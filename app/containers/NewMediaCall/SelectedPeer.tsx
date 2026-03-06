@@ -23,19 +23,17 @@ export const SelectedPeerInner = ({ selectedPeer }: { selectedPeer: TPeerItem | 
 		<View style={styles.container}>
 			<View style={[styles.selectedTag, { backgroundColor: colors.buttonBackgroundSecondaryDefault }]}>
 				<PeerItemInner item={selectedPeer} />
-				<View style={styles.removeButtonContainer}>
-					<BorderlessButton
-						onPress={clearSelection}
-						testID='new-media-call-clear-selected-peer'
-						rippleColor={colors.buttonBackgroundSecondaryPress}
-						foreground
-						style={styles.removeButton}
-						accessibilityLabel={I18n.t('Remove')}
-						accessibilityRole='button'
-						hitSlop={10}>
-						<CustomIcon name={'close'} size={16} color={colors.buttonFontSecondary} />
-					</BorderlessButton>
-				</View>
+				<BorderlessButton
+					onPress={clearSelection}
+					testID='new-media-call-clear-selected-peer'
+					rippleColor={colors.buttonBackgroundSecondaryPress}
+					foreground
+					style={styles.removeButton}
+					accessibilityLabel={I18n.t('Remove')}
+					accessibilityRole='button'
+					hitSlop={10}>
+					<CustomIcon name={'close'} size={16} color={colors.buttonFontSecondary} />
+				</BorderlessButton>
 			</View>
 		</View>
 	);
@@ -54,11 +52,6 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		gap: 10
-	},
-	removeButtonContainer: {
-		// flexGrow: 1
-		// flex: 1
-		// flexShrink: 0
 	},
 	removeButton: {
 		padding: 2

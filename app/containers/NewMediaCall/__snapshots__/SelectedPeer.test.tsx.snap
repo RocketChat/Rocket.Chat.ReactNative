@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Story Snapshots: LongUsername should match snapshot 1`] = `
+exports[`Story Snapshots: All should match snapshot 1`] = `
 <View
   style={
     {
@@ -18,12 +18,13 @@ exports[`Story Snapshots: LongUsername should match snapshot 1`] = `
       }
     }
   >
-    Long username variant
+    User variant
   </Text>
   <View
     style={
       {
-        "marginBottom": 16,
+        "alignItems": "center",
+        "flexDirection": "row",
       }
     }
   >
@@ -32,9 +33,10 @@ exports[`Story Snapshots: LongUsername should match snapshot 1`] = `
         [
           {
             "alignItems": "center",
-            "alignSelf": "flex-start",
             "borderRadius": 4,
             "flexDirection": "row",
+            "flexShrink": 1,
+            "gap": 10,
             "minHeight": 48,
             "paddingHorizontal": 10,
           },
@@ -48,168 +50,181 @@ exports[`Story Snapshots: LongUsername should match snapshot 1`] = `
         style={
           {
             "alignItems": "center",
-            "width": 28,
-          }
-        }
-      >
-        <View
-          accessibilityLabel="this.is.a.very.long.username.for.storybook.preview's avatar"
-          accessible={true}
-          style={
-            [
-              {
-                "borderRadius": 4,
-                "height": 28,
-                "width": 28,
-              },
-              undefined,
-            ]
-          }
-          testID="avatar"
-        >
-          <ViewManagerAdapter_ExpoImage
-            borderRadius={4}
-            containerViewRef={"[React.ref]"}
-            contentFit="cover"
-            contentPosition={
-              {
-                "left": "50%",
-                "top": "50%",
-              }
-            }
-            height={28}
-            nativeViewRef={"[React.ref]"}
-            onError={[Function]}
-            onLoad={[Function]}
-            onLoadStart={[Function]}
-            onProgress={[Function]}
-            placeholder={[]}
-            priority="high"
-            source={
-              [
-                {
-                  "headers": {
-                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                  },
-                  "uri": "https://open.rocket.chat/avatar/this.is.a.very.long.username.for.storybook.preview?format=png&size=56",
-                },
-              ]
-            }
-            style={
-              {
-                "borderRadius": 4,
-                "height": 28,
-                "width": 28,
-              }
-            }
-            transition={null}
-            width={28}
-          />
-        </View>
-      </View>
-      <View
-        style={
-          {
-            "alignItems": "center",
-            "flex": 1,
             "flexDirection": "row",
+            "flexShrink": 1,
             "gap": 4,
           }
         }
       >
-        <Text
-          allowFontScaling={false}
-          selectable={false}
+        <View
           style={
-            [
-              {
-                "color": "#6C727A",
-                "fontSize": 20,
-              },
+            {
+              "alignItems": "center",
+              "width": 28,
+            }
+          }
+        >
+          <View
+            accessibilityLabel="alice.johnson's avatar"
+            accessible={true}
+            style={
               [
                 {
-                  "lineHeight": 20,
+                  "borderRadius": 4,
+                  "height": 28,
+                  "width": 28,
+                },
+                undefined,
+              ]
+            }
+            testID="avatar"
+          >
+            <ViewManagerAdapter_ExpoImage
+              borderRadius={4}
+              containerViewRef={"[React.ref]"}
+              contentFit="cover"
+              contentPosition={
+                {
+                  "left": "50%",
+                  "top": "50%",
+                }
+              }
+              height={28}
+              nativeViewRef={"[React.ref]"}
+              onError={[Function]}
+              onLoad={[Function]}
+              onLoadStart={[Function]}
+              onProgress={[Function]}
+              placeholder={[]}
+              priority="high"
+              source={
+                [
+                  {
+                    "headers": {
+                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                    },
+                    "uri": "https://open.rocket.chat/avatar/alice.johnson?format=png&size=56",
+                  },
+                ]
+              }
+              style={
+                {
+                  "borderRadius": 4,
+                  "height": 28,
+                  "width": 28,
+                }
+              }
+              transition={null}
+              width={28}
+            />
+          </View>
+        </View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "flexShrink": 1,
+              "gap": 4,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#6C727A",
+                  "fontSize": 20,
                 },
                 [
                   {
-                    "height": 20,
-                    "textAlign": "center",
-                    "textAlignVertical": "center",
-                    "width": 20,
+                    "lineHeight": 20,
                   },
-                  undefined,
+                  [
+                    {
+                      "height": 20,
+                      "textAlign": "center",
+                      "textAlignVertical": "center",
+                      "width": 20,
+                    },
+                    undefined,
+                  ],
                 ],
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
-            ]
-          }
-        >
-          
-        </Text>
-        <Text
-          numberOfLines={1}
-          style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "flexShrink": 1,
-                "fontFamily": "Inter",
-                "fontSize": 18,
-                "fontWeight": "500",
-                "lineHeight": 26,
-                "textAlign": "left",
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
-          }
-        >
-          Long display name to validate text truncation behavior for SelectedPeer in narrow widths
-        </Text>
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "500",
+                  "lineHeight": 26,
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            Alice Johnson
+          </Text>
+        </View>
       </View>
-      <View
+      <RNGestureHandlerButton
         accessibilityLabel="Remove"
         accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": undefined,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
+        activeOpacity={0.3}
+        borderless={true}
         collapsable={false}
-        focusable={true}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          {
-            "marginLeft": 10,
-            "padding": 2,
+        delayLongPress={600}
+        foreground={true}
+        handlerTag={4}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={10}
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={
+          [MockFunction] {
+            "calls": [
+              [],
+            ],
+            "results": [
+              {
+                "type": "return",
+                "value": undefined,
+              },
+            ],
           }
+        }
+        rippleColor="#9EA2A8"
+        style={
+          [
+            {
+              "opacity": 1,
+              "padding": 2,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="new-media-call-clear-selected-peer"
       >
@@ -239,7 +254,699 @@ exports[`Story Snapshots: LongUsername should match snapshot 1`] = `
         >
           
         </Text>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+  <Text
+    style={
+      {
+        "fontSize": 13,
+        "opacity": 0.6,
+      }
+    }
+  >
+    SIP variant
+  </Text>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "flexDirection": "row",
+      }
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "borderRadius": 4,
+            "flexDirection": "row",
+            "flexShrink": 1,
+            "gap": 10,
+            "minHeight": 48,
+            "paddingHorizontal": 10,
+          },
+          {
+            "backgroundColor": "#E4E7EA",
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "flexShrink": 1,
+            "gap": 4,
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "width": 28,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#6C727A",
+                  "fontSize": 20,
+                },
+                [
+                  {
+                    "lineHeight": 20,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "flexShrink": 1,
+              "gap": 4,
+            }
+          }
+        >
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "500",
+                  "lineHeight": 26,
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            +55 11 99999-9999
+          </Text>
+        </View>
       </View>
+      <RNGestureHandlerButton
+        accessibilityLabel="Remove"
+        accessibilityRole="button"
+        activeOpacity={0.3}
+        borderless={true}
+        collapsable={false}
+        delayLongPress={600}
+        foreground={true}
+        handlerTag={5}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={10}
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={
+          [MockFunction] {
+            "calls": [
+              [],
+            ],
+            "results": [
+              {
+                "type": "return",
+                "value": undefined,
+              },
+            ],
+          }
+        }
+        rippleColor="#9EA2A8"
+        style={
+          [
+            {
+              "opacity": 1,
+              "padding": 2,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="new-media-call-clear-selected-peer"
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#1F2329",
+                "fontSize": 16,
+              },
+              [
+                {
+                  "lineHeight": 16,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+  <Text
+    style={
+      {
+        "fontSize": 13,
+        "opacity": 0.6,
+      }
+    }
+  >
+    Long username variant
+  </Text>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "flexDirection": "row",
+      }
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "borderRadius": 4,
+            "flexDirection": "row",
+            "flexShrink": 1,
+            "gap": 10,
+            "minHeight": 48,
+            "paddingHorizontal": 10,
+          },
+          {
+            "backgroundColor": "#E4E7EA",
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "flexShrink": 1,
+            "gap": 4,
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "width": 28,
+            }
+          }
+        >
+          <View
+            accessibilityLabel="this.is.a.very.long.username.for.storybook.preview's avatar"
+            accessible={true}
+            style={
+              [
+                {
+                  "borderRadius": 4,
+                  "height": 28,
+                  "width": 28,
+                },
+                undefined,
+              ]
+            }
+            testID="avatar"
+          >
+            <ViewManagerAdapter_ExpoImage
+              borderRadius={4}
+              containerViewRef={"[React.ref]"}
+              contentFit="cover"
+              contentPosition={
+                {
+                  "left": "50%",
+                  "top": "50%",
+                }
+              }
+              height={28}
+              nativeViewRef={"[React.ref]"}
+              onError={[Function]}
+              onLoad={[Function]}
+              onLoadStart={[Function]}
+              onProgress={[Function]}
+              placeholder={[]}
+              priority="high"
+              source={
+                [
+                  {
+                    "headers": {
+                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                    },
+                    "uri": "https://open.rocket.chat/avatar/this.is.a.very.long.username.for.storybook.preview?format=png&size=56",
+                  },
+                ]
+              }
+              style={
+                {
+                  "borderRadius": 4,
+                  "height": 28,
+                  "width": 28,
+                }
+              }
+              transition={null}
+              width={28}
+            />
+          </View>
+        </View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "flexShrink": 1,
+              "gap": 4,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#6C727A",
+                  "fontSize": 20,
+                },
+                [
+                  {
+                    "lineHeight": 20,
+                  },
+                  [
+                    {
+                      "height": 20,
+                      "textAlign": "center",
+                      "textAlignVertical": "center",
+                      "width": 20,
+                    },
+                    undefined,
+                  ],
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "500",
+                  "lineHeight": 26,
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            Long display name to validate text truncation behavior for SelectedPeer in narrow widths
+          </Text>
+        </View>
+      </View>
+      <RNGestureHandlerButton
+        accessibilityLabel="Remove"
+        accessibilityRole="button"
+        activeOpacity={0.3}
+        borderless={true}
+        collapsable={false}
+        delayLongPress={600}
+        foreground={true}
+        handlerTag={6}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={10}
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={
+          [MockFunction] {
+            "calls": [
+              [],
+            ],
+            "results": [
+              {
+                "type": "return",
+                "value": undefined,
+              },
+            ],
+          }
+        }
+        rippleColor="#9EA2A8"
+        style={
+          [
+            {
+              "opacity": 1,
+              "padding": 2,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="new-media-call-clear-selected-peer"
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#1F2329",
+                "fontSize": 16,
+              },
+              [
+                {
+                  "lineHeight": 16,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: LongUsername should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+      "gap": 12,
+      "padding": 16,
+    }
+  }
+>
+  <Text
+    style={
+      {
+        "fontSize": 13,
+        "opacity": 0.6,
+      }
+    }
+  >
+    Long username variant
+  </Text>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "flexDirection": "row",
+      }
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "borderRadius": 4,
+            "flexDirection": "row",
+            "flexShrink": 1,
+            "gap": 10,
+            "minHeight": 48,
+            "paddingHorizontal": 10,
+          },
+          {
+            "backgroundColor": "#E4E7EA",
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "flexShrink": 1,
+            "gap": 4,
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "width": 28,
+            }
+          }
+        >
+          <View
+            accessibilityLabel="this.is.a.very.long.username.for.storybook.preview's avatar"
+            accessible={true}
+            style={
+              [
+                {
+                  "borderRadius": 4,
+                  "height": 28,
+                  "width": 28,
+                },
+                undefined,
+              ]
+            }
+            testID="avatar"
+          >
+            <ViewManagerAdapter_ExpoImage
+              borderRadius={4}
+              containerViewRef={"[React.ref]"}
+              contentFit="cover"
+              contentPosition={
+                {
+                  "left": "50%",
+                  "top": "50%",
+                }
+              }
+              height={28}
+              nativeViewRef={"[React.ref]"}
+              onError={[Function]}
+              onLoad={[Function]}
+              onLoadStart={[Function]}
+              onProgress={[Function]}
+              placeholder={[]}
+              priority="high"
+              source={
+                [
+                  {
+                    "headers": {
+                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                    },
+                    "uri": "https://open.rocket.chat/avatar/this.is.a.very.long.username.for.storybook.preview?format=png&size=56",
+                  },
+                ]
+              }
+              style={
+                {
+                  "borderRadius": 4,
+                  "height": 28,
+                  "width": 28,
+                }
+              }
+              transition={null}
+              width={28}
+            />
+          </View>
+        </View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "flexShrink": 1,
+              "gap": 4,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#6C727A",
+                  "fontSize": 20,
+                },
+                [
+                  {
+                    "lineHeight": 20,
+                  },
+                  [
+                    {
+                      "height": 20,
+                      "textAlign": "center",
+                      "textAlignVertical": "center",
+                      "width": 20,
+                    },
+                    undefined,
+                  ],
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "500",
+                  "lineHeight": 26,
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            Long display name to validate text truncation behavior for SelectedPeer in narrow widths
+          </Text>
+        </View>
+      </View>
+      <RNGestureHandlerButton
+        accessibilityLabel="Remove"
+        accessibilityRole="button"
+        activeOpacity={0.3}
+        borderless={true}
+        collapsable={false}
+        delayLongPress={600}
+        foreground={true}
+        handlerTag={7}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={10}
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={
+          [MockFunction] {
+            "calls": [
+              [],
+            ],
+            "results": [
+              {
+                "type": "return",
+                "value": undefined,
+              },
+            ],
+          }
+        }
+        rippleColor="#9EA2A8"
+        style={
+          [
+            {
+              "opacity": 1,
+              "padding": 2,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="new-media-call-clear-selected-peer"
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#1F2329",
+                "fontSize": 16,
+              },
+              [
+                {
+                  "lineHeight": 16,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+      </RNGestureHandlerButton>
     </View>
   </View>
 </View>
@@ -268,7 +975,8 @@ exports[`Story Snapshots: Sip should match snapshot 1`] = `
   <View
     style={
       {
-        "marginBottom": 16,
+        "alignItems": "center",
+        "flexDirection": "row",
       }
     }
   >
@@ -277,9 +985,10 @@ exports[`Story Snapshots: Sip should match snapshot 1`] = `
         [
           {
             "alignItems": "center",
-            "alignSelf": "flex-start",
             "borderRadius": 4,
             "flexDirection": "row",
+            "flexShrink": 1,
+            "gap": 10,
             "minHeight": 48,
             "paddingHorizontal": 10,
           },
@@ -293,106 +1002,119 @@ exports[`Story Snapshots: Sip should match snapshot 1`] = `
         style={
           {
             "alignItems": "center",
-            "width": 28,
-          }
-        }
-      >
-        <Text
-          allowFontScaling={false}
-          selectable={false}
-          style={
-            [
-              {
-                "color": "#6C727A",
-                "fontSize": 20,
-              },
-              [
-                {
-                  "lineHeight": 20,
-                },
-                undefined,
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
-            ]
-          }
-        >
-          
-        </Text>
-      </View>
-      <View
-        style={
-          {
-            "alignItems": "center",
-            "flex": 1,
             "flexDirection": "row",
+            "flexShrink": 1,
             "gap": 4,
           }
         }
       >
-        <Text
-          numberOfLines={1}
+        <View
           style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "flexShrink": 1,
-                "fontFamily": "Inter",
-                "fontSize": 18,
-                "fontWeight": "500",
-                "lineHeight": 26,
-                "textAlign": "left",
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
+            {
+              "alignItems": "center",
+              "width": 28,
+            }
           }
         >
-          +55 11 99999-9999
-        </Text>
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#6C727A",
+                  "fontSize": 20,
+                },
+                [
+                  {
+                    "lineHeight": 20,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "flexShrink": 1,
+              "gap": 4,
+            }
+          }
+        >
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "500",
+                  "lineHeight": 26,
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            +55 11 99999-9999
+          </Text>
+        </View>
       </View>
-      <View
+      <RNGestureHandlerButton
         accessibilityLabel="Remove"
         accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": undefined,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
+        activeOpacity={0.3}
+        borderless={true}
         collapsable={false}
-        focusable={true}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          {
-            "marginLeft": 10,
-            "padding": 2,
+        delayLongPress={600}
+        foreground={true}
+        handlerTag={8}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={10}
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={
+          [MockFunction] {
+            "calls": [
+              [],
+            ],
+            "results": [
+              {
+                "type": "return",
+                "value": undefined,
+              },
+            ],
           }
+        }
+        rippleColor="#9EA2A8"
+        style={
+          [
+            {
+              "opacity": 1,
+              "padding": 2,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="new-media-call-clear-selected-peer"
       >
@@ -422,7 +1144,7 @@ exports[`Story Snapshots: Sip should match snapshot 1`] = `
         >
           
         </Text>
-      </View>
+      </RNGestureHandlerButton>
     </View>
   </View>
 </View>
@@ -451,7 +1173,8 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
   <View
     style={
       {
-        "marginBottom": 16,
+        "alignItems": "center",
+        "flexDirection": "row",
       }
     }
   >
@@ -460,9 +1183,10 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
         [
           {
             "alignItems": "center",
-            "alignSelf": "flex-start",
             "borderRadius": 4,
             "flexDirection": "row",
+            "flexShrink": 1,
+            "gap": 10,
             "minHeight": 48,
             "paddingHorizontal": 10,
           },
@@ -476,168 +1200,181 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
         style={
           {
             "alignItems": "center",
-            "width": 28,
-          }
-        }
-      >
-        <View
-          accessibilityLabel="alice.johnson's avatar"
-          accessible={true}
-          style={
-            [
-              {
-                "borderRadius": 4,
-                "height": 28,
-                "width": 28,
-              },
-              undefined,
-            ]
-          }
-          testID="avatar"
-        >
-          <ViewManagerAdapter_ExpoImage
-            borderRadius={4}
-            containerViewRef={"[React.ref]"}
-            contentFit="cover"
-            contentPosition={
-              {
-                "left": "50%",
-                "top": "50%",
-              }
-            }
-            height={28}
-            nativeViewRef={"[React.ref]"}
-            onError={[Function]}
-            onLoad={[Function]}
-            onLoadStart={[Function]}
-            onProgress={[Function]}
-            placeholder={[]}
-            priority="high"
-            source={
-              [
-                {
-                  "headers": {
-                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                  },
-                  "uri": "https://open.rocket.chat/avatar/alice.johnson?format=png&size=56",
-                },
-              ]
-            }
-            style={
-              {
-                "borderRadius": 4,
-                "height": 28,
-                "width": 28,
-              }
-            }
-            transition={null}
-            width={28}
-          />
-        </View>
-      </View>
-      <View
-        style={
-          {
-            "alignItems": "center",
-            "flex": 1,
             "flexDirection": "row",
+            "flexShrink": 1,
             "gap": 4,
           }
         }
       >
-        <Text
-          allowFontScaling={false}
-          selectable={false}
+        <View
           style={
-            [
-              {
-                "color": "#6C727A",
-                "fontSize": 20,
-              },
+            {
+              "alignItems": "center",
+              "width": 28,
+            }
+          }
+        >
+          <View
+            accessibilityLabel="alice.johnson's avatar"
+            accessible={true}
+            style={
               [
                 {
-                  "lineHeight": 20,
+                  "borderRadius": 4,
+                  "height": 28,
+                  "width": 28,
+                },
+                undefined,
+              ]
+            }
+            testID="avatar"
+          >
+            <ViewManagerAdapter_ExpoImage
+              borderRadius={4}
+              containerViewRef={"[React.ref]"}
+              contentFit="cover"
+              contentPosition={
+                {
+                  "left": "50%",
+                  "top": "50%",
+                }
+              }
+              height={28}
+              nativeViewRef={"[React.ref]"}
+              onError={[Function]}
+              onLoad={[Function]}
+              onLoadStart={[Function]}
+              onProgress={[Function]}
+              placeholder={[]}
+              priority="high"
+              source={
+                [
+                  {
+                    "headers": {
+                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                    },
+                    "uri": "https://open.rocket.chat/avatar/alice.johnson?format=png&size=56",
+                  },
+                ]
+              }
+              style={
+                {
+                  "borderRadius": 4,
+                  "height": 28,
+                  "width": 28,
+                }
+              }
+              transition={null}
+              width={28}
+            />
+          </View>
+        </View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "flexShrink": 1,
+              "gap": 4,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#6C727A",
+                  "fontSize": 20,
                 },
                 [
                   {
-                    "height": 20,
-                    "textAlign": "center",
-                    "textAlignVertical": "center",
-                    "width": 20,
+                    "lineHeight": 20,
                   },
-                  undefined,
+                  [
+                    {
+                      "height": 20,
+                      "textAlign": "center",
+                      "textAlignVertical": "center",
+                      "width": 20,
+                    },
+                    undefined,
+                  ],
                 ],
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
-            ]
-          }
-        >
-          
-        </Text>
-        <Text
-          numberOfLines={1}
-          style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "flexShrink": 1,
-                "fontFamily": "Inter",
-                "fontSize": 18,
-                "fontWeight": "500",
-                "lineHeight": 26,
-                "textAlign": "left",
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
-          }
-        >
-          Alice Johnson
-        </Text>
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "500",
+                  "lineHeight": 26,
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            Alice Johnson
+          </Text>
+        </View>
       </View>
-      <View
+      <RNGestureHandlerButton
         accessibilityLabel="Remove"
         accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": undefined,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
+        activeOpacity={0.3}
+        borderless={true}
         collapsable={false}
-        focusable={true}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          {
-            "marginLeft": 10,
-            "padding": 2,
+        delayLongPress={600}
+        foreground={true}
+        handlerTag={9}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={10}
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={
+          [MockFunction] {
+            "calls": [
+              [],
+            ],
+            "results": [
+              {
+                "type": "return",
+                "value": undefined,
+              },
+            ],
           }
+        }
+        rippleColor="#9EA2A8"
+        style={
+          [
+            {
+              "opacity": 1,
+              "padding": 2,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="new-media-call-clear-selected-peer"
       >
@@ -667,7 +1404,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
         >
           
         </Text>
-      </View>
+      </RNGestureHandlerButton>
     </View>
   </View>
 </View>
