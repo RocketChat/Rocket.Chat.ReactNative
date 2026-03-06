@@ -24,9 +24,6 @@ export const PeerItem = ({ item, onSelectOption }: { item: TPeerItem; onSelectOp
 const styles = StyleSheet.create({
 	container: {
 		paddingVertical: 10,
-		paddingHorizontal: 12,
-		flexDirection: 'row',
-		alignItems: 'center',
-		gap: 4
+		paddingHorizontal: 12
 	}
 });

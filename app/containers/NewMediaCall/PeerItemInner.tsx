@@ -13,7 +13,7 @@ export const PeerItemInner = ({ item }: { item: TPeerItem }) => {
 	const isSip = item.type === 'sip';
 
 	return (
-		<>
+		<View style={styles.container}>
 			<View style={styles.icon}>
 				{isSip ? (
 					<CustomIcon name='phone-in' size={20} color={colors.fontSecondaryInfo} />
@@ -27,17 +27,23 @@ export const PeerItemInner = ({ item }: { item: TPeerItem }) => {
 					{item.label}
 				</Text>
 			</View>
-		</>
+		</View>
 	);
 };
 
 const styles = StyleSheet.create({
+	container: {
+		flexShrink: 1,
+		flexDirection: 'row',
+		alignItems: 'center',
+		gap: 4
+	},
 	icon: {
 		width: 28,
 		alignItems: 'center'
 	},
 	nameContainer: {
-		flex: 1,
+		flexShrink: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
 		gap: 4

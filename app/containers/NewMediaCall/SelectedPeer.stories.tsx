@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';
-import { SelectedPeer } from './SelectedPeer';
+import { SelectedPeerInner } from './SelectedPeer';
 import type { TPeerItem } from '../../lib/services/voip/getPeerAutocompleteOptions';
 
 const styles = StyleSheet.create({
@@ -45,15 +45,26 @@ const longUsernamePeer: TPeerItem = {
 
 export default {
 	title: 'NewMediaCall/SelectedPeer',
-	component: SelectedPeer
+	component: SelectedPeerInner
 };
+
+export const All = () => (
+	<View style={styles.container}>
+		<Text style={styles.sectionLabel}>User variant</Text>
+		<SelectedPeerInner selectedPeer={userPeer} />
+		<Text style={styles.sectionLabel}>SIP variant</Text>
+		<SelectedPeerInner selectedPeer={sipPeer} />
+		<Text style={styles.sectionLabel}>Long username variant</Text>
+		<SelectedPeerInner selectedPeer={longUsernamePeer} />
+	</View>
+);
 
 export const User = () => {
 	setStoreState(userPeer);
 	return (
 		<View style={styles.container}>
 			<Text style={styles.sectionLabel}>User variant</Text>
-			<SelectedPeer />
+			<SelectedPeerInner selectedPeer={userPeer} />
 		</View>
 	);
 };
@@ -63,7 +74,7 @@ export const Sip = () => {
 	return (
 		<View style={styles.container}>
 			<Text style={styles.sectionLabel}>SIP variant</Text>
-			<SelectedPeer />
+			<SelectedPeerInner selectedPeer={sipPeer} />
 		</View>
 	);
 };
@@ -73,7 +84,7 @@ export const LongUsername = () => {
 	return (
 		<View style={styles.container}>
 			<Text style={styles.sectionLabel}>Long username variant</Text>
-			<SelectedPeer />
+			<SelectedPeerInner selectedPeer={longUsernamePeer} />
 		</View>
 	);
 };
