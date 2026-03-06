@@ -66,8 +66,8 @@ NSString *mmkvCurrentServerKey = @"currentServer";
 #pragma mark - spec methods (declared in spec)
 - (NSString *)syncQuickReplies {
     
-    if(![self isWatchSupported] || ![self isWatchAppInstalled]){
-        return @"[ERROR]: WatchApp not supported";
+    if(![self isWatchSupported].boolValue || ![self isWatchAppInstalled].boolValue){
+        return @"[ERROR]: WatchApp not supported or not installed";
     }
     
     NSString *currentServer = [self getValueFromMMKV:mmkvCurrentServerKey];

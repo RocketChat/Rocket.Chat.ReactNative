@@ -27,20 +27,24 @@ const UserWatchOSQuickRepliesView = ({ navigation }: IUserWatchOSQuickRepliesVie
 		});
 	}, [navigation]);
 
-	useEffect(() => {
-		syncWatchOSQuickReplies();
-	}, []);
-
 	const removeQuickReply = (reply: string) => {
+		if (!currentServer) {
+			console.error('Error: cannot set quick replies, current server is undefined');
+			return;
+		}
 		const newReplies = quickReplies?.filter(quickreply => quickreply !== reply);
 		setQuickReplies(newReplies);
 		syncWatchOSQuickReplies();
 	};
 
 	const addQuickReply = () => {
+		if (!currentServer) {
+			console.error('Error: cannot set quick replies, current server is undefined');
+			return;
+		}
 		const value = input.trim();
 		if (!value) return;
-		if (!quickReplies?.includes(input.trim())) setQuickReplies([...(quickReplies ?? []), value]);
+		if (!quickReplies?.includes(value)) setQuickReplies([...(quickReplies ?? []), value]);
 		setInput('');
 		syncWatchOSQuickReplies();
 	};
