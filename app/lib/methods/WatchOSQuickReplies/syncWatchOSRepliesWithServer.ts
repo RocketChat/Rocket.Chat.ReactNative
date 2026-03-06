@@ -5,11 +5,11 @@ import { type IApplicationState } from '../../../definitions';
 import { shouldShowWatchAppOptions } from './getWatchStatus';
 import { getWatchOSRepliesForServer } from './getWatchOSRepliesFromMMKV';
 
-const syncWatchOSQuickRepliesWithServer = (state: IApplicationState) => {
-	if (!shouldShowWatchAppOptions()) return;
+const syncWatchOSQuickRepliesWithServer = (state: IApplicationState): boolean => {
+	if (!shouldShowWatchAppOptions()) return false;
 	const { server } = state.server;
 	const appleWatchReplies = state.settings.Apple_Watch_Quick_Actions;
-	if (!server) return;
+	if (!server) return false;
 
 	const isRepliesAvailable = getWatchOSRepliesForServer(server);
 
@@ -20,6 +20,7 @@ const syncWatchOSQuickRepliesWithServer = (state: IApplicationState) => {
 		const replies = appleWatchReplies.split(',').map(reply => reply.trim());
 		UserPreferences.setArray(quickRepliesMMKVKey, replies);
 	}
-	syncWatchOSQuickReplies();
+	const result = syncWatchOSQuickReplies();
+	return result;
 };
 export default syncWatchOSQuickRepliesWithServer;

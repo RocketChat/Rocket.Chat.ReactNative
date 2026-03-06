@@ -109,6 +109,10 @@ NSString *mmkvCurrentServerKey = @"currentServer";
                     BOOL success = [_session updateApplicationContext:@{
                         @"quickReplies" : array,
                         @"server" : currentServer,
+                        /**
+                         * when we send context make sure its unique each time
+                         * otherwise WatchApp will not fire `updateApplicationContext`
+                         */
                         @"_t" : @(arc4random())
                     }
                                                                 error:&error];

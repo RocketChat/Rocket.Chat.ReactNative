@@ -1,11 +1,10 @@
-import { put, takeLatest, select } from 'redux-saga/effects';
+import { put, takeLatest } from 'redux-saga/effects';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 import valid from 'semver/functions/valid';
 import coerce from 'semver/functions/coerce';
 import { call } from 'typed-redux-saga';
 
-import { shouldShowWatchAppOptions } from '../lib/methods/WatchOSQuickReplies/getWatchStatus';
 import Navigation from '../lib/navigation/appNavigation';
 import { SERVER } from '../actions/actionsTypes';
 import {
@@ -29,7 +28,7 @@ import { setSupportedVersions } from '../actions/supportedVersions';
 import UserPreferences from '../lib/methods/userPreferences';
 import { encryptionStop } from '../actions/encryption';
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
-import { type IApplicationState, type IServerInfo, RootEnum, type TServerModel } from '../definitions';
+import { type IServerInfo, RootEnum, type TServerModel } from '../definitions';
 import { CERTIFICATE_KEY, CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
 import { checkSupportedVersions } from '../lib/methods/checkSupportedVersions';
 import { getLoginSettings, setSettings } from '../lib/methods/getSettings';
@@ -44,7 +43,6 @@ import { appSelector } from '../lib/hooks/useAppSelector';
 import { getServerById } from '../lib/database/services/Server';
 import { getLoggedUserById } from '../lib/database/services/LoggedUser';
 import SSLPinning from '../lib/methods/helpers/sslPinning';
-import syncWatchOSQuickRepliesWithServer from '../lib/methods/WatchOSQuickReplies/syncWatchOSRepliesWithServer';
 
 const getServerVersion = function (version: string | null) {
 	let validVersion = valid(version);
@@ -198,9 +196,6 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		}
 
-		const state: IApplicationState = yield select((state: IApplicationState) => state);
-		syncWatchOSQuickRepliesWithServer(state);
-
 		// We can't use yield here because fetch of Settings & Custom Emojis is slower
 		// and block the selectServerSuccess raising multiples errors
 		setSettings();
@@ -268,26 +263,8 @@ const handleServerRequest = function* handleServerRequest({ server, username, fr
 	}
 };
 
-function* handleServerFinishAdd() {
-	try {
-		const state = yield* appSelector(s => s);
-
-		const { server } = state.server;
-		if (!server) return;
-
-		if (shouldShowWatchAppOptions()) {
-			// case: when new server is added and switched
-			// sets the local mmkv and syncs
-			syncWatchOSQuickRepliesWithServer(state);
-		}
-	} catch (e) {
-		log(e);
-	}
-}
-
 const root = function* root() {
 	yield takeLatest<IServerRequestAction>(SERVER.REQUEST, handleServerRequest);
 	yield takeLatest<ISelectServerAction>(SERVER.SELECT_REQUEST, handleSelectServer);
-	yield takeLatest(SERVER.FINISH_ADD, handleServerFinishAdd);
 };
 export default root;
