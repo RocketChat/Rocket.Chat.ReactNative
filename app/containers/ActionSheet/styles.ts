@@ -70,7 +70,6 @@ export default StyleSheet.create({
 		marginRight: 8
 	},
 	contentContainer: {
-		height: '100%',
-		width: '100%'
+		flex: 0
 	}
 });

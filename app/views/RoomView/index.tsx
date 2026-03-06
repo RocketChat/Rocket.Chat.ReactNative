@@ -855,7 +855,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				),
 				snaps: ['50%'],
 				enableContentPanningGesture: false,
-				onClose: this.resetAction
+				onClose: this.resetAction,
+				fullContainer: true
 			});
 		}, 100);
 	};

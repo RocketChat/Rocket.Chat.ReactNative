@@ -115,6 +115,7 @@ const ActionSheet = React.memo(
 							children={data?.children}
 							hasCancel={data?.hasCancel}
 							onLayout={handleContentLayout}
+							fullContainer={data.fullContainer}
 						/>
 					</GestureHandlerRootView>
 				</TrueSheet>
