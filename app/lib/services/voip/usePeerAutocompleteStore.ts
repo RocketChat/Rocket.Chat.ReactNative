@@ -13,6 +13,7 @@ type TPeerAutocompleteActions = {
 	setSelectedPeer: (peer: TPeerItem | null) => void;
 	setFilter: (filter: string) => void;
 	clearSelection: () => void;
+	reset: () => void;
 };
 
 export type TPeerAutocompleteStore = TPeerAutocompleteState & TPeerAutocompleteActions;
@@ -52,5 +53,9 @@ export const usePeerAutocompleteStore = create<TPeerAutocompleteStore>((set, get
 
 	clearSelection: () => {
 		set({ selectedPeer: null });
+	},
+
+	reset: () => {
+		set({ options: [], selectedPeer: null, filter: '' });
 	}
 }));

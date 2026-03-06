@@ -2,26 +2,25 @@ import React from 'react';
 
 import * as HeaderButton from '../../../containers/Header/components/HeaderButton';
 import { useVideoConf } from '../../../lib/hooks/useVideoConf';
-import type { TSubscriptionModel } from '../../../definitions';
 import { useMediaCallPermission } from '../../../lib/hooks/useMediaCallPermission';
 import { NewMediaCall } from '../../../containers/NewMediaCall';
 import { showActionSheetRef } from '../../../containers/ActionSheet';
 import { getUidDirectMessage } from '../../../lib/methods/helpers/helpers';
 import { usePeerAutocompleteStore } from '../../../lib/services/voip/usePeerAutocompleteStore';
+import { useSubscription } from '../../../lib/hooks/useSubscription';
 
 export const HeaderCallButton = ({
 	rid,
 	disabled,
-	accessibilityLabel,
-	room
+	accessibilityLabel
 }: {
 	rid: string;
 	disabled: boolean;
 	accessibilityLabel: string;
-	room?: TSubscriptionModel;
 }): React.ReactElement | null => {
 	'use memo';
 
+	const room = useSubscription(rid);
 	const { showInitCallActionSheet, callEnabled, disabledTooltip } = useVideoConf(rid);
 	const hasMediaCallPermission = useMediaCallPermission();
 
