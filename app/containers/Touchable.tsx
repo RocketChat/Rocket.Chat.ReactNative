@@ -8,8 +8,7 @@ import {
 	type AccessibilityActionInfo,
 	TouchableNativeFeedback,
 	TouchableOpacity,
-	type TouchableWithoutFeedbackProps,
-	type ColorValue
+	type TouchableWithoutFeedbackProps
 } from 'react-native';
 
 import { useTheme } from '../theme';
@@ -26,7 +25,6 @@ export interface ITouchProps extends TouchableWithoutFeedbackProps {
 	rectButtonStyle?: StyleProp<ViewStyle>;
 	enabled?: boolean;
 	android_rippleColor?: string;
-	underlayColor?: ColorValue;
 }
 
 const Component = isIOS ? TouchableOpacity : TouchableNativeFeedback;
@@ -37,7 +35,6 @@ const Touchable = React.forwardRef<View, ITouchProps>(
 			children,
 			onPress,
 			android_rippleColor,
-			underlayColor,
 			accessible,
 			accessibilityLabel,
 			accessibilityHint,
