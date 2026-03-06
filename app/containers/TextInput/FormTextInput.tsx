@@ -9,7 +9,6 @@ import {
 	View,
 	type ViewStyle
 } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
 import { A11y } from 'react-native-a11y-order';
 
 import i18n from '../../i18n';
