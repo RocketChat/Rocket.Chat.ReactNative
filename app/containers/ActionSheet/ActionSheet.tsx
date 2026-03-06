@@ -5,6 +5,7 @@ import { Keyboard, type LayoutChangeEvent, useWindowDimensions } from 'react-nat
 import { TrueSheet } from '@lodev09/react-native-true-sheet';
 import type { SheetDetent } from '@lodev09/react-native-true-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { useTheme } from '../../theme';
 import { isTablet } from '../../lib/methods/helpers';
@@ -89,10 +90,10 @@ const ActionSheet = React.memo(
 		}));
 
 		const renderHeader = () => (
-			<>
+			<GestureHandlerRootView style={{ flex: 0 }}>
 				<Handle />
 				{isValidElement(data?.customHeader) ? data.customHeader : null}
-			</>
+			</GestureHandlerRootView>
 		);
 
 		const onDidDismiss = () => {
@@ -149,13 +150,15 @@ const ActionSheet = React.memo(
 					scrollable={!!data?.options}
 					style={[styles.container, bottomSheetStyle]}
 					onDidDismiss={onDidDismiss}>
-					<BottomSheetContent
-						options={data?.options}
-						hide={hide}
-						children={data?.children}
-						hasCancel={data?.hasCancel}
-						onLayout={handleContentLayout}
-					/>
+					<GestureHandlerRootView style={styles.contentContainer}>
+						<BottomSheetContent
+							options={data?.options}
+							hide={hide}
+							children={data?.children}
+							hasCancel={data?.hasCancel}
+							onLayout={handleContentLayout}
+						/>
+					</GestureHandlerRootView>
 				</TrueSheet>
 			</>
 		);
