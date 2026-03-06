@@ -7,7 +7,7 @@ import Touch from '../Touch';
 
 export const PressableEmoji = ({ emoji, onPress }: { emoji: IEmoji; onPress: (emoji: IEmoji) => void }): React.ReactElement => {
 	const accessibilityLabel = typeof emoji === 'string' ? emoji : emoji.name;
-
+	// we should use a Touchable component instead of a Touch component because Gesture handler is compatible with ActionSheet and TextInput typing
 	return (
 		<Touch
 			accessible
