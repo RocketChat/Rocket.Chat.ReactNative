@@ -10,7 +10,6 @@ import { generateLoadMoreId } from './helpers/generateLoadMoreId';
 import { type ChatGetMessage } from '@rocket.chat/rest-typings';
 
 const COUNT = 50;
-const COUNT_LIMIT = COUNT * 10;
 
 async function load({ rid: roomId, latest, t }: { rid: string; latest?: Date; t: RoomTypes }): Promise<IMessage[]> {
 	const apiType = roomTypeToApiType(t);
@@ -22,11 +21,11 @@ async function load({ rid: roomId, latest, t }: { rid: string; latest?: Date; t:
 	let mainMessagesCount = 0;
 
 	async function fetchBatch(lastTs?: string): Promise<void> {
-		if (allMessages.length >= COUNT_LIMIT) {
+		if (allMessages.length >= COUNT) {
 			return;
 		}
 
-		const params: ChatGetMessage = { roomId, count: COUNT, ...(lastTs && { latest: lastTs }) };
+		const params: ChatGetMessage = { roomId, showThreadMessages: false, count: COUNT, ...(lastTs && { latest: lastTs }) };
 
 		let data;
 		switch (apiType) {
@@ -78,7 +77,7 @@ export function loadMessagesForRoom(args: {
 			if (data?.length) {
 				const lastMessage = data[data.length - 1];
 				const lastMessageRecord = await getMessageById(lastMessage._id as string);
-				if (!lastMessageRecord && (data.length === COUNT || data.length >= COUNT_LIMIT)) {
+				if (!lastMessageRecord && data.length === COUNT) {
 					const loadMoreMessage = {
 						_id: generateLoadMoreId(lastMessage._id as string),
 						rid: lastMessage.rid,

@@ -306,7 +306,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 		);
 	};
 
-	goRoomActionsView = (screen: string) => {
+	goRoomActionsView = (screen?: string) => {
 		logEvent(events.TC_GO_ACTIONS);
 		const { team, joined } = this;
 		const { navigation, isMasterDetail } = this.props;

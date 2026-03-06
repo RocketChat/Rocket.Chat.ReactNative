@@ -2,7 +2,6 @@ import isEmpty from 'lodash/isEmpty';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import Modal from 'react-native-modal';
-import Touchable from 'react-native-platform-touchable';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 
 import { PasscodeEnter } from '../containers/Passcode';
@@ -10,6 +9,7 @@ import { LOCAL_AUTHENTICATE_EMITTER } from '../lib/constants/localAuthentication
 import { CustomIcon } from '../containers/CustomIcon';
 import { hasNotch } from '../lib/methods/helpers';
 import EventEmitter from '../lib/methods/helpers/events';
+import Touch from '../containers/Touch';
 
 interface IData {
 	submit?: () => void;
@@ -75,9 +75,9 @@ const ScreenLockedView = (): JSX.Element => {
 			animationOut='fadeOut'>
 			<PasscodeEnter hasBiometry={!!data?.hasBiometry} finishProcess={onSubmit} />
 			{data?.force ? (
-				<Touchable onPress={onCancel} style={styles.close}>
+				<Touch onPress={onCancel} style={styles.close}>
 					<CustomIcon name='close' size={30} />
-				</Touchable>
+				</Touch>
 			) : null}
 		</Modal>
 	);
