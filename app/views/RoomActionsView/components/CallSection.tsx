@@ -2,7 +2,6 @@ import React from 'react';
 
 import * as List from '../../../containers/List';
 import { useVideoConf } from '../../../lib/hooks/useVideoConf';
-import { mediaSessionInstance } from '../../../lib/services/voip/MediaSessionInstance';
 import type { TSubscriptionModel } from '../../../definitions';
 import { useNewMediaCall } from '../../../lib/hooks/useNewMediaCall';
 

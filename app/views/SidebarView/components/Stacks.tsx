@@ -2,14 +2,14 @@ import { useTheme } from '../../../theme';
 import * as List from '../../../containers/List';
 import { sidebarNavigate } from '../methods/sidebarNavigate';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
-import { useNewMediaCallWithoutRoom } from '../../../lib/hooks/useNewMediaCall';
+import { useNewMediaCall } from '../../../lib/hooks/useNewMediaCall';
 
 const Stacks = ({ currentScreen }: { currentScreen: string | null }) => {
 	'use memo';
 
 	const { colors } = useTheme();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
-	const { openNewMediaCall, hasMediaCallPermission } = useNewMediaCallWithoutRoom();
+	const { openNewMediaCall, hasMediaCallPermission } = useNewMediaCall();
 
 	if (isMasterDetail) {
 		return null;
