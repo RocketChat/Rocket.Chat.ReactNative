@@ -1,9 +1,11 @@
 import React, { forwardRef, memo, useCallback, useEffect, useImperativeHandle } from 'react';
-import { TextInput, StyleSheet, type TextInputProps, InteractionManager } from 'react-native';
+import { StyleSheet, type TextInputProps, InteractionManager, Alert } from 'react-native';
 import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
 import { type RouteProp, useFocusEffect, useRoute } from '@react-navigation/native';
+import { type OnChangeSelectionEvent, type onPasteImageEventData, TypeRichTextInput } from 'react-native-typerich';
 
+import { canUploadFile } from '../../../lib/methods/helpers';
 import { textInputDebounceTime } from '../../../lib/constants/debounceConfig';
 import I18n from '../../../i18n';
 import {
@@ -15,7 +17,7 @@ import {
 } from '../interfaces';
 import { useAutocompleteParams, useFocused, useMessageComposerApi, useMicOrSend } from '../context';
 import { fetchIsAllOrHere, getMentionRegexp } from '../helpers';
-import { useAutoSaveDraft } from '../hooks';
+import { useAutoSaveDraft, useCanUploadFile } from '../hooks';
 import sharedStyles from '../../../views/Styles';
 import { useTheme } from '../../../theme';
 import { userTyping } from '../../../actions/room';
@@ -42,6 +44,9 @@ import { usePrevious } from '../../../lib/hooks/usePrevious';
 import { type ChatsStackParamList } from '../../../stacks/types';
 import { loadDraftMessage } from '../../../lib/methods/draftMessage';
 import useIOSBackSwipeHandler from '../hooks/useIOSBackSwipeHandler';
+import { getSubscriptionByRoomId } from '../../../lib/database/services/Subscription';
+import { getThreadById } from '../../../lib/database/services/Thread';
+import { type IShareAttachment } from '../../../definitions';
 
 const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
@@ -67,6 +72,11 @@ export const ComposerInput = memo(
 		const route = useRoute<RouteProp<ChatsStackParamList, 'RoomView'>>();
 		const usedCannedResponse = route.params?.usedCannedResponse;
 		const prevAction = usePrevious(action);
+
+		const permissionToUpload = useCanUploadFile(rid);
+		const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = useAppSelector(state => state.settings);
+		const allowList = FileUpload_MediaTypeWhiteList as string;
+		const maxFileSize = FileUpload_MaxFileSize as number;
 
 		// subscribe to changes on mic state to update draft after a message is sent
 		useMicOrSend();
@@ -143,6 +153,8 @@ export const ComposerInput = memo(
 						const text = textRef.current;
 						const newText = `${text.substr(0, start)}@${text.substr(start, end - start)}${text.substr(end)}`;
 						setInput(newText, { start: start + 1, end: start === end ? start + 1 : end + 1 });
+						// todo mention command here
+
 						setAutocompleteParams({ text: '', type: '@' });
 					});
 				});
@@ -175,7 +187,7 @@ export const ComposerInput = memo(
 				saveMessageDraft('');
 			}
 
-			inputRef.current?.setNativeProps?.({ text });
+			inputRef.current?.setText(text);
 
 			if (selection) {
 				// setSelection won't trigger onSelectionChange, so we need it to be ran after new text is set
@@ -201,23 +213,25 @@ export const ComposerInput = memo(
 			setInput(text);
 		};
 
-		const onSelectionChange: TextInputProps['onSelectionChange'] = e => {
-			selectionRef.current = e.nativeEvent.selection;
+		const onChangeSelection = (e: OnChangeSelectionEvent) => {
+			const { start, end } = e;
+			const selection = { start, end };
+			selectionRef.current = selection;
 		};
 
-		const onFocus: TextInputProps['onFocus'] = () => {
+		const handleFocus = () => {
 			setFocused(true);
 		};
 
-		const onTouchStart: TextInputProps['onTouchStart'] = () => {
-			setFocused(true);
-		};
-
-		const onBlur: TextInputProps['onBlur'] = () => {
+		const handleBlur = () => {
 			if (!iOSBackSwipe.current) {
 				setFocused(false);
 				stopAutocomplete();
 			}
+		};
+
+		const onTouchStart: TextInputProps['onTouchStart'] = () => {
+			setFocused(true);
 		};
 
 		const onAutocompleteItemSelected: IAutocompleteItemProps['onPress'] = async item => {
@@ -364,28 +378,93 @@ export const ComposerInput = memo(
 			dispatch(userTyping(rid, isTyping, tmid ? { tmid } : {}));
 		};
 
+		const startShareView = () => ({
+			selectedMessages,
+			text: ''
+		});
+
+		const finishShareView = (text = '', quotes = []) => setQuotesAndText?.(text, quotes);
+
+		const handleOnImagePaste = async (e: onPasteImageEventData) => {
+			console.log(e);
+			if (e.error?.message) {
+				handleError(e.error.message);
+				console.log('error detected');
+				return;
+			}
+			if (!rid) return;
+
+			const room = await getSubscriptionByRoomId(rid);
+
+			if (!room) {
+				handleError('Room not found');
+				return;
+			}
+
+			let thread;
+			if (tmid) {
+				thread = await getThreadById(tmid);
+			}
+
+			const file = {
+				filename: e.fileName,
+				size: e.fileSize,
+				mime: e.type,
+				path: e.uri
+			} as IShareAttachment;
+
+			const canUploadResult = canUploadFile({
+				file,
+				allowList,
+				maxFileSize,
+				permissionToUploadFile: permissionToUpload
+			});
+			if (canUploadResult.success) {
+				Navigation.navigate('ShareView', {
+					room,
+					thread: thread || tmid,
+					attachments: [file],
+					action,
+					finishShareView,
+					startShareView
+				});
+			} else {
+				console.log('can upload error');
+
+				handleError(canUploadResult.error);
+			}
+		};
+
+		const handleError = (error?: string) => {
+			Alert.alert(I18n.t('Error_uploading'), error && I18n.isTranslated(error) ? I18n.t(error) : error);
+		};
+
 		return (
-			<TextInput
-				style={[styles.textInput, { color: colors.fontDefault }]}
-				placeholder={placeholder}
-				placeholderTextColor={colors.fontAnnotation}
-				ref={component => {
-					inputRef.current = component;
-				}}
-				blurOnSubmit={false}
-				onChangeText={onChangeText}
-				onTouchStart={onTouchStart}
-				onSelectionChange={onSelectionChange}
-				onFocus={onFocus}
-				onBlur={onBlur}
-				underlineColorAndroid='transparent'
-				defaultValue=''
-				multiline
-				{...(autocompleteType ? { autoComplete: 'off', autoCorrect: false, autoCapitalize: 'none' } : {})}
-				keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
-				// eslint-disable-next-line no-nested-ternary
-				testID={`message-composer-input${tmid ? '-thread' : sharing ? '-share' : ''}`}
-			/>
+			<>
+				<TypeRichTextInput
+					style={[styles.textInput]}
+					color={colors.fontDefault}
+					placeholder={placeholder}
+					placeholderTextColor={colors.fontAnnotation}
+					ref={component => {
+						inputRef.current = component;
+					}}
+					// blurOnSubmit={false} // not needed
+					onChangeText={onChangeText}
+					onTouchStart={onTouchStart}
+					onChangeSelection={onChangeSelection}
+					onFocus={handleFocus} // typerich onFocus / onBlur events doesn't pass any arguments to callbacks
+					onBlur={handleBlur}
+					// underlineColorAndroid='transparent' // by default behaiviour
+					defaultValue=''
+					multiline
+					{...(autocompleteType ? { autoComplete: 'off', autoCorrect: false, autoCapitalize: 'none' } : {})}
+					keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
+					// eslint-disable-next-line no-nested-ternary
+					testID={`message-composer-input${tmid ? '-thread' : sharing ? '-share' : ''}`}
+					onPasteImageData={handleOnImagePaste}
+				/>
+			</>
 		);
 	})
 );
@@ -397,9 +476,9 @@ const styles = StyleSheet.create({
 		maxHeight: MAX_HEIGHT,
 		paddingTop: 12,
 		paddingBottom: 12,
-		fontSize: 16,
 		textAlignVertical: 'center',
 		...sharedStyles.textRegular,
-		lineHeight: 22
+		lineHeight: 22,
+		fontSize: 16
 	}
 });
