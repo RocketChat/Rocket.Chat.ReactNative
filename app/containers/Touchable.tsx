@@ -78,7 +78,9 @@ const Touchable = React.forwardRef<View, ITouchProps>(
 			marginStart,
 			marginTop
 		};
-		const touchableProps = isIOS ? { underlayColor: colors.surfaceNeutral, activeOpacity: 1 } : { background: TouchableNativeFeedback.Ripple(android_rippleColor ?? colors.surfaceNeutral, false) };
+		const touchableProps = isIOS
+			? { underlayColor: colors.surfaceNeutral, activeOpacity: 1 }
+			: { background: TouchableNativeFeedback.Ripple(android_rippleColor ?? colors.surfaceNeutral, false) };
 
 		return (
 			<Component
