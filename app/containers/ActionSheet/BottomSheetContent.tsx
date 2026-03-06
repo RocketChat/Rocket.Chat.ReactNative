@@ -26,6 +26,7 @@ const BottomSheetContent = React.memo(({ options, hasCancel, hide, children, onL
 	const { bottom } = useSafeAreaInsets();
 	const { fontScale } = useWindowDimensions();
 	const height = 48 * fontScale;
+	const paddingBottom = bottom + height;
 
 	const renderFooter = () =>
 		hasCancel ? (
@@ -51,7 +52,7 @@ const BottomSheetContent = React.memo(({ options, hasCancel, hide, children, onL
 				style={{ backgroundColor: colors.strokeExtraDark }}
 				keyboardDismissMode='interactive'
 				indicatorStyle='black'
-				contentContainerStyle={{ paddingBottom: bottom, backgroundColor: colors.surfaceLight }}
+				contentContainerStyle={{ paddingBottom, backgroundColor: colors.surfaceLight }}
 				ItemSeparatorComponent={List.Separator}
 				ListHeaderComponent={List.Separator}
 				ListFooterComponent={renderFooter}
