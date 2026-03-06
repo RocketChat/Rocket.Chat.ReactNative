@@ -25,10 +25,7 @@ describe('useMediaCallPermission', () => {
 		const { result } = renderHook(() => useMediaCallPermission());
 
 		expect(result.current).toBe(false);
-		expect(mockUsePermissions).toHaveBeenCalledWith([
-			'allow-internal-voice-calls',
-			'allow-external-voice-calls'
-		]);
+		expect(mockUsePermissions).toHaveBeenCalledWith(['allow-internal-voice-calls', 'allow-external-voice-calls']);
 	});
 
 	it('should return false when voip module exists but no voice call permissions', () => {
