@@ -108,6 +108,7 @@ describe('NewMessageView Item', () => {
 		expect(mockSetSelectedPeer).toHaveBeenCalledWith({
 			type: 'user',
 			value: 'user123',
+			username: 'john.doe',
 			label: 'John Doe'
 		});
 		expect(mockShowActionSheetRef).toHaveBeenCalledTimes(1);
