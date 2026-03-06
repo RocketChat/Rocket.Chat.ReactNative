@@ -129,9 +129,7 @@ const ActionSheet = React.memo(
 			const fraction = Math.min(contentHeight / windowHeight, ACTION_SHEET_MAX_HEIGHT_FRACTION);
 			const contentDetent = Math.max(0.25, fraction);
 			detents =
-				contentDetent > ACTION_SHEET_MIN_HEIGHT_FRACTION
-					? [ACTION_SHEET_MIN_HEIGHT_FRACTION, contentDetent]
-					: [contentDetent];
+				contentDetent > ACTION_SHEET_MIN_HEIGHT_FRACTION ? [ACTION_SHEET_MIN_HEIGHT_FRACTION, contentDetent] : [contentDetent];
 		} else {
 			detents = [ACTION_SHEET_MIN_HEIGHT_FRACTION, 'auto'];
 		}
