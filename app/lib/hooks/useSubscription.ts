@@ -16,6 +16,10 @@ export const useSubscription = (rid?: string): TSubscriptionModel | undefined =>
 			}
 		};
 		load();
+
+		return () => {
+			setSubscription(undefined);
+		};
 	}, [rid]);
 
 	return subscription;

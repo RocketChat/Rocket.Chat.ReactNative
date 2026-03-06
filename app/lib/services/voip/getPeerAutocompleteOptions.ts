@@ -1,9 +1,8 @@
-import type { TUserStatus } from '../../../definitions';
 import { usersAutoComplete } from '../restApi';
 import { store as reduxStore } from '../../store/auxStore';
 
 export type TPeerItem =
-	| { type: 'user'; value: string; label: string; username?: string; callerId?: string; status?: TUserStatus }
+	| { type: 'user'; value: string; label: string; username?: string; callerId?: string }
 	| { type: 'sip'; value: string; label: string };
 
 type TUserAutocompleteResponse = {
@@ -13,7 +12,6 @@ type TUserAutocompleteResponse = {
 		name?: string;
 		username?: string;
 		freeSwitchExtension?: string;
-		status?: TUserStatus;
 	}>;
 };
 
@@ -79,8 +77,7 @@ export const getPeerAutocompleteOptions = async ({
 					value: item._id,
 					label: item.name || item.username || '',
 					username: item.username,
-					callerId: item.freeSwitchExtension,
-					status: item.status
+					callerId: item.freeSwitchExtension
 				}))
 		: [];
 

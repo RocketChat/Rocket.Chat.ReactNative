@@ -19,12 +19,7 @@ export const CreateCall = () => {
 			return;
 		}
 
-		if ('number' in selectedPeer) {
-			mediaSessionInstance.startCall(selectedPeer.value, 'sip');
-		} else {
-			mediaSessionInstance.startCall(selectedPeer.value, 'user');
-		}
-
+		mediaSessionInstance.startCall(selectedPeer.value, selectedPeer.type);
 		hideActionSheetRef();
 	};
 

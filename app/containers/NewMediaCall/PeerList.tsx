@@ -23,8 +23,7 @@ export const PeerList = () => {
 						value: option.value,
 						label: option.label,
 						username: option.username,
-						callerId: option.callerId,
-						status: option.status
+						callerId: option.callerId
 				  };
 
 		setSelectedPeer(peerItem);

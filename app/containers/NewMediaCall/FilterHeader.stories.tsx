@@ -1,26 +1,23 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import BottomSheet from '@discord/bottom-sheet';
 
-import { Container } from './Container';
+import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';
+import { FilterHeader } from './FilterHeader';
 
 const styles = StyleSheet.create({
 	root: {
 		flex: 1
-	},
-	placeholder: {
-		marginTop: 8,
-		padding: 12,
-		borderRadius: 6,
-		backgroundColor: '#efefef'
 	}
 });
 
-const PlaceholderChildren = () => (
-	<View style={styles.placeholder}>
-		<Text>Mock children placeholder</Text>
-	</View>
-);
+const setStoreState = (filter: string) => {
+	usePeerAutocompleteStore.setState({
+		filter,
+		selectedPeer: null,
+		options: []
+	});
+};
 
 const BottomSheetWrapper = ({ children }: { children: React.ReactNode }) => (
 	<View style={styles.root}>
@@ -36,8 +33,8 @@ const BottomSheetWrapper = ({ children }: { children: React.ReactNode }) => (
 );
 
 export default {
-	title: 'NewMediaCall/Container',
-	component: Container,
+	title: 'NewMediaCall/FilterHeader',
+	component: FilterHeader,
 	decorators: [
 		(Story: React.ComponentType) => (
 			<BottomSheetWrapper>
@@ -47,8 +44,12 @@ export default {
 	]
 };
 
-export const Default = () => (
-	<Container>
-		<PlaceholderChildren />
-	</Container>
-);
+export const Default = () => {
+	setStoreState('');
+	return <FilterHeader />;
+};
+
+export const WithFilter = () => {
+	setStoreState('alice');
+	return <FilterHeader />;
+};

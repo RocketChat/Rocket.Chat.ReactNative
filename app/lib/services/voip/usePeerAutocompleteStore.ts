@@ -39,7 +39,7 @@ export const usePeerAutocompleteStore = create<TPeerAutocompleteStore>((set, get
 
 			set({ options });
 		} catch {
-			console.log('Failed to fetch options');
+			set({ options: [] });
 		}
 	},
 

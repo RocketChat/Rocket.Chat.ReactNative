@@ -27,7 +27,7 @@ const Item = ({ userId, name, username, onPress, testID, onLongPress }: IItem) =
 
 	const handleCallPress = () => {
 		if (!userId) return;
-		usePeerAutocompleteStore.getState().setSelectedPeer({ type: 'user', value: userId, label: name });
+		usePeerAutocompleteStore.getState().setSelectedPeer({ type: 'user', value: userId, label: name, username });
 		showActionSheetRef({
 			children: <NewMediaCall />
 		});

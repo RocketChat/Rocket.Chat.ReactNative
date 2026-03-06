@@ -4,6 +4,7 @@ import { PeerList } from './PeerList';
 import { SelectedPeer } from './SelectedPeer';
 import { Container } from './Container';
 import { CreateCall } from './CreateCall';
+import { FilterHeader } from './FilterHeader';
 import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';
 
 export const NewMediaCall = (): React.ReactElement => {
@@ -13,6 +14,7 @@ export const NewMediaCall = (): React.ReactElement => {
 
 	return (
 		<Container>
+			<FilterHeader />
 			<SelectedPeer />
 			<PeerList />
 			<CreateCall />

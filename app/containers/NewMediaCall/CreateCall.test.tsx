@@ -123,7 +123,7 @@ describe('CreateCall', () => {
 
 		fireEvent.press(getByTestId('new-media-call-button'));
 		expect(mockStartCall).toHaveBeenCalledTimes(1);
-		expect(mockStartCall).toHaveBeenCalledWith('+5511999999999', 'user');
+		expect(mockStartCall).toHaveBeenCalledWith('+5511999999999', 'sip');
 		expect(mockHideActionSheet).toHaveBeenCalledTimes(1);
 	});
 });

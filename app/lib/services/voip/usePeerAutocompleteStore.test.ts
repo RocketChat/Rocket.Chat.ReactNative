@@ -137,7 +137,6 @@ describe('usePeerAutocompleteStore', () => {
 
 		it('should set empty options on fetch error', async () => {
 			mockGetPeerAutocompleteOptions.mockRejectedValue(new Error('API error'));
-			const consoleSpy = jest.spyOn(console, 'log').mockImplementation();
 
 			const { result } = renderHook(() => usePeerAutocompleteStore());
 
@@ -146,8 +145,6 @@ describe('usePeerAutocompleteStore', () => {
 			});
 
 			expect(usePeerAutocompleteStore.getState().options).toEqual([]);
-			expect(consoleSpy).toHaveBeenCalledWith('Failed to fetch options');
-			consoleSpy.mockRestore();
 		});
 	});
 });
