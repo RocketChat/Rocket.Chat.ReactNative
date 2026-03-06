@@ -8,8 +8,6 @@ import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocom
 export const PeerList = () => {
 	const setSelectedPeer = usePeerAutocompleteStore(state => state.setSelectedPeer);
 	const selectedPeer = usePeerAutocompleteStore(state => state.selectedPeer);
-	const setFilter = usePeerAutocompleteStore(state => state.setFilter);
-	const fetchOptions = usePeerAutocompleteStore(state => state.fetchOptions);
 	const options = usePeerAutocompleteStore(state => state.options);
 
 	if (selectedPeer) return null;
@@ -27,8 +25,6 @@ export const PeerList = () => {
 				  };
 
 		setSelectedPeer(peerItem);
-		setFilter('');
-		fetchOptions('');
 	};
 
 	const renderItem = ({ item }: { item: TPeerItem }) => <PeerItem item={item} onSelectOption={handleSelectOption} />;

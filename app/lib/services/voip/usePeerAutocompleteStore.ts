@@ -45,6 +45,8 @@ export const usePeerAutocompleteStore = create<TPeerAutocompleteStore>((set, get
 
 	setSelectedPeer: (peer: TPeerItem | null) => {
 		set({ selectedPeer: peer });
+		set({ filter: '' });
+		set({ options: [] });
 	},
 
 	setFilter: (filter: string) => {

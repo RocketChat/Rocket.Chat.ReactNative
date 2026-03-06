@@ -68,15 +68,10 @@ describe('PeerList', () => {
 	});
 
 	it('should set selected peer, clear filter and fetch options when option is pressed', () => {
-		const setSelectedPeer = jest.fn();
-		const setFilter = jest.fn();
-		const fetchOptions = jest.fn();
 		usePeerAutocompleteStore.setState({
 			options: mockOptions,
 			selectedPeer: null,
-			setSelectedPeer,
-			setFilter,
-			fetchOptions
+			filter: 'Alice'
 		});
 
 		const { getByTestId } = render(
@@ -87,7 +82,7 @@ describe('PeerList', () => {
 
 		fireEvent.press(getByTestId('new-media-call-option-user-1'));
 
-		expect(setSelectedPeer).toHaveBeenCalledWith(
+		expect(usePeerAutocompleteStore.getState().selectedPeer).toEqual(
 			expect.objectContaining({
 				type: 'user',
 				value: 'user-1',
@@ -95,18 +90,15 @@ describe('PeerList', () => {
 				username: 'alice.johnson'
 			})
 		);
-		expect(setFilter).toHaveBeenCalledWith('');
-		expect(fetchOptions).toHaveBeenCalledWith('');
+		expect(usePeerAutocompleteStore.getState().filter).toBe('');
+		expect(usePeerAutocompleteStore.getState().options).toEqual([]);
 	});
 
 	it('should pass sip item correctly when SIP option is pressed', () => {
-		const setSelectedPeer = jest.fn();
 		usePeerAutocompleteStore.setState({
 			options: mockOptions,
 			selectedPeer: null,
-			setSelectedPeer,
-			setFilter: jest.fn(),
-			fetchOptions: jest.fn()
+			filter: '+55 11 98888-7777'
 		});
 
 		const { getByTestId } = render(
@@ -117,13 +109,15 @@ describe('PeerList', () => {
 
 		fireEvent.press(getByTestId('new-media-call-option-+5511988887777'));
 
-		expect(setSelectedPeer).toHaveBeenCalledWith(
+		expect(usePeerAutocompleteStore.getState().selectedPeer).toEqual(
 			expect.objectContaining({
 				type: 'sip',
 				value: '+5511988887777',
 				label: '+55 11 98888-7777'
 			})
 		);
+		expect(usePeerAutocompleteStore.getState().filter).toBe('');
+		expect(usePeerAutocompleteStore.getState().options).toEqual([]);
 	});
 });
 
