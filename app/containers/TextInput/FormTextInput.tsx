@@ -9,7 +9,6 @@ import {
 	View,
 	type ViewStyle
 } from 'react-native';
-import { BottomSheetTextInput } from '@discord/bottom-sheet';
 import { A11y } from 'react-native-a11y-order';
 
 import i18n from '../../i18n';
@@ -128,7 +127,7 @@ export const FormTextInput = ({
 	const { colors } = useTheme();
 	const [showPassword, setShowPassword] = useState(false);
 	const showClearInput = onClearInput && value && value.length > 0;
-	const Input = bottomSheet ? BottomSheetTextInput : TextInput;
+	const Input = TextInput;
 
 	const inputError = getInputError(error);
 	const accessibilityLabelText = useMemo(() => {
