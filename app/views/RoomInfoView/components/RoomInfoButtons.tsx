@@ -1,19 +1,17 @@
 import React from 'react';
-import { Text, View } from 'react-native';
-import { BorderlessButton } from 'react-native-gesture-handler';
+import { View } from 'react-native';
 
-import { CustomIcon, type TIconsName } from '../../../containers/CustomIcon';
+import { type TIconsName } from '../../../containers/CustomIcon';
 import { type ISubscription, SubscriptionType } from '../../../definitions';
 import i18n from '../../../i18n';
 import { useVideoConf } from '../../../lib/hooks/useVideoConf';
-import { useTheme } from '../../../theme';
 import styles from '../styles';
 import { compareServerVersion } from '../../../lib/methods/helpers';
 import { useE2EEWarning } from '../hooks';
 import { useActionSheet } from '../../../containers/ActionSheet';
 import type { TActionSheetOptionsItem } from '../../../containers/ActionSheet';
-import { mediaSessionInstance } from '../../../lib/services/voip/MediaSessionInstance';
-import { useMediaCallPermission } from '../../../lib/hooks/useMediaCallPermission';
+import { BaseButton } from './BaseButton';
+import { useNewMediaCall } from '../../../lib/hooks/useNewMediaCall';
 
 type ButtonConfig = {
 	label: string;
@@ -23,36 +21,6 @@ type ButtonConfig = {
 	enabled?: boolean;
 	show: boolean;
 };
-
-function BaseButton({
-	danger,
-	iconName,
-	onPress,
-	label,
-	showIcon = true,
-	enabled = true
-}: {
-	danger?: boolean;
-	iconName: TIconsName;
-	onPress?: (prop: any) => void;
-	label: string;
-	showIcon?: boolean;
-	enabled?: boolean;
-}): React.ReactElement | null {
-	const { colors } = useTheme();
-	const color = danger ? colors.buttonBackgroundDangerDefault : colors.fontHint;
-
-	if (showIcon)
-		return (
-			<BorderlessButton enabled={enabled} testID={`room-info-view-${iconName}`} onPress={onPress} style={styles.roomButton}>
-				<CustomIcon name={iconName} size={30} color={color} />
-				<Text numberOfLines={1} style={[styles.roomButtonText, { color }]}>
-					{label}
-				</Text>
-			</BorderlessButton>
-		);
-	return null;
-}
 
 interface IRoomInfoButtons {
 	rid: string;
@@ -88,7 +56,7 @@ export const RoomInfoButtons = ({
 	const room = roomFromRid || roomFromProps;
 	const { showActionSheet } = useActionSheet();
 	const { callEnabled, disabledTooltip, showInitCallActionSheet } = useVideoConf(rid);
-	const hasMediaCallPermission = useMediaCallPermission();
+	const { openNewMediaCall, hasMediaCallPermission } = useNewMediaCall(rid);
 
 	// Following the web behavior, when is a DM with myself, shouldn't appear block or ignore option
 	const isDmWithMyself = room?.uids?.filter((uid: string) => uid !== roomUserId).length === 0;
@@ -104,11 +72,6 @@ export const RoomInfoButtons = ({
 		!itsMe && isDirectFromSaved && !isDmWithMyself && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.4.0');
 	const renderVideoCall = !hasE2EEWarning && callEnabled && !roomFromRid;
 
-	const handleVoiceCall = () => {
-		if (!room) return;
-		mediaSessionInstance.startCallByRoom(room);
-	};
-
 	const allItems: ButtonConfig[] = [
 		{
 			label: i18n.t('Message'),
@@ -120,7 +83,7 @@ export const RoomInfoButtons = ({
 		{
 			label: i18n.t('Voice_call'),
 			iconName: 'phone',
-			onPress: handleVoiceCall,
+			onPress: openNewMediaCall,
 			enabled: true,
 			show: hasMediaCallPermission
 		},

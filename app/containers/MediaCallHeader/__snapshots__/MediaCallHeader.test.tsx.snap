@@ -190,6 +190,7 @@ exports[`Story Snapshots: ActiveCall should match snapshot 1`] = `
                   [
                     {
                       "height": 16,
+                      "textAlign": "center",
                       "textAlignVertical": "center",
                       "width": 16,
                     },
@@ -228,7 +229,7 @@ exports[`Story Snapshots: ActiveCall should match snapshot 1`] = `
             Bob Burnquist
             <Text>
                - 
-              16448:41:15
+              16524:56:56
             </Text>
           </Text>
         </View>
@@ -536,6 +537,7 @@ exports[`Story Snapshots: Collapsed should match snapshot 1`] = `
                   [
                     {
                       "height": 16,
+                      "textAlign": "center",
                       "textAlignVertical": "center",
                       "width": 16,
                     },
@@ -574,7 +576,7 @@ exports[`Story Snapshots: Collapsed should match snapshot 1`] = `
             Bob Burnquist
             <Text>
                - 
-              16448:41:15
+              16524:56:56
             </Text>
           </Text>
         </View>
@@ -882,6 +884,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
                   [
                     {
                       "height": 16,
+                      "textAlign": "center",
                       "textAlignVertical": "center",
                       "width": 16,
                     },
@@ -1224,6 +1227,7 @@ exports[`Story Snapshots: Focused should match snapshot 1`] = `
                   [
                     {
                       "height": 16,
+                      "textAlign": "center",
                       "textAlignVertical": "center",
                       "width": 16,
                     },
@@ -1262,7 +1266,7 @@ exports[`Story Snapshots: Focused should match snapshot 1`] = `
             Bob Burnquist
             <Text>
                - 
-              16448:41:15
+              16524:56:56
             </Text>
           </Text>
         </View>
@@ -1590,6 +1594,7 @@ exports[`Story Snapshots: WithRemoteHeld should match snapshot 1`] = `
                   [
                     {
                       "height": 16,
+                      "textAlign": "center",
                       "textAlignVertical": "center",
                       "width": 16,
                     },
@@ -1628,7 +1633,7 @@ exports[`Story Snapshots: WithRemoteHeld should match snapshot 1`] = `
             Bob Burnquist
             <Text>
                - 
-              16448:41:15
+              16524:56:56
             </Text>
           </Text>
         </View>
@@ -1936,6 +1941,7 @@ exports[`Story Snapshots: WithRemoteMuted should match snapshot 1`] = `
                   [
                     {
                       "height": 16,
+                      "textAlign": "center",
                       "textAlignVertical": "center",
                       "width": 16,
                     },
@@ -1974,7 +1980,7 @@ exports[`Story Snapshots: WithRemoteMuted should match snapshot 1`] = `
             Bob Burnquist
             <Text>
                - 
-              16448:41:15
+              16524:56:56
             </Text>
           </Text>
         </View>

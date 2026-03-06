@@ -6,37 +6,11 @@ import Avatar from '../../containers/Avatar';
 import { CustomIcon } from '../../containers/CustomIcon';
 import sharedStyles from '../Styles';
 import { useTheme } from '../../theme';
-import { mediaSessionInstance } from '../../lib/services/voip/MediaSessionInstance';
 import I18n from '../../i18n';
 import { useMediaCallPermission } from '../../lib/hooks/useMediaCallPermission';
-
-const styles = StyleSheet.create({
-	button: {
-		height: 54
-	},
-	container: {
-		flexDirection: 'row'
-	},
-	avatar: {
-		marginHorizontal: 12,
-		marginVertical: 12
-	},
-	textContainer: {
-		flex: 1,
-		flexDirection: 'column',
-		justifyContent: 'center',
-		marginRight: 12
-	},
-	name: {
-		fontSize: 18,
-		lineHeight: 26,
-		...sharedStyles.textMedium
-	},
-	iconContainer: {
-		paddingHorizontal: 15,
-		alignSelf: 'center'
-	}
-});
+import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';
+import { showActionSheetRef } from '../../containers/ActionSheet';
+import { NewMediaCall } from '../../containers/NewMediaCall';
 
 interface IItem {
 	userId: string;
@@ -53,7 +27,10 @@ const Item = ({ userId, name, username, onPress, testID, onLongPress }: IItem) =
 
 	const handleCallPress = () => {
 		if (!userId) return;
-		mediaSessionInstance.startCall(userId, 'user');
+		usePeerAutocompleteStore.getState().setSelectedPeer({ type: 'user', value: userId, label: name, username });
+		showActionSheetRef({
+			children: <NewMediaCall />
+		});
 	};
 
 	return (
@@ -90,3 +67,31 @@ const Item = ({ userId, name, username, onPress, testID, onLongPress }: IItem) =
 };
 
 export default Item;
+
+const styles = StyleSheet.create({
+	button: {
+		height: 54
+	},
+	container: {
+		flexDirection: 'row'
+	},
+	avatar: {
+		marginHorizontal: 12,
+		marginVertical: 12
+	},
+	textContainer: {
+		flex: 1,
+		flexDirection: 'column',
+		justifyContent: 'center',
+		marginRight: 12
+	},
+	name: {
+		fontSize: 18,
+		lineHeight: 26,
+		...sharedStyles.textMedium
+	},
+	iconContainer: {
+		paddingHorizontal: 15,
+		alignSelf: 'center'
+	}
+});

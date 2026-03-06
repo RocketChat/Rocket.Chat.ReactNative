@@ -528,7 +528,6 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 					accessibilityLabel={i18n.t('Call_room_name', { roomName: accessibilityRoomName })}
 					rid={rid}
 					disabled={hasE2EEWarning}
-					room={this.room}
 				/>
 				{threadsEnabled ? (
 					<HeaderButton.Item
