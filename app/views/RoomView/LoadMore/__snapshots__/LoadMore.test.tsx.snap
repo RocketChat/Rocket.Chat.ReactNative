@@ -426,11 +426,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
         <View
           accessibilityState={
             {
-              "busy": undefined,
-              "checked": undefined,
               "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
             }
           }
           accessibilityValue={
@@ -442,7 +438,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             }
           }
           accessible={true}
-          collapsable={false}
           focusable={true}
           onClick={[Function]}
           onResponderGrant={[Function]}
@@ -452,20 +447,24 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            {
-              "backgroundColor": undefined,
-              "borderRadius": undefined,
-              "margin": undefined,
-              "marginBottom": undefined,
-              "marginEnd": undefined,
-              "marginHorizontal": undefined,
-              "marginLeft": undefined,
-              "marginRight": undefined,
-              "marginStart": undefined,
-              "marginTop": undefined,
-              "marginVertical": undefined,
-              "opacity": 1,
-            }
+            [
+              undefined,
+              {
+                "margin": undefined,
+                "marginBottom": undefined,
+                "marginEnd": undefined,
+                "marginHorizontal": undefined,
+                "marginLeft": undefined,
+                "marginRight": undefined,
+                "marginStart": undefined,
+                "marginTop": undefined,
+                "marginVertical": undefined,
+              },
+              {
+                "backgroundColor": undefined,
+                "borderRadius": undefined,
+              },
+            ]
           }
         >
           <View
@@ -854,11 +853,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
         <View
           accessibilityState={
             {
-              "busy": undefined,
-              "checked": undefined,
               "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
             }
           }
           accessibilityValue={
@@ -870,7 +865,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             }
           }
           accessible={true}
-          collapsable={false}
           focusable={true}
           onClick={[Function]}
           onResponderGrant={[Function]}
@@ -880,20 +874,24 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            {
-              "backgroundColor": undefined,
-              "borderRadius": undefined,
-              "margin": undefined,
-              "marginBottom": undefined,
-              "marginEnd": undefined,
-              "marginHorizontal": undefined,
-              "marginLeft": undefined,
-              "marginRight": undefined,
-              "marginStart": undefined,
-              "marginTop": undefined,
-              "marginVertical": undefined,
-              "opacity": 1,
-            }
+            [
+              undefined,
+              {
+                "margin": undefined,
+                "marginBottom": undefined,
+                "marginEnd": undefined,
+                "marginHorizontal": undefined,
+                "marginLeft": undefined,
+                "marginRight": undefined,
+                "marginStart": undefined,
+                "marginTop": undefined,
+                "marginVertical": undefined,
+              },
+              {
+                "backgroundColor": undefined,
+                "borderRadius": undefined,
+              },
+            ]
           }
         >
           <View
@@ -1047,11 +1045,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
         <View
           accessibilityState={
             {
-              "busy": undefined,
-              "checked": undefined,
               "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
             }
           }
           accessibilityValue={
@@ -1063,7 +1057,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             }
           }
           accessible={true}
-          collapsable={false}
           focusable={true}
           onClick={[Function]}
           onResponderGrant={[Function]}
@@ -1073,20 +1066,24 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            {
-              "backgroundColor": undefined,
-              "borderRadius": undefined,
-              "margin": undefined,
-              "marginBottom": undefined,
-              "marginEnd": undefined,
-              "marginHorizontal": undefined,
-              "marginLeft": undefined,
-              "marginRight": undefined,
-              "marginStart": undefined,
-              "marginTop": undefined,
-              "marginVertical": undefined,
-              "opacity": 1,
-            }
+            [
+              undefined,
+              {
+                "margin": undefined,
+                "marginBottom": undefined,
+                "marginEnd": undefined,
+                "marginHorizontal": undefined,
+                "marginLeft": undefined,
+                "marginRight": undefined,
+                "marginStart": undefined,
+                "marginTop": undefined,
+                "marginVertical": undefined,
+              },
+              {
+                "backgroundColor": undefined,
+                "borderRadius": undefined,
+              },
+            ]
           }
         >
           <View
@@ -1406,11 +1403,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
         <View
           accessibilityState={
             {
-              "busy": undefined,
-              "checked": undefined,
               "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
             }
           }
           accessibilityValue={
@@ -1422,7 +1415,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             }
           }
           accessible={true}
-          collapsable={false}
           focusable={true}
           onClick={[Function]}
           onResponderGrant={[Function]}
@@ -1432,20 +1424,24 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            {
-              "backgroundColor": undefined,
-              "borderRadius": undefined,
-              "margin": undefined,
-              "marginBottom": undefined,
-              "marginEnd": undefined,
-              "marginHorizontal": undefined,
-              "marginLeft": undefined,
-              "marginRight": undefined,
-              "marginStart": undefined,
-              "marginTop": undefined,
-              "marginVertical": undefined,
-              "opacity": 1,
-            }
+            [
+              undefined,
+              {
+                "margin": undefined,
+                "marginBottom": undefined,
+                "marginEnd": undefined,
+                "marginHorizontal": undefined,
+                "marginLeft": undefined,
+                "marginRight": undefined,
+                "marginStart": undefined,
+                "marginTop": undefined,
+                "marginVertical": undefined,
+              },
+              {
+                "backgroundColor": undefined,
+                "borderRadius": undefined,
+              },
+            ]
           }
         >
           <View
@@ -1834,11 +1830,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
         <View
           accessibilityState={
             {
-              "busy": undefined,
-              "checked": undefined,
               "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
             }
           }
           accessibilityValue={
@@ -1850,7 +1842,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             }
           }
           accessible={true}
-          collapsable={false}
           focusable={true}
           onClick={[Function]}
           onResponderGrant={[Function]}
@@ -1860,20 +1851,24 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            {
-              "backgroundColor": undefined,
-              "borderRadius": undefined,
-              "margin": undefined,
-              "marginBottom": undefined,
-              "marginEnd": undefined,
-              "marginHorizontal": undefined,
-              "marginLeft": undefined,
-              "marginRight": undefined,
-              "marginStart": undefined,
-              "marginTop": undefined,
-              "marginVertical": undefined,
-              "opacity": 1,
-            }
+            [
+              undefined,
+              {
+                "margin": undefined,
+                "marginBottom": undefined,
+                "marginEnd": undefined,
+                "marginHorizontal": undefined,
+                "marginLeft": undefined,
+                "marginRight": undefined,
+                "marginStart": undefined,
+                "marginTop": undefined,
+                "marginVertical": undefined,
+              },
+              {
+                "backgroundColor": undefined,
+                "borderRadius": undefined,
+              },
+            ]
           }
         >
           <View
@@ -2027,11 +2022,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
         <View
           accessibilityState={
             {
-              "busy": undefined,
-              "checked": undefined,
               "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
             }
           }
           accessibilityValue={
@@ -2043,7 +2034,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             }
           }
           accessible={true}
-          collapsable={false}
           focusable={true}
           onClick={[Function]}
           onResponderGrant={[Function]}
@@ -2053,20 +2043,24 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            {
-              "backgroundColor": undefined,
-              "borderRadius": undefined,
-              "margin": undefined,
-              "marginBottom": undefined,
-              "marginEnd": undefined,
-              "marginHorizontal": undefined,
-              "marginLeft": undefined,
-              "marginRight": undefined,
-              "marginStart": undefined,
-              "marginTop": undefined,
-              "marginVertical": undefined,
-              "opacity": 1,
-            }
+            [
+              undefined,
+              {
+                "margin": undefined,
+                "marginBottom": undefined,
+                "marginEnd": undefined,
+                "marginHorizontal": undefined,
+                "marginLeft": undefined,
+                "marginRight": undefined,
+                "marginStart": undefined,
+                "marginTop": undefined,
+                "marginVertical": undefined,
+              },
+              {
+                "backgroundColor": undefined,
+                "borderRadius": undefined,
+              },
+            ]
           }
         >
           <View
@@ -2220,11 +2214,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
         <View
           accessibilityState={
             {
-              "busy": undefined,
-              "checked": undefined,
               "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
             }
           }
           accessibilityValue={
@@ -2236,7 +2226,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             }
           }
           accessible={true}
-          collapsable={false}
           focusable={true}
           onClick={[Function]}
           onResponderGrant={[Function]}
@@ -2246,20 +2235,24 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            {
-              "backgroundColor": undefined,
-              "borderRadius": undefined,
-              "margin": undefined,
-              "marginBottom": undefined,
-              "marginEnd": undefined,
-              "marginHorizontal": undefined,
-              "marginLeft": undefined,
-              "marginRight": undefined,
-              "marginStart": undefined,
-              "marginTop": undefined,
-              "marginVertical": undefined,
-              "opacity": 1,
-            }
+            [
+              undefined,
+              {
+                "margin": undefined,
+                "marginBottom": undefined,
+                "marginEnd": undefined,
+                "marginHorizontal": undefined,
+                "marginLeft": undefined,
+                "marginRight": undefined,
+                "marginStart": undefined,
+                "marginTop": undefined,
+                "marginVertical": undefined,
+              },
+              {
+                "backgroundColor": undefined,
+                "borderRadius": undefined,
+              },
+            ]
           }
         >
           <View
@@ -2744,11 +2737,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
         <View
           accessibilityState={
             {
-              "busy": undefined,
-              "checked": undefined,
               "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
             }
           }
           accessibilityValue={
@@ -2760,7 +2749,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             }
           }
           accessible={true}
-          collapsable={false}
           focusable={true}
           onClick={[Function]}
           onResponderGrant={[Function]}
@@ -2770,20 +2758,24 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            {
-              "backgroundColor": undefined,
-              "borderRadius": undefined,
-              "margin": undefined,
-              "marginBottom": undefined,
-              "marginEnd": undefined,
-              "marginHorizontal": undefined,
-              "marginLeft": undefined,
-              "marginRight": undefined,
-              "marginStart": undefined,
-              "marginTop": undefined,
-              "marginVertical": undefined,
-              "opacity": 1,
-            }
+            [
+              undefined,
+              {
+                "margin": undefined,
+                "marginBottom": undefined,
+                "marginEnd": undefined,
+                "marginHorizontal": undefined,
+                "marginLeft": undefined,
+                "marginRight": undefined,
+                "marginStart": undefined,
+                "marginTop": undefined,
+                "marginVertical": undefined,
+              },
+              {
+                "backgroundColor": undefined,
+                "borderRadius": undefined,
+              },
+            ]
           }
         >
           <View
@@ -3172,11 +3164,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
         <View
           accessibilityState={
             {
-              "busy": undefined,
-              "checked": undefined,
               "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
             }
           }
           accessibilityValue={
@@ -3188,7 +3176,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             }
           }
           accessible={true}
-          collapsable={false}
           focusable={true}
           onClick={[Function]}
           onResponderGrant={[Function]}
@@ -3198,20 +3185,24 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            {
-              "backgroundColor": undefined,
-              "borderRadius": undefined,
-              "margin": undefined,
-              "marginBottom": undefined,
-              "marginEnd": undefined,
-              "marginHorizontal": undefined,
-              "marginLeft": undefined,
-              "marginRight": undefined,
-              "marginStart": undefined,
-              "marginTop": undefined,
-              "marginVertical": undefined,
-              "opacity": 1,
-            }
+            [
+              undefined,
+              {
+                "margin": undefined,
+                "marginBottom": undefined,
+                "marginEnd": undefined,
+                "marginHorizontal": undefined,
+                "marginLeft": undefined,
+                "marginRight": undefined,
+                "marginStart": undefined,
+                "marginTop": undefined,
+                "marginVertical": undefined,
+              },
+              {
+                "backgroundColor": undefined,
+                "borderRadius": undefined,
+              },
+            ]
           }
         >
           <View
@@ -3365,11 +3356,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
         <View
           accessibilityState={
             {
-              "busy": undefined,
-              "checked": undefined,
               "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
             }
           }
           accessibilityValue={
@@ -3381,7 +3368,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             }
           }
           accessible={true}
-          collapsable={false}
           focusable={true}
           onClick={[Function]}
           onResponderGrant={[Function]}
@@ -3391,20 +3377,24 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            {
-              "backgroundColor": undefined,
-              "borderRadius": undefined,
-              "margin": undefined,
-              "marginBottom": undefined,
-              "marginEnd": undefined,
-              "marginHorizontal": undefined,
-              "marginLeft": undefined,
-              "marginRight": undefined,
-              "marginStart": undefined,
-              "marginTop": undefined,
-              "marginVertical": undefined,
-              "opacity": 1,
-            }
+            [
+              undefined,
+              {
+                "margin": undefined,
+                "marginBottom": undefined,
+                "marginEnd": undefined,
+                "marginHorizontal": undefined,
+                "marginLeft": undefined,
+                "marginRight": undefined,
+                "marginStart": undefined,
+                "marginTop": undefined,
+                "marginVertical": undefined,
+              },
+              {
+                "backgroundColor": undefined,
+                "borderRadius": undefined,
+              },
+            ]
           }
         >
           <View
@@ -3724,11 +3714,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
         <View
           accessibilityState={
             {
-              "busy": undefined,
-              "checked": undefined,
               "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
             }
           }
           accessibilityValue={
@@ -3740,7 +3726,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             }
           }
           accessible={true}
-          collapsable={false}
           focusable={true}
           onClick={[Function]}
           onResponderGrant={[Function]}
@@ -3750,20 +3735,24 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            {
-              "backgroundColor": undefined,
-              "borderRadius": undefined,
-              "margin": undefined,
-              "marginBottom": undefined,
-              "marginEnd": undefined,
-              "marginHorizontal": undefined,
-              "marginLeft": undefined,
-              "marginRight": undefined,
-              "marginStart": undefined,
-              "marginTop": undefined,
-              "marginVertical": undefined,
-              "opacity": 1,
-            }
+            [
+              undefined,
+              {
+                "margin": undefined,
+                "marginBottom": undefined,
+                "marginEnd": undefined,
+                "marginHorizontal": undefined,
+                "marginLeft": undefined,
+                "marginRight": undefined,
+                "marginStart": undefined,
+                "marginTop": undefined,
+                "marginVertical": undefined,
+              },
+              {
+                "backgroundColor": undefined,
+                "borderRadius": undefined,
+              },
+            ]
           }
         >
           <View
@@ -4152,11 +4141,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
         <View
           accessibilityState={
             {
-              "busy": undefined,
-              "checked": undefined,
               "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
             }
           }
           accessibilityValue={
@@ -4168,7 +4153,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             }
           }
           accessible={true}
-          collapsable={false}
           focusable={true}
           onClick={[Function]}
           onResponderGrant={[Function]}
@@ -4178,20 +4162,24 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            {
-              "backgroundColor": undefined,
-              "borderRadius": undefined,
-              "margin": undefined,
-              "marginBottom": undefined,
-              "marginEnd": undefined,
-              "marginHorizontal": undefined,
-              "marginLeft": undefined,
-              "marginRight": undefined,
-              "marginStart": undefined,
-              "marginTop": undefined,
-              "marginVertical": undefined,
-              "opacity": 1,
-            }
+            [
+              undefined,
+              {
+                "margin": undefined,
+                "marginBottom": undefined,
+                "marginEnd": undefined,
+                "marginHorizontal": undefined,
+                "marginLeft": undefined,
+                "marginRight": undefined,
+                "marginStart": undefined,
+                "marginTop": undefined,
+                "marginVertical": undefined,
+              },
+              {
+                "backgroundColor": undefined,
+                "borderRadius": undefined,
+              },
+            ]
           }
         >
           <View
@@ -4345,11 +4333,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
         <View
           accessibilityState={
             {
-              "busy": undefined,
-              "checked": undefined,
               "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
             }
           }
           accessibilityValue={
@@ -4361,7 +4345,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             }
           }
           accessible={true}
-          collapsable={false}
           focusable={true}
           onClick={[Function]}
           onResponderGrant={[Function]}
@@ -4371,20 +4354,24 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            {
-              "backgroundColor": undefined,
-              "borderRadius": undefined,
-              "margin": undefined,
-              "marginBottom": undefined,
-              "marginEnd": undefined,
-              "marginHorizontal": undefined,
-              "marginLeft": undefined,
-              "marginRight": undefined,
-              "marginStart": undefined,
-              "marginTop": undefined,
-              "marginVertical": undefined,
-              "opacity": 1,
-            }
+            [
+              undefined,
+              {
+                "margin": undefined,
+                "marginBottom": undefined,
+                "marginEnd": undefined,
+                "marginHorizontal": undefined,
+                "marginLeft": undefined,
+                "marginRight": undefined,
+                "marginStart": undefined,
+                "marginTop": undefined,
+                "marginVertical": undefined,
+              },
+              {
+                "backgroundColor": undefined,
+                "borderRadius": undefined,
+              },
+            ]
           }
         >
           <View
@@ -4538,11 +4525,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
         <View
           accessibilityState={
             {
-              "busy": undefined,
-              "checked": undefined,
               "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
             }
           }
           accessibilityValue={
@@ -4554,7 +4537,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             }
           }
           accessible={true}
-          collapsable={false}
           focusable={true}
           onClick={[Function]}
           onResponderGrant={[Function]}
@@ -4564,20 +4546,24 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            {
-              "backgroundColor": undefined,
-              "borderRadius": undefined,
-              "margin": undefined,
-              "marginBottom": undefined,
-              "marginEnd": undefined,
-              "marginHorizontal": undefined,
-              "marginLeft": undefined,
-              "marginRight": undefined,
-              "marginStart": undefined,
-              "marginTop": undefined,
-              "marginVertical": undefined,
-              "opacity": 1,
-            }
+            [
+              undefined,
+              {
+                "margin": undefined,
+                "marginBottom": undefined,
+                "marginEnd": undefined,
+                "marginHorizontal": undefined,
+                "marginLeft": undefined,
+                "marginRight": undefined,
+                "marginStart": undefined,
+                "marginTop": undefined,
+                "marginVertical": undefined,
+              },
+              {
+                "backgroundColor": undefined,
+                "borderRadius": undefined,
+              },
+            ]
           }
         >
           <View
@@ -5062,11 +5048,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
         <View
           accessibilityState={
             {
-              "busy": undefined,
-              "checked": undefined,
               "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
             }
           }
           accessibilityValue={
@@ -5078,7 +5060,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             }
           }
           accessible={true}
-          collapsable={false}
           focusable={true}
           onClick={[Function]}
           onResponderGrant={[Function]}
@@ -5088,20 +5069,24 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            {
-              "backgroundColor": undefined,
-              "borderRadius": undefined,
-              "margin": undefined,
-              "marginBottom": undefined,
-              "marginEnd": undefined,
-              "marginHorizontal": undefined,
-              "marginLeft": undefined,
-              "marginRight": undefined,
-              "marginStart": undefined,
-              "marginTop": undefined,
-              "marginVertical": undefined,
-              "opacity": 1,
-            }
+            [
+              undefined,
+              {
+                "margin": undefined,
+                "marginBottom": undefined,
+                "marginEnd": undefined,
+                "marginHorizontal": undefined,
+                "marginLeft": undefined,
+                "marginRight": undefined,
+                "marginStart": undefined,
+                "marginTop": undefined,
+                "marginVertical": undefined,
+              },
+              {
+                "backgroundColor": undefined,
+                "borderRadius": undefined,
+              },
+            ]
           }
         >
           <View
@@ -5490,11 +5475,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
         <View
           accessibilityState={
             {
-              "busy": undefined,
-              "checked": undefined,
               "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
             }
           }
           accessibilityValue={
@@ -5506,7 +5487,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             }
           }
           accessible={true}
-          collapsable={false}
           focusable={true}
           onClick={[Function]}
           onResponderGrant={[Function]}
@@ -5516,20 +5496,24 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            {
-              "backgroundColor": undefined,
-              "borderRadius": undefined,
-              "margin": undefined,
-              "marginBottom": undefined,
-              "marginEnd": undefined,
-              "marginHorizontal": undefined,
-              "marginLeft": undefined,
-              "marginRight": undefined,
-              "marginStart": undefined,
-              "marginTop": undefined,
-              "marginVertical": undefined,
-              "opacity": 1,
-            }
+            [
+              undefined,
+              {
+                "margin": undefined,
+                "marginBottom": undefined,
+                "marginEnd": undefined,
+                "marginHorizontal": undefined,
+                "marginLeft": undefined,
+                "marginRight": undefined,
+                "marginStart": undefined,
+                "marginTop": undefined,
+                "marginVertical": undefined,
+              },
+              {
+                "backgroundColor": undefined,
+                "borderRadius": undefined,
+              },
+            ]
           }
         >
           <View
@@ -5683,11 +5667,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
         <View
           accessibilityState={
             {
-              "busy": undefined,
-              "checked": undefined,
               "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
             }
           }
           accessibilityValue={
@@ -5699,7 +5679,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             }
           }
           accessible={true}
-          collapsable={false}
           focusable={true}
           onClick={[Function]}
           onResponderGrant={[Function]}
@@ -5709,20 +5688,24 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            {
-              "backgroundColor": undefined,
-              "borderRadius": undefined,
-              "margin": undefined,
-              "marginBottom": undefined,
-              "marginEnd": undefined,
-              "marginHorizontal": undefined,
-              "marginLeft": undefined,
-              "marginRight": undefined,
-              "marginStart": undefined,
-              "marginTop": undefined,
-              "marginVertical": undefined,
-              "opacity": 1,
-            }
+            [
+              undefined,
+              {
+                "margin": undefined,
+                "marginBottom": undefined,
+                "marginEnd": undefined,
+                "marginHorizontal": undefined,
+                "marginLeft": undefined,
+                "marginRight": undefined,
+                "marginStart": undefined,
+                "marginTop": undefined,
+                "marginVertical": undefined,
+              },
+              {
+                "backgroundColor": undefined,
+                "borderRadius": undefined,
+              },
+            ]
           }
         >
           <View
@@ -6042,11 +6025,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
         <View
           accessibilityState={
             {
-              "busy": undefined,
-              "checked": undefined,
               "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
             }
           }
           accessibilityValue={
@@ -6058,7 +6037,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             }
           }
           accessible={true}
-          collapsable={false}
           focusable={true}
           onClick={[Function]}
           onResponderGrant={[Function]}
@@ -6068,20 +6046,24 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            {
-              "backgroundColor": undefined,
-              "borderRadius": undefined,
-              "margin": undefined,
-              "marginBottom": undefined,
-              "marginEnd": undefined,
-              "marginHorizontal": undefined,
-              "marginLeft": undefined,
-              "marginRight": undefined,
-              "marginStart": undefined,
-              "marginTop": undefined,
-              "marginVertical": undefined,
-              "opacity": 1,
-            }
+            [
+              undefined,
+              {
+                "margin": undefined,
+                "marginBottom": undefined,
+                "marginEnd": undefined,
+                "marginHorizontal": undefined,
+                "marginLeft": undefined,
+                "marginRight": undefined,
+                "marginStart": undefined,
+                "marginTop": undefined,
+                "marginVertical": undefined,
+              },
+              {
+                "backgroundColor": undefined,
+                "borderRadius": undefined,
+              },
+            ]
           }
         >
           <View
@@ -6470,11 +6452,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
         <View
           accessibilityState={
             {
-              "busy": undefined,
-              "checked": undefined,
               "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
             }
           }
           accessibilityValue={
@@ -6486,7 +6464,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             }
           }
           accessible={true}
-          collapsable={false}
           focusable={true}
           onClick={[Function]}
           onResponderGrant={[Function]}
@@ -6496,20 +6473,24 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            {
-              "backgroundColor": undefined,
-              "borderRadius": undefined,
-              "margin": undefined,
-              "marginBottom": undefined,
-              "marginEnd": undefined,
-              "marginHorizontal": undefined,
-              "marginLeft": undefined,
-              "marginRight": undefined,
-              "marginStart": undefined,
-              "marginTop": undefined,
-              "marginVertical": undefined,
-              "opacity": 1,
-            }
+            [
+              undefined,
+              {
+                "margin": undefined,
+                "marginBottom": undefined,
+                "marginEnd": undefined,
+                "marginHorizontal": undefined,
+                "marginLeft": undefined,
+                "marginRight": undefined,
+                "marginStart": undefined,
+                "marginTop": undefined,
+                "marginVertical": undefined,
+              },
+              {
+                "backgroundColor": undefined,
+                "borderRadius": undefined,
+              },
+            ]
           }
         >
           <View
@@ -6663,11 +6644,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
         <View
           accessibilityState={
             {
-              "busy": undefined,
-              "checked": undefined,
               "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
             }
           }
           accessibilityValue={
@@ -6679,7 +6656,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             }
           }
           accessible={true}
-          collapsable={false}
           focusable={true}
           onClick={[Function]}
           onResponderGrant={[Function]}
@@ -6689,20 +6665,24 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            {
-              "backgroundColor": undefined,
-              "borderRadius": undefined,
-              "margin": undefined,
-              "marginBottom": undefined,
-              "marginEnd": undefined,
-              "marginHorizontal": undefined,
-              "marginLeft": undefined,
-              "marginRight": undefined,
-              "marginStart": undefined,
-              "marginTop": undefined,
-              "marginVertical": undefined,
-              "opacity": 1,
-            }
+            [
+              undefined,
+              {
+                "margin": undefined,
+                "marginBottom": undefined,
+                "marginEnd": undefined,
+                "marginHorizontal": undefined,
+                "marginLeft": undefined,
+                "marginRight": undefined,
+                "marginStart": undefined,
+                "marginTop": undefined,
+                "marginVertical": undefined,
+              },
+              {
+                "backgroundColor": undefined,
+                "borderRadius": undefined,
+              },
+            ]
           }
         >
           <View
@@ -6856,11 +6836,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
         <View
           accessibilityState={
             {
-              "busy": undefined,
-              "checked": undefined,
               "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
             }
           }
           accessibilityValue={
@@ -6872,7 +6848,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             }
           }
           accessible={true}
-          collapsable={false}
           focusable={true}
           onClick={[Function]}
           onResponderGrant={[Function]}
@@ -6882,20 +6857,24 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            {
-              "backgroundColor": undefined,
-              "borderRadius": undefined,
-              "margin": undefined,
-              "marginBottom": undefined,
-              "marginEnd": undefined,
-              "marginHorizontal": undefined,
-              "marginLeft": undefined,
-              "marginRight": undefined,
-              "marginStart": undefined,
-              "marginTop": undefined,
-              "marginVertical": undefined,
-              "opacity": 1,
-            }
+            [
+              undefined,
+              {
+                "margin": undefined,
+                "marginBottom": undefined,
+                "marginEnd": undefined,
+                "marginHorizontal": undefined,
+                "marginLeft": undefined,
+                "marginRight": undefined,
+                "marginStart": undefined,
+                "marginTop": undefined,
+                "marginVertical": undefined,
+              },
+              {
+                "backgroundColor": undefined,
+                "borderRadius": undefined,
+              },
+            ]
           }
         >
           <View
