@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { FlatList, StyleSheet, Text } from 'react-native';
 import Popover from 'react-native-popover-view';
-import Touchable from 'react-native-platform-touchable';
 
 import { CustomIcon } from '../CustomIcon';
 import ActivityIndicator from '../ActivityIndicator';
@@ -10,6 +9,7 @@ import { useTheme } from '../../theme';
 import { BUTTON_HIT_SLOP } from '../message/utils';
 import * as List from '../List';
 import { type IOption, type IOptions, type IOverflow } from './interfaces';
+import Touch from '../Touch';
 
 const keyExtractor = (item: any) => item.value;
 
@@ -26,13 +26,10 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Option = ({ option: { text, value }, onOptionPress, parser, theme }: IOption) => (
-	<Touchable
-		onPress={() => onOptionPress({ value })}
-		background={Touchable.Ripple(themes[theme].surfaceNeutral)}
-		style={styles.option}>
+const Option = ({ option: { text, value }, onOptionPress, parser }: IOption) => (
+	<Touch onPress={() => onOptionPress({ value })} style={styles.option}>
 		<Text>{parser.text(text)}</Text>
-	</Touchable>
+	</Touch>
 );
 
 const Options = ({ options, onOptionPress, parser, theme }: IOptions) => (
@@ -44,7 +41,7 @@ const Options = ({ options, onOptionPress, parser, theme }: IOptions) => (
 	/>
 );
 
-const touchable: { [key: string]: Touchable | null } = {};
+const touchable: { [key: string]: React.RefObject<any> | null } = {};
 
 export const Overflow = ({ element, loading, action, parser }: IOverflow) => {
 	const { theme } = useTheme();
@@ -59,11 +56,10 @@ export const Overflow = ({ element, loading, action, parser }: IOverflow) => {
 
 	return (
 		<>
-			<Touchable
+			<Touch
 				ref={ref => {
 					touchable[blockId] = ref;
 				}}
-				background={Touchable.Ripple(themes[theme].surfaceNeutral)}
 				onPress={() => onShow(!show)}
 				hitSlop={BUTTON_HIT_SLOP}
 				style={styles.menu}>
@@ -72,13 +68,8 @@ export const Overflow = ({ element, loading, action, parser }: IOverflow) => {
 				) : (
 					<ActivityIndicator style={styles.loading} />
 				)}
-			</Touchable>
-			<Popover
-				isVisible={show}
-				// fromView exists in Popover Component
-				/* @ts-ignore*/
-				fromView={touchable[blockId]}
-				onRequestClose={() => onShow(false)}>
+			</Touch>
+			<Popover isVisible={show} from={touchable[blockId]} onRequestClose={() => onShow(false)}>
 				<Options options={options} onOptionPress={onOptionPress} parser={parser} theme={theme} />
 			</Popover>
 		</>
