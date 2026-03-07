@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
 
 import { useTheme } from '../../theme';
 import Avatar from '../../containers/Avatar';
@@ -10,6 +9,7 @@ import { MarkdownPreview } from '../../containers/markdown';
 import { formatDateThreads, makeThreadName } from '../../lib/methods/helpers/room';
 import ThreadDetails from '../../containers/ThreadDetails';
 import { type TThreadModel } from '../../definitions';
+import Touch from '../../containers/Touch';
 
 const styles = StyleSheet.create({
 	container: {
@@ -74,7 +74,7 @@ const Item = ({ item, useRealName, user, badgeColor, onPress, toggleFollowThread
 	}
 
 	return (
-		<Touchable
+		<Touch
 			onPress={() => onPress(item)}
 			testID={`thread-messages-view-${item.msg}`}
 			style={{ backgroundColor: themes[theme].surfaceRoom }}>
@@ -94,7 +94,7 @@ const Item = ({ item, useRealName, user, badgeColor, onPress, toggleFollowThread
 					<ThreadDetails item={item} user={user} toggleFollowThread={toggleFollowThread} style={styles.threadDetails} />
 				</View>
 			</View>
-		</Touchable>
+		</Touch>
 	);
 };
 

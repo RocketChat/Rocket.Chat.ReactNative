@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, type ViewStyle } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
 
+import Touch from './Touch';
 import { CustomIcon } from './CustomIcon';
 import { themes } from '../lib/constants/colors';
 import sharedStyles from '../views/Styles';
@@ -87,11 +87,11 @@ const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IT
 			</View>
 			<View style={styles.badgeContainer}>
 				{badgeColor ? <View style={[styles.badge, { backgroundColor: badgeColor }]} /> : null}
-				<Touchable
+				<Touch
 					accessibilityLabel={i18n.t(isFollowing ? 'Unfollow_thread' : 'Follow_thread')}
 					onPress={() => toggleFollowThread?.(isFollowing, item.id)}>
 					<CustomIcon size={24} name={isFollowing ? 'notification' : 'notification-disabled'} />
-				</Touchable>
+				</Touch>
 			</View>
 		</View>
 	);
