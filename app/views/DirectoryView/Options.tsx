@@ -15,6 +15,7 @@ interface IDirectoryOptionsProps {
 	isFederationEnabled: boolean;
 	changeType: Function;
 	toggleWorkspace(): void;
+	hasViewOutsideRoomPermission: boolean;
 }
 
 const DirectoryOptions = ({
@@ -22,7 +23,8 @@ const DirectoryOptions = ({
 	globalUsers,
 	isFederationEnabled,
 	changeType,
-	toggleWorkspace
+	toggleWorkspace,
+	hasViewOutsideRoomPermission
 }: IDirectoryOptionsProps) => {
 	const { colors } = useTheme();
 	const insets = useSafeAreaInsets();
@@ -40,13 +42,23 @@ const DirectoryOptions = ({
 			icon = 'teams';
 		}
 
+		const isDisabled = itemType === 'users' && !hasViewOutsideRoomPermission;
+
 		return (
 			<List.Radio
 				title={text}
 				value={itemType}
 				isSelected={propType === itemType}
-				onPress={() => changeType(itemType)}
-				left={() => <CustomIcon name={icon} size={22} color={colors.fontDefault} style={styles.filterItemIcon} />}
+				onPress={() => !isDisabled && changeType(itemType)}
+				disabled={isDisabled}
+				left={() => (
+					<CustomIcon
+						name={icon}
+						size={22}
+						color={isDisabled ? colors.fontDisabled : colors.fontDefault}
+						style={styles.filterItemIcon}
+					/>
+				)}
 			/>
 		);
 	};
