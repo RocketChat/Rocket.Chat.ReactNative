@@ -1,0 +1,38 @@
+appId: chat.rocket.reactnative
+name: Go To Screen Lock Config View
+tags:
+  - 'util'
+
+---
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view-sidebar'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-view-sidebar'
+- extendedWaitUntil:
+    visible:
+      id: 'sidebar-settings'
+    timeout: 60000
+- tapOn:
+    id: 'sidebar-settings'
+- extendedWaitUntil:
+    visible:
+      id: 'settings-view-security-privacy'
+    timeout: 60000
+- tapOn:
+    id: 'settings-view-security-privacy'
+- extendedWaitUntil:
+    visible:
+      id: 'security-privacy-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'security-privacy-view-screen-lock'
+    timeout: 60000
+- tapOn:
+    id: 'security-privacy-view-screen-lock'
+- extendedWaitUntil:
+    visible:
+      id: 'screen-lock-config-view'
+    timeout: 60000
