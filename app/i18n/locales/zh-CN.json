@@ -648,5 +648,18 @@
   "Your_invite_link_will_never_expire": "您的邀请链接永久有效。",
   "Your_password_is": "您的密码",
   "Your_Password_Must_Have": "您的密码必须具有：",
-  "Your_workspace": "您的工作区"
+  "Your_workspace": "您的工作区",
+  "Timestamp_Picker": "日期和时间",
+  "Timestamp_Picker_Date": "日期",
+  "Timestamp_Picker_Time": "时间",
+  "Timestamp_Picker_Format": "格式",
+  "Timestamp_Picker_Preview": "预览",
+  "Timestamp_Picker_Add": "添加到消息",
+  "Timestamp_Picker_Timezone": "时区",
+  "Timestamp_Short_Time": "短时间 (下午1:30)",
+  "Timestamp_Long_Time": "长时间 (下午1:30:00)",
+  "Timestamp_Short_Date": "短日期 (2025/7/11)",
+  "Timestamp_Long_Date": "长日期 (2025年7月11日)",
+  "Timestamp_Full": "完整 (2025年7月11日星期五 下午1:30)",
+  "Timestamp_Relative": "相对 (3小时前)"
 }
