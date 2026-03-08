@@ -310,6 +310,21 @@ const MessageActions = React.memo(
 				logEvent(starred ? events.ROOM_MSG_ACTION_UNSTAR : events.ROOM_MSG_ACTION_STAR);
 				try {
 					await toggleStarMessage(messageId, starred);
+					// Update the message in the database immediately to reflect the change in UI
+					const db = database.active;
+					const msgCollection = db.get('messages');
+					try {
+						const message = await msgCollection.find(messageId);
+						await db.write(async () => {
+							await message.update(m => {
+								m.starred = !starred; // Toggle the starred state
+								m._updatedAt = new Date();
+							});
+						});
+					} catch (e) {
+						// If message is not found, that's okay - it will be updated via stream
+						log(e);
+					}
 					EventEmitter.emit(LISTENER, { message: starred ? I18n.t('Message_unstarred') : I18n.t('Message_starred') });
 				} catch (e) {
 					logEvent(events.ROOM_MSG_ACTION_STAR_F);
@@ -321,6 +336,21 @@ const MessageActions = React.memo(
 				logEvent(events.ROOM_MSG_ACTION_PIN);
 				try {
 					await togglePinMessage(message.id, message.pinned as boolean); // TODO: reevaluate `message.pinned` type on IMessage
+					// Update the message in the database immediately to reflect the change in UI
+					const db = database.active;
+					const msgCollection = db.get('messages');
+					try {
+						const msg = await msgCollection.find(message.id);
+						await db.write(async () => {
+							await msg.update(m => {
+								m.pinned = !message.pinned; // Toggle the pinned state
+								m._updatedAt = new Date();
+							});
+						});
+					} catch (e) {
+						// If message is not found, that's okay - it will be updated via stream
+						log(e);
+					}
 				} catch (e) {
 					logEvent(events.ROOM_MSG_ACTION_PIN_F);
 					log(e);
