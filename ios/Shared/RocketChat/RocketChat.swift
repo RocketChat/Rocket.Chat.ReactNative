@@ -11,53 +11,51 @@ import Foundation
 final class RocketChat {
   typealias Server = String
   typealias RoomId = String
-  
+
   let server: Server
   let api: API?
 
   private var encryptionQueue = DispatchQueue(label: "chat.rocket.encryptionQueue")
-  
+
   init(server: Server) {
     self.server = server
     self.api = API(server: server)
   }
-  
-  func getPushWithId(_ msgId: String, completion: @escaping((Notification?) -> Void)) {
+
+  func getPushWithId(_ msgId: String, completion: @escaping (Notification?) -> Void) {
     api?.fetch(request: PushRequest(msgId: msgId), retry: Retry(retries: 4)) { response in
       switch response {
       case .resource(let response):
         let notification = response.data.notification
         completion(notification)
-        
+
       case .error:
         completion(nil)
-        break
       }
     }
   }
-  
-  func sendMessage(rid: String, message: String, threadIdentifier: String?, completion: @escaping((MessageResponse?) -> Void)) {
+
+  func sendMessage(rid: String, message: String, threadIdentifier: String?, completion: @escaping (MessageResponse?) -> Void) {
     let id = String.random(length: 17)
-    
+
     let encrypted = Database(server: server).readRoomEncrypted(for: rid)
-    
+
     if encrypted {
       let encryption = Encryption(server: server, rid: rid)
       guard let content = encryption.encryptContent(message) else {
         return
       }
-      
+
       // For backward compatibility, also set msg field
       let msg = content.algorithm == "rc.v2.aes-sha2" ? "" : content.ciphertext
-      
+
       api?.fetch(request: SendMessageRequest(id: id, roomId: rid, text: msg, content: content, threadIdentifier: threadIdentifier, messageType: .e2e)) { response in
         switch response {
         case .resource(let response):
           completion(response)
-          
+
         case .error:
           completion(nil)
-          break
         }
       }
     } else {
@@ -65,19 +63,30 @@ final class RocketChat {
         switch response {
         case .resource(let response):
           completion(response)
-          
+
         case .error:
           completion(nil)
-          break
         }
       }
     }
   }
-  
+
   func decryptContent(rid: String, content: EncryptedContent) -> String? {
     encryptionQueue.sync {
       let encryption = Encryption(server: server, rid: rid)
       return encryption.decryptContent(content: content)
+    }
+  }
+
+  func markAsRead(rid: String, completion: @escaping (MarkAsReadResponse?) -> Void) {
+    api?.fetch(request: MarkAsReadRequest(rid: rid)) { response in
+      switch response {
+      case .resource(let response):
+        completion(response)
+
+      case .error:
+        completion(nil)
+      }
     }
   }
 }

@@ -89,7 +89,7 @@ const setupNotificationCategories = async (): Promise<void> => {
 	}
 
 	try {
-		// Message category with Reply action
+		// Message category with Reply and Mark as Read actions
 		await Notifications.setNotificationCategoryAsync('MESSAGE', [
 			{
 				identifier: 'REPLY_ACTION',
@@ -98,6 +98,13 @@ const setupNotificationCategories = async (): Promise<void> => {
 					submitButtonTitle: I18n.t('Reply'),
 					placeholder: I18n.t('Type_message')
 				},
+				options: {
+					opensAppToForeground: false
+				}
+			},
+			{
+				identifier: 'MARK_AS_READ_ACTION',
+				buttonTitle: I18n.t('Mark_as_read'),
 				options: {
 					opensAppToForeground: false
 				}
