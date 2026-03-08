@@ -1,0 +1,197 @@
+appId: chat.rocket.reactnative
+name: Message Markdown
+jsEngine: graaljs
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-12
+
+---
+- evalScript: ${output.user = output.utils.createUser()}
+
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+- runFlow:
+    file: '../../helpers/search-and-navigate-room.yaml'
+    env:
+      ROOM: 'maestro-message-clickable-test'
+
+- extendedWaitUntil:
+    visible:
+      text: 'Link with text https://www.rocket.chat'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: '.*detox-public*.'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: '.*e2e_admin*.'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: '.*Message with thread*.'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'message-thread-button-message with thread'
+    timeout: 60000
+
+# Tap on detox-public mention to open room info
+- tapOn:
+    text: '.*detox-public*.'
+
+# Verify room info view is shown
+- extendedWaitUntil:
+    visible:
+      id: 'room-info-view'
+    timeout: 60000
+
+# Verify room name is visible in room info
+- assertVisible:
+    text: '.*detox-public.*'
+
+# Go back to room
+- tapOn:
+    id: custom-header-back
+
+# Wait for room view to be visible again
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-maestro-message-clickable-test'
+    timeout: 60000
+
+# Tap on the URL link to open alert
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - tapOn:
+          text: '.*https://www.rocket.chat.*'
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn:
+          point: 66%,66%
+
+# Verify alert is shown with the link
+- extendedWaitUntil:
+    visible:
+      text: '.*Link Pressed*.'
+    timeout: 10000
+
+- assertVisible:
+    text: '.*https://www.rocket.chat*.'
+
+# Dismiss the alert
+- tapOn:
+    text: 'OK'
+    optional: true
+
+# Long press on the link to copy to clipboard
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - longPressOn:
+          text: '.*https://www.rocket.chat.*'
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - longPressOn:
+          point: 66%,66%
+
+# Verify clipboard has the link alert
+- extendedWaitUntil:
+    visible:
+      text: '.*Link Long Pressed*.'
+    timeout: 10000
+
+- assertVisible:
+    text: '.*https://www.rocket.chat*.'
+
+# Dismiss the alert
+- tapOn:
+    text: 'OK'
+    optional: true
+
+# Tap on e2e_admin mention to open user info
+- tapOn:
+    text: '.*e2e_admin*.'
+
+# Verify user info view is shown
+- extendedWaitUntil:
+    visible:
+      text: '.*User info*.'
+    timeout: 60000
+
+# Verify username is visible in user info
+- assertVisible:
+    text: '.*e2e_admin.*'
+
+# Go back to room
+- tapOn:
+    id: custom-header-back
+
+# Wait for room view to be visible again
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-maestro-message-clickable-test'
+    timeout: 60000
+
+# Tap on message with thread to open thread room
+- tapOn:
+    text: '.*Message with thread*.'
+
+# Verify thread room view is opened with the correct id
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-message with thread'
+    timeout: 60000
+
+# Go back to main room
+- tapOn:
+    id: header-back
+
+# Wait for room view to be visible again
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-maestro-message-clickable-test'
+    timeout: 60000
+
+# Tap on "View thread" button
+- tapOn:
+    id: 'message-thread-button-message with thread'
+
+# Verify thread room view is opened
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-message with thread'
+    timeout: 60000
+
+# Go back to main room
+- tapOn:
+    id: header-back
+
+# Wait for room view to be visible again
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-maestro-message-clickable-test'
+    timeout: 60000
+
+# Now tap on a message within the thread
+- tapOn:
+    text: '.*a message in thread*.'
+
+# Verify thread room view remains (clicking message in thread stays in thread)
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-message with thread'
+    timeout: 60000
