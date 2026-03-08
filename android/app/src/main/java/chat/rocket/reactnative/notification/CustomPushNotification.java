@@ -1,5 +1,7 @@
 package chat.rocket.reactnative.notification;
 
+import android.app.Activity;
+import android.app.Application;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -44,6 +46,9 @@ public class CustomPushNotification {
     // Shared state
     private static final Gson gson = new Gson();
     private static final Map<String, List<Bundle>> notificationMessages = new ConcurrentHashMap<>();
+
+    // Track app foreground state
+    private static boolean isAppInForeground = false;
     
     // Constants
     public static final String KEY_REPLY = "KEY_REPLY";
@@ -67,6 +72,23 @@ public class CustomPushNotification {
 
     public static void clearMessages(int notId) {
         notificationMessages.remove(Integer.toString(notId));
+    }
+
+    /**
+     * Sets the app foreground state. Should be called from MainActivity's lifecycle callbacks.
+     */
+    public static void setAppInForeground(boolean inForeground) {
+        isAppInForeground = inForeground;
+        if (ENABLE_VERBOSE_LOGS) {
+            Log.d(TAG, "App foreground state changed to: " + (inForeground ? "FOREGROUND" : "BACKGROUND"));
+        }
+    }
+
+    /**
+     * Checks if the app is currently in the foreground.
+     */
+    public static boolean isAppInForeground() {
+        return isAppInForeground;
     }
     
     public void onReceived() {
@@ -267,6 +289,13 @@ public class CustomPushNotification {
     }
 
     private void postNotification(int notificationId) {
+        // Don't show notification if app is in foreground
+        // In-app notifications are handled by the JavaScript layer
+        if (isAppInForeground()) {
+            Log.d(TAG, "App is in foreground, skipping native notification display");
+            return;
+        }
+
         Notification.Builder notification = buildNotification(notificationId);
         if (notification != null && notificationManager != null) {
             notificationManager.notify(notificationId, notification.build());
