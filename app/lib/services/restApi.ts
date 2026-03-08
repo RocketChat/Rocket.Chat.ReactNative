@@ -1,3 +1,5 @@
+import { settings as RocketChatSettings } from '@rocket.chat/sdk';
+
 import {
 	type IAvatarSuggestion,
 	type IMessage,
@@ -25,7 +27,7 @@ import { compareServerVersion, getBundleId, isIOS } from '../methods/helpers';
 import { getDeviceToken } from '../notifications';
 import { store as reduxStore } from '../store/auxStore';
 import sdk from './sdk';
-import fetch from '../methods/helpers/fetch';
+import FileUpload from '../methods/helpers/fileUpload';
 
 export const createChannel = ({
 	name,
@@ -700,14 +702,49 @@ export const resetAvatar = (userId: string) =>
 export const setAvatarFromService = ({
 	data,
 	contentType = '',
-	service = null
+	service = null,
+	url,
+	server,
+	user
 }: {
 	data: any;
 	contentType?: string;
 	service?: string | null;
-}): Promise<void> =>
+	url?: string;
+	server: string;
+	user: { id?: string; token?: string };
+}): Promise<any> => {
 	// RC 0.51.0
-	sdk.methodCallWrapper('setAvatarFromService', data, contentType, service);
+	if (service === 'url') {
+		return sdk.post('users.setAvatar', { avatarUrl: data });
+	}
+	if (service === 'upload' && url && server && user?.id && user?.token) {
+		const rawExtension = url.split('.').pop() || 'png';
+		const extension = rawExtension.split('?')[0].toLowerCase();
+
+		const formData = [
+			{
+				name: 'image',
+				type: `image/${extension}`,
+				filename: `image.${extension}`,
+				uri: url
+			}
+		];
+
+		const headers = {
+			...RocketChatSettings.customHeaders,
+			'Content-Type': 'multipart/form-data',
+			'X-Auth-Token': user.token,
+			'X-User-Id': user.id
+		};
+
+		const upload = new FileUpload(`${server}/api/v1/users.setAvatar`, headers, formData);
+
+		return upload.send();
+	}
+
+	return sdk.methodCallWrapper('setAvatarFromService', data, contentType, service);
+};
 
 export const getUsernameSuggestion = () =>
 	// RC 0.65.0
