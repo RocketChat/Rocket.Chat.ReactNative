@@ -147,7 +147,7 @@ dependencies {
     implementation project(':watermelondb-jsi')
 
     implementation "com.google.code.gson:gson:2.8.9"
-    implementation "com.tencent:mmkv-static:1.2.10"
+    implementation "io.github.zhongwuzw:mmkv:2.2.4"
     implementation 'com.facebook.soloader:soloader:0.10.4'
     
     // For SecureKeystore (EncryptedSharedPreferences)
