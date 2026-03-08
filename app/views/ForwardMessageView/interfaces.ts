@@ -5,6 +5,7 @@ export interface IForwardMessageViewSelectRoom {
 	onRoomSelect: ({ value }: { value: string[] }) => void;
 	blockUnauthenticatedAccess: boolean;
 	serverVersion: string;
+	disabled?: boolean;
 }
 
 export interface IForwardMessageViewSearchResult {
