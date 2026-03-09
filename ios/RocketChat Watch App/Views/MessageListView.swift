@@ -98,7 +98,7 @@ struct MessageListView: View {
                     .onAppear {
                         scrollToBottom(proxy: proxy)
                     }
-                    .onChange(of: messages.count) { _ in
+                    .onChange(of: messages.last?.ts) { _ in
                         // Also scroll to bottom when new messages arrive
                         withAnimation(.easeOut(duration: 0.3)) {
                             proxy.scrollTo(bottomAnchor, anchor: .center)
