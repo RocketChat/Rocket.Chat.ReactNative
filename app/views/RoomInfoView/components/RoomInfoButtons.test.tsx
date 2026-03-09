@@ -11,17 +11,18 @@ import { SubscriptionType } from '../../../definitions';
 
 const mockShowInitCallActionSheet = jest.fn();
 const mockShowActionSheet = jest.fn();
-const mockStartCallByRoom = jest.fn();
+const mockOpenNewMediaCall = jest.fn();
+const noopOpenNewMediaCall = () => undefined;
 
 const mockUseVideoConf = jest.fn();
-const mockUseMediaCallPermission = jest.fn();
+const mockUseNewMediaCall = jest.fn();
 
 jest.mock('../../../lib/hooks/useVideoConf', () => ({
 	useVideoConf: (...args: unknown[]) => mockUseVideoConf(...args)
 }));
 
-jest.mock('../../../lib/hooks/useMediaCallPermission', () => ({
-	useMediaCallPermission: (...args: unknown[]) => mockUseMediaCallPermission(...args)
+jest.mock('../../../lib/hooks/useNewMediaCall', () => ({
+	useNewMediaCall: (...args: unknown[]) => mockUseNewMediaCall(...args)
 }));
 
 jest.mock('../hooks', () => ({
@@ -31,12 +32,6 @@ jest.mock('../hooks', () => ({
 jest.mock('../../../containers/ActionSheet', () => ({
 	...jest.requireActual('../../../containers/ActionSheet'),
 	useActionSheet: () => ({ showActionSheet: mockShowActionSheet })
-}));
-
-jest.mock('../../../lib/services/voip/MediaSessionInstance', () => ({
-	mediaSessionInstance: {
-		startCallByRoom: (room: ISubscription) => mockStartCallByRoom(room)
-	}
 }));
 
 const Wrapper = ({ children }: { children: React.ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
@@ -90,7 +85,10 @@ describe('RoomInfoButtons', () => {
 			disabledTooltip: false,
 			showInitCallActionSheet: mockShowInitCallActionSheet
 		});
-		mockUseMediaCallPermission.mockReturnValue(true);
+		mockUseNewMediaCall.mockReturnValue({
+			openNewMediaCall: noopOpenNewMediaCall,
+			hasMediaCallPermission: true
+		});
 	});
 
 	it('should render Message button', () => {
@@ -113,16 +111,18 @@ describe('RoomInfoButtons', () => {
 		expect(handleCreateDirectMessage).toHaveBeenCalledTimes(1);
 	});
 
-	it('should call mediaSessionInstance.startCallByRoom when Voice call is pressed', () => {
-		const mockRoom = createMockRoom();
+	it('should call openNewMediaCall when Voice call is pressed', () => {
+		mockUseNewMediaCall.mockReturnValue({
+			openNewMediaCall: mockOpenNewMediaCall,
+			hasMediaCallPermission: true
+		});
 		const { getByTestId } = render(
 			<Wrapper>
-				<RoomInfoButtons {...defaultProps} room={mockRoom} />
+				<RoomInfoButtons {...defaultProps} />
 			</Wrapper>
 		);
 		fireEvent.press(getByTestId('room-info-view-phone'));
-		expect(mockStartCallByRoom).toHaveBeenCalledTimes(1);
-		expect(mockStartCallByRoom).toHaveBeenCalledWith(mockRoom);
+		expect(mockOpenNewMediaCall).toHaveBeenCalledTimes(1);
 	});
 
 	it('should call showInitCallActionSheet when Video call is pressed', () => {
@@ -135,8 +135,11 @@ describe('RoomInfoButtons', () => {
 		expect(mockShowInitCallActionSheet).toHaveBeenCalledTimes(1);
 	});
 
-	it('should not render Voice call when useMediaCallPermission returns false', () => {
-		mockUseMediaCallPermission.mockReturnValue(false);
+	it('should not render Voice call when hasMediaCallPermission is false', () => {
+		mockUseNewMediaCall.mockReturnValue({
+			openNewMediaCall: noopOpenNewMediaCall,
+			hasMediaCallPermission: false
+		});
 		const { queryByTestId } = render(
 			<Wrapper>
 				<RoomInfoButtons {...defaultProps} />

@@ -1,0 +1,199 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Story Snapshots: Disabled should match snapshot 1`] = `
+<View
+  accessibilityLabel="Call"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": true,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    [
+      {
+        "alignItems": "center",
+        "borderRadius": 4,
+        "flexDirection": "row",
+        "gap": 4,
+        "height": 52,
+        "justifyContent": "center",
+        "marginTop": 32,
+      },
+      {
+        "backgroundColor": "#C0F6E4",
+      },
+    ]
+  }
+  testID="new-media-call-button"
+>
+  <Text
+    allowFontScaling={false}
+    selectable={false}
+    style={
+      [
+        {
+          "color": "#FFFFFF",
+          "fontSize": 24,
+        },
+        [
+          {
+            "lineHeight": 24,
+          },
+          undefined,
+        ],
+        {
+          "fontFamily": "custom",
+          "fontStyle": "normal",
+          "fontWeight": "normal",
+        },
+        {},
+      ]
+    }
+  >
+    
+  </Text>
+  <Text
+    style={
+      [
+        {
+          "backgroundColor": "transparent",
+          "fontFamily": "Inter",
+          "fontSize": 16,
+          "fontWeight": "500",
+          "lineHeight": 24,
+          "textAlign": "left",
+        },
+        {
+          "color": "#FFFFFF",
+        },
+      ]
+    }
+  >
+    Call
+  </Text>
+</View>
+`;
+
+exports[`Story Snapshots: Enabled should match snapshot 1`] = `
+<View
+  accessibilityLabel="Call"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": false,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    [
+      {
+        "alignItems": "center",
+        "borderRadius": 4,
+        "flexDirection": "row",
+        "gap": 4,
+        "height": 52,
+        "justifyContent": "center",
+        "marginTop": 32,
+      },
+      {
+        "backgroundColor": "#158D65",
+      },
+    ]
+  }
+  testID="new-media-call-button"
+>
+  <Text
+    allowFontScaling={false}
+    selectable={false}
+    style={
+      [
+        {
+          "color": "#FFFFFF",
+          "fontSize": 24,
+        },
+        [
+          {
+            "lineHeight": 24,
+          },
+          undefined,
+        ],
+        {
+          "fontFamily": "custom",
+          "fontStyle": "normal",
+          "fontWeight": "normal",
+        },
+        {},
+      ]
+    }
+  >
+    
+  </Text>
+  <Text
+    style={
+      [
+        {
+          "backgroundColor": "transparent",
+          "fontFamily": "Inter",
+          "fontSize": 16,
+          "fontWeight": "500",
+          "lineHeight": 24,
+          "textAlign": "left",
+        },
+        {
+          "color": "#FFFFFF",
+        },
+      ]
+    }
+  >
+    Call
+  </Text>
+</View>
+`;

@@ -2,9 +2,8 @@ import React from 'react';
 
 import * as List from '../../../containers/List';
 import { useVideoConf } from '../../../lib/hooks/useVideoConf';
-import { mediaSessionInstance } from '../../../lib/services/voip/MediaSessionInstance';
 import type { TSubscriptionModel } from '../../../definitions';
-import { useMediaCallPermission } from '../../../lib/hooks/useMediaCallPermission';
+import { useNewMediaCall } from '../../../lib/hooks/useNewMediaCall';
 
 export default function CallSection({
 	room,
@@ -14,12 +13,7 @@ export default function CallSection({
 	disabled: boolean;
 }): React.ReactElement | null {
 	const { callEnabled, showInitCallActionSheet, disabledTooltip } = useVideoConf(room.rid);
-	const hasMediaCallPermission = useMediaCallPermission();
-
-	const handleVoiceCallPress = () => {
-		if (!room) return;
-		mediaSessionInstance.startCallByRoom(room);
-	};
+	const { openNewMediaCall, hasMediaCallPermission } = useNewMediaCall(room.rid);
 
 	if (!hasMediaCallPermission && !callEnabled) {
 		return null;
@@ -32,7 +26,7 @@ export default function CallSection({
 				<>
 					<List.Item
 						title={'Voice_call'}
-						onPress={handleVoiceCallPress}
+						onPress={openNewMediaCall}
 						testID='room-actions-voice-call'
 						left={() => <List.Icon name='phone' />}
 						showActionIndicator

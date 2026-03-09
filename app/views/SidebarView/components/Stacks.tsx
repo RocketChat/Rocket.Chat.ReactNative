@@ -2,15 +2,14 @@ import { useTheme } from '../../../theme';
 import * as List from '../../../containers/List';
 import { sidebarNavigate } from '../methods/sidebarNavigate';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
-import { simulateCall } from '../../../lib/services/voip/simulateCall';
-import { useCallStore } from '../../../lib/services/voip/useCallStore';
+import { useNewMediaCall } from '../../../lib/hooks/useNewMediaCall';
 
 const Stacks = ({ currentScreen }: { currentScreen: string | null }) => {
 	'use memo';
 
 	const { colors } = useTheme();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
-	const toggleFocus = useCallStore(state => state.toggleFocus);
+	const { openNewMediaCall, hasMediaCallPermission } = useNewMediaCall();
 
 	if (isMasterDetail) {
 		return null;
@@ -26,17 +25,17 @@ const Stacks = ({ currentScreen }: { currentScreen: string | null }) => {
 				testID='sidebar-chats'
 			/>
 			<List.Separator />
-			<List.Item
-				title={'Voice_call'}
-				left={() => <List.Icon name='phone' />}
-				onPress={() => {
-					simulateCall();
-					toggleFocus();
-				}}
-				// backgroundColor={currentScreen === 'ChatsStackNavigator' ? colors.strokeLight : undefined}
-				testID='sidebar-voice-call'
-			/>
-			<List.Separator />
+			{hasMediaCallPermission ? (
+				<>
+					<List.Item
+						title={'Voice_call'}
+						left={() => <List.Icon name='phone' />}
+						onPress={openNewMediaCall}
+						testID='sidebar-media-call'
+					/>
+					<List.Separator />
+				</>
+			) : null}
 			<List.Item
 				title={'Profile'}
 				left={() => <List.Icon name='user' />}
