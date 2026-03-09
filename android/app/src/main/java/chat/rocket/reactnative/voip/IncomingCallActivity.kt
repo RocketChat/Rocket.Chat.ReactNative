@@ -21,7 +21,6 @@ import android.view.ViewOutlineProvider
 import com.bumptech.glide.Glide
 import chat.rocket.reactnative.MainActivity
 import chat.rocket.reactnative.R
-import chat.rocket.reactnative.notification.Ejson
 import android.graphics.Typeface
 
 /**
@@ -152,13 +151,10 @@ class IncomingCallActivity : Activity() {
     }
 
     private fun loadAvatar(payload: VoipPayload) {
-        if (payload.host.isBlank() || payload.username.isBlank()) return
-
         val container = findViewById<FrameLayout>(R.id.avatar_container)
         val imageView = findViewById<ImageView>(R.id.avatar)
         val sizePx = (120 * resources.displayMetrics.density).toInt().coerceIn(120, 480)
-        val avatarUrl = Ejson.forCallerAvatar(payload.host, payload.username)?.getCallerAvatarUri(sizePx)
-            ?: return
+        val avatarUrl = payload.avatarUrl?.takeIf { it.isNotBlank() } ?: return
         val cornerRadiusPx = (8 * resources.displayMetrics.density).toFloat()
 
         Glide.with(this)

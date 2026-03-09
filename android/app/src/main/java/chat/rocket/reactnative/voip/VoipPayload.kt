@@ -1,6 +1,7 @@
 package chat.rocket.reactnative.voip
 
 import android.os.Bundle
+import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.WritableMap
@@ -24,6 +25,9 @@ data class VoipPayload(
     
     @SerializedName("hostName")
     val hostName: String,
+
+    @SerializedName("avatarUrl")
+    val avatarUrl: String?,
 ) {
     val notificationId: Int = callId.hashCode()
     val callUUID: String = CallIdUUID.generateUUIDv5(callId)
@@ -40,6 +44,7 @@ data class VoipPayload(
             putString("host", host)
             putString("type", type)
             putString("hostName", hostName)
+            putString("avatarUrl", avatarUrl)
             putString("callUUID", callUUID)
             putInt("notificationId", notificationId)
             // Useful flag for MainActivity to know it's handling a VoIP action
@@ -55,22 +60,66 @@ data class VoipPayload(
             putString("host", host)
             putString("type", type)
             putString("hostName", hostName)
+            putString("avatarUrl", avatarUrl)
             putString("callUUID", callUUID)
             putInt("notificationId", notificationId)
         }
     }
 
     companion object {
-        fun fromMap(data: Map<String, String>): VoipPayload? {
-            val type = data["type"] ?: return null
-            val callId = data["callId"] ?: return null
-            val caller = data["caller"] ?: return null
-            val username = data["username"] ?: return null
-            val host = data["host"] ?: return null
-            val hostName = data["hostName"] ?: return null
-            if (type != "incoming_call") return null
+        private val gson = Gson()
 
-            return VoipPayload(callId, caller, username, host, type, hostName)
+        private data class RemoteCaller(
+            @SerializedName("name")
+            val name: String? = null,
+
+            @SerializedName("avatarUrl")
+            val avatarUrl: String? = null,
+        )
+
+        private data class RemoteVoipPayload(
+            @SerializedName("callId")
+            val callId: String? = null,
+
+            @SerializedName("caller")
+            val caller: RemoteCaller? = null,
+
+            @SerializedName("username")
+            val username: String? = null,
+
+            @SerializedName("host")
+            val host: String? = null,
+
+            @SerializedName("type")
+            val type: String? = null,
+
+            @SerializedName("hostName")
+            val hostName: String? = null,
+
+            @SerializedName("notificationType")
+            val notificationType: String? = null,
+        ) {
+            fun toVoipPayload(): VoipPayload? {
+                if (notificationType != "voip") return null
+
+                val payloadType = type ?: return null
+                if (payloadType != "incoming_call") return null
+
+                return VoipPayload(
+                    callId = callId ?: return null,
+                    caller = caller?.name ?: return null,
+                    username = username ?: return null,
+                    host = host ?: return null,
+                    type = payloadType,
+                    hostName = hostName ?: return null,
+                    avatarUrl = caller?.avatarUrl,
+                )
+            }
+        }
+
+        fun fromMap(data: Map<String, String>): VoipPayload? {
+            val payload = parseRemotePayload(data) ?: return null
+            return payload.toVoipPayload()
         }
 
         fun fromBundle(bundle: Bundle?): VoipPayload? {
@@ -81,8 +130,22 @@ data class VoipPayload(
             val host = bundle.getString("host") ?: return null
             val type = bundle.getString("type") ?: return null
             val hostName = bundle.getString("hostName") ?: return null
+            val avatarUrl = bundle.getString("avatarUrl")
 
-            return VoipPayload(callId, caller, username, host, type, hostName)
+            return VoipPayload(callId, caller, username, host, type, hostName, avatarUrl)
+        }
+
+        private fun parseRemotePayload(data: Map<String, String>): RemoteVoipPayload? {
+            val rawPayload = data["ejson"]
+            if (rawPayload.isNullOrBlank() || rawPayload == "{}") {
+                return null
+            }
+
+            return try {
+                gson.fromJson(rawPayload, RemoteVoipPayload::class.java)
+            } catch (_: Exception) {
+                null
+            }
         }
     }
 }
