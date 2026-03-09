@@ -57,6 +57,7 @@ const handleRequest = function* handleRequest({ data }) {
 				...result?.group
 			};
 		}
+		console.log('new channel', sub)
 		try {
 			const db = database.active;
 			const subCollection = db.get('subscriptions');
@@ -64,6 +65,7 @@ const handleRequest = function* handleRequest({ data }) {
 				await subCollection.create((s) => {
 					s._raw = sanitizedRaw({ id: sub.rid }, subCollection.schema);
 					s.id = sub.rid;
+					s._id = sub.rid;
 					s.ts = sub.ts || new Date();
 					s.ls = sub.ls || new Date();
 					s.lr = sub.lr || new Date();

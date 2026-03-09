@@ -130,9 +130,9 @@ export function getCustomEmojis() {
 			}
 
 			// RC 0.75.0
-			const result = await sdk.get('emoji-custom.list', params);
+			const result = await sdk.get('/v1/emoji-custom.list', params);
 
-			if (!result.success) {
+			if (!result) {
 				return resolve();
 			}
 

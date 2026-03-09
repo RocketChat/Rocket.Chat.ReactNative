@@ -111,6 +111,7 @@ export async function hasPermission(permissions, rid?: any): Promise<boolean[]> 
 		const loginUser = reduxStore.getState().login.user;
 		const userRoles = loginUser?.roles || [];
 		const mergedRoles = [...new Set([...roomRoles, ...userRoles])];
+		console.log('channel.edit-1', permissions, mergedRoles);
 		return permissions.map(permission => permission?.some(r => mergedRoles.includes(r) ?? false));
 	} catch (e) {
 		log(e);

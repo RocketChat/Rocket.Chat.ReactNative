@@ -16,7 +16,7 @@ import { type TParams } from '../../definitions/ILivechatEditView';
 import { type ILivechatTag } from '../../definitions/ILivechatTag';
 import { type ISpotlight } from '../../definitions/ISpotlight';
 import { TEAM_TYPE } from '../../definitions/ITeam';
-import { type OperationParams, type ResultFor } from '../../definitions/rest/helpers';
+import { type OperationParams } from '../../definitions/rest/helpers';
 import { type SubscriptionsEndpoints } from '../../definitions/rest/v1/subscriptions';
 import { Encryption } from '../encryption';
 import { type RoomTypes, roomTypeToApiType } from '../methods/roomTypeToApiType';
@@ -71,7 +71,7 @@ export const e2eGetUsersOfRoomWithoutKey = (rid: string) =>
 
 export const e2eSetRoomKeyID = (rid: string, keyID: string) =>
 	// RC 0.70.0
-	sdk.post('/v1/e2e.setRoomKeyID', { rid, keyID });
+	sdk.methodCallWrapper('e2e.setRoomKeyID', rid, keyID);
 
 export const e2eUpdateGroupKey = (uid: string, rid: string, key: string): any =>
 	// RC 0.70.0
@@ -268,7 +268,8 @@ export const joinRoom = (roomId: string, joinCode: string | null, type: 'c' | 'p
 	if (type === 'p') {
 		return sdk.methodCallWrapper('joinRoom', roomId) as Promise<boolean>;
 	}
-	return sdk.post('/v1/channels.join', { roomId, joinCode });
+	const params = { roomId, ...(joinCode && { joinCode }) };
+	return sdk.post('/v1/channels.join', params);
 };
 
 export const deleteMessage = (messageId: string, rid: string) =>
@@ -423,7 +424,7 @@ export const returnLivechat = (rid: string, departmentId?: string): Promise<any>
 	const serverVersion = reduxStore.getState().server.version;
 
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.12.0')) {
-		return sdk.post('livechat/inquiries.returnAsInquiry', { roomId: rid, departmentId });
+		return sdk.post('/v1/livechat/room.returnAsInquiry', { roomId: rid, departmentId });
 	}
 
 	// RC 0.72.0
@@ -517,9 +518,13 @@ export const leaveRoom = (roomId: string, t: RoomTypes) =>
 	// RC 0.48.0
 	sdk.post(`/v1/${roomTypeToApiType(t)}.leave`, { roomId });
 
-export const deleteRoom = (roomId: string, t: RoomTypes) =>
-	// RC 0.49.0
+export const deleteRoom = (roomId: string, t: RoomTypes) => {
+	if (t === 'd') {
+		return sdk.post(`/v1/im.close`, { roomId });
+	}
+
 	sdk.post(`/v1/${roomTypeToApiType(t)}.delete`, { roomId });
+}
 
 export const toggleMuteUserInRoom = (rid: string, username: string, userId: string, mute: boolean) => {
 	const serverVersion = reduxStore.getState().server.version;
