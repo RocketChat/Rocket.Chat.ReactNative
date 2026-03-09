@@ -11,6 +11,8 @@ import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
 // Mock alert
 global.alert = jest.fn();
 
+const mockCallStartTime = 1713340800000;
+
 // Helper to create a mock call
 const createMockCall = (overrides: Record<string, unknown> = {}) => ({
 	state: 'active',
@@ -42,7 +44,7 @@ const setStoreState = (overrides: Partial<ReturnType<typeof useCallStore.getStat
 		isMuted: false,
 		isOnHold: false,
 		isSpeakerOn: false,
-		callStartTime: Date.now(),
+		callStartTime: mockCallStartTime,
 		contact: {
 			id: 'user-1',
 			displayName: 'Bob Burnquist',
@@ -57,6 +59,15 @@ const setStoreState = (overrides: Partial<ReturnType<typeof useCallStore.getStat
 };
 
 const Wrapper = ({ children }: { children: React.ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
+
+beforeAll(() => {
+	jest.useFakeTimers();
+	jest.setSystemTime(mockCallStartTime);
+});
+
+afterAll(() => {
+	jest.useRealTimers();
+});
 
 describe('MediaCallHeader', () => {
 	beforeEach(() => {

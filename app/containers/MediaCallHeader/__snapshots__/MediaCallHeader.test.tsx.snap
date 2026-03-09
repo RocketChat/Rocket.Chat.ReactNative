@@ -229,7 +229,7 @@ exports[`Story Snapshots: ActiveCall should match snapshot 1`] = `
             Bob Burnquist
             <Text>
                - 
-              16524:56:56
+              00:00
             </Text>
           </Text>
         </View>
@@ -576,7 +576,7 @@ exports[`Story Snapshots: Collapsed should match snapshot 1`] = `
             Bob Burnquist
             <Text>
                - 
-              16524:56:56
+              00:00
             </Text>
           </Text>
         </View>
@@ -1266,7 +1266,7 @@ exports[`Story Snapshots: Focused should match snapshot 1`] = `
             Bob Burnquist
             <Text>
                - 
-              16524:56:56
+              00:00
             </Text>
           </Text>
         </View>
@@ -1633,7 +1633,7 @@ exports[`Story Snapshots: WithRemoteHeld should match snapshot 1`] = `
             Bob Burnquist
             <Text>
                - 
-              16524:56:56
+              00:00
             </Text>
           </Text>
         </View>
@@ -1980,7 +1980,7 @@ exports[`Story Snapshots: WithRemoteMuted should match snapshot 1`] = `
             Bob Burnquist
             <Text>
                - 
-              16524:56:56
+              00:00
             </Text>
           </Text>
         </View>
