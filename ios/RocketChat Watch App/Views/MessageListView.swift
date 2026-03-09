@@ -44,70 +44,69 @@ struct MessageListView: View {
                     }
                     Spacer()
                 }
-            } else {
-                ScrollViewReader { proxy in
-                    ChatScrollView {
-                        VStack(spacing: 0) {
-                            if room.hasMoreMessages {
-                                Button("Load more...") {
-                                    guard
-                                        let oldestMessage = room.firstMessage?
-                                            .ts
-                                    else { return }
+            }
+            ScrollViewReader { proxy in
+                ChatScrollView {
+                    VStack(spacing: 0) {
+                        if room.hasMoreMessages {
+                            Button("Load more...") {
+                                guard
+                                    let oldestMessage = room.firstMessage?
+                                        .ts
+                                else { return }
 
-                                    messagesLoader.loadMore(from: oldestMessage)
-                                }
-                                .padding(.bottom, 8)
+                                messagesLoader.loadMore(from: oldestMessage)
                             }
+                            .padding(.bottom, 8)
+                        }
 
-                            ForEach(messages.indices, id: \.self) { index in
-                                let message = messages[index]
-                                let previousMessage =
-                                    messages.indices.contains(index - 1)
-                                    ? messages[index - 1] : nil
+                        ForEach(messages.indices, id: \.self) { index in
+                            let message = messages[index]
+                            let previousMessage =
+                                messages.indices.contains(index - 1)
+                                ? messages[index - 1] : nil
 
-                                MessageView(
-                                    viewModel: .init(
+                            MessageView(
+                                viewModel: .init(
+                                    message: message,
+                                    previousMessage: previousMessage,
+                                    server: server,
+                                    lastOpen: lastOpen
+                                )
+                            ) { action in
+                                switch action {
+                                case .resend(let message):
+                                    messageSender.resendMessage(
                                         message: message,
-                                        previousMessage: previousMessage,
-                                        server: server,
-                                        lastOpen: lastOpen
+                                        in: room
                                     )
-                                ) { action in
-                                    switch action {
-                                    case .resend(let message):
-                                        messageSender.resendMessage(
-                                            message: message,
-                                            in: room
-                                        )
 
-                                        lastOpen = nil
-                                    case .delete(let message):
-                                        database.remove(message)
-                                    }
+                                    lastOpen = nil
+                                case .delete(let message):
+                                    database.remove(message)
                                 }
                             }
-
-                            MessageComposerView(
-                                room: room,
-                                server: server,
-                                anchorID: bottomAnchor
-                            ) {
-                                messageSender.sendMessage($0, in: room)
-
-                                lastOpen = nil
-                            }
-                            .id(messageComposer)
-                            .padding(.top, 8)
                         }
-                        .onAppear {
-                            scrollToBottom(proxy: proxy)
+
+                        MessageComposerView(
+                            room: room,
+                            server: server,
+                            anchorID: bottomAnchor
+                        ) {
+                            messageSender.sendMessage($0, in: room)
+
+                            lastOpen = nil
                         }
-                        .onChange(of: messages.last?.ts) { _ in
-                            // Also scroll to bottom when new messages arrive
-                            withAnimation(.easeOut(duration: 0.3)) {
-                                proxy.scrollTo(bottomAnchor, anchor: .center)
-                            }
+                        .id(messageComposer)
+                        .padding(.top, 8)
+                    }
+                    .onAppear {
+                        scrollToBottom(proxy: proxy)
+                    }
+                    .onChange(of: messages.last?.ts) { _ in
+                        // Also scroll to bottom when new messages arrive
+                        withAnimation(.easeOut(duration: 0.3)) {
+                            proxy.scrollTo(bottomAnchor, anchor: .bottom)
                         }
                     }
                 }
@@ -150,7 +149,7 @@ struct MessageListView: View {
             }
         }
     }
-    
+
     private func scrollToBottom(proxy: ScrollViewProxy) {
         // Small delay ensures layout is complete before scrolling
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
