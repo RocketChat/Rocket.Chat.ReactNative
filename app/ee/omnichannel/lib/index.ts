@@ -14,15 +14,16 @@ export const getInquiriesQueued = (serverVersion: string) => {
 	const url = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')
 		? '/v1/livechat/inquiries.queuedForUser'
 		: '/v1/livechat/inquiries.queued';
-	return sdk.get(url);
+	return sdk.get(url as any);
 };
 
 // this inquiry is added to the db by the subscriptions stream
 // and will be removed by the queue stream
 // RC 2.4.0
+// @ts-ignore
 export const takeInquiry = (inquiryId: string, serverVersion: string) => {
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.11.0')) {
-		return sdk.post('livechat/inquiries.take', { inquiryId });
+		return sdk.post('livechat/inquiries.take' as any, { inquiryId });
 	}
 	// Method removed in 8.0.0
 	return sdk.methodCallWrapper('livechat:takeInquiry', inquiryId);

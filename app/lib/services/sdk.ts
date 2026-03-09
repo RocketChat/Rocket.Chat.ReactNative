@@ -1,6 +1,6 @@
 import EJSON from 'ejson';
 import isEmpty from 'lodash/isEmpty';
-import { ClientStream, DDPSDK } from '@rocket.chat/ddp-client';
+import { type ClientStream, DDPSDK } from '@rocket.chat/ddp-client';
 import { Platform } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
@@ -171,12 +171,67 @@ class Sdk {
 		return this.current?.client.subscribe(...args);
 	}
 
+	subscribeRoom(rid: string): Promise<any[]> {
+		const subscriptions: any[] = [];
+		if (!this.current) {
+			return Promise.resolve(subscriptions);
+		}
+		try {
+			subscriptions.push(this.current.client.subscribe('stream-room-messages', rid));
+			subscriptions.push(this.current.client.subscribe('stream-notify-room', rid, { useCollection: false }));
+			return Promise.resolve(subscriptions);
+		} catch (e) {
+			return Promise.resolve(subscriptions);
+		}
+	}
+
 	onCollection(...args: Parameters<ClientStream['onCollection']>) {
 		return this.current?.client.onCollection(...args);
 	}
 
+	onStreamData(name: string, callback: (...data: any) => void): Promise<{ stop: () => void }> {
+		return new Promise((resolve) => {
+			if (!this.current) {
+				resolve({ stop: () => {} });
+				return;
+			}
+			const listener = this.current.client.onCollection(name, (ddpMessage: any) => {
+				// DDP stream events come in the format: { msg, collection, id, fields: { eventName, args } }
+				if (ddpMessage && ddpMessage.fields) {
+					callback(ddpMessage);
+				}
+			});
+			resolve({ stop: listener });
+		});
+	}
+
 	stream(...args: Parameters<DDPSDK['stream']>) {
 		return this.current?.stream(...args);
+	}
+
+	subscribeRaw(...args: Parameters<ClientStream['subscribe']>) {
+		return this.current?.client.subscribe(...args);
+	}
+
+	get currentLogin() {
+		const user = this.current?.account.user;
+		if (!user) {
+			return { userId: '', authToken: '' };
+		}
+		return {
+			userId: user.id,
+			authToken: user.token || ''
+		};
+	}
+
+	get client() {
+		return this.current?.client;
+	}
+
+	async logout(): Promise<void> {
+		if (this.current?.account) {
+			await this.current.account.logout();
+		}
 	}
 
 	_stream(name: string, data: unknown, cb: (...data: any) => void) {
