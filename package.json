@@ -139,7 +139,8 @@
 	},
 	"resolutions": {
 		"ua-parser-js": "1.0.2",
-		"jpeg-js": "0.4.4"
+		"jpeg-js": "0.4.4",
+		"@rocket.chat/core-typings": "6.13.1"
 	},
 	"devDependencies": {
 		"@babel/core": "~7.25.9",
