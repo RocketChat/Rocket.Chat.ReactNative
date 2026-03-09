@@ -1,3 +1,5 @@
+import type { IPushTokenTypes } from '@rocket.chat/core-typings';
+
 import {
 	type IAvatarSuggestion,
 	type IMessage,
@@ -1007,7 +1009,7 @@ export const registerPushToken = () =>
 	new Promise<void>(async resolve => {
 		const token = getDeviceToken();
 		if (token) {
-			const type = isIOS ? 'apn' : 'gcm';
+			const type: IPushTokenTypes = isIOS ? 'apn' : 'gcm';
 			const data = {
 				value: token,
 				type,
@@ -1015,7 +1017,7 @@ export const registerPushToken = () =>
 			};
 			try {
 				// RC 0.60.0
-				await sdk.post('push.token', data);
+				await sdk.post('/v1/push.token', data);
 			} catch (error) {
 				console.log(error);
 			}
@@ -1103,9 +1105,9 @@ export function getUserInfo(userId: string) {
 	return sdk.get('/v1/users.info', { userId });
 }
 
-export const toggleFavorite = (roomId: string, favorite: boolean) => sdk.post('rooms.favorite', { roomId, favorite });
+export const toggleFavorite = (roomId: string, favorite: boolean) => sdk.post('/v1/rooms.favorite', { roomId, favorite });
 
-export const sendInvitationReply = (roomId: string, action: 'accept' | 'reject') => sdk.post('rooms.invite', { roomId, action });
+export const sendInvitationReply = (roomId: string, action: 'accept' | 'reject') => sdk.post('/v1/rooms.invite', { roomId, action });
 
 export const videoConferenceJoin = (callId: string, cam?: boolean, mic?: boolean) =>
 	sdk.post('/v1/video-conference.join', { callId, state: { cam: !!cam, mic: mic === undefined ? true : mic } });
@@ -1130,7 +1132,7 @@ export const getUsersRoles = async (): Promise<boolean | IRoleUser[]> => {
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.10.0')) {
 		// RC 7.10.0
 		const response = await sdk.get('/v1/roles.getUsersInPublicRoles');
-		if (response.success) {
+		if (response.users) {
 			return response.users;
 		}
 		return false;
