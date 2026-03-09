@@ -7,11 +7,11 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { useTheme } from '../../theme';
-import { isTablet } from '../../lib/methods/helpers';
+import { isIOS, isTablet } from '../../lib/methods/helpers';
 import { Handle } from './Handle';
 import { type TActionSheetOptions } from './Provider';
 import BottomSheetContent from './BottomSheetContent';
-import { useActionSheetDetents } from './useActionSheetDetents';
+import { HANDLE_HEIGHT, useActionSheetDetents } from './useActionSheetDetents';
 import styles from './styles';
 
 export const ACTION_SHEET_ANIMATION_DURATION = 250;
@@ -95,6 +95,15 @@ const ActionSheet = React.memo(
 		const disableContentPanning = data?.enableContentPanningGesture === false;
 		const isScrollable = hasOptions || (hasSnaps && !disableContentPanning);
 
+		const contentMinHeight =
+			data.fullContainer && data.snaps?.length
+				? (() => {
+						const snap = data.snaps[0];
+						const fraction = typeof snap === 'number' ? Math.min(1, Math.max(0.1, snap)) : (parseFloat(String(snap)) || 50) / 100;
+						return Math.max(0, windowHeight * fraction - HANDLE_HEIGHT - bottom);
+				  })()
+				: undefined;
+
 		return (
 			<>
 				{children}
@@ -119,6 +128,7 @@ const ActionSheet = React.memo(
 							hasCancel={data?.hasCancel}
 							onLayout={handleContentLayout}
 							fullContainer={data.fullContainer}
+							contentMinHeight={isIOS ? contentMinHeight : undefined}
 						/>
 					</GestureHandlerRootView>
 				</TrueSheet>

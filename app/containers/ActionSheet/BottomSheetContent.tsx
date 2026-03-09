@@ -1,4 +1,4 @@
-import { FlatList, Text, useWindowDimensions, View, type ViewProps } from 'react-native';
+import { FlatList, Platform, Text, useWindowDimensions, View, type ViewProps } from 'react-native';
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -18,10 +18,11 @@ interface IBottomSheetContentProps {
 	children?: React.ReactElement | null;
 	onLayout: ViewProps['onLayout'];
 	fullContainer?: boolean;
+	contentMinHeight?: number;
 }
 
 const BottomSheetContent = React.memo(
-	({ options, hasCancel, hide, children, onLayout, fullContainer }: IBottomSheetContentProps) => {
+	({ options, hasCancel, hide, children, onLayout, fullContainer, contentMinHeight }: IBottomSheetContentProps) => {
 		'use memo';
 
 		const { colors } = useTheme();
@@ -64,7 +65,19 @@ const BottomSheetContent = React.memo(
 			);
 		}
 		return (
-			<View testID='action-sheet' style={fullContainer ? { width: '100%', height: '100%' } : undefined} onLayout={onLayout}>
+			<View
+				testID='action-sheet'
+				style={
+					fullContainer
+						? {
+								width: '100%',
+								height: '100%',
+								flex: 0,
+								...(Platform.OS === 'ios' && contentMinHeight != null && { minHeight: contentMinHeight })
+						  }
+						: undefined
+				}
+				onLayout={onLayout}>
 				{children}
 			</View>
 		);

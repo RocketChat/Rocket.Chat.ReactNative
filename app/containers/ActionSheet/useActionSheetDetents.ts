@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 
 const ACTION_SHEET_MIN_HEIGHT_FRACTION = 0.35;
 const ACTION_SHEET_MAX_HEIGHT_FRACTION = 0.75;
-const HANDLE_HEIGHT = 28;
+export const HANDLE_HEIGHT = 28;
 const CANCEL_HEIGHT = 64;
 const PADDING_BOTTOM = 22;
 
