@@ -1,3 +1,5 @@
+import { getUniqueId } from 'react-native-device-info';
+
 import {
 	type IAvatarSuggestion,
 	type IMessage,
@@ -23,10 +25,11 @@ import { type RoomTypes, roomTypeToApiType } from '../methods/roomTypeToApiType'
 import { unsubscribeRooms } from '../methods/subscribeRooms';
 import { compareServerVersion, getBundleId, isIOS } from '../methods/helpers';
 import { getDeviceToken } from '../notifications';
+import NativeVoipModule from '../native/NativeVoip';
 import { store as reduxStore } from '../store/auxStore';
 import sdk from './sdk';
 import fetch from '../methods/helpers/fetch';
-import { getVoipPushToken } from './voip/pushTokenAux';
+import log from '../methods/helpers/log';
 
 export const createChannel = ({
 	name,
@@ -999,38 +1002,62 @@ export const editMessage = async (message: Pick<IMessage, 'id' | 'msg' | 'rid' |
 	});
 };
 
-export const registerPushToken = () =>
+let lastToken = '';
+let lastVoipToken = '';
+
+type TRegisterPushTokenData = {
+	id: string;
+	value: string;
+	type: string;
+	appName: string;
+	voipToken?: string;
+};
+export const registerPushToken = (): Promise<void> =>
 	new Promise<void>(async resolve => {
 		const token = getDeviceToken();
+		const voipToken = isIOS ? NativeVoipModule.getLastVoipToken() : '';
+
+		if (token === lastToken && voipToken === lastVoipToken) {
+			return resolve();
+		}
+
+		// TODO: server version
+		if (isIOS && (!token || !voipToken)) {
+			return resolve();
+		}
+
+		let data: TRegisterPushTokenData = {
+			id: '',
+			value: '',
+			type: '',
+			appName: ''
+		};
 		if (token) {
 			const type = isIOS ? 'apn' : 'gcm';
-			const data = {
+			data = {
+				id: await getUniqueId(),
 				value: token,
 				type,
 				appName: getBundleId
 			};
-			try {
-				if (isIOS) {
-					const voipToken = getVoipPushToken();
-					if (voipToken) {
-						// TODO: this is temp only for VoIP push token
-						await sdk.post('push.token', {
-							type: 'gcm',
-							value: voipToken,
-							appName: getBundleId
-						});
-					}
-				}
+		}
+		if (isIOS && voipToken) {
+			data.voipToken = voipToken;
+		}
 
-				// RC 0.60.0
-				await sdk.post('push.token', data);
-			} catch (error) {
-				console.log(error);
-			}
+		try {
+			// RC 0.60.0
+			await sdk.post('push.token', data);
+			console.log('registerPushToken success', data);
+			lastToken = token;
+			lastVoipToken = voipToken;
+		} catch (e) {
+			log(e);
 		}
 		return resolve();
 	});
 
+// TODO: add voip token removal
 export const removePushToken = (): Promise<boolean | void> => {
 	const token = getDeviceToken();
 	if (token) {

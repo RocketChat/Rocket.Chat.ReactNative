@@ -16,13 +16,15 @@ public final class VoipService: NSObject {
     // MARK: - Constants
     
     private static let TAG = "RocketChat.VoipModule"
+    private static let voipTokenStorageKey = "RCVoipPushToken"
+    private static let storage = MMKVBridge.build()
     
     // MARK: - Static Properties
     
     private static var initialEventsData: VoipPayload?
     private static var initialEventsTimestamp: TimeInterval = 0
     private static var isVoipRegistered = false
-    private static var lastVoipToken: String = ""
+    private static var lastVoipToken: String = loadPersistedVoipToken()
     private static var voipRegistry: PKPushRegistry?
     
     // MARK: - Static Methods (Called from VoipModule.mm and AppDelegate)
@@ -64,7 +66,16 @@ public final class VoipService: NSObject {
         
         // Convert token data to hex string
         let token = credentials.token.map { String(format: "%02x", $0) }.joined()
+
+        if lastVoipToken == token {
+            #if DEBUG
+            print("[\(TAG)] VoIP token unchanged")
+            #endif
+            return
+        }
+
         lastVoipToken = token
+        persistVoipToken(token)
         
         #if DEBUG
         print("[\(TAG)] VoIP token: \(token)")
@@ -76,6 +87,18 @@ public final class VoipService: NSObject {
             object: nil,
             userInfo: ["token": token]
         )
+    }
+
+    /// Called from AppDelegate when a previously registered token is invalidated
+    // TODO: remove voip token from all logged in workspaces, since they share the same token
+    @objc
+    public static func invalidatePushToken() {
+        lastVoipToken = ""
+        storage.removeValue(forKey: voipTokenStorageKey)
+
+        #if DEBUG
+        print("[\(TAG)] Invalidated VoIP token")
+        #endif
     }
     
     /// Called from AppDelegate when a VoIP push initial events are received
@@ -144,61 +167,17 @@ public final class VoipService: NSObject {
     /// Returns the last registered VoIP token
     @objc
     public static func getLastVoipToken() -> String {
+        if lastVoipToken.isEmpty {
+            lastVoipToken = loadPersistedVoipToken()
+        }
         return lastVoipToken
     }
-}
 
-// MARK: - VoipPayload
+    private static func loadPersistedVoipToken() -> String {
+        return storage.string(forKey: voipTokenStorageKey) ?? ""
+    }
 
-/// Data structure for initial events payload
-@objc(VoipPayload)
-public class VoipPayload: NSObject {
-    @objc public let callId: String
-    @objc public let caller: String
-    @objc public let host: String
-    @objc public let type: String
-    
-    @objc public var notificationId: Int {
-        return callId.hashValue
-    }
-    
-    @objc
-    public init(callId: String, caller: String, host: String, type: String) {
-        self.callId = callId
-        self.caller = caller
-        self.host = host
-        self.type = type
-        super.init()
-    }
-    
-    @objc
-    public func isVoipIncomingCall() -> Bool {
-        return type == "incoming_call" && !callId.isEmpty && !caller.isEmpty && !host.isEmpty
-    }
-    
-    @objc
-    public func toDictionary() -> [String: Any] {
-        return [
-            "callId": callId,
-            "caller": caller,
-            "host": host,
-            "type": type,
-            "notificationId": notificationId
-        ]
-    }
-    
-    @objc
-    public static func fromDictionary(_ dict: [AnyHashable: Any]) -> VoipPayload? {
-        guard let type = dict["type"] as? String,
-              let callId = dict["callId"] as? String,
-              type == "incoming_call",
-              !callId.isEmpty else {
-            return nil
-        }
-        
-        let caller = dict["caller"] as? String ?? ""
-        let host = dict["host"] as? String ?? ""
-        
-        return VoipPayload(callId: callId, caller: caller, host: host, type: type)
+    private static func persistVoipToken(_ token: String) {
+        storage.setString(token, forKey: voipTokenStorageKey)
     }
 }

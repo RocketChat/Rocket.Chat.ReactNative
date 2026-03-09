@@ -11,6 +11,7 @@
 + (void)voipRegistration;
 + (NSDictionary * _Nullable)getInitialEvents;
 + (void)clearInitialEvents;
++ (NSString * _Nonnull)getLastVoipToken;
 @end
 
 @implementation VoipModule {
@@ -87,6 +88,10 @@ RCT_EXPORT_MODULE()
 
 - (void)clearInitialEvents {
     [VoipService clearInitialEvents];
+}
+
+- (NSString * _Nonnull)getLastVoipToken {
+    return [VoipService getLastVoipToken];
 }
 
 - (void)addListener:(NSString *)eventName {

@@ -101,6 +101,8 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
         clearInitialEventsInternal()
     }
 
+    override fun getLastVoipToken(): String = ""
+
     /**
      * Registers for VoIP push token.
      * No-op on Android - uses FCM for push notifications.

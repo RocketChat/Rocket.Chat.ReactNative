@@ -4,11 +4,11 @@ import { DeviceEventEmitter, NativeEventEmitter } from 'react-native';
 import { isIOS } from '../../methods/helpers';
 import store from '../../store';
 import { voipCallOpen } from '../../../actions/deepLinking';
-import { setVoipPushToken } from './pushTokenAux';
 import { useCallStore } from './useCallStore';
 import { mediaSessionInstance } from './MediaSessionInstance';
 import type { VoipPayload } from '../../../definitions/Voip';
 import NativeVoipModule from '../../native/NativeVoip';
+import { registerPushToken } from '../restApi';
 
 const Emitter = isIOS ? new NativeEventEmitter(NativeVoipModule) : DeviceEventEmitter;
 const platform = isIOS ? 'iOS' : 'Android';
@@ -24,9 +24,11 @@ export const setupMediaCallEvents = (): (() => void) => {
 	// iOS listens for VoIP push token registration and CallKeep events
 	if (isIOS) {
 		subscriptions.push(
-			Emitter.addListener('VoipPushTokenRegistered', (token: string) => {
+			Emitter.addListener('VoipPushTokenRegistered', ({ token }: { token: string }) => {
 				console.log(`${TAG} Registered VoIP push token:`, token);
-				setVoipPushToken(token);
+				registerPushToken().catch(error => {
+					console.log(`${TAG} Failed to register push token after VoIP update:`, error);
+				});
 			})
 		);
 
