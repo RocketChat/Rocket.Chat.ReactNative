@@ -23,13 +23,12 @@ const ActionSheet = React.memo(
 		const { bottom, right, left } = useSafeAreaInsets();
 		const sheetRef = useRef<TrueSheet>(null);
 		const [data, setData] = useState<TActionSheetOptions>({} as TActionSheetOptions);
-		const [isVisible, setVisible] = useState(false);
+		const [isVisible, setIsVisible] = useState(false);
 		const [contentHeight, setContentHeight] = useState(0);
 
 		const itemHeight = 48 * fontScale;
 
 		const handleContentLayout = ({ nativeEvent: { layout } }: LayoutChangeEvent) => {
-			console.log('layout', layout.height);
 			setContentHeight(layout.height);
 		};
 
@@ -39,7 +38,11 @@ const ActionSheet = React.memo(
 
 		const show = (options: TActionSheetOptions) => {
 			setData(options);
-			setVisible(true);
+			setIsVisible(true);
+			// timeout to open after the old one close;
+			setTimeout(() => {
+				sheetRef.current?.present();
+			}, 200);
 		};
 
 		useBackHandler(() => {
@@ -48,12 +51,6 @@ const ActionSheet = React.memo(
 			}
 			return isVisible;
 		});
-
-		useEffect(() => {
-			if (isVisible) {
-				sheetRef.current?.present(0);
-			}
-		}, [isVisible]);
 
 		useEffect(() => {
 			if (isVisible) {
@@ -69,13 +66,13 @@ const ActionSheet = React.memo(
 
 		const renderHeader = () => (
 			<GestureHandlerRootView style={{ flex: 0 }}>
-				<Handle />
+				<Handle onPress={hide} />
 				{isValidElement(data?.customHeader) ? data.customHeader : null}
 			</GestureHandlerRootView>
 		);
 
 		const onDidDismiss = () => {
-			setVisible(false);
+			setIsVisible(false);
 			setContentHeight(0);
 			data?.onClose?.();
 		};
