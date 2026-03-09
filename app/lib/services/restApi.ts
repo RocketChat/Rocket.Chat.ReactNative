@@ -210,9 +210,7 @@ export const removeTeamRoom = ({ roomId, teamId }: { roomId: string; teamId: str
 
 export const leaveTeam = ({ teamId, rooms }: { teamId: string; rooms: string[] }): any =>
 	// RC 3.13.0
-	// TODO: missing definitions from server
-	// @ts-ignore
-	sdk.post('teams.leave', {
+	sdk.post('/v1/teams.leave', {
 		teamId,
 		// RC 4.2.0
 		...(rooms?.length && { rooms })
@@ -233,16 +231,13 @@ export const updateTeamRoom = ({ roomId, isDefault }: { roomId: string; isDefaul
 
 export const deleteTeam = ({ teamId, roomsToRemove }: { teamId: string; roomsToRemove: string[] }): any =>
 	// RC 3.13.0
-	// TODO: missing definitions from server
-	// @ts-ignore
-	sdk.post('teams.delete', { teamId, roomsToRemove });
+	sdk.post('/v1/teams.delete', { teamId, roomsToRemove });
 
 export const teamListRoomsOfUser = ({ teamId, userId }: { teamId: string; userId: string }) =>
 	// RC 3.13.0
 	sdk.get('/v1/teams.listRoomsOfUser', { teamId, userId });
 
 export const convertChannelToTeam = ({ rid, name, type }: { rid: string; name: string; type: 'c' | 'p' }) => {
-	const serverVersion = reduxStore.getState().server.version;
 	let params;
 	if (type === 'c') {
 		// https://github.com/RocketChat/Rocket.Chat/pull/25279
@@ -525,13 +520,13 @@ export const deleteRoom = (roomId: string, t: RoomTypes) => {
 		return sdk.post(`/v1/im.close`, { roomId });
 	}
 
-	sdk.post(`/v1/${roomTypeToApiType(t)}.delete`, { roomId });
+	return sdk.post(`/v1/${roomTypeToApiType(t)}.delete`, { roomId });
 }
 
 export const toggleMuteUserInRoom = (rid: string, username: string, userId: string, mute: boolean) => {
 	const serverVersion = reduxStore.getState().server.version;
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.8.0')) {
-		return sdk.post(mute ? 'rooms.muteUser' : 'rooms.unmuteUser', { roomId: rid, userId });
+		return sdk.post(mute ? '/v1/rooms.muteUser' : '/v1/rooms.unmuteUser', { roomId: rid, userId });
 	}
 	// RC 0.51.0
 	return sdk.methodCallWrapper(mute ? 'muteUserInRoom' : 'unmuteUserInRoom', { rid, username });
@@ -919,21 +914,15 @@ export const translateMessage = (messageId: string, targetLanguage: string) =>
 
 export const findOrCreateInvite = ({ rid, days, maxUses }: { rid: string; days: number; maxUses: number }): any =>
 	// RC 2.4.0
-	// TODO: missing definitions from server
-	// @ts-ignore
-	sdk.post('findOrCreateInvite', { rid, days, maxUses });
+	sdk.post('/v1/findOrCreateInvite', { rid, days, maxUses });
 
 export const validateInviteToken = (token: string): any =>
 	// RC 2.4.0
-	// TODO: missing definitions from server
-	// @ts-ignore
-	sdk.post('validateInviteToken', { token });
+	sdk.post('/v1/validateInviteToken', { token });
 
 export const inviteToken = (token: string): any =>
 	// RC 2.4.0
-	// TODO: missing definitions from server
-	// @ts-ignore
-	sdk.post('useInviteToken', { token });
+	sdk.post('/v1/useInviteToken', { token });
 
 export const readThreads = (tmid: string): Promise<void> => {
 	const serverVersion = reduxStore.getState().server.version;
@@ -981,8 +970,7 @@ export function e2eResetOwnKey(userId: string): Promise<{ success?: boolean }> {
     return Promise.resolve({ success: true });
 }
 
-export function e2eResetRoomKey(rid: string, e2eKey: string, e2eKeyId: string): Promise<boolean | {}> {
-	// RC ?
+export function e2eResetRoomKey(rid: string, e2eKey: string, e2eKeyId: string): Promise<null> {
 	return sdk.post('/v1/e2e.resetRoomKey', { rid, e2eKey, e2eKeyId });
 }
 
@@ -994,7 +982,7 @@ export const editMessage = async (message: Pick<IMessage, 'id' | 'msg' | 'rid' |
 
 	if (result.content) {
 		// RC 0.49.0
-		return sdk.post('chat.update', {
+		return sdk.post('/v1/chat.update', {
 			roomId: message.rid,
 			msgId: message.id,
 			content: result.content
@@ -1002,7 +990,7 @@ export const editMessage = async (message: Pick<IMessage, 'id' | 'msg' | 'rid' |
 	}
 
 	// RC 0.49.0
-	return sdk.post('/v1/chat.update', { roomId: rid, msgId: message.id, text: msg || '' });
+	return sdk.post('/v1/chat.update', { roomId: message.rid, msgId: message.id, text: result.msg || '' });
 };
 
 export const registerPushToken = () =>
