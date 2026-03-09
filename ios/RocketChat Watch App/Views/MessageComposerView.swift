@@ -4,7 +4,7 @@ struct MessageComposerView: View {
     @State private var message = ""
 
     let room: Room
-    let server: Server
+    @ObservedObject var server: Server
     let anchorID: String
     let onSend: (String) -> Void
 

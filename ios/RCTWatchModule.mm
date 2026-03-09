@@ -124,8 +124,7 @@ NSString *mmkvCurrentServerKey = @"currentServer";
                         return message;
                     }
                     
-                    NSString *replies = [array componentsJoinedByString:@", "];
-                    return replies;
+                    return @"SUCCESS";
                 } catch (const std::exception &e) {
                     NSString *message = @"[ERROR]: Watch sync exception";
                     RCTLogError(@"Watch sync exception: %s", e.what());

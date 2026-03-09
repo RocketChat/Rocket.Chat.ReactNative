@@ -228,6 +228,14 @@ const fetchWatchReplies = function* fetchWatchRepliesFork() {
 	try {
 		// we are getting replies from server settings
 		const state = yield select(state => state);
+
+		if (!state.settings?.Apple_Watch_Quick_Actions) {
+			yield delay(1000);
+			const newState = yield select();
+			syncWatchOSQuickRepliesWithServer(newState);
+			return;
+		}
+
 		syncWatchOSQuickRepliesWithServer(state);
 	} catch (e) {
 		log(e);
