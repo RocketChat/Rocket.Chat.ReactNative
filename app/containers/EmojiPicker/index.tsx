@@ -40,7 +40,12 @@ const EmojiPicker = ({
 	);
 
 	const renderScene = ({ route }: { route: Route }) => (
-		<EmojiCategory parentWidth={parentWidth} onEmojiSelected={handleEmojiSelect} category={route.key as any} bottomSheet={bottomSheet} />
+		<EmojiCategory
+			parentWidth={parentWidth}
+			onEmojiSelected={handleEmojiSelect}
+			category={route.key as any}
+			bottomSheet={bottomSheet}
+		/>
 	);
 
 	const renderTabItem = (tab: Route, color: string) => (
