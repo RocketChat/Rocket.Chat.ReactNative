@@ -8,17 +8,19 @@ export const useSubscription = (rid?: string): TSubscriptionModel | undefined =>
 
 	const [subscription, setSubscription] = useState<TSubscriptionModel>();
 	useEffect(() => {
+		let isActive = true;
+
 		const load = async () => {
 			if (!rid) return;
 			const result = await getSubscriptionByRoomId(rid);
-			if (result) {
-				setSubscription(result);
+			if (isActive) {
+				setSubscription(result ?? undefined);
 			}
 		};
 		load();
 
 		return () => {
-			setSubscription(undefined);
+			isActive = false;
 		};
 	}, [rid]);
 
