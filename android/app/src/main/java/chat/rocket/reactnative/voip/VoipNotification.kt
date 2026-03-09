@@ -12,13 +12,18 @@ import android.media.AudioAttributes
 import android.media.RingtoneManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import android.content.ComponentName
 import android.net.Uri
 import android.telecom.PhoneAccount
 import android.telecom.PhoneAccountHandle
 import android.telecom.TelecomManager
+import io.wazo.callkeep.VoiceConnection
+import io.wazo.callkeep.VoiceConnectionService
 import chat.rocket.reactnative.MainActivity
 
 /**
@@ -39,9 +44,13 @@ class VoipNotification(private val context: Context) {
 
         const val ACTION_ACCEPT = "chat.rocket.reactnative.ACTION_VOIP_ACCEPT"
         const val ACTION_DECLINE = "chat.rocket.reactnative.ACTION_VOIP_DECLINE"
+        const val ACTION_TIMEOUT = "chat.rocket.reactnative.ACTION_VOIP_TIMEOUT"
 
         // react-native-callkeep's ConnectionService class name
         private const val CALLKEEP_CONNECTION_SERVICE_CLASS = "io.wazo.callkeep.VoiceConnectionService"
+        private const val DISCONNECT_REASON_MISSED = 6
+        private val timeoutHandler = Handler(Looper.getMainLooper())
+        private val timeoutCallbacks = mutableMapOf<String, Runnable>()
 
         /**
          * Cancels a VoIP notification by ID.
@@ -53,6 +62,55 @@ class VoipNotification(private val context: Context) {
             Log.d(TAG, "VoIP notification cancelled with ID: $notificationId")
         }
 
+        @JvmStatic
+        fun scheduleTimeout(context: Context, payload: VoipPayload) {
+            val delayMs = payload.getRemainingLifetimeMs()
+            if (delayMs == null || delayMs <= 0L) {
+                Log.d(TAG, "Skipping timeout scheduling for expired or invalid call: ${payload.callId}")
+                return
+            }
+
+            cancelTimeout(payload.callId)
+
+            val applicationContext = context.applicationContext
+            val timeoutRunnable = Runnable {
+                synchronized(timeoutCallbacks) {
+                    timeoutCallbacks.remove(payload.callId)
+                }
+                handleTimeout(applicationContext, payload)
+            }
+
+            synchronized(timeoutCallbacks) {
+                timeoutCallbacks[payload.callId] = timeoutRunnable
+            }
+            timeoutHandler.postDelayed(timeoutRunnable, delayMs)
+            Log.d(TAG, "Scheduled VoIP timeout for ${payload.callId} in ${delayMs}ms")
+        }
+
+        @JvmStatic
+        fun cancelTimeout(callId: String) {
+            val timeoutRunnable = synchronized(timeoutCallbacks) {
+                timeoutCallbacks.remove(callId)
+            }
+            if (timeoutRunnable != null) {
+                timeoutHandler.removeCallbacks(timeoutRunnable)
+                Log.d(TAG, "Cancelled VoIP timeout for $callId")
+            }
+        }
+
+        @JvmStatic
+        fun handleTimeout(context: Context, payload: VoipPayload) {
+            cancelTimeout(payload.callId)
+            disconnectTimedOutCall(payload.callId)
+            cancelById(context, payload.notificationId)
+            LocalBroadcastManager.getInstance(context).sendBroadcast(
+                Intent(ACTION_TIMEOUT).apply {
+                    putExtras(payload.toBundle())
+                }
+            )
+            Log.d(TAG, "Timed out incoming VoIP call: ${payload.callId}")
+        }
+
         /**
          * Handles decline action for VoIP call.
          * Logs the decline action and clears stored call data.
@@ -60,7 +118,28 @@ class VoipNotification(private val context: Context) {
         @JvmStatic
         fun handleDeclineAction(context: Context, payload: VoipPayload) {
             Log.d(TAG, "Decline action triggered for callId: ${payload.callId}")
+            cancelTimeout(payload.callId)
+            rejectIncomingCall(payload.callId)
+            cancelById(context, payload.notificationId)
             // TODO: call restapi to decline the call
+        }
+
+        private fun disconnectTimedOutCall(callId: String) {
+            val connection = VoiceConnectionService.getConnection(callId)
+            when (connection) {
+                is VoiceConnection -> connection.reportDisconnect(DISCONNECT_REASON_MISSED)
+                null -> Log.d(TAG, "No active VoiceConnection found for timed out call: $callId")
+                else -> connection.onDisconnect()
+            }
+        }
+
+        private fun rejectIncomingCall(callId: String) {
+            val connection = VoiceConnectionService.getConnection(callId)
+            when (connection) {
+                is VoiceConnection -> connection.onReject()
+                null -> Log.d(TAG, "No active VoiceConnection found for declined call: $callId")
+                else -> connection.onDisconnect()
+            }
         }
     }
 
@@ -119,6 +198,15 @@ class VoipNotification(private val context: Context) {
     fun showIncomingCall(voipPayload: VoipPayload) {
         val callId = voipPayload.callId
         val caller = voipPayload.caller
+        if (voipPayload.getRemainingLifetimeMs() == null) {
+            Log.w(TAG, "Skipping incoming VoIP call without a valid createdAt timestamp - callId: $callId")
+            return
+        }
+
+        if (voipPayload.isExpired()) {
+            Log.d(TAG, "Skipping expired incoming VoIP call - callId: $callId")
+            return
+        }
 
         Log.d(TAG, "Showing incoming VoIP call - callId: $callId, caller: $caller")
 
@@ -128,6 +216,7 @@ class VoipNotification(private val context: Context) {
 
         // Show notification with full-screen intent
         showIncomingCallNotification(voipPayload)
+        scheduleTimeout(context, voipPayload)
     }
 
     /**
@@ -194,6 +283,11 @@ class VoipNotification(private val context: Context) {
     private fun showIncomingCallNotification(voipPayload: VoipPayload) {
         val caller = voipPayload.caller
         val notificationId = voipPayload.notificationId
+        val remainingLifetimeMs = voipPayload.getRemainingLifetimeMs()
+        if (remainingLifetimeMs == null || remainingLifetimeMs <= 0L) {
+            Log.d(TAG, "Skipping notification for expired or invalid call: ${voipPayload.callId}")
+            return
+        }
 
         Log.d(TAG, "Showing incoming call notification for VoIP call from: $caller")
 
@@ -256,6 +350,7 @@ class VoipNotification(private val context: Context) {
             setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             setAutoCancel(false)
             setOngoing(true)
+            setTimeoutAfter(remainingLifetimeMs)
             addAction(0, "Decline", declinePendingIntent)
             addAction(0, "Accept", acceptPendingIntent)
 

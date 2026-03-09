@@ -26,11 +26,15 @@ extension AppDelegate: PKPushRegistryDelegate {
       return
     }
 
-    let callId = voipPayload.callId.lowercased()
+    let callId = voipPayload.callId
     let caller = voipPayload.caller
+    guard !voipPayload.isExpired() else {
+      print("Skipping expired or invalid VoIP payload for callId: \(callId)")
+      completion()
+      return
+    }
 
-    // Store pending call data in our native module
-    VoipService.storeInitialEvents(voipPayload)
+    VoipService.prepareIncomingCall(voipPayload)
 
     RNCallKeep.reportNewIncomingCall(
       callId,

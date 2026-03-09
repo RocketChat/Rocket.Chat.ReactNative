@@ -1,3 +1,4 @@
+import CallKit
 import Foundation
 import PushKit
 
@@ -22,10 +23,10 @@ public final class VoipService: NSObject {
     // MARK: - Static Properties
     
     private static var initialEventsData: VoipPayload?
-    private static var initialEventsTimestamp: TimeInterval = 0
     private static var isVoipRegistered = false
     private static var lastVoipToken: String = loadPersistedVoipToken()
     private static var voipRegistry: PKPushRegistry?
+    private static var incomingCallTimeouts: [String: DispatchWorkItem] = [:]
     
     // MARK: - Static Methods (Called from VoipModule.mm and AppDelegate)
     
@@ -100,35 +101,24 @@ public final class VoipService: NSObject {
         print("[\(TAG)] Invalidated VoIP token")
         #endif
     }
-    
-    /// Called from AppDelegate when a VoIP push initial events are received
-    @objc
-    public static func didReceiveIncomingPush(with payload: PKPushPayload, forType type: String) {
-        #if DEBUG
-        print("[\(TAG)] didReceiveIncomingPush payload: \(payload.dictionaryPayload)")
-        #endif
-        
-        guard let voipPayload = VoipPayload.fromDictionary(payload.dictionaryPayload) else {
-            #if DEBUG
-            print("[\(TAG)] Failed to parse VoIP payload")
-            #endif
-            return
-        }
-        
-        storeInitialEvents(voipPayload)
+
+    public static func prepareIncomingCall(_ payload: VoipPayload) {
+        storeInitialEvents(payload)
+        scheduleIncomingCallTimeout(for: payload)
     }
+
+    // MARK: - Initial Events
     
     /// Stores initial events for JS to retrieve.
     @objc
     public static func storeInitialEvents(_ payload: VoipPayload) {
         initialEventsData = payload
-        initialEventsTimestamp = Date().timeIntervalSince1970
         
         #if DEBUG
         print("[\(TAG)] Stored initial events: \(payload.callId)")
         #endif
     }
-    
+
     /// Gets any initial events. Returns nil if no initial events.
     @objc
     public static func getInitialEvents() -> [String: Any]? {
@@ -136,9 +126,7 @@ public final class VoipService: NSObject {
             return nil
         }
         
-        // Check if data is older than 5 minutes
-        let now = Date().timeIntervalSince1970
-        if now - initialEventsTimestamp > 5 * 60 {
+        if data.isExpired() {
             clearInitialEventsInternal()
             return nil
         }
@@ -158,12 +146,13 @@ public final class VoipService: NSObject {
     /// Clears initial events (internal)
     private static func clearInitialEventsInternal() {
         initialEventsData = nil
-        initialEventsTimestamp = 0
         #if DEBUG
         print("[\(TAG)] Cleared initial events")
         #endif
     }
-    
+
+    // MARK: - VoIP Token
+
     /// Returns the last registered VoIP token
     @objc
     public static func getLastVoipToken() -> String {
@@ -179,5 +168,51 @@ public final class VoipService: NSObject {
 
     private static func persistVoipToken(_ token: String) {
         storage.setString(token, forKey: voipTokenStorageKey)
+    }
+
+    // MARK: - Incoming Call Timeout
+
+    public static func scheduleIncomingCallTimeout(for payload: VoipPayload) {
+        guard let delay = payload.remainingLifetime(), delay > 0 else {
+            #if DEBUG
+            print("[\(TAG)] Skipping incoming call timeout for expired or invalid payload: \(payload.callId)")
+            #endif
+            return
+        }
+
+        cancelIncomingCallTimeout(for: payload.callId)
+
+        let workItem = DispatchWorkItem {
+            handleIncomingCallTimeout(for: payload)
+        }
+
+        incomingCallTimeouts[payload.callId] = workItem
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: workItem)
+
+        #if DEBUG
+        print("[\(TAG)] Scheduled incoming call timeout for \(payload.callId) in \(delay)s")
+        #endif
+    }
+
+    private static func cancelIncomingCallTimeout(for callId: String) {
+        incomingCallTimeouts.removeValue(forKey: callId)?.cancel()
+    }
+
+    private static func handleIncomingCallTimeout(for payload: VoipPayload) {
+        incomingCallTimeouts.removeValue(forKey: payload.callId)
+
+        let callId = payload.callId
+        let callUUID = payload.callUUID
+
+        let callObserver = CXCallObserver()
+        guard let call = callObserver.calls.first(where: { $0.uuid == callUUID }) else {
+            return
+        }
+
+        guard !call.hasConnected, !call.hasEnded else {
+            return
+        }
+
+        RNCallKeep.endCall(withUUID: callId, reason: 3)
     }
 }

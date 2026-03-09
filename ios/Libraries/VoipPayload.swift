@@ -20,6 +20,7 @@ private struct RemoteVoipPayload {
     let type: String?
     let hostName: String?
     let notificationType: String?
+    let createdAt: String?
 
     static func fromDictionary(_ payload: [AnyHashable: Any]) -> RemoteVoipPayload {
         let caller = (payload["caller"] as? [AnyHashable: Any]).map(RemoteCaller.fromDictionary)
@@ -31,7 +32,8 @@ private struct RemoteVoipPayload {
             host: payload["host"] as? String,
             type: payload["type"] as? String,
             hostName: payload["hostName"] as? String,
-            notificationType: payload["notificationType"] as? String
+            notificationType: payload["notificationType"] as? String,
+            createdAt: payload["createdAt"] as? String
         )
     }
 
@@ -42,6 +44,7 @@ private struct RemoteVoipPayload {
 
         guard
             let payloadCallId = callId,
+            let payloadCallUUID = UUID(uuidString: payloadCallId),
             let payloadCaller = caller?.name,
             let payloadUsername = username,
             let payloadHost = host,
@@ -54,12 +57,14 @@ private struct RemoteVoipPayload {
 
         return VoipPayload(
             callId: payloadCallId,
+            callUUID: payloadCallUUID,
             caller: payloadCaller,
             username: payloadUsername,
             host: payloadHost,
             type: payloadType,
             hostName: payloadHostName,
-            avatarUrl: caller?.avatarUrl
+            avatarUrl: caller?.avatarUrl,
+            createdAt: createdAt
         )
     }
 }
@@ -67,27 +72,55 @@ private struct RemoteVoipPayload {
 /// Data structure for initial events payload
 @objc(VoipPayload)
 public class VoipPayload: NSObject {
+    // the amount of time in milliseconds that an incoming call will be kept alive
+    @objc public static let INCOMING_CALL_LIFETIME_SEC: TimeInterval = 60
+
     @objc public let callId: String
+    let callUUID: UUID
     @objc public let caller: String
     @objc public let username: String
     @objc public let host: String
     @objc public let type: String
     @objc public let hostName: String
     @objc public let avatarUrl: String?
+    @objc public let createdAt: String?
+
+    private var createdAtDate: Date? {
+        return Self.parseCreatedAt(createdAt)
+    }
+
+    private var expiresAt: Date? {
+        return createdAtDate?.addingTimeInterval(Self.INCOMING_CALL_LIFETIME_SEC)
+    }
+
+    private static let iso8601FormatterWithFractionalSeconds: ISO8601DateFormatter = {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        return formatter
+    }()
+
+    private static let iso8601Formatter: ISO8601DateFormatter = {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime]
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        return formatter
+    }()
 
     @objc public var notificationId: Int {
         return callId.hashValue
     }
 
-    @objc
-    public init(callId: String, caller: String, username: String, host: String, type: String, hostName: String, avatarUrl: String?) {
+    init(callId: String, callUUID: UUID, caller: String, username: String, host: String, type: String, hostName: String, avatarUrl: String?, createdAt: String?) {
         self.callId = callId
+        self.callUUID = callUUID
         self.caller = caller
         self.username = username
         self.host = host
         self.type = type
         self.hostName = hostName
         self.avatarUrl = avatarUrl
+        self.createdAt = createdAt
         super.init()
     }
 
@@ -106,8 +139,25 @@ public class VoipPayload: NSObject {
             "type": type,
             "hostName": hostName,
             "avatarUrl": avatarUrl ?? NSNull(),
+            "createdAt": createdAt ?? NSNull(),
             "notificationId": notificationId
         ]
+    }
+
+    public func remainingLifetime(now: Date = Date()) -> TimeInterval? {
+        guard let expiresAt else {
+            return nil
+        }
+
+        return max(0, expiresAt.timeIntervalSince(now))
+    }
+
+    public func isExpired(now: Date = Date()) -> Bool {
+        guard let remainingLifetime = remainingLifetime(now: now) else {
+            return true
+        }
+
+        return remainingLifetime <= 0
     }
 
     @objc
@@ -131,5 +181,17 @@ public class VoipPayload: NSObject {
 
     private static func parseRemotePayload(from payload: [AnyHashable: Any]) -> RemoteVoipPayload {
         return RemoteVoipPayload.fromDictionary(payload)
+    }
+
+    private static func parseCreatedAt(_ value: String?) -> Date? {
+        guard let value, !value.isEmpty else {
+            return nil
+        }
+
+        if let parsed = iso8601FormatterWithFractionalSeconds.date(from: value) {
+            return parsed
+        }
+
+        return iso8601Formatter.date(from: value)
     }
 }

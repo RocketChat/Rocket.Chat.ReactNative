@@ -5,6 +5,9 @@ import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.WritableMap
+import java.text.SimpleDateFormat
+import java.util.Locale
+import java.util.TimeZone
 
 data class VoipPayload(
     @SerializedName("callId")
@@ -27,8 +30,16 @@ data class VoipPayload(
 
     @SerializedName("avatarUrl")
     val avatarUrl: String?,
+
+    @SerializedName("createdAt")
+    val createdAt: String?,
 ) {
     val notificationId: Int = callId.hashCode()
+    private val createdAtMs: Long?
+        get() = parseCreatedAtMs(createdAt)
+
+    private val expiresAtMs: Long?
+        get() = createdAtMs?.plus(INCOMING_CALL_LIFETIME_MS)
 
     fun isVoipIncomingCall(): Boolean {
         return type == "incoming_call" && callId.isNotEmpty() && caller.isNotEmpty() && host.isNotEmpty()
@@ -43,6 +54,7 @@ data class VoipPayload(
             putString("type", type)
             putString("hostName", hostName)
             putString("avatarUrl", avatarUrl)
+            putString("createdAt", createdAt)
             putInt("notificationId", notificationId)
             // Useful flag for MainActivity to know it's handling a VoIP action
             putBoolean("voipAction", true)
@@ -58,12 +70,33 @@ data class VoipPayload(
             putString("type", type)
             putString("hostName", hostName)
             putString("avatarUrl", avatarUrl)
+            putString("createdAt", createdAt)
             putInt("notificationId", notificationId)
         }
     }
 
+    fun getRemainingLifetimeMs(): Long? {
+        val expiresAtMs = expiresAtMs ?: return null
+        val nowMs = System.currentTimeMillis()
+        return (expiresAtMs - nowMs).coerceAtLeast(0L)
+    }
+
+    fun isExpired(): Boolean {
+        val remainingLifetimeMs = getRemainingLifetimeMs() ?: return true
+        return remainingLifetimeMs <= 0L
+    }
+
     companion object {
         private val gson = Gson()
+        // the amount of time in milliseconds that an incoming call will be kept alive
+        private const val INCOMING_CALL_LIFETIME_MS = 60_000L
+        private val isoDateFormats = listOf(
+            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX", Locale.US),
+            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX", Locale.US),
+        ).onEach { formatter ->
+            formatter.timeZone = TimeZone.getTimeZone("UTC")
+            formatter.isLenient = false
+        }
 
         private data class RemoteCaller(
             @SerializedName("name")
@@ -94,6 +127,9 @@ data class VoipPayload(
 
             @SerializedName("notificationType")
             val notificationType: String? = null,
+
+            @SerializedName("createdAt")
+            val createdAt: String? = null,
         ) {
             fun toVoipPayload(): VoipPayload? {
                 if (notificationType != "voip") return null
@@ -109,6 +145,7 @@ data class VoipPayload(
                     type = payloadType,
                     hostName = hostName ?: return null,
                     avatarUrl = caller?.avatarUrl,
+                    createdAt = createdAt,
                 )
             }
         }
@@ -127,8 +164,9 @@ data class VoipPayload(
             val type = bundle.getString("type") ?: return null
             val hostName = bundle.getString("hostName") ?: return null
             val avatarUrl = bundle.getString("avatarUrl")
+            val createdAt = bundle.getString("createdAt")
 
-            return VoipPayload(callId, caller, username, host, type, hostName, avatarUrl)
+            return VoipPayload(callId, caller, username, host, type, hostName, avatarUrl, createdAt)
         }
 
         private fun parseRemotePayload(data: Map<String, String>): RemoteVoipPayload? {
@@ -142,6 +180,23 @@ data class VoipPayload(
             } catch (_: Exception) {
                 null
             }
+        }
+
+        private fun parseCreatedAtMs(value: String?): Long? {
+            if (value.isNullOrBlank()) {
+                return null
+            }
+
+            isoDateFormats.forEach { formatter ->
+                synchronized(formatter) {
+                    val parsed = formatter.parse(value)
+                    if (parsed != null) {
+                        return parsed.time
+                    }
+                }
+            }
+
+            return null
         }
     }
 }

@@ -20,7 +20,6 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
 
         private var reactContextRef: WeakReference<ReactApplicationContext>? = null
         private var initialEventsData: VoipPayload? = null
-        private var initialEventsTimestamp: Long = 0
 
         /**
          * Sets the React context reference for event emission.
@@ -55,7 +54,6 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
         @JvmStatic
         fun storeInitialEvents(voipPayload: VoipPayload) {
             initialEventsData = voipPayload
-            initialEventsTimestamp = System.currentTimeMillis()
             emitInitialEventsEvent(voipPayload)
         }
 
@@ -63,7 +61,6 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
         fun clearInitialEventsInternal() {
             try {
                 initialEventsData = null
-                initialEventsTimestamp = 0
                 Log.d(TAG, "Cleared initial events")
             } catch (e: Exception) {
                 Log.e(TAG, "Error clearing initial events", e)
@@ -83,7 +80,8 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
     override fun getInitialEvents(): WritableMap? {
         val data = initialEventsData ?: return null
 
-        if (System.currentTimeMillis() - initialEventsTimestamp > 5 * 60 * 1000) {
+        if (data.isExpired()) {
+            Log.d(TAG, "Discarding expired VoIP initial event: ${data.callId}")
             clearInitialEventsInternal()
             return null
         }
@@ -101,6 +99,7 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
         clearInitialEventsInternal()
     }
 
+    // No-op on Android - FCM handles push notifications
     override fun getLastVoipToken(): String = ""
 
     /**
