@@ -90,6 +90,11 @@ const ActionSheet = React.memo(
 			contentHeight
 		});
 
+		const hasOptions = !!data?.options?.length;
+		const hasSnaps = !!data?.snaps?.length;
+		const disableContentPanning = data?.enableContentPanningGesture === false;
+		const isScrollable = hasOptions || (hasSnaps && !disableContentPanning);
+
 		return (
 			<>
 				{children}
@@ -101,8 +106,9 @@ const ActionSheet = React.memo(
 					cornerRadius={16}
 					dimmed
 					grabber={false}
+					draggable={!disableContentPanning}
 					header={renderHeader()}
-					scrollable={!!data?.options}
+					scrollable={isScrollable}
 					style={[styles.container, bottomSheetStyle]}
 					onDidDismiss={onDidDismiss}>
 					<GestureHandlerRootView style={styles.contentContainer}>
