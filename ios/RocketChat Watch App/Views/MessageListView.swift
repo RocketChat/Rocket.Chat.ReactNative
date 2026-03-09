@@ -103,8 +103,7 @@ struct MessageListView: View {
                     .onAppear {
                         scrollToBottom(proxy: proxy)
                     }
-                    .onChange(of: messages.last?.ts) { _ in
-                        // Also scroll to bottom when new messages arrive
+                    .onChange(of: messages.last?.id) { _ in
                         withAnimation(.easeOut(duration: 0.3)) {
                             proxy.scrollTo(bottomAnchor, anchor: .bottom)
                         }
@@ -152,8 +151,10 @@ struct MessageListView: View {
 
     private func scrollToBottom(proxy: ScrollViewProxy) {
         // Small delay ensures layout is complete before scrolling
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            proxy.scrollTo(bottomAnchor, anchor: .bottom)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            withAnimation(.easeOut(duration: 0.3)) {
+                proxy.scrollTo(bottomAnchor, anchor: .bottom)
+            }
         }
     }
 }
