@@ -305,10 +305,6 @@
 		7A1B58422F5F58FF002A6BDE /* VoipPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1B58402F5F58FF002A6BDE /* VoipPayload.swift */; };
 		7A1B58442F5F63DB002A6BDE /* AppDelegate+Voip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1B58432F5F63DB002A6BDE /* AppDelegate+Voip.swift */; };
 		7A1B58452F5F63DB002A6BDE /* AppDelegate+Voip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1B58432F5F63DB002A6BDE /* AppDelegate+Voip.swift */; };
-		7A3F4C6B2F1AAFA700B6B4BD /* CallIdUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3F4C6A2F1AAFA700B6B4BD /* CallIdUUID.swift */; };
-		7A3F4C6C2F1AAFA700B6B4BD /* CallIdUUID.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A3F4C692F1AAFA700B6B4BD /* CallIdUUID.m */; };
-		7A3F4C6D2F1AAFA700B6B4BD /* CallIdUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3F4C6A2F1AAFA700B6B4BD /* CallIdUUID.swift */; };
-		7A3F4C6E2F1AAFA700B6B4BD /* CallIdUUID.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A3F4C692F1AAFA700B6B4BD /* CallIdUUID.m */; };
 		7A610CD227ECE38100B8ABDD /* custom.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A610CD127ECE38100B8ABDD /* custom.ttf */; };
 		7A610CD427ECE38100B8ABDD /* custom.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A610CD127ECE38100B8ABDD /* custom.ttf */; };
 		7A610CD527ECE38100B8ABDD /* custom.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A610CD127ECE38100B8ABDD /* custom.ttf */; };
@@ -642,8 +638,6 @@
 		7A14FCF3257FEB59005BDCD4 /* Official.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Official.xcassets; sourceTree = "<group>"; };
 		7A1B58402F5F58FF002A6BDE /* VoipPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoipPayload.swift; sourceTree = "<group>"; };
 		7A1B58432F5F63DB002A6BDE /* AppDelegate+Voip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Voip.swift"; sourceTree = "<group>"; };
-		7A3F4C692F1AAFA700B6B4BD /* CallIdUUID.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CallIdUUID.m; sourceTree = "<group>"; };
-		7A3F4C6A2F1AAFA700B6B4BD /* CallIdUUID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallIdUUID.swift; sourceTree = "<group>"; };
 		7A610CD127ECE38100B8ABDD /* custom.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = custom.ttf; sourceTree = "<group>"; };
 		7A8B30742BCD9D3F00146A40 /* SSLPinning.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSLPinning.h; sourceTree = "<group>"; };
 		7A8B30752BCD9D3F00146A40 /* SSLPinning.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SSLPinning.mm; sourceTree = "<group>"; };
@@ -1151,8 +1145,6 @@
 			children = (
 				7A1B58432F5F63DB002A6BDE /* AppDelegate+Voip.swift */,
 				7A1B58402F5F58FF002A6BDE /* VoipPayload.swift */,
-				7A3F4C692F1AAFA700B6B4BD /* CallIdUUID.m */,
-				7A3F4C6A2F1AAFA700B6B4BD /* CallIdUUID.swift */,
 				7A0000042F1BAFA700B6B4BD /* VoipModule.mm */,
 				7A0000032F1BAFA700B6B4BD /* VoipService.swift */,
 				B179038FDD7AAF285047814B /* SecureStorage.h */,
@@ -2067,8 +2059,6 @@
 				1E76CBD825152C870067298C /* Request.swift in Sources */,
 				1E51411C2B85683C007BE94A /* SSLPinning.m in Sources */,
 				66C2701B2EBBCB570062725F /* MMKVKeyManager.mm in Sources */,
-				7A3F4C6B2F1AAFA700B6B4BD /* CallIdUUID.swift in Sources */,
-				7A3F4C6C2F1AAFA700B6B4BD /* CallIdUUID.m in Sources */,
 				7A1B58422F5F58FF002A6BDE /* VoipPayload.swift in Sources */,
 				7A0000012F1BAFA700B6B4BD /* VoipService.swift in Sources */,
 				7A0000022F1BAFA700B6B4BD /* VoipModule.mm in Sources */,
@@ -2347,8 +2337,6 @@
 				7AAB3E16257E6A6E00707CF6 /* Request.swift in Sources */,
 				1E51411D2B85683C007BE94A /* SSLPinning.m in Sources */,
 				66C2701C2EBBCB570062725F /* MMKVKeyManager.mm in Sources */,
-				7A3F4C6D2F1AAFA700B6B4BD /* CallIdUUID.swift in Sources */,
-				7A3F4C6E2F1AAFA700B6B4BD /* CallIdUUID.m in Sources */,
 				7A1B58412F5F58FF002A6BDE /* VoipPayload.swift in Sources */,
 				7A0000052F1BAFA700B6B4BD /* VoipService.swift in Sources */,
 				7A0000062F1BAFA700B6B4BD /* VoipModule.mm in Sources */,

@@ -75,9 +75,6 @@ class MediaSessionInstance {
 					return;
 				}
 
-				// const callUUID = CallIdUUIDModule.toUUID(call.callId);
-				// console.log('[VoIP] New call UUID:', callUUID);
-
 				if (call.role === 'caller') {
 					useCallStore.getState().setCall(call);
 					Navigation.navigate('CallView');
