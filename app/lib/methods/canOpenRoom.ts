@@ -17,7 +17,7 @@ async function open({ type, rid, name }: { type: ERoomTypes; rid: string; name: 
 		// if the dm already exists it'll return the existent
 		if (type === ERoomTypes.DIRECT && !rid) {
 			const result = await createDirectMessage(name);
-			if (result.success) {
+			if (result.room) {
 				const { room } = result;
 				return {
 					...room,
@@ -30,8 +30,7 @@ async function open({ type, rid, name }: { type: ERoomTypes; rid: string; name: 
 		if (type === ERoomTypes.GROUP) {
 			try {
 				// RC 0.61.0
-				// @ts-ignore
-				await sdk.post(`${restTypes[type]}.open`, params);
+				await sdk.post(`/v1/groups.open`, params);
 			} catch (e: any) {
 				if (!(e.data && /is already open/.test(e.data.error))) {
 					return false;
@@ -43,8 +42,7 @@ async function open({ type, rid, name }: { type: ERoomTypes; rid: string; name: 
 		// we'll get info from the room
 		if ((type === ERoomTypes.CHANNEL || type === ERoomTypes.GROUP) && !rid) {
 			// RC 0.72.0
-			// @ts-ignore
-			const result: any = await sdk.get(`${restTypes[type]}.info`, params);
+			const result: any = await sdk.get(`/v1/${restTypes[type]}.info`, params);
 			if (result.success) {
 				const room = result[type];
 				room.rid = room._id;
