@@ -55,15 +55,14 @@ export const setupMediaCallEvents = (): (() => void) => {
 					}
 					console.log(`${TAG} Initial events event:`, data);
 					NativeVoipModule.clearInitialEvents();
-					useCallStore.getState().setCallUUID(data.callUUID);
+					useCallStore.getState().setCallId(data.callId);
 					store.dispatch(
 						voipCallOpen({
 							callId: data.callId,
-							callUUID: data.callUUID,
 							host: data.host
 						})
 					);
-					await mediaSessionInstance.answerCall(data.callUUID);
+					await mediaSessionInstance.answerCall(data.callId);
 				} catch (error) {
 					console.error(`${TAG} Error handling initial events event:`, error);
 				}
@@ -110,7 +109,7 @@ export const getInitialMediaCallEvents = async (): Promise<boolean> => {
 				const { name, data } = event;
 				if (name === 'RNCallKeepPerformAnswerCallAction') {
 					const { callUUID } = data;
-					if (initialEvents.callUUID.toLowerCase() === callUUID.toLowerCase()) {
+					if (initialEvents.callId.toLowerCase() === callUUID.toLowerCase()) {
 						wasAnswered = true;
 						console.log(`${TAG} Call was already answered via CallKit`);
 						break;
@@ -123,12 +122,11 @@ export const getInitialMediaCallEvents = async (): Promise<boolean> => {
 		}
 
 		if (wasAnswered) {
-			useCallStore.getState().setCallUUID(initialEvents.callUUID);
+			useCallStore.getState().setCallId(initialEvents.callId);
 
 			store.dispatch(
 				voipCallOpen({
 					callId: initialEvents.callId,
-					callUUID: initialEvents.callUUID,
 					host: initialEvents.host
 				})
 			);

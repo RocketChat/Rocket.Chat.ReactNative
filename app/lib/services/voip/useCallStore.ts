@@ -9,7 +9,7 @@ import { hideActionSheetRef } from '../../../containers/ActionSheet';
 interface CallStoreState {
 	// Call reference
 	call: IClientMediaCall | null;
-	callUUID: string | null;
+	callId: string | null;
 
 	// Call state
 	callState: CallState;
@@ -27,8 +27,8 @@ interface CallStoreState {
 }
 
 interface CallStoreActions {
-	setCallUUID: (callUUID: string | null) => void;
-	setCall: (call: IClientMediaCall, callUUID: string) => void;
+	setCallId: (callId: string | null) => void;
+	setCall: (call: IClientMediaCall) => void;
 	toggleMute: () => void;
 	toggleHold: () => void;
 	toggleSpeaker: () => void;
@@ -42,7 +42,7 @@ export type CallStore = CallStoreState & CallStoreActions;
 
 const initialState: CallStoreState = {
 	call: null,
-	callUUID: null,
+	callId: null,
 	callState: 'none',
 	isMuted: false,
 	isOnHold: false,
@@ -58,15 +58,15 @@ const initialState: CallStoreState = {
 export const useCallStore = create<CallStore>((set, get) => ({
 	...initialState,
 
-	setCallUUID: (callUUID: string | null) => {
-		set({ callUUID });
+	setCallId: (callId: string | null) => {
+		set({ callId });
 	},
 
-	setCall: (call: IClientMediaCall, callUUID: string) => {
+	setCall: (call: IClientMediaCall) => {
 		// Update state with call info
 		set({
 			call,
-			callUUID,
+			callId: call.callId,
 			callState: call.state,
 			isMuted: call.muted,
 			isOnHold: call.held,
@@ -140,8 +140,8 @@ export const useCallStore = create<CallStore>((set, get) => ({
 	},
 
 	toggleSpeaker: async () => {
-		const { callUUID, isSpeakerOn } = get();
-		if (!callUUID) return;
+		const { callId, isSpeakerOn } = get();
+		if (!callId) return;
 
 		const newSpeakerOn = !isSpeakerOn;
 
@@ -159,7 +159,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		if (isFocused) {
 			Navigation.back();
 		} else {
-			Navigation.navigate('CallView', { callUUID: get().callUUID });
+			Navigation.navigate('CallView');
 		}
 	},
 
@@ -173,14 +173,14 @@ export const useCallStore = create<CallStore>((set, get) => ({
 	},
 
 	endCall: () => {
-		const { call, callUUID } = get();
+		const { call, callId } = get();
 
 		if (call) {
 			call.hangup();
 		}
 
-		if (callUUID) {
-			RNCallKeep.endCall(callUUID);
+		if (callId) {
+			RNCallKeep.endCall(callId);
 		}
 
 		// Navigation.back(); // TODO: It could be collapsed, so going back woudln't make sense

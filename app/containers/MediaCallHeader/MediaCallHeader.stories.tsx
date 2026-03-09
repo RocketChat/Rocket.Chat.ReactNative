@@ -35,7 +35,6 @@ const setStoreState = (overrides: Partial<ReturnType<typeof useCallStore.getStat
 
 	useCallStore.setState({
 		call: mockCall,
-		callUUID: 'test-uuid',
 		callState: 'active',
 		isMuted: false,
 		isOnHold: false,

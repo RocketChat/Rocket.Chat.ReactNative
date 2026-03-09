@@ -12,6 +12,5 @@ export interface VoipPayload {
 	readonly hostName: string;
 	readonly type: string;
 	readonly avatarUrl?: string | null;
-	readonly callUUID: string;
 	readonly notificationId: number;
 }

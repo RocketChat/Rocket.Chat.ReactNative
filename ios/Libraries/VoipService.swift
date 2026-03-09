@@ -162,10 +162,6 @@ public class VoipPayload: NSObject {
         return callId.hashValue
     }
     
-    @objc public var callUUID: String {
-        return CallIdUUID.generateUUIDv5(from: callId)
-    }
-    
     @objc
     public init(callId: String, caller: String, host: String, type: String) {
         self.callId = callId
@@ -187,7 +183,6 @@ public class VoipPayload: NSObject {
             "caller": caller,
             "host": host,
             "type": type,
-            "callUUID": callUUID,
             "notificationId": notificationId
         ]
     }

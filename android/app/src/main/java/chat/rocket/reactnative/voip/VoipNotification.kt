@@ -59,7 +59,7 @@ class VoipNotification(private val context: Context) {
          */
         @JvmStatic
         fun handleDeclineAction(context: Context, payload: VoipPayload) {
-            Log.d(TAG, "Decline action triggered for callUUID: ${payload.callUUID}")
+            Log.d(TAG, "Decline action triggered for callId: ${payload.callId}")
             // TODO: call restapi to decline the call
         }
     }
@@ -119,13 +119,12 @@ class VoipNotification(private val context: Context) {
     fun showIncomingCall(voipPayload: VoipPayload) {
         val callId = voipPayload.callId
         val caller = voipPayload.caller
-        val callUUID = voipPayload.callUUID
 
-        Log.d(TAG, "Showing incoming VoIP call - callId: $callId, callUUID: $callUUID, caller: $caller")
+        Log.d(TAG, "Showing incoming VoIP call - callId: $callId, caller: $caller")
 
         // CRITICAL: Register call with TelecomManager FIRST (required for audio focus, Bluetooth, priority, FSI exemption)
         // This triggers react-native-callkeep's ConnectionService
-        registerCallWithTelecomManager(callUUID, caller)
+        registerCallWithTelecomManager(callId, caller)
 
         // Show notification with full-screen intent
         showIncomingCallNotification(voipPayload)
@@ -139,11 +138,11 @@ class VoipNotification(private val context: Context) {
      * 3. Higher process priority
      * 4. FSI exemption on Play Store
      */
-    private fun registerCallWithTelecomManager(callUUID: String, caller: String) {
+    private fun registerCallWithTelecomManager(callId: String, caller: String) {
         try {
             // Validate inputs
-            if (callUUID.isNullOrEmpty() || caller.isNullOrEmpty()) {
-                Log.e(TAG, "Cannot register call with TelecomManager: callUUID is null or empty")
+            if (callId.isNullOrEmpty() || caller.isNullOrEmpty()) {
+                Log.e(TAG, "Cannot register call with TelecomManager: callId is null or empty")
                 return
             }
 
@@ -169,19 +168,17 @@ class VoipNotification(private val context: Context) {
             val extras = Bundle().apply {
                 val callerUri = Uri.fromParts(PhoneAccount.SCHEME_TEL, caller, null)
                 putParcelable(TelecomManager.EXTRA_INCOMING_CALL_ADDRESS, callerUri)
-                putString("EXTRA_CALL_UUID", callUUID)
+                putString("EXTRA_CALL_UUID", callId)
                 putString("EXTRA_CALLER_NAME", caller)
-                // Legacy keys for backward compatibility
-                putString("callUUID", callUUID)
                 putString("name", caller)
                 putString("handle", caller)
             }
 
-            Log.d(TAG, "Registering call with TelecomManager - callUUID: $callUUID, caller: $caller, extras keys: ${extras.keySet()}")
+            Log.d(TAG, "Registering call with TelecomManager - callId: $callId, caller: $caller, extras keys: ${extras.keySet()}")
 
             // Register the incoming call with the OS
             telecomManager.addNewIncomingCall(phoneAccountHandle, extras)
-            Log.d(TAG, "Successfully registered incoming call with TelecomManager: $callUUID")
+            Log.d(TAG, "Successfully registered incoming call with TelecomManager: $callId")
         } catch (e: SecurityException) {
             Log.e(TAG, "SecurityException registering call with TelecomManager. MANAGE_OWN_CALLS permission may be missing.", e)
         } catch (e: Exception) {

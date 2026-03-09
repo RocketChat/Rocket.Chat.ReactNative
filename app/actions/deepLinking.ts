@@ -18,7 +18,6 @@ interface IDeepLinkingOpen extends Action {
 
 interface IVoipCallParams {
 	callId: string;
-	callUUID: string;
 	host: string;
 }
 

@@ -67,43 +67,43 @@ class MediaSessionInstance {
 					console.log(`📊 ${oldState} → ${call.state}`);
 				});
 
-				const existingCallUUID = useCallStore.getState().callUUID;
-				console.log('[VoIP] Existing call UUID:', existingCallUUID);
+				const existingCallId = useCallStore.getState().callId;
+				console.log('[VoIP] Existing call Id:', existingCallId);
 				// // TODO: need to answer the call here?
-				if (existingCallUUID) {
-					this.answerCall(existingCallUUID);
+				if (existingCallId) {
+					this.answerCall(existingCallId);
 					return;
 				}
 
-				const callUUID = CallIdUUIDModule.toUUID(call.callId);
-				console.log('[VoIP] New call UUID:', callUUID);
+				// const callUUID = CallIdUUIDModule.toUUID(call.callId);
+				// console.log('[VoIP] New call UUID:', callUUID);
 
 				if (call.role === 'caller') {
-					useCallStore.getState().setCall(call, callUUID);
-					Navigation.navigate('CallView', { callUUID });
+					useCallStore.getState().setCall(call);
+					Navigation.navigate('CallView');
 				}
 
 				call.emitter.on('ended', () => {
-					RNCallKeep.endCall(callUUID);
+					RNCallKeep.endCall(call.callId);
 				});
 			}
 		});
 	}
 
-	public answerCall = async (callUUID: string) => {
-		console.log('[VoIP] Answering call:', callUUID);
+	public answerCall = async (callId: string) => {
+		console.log('[VoIP] Answering call:', callId);
 		const mainCall = this.instance?.getMainCall();
 		console.log('[VoIP] Main call:', mainCall);
 		// Compare using deterministic UUID conversion
-		if (mainCall && CallIdUUIDModule.toUUID(mainCall.callId) === callUUID) {
-			console.log('[VoIP] Accepting call:', callUUID);
+		if (mainCall && mainCall.callId === callId) {
+			console.log('[VoIP] Accepting call:', callId);
 			await mainCall.accept();
-			console.log('[VoIP] Setting current call active:', callUUID);
-			RNCallKeep.setCurrentCallActive(callUUID);
-			useCallStore.getState().setCall(mainCall, callUUID);
-			Navigation.navigate('CallView', { callUUID });
+			console.log('[VoIP] Setting current call active:', callId);
+			RNCallKeep.setCurrentCallActive(callId);
+			useCallStore.getState().setCall(mainCall);
+			Navigation.navigate('CallView');
 		} else {
-			RNCallKeep.endCall(callUUID);
+			RNCallKeep.endCall(callId);
 			alert('Call not found'); // TODO: Show error message?
 		}
 	};
@@ -120,17 +120,17 @@ class MediaSessionInstance {
 		this.instance?.startCall(actor, userId);
 	};
 
-	public endCall = (callUUID: string) => {
+	public endCall = (callId: string) => {
 		const mainCall = this.instance?.getMainCall();
 		// Compare using deterministic UUID conversion
-		if (mainCall && CallIdUUIDModule.toUUID(mainCall.callId) === callUUID) {
+		if (mainCall && mainCall.callId === callId) {
 			if (mainCall.state === 'ringing') {
 				mainCall.reject();
 			} else {
 				mainCall.hangup();
 			}
 		}
-		RNCallKeep.endCall(callUUID);
+		RNCallKeep.endCall(callId);
 		RNCallKeep.setCurrentCallActive('');
 		RNCallKeep.setAvailable(true);
 		// Reset Zustand store

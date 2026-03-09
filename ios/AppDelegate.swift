@@ -119,15 +119,12 @@ extension AppDelegate: PKPushRegistryDelegate {
       completion()
       return
     }
-    
-    // Convert callId to deterministic UUID v5 for CallKit
-    let callIdUUID = CallIdUUID.generateUUIDv5(from: callId)
 
     // Store pending call data in our native module
     VoipService.didReceiveIncomingPush(with: payload, forType: type.rawValue)
 
     RNCallKeep.reportNewIncomingCall(
-      callIdUUID,
+      callId,
       handle: caller,
       handleType: "generic",
       hasVideo: true,

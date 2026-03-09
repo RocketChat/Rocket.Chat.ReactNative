@@ -74,7 +74,7 @@ class IncomingCallActivity : Activity() {
         }
         this.voipPayload = voipPayload
 
-        Log.d(TAG, "IncomingCallActivity created - callUUID: ${voipPayload.callUUID}, caller: ${voipPayload.caller}")
+        Log.d(TAG, "IncomingCallActivity created - callId: ${voipPayload.callId}, caller: ${voipPayload.caller}")
 
         updateUI(voipPayload)
         startRingtone()
@@ -229,7 +229,7 @@ class IncomingCallActivity : Activity() {
     }
 
     private fun handleAccept(payload: VoipPayload) {
-        Log.d(TAG, "Call accepted - callUUID: ${payload.callUUID}")
+        Log.d(TAG, "Call accepted - callId: ${payload.callId}")
         stopRingtone()
 
         // Launch MainActivity with call data
@@ -243,7 +243,7 @@ class IncomingCallActivity : Activity() {
     }
 
     private fun handleDecline(payload: VoipPayload) {
-        Log.d(TAG, "Call declined - callUUID: ${payload.callUUID}")
+        Log.d(TAG, "Call declined - callId: ${payload.callId}")
         stopRingtone()
 
         VoipNotification.cancelById(this, payload.notificationId)

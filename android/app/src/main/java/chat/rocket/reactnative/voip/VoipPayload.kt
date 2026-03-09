@@ -5,7 +5,6 @@ import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.WritableMap
-import chat.rocket.reactnative.utils.CallIdUUID
 
 data class VoipPayload(
     @SerializedName("callId")
@@ -30,7 +29,6 @@ data class VoipPayload(
     val avatarUrl: String?,
 ) {
     val notificationId: Int = callId.hashCode()
-    val callUUID: String = CallIdUUID.generateUUIDv5(callId)
 
     fun isVoipIncomingCall(): Boolean {
         return type == "incoming_call" && callId.isNotEmpty() && caller.isNotEmpty() && host.isNotEmpty()
@@ -45,7 +43,6 @@ data class VoipPayload(
             putString("type", type)
             putString("hostName", hostName)
             putString("avatarUrl", avatarUrl)
-            putString("callUUID", callUUID)
             putInt("notificationId", notificationId)
             // Useful flag for MainActivity to know it's handling a VoIP action
             putBoolean("voipAction", true)
@@ -61,7 +58,6 @@ data class VoipPayload(
             putString("type", type)
             putString("hostName", hostName)
             putString("avatarUrl", avatarUrl)
-            putString("callUUID", callUUID)
             putInt("notificationId", notificationId)
         }
     }
