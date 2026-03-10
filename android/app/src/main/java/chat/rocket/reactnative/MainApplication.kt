@@ -22,9 +22,8 @@ import chat.rocket.reactnative.notification.VideoConfTurboPackage
 import chat.rocket.reactnative.notification.PushNotificationTurboPackage
 import chat.rocket.reactnative.notification.CustomPushNotification
 import chat.rocket.reactnative.scroll.InvertedScrollPackage
-import androidx.lifecycle.ProcessLifecycleOwner
-import androidx.lifecycle.DefaultLifecycleObserver
-import androidx.lifecycle.LifecycleOwner
+import android.app.Activity
+import android.os.Bundle
 
 /**
  * Main Application class.
@@ -40,17 +39,32 @@ import androidx.lifecycle.LifecycleOwner
  */
 open class MainApplication : Application(), ReactApplication {
 
-  // ProcessLifecycleOwner observer for app foreground/background state tracking
-  private val lifecycleObserver = object : DefaultLifecycleObserver {
-    override fun onStart(owner: LifecycleOwner) {
-      // App is in foreground
-      CustomPushNotification.setAppInForeground(true)
+  // Track active activity count for immediate foreground/background detection
+  private var activeActivityCount = 0
+
+  // ActivityLifecycleCallbacks for immediate app state tracking
+  private val activityLifecycleCallbacks = object : Application.ActivityLifecycleCallbacks {
+    override fun onActivityStarted(activity: Activity) {
+      activeActivityCount++
+      if (activeActivityCount == 1) {
+        // App moved from background to foreground
+        CustomPushNotification.setAppInForeground(true)
+      }
     }
 
-    override fun onStop(owner: LifecycleOwner) {
-      // App is in background
-      CustomPushNotification.setAppInForeground(false)
+    override fun onActivityStopped(activity: Activity) {
+      activeActivityCount--
+      if (activeActivityCount == 0) {
+        // App moved from foreground to background
+        CustomPushNotification.setAppInForeground(false)
+      }
     }
+
+    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {}
+    override fun onActivityResumed(activity: Activity) {}
+    override fun onActivityPaused(activity: Activity) {}
+    override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
+    override fun onActivityDestroyed(activity: Activity) {}
   }
 
   override val reactNativeHost: ReactNativeHost =
@@ -85,8 +99,8 @@ open class MainApplication : Application(), ReactApplication {
     // Must run before React Native starts to avoid race conditions
     MMKVKeyManager.initialize(this)
 
-    // Register ProcessLifecycleOwner observer for app-level foreground/background tracking
-    ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleObserver)
+    // Register ActivityLifecycleCallbacks for immediate foreground/background detection
+    registerActivityLifecycleCallbacks(activityLifecycleCallbacks)
 
     // Load the native entry point for the New Architecture
     load()

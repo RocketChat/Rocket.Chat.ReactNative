@@ -152,9 +152,6 @@ dependencies {
     
     // For SecureKeystore (EncryptedSharedPreferences)
     implementation 'androidx.security:security-crypto:1.1.0'
-
-    // For ProcessLifecycleOwner (app foreground/background tracking)
-    implementation "androidx.lifecycle:lifecycle-process:2.6.2"
 }
 
 apply plugin: 'com.google.gms.google-services'
