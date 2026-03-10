@@ -17,6 +17,8 @@ import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.ProcessLifecycleOwner;
 
 import com.google.gson.Gson;
 
@@ -44,9 +46,6 @@ public class CustomPushNotification {
     // Shared state
     private static final Gson gson = new Gson();
     private static final Map<String, List<Bundle>> notificationMessages = new ConcurrentHashMap<>();
-
-    // Track app foreground state
-    private static volatile boolean isAppInForeground = false;
     
     // Constants
     public static final String KEY_REPLY = "KEY_REPLY";
@@ -73,20 +72,11 @@ public class CustomPushNotification {
     }
 
     /**
-     * Sets the app foreground state. Should be called from MainApplication's lifecycle callbacks.
-     */
-    public static void setAppInForeground(boolean inForeground) {
-        isAppInForeground = inForeground;
-        if (ENABLE_VERBOSE_LOGS) {
-            Log.d(TAG, "App foreground state changed to: " + (inForeground ? "FOREGROUND" : "BACKGROUND"));
-        }
-    }
-
-    /**
      * Checks if the app is currently in the foreground.
+     * Uses ProcessLifecycleOwner to reliably detect app state.
      */
     public static boolean isAppInForeground() {
-        return isAppInForeground;
+        return ProcessLifecycleOwner.get().getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED);
     }
     
     public void onReceived() {

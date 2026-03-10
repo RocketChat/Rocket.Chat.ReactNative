@@ -20,9 +20,7 @@ import chat.rocket.reactnative.storage.MMKVKeyManager;
 import chat.rocket.reactnative.storage.SecureStoragePackage;
 import chat.rocket.reactnative.notification.VideoConfTurboPackage
 import chat.rocket.reactnative.notification.PushNotificationTurboPackage
-import chat.rocket.reactnative.notification.CustomPushNotification
 import chat.rocket.reactnative.scroll.InvertedScrollPackage
-import android.app.Activity
 import android.os.Bundle
 
 /**
@@ -38,34 +36,6 @@ import android.os.Bundle
  *   - Message-id-only notification loading
  */
 open class MainApplication : Application(), ReactApplication {
-
-  // Track active activity count for immediate foreground/background detection
-  private var activeActivityCount = 0
-
-  // ActivityLifecycleCallbacks for immediate app state tracking
-  private val activityLifecycleCallbacks = object : Application.ActivityLifecycleCallbacks {
-    override fun onActivityResumed(activity: Activity) {
-      activeActivityCount++
-      if (activeActivityCount == 1) {
-        // App moved from background to foreground
-        CustomPushNotification.setAppInForeground(true)
-      }
-    }
-
-    override fun onActivityPaused(activity: Activity) {
-      activeActivityCount--
-      if (activeActivityCount == 0) {
-        // App moved from foreground to background
-        CustomPushNotification.setAppInForeground(false)
-      }
-    }
-
-    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {}
-    override fun onActivityStarted(activity: Activity) {}
-    override fun onActivityStopped(activity: Activity) {}
-    override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
-    override fun onActivityDestroyed(activity: Activity) {}
-  }
 
   override val reactNativeHost: ReactNativeHost =
       object : DefaultReactNativeHost(this) {
@@ -98,9 +68,6 @@ open class MainApplication : Application(), ReactApplication {
     // Initialize MMKV encryption - reads existing key or generates new one
     // Must run before React Native starts to avoid race conditions
     MMKVKeyManager.initialize(this)
-
-    // Register ActivityLifecycleCallbacks for immediate foreground/background detection
-    registerActivityLifecycleCallbacks(activityLifecycleCallbacks)
 
     // Load the native entry point for the New Architecture
     load()
