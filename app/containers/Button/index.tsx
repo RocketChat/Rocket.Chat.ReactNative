@@ -1,15 +1,12 @@
 import React from 'react';
 import { type StyleProp, StyleSheet, Text, type TextStyle, type ViewStyle } from 'react-native';
-import Touchable, { type PlatformTouchableProps } from 'react-native-platform-touchable';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import { runOnJS } from 'react-native-reanimated';
+import { Pressable, type PressableProps } from 'react-native-gesture-handler';
 
 import { useTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';
 import ActivityIndicator from '../ActivityIndicator';
 
-// @ts-ignore
-interface IButtonProps extends PlatformTouchableProps {
+interface IButtonProps extends PressableProps {
 	title: string;
 	onPress: () => void;
 	type?: 'primary' | 'secondary';
@@ -92,30 +89,17 @@ const Button: React.FC<IButtonProps> = ({
 		styleText
 	];
 
-	const touchable = (
-		<Touchable
-			onPress={useGestureHandlerTouchable ? undefined : onPress}
+	return (
+		<Pressable
+			onPress={onPress}
 			disabled={isDisabled}
-			// @ts-ignore
 			style={containerStyle}
 			accessibilityLabel={title}
 			accessibilityRole='button'
 			{...otherProps}>
 			{loading ? <ActivityIndicator color={resolvedTextColor} style={{ padding: 0 }} /> : <Text style={textStyle}>{title}</Text>}
-		</Touchable>
+		</Pressable>
 	);
-
-	if (useGestureHandlerTouchable) {
-		const firePress = () => {
-			if (!isDisabled) onPress();
-		};
-		const tap = Gesture.Tap().onStart(() => {
-			runOnJS(firePress)();
-		});
-		return <GestureDetector gesture={tap}>{touchable}</GestureDetector>;
-	}
-
-	return touchable;
 };
 
 export default Button;

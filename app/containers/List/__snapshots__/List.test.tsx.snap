@@ -807,7 +807,7 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
         {
           "busy": undefined,
           "checked": undefined,
-          "disabled": true,
+          "disabled": false,
           "expanded": undefined,
           "selected": undefined,
         }
@@ -821,7 +821,7 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
         }
       }
       accessible={true}
-      focusable={false}
+      focusable={true}
       onClick={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -2510,7 +2510,7 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
             {
               "busy": undefined,
               "checked": undefined,
-              "disabled": true,
+              "disabled": false,
               "expanded": undefined,
               "selected": undefined,
             }
@@ -2524,7 +2524,7 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
             }
           }
           accessible={true}
-          focusable={false}
+          focusable={true}
           onClick={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
@@ -2669,7 +2669,7 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
             {
               "busy": undefined,
               "checked": undefined,
-              "disabled": true,
+              "disabled": false,
               "expanded": undefined,
               "selected": undefined,
             }
@@ -2683,7 +2683,7 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
             }
           }
           accessible={true}
-          focusable={false}
+          focusable={true}
           onClick={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
@@ -2870,7 +2870,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
             {
               "busy": undefined,
               "checked": undefined,
-              "disabled": true,
+              "disabled": false,
               "expanded": undefined,
               "selected": undefined,
             }
@@ -2884,7 +2884,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
             }
           }
           accessible={true}
-          focusable={false}
+          focusable={true}
           onClick={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
@@ -3029,7 +3029,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
             {
               "busy": undefined,
               "checked": undefined,
-              "disabled": true,
+              "disabled": false,
               "expanded": undefined,
               "selected": undefined,
             }
@@ -3043,7 +3043,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
             }
           }
           accessible={true}
-          focusable={false}
+          focusable={true}
           onClick={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
@@ -3385,7 +3385,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
             {
               "busy": undefined,
               "checked": undefined,
-              "disabled": true,
+              "disabled": false,
               "expanded": undefined,
               "selected": undefined,
             }
@@ -3399,7 +3399,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
             }
           }
           accessible={true}
-          focusable={false}
+          focusable={true}
           onClick={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
@@ -3544,7 +3544,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
             {
               "busy": undefined,
               "checked": undefined,
-              "disabled": true,
+              "disabled": false,
               "expanded": undefined,
               "selected": undefined,
             }
@@ -3558,7 +3558,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
             }
           }
           accessible={true}
-          focusable={false}
+          focusable={true}
           onClick={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
@@ -5377,7 +5377,7 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
             {
               "busy": undefined,
               "checked": undefined,
-              "disabled": true,
+              "disabled": false,
               "expanded": undefined,
               "selected": undefined,
             }
@@ -5391,7 +5391,7 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
             }
           }
           accessible={true}
-          focusable={false}
+          focusable={true}
           onClick={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
@@ -5536,7 +5536,7 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
             {
               "busy": undefined,
               "checked": undefined,
-              "disabled": true,
+              "disabled": false,
               "expanded": undefined,
               "selected": undefined,
             }
@@ -5550,7 +5550,7 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
             }
           }
           accessible={true}
-          focusable={false}
+          focusable={true}
           onClick={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}

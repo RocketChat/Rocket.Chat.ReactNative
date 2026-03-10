@@ -25,7 +25,9 @@ exports[`Story Snapshots: Separators should match snapshot 1`] = `
     accessible={true}
     collapsable={false}
     focusable={true}
+    onBlur={[Function]}
     onClick={[Function]}
+    onFocus={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -33,15 +35,24 @@ exports[`Story Snapshots: Separators should match snapshot 1`] = `
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
     style={
-      {
-        "backgroundColor": "#E4E7EA",
-        "borderRadius": 4,
-        "justifyContent": "center",
-        "marginBottom": 0,
-        "opacity": 1,
-        "paddingHorizontal": 16,
-        "paddingVertical": 14,
-      }
+      [
+        {
+          "justifyContent": "center",
+          "paddingHorizontal": 16,
+          "paddingVertical": 14,
+        },
+        {
+          "borderRadius": 4,
+          "marginBottom": 12,
+        },
+        {
+          "backgroundColor": "#E4E7EA",
+        },
+        {},
+        {
+          "marginBottom": 0,
+        },
+      ]
     }
   >
     <Text
@@ -143,7 +154,9 @@ exports[`Story Snapshots: Separators should match snapshot 1`] = `
     accessible={true}
     collapsable={false}
     focusable={true}
+    onBlur={[Function]}
     onClick={[Function]}
+    onFocus={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -151,15 +164,24 @@ exports[`Story Snapshots: Separators should match snapshot 1`] = `
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
     style={
-      {
-        "backgroundColor": "#E4E7EA",
-        "borderRadius": 4,
-        "justifyContent": "center",
-        "marginBottom": 0,
-        "opacity": 1,
-        "paddingHorizontal": 16,
-        "paddingVertical": 14,
-      }
+      [
+        {
+          "justifyContent": "center",
+          "paddingHorizontal": 16,
+          "paddingVertical": 14,
+        },
+        {
+          "borderRadius": 4,
+          "marginBottom": 12,
+        },
+        {
+          "backgroundColor": "#E4E7EA",
+        },
+        {},
+        {
+          "marginBottom": 0,
+        },
+      ]
     }
   >
     <Text

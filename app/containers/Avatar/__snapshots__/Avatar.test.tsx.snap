@@ -840,12 +840,11 @@ exports[`Story Snapshots: Touchable should match snapshot 1`] = `
   testID="avatar"
 >
   <View
-    accessibilityLabel="Avatar's avatar"
     accessibilityState={
       {
         "busy": undefined,
         "checked": undefined,
-        "disabled": undefined,
+        "disabled": false,
         "expanded": undefined,
         "selected": undefined,
       }
@@ -859,7 +858,6 @@ exports[`Story Snapshots: Touchable should match snapshot 1`] = `
       }
     }
     accessible={true}
-    collapsable={false}
     focusable={true}
     onClick={[Function]}
     onResponderGrant={[Function]}
@@ -868,49 +866,7 @@ exports[`Story Snapshots: Touchable should match snapshot 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      {
-        "opacity": 1,
-      }
-    }
-  >
-    <ViewManagerAdapter_ExpoImage
-      borderRadius={4}
-      containerViewRef={"[React.ref]"}
-      contentFit="cover"
-      contentPosition={
-        {
-          "left": "50%",
-          "top": "50%",
-        }
-      }
-      height={56}
-      nativeViewRef={"[React.ref]"}
-      onError={[Function]}
-      onLoad={[Function]}
-      onLoadStart={[Function]}
-      onProgress={[Function]}
-      placeholder={[]}
-      priority="high"
-      source={
-        [
-          {
-            "headers": undefined,
-            "uri": "https://open.rocket.chat/avatar/Avatar?format=png&size=112",
-          },
-        ]
-      }
-      style={
-        {
-          "borderRadius": 4,
-          "height": 56,
-          "width": 56,
-        }
-      }
-      transition={null}
-      width={56}
-    />
-  </View>
+  />
 </View>
 `;
 

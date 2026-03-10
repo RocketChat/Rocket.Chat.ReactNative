@@ -24,7 +24,9 @@ exports[`Story Snapshots: CustomButton should match snapshot 1`] = `
   accessible={true}
   collapsable={false}
   focusable={true}
+  onBlur={[Function]}
   onClick={[Function]}
+  onFocus={[Function]}
   onResponderGrant={[Function]}
   onResponderMove={[Function]}
   onResponderRelease={[Function]}
@@ -32,16 +34,24 @@ exports[`Story Snapshots: CustomButton should match snapshot 1`] = `
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
   style={
-    {
-      "backgroundColor": "purple",
-      "borderRadius": 4,
-      "justifyContent": "center",
-      "marginBottom": 12,
-      "opacity": 1,
-      "padding": 10,
-      "paddingHorizontal": 16,
-      "paddingVertical": 14,
-    }
+    [
+      {
+        "justifyContent": "center",
+        "paddingHorizontal": 16,
+        "paddingVertical": 14,
+      },
+      {
+        "borderRadius": 4,
+        "marginBottom": 12,
+      },
+      {
+        "backgroundColor": "purple",
+      },
+      {},
+      {
+        "padding": 10,
+      },
+    ]
   }
   testID="testButton"
 >
@@ -94,8 +104,10 @@ exports[`Story Snapshots: DisabledButton should match snapshot 1`] = `
   }
   accessible={true}
   collapsable={false}
-  focusable={false}
+  focusable={true}
+  onBlur={[Function]}
   onClick={[Function]}
+  onFocus={[Function]}
   onResponderGrant={[Function]}
   onResponderMove={[Function]}
   onResponderRelease={[Function]}
@@ -103,15 +115,22 @@ exports[`Story Snapshots: DisabledButton should match snapshot 1`] = `
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
   style={
-    {
-      "backgroundColor": "#D1EBFE",
-      "borderRadius": 4,
-      "justifyContent": "center",
-      "marginBottom": 12,
-      "opacity": 1,
-      "paddingHorizontal": 16,
-      "paddingVertical": 14,
-    }
+    [
+      {
+        "justifyContent": "center",
+        "paddingHorizontal": 16,
+        "paddingVertical": 14,
+      },
+      {
+        "borderRadius": 4,
+        "marginBottom": 12,
+      },
+      {
+        "backgroundColor": "#D1EBFE",
+      },
+      {},
+      undefined,
+    ]
   }
   testID="testButton"
 >
@@ -160,8 +179,10 @@ exports[`Story Snapshots: DisabledLoadingButton should match snapshot 1`] = `
   }
   accessible={true}
   collapsable={false}
-  focusable={false}
+  focusable={true}
+  onBlur={[Function]}
   onClick={[Function]}
+  onFocus={[Function]}
   onResponderGrant={[Function]}
   onResponderMove={[Function]}
   onResponderRelease={[Function]}
@@ -169,15 +190,22 @@ exports[`Story Snapshots: DisabledLoadingButton should match snapshot 1`] = `
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
   style={
-    {
-      "backgroundColor": "#D1EBFE",
-      "borderRadius": 4,
-      "justifyContent": "center",
-      "marginBottom": 12,
-      "opacity": 1,
-      "paddingHorizontal": 16,
-      "paddingVertical": 14,
-    }
+    [
+      {
+        "justifyContent": "center",
+        "paddingHorizontal": 16,
+        "paddingVertical": 14,
+      },
+      {
+        "borderRadius": 4,
+        "marginBottom": 12,
+      },
+      {
+        "backgroundColor": "#D1EBFE",
+      },
+      {},
+      undefined,
+    ]
   }
   testID="testButton"
 >
@@ -215,8 +243,10 @@ exports[`Story Snapshots: LoadingButton should match snapshot 1`] = `
   }
   accessible={true}
   collapsable={false}
-  focusable={false}
+  focusable={true}
+  onBlur={[Function]}
   onClick={[Function]}
+  onFocus={[Function]}
   onResponderGrant={[Function]}
   onResponderMove={[Function]}
   onResponderRelease={[Function]}
@@ -224,15 +254,22 @@ exports[`Story Snapshots: LoadingButton should match snapshot 1`] = `
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
   style={
-    {
-      "backgroundColor": "#D1EBFE",
-      "borderRadius": 4,
-      "justifyContent": "center",
-      "marginBottom": 12,
-      "opacity": 1,
-      "paddingHorizontal": 16,
-      "paddingVertical": 14,
-    }
+    [
+      {
+        "justifyContent": "center",
+        "paddingHorizontal": 16,
+        "paddingVertical": 14,
+      },
+      {
+        "borderRadius": 4,
+        "marginBottom": 12,
+      },
+      {
+        "backgroundColor": "#D1EBFE",
+      },
+      {},
+      undefined,
+    ]
   }
   testID="testButton"
 >
@@ -271,7 +308,9 @@ exports[`Story Snapshots: PrimaryButton should match snapshot 1`] = `
   accessible={true}
   collapsable={false}
   focusable={true}
+  onBlur={[Function]}
   onClick={[Function]}
+  onFocus={[Function]}
   onResponderGrant={[Function]}
   onResponderMove={[Function]}
   onResponderRelease={[Function]}
@@ -279,15 +318,22 @@ exports[`Story Snapshots: PrimaryButton should match snapshot 1`] = `
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
   style={
-    {
-      "backgroundColor": "#156FF5",
-      "borderRadius": 4,
-      "justifyContent": "center",
-      "marginBottom": 12,
-      "opacity": 1,
-      "paddingHorizontal": 16,
-      "paddingVertical": 14,
-    }
+    [
+      {
+        "justifyContent": "center",
+        "paddingHorizontal": 16,
+        "paddingVertical": 14,
+      },
+      {
+        "borderRadius": 4,
+        "marginBottom": 12,
+      },
+      {
+        "backgroundColor": "#156FF5",
+      },
+      {},
+      undefined,
+    ]
   }
   testID="testButton"
 >
@@ -337,7 +383,9 @@ exports[`Story Snapshots: SecondaryButton should match snapshot 1`] = `
   accessible={true}
   collapsable={false}
   focusable={true}
+  onBlur={[Function]}
   onClick={[Function]}
+  onFocus={[Function]}
   onResponderGrant={[Function]}
   onResponderMove={[Function]}
   onResponderRelease={[Function]}
@@ -345,15 +393,22 @@ exports[`Story Snapshots: SecondaryButton should match snapshot 1`] = `
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
   style={
-    {
-      "backgroundColor": "#E4E7EA",
-      "borderRadius": 4,
-      "justifyContent": "center",
-      "marginBottom": 12,
-      "opacity": 1,
-      "paddingHorizontal": 16,
-      "paddingVertical": 14,
-    }
+    [
+      {
+        "justifyContent": "center",
+        "paddingHorizontal": 16,
+        "paddingVertical": 14,
+      },
+      {
+        "borderRadius": 4,
+        "marginBottom": 12,
+      },
+      {
+        "backgroundColor": "#E4E7EA",
+      },
+      {},
+      undefined,
+    ]
   }
   testID="testButton"
 >
@@ -403,7 +458,9 @@ exports[`Story Snapshots: SmallButton should match snapshot 1`] = `
   accessible={true}
   collapsable={false}
   focusable={true}
+  onBlur={[Function]}
   onClick={[Function]}
+  onFocus={[Function]}
   onResponderGrant={[Function]}
   onResponderMove={[Function]}
   onResponderRelease={[Function]}
@@ -411,15 +468,22 @@ exports[`Story Snapshots: SmallButton should match snapshot 1`] = `
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
   style={
-    {
-      "alignSelf": "center",
-      "backgroundColor": "#156FF5",
-      "borderRadius": 4,
-      "marginBottom": 12,
-      "opacity": 1,
-      "paddingHorizontal": 12,
-      "paddingVertical": 8,
-    }
+    [
+      {
+        "alignSelf": "center",
+        "paddingHorizontal": 12,
+        "paddingVertical": 8,
+      },
+      {
+        "borderRadius": 4,
+        "marginBottom": 12,
+      },
+      {
+        "backgroundColor": "#156FF5",
+      },
+      {},
+      undefined,
+    ]
   }
   testID="testButton"
 >
