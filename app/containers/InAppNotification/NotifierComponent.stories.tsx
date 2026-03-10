@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ThemeContext , type TSupportedThemes } from '../../theme';
+import { ThemeContext, type TSupportedThemes } from '../../theme';
 import { themes } from '../../lib/constants/colors';
 import NotifierComponent from './NotifierComponent';
 import { SubscriptionType } from '../../definitions';
