@@ -30,22 +30,25 @@ class MainActivity : ReactActivity() {
   override fun createReactActivityDelegate(): ReactActivityDelegate =
       DefaultReactActivityDelegate(this, mainComponentName, fabricEnabled)
 
+  // ProcessLifecycleOwner observer for app foreground/background state tracking
+  private val lifecycleObserver = object : DefaultLifecycleObserver {
+    override fun onStart(owner: LifecycleOwner) {
+      // App is in foreground
+      CustomPushNotification.setAppInForeground(true)
+    }
+
+    override fun onStop(owner: LifecycleOwner) {
+      // App is in background
+      CustomPushNotification.setAppInForeground(false)
+    }
+  }
+
   override fun onCreate(savedInstanceState: Bundle?) {
     RNBootSplash.init(this, R.style.BootTheme)
     super.onCreate(null)
 
-    // Register ProcessLifecycleOwner observer for app foreground/background state
-    ProcessLifecycleOwner.get().lifecycle.addObserver(object : DefaultLifecycleObserver {
-      override fun onStart(owner: LifecycleOwner) {
-        // App is in foreground
-        CustomPushNotification.setAppInForeground(true)
-      }
-
-      override fun onStop(owner: LifecycleOwner) {
-        // App is in background
-        CustomPushNotification.setAppInForeground(false)
-      }
-    })
+    // Register ProcessLifecycleOwner observer
+    ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleObserver)
 
     // Handle notification intents
     intent?.let { NotificationIntentHandler.handleIntent(this, it) }
