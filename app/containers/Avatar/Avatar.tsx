@@ -1,7 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
 import { Image } from 'expo-image';
-import Touchable from 'react-native-platform-touchable';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import Emoji from '../markdown/components/emoji/Emoji';
@@ -10,6 +9,7 @@ import { SubscriptionType } from '../../definitions';
 import { type IAvatar } from './interfaces';
 import MarkdownContext from '../markdown/contexts/MarkdownContext';
 import I18n from '../../i18n';
+import Touch from '../Touch';
 
 const Avatar = React.memo(
 	({
@@ -97,9 +97,9 @@ const Avatar = React.memo(
 
 		if (onPress) {
 			image = (
-				<Touchable accessible={accessible} accessibilityLabel={avatarAccessibilityLabel} onPress={onPress}>
+				<Touch accessible={accessible} accessibilityLabel={avatarAccessibilityLabel} onPress={onPress}>
 					{image}
-				</Touchable>
+				</Touch>
 			);
 		}
 
