@@ -97,12 +97,14 @@ jest.mock('./app/lib/hooks/useResponsiveLayout/useResponsiveLayout', () => {
 		...actual,
 		useResponsiveLayout: jest.fn(() => ({
 			fontScale: 1,
+			width: 390,
+			height: 844,
 			isLargeFontScale: false,
 			fontScaleLimited: 1,
-			rowHeight: 75,
-			rowHeightCondensed: 60
+			rowHeight: actual.BASE_ROW_HEIGHT,
+			rowHeightCondensed: actual.BASE_ROW_HEIGHT_CONDENSED
 		})),
-		FONT_SCALE_LIMIT: 1.3
+		FONT_SCALE_LIMIT: actual.FONT_SCALE_LIMIT
 	};
 });
 
