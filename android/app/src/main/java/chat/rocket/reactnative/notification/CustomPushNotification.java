@@ -48,7 +48,7 @@ public class CustomPushNotification {
     private static final Map<String, List<Bundle>> notificationMessages = new ConcurrentHashMap<>();
 
     // Track app foreground state
-    private static boolean isAppInForeground = false;
+    private static volatile boolean isAppInForeground = false;
     
     // Constants
     public static final String KEY_REPLY = "KEY_REPLY";
@@ -250,6 +250,14 @@ public class CustomPushNotification {
             if (ENABLE_VERBOSE_LOGS) {
                 Log.d(TAG, "[Before add to notificationMessages] notId=" + notId + ", bundle.message length=" + (bundle.getString("message") != null ? bundle.getString("message").length() : 0) + ", bundle.notificationLoaded=" + bundle.getBoolean("notificationLoaded", false));
             }
+
+            // Don't show notification if app is in foreground
+            // In-app notifications are handled by the JavaScript layer
+            if (isAppInForeground()) {
+                Log.d(TAG, "App is in foreground, skipping native notification");
+                return;
+            }
+
             notificationMessages.get(notId).add(bundle);
             if (ENABLE_VERBOSE_LOGS) {
                 Log.d(TAG, "[After add] notificationMessages[" + notId + "].size=" + notificationMessages.get(notId).size());
@@ -289,13 +297,6 @@ public class CustomPushNotification {
     }
 
     private void postNotification(int notificationId) {
-        // Don't show notification if app is in foreground
-        // In-app notifications are handled by the JavaScript layer
-        if (isAppInForeground()) {
-            Log.d(TAG, "App is in foreground, skipping native notification display");
-            return;
-        }
-
         Notification.Builder notification = buildNotification(notificationId);
         if (notification != null && notificationManager != null) {
             notificationManager.notify(notificationId, notification.build());
