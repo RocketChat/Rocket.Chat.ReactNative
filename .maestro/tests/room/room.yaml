@@ -316,22 +316,23 @@ tags:
     visible:
       text: '.*edit.*'
     timeout: 60000
+- hideKeyboard
 - longPressOn:
     id: 'message-content-edit'
+- waitForAnimationToEnd:
+    timeout: 1000
 - extendedWaitUntil:
     visible:
       id: action-sheet
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      id: action-sheet-handle
+      id: message-actions-edit
     timeout: 60000
-- extendedWaitUntil:
-    visible:
-      text: 'Edit'
-    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 1000
 - tapOn:
-    text: 'Edit'
+    id: message-actions-edit
 - extendedWaitUntil:
     visible:
       id: message-composer-input
@@ -362,10 +363,10 @@ tags:
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: 'Quote'
+      id: message-actions-quote
     timeout: 60000
 - tapOn:
-    text: 'Quote'
+    id: message-actions-quote
 - extendedWaitUntil:
     visible:
       id: message-composer-input
@@ -418,9 +419,9 @@ tags:
     direction: UP
 - scrollUntilVisible:
     element:
-      text: 'Delete'
+      id: message-actions-delete
 - tapOn:
-    text: 'Delete'
+    id: message-actions-delete
 - extendedWaitUntil:
     visible:
       text: '.*You will not be able to recover this message.*'
@@ -470,10 +471,10 @@ tags:
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: 'Reply in direct message'
+      id: message-actions-reply-in-dm
     timeout: 60000
 - tapOn:
-    text: 'Reply in direct message'
+    id: message-actions-reply-in-dm
 - extendedWaitUntil:
     visible:
       id: room-view-title-${output.replyUser.username}
@@ -584,7 +585,7 @@ tags:
       id: action-sheet
     timeout: 60000
 - tapOn:
-    text: 'Quote'
+    id: message-actions-quote
 - extendedWaitUntil:
     visible:
       id: 'markdown-preview-${output.originalMessage}'
