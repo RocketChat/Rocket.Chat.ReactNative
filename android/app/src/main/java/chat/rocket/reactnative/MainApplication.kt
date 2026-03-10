@@ -88,7 +88,7 @@ open class MainApplication : Application(), ReactApplication {
     super.onCreate()
     SoLoader.init(this, OpenSourceMergedSoMapping)
     Bugsnag.start(this)
-
+    
     // Initialize MMKV encryption - reads existing key or generates new one
     // Must run before React Native starts to avoid race conditions
     MMKVKeyManager.initialize(this)
@@ -98,7 +98,7 @@ open class MainApplication : Application(), ReactApplication {
 
     // Load the native entry point for the New Architecture
     load()
-
+    
 		ApplicationLifecycleDispatcher.onApplicationCreate(this)
   }
 
