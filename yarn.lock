@@ -5016,10 +5016,10 @@
   dependencies:
     eslint-plugin-import "^2.17.2"
 
-"@rocket.chat/message-parser@^0.31.33":
-  version "0.31.33"
-  resolved "https://registry.yarnpkg.com/@rocket.chat/message-parser/-/message-parser-0.31.33.tgz#cf5d883731a311f4676d762964b48088a18a09d5"
-  integrity sha512-0ADgbPelF+U88oobkxIPBvwjeElrHqcGJACz6x2Er/nrp2J3rU27L6DRb3b5t8otyiHuqLX8mm/NM7Lfta0Epg==
+"@rocket.chat/message-parser@^0.31.34":
+  version "0.31.34"
+  resolved "https://registry.yarnpkg.com/@rocket.chat/message-parser/-/message-parser-0.31.34.tgz#cd3c0f46ec524411a3ac14b26eeb9607ef3c8a21"
+  integrity sha512-QWKPJPuKGAzPgKF1ouCPkGONQ1PLxTVUCn2t85pAOSJj2tqcjPK3dA1V8VNIeCYDPKwN2tjhYffrVCpjulMl/g==
   dependencies:
     tldts "~6.1.86"
 
