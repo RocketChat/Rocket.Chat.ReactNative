@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { View, type ViewStyle } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
 import { A11y } from 'react-native-a11y-order';
 
 import MessageContext from './Context';
@@ -27,6 +26,7 @@ import MessageTime from './Time';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import Quote from './Components/Attachments/Quote';
 import translationLanguages from '../../lib/constants/translationLanguages';
+import Touchable from '../Touchable';
 
 const MessageInner = React.memo((props: IMessageInner) => {
 	const { isLargeFontScale } = useResponsiveLayout();
