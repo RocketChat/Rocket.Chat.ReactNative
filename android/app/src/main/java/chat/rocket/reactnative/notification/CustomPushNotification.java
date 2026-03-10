@@ -240,7 +240,6 @@ public class CustomPushNotification {
             }
 
             // Don't show notification if app is in foreground
-            // In-app notifications are handled by the JavaScript layer
             if (isAppInForeground()) {
                 if (ENABLE_VERBOSE_LOGS) {
                     Log.d(TAG, "App is in foreground, skipping native notification");
