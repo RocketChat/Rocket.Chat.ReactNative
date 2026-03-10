@@ -21,7 +21,6 @@ import chat.rocket.reactnative.storage.SecureStoragePackage;
 import chat.rocket.reactnative.notification.VideoConfTurboPackage
 import chat.rocket.reactnative.notification.PushNotificationTurboPackage
 import chat.rocket.reactnative.scroll.InvertedScrollPackage
-import android.os.Bundle
 
 /**
  * Main Application class.
