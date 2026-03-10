@@ -41,16 +41,17 @@ class IncomingCallActivity : Activity() {
 
     private var ringtone: Ringtone? = null
     private var voipPayload: VoipPayload? = null
-    private var isTimeoutReceiverRegistered = false
+    private var isCallStateReceiverRegistered = false
     private val timeoutHandler = Handler(Looper.getMainLooper())
     private var timeoutRunnable: Runnable? = null
-    private val timeoutReceiver = object : BroadcastReceiver() {
+    private val callStateReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             val payload = VoipPayload.fromBundle(intent?.extras) ?: return
             if (payload.callId != voipPayload?.callId) {
                 return
             }
 
+            clearTimeout()
             stopRingtone()
             finish()
         }
@@ -100,9 +101,12 @@ class IncomingCallActivity : Activity() {
         startRingtone()
         setupButtons(voipPayload)
         scheduleTimeout(voipPayload)
-        LocalBroadcastManager.getInstance(this)
-            .registerReceiver(timeoutReceiver, IntentFilter(VoipNotification.ACTION_TIMEOUT))
-        isTimeoutReceiverRegistered = true
+        val intentFilter = IntentFilter().apply {
+            addAction(VoipNotification.ACTION_TIMEOUT)
+            addAction(VoipNotification.ACTION_DISMISS)
+        }
+        LocalBroadcastManager.getInstance(this).registerReceiver(callStateReceiver, intentFilter)
+        isCallStateReceiverRegistered = true
     }
 
     private fun applyNavigationBar() {
@@ -303,9 +307,9 @@ class IncomingCallActivity : Activity() {
     override fun onDestroy() {
         super.onDestroy()
         clearTimeout()
-        if (isTimeoutReceiverRegistered) {
-            LocalBroadcastManager.getInstance(this).unregisterReceiver(timeoutReceiver)
-            isTimeoutReceiverRegistered = false
+        if (isCallStateReceiverRegistered) {
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(callStateReceiver)
+            isCallStateReceiverRegistered = false
         }
         stopRingtone()
     }

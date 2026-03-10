@@ -51,7 +51,6 @@ private struct RemoteVoipPayload {
             let payloadUsername = caller?.username ?? username,
             let payloadHost = host,
             let payloadType = type,
-            payloadType == "incoming_call",
             let payloadHostName = hostName
         else {
             return nil

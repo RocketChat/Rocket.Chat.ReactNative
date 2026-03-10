@@ -45,6 +45,7 @@ class VoipNotification(private val context: Context) {
         const val ACTION_ACCEPT = "chat.rocket.reactnative.ACTION_VOIP_ACCEPT"
         const val ACTION_DECLINE = "chat.rocket.reactnative.ACTION_VOIP_DECLINE"
         const val ACTION_TIMEOUT = "chat.rocket.reactnative.ACTION_VOIP_TIMEOUT"
+        const val ACTION_DISMISS = "chat.rocket.reactnative.ACTION_VOIP_DISMISS"
 
         // react-native-callkeep's ConnectionService class name
         private const val CALLKEEP_CONNECTION_SERVICE_CLASS = "io.wazo.callkeep.VoiceConnectionService"
@@ -141,6 +142,21 @@ class VoipNotification(private val context: Context) {
                 else -> connection.onDisconnect()
             }
         }
+
+        private fun disconnectIncomingCall(callId: String, reportAsMissed: Boolean) {
+            val connection = VoiceConnectionService.getConnection(callId)
+            when (connection) {
+                is VoiceConnection -> {
+                    if (reportAsMissed) {
+                        connection.reportDisconnect(DISCONNECT_REASON_MISSED)
+                    } else {
+                        connection.onDisconnect()
+                    }
+                }
+                null -> Log.d(TAG, "No active VoiceConnection found for dismissed call: $callId")
+                else -> connection.onDisconnect()
+            }
+        }
     }
 
     /**
@@ -158,6 +174,14 @@ class VoipNotification(private val context: Context) {
 
     init {
         createNotificationChannel()
+    }
+
+    fun onMessageReceived(voipPayload: VoipPayload) {
+        when {
+            voipPayload.isVoipIncomingCall() -> showIncomingCall(voipPayload)
+            voipPayload.shouldHideIncomingCall() -> dismissIncomingCall(voipPayload)
+            else -> Log.w(TAG, "Ignoring unsupported VoIP payload type: ${voipPayload.type}")
+        }
     }
 
     /**
@@ -217,6 +241,27 @@ class VoipNotification(private val context: Context) {
         // Show notification with full-screen intent
         showIncomingCallNotification(voipPayload)
         scheduleTimeout(context, voipPayload)
+    }
+
+    private fun dismissIncomingCall(voipPayload: VoipPayload) {
+        cancelTimeout(voipPayload.callId)
+        val showMissedCallNotification = voipPayload.shouldShowMissedCallNotification()
+        disconnectIncomingCall(
+            callId = voipPayload.callId,
+            reportAsMissed = showMissedCallNotification
+        )
+        cancelById(context, voipPayload.notificationId)
+        LocalBroadcastManager.getInstance(context).sendBroadcast(
+            Intent(ACTION_DISMISS).apply {
+                putExtras(voipPayload.toBundle())
+            }
+        )
+
+        if (showMissedCallNotification) {
+            showMissedCallNotification(voipPayload)
+        }
+
+        Log.d(TAG, "Dismissed incoming VoIP call for type ${voipPayload.type}: ${voipPayload.callId}")
     }
 
     /**
@@ -378,6 +423,34 @@ class VoipNotification(private val context: Context) {
         // Show notification
         notificationManager?.notify(notificationId, builder.build())
         Log.d(TAG, "VoIP notification displayed with ID: $notificationId")
+    }
+
+    private fun showMissedCallNotification(voipPayload: VoipPayload) {
+        val packageName = context.packageName
+        val smallIconResId = context.resources.getIdentifier("ic_notification", "drawable", packageName)
+        val launchIntent = Intent(context, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            putExtras(voipPayload.toBundle())
+        }
+        val contentIntent = createPendingIntent(voipPayload.notificationId + 3, launchIntent)
+        val caller = voipPayload.caller
+
+        val builder = NotificationCompat.Builder(context, CHANNEL_ID).apply {
+            setSmallIcon(smallIconResId)
+            setContentTitle("Missed call")
+            if (caller.isNotBlank()) {
+                setContentText("Call from $caller")
+            }
+            setCategory(NotificationCompat.CATEGORY_MISSED_CALL)
+            setPriority(NotificationCompat.PRIORITY_HIGH)
+            setAutoCancel(true)
+            setOngoing(false)
+            setSilent(true)
+            setContentIntent(contentIntent)
+        }
+
+        notificationManager?.notify(voipPayload.notificationId, builder.build())
+        Log.d(TAG, "Missed VoIP call notification displayed with ID: ${voipPayload.notificationId}")
     }
 
     /**

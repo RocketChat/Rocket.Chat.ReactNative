@@ -33,8 +33,8 @@ class RCFirebaseMessagingService : FirebaseMessagingService() {
 
         val voipPayload = VoipPayload.fromMap(data)
         if (voipPayload != null) {
-            Log.d(TAG, "Detected VoIP incoming call payload, routing to VoipNotification handler")
-            VoipNotification(this).showIncomingCall(voipPayload)
+            Log.d(TAG, "Detected VoIP payload of type ${voipPayload.type}, routing to VoipNotification handler")
+            VoipNotification(this).onMessageReceived(voipPayload)
             return
         }
 
