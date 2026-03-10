@@ -20,7 +20,11 @@ import chat.rocket.reactnative.storage.MMKVKeyManager;
 import chat.rocket.reactnative.storage.SecureStoragePackage;
 import chat.rocket.reactnative.notification.VideoConfTurboPackage
 import chat.rocket.reactnative.notification.PushNotificationTurboPackage
+import chat.rocket.reactnative.notification.CustomPushNotification
 import chat.rocket.reactnative.scroll.InvertedScrollPackage
+import androidx.lifecycle.ProcessLifecycleOwner
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 
 /**
  * Main Application class.
@@ -35,6 +39,19 @@ import chat.rocket.reactnative.scroll.InvertedScrollPackage
  *   - Message-id-only notification loading
  */
 open class MainApplication : Application(), ReactApplication {
+
+  // ProcessLifecycleOwner observer for app foreground/background state tracking
+  private val lifecycleObserver = object : DefaultLifecycleObserver {
+    override fun onStart(owner: LifecycleOwner) {
+      // App is in foreground
+      CustomPushNotification.setAppInForeground(true)
+    }
+
+    override fun onStop(owner: LifecycleOwner) {
+      // App is in background
+      CustomPushNotification.setAppInForeground(false)
+    }
+  }
 
   override val reactNativeHost: ReactNativeHost =
       object : DefaultReactNativeHost(this) {
@@ -63,14 +80,17 @@ open class MainApplication : Application(), ReactApplication {
     super.onCreate()
     SoLoader.init(this, OpenSourceMergedSoMapping)
     Bugsnag.start(this)
-    
+
     // Initialize MMKV encryption - reads existing key or generates new one
     // Must run before React Native starts to avoid race conditions
     MMKVKeyManager.initialize(this)
 
+    // Register ProcessLifecycleOwner observer for app-level foreground/background tracking
+    ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleObserver)
+
     // Load the native entry point for the New Architecture
     load()
-    
+
 		ApplicationLifecycleDispatcher.onApplicationCreate(this)
   }
 
