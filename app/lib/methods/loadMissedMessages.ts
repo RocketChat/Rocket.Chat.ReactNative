@@ -8,7 +8,7 @@ import { getSubscriptionByRoomId } from '../database/services/Subscription';
 const count = 50;
 
 const syncMessages = async ({ roomId, next, type }: { roomId: string; next: number; type: 'UPDATED' | 'DELETED' }) => {
-	const { result } = await sdk.get('/v1/chat.syncMessages', { roomId, next, count, type });
+	const { result } = await sdk.get('/v1/chat.syncMessages', { roomId, next: next.toString(), count, type });
 	return result;
 };
 

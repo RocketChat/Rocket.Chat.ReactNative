@@ -79,7 +79,7 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 
 	const handleGetCustomFields = async () => {
 		const result = await getCustomFields();
-		if (result.success && result.customFields?.length) {
+		if (result.customFields?.length) {
 			const visitorCustomFields = result.customFields
 				.filter(field => field.visibility !== 'hidden' && field.scope === 'visitor')
 				.map(field => ({ [field._id]: (visitor.livechatData && visitor.livechatData[field._id]) || '' }))

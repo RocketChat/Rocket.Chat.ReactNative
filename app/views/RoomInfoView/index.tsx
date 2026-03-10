@@ -166,7 +166,7 @@ const RoomInfoView = (): React.ReactElement => {
 			try {
 				const roomUserId = getUidDirectMessage({ ...(room || { rid, t }), itsMe });
 				const result = await getUserInfo(roomUserId);
-				if (result) {
+				if (result && result.user) {
 					const { user } = result;
 					const r = handleRoles(user);
 					setRoomUser({ ...user, roles: r });
@@ -183,7 +183,6 @@ const RoomInfoView = (): React.ReactElement => {
 	const loadRoom = async () => {
 		const permissionToEdit = isLivechat ? [editOmnichannelContact, editLivechatRoomCustomfields] : [editRoomPermission];
 		const permissions = await hasPermission(permissionToEdit, rid);
-		console.log('channel.edit-2', editRoomPermission, permissions)
 		const canEdit = permissions.some(Boolean);
 		const subRoom = await getSubscriptionByRoomId(rid);
 		if (!subRoom && isDirect && fromRid) {
@@ -198,14 +197,12 @@ const RoomInfoView = (): React.ReactElement => {
 			const sub = subRoom.observe();
 			subscription.current = sub.subscribe(changes => {
 				setRoom(changes.asPlain());
-				console.log('channel.edit', roomType, canEdit)
 				setHeader(roomType === SubscriptionType.DIRECT ? false : canEdit);
 			});
 		} else {
 			try {
 				if (!isDirect) {
 					const result = await getRoomInfo(rid);
-					console.log('room', result)
 					if (result) setRoom({ ...room, ...(result.room as unknown as ISubscription) });
 				}
 			} catch (e) {
