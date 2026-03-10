@@ -252,10 +252,8 @@ tags:
     visible:
       id: 'action-sheet-handle'
     timeout: 60000
-- swipe:
-    from:
-      id: action-sheet-handle
-    direction: DOWN
+- tapOn:
+    id: 'action-sheet-handle'
 - extendedWaitUntil:
     notVisible:
       id: 'reactionsList'
