@@ -102,6 +102,9 @@ data class VoipPayload(
             @SerializedName("name")
             val name: String? = null,
 
+            @SerializedName("username")
+            val username: String? = null,
+
             @SerializedName("avatarUrl")
             val avatarUrl: String? = null,
         )
@@ -140,7 +143,7 @@ data class VoipPayload(
                 return VoipPayload(
                     callId = callId ?: return null,
                     caller = caller?.name ?: return null,
-                    username = username ?: return null,
+                    username = caller?.username ?: username ?: return null,
                     host = host ?: return null,
                     type = payloadType,
                     hostName = hostName ?: return null,
@@ -161,8 +164,8 @@ data class VoipPayload(
             val caller = bundle.getString("caller") ?: return null
             val username = bundle.getString("username") ?: return null
             val host = bundle.getString("host") ?: return null
-            val type = bundle.getString("type") ?: return null
             val hostName = bundle.getString("hostName") ?: return null
+            val type = bundle.getString("type") ?: return null
             val avatarUrl = bundle.getString("avatarUrl")
             val createdAt = bundle.getString("createdAt")
 

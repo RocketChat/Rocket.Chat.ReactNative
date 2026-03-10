@@ -2,11 +2,13 @@ import Foundation
 
 private struct RemoteCaller {
     let name: String?
+    let username: String?
     let avatarUrl: String?
 
     static func fromDictionary(_ payload: [AnyHashable: Any]) -> RemoteCaller {
         RemoteCaller(
             name: payload["name"] as? String,
+            username: payload["username"] as? String,
             avatarUrl: payload["avatarUrl"] as? String
         )
     }
@@ -46,7 +48,7 @@ private struct RemoteVoipPayload {
             let payloadCallId = callId,
             let payloadCallUUID = UUID(uuidString: payloadCallId),
             let payloadCaller = caller?.name,
-            let payloadUsername = username,
+            let payloadUsername = caller?.username ?? username,
             let payloadHost = host,
             let payloadType = type,
             payloadType == "incoming_call",
