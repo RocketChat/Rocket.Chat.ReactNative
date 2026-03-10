@@ -44,7 +44,7 @@ open class MainApplication : Application(), ReactApplication {
 
   // ActivityLifecycleCallbacks for immediate app state tracking
   private val activityLifecycleCallbacks = object : Application.ActivityLifecycleCallbacks {
-    override fun onActivityStarted(activity: Activity) {
+    override fun onActivityResumed(activity: Activity) {
       activeActivityCount++
       if (activeActivityCount == 1) {
         // App moved from background to foreground
@@ -52,7 +52,7 @@ open class MainApplication : Application(), ReactApplication {
       }
     }
 
-    override fun onActivityStopped(activity: Activity) {
+    override fun onActivityPaused(activity: Activity) {
       activeActivityCount--
       if (activeActivityCount == 0) {
         // App moved from foreground to background
@@ -61,8 +61,8 @@ open class MainApplication : Application(), ReactApplication {
     }
 
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {}
-    override fun onActivityResumed(activity: Activity) {}
-    override fun onActivityPaused(activity: Activity) {}
+    override fun onActivityStarted(activity: Activity) {}
+    override fun onActivityStopped(activity: Activity) {}
     override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
     override fun onActivityDestroyed(activity: Activity) {}
   }

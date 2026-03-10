@@ -73,7 +73,7 @@ public class CustomPushNotification {
     }
 
     /**
-     * Sets the app foreground state. Should be called from MainActivity's lifecycle callbacks.
+     * Sets the app foreground state. Should be called from MainApplication's lifecycle callbacks.
      */
     public static void setAppInForeground(boolean inForeground) {
         isAppInForeground = inForeground;
