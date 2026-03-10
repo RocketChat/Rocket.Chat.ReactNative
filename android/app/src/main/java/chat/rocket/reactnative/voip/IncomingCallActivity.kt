@@ -27,6 +27,7 @@ import com.bumptech.glide.Glide
 import chat.rocket.reactnative.MainActivity
 import chat.rocket.reactnative.R
 import android.graphics.Typeface
+import chat.rocket.reactnative.notification.Ejson
 
 /**
  * Full-screen Activity displayed when an incoming VoIP call arrives.
@@ -177,7 +178,8 @@ class IncomingCallActivity : Activity() {
         val container = findViewById<FrameLayout>(R.id.avatar_container)
         val imageView = findViewById<ImageView>(R.id.avatar)
         val sizePx = (120 * resources.displayMetrics.density).toInt().coerceIn(120, 480)
-        val avatarUrl = payload.avatarUrl?.takeIf { it.isNotBlank() } ?: return
+        val avatarUrl = Ejson.forCallerAvatar(payload.host, payload.username)?.getCallerAvatarUri(sizePx)
+            ?: return
         val cornerRadiusPx = (8 * resources.displayMetrics.density).toFloat()
 
         Glide.with(this)
