@@ -106,7 +106,7 @@ jest.mock('./app/lib/hooks/useResponsiveLayout/useResponsiveLayout', () => {
 		})),
 		FONT_SCALE_LIMIT: actual.FONT_SCALE_LIMIT
 	};
-});
+}); 
 
 jest.mock('./app/containers/CustomIcon', () => {
 	const actualNav = jest.requireActual('./app/containers/CustomIcon');
