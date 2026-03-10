@@ -1,8 +1,8 @@
 import React from 'react';
-import { ThemeContext } from '../../theme';
+
+import { ThemeContext , type TSupportedThemes } from '../../theme';
 import { themes } from '../../lib/constants/colors';
 import NotifierComponent from './NotifierComponent';
-import { TSupportedThemes } from '../../theme';
 import { SubscriptionType } from '../../definitions';
 import {
 	BASE_ROW_HEIGHT,
@@ -35,9 +35,7 @@ const baseNotification = {
 
 const Wrapper = ({ children, theme = 'light' }: { children: React.ReactNode; theme?: TSupportedThemes }) => (
 	<ThemeContext.Provider value={{ theme, colors: themes[theme] }}>
-		<ResponsiveLayoutContext.Provider value={responsiveLayoutProviderValue}>
-			{children}
-		</ResponsiveLayoutContext.Provider>
+		<ResponsiveLayoutContext.Provider value={responsiveLayoutProviderValue}>{children}</ResponsiveLayoutContext.Provider>
 	</ThemeContext.Provider>
 );
 
