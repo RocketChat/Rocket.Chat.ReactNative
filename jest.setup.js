@@ -91,16 +91,20 @@ jest.mock('react-native/Libraries/Utilities/useWindowDimensions', () => ({
 	}))
 }));
 
-jest.mock('./app/lib/hooks/useResponsiveLayout/useResponsiveLayout', () => ({
-	useResponsiveLayout: jest.fn(() => ({
-		fontScale: 1,
-		isLargeFontScale: false,
-		fontScaleLimited: 1,
-		rowHeight: 75,
-		rowHeightCondensed: 60
-	})),
-	FONT_SCALE_LIMIT: 1.3
-}));
+jest.mock('./app/lib/hooks/useResponsiveLayout/useResponsiveLayout', () => {
+	const actual = jest.requireActual('./app/lib/hooks/useResponsiveLayout/useResponsiveLayout');
+	return {
+		...actual,
+		useResponsiveLayout: jest.fn(() => ({
+			fontScale: 1,
+			isLargeFontScale: false,
+			fontScaleLimited: 1,
+			rowHeight: 75,
+			rowHeightCondensed: 60
+		})),
+		FONT_SCALE_LIMIT: 1.3
+	};
+});
 
 jest.mock('./app/containers/CustomIcon', () => {
 	const actualNav = jest.requireActual('./app/containers/CustomIcon');
