@@ -1,6 +1,6 @@
 import { useBackHandler } from '@react-native-community/hooks';
 import * as Haptics from 'expo-haptics';
-import React, { forwardRef, isValidElement, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import React, { forwardRef, isValidElement, useImperativeHandle, useRef, useState } from 'react';
 import { Keyboard, type LayoutChangeEvent, useWindowDimensions } from 'react-native';
 import { TrueSheet } from '@lodev09/react-native-true-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -25,6 +25,8 @@ const ActionSheet = React.memo(
 		const [data, setData] = useState<TActionSheetOptions>({} as TActionSheetOptions);
 		const [isVisible, setIsVisible] = useState(false);
 		const [contentHeight, setContentHeight] = useState(0);
+		const presentTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+		const onCloseSnapshotRef = useRef<TActionSheetOptions['onClose']>(undefined);
 
 		const itemHeight = 48 * fontScale;
 
@@ -32,15 +34,30 @@ const ActionSheet = React.memo(
 			setContentHeight(layout.height);
 		};
 
+		const cancelPendingPresent = () => {
+			if (presentTimerRef.current !== null) {
+				clearTimeout(presentTimerRef.current);
+				presentTimerRef.current = null;
+			}
+		};
+
 		const hide = () => {
+			cancelPendingPresent();
+			onCloseSnapshotRef.current = data?.onClose;
 			sheetRef.current?.dismiss();
+			Keyboard.dismiss();
+			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 		};
 
 		const show = (options: TActionSheetOptions) => {
+			cancelPendingPresent();
 			setData(options);
 			setIsVisible(true);
-			// timeout to open after the old one close;
-			setTimeout(() => {
+			Keyboard.dismiss();
+			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+			onCloseSnapshotRef.current = options.onClose;
+			presentTimerRef.current = setTimeout(() => {
+				presentTimerRef.current = null;
 				sheetRef.current?.present();
 			}, 200);
 		};
@@ -51,13 +68,6 @@ const ActionSheet = React.memo(
 			}
 			return isVisible;
 		});
-
-		useEffect(() => {
-			if (isVisible) {
-				Keyboard.dismiss();
-				Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-			}
-		}, [isVisible]);
 
 		useImperativeHandle(ref, () => ({
 			showActionSheet: show,
@@ -74,7 +84,9 @@ const ActionSheet = React.memo(
 		const onDidDismiss = () => {
 			setIsVisible(false);
 			setContentHeight(0);
-			data?.onClose?.();
+			const snapshotOnClose = onCloseSnapshotRef.current;
+			onCloseSnapshotRef.current = undefined;
+			snapshotOnClose?.();
 		};
 
 		const bottomSheetStyle = isTablet ? styles.bottomSheet : { marginRight: right, marginLeft: left };
