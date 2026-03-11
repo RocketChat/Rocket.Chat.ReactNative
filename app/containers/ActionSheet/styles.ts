@@ -71,5 +71,10 @@ export default StyleSheet.create({
 	},
 	contentContainer: {
 		flex: 0
+	},
+	fullContainer: {
+		width: '100%',
+		height: '100%',
+		flex: 0
 	}
 });

@@ -1,4 +1,4 @@
-import { FlatList, Platform, Text, useWindowDimensions, View, type ViewProps } from 'react-native';
+import { FlatList, Text, useWindowDimensions, View, type ViewProps } from 'react-native';
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -30,6 +30,7 @@ const BottomSheetContent = React.memo(
 		const { fontScale } = useWindowDimensions();
 		const height = 48 * fontScale;
 		const paddingBottom = bottom + height;
+		const minHeightStyle = isAndroid || !contentMinHeight ? undefined : { minHeight: contentMinHeight };
 
 		const renderFooter = () =>
 			hasCancel ? (
@@ -65,19 +66,7 @@ const BottomSheetContent = React.memo(
 			);
 		}
 		return (
-			<View
-				testID='action-sheet'
-				style={
-					fullContainer
-						? {
-								width: '100%',
-								height: '100%',
-								flex: 0,
-								...(Platform.OS === 'ios' && contentMinHeight != null && { minHeight: contentMinHeight })
-						  }
-						: undefined
-				}
-				onLayout={onLayout}>
+			<View testID='action-sheet' style={fullContainer ? [styles.fullContainer, minHeightStyle] : undefined} onLayout={onLayout}>
 				{children}
 			</View>
 		);
