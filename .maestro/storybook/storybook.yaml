@@ -3,7 +3,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/avatar--avatar-base-64"
 - assertScreenshot:
-    path: ./screenshots/avatar--avatar-base-64.png
+    path: .maestro/screenshots/avatar--avatar-base-64
     cropOn:
       id: avatar--avatar-base-64
     thresholdPercentage: 1
@@ -11,7 +11,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/avatar--avatar-external-provider-url"
 - assertScreenshot:
-    path: ./screenshots/avatar--avatar-external-provider-url.png
+    path: .maestro/screenshots/avatar--avatar-external-provider-url
     cropOn:
       id: avatar--avatar-external-provider-url
     thresholdPercentage: 1
@@ -19,7 +19,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/avatar--avatar-path"
 - assertScreenshot:
-    path: ./screenshots/avatar--avatar-path.png
+    path: .maestro/screenshots/avatar--avatar-path
     cropOn:
       id: avatar--avatar-path
     thresholdPercentage: 1
@@ -27,7 +27,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/avatar--avatar-room-id"
 - assertScreenshot:
-    path: ./screenshots/avatar--avatar-room-id.png
+    path: .maestro/screenshots/avatar--avatar-room-id
     cropOn:
       id: avatar--avatar-room-id
     thresholdPercentage: 1
@@ -35,7 +35,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/avatar--avatar-text"
 - assertScreenshot:
-    path: ./screenshots/avatar--avatar-text.png
+    path: .maestro/screenshots/avatar--avatar-text
     cropOn:
       id: avatar--avatar-text
     thresholdPercentage: 1
@@ -43,7 +43,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/avatar--avatar-url"
 - assertScreenshot:
-    path: ./screenshots/avatar--avatar-url.png
+    path: .maestro/screenshots/avatar--avatar-url
     cropOn:
       id: avatar--avatar-url
     thresholdPercentage: 1
@@ -51,7 +51,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/avatar--channel"
 - assertScreenshot:
-    path: ./screenshots/avatar--channel.png
+    path: .maestro/screenshots/avatar--channel
     cropOn:
       id: avatar--channel
     thresholdPercentage: 1
@@ -59,7 +59,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/avatar--children"
 - assertScreenshot:
-    path: ./screenshots/avatar--children.png
+    path: .maestro/screenshots/avatar--children
     cropOn:
       id: avatar--children
     thresholdPercentage: 1
@@ -67,7 +67,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/avatar--custom-border-radius"
 - assertScreenshot:
-    path: ./screenshots/avatar--custom-border-radius.png
+    path: .maestro/screenshots/avatar--custom-border-radius
     cropOn:
       id: avatar--custom-border-radius
     thresholdPercentage: 1
@@ -75,7 +75,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/avatar--custom-style"
 - assertScreenshot:
-    path: ./screenshots/avatar--custom-style.png
+    path: .maestro/screenshots/avatar--custom-style
     cropOn:
       id: avatar--custom-style
     thresholdPercentage: 1
@@ -83,7 +83,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/avatar--direct"
 - assertScreenshot:
-    path: ./screenshots/avatar--direct.png
+    path: .maestro/screenshots/avatar--direct
     cropOn:
       id: avatar--direct
     thresholdPercentage: 1
@@ -91,7 +91,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/avatar--emoji"
 - assertScreenshot:
-    path: ./screenshots/avatar--emoji.png
+    path: .maestro/screenshots/avatar--emoji
     cropOn:
       id: avatar--emoji
     thresholdPercentage: 1
@@ -99,7 +99,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/avatar--room-avatar-external-provider-url"
 - assertScreenshot:
-    path: ./screenshots/avatar--room-avatar-external-provider-url.png
+    path: .maestro/screenshots/avatar--room-avatar-external-provider-url
     cropOn:
       id: avatar--room-avatar-external-provider-url
     thresholdPercentage: 1
@@ -107,7 +107,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/avatar--static"
 - assertScreenshot:
-    path: ./screenshots/avatar--static.png
+    path: .maestro/screenshots/avatar--static
     cropOn:
       id: avatar--static
     thresholdPercentage: 1
@@ -115,7 +115,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/avatar--touchable"
 - assertScreenshot:
-    path: ./screenshots/avatar--touchable.png
+    path: .maestro/screenshots/avatar--touchable
     cropOn:
       id: avatar--touchable
     thresholdPercentage: 1
@@ -123,7 +123,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/avatar--with-e-tag"
 - assertScreenshot:
-    path: ./screenshots/avatar--with-e-tag.png
+    path: .maestro/screenshots/avatar--with-e-tag
     cropOn:
       id: avatar--with-e-tag
     thresholdPercentage: 1
@@ -131,7 +131,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/avatar--without-e-tag"
 - assertScreenshot:
-    path: ./screenshots/avatar--without-e-tag.png
+    path: .maestro/screenshots/avatar--without-e-tag
     cropOn:
       id: avatar--without-e-tag
     thresholdPercentage: 1
@@ -139,7 +139,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/avatar--wrong-server"
 - assertScreenshot:
-    path: ./screenshots/avatar--wrong-server.png
+    path: .maestro/screenshots/avatar--wrong-server
     cropOn:
       id: avatar--wrong-server
     thresholdPercentage: 1
@@ -147,7 +147,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/backgroundcontainer--basic"
 - assertScreenshot:
-    path: ./screenshots/backgroundcontainer--basic.png
+    path: .maestro/screenshots/backgroundcontainer--basic
     cropOn:
       id: backgroundcontainer--basic
     thresholdPercentage: 1
@@ -155,7 +155,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/backgroundcontainer--black-theme-loading"
 - assertScreenshot:
-    path: ./screenshots/backgroundcontainer--black-theme-loading.png
+    path: .maestro/screenshots/backgroundcontainer--black-theme-loading
     cropOn:
       id: backgroundcontainer--black-theme-loading
     thresholdPercentage: 1
@@ -163,7 +163,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/backgroundcontainer--black-theme-text"
 - assertScreenshot:
-    path: ./screenshots/backgroundcontainer--black-theme-text.png
+    path: .maestro/screenshots/backgroundcontainer--black-theme-text
     cropOn:
       id: backgroundcontainer--black-theme-text
     thresholdPercentage: 1
@@ -171,7 +171,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/backgroundcontainer--dark-theme-loading"
 - assertScreenshot:
-    path: ./screenshots/backgroundcontainer--dark-theme-loading.png
+    path: .maestro/screenshots/backgroundcontainer--dark-theme-loading
     cropOn:
       id: backgroundcontainer--dark-theme-loading
     thresholdPercentage: 1
@@ -179,7 +179,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/backgroundcontainer--dark-theme-text"
 - assertScreenshot:
-    path: ./screenshots/backgroundcontainer--dark-theme-text.png
+    path: .maestro/screenshots/backgroundcontainer--dark-theme-text
     cropOn:
       id: backgroundcontainer--dark-theme-text
     thresholdPercentage: 1
@@ -187,7 +187,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/backgroundcontainer--loading"
 - assertScreenshot:
-    path: ./screenshots/backgroundcontainer--loading.png
+    path: .maestro/screenshots/backgroundcontainer--loading
     cropOn:
       id: backgroundcontainer--loading
     thresholdPercentage: 1
@@ -195,7 +195,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/backgroundcontainer--long-text"
 - assertScreenshot:
-    path: ./screenshots/backgroundcontainer--long-text.png
+    path: .maestro/screenshots/backgroundcontainer--long-text
     cropOn:
       id: backgroundcontainer--long-text
     thresholdPercentage: 1
@@ -203,7 +203,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/backgroundcontainer--text"
 - assertScreenshot:
-    path: ./screenshots/backgroundcontainer--text.png
+    path: .maestro/screenshots/backgroundcontainer--text
     cropOn:
       id: backgroundcontainer--text
     thresholdPercentage: 1
@@ -211,7 +211,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/button--custom-button"
 - assertScreenshot:
-    path: ./screenshots/button--custom-button.png
+    path: .maestro/screenshots/button--custom-button
     cropOn:
       id: button--custom-button
     thresholdPercentage: 1
@@ -219,7 +219,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/button--disabled-button"
 - assertScreenshot:
-    path: ./screenshots/button--disabled-button.png
+    path: .maestro/screenshots/button--disabled-button
     cropOn:
       id: button--disabled-button
     thresholdPercentage: 1
@@ -227,7 +227,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/button--disabled-loading-button"
 - assertScreenshot:
-    path: ./screenshots/button--disabled-loading-button.png
+    path: .maestro/screenshots/button--disabled-loading-button
     cropOn:
       id: button--disabled-loading-button
     thresholdPercentage: 1
@@ -235,7 +235,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/button--loading-button"
 - assertScreenshot:
-    path: ./screenshots/button--loading-button.png
+    path: .maestro/screenshots/button--loading-button
     cropOn:
       id: button--loading-button
     thresholdPercentage: 1
@@ -243,7 +243,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/button--primary-button"
 - assertScreenshot:
-    path: ./screenshots/button--primary-button.png
+    path: .maestro/screenshots/button--primary-button
     cropOn:
       id: button--primary-button
     thresholdPercentage: 1
@@ -251,7 +251,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/button--secondary-button"
 - assertScreenshot:
-    path: ./screenshots/button--secondary-button.png
+    path: .maestro/screenshots/button--secondary-button
     cropOn:
       id: button--secondary-button
     thresholdPercentage: 1
@@ -259,7 +259,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/button--small-button"
 - assertScreenshot:
-    path: ./screenshots/button--small-button.png
+    path: .maestro/screenshots/button--small-button
     cropOn:
       id: button--small-button
     thresholdPercentage: 1
@@ -267,7 +267,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/chip--chip-full-width"
 - assertScreenshot:
-    path: ./screenshots/chip--chip-full-width.png
+    path: .maestro/screenshots/chip--chip-full-width
     cropOn:
       id: chip--chip-full-width
     thresholdPercentage: 1
@@ -275,7 +275,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/chip--chip-text"
 - assertScreenshot:
-    path: ./screenshots/chip--chip-text.png
+    path: .maestro/screenshots/chip--chip-text
     cropOn:
       id: chip--chip-text
     thresholdPercentage: 1
@@ -283,7 +283,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/chip--chip-without-avatar"
 - assertScreenshot:
-    path: ./screenshots/chip--chip-without-avatar.png
+    path: .maestro/screenshots/chip--chip-without-avatar
     cropOn:
       id: chip--chip-without-avatar
     thresholdPercentage: 1
@@ -291,7 +291,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/chip--chip-without-avatar-and-icon"
 - assertScreenshot:
-    path: ./screenshots/chip--chip-without-avatar-and-icon.png
+    path: .maestro/screenshots/chip--chip-without-avatar-and-icon
     cropOn:
       id: chip--chip-without-avatar-and-icon
     thresholdPercentage: 1
@@ -299,7 +299,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/chip--chip-without-icon"
 - assertScreenshot:
-    path: ./screenshots/chip--chip-without-icon.png
+    path: .maestro/screenshots/chip--chip-without-icon
     cropOn:
       id: chip--chip-without-icon
     thresholdPercentage: 1
@@ -307,7 +307,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/chip--chip-with-short-text"
 - assertScreenshot:
-    path: ./screenshots/chip--chip-with-short-text.png
+    path: .maestro/screenshots/chip--chip-with-short-text
     cropOn:
       id: chip--chip-with-short-text
     thresholdPercentage: 1
@@ -315,7 +315,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/collapsible-text--item"
 - assertScreenshot:
-    path: ./screenshots/collapsible-text--item.png
+    path: .maestro/screenshots/collapsible-text--item
     cropOn:
       id: collapsible-text--item
     thresholdPercentage: 1
@@ -323,7 +323,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/directoryitem--custom-style"
 - assertScreenshot:
-    path: ./screenshots/directoryitem--custom-style.png
+    path: .maestro/screenshots/directoryitem--custom-style
     cropOn:
       id: directoryitem--custom-style
     thresholdPercentage: 1
@@ -331,7 +331,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/directoryitem--default"
 - assertScreenshot:
-    path: ./screenshots/directoryitem--default.png
+    path: .maestro/screenshots/directoryitem--default
     cropOn:
       id: directoryitem--default
     thresholdPercentage: 1
@@ -339,7 +339,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/directoryitem--direct-message"
 - assertScreenshot:
-    path: ./screenshots/directoryitem--direct-message.png
+    path: .maestro/screenshots/directoryitem--direct-message
     cropOn:
       id: directoryitem--direct-message
     thresholdPercentage: 1
@@ -347,7 +347,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/directoryitem--long-room-name"
 - assertScreenshot:
-    path: ./screenshots/directoryitem--long-room-name.png
+    path: .maestro/screenshots/directoryitem--long-room-name
     cropOn:
       id: directoryitem--long-room-name
     thresholdPercentage: 1
@@ -355,7 +355,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/directoryitem--only-title"
 - assertScreenshot:
-    path: ./screenshots/directoryitem--only-title.png
+    path: .maestro/screenshots/directoryitem--only-title
     cropOn:
       id: directoryitem--only-title
     thresholdPercentage: 1
@@ -363,7 +363,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/directoryitem--team-main"
 - assertScreenshot:
-    path: ./screenshots/directoryitem--team-main.png
+    path: .maestro/screenshots/directoryitem--team-main
     cropOn:
       id: directoryitem--team-main
     thresholdPercentage: 1
@@ -371,7 +371,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/directoryitem--without-description"
 - assertScreenshot:
-    path: ./screenshots/directoryitem--without-description.png
+    path: .maestro/screenshots/directoryitem--without-description
     cropOn:
       id: directoryitem--without-description
     thresholdPercentage: 1
@@ -379,7 +379,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/directoryitem--with-right-label"
 - assertScreenshot:
-    path: ./screenshots/directoryitem--with-right-label.png
+    path: .maestro/screenshots/directoryitem--with-right-label
     cropOn:
       id: directoryitem--with-right-label
     thresholdPercentage: 1
@@ -387,7 +387,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/headerbuttons--badge"
 - assertScreenshot:
-    path: ./screenshots/headerbuttons--badge.png
+    path: .maestro/screenshots/headerbuttons--badge
     cropOn:
       id: headerbuttons--badge
     thresholdPercentage: 1
@@ -395,7 +395,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/headerbuttons--common"
 - assertScreenshot:
-    path: ./screenshots/headerbuttons--common.png
+    path: .maestro/screenshots/headerbuttons--common
     cropOn:
       id: headerbuttons--common
     thresholdPercentage: 1
@@ -403,7 +403,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/headerbuttons--icons"
 - assertScreenshot:
-    path: ./screenshots/headerbuttons--icons.png
+    path: .maestro/screenshots/headerbuttons--icons
     cropOn:
       id: headerbuttons--icons
     thresholdPercentage: 1
@@ -411,7 +411,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/headerbuttons--themes"
 - assertScreenshot:
-    path: ./screenshots/headerbuttons--themes.png
+    path: .maestro/screenshots/headerbuttons--themes
     cropOn:
       id: headerbuttons--themes
     thresholdPercentage: 1
@@ -419,7 +419,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/headerbuttons--title"
 - assertScreenshot:
-    path: ./screenshots/headerbuttons--title.png
+    path: .maestro/screenshots/headerbuttons--title
     cropOn:
       id: headerbuttons--title
     thresholdPercentage: 1
@@ -427,7 +427,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/list--alert"
 - assertScreenshot:
-    path: ./screenshots/list--alert.png
+    path: .maestro/screenshots/list--alert
     cropOn:
       id: list--alert
     thresholdPercentage: 1
@@ -435,7 +435,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/list--header"
 - assertScreenshot:
-    path: ./screenshots/list--header.png
+    path: .maestro/screenshots/list--header
     cropOn:
       id: list--header
     thresholdPercentage: 1
@@ -443,7 +443,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/list--icon"
 - assertScreenshot:
-    path: ./screenshots/list--icon.png
+    path: .maestro/screenshots/list--icon
     cropOn:
       id: list--icon
     thresholdPercentage: 1
@@ -451,7 +451,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/list--list-item-with-right-container-style"
 - assertScreenshot:
-    path: ./screenshots/list--list-item-with-right-container-style.png
+    path: .maestro/screenshots/list--list-item-with-right-container-style
     cropOn:
       id: list--list-item-with-right-container-style
     thresholdPercentage: 1
@@ -459,7 +459,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/list--pressable"
 - assertScreenshot:
-    path: ./screenshots/list--pressable.png
+    path: .maestro/screenshots/list--pressable
     cropOn:
       id: list--pressable
     thresholdPercentage: 1
@@ -467,7 +467,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/list--radio"
 - assertScreenshot:
-    path: ./screenshots/list--radio.png
+    path: .maestro/screenshots/list--radio
     cropOn:
       id: list--radio
     thresholdPercentage: 1
@@ -475,7 +475,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/list--section-and-info"
 - assertScreenshot:
-    path: ./screenshots/list--section-and-info.png
+    path: .maestro/screenshots/list--section-and-info
     cropOn:
       id: list--section-and-info
     thresholdPercentage: 1
@@ -483,7 +483,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/list--separator"
 - assertScreenshot:
-    path: ./screenshots/list--separator.png
+    path: .maestro/screenshots/list--separator
     cropOn:
       id: list--separator
     thresholdPercentage: 1
@@ -491,7 +491,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/list--title-and-subtitle"
 - assertScreenshot:
-    path: ./screenshots/list--title-and-subtitle.png
+    path: .maestro/screenshots/list--title-and-subtitle
     cropOn:
       id: list--title-and-subtitle
     thresholdPercentage: 1
@@ -499,7 +499,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/list--with-bigger-font"
 - assertScreenshot:
-    path: ./screenshots/list--with-bigger-font.png
+    path: .maestro/screenshots/list--with-bigger-font
     cropOn:
       id: list--with-bigger-font
     thresholdPercentage: 1
@@ -507,7 +507,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/list--with-black-theme"
 - assertScreenshot:
-    path: ./screenshots/list--with-black-theme.png
+    path: .maestro/screenshots/list--with-black-theme
     cropOn:
       id: list--with-black-theme
     thresholdPercentage: 1
@@ -515,7 +515,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/list--with-custom-colors"
 - assertScreenshot:
-    path: ./screenshots/list--with-custom-colors.png
+    path: .maestro/screenshots/list--with-custom-colors
     cropOn:
       id: list--with-custom-colors
     thresholdPercentage: 1
@@ -523,7 +523,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/list--with-dark-theme"
 - assertScreenshot:
-    path: ./screenshots/list--with-dark-theme.png
+    path: .maestro/screenshots/list--with-dark-theme
     cropOn:
       id: list--with-dark-theme
     thresholdPercentage: 1
@@ -531,7 +531,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/list--with-flat-list"
 - assertScreenshot:
-    path: ./screenshots/list--with-flat-list.png
+    path: .maestro/screenshots/list--with-flat-list
     cropOn:
       id: list--with-flat-list
     thresholdPercentage: 1
@@ -539,7 +539,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/list--with-icon"
 - assertScreenshot:
-    path: ./screenshots/list--with-icon.png
+    path: .maestro/screenshots/list--with-icon
     cropOn:
       id: list--with-icon
     thresholdPercentage: 1
@@ -547,7 +547,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/list--with-small-font"
 - assertScreenshot:
-    path: ./screenshots/list--with-small-font.png
+    path: .maestro/screenshots/list--with-small-font
     cropOn:
       id: list--with-small-font
     thresholdPercentage: 1
@@ -555,7 +555,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/login-services--separators"
 - assertScreenshot:
-    path: ./screenshots/login-services--separators.png
+    path: .maestro/screenshots/login-services--separators
     cropOn:
       id: login-services--separators
     thresholdPercentage: 1
@@ -563,7 +563,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/login-services--service-list"
 - assertScreenshot:
-    path: ./screenshots/login-services--service-list.png
+    path: .maestro/screenshots/login-services--service-list
     cropOn:
       id: login-services--service-list
     thresholdPercentage: 1
@@ -571,7 +571,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/reactionslist--reactions-list-full-name"
 - assertScreenshot:
-    path: ./screenshots/reactionslist--reactions-list-full-name.png
+    path: .maestro/screenshots/reactionslist--reactions-list-full-name
     cropOn:
       id: reactionslist--reactions-list-full-name
     thresholdPercentage: 1
@@ -579,7 +579,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/reactionslist--reactions-list-story"
 - assertScreenshot:
-    path: ./screenshots/reactionslist--reactions-list-story.png
+    path: .maestro/screenshots/reactionslist--reactions-list-story
     cropOn:
       id: reactionslist--reactions-list-story
     thresholdPercentage: 1
@@ -587,7 +587,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/roomheader--icons"
 - assertScreenshot:
-    path: ./screenshots/roomheader--icons.png
+    path: .maestro/screenshots/roomheader--icons
     cropOn:
       id: roomheader--icons
     thresholdPercentage: 1
@@ -595,7 +595,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/roomheader--themes"
 - assertScreenshot:
-    path: ./screenshots/roomheader--themes.png
+    path: .maestro/screenshots/roomheader--themes
     cropOn:
       id: roomheader--themes
     thresholdPercentage: 1
@@ -603,7 +603,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/roomheader--thread"
 - assertScreenshot:
-    path: ./screenshots/roomheader--thread.png
+    path: .maestro/screenshots/roomheader--thread
     cropOn:
       id: roomheader--thread
     thresholdPercentage: 1
@@ -611,7 +611,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/roomheader--title-subtitle"
 - assertScreenshot:
-    path: ./screenshots/roomheader--title-subtitle.png
+    path: .maestro/screenshots/roomheader--title-subtitle
     cropOn:
       id: roomheader--title-subtitle
     thresholdPercentage: 1
@@ -619,7 +619,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/roomheader--typing"
 - assertScreenshot:
-    path: ./screenshots/roomheader--typing.png
+    path: .maestro/screenshots/roomheader--typing
     cropOn:
       id: roomheader--typing
     thresholdPercentage: 1
@@ -627,7 +627,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/roomitem--alerts"
 - assertScreenshot:
-    path: ./screenshots/roomitem--alerts.png
+    path: .maestro/screenshots/roomitem--alerts
     cropOn:
       id: roomitem--alerts
     thresholdPercentage: 1
@@ -635,7 +635,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/roomitem--basic"
 - assertScreenshot:
-    path: ./screenshots/roomitem--basic.png
+    path: .maestro/screenshots/roomitem--basic
     cropOn:
       id: roomitem--basic
     thresholdPercentage: 1
@@ -643,7 +643,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/roomitem--condensed-room-item"
 - assertScreenshot:
-    path: ./screenshots/roomitem--condensed-room-item.png
+    path: .maestro/screenshots/roomitem--condensed-room-item
     cropOn:
       id: roomitem--condensed-room-item
     thresholdPercentage: 1
@@ -651,7 +651,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/roomitem--condensed-room-item-without-avatar"
 - assertScreenshot:
-    path: ./screenshots/roomitem--condensed-room-item-without-avatar.png
+    path: .maestro/screenshots/roomitem--condensed-room-item-without-avatar
     cropOn:
       id: roomitem--condensed-room-item-without-avatar
     thresholdPercentage: 1
@@ -659,7 +659,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/roomitem--expanded-room-item-without-avatar"
 - assertScreenshot:
-    path: ./screenshots/roomitem--expanded-room-item-without-avatar.png
+    path: .maestro/screenshots/roomitem--expanded-room-item-without-avatar
     cropOn:
       id: roomitem--expanded-room-item-without-avatar
     thresholdPercentage: 1
@@ -667,7 +667,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/roomitem--invited-room"
 - assertScreenshot:
-    path: ./screenshots/roomitem--invited-room.png
+    path: .maestro/screenshots/roomitem--invited-room
     cropOn:
       id: roomitem--invited-room
     thresholdPercentage: 1
@@ -675,7 +675,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/roomitem--last-message"
 - assertScreenshot:
-    path: ./screenshots/roomitem--last-message.png
+    path: .maestro/screenshots/roomitem--last-message
     cropOn:
       id: roomitem--last-message
     thresholdPercentage: 1
@@ -683,7 +683,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/roomitem--omnichannel-icon"
 - assertScreenshot:
-    path: ./screenshots/roomitem--omnichannel-icon.png
+    path: .maestro/screenshots/roomitem--omnichannel-icon
     cropOn:
       id: roomitem--omnichannel-icon
     thresholdPercentage: 1
@@ -691,7 +691,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/roomitem--tag"
 - assertScreenshot:
-    path: ./screenshots/roomitem--tag.png
+    path: .maestro/screenshots/roomitem--tag
     cropOn:
       id: roomitem--tag
     thresholdPercentage: 1
@@ -699,7 +699,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/roomitem--touch"
 - assertScreenshot:
-    path: ./screenshots/roomitem--touch.png
+    path: .maestro/screenshots/roomitem--touch
     cropOn:
       id: roomitem--touch
     thresholdPercentage: 1
@@ -707,7 +707,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/roomitem--type"
 - assertScreenshot:
-    path: ./screenshots/roomitem--type.png
+    path: .maestro/screenshots/roomitem--type
     cropOn:
       id: roomitem--type
     thresholdPercentage: 1
@@ -715,7 +715,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/roomitem--user"
 - assertScreenshot:
-    path: ./screenshots/roomitem--user.png
+    path: .maestro/screenshots/roomitem--user
     cropOn:
       id: roomitem--user
     thresholdPercentage: 1
@@ -723,7 +723,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/roomtypeicon--all"
 - assertScreenshot:
-    path: ./screenshots/roomtypeicon--all.png
+    path: .maestro/screenshots/roomtypeicon--all
     cropOn:
       id: roomtypeicon--all
     thresholdPercentage: 1
@@ -731,7 +731,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/searchbox--basic"
 - assertScreenshot:
-    path: ./screenshots/searchbox--basic.png
+    path: .maestro/screenshots/searchbox--basic
     cropOn:
       id: searchbox--basic
     thresholdPercentage: 1
@@ -739,7 +739,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/serveritem--content"
 - assertScreenshot:
-    path: ./screenshots/serveritem--content.png
+    path: .maestro/screenshots/serveritem--content
     cropOn:
       id: serveritem--content
     thresholdPercentage: 1
@@ -747,7 +747,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/serveritem--swipe-actions"
 - assertScreenshot:
-    path: ./screenshots/serveritem--swipe-actions.png
+    path: .maestro/screenshots/serveritem--swipe-actions
     cropOn:
       id: serveritem--swipe-actions
     thresholdPercentage: 1
@@ -755,7 +755,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/serveritem--themes"
 - assertScreenshot:
-    path: ./screenshots/serveritem--themes.png
+    path: .maestro/screenshots/serveritem--themes
     cropOn:
       id: serveritem--themes
     thresholdPercentage: 1
@@ -763,7 +763,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/status--all"
 - assertScreenshot:
-    path: ./screenshots/status--all.png
+    path: .maestro/screenshots/status--all
     cropOn:
       id: status--all
     thresholdPercentage: 1
@@ -771,7 +771,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/textinput--icons"
 - assertScreenshot:
-    path: ./screenshots/textinput--icons.png
+    path: .maestro/screenshots/textinput--icons
     cropOn:
       id: textinput--icons
     thresholdPercentage: 1
@@ -779,7 +779,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/textinput--loading"
 - assertScreenshot:
-    path: ./screenshots/textinput--loading.png
+    path: .maestro/screenshots/textinput--loading
     cropOn:
       id: textinput--loading
     thresholdPercentage: 1
@@ -787,7 +787,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/textinput--multiline"
 - assertScreenshot:
-    path: ./screenshots/textinput--multiline.png
+    path: .maestro/screenshots/textinput--multiline
     cropOn:
       id: textinput--multiline
     thresholdPercentage: 1
@@ -795,7 +795,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/textinput--secure-text-entry"
 - assertScreenshot:
-    path: ./screenshots/textinput--secure-text-entry.png
+    path: .maestro/screenshots/textinput--secure-text-entry
     cropOn:
       id: textinput--secure-text-entry
     thresholdPercentage: 1
@@ -803,7 +803,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/textinput--short-and-long"
 - assertScreenshot:
-    path: ./screenshots/textinput--short-and-long.png
+    path: .maestro/screenshots/textinput--short-and-long
     cropOn:
       id: textinput--short-and-long
     thresholdPercentage: 1
@@ -811,7 +811,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/uikit-uikitmessage--action-button"
 - assertScreenshot:
-    path: ./screenshots/uikit-uikitmessage--action-button.png
+    path: .maestro/screenshots/uikit-uikitmessage--action-button
     cropOn:
       id: uikit-uikitmessage--action-button
     thresholdPercentage: 1
@@ -819,7 +819,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/uikit-uikitmessage--action-select"
 - assertScreenshot:
-    path: ./screenshots/uikit-uikitmessage--action-select.png
+    path: .maestro/screenshots/uikit-uikitmessage--action-select
     cropOn:
       id: uikit-uikitmessage--action-select
     thresholdPercentage: 1
@@ -827,7 +827,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/uikit-uikitmessage--fields"
 - assertScreenshot:
-    path: ./screenshots/uikit-uikitmessage--fields.png
+    path: .maestro/screenshots/uikit-uikitmessage--fields
     cropOn:
       id: uikit-uikitmessage--fields
     thresholdPercentage: 1
@@ -835,7 +835,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/uikit-uikitmessage--section"
 - assertScreenshot:
-    path: ./screenshots/uikit-uikitmessage--section.png
+    path: .maestro/screenshots/uikit-uikitmessage--section
     cropOn:
       id: uikit-uikitmessage--section
     thresholdPercentage: 1
@@ -843,7 +843,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/uikit-uikitmessage--section-button"
 - assertScreenshot:
-    path: ./screenshots/uikit-uikitmessage--section-button.png
+    path: .maestro/screenshots/uikit-uikitmessage--section-button
     cropOn:
       id: uikit-uikitmessage--section-button
     thresholdPercentage: 1
@@ -851,7 +851,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/uikit-uikitmessage--section-date-picker"
 - assertScreenshot:
-    path: ./screenshots/uikit-uikitmessage--section-date-picker.png
+    path: .maestro/screenshots/uikit-uikitmessage--section-date-picker
     cropOn:
       id: uikit-uikitmessage--section-date-picker
     thresholdPercentage: 1
@@ -859,7 +859,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/uikit-uikitmessage--section-markdown-list"
 - assertScreenshot:
-    path: ./screenshots/uikit-uikitmessage--section-markdown-list.png
+    path: .maestro/screenshots/uikit-uikitmessage--section-markdown-list
     cropOn:
       id: uikit-uikitmessage--section-markdown-list
     thresholdPercentage: 1
@@ -867,7 +867,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/uikit-uikitmessage--section-multi-select"
 - assertScreenshot:
-    path: ./screenshots/uikit-uikitmessage--section-multi-select.png
+    path: .maestro/screenshots/uikit-uikitmessage--section-multi-select
     cropOn:
       id: uikit-uikitmessage--section-multi-select
     thresholdPercentage: 1
@@ -875,7 +875,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/uikit-uikitmessage--section-overflow"
 - assertScreenshot:
-    path: ./screenshots/uikit-uikitmessage--section-overflow.png
+    path: .maestro/screenshots/uikit-uikitmessage--section-overflow
     cropOn:
       id: uikit-uikitmessage--section-overflow
     thresholdPercentage: 1
@@ -883,7 +883,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/uikit-uikitmessage--section-select"
 - assertScreenshot:
-    path: ./screenshots/uikit-uikitmessage--section-select.png
+    path: .maestro/screenshots/uikit-uikitmessage--section-select
     cropOn:
       id: uikit-uikitmessage--section-select
     thresholdPercentage: 1
@@ -891,7 +891,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/uikit-uikitmodal--modal-actions"
 - assertScreenshot:
-    path: ./screenshots/uikit-uikitmodal--modal-actions.png
+    path: .maestro/screenshots/uikit-uikitmodal--modal-actions
     cropOn:
       id: uikit-uikitmodal--modal-actions
     thresholdPercentage: 1
@@ -899,7 +899,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/uikit-uikitmodal--modal-actions-with-show-more"
 - assertScreenshot:
-    path: ./screenshots/uikit-uikitmodal--modal-actions-with-show-more.png
+    path: .maestro/screenshots/uikit-uikitmodal--modal-actions-with-show-more
     cropOn:
       id: uikit-uikitmodal--modal-actions-with-show-more
     thresholdPercentage: 1
@@ -907,7 +907,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/uikit-uikitmodal--modal-contexts-dividers"
 - assertScreenshot:
-    path: ./screenshots/uikit-uikitmodal--modal-contexts-dividers.png
+    path: .maestro/screenshots/uikit-uikitmodal--modal-contexts-dividers
     cropOn:
       id: uikit-uikitmodal--modal-contexts-dividers
     thresholdPercentage: 1
@@ -915,7 +915,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/uikit-uikitmodal--modal-date-picker-with-error"
 - assertScreenshot:
-    path: ./screenshots/uikit-uikitmodal--modal-date-picker-with-error.png
+    path: .maestro/screenshots/uikit-uikitmodal--modal-date-picker-with-error
     cropOn:
       id: uikit-uikitmodal--modal-date-picker-with-error
     thresholdPercentage: 1
@@ -923,7 +923,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/uikit-uikitmodal--modal-form-input"
 - assertScreenshot:
-    path: ./screenshots/uikit-uikitmodal--modal-form-input.png
+    path: .maestro/screenshots/uikit-uikitmodal--modal-form-input
     cropOn:
       id: uikit-uikitmodal--modal-form-input
     thresholdPercentage: 1
@@ -931,7 +931,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/uikit-uikitmodal--modal-form-text-area"
 - assertScreenshot:
-    path: ./screenshots/uikit-uikitmodal--modal-form-text-area.png
+    path: .maestro/screenshots/uikit-uikitmodal--modal-form-text-area
     cropOn:
       id: uikit-uikitmodal--modal-form-text-area
     thresholdPercentage: 1
@@ -939,7 +939,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/uikit-uikitmodal--modal-input-with-add-field"
 - assertScreenshot:
-    path: ./screenshots/uikit-uikitmodal--modal-input-with-add-field.png
+    path: .maestro/screenshots/uikit-uikitmodal--modal-input-with-add-field
     cropOn:
       id: uikit-uikitmodal--modal-input-with-add-field
     thresholdPercentage: 1
@@ -947,7 +947,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/uikit-uikitmodal--modal-input-with-error"
 - assertScreenshot:
-    path: ./screenshots/uikit-uikitmodal--modal-input-with-error.png
+    path: .maestro/screenshots/uikit-uikitmodal--modal-input-with-error
     cropOn:
       id: uikit-uikitmodal--modal-input-with-error
     thresholdPercentage: 1
@@ -955,7 +955,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/uikit-uikitmodal--modal-multilne-with-error"
 - assertScreenshot:
-    path: ./screenshots/uikit-uikitmodal--modal-multilne-with-error.png
+    path: .maestro/screenshots/uikit-uikitmodal--modal-multilne-with-error
     cropOn:
       id: uikit-uikitmodal--modal-multilne-with-error
     thresholdPercentage: 1
@@ -963,7 +963,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/uikit-uikitmodal--modal-multi-select"
 - assertScreenshot:
-    path: ./screenshots/uikit-uikitmodal--modal-multi-select.png
+    path: .maestro/screenshots/uikit-uikitmodal--modal-multi-select
     cropOn:
       id: uikit-uikitmodal--modal-multi-select
     thresholdPercentage: 1
@@ -971,7 +971,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/uikit-uikitmodal--modal-section-accessories"
 - assertScreenshot:
-    path: ./screenshots/uikit-uikitmodal--modal-section-accessories.png
+    path: .maestro/screenshots/uikit-uikitmodal--modal-section-accessories
     cropOn:
       id: uikit-uikitmodal--modal-section-accessories
     thresholdPercentage: 1
@@ -979,7 +979,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/uikit-uikitmodal--modal-section-selects"
 - assertScreenshot:
-    path: ./screenshots/uikit-uikitmodal--modal-section-selects.png
+    path: .maestro/screenshots/uikit-uikitmodal--modal-section-selects
     cropOn:
       id: uikit-uikitmodal--modal-section-selects
     thresholdPercentage: 1
@@ -987,7 +987,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/unread-badge--all"
 - assertScreenshot:
-    path: ./screenshots/unread-badge--all.png
+    path: .maestro/screenshots/unread-badge--all
     cropOn:
       id: unread-badge--all
     thresholdPercentage: 1
@@ -995,7 +995,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/unread-badge--different-mention-types"
 - assertScreenshot:
-    path: ./screenshots/unread-badge--different-mention-types.png
+    path: .maestro/screenshots/unread-badge--different-mention-types
     cropOn:
       id: unread-badge--different-mention-types
     thresholdPercentage: 1
@@ -1003,7 +1003,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/unread-badge--normal"
 - assertScreenshot:
-    path: ./screenshots/unread-badge--normal.png
+    path: .maestro/screenshots/unread-badge--normal
     cropOn:
       id: unread-badge--normal
     thresholdPercentage: 1
@@ -1011,7 +1011,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/unread-badge--small"
 - assertScreenshot:
-    path: ./screenshots/unread-badge--small.png
+    path: .maestro/screenshots/unread-badge--small
     cropOn:
       id: unread-badge--small
     thresholdPercentage: 1
@@ -1019,7 +1019,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/unread-badge--themes"
 - assertScreenshot:
-    path: ./screenshots/unread-badge--themes.png
+    path: .maestro/screenshots/unread-badge--themes
     cropOn:
       id: unread-badge--themes
     thresholdPercentage: 1
@@ -1027,7 +1027,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/markdown--block-quote"
 - assertScreenshot:
-    path: ./screenshots/markdown--block-quote.png
+    path: .maestro/screenshots/markdown--block-quote
     cropOn:
       id: markdown--block-quote
     thresholdPercentage: 1
@@ -1035,7 +1035,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/markdown--code"
 - assertScreenshot:
-    path: ./screenshots/markdown--code.png
+    path: .maestro/screenshots/markdown--code
     cropOn:
       id: markdown--code
     thresholdPercentage: 1
@@ -1043,7 +1043,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/markdown--emoji"
 - assertScreenshot:
-    path: ./screenshots/markdown--emoji.png
+    path: .maestro/screenshots/markdown--emoji
     cropOn:
       id: markdown--emoji
     thresholdPercentage: 1
@@ -1051,7 +1051,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/markdown--hashtag"
 - assertScreenshot:
-    path: ./screenshots/markdown--hashtag.png
+    path: .maestro/screenshots/markdown--hashtag
     cropOn:
       id: markdown--hashtag
     thresholdPercentage: 1
@@ -1059,7 +1059,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/markdown--headers"
 - assertScreenshot:
-    path: ./screenshots/markdown--headers.png
+    path: .maestro/screenshots/markdown--headers
     cropOn:
       id: markdown--headers
     thresholdPercentage: 1
@@ -1067,7 +1067,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/markdown--image"
 - assertScreenshot:
-    path: ./screenshots/markdown--image.png
+    path: .maestro/screenshots/markdown--image
     cropOn:
       id: markdown--image
     thresholdPercentage: 1
@@ -1075,7 +1075,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/markdown--links"
 - assertScreenshot:
-    path: ./screenshots/markdown--links.png
+    path: .maestro/screenshots/markdown--links
     cropOn:
       id: markdown--links
     thresholdPercentage: 1
@@ -1083,7 +1083,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/markdown--lists"
 - assertScreenshot:
-    path: ./screenshots/markdown--lists.png
+    path: .maestro/screenshots/markdown--lists
     cropOn:
       id: markdown--lists
     thresholdPercentage: 1
@@ -1091,7 +1091,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/markdown--mentions"
 - assertScreenshot:
-    path: ./screenshots/markdown--mentions.png
+    path: .maestro/screenshots/markdown--mentions
     cropOn:
       id: markdown--mentions
     thresholdPercentage: 1
@@ -1099,7 +1099,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/markdown--preview"
 - assertScreenshot:
-    path: ./screenshots/markdown--preview.png
+    path: .maestro/screenshots/markdown--preview
     cropOn:
       id: markdown--preview
     thresholdPercentage: 1
@@ -1107,7 +1107,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/markdown--text"
 - assertScreenshot:
-    path: ./screenshots/markdown--text.png
+    path: .maestro/screenshots/markdown--text
     cropOn:
       id: markdown--text
     thresholdPercentage: 1
@@ -1115,7 +1115,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/markdown--timestamp"
 - assertScreenshot:
-    path: ./screenshots/markdown--timestamp.png
+    path: .maestro/screenshots/markdown--timestamp
     cropOn:
       id: markdown--timestamp
     thresholdPercentage: 1
@@ -1123,7 +1123,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/collapsiblequote--item"
 - assertScreenshot:
-    path: ./screenshots/collapsiblequote--item.png
+    path: .maestro/screenshots/collapsiblequote--item
     cropOn:
       id: collapsiblequote--item
     thresholdPercentage: 1
@@ -1131,7 +1131,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--archived"
 - assertScreenshot:
-    path: ./screenshots/message--archived.png
+    path: .maestro/screenshots/message--archived
     cropOn:
       id: message--archived
     thresholdPercentage: 1
@@ -1139,7 +1139,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--archived-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--archived-large-font.png
+    path: .maestro/screenshots/message--archived-large-font
     cropOn:
       id: message--archived-large-font
     thresholdPercentage: 1
@@ -1147,7 +1147,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--attachment-with-text-and-link"
 - assertScreenshot:
-    path: ./screenshots/message--attachment-with-text-and-link.png
+    path: .maestro/screenshots/message--attachment-with-text-and-link
     cropOn:
       id: message--attachment-with-text-and-link
     thresholdPercentage: 1
@@ -1155,7 +1155,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--attachment-with-text-and-link-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--attachment-with-text-and-link-large-font.png
+    path: .maestro/screenshots/message--attachment-with-text-and-link-large-font
     cropOn:
       id: message--attachment-with-text-and-link-large-font
     thresholdPercentage: 1
@@ -1163,7 +1163,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--avatar"
 - assertScreenshot:
-    path: ./screenshots/message--avatar.png
+    path: .maestro/screenshots/message--avatar
     cropOn:
       id: message--avatar
     thresholdPercentage: 1
@@ -1171,7 +1171,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--basic"
 - assertScreenshot:
-    path: ./screenshots/message--basic.png
+    path: .maestro/screenshots/message--basic
     cropOn:
       id: message--basic
     thresholdPercentage: 1
@@ -1179,7 +1179,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--basic-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--basic-large-font.png
+    path: .maestro/screenshots/message--basic-large-font
     cropOn:
       id: message--basic-large-font
     thresholdPercentage: 1
@@ -1187,7 +1187,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--block-quote"
 - assertScreenshot:
-    path: ./screenshots/message--block-quote.png
+    path: .maestro/screenshots/message--block-quote
     cropOn:
       id: message--block-quote
     thresholdPercentage: 1
@@ -1195,7 +1195,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--block-quote-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--block-quote-large-font.png
+    path: .maestro/screenshots/message--block-quote-large-font
     cropOn:
       id: message--block-quote-large-font
     thresholdPercentage: 1
@@ -1203,7 +1203,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--broadcast"
 - assertScreenshot:
-    path: ./screenshots/message--broadcast.png
+    path: .maestro/screenshots/message--broadcast
     cropOn:
       id: message--broadcast
     thresholdPercentage: 1
@@ -1211,7 +1211,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--broadcast-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--broadcast-large-font.png
+    path: .maestro/screenshots/message--broadcast-large-font
     cropOn:
       id: message--broadcast-large-font
     thresholdPercentage: 1
@@ -1219,7 +1219,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--collapsed-attachments"
 - assertScreenshot:
-    path: ./screenshots/message--collapsed-attachments.png
+    path: .maestro/screenshots/message--collapsed-attachments
     cropOn:
       id: message--collapsed-attachments
     thresholdPercentage: 1
@@ -1227,7 +1227,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--collapsed-attachments-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--collapsed-attachments-large-font.png
+    path: .maestro/screenshots/message--collapsed-attachments-large-font
     cropOn:
       id: message--collapsed-attachments-large-font
     thresholdPercentage: 1
@@ -1235,7 +1235,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--collapsible-attachment-with-text"
 - assertScreenshot:
-    path: ./screenshots/message--collapsible-attachment-with-text.png
+    path: .maestro/screenshots/message--collapsible-attachment-with-text
     cropOn:
       id: message--collapsible-attachment-with-text
     thresholdPercentage: 1
@@ -1243,7 +1243,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--collapsible-attachment-with-text-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--collapsible-attachment-with-text-large-font.png
+    path: .maestro/screenshots/message--collapsible-attachment-with-text-large-font
     cropOn:
       id: message--collapsible-attachment-with-text-large-font
     thresholdPercentage: 1
@@ -1251,7 +1251,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--colored-attachments"
 - assertScreenshot:
-    path: ./screenshots/message--colored-attachments.png
+    path: .maestro/screenshots/message--colored-attachments
     cropOn:
       id: message--colored-attachments
     thresholdPercentage: 1
@@ -1259,7 +1259,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--colored-attachments-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--colored-attachments-large-font.png
+    path: .maestro/screenshots/message--colored-attachments-large-font
     cropOn:
       id: message--colored-attachments-large-font
     thresholdPercentage: 1
@@ -1267,7 +1267,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--custom-fields"
 - assertScreenshot:
-    path: ./screenshots/message--custom-fields.png
+    path: .maestro/screenshots/message--custom-fields
     cropOn:
       id: message--custom-fields
     thresholdPercentage: 1
@@ -1275,7 +1275,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--custom-fields-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--custom-fields-large-font.png
+    path: .maestro/screenshots/message--custom-fields-large-font
     cropOn:
       id: message--custom-fields-large-font
     thresholdPercentage: 1
@@ -1283,7 +1283,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--date-and-unread-separators"
 - assertScreenshot:
-    path: ./screenshots/message--date-and-unread-separators.png
+    path: .maestro/screenshots/message--date-and-unread-separators
     cropOn:
       id: message--date-and-unread-separators
     thresholdPercentage: 1
@@ -1291,7 +1291,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--date-and-unread-separators-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--date-and-unread-separators-large-font.png
+    path: .maestro/screenshots/message--date-and-unread-separators-large-font
     cropOn:
       id: message--date-and-unread-separators-large-font
     thresholdPercentage: 1
@@ -1299,7 +1299,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--discussion"
 - assertScreenshot:
-    path: ./screenshots/message--discussion.png
+    path: .maestro/screenshots/message--discussion
     cropOn:
       id: message--discussion
     thresholdPercentage: 1
@@ -1307,7 +1307,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--discussion-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--discussion-large-font.png
+    path: .maestro/screenshots/message--discussion-large-font
     cropOn:
       id: message--discussion-large-font
     thresholdPercentage: 1
@@ -1315,7 +1315,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--edited"
 - assertScreenshot:
-    path: ./screenshots/message--edited.png
+    path: .maestro/screenshots/message--edited
     cropOn:
       id: message--edited
     thresholdPercentage: 1
@@ -1323,7 +1323,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--edited-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--edited-large-font.png
+    path: .maestro/screenshots/message--edited-large-font
     cropOn:
       id: message--edited-large-font
     thresholdPercentage: 1
@@ -1331,7 +1331,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--editing"
 - assertScreenshot:
-    path: ./screenshots/message--editing.png
+    path: .maestro/screenshots/message--editing
     cropOn:
       id: message--editing
     thresholdPercentage: 1
@@ -1339,7 +1339,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--editing-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--editing-large-font.png
+    path: .maestro/screenshots/message--editing-large-font
     cropOn:
       id: message--editing-large-font
     thresholdPercentage: 1
@@ -1347,7 +1347,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--emojis"
 - assertScreenshot:
-    path: ./screenshots/message--emojis.png
+    path: .maestro/screenshots/message--emojis
     cropOn:
       id: message--emojis
     thresholdPercentage: 1
@@ -1355,7 +1355,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--emojis-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--emojis-large-font.png
+    path: .maestro/screenshots/message--emojis-large-font
     cropOn:
       id: message--emojis-large-font
     thresholdPercentage: 1
@@ -1363,7 +1363,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--encrypted"
 - assertScreenshot:
-    path: ./screenshots/message--encrypted.png
+    path: .maestro/screenshots/message--encrypted
     cropOn:
       id: message--encrypted
     thresholdPercentage: 1
@@ -1371,7 +1371,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--encrypted-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--encrypted-large-font.png
+    path: .maestro/screenshots/message--encrypted-large-font
     cropOn:
       id: message--encrypted-large-font
     thresholdPercentage: 1
@@ -1379,7 +1379,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--error"
 - assertScreenshot:
-    path: ./screenshots/message--error.png
+    path: .maestro/screenshots/message--error
     cropOn:
       id: message--error
     thresholdPercentage: 1
@@ -1387,7 +1387,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--error-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--error-large-font.png
+    path: .maestro/screenshots/message--error-large-font
     cropOn:
       id: message--error-large-font
     thresholdPercentage: 1
@@ -1395,7 +1395,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--file-attachments-with-filenames"
 - assertScreenshot:
-    path: ./screenshots/message--file-attachments-with-filenames.png
+    path: .maestro/screenshots/message--file-attachments-with-filenames
     cropOn:
       id: message--file-attachments-with-filenames
     thresholdPercentage: 1
@@ -1403,7 +1403,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--file-attachments-with-filenames-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--file-attachments-with-filenames-large-font.png
+    path: .maestro/screenshots/message--file-attachments-with-filenames-large-font
     cropOn:
       id: message--file-attachments-with-filenames-large-font
     thresholdPercentage: 1
@@ -1411,7 +1411,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--full-name"
 - assertScreenshot:
-    path: ./screenshots/message--full-name.png
+    path: .maestro/screenshots/message--full-name
     cropOn:
       id: message--full-name
     thresholdPercentage: 1
@@ -1419,7 +1419,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--full-name-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--full-name-large-font.png
+    path: .maestro/screenshots/message--full-name-large-font
     cropOn:
       id: message--full-name-large-font
     thresholdPercentage: 1
@@ -1427,7 +1427,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--grouped-messages"
 - assertScreenshot:
-    path: ./screenshots/message--grouped-messages.png
+    path: .maestro/screenshots/message--grouped-messages
     cropOn:
       id: message--grouped-messages
     thresholdPercentage: 1
@@ -1435,7 +1435,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--grouped-messages-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--grouped-messages-large-font.png
+    path: .maestro/screenshots/message--grouped-messages-large-font
     cropOn:
       id: message--grouped-messages-large-font
     thresholdPercentage: 1
@@ -1443,7 +1443,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--ignored"
 - assertScreenshot:
-    path: ./screenshots/message--ignored.png
+    path: .maestro/screenshots/message--ignored
     cropOn:
       id: message--ignored
     thresholdPercentage: 1
@@ -1451,7 +1451,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--ignored-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--ignored-large-font.png
+    path: .maestro/screenshots/message--ignored-large-font
     cropOn:
       id: message--ignored-large-font
     thresholdPercentage: 1
@@ -1459,7 +1459,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--inline-katex"
 - assertScreenshot:
-    path: ./screenshots/message--inline-katex.png
+    path: .maestro/screenshots/message--inline-katex
     cropOn:
       id: message--inline-katex
     thresholdPercentage: 1
@@ -1467,7 +1467,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--inline-katex-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--inline-katex-large-font.png
+    path: .maestro/screenshots/message--inline-katex-large-font
     cropOn:
       id: message--inline-katex-large-font
     thresholdPercentage: 1
@@ -1475,7 +1475,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--katex"
 - assertScreenshot:
-    path: ./screenshots/message--katex.png
+    path: .maestro/screenshots/message--katex
     cropOn:
       id: message--katex
     thresholdPercentage: 1
@@ -1483,7 +1483,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--katex-array"
 - assertScreenshot:
-    path: ./screenshots/message--katex-array.png
+    path: .maestro/screenshots/message--katex-array
     cropOn:
       id: message--katex-array
     thresholdPercentage: 1
@@ -1491,7 +1491,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--katex-array-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--katex-array-large-font.png
+    path: .maestro/screenshots/message--katex-array-large-font
     cropOn:
       id: message--katex-array-large-font
     thresholdPercentage: 1
@@ -1499,7 +1499,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--katex-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--katex-large-font.png
+    path: .maestro/screenshots/message--katex-large-font
     cropOn:
       id: message--katex-large-font
     thresholdPercentage: 1
@@ -1507,7 +1507,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--lists"
 - assertScreenshot:
-    path: ./screenshots/message--lists.png
+    path: .maestro/screenshots/message--lists
     cropOn:
       id: message--lists
     thresholdPercentage: 1
@@ -1515,7 +1515,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--lists-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--lists-large-font.png
+    path: .maestro/screenshots/message--lists-large-font
     cropOn:
       id: message--lists-large-font
     thresholdPercentage: 1
@@ -1523,7 +1523,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--long-name-user"
 - assertScreenshot:
-    path: ./screenshots/message--long-name-user.png
+    path: .maestro/screenshots/message--long-name-user
     cropOn:
       id: message--long-name-user
     thresholdPercentage: 1
@@ -1531,7 +1531,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--long-name-user-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--long-name-user-large-font.png
+    path: .maestro/screenshots/message--long-name-user-large-font
     cropOn:
       id: message--long-name-user-large-font
     thresholdPercentage: 1
@@ -1539,7 +1539,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--mentions"
 - assertScreenshot:
-    path: ./screenshots/message--mentions.png
+    path: .maestro/screenshots/message--mentions
     cropOn:
       id: message--mentions
     thresholdPercentage: 1
@@ -1547,7 +1547,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--mentions-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--mentions-large-font.png
+    path: .maestro/screenshots/message--mentions-large-font
     cropOn:
       id: message--mentions-large-font
     thresholdPercentage: 1
@@ -1555,7 +1555,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--message"
 - assertScreenshot:
-    path: ./screenshots/message--message.png
+    path: .maestro/screenshots/message--message
     cropOn:
       id: message--message
     thresholdPercentage: 1
@@ -1563,7 +1563,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--message-with-nested-reply-and-file"
 - assertScreenshot:
-    path: ./screenshots/message--message-with-nested-reply-and-file.png
+    path: .maestro/screenshots/message--message-with-nested-reply-and-file
     cropOn:
       id: message--message-with-nested-reply-and-file
     thresholdPercentage: 1
@@ -1571,7 +1571,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--message-with-read-receipt"
 - assertScreenshot:
-    path: ./screenshots/message--message-with-read-receipt.png
+    path: .maestro/screenshots/message--message-with-read-receipt
     cropOn:
       id: message--message-with-read-receipt
     thresholdPercentage: 1
@@ -1579,7 +1579,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--message-with-read-receipt-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--message-with-read-receipt-large-font.png
+    path: .maestro/screenshots/message--message-with-read-receipt-large-font
     cropOn:
       id: message--message-with-read-receipt-large-font
     thresholdPercentage: 1
@@ -1587,7 +1587,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--message-with-reply"
 - assertScreenshot:
-    path: ./screenshots/message--message-with-reply.png
+    path: .maestro/screenshots/message--message-with-reply
     cropOn:
       id: message--message-with-reply
     thresholdPercentage: 1
@@ -1595,7 +1595,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--message-with-reply-and-file"
 - assertScreenshot:
-    path: ./screenshots/message--message-with-reply-and-file.png
+    path: .maestro/screenshots/message--message-with-reply-and-file
     cropOn:
       id: message--message-with-reply-and-file
     thresholdPercentage: 1
@@ -1603,7 +1603,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--message-with-reply-and-file-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--message-with-reply-and-file-large-font.png
+    path: .maestro/screenshots/message--message-with-reply-and-file-large-font
     cropOn:
       id: message--message-with-reply-and-file-large-font
     thresholdPercentage: 1
@@ -1611,7 +1611,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--message-with-reply-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--message-with-reply-large-font.png
+    path: .maestro/screenshots/message--message-with-reply-large-font
     cropOn:
       id: message--message-with-reply-large-font
     thresholdPercentage: 1
@@ -1619,7 +1619,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--message-with-thread"
 - assertScreenshot:
-    path: ./screenshots/message--message-with-thread.png
+    path: .maestro/screenshots/message--message-with-thread
     cropOn:
       id: message--message-with-thread
     thresholdPercentage: 1
@@ -1627,7 +1627,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--message-with-thread-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--message-with-thread-large-font.png
+    path: .maestro/screenshots/message--message-with-thread-large-font
     cropOn:
       id: message--message-with-thread-large-font
     thresholdPercentage: 1
@@ -1635,7 +1635,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--pinned"
 - assertScreenshot:
-    path: ./screenshots/message--pinned.png
+    path: .maestro/screenshots/message--pinned
     cropOn:
       id: message--pinned
     thresholdPercentage: 1
@@ -1643,7 +1643,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--pinned-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--pinned-large-font.png
+    path: .maestro/screenshots/message--pinned-large-font
     cropOn:
       id: message--pinned-large-font
     thresholdPercentage: 1
@@ -1651,7 +1651,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--reactions"
 - assertScreenshot:
-    path: ./screenshots/message--reactions.png
+    path: .maestro/screenshots/message--reactions
     cropOn:
       id: message--reactions
     thresholdPercentage: 1
@@ -1659,7 +1659,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--reactions-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--reactions-large-font.png
+    path: .maestro/screenshots/message--reactions-large-font
     cropOn:
       id: message--reactions-large-font
     thresholdPercentage: 1
@@ -1667,7 +1667,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--sequential-thread-messages-following-thread-button"
 - assertScreenshot:
-    path: ./screenshots/message--sequential-thread-messages-following-thread-button.png
+    path: .maestro/screenshots/message--sequential-thread-messages-following-thread-button
     cropOn:
       id: message--sequential-thread-messages-following-thread-button
     thresholdPercentage: 1
@@ -1675,7 +1675,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--sequential-thread-messages-following-thread-button-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--sequential-thread-messages-following-thread-button-large-font.png
+    path: .maestro/screenshots/message--sequential-thread-messages-following-thread-button-large-font
     cropOn:
       id: message--sequential-thread-messages-following-thread-button-large-font
     thresholdPercentage: 1
@@ -1683,7 +1683,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--sequential-thread-messages-following-thread-reply"
 - assertScreenshot:
-    path: ./screenshots/message--sequential-thread-messages-following-thread-reply.png
+    path: .maestro/screenshots/message--sequential-thread-messages-following-thread-reply
     cropOn:
       id: message--sequential-thread-messages-following-thread-reply
     thresholdPercentage: 1
@@ -1691,7 +1691,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--sequential-thread-messages-following-thread-reply-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--sequential-thread-messages-following-thread-reply-large-font.png
+    path: .maestro/screenshots/message--sequential-thread-messages-following-thread-reply-large-font
     cropOn:
       id: message--sequential-thread-messages-following-thread-reply-large-font
     thresholdPercentage: 1
@@ -1699,7 +1699,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--show-button-as-attachment"
 - assertScreenshot:
-    path: ./screenshots/message--show-button-as-attachment.png
+    path: .maestro/screenshots/message--show-button-as-attachment
     cropOn:
       id: message--show-button-as-attachment
     thresholdPercentage: 1
@@ -1707,7 +1707,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--show-button-as-attachment-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--show-button-as-attachment-large-font.png
+    path: .maestro/screenshots/message--show-button-as-attachment-large-font
     cropOn:
       id: message--show-button-as-attachment-large-font
     thresholdPercentage: 1
@@ -1715,7 +1715,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--static-avatar"
 - assertScreenshot:
-    path: ./screenshots/message--static-avatar.png
+    path: .maestro/screenshots/message--static-avatar
     cropOn:
       id: message--static-avatar
     thresholdPercentage: 1
@@ -1723,7 +1723,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--static-avatar-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--static-avatar-large-font.png
+    path: .maestro/screenshots/message--static-avatar-large-font
     cropOn:
       id: message--static-avatar-large-font
     thresholdPercentage: 1
@@ -1731,7 +1731,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--system-messages"
 - assertScreenshot:
-    path: ./screenshots/message--system-messages.png
+    path: .maestro/screenshots/message--system-messages
     cropOn:
       id: message--system-messages
     thresholdPercentage: 1
@@ -1739,7 +1739,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--system-messages-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--system-messages-large-font.png
+    path: .maestro/screenshots/message--system-messages-large-font
     cropOn:
       id: message--system-messages-large-font
     thresholdPercentage: 1
@@ -1747,7 +1747,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--temp"
 - assertScreenshot:
-    path: ./screenshots/message--temp.png
+    path: .maestro/screenshots/message--temp
     cropOn:
       id: message--temp
     thresholdPercentage: 1
@@ -1755,7 +1755,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--temp-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--temp-large-font.png
+    path: .maestro/screenshots/message--temp-large-font
     cropOn:
       id: message--temp-large-font
     thresholdPercentage: 1
@@ -1763,7 +1763,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--thumbnail-from-server"
 - assertScreenshot:
-    path: ./screenshots/message--thumbnail-from-server.png
+    path: .maestro/screenshots/message--thumbnail-from-server
     cropOn:
       id: message--thumbnail-from-server
     thresholdPercentage: 1
@@ -1771,7 +1771,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--thumbnail-from-server-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--thumbnail-from-server-large-font.png
+    path: .maestro/screenshots/message--thumbnail-from-server-large-font
     cropOn:
       id: message--thumbnail-from-server-large-font
     thresholdPercentage: 1
@@ -1779,7 +1779,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--time-format"
 - assertScreenshot:
-    path: ./screenshots/message--time-format.png
+    path: .maestro/screenshots/message--time-format
     cropOn:
       id: message--time-format
     thresholdPercentage: 1
@@ -1787,7 +1787,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--time-format-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--time-format-large-font.png
+    path: .maestro/screenshots/message--time-format-large-font
     cropOn:
       id: message--time-format-large-font
     thresholdPercentage: 1
@@ -1795,7 +1795,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--translated"
 - assertScreenshot:
-    path: ./screenshots/message--translated.png
+    path: .maestro/screenshots/message--translated
     cropOn:
       id: message--translated
     thresholdPercentage: 1
@@ -1803,7 +1803,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--translated-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--translated-large-font.png
+    path: .maestro/screenshots/message--translated-large-font
     cropOn:
       id: message--translated-large-font
     thresholdPercentage: 1
@@ -1811,7 +1811,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--two-short-custom-fields-with-markdown"
 - assertScreenshot:
-    path: ./screenshots/message--two-short-custom-fields-with-markdown.png
+    path: .maestro/screenshots/message--two-short-custom-fields-with-markdown
     cropOn:
       id: message--two-short-custom-fields-with-markdown
     thresholdPercentage: 1
@@ -1819,7 +1819,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--two-short-custom-fields-with-markdown-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--two-short-custom-fields-with-markdown-large-font.png
+    path: .maestro/screenshots/message--two-short-custom-fields-with-markdown-large-font
     cropOn:
       id: message--two-short-custom-fields-with-markdown-large-font
     thresholdPercentage: 1
@@ -1827,7 +1827,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--url"
 - assertScreenshot:
-    path: ./screenshots/message--url.png
+    path: .maestro/screenshots/message--url
     cropOn:
       id: message--url
     thresholdPercentage: 1
@@ -1835,7 +1835,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--url-image-preview"
 - assertScreenshot:
-    path: ./screenshots/message--url-image-preview.png
+    path: .maestro/screenshots/message--url-image-preview
     cropOn:
       id: message--url-image-preview
     thresholdPercentage: 1
@@ -1843,7 +1843,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--url-image-preview-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--url-image-preview-large-font.png
+    path: .maestro/screenshots/message--url-image-preview-large-font
     cropOn:
       id: message--url-image-preview-large-font
     thresholdPercentage: 1
@@ -1851,7 +1851,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--url-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--url-large-font.png
+    path: .maestro/screenshots/message--url-large-font
     cropOn:
       id: message--url-large-font
     thresholdPercentage: 1
@@ -1859,7 +1859,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--with-alias"
 - assertScreenshot:
-    path: ./screenshots/message--with-alias.png
+    path: .maestro/screenshots/message--with-alias
     cropOn:
       id: message--with-alias
     thresholdPercentage: 1
@@ -1867,7 +1867,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--with-alias-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--with-alias-large-font.png
+    path: .maestro/screenshots/message--with-alias-large-font
     cropOn:
       id: message--with-alias-large-font
     thresholdPercentage: 1
@@ -1875,7 +1875,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--with-audio"
 - assertScreenshot:
-    path: ./screenshots/message--with-audio.png
+    path: .maestro/screenshots/message--with-audio
     cropOn:
       id: message--with-audio
     thresholdPercentage: 1
@@ -1883,7 +1883,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--with-audio-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--with-audio-large-font.png
+    path: .maestro/screenshots/message--with-audio-large-font
     cropOn:
       id: message--with-audio-large-font
     thresholdPercentage: 1
@@ -1891,7 +1891,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--with-file"
 - assertScreenshot:
-    path: ./screenshots/message--with-file.png
+    path: .maestro/screenshots/message--with-file
     cropOn:
       id: message--with-file
     thresholdPercentage: 1
@@ -1899,7 +1899,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--with-file-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--with-file-large-font.png
+    path: .maestro/screenshots/message--with-file-large-font
     cropOn:
       id: message--with-file-large-font
     thresholdPercentage: 1
@@ -1907,7 +1907,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--with-image"
 - assertScreenshot:
-    path: ./screenshots/message--with-image.png
+    path: .maestro/screenshots/message--with-image
     cropOn:
       id: message--with-image
     thresholdPercentage: 1
@@ -1915,7 +1915,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--with-image-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--with-image-large-font.png
+    path: .maestro/screenshots/message--with-image-large-font
     cropOn:
       id: message--with-image-large-font
     thresholdPercentage: 1
@@ -1923,7 +1923,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--without-header"
 - assertScreenshot:
-    path: ./screenshots/message--without-header.png
+    path: .maestro/screenshots/message--without-header
     cropOn:
       id: message--without-header
     thresholdPercentage: 1
@@ -1931,7 +1931,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--without-header-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--without-header-large-font.png
+    path: .maestro/screenshots/message--without-header-large-font
     cropOn:
       id: message--without-header-large-font
     thresholdPercentage: 1
@@ -1939,7 +1939,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--with-video"
 - assertScreenshot:
-    path: ./screenshots/message--with-video.png
+    path: .maestro/screenshots/message--with-video
     cropOn:
       id: message--with-video
     thresholdPercentage: 1
@@ -1947,7 +1947,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/message--with-video-large-font"
 - assertScreenshot:
-    path: ./screenshots/message--with-video-large-font.png
+    path: .maestro/screenshots/message--with-video-large-font
     cropOn:
       id: message--with-video-large-font
     thresholdPercentage: 1
@@ -1955,7 +1955,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/cannedresponseitem--itens"
 - assertScreenshot:
-    path: ./screenshots/cannedresponseitem--itens.png
+    path: .maestro/screenshots/cannedresponseitem--itens
     cropOn:
       id: cannedresponseitem--itens
     thresholdPercentage: 1
@@ -1963,7 +1963,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/switchitem--switch"
 - assertScreenshot:
-    path: ./screenshots/switchitem--switch.png
+    path: .maestro/screenshots/switchitem--switch
     cropOn:
       id: switchitem--switch
     thresholdPercentage: 1
@@ -1971,7 +1971,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/discussionsview-item--content"
 - assertScreenshot:
-    path: ./screenshots/discussionsview-item--content.png
+    path: .maestro/screenshots/discussionsview-item--content
     cropOn:
       id: discussionsview-item--content
     thresholdPercentage: 1
@@ -1979,7 +1979,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/discussionsview-item--themes"
 - assertScreenshot:
-    path: ./screenshots/discussionsview-item--themes.png
+    path: .maestro/screenshots/discussionsview-item--themes
     cropOn:
       id: discussionsview-item--themes
     thresholdPercentage: 1
@@ -1987,7 +1987,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/servershistoryitem--content"
 - assertScreenshot:
-    path: ./screenshots/servershistoryitem--content.png
+    path: .maestro/screenshots/servershistoryitem--content
     cropOn:
       id: servershistoryitem--content
     thresholdPercentage: 1
@@ -1995,7 +1995,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/servershistoryitem--swipe-actions"
 - assertScreenshot:
-    path: ./screenshots/servershistoryitem--swipe-actions.png
+    path: .maestro/screenshots/servershistoryitem--swipe-actions
     cropOn:
       id: servershistoryitem--swipe-actions
     thresholdPercentage: 1
@@ -2003,7 +2003,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/servershistoryitem--themes"
 - assertScreenshot:
-    path: ./screenshots/servershistoryitem--themes.png
+    path: .maestro/screenshots/servershistoryitem--themes
     cropOn:
       id: servershistoryitem--themes
     thresholdPercentage: 1
@@ -2011,7 +2011,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/roominfoabac--black"
 - assertScreenshot:
-    path: ./screenshots/roominfoabac--black.png
+    path: .maestro/screenshots/roominfoabac--black
     cropOn:
       id: roominfoabac--black
     thresholdPercentage: 1
@@ -2019,7 +2019,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/roominfoabac--dark"
 - assertScreenshot:
-    path: ./screenshots/roominfoabac--dark.png
+    path: .maestro/screenshots/roominfoabac--dark
     cropOn:
       id: roominfoabac--dark
     thresholdPercentage: 1
@@ -2027,7 +2027,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/roominfoabac--light"
 - assertScreenshot:
-    path: ./screenshots/roominfoabac--light.png
+    path: .maestro/screenshots/roominfoabac--light
     cropOn:
       id: roominfoabac--light
     thresholdPercentage: 1
@@ -2035,7 +2035,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/roomview-loadmore--basic"
 - assertScreenshot:
-    path: ./screenshots/roomview-loadmore--basic.png
+    path: .maestro/screenshots/roomview-loadmore--basic
     cropOn:
       id: roomview-loadmore--basic
     thresholdPercentage: 1
@@ -2043,7 +2043,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/roomview-loadmore--black-theme"
 - assertScreenshot:
-    path: ./screenshots/roomview-loadmore--black-theme.png
+    path: .maestro/screenshots/roomview-loadmore--black-theme
     cropOn:
       id: roomview-loadmore--black-theme
     thresholdPercentage: 1
@@ -2051,7 +2051,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/roomview-loadmore--dark-theme"
 - assertScreenshot:
-    path: ./screenshots/roomview-loadmore--dark-theme.png
+    path: .maestro/screenshots/roomview-loadmore--dark-theme
     cropOn:
       id: roomview-loadmore--dark-theme
     thresholdPercentage: 1
@@ -2059,7 +2059,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/roomview-loadmore--light-theme"
 - assertScreenshot:
-    path: ./screenshots/roomview-loadmore--light-theme.png
+    path: .maestro/screenshots/roomview-loadmore--light-theme
     cropOn:
       id: roomview-loadmore--light-theme
     thresholdPercentage: 1
@@ -2067,7 +2067,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/threadmessagesview-item--badge"
 - assertScreenshot:
-    path: ./screenshots/threadmessagesview-item--badge.png
+    path: .maestro/screenshots/threadmessagesview-item--badge
     cropOn:
       id: threadmessagesview-item--badge
     thresholdPercentage: 1
@@ -2075,7 +2075,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/threadmessagesview-item--content"
 - assertScreenshot:
-    path: ./screenshots/threadmessagesview-item--content.png
+    path: .maestro/screenshots/threadmessagesview-item--content
     cropOn:
       id: threadmessagesview-item--content
     thresholdPercentage: 1
@@ -2083,7 +2083,7 @@ appId: chat.rocket.reactnative
 
 - openLink: "rocketchat://storybook?path=/story/threadmessagesview-item--themes"
 - assertScreenshot:
-    path: ./screenshots/threadmessagesview-item--themes.png
+    path: .maestro/screenshots/threadmessagesview-item--themes
     cropOn:
       id: threadmessagesview-item--themes
     thresholdPercentage: 1

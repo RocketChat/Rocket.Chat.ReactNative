@@ -63,7 +63,7 @@ function buildSteps(story) {
 	return `
 - openLink: "rocketchat://storybook?path=/story/${story.id}"
 - assertScreenshot:
-    path: ./screenshots/${story.id}.png
+    path: .maestro/screenshots/${story.id}
     cropOn:
       id: ${story.id}
     thresholdPercentage: 1
