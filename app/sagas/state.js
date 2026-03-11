@@ -19,6 +19,13 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 	if (appRoot !== RootEnum.ROOT_INSIDE) {
 		return;
 	}
+	// Check for pending notification BEFORE connection check.
+	// This ensures notification taps during WebSocket reconnection are not lost.
+	// checkPendingNotification() dispatches deepLinkingOpen, and the deepLinking
+	// saga already waits for LOGIN.SUCCESS before navigating to the room.
+	checkPendingNotification().catch((e) => {
+		log('[state.js] Error checking pending notification:', e);
+	});
 	const isReady = yield isAuthAndConnected();
 	if (!isReady) {
 		return;
@@ -27,10 +34,6 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 		const server = yield select(state => state.server.server);
 		yield localAuthenticate(server);
 		checkAndReopen();
-		// Check for pending notification when app comes to foreground (Android - notification tap while in background)
-		checkPendingNotification().catch((e) => {
-			log('[state.js] Error checking pending notification:', e);
-		});
 		return yield setUserPresenceOnline();
 	} catch (e) {
 		log(e);
