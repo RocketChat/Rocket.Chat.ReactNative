@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, type TextStyle } from 'react-native';
 import { type Strike as StrikeProps } from '@rocket.chat/message-parser';
 
 import { Bold, Italic, Link } from './index';
@@ -7,6 +7,7 @@ import Plain from '../Plain';
 
 interface IStrikeProps {
 	value: StrikeProps['value'];
+	style?: TextStyle;
 }
 
 const styles = StyleSheet.create({
@@ -15,8 +16,8 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Strike = ({ value }: IStrikeProps) => (
-	<Text style={styles.text}>
+const Strike = ({ value, style }: IStrikeProps) => (
+	<Text style={[styles.text, style]}>
 		{value.map(block => {
 			switch (block.type) {
 				case 'LINK':

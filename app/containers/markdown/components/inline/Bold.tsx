@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, type TextStyle } from 'react-native';
 import { type Bold as BoldProps } from '@rocket.chat/message-parser';
 
 import { Italic, Link, Strike } from './index';
@@ -8,6 +8,7 @@ import sharedStyles from '../../../../views/Styles';
 
 interface IBoldProps {
 	value: BoldProps['value'];
+	style?: TextStyle;
 }
 
 const styles = StyleSheet.create({
@@ -16,8 +17,8 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Bold = ({ value }: IBoldProps) => (
-	<Text style={styles.text}>
+const Bold = ({ value, style }: IBoldProps) => (
+	<Text style={[styles.text, style]}>
 		{value.map(block => {
 			switch (block.type) {
 				case 'LINK':

@@ -16,9 +16,10 @@ interface IAtMention {
 	style?: StyleProp<TextStyle>[];
 	useRealName?: boolean;
 	mentions?: IUserMention[];
+	disabled?: boolean;
 }
 
-const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, style = [], useRealName }: IAtMention) => {
+const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, style = [], useRealName, disabled }: IAtMention) => {
 	const { theme } = useTheme();
 	const [mentionsWithAtSymbol] = useUserPreferences<boolean>(USER_MENTIONS_PREFERENCES_KEY, false);
 	const preffix = mentionsWithAtSymbol ? '@' : '';
@@ -74,7 +75,7 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 
 		return (
 			// not enough information on mentions to navigate to team info, so we don't handle onPress
-			<Text style={[styles.mention, mentionStyle, ...style]} onPress={atMentioned?.type === 'team' ? undefined : handlePress}>
+			<Text style={[styles.mention, mentionStyle, ...style]} onPress={disabled || atMentioned?.type === 'team' ? undefined : handlePress}>
 				{preffix}
 				{text}
 			</Text>

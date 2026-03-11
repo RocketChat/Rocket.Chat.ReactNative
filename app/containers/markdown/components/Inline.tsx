@@ -5,7 +5,7 @@ import { type Paragraph as ParagraphProps } from '@rocket.chat/message-parser';
 import styles from '../styles';
 import { AtMention, Hashtag } from './mentions';
 import { Emoji } from './emoji';
-import { Bold, Italic, Link, Strike } from './inline/index';
+import { Bold, Italic, Link, Spoiler, Strike } from './inline/index';
 import Plain from './Plain';
 import InlineCode from './InlineCode';
 import Image from './Image';
@@ -73,6 +73,8 @@ const Inline = ({ value, forceTrim }: IParagraphProps): React.ReactElement | nul
 						return <Text>{block.value}</Text>;
 					case 'TIMESTAMP':
 						return <Timestamp value={block.value} />;
+					case 'SPOILER':
+						return <Spoiler value={block.value} />;
 					default:
 						return null;
 				}

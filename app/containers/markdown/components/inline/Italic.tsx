@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, type TextStyle } from 'react-native';
 import { type Italic as ItalicProps } from '@rocket.chat/message-parser';
 
 import { Bold, Link, Strike } from './index';
@@ -7,6 +7,7 @@ import Plain from '../Plain';
 
 interface IItalicProps {
 	value: ItalicProps['value'];
+	style?: TextStyle;
 }
 
 const styles = StyleSheet.create({
@@ -15,8 +16,8 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Italic = ({ value }: IItalicProps) => (
-	<Text style={styles.text}>
+const Italic = ({ value, style }: IItalicProps) => (
+	<Text style={[styles.text, style]}>
 		{value.map(block => {
 			switch (block.type) {
 				case 'LINK':

@@ -20,9 +20,10 @@ interface IHashtag {
 	navToRoomInfo?: Function;
 	style?: StyleProp<TextStyle>[];
 	channels?: IUserChannel[];
+	disabled?: boolean;
 }
 
-const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IHashtag) => {
+const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [], disabled }: IHashtag) => {
 	const { theme } = useTheme();
 	const [roomsWithHashTagSymbol] = useUserPreferences<boolean>(ROOM_MENTIONS_PREFERENCES_KEY, false);
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
@@ -61,7 +62,7 @@ const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IH
 					},
 					...style
 				]}
-				onPress={handlePress}>
+				onPress={disabled ? undefined : handlePress}>
 				{`${preffix}${hashtag}`}
 			</Text>
 		);

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Alert, Text } from 'react-native';
+import { Alert, Text, type TextStyle } from 'react-native';
 import { type Link as LinkProps } from '@rocket.chat/message-parser';
 import Clipboard from '@react-native-clipboard/clipboard';
 
@@ -15,9 +15,11 @@ import styles from '../../styles';
 
 interface ILinkProps {
 	value: LinkProps['value'];
+	style?: TextStyle;
+	disabled?: boolean;
 }
 
-const Link = ({ value }: ILinkProps) => {
+const Link = ({ value, style, disabled = false }: ILinkProps) => {
 	const { theme } = useTheme();
 	const { onLinkPress } = useContext(MarkdownContext);
 	const { src, label } = value;
@@ -48,7 +50,7 @@ const Link = ({ value }: ILinkProps) => {
 	};
 
 	return (
-		<Text style={[styles.link, { color: themes[theme].fontInfo }]} onPress={handlePress} onLongPress={onLongPress}>
+		<Text style={[styles.link, { color: themes[theme].fontInfo }, style]} onPress={disabled ? undefined : handlePress} onLongPress={disabled ? undefined : onLongPress}>
 			{(block => {
 				const blockArray = Array.isArray(block) ? block : [block];
 				return blockArray.map(blockInArray => {
