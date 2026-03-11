@@ -1759,28 +1759,7 @@ index 0000000..1211b1e
 +minAndroidGradlePluginVersion=1.0.0
 +coreLibraryDesugaringEnabled=false
 diff --git a/node_modules/@lodev09/react-native-true-sheet/android/build/intermediates/annotation_processor_list/debug/javaPreCompileDebug/annotationProcessors.json b/node_modules/@lodev09/react-native-true-sheet/android/build/intermediates/annotation_processor_list/debug/javaPreCompileDebug/annotationProcessors.json
-new file mode 100644
-index 0000000..9e26dfe
---- /dev/null
-+++ b/node_modules/@lodev09/react-native-true-sheet/android/build/intermediates/annotation_processor_list/debug/javaPreCompileDebug/annotationProcessors.json
-@@ -0,0 +1 @@
-+{}
-\ No newline at end of file
-diff --git a/node_modules/@lodev09/react-native-true-sheet/android/build/intermediates/compile_r_class_jar/debug/generateDebugRFile/R.jar b/node_modules/@lodev09/react-native-true-sheet/android/build/intermediates/compile_r_class_jar/debug/generateDebugRFile/R.jar
-new file mode 100644
-index 0000000..ecea938
-Binary files /dev/null and b/node_modules/@lodev09/react-native-true-sheet/android/build/intermediates/compile_r_class_jar/debug/generateDebugRFile/R.jar differ
-diff --git a/node_modules/@lodev09/react-native-true-sheet/android/build/intermediates/compile_symbol_list/debug/generateDebugRFile/R.txt b/node_modules/@lodev09/react-native-true-sheet/android/build/intermediates/compile_symbol_list/debug/generateDebugRFile/R.txt
-new file mode 100644
-index 0000000..e69de29
-diff --git a/node_modules/@lodev09/react-native-true-sheet/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties b/node_modules/@lodev09/react-native-true-sheet/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties
-new file mode 100644
-index 0000000..4998f7b
---- /dev/null
-+++ b/node_modules/@lodev09/react-native-true-sheet/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties
-@@ -0,0 +1 @@
-+#Thu Mar 05 15:48:34 BRT 2026
-diff --git a/node_modules/@lodev09/react-native-true-sheet/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml b/node_modules/@lodev09/react-native-true-sheet/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml
+
 new file mode 100644
 index 0000000..a3a53e4
 --- /dev/null
