@@ -1,0 +1,2090 @@
+appId: chat.rocket.reactnative
+---
+
+- openLink: "rocketchat://storybook?path=/story/avatar--avatar-base-64"
+- assertScreenshot:
+    path: ./screenshots/avatar--avatar-base-64.png
+    cropOn:
+      id: avatar--avatar-base-64
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/avatar--avatar-external-provider-url"
+- assertScreenshot:
+    path: ./screenshots/avatar--avatar-external-provider-url.png
+    cropOn:
+      id: avatar--avatar-external-provider-url
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/avatar--avatar-path"
+- assertScreenshot:
+    path: ./screenshots/avatar--avatar-path.png
+    cropOn:
+      id: avatar--avatar-path
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/avatar--avatar-room-id"
+- assertScreenshot:
+    path: ./screenshots/avatar--avatar-room-id.png
+    cropOn:
+      id: avatar--avatar-room-id
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/avatar--avatar-text"
+- assertScreenshot:
+    path: ./screenshots/avatar--avatar-text.png
+    cropOn:
+      id: avatar--avatar-text
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/avatar--avatar-url"
+- assertScreenshot:
+    path: ./screenshots/avatar--avatar-url.png
+    cropOn:
+      id: avatar--avatar-url
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/avatar--channel"
+- assertScreenshot:
+    path: ./screenshots/avatar--channel.png
+    cropOn:
+      id: avatar--channel
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/avatar--children"
+- assertScreenshot:
+    path: ./screenshots/avatar--children.png
+    cropOn:
+      id: avatar--children
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/avatar--custom-border-radius"
+- assertScreenshot:
+    path: ./screenshots/avatar--custom-border-radius.png
+    cropOn:
+      id: avatar--custom-border-radius
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/avatar--custom-style"
+- assertScreenshot:
+    path: ./screenshots/avatar--custom-style.png
+    cropOn:
+      id: avatar--custom-style
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/avatar--direct"
+- assertScreenshot:
+    path: ./screenshots/avatar--direct.png
+    cropOn:
+      id: avatar--direct
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/avatar--emoji"
+- assertScreenshot:
+    path: ./screenshots/avatar--emoji.png
+    cropOn:
+      id: avatar--emoji
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/avatar--room-avatar-external-provider-url"
+- assertScreenshot:
+    path: ./screenshots/avatar--room-avatar-external-provider-url.png
+    cropOn:
+      id: avatar--room-avatar-external-provider-url
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/avatar--static"
+- assertScreenshot:
+    path: ./screenshots/avatar--static.png
+    cropOn:
+      id: avatar--static
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/avatar--touchable"
+- assertScreenshot:
+    path: ./screenshots/avatar--touchable.png
+    cropOn:
+      id: avatar--touchable
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/avatar--with-e-tag"
+- assertScreenshot:
+    path: ./screenshots/avatar--with-e-tag.png
+    cropOn:
+      id: avatar--with-e-tag
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/avatar--without-e-tag"
+- assertScreenshot:
+    path: ./screenshots/avatar--without-e-tag.png
+    cropOn:
+      id: avatar--without-e-tag
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/avatar--wrong-server"
+- assertScreenshot:
+    path: ./screenshots/avatar--wrong-server.png
+    cropOn:
+      id: avatar--wrong-server
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/backgroundcontainer--basic"
+- assertScreenshot:
+    path: ./screenshots/backgroundcontainer--basic.png
+    cropOn:
+      id: backgroundcontainer--basic
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/backgroundcontainer--black-theme-loading"
+- assertScreenshot:
+    path: ./screenshots/backgroundcontainer--black-theme-loading.png
+    cropOn:
+      id: backgroundcontainer--black-theme-loading
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/backgroundcontainer--black-theme-text"
+- assertScreenshot:
+    path: ./screenshots/backgroundcontainer--black-theme-text.png
+    cropOn:
+      id: backgroundcontainer--black-theme-text
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/backgroundcontainer--dark-theme-loading"
+- assertScreenshot:
+    path: ./screenshots/backgroundcontainer--dark-theme-loading.png
+    cropOn:
+      id: backgroundcontainer--dark-theme-loading
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/backgroundcontainer--dark-theme-text"
+- assertScreenshot:
+    path: ./screenshots/backgroundcontainer--dark-theme-text.png
+    cropOn:
+      id: backgroundcontainer--dark-theme-text
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/backgroundcontainer--loading"
+- assertScreenshot:
+    path: ./screenshots/backgroundcontainer--loading.png
+    cropOn:
+      id: backgroundcontainer--loading
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/backgroundcontainer--long-text"
+- assertScreenshot:
+    path: ./screenshots/backgroundcontainer--long-text.png
+    cropOn:
+      id: backgroundcontainer--long-text
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/backgroundcontainer--text"
+- assertScreenshot:
+    path: ./screenshots/backgroundcontainer--text.png
+    cropOn:
+      id: backgroundcontainer--text
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/button--custom-button"
+- assertScreenshot:
+    path: ./screenshots/button--custom-button.png
+    cropOn:
+      id: button--custom-button
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/button--disabled-button"
+- assertScreenshot:
+    path: ./screenshots/button--disabled-button.png
+    cropOn:
+      id: button--disabled-button
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/button--disabled-loading-button"
+- assertScreenshot:
+    path: ./screenshots/button--disabled-loading-button.png
+    cropOn:
+      id: button--disabled-loading-button
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/button--loading-button"
+- assertScreenshot:
+    path: ./screenshots/button--loading-button.png
+    cropOn:
+      id: button--loading-button
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/button--primary-button"
+- assertScreenshot:
+    path: ./screenshots/button--primary-button.png
+    cropOn:
+      id: button--primary-button
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/button--secondary-button"
+- assertScreenshot:
+    path: ./screenshots/button--secondary-button.png
+    cropOn:
+      id: button--secondary-button
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/button--small-button"
+- assertScreenshot:
+    path: ./screenshots/button--small-button.png
+    cropOn:
+      id: button--small-button
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/chip--chip-full-width"
+- assertScreenshot:
+    path: ./screenshots/chip--chip-full-width.png
+    cropOn:
+      id: chip--chip-full-width
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/chip--chip-text"
+- assertScreenshot:
+    path: ./screenshots/chip--chip-text.png
+    cropOn:
+      id: chip--chip-text
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/chip--chip-without-avatar"
+- assertScreenshot:
+    path: ./screenshots/chip--chip-without-avatar.png
+    cropOn:
+      id: chip--chip-without-avatar
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/chip--chip-without-avatar-and-icon"
+- assertScreenshot:
+    path: ./screenshots/chip--chip-without-avatar-and-icon.png
+    cropOn:
+      id: chip--chip-without-avatar-and-icon
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/chip--chip-without-icon"
+- assertScreenshot:
+    path: ./screenshots/chip--chip-without-icon.png
+    cropOn:
+      id: chip--chip-without-icon
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/chip--chip-with-short-text"
+- assertScreenshot:
+    path: ./screenshots/chip--chip-with-short-text.png
+    cropOn:
+      id: chip--chip-with-short-text
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/collapsible-text--item"
+- assertScreenshot:
+    path: ./screenshots/collapsible-text--item.png
+    cropOn:
+      id: collapsible-text--item
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/directoryitem--custom-style"
+- assertScreenshot:
+    path: ./screenshots/directoryitem--custom-style.png
+    cropOn:
+      id: directoryitem--custom-style
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/directoryitem--default"
+- assertScreenshot:
+    path: ./screenshots/directoryitem--default.png
+    cropOn:
+      id: directoryitem--default
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/directoryitem--direct-message"
+- assertScreenshot:
+    path: ./screenshots/directoryitem--direct-message.png
+    cropOn:
+      id: directoryitem--direct-message
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/directoryitem--long-room-name"
+- assertScreenshot:
+    path: ./screenshots/directoryitem--long-room-name.png
+    cropOn:
+      id: directoryitem--long-room-name
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/directoryitem--only-title"
+- assertScreenshot:
+    path: ./screenshots/directoryitem--only-title.png
+    cropOn:
+      id: directoryitem--only-title
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/directoryitem--team-main"
+- assertScreenshot:
+    path: ./screenshots/directoryitem--team-main.png
+    cropOn:
+      id: directoryitem--team-main
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/directoryitem--without-description"
+- assertScreenshot:
+    path: ./screenshots/directoryitem--without-description.png
+    cropOn:
+      id: directoryitem--without-description
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/directoryitem--with-right-label"
+- assertScreenshot:
+    path: ./screenshots/directoryitem--with-right-label.png
+    cropOn:
+      id: directoryitem--with-right-label
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/headerbuttons--badge"
+- assertScreenshot:
+    path: ./screenshots/headerbuttons--badge.png
+    cropOn:
+      id: headerbuttons--badge
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/headerbuttons--common"
+- assertScreenshot:
+    path: ./screenshots/headerbuttons--common.png
+    cropOn:
+      id: headerbuttons--common
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/headerbuttons--icons"
+- assertScreenshot:
+    path: ./screenshots/headerbuttons--icons.png
+    cropOn:
+      id: headerbuttons--icons
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/headerbuttons--themes"
+- assertScreenshot:
+    path: ./screenshots/headerbuttons--themes.png
+    cropOn:
+      id: headerbuttons--themes
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/headerbuttons--title"
+- assertScreenshot:
+    path: ./screenshots/headerbuttons--title.png
+    cropOn:
+      id: headerbuttons--title
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/list--alert"
+- assertScreenshot:
+    path: ./screenshots/list--alert.png
+    cropOn:
+      id: list--alert
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/list--header"
+- assertScreenshot:
+    path: ./screenshots/list--header.png
+    cropOn:
+      id: list--header
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/list--icon"
+- assertScreenshot:
+    path: ./screenshots/list--icon.png
+    cropOn:
+      id: list--icon
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/list--list-item-with-right-container-style"
+- assertScreenshot:
+    path: ./screenshots/list--list-item-with-right-container-style.png
+    cropOn:
+      id: list--list-item-with-right-container-style
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/list--pressable"
+- assertScreenshot:
+    path: ./screenshots/list--pressable.png
+    cropOn:
+      id: list--pressable
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/list--radio"
+- assertScreenshot:
+    path: ./screenshots/list--radio.png
+    cropOn:
+      id: list--radio
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/list--section-and-info"
+- assertScreenshot:
+    path: ./screenshots/list--section-and-info.png
+    cropOn:
+      id: list--section-and-info
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/list--separator"
+- assertScreenshot:
+    path: ./screenshots/list--separator.png
+    cropOn:
+      id: list--separator
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/list--title-and-subtitle"
+- assertScreenshot:
+    path: ./screenshots/list--title-and-subtitle.png
+    cropOn:
+      id: list--title-and-subtitle
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/list--with-bigger-font"
+- assertScreenshot:
+    path: ./screenshots/list--with-bigger-font.png
+    cropOn:
+      id: list--with-bigger-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/list--with-black-theme"
+- assertScreenshot:
+    path: ./screenshots/list--with-black-theme.png
+    cropOn:
+      id: list--with-black-theme
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/list--with-custom-colors"
+- assertScreenshot:
+    path: ./screenshots/list--with-custom-colors.png
+    cropOn:
+      id: list--with-custom-colors
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/list--with-dark-theme"
+- assertScreenshot:
+    path: ./screenshots/list--with-dark-theme.png
+    cropOn:
+      id: list--with-dark-theme
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/list--with-flat-list"
+- assertScreenshot:
+    path: ./screenshots/list--with-flat-list.png
+    cropOn:
+      id: list--with-flat-list
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/list--with-icon"
+- assertScreenshot:
+    path: ./screenshots/list--with-icon.png
+    cropOn:
+      id: list--with-icon
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/list--with-small-font"
+- assertScreenshot:
+    path: ./screenshots/list--with-small-font.png
+    cropOn:
+      id: list--with-small-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/login-services--separators"
+- assertScreenshot:
+    path: ./screenshots/login-services--separators.png
+    cropOn:
+      id: login-services--separators
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/login-services--service-list"
+- assertScreenshot:
+    path: ./screenshots/login-services--service-list.png
+    cropOn:
+      id: login-services--service-list
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/reactionslist--reactions-list-full-name"
+- assertScreenshot:
+    path: ./screenshots/reactionslist--reactions-list-full-name.png
+    cropOn:
+      id: reactionslist--reactions-list-full-name
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/reactionslist--reactions-list-story"
+- assertScreenshot:
+    path: ./screenshots/reactionslist--reactions-list-story.png
+    cropOn:
+      id: reactionslist--reactions-list-story
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/roomheader--icons"
+- assertScreenshot:
+    path: ./screenshots/roomheader--icons.png
+    cropOn:
+      id: roomheader--icons
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/roomheader--themes"
+- assertScreenshot:
+    path: ./screenshots/roomheader--themes.png
+    cropOn:
+      id: roomheader--themes
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/roomheader--thread"
+- assertScreenshot:
+    path: ./screenshots/roomheader--thread.png
+    cropOn:
+      id: roomheader--thread
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/roomheader--title-subtitle"
+- assertScreenshot:
+    path: ./screenshots/roomheader--title-subtitle.png
+    cropOn:
+      id: roomheader--title-subtitle
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/roomheader--typing"
+- assertScreenshot:
+    path: ./screenshots/roomheader--typing.png
+    cropOn:
+      id: roomheader--typing
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/roomitem--alerts"
+- assertScreenshot:
+    path: ./screenshots/roomitem--alerts.png
+    cropOn:
+      id: roomitem--alerts
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/roomitem--basic"
+- assertScreenshot:
+    path: ./screenshots/roomitem--basic.png
+    cropOn:
+      id: roomitem--basic
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/roomitem--condensed-room-item"
+- assertScreenshot:
+    path: ./screenshots/roomitem--condensed-room-item.png
+    cropOn:
+      id: roomitem--condensed-room-item
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/roomitem--condensed-room-item-without-avatar"
+- assertScreenshot:
+    path: ./screenshots/roomitem--condensed-room-item-without-avatar.png
+    cropOn:
+      id: roomitem--condensed-room-item-without-avatar
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/roomitem--expanded-room-item-without-avatar"
+- assertScreenshot:
+    path: ./screenshots/roomitem--expanded-room-item-without-avatar.png
+    cropOn:
+      id: roomitem--expanded-room-item-without-avatar
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/roomitem--invited-room"
+- assertScreenshot:
+    path: ./screenshots/roomitem--invited-room.png
+    cropOn:
+      id: roomitem--invited-room
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/roomitem--last-message"
+- assertScreenshot:
+    path: ./screenshots/roomitem--last-message.png
+    cropOn:
+      id: roomitem--last-message
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/roomitem--omnichannel-icon"
+- assertScreenshot:
+    path: ./screenshots/roomitem--omnichannel-icon.png
+    cropOn:
+      id: roomitem--omnichannel-icon
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/roomitem--tag"
+- assertScreenshot:
+    path: ./screenshots/roomitem--tag.png
+    cropOn:
+      id: roomitem--tag
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/roomitem--touch"
+- assertScreenshot:
+    path: ./screenshots/roomitem--touch.png
+    cropOn:
+      id: roomitem--touch
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/roomitem--type"
+- assertScreenshot:
+    path: ./screenshots/roomitem--type.png
+    cropOn:
+      id: roomitem--type
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/roomitem--user"
+- assertScreenshot:
+    path: ./screenshots/roomitem--user.png
+    cropOn:
+      id: roomitem--user
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/roomtypeicon--all"
+- assertScreenshot:
+    path: ./screenshots/roomtypeicon--all.png
+    cropOn:
+      id: roomtypeicon--all
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/searchbox--basic"
+- assertScreenshot:
+    path: ./screenshots/searchbox--basic.png
+    cropOn:
+      id: searchbox--basic
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/serveritem--content"
+- assertScreenshot:
+    path: ./screenshots/serveritem--content.png
+    cropOn:
+      id: serveritem--content
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/serveritem--swipe-actions"
+- assertScreenshot:
+    path: ./screenshots/serveritem--swipe-actions.png
+    cropOn:
+      id: serveritem--swipe-actions
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/serveritem--themes"
+- assertScreenshot:
+    path: ./screenshots/serveritem--themes.png
+    cropOn:
+      id: serveritem--themes
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/status--all"
+- assertScreenshot:
+    path: ./screenshots/status--all.png
+    cropOn:
+      id: status--all
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/textinput--icons"
+- assertScreenshot:
+    path: ./screenshots/textinput--icons.png
+    cropOn:
+      id: textinput--icons
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/textinput--loading"
+- assertScreenshot:
+    path: ./screenshots/textinput--loading.png
+    cropOn:
+      id: textinput--loading
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/textinput--multiline"
+- assertScreenshot:
+    path: ./screenshots/textinput--multiline.png
+    cropOn:
+      id: textinput--multiline
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/textinput--secure-text-entry"
+- assertScreenshot:
+    path: ./screenshots/textinput--secure-text-entry.png
+    cropOn:
+      id: textinput--secure-text-entry
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/textinput--short-and-long"
+- assertScreenshot:
+    path: ./screenshots/textinput--short-and-long.png
+    cropOn:
+      id: textinput--short-and-long
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmessage--action-button"
+- assertScreenshot:
+    path: ./screenshots/uikit-uikitmessage--action-button.png
+    cropOn:
+      id: uikit-uikitmessage--action-button
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmessage--action-select"
+- assertScreenshot:
+    path: ./screenshots/uikit-uikitmessage--action-select.png
+    cropOn:
+      id: uikit-uikitmessage--action-select
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmessage--fields"
+- assertScreenshot:
+    path: ./screenshots/uikit-uikitmessage--fields.png
+    cropOn:
+      id: uikit-uikitmessage--fields
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmessage--section"
+- assertScreenshot:
+    path: ./screenshots/uikit-uikitmessage--section.png
+    cropOn:
+      id: uikit-uikitmessage--section
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmessage--section-button"
+- assertScreenshot:
+    path: ./screenshots/uikit-uikitmessage--section-button.png
+    cropOn:
+      id: uikit-uikitmessage--section-button
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmessage--section-date-picker"
+- assertScreenshot:
+    path: ./screenshots/uikit-uikitmessage--section-date-picker.png
+    cropOn:
+      id: uikit-uikitmessage--section-date-picker
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmessage--section-markdown-list"
+- assertScreenshot:
+    path: ./screenshots/uikit-uikitmessage--section-markdown-list.png
+    cropOn:
+      id: uikit-uikitmessage--section-markdown-list
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmessage--section-multi-select"
+- assertScreenshot:
+    path: ./screenshots/uikit-uikitmessage--section-multi-select.png
+    cropOn:
+      id: uikit-uikitmessage--section-multi-select
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmessage--section-overflow"
+- assertScreenshot:
+    path: ./screenshots/uikit-uikitmessage--section-overflow.png
+    cropOn:
+      id: uikit-uikitmessage--section-overflow
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmessage--section-select"
+- assertScreenshot:
+    path: ./screenshots/uikit-uikitmessage--section-select.png
+    cropOn:
+      id: uikit-uikitmessage--section-select
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmodal--modal-actions"
+- assertScreenshot:
+    path: ./screenshots/uikit-uikitmodal--modal-actions.png
+    cropOn:
+      id: uikit-uikitmodal--modal-actions
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmodal--modal-actions-with-show-more"
+- assertScreenshot:
+    path: ./screenshots/uikit-uikitmodal--modal-actions-with-show-more.png
+    cropOn:
+      id: uikit-uikitmodal--modal-actions-with-show-more
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmodal--modal-contexts-dividers"
+- assertScreenshot:
+    path: ./screenshots/uikit-uikitmodal--modal-contexts-dividers.png
+    cropOn:
+      id: uikit-uikitmodal--modal-contexts-dividers
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmodal--modal-date-picker-with-error"
+- assertScreenshot:
+    path: ./screenshots/uikit-uikitmodal--modal-date-picker-with-error.png
+    cropOn:
+      id: uikit-uikitmodal--modal-date-picker-with-error
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmodal--modal-form-input"
+- assertScreenshot:
+    path: ./screenshots/uikit-uikitmodal--modal-form-input.png
+    cropOn:
+      id: uikit-uikitmodal--modal-form-input
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmodal--modal-form-text-area"
+- assertScreenshot:
+    path: ./screenshots/uikit-uikitmodal--modal-form-text-area.png
+    cropOn:
+      id: uikit-uikitmodal--modal-form-text-area
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmodal--modal-input-with-add-field"
+- assertScreenshot:
+    path: ./screenshots/uikit-uikitmodal--modal-input-with-add-field.png
+    cropOn:
+      id: uikit-uikitmodal--modal-input-with-add-field
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmodal--modal-input-with-error"
+- assertScreenshot:
+    path: ./screenshots/uikit-uikitmodal--modal-input-with-error.png
+    cropOn:
+      id: uikit-uikitmodal--modal-input-with-error
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmodal--modal-multilne-with-error"
+- assertScreenshot:
+    path: ./screenshots/uikit-uikitmodal--modal-multilne-with-error.png
+    cropOn:
+      id: uikit-uikitmodal--modal-multilne-with-error
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmodal--modal-multi-select"
+- assertScreenshot:
+    path: ./screenshots/uikit-uikitmodal--modal-multi-select.png
+    cropOn:
+      id: uikit-uikitmodal--modal-multi-select
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmodal--modal-section-accessories"
+- assertScreenshot:
+    path: ./screenshots/uikit-uikitmodal--modal-section-accessories.png
+    cropOn:
+      id: uikit-uikitmodal--modal-section-accessories
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmodal--modal-section-selects"
+- assertScreenshot:
+    path: ./screenshots/uikit-uikitmodal--modal-section-selects.png
+    cropOn:
+      id: uikit-uikitmodal--modal-section-selects
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/unread-badge--all"
+- assertScreenshot:
+    path: ./screenshots/unread-badge--all.png
+    cropOn:
+      id: unread-badge--all
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/unread-badge--different-mention-types"
+- assertScreenshot:
+    path: ./screenshots/unread-badge--different-mention-types.png
+    cropOn:
+      id: unread-badge--different-mention-types
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/unread-badge--normal"
+- assertScreenshot:
+    path: ./screenshots/unread-badge--normal.png
+    cropOn:
+      id: unread-badge--normal
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/unread-badge--small"
+- assertScreenshot:
+    path: ./screenshots/unread-badge--small.png
+    cropOn:
+      id: unread-badge--small
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/unread-badge--themes"
+- assertScreenshot:
+    path: ./screenshots/unread-badge--themes.png
+    cropOn:
+      id: unread-badge--themes
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/markdown--block-quote"
+- assertScreenshot:
+    path: ./screenshots/markdown--block-quote.png
+    cropOn:
+      id: markdown--block-quote
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/markdown--code"
+- assertScreenshot:
+    path: ./screenshots/markdown--code.png
+    cropOn:
+      id: markdown--code
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/markdown--emoji"
+- assertScreenshot:
+    path: ./screenshots/markdown--emoji.png
+    cropOn:
+      id: markdown--emoji
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/markdown--hashtag"
+- assertScreenshot:
+    path: ./screenshots/markdown--hashtag.png
+    cropOn:
+      id: markdown--hashtag
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/markdown--headers"
+- assertScreenshot:
+    path: ./screenshots/markdown--headers.png
+    cropOn:
+      id: markdown--headers
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/markdown--image"
+- assertScreenshot:
+    path: ./screenshots/markdown--image.png
+    cropOn:
+      id: markdown--image
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/markdown--links"
+- assertScreenshot:
+    path: ./screenshots/markdown--links.png
+    cropOn:
+      id: markdown--links
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/markdown--lists"
+- assertScreenshot:
+    path: ./screenshots/markdown--lists.png
+    cropOn:
+      id: markdown--lists
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/markdown--mentions"
+- assertScreenshot:
+    path: ./screenshots/markdown--mentions.png
+    cropOn:
+      id: markdown--mentions
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/markdown--preview"
+- assertScreenshot:
+    path: ./screenshots/markdown--preview.png
+    cropOn:
+      id: markdown--preview
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/markdown--text"
+- assertScreenshot:
+    path: ./screenshots/markdown--text.png
+    cropOn:
+      id: markdown--text
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/markdown--timestamp"
+- assertScreenshot:
+    path: ./screenshots/markdown--timestamp.png
+    cropOn:
+      id: markdown--timestamp
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/collapsiblequote--item"
+- assertScreenshot:
+    path: ./screenshots/collapsiblequote--item.png
+    cropOn:
+      id: collapsiblequote--item
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--archived"
+- assertScreenshot:
+    path: ./screenshots/message--archived.png
+    cropOn:
+      id: message--archived
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--archived-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--archived-large-font.png
+    cropOn:
+      id: message--archived-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--attachment-with-text-and-link"
+- assertScreenshot:
+    path: ./screenshots/message--attachment-with-text-and-link.png
+    cropOn:
+      id: message--attachment-with-text-and-link
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--attachment-with-text-and-link-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--attachment-with-text-and-link-large-font.png
+    cropOn:
+      id: message--attachment-with-text-and-link-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--avatar"
+- assertScreenshot:
+    path: ./screenshots/message--avatar.png
+    cropOn:
+      id: message--avatar
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--basic"
+- assertScreenshot:
+    path: ./screenshots/message--basic.png
+    cropOn:
+      id: message--basic
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--basic-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--basic-large-font.png
+    cropOn:
+      id: message--basic-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--block-quote"
+- assertScreenshot:
+    path: ./screenshots/message--block-quote.png
+    cropOn:
+      id: message--block-quote
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--block-quote-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--block-quote-large-font.png
+    cropOn:
+      id: message--block-quote-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--broadcast"
+- assertScreenshot:
+    path: ./screenshots/message--broadcast.png
+    cropOn:
+      id: message--broadcast
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--broadcast-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--broadcast-large-font.png
+    cropOn:
+      id: message--broadcast-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--collapsed-attachments"
+- assertScreenshot:
+    path: ./screenshots/message--collapsed-attachments.png
+    cropOn:
+      id: message--collapsed-attachments
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--collapsed-attachments-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--collapsed-attachments-large-font.png
+    cropOn:
+      id: message--collapsed-attachments-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--collapsible-attachment-with-text"
+- assertScreenshot:
+    path: ./screenshots/message--collapsible-attachment-with-text.png
+    cropOn:
+      id: message--collapsible-attachment-with-text
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--collapsible-attachment-with-text-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--collapsible-attachment-with-text-large-font.png
+    cropOn:
+      id: message--collapsible-attachment-with-text-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--colored-attachments"
+- assertScreenshot:
+    path: ./screenshots/message--colored-attachments.png
+    cropOn:
+      id: message--colored-attachments
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--colored-attachments-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--colored-attachments-large-font.png
+    cropOn:
+      id: message--colored-attachments-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--custom-fields"
+- assertScreenshot:
+    path: ./screenshots/message--custom-fields.png
+    cropOn:
+      id: message--custom-fields
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--custom-fields-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--custom-fields-large-font.png
+    cropOn:
+      id: message--custom-fields-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--date-and-unread-separators"
+- assertScreenshot:
+    path: ./screenshots/message--date-and-unread-separators.png
+    cropOn:
+      id: message--date-and-unread-separators
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--date-and-unread-separators-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--date-and-unread-separators-large-font.png
+    cropOn:
+      id: message--date-and-unread-separators-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--discussion"
+- assertScreenshot:
+    path: ./screenshots/message--discussion.png
+    cropOn:
+      id: message--discussion
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--discussion-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--discussion-large-font.png
+    cropOn:
+      id: message--discussion-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--edited"
+- assertScreenshot:
+    path: ./screenshots/message--edited.png
+    cropOn:
+      id: message--edited
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--edited-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--edited-large-font.png
+    cropOn:
+      id: message--edited-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--editing"
+- assertScreenshot:
+    path: ./screenshots/message--editing.png
+    cropOn:
+      id: message--editing
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--editing-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--editing-large-font.png
+    cropOn:
+      id: message--editing-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--emojis"
+- assertScreenshot:
+    path: ./screenshots/message--emojis.png
+    cropOn:
+      id: message--emojis
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--emojis-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--emojis-large-font.png
+    cropOn:
+      id: message--emojis-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--encrypted"
+- assertScreenshot:
+    path: ./screenshots/message--encrypted.png
+    cropOn:
+      id: message--encrypted
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--encrypted-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--encrypted-large-font.png
+    cropOn:
+      id: message--encrypted-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--error"
+- assertScreenshot:
+    path: ./screenshots/message--error.png
+    cropOn:
+      id: message--error
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--error-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--error-large-font.png
+    cropOn:
+      id: message--error-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--file-attachments-with-filenames"
+- assertScreenshot:
+    path: ./screenshots/message--file-attachments-with-filenames.png
+    cropOn:
+      id: message--file-attachments-with-filenames
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--file-attachments-with-filenames-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--file-attachments-with-filenames-large-font.png
+    cropOn:
+      id: message--file-attachments-with-filenames-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--full-name"
+- assertScreenshot:
+    path: ./screenshots/message--full-name.png
+    cropOn:
+      id: message--full-name
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--full-name-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--full-name-large-font.png
+    cropOn:
+      id: message--full-name-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--grouped-messages"
+- assertScreenshot:
+    path: ./screenshots/message--grouped-messages.png
+    cropOn:
+      id: message--grouped-messages
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--grouped-messages-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--grouped-messages-large-font.png
+    cropOn:
+      id: message--grouped-messages-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--ignored"
+- assertScreenshot:
+    path: ./screenshots/message--ignored.png
+    cropOn:
+      id: message--ignored
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--ignored-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--ignored-large-font.png
+    cropOn:
+      id: message--ignored-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--inline-katex"
+- assertScreenshot:
+    path: ./screenshots/message--inline-katex.png
+    cropOn:
+      id: message--inline-katex
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--inline-katex-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--inline-katex-large-font.png
+    cropOn:
+      id: message--inline-katex-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--katex"
+- assertScreenshot:
+    path: ./screenshots/message--katex.png
+    cropOn:
+      id: message--katex
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--katex-array"
+- assertScreenshot:
+    path: ./screenshots/message--katex-array.png
+    cropOn:
+      id: message--katex-array
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--katex-array-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--katex-array-large-font.png
+    cropOn:
+      id: message--katex-array-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--katex-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--katex-large-font.png
+    cropOn:
+      id: message--katex-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--lists"
+- assertScreenshot:
+    path: ./screenshots/message--lists.png
+    cropOn:
+      id: message--lists
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--lists-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--lists-large-font.png
+    cropOn:
+      id: message--lists-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--long-name-user"
+- assertScreenshot:
+    path: ./screenshots/message--long-name-user.png
+    cropOn:
+      id: message--long-name-user
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--long-name-user-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--long-name-user-large-font.png
+    cropOn:
+      id: message--long-name-user-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--mentions"
+- assertScreenshot:
+    path: ./screenshots/message--mentions.png
+    cropOn:
+      id: message--mentions
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--mentions-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--mentions-large-font.png
+    cropOn:
+      id: message--mentions-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--message"
+- assertScreenshot:
+    path: ./screenshots/message--message.png
+    cropOn:
+      id: message--message
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--message-with-nested-reply-and-file"
+- assertScreenshot:
+    path: ./screenshots/message--message-with-nested-reply-and-file.png
+    cropOn:
+      id: message--message-with-nested-reply-and-file
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--message-with-read-receipt"
+- assertScreenshot:
+    path: ./screenshots/message--message-with-read-receipt.png
+    cropOn:
+      id: message--message-with-read-receipt
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--message-with-read-receipt-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--message-with-read-receipt-large-font.png
+    cropOn:
+      id: message--message-with-read-receipt-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--message-with-reply"
+- assertScreenshot:
+    path: ./screenshots/message--message-with-reply.png
+    cropOn:
+      id: message--message-with-reply
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--message-with-reply-and-file"
+- assertScreenshot:
+    path: ./screenshots/message--message-with-reply-and-file.png
+    cropOn:
+      id: message--message-with-reply-and-file
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--message-with-reply-and-file-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--message-with-reply-and-file-large-font.png
+    cropOn:
+      id: message--message-with-reply-and-file-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--message-with-reply-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--message-with-reply-large-font.png
+    cropOn:
+      id: message--message-with-reply-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--message-with-thread"
+- assertScreenshot:
+    path: ./screenshots/message--message-with-thread.png
+    cropOn:
+      id: message--message-with-thread
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--message-with-thread-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--message-with-thread-large-font.png
+    cropOn:
+      id: message--message-with-thread-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--pinned"
+- assertScreenshot:
+    path: ./screenshots/message--pinned.png
+    cropOn:
+      id: message--pinned
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--pinned-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--pinned-large-font.png
+    cropOn:
+      id: message--pinned-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--reactions"
+- assertScreenshot:
+    path: ./screenshots/message--reactions.png
+    cropOn:
+      id: message--reactions
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--reactions-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--reactions-large-font.png
+    cropOn:
+      id: message--reactions-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--sequential-thread-messages-following-thread-button"
+- assertScreenshot:
+    path: ./screenshots/message--sequential-thread-messages-following-thread-button.png
+    cropOn:
+      id: message--sequential-thread-messages-following-thread-button
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--sequential-thread-messages-following-thread-button-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--sequential-thread-messages-following-thread-button-large-font.png
+    cropOn:
+      id: message--sequential-thread-messages-following-thread-button-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--sequential-thread-messages-following-thread-reply"
+- assertScreenshot:
+    path: ./screenshots/message--sequential-thread-messages-following-thread-reply.png
+    cropOn:
+      id: message--sequential-thread-messages-following-thread-reply
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--sequential-thread-messages-following-thread-reply-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--sequential-thread-messages-following-thread-reply-large-font.png
+    cropOn:
+      id: message--sequential-thread-messages-following-thread-reply-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--show-button-as-attachment"
+- assertScreenshot:
+    path: ./screenshots/message--show-button-as-attachment.png
+    cropOn:
+      id: message--show-button-as-attachment
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--show-button-as-attachment-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--show-button-as-attachment-large-font.png
+    cropOn:
+      id: message--show-button-as-attachment-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--static-avatar"
+- assertScreenshot:
+    path: ./screenshots/message--static-avatar.png
+    cropOn:
+      id: message--static-avatar
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--static-avatar-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--static-avatar-large-font.png
+    cropOn:
+      id: message--static-avatar-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--system-messages"
+- assertScreenshot:
+    path: ./screenshots/message--system-messages.png
+    cropOn:
+      id: message--system-messages
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--system-messages-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--system-messages-large-font.png
+    cropOn:
+      id: message--system-messages-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--temp"
+- assertScreenshot:
+    path: ./screenshots/message--temp.png
+    cropOn:
+      id: message--temp
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--temp-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--temp-large-font.png
+    cropOn:
+      id: message--temp-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--thumbnail-from-server"
+- assertScreenshot:
+    path: ./screenshots/message--thumbnail-from-server.png
+    cropOn:
+      id: message--thumbnail-from-server
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--thumbnail-from-server-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--thumbnail-from-server-large-font.png
+    cropOn:
+      id: message--thumbnail-from-server-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--time-format"
+- assertScreenshot:
+    path: ./screenshots/message--time-format.png
+    cropOn:
+      id: message--time-format
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--time-format-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--time-format-large-font.png
+    cropOn:
+      id: message--time-format-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--translated"
+- assertScreenshot:
+    path: ./screenshots/message--translated.png
+    cropOn:
+      id: message--translated
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--translated-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--translated-large-font.png
+    cropOn:
+      id: message--translated-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--two-short-custom-fields-with-markdown"
+- assertScreenshot:
+    path: ./screenshots/message--two-short-custom-fields-with-markdown.png
+    cropOn:
+      id: message--two-short-custom-fields-with-markdown
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--two-short-custom-fields-with-markdown-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--two-short-custom-fields-with-markdown-large-font.png
+    cropOn:
+      id: message--two-short-custom-fields-with-markdown-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--url"
+- assertScreenshot:
+    path: ./screenshots/message--url.png
+    cropOn:
+      id: message--url
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--url-image-preview"
+- assertScreenshot:
+    path: ./screenshots/message--url-image-preview.png
+    cropOn:
+      id: message--url-image-preview
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--url-image-preview-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--url-image-preview-large-font.png
+    cropOn:
+      id: message--url-image-preview-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--url-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--url-large-font.png
+    cropOn:
+      id: message--url-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--with-alias"
+- assertScreenshot:
+    path: ./screenshots/message--with-alias.png
+    cropOn:
+      id: message--with-alias
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--with-alias-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--with-alias-large-font.png
+    cropOn:
+      id: message--with-alias-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--with-audio"
+- assertScreenshot:
+    path: ./screenshots/message--with-audio.png
+    cropOn:
+      id: message--with-audio
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--with-audio-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--with-audio-large-font.png
+    cropOn:
+      id: message--with-audio-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--with-file"
+- assertScreenshot:
+    path: ./screenshots/message--with-file.png
+    cropOn:
+      id: message--with-file
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--with-file-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--with-file-large-font.png
+    cropOn:
+      id: message--with-file-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--with-image"
+- assertScreenshot:
+    path: ./screenshots/message--with-image.png
+    cropOn:
+      id: message--with-image
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--with-image-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--with-image-large-font.png
+    cropOn:
+      id: message--with-image-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--without-header"
+- assertScreenshot:
+    path: ./screenshots/message--without-header.png
+    cropOn:
+      id: message--without-header
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--without-header-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--without-header-large-font.png
+    cropOn:
+      id: message--without-header-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--with-video"
+- assertScreenshot:
+    path: ./screenshots/message--with-video.png
+    cropOn:
+      id: message--with-video
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/message--with-video-large-font"
+- assertScreenshot:
+    path: ./screenshots/message--with-video-large-font.png
+    cropOn:
+      id: message--with-video-large-font
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/cannedresponseitem--itens"
+- assertScreenshot:
+    path: ./screenshots/cannedresponseitem--itens.png
+    cropOn:
+      id: cannedresponseitem--itens
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/switchitem--switch"
+- assertScreenshot:
+    path: ./screenshots/switchitem--switch.png
+    cropOn:
+      id: switchitem--switch
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/discussionsview-item--content"
+- assertScreenshot:
+    path: ./screenshots/discussionsview-item--content.png
+    cropOn:
+      id: discussionsview-item--content
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/discussionsview-item--themes"
+- assertScreenshot:
+    path: ./screenshots/discussionsview-item--themes.png
+    cropOn:
+      id: discussionsview-item--themes
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/servershistoryitem--content"
+- assertScreenshot:
+    path: ./screenshots/servershistoryitem--content.png
+    cropOn:
+      id: servershistoryitem--content
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/servershistoryitem--swipe-actions"
+- assertScreenshot:
+    path: ./screenshots/servershistoryitem--swipe-actions.png
+    cropOn:
+      id: servershistoryitem--swipe-actions
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/servershistoryitem--themes"
+- assertScreenshot:
+    path: ./screenshots/servershistoryitem--themes.png
+    cropOn:
+      id: servershistoryitem--themes
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/roominfoabac--black"
+- assertScreenshot:
+    path: ./screenshots/roominfoabac--black.png
+    cropOn:
+      id: roominfoabac--black
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/roominfoabac--dark"
+- assertScreenshot:
+    path: ./screenshots/roominfoabac--dark.png
+    cropOn:
+      id: roominfoabac--dark
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/roominfoabac--light"
+- assertScreenshot:
+    path: ./screenshots/roominfoabac--light.png
+    cropOn:
+      id: roominfoabac--light
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/roomview-loadmore--basic"
+- assertScreenshot:
+    path: ./screenshots/roomview-loadmore--basic.png
+    cropOn:
+      id: roomview-loadmore--basic
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/roomview-loadmore--black-theme"
+- assertScreenshot:
+    path: ./screenshots/roomview-loadmore--black-theme.png
+    cropOn:
+      id: roomview-loadmore--black-theme
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/roomview-loadmore--dark-theme"
+- assertScreenshot:
+    path: ./screenshots/roomview-loadmore--dark-theme.png
+    cropOn:
+      id: roomview-loadmore--dark-theme
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/roomview-loadmore--light-theme"
+- assertScreenshot:
+    path: ./screenshots/roomview-loadmore--light-theme.png
+    cropOn:
+      id: roomview-loadmore--light-theme
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/threadmessagesview-item--badge"
+- assertScreenshot:
+    path: ./screenshots/threadmessagesview-item--badge.png
+    cropOn:
+      id: threadmessagesview-item--badge
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/threadmessagesview-item--content"
+- assertScreenshot:
+    path: ./screenshots/threadmessagesview-item--content.png
+    cropOn:
+      id: threadmessagesview-item--content
+    thresholdPercentage: 1
+    optional: true
+
+- openLink: "rocketchat://storybook?path=/story/threadmessagesview-item--themes"
+- assertScreenshot:
+    path: ./screenshots/threadmessagesview-item--themes.png
+    cropOn:
+      id: threadmessagesview-item--themes
+    thresholdPercentage: 1
+    optional: true
