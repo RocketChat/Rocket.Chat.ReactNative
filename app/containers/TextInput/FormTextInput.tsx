@@ -184,7 +184,7 @@ export const FormTextInput = ({
 							{...inputProps}
 						/>
 
-					{iconLeft ? (
+						{iconLeft ? (
 							<CustomIcon
 								name={iconLeft}
 								testID={testID ? `${testID}-icon-left` : undefined}
