@@ -111,6 +111,11 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
         Log.d(TAG, "registerVoipToken called (no-op on Android)")
     }
 
+    // No-op on Android - native DDP listener is iOS only
+    override fun stopNativeDDPClient() {
+        Log.d(TAG, "stopNativeDDPClient called (no-op on Android)")
+    }
+
     /**
      * Required for NativeEventEmitter in TurboModules.
      * Called when JS starts listening to events.

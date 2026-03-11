@@ -12,6 +12,7 @@
 + (NSDictionary * _Nullable)getInitialEvents;
 + (void)clearInitialEvents;
 + (NSString * _Nonnull)getLastVoipToken;
++ (void)stopDDPClient;
 @end
 
 @implementation VoipModule {
@@ -92,6 +93,10 @@ RCT_EXPORT_MODULE()
 
 - (NSString * _Nonnull)getLastVoipToken {
     return [VoipService getLastVoipToken];
+}
+
+- (void)stopNativeDDPClient {
+    [VoipService stopDDPClient];
 }
 
 - (void)addListener:(NSString *)eventName {

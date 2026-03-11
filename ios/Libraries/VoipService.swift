@@ -16,7 +16,7 @@ public final class VoipService: NSObject {
     
     // MARK: - Constants
     
-    private static let TAG = "RocketChat.VoipModule"
+    private static let TAG = "RocketChat.VoipService"
     private static let voipTokenStorageKey = "RCVoipPushToken"
     private static let storage = MMKVBridge.build()
     
@@ -27,6 +27,8 @@ public final class VoipService: NSObject {
     private static var lastVoipToken: String = loadPersistedVoipToken()
     private static var voipRegistry: PKPushRegistry?
     private static var incomingCallTimeouts: [String: DispatchWorkItem] = [:]
+    private static var ddpClient: DDPClient?
+    private static var ddpDisconnectWorkItem: DispatchWorkItem?
     
     // MARK: - Static Methods (Called from VoipModule.mm and AppDelegate)
     
@@ -105,6 +107,7 @@ public final class VoipService: NSObject {
     public static func prepareIncomingCall(_ payload: VoipPayload) {
         storeInitialEvents(payload)
         scheduleIncomingCallTimeout(for: payload)
+        startListeningForCallEnd(payload: payload)
     }
 
     // MARK: - Initial Events
@@ -214,5 +217,126 @@ public final class VoipService: NSObject {
         }
 
         RNCallKeep.endCall(withUUID: callId, reason: 3)
+    }
+
+    // MARK: - Native DDP Listener (Call End Detection)
+
+    /// Opens a lightweight DDP WebSocket to detect call hangup before JS boots.
+    private static func startListeningForCallEnd(payload: VoipPayload) {
+        stopDDPClientInternal()
+
+        let credentialStorage = Storage()
+        guard let credentials = credentialStorage.getCredentials(server: payload.host.removeTrailingSlash()) else {
+            #if DEBUG
+            print("[\(TAG)] No credentials for \(payload.host), skipping DDP listener")
+            #endif
+            return
+        }
+
+        let callId = payload.callId
+        let userId = credentials.userId
+        let client = DDPClient()
+        ddpClient = client
+
+        #if DEBUG
+        print("[\(TAG)] Starting DDP listener for call \(callId)")
+        #endif
+
+        client.onCollectionMessage = { message in
+            print("[\(TAG)] DDP received collection message: \(message)")
+            guard let fields = message["fields"] as? [String: Any],
+                  let eventName = fields["eventName"] as? String,
+                  eventName.hasSuffix("/media-signal"),
+                  let args = fields["args"] as? [Any],
+                  let firstArg = args.first as? [String: Any],
+                  let signalType = firstArg["type"] as? String,
+                  signalType == "notification",
+                  let notification = firstArg["notification"] as? String,
+                  notification == "hangup",
+                  let signalCallId = firstArg["callId"] as? String,
+                  signalCallId == callId
+            else {
+                return
+            }
+
+            #if DEBUG
+            print("[\(TAG)] DDP received hangup for call \(callId)")
+            #endif
+
+            DispatchQueue.main.async {
+                RNCallKeep.endCall(withUUID: callId, reason: 3)
+                cancelIncomingCallTimeout(for: callId)
+                stopDDPClientInternal()
+            }
+        }
+
+        client.connect(host: payload.host) { connected in
+            guard connected else {
+                #if DEBUG
+                print("[\(TAG)] DDP connection failed")
+                #endif
+                stopDDPClientInternal()
+                return
+            }
+
+            client.login(token: credentials.userToken) { loggedIn in
+                guard loggedIn else {
+                    #if DEBUG
+                    print("[\(TAG)] DDP login failed")
+                    #endif
+                    stopDDPClientInternal()
+                    return
+                }
+
+                let params: [Any] = [
+                    "\(userId)/media-signal",
+                    ["useCollection": false, "args": [false]]
+                ]
+
+                client.subscribe(name: "stream-notify-user", params: params) { subscribed in
+                    #if DEBUG
+                    print("[\(TAG)] DDP subscribe result: \(subscribed)")
+                    #endif
+                    if !subscribed {
+                        stopDDPClientInternal()
+                    }
+                }
+            }
+        }
+
+        scheduleDDPSafetyTimeout()
+    }
+
+    /// Stops the native DDP listener. Called from JS when it takes over signaling.
+    @objc
+    public static func stopDDPClient() {
+        #if DEBUG
+        print("[\(TAG)] stopDDPClient called from JS")
+        #endif
+        stopDDPClientInternal()
+    }
+
+    private static func stopDDPClientInternal() {
+        ddpDisconnectWorkItem?.cancel()
+        ddpDisconnectWorkItem = nil
+        ddpClient?.disconnect()
+        ddpClient = nil
+    }
+
+    private static func scheduleDDPSafetyTimeout() {
+        ddpDisconnectWorkItem?.cancel()
+
+        let workItem = DispatchWorkItem {
+            #if DEBUG
+            print("[\(TAG)] DDP safety timeout reached, disconnecting")
+            #endif
+            stopDDPClientInternal()
+        }
+
+        ddpDisconnectWorkItem = workItem
+        DispatchQueue.main.asyncAfter(
+            deadline: .now() + VoipPayload.INCOMING_CALL_LIFETIME_SEC,
+            execute: workItem
+        )
     }
 }

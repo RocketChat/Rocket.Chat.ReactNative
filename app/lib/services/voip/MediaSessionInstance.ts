@@ -15,6 +15,7 @@ import { store } from '../../store/auxStore';
 import sdk from '../sdk';
 import Navigation from '../../navigation/appNavigation';
 import { parseStringToIceServers } from './parseStringToIceServers';
+import NativeVoipModule from '../../native/NativeVoip';
 import type { IceServer } from '../../../definitions/Voip';
 import type { IDDPMessage } from '../../../definitions/IDDPMessage';
 import type { ISubscription, TSubscriptionModel } from '../../../definitions';
@@ -33,6 +34,8 @@ class MediaSessionInstance {
 		this.stop();
 		registerGlobals();
 		this.configureIceServers();
+
+		NativeVoipModule.stopNativeDDPClient();
 
 		mediaSessionStore.setWebRTCProcessorFactory(
 			(config: WebRTCProcessorConfig) =>

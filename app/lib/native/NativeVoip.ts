@@ -29,6 +29,13 @@ export interface Spec extends TurboModule {
 	getLastVoipToken(): string;
 
 	/**
+	 * Stops the native DDP WebSocket listener used for early call-end detection.
+	 * iOS: Disconnects the native DDP client that monitors media-signal hangup events.
+	 * Android: No-op.
+	 */
+	stopNativeDDPClient(): void;
+
+	/**
 	 * Required for NativeEventEmitter in TurboModules.
 	 * Called when JS starts listening to events.
 	 * @platform android
@@ -50,6 +57,7 @@ const NativeVoipModule =
 		getInitialEvents: () => null,
 		clearInitialEvents: () => undefined,
 		getLastVoipToken: () => '',
+		stopNativeDDPClient: () => undefined,
 		addListener: () => undefined,
 		removeListeners: () => undefined
 	} as Spec);
