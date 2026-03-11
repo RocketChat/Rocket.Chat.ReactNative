@@ -44,8 +44,7 @@ export default StyleSheet.create({
 		...StyleSheet.absoluteFillObject
 	},
 	bottomSheet: {
-		width: '50%',
-		marginHorizontal: '25%'
+		width: '100%'
 	},
 	button: {
 		marginHorizontal: 16,
