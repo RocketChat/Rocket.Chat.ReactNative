@@ -153,6 +153,7 @@ tags:
       text: '.*Load newer.*'
     direction: DOWN
     timeout: 60000
+    centerElement: true
 - tapOn:
     text: 'Load newer'
     retryTapIfNoChange: true
