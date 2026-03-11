@@ -7,7 +7,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { useTheme } from '../../theme';
-import { isIOS, isTablet } from '../../lib/methods/helpers';
+import { isIOS } from '../../lib/methods/helpers';
 import { Handle } from './Handle';
 import { type TActionSheetOptions } from './Provider';
 import BottomSheetContent from './BottomSheetContent';
@@ -20,7 +20,7 @@ const ActionSheet = React.memo(
 	forwardRef(({ children }: { children: React.ReactElement }, ref) => {
 		const { colors } = useTheme();
 		const { height: windowHeight, fontScale } = useWindowDimensions();
-		const { bottom, right, left } = useSafeAreaInsets();
+		const { bottom } = useSafeAreaInsets();
 		const sheetRef = useRef<TrueSheet>(null);
 		const [data, setData] = useState<TActionSheetOptions>({} as TActionSheetOptions);
 		const [isVisible, setIsVisible] = useState(false);
@@ -89,8 +89,6 @@ const ActionSheet = React.memo(
 			snapshotOnClose?.();
 		};
 
-		const bottomSheetStyle = isTablet ? styles.bottomSheet : { marginRight: right, marginLeft: left };
-
 		const { detents, maxHeight } = useActionSheetDetents({
 			windowHeight,
 			bottomInset: bottom,
@@ -130,7 +128,7 @@ const ActionSheet = React.memo(
 					draggable={!disableContentPanning}
 					header={renderHeader()}
 					scrollable={isScrollable}
-					style={[styles.container, bottomSheetStyle]}
+					style={[styles.container]}
 					onDidDismiss={onDidDismiss}>
 					<GestureHandlerRootView style={styles.contentContainer}>
 						<BottomSheetContent

@@ -43,9 +43,6 @@ export default StyleSheet.create({
 	backdrop: {
 		...StyleSheet.absoluteFillObject
 	},
-	bottomSheet: {
-		width: '100%'
-	},
 	button: {
 		marginHorizontal: 16,
 		paddingHorizontal: 14,
