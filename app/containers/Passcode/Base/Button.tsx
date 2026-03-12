@@ -21,6 +21,7 @@ const Button = React.memo(({ style, text, disabled, onPress, icon }: IPasscodeBu
 
 	return (
 		<Touch
+			testID={text ? `passcode-button-${text}` : `passcode-button-${icon}`}
 			style={[styles.buttonView, { backgroundColor: 'transparent' }, style]}
 			underlayColor={colors.buttonBackgroundSecondaryDefault}
 			rippleColor={colors.buttonBackgroundSecondaryPress}
