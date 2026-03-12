@@ -61,7 +61,9 @@ export const useVideoConf = (
 			if (canInit) {
 				showActionSheet({
 					children: <StartACallActionSheet rid={rid} roomType={roomType} />,
-					snaps: [480]
+					snaps: ['60%'],
+					enableContentPanningGesture: false,
+					fullContainer: true
 				});
 
 				if (!permission?.granted) {
