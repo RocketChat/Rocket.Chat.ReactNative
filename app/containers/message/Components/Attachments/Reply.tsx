@@ -20,6 +20,7 @@ import dayjs from '../../../../lib/dayjs';
 import { CustomIcon } from '../../../CustomIcon';
 import { getFileIcon } from '../../../../lib/methods/getFileIcon';
 import { formatSize } from '../../../../lib/methods/formatSize';
+import { isDocumentFile } from '../../../../lib/methods/isDocumentFile';
 
 const styles = StyleSheet.create({
 	button: {
@@ -112,16 +113,6 @@ interface IMessageReply {
 	msg?: string;
 	showAttachment?: (file: IAttachment) => void;
 }
-
-const isDocumentFile = (attachment: IAttachment) => {
-	if (attachment.type === 'file') {
-		switch (attachment.format) {
-			case 'PDF':
-				return true;
-		}
-	}
-	return false;
-};
 
 const Title = React.memo(
 	({ attachment, timeFormat, theme }: { attachment: IAttachment; timeFormat?: string; theme: TSupportedThemes }) => {
@@ -253,6 +244,8 @@ const Reply = React.memo(
 			return null;
 		}
 
+		console.log(attachment, '============================');
+
 		const onPress = async () => {
 			let url = attachment.title_link || attachment.author_link;
 			if (!url) {
@@ -286,7 +279,7 @@ const Reply = React.memo(
 					]}
 					disabled={!!(loading || attachment.message_link)}>
 					<View style={styles.attachmentContainer}>
-						{attachment.type === 'file' && attachment.format === 'PDF' && attachment.title && (
+						{attachment.type === 'file' && isDocumentFile(attachment) && attachment.title && (
 							<View style={[styles.fileIconContainer, { backgroundColor: colors.surfaceNeutral }]}>
 								<CustomIcon name={getFileIcon(attachment.title)} size={38} color={colors.surfaceDark} />
 							</View>
