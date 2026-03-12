@@ -12,11 +12,12 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.util.concurrent.TimeUnit
 
-/**
- * Minimal DDP WebSocket client for listening to Rocket.Chat media-signal events from native Android.
- * Only implements the subset needed to detect call hangup: connect, login, subscribe, and ping/pong.
- */
 class DDPClient {
+    private data class QueuedMethodCall(
+        val method: String,
+        val params: JSONArray,
+        val callback: (Boolean) -> Unit
+    )
 
     companion object {
         private const val TAG = "RocketChat.DDPClient"
@@ -29,6 +30,7 @@ class DDPClient {
     private val mainHandler = Handler(Looper.getMainLooper())
 
     private val pendingCallbacks = mutableMapOf<String, (JSONObject) -> Unit>()
+    private val queuedMethodCalls = mutableListOf<QueuedMethodCall>()
     private var connectedCallback: ((Boolean) -> Unit)? = null
 
     var onCollectionMessage: ((JSONObject) -> Unit)? = null
@@ -127,6 +129,7 @@ class DDPClient {
         Log.d(TAG, "Disconnecting")
         isConnected = false
         synchronized(pendingCallbacks) { pendingCallbacks.clear() }
+        clearQueuedMethodCalls()
         connectedCallback = null
         onCollectionMessage = null
         webSocket?.close(1000, null)
@@ -146,6 +149,62 @@ class DDPClient {
     private fun send(json: JSONObject): Boolean {
         val ws = webSocket ?: return false
         return ws.send(json.toString())
+    }
+
+    fun callMethod(method: String, params: JSONArray, callback: (Boolean) -> Unit) {
+        val msg = nextMessage("method").apply {
+            put("method", method)
+            put("params", params)
+        }
+
+        val msgId = msg.getString("id")
+
+        synchronized(pendingCallbacks) {
+            pendingCallbacks[msgId] = { data ->
+                synchronized(pendingCallbacks) { pendingCallbacks.remove(msgId) }
+                val hasError = data.has("error")
+                if (hasError) {
+                    Log.e(TAG, "Method $method failed: ${data.opt("error")}")
+                }
+                mainHandler.post { callback(!hasError) }
+            }
+        }
+
+        if (!send(msg)) {
+            synchronized(pendingCallbacks) { pendingCallbacks.remove(msgId) }
+            mainHandler.post { callback(false) }
+        }
+    }
+
+    fun queueMethodCall(method: String, params: JSONArray, callback: (Boolean) -> Unit = {}) {
+        synchronized(queuedMethodCalls) {
+            queuedMethodCalls.add(
+                QueuedMethodCall(
+                    method = method,
+                    params = params,
+                    callback = callback
+                )
+            )
+        }
+    }
+
+    fun hasQueuedMethodCalls(): Boolean =
+        synchronized(queuedMethodCalls) { queuedMethodCalls.isNotEmpty() }
+
+    fun flushQueuedMethodCalls() {
+        val queuedCalls = synchronized(queuedMethodCalls) {
+            queuedMethodCalls.toList().also { queuedMethodCalls.clear() }
+        }
+
+        queuedCalls.forEach { queuedCall ->
+            callMethod(queuedCall.method, queuedCall.params, queuedCall.callback)
+        }
+    }
+
+    fun clearQueuedMethodCalls() {
+        synchronized(queuedMethodCalls) {
+            queuedMethodCalls.clear()
+        }
     }
 
     private fun waitForConnected(timeoutMs: Long, callback: (Boolean) -> Unit) {

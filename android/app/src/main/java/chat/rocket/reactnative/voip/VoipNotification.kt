@@ -57,6 +57,7 @@ class VoipNotification(private val context: Context) {
         private val timeoutHandler = Handler(Looper.getMainLooper())
         private val timeoutCallbacks = mutableMapOf<String, Runnable>()
         private var ddpClient: DDPClient? = null
+        private var isDdpLoggedIn = false
 
         /**
          * Cancels a VoIP notification by ID.
@@ -95,7 +96,6 @@ class VoipNotification(private val context: Context) {
 
         @JvmStatic
         fun cancelTimeout(callId: String) {
-            stopDDPClientInternal();
             val timeoutRunnable = synchronized(timeoutCallbacks) {
                 timeoutCallbacks.remove(callId)
             }
@@ -115,6 +115,7 @@ class VoipNotification(private val context: Context) {
                     putExtras(payload.toBundle())
                 }
             )
+            stopDDPClientInternal()
             Log.d(TAG, "Timed out incoming VoIP call: ${payload.callId}")
         }
 
@@ -126,9 +127,18 @@ class VoipNotification(private val context: Context) {
         fun handleDeclineAction(context: Context, payload: VoipPayload) {
             Log.d(TAG, "Decline action triggered for callId: ${payload.callId}")
             cancelTimeout(payload.callId)
+            if (isDdpLoggedIn) {
+                sendRejectSignal(context, payload)
+            } else {
+                queueRejectSignal(context, payload)
+            }
             rejectIncomingCall(payload.callId)
             cancelById(context, payload.notificationId)
-            // TODO: call restapi to decline the call
+            LocalBroadcastManager.getInstance(context).sendBroadcast(
+                Intent(ACTION_DISMISS).apply {
+                    putExtras(payload.toBundle())
+                }
+            )
         }
 
         // TODO: unify these three functions and check VoiceConnectionService
@@ -165,6 +175,78 @@ class VoipNotification(private val context: Context) {
             }
         }
 
+        private fun sendRejectSignal(context: Context, payload: VoipPayload) {
+            val client = ddpClient
+            if (client == null) {
+                Log.d(TAG, "Native DDP client unavailable, cannot send reject for ${payload.callId}")
+                return
+            }
+
+            val params = buildRejectSignalParams(context, payload) ?: return
+
+            client.callMethod("stream-notify-user", params) { success ->
+                Log.d(TAG, "Native reject signal result for ${payload.callId}: $success")
+                stopDDPClientInternal()
+            }
+        }
+
+        private fun queueRejectSignal(context: Context, payload: VoipPayload) {
+            val client = ddpClient
+            if (client == null) {
+                Log.d(TAG, "Native DDP client unavailable, cannot queue reject for ${payload.callId}")
+                return
+            }
+
+            val params = buildRejectSignalParams(context, payload) ?: return
+
+            client.queueMethodCall("stream-notify-user", params) { success ->
+                Log.d(TAG, "Queued native reject signal result for ${payload.callId}: $success")
+                stopDDPClientInternal()
+            }
+            Log.d(TAG, "Queued native reject signal for ${payload.callId}")
+        }
+
+        private fun flushPendingRejectSignalIfNeeded(): Boolean {
+            val client = ddpClient ?: return false
+            if (!client.hasQueuedMethodCalls()) {
+                return false
+            }
+
+            client.flushQueuedMethodCalls()
+            return true
+        }
+
+        private fun buildRejectSignalParams(context: Context, payload: VoipPayload): JSONArray? {
+            val ejson = Ejson().apply {
+                host = payload.host
+            }
+            val userId = ejson.userId()
+            if (userId.isNullOrEmpty()) {
+                Log.d(TAG, "Missing userId, cannot send reject for ${payload.callId}")
+                stopDDPClientInternal()
+                return null
+            }
+
+            val deviceId = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+            if (deviceId.isNullOrEmpty()) {
+                Log.d(TAG, "Missing deviceId, cannot send reject for ${payload.callId}")
+                stopDDPClientInternal()
+                return null
+            }
+
+            val signal = JSONObject().apply {
+                put("callId", payload.callId)
+                put("contractId", deviceId)
+                put("type", "answer")
+                put("answer", "reject")
+            }
+
+            return JSONArray().apply {
+                put("$userId/media-calls")
+                put(signal.toString())
+            }
+        }
+
         // -- Native DDP Listener (Call End Detection) --
 
         @JvmStatic
@@ -185,6 +267,7 @@ class VoipNotification(private val context: Context) {
             val callId = payload.callId
             val client = DDPClient()
             ddpClient = client
+            isDdpLoggedIn = false
 
             Log.d(TAG, "Starting DDP listener for call $callId")
 
@@ -212,6 +295,7 @@ class VoipNotification(private val context: Context) {
                                             putExtras(payload.toBundle())
                                         }
                                     )
+                                    stopDDPClientInternal()
                                 }
                             }
                         }
@@ -230,6 +314,11 @@ class VoipNotification(private val context: Context) {
                     if (!loggedIn) {
                         Log.d(TAG, "DDP login failed")
                         stopDDPClientInternal()
+                        return@login
+                    }
+
+                    isDdpLoggedIn = true
+                    if (flushPendingRejectSignalIfNeeded()) {
                         return@login
                     }
 
@@ -259,6 +348,8 @@ class VoipNotification(private val context: Context) {
         }
 
         private fun stopDDPClientInternal() {
+            isDdpLoggedIn = false
+            ddpClient?.clearQueuedMethodCalls()
             ddpClient?.disconnect()
             ddpClient = null
         }
