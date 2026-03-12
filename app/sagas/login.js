@@ -39,6 +39,7 @@ import appNavigation from '../lib/navigation/appNavigation';
 import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
 import { isIOS } from '../lib/methods/helpers';
+import syncWatchOSQuickRepliesWithServer from '../lib/methods/WatchOSQuickReplies/syncWatchOSRepliesWithServer';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => loginWithPassword(args);
@@ -58,7 +59,7 @@ const showSupportedVersionsWarning = function* showSupportedVersionsWarning(serv
 
 	const serversDB = database.servers;
 	yield serversDB.write(async () => {
-		await serverRecord.update((r) => {
+		await serverRecord.update(r => {
 			r.supportedVersionsWarningAt = new Date();
 		});
 	});
@@ -105,7 +106,7 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 						}
 						// this is updating on every login just to save `updated_at`
 						// keeping this server as the most recent on autocomplete order
-						await serverHistoryRecord.update((s) => {
+						await serverHistoryRecord.update(s => {
 							s.username = result.username;
 							if (iconURL) {
 								s.iconURL = iconURL;
@@ -223,6 +224,24 @@ const fetchUsersRoles = function* fetchRoomsFork() {
 	}
 };
 
+const fetchWatchReplies = function* fetchWatchRepliesFork() {
+	try {
+		// we are getting replies from server settings
+		const state = yield select(state => state);
+
+		if (!state.settings?.Apple_Watch_Quick_Actions) {
+			yield delay(1000);
+			const newState = yield select();
+			syncWatchOSQuickRepliesWithServer(newState);
+			return;
+		}
+
+		syncWatchOSQuickRepliesWithServer(state);
+	} catch (e) {
+		log(e);
+	}
+};
+
 const checkBackgroundAndSetAway = function* checkBackgroundAndSetAway() {
 	try {
 		const { background, root } = yield select(state => state.app);
@@ -279,12 +298,12 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield serversDB.write(async () => {
 			try {
 				const userRecord = await usersCollection.find(user.id);
-				await userRecord.update((record) => {
+				await userRecord.update(record => {
 					record._raw = sanitizedRaw({ id: user.id, ...record._raw }, usersCollection.schema);
 					Object.assign(record, u);
 				});
 			} catch (e) {
-				await usersCollection.create((record) => {
+				await usersCollection.create(record => {
 					record._raw = sanitizedRaw({ id: user.id }, usersCollection.schema);
 					Object.assign(record, u);
 				});
@@ -296,6 +315,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		UserPreferences.setString(CURRENT_SERVER, server);
 		yield put(setUser(user));
 		EventEmitter.emit('connected');
+		yield fork(fetchWatchReplies);
 		const currentRoot = yield select(state => state.app.root);
 		if (currentRoot !== RootEnum.ROOT_SHARE_EXTENSION && currentRoot !== RootEnum.ROOT_LOADING_SHARE_EXTENSION) {
 			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
@@ -362,7 +382,7 @@ const handleSetUser = function* handleSetUser({ user }) {
 		yield serversDB.write(async () => {
 			try {
 				const record = await userCollections.find(userId);
-				await record.update((userRecord) => {
+				await record.update(userRecord => {
 					if ('avatarETag' in user) {
 						userRecord.avatarETag = user.avatarETag;
 					}
