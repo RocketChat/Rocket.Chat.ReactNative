@@ -29,7 +29,7 @@ const BottomSheetContent = React.memo(
 		const { bottom } = useSafeAreaInsets();
 		const { fontScale } = useWindowDimensions();
 		const height = 48 * fontScale;
-		const paddingBottom = bottom + height;
+		const paddingBottom = isAndroid ? bottom + height : bottom;
 		const minHeightStyle = isAndroid || !contentMinHeight ? undefined : { minHeight: contentMinHeight };
 
 		const renderFooter = () =>
