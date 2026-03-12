@@ -34,7 +34,7 @@ class MediaSessionInstance {
 		this.stop();
 		registerGlobals();
 		this.configureIceServers();
-
+		// prevent JS and native DDP clients from interfering with each other
 		NativeVoipModule.stopNativeDDPClient();
 
 		mediaSessionStore.setWebRTCProcessorFactory(

@@ -1021,7 +1021,7 @@ export const registerPushToken = async (): Promise<void> => {
 		return;
 	}
 
-	// TODO: server version
+	// TODO: voice permission check and retry to avoid race condition
 	if (isIOS && (!token || !voipToken)) {
 		return;
 	}
