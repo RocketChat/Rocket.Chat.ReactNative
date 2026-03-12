@@ -5,7 +5,7 @@ import isEmpty from 'lodash/isEmpty';
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { type Subscription } from 'rxjs';
-import UAParser from 'ua-parser-js';
+import Bowser from 'bowser';
 
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -131,10 +131,11 @@ const RoomInfoView = (): React.ReactElement => {
 					const { visitor } = result;
 					const params: { os?: string; browser?: string } = {};
 					if (visitor.userAgent) {
-						const ua = new UAParser();
-						ua.setUA(visitor.userAgent);
-						params.os = `${ua.getOS().name} ${ua.getOS().version}`;
-						params.browser = `${ua.getBrowser().name} ${ua.getBrowser().version}`;
+						const ua = Bowser.getParser(visitor.userAgent);
+						params.os = `${ua.getOS().name ?? ua.getOSName()} ${ua.getOS().version ?? ua.getOSVersion()}`;
+						params.browser = `${ua.getBrowser().name ?? ua.getBrowserName()} ${
+							ua.getBrowser().version ?? ua.getBrowserVersion()
+						}`;
 					}
 					setRoomUser({ ...visitor, ...params });
 					setHeader();
