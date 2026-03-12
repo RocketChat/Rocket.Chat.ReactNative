@@ -10,11 +10,7 @@ import java.util.Locale
 import java.util.TimeZone
 
 enum class VoipPushType(val value: String) {
-    INCOMING_CALL("incoming_call"),
-    ANSWERED_ELSEWHERE("answeredElsewhere"),
-    DECLINED_ELSEWHERE("declinedElsewhere"),
-    REMOTE_ENDED("remoteEnded"),
-    UNANSWERED("unanswered");
+    INCOMING_CALL("incoming_call");
 
     companion object {
         fun from(value: String?): VoipPushType? = entries.firstOrNull { it.value == value }
@@ -61,24 +57,6 @@ data class VoipPayload(
             callId.isNotBlank() &&
             caller.isNotBlank() &&
             host.isNotBlank()
-    }
-
-    fun shouldHideIncomingCall(): Boolean {
-        return when (pushType) {
-            VoipPushType.ANSWERED_ELSEWHERE,
-            VoipPushType.DECLINED_ELSEWHERE,
-            VoipPushType.REMOTE_ENDED,
-            VoipPushType.UNANSWERED -> true
-            else -> false
-        }
-    }
-
-    fun shouldShowMissedCallNotification(): Boolean {
-        return when (pushType) {
-            VoipPushType.REMOTE_ENDED,
-            VoipPushType.UNANSWERED -> true
-            else -> false
-        }
     }
 
     fun toBundle(): Bundle {

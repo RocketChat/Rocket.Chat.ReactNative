@@ -14,6 +14,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.provider.Settings
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -25,6 +26,9 @@ import android.telecom.TelecomManager
 import io.wazo.callkeep.VoiceConnection
 import io.wazo.callkeep.VoiceConnectionService
 import chat.rocket.reactnative.MainActivity
+import chat.rocket.reactnative.notification.Ejson
+import org.json.JSONArray
+import org.json.JSONObject
 
 /**
  * Handles VoIP call notifications using Android's Telecom framework via CallKeep.
@@ -50,8 +54,11 @@ class VoipNotification(private val context: Context) {
         // react-native-callkeep's ConnectionService class name
         private const val CALLKEEP_CONNECTION_SERVICE_CLASS = "io.wazo.callkeep.VoiceConnectionService"
         private const val DISCONNECT_REASON_MISSED = 6
+        private const val INCOMING_CALL_LIFETIME_MS = 60_000L
         private val timeoutHandler = Handler(Looper.getMainLooper())
         private val timeoutCallbacks = mutableMapOf<String, Runnable>()
+        private var ddpClient: DDPClient? = null
+        private var ddpDisconnectRunnable: Runnable? = null
 
         /**
          * Cancels a VoIP notification by ID.
@@ -157,6 +164,120 @@ class VoipNotification(private val context: Context) {
                 else -> connection.onDisconnect()
             }
         }
+
+        // -- Native DDP Listener (Call End Detection) --
+
+        @JvmStatic
+        fun startListeningForCallEnd(context: Context, payload: VoipPayload) {
+            stopDDPClientInternal()
+
+            val ejson = Ejson()
+            ejson.host = payload.host
+            val userId = ejson.userId()
+            val token = ejson.token()
+
+            if (userId.isNullOrEmpty() || token.isNullOrEmpty()) {
+                Log.d(TAG, "No credentials for ${payload.host}, skipping DDP listener")
+                return
+            }
+
+            val deviceId = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+            val callId = payload.callId
+            val client = DDPClient()
+            ddpClient = client
+
+            Log.d(TAG, "Starting DDP listener for call $callId")
+
+            client.onCollectionMessage = { message ->
+                Log.d(TAG, "DDP received message: $message")
+                val fields = message.optJSONObject("fields")
+                if (fields != null) {
+                    val eventName = fields.optString("eventName")
+                    if (eventName.endsWith("/media-signal")) {
+                        val args = fields.optJSONArray("args")
+                        val firstArg = args?.optJSONObject(0)
+                        if (firstArg != null) {
+                            val signalType = firstArg.optString("type")
+                            val signalCallId = firstArg.optString("callId")
+                            val signedContractId = firstArg.optString("signedContractId")
+
+                            if (signalType == "notification" && signalCallId == callId && signedContractId != null && signedContractId != deviceId) {
+                                Log.d(TAG, "DDP received hangup for call $callId")
+                                val appContext = context.applicationContext
+                                Handler(Looper.getMainLooper()).post {
+                                    cancelTimeout(callId)
+                                    disconnectIncomingCall(callId, true)
+                                    cancelById(appContext, payload.notificationId)
+                                    LocalBroadcastManager.getInstance(appContext).sendBroadcast(
+                                        Intent(ACTION_DISMISS).apply {
+                                            putExtras(payload.toBundle())
+                                        }
+                                    )
+                                    stopDDPClientInternal()
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            client.connect(payload.host) { connected ->
+                if (!connected) {
+                    Log.d(TAG, "DDP connection failed")
+                    stopDDPClientInternal()
+                    return@connect
+                }
+
+                client.login(token) { loggedIn ->
+                    if (!loggedIn) {
+                        Log.d(TAG, "DDP login failed")
+                        stopDDPClientInternal()
+                        return@login
+                    }
+
+                    val params = JSONArray().apply {
+                        put("$userId/media-signal")
+                        put(JSONObject().apply {
+                            put("useCollection", false)
+                            put("args", JSONArray().apply { put(false) })
+                        })
+                    }
+
+                    client.subscribe("stream-notify-user", params) { subscribed ->
+                        Log.d(TAG, "DDP subscribe result: $subscribed")
+                        if (!subscribed) {
+                            stopDDPClientInternal()
+                        }
+                    }
+                }
+            }
+
+            scheduleDDPSafetyTimeout()
+        }
+
+        @JvmStatic
+        fun stopDDPClient() {
+            Log.d(TAG, "stopDDPClient called from JS")
+            stopDDPClientInternal()
+        }
+
+        private fun stopDDPClientInternal() {
+            ddpDisconnectRunnable?.let { timeoutHandler.removeCallbacks(it) }
+            ddpDisconnectRunnable = null
+            ddpClient?.disconnect()
+            ddpClient = null
+        }
+
+        private fun scheduleDDPSafetyTimeout() {
+            ddpDisconnectRunnable?.let { timeoutHandler.removeCallbacks(it) }
+
+            val runnable = Runnable {
+                Log.d(TAG, "DDP safety timeout reached, disconnecting")
+                stopDDPClientInternal()
+            }
+            ddpDisconnectRunnable = runnable
+            timeoutHandler.postDelayed(runnable, INCOMING_CALL_LIFETIME_MS)
+        }
     }
 
     /**
@@ -179,7 +300,6 @@ class VoipNotification(private val context: Context) {
     fun onMessageReceived(voipPayload: VoipPayload) {
         when {
             voipPayload.isVoipIncomingCall() -> showIncomingCall(voipPayload)
-            voipPayload.shouldHideIncomingCall() -> dismissIncomingCall(voipPayload)
             else -> Log.w(TAG, "Ignoring unsupported VoIP payload type: ${voipPayload.type}")
         }
     }
@@ -241,27 +361,7 @@ class VoipNotification(private val context: Context) {
         // Show notification with full-screen intent
         showIncomingCallNotification(voipPayload)
         scheduleTimeout(context, voipPayload)
-    }
-
-    private fun dismissIncomingCall(voipPayload: VoipPayload) {
-        cancelTimeout(voipPayload.callId)
-        val showMissedCallNotification = voipPayload.shouldShowMissedCallNotification()
-        disconnectIncomingCall(
-            callId = voipPayload.callId,
-            reportAsMissed = showMissedCallNotification
-        )
-        cancelById(context, voipPayload.notificationId)
-        LocalBroadcastManager.getInstance(context).sendBroadcast(
-            Intent(ACTION_DISMISS).apply {
-                putExtras(voipPayload.toBundle())
-            }
-        )
-
-        if (showMissedCallNotification) {
-            showMissedCallNotification(voipPayload)
-        }
-
-        Log.d(TAG, "Dismissed incoming VoIP call for type ${voipPayload.type}: ${voipPayload.callId}")
+        startListeningForCallEnd(context, voipPayload)
     }
 
     /**
@@ -423,34 +523,6 @@ class VoipNotification(private val context: Context) {
         // Show notification
         notificationManager?.notify(notificationId, builder.build())
         Log.d(TAG, "VoIP notification displayed with ID: $notificationId")
-    }
-
-    private fun showMissedCallNotification(voipPayload: VoipPayload) {
-        val packageName = context.packageName
-        val smallIconResId = context.resources.getIdentifier("ic_notification", "drawable", packageName)
-        val launchIntent = Intent(context, MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            putExtras(voipPayload.toBundle())
-        }
-        val contentIntent = createPendingIntent(voipPayload.notificationId + 3, launchIntent)
-        val caller = voipPayload.caller
-
-        val builder = NotificationCompat.Builder(context, CHANNEL_ID).apply {
-            setSmallIcon(smallIconResId)
-            setContentTitle("Missed call")
-            if (caller.isNotBlank()) {
-                setContentText("Call from $caller")
-            }
-            setCategory(NotificationCompat.CATEGORY_MISSED_CALL)
-            setPriority(NotificationCompat.PRIORITY_HIGH)
-            setAutoCancel(true)
-            setOngoing(false)
-            setSilent(true)
-            setContentIntent(contentIntent)
-        }
-
-        notificationManager?.notify(voipPayload.notificationId, builder.build())
-        Log.d(TAG, "Missed VoIP call notification displayed with ID: ${voipPayload.notificationId}")
     }
 
     /**
