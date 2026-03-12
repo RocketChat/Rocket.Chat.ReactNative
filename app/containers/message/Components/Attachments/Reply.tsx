@@ -152,11 +152,10 @@ const Description = React.memo(
 		const isFileName = attachment.type === 'file' && !attachment.text;
 		const isDocument = isDocumentFile(attachment);
 
-		if (isFileName && isDocument) {
-			return (
-				<Text style={[styles.fileSizeText, { color: colors.fontSecondaryInfo }]}>{formatSize(attachment.size ?? 0, 2)}</Text>
-			);
+		if (isFileName && isDocument && attachment.size) {
+			return <Text style={[styles.fileSizeText, { color: colors.fontSecondaryInfo }]}>{formatSize(attachment.size, 2)}</Text>;
 		}
+
 		if (isFileName) {
 			return <MarkdownPreview msg={text} numberOfLines={0} />;
 		}
@@ -244,8 +243,6 @@ const Reply = React.memo(
 			return null;
 		}
 
-		console.log(attachment, '============================');
-
 		const onPress = async () => {
 			let url = attachment.title_link || attachment.author_link;
 			if (!url) {
@@ -266,6 +263,11 @@ const Reply = React.memo(
 			strokeLight = attachment.color;
 		}
 
+		const titleParts = attachment.title?.split('.') ?? [];
+		const attachmentFormat = attachment.format ?? titleParts[titleParts.length - 1];
+
+		const isDocument = attachment.type === 'file' && isDocumentFile(attachment) && attachment.title;
+
 		return (
 			<View style={{ gap: 4 }}>
 				<Touchable
@@ -279,9 +281,9 @@ const Reply = React.memo(
 					]}
 					disabled={!!(loading || attachment.message_link)}>
 					<View style={styles.attachmentContainer}>
-						{attachment.type === 'file' && isDocumentFile(attachment) && attachment.title && (
+						{isDocument && (
 							<View style={[styles.fileIconContainer, { backgroundColor: colors.surfaceNeutral }]}>
-								<CustomIcon name={getFileIcon(attachment.title)} size={38} color={colors.surfaceDark} />
+								<CustomIcon name={getFileIcon(attachmentFormat)} size={38} color={colors.surfaceDark} />
 							</View>
 						)}
 

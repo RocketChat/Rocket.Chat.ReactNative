@@ -1,11 +1,25 @@
 import { type TIconsName } from '../../containers/CustomIcon';
 
-export const getFileIcon = (filename: string): TIconsName => {
-	const lowerFilename = filename.toLowerCase();
-	if (lowerFilename.endsWith('.pdf')) return 'adobe-reader-monochromatic';
-	// if (lowerFilename.endsWith('.doc') || lowerFilename.endsWith('.docx')) return 'another';
-	if (lowerFilename.endsWith('.xls') || lowerFilename.endsWith('.xlsx') || lowerFilename.endsWith('.csv')) return 'file-sheet';
-	if (lowerFilename.endsWith('.pptx') || lowerFilename.endsWith('.ppt')) return 'engagement-dashboard';
-	// if (lowerFilename.endsWith('.zip')) return 'another';
-	return 'file-document';
+export const getFileIcon = (format: string): TIconsName => {
+	const fileFormat = format.toLowerCase();
+
+	switch (fileFormat) {
+		case 'pdf':
+			return 'adobe-reader-monochromatic';
+
+		// sheets
+		case 'xls':
+		case 'xlsx':
+		case 'csv':
+			return 'file-sheet';
+
+		// presentations
+		case 'pptx':
+		case 'ppt':
+			return 'engagement-dashboard';
+
+		// other documents
+		default:
+			return 'file-document';
+	}
 };
