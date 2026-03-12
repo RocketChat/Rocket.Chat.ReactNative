@@ -1012,55 +1012,55 @@ type TRegisterPushTokenData = {
 	appName: string;
 	voipToken?: string;
 };
-export const registerPushToken = (): Promise<void> =>
-	new Promise<void>(async resolve => {
-		const token = getDeviceToken();
-		const voipToken = isIOS ? NativeVoipModule.getLastVoipToken() : '';
+export const registerPushToken = async (): Promise<void> => {
+	const token = getDeviceToken();
+	// Always returns an empty string on Android
+	const voipToken = NativeVoipModule.getLastVoipToken();
 
-		if (token === lastToken && voipToken === lastVoipToken) {
-			return resolve();
-		}
+	if (token === lastToken && voipToken === lastVoipToken) {
+		return;
+	}
 
-		// TODO: server version
-		if (isIOS && (!token || !voipToken)) {
-			return resolve();
-		}
+	// TODO: server version
+	if (isIOS && (!token || !voipToken)) {
+		return;
+	}
 
-		let data: TRegisterPushTokenData = {
-			id: '',
-			value: '',
-			type: '',
-			appName: ''
+	let data: TRegisterPushTokenData = {
+		id: '',
+		value: '',
+		type: '',
+		appName: ''
+	};
+	if (token) {
+		const type = isIOS ? 'apn' : 'gcm';
+		data = {
+			id: await getUniqueId(),
+			value: token,
+			type,
+			appName: getBundleId
 		};
-		if (token) {
-			const type = isIOS ? 'apn' : 'gcm';
-			data = {
-				id: await getUniqueId(),
-				value: token,
-				type,
-				appName: getBundleId
-			};
-		}
-		if (isIOS && voipToken) {
-			data.voipToken = voipToken;
-		}
+	}
+	if (voipToken) {
+		data.voipToken = voipToken;
+	}
 
-		try {
-			// RC 0.60.0
-			await sdk.post('push.token', data);
-			console.log('registerPushToken success', data);
-			lastToken = token;
-			lastVoipToken = voipToken;
-		} catch (e) {
-			log(e);
-		}
-		return resolve();
-	});
+	try {
+		// RC 0.60.0
+		await sdk.post('push.token', data);
+		lastToken = token;
+		lastVoipToken = voipToken;
+	} catch (e) {
+		log(e);
+	}
+};
 
 // TODO: add voip token removal
 export const removePushToken = (): Promise<boolean | void> => {
 	const token = getDeviceToken();
 	if (token) {
+		lastToken = '';
+		lastVoipToken = '';
 		// RC 0.60.0
 		return sdk.current.del('push.token', { token });
 	}
