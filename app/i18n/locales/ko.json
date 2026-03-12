@@ -1,1 +1,13 @@
-{}
+{"Timestamp_Picker": "날짜 및 시간",
+  "Timestamp_Picker_Date": "날짜",
+  "Timestamp_Picker_Time": "시간",
+  "Timestamp_Picker_Format": "형식",
+  "Timestamp_Picker_Preview": "미리보기",
+  "Timestamp_Picker_Add": "메시지에 추가",
+  "Timestamp_Picker_Timezone": "시간대",
+  "Timestamp_Short_Time": "짧은 시간 (오후 1:30)",
+  "Timestamp_Long_Time": "긴 시간 (오후 1:30:00)",
+  "Timestamp_Short_Date": "짧은 날짜 (2025. 7. 11.)",
+  "Timestamp_Long_Date": "긴 날짜 (2025년 7월 11일)",
+  "Timestamp_Full": "전체 (2025년 7월 11일 금요일 오후 1:30)",
+  "Timestamp_Relative": "상대적 (3시간 전)"}

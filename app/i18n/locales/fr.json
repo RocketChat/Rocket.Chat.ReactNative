@@ -802,5 +802,18 @@
   "Your_invite_link_will_never_expire": "Votre lien d'invitation n'expirera jamais.",
   "Your_password_is": "Votre mot de passe est",
   "Your_Password_Must_Have": "Votre mot de passe doit avoir:",
-  "Your_workspace": "Votre espace de travail"
+  "Your_workspace": "Votre espace de travail",
+  "Timestamp_Picker": "Date et heure",
+  "Timestamp_Picker_Date": "Date",
+  "Timestamp_Picker_Time": "Heure",
+  "Timestamp_Picker_Format": "Format",
+  "Timestamp_Picker_Preview": "Aperçu",
+  "Timestamp_Picker_Add": "Ajouter au message",
+  "Timestamp_Picker_Timezone": "Fuseau horaire",
+  "Timestamp_Short_Time": "Heure courte (13:30)",
+  "Timestamp_Long_Time": "Heure longue (13:30:00)",
+  "Timestamp_Short_Date": "Date courte (11/07/2025)",
+  "Timestamp_Long_Date": "Date longue (11 juillet 2025)",
+  "Timestamp_Full": "Complet (vendredi 11 juillet 2025 13:30)",
+  "Timestamp_Relative": "Relatif (il y a 3 heures)"
 }

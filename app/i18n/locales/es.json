@@ -478,5 +478,18 @@
   "you_were_mentioned": "has sido mencionado",
   "You_will_not_be_able_to_recover_this_message": "¡No podrás recuperar este mensaje!",
   "Your_certificate": "Tu certificado",
-  "Your_Password_Must_Have": "Su contraseña debe tener:"
+  "Your_Password_Must_Have": "Su contraseña debe tener:",
+  "Timestamp_Picker": "Fecha y Hora",
+  "Timestamp_Picker_Date": "Fecha",
+  "Timestamp_Picker_Time": "Hora",
+  "Timestamp_Picker_Format": "Formato",
+  "Timestamp_Picker_Preview": "Vista previa",
+  "Timestamp_Picker_Add": "Agregar al mensaje",
+  "Timestamp_Picker_Timezone": "Zona horaria",
+  "Timestamp_Short_Time": "Hora corta (1:30 PM)",
+  "Timestamp_Long_Time": "Hora larga (1:30:00 PM)",
+  "Timestamp_Short_Date": "Fecha corta (11/07/2025)",
+  "Timestamp_Long_Date": "Fecha larga (11 de julio de 2025)",
+  "Timestamp_Full": "Completo (viernes, 11 de julio de 2025 1:30 PM)",
+  "Timestamp_Relative": "Relativo (hace 3 horas)"
 }
