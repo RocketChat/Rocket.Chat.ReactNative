@@ -10,8 +10,10 @@ import { emojisByCategory } from '../../lib/constants/emojis';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { useFrequentlyUsedEmoji } from '../../lib/hooks/useFrequentlyUsedEmoji';
 import { type IEmojiCategoryProps, type TEmojiCategory } from './interfaces';
+import { isAndroid } from '../../lib/methods/helpers';
 
-const EMOJI_CATEGORY_BOTTOM_SHEET_PADDING = EMOJI_BUTTON_SIZE + 22;
+const ANDROID_BOTTOM_SHEET_EXTRA_OFFSET = 24;
+const ANDROID_BOTTOM_SHEET_CONTENT_PADDING = EMOJI_BUTTON_SIZE + ANDROID_BOTTOM_SHEET_EXTRA_OFFSET;
 
 const useEmojis = (category?: TEmojiCategory) => {
 	const { frequentlyUsed, loaded } = useFrequentlyUsedEmoji();
@@ -57,7 +59,7 @@ const EmojiCategory = ({
 
 	const numColumns = Math.trunc(parentWidth / EMOJI_BUTTON_SIZE);
 	const marginHorizontal = (parentWidth % EMOJI_BUTTON_SIZE) / 2;
-	const contentPaddingBottom = bottomSheet ? bottom + EMOJI_CATEGORY_BOTTOM_SHEET_PADDING : undefined;
+	const contentPaddingBottom = isAndroid && bottomSheet ? ANDROID_BOTTOM_SHEET_CONTENT_PADDING + bottom : undefined;
 
 	const renderItem = ({ item }: { item: IEmoji }) => <PressableEmoji emoji={item} onPress={onEmojiSelected} />;
 
