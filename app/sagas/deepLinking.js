@@ -1,5 +1,7 @@
 import { all, call, delay, put, select, take, takeLatest } from 'redux-saga/effects';
 
+import { isPushVideoConfAlreadyProcessed } from '../lib/notifications/videoConf/deduplication';
+
 import { shareSetParams } from '../actions/share';
 import * as types from '../actions/actionsTypes';
 import { appInit, appStart, appReady } from '../actions/app';
@@ -245,8 +247,14 @@ const handleNavigateCallRoom = function* handleNavigateCallRoom({ params }) {
 
 const handleClickCallPush = function* handleClickCallPush({ params }) {
 	let { host } = params;
+	const notId = params.notId || params.identifier || params.payload?.notId || params.push?.identifier || params.push?.payload?.notId;
 
 	if (!host) {
+		return;
+	}
+
+	const isProcessed = yield call(isPushVideoConfAlreadyProcessed, notId);
+	if (isProcessed) {
 		return;
 	}
 

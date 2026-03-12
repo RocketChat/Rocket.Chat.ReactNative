@@ -1,6 +1,7 @@
 import EJSON from 'ejson';
 import { Platform } from 'react-native';
 
+import { isPushVideoConfAlreadyProcessed } from './videoConf/deduplication';
 import { appInit } from '../../actions/app';
 import { deepLinkingClickCallPush, deepLinkingOpen } from '../../actions/deepLinking';
 import { type INotification, SubscriptionType } from '../../definitions';
@@ -16,7 +17,7 @@ interface IEjson {
 	messageId: string;
 }
 
-export const onNotification = (push: INotification): void => {
+export const onNotification = async (push: INotification): Promise<void> => {
 	const identifier = String(push?.payload?.action?.identifier);
 
 	// Handle video conf notification actions (Accept/Decline buttons)
@@ -24,6 +25,10 @@ export const onNotification = (push: INotification): void => {
 		if (push?.payload?.ejson) {
 			try {
 				const notification = EJSON.parse(push.payload.ejson);
+				const currentId = push.identifier || push.payload?.notId;
+				if (await isPushVideoConfAlreadyProcessed(currentId)) {
+					return;
+				}
 				store.dispatch(
 					deepLinkingClickCallPush({ ...notification, event: identifier === 'ACCEPT_ACTION' ? 'accept' : 'decline' })
 				);
@@ -40,6 +45,10 @@ export const onNotification = (push: INotification): void => {
 
 			// Handle video conf notification tap (default action) - treat as accept
 			if (notification?.notificationType === 'videoconf') {
+				const currentId = push.identifier || push.payload?.notId;
+				if (await isPushVideoConfAlreadyProcessed(currentId)) {
+					return;
+				}
 				store.dispatch(deepLinkingClickCallPush({ ...notification, event: 'accept' }));
 				return;
 			}
@@ -122,7 +131,10 @@ export const checkPendingNotification = async (): Promise<void> => {
 							},
 							identifier: notificationData.notId || ''
 						};
-						onNotification(notification);
+						const result = onNotification(notification);
+						if (result?.catch) {
+							result.catch(e => console.warn('[notifications/index.ts] onNotification error:', e));
+						}
 					} catch (e) {
 						console.warn('[notifications/index.ts] Failed to parse pending notification:', e);
 					}
