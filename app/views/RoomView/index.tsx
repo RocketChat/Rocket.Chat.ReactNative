@@ -906,7 +906,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			Review.pushPositiveEvent();
 		} catch (e) {
 			log(e);
+			return false;
 		}
+		return true;
 	};
 
 	onReactionLongPress = (message: TAnyMessageModel) => {
