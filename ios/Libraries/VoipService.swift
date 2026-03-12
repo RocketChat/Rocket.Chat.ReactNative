@@ -28,7 +28,6 @@ public final class VoipService: NSObject {
     private static var voipRegistry: PKPushRegistry?
     private static var incomingCallTimeouts: [String: DispatchWorkItem] = [:]
     private static var ddpClient: DDPClient?
-    private static var ddpDisconnectWorkItem: DispatchWorkItem?
     
     // MARK: - Static Methods (Called from VoipModule.mm and AppDelegate)
     
@@ -203,6 +202,7 @@ public final class VoipService: NSObject {
 
     private static func handleIncomingCallTimeout(for payload: VoipPayload) {
         incomingCallTimeouts.removeValue(forKey: payload.callId)
+        stopDDPClientInternal()
 
         let callId = payload.callId
         let callUUID = payload.callUUID
@@ -318,8 +318,6 @@ public final class VoipService: NSObject {
                 }
             }
         }
-
-        scheduleDDPSafetyTimeout()
     }
 
     /// Stops the native DDP listener. Called from JS when it takes over signaling.
@@ -332,26 +330,7 @@ public final class VoipService: NSObject {
     }
 
     private static func stopDDPClientInternal() {
-        ddpDisconnectWorkItem?.cancel()
-        ddpDisconnectWorkItem = nil
         ddpClient?.disconnect()
         ddpClient = nil
-    }
-
-    private static func scheduleDDPSafetyTimeout() {
-        ddpDisconnectWorkItem?.cancel()
-
-        let workItem = DispatchWorkItem {
-            #if DEBUG
-            print("[\(TAG)] DDP safety timeout reached, disconnecting")
-            #endif
-            stopDDPClientInternal()
-        }
-
-        ddpDisconnectWorkItem = workItem
-        DispatchQueue.main.asyncAfter(
-            deadline: .now() + VoipPayload.INCOMING_CALL_LIFETIME_SEC,
-            execute: workItem
-        )
     }
 }

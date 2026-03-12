@@ -54,11 +54,9 @@ class VoipNotification(private val context: Context) {
         // react-native-callkeep's ConnectionService class name
         private const val CALLKEEP_CONNECTION_SERVICE_CLASS = "io.wazo.callkeep.VoiceConnectionService"
         private const val DISCONNECT_REASON_MISSED = 6
-        private const val INCOMING_CALL_LIFETIME_MS = 60_000L
         private val timeoutHandler = Handler(Looper.getMainLooper())
         private val timeoutCallbacks = mutableMapOf<String, Runnable>()
         private var ddpClient: DDPClient? = null
-        private var ddpDisconnectRunnable: Runnable? = null
 
         /**
          * Cancels a VoIP notification by ID.
@@ -214,7 +212,6 @@ class VoipNotification(private val context: Context) {
                                             putExtras(payload.toBundle())
                                         }
                                     )
-                                    stopDDPClientInternal()
                                 }
                             }
                         }
@@ -253,7 +250,6 @@ class VoipNotification(private val context: Context) {
                 }
             }
 
-            scheduleDDPSafetyTimeout()
         }
 
         @JvmStatic
@@ -263,21 +259,8 @@ class VoipNotification(private val context: Context) {
         }
 
         private fun stopDDPClientInternal() {
-            ddpDisconnectRunnable?.let { timeoutHandler.removeCallbacks(it) }
-            ddpDisconnectRunnable = null
             ddpClient?.disconnect()
             ddpClient = null
-        }
-
-        private fun scheduleDDPSafetyTimeout() {
-            ddpDisconnectRunnable?.let { timeoutHandler.removeCallbacks(it) }
-
-            val runnable = Runnable {
-                Log.d(TAG, "DDP safety timeout reached, disconnecting")
-                stopDDPClientInternal()
-            }
-            ddpDisconnectRunnable = runnable
-            timeoutHandler.postDelayed(runnable, INCOMING_CALL_LIFETIME_MS)
         }
     }
 
