@@ -5,7 +5,6 @@ const ACTION_SHEET_MIN_HEIGHT_FRACTION = 0.35;
 const ACTION_SHEET_MAX_HEIGHT_FRACTION = 0.75;
 export const HANDLE_HEIGHT = 28;
 const CANCEL_HEIGHT = 64;
-const PADDING_BOTTOM = 22;
 
 function normalizeSnapsToDetents(snaps: (string | number)[]): number[] {
 	return snaps
@@ -65,7 +64,7 @@ export function useActionSheetDetents({
 				detents = [fraction];
 			}
 		} else if (contentHeight > 0) {
-			const contentDetent = (contentHeight + bottomInset + PADDING_BOTTOM) / windowHeight;
+			const contentDetent = (contentHeight + bottomInset) / windowHeight;
 
 			detents = [contentDetent];
 		} else {

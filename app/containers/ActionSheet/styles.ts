@@ -4,9 +4,7 @@ import sharedStyles from '../../views/Styles';
 
 export default StyleSheet.create({
 	container: {
-		overflow: 'hidden',
-		borderTopLeftRadius: 16,
-		borderTopRightRadius: 16
+		overflow: 'hidden'
 	},
 	item: {
 		paddingHorizontal: 16,
