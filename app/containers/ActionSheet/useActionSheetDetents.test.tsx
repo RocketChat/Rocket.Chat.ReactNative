@@ -91,4 +91,3 @@ describe('useActionSheetDetents', () => {
 		expect(result.current.detents).toEqual([0.35]);
 	});
 });
-
