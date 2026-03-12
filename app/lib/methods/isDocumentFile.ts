@@ -15,6 +15,10 @@ export const isDocumentFile = (attachment: IAttachment) => {
 				return true;
 			case 'ppt':
 				return true;
+			case 'docx':
+				return true;
+			case 'doc':
+				return true;
 		}
 	}
 	return false;
