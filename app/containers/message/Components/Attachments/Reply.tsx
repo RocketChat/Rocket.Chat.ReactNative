@@ -162,8 +162,9 @@ const Description = React.memo(
 		const isDocument = isDocumentFile(attachment);
 
 		if (isFileName && isDocument) {
-			const newText = isDocument ? formatSize(attachment.size ?? 0, 2) : text;
-			return <Text style={[styles.fileSizeText, { color: colors.fontSecondaryInfo }]}>{newText}</Text>;
+			return (
+				<Text style={[styles.fileSizeText, { color: colors.fontSecondaryInfo }]}>{formatSize(attachment.size ?? 0, 2)}</Text>
+			);
 		}
 		if (isFileName) {
 			return <MarkdownPreview msg={text} numberOfLines={0} />;
@@ -179,6 +180,12 @@ const Description = React.memo(
 			return false;
 		}
 		if (prevProps.attachment.type !== nextProps.attachment.type) {
+			return false;
+		}
+		if (prevProps.attachment.format !== nextProps.attachment.format) {
+			return false;
+		}
+		if (prevProps.attachment.size !== nextProps.attachment.size) {
 			return false;
 		}
 		return true;
@@ -238,9 +245,8 @@ const Reply = React.memo(
 	({ attachment, timeFormat, getCustomEmoji, msg, showAttachment }: IMessageReply) => {
 		'use memo';
 
-		const { colors } = useTheme();
 		const [loading, setLoading] = useState(false);
-		const { theme } = useTheme();
+		const { theme, colors } = useTheme();
 		const { baseUrl, user, id, e2e, isEncrypted } = useContext(MessageContext);
 
 		if (!attachment || (isEncrypted && !e2e)) {
