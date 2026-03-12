@@ -109,7 +109,17 @@ public class VoipPayload: NSObject {
     }()
 
     @objc public var notificationId: Int {
-        return callId.hashValue
+        return Self.stableNotificationId(for: callId)
+    }
+
+    /// Deterministic hash for consistent notification IDs across app launches.
+    /// Matches Java/Kotlin String.hashCode() semantics over UTF-16 code units.
+    private static func stableNotificationId(for value: String) -> Int {
+        var hash: Int32 = 0
+        for codeUnit in value.utf16 {
+            hash = (31 &* hash) &+ Int32(codeUnit)
+        }
+        return Int(hash)
     }
 
     init(callId: String, callUUID: UUID, caller: String, username: String, host: String, type: String, hostName: String, avatarUrl: String?, createdAt: String?) {
