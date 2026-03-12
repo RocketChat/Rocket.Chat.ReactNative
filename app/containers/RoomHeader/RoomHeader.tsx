@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Pressable } from 'react-native-gesture-handler';
 
-import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import HeaderTitle from '../Header/components/HeaderTitle';
 import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
 import { MarkdownPreview } from '../markdown';
@@ -19,7 +19,6 @@ const HIT_SLOP = {
 	bottom: 5,
 	left: 5
 };
-const TITLE_SIZE = 16;
 const SUBTITLE_SIZE = 12;
 
 const getSubTitleSize = (scale: number) => SUBTITLE_SIZE * scale;
@@ -32,10 +31,6 @@ const styles = StyleSheet.create({
 	titleContainer: {
 		alignItems: 'center',
 		flexDirection: 'row'
-	},
-	title: {
-		flexShrink: 1,
-		...sharedStyles.textSemibold
 	},
 	subtitle: {
 		flexShrink: 1,
@@ -51,14 +46,6 @@ type TRoomHeaderSubTitle = {
 	subtitle?: string;
 	renderFunc?: () => React.ReactElement;
 	scale: number;
-};
-
-type TRoomHeaderHeaderTitle = {
-	title?: string;
-	tmid?: string;
-	prid?: string;
-	scale: number;
-	testID?: string;
 };
 
 interface IRoomHeader {
@@ -113,22 +100,6 @@ const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, scale }: TRoom
 	}
 
 	return null;
-});
-
-const HeaderTitle = React.memo(({ title, tmid, prid, scale, testID }: TRoomHeaderHeaderTitle) => {
-	const { colors } = useTheme();
-	const { isLargeFontScale } = useResponsiveLayout();
-
-	const titleStyle = { fontSize: TITLE_SIZE * scale, color: colors.fontTitlesLabels };
-	if (!tmid && !prid) {
-		return (
-			<Text style={[styles.title, titleStyle]} numberOfLines={isLargeFontScale ? 2 : 1} testID={testID}>
-				{title}
-			</Text>
-		);
-	}
-
-	return <MarkdownPreview msg={title} style={[styles.title, titleStyle]} testID={testID} />;
 });
 
 const Header = React.memo(
@@ -201,7 +172,7 @@ const Header = React.memo(
 				accessible
 				accessibilityLabel={accessibilityLabel}
 				accessibilityRole='header'>
-				<TouchableOpacity testID='room-header' onPress={handleOnPress} disabled={disabled} hitSlop={HIT_SLOP}>
+				<Pressable testID='room-header' onPress={handleOnPress} disabled={disabled} hitSlop={HIT_SLOP}>
 					<View style={styles.titleContainer}>
 						{tmid ? null : (
 							<RoomTypeIcon
@@ -214,10 +185,10 @@ const Header = React.memo(
 								abacAttributes={abacAttributes}
 							/>
 						)}
-						<HeaderTitle title={title} tmid={tmid} prid={prid} scale={scale} testID={testID} />
+						<HeaderTitle headerTitle={title ?? ''} testID={testID} position='left' />
 					</View>
 					<SubTitle usersTyping={tmid ? [] : usersTyping} subtitle={subtitle} renderFunc={renderFunc} scale={scale} />
-				</TouchableOpacity>
+				</Pressable>
 			</View>
 		);
 	}
