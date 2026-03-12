@@ -640,18 +640,14 @@ exports[`Story Snapshots: Fields should match snapshot 1`] = `
     ]
   }
 >
-  <Text
+  <View
     style={
       [
         {
-          "flex": 1,
           "padding": 4,
         },
         {
           "marginVertical": 6,
-        },
-        {
-          "color": "#2F343D",
         },
       ]
     }
@@ -676,19 +672,15 @@ exports[`Story Snapshots: Fields should match snapshot 1`] = `
     >
       *this is plain_text text*
     </Text>
-  </Text>
-  <Text
+  </View>
+  <View
     style={
       [
         {
-          "flex": 1,
           "padding": 4,
         },
         {
           "marginVertical": 6,
-        },
-        {
-          "color": "#2F343D",
         },
       ]
     }
@@ -713,19 +705,15 @@ exports[`Story Snapshots: Fields should match snapshot 1`] = `
     >
       *this is plain_text text*
     </Text>
-  </Text>
-  <Text
+  </View>
+  <View
     style={
       [
         {
-          "flex": 1,
           "padding": 4,
         },
         {
           "marginVertical": 6,
-        },
-        {
-          "color": "#2F343D",
         },
       ]
     }
@@ -750,19 +738,15 @@ exports[`Story Snapshots: Fields should match snapshot 1`] = `
     >
       *this is plain_text text*
     </Text>
-  </Text>
-  <Text
+  </View>
+  <View
     style={
       [
         {
-          "flex": 1,
           "padding": 4,
         },
         {
           "marginVertical": 6,
-        },
-        {
-          "color": "#2F343D",
         },
       ]
     }
@@ -787,19 +771,15 @@ exports[`Story Snapshots: Fields should match snapshot 1`] = `
     >
       *this is plain_text text*
     </Text>
-  </Text>
-  <Text
+  </View>
+  <View
     style={
       [
         {
-          "flex": 1,
           "padding": 4,
         },
         {
           "marginVertical": 6,
-        },
-        {
-          "color": "#2F343D",
         },
       ]
     }
@@ -824,7 +804,7 @@ exports[`Story Snapshots: Fields should match snapshot 1`] = `
     >
       *this is plain_text text*
     </Text>
-  </Text>
+  </View>
 </View>
 `;
 
@@ -844,7 +824,6 @@ exports[`Story Snapshots: Section should match snapshot 1`] = `
   <View
     style={
       {
-        "flex": 1,
         "padding": 4,
       }
     }
@@ -924,7 +903,6 @@ exports[`Story Snapshots: SectionButton should match snapshot 1`] = `
   <View
     style={
       {
-        "flex": 1,
         "padding": 4,
       }
     }
@@ -1063,7 +1041,6 @@ exports[`Story Snapshots: SectionDatePicker should match snapshot 1`] = `
   <View
     style={
       {
-        "flex": 1,
         "padding": 4,
       }
     }
@@ -1200,7 +1177,6 @@ exports[`Story Snapshots: SectionMarkdownList should match snapshot 1`] = `
   <View
     style={
       {
-        "flex": 1,
         "padding": 4,
       }
     }
@@ -1398,7 +1374,6 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
     <View
       style={
         {
-          "flex": 1,
           "padding": 4,
         }
       }
@@ -1532,7 +1507,6 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
     <View
       style={
         {
-          "flex": 1,
           "padding": 4,
         }
       }
@@ -1670,7 +1644,6 @@ exports[`Story Snapshots: SectionOverflow should match snapshot 1`] = `
   <View
     style={
       {
-        "flex": 1,
         "padding": 4,
       }
     }
@@ -1847,7 +1820,6 @@ exports[`Story Snapshots: SectionSelect should match snapshot 1`] = `
   <View
     style={
       {
-        "flex": 1,
         "padding": 4,
       }
     }
