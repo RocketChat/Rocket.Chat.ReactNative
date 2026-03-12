@@ -19,7 +19,7 @@ export const ACTION_SHEET_ANIMATION_DURATION = 250;
 const ActionSheet = React.memo(
 	forwardRef(({ children }: { children: React.ReactElement }, ref) => {
 		const { colors } = useTheme();
-		const { height: windowHeight, fontScale } = useWindowDimensions();
+		const { height: windowHeight, width: windowWidth, fontScale } = useWindowDimensions();
 		const { bottom } = useSafeAreaInsets();
 		const sheetRef = useRef<TrueSheet>(null);
 		const [data, setData] = useState<TActionSheetOptions>({} as TActionSheetOptions);
@@ -89,26 +89,29 @@ const ActionSheet = React.memo(
 			snapshotOnClose?.();
 		};
 
+		const isPortrait = windowHeight > windowWidth;
+		const effectiveSnaps = (isPortrait ? data?.portraitSnaps : data?.landscapeSnaps) || data?.snaps;
+
 		const { detents, maxHeight } = useActionSheetDetents({
 			windowHeight,
 			bottomInset: bottom,
 			itemHeight,
 			optionsLength: data?.options?.length || 0,
-			snaps: data?.snaps,
+			snaps: effectiveSnaps,
 			headerHeight: data?.headerHeight,
 			hasCancel: data?.hasCancel,
 			contentHeight
 		});
 
 		const hasOptions = !!data?.options?.length;
-		const hasSnaps = !!data?.snaps?.length;
+		const hasSnaps = !!effectiveSnaps?.length;
 		const disableContentPanning = data?.enableContentPanningGesture === false;
 		const isScrollable = hasOptions || (hasSnaps && !disableContentPanning);
 
 		const contentMinHeight =
-			data.fullContainer && data.snaps?.length
+			data.fullContainer && effectiveSnaps?.length
 				? (() => {
-						const snap = data.snaps[0];
+						const snap = effectiveSnaps[0];
 						const fraction = typeof snap === 'number' ? Math.min(1, Math.max(0.1, snap)) : (parseFloat(String(snap)) || 50) / 100;
 						return Math.max(0, windowHeight * fraction - HANDLE_HEIGHT);
 				  })()
