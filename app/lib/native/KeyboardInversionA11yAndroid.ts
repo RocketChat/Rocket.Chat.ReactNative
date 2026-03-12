@@ -23,4 +23,3 @@ export const disableKeyboardA11y = () => {
 };
 
 export const getKeyboardA11yState = () => NativeModule.getState();
-
