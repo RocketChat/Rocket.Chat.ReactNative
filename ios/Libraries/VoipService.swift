@@ -235,6 +235,7 @@ public final class VoipService: NSObject {
 
         let callId = payload.callId
         let userId = credentials.userId
+        let deviceId = DeviceUID.uid()
         let client = DDPClient()
         ddpClient = client
 
@@ -251,10 +252,10 @@ public final class VoipService: NSObject {
                   let firstArg = args.first as? [String: Any],
                   let signalType = firstArg["type"] as? String,
                   signalType == "notification",
-                  let notification = firstArg["notification"] as? String,
-                  notification == "hangup",
                   let signalCallId = firstArg["callId"] as? String,
-                  signalCallId == callId
+                  signalCallId == callId,
+                  let signedContractId = firstArg["signedContractId"] as? String,
+                  signedContractId != deviceId
             else {
                 return
             }
