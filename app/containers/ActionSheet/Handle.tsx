@@ -1,16 +1,18 @@
 import React from 'react';
 import { View } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler';
 
 import styles from './styles';
 import { themes } from '../../lib/constants/colors';
 import { useTheme } from '../../theme';
-import Touch from '../Touch';
 
 export const Handle = ({ onPress }: { onPress: () => void }) => {
 	const { theme } = useTheme();
+
+	// We should use Pressable from gesture-handler to avoid issues with the keyboard
 	return (
-		<Touch onPress={onPress} style={styles.handle} testID='action-sheet-handle'>
+		<Pressable onPress={onPress} style={styles.handle} testID='action-sheet-handle'>
 			<View style={[styles.handleIndicator, { backgroundColor: themes[theme].fontSecondaryInfo }]} />
-		</Touch>
+		</Pressable>
 	);
 };
