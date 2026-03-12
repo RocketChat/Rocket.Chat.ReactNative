@@ -17,6 +17,9 @@ import MessageContext from '../../Context';
 import Touchable from '../../Touchable';
 import messageStyles from '../../styles';
 import dayjs from '../../../../lib/dayjs';
+import { CustomIcon } from '../../../CustomIcon';
+import { getFileIcon } from '../../../../lib/methods/getFileIcon';
+import { formatSize } from '../../../../lib/methods/formatSize';
 
 const styles = StyleSheet.create({
 	button: {
@@ -30,6 +33,8 @@ const styles = StyleSheet.create({
 		flex: 1,
 		borderRadius: 4,
 		flexDirection: 'row',
+		alignItems: 'center',
+		gap: 8,
 		paddingVertical: 4,
 		paddingLeft: 8
 	},
@@ -88,6 +93,15 @@ const styles = StyleSheet.create({
 		flex: 1,
 		fontSize: 16,
 		...sharedStyles.textMedium
+	},
+	fileIconContainer: {
+		borderRadius: 4,
+		padding: 4
+	},
+	fileSizeText: {
+		fontSize: 13,
+		lineHeight: 18,
+		...sharedStyles.textRegular
 	}
 });
 
@@ -98,6 +112,16 @@ interface IMessageReply {
 	msg?: string;
 	showAttachment?: (file: IAttachment) => void;
 }
+
+const isDocumentFile = (attachment: IAttachment) => {
+	if (attachment.type === 'file') {
+		switch (attachment.format) {
+			case 'PDF':
+				return true;
+		}
+	}
+	return false;
+};
 
 const Title = React.memo(
 	({ attachment, timeFormat, theme }: { attachment: IAttachment; timeFormat?: string; theme: TSupportedThemes }) => {
@@ -124,6 +148,7 @@ const Description = React.memo(
 
 		const { user } = useContext(MessageContext);
 		const text = attachment.text || attachment.title;
+		const { colors } = useTheme();
 
 		if (!text) {
 			return null;
@@ -134,7 +159,12 @@ const Description = React.memo(
 		// For other attachments (message quotes, embeds), the text may contain actual markdown formatting,
 		// so we use the full Markdown component to preserve styling.
 		const isFileName = attachment.type === 'file' && !attachment.text;
+		const isDocument = isDocumentFile(attachment);
 
+		if (isFileName && isDocument) {
+			const newText = isDocument ? formatSize(attachment.size ?? 0, 2) : text;
+			return <Text style={[styles.fileSizeText, { color: colors.fontSecondaryInfo }]}>{newText}</Text>;
+		}
 		if (isFileName) {
 			return <MarkdownPreview msg={text} numberOfLines={0} />;
 		}
@@ -208,6 +238,7 @@ const Reply = React.memo(
 	({ attachment, timeFormat, getCustomEmoji, msg, showAttachment }: IMessageReply) => {
 		'use memo';
 
+		const { colors } = useTheme();
 		const [loading, setLoading] = useState(false);
 		const { theme } = useTheme();
 		const { baseUrl, user, id, e2e, isEncrypted } = useContext(MessageContext);
@@ -249,6 +280,12 @@ const Reply = React.memo(
 					]}
 					disabled={!!(loading || attachment.message_link)}>
 					<View style={styles.attachmentContainer}>
+						{attachment.type === 'file' && attachment.format === 'PDF' && attachment.title && (
+							<View style={[styles.fileIconContainer, { backgroundColor: colors.surfaceNeutral }]}>
+								<CustomIcon name={getFileIcon(attachment.title)} size={38} color={colors.surfaceDark} />
+							</View>
+						)}
+
 						<View style={styles.titleAndDescriptionContainer}>
 							<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
 							<Description attachment={attachment} getCustomEmoji={getCustomEmoji} />
