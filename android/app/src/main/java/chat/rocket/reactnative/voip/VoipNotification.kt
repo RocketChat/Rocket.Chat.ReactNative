@@ -97,6 +97,7 @@ class VoipNotification(private val context: Context) {
 
         @JvmStatic
         fun cancelTimeout(callId: String) {
+            stopDDPClientInternal();
             val timeoutRunnable = synchronized(timeoutCallbacks) {
                 timeoutCallbacks.remove(callId)
             }
@@ -132,6 +133,7 @@ class VoipNotification(private val context: Context) {
             // TODO: call restapi to decline the call
         }
 
+        // TODO: unify these three functions and check VoiceConnectionService
         private fun disconnectTimedOutCall(callId: String) {
             val connection = VoiceConnectionService.getConnection(callId)
             when (connection) {
@@ -201,12 +203,11 @@ class VoipNotification(private val context: Context) {
                             val signalCallId = firstArg.optString("callId")
                             val signedContractId = firstArg.optString("signedContractId")
 
-                            if (signalType == "notification" && signalCallId == callId && signedContractId != null && signedContractId != deviceId) {
-                                Log.d(TAG, "DDP received hangup for call $callId")
+                            if (signalType == "notification" && signalCallId == callId && signedContractId.isNullOrEmpty() && signedContractId != deviceId) {
                                 val appContext = context.applicationContext
                                 Handler(Looper.getMainLooper()).post {
                                     cancelTimeout(callId)
-                                    disconnectIncomingCall(callId, true)
+                                    disconnectIncomingCall(callId, false)
                                     cancelById(appContext, payload.notificationId)
                                     LocalBroadcastManager.getInstance(appContext).sendBroadcast(
                                         Intent(ACTION_DISMISS).apply {

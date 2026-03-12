@@ -93,7 +93,7 @@ class MediaSessionInstance {
 		console.log('[VoIP] Answering call:', callId);
 		const mainCall = this.instance?.getMainCall();
 		console.log('[VoIP] Main call:', mainCall);
-		// Compare using deterministic UUID conversion
+
 		if (mainCall && mainCall.callId === callId) {
 			console.log('[VoIP] Accepting call:', callId);
 			await mainCall.accept();
@@ -121,7 +121,7 @@ class MediaSessionInstance {
 
 	public endCall = (callId: string) => {
 		const mainCall = this.instance?.getMainCall();
-		// Compare using deterministic UUID conversion
+
 		if (mainCall && mainCall.callId === callId) {
 			if (mainCall.state === 'ringing') {
 				mainCall.reject();

@@ -51,7 +51,9 @@ private struct RemoteVoipPayload {
             let payloadUsername = caller?.username ?? username,
             let payloadHost = host,
             let payloadType = type,
-            let payloadHostName = hostName
+            let payloadHostName = hostName,
+            let payloadCreatedAt = createdAt,
+            !payloadCreatedAt.isEmpty
         else {
             return nil
         }
@@ -65,7 +67,7 @@ private struct RemoteVoipPayload {
             type: payloadType,
             hostName: payloadHostName,
             avatarUrl: caller?.avatarUrl,
-            createdAt: createdAt
+            createdAt: payloadCreatedAt
         )
     }
 }

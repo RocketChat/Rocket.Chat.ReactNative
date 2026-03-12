@@ -5,6 +5,7 @@ import Foundation
 final class DDPClient {
     
     private static let TAG = "RocketChat.DDPClient"
+    private let stateQueue = DispatchQueue(label: "chat.rocket.reactnative.ddp-client")
     
     private var webSocketTask: URLSessionWebSocketTask?
     private var urlSession: URLSession?
@@ -17,40 +18,44 @@ final class DDPClient {
     // MARK: - Connect
     
     func connect(host: String, completion: @escaping (Bool) -> Void) {
-        let wsUrl = Self.buildWebSocketURL(host: host)
-        
-        guard let url = URL(string: wsUrl) else {
-            #if DEBUG
-            print("[\(Self.TAG)] Invalid WebSocket URL: \(wsUrl)")
-            #endif
-            completion(false)
-            return
-        }
-        
-        #if DEBUG
-        print("[\(Self.TAG)] Connecting to \(wsUrl)")
-        #endif
-        
-        let session = URLSession(configuration: .default)
-        let task = session.webSocketTask(with: url)
-        
-        self.urlSession = session
-        self.webSocketTask = task
-        task.resume()
-        
-        listenForMessages()
-        
-        let connectMsg: [String: Any] = [
-            "msg": "connect",
-            "version": "1",
-            "support": ["1", "pre2", "pre1"]
-        ]
-        
-        send(connectMsg) { [weak self] success in
-            if success {
-                self?.waitForConnected(timeout: 10.0, completion: completion)
-            } else {
+        stateQueue.async {
+            let wsUrl = Self.buildWebSocketURL(host: host)
+            
+            guard let url = URL(string: wsUrl) else {
+                #if DEBUG
+                print("[\(Self.TAG)] Invalid WebSocket URL: \(wsUrl)")
+                #endif
                 completion(false)
+                return
+            }
+            
+            #if DEBUG
+            print("[\(Self.TAG)] Connecting to \(wsUrl)")
+            #endif
+            
+            let session = URLSession(configuration: .default)
+            let task = session.webSocketTask(with: url)
+            
+            self.urlSession = session
+            self.webSocketTask = task
+            self.isConnected = false
+            task.resume()
+            
+            self.listenForMessages(task: task)
+            
+            let connectMsg: [String: Any] = [
+                "msg": "connect",
+                "version": "1",
+                "support": ["1", "pre2", "pre1"]
+            ]
+            
+            self.send(connectMsg) { [weak self] success in
+                guard let self else { return }
+                if success {
+                    self.waitForConnected(timeout: 10.0, completion: completion)
+                } else {
+                    completion(false)
+                }
             }
         }
     }
@@ -58,68 +63,91 @@ final class DDPClient {
     // MARK: - Login
     
     func login(token: String, completion: @escaping (Bool) -> Void) {
-        let msg = nextMessage(msg: "method", extra: [
-            "method": "login",
-            "params": [["resume": token]]
-        ])
-        
-        let msgId = msg["id"] as? String
-        
-        pendingCallbacks[msgId ?? ""] = { [weak self] data in
-            self?.pendingCallbacks.removeValue(forKey: msgId ?? "")
-            let hasError = data["error"] != nil
-            #if DEBUG
-            if hasError {
-                print("[\(Self.TAG)] Login failed: \(data["error"] ?? "unknown")")
-            } else {
-                print("[\(Self.TAG)] Login succeeded")
+        stateQueue.async {
+            let msg = self.nextMessage(msg: "method", extra: [
+                "method": "login",
+                "params": [["resume": token]]
+            ])
+            
+            let msgId = msg["id"] as? String
+            
+            self.pendingCallbacks[msgId ?? ""] = { [weak self] data in
+                self?.pendingCallbacks.removeValue(forKey: msgId ?? "")
+                let hasError = data["error"] != nil
+                #if DEBUG
+                if hasError {
+                    print("[\(Self.TAG)] Login failed: \(data["error"] ?? "unknown")")
+                } else {
+                    print("[\(Self.TAG)] Login succeeded")
+                }
+                #endif
+                completion(!hasError)
             }
-            #endif
-            completion(!hasError)
-        }
-        
-        send(msg) { success in
-            if !success { completion(false) }
+            
+            self.send(msg) { [weak self] success in
+                guard let self else { return }
+                if !success {
+                    self.stateQueue.async {
+                        self.pendingCallbacks.removeValue(forKey: msgId ?? "")
+                        completion(false)
+                    }
+                }
+            }
         }
     }
     
     // MARK: - Subscribe
     
     func subscribe(name: String, params: [Any], completion: @escaping (Bool) -> Void) {
-        let msg = nextMessage(msg: "sub", extra: [
-            "name": name,
-            "params": params
-        ])
-        
-        let msgId = msg["id"] as? String
-        
-        pendingCallbacks[msgId ?? ""] = { [weak self] _ in
-            self?.pendingCallbacks.removeValue(forKey: msgId ?? "")
-            #if DEBUG
-            print("[\(Self.TAG)] Subscribed to \(name)")
-            #endif
-            completion(true)
-        }
-        
-        send(msg) { success in
-            if !success { completion(false) }
+        stateQueue.async {
+            let msg = self.nextMessage(msg: "sub", extra: [
+                "name": name,
+                "params": params
+            ])
+            
+            let msgId = msg["id"] as? String
+            
+            self.pendingCallbacks[msgId ?? ""] = { [weak self] data in
+                self?.pendingCallbacks.removeValue(forKey: msgId ?? "")
+                let didSubscribe = (data["msg"] as? String) == "ready" && data["error"] == nil
+                #if DEBUG
+                if didSubscribe {
+                    print("[\(Self.TAG)] Subscribed to \(name)")
+                } else {
+                    print("[\(Self.TAG)] Failed to subscribe to \(name): \(data["error"] ?? "nosub")")
+                }
+                #endif
+                completion(didSubscribe)
+            }
+            
+            self.send(msg) { [weak self] success in
+                guard let self else { return }
+                if !success {
+                    self.stateQueue.async {
+                        self.pendingCallbacks.removeValue(forKey: msgId ?? "")
+                        completion(false)
+                    }
+                }
+            }
         }
     }
     
     // MARK: - Disconnect
     
     func disconnect() {
-        #if DEBUG
-        print("[\(Self.TAG)] Disconnecting")
-        #endif
-        isConnected = false
-        pendingCallbacks.removeAll()
-        connectedCallback = nil
-        onCollectionMessage = nil
-        webSocketTask?.cancel(with: .normalClosure, reason: nil)
-        webSocketTask = nil
-        urlSession?.invalidateAndCancel()
-        urlSession = nil
+        stateQueue.async {
+            #if DEBUG
+            print("[\(Self.TAG)] Disconnecting")
+            #endif
+            self.isConnected = false
+            self.pendingCallbacks.removeAll()
+            self.connectedCallback = nil
+            self.onCollectionMessage = nil
+            self.webSocketTask?.cancel(with: .normalClosure, reason: nil)
+            self.webSocketTask = nil
+            self.urlSession?.invalidateAndCancel()
+            self.urlSession = nil
+        }
     }
     
     // MARK: - Private
@@ -158,33 +186,37 @@ final class DDPClient {
     private func waitForConnected(timeout: TimeInterval, completion: @escaping (Bool) -> Void) {
         connectedCallback = completion
         DispatchQueue.main.asyncAfter(deadline: .now() + timeout) { [weak self] in
-            guard let self = self, let cb = self.connectedCallback else { return }
-            self.connectedCallback = nil
-            #if DEBUG
-            print("[\(Self.TAG)] Connect timeout")
-            #endif
-            cb(false)
+            self?.stateQueue.async {
+                guard let self = self, let cb = self.connectedCallback else { return }
+                self.connectedCallback = nil
+                #if DEBUG
+                print("[\(Self.TAG)] Connect timeout")
+                #endif
+                cb(false)
+            }
         }
     }
     
-    private func listenForMessages() {
-        webSocketTask?.receive { [weak self] result in
-            guard let self = self else { return }
-            
-            switch result {
-            case .success(let message):
-                switch message {
-                case .string(let text):
-                    self.handleMessage(text)
-                default:
-                    break
-                }
-                self.listenForMessages()
+    private func listenForMessages(task: URLSessionWebSocketTask) {
+        task.receive { [weak self] result in
+            self?.stateQueue.async {
+                guard let self = self, let currentTask = self.webSocketTask, task === currentTask else { return }
                 
-            case .failure(let error):
-                #if DEBUG
-                print("[\(Self.TAG)] Receive error: \(error.localizedDescription)")
-                #endif
+                switch result {
+                case .success(let message):
+                    switch message {
+                    case .string(let text):
+                        self.handleMessage(text)
+                    default:
+                        break
+                    }
+                    self.listenForMessages(task: task)
+                    
+                case .failure(let error):
+                    #if DEBUG
+                    print("[\(Self.TAG)] Receive error: \(error.localizedDescription)")
+                    #endif
+                }
             }
         }
     }

@@ -111,7 +111,7 @@ export const getInitialMediaCallEvents = async (): Promise<boolean> => {
 				const { name, data } = event;
 				if (name === 'RNCallKeepPerformAnswerCallAction') {
 					const { callUUID } = data;
-					if (initialEvents.callId.toLowerCase() === callUUID.toLowerCase()) {
+					if (initialEvents.callId === callUUID) {
 						wasAnswered = true;
 						console.log(`${TAG} Call was already answered via CallKit`);
 						break;

@@ -96,8 +96,8 @@ data class VoipPayload(
     }
 
     fun isExpired(): Boolean {
-        val remainingLifetimeMs = getRemainingLifetimeMs() ?: return true
-        return remainingLifetimeMs <= 0L
+        val remainingLifetimeMs = getRemainingLifetimeMs()
+        return remainingLifetimeMs?.let { it <= 0L } ?: true
     }
 
     companion object {
@@ -153,6 +153,7 @@ data class VoipPayload(
                 if (notificationType != VOIP_NOTIFICATION_TYPE) return null
 
                 val payloadType = VoipPushType.from(type)?.value ?: return null
+                val payloadCreatedAt = createdAt?.takeUnless { it.isBlank() } ?: return null
 
                 return VoipPayload(
                     callId = callId ?: return null,
@@ -162,7 +163,7 @@ data class VoipPayload(
                     type = payloadType,
                     hostName = hostName.orEmpty(),
                     avatarUrl = caller?.avatarUrl,
-                    createdAt = createdAt,
+                    createdAt = payloadCreatedAt,
                 )
             }
         }
@@ -181,7 +182,7 @@ data class VoipPayload(
             val hostName = bundle.getString("hostName").orEmpty()
             val type = bundle.getString("type") ?: return null
             val avatarUrl = bundle.getString("avatarUrl")
-            val createdAt = bundle.getString("createdAt")
+            val createdAt = bundle.getString("createdAt")?.takeUnless { it.isBlank() } ?: return null
 
             if (VoipPushType.from(type) == null) {
                 return null
@@ -208,12 +209,12 @@ data class VoipPayload(
                 return null
             }
 
-            isoDateFormats.forEach { formatter ->
-                synchronized(formatter) {
-                    val parsed = formatter.parse(value)
-                    if (parsed != null) {
-                        return parsed.time
-                    }
+            for (formatter in isoDateFormats) {
+                val parsed = synchronized(formatter) {
+                    runCatching { formatter.parse(value) }.getOrNull()
+                }
+                if (parsed != null) {
+                    return parsed.time
                 }
             }
 

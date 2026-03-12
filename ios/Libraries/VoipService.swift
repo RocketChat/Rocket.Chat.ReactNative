@@ -244,7 +244,9 @@ public final class VoipService: NSObject {
         #endif
 
         client.onCollectionMessage = { message in
-            print("[\(TAG)] DDP received collection message: \(message)")
+            guard ddpClient === client else {
+                return
+            }
             guard let fields = message["fields"] as? [String: Any],
                   let eventName = fields["eventName"] as? String,
                   eventName.hasSuffix("/media-signal"),
@@ -265,6 +267,9 @@ public final class VoipService: NSObject {
             #endif
 
             DispatchQueue.main.async {
+                guard ddpClient === client else {
+                    return
+                }
                 RNCallKeep.endCall(withUUID: callId, reason: 3)
                 cancelIncomingCallTimeout(for: callId)
                 stopDDPClientInternal()
@@ -272,6 +277,9 @@ public final class VoipService: NSObject {
         }
 
         client.connect(host: payload.host) { connected in
+            guard ddpClient === client else {
+                return
+            }
             guard connected else {
                 #if DEBUG
                 print("[\(TAG)] DDP connection failed")
@@ -281,6 +289,9 @@ public final class VoipService: NSObject {
             }
 
             client.login(token: credentials.userToken) { loggedIn in
+                guard ddpClient === client else {
+                    return
+                }
                 guard loggedIn else {
                     #if DEBUG
                     print("[\(TAG)] DDP login failed")
@@ -295,6 +306,9 @@ public final class VoipService: NSObject {
                 ]
 
                 client.subscribe(name: "stream-notify-user", params: params) { subscribed in
+                    guard ddpClient === client else {
+                        return
+                    }
                     #if DEBUG
                     print("[\(TAG)] DDP subscribe result: \(subscribed)")
                     #endif
