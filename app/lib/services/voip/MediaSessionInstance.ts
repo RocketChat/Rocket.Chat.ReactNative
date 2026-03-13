@@ -8,6 +8,7 @@ import {
 } from '@rocket.chat/media-signaling';
 import RNCallKeep from 'react-native-callkeep';
 import { registerGlobals } from 'react-native-webrtc';
+import { getUniqueId } from 'react-native-device-info';
 
 import { mediaSessionStore } from './MediaSessionStore';
 import { useCallStore } from './useCallStore';
@@ -61,6 +62,11 @@ class MediaSessionInstance {
 			}
 			const signal = ddpMessage.fields.args[0];
 			this.instance.processSignal(signal);
+
+			// If the call was accepted from another device, end the call
+			if (signal.type === 'notification' && signal.notification === 'accepted' && signal.signedContractId !== getUniqueId()) {
+				// TODO: pop from call view, end callkeep and remove incoming call notification
+			}
 		});
 
 		this.instance?.on('newCall', ({ call }: { call: IClientMediaCall }) => {

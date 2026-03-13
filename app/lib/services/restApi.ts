@@ -1017,6 +1017,10 @@ export const registerPushToken = async (): Promise<void> => {
 	// Always returns an empty string on Android
 	const voipToken = NativeVoipModule.getLastVoipToken();
 
+	if (!token) {
+		return;
+	}
+
 	if (token === lastToken && voipToken === lastVoipToken) {
 		return;
 	}
@@ -1027,18 +1031,17 @@ export const registerPushToken = async (): Promise<void> => {
 	}
 
 	let data: TRegisterPushTokenData = {
-		id: '',
+		id: await getUniqueId(),
 		value: '',
 		type: '',
-		appName: ''
+		appName: getBundleId
 	};
 	if (token) {
 		const type = isIOS ? 'apn' : 'gcm';
 		data = {
-			id: await getUniqueId(),
+			...data,
 			value: token,
-			type,
-			appName: getBundleId
+			type
 		};
 	}
 	if (voipToken) {

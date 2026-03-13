@@ -172,6 +172,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		set({ dialpadValue: newValue });
 	},
 
+	// TODO: do it here or in MediaSessionInstance?
 	endCall: () => {
 		const { call, callId } = get();
 

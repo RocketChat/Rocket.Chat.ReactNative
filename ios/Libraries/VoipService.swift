@@ -303,7 +303,6 @@ public final class VoipService: NSObject {
         }
 
         client.connect(host: payload.host) { connected in
-            print("[\(TAG)] DDP connection callback")
             guard ddpClient === client else {
                 return
             }

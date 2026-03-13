@@ -21,7 +21,9 @@ extension AppDelegate: PKPushRegistryDelegate {
     let payloadDict = payload.dictionaryPayload
 
     guard let voipPayload = VoipPayload.fromDictionary(payloadDict) else {
-      print("Failed to parse incoming VoIP payload")
+      #if DEBUG
+      print("[\(TAG)] Failed to parse incoming VoIP payload")
+      #endif
       completion()
       return
     }
@@ -29,7 +31,9 @@ extension AppDelegate: PKPushRegistryDelegate {
     let callId = voipPayload.callId
     let caller = voipPayload.caller
     guard !voipPayload.isExpired() else {
-      print("Skipping expired or invalid VoIP payload for callId: \(callId)")
+      #if DEBUG
+      print("[\(TAG)] Skipping expired or invalid VoIP payload for callId: \(callId)")
+      #endif
       completion()
       return
     }
