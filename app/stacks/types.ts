@@ -296,9 +296,7 @@ export type InsideStackParamList = {
 	ModalBlockView: {
 		data: any; // TODO: Change;
 	};
-	CallView: {
-		callUUID: string;
-	};
+	CallView: undefined;
 };
 
 export type OutsideParamList = {

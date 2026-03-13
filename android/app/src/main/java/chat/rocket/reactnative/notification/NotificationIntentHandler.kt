@@ -58,6 +58,7 @@ class NotificationIntentHandler {
             Log.d(TAG, "Handling VoIP intent - voipPayload: $voipPayload")
 
             VoipNotification.cancelById(context, voipPayload.notificationId)
+            VoipNotification.cancelTimeout(voipPayload.callId)
             VoipModule.storeInitialEvents(voipPayload)
 
             if (context is Activity) {

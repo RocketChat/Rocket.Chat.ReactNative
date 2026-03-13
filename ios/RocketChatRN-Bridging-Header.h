@@ -7,6 +7,7 @@
 #import "MMKVKeyManager.h"
 #import "Shared/RocketChat/MMKVBridge.h"
 #import <RNBootSplash.h>
+#import <RNDeviceInfo/DeviceUID.h>
 #import <MobileCrypto/RSACrypto.h>
 #import <MobileCrypto/AESCrypto.h>
 #import <MobileCrypto/RandomUtils.h>

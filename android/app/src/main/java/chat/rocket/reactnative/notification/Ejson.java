@@ -25,7 +25,7 @@ public class Ejson {
     private static final String TAG = "RocketChat.Ejson";
     private static final String TOKEN_KEY = "reactnativemeteor_usertoken-";
     
-    String host;
+    public String host;
     String rid;
     String type;
     Sender sender;

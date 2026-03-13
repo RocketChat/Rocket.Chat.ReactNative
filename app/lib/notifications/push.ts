@@ -186,19 +186,19 @@ export const pushNotificationConfigure = (onNotification: (notification: INotifi
 		if (token) {
 			deviceToken = token;
 			console.log('[push.ts] Registered for push notifications:', token);
+
+			registerPushToken().catch(e => {
+				console.log('[push.ts] Failed to register push token after initial acquisition:', e);
+			});
 		}
 	});
 
 	// Listen for token updates (FCM can refresh tokens at any time)
 	Notifications.addPushTokenListener(tokenData => {
 		deviceToken = tokenData.data;
-		// Re-register with server if user is logged in
-		const { isAuthenticated } = reduxStore.getState().login;
-		if (isAuthenticated) {
-			registerPushToken().catch(e => {
-				console.log('Failed to re-register push token after refresh:', e);
-			});
-		}
+		registerPushToken().catch(e => {
+			console.log('[push.ts] Failed to re-register push token after refresh:', e);
+		});
 	});
 
 	// Listen for notification responses (when user taps on notification)

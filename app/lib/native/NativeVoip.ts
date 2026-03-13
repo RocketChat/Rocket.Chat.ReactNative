@@ -22,6 +22,20 @@ export interface Spec extends TurboModule {
 	clearInitialEvents(): void;
 
 	/**
+	 * Gets the last known VoIP push token.
+	 * iOS: Returns the cached PushKit token.
+	 * Android: Returns an empty string.
+	 */
+	getLastVoipToken(): string;
+
+	/**
+	 * Stops the native DDP WebSocket listener used for early call-end detection.
+	 * iOS: Disconnects the native DDP client that monitors media-signal hangup events.
+	 * Android: No-op.
+	 */
+	stopNativeDDPClient(): void;
+
+	/**
 	 * Required for NativeEventEmitter in TurboModules.
 	 * Called when JS starts listening to events.
 	 * @platform android
@@ -36,4 +50,16 @@ export interface Spec extends TurboModule {
 	removeListeners(count: number): void;
 }
 
-export default TurboModuleRegistry.getEnforcing<Spec>('VoipModule');
+const NativeVoipModule =
+	TurboModuleRegistry.get<Spec>('VoipModule') ??
+	({
+		registerVoipToken: () => undefined,
+		getInitialEvents: () => null,
+		clearInitialEvents: () => undefined,
+		getLastVoipToken: () => '',
+		stopNativeDDPClient: () => undefined,
+		addListener: () => undefined,
+		removeListeners: () => undefined
+	} as Spec);
+
+export default NativeVoipModule;

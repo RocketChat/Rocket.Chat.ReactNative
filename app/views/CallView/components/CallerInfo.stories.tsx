@@ -19,7 +19,7 @@ const setStoreState = (contact: { displayName?: string; username?: string; sipEx
 	useCallStore.setState({
 		contact,
 		call: {} as any,
-		callUUID: 'test-uuid',
+		callId: 'test-id',
 		callState: 'active',
 		isMuted: false,
 		isOnHold: false,

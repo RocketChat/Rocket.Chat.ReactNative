@@ -12,14 +12,23 @@ import android.media.AudioAttributes
 import android.media.RingtoneManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.provider.Settings
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import android.content.ComponentName
 import android.net.Uri
 import android.telecom.PhoneAccount
 import android.telecom.PhoneAccountHandle
 import android.telecom.TelecomManager
+import io.wazo.callkeep.VoiceConnection
+import io.wazo.callkeep.VoiceConnectionService
 import chat.rocket.reactnative.MainActivity
+import chat.rocket.reactnative.notification.Ejson
+import org.json.JSONArray
+import org.json.JSONObject
 
 /**
  * Handles VoIP call notifications using Android's Telecom framework via CallKeep.
@@ -39,9 +48,16 @@ class VoipNotification(private val context: Context) {
 
         const val ACTION_ACCEPT = "chat.rocket.reactnative.ACTION_VOIP_ACCEPT"
         const val ACTION_DECLINE = "chat.rocket.reactnative.ACTION_VOIP_DECLINE"
+        const val ACTION_TIMEOUT = "chat.rocket.reactnative.ACTION_VOIP_TIMEOUT"
+        const val ACTION_DISMISS = "chat.rocket.reactnative.ACTION_VOIP_DISMISS"
 
         // react-native-callkeep's ConnectionService class name
         private const val CALLKEEP_CONNECTION_SERVICE_CLASS = "io.wazo.callkeep.VoiceConnectionService"
+        private const val DISCONNECT_REASON_MISSED = 6
+        private val timeoutHandler = Handler(Looper.getMainLooper())
+        private val timeoutCallbacks = mutableMapOf<String, Runnable>()
+        private var ddpClient: DDPClient? = null
+        private var isDdpLoggedIn = false
 
         /**
          * Cancels a VoIP notification by ID.
@@ -53,14 +69,298 @@ class VoipNotification(private val context: Context) {
             Log.d(TAG, "VoIP notification cancelled with ID: $notificationId")
         }
 
+        @JvmStatic
+        fun scheduleTimeout(context: Context, payload: VoipPayload) {
+            val delayMs = payload.getRemainingLifetimeMs()
+            if (delayMs == null || delayMs <= 0L) {
+                Log.d(TAG, "Skipping timeout scheduling for expired or invalid call: ${payload.callId}")
+                return
+            }
+
+            cancelTimeout(payload.callId)
+
+            val applicationContext = context.applicationContext
+            val timeoutRunnable = Runnable {
+                synchronized(timeoutCallbacks) {
+                    timeoutCallbacks.remove(payload.callId)
+                }
+                handleTimeout(applicationContext, payload)
+            }
+
+            synchronized(timeoutCallbacks) {
+                timeoutCallbacks[payload.callId] = timeoutRunnable
+            }
+            timeoutHandler.postDelayed(timeoutRunnable, delayMs)
+            Log.d(TAG, "Scheduled VoIP timeout for ${payload.callId} in ${delayMs}ms")
+        }
+
+        @JvmStatic
+        fun cancelTimeout(callId: String) {
+            val timeoutRunnable = synchronized(timeoutCallbacks) {
+                timeoutCallbacks.remove(callId)
+            }
+            if (timeoutRunnable != null) {
+                timeoutHandler.removeCallbacks(timeoutRunnable)
+                Log.d(TAG, "Cancelled VoIP timeout for $callId")
+            }
+        }
+
+        @JvmStatic
+        fun handleTimeout(context: Context, payload: VoipPayload) {
+            cancelTimeout(payload.callId)
+            disconnectTimedOutCall(payload.callId)
+            cancelById(context, payload.notificationId)
+            LocalBroadcastManager.getInstance(context).sendBroadcast(
+                Intent(ACTION_TIMEOUT).apply {
+                    putExtras(payload.toBundle())
+                }
+            )
+            stopDDPClientInternal()
+            Log.d(TAG, "Timed out incoming VoIP call: ${payload.callId}")
+        }
+
         /**
          * Handles decline action for VoIP call.
          * Logs the decline action and clears stored call data.
          */
         @JvmStatic
         fun handleDeclineAction(context: Context, payload: VoipPayload) {
-            Log.d(TAG, "Decline action triggered for callUUID: ${payload.callUUID}")
-            // TODO: call restapi to decline the call
+            Log.d(TAG, "Decline action triggered for callId: ${payload.callId}")
+            cancelTimeout(payload.callId)
+            if (isDdpLoggedIn) {
+                sendRejectSignal(context, payload)
+            } else {
+                queueRejectSignal(context, payload)
+            }
+            rejectIncomingCall(payload.callId)
+            cancelById(context, payload.notificationId)
+            LocalBroadcastManager.getInstance(context).sendBroadcast(
+                Intent(ACTION_DISMISS).apply {
+                    putExtras(payload.toBundle())
+                }
+            )
+        }
+
+        // TODO: unify these three functions and check VoiceConnectionService
+        private fun disconnectTimedOutCall(callId: String) {
+            val connection = VoiceConnectionService.getConnection(callId)
+            when (connection) {
+                is VoiceConnection -> connection.reportDisconnect(DISCONNECT_REASON_MISSED)
+                null -> Log.d(TAG, "No active VoiceConnection found for timed out call: $callId")
+                else -> connection.onDisconnect()
+            }
+        }
+
+        private fun rejectIncomingCall(callId: String) {
+            val connection = VoiceConnectionService.getConnection(callId)
+            when (connection) {
+                is VoiceConnection -> connection.onReject()
+                null -> Log.d(TAG, "No active VoiceConnection found for declined call: $callId")
+                else -> connection.onDisconnect()
+            }
+        }
+
+        private fun disconnectIncomingCall(callId: String, reportAsMissed: Boolean) {
+            val connection = VoiceConnectionService.getConnection(callId)
+            when (connection) {
+                is VoiceConnection -> {
+                    if (reportAsMissed) {
+                        connection.reportDisconnect(DISCONNECT_REASON_MISSED)
+                    } else {
+                        connection.onDisconnect()
+                    }
+                }
+                null -> Log.d(TAG, "No active VoiceConnection found for dismissed call: $callId")
+                else -> connection.onDisconnect()
+            }
+        }
+
+        private fun sendRejectSignal(context: Context, payload: VoipPayload) {
+            val client = ddpClient
+            if (client == null) {
+                Log.d(TAG, "Native DDP client unavailable, cannot send reject for ${payload.callId}")
+                return
+            }
+
+            val params = buildRejectSignalParams(context, payload) ?: return
+
+            client.callMethod("stream-notify-user", params) { success ->
+                Log.d(TAG, "Native reject signal result for ${payload.callId}: $success")
+                stopDDPClientInternal()
+            }
+        }
+
+        private fun queueRejectSignal(context: Context, payload: VoipPayload) {
+            val client = ddpClient
+            if (client == null) {
+                Log.d(TAG, "Native DDP client unavailable, cannot queue reject for ${payload.callId}")
+                return
+            }
+
+            val params = buildRejectSignalParams(context, payload) ?: return
+
+            client.queueMethodCall("stream-notify-user", params) { success ->
+                Log.d(TAG, "Queued native reject signal result for ${payload.callId}: $success")
+                stopDDPClientInternal()
+            }
+            Log.d(TAG, "Queued native reject signal for ${payload.callId}")
+        }
+
+        private fun flushPendingRejectSignalIfNeeded(): Boolean {
+            val client = ddpClient ?: return false
+            if (!client.hasQueuedMethodCalls()) {
+                return false
+            }
+
+            client.flushQueuedMethodCalls()
+            return true
+        }
+
+        private fun buildRejectSignalParams(context: Context, payload: VoipPayload): JSONArray? {
+            val ejson = Ejson().apply {
+                host = payload.host
+            }
+            val userId = ejson.userId()
+            if (userId.isNullOrEmpty()) {
+                Log.d(TAG, "Missing userId, cannot send reject for ${payload.callId}")
+                stopDDPClientInternal()
+                return null
+            }
+
+            val deviceId = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+            if (deviceId.isNullOrEmpty()) {
+                Log.d(TAG, "Missing deviceId, cannot send reject for ${payload.callId}")
+                stopDDPClientInternal()
+                return null
+            }
+
+            val signal = JSONObject().apply {
+                put("callId", payload.callId)
+                put("contractId", deviceId)
+                put("type", "answer")
+                put("answer", "reject")
+            }
+
+            return JSONArray().apply {
+                put("$userId/media-calls")
+                put(signal.toString())
+            }
+        }
+
+        // -- Native DDP Listener (Call End Detection) --
+
+        @JvmStatic
+        fun startListeningForCallEnd(context: Context, payload: VoipPayload) {
+            stopDDPClientInternal()
+
+            val ejson = Ejson()
+            ejson.host = payload.host
+            val userId = ejson.userId()
+            val token = ejson.token()
+
+            if (userId.isNullOrEmpty() || token.isNullOrEmpty()) {
+                Log.d(TAG, "No credentials for ${payload.host}, skipping DDP listener")
+                return
+            }
+
+            val deviceId = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+            val callId = payload.callId
+            val client = DDPClient()
+            ddpClient = client
+            isDdpLoggedIn = false
+
+            Log.d(TAG, "Starting DDP listener for call $callId")
+
+            client.onCollectionMessage = { message ->
+                Log.d(TAG, "DDP received message: $message")
+                val fields = message.optJSONObject("fields")
+                if (fields != null) {
+                    val eventName = fields.optString("eventName")
+                    if (eventName.endsWith("/media-signal")) {
+                        val args = fields.optJSONArray("args")
+                        val firstArg = args?.optJSONObject(0)
+                        if (firstArg != null) {
+                            val signalType = firstArg.optString("type")
+                            val signalCallId = firstArg.optString("callId")
+                            val signalNotification = firstArg.optString("notification")
+                            val signedContractId = firstArg.optString("signedContractId")
+
+                            if (signalCallId == callId) {
+                                if (signalType == "notification" &&
+                                    (
+                                        // accepted from other device
+                                        (!signedContractId.isNullOrEmpty() && signedContractId != deviceId) ||
+                                        // hung up by other device
+                                        (signalNotification == "hangup")
+                                    )) {
+                                    val appContext = context.applicationContext
+                                    Handler(Looper.getMainLooper()).post {
+                                        cancelTimeout(callId)
+                                        disconnectIncomingCall(callId, false)
+                                        cancelById(appContext, payload.notificationId)
+                                        LocalBroadcastManager.getInstance(appContext).sendBroadcast(
+                                            Intent(ACTION_DISMISS).apply {
+                                                putExtras(payload.toBundle())
+                                            }
+                                        )
+                                        stopDDPClientInternal()
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            client.connect(payload.host) { connected ->
+                if (!connected) {
+                    Log.d(TAG, "DDP connection failed")
+                    stopDDPClientInternal()
+                    return@connect
+                }
+
+                client.login(token) { loggedIn ->
+                    if (!loggedIn) {
+                        Log.d(TAG, "DDP login failed")
+                        stopDDPClientInternal()
+                        return@login
+                    }
+
+                    isDdpLoggedIn = true
+                    if (flushPendingRejectSignalIfNeeded()) {
+                        return@login
+                    }
+
+                    val params = JSONArray().apply {
+                        put("$userId/media-signal")
+                        put(JSONObject().apply {
+                            put("useCollection", false)
+                            put("args", JSONArray().apply { put(false) })
+                        })
+                    }
+
+                    client.subscribe("stream-notify-user", params) { subscribed ->
+                        Log.d(TAG, "DDP subscribe result: $subscribed")
+                        if (!subscribed) {
+                            stopDDPClientInternal()
+                        }
+                    }
+                }
+            }
+
+        }
+
+        @JvmStatic
+        fun stopDDPClient() {
+            Log.d(TAG, "stopDDPClient called from JS")
+            stopDDPClientInternal()
+        }
+
+        private fun stopDDPClientInternal() {
+            isDdpLoggedIn = false
+            ddpClient?.clearQueuedMethodCalls()
+            ddpClient?.disconnect()
+            ddpClient = null
         }
     }
 
@@ -81,6 +381,13 @@ class VoipNotification(private val context: Context) {
         createNotificationChannel()
     }
 
+    fun onMessageReceived(voipPayload: VoipPayload) {
+        when {
+            voipPayload.isVoipIncomingCall() -> showIncomingCall(voipPayload)
+            else -> Log.w(TAG, "Ignoring unsupported VoIP payload type: ${voipPayload.type}")
+        }
+    }
+
     /**
      * Creates the notification channel for VoIP calls with high importance and ringtone sound.
      */
@@ -91,6 +398,7 @@ class VoipNotification(private val context: Context) {
                 CHANNEL_NAME,
                 NotificationManager.IMPORTANCE_HIGH
             ).apply {
+                // TODO: i18n
                 description = "Incoming VoIP calls"
                 enableLights(true)
                 enableVibration(true)
@@ -119,16 +427,26 @@ class VoipNotification(private val context: Context) {
     fun showIncomingCall(voipPayload: VoipPayload) {
         val callId = voipPayload.callId
         val caller = voipPayload.caller
-        val callUUID = voipPayload.callUUID
+        if (voipPayload.getRemainingLifetimeMs() == null) {
+            Log.w(TAG, "Skipping incoming VoIP call without a valid createdAt timestamp - callId: $callId")
+            return
+        }
 
-        Log.d(TAG, "Showing incoming VoIP call - callId: $callId, callUUID: $callUUID, caller: $caller")
+        if (voipPayload.isExpired()) {
+            Log.d(TAG, "Skipping expired incoming VoIP call - callId: $callId")
+            return
+        }
+
+        Log.d(TAG, "Showing incoming VoIP call - callId: $callId, caller: $caller")
 
         // CRITICAL: Register call with TelecomManager FIRST (required for audio focus, Bluetooth, priority, FSI exemption)
         // This triggers react-native-callkeep's ConnectionService
-        registerCallWithTelecomManager(callUUID, caller)
+        registerCallWithTelecomManager(callId, caller)
 
         // Show notification with full-screen intent
         showIncomingCallNotification(voipPayload)
+        scheduleTimeout(context, voipPayload)
+        startListeningForCallEnd(context, voipPayload)
     }
 
     /**
@@ -139,11 +457,11 @@ class VoipNotification(private val context: Context) {
      * 3. Higher process priority
      * 4. FSI exemption on Play Store
      */
-    private fun registerCallWithTelecomManager(callUUID: String, caller: String) {
+    private fun registerCallWithTelecomManager(callId: String, caller: String) {
         try {
             // Validate inputs
-            if (callUUID.isNullOrEmpty() || caller.isNullOrEmpty()) {
-                Log.e(TAG, "Cannot register call with TelecomManager: callUUID is null or empty")
+            if (callId.isNullOrEmpty() || caller.isNullOrEmpty()) {
+                Log.e(TAG, "Cannot register call with TelecomManager: callId is null or empty")
                 return
             }
 
@@ -169,19 +487,17 @@ class VoipNotification(private val context: Context) {
             val extras = Bundle().apply {
                 val callerUri = Uri.fromParts(PhoneAccount.SCHEME_TEL, caller, null)
                 putParcelable(TelecomManager.EXTRA_INCOMING_CALL_ADDRESS, callerUri)
-                putString("EXTRA_CALL_UUID", callUUID)
+                putString("EXTRA_CALL_UUID", callId)
                 putString("EXTRA_CALLER_NAME", caller)
-                // Legacy keys for backward compatibility
-                putString("callUUID", callUUID)
                 putString("name", caller)
                 putString("handle", caller)
             }
 
-            Log.d(TAG, "Registering call with TelecomManager - callUUID: $callUUID, caller: $caller, extras keys: ${extras.keySet()}")
+            Log.d(TAG, "Registering call with TelecomManager - callId: $callId, caller: $caller, extras keys: ${extras.keySet()}")
 
             // Register the incoming call with the OS
             telecomManager.addNewIncomingCall(phoneAccountHandle, extras)
-            Log.d(TAG, "Successfully registered incoming call with TelecomManager: $callUUID")
+            Log.d(TAG, "Successfully registered incoming call with TelecomManager: $callId")
         } catch (e: SecurityException) {
             Log.e(TAG, "SecurityException registering call with TelecomManager. MANAGE_OWN_CALLS permission may be missing.", e)
         } catch (e: Exception) {
@@ -197,6 +513,11 @@ class VoipNotification(private val context: Context) {
     private fun showIncomingCallNotification(voipPayload: VoipPayload) {
         val caller = voipPayload.caller
         val notificationId = voipPayload.notificationId
+        val remainingLifetimeMs = voipPayload.getRemainingLifetimeMs()
+        if (remainingLifetimeMs == null || remainingLifetimeMs <= 0L) {
+            Log.d(TAG, "Skipping notification for expired or invalid call: ${voipPayload.callId}")
+            return
+        }
 
         Log.d(TAG, "Showing incoming call notification for VoIP call from: $caller")
 
@@ -259,6 +580,7 @@ class VoipNotification(private val context: Context) {
             setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             setAutoCancel(false)
             setOngoing(true)
+            setTimeoutAfter(remainingLifetimeMs)
             addAction(0, "Decline", declinePendingIntent)
             addAction(0, "Accept", acceptPendingIntent)
 

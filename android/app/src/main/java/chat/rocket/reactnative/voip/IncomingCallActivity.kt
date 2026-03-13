@@ -2,17 +2,22 @@ package chat.rocket.reactnative.voip
 
 import android.app.Activity
 import android.app.KeyguardManager
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.drawable.GradientDrawable
 import android.media.Ringtone
 import android.media.RingtoneManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.WindowManager
 import android.view.View
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.FrameLayout
@@ -21,8 +26,8 @@ import android.view.ViewOutlineProvider
 import com.bumptech.glide.Glide
 import chat.rocket.reactnative.MainActivity
 import chat.rocket.reactnative.R
-import chat.rocket.reactnative.notification.Ejson
 import android.graphics.Typeface
+import chat.rocket.reactnative.notification.Ejson
 
 /**
  * Full-screen Activity displayed when an incoming VoIP call arrives.
@@ -36,6 +41,21 @@ class IncomingCallActivity : Activity() {
 
     private var ringtone: Ringtone? = null
     private var voipPayload: VoipPayload? = null
+    private var isCallStateReceiverRegistered = false
+    private val timeoutHandler = Handler(Looper.getMainLooper())
+    private var timeoutRunnable: Runnable? = null
+    private val callStateReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            val payload = VoipPayload.fromBundle(intent?.extras) ?: return
+            if (payload.callId != voipPayload?.callId) {
+                return
+            }
+
+            clearTimeout()
+            stopRingtone()
+            finish()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,11 +95,18 @@ class IncomingCallActivity : Activity() {
         }
         this.voipPayload = voipPayload
 
-        Log.d(TAG, "IncomingCallActivity created - callUUID: ${voipPayload.callUUID}, caller: ${voipPayload.caller}")
+        Log.d(TAG, "IncomingCallActivity created - callId: ${voipPayload.callId}, caller: ${voipPayload.caller}")
 
         updateUI(voipPayload)
         startRingtone()
         setupButtons(voipPayload)
+        scheduleTimeout(voipPayload)
+        val intentFilter = IntentFilter().apply {
+            addAction(VoipNotification.ACTION_TIMEOUT)
+            addAction(VoipNotification.ACTION_DISMISS)
+        }
+        LocalBroadcastManager.getInstance(this).registerReceiver(callStateReceiver, intentFilter)
+        isCallStateReceiverRegistered = true
     }
 
     private fun applyNavigationBar() {
@@ -152,8 +179,6 @@ class IncomingCallActivity : Activity() {
     }
 
     private fun loadAvatar(payload: VoipPayload) {
-        if (payload.host.isBlank() || payload.username.isBlank()) return
-
         val container = findViewById<FrameLayout>(R.id.avatar_container)
         val imageView = findViewById<ImageView>(R.id.avatar)
         val sizePx = (120 * resources.displayMetrics.density).toInt().coerceIn(120, 480)
@@ -232,8 +257,31 @@ class IncomingCallActivity : Activity() {
         }
     }
 
+    private fun scheduleTimeout(payload: VoipPayload) {
+        val remainingLifetimeMs = payload.getRemainingLifetimeMs()
+        if (remainingLifetimeMs == null || remainingLifetimeMs <= 0L) {
+            stopRingtone()
+            finish()
+            return
+        }
+
+        clearTimeout()
+        timeoutRunnable = Runnable {
+            stopRingtone()
+            VoipNotification.handleTimeout(this, payload)
+            finish()
+        }.also { timeoutHandler.postDelayed(it, remainingLifetimeMs) }
+    }
+
+    private fun clearTimeout() {
+        timeoutRunnable?.let(timeoutHandler::removeCallbacks)
+        timeoutRunnable = null
+    }
+
     private fun handleAccept(payload: VoipPayload) {
-        Log.d(TAG, "Call accepted - callUUID: ${payload.callUUID}")
+        Log.d(TAG, "Call accepted - callId: ${payload.callId}")
+        clearTimeout()
+        VoipNotification.cancelTimeout(payload.callId)
         stopRingtone()
 
         // Launch MainActivity with call data
@@ -247,19 +295,22 @@ class IncomingCallActivity : Activity() {
     }
 
     private fun handleDecline(payload: VoipPayload) {
-        Log.d(TAG, "Call declined - callUUID: ${payload.callUUID}")
+        Log.d(TAG, "Call declined - callId: ${payload.callId}")
+        clearTimeout()
+        VoipNotification.cancelTimeout(payload.callId)
         stopRingtone()
-
-        VoipNotification.cancelById(this, payload.notificationId)
-
-        // Emit event to JS
-        // TODO: call restapi to decline the call
+        VoipNotification.handleDeclineAction(this, payload)
 
         finish()
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        clearTimeout()
+        if (isCallStateReceiverRegistered) {
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(callStateReceiver)
+            isCallStateReceiverRegistered = false
+        }
         stopRingtone()
     }
 

@@ -21,7 +21,6 @@ import chat.rocket.reactnative.storage.SecureStoragePackage;
 import chat.rocket.reactnative.notification.VideoConfTurboPackage
 import chat.rocket.reactnative.notification.PushNotificationTurboPackage
 import chat.rocket.reactnative.VoipTurboPackage
-import chat.rocket.reactnative.utils.CallIdUUIDTurboPackage
 
 /**
  * Main Application class.
@@ -46,7 +45,6 @@ open class MainApplication : Application(), ReactApplication {
               add(VideoConfTurboPackage())
               add(PushNotificationTurboPackage())
               add(VoipTurboPackage())
-              add(CallIdUUIDTurboPackage())
               add(SecureStoragePackage())
             }
 

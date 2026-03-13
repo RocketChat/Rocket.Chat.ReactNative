@@ -9,7 +9,7 @@ jest.mock('../database/services/Subscription', () => ({
 
 const mockedGetSubscriptionByRoomId = jest.mocked(getSubscriptionByRoomId);
 
-const createDeferred = <T,>() => {
+const createDeferred = <T>() => {
 	let resolve!: (value: T) => void;
 	const promise = new Promise<T>(res => {
 		resolve = res;
@@ -45,9 +45,7 @@ describe('useSubscription', () => {
 		const secondSubscription = { id: 'sub-2', rid: 'room-2' } as any;
 		const secondRequest = createDeferred<typeof secondSubscription | null>();
 
-		mockedGetSubscriptionByRoomId
-			.mockResolvedValueOnce(firstSubscription)
-			.mockImplementationOnce(() => secondRequest.promise);
+		mockedGetSubscriptionByRoomId.mockResolvedValueOnce(firstSubscription).mockImplementationOnce(() => secondRequest.promise);
 
 		const { result, rerender } = renderHook(({ rid }: { rid?: string }) => useSubscription(rid), {
 			initialProps: { rid: 'room-1' }

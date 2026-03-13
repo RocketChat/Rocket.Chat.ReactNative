@@ -6,7 +6,7 @@ type TPushInfo = {
 
 export type PushEndpoints = {
 	'push.token': {
-		POST: (params: { value: string; type: string; appName: string }) => {
+		POST: (params: { id: string; value: string; type: string; appName: string; voipToken?: string }) => {
 			result: {
 				id: string;
 				token: string;

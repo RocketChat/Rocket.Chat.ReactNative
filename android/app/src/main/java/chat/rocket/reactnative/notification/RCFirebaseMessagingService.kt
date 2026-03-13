@@ -23,7 +23,8 @@ class RCFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        Log.d(TAG, "FCM message received from: ${remoteMessage.from}")
+        // TODO: remove data
+        Log.d(TAG, "FCM message received from: ${remoteMessage.from} data: ${remoteMessage.data}")
 
         val data = remoteMessage.data
         if (data.isEmpty()) {
@@ -31,22 +32,20 @@ class RCFirebaseMessagingService : FirebaseMessagingService() {
             return
         }
 
-        // Convert FCM data to Bundle for processing
-        val bundle = Bundle().apply {
-            data.forEach { (key, value) ->
-                putString(key, value)
-            }
-        }
-
         val voipPayload = VoipPayload.fromMap(data)
         if (voipPayload != null) {
-            Log.d(TAG, "Detected VoIP incoming call payload, routing to VoipNotification handler")
-            VoipNotification(this).showIncomingCall(voipPayload)
+            Log.d(TAG, "Detected VoIP payload of type ${voipPayload.type}, routing to VoipNotification handler")
+            VoipNotification(this).onMessageReceived(voipPayload)
             return
         }
 
         // Process regular notifications via CustomPushNotification
         try {
+            val bundle = Bundle().apply {
+                data.forEach { (key, value) ->
+                    putString(key, value)
+                }
+            }
             val notification = CustomPushNotification(this, bundle)
             notification.onReceived()
         } catch (e: Exception) {

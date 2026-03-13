@@ -4,11 +4,11 @@ import { DeviceEventEmitter, NativeEventEmitter } from 'react-native';
 import { isIOS } from '../../methods/helpers';
 import store from '../../store';
 import { voipCallOpen } from '../../../actions/deepLinking';
-import { setVoipPushToken } from './pushTokenAux';
 import { useCallStore } from './useCallStore';
 import { mediaSessionInstance } from './MediaSessionInstance';
 import type { VoipPayload } from '../../../definitions/Voip';
 import NativeVoipModule from '../../native/NativeVoip';
+import { registerPushToken } from '../restApi';
 
 const Emitter = isIOS ? new NativeEventEmitter(NativeVoipModule) : DeviceEventEmitter;
 const platform = isIOS ? 'iOS' : 'Android';
@@ -24,9 +24,11 @@ export const setupMediaCallEvents = (): (() => void) => {
 	// iOS listens for VoIP push token registration and CallKeep events
 	if (isIOS) {
 		subscriptions.push(
-			Emitter.addListener('VoipPushTokenRegistered', (token: string) => {
+			Emitter.addListener('VoipPushTokenRegistered', ({ token }: { token: string }) => {
 				console.log(`${TAG} Registered VoIP push token:`, token);
-				setVoipPushToken(token);
+				registerPushToken().catch(error => {
+					console.log(`${TAG} Failed to register push token after VoIP update:`, error);
+				});
 			})
 		);
 
@@ -55,15 +57,14 @@ export const setupMediaCallEvents = (): (() => void) => {
 					}
 					console.log(`${TAG} Initial events event:`, data);
 					NativeVoipModule.clearInitialEvents();
-					useCallStore.getState().setCallUUID(data.callUUID);
+					useCallStore.getState().setCallId(data.callId);
 					store.dispatch(
 						voipCallOpen({
 							callId: data.callId,
-							callUUID: data.callUUID,
 							host: data.host
 						})
 					);
-					await mediaSessionInstance.answerCall(data.callUUID);
+					await mediaSessionInstance.answerCall(data.callId);
 				} catch (error) {
 					console.error(`${TAG} Error handling initial events event:`, error);
 				}
@@ -110,7 +111,7 @@ export const getInitialMediaCallEvents = async (): Promise<boolean> => {
 				const { name, data } = event;
 				if (name === 'RNCallKeepPerformAnswerCallAction') {
 					const { callUUID } = data;
-					if (initialEvents.callUUID.toLowerCase() === callUUID.toLowerCase()) {
+					if (initialEvents.callId === callUUID) {
 						wasAnswered = true;
 						console.log(`${TAG} Call was already answered via CallKit`);
 						break;
@@ -123,12 +124,11 @@ export const getInitialMediaCallEvents = async (): Promise<boolean> => {
 		}
 
 		if (wasAnswered) {
-			useCallStore.getState().setCallUUID(initialEvents.callUUID);
+			useCallStore.getState().setCallId(initialEvents.callId);
 
 			store.dispatch(
 				voipCallOpen({
 					callId: initialEvents.callId,
-					callUUID: initialEvents.callUUID,
 					host: initialEvents.host
 				})
 			);

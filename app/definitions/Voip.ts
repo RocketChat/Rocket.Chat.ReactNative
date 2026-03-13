@@ -7,7 +7,11 @@ export type IceServer = {
 export interface VoipPayload {
 	readonly callId: string;
 	readonly caller: string;
+	readonly username: string;
 	readonly host: string;
+	readonly hostName: string;
 	readonly type: string;
-	readonly callUUID: string;
+	readonly avatarUrl?: string | null;
+	readonly createdAt?: string | null;
+	readonly notificationId: number;
 }

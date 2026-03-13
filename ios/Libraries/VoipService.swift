@@ -1,3 +1,4 @@
+import CallKit
 import Foundation
 import PushKit
 
@@ -12,18 +13,35 @@ import PushKit
  */
 @objc(VoipService)
 public final class VoipService: NSObject {
+    private struct ObservedIncomingCall {
+        let payload: VoipPayload
+    }
+
+    private final class IncomingCallObserver: NSObject, CXCallObserverDelegate {
+        func callObserver(_ callObserver: CXCallObserver, callChanged call: CXCall) {
+            VoipService.handleObservedCallChanged(call)
+        }
+    }
     
     // MARK: - Constants
     
-    private static let TAG = "RocketChat.VoipModule"
+    private static let TAG = "RocketChat.VoipService"
+    private static let voipTokenStorageKey = "RCVoipPushToken"
+    private static let storage = MMKVBridge.build()
     
     // MARK: - Static Properties
     
     private static var initialEventsData: VoipPayload?
-    private static var initialEventsTimestamp: TimeInterval = 0
     private static var isVoipRegistered = false
-    private static var lastVoipToken: String = ""
+    private static var lastVoipToken: String = loadPersistedVoipToken()
     private static var voipRegistry: PKPushRegistry?
+    private static var incomingCallTimeouts: [String: DispatchWorkItem] = [:]
+    private static var ddpClient: DDPClient?
+    private static let callObserver = CXCallObserver()
+    private static let incomingCallObserver = IncomingCallObserver()
+    private static var isCallObserverConfigured = false
+    private static var observedIncomingCall: ObservedIncomingCall?
+    private static var isDdpLoggedIn = false
     
     // MARK: - Static Methods (Called from VoipModule.mm and AppDelegate)
     
@@ -64,7 +82,16 @@ public final class VoipService: NSObject {
         
         // Convert token data to hex string
         let token = credentials.token.map { String(format: "%02x", $0) }.joined()
+
+        if lastVoipToken == token {
+            #if DEBUG
+            print("[\(TAG)] VoIP token unchanged")
+            #endif
+            return
+        }
+
         lastVoipToken = token
+        persistVoipToken(token)
         
         #if DEBUG
         print("[\(TAG)] VoIP token: \(token)")
@@ -77,35 +104,37 @@ public final class VoipService: NSObject {
             userInfo: ["token": token]
         )
     }
-    
-    /// Called from AppDelegate when a VoIP push initial events are received
+
+    /// Called from AppDelegate when a previously registered token is invalidated
+    // TODO: remove voip token from all logged in workspaces, since they share the same token
     @objc
-    public static func didReceiveIncomingPush(with payload: PKPushPayload, forType type: String) {
+    public static func invalidatePushToken() {
+        lastVoipToken = ""
+        storage.removeValue(forKey: voipTokenStorageKey)
+
         #if DEBUG
-        print("[\(TAG)] didReceiveIncomingPush payload: \(payload.dictionaryPayload)")
+        print("[\(TAG)] Invalidated VoIP token")
         #endif
-        
-        guard let voipPayload = VoipPayload.fromDictionary(payload.dictionaryPayload) else {
-            #if DEBUG
-            print("[\(TAG)] Failed to parse VoIP payload")
-            #endif
-            return
-        }
-        
-        storeInitialEvents(voipPayload)
     }
+
+    public static func prepareIncomingCall(_ payload: VoipPayload) {
+        storeInitialEvents(payload)
+        scheduleIncomingCallTimeout(for: payload)
+        startListeningForCallEnd(payload: payload)
+    }
+
+    // MARK: - Initial Events
     
     /// Stores initial events for JS to retrieve.
     @objc
     public static func storeInitialEvents(_ payload: VoipPayload) {
         initialEventsData = payload
-        initialEventsTimestamp = Date().timeIntervalSince1970
         
         #if DEBUG
         print("[\(TAG)] Stored initial events: \(payload.callId)")
         #endif
     }
-    
+
     /// Gets any initial events. Returns nil if no initial events.
     @objc
     public static func getInitialEvents() -> [String: Any]? {
@@ -113,9 +142,7 @@ public final class VoipService: NSObject {
             return nil
         }
         
-        // Check if data is older than 5 minutes
-        let now = Date().timeIntervalSince1970
-        if now - initialEventsTimestamp > 5 * 60 {
+        if data.isExpired() {
             clearInitialEventsInternal()
             return nil
         }
@@ -135,75 +162,348 @@ public final class VoipService: NSObject {
     /// Clears initial events (internal)
     private static func clearInitialEventsInternal() {
         initialEventsData = nil
-        initialEventsTimestamp = 0
         #if DEBUG
         print("[\(TAG)] Cleared initial events")
         #endif
     }
-    
+
+    // MARK: - VoIP Token
+
     /// Returns the last registered VoIP token
     @objc
     public static func getLastVoipToken() -> String {
+        if lastVoipToken.isEmpty {
+            lastVoipToken = loadPersistedVoipToken()
+        }
         return lastVoipToken
     }
-}
 
-// MARK: - VoipPayload
+    private static func loadPersistedVoipToken() -> String {
+        return storage.string(forKey: voipTokenStorageKey) ?? ""
+    }
 
-/// Data structure for initial events payload
-@objc(VoipPayload)
-public class VoipPayload: NSObject {
-    @objc public let callId: String
-    @objc public let caller: String
-    @objc public let host: String
-    @objc public let type: String
-    
-    @objc public var notificationId: Int {
-        return callId.hashValue
+    private static func persistVoipToken(_ token: String) {
+        storage.setString(token, forKey: voipTokenStorageKey)
     }
-    
-    @objc public var callUUID: String {
-        return CallIdUUID.generateUUIDv5(from: callId)
+
+    // MARK: - Incoming Call Timeout
+
+    public static func scheduleIncomingCallTimeout(for payload: VoipPayload) {
+        guard let delay = payload.remainingLifetime(), delay > 0 else {
+            #if DEBUG
+            print("[\(TAG)] Skipping incoming call timeout for expired or invalid payload: \(payload.callId)")
+            #endif
+            return
+        }
+
+        cancelIncomingCallTimeout(for: payload.callId)
+
+        let workItem = DispatchWorkItem {
+            handleIncomingCallTimeout(for: payload)
+        }
+
+        incomingCallTimeouts[payload.callId] = workItem
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: workItem)
+
+        #if DEBUG
+        print("[\(TAG)] Scheduled incoming call timeout for \(payload.callId) in \(delay)s")
+        #endif
     }
-    
+
+    private static func cancelIncomingCallTimeout(for callId: String) {
+        incomingCallTimeouts.removeValue(forKey: callId)?.cancel()
+    }
+
+    private static func handleIncomingCallTimeout(for payload: VoipPayload) {
+        incomingCallTimeouts.removeValue(forKey: payload.callId)
+        clearTrackedIncomingCall(for: payload.callUUID)
+        stopDDPClientInternal()
+
+        let callId = payload.callId
+        let callUUID = payload.callUUID
+
+        configureCallObserverIfNeeded()
+        guard let call = callObserver.calls.first(where: { $0.uuid == callUUID }) else {
+            return
+        }
+
+        guard !call.hasConnected, !call.hasEnded else {
+            return
+        }
+
+        RNCallKeep.endCall(withUUID: callId, reason: 3)
+    }
+
+    // MARK: - Native DDP Listener (Call End Detection)
+
+    /// Opens a lightweight DDP WebSocket to detect call hangup before JS boots.
+    private static func startListeningForCallEnd(payload: VoipPayload) {
+        stopDDPClientInternal()
+
+        let credentialStorage = Storage()
+        guard let credentials = credentialStorage.getCredentials(server: payload.host.removeTrailingSlash()) else {
+            #if DEBUG
+            print("[\(TAG)] No credentials for \(payload.host), skipping DDP listener")
+            #endif
+            return
+        }
+
+        let callId = payload.callId
+        let userId = credentials.userId
+        let deviceId = DeviceUID.uid()
+        let client = DDPClient()
+        ddpClient = client
+        isDdpLoggedIn = false
+        trackIncomingCall(payload)
+
+        #if DEBUG
+        print("[\(TAG)] Starting DDP listener for call \(callId)")
+        #endif
+
+        client.onCollectionMessage = { message in
+            guard ddpClient === client else {
+                return
+            }
+            guard let fields = message["fields"] as? [String: Any],
+                  let eventName = fields["eventName"] as? String,
+                  eventName.hasSuffix("/media-signal"),
+                  let args = fields["args"] as? [Any],
+                  let firstArg = args.first as? [String: Any],
+                  let signalType = firstArg["type"] as? String,
+                  signalType == "notification",
+                  let signalCallId = firstArg["callId"] as? String,
+                  signalCallId == callId
+            else {
+                return
+            }
+
+            let signalNotification = firstArg["notification"] as? String
+            let signedContractId = firstArg["signedContractId"] as? String
+
+            let isHangup = signalNotification == "hangup"
+            let isAcceptedOnAnotherDevice = signedContractId != nil && signedContractId != deviceId
+
+            guard isHangup || isAcceptedOnAnotherDevice else {
+                return
+            }
+
+            #if DEBUG
+            print("[\(TAG)] DDP received hangup for call or accepted from another device \(callId)")
+            #endif
+
+            DispatchQueue.main.async {
+                guard ddpClient === client else {
+                    return
+                }
+                clearTrackedIncomingCall(for: payload.callUUID)
+                RNCallKeep.endCall(withUUID: callId, reason: 3)
+                cancelIncomingCallTimeout(for: callId)
+                stopDDPClientInternal()
+            }
+        }
+
+        client.connect(host: payload.host) { connected in
+            guard ddpClient === client else {
+                return
+            }
+            guard connected else {
+                #if DEBUG
+                print("[\(TAG)] DDP connection failed")
+                #endif
+                stopDDPClientInternal()
+                return
+            }
+
+            client.login(token: credentials.userToken) { loggedIn in
+                guard ddpClient === client else {
+                    return
+                }
+                guard loggedIn else {
+                    #if DEBUG
+                    print("[\(TAG)] DDP login failed")
+                    #endif
+                    stopDDPClientInternal()
+                    return
+                }
+
+                isDdpLoggedIn = true
+                if flushPendingRejectSignalIfNeeded() {
+                    return
+                }
+
+                let params: [Any] = [
+                    "\(userId)/media-signal",
+                    ["useCollection": false, "args": [false]]
+                ]
+
+                client.subscribe(name: "stream-notify-user", params: params) { subscribed in
+                    guard ddpClient === client else {
+                        return
+                    }
+                    #if DEBUG
+                    print("[\(TAG)] DDP subscribe result: \(subscribed)")
+                    #endif
+                    if !subscribed {
+                        stopDDPClientInternal()
+                    }
+                }
+            }
+        }
+    }
+
+    /// Stops the native DDP listener. Called from JS when it takes over signaling.
     @objc
-    public init(callId: String, caller: String, host: String, type: String) {
-        self.callId = callId
-        self.caller = caller
-        self.host = host
-        self.type = type
-        super.init()
+    public static func stopDDPClient() {
+        #if DEBUG
+        print("[\(TAG)] stopDDPClient called from JS")
+        #endif
+        stopDDPClientInternal()
     }
-    
-    @objc
-    public func isVoipIncomingCall() -> Bool {
-        return type == "incoming_call" && !callId.isEmpty && !caller.isEmpty && !host.isEmpty
+
+    private static func stopDDPClientInternal() {
+        isDdpLoggedIn = false
+        observedIncomingCall = nil
+        ddpClient?.clearQueuedMethodCalls()
+        ddpClient?.disconnect()
+        ddpClient = nil
     }
-    
-    @objc
-    public func toDictionary() -> [String: Any] {
-        return [
-            "callId": callId,
-            "caller": caller,
-            "host": host,
-            "type": type,
-            "callUUID": callUUID,
-            "notificationId": notificationId
-        ]
-    }
-    
-    @objc
-    public static func fromDictionary(_ dict: [AnyHashable: Any]) -> VoipPayload? {
-        guard let type = dict["type"] as? String,
-              let callId = dict["callId"] as? String,
-              type == "incoming_call",
-              !callId.isEmpty else {
+
+    private static func buildRejectMethodParams(payload: VoipPayload) -> [Any]? {
+        let credentialStorage = Storage()
+        guard let credentials = credentialStorage.getCredentials(server: payload.host.removeTrailingSlash()) else {
+            #if DEBUG
+            print("[\(TAG)] Missing credentials, cannot send reject for \(payload.callId)")
+            #endif
+            stopDDPClientInternal()
             return nil
         }
-        
-        let caller = dict["caller"] as? String ?? ""
-        let host = dict["host"] as? String ?? ""
-        
-        return VoipPayload(callId: callId, caller: caller, host: host, type: type)
+
+        let signal: [String: Any] = [
+            "callId": payload.callId,
+            "contractId": DeviceUID.uid(),
+            "type": "answer",
+            "answer": "reject"
+        ]
+
+        guard
+            let signalData = try? JSONSerialization.data(withJSONObject: signal),
+            let signalString = String(data: signalData, encoding: .utf8)
+        else {
+            stopDDPClientInternal()
+            return nil
+        }
+
+        return ["\(credentials.userId)/media-calls", signalString]
+    }
+
+    private static func sendRejectSignal(payload: VoipPayload) {
+        guard let client = ddpClient else {
+            #if DEBUG
+            print("[\(TAG)] Native DDP client unavailable, cannot send reject for \(payload.callId)")
+            #endif
+            return
+        }
+
+        guard let params = buildRejectMethodParams(payload: payload) else {
+            return
+        }
+
+        client.callMethod("stream-notify-user", params: params) { success in
+            #if DEBUG
+            print("[\(TAG)] Native reject signal result for \(payload.callId): \(success)")
+            #endif
+            stopDDPClientInternal()
+        }
+    }
+
+    private static func queueRejectSignal(payload: VoipPayload) {
+        guard let client = ddpClient else {
+            #if DEBUG
+            print("[\(TAG)] Native DDP client unavailable, cannot queue reject for \(payload.callId)")
+            #endif
+            return
+        }
+
+        guard let params = buildRejectMethodParams(payload: payload) else {
+            return
+        }
+
+        client.queueMethodCall("stream-notify-user", params: params) { success in
+            #if DEBUG
+            print("[\(TAG)] Queued native reject signal result for \(payload.callId): \(success)")
+            #endif
+            stopDDPClientInternal()
+        }
+    }
+
+    private static func flushPendingRejectSignalIfNeeded() -> Bool {
+        guard let client = ddpClient, client.hasQueuedMethodCalls() else {
+            return false
+        }
+
+        client.flushQueuedMethodCalls()
+        return true
+    }
+
+    private static func configureCallObserverIfNeeded() {
+        guard !isCallObserverConfigured else {
+            return
+        }
+
+        callObserver.setDelegate(incomingCallObserver, queue: .main)
+        isCallObserverConfigured = true
+    }
+
+    private static func trackIncomingCall(_ payload: VoipPayload) {
+        let trackCall = {
+            configureCallObserverIfNeeded()
+            observedIncomingCall = ObservedIncomingCall(payload: payload)
+        }
+
+        if Thread.isMainThread {
+            trackCall()
+        } else {
+            DispatchQueue.main.async(execute: trackCall)
+        }
+    }
+
+    private static func clearTrackedIncomingCall(for callUUID: UUID) {
+        let clearCall = {
+            guard observedIncomingCall?.payload.callUUID == callUUID else {
+                return
+            }
+
+            observedIncomingCall = nil
+        }
+
+        if Thread.isMainThread {
+            clearCall()
+        } else {
+            DispatchQueue.main.async(execute: clearCall)
+        }
+    }
+
+    private static func handleObservedCallChanged(_ call: CXCall) {
+        guard let observedCall = observedIncomingCall, observedCall.payload.callUUID == call.uuid else {
+            return
+        }
+
+        if call.hasConnected {
+            observedIncomingCall = nil
+            return
+        }
+
+        guard call.hasEnded else {
+            return
+        }
+
+        observedIncomingCall = nil
+        cancelIncomingCallTimeout(for: observedCall.payload.callId)
+
+        if isDdpLoggedIn {
+            sendRejectSignal(payload: observedCall.payload)
+        } else {
+            queueRejectSignal(payload: observedCall.payload)
+        }
     }
 }

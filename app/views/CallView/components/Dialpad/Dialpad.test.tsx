@@ -29,7 +29,7 @@ const setStoreState = (overrides: Partial<ReturnType<typeof useCallStore.getStat
 
 	useCallStore.setState({
 		call: mockCall,
-		callUUID: 'test-uuid',
+		callId: 'test-id',
 		callState: 'active',
 		dialpadValue: '',
 		...overrides

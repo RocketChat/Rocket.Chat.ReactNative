@@ -301,10 +301,10 @@
 		7A0D62D2242AB187006D5C06 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A0D62D1242AB187006D5C06 /* LaunchScreen.storyboard */; };
 		7A14FCED257FEB3A005BDCD4 /* Experimental.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A14FCEC257FEB3A005BDCD4 /* Experimental.xcassets */; };
 		7A14FCF4257FEB59005BDCD4 /* Official.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A14FCF3257FEB59005BDCD4 /* Official.xcassets */; };
-		7A3F4C6B2F1AAFA700B6B4BD /* CallIdUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3F4C6A2F1AAFA700B6B4BD /* CallIdUUID.swift */; };
-		7A3F4C6C2F1AAFA700B6B4BD /* CallIdUUID.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A3F4C692F1AAFA700B6B4BD /* CallIdUUID.m */; };
-		7A3F4C6D2F1AAFA700B6B4BD /* CallIdUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3F4C6A2F1AAFA700B6B4BD /* CallIdUUID.swift */; };
-		7A3F4C6E2F1AAFA700B6B4BD /* CallIdUUID.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A3F4C692F1AAFA700B6B4BD /* CallIdUUID.m */; };
+		7A1B58412F5F58FF002A6BDE /* VoipPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1B58402F5F58FF002A6BDE /* VoipPayload.swift */; };
+		7A1B58422F5F58FF002A6BDE /* VoipPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1B58402F5F58FF002A6BDE /* VoipPayload.swift */; };
+		7A1B58442F5F63DB002A6BDE /* AppDelegate+Voip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1B58432F5F63DB002A6BDE /* AppDelegate+Voip.swift */; };
+		7A1B58452F5F63DB002A6BDE /* AppDelegate+Voip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1B58432F5F63DB002A6BDE /* AppDelegate+Voip.swift */; };
 		7A610CD227ECE38100B8ABDD /* custom.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A610CD127ECE38100B8ABDD /* custom.ttf */; };
 		7A610CD427ECE38100B8ABDD /* custom.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A610CD127ECE38100B8ABDD /* custom.ttf */; };
 		7A610CD527ECE38100B8ABDD /* custom.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A610CD127ECE38100B8ABDD /* custom.ttf */; };
@@ -371,7 +371,9 @@
 		A48B46D92D3FFBD200945489 /* A11yFlowModule.m in Sources */ = {isa = PBXBuildFile; fileRef = A48B46D82D3FFBD200945489 /* A11yFlowModule.m */; };
 		A48B46DA2D3FFBD200945489 /* A11yFlowModule.m in Sources */ = {isa = PBXBuildFile; fileRef = A48B46D82D3FFBD200945489 /* A11yFlowModule.m */; };
 		AC6086DB073443D98330ED08 /* Pods_defaults_NotificationService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 112EC394C611BEEA2867A6D3 /* Pods_defaults_NotificationService.framework */; };
+		AE692FD072A44EA955D0C0D8 /* DDPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BE2F3DC02A264F204E3EDE3 /* DDPClient.swift */; };
 		BC404914E86821389EEB543D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391C4F7AA7023CD41EEBD106 /* ExpoModulesProvider.swift */; };
+		CE4453310C9A08AB0DAC2307 /* DDPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BE2F3DC02A264F204E3EDE3 /* DDPClient.swift */; };
 		DD2BA30A89E64F189C2C24AC /* libWatermelonDB.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BA7E862283664608B3894E34 /* libWatermelonDB.a */; };
 /* End PBXBuildFile section */
 
@@ -636,8 +638,8 @@
 		7A0D62D1242AB187006D5C06 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7A14FCEC257FEB3A005BDCD4 /* Experimental.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Experimental.xcassets; sourceTree = "<group>"; };
 		7A14FCF3257FEB59005BDCD4 /* Official.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Official.xcassets; sourceTree = "<group>"; };
-		7A3F4C692F1AAFA700B6B4BD /* CallIdUUID.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CallIdUUID.m; sourceTree = "<group>"; };
-		7A3F4C6A2F1AAFA700B6B4BD /* CallIdUUID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallIdUUID.swift; sourceTree = "<group>"; };
+		7A1B58402F5F58FF002A6BDE /* VoipPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoipPayload.swift; sourceTree = "<group>"; };
+		7A1B58432F5F63DB002A6BDE /* AppDelegate+Voip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Voip.swift"; sourceTree = "<group>"; };
 		7A610CD127ECE38100B8ABDD /* custom.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = custom.ttf; sourceTree = "<group>"; };
 		7A8B30742BCD9D3F00146A40 /* SSLPinning.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSLPinning.h; sourceTree = "<group>"; };
 		7A8B30752BCD9D3F00146A40 /* SSLPinning.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SSLPinning.mm; sourceTree = "<group>"; };
@@ -652,6 +654,7 @@
 		9B215A42CFB843397273C7EA /* SecureStorage.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = SecureStorage.m; sourceTree = "<group>"; };
 		9B215A44CFB843397273C7EC /* MMKVBridge.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = MMKVBridge.mm; path = Shared/RocketChat/MMKVBridge.mm; sourceTree = "<group>"; };
 		9BD1145A1612F5D6A655D75A /* Pods-defaults-RocketChatRN.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-defaults-RocketChatRN.release.xcconfig"; path = "Target Support Files/Pods-defaults-RocketChatRN/Pods-defaults-RocketChatRN.release.xcconfig"; sourceTree = "<group>"; };
+		9BE2F3DC02A264F204E3EDE3 /* DDPClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DDPClient.swift; sourceTree = "<group>"; };
 		A3FFA83FC7CA4F1C7C42F2A8 /* Pods-defaults-NotificationService.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-defaults-NotificationService.release.xcconfig"; path = "Target Support Files/Pods-defaults-NotificationService/Pods-defaults-NotificationService.release.xcconfig"; sourceTree = "<group>"; };
 		A48B46D72D3FFBD200945489 /* A11yFlowModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = A11yFlowModule.h; sourceTree = "<group>"; };
 		A48B46D82D3FFBD200945489 /* A11yFlowModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = A11yFlowModule.m; sourceTree = "<group>"; };
@@ -1143,8 +1146,8 @@
 		7A76DEE42F1AA6EF00750653 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				7A3F4C692F1AAFA700B6B4BD /* CallIdUUID.m */,
-				7A3F4C6A2F1AAFA700B6B4BD /* CallIdUUID.swift */,
+				7A1B58432F5F63DB002A6BDE /* AppDelegate+Voip.swift */,
+				7A1B58402F5F58FF002A6BDE /* VoipPayload.swift */,
 				7A0000042F1BAFA700B6B4BD /* VoipModule.mm */,
 				7A0000032F1BAFA700B6B4BD /* VoipService.swift */,
 				B179038FDD7AAF285047814B /* SecureStorage.h */,
@@ -1155,6 +1158,7 @@
 				66C2701A2EBBCB570062725F /* MMKVKeyManager.mm */,
 				7A8B30742BCD9D3F00146A40 /* SSLPinning.h */,
 				7A8B30752BCD9D3F00146A40 /* SSLPinning.mm */,
+				9BE2F3DC02A264F204E3EDE3 /* DDPClient.swift */,
 			);
 			path = Libraries;
 			sourceTree = "<group>";
@@ -2059,8 +2063,7 @@
 				1E76CBD825152C870067298C /* Request.swift in Sources */,
 				1E51411C2B85683C007BE94A /* SSLPinning.m in Sources */,
 				66C2701B2EBBCB570062725F /* MMKVKeyManager.mm in Sources */,
-				7A3F4C6B2F1AAFA700B6B4BD /* CallIdUUID.swift in Sources */,
-				7A3F4C6C2F1AAFA700B6B4BD /* CallIdUUID.m in Sources */,
+				7A1B58422F5F58FF002A6BDE /* VoipPayload.swift in Sources */,
 				7A0000012F1BAFA700B6B4BD /* VoipService.swift in Sources */,
 				7A0000022F1BAFA700B6B4BD /* VoipModule.mm in Sources */,
 				1ED00BB12513E04400A1331F /* ReplyNotification.swift in Sources */,
@@ -2094,6 +2097,7 @@
 				1E068D0124FD2E0500A0FFC1 /* AppGroup.m in Sources */,
 				1ED038C42B50A1F500C007D4 /* WatchMessage.swift in Sources */,
 				1E76CBD025152C6E0067298C /* URL+Extensions.swift in Sources */,
+				7A1B58442F5F63DB002A6BDE /* AppDelegate+Voip.swift in Sources */,
 				1E068CFE24FD2DC700A0FFC1 /* AppGroup.swift in Sources */,
 				1E76CBCE25152C2F0067298C /* RoomKey.swift in Sources */,
 				1E76CBCC25152C290067298C /* Message.swift in Sources */,
@@ -2102,6 +2106,7 @@
 				1E76CBDA25152C8E0067298C /* SendMessage.swift in Sources */,
 				4C4C8603EF082F0A33A95522 /* ExpoModulesProvider.swift in Sources */,
 				A2C6E2DD38F8BEE19BFB2E1D /* SecureStorage.m in Sources */,
+				AE692FD072A44EA955D0C0D8 /* DDPClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2337,8 +2342,7 @@
 				7AAB3E16257E6A6E00707CF6 /* Request.swift in Sources */,
 				1E51411D2B85683C007BE94A /* SSLPinning.m in Sources */,
 				66C2701C2EBBCB570062725F /* MMKVKeyManager.mm in Sources */,
-				7A3F4C6D2F1AAFA700B6B4BD /* CallIdUUID.swift in Sources */,
-				7A3F4C6E2F1AAFA700B6B4BD /* CallIdUUID.m in Sources */,
+				7A1B58412F5F58FF002A6BDE /* VoipPayload.swift in Sources */,
 				7A0000052F1BAFA700B6B4BD /* VoipService.swift in Sources */,
 				7A0000062F1BAFA700B6B4BD /* VoipModule.mm in Sources */,
 				7AAB3E17257E6A6E00707CF6 /* ReplyNotification.swift in Sources */,
@@ -2372,6 +2376,7 @@
 				7AAB3E2A257E6A6E00707CF6 /* AppGroup.m in Sources */,
 				1ED038C52B50A1F500C007D4 /* WatchMessage.swift in Sources */,
 				7AAB3E2C257E6A6E00707CF6 /* URL+Extensions.swift in Sources */,
+				7A1B58452F5F63DB002A6BDE /* AppDelegate+Voip.swift in Sources */,
 				7AAB3E2D257E6A6E00707CF6 /* AppGroup.swift in Sources */,
 				7AAB3E2E257E6A6E00707CF6 /* RoomKey.swift in Sources */,
 				7AAB3E2F257E6A6E00707CF6 /* Message.swift in Sources */,
@@ -2380,6 +2385,7 @@
 				7AAB3E31257E6A6E00707CF6 /* SendMessage.swift in Sources */,
 				BC404914E86821389EEB543D /* ExpoModulesProvider.swift in Sources */,
 				79D8C97F8CE2EC1B6882826B /* SecureStorage.m in Sources */,
+				CE4453310C9A08AB0DAC2307 /* DDPClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
