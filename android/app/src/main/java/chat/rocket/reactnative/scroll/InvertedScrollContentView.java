@@ -4,6 +4,7 @@ import android.view.View;
 import com.facebook.react.views.view.ReactViewGroup;
 import java.util.ArrayList;
 import java.util.Collections;
+import chat.rocket.reactnative.R;
 
 /**
  * Content view for inverted FlatLists. Reports its children to accessibility in reversed order so

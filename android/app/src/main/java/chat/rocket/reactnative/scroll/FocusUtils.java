@@ -2,6 +2,7 @@ package chat.rocket.reactnative.scroll;
 
 import android.view.View;
 import android.view.ViewParent;
+import chat.rocket.reactnative.R;
 
 /**
  * Utilities for focus-related queries inside custom scroll views.
