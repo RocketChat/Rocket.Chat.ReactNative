@@ -105,7 +105,7 @@ export async function logout({ server }: { server: string }): Promise<void> {
 
 	try {
 		// RC 0.60.0
-		await sdk.current.logout();
+		await sdk.logout();
 	} catch (e) {
 		log(e);
 	}

@@ -57,12 +57,26 @@ const handleRequest = function* handleRequest({ data }) {
 				...result?.group
 			};
 		}
+		console.log('new channel', sub)
 		try {
 			const db = database.active;
 			const subCollection = db.get('subscriptions');
 			yield db.write(async () => {
 				await subCollection.create((s) => {
 					s._raw = sanitizedRaw({ id: sub.rid }, subCollection.schema);
+					s.id = sub.rid;
+					s._id = sub.rid;
+					s.ts = sub.ts || new Date();
+					s.ls = sub.ls || new Date();
+					s.lr = sub.lr || new Date();
+					s.lm = sub.lm || new Date();
+					s.roomUpdatedAt = sub.roomUpdatedAt || new Date();
+					s.open = sub.open ?? true;
+					s.alert = sub.alert ?? false;
+					s.unread = sub.unread ?? 0;
+					s.userMentions = sub.userMentions ?? 0;
+					s.groupMentions = sub.groupMentions ?? 0;
+					s.ro = sub.ro ?? false;
 					Object.assign(s, sub);
 				});
 			});

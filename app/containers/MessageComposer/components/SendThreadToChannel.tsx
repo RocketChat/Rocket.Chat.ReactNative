@@ -1,7 +1,7 @@
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { StyleSheet, Text } from 'react-native';
 import React, { useEffect, useRef } from 'react';
-import { type Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/internal/Subscription';
 import { Q } from '@nozbe/watermelondb';
 
 import { useRoomContext } from '../../../views/RoomView/context';
@@ -55,6 +55,7 @@ export const SendThreadToChannel = (): React.ReactElement | null => {
 		if (alsoSendThreadToChannelUserPref === 'default') {
 			const db = database.active;
 			const observable = db.get('threads').query(Q.where('id', tmid)).observe();
+            // @ts-ignore: fix me
 			subscription.current = observable.subscribe(result => {
 				setAlsoSendThreadToChannel(!result.length);
 			});

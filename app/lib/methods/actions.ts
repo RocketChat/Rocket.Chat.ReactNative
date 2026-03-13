@@ -88,8 +88,8 @@ export function triggerAction({ type, actionId, appId, rid, mid, viewId, contain
 		const payload = rest.payload || rest;
 
 		try {
-			const { userId, authToken } = sdk.current.currentLogin;
-			const { host } = sdk.current.client;
+			const { userId, authToken } = sdk.currentLogin;
+			const host = sdk.current?.connection.url;
 
 			// we need to use fetch because this.sdk.post add /v1 to url
 			const result = await fetch(`${host}/api/apps/ui.interaction/${appId}/`, {

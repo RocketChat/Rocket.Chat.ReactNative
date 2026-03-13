@@ -341,11 +341,11 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 				offset,
 				text: searchText
 			});
-			if (result.success) {
+			if (result) {
 				this.updateThreads({ update: result.threads, lastThreadSync });
 				this.setState({
 					loading: false,
-					end: result.count < API_FETCH_COUNT,
+					end: result.total < API_FETCH_COUNT,
 					offset: offset + API_FETCH_COUNT
 				});
 			}

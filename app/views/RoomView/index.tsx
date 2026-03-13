@@ -700,7 +700,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				this.setState({ roomUserId }, () => this.setHeader());
 
 				const result = await getUserInfo(roomUserId);
-				if (result.success) {
+				if (result) {
 					return result.user;
 				}
 			} catch (e) {
