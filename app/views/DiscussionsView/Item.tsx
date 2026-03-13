@@ -74,7 +74,7 @@ const Item = ({ item, onPress }: IItem): React.ReactElement => {
 						{messageTime ? <Text style={[styles.time, { color: colors.fontSecondaryInfo }]}>{messageTime}</Text> : null}
 					</View>
 					<View style={styles.messageContainer}>
-						{username ? <MarkdownPreview msg={makeThreadName(item)} numberOfLines={2} style={[styles.markdown]} /> : null}
+						{username ? <MarkdownPreview msg={makeThreadName(item)} numberOfLines={2} style={styles.markdown} /> : null}
 					</View>
 					{messageDate ? <DiscussionDetails item={item} date={messageDate} /> : null}
 				</View>
