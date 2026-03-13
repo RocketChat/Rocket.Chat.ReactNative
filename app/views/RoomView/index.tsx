@@ -1556,7 +1556,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			}
 		}
 
-		return <MessageComposerContainer ref={this.messageComposerRef} />;
+		return (
+			<View nativeID='message-composer-exit-focus'>
+				<MessageComposerContainer ref={this.messageComposerRef} />
+			</View>
+		);
 	};
 
 	renderActions = () => {

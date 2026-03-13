@@ -1,5 +1,6 @@
 package chat.rocket.reactnative.scroll;
 
+import android.graphics.Rect;
 import android.view.View;
 import com.facebook.react.views.view.ReactViewGroup;
 import java.util.ArrayList;
@@ -33,6 +34,22 @@ public class InvertedScrollContentView extends ReactViewGroup {
     if (mIsInvertedContent) {
       Collections.reverse(outChildren);
     }
+  }
+
+  @Override
+  protected boolean onRequestFocusInDescendants(int direction, Rect previouslyFocusedRect) {
+    if (mIsInvertedContent) {
+      for (int i = getChildCount() - 1; i >= 0; i--) {
+        View child = getChildAt(i);
+        if (child.getVisibility() == VISIBLE) {
+          if (child.requestFocus(direction, previouslyFocusedRect)) {
+            return true;
+          }
+        }
+      }
+      return false;
+    }
+    return super.onRequestFocusInDescendants(direction, previouslyFocusedRect);
   }
 
   @Override

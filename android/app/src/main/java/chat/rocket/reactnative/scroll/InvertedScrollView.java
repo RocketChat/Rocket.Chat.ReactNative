@@ -6,22 +6,29 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import androidx.annotation.Nullable;
+import com.facebook.react.uimanager.util.ReactFindViewUtil;
 import com.facebook.react.views.scroll.ReactScrollView;
 
 /**
  * Custom ScrollView for inverted FlatLists that corrects keyboard navigation so it follows
  * the visual order instead of the inverted view-tree order.
  *
- * DPAD arrows are swapped unconditionally (stateless).
- * Tab/Shift+Tab are handled manually via requestFocus to avoid position-sort issues
- * with FOCUS_FORWARD/FOCUS_BACKWARD, and to allow clean exit at list boundaries.
+ * Both Tab/Shift+Tab and DPAD arrows navigate between FlatList cells (direct children of the
+ * content view) to avoid loops caused by inner focusable elements within a single message.
+ * Boundary exit uses ReactFindViewUtil to find a tagged exit-target view by nativeID.
  */
 public class InvertedScrollView extends ReactScrollView {
 
-  private boolean mTabConsumed = false;
+  private boolean mKeyConsumed = false;
+  private @Nullable String mExitFocusNativeId;
 
   public InvertedScrollView(Context context) {
     super(context);
+  }
+
+  public void setExitFocusNativeId(@Nullable String nativeId) {
+    mExitFocusNativeId = nativeId;
   }
 
   @Override
@@ -29,56 +36,82 @@ public class InvertedScrollView extends ReactScrollView {
     int keyCode = event.getKeyCode();
 
     if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN || keyCode == KeyEvent.KEYCODE_DPAD_UP) {
-      int mapped = (keyCode == KeyEvent.KEYCODE_DPAD_DOWN)
-          ? KeyEvent.KEYCODE_DPAD_UP
-          : KeyEvent.KEYCODE_DPAD_DOWN;
-      KeyEvent invertedEvent = new KeyEvent(
-          event.getDownTime(), event.getEventTime(),
-          event.getAction(), mapped,
-          event.getRepeatCount(), event.getMetaState(),
-          event.getDeviceId(), event.getScanCode(),
-          event.getFlags(), event.getSource()
-      );
-      return super.dispatchKeyEvent(invertedEvent);
+      if (event.getAction() == KeyEvent.ACTION_DOWN) {
+        boolean isForward = (keyCode == KeyEvent.KEYCODE_DPAD_DOWN);
+        mKeyConsumed = handleCellNavigation(isForward);
+        return mKeyConsumed;
+      }
+      return mKeyConsumed;
     }
 
     if (keyCode == KeyEvent.KEYCODE_TAB) {
       if (event.getAction() == KeyEvent.ACTION_DOWN) {
-        return handleTabDown(event.isShiftPressed());
+        boolean isForward = !event.isShiftPressed();
+        mKeyConsumed = handleCellNavigation(isForward);
+        return mKeyConsumed;
       }
-      return mTabConsumed;
+      return mKeyConsumed;
     }
 
     return super.dispatchKeyEvent(event);
   }
 
-  private boolean handleTabDown(boolean isShiftPressed) {
+  /**
+   * Shared navigation logic for Tab and DPAD.
+   * @param isForward true = visual down (Tab / DPAD_DOWN), false = visual up (Shift+Tab / DPAD_UP)
+   */
+  private boolean handleCellNavigation(boolean isForward) {
     View focused = findFocus();
-    if (focused == null) {
-      mTabConsumed = false;
+    if (focused == null || getChildCount() == 0) {
       return false;
     }
 
-    int searchDir = isShiftPressed ? View.FOCUS_DOWN : View.FOCUS_UP;
-    View next = FocusFinder.getInstance().findNextFocus(this, focused, searchDir);
-
-    if (next != null && next != focused) {
-      mTabConsumed = true;
-      return next.requestFocus(searchDir);
+    ViewGroup contentView = (ViewGroup) getChildAt(0);
+    int cellIndex = findContainingCellIndex(contentView, focused);
+    if (cellIndex < 0) {
+      return false;
     }
 
-    int exitDir = isShiftPressed ? View.FOCUS_UP : View.FOCUS_DOWN;
+    int step = isForward ? -1 : 1;
+    int focusDir = isForward ? View.FOCUS_UP : View.FOCUS_DOWN;
+
+    for (int i = cellIndex + step; i >= 0 && i < contentView.getChildCount(); i += step) {
+      View cell = contentView.getChildAt(i);
+      if (cell != null && cell.getVisibility() == VISIBLE && cell.requestFocus(focusDir)) {
+        return true;
+      }
+    }
+
+    int exitDir = isForward ? View.FOCUS_DOWN : View.FOCUS_UP;
     View exitTarget = findExitTarget(exitDir);
     if (exitTarget != null) {
-      mTabConsumed = true;
-      return exitTarget.requestFocus(exitDir);
+      exitTarget.requestFocus();
+      return true;
     }
 
-    mTabConsumed = true;
     return true;
   }
 
+  private int findContainingCellIndex(ViewGroup contentView, View focused) {
+    View current = focused;
+    while (current != null && current.getParent() != contentView) {
+      ViewParent p = current.getParent();
+      if (p instanceof View) {
+        current = (View) p;
+      } else {
+        return -1;
+      }
+    }
+    return current != null ? contentView.indexOfChild(current) : -1;
+  }
+
   private View findExitTarget(int direction) {
+    if (mExitFocusNativeId != null) {
+      View target = ReactFindViewUtil.findView(getRootView(), mExitFocusNativeId);
+      if (target != null) {
+        return target;
+      }
+    }
     View rootView = getRootView();
     if (!(rootView instanceof ViewGroup)) {
       return null;
