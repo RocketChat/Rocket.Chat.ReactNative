@@ -17,6 +17,10 @@ import MessageContext from '../../Context';
 import Touchable from '../../Touchable';
 import messageStyles from '../../styles';
 import dayjs from '../../../../lib/dayjs';
+import { CustomIcon } from '../../../CustomIcon';
+import { getFileIcon } from '../../../../lib/methods/getFileIcon';
+import { formatSize } from '../../../../lib/methods/formatSize';
+import { isDocumentFile } from '../../../../lib/methods/isDocumentFile';
 
 const styles = StyleSheet.create({
 	button: {
@@ -30,6 +34,8 @@ const styles = StyleSheet.create({
 		flex: 1,
 		borderRadius: 4,
 		flexDirection: 'row',
+		alignItems: 'center',
+		gap: 8,
 		paddingVertical: 4,
 		paddingLeft: 8
 	},
@@ -88,6 +94,15 @@ const styles = StyleSheet.create({
 		flex: 1,
 		fontSize: 16,
 		...sharedStyles.textMedium
+	},
+	fileIconContainer: {
+		borderRadius: 4,
+		padding: 4
+	},
+	fileSizeText: {
+		fontSize: 13,
+		lineHeight: 18,
+		...sharedStyles.textRegular
 	}
 });
 
@@ -124,6 +139,7 @@ const Description = React.memo(
 
 		const { user } = useContext(MessageContext);
 		const text = attachment.text || attachment.title;
+		const { colors } = useTheme();
 
 		if (!text) {
 			return null;
@@ -134,6 +150,11 @@ const Description = React.memo(
 		// For other attachments (message quotes, embeds), the text may contain actual markdown formatting,
 		// so we use the full Markdown component to preserve styling.
 		const isFileName = attachment.type === 'file' && !attachment.text;
+		const isDocument = isDocumentFile(attachment);
+
+		if (isFileName && isDocument && attachment.size !== undefined) {
+			return <Text style={[styles.fileSizeText, { color: colors.fontSecondaryInfo }]}>{formatSize(attachment.size, 2)}</Text>;
+		}
 
 		if (isFileName) {
 			return <MarkdownPreview msg={text} numberOfLines={0} />;
@@ -149,6 +170,12 @@ const Description = React.memo(
 			return false;
 		}
 		if (prevProps.attachment.type !== nextProps.attachment.type) {
+			return false;
+		}
+		if (prevProps.attachment.format !== nextProps.attachment.format) {
+			return false;
+		}
+		if (prevProps.attachment.size !== nextProps.attachment.size) {
 			return false;
 		}
 		return true;
@@ -209,7 +236,7 @@ const Reply = React.memo(
 		'use memo';
 
 		const [loading, setLoading] = useState(false);
-		const { theme } = useTheme();
+		const { theme, colors } = useTheme();
 		const { baseUrl, user, id, e2e, isEncrypted } = useContext(MessageContext);
 
 		if (!attachment || (isEncrypted && !e2e)) {
@@ -236,6 +263,12 @@ const Reply = React.memo(
 			strokeLight = attachment.color;
 		}
 
+		// in case we dont have format in payload, we can extract extention from title
+		const titleParts = attachment.title?.split('.') ?? [];
+		const attachmentFormat = attachment.format ?? titleParts[titleParts.length - 1];
+
+		const isDocument = attachment.type === 'file' && isDocumentFile(attachment) && attachment.title;
+
 		return (
 			<View style={{ gap: 4 }}>
 				<Touchable
@@ -249,6 +282,12 @@ const Reply = React.memo(
 					]}
 					disabled={!!(loading || attachment.message_link)}>
 					<View style={styles.attachmentContainer}>
+						{isDocument && (
+							<View style={[styles.fileIconContainer, { backgroundColor: colors.surfaceNeutral }]}>
+								<CustomIcon name={getFileIcon(attachmentFormat)} size={38} color={colors.surfaceDark} />
+							</View>
+						)}
+
 						<View style={styles.titleAndDescriptionContainer}>
 							<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
 							<Description attachment={attachment} getCustomEmoji={getCustomEmoji} />
