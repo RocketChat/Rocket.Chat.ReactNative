@@ -13,6 +13,15 @@ import PushKit
  */
 @objc(VoipService)
 public final class VoipService: NSObject {
+    private struct ObservedIncomingCall {
+        let payload: VoipPayload
+    }
+
+    private final class IncomingCallObserver: NSObject, CXCallObserverDelegate {
+        func callObserver(_ callObserver: CXCallObserver, callChanged call: CXCall) {
+            VoipService.handleObservedCallChanged(call)
+        }
+    }
     
     // MARK: - Constants
     
@@ -28,6 +37,11 @@ public final class VoipService: NSObject {
     private static var voipRegistry: PKPushRegistry?
     private static var incomingCallTimeouts: [String: DispatchWorkItem] = [:]
     private static var ddpClient: DDPClient?
+    private static let callObserver = CXCallObserver()
+    private static let incomingCallObserver = IncomingCallObserver()
+    private static var isCallObserverConfigured = false
+    private static var observedIncomingCall: ObservedIncomingCall?
+    private static var isDdpLoggedIn = false
     
     // MARK: - Static Methods (Called from VoipModule.mm and AppDelegate)
     
@@ -202,12 +216,13 @@ public final class VoipService: NSObject {
 
     private static func handleIncomingCallTimeout(for payload: VoipPayload) {
         incomingCallTimeouts.removeValue(forKey: payload.callId)
+        clearTrackedIncomingCall(for: payload.callUUID)
         stopDDPClientInternal()
 
         let callId = payload.callId
         let callUUID = payload.callUUID
 
-        let callObserver = CXCallObserver()
+        configureCallObserverIfNeeded()
         guard let call = callObserver.calls.first(where: { $0.uuid == callUUID }) else {
             return
         }
@@ -238,6 +253,8 @@ public final class VoipService: NSObject {
         let deviceId = DeviceUID.uid()
         let client = DDPClient()
         ddpClient = client
+        isDdpLoggedIn = false
+        trackIncomingCall(payload)
 
         #if DEBUG
         print("[\(TAG)] Starting DDP listener for call \(callId)")
@@ -270,6 +287,7 @@ public final class VoipService: NSObject {
                 guard ddpClient === client else {
                     return
                 }
+                clearTrackedIncomingCall(for: payload.callUUID)
                 RNCallKeep.endCall(withUUID: callId, reason: 3)
                 cancelIncomingCallTimeout(for: callId)
                 stopDDPClientInternal()
@@ -277,6 +295,7 @@ public final class VoipService: NSObject {
         }
 
         client.connect(host: payload.host) { connected in
+            print("[\(TAG)] DDP connection callback")
             guard ddpClient === client else {
                 return
             }
@@ -297,6 +316,11 @@ public final class VoipService: NSObject {
                     print("[\(TAG)] DDP login failed")
                     #endif
                     stopDDPClientInternal()
+                    return
+                }
+
+                isDdpLoggedIn = true
+                if flushPendingRejectSignalIfNeeded() {
                     return
                 }
 
@@ -330,7 +354,149 @@ public final class VoipService: NSObject {
     }
 
     private static func stopDDPClientInternal() {
+        isDdpLoggedIn = false
+        observedIncomingCall = nil
+        ddpClient?.clearQueuedMethodCalls()
         ddpClient?.disconnect()
         ddpClient = nil
+    }
+
+    private static func buildRejectMethodParams(payload: VoipPayload) -> [Any]? {
+        let credentialStorage = Storage()
+        guard let credentials = credentialStorage.getCredentials(server: payload.host.removeTrailingSlash()) else {
+            #if DEBUG
+            print("[\(TAG)] Missing credentials, cannot send reject for \(payload.callId)")
+            #endif
+            stopDDPClientInternal()
+            return nil
+        }
+
+        let signal: [String: Any] = [
+            "callId": payload.callId,
+            "contractId": DeviceUID.uid(),
+            "type": "answer",
+            "answer": "reject"
+        ]
+
+        guard
+            let signalData = try? JSONSerialization.data(withJSONObject: signal),
+            let signalString = String(data: signalData, encoding: .utf8)
+        else {
+            stopDDPClientInternal()
+            return nil
+        }
+
+        return ["\(credentials.userId)/media-calls", signalString]
+    }
+
+    private static func sendRejectSignal(payload: VoipPayload) {
+        guard let client = ddpClient else {
+            #if DEBUG
+            print("[\(TAG)] Native DDP client unavailable, cannot send reject for \(payload.callId)")
+            #endif
+            return
+        }
+
+        guard let params = buildRejectMethodParams(payload: payload) else {
+            return
+        }
+
+        client.callMethod("stream-notify-user", params: params) { success in
+            #if DEBUG
+            print("[\(TAG)] Native reject signal result for \(payload.callId): \(success)")
+            #endif
+            stopDDPClientInternal()
+        }
+    }
+
+    private static func queueRejectSignal(payload: VoipPayload) {
+        guard let client = ddpClient else {
+            #if DEBUG
+            print("[\(TAG)] Native DDP client unavailable, cannot queue reject for \(payload.callId)")
+            #endif
+            return
+        }
+
+        guard let params = buildRejectMethodParams(payload: payload) else {
+            return
+        }
+
+        client.queueMethodCall("stream-notify-user", params: params) { success in
+            #if DEBUG
+            print("[\(TAG)] Queued native reject signal result for \(payload.callId): \(success)")
+            #endif
+            stopDDPClientInternal()
+        }
+    }
+
+    private static func flushPendingRejectSignalIfNeeded() -> Bool {
+        guard let client = ddpClient, client.hasQueuedMethodCalls() else {
+            return false
+        }
+
+        client.flushQueuedMethodCalls()
+        return true
+    }
+
+    private static func configureCallObserverIfNeeded() {
+        guard !isCallObserverConfigured else {
+            return
+        }
+
+        callObserver.setDelegate(incomingCallObserver, queue: .main)
+        isCallObserverConfigured = true
+    }
+
+    private static func trackIncomingCall(_ payload: VoipPayload) {
+        let trackCall = {
+            configureCallObserverIfNeeded()
+            observedIncomingCall = ObservedIncomingCall(payload: payload)
+        }
+
+        if Thread.isMainThread {
+            trackCall()
+        } else {
+            DispatchQueue.main.async(execute: trackCall)
+        }
+    }
+
+    private static func clearTrackedIncomingCall(for callUUID: UUID) {
+        let clearCall = {
+            guard observedIncomingCall?.payload.callUUID == callUUID else {
+                return
+            }
+
+            observedIncomingCall = nil
+        }
+
+        if Thread.isMainThread {
+            clearCall()
+        } else {
+            DispatchQueue.main.async(execute: clearCall)
+        }
+    }
+
+    private static func handleObservedCallChanged(_ call: CXCall) {
+        guard let observedCall = observedIncomingCall, observedCall.payload.callUUID == call.uuid else {
+            return
+        }
+
+        if call.hasConnected {
+            observedIncomingCall = nil
+            return
+        }
+
+        guard call.hasEnded else {
+            return
+        }
+
+        observedIncomingCall = nil
+        cancelIncomingCallTimeout(for: observedCall.payload.callId)
+
+        if isDdpLoggedIn {
+            sendRejectSignal(payload: observedCall.payload)
+        } else {
+            queueRejectSignal(payload: observedCall.payload)
+        }
     }
 }

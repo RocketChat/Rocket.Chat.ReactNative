@@ -3,8 +3,14 @@ import Foundation
 /// Minimal DDP WebSocket client for listening to Rocket.Chat media-signal events from native iOS.
 /// Only implements the subset needed to detect call hangup: connect, login, subscribe, and ping/pong.
 final class DDPClient {
+    private struct QueuedMethodCall {
+        let method: String
+        let params: [Any]
+        let completion: (Bool) -> Void
+    }
     
     private static let TAG = "RocketChat.DDPClient"
+    private let stateQueueKey = DispatchSpecificKey<Void>()
     private let stateQueue = DispatchQueue(label: "chat.rocket.reactnative.ddp-client")
     
     private var webSocketTask: URLSessionWebSocketTask?
@@ -14,6 +20,10 @@ final class DDPClient {
     
     /// Called for every incoming DDP collection message (e.g. stream-notify-user).
     var onCollectionMessage: (([String: Any]) -> Void)?
+
+    init() {
+        stateQueue.setSpecific(key: stateQueueKey, value: ())
+    }
     
     // MARK: - Connect
     
@@ -141,6 +151,7 @@ final class DDPClient {
             #endif
             self.isConnected = false
             self.pendingCallbacks.removeAll()
+            self.clearQueuedMethodCalls()
             self.connectedCallback = nil
             self.onCollectionMessage = nil
             self.webSocketTask?.cancel(with: .normalClosure, reason: nil)
@@ -153,6 +164,7 @@ final class DDPClient {
     // MARK: - Private
     
     private var pendingCallbacks: [String: ([String: Any]) -> Void] = [:]
+    private var queuedMethodCalls: [QueuedMethodCall] = []
     private var connectedCallback: ((Bool) -> Void)?
     
     private func nextMessage(msg: String, extra: [String: Any] = [:]) -> [String: Any] {
@@ -180,6 +192,82 @@ final class DDPClient {
             } else {
                 completion(true)
             }
+        }
+    }
+
+    func callMethod(_ method: String, params: [Any], completion: @escaping (Bool) -> Void) {
+        stateQueue.async {
+            let msg = self.nextMessage(msg: "method", extra: [
+                "method": method,
+                "params": params
+            ])
+
+            let msgId = msg["id"] as? String
+
+            self.pendingCallbacks[msgId ?? ""] = { [weak self] data in
+                self?.pendingCallbacks.removeValue(forKey: msgId ?? "")
+                let hasError = data["error"] != nil
+                #if DEBUG
+                if hasError {
+                    print("[\(Self.TAG)] Method \(method) failed: \(data["error"] ?? "unknown")")
+                }
+                #endif
+                completion(!hasError)
+            }
+
+            self.send(msg) { [weak self] success in
+                guard let self else { return }
+                if !success {
+                    self.stateQueue.async {
+                        self.pendingCallbacks.removeValue(forKey: msgId ?? "")
+                        completion(false)
+                    }
+                }
+            }
+        }
+    }
+
+    func queueMethodCall(_ method: String, params: [Any], completion: @escaping (Bool) -> Void = { _ in }) {
+        stateQueue.async {
+            self.queuedMethodCalls.append(
+                QueuedMethodCall(
+                    method: method,
+                    params: params,
+                    completion: completion
+                )
+            )
+        }
+    }
+
+    func hasQueuedMethodCalls() -> Bool {
+        if DispatchQueue.getSpecific(key: stateQueueKey) != nil {
+            return !queuedMethodCalls.isEmpty
+        }
+
+        return stateQueue.sync {
+            !queuedMethodCalls.isEmpty
+        }
+    }
+
+    func flushQueuedMethodCalls() {
+        stateQueue.async {
+            let queuedCalls = self.queuedMethodCalls
+            self.queuedMethodCalls.removeAll()
+
+            queuedCalls.forEach { queuedCall in
+                self.callMethod(queuedCall.method, params: queuedCall.params, completion: queuedCall.completion)
+            }
+        }
+    }
+
+    func clearQueuedMethodCalls() {
+        if DispatchQueue.getSpecific(key: stateQueueKey) != nil {
+            queuedMethodCalls.removeAll()
+            return
+        }
+
+        stateQueue.async {
+            self.queuedMethodCalls.removeAll()
         }
     }
     
