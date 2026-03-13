@@ -106,3 +106,17 @@ jobs:
       fail-fast: false
     with:
       shard: ${{ matrix.shard }}
+
+  storybook-build-android:
+    name: Storybook Build Android
+    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    uses: ./.github/workflows/storybook-build-android.yml
+    needs: [e2e-hold]
+    secrets: inherit
+
+  storybook-run-android:
+    name: Storybook Run Android
+    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    uses: ./.github/workflows/maestro-storybook-android.yml
+    needs: [storybook-build-android]
+    secrets: inherit
