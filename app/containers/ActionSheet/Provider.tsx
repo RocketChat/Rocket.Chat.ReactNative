@@ -26,7 +26,7 @@ export type TActionSheetOptions = {
 	hasCancel?: boolean;
 	// children can both use snaps or dynamic
 	children?: React.ReactElement | null;
-	// Required if your action sheet needs vertical scroll */
+	// Required if your action sheet needs vertical scroll
 	snaps?: (string | number)[];
 	// Optional snaps specifically for portrait orientation
 	portraitSnaps?: (string | number)[];

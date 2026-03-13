@@ -34,15 +34,7 @@ const ActionSheet = React.memo(
 			setContentHeight(layout.height);
 		};
 
-		const cancelPendingPresent = () => {
-			if (presentTimerRef.current !== null) {
-				clearTimeout(presentTimerRef.current);
-				presentTimerRef.current = null;
-			}
-		};
-
 		const hide = () => {
-			cancelPendingPresent();
 			onCloseSnapshotRef.current = data?.onClose;
 			sheetRef.current?.dismiss();
 			Keyboard.dismiss();
@@ -50,7 +42,6 @@ const ActionSheet = React.memo(
 		};
 
 		const show = (options: TActionSheetOptions) => {
-			cancelPendingPresent();
 			setData(options);
 			setIsVisible(true);
 			Keyboard.dismiss();
