@@ -237,7 +237,7 @@ const Button = React.memo(({ onPress, backgroundColor, underlayColor, ...props }
 	return (
 		<Touch
 			onPress={handlePress}
-			style={{ backgroundColor: backgroundColor || colors.surfaceRoom }}
+			style={{ backgroundColor: backgroundColor || colors.surfaceRoom, height: BASE_HEIGHT }}
 			underlayColor={underlayColor}
 			enabled={!props.disabled || !!props.disabledReason}>
 			<Content {...props} />

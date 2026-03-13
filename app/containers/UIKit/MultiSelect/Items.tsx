@@ -1,7 +1,8 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import { Image } from 'expo-image';
-import { FlatList } from 'react-native-gesture-handler';
+import { FlatList, Gesture, GestureDetector } from 'react-native-gesture-handler';
+import { runOnJS } from 'react-native-reanimated';
 
 import * as List from '../../List';
 import { textParser } from '../utils';
@@ -31,6 +32,11 @@ const Item = ({ item, selected, onSelect }: IItem) => {
 	const { colors } = useTheme();
 	const iconName = selected ? 'checkbox-checked' : 'checkbox-unchecked';
 	const iconColor = selected ? colors.badgeBackgroundLevel2 : colors.strokeMedium;
+
+	const handleSelect = () => onSelect(item);
+	const tap = Gesture.Tap().onStart(() => {
+		runOnJS(handleSelect)();
+	});
 
 	return (
 		<Touch

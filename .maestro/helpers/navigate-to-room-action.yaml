@@ -13,6 +13,7 @@ tags:
           file: './search-and-navigate-room.yaml'
           env:
             ROOM: ${ROOM}
+            EXTENDED_SEARCH_TIMEOUT: ${EXTENDED_SEARCH_TIMEOUT}
 
 - extendedWaitUntil:
     visible:
