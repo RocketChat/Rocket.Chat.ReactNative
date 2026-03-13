@@ -23,6 +23,7 @@ class RCFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
+        // TODO: remove data
         Log.d(TAG, "FCM message received from: ${remoteMessage.from} data: ${remoteMessage.data}")
 
         val data = remoteMessage.data

@@ -282,20 +282,29 @@ class VoipNotification(private val context: Context) {
                         if (firstArg != null) {
                             val signalType = firstArg.optString("type")
                             val signalCallId = firstArg.optString("callId")
+                            val signalNotification = firstArg.optString("notification")
                             val signedContractId = firstArg.optString("signedContractId")
 
-                            if (signalType == "notification" && signalCallId == callId && signedContractId.isNullOrEmpty() && signedContractId != deviceId) {
-                                val appContext = context.applicationContext
-                                Handler(Looper.getMainLooper()).post {
-                                    cancelTimeout(callId)
-                                    disconnectIncomingCall(callId, false)
-                                    cancelById(appContext, payload.notificationId)
-                                    LocalBroadcastManager.getInstance(appContext).sendBroadcast(
-                                        Intent(ACTION_DISMISS).apply {
-                                            putExtras(payload.toBundle())
-                                        }
-                                    )
-                                    stopDDPClientInternal()
+                            if (signalCallId == callId) {
+                                if (signalType == "notification" &&
+                                    (
+                                        // accepted from other device
+                                        (!signedContractId.isNullOrEmpty() && signedContractId != deviceId) ||
+                                        // hung up by other device
+                                        (signalNotification == "hangup")
+                                    )) {
+                                    val appContext = context.applicationContext
+                                    Handler(Looper.getMainLooper()).post {
+                                        cancelTimeout(callId)
+                                        disconnectIncomingCall(callId, false)
+                                        cancelById(appContext, payload.notificationId)
+                                        LocalBroadcastManager.getInstance(appContext).sendBroadcast(
+                                            Intent(ACTION_DISMISS).apply {
+                                                putExtras(payload.toBundle())
+                                            }
+                                        )
+                                        stopDDPClientInternal()
+                                    }
                                 }
                             }
                         }
@@ -389,6 +398,7 @@ class VoipNotification(private val context: Context) {
                 CHANNEL_NAME,
                 NotificationManager.IMPORTANCE_HIGH
             ).apply {
+                // TODO: i18n
                 description = "Incoming VoIP calls"
                 enableLights(true)
                 enableVibration(true)

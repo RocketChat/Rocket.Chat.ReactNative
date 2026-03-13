@@ -272,15 +272,23 @@ public final class VoipService: NSObject {
                   let signalType = firstArg["type"] as? String,
                   signalType == "notification",
                   let signalCallId = firstArg["callId"] as? String,
-                  signalCallId == callId,
-                  let signedContractId = firstArg["signedContractId"] as? String,
-                  signedContractId != deviceId
+                  signalCallId == callId
             else {
                 return
             }
 
+            let signalNotification = firstArg["notification"] as? String
+            let signedContractId = firstArg["signedContractId"] as? String
+
+            let isHangup = signalNotification == "hangup"
+            let isAcceptedOnAnotherDevice = signedContractId != nil && signedContractId != deviceId
+
+            guard isHangup || isAcceptedOnAnotherDevice else {
+                return
+            }
+
             #if DEBUG
-            print("[\(TAG)] DDP received hangup for call \(callId)")
+            print("[\(TAG)] DDP received hangup for call or accepted from another device \(callId)")
             #endif
 
             DispatchQueue.main.async {
