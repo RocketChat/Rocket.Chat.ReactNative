@@ -152,7 +152,7 @@ const Description = React.memo(
 		const isFileName = attachment.type === 'file' && !attachment.text;
 		const isDocument = isDocumentFile(attachment);
 
-		if (isFileName && isDocument && attachment.size) {
+		if (isFileName && isDocument && attachment.size !== undefined) {
 			return <Text style={[styles.fileSizeText, { color: colors.fontSecondaryInfo }]}>{formatSize(attachment.size, 2)}</Text>;
 		}
 
@@ -263,6 +263,7 @@ const Reply = React.memo(
 			strokeLight = attachment.color;
 		}
 
+		// in case we dont have format in payload, we can extract extention from title
 		const titleParts = attachment.title?.split('.') ?? [];
 		const attachmentFormat = attachment.format ?? titleParts[titleParts.length - 1];
 
