@@ -55,7 +55,8 @@ export const MessageComposer = ({
 	useImperativeHandle(forwardedRef, () => ({
 		closeEmojiKeyboardAndAction,
 		getText: composerInputComponentRef.current?.getText,
-		setInput: composerInputComponentRef.current?.setInput
+		setInput: composerInputComponentRef.current?.setInput,
+		focus: composerInputComponentRef.current?.focus
 	}));
 
 	useBackHandler(() => {

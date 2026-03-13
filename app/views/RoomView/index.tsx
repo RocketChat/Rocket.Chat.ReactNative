@@ -253,6 +253,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.unsubscribeBlur = navigation.addListener('blur', () => {
 			AudioManager.pauseAudio();
 		});
+		this.unsubscribeFocus = navigation.addListener('focus', () => {
+			InteractionManager.runAfterInteractions(() => {
+				this.messageComposerRef.current?.focus();
+			});
+		});
 	}
 
 	shouldComponentUpdate(nextProps: IRoomViewProps, nextState: IRoomViewState) {
