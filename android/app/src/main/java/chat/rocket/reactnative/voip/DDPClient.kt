@@ -67,11 +67,13 @@ class DDPClient {
 
             override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
                 Log.e(TAG, "WebSocket failure: ${t.message}")
+                isConnected = false
                 mainHandler.post { callback(false) }
             }
 
             override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
                 Log.d(TAG, "WebSocket closed: $code $reason")
+                isConnected = false
             }
         })
     }
@@ -113,14 +115,20 @@ class DDPClient {
         val msgId = msg.getString("id")
 
         synchronized(pendingCallbacks) {
-            pendingCallbacks[msgId] = {
+            pendingCallbacks[msgId] = { data ->
                 synchronized(pendingCallbacks) { pendingCallbacks.remove(msgId) }
-                Log.d(TAG, "Subscribed to $name")
-                mainHandler.post { callback(true) }
+                val didSubscribe = data.optString("msg") == "ready" && !data.has("error")
+                if (didSubscribe) {
+                    Log.d(TAG, "Subscribed to $name")
+                } else {
+                    Log.e(TAG, "Failed to subscribe to $name: ${data.opt("error") ?: "nosub"}")
+                }
+                mainHandler.post { callback(didSubscribe) }
             }
         }
 
         if (!send(msg)) {
+            synchronized(pendingCallbacks) { pendingCallbacks.remove(msgId) }
             mainHandler.post { callback(false) }
         }
     }
@@ -245,10 +253,16 @@ class DDPClient {
 
             "ready" -> {
                 val subs = json.optJSONArray("subs")
-                val first = subs?.optString(0)
-                if (first != null) {
-                    val cb = synchronized(pendingCallbacks) { pendingCallbacks[first] }
-                    cb?.invoke(json)
+                if (subs != null) {
+                    for (index in 0 until subs.length()) {
+                        val subId = subs.optString(index)
+                        if (subId.isEmpty()) {
+                            continue
+                        }
+
+                        val cb = synchronized(pendingCallbacks) { pendingCallbacks[subId] }
+                        cb?.invoke(json)
+                    }
                 }
             }
 

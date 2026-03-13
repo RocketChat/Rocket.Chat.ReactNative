@@ -182,8 +182,13 @@ final class DDPClient {
             completion(false)
             return
         }
+
+        guard let webSocketTask else {
+            completion(false)
+            return
+        }
         
-        webSocketTask?.send(.string(string)) { error in
+        webSocketTask.send(.string(string)) { error in
             if let error = error {
                 #if DEBUG
                 print("[\(Self.TAG)] Send error: \(error.localizedDescription)")
@@ -334,8 +339,10 @@ final class DDPClient {
             }
             
         case "ready":
-            if let subs = json["subs"] as? [String], let first = subs.first, let cb = pendingCallbacks[first] {
-                cb(json)
+            if let subs = json["subs"] as? [String] {
+                subs.forEach { subId in
+                    pendingCallbacks[subId]?(json)
+                }
             }
             
         case "changed", "added", "removed":

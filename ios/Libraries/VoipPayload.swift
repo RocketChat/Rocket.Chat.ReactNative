@@ -75,7 +75,7 @@ private struct RemoteVoipPayload {
 /// Data structure for initial events payload
 @objc(VoipPayload)
 public class VoipPayload: NSObject {
-    // the amount of time in milliseconds that an incoming call will be kept alive
+    // the amount of time in seconds that an incoming call will be kept alive
     @objc public static let INCOMING_CALL_LIFETIME_SEC: TimeInterval = 60
 
     @objc public let callId: String
