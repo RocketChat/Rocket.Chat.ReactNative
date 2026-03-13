@@ -1,12 +1,12 @@
-import React from 'react';
 import { AccessibilityInfo, FlatList, type ListRenderItem } from 'react-native';
 import { connect } from 'react-redux';
-import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { type CompositeNavigationProp } from '@react-navigation/native';
+import type { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { CompositeNavigationProp } from '@react-navigation/native';
+import { Component } from 'react';
 
 import { hideActionSheetRef, showActionSheetRef } from '../../containers/ActionSheet';
-import { type ChatsStackParamList } from '../../stacks/types';
-import { type MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
+import type { ChatsStackParamList } from '../../stacks/types';
+import type { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import * as List from '../../containers/List';
 import DirectoryItem from '../../containers/DirectoryItem';
 import sharedStyles from '../Styles';
@@ -49,7 +49,7 @@ interface IDirectoryViewState {
 	type: string;
 }
 
-class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewState> {
+class DirectoryView extends Component<IDirectoryViewProps, IDirectoryViewState> {
 	constructor(props: IDirectoryViewProps) {
 		super(props);
 		this.state = {

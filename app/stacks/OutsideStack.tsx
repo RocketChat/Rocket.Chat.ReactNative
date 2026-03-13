@@ -1,6 +1,6 @@
-import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { connect } from 'react-redux';
+import { useContext } from 'react';
 
 import { ThemeContext } from '../theme';
 import { defaultHeader, themedHeader } from '../lib/methods/helpers/navigation';
@@ -13,14 +13,14 @@ import SendEmailConfirmationView from '../views/SendEmailConfirmationView';
 import RegisterView from '../views/RegisterView';
 import LegalView from '../views/LegalView';
 import AuthenticationWebView from '../views/AuthenticationWebView';
-import { type OutsideModalParamList, type OutsideParamList } from './types';
+import type { OutsideModalParamList, OutsideParamList } from './types';
 
 // Outside
 const Outside = createNativeStackNavigator<OutsideParamList>();
 const OutsideStackComponent = () => {
 	'use memo';
 
-	const { theme } = React.useContext(ThemeContext);
+	const { theme } = useContext(ThemeContext);
 
 	return (
 		<Outside.Navigator screenOptions={themedHeader(theme)}>
@@ -50,7 +50,7 @@ const OutsideModal = createNativeStackNavigator<OutsideModalParamList>();
 const OutsideStackModal = () => {
 	'use memo';
 
-	const { theme } = React.useContext(ThemeContext);
+	const { theme } = useContext(ThemeContext);
 
 	return (
 		<OutsideModal.Navigator screenOptions={{ ...themedHeader(theme), presentation: 'containedTransparentModal' }}>

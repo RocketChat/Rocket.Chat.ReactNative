@@ -1,10 +1,9 @@
-import React from 'react';
 import { Text, View } from 'react-native';
 
 import { useTheme } from '../../theme';
 import Touch from '../Touch';
 import { CustomIcon } from '../CustomIcon';
-import { type IButtonService } from './interfaces';
+import type { IButtonService } from './interfaces';
 import styles from './styles';
 
 const ButtonService = ({ name, authType, onPress, backgroundColor, buttonText, icon, accessibilityLabel }: IButtonService) => {

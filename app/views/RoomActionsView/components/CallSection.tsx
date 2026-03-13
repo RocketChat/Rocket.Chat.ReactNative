@@ -1,9 +1,9 @@
-import React from 'react';
+import type { ReactElement } from 'react';
 
 import * as List from '../../../containers/List';
 import { useVideoConf } from '../../../lib/hooks/useVideoConf';
 
-export default function CallSection({ rid, disabled }: { rid: string; disabled: boolean }): React.ReactElement | null {
+export default function CallSection({ rid, disabled }: { rid: string; disabled: boolean }): ReactElement | null {
 	const { callEnabled, showInitCallActionSheet, disabledTooltip } = useVideoConf(rid);
 	if (callEnabled)
 		return (

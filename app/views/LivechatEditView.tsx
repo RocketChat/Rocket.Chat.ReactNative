@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { type RouteProp } from '@react-navigation/native';
+import { useEffect, useState } from 'react';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { RouteProp } from '@react-navigation/native';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { BlockContext } from '@rocket.chat/ui-kit';
@@ -18,15 +18,9 @@ import { getUserSelector } from '../selectors/login';
 import Button from '../containers/Button';
 import SafeAreaView from '../containers/SafeAreaView';
 import { MultiSelect } from '../containers/UIKit/MultiSelect';
-import {
-	type ICustomFields,
-	type IInputsRefs,
-	type TParams,
-	type ITitle,
-	type ILivechat
-} from '../definitions/ILivechatEditView';
-import { type IApplicationState, type IUser } from '../definitions';
-import { type ChatsStackParamList } from '../stacks/types';
+import type { ICustomFields, IInputsRefs, TParams, ITitle, ILivechat } from '../definitions/ILivechatEditView';
+import type { IApplicationState, IUser } from '../definitions';
+import type { ChatsStackParamList } from '../stacks/types';
 import sharedStyles from './Styles';
 import { getAgentDepartments, getCustomFields, editLivechat, getTagsList } from '../lib/services/restApi';
 import { usePermissions } from '../lib/hooks/usePermissions';
@@ -242,6 +236,7 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 					/>
 					{Object.entries(customFields?.visitor || {}).map(([key, value], index, array) => (
 						<FormTextInput
+							key={key}
 							label={key}
 							defaultValue={value}
 							inputRef={e => {
@@ -284,6 +279,7 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 
 					{Object.entries(customFields?.livechat || {}).map(([key, value], index, array: any) => (
 						<FormTextInput
+							key={key}
 							label={key}
 							defaultValue={value}
 							inputRef={e => {

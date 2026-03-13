@@ -1,4 +1,4 @@
-import { type SortBy, type DisplayMode } from '../lib/constants/constantDisplayMode';
+import type { SortBy, DisplayMode } from '../lib/constants/constantDisplayMode';
 
 export interface IPreferences {
 	sortBy: SortBy;

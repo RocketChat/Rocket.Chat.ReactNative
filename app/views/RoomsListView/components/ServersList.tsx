@@ -1,8 +1,8 @@
-import React, { memo, useEffect, useRef, useState } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import { FlatList, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { batch, useDispatch } from 'react-redux';
-import { type Subscription } from 'rxjs';
+import type { Subscription } from 'rxjs';
 
 import { appStart } from '../../../actions/app';
 import { selectServerRequest, serverInitAdd } from '../../../actions/server';

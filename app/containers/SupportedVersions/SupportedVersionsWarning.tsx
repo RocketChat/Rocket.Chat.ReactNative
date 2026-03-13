@@ -1,4 +1,4 @@
-import React, { type ReactElement, useLayoutEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { View, Text, Linking } from 'react-native';
 
 import { useTheme } from '../../theme';
@@ -10,7 +10,7 @@ import * as HeaderButton from '../Header/components/HeaderButton';
 import I18n from '../../i18n';
 import { LEARN_MORE_URL } from './constants';
 
-export const SupportedVersionsWarning = ({ navigation, route }: { navigation?: any; route?: any }): ReactElement | null => {
+export const SupportedVersionsWarning = ({ navigation, route }: { navigation?: any; route?: any }) => {
 	const { colors } = useTheme();
 	const message = useSupportedVersionMessage();
 

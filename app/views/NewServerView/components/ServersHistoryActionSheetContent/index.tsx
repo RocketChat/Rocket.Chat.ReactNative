@@ -1,11 +1,11 @@
-import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { A11y } from 'react-native-a11y-order';
+import { Fragment } from 'react';
 
 import * as List from '../../../../containers/List';
 import { useTheme } from '../../../../theme';
-import { type TServerHistoryModel } from '../../../../definitions';
+import type { TServerHistoryModel } from '../../../../definitions';
 import ServersHistoryItem from '../ServersHistoryItem';
 import I18n from '../../../../i18n';
 import sharedStyles from '../../../Styles';
@@ -46,14 +46,14 @@ export const ServersHistoryActionSheetContent = ({
 			</View>
 			<List.Separator />
 			{serversHistory.map(item => (
-				<React.Fragment key={item.id}>
+				<Fragment key={item.id}>
 					<A11y.Order>
 						<A11y.Index index={1}>
 							<ServersHistoryItem item={item} onPress={() => onPressServerHistory(item)} onDeletePress={() => onDelete(item)} />
 						</A11y.Index>
 					</A11y.Order>
 					<List.Separator />
-				</React.Fragment>
+				</Fragment>
 			))}
 		</View>
 	);

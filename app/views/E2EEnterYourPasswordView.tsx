@@ -1,11 +1,11 @@
 import { useFocusEffect } from '@react-navigation/native';
-import React, { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 import { ScrollView, StyleSheet, Text, AccessibilityInfo, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
-import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { type E2EEnterYourPasswordStackParamList, type InsideStackParamList } from '../stacks/types';
+import type { E2EEnterYourPasswordStackParamList, InsideStackParamList } from '../stacks/types';
 import { encryptionDecodeKey } from '../actions/encryption';
 import Button from '../containers/Button';
 import * as HeaderButton from '../containers/Header/components/HeaderButton';
@@ -44,7 +44,7 @@ interface IE2EEnterYourPasswordView {
 	navigation: NativeStackNavigationProp<E2EEnterYourPasswordStackParamList, 'E2EEnterYourPasswordView'>;
 }
 
-const E2EEnterYourPasswordView = ({ navigation }: IE2EEnterYourPasswordView): React.ReactElement => {
+const E2EEnterYourPasswordView = ({ navigation }: IE2EEnterYourPasswordView) => {
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
 	const { enabled: encryptionEnabled, failure: encryptionFailure } = useAppSelector(state => state.encryption);

@@ -1,9 +1,9 @@
-import { type RouteProp } from '@react-navigation/native';
-import { type Dispatch } from 'redux';
-import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { RouteProp } from '@react-navigation/native';
+import type { Dispatch } from 'redux';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { type TNavigation } from '../stacks/stackType';
-import { type TColors, type TSupportedThemes } from '../theme';
+import type { TNavigation } from '../stacks/stackType';
+import type { TColors, TSupportedThemes } from '../theme';
 
 export * from './ERoomType';
 export * from './IAttachment';

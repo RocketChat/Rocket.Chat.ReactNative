@@ -1,5 +1,5 @@
-import React from 'react';
 import { Text, type StyleProp, type ViewStyle } from 'react-native';
+import { memo } from 'react';
 
 import styles from './styles';
 import Touch from '../../Touch';
@@ -14,7 +14,7 @@ interface IPasscodeButton {
 	style?: StyleProp<ViewStyle>;
 }
 
-const Button = React.memo(({ style, text, disabled, onPress, icon }: IPasscodeButton) => {
+const Button = ({ style, text, disabled, onPress, icon }: IPasscodeButton) => {
 	const { colors } = useTheme();
 
 	const press = () => onPress && onPress(text);
@@ -33,6 +33,6 @@ const Button = React.memo(({ style, text, disabled, onPress, icon }: IPasscodeBu
 			)}
 		</Touch>
 	);
-});
+};
 
-export default Button;
+export default memo(Button);

@@ -1,8 +1,7 @@
-import React from 'react';
 import { Text, View } from 'react-native';
 
-import { type TGetCustomEmoji } from '../../definitions/IEmoji';
-import { type IReaction } from '../../definitions';
+import type { TGetCustomEmoji } from '../../definitions/IEmoji';
+import type { IReaction } from '../../definitions';
 import I18n from '../../i18n';
 import styles from './styles';
 import AllTab from './AllTab';

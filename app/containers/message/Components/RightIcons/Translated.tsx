@@ -1,10 +1,10 @@
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { View } from 'react-native';
 
 import { CustomIcon } from '../../../CustomIcon';
 import styles from '../../styles';
 
-const Translated = memo(({ isTranslated }: { isTranslated: boolean }) => {
+const Translated = ({ isTranslated }: { isTranslated: boolean }) => {
 	'use memo';
 
 	if (!isTranslated) {
@@ -16,6 +16,6 @@ const Translated = memo(({ isTranslated }: { isTranslated: boolean }) => {
 			<CustomIcon name='language' size={16} />
 		</View>
 	);
-});
+};
 
-export default Translated;
+export default memo(Translated);

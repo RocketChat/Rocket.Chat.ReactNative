@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
+import { memo, useContext } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { type MessageType, type MessageTypesValues, SubscriptionType } from '../../definitions';
 import { useTheme } from '../../theme';
-import { type IRoomInfoParam } from '../../views/SearchMessagesView';
+import type { IRoomInfoParam } from '../../views/SearchMessagesView';
 import sharedStyles from '../../views/Styles';
 import RightIcons from './Components/RightIcons';
 import MessageContext from './Context';
@@ -17,10 +17,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		alignItems: 'center'
-	},
-	actionIcons: {
-		flexDirection: 'row',
 		alignItems: 'center'
 	},
 	username: {
@@ -66,79 +62,77 @@ interface IMessageUser {
 	isTranslated: boolean;
 }
 
-const User = React.memo(
-	({
-		isHeader,
-		useRealName,
-		author,
-		alias,
-		ts,
-		timeFormat,
-		hasError,
-		navToRoomInfo,
-		type,
-		isEdited,
-		isTranslated,
-		...props
-	}: IMessageUser) => {
-		'use memo';
+const User = ({
+	isHeader,
+	useRealName,
+	author,
+	alias,
+	ts,
+	timeFormat,
+	hasError,
+	navToRoomInfo,
+	type,
+	isEdited,
+	isTranslated,
+	...props
+}: IMessageUser) => {
+	'use memo';
 
-		const { user } = useContext(MessageContext);
-		const { colors } = useTheme();
-		const { isLargeFontScale } = useResponsiveLayout();
+	const { user } = useContext(MessageContext);
+	const { colors } = useTheme();
+	const { isLargeFontScale } = useResponsiveLayout();
 
-		if (isHeader) {
-			const username = (useRealName && author?.name) || author?.username;
-			const aliasUsername = alias ? <Text style={[styles.alias, { color: colors.fontSecondaryInfo }]}> @{username}</Text> : null;
-			const itsMe = author?._id === user.id;
+	if (isHeader) {
+		const username = (useRealName && author?.name) || author?.username;
+		const aliasUsername = alias ? <Text style={[styles.alias, { color: colors.fontSecondaryInfo }]}> @{username}</Text> : null;
+		const itsMe = author?._id === user.id;
 
-			const onUserPress = () => {
-				navToRoomInfo?.({
-					t: SubscriptionType.DIRECT,
-					rid: author?._id || '',
-					itsMe
-				});
-			};
+		const onUserPress = () => {
+			navToRoomInfo?.({
+				t: SubscriptionType.DIRECT,
+				rid: author?._id || '',
+				itsMe
+			});
+		};
 
-			const textContent = (
-				<>
-					{alias || username}
-					{aliasUsername}
-				</>
-			);
+		const textContent = (
+			<>
+				{alias || username}
+				{aliasUsername}
+			</>
+		);
 
-			if (messageHaveAuthorName(type as MessageTypesValues)) {
-				return (
-					<Text style={[styles.usernameInfoMessage, { color: colors.fontTitlesLabels }]} onPress={onUserPress}>
-						{textContent}
-					</Text>
-				);
-			}
-
+		if (messageHaveAuthorName(type as MessageTypesValues)) {
 			return (
-				<View style={styles.container}>
-					<Touch testID={`username-header-${username}`} style={styles.titleContainer} onPress={onUserPress}>
-						<Text style={[styles.username, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
-							{textContent}
-						</Text>
-						{isLargeFontScale ? null : <MessageTime timeFormat={timeFormat} ts={ts} />}
-					</Touch>
-					<RightIcons
-						type={type}
-						isEdited={isEdited}
-						hasError={hasError}
-						isReadReceiptEnabled={props.isReadReceiptEnabled}
-						unread={props.unread}
-						pinned={props.pinned}
-						isTranslated={isTranslated}
-					/>
-				</View>
+				<Text style={[styles.usernameInfoMessage, { color: colors.fontTitlesLabels }]} onPress={onUserPress}>
+					{textContent}
+				</Text>
 			);
 		}
-		return null;
+
+		return (
+			<View style={styles.container}>
+				<Touch testID={`username-header-${username}`} style={styles.titleContainer} onPress={onUserPress}>
+					<Text style={[styles.username, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
+						{textContent}
+					</Text>
+					{isLargeFontScale ? null : <MessageTime timeFormat={timeFormat} ts={ts} />}
+				</Touch>
+				<RightIcons
+					type={type}
+					isEdited={isEdited}
+					hasError={hasError}
+					isReadReceiptEnabled={props.isReadReceiptEnabled}
+					unread={props.unread}
+					pinned={props.pinned}
+					isTranslated={isTranslated}
+				/>
+			</View>
+		);
 	}
-);
+	return null;
+};
 
 User.displayName = 'MessageUser';
 
-export default User;
+export default memo(User);

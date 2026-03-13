@@ -1,11 +1,11 @@
-import React from 'react';
 import { View } from 'react-native';
+import { memo } from 'react';
 
 import styles from './styles';
 import { themes } from '../../lib/constants/colors';
 import { useTheme } from '../../theme';
 
-export const Handle = React.memo(() => {
+export const Handle = memo(function Handle() {
 	'use memo';
 
 	const { theme } = useTheme();

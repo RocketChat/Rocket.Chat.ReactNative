@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import { type CompositeNavigationProp, useNavigation } from '@react-navigation/native';
-import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { FlatList, type ListRenderItem, useWindowDimensions } from 'react-native';
 import { shallowEqual, useSelector } from 'react-redux';
 
@@ -13,10 +13,10 @@ import { goRoom } from '../../../lib/methods/helpers/goRoom';
 import * as HeaderButton from '../../../containers/Header/components/HeaderButton';
 import { events, logEvent } from '../../../lib/methods/helpers/log';
 import { getInquiryQueueSelector } from '../selectors/inquiry';
-import { type IOmnichannelRoom, type IApplicationState } from '../../../definitions';
+import type { IOmnichannelRoom, IApplicationState } from '../../../definitions';
 import { MAX_SIDEBAR_WIDTH } from '../../../lib/constants/tablet';
-import { type ChatsStackParamList } from '../../../stacks/types';
-import { type MasterDetailInsideStackParamList } from '../../../stacks/MasterDetailStack/types';
+import type { ChatsStackParamList } from '../../../stacks/types';
+import type { MasterDetailInsideStackParamList } from '../../../stacks/MasterDetailStack/types';
 import { getRoomAvatar, getRoomTitle, getUidDirectMessage, isIOS, isTablet } from '../../../lib/methods/helpers';
 import { useResponsiveLayout } from '../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
@@ -29,7 +29,7 @@ const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 
 const keyExtractor = (item: IOmnichannelRoom) => item.rid;
 
-const QueueListView = React.memo(() => {
+const QueueListView = () => {
 	const navigation = useNavigation<TNavigation>();
 	const getScrollRef = useRef<FlatList<IOmnichannelRoom>>(null);
 	const { colors } = useTheme();
@@ -67,7 +67,7 @@ const QueueListView = React.memo(() => {
 		navigation.setOptions(options);
 	}, [isMasterDetail, navigation]);
 
-	const getItemLayout = (data: ArrayLike<IOmnichannelRoom> | null | undefined, index: number) => {
+	const getItemLayout = (_data: ArrayLike<IOmnichannelRoom> | null | undefined, index: number) => {
 		const rowHeight = 75 * fontScale;
 		return {
 			length: rowHeight,
@@ -125,6 +125,6 @@ const QueueListView = React.memo(() => {
 			/>
 		</SafeAreaView>
 	);
-});
+};
 
-export default QueueListView;
+export default memo(QueueListView);

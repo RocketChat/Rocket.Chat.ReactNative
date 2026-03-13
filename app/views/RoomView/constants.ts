@@ -1,4 +1,4 @@
-import { type TRoomUpdate, type TStateAttrsUpdate } from './definitions';
+import type { TRoomUpdate, TStateAttrsUpdate } from './definitions';
 
 export const stateAttrsUpdate = [
 	'joined',

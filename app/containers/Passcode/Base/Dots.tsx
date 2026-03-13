@@ -1,6 +1,6 @@
-import React from 'react';
 import { View } from 'react-native';
 import range from 'lodash/range';
+import { memo } from 'react';
 
 import styles from './styles';
 import { useTheme } from '../../../theme';
@@ -13,7 +13,7 @@ interface IPasscodeDots {
 	length: number;
 }
 
-const Dots = React.memo(({ passcode, length }: IPasscodeDots) => {
+const Dots = ({ passcode, length }: IPasscodeDots) => {
 	const { colors } = useTheme();
 
 	return (
@@ -32,7 +32,7 @@ const Dots = React.memo(({ passcode, length }: IPasscodeDots) => {
 				const marginRight = lengthSup ? 10 - (SIZE_FULL - SIZE_EMPTY) / 2 : 10;
 				const marginLeft = lengthSup ? 10 - (SIZE_FULL - SIZE_EMPTY) / 2 : 10;
 				return (
-					<View style={styles.dotsView}>
+					<View key={val} style={styles.dotsView}>
 						<View
 							style={{
 								height,
@@ -48,6 +48,6 @@ const Dots = React.memo(({ passcode, length }: IPasscodeDots) => {
 			})}
 		</View>
 	);
-});
+};
 
-export default Dots;
+export default memo(Dots);

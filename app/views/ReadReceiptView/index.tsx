@@ -1,9 +1,9 @@
-import React from 'react';
 import { FlatList, Text, View, RefreshControl } from 'react-native';
 import { dequal } from 'dequal';
 import { connect } from 'react-redux';
-import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { type RouteProp } from '@react-navigation/core';
+import type { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { RouteProp } from '@react-navigation/core';
+import { Component } from 'react';
 
 import dayjs from '../../lib/dayjs';
 import * as List from '../../containers/List';
@@ -14,8 +14,8 @@ import { type TSupportedThemes, withTheme } from '../../theme';
 import { themes } from '../../lib/constants/colors';
 import SafeAreaView from '../../containers/SafeAreaView';
 import styles from './styles';
-import { type ChatsStackParamList } from '../../stacks/types';
-import { type IApplicationState, type IReadReceipts } from '../../definitions';
+import type { ChatsStackParamList } from '../../stacks/types';
+import type { IApplicationState, IReadReceipts } from '../../definitions';
 import { getReadReceipts } from '../../lib/services/restApi';
 
 interface IReadReceiptViewState {
@@ -34,7 +34,7 @@ interface IReadReceiptViewProps extends INavigationOption {
 	theme: TSupportedThemes;
 }
 
-class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceiptViewState> {
+class ReadReceiptView extends Component<IReadReceiptViewProps, IReadReceiptViewState> {
 	private messageId: string;
 
 	static navigationOptions = ({ navigation, isMasterDetail }: INavigationOption) => {

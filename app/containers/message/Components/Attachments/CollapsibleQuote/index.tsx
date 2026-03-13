@@ -1,6 +1,6 @@
 import { transparentize } from 'color2k';
 import { dequal } from 'dequal';
-import React, { useContext, useState } from 'react';
+import { memo, useContext, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { themes } from '../../../../../lib/constants/colors';
@@ -83,8 +83,8 @@ interface IMessageReply {
 	getCustomEmoji: TGetCustomEmoji;
 }
 
-const AttText = React.memo(
-	({ text, getCustomEmoji }: IMessageAttText) => {
+const AttText = memo(
+	function AttText({ text, getCustomEmoji }: IMessageAttText) {
 		'use memo';
 
 		const { user } = useContext(MessageContext);
@@ -98,8 +98,8 @@ const AttText = React.memo(
 	(prevProps, nextProps) => prevProps.text === nextProps.text
 );
 
-const Fields = React.memo(
-	({ attachment, getCustomEmoji }: IMessageFields) => {
+const CollapsibleQuoteFields = memo(
+	function CollapsibleQuoteFields({ attachment, getCustomEmoji }: IMessageFields) {
 		'use memo';
 
 		const { theme } = useTheme();
@@ -125,8 +125,8 @@ const Fields = React.memo(
 	(prevProps, nextProps) => dequal(prevProps.attachment.fields, nextProps.attachment.fields)
 );
 
-const CollapsibleQuote = React.memo(
-	({ attachment, getCustomEmoji }: IMessageReply) => {
+const CollapsibleQuote = memo(
+	function CollapsibleQuote({ attachment, getCustomEmoji }: IMessageReply) {
 		'use memo';
 
 		const { theme } = useTheme();
@@ -178,7 +178,7 @@ const CollapsibleQuote = React.memo(
 								<Text style={[styles.title, { color: fontSecondaryInfo }]}>{attachment.title}</Text>
 							</View>
 							{!collapsed && <AttText text={attachment.text} getCustomEmoji={getCustomEmoji} />}
-							{!collapsed && <Fields attachment={attachment} getCustomEmoji={getCustomEmoji} />}
+							{!collapsed && <CollapsibleQuoteFields attachment={attachment} getCustomEmoji={getCustomEmoji} />}
 						</View>
 						<View style={styles.iconContainer}>
 							<CustomIcon name={!collapsed ? 'chevron-up' : 'chevron-down'} size={22} color={strokeMedium} />
@@ -190,8 +190,5 @@ const CollapsibleQuote = React.memo(
 	},
 	(prevProps, nextProps) => dequal(prevProps.attachment, nextProps.attachment)
 );
-
-CollapsibleQuote.displayName = 'CollapsibleQuote';
-Fields.displayName = 'CollapsibleQuoteFields';
 
 export default CollapsibleQuote;

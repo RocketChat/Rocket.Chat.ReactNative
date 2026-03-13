@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle } from 'react';
+import { forwardRef, memo, useImperativeHandle } from 'react';
 import { Alert, Share } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { connect } from 'react-redux';
@@ -16,13 +16,7 @@ import { showConfirmationAlert } from '../../lib/methods/helpers/info';
 import { type TActionSheetOptionsItem, useActionSheet, ACTION_SHEET_ANIMATION_DURATION } from '../ActionSheet';
 import Header, { HEADER_HEIGHT, type IHeader } from './Header';
 import events from '../../lib/methods/helpers/log/events';
-import {
-	type IApplicationState,
-	type IEmoji,
-	type ILoggedUser,
-	type TAnyMessageModel,
-	type TSubscriptionModel
-} from '../../definitions';
+import type { IApplicationState, IEmoji, ILoggedUser, TAnyMessageModel, TSubscriptionModel } from '../../definitions';
 import { getPermalinkMessage } from '../../lib/methods/getPermalinks';
 import { getQuoteMessageLink } from '../../lib/methods/getQuoteMessageLink';
 import { compareServerVersion, getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/methods/helpers';
@@ -69,7 +63,7 @@ export interface IMessageActions {
 	showMessageActions: (message: TAnyMessageModel) => Promise<void>;
 }
 
-const MessageActions = React.memo(
+const MessageActions = memo(
 	forwardRef<IMessageActions, IMessageActionsProps>(
 		(
 			{

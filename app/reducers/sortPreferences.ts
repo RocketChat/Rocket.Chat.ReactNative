@@ -1,6 +1,6 @@
 import { SORT_PREFERENCES } from '../actions/actionsTypes';
 import { DisplayMode, SortBy } from '../lib/constants/constantDisplayMode';
-import { type IPreferences, type TApplicationActions } from '../definitions';
+import type { IPreferences, TApplicationActions } from '../definitions';
 
 export const initialState: IPreferences = {
 	sortBy: SortBy.Activity,

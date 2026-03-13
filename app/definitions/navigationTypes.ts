@@ -1,11 +1,11 @@
-import { type NavigatorScreenParams } from '@react-navigation/core';
-import { type NativeStackNavigationOptions } from '@react-navigation/native-stack';
+import type { NavigatorScreenParams } from '@react-navigation/core';
+import type { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 
-import { type TSubscriptionModel } from './ISubscription';
-import { type TServerModel } from './IServer';
-import { type IAttachment } from './IAttachment';
-import { type MasterDetailInsideStackParamList } from '../stacks/MasterDetailStack/types';
-import { type OutsideParamList, type InsideStackParamList } from '../stacks/types';
+import type { TSubscriptionModel } from './ISubscription';
+import type { TServerModel } from './IServer';
+import type { IAttachment } from './IAttachment';
+import type { MasterDetailInsideStackParamList } from '../stacks/MasterDetailStack/types';
+import type { OutsideParamList, InsideStackParamList } from '../stacks/types';
 
 interface INavigationProps {
 	route?: any;

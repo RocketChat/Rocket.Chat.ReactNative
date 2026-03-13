@@ -1,8 +1,7 @@
-import React from 'react';
 import { Text, StyleSheet, View } from 'react-native';
 
 import I18n from '../../../../i18n';
-import { type TCertificatePicker } from '../../definitions';
+import type { TCertificatePicker } from '../../definitions';
 import Button from '../../../../containers/Button';
 import sharedStyles from '../../../Styles';
 import { useTheme } from '../../../../theme';

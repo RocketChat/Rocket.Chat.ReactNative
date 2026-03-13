@@ -1,14 +1,14 @@
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { FlatList } from 'react-native';
 
-import { type ICustomEmojis, type IEmoji } from '../../definitions/IEmoji';
+import type { ICustomEmojis, IEmoji } from '../../definitions/IEmoji';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import { PressableEmoji } from './PressableEmoji';
 import { EMOJI_BUTTON_SIZE } from './styles';
 import { emojisByCategory } from '../../lib/constants/emojis';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { useFrequentlyUsedEmoji } from '../../lib/hooks/useFrequentlyUsedEmoji';
-import { type IEmojiCategoryProps, type TEmojiCategory } from './interfaces';
+import type { IEmojiCategoryProps, TEmojiCategory } from './interfaces';
 
 const useEmojis = (category?: TEmojiCategory) => {
 	const { frequentlyUsed, loaded } = useFrequentlyUsedEmoji();
@@ -38,7 +38,7 @@ const useEmojis = (category?: TEmojiCategory) => {
 	return emojisByCategory[category];
 };
 
-const EmojiCategory = ({ parentWidth, category, emojis, onEmojiSelected }: IEmojiCategoryProps): React.ReactElement | null => {
+const EmojiCategory = ({ parentWidth, category, emojis, onEmojiSelected }: IEmojiCategoryProps) => {
 	const items = useEmojis(category);
 
 	if (!parentWidth) {

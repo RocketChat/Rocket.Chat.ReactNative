@@ -1,9 +1,9 @@
 import type Model from '@nozbe/watermelondb/Model';
-import { type Root } from '@rocket.chat/message-parser';
+import type { Root } from '@rocket.chat/message-parser';
 
-import { type IAttachment } from './IAttachment';
-import { type IMessage, type IUserChannel, type IUserMention, type IUserMessage } from './IMessage';
-import { type IUrl } from './IUrl';
+import type { IAttachment } from './IAttachment';
+import type { IMessage, IUserChannel, IUserMention, IUserMessage } from './IMessage';
+import type { IUrl } from './IUrl';
 
 interface IFileThread {
 	_id: string;

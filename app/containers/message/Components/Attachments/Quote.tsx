@@ -1,11 +1,11 @@
-import React, { useContext } from 'react';
+import { type FC, memo, useContext } from 'react';
 import { dequal } from 'dequal';
 import { View } from 'react-native';
 
 import { Reply } from './components';
 import MessageContext from '../../Context';
-import { type IMessageAttachments } from '../../interfaces';
-import { type IAttachment } from '../../../../definitions';
+import type { IMessageAttachments } from '../../interfaces';
+import type { IAttachment } from '../../../../definitions';
 import { getMessageFromAttachment } from '../../utils';
 
 const isQuoteAttachment = (file?: IAttachment): boolean => {
@@ -29,7 +29,7 @@ const isQuoteAttachment = (file?: IAttachment): boolean => {
 	return true;
 };
 
-const Quote: React.FC<IMessageAttachments> = React.memo(
+const Quote: FC<IMessageAttachments> = memo(
 	({ attachments, timeFormat, showAttachment, getCustomEmoji }: IMessageAttachments) => {
 		'use memo';
 

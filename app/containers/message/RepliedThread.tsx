@@ -1,11 +1,11 @@
-import React, { memo, useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { View } from 'react-native';
 
 import { CustomIcon } from '../CustomIcon';
 import styles from './styles';
 import I18n from '../../i18n';
 import { MarkdownPreview } from '../markdown';
-import { type IMessageRepliedThread } from './interfaces';
+import type { IMessageRepliedThread } from './interfaces';
 import { useTheme } from '../../theme';
 import { AvatarContainer } from './MessageAvatar';
 

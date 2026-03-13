@@ -1,5 +1,5 @@
-import React from 'react';
 import { Keyboard } from 'react-native';
+import { Component } from 'react';
 
 import Message from './Message';
 import MessageContext from './Context';
@@ -7,8 +7,8 @@ import { debounce } from '../../lib/methods/helpers';
 import { getMessageTranslation } from './utils';
 import { type TSupportedThemes, withTheme } from '../../theme';
 import openLink from '../../lib/methods/helpers/openLink';
-import { type IAttachment, type TAnyMessageModel, type TGetCustomEmoji } from '../../definitions';
-import { type IRoomInfoParam } from '../../views/SearchMessagesView';
+import type { IAttachment, TAnyMessageModel, TGetCustomEmoji } from '../../definitions';
+import type { IRoomInfoParam } from '../../views/SearchMessagesView';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/constants/keys';
 import { messagesStatus } from '../../lib/constants/messagesStatus';
 import MessageSeparator from '../MessageSeparator';
@@ -69,7 +69,7 @@ interface IMessageContainerState {
 	isManualUnignored: boolean;
 }
 
-class MessageContainer extends React.Component<IMessageContainerProps, IMessageContainerState> {
+class MessageContainer extends Component<IMessageContainerProps, IMessageContainerState> {
 	static defaultProps = {
 		getCustomEmoji: () => null,
 		onLongPress: () => {},

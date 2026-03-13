@@ -1,10 +1,9 @@
-import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../lib/constants/colors';
-import { type IInput } from './interfaces';
+import type { IInput } from './interfaces';
 
 const styles = StyleSheet.create({
 	container: {

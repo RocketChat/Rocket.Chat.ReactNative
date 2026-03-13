@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { shallowEqual } from 'react-redux';
 import type { Subscription } from 'rxjs';
 
-import { type TSubscriptionModel } from '../../../definitions';
+import type { TSubscriptionModel } from '../../../definitions';
 import { SortBy } from '../../../lib/constants/constantDisplayMode';
 import database from '../../../lib/database';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';

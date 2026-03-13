@@ -1,5 +1,5 @@
-import React from 'react';
 import { type StyleProp, StyleSheet, Text, useWindowDimensions, View, type ViewStyle } from 'react-native';
+import { memo } from 'react';
 
 import sharedStyles from '../../views/Styles';
 import { getUnreadStyle } from './getUnreadStyle';
@@ -52,78 +52,76 @@ function getTestId(userMentions: number | undefined, groupMentions: number | und
 	return '';
 }
 
-const UnreadBadge = React.memo(
-	({
+const UnreadBadge = ({
+	unread,
+	userMentions,
+	groupMentions,
+	style,
+	tunread,
+	tunreadUser,
+	tunreadGroup,
+	small,
+	hideMentionStatus,
+	hideUnreadStatus
+}: IUnreadBadge) => {
+	const { theme } = useTheme();
+	const { fontScale } = useWindowDimensions();
+
+	if ((!unread || unread <= 0) && !tunread?.length) {
+		return null;
+	}
+
+	if (hideUnreadStatus && hideMentionStatus) {
+		return null;
+	}
+
+	// Return null when hideUnreadStatus is true and isn't a direct mention
+	if (hideUnreadStatus && !((userMentions && userMentions > 0) || tunreadUser?.length)) {
+		return null;
+	}
+
+	const { backgroundColor, color } = getUnreadStyle({
+		theme,
 		unread,
 		userMentions,
 		groupMentions,
-		style,
 		tunread,
 		tunreadUser,
-		tunreadGroup,
-		small,
-		hideMentionStatus,
-		hideUnreadStatus
-	}: IUnreadBadge) => {
-		const { theme } = useTheme();
-		const { fontScale } = useWindowDimensions();
+		tunreadGroup
+	});
 
-		if ((!unread || unread <= 0) && !tunread?.length) {
-			return null;
-		}
-
-		if (hideUnreadStatus && hideMentionStatus) {
-			return null;
-		}
-
-		// Return null when hideUnreadStatus is true and isn't a direct mention
-		if (hideUnreadStatus && !((userMentions && userMentions > 0) || tunreadUser?.length)) {
-			return null;
-		}
-
-		const { backgroundColor, color } = getUnreadStyle({
-			theme,
-			unread,
-			userMentions,
-			groupMentions,
-			tunread,
-			tunreadUser,
-			tunreadGroup
-		});
-
-		if (!backgroundColor) {
-			return null;
-		}
-		let text: any = unread || tunread?.length;
-		if (small && text >= 100) {
-			text = '+99';
-		}
-		if (!small && text >= 1000) {
-			text = '+999';
-		}
-		text = text.toString();
-
-		let minWidth = 21;
-		if (small) {
-			minWidth = 11 + text.length * 5;
-		}
-		const borderRadius = 10.5 * fontScale;
-		const testId = getTestId(userMentions, groupMentions, text);
-
-		return (
-			<View
-				style={[
-					small ? styles.unreadNumberContainerSmall : styles.unreadNumberContainerNormal,
-					{ backgroundColor, minWidth: minWidth * fontScale, borderRadius },
-					style
-				]}
-				testID={testId}>
-				<Text style={[styles.unreadText, small && styles.textSmall, { color }]} numberOfLines={1}>
-					{text}
-				</Text>
-			</View>
-		);
+	if (!backgroundColor) {
+		return null;
 	}
-);
+	let text: any = unread || tunread?.length;
+	if (small && text >= 100) {
+		text = '+99';
+	}
+	if (!small && text >= 1000) {
+		text = '+999';
+	}
+	text = text.toString();
 
-export default UnreadBadge;
+	let minWidth = 21;
+	if (small) {
+		minWidth = 11 + text.length * 5;
+	}
+	const borderRadius = 10.5 * fontScale;
+	const testId = getTestId(userMentions, groupMentions, text);
+
+	return (
+		<View
+			style={[
+				small ? styles.unreadNumberContainerSmall : styles.unreadNumberContainerNormal,
+				{ backgroundColor, minWidth: minWidth * fontScale, borderRadius },
+				style
+			]}
+			testID={testId}>
+			<Text style={[styles.unreadText, small && styles.textSmall, { color }]} numberOfLines={1}>
+				{text}
+			</Text>
+		</View>
+	);
+};
+
+export default memo(UnreadBadge);

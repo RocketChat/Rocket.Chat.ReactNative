@@ -1,4 +1,4 @@
-import { type TActionsRoom } from '../actions/room';
+import type { TActionsRoom } from '../actions/room';
 import { ROOM } from '../actions/actionsTypes';
 
 export type IRoomRecord = string[];

@@ -1,4 +1,4 @@
-import React, { type ElementType, memo, useEffect } from 'react';
+import { type ElementType, memo, useEffect } from 'react';
 import { Easing, Notifier, NotifierRoot } from 'react-native-notifier';
 import { useDispatch } from 'react-redux';
 import { AccessibilityInfo } from 'react-native';
@@ -13,7 +13,7 @@ import I18n from '../../i18n';
 
 export const INAPP_NOTIFICATION_EMITTER = 'NotificationInApp';
 
-const InAppNotification = memo(() => {
+const InAppNotification = () => {
 	const { appState, subscribedRoom } = useAppSelector(state => ({
 		subscribedRoom: state.room.subscribedRoom,
 		appState: state.app.ready && state.app.foreground ? 'foreground' : 'background'
@@ -74,6 +74,6 @@ const InAppNotification = memo(() => {
 	}, [subscribedRoom, appState]);
 
 	return <NotifierRoot />;
-});
+};
 
-export default InAppNotification;
+export default memo(InAppNotification);

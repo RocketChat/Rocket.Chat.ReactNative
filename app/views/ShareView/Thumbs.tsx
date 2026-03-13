@@ -1,14 +1,14 @@
-import React from 'react';
 import { FlatList, Image, StyleSheet, View } from 'react-native';
 import { RectButton, TouchableNativeFeedback, TouchableOpacity } from 'react-native-gesture-handler';
+import { memo } from 'react';
 
 import { BUTTON_HIT_SLOP } from '../../containers/message/utils';
 import { themes } from '../../lib/constants/colors';
 import { CustomIcon } from '../../containers/CustomIcon';
 import { isIOS } from '../../lib/methods/helpers';
 import { THUMBS_HEIGHT } from './constants';
-import { type TSupportedThemes } from '../../theme';
-import { type IShareAttachment } from '../../definitions';
+import type { TSupportedThemes } from '../../theme';
+import type { IShareAttachment } from '../../definitions';
 
 const THUMB_SIZE = 64;
 
@@ -70,7 +70,7 @@ interface IThumbs extends Omit<IThumb, 'item'> {
 	attachments: IShareAttachment[];
 }
 
-const ThumbContent = React.memo(({ item, theme }: IThumbContent) => {
+const ThumbContent = memo(function ThumbContent({ item, theme }: IThumbContent) {
 	const type = item?.mime;
 
 	if (type?.match(/image/)) {

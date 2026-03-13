@@ -1,7 +1,6 @@
-import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { type ILivechatDepartment } from '../../../definitions/ILivechatDepartment';
+import type { ILivechatDepartment } from '../../../definitions/ILivechatDepartment';
 import { useTheme } from '../../../theme';
 import Touch from '../../../containers/Touch';
 import { CustomIcon } from '../../../containers/CustomIcon';
@@ -30,7 +29,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const DepartmentItemFilter = ({ currentDepartment, value, onPress }: IDepartmentItemFilter): JSX.Element => {
+const DepartmentItemFilter = ({ currentDepartment, value, onPress }: IDepartmentItemFilter) => {
 	const { colors } = useTheme();
 	const iconName = currentDepartment?._id === value?._id ? 'check' : null;
 

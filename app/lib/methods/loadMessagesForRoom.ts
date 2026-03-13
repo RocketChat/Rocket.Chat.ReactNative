@@ -1,6 +1,6 @@
 import dayjs from '../dayjs';
 import { MessageTypeLoad } from '../constants/messageTypeLoad';
-import { type IMessage, type TMessageModel } from '../../definitions';
+import type { IMessage, TMessageModel } from '../../definitions';
 import log from './helpers/log';
 import { getMessageById } from '../database/services/Message';
 import { type RoomTypes, roomTypeToApiType } from './roomTypeToApiType';

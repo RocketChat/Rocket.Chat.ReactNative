@@ -1,11 +1,11 @@
-import React from 'react';
 import { Text } from 'react-native';
+import { memo } from 'react';
 
 import styles from './styles';
-import { type ITitleProps } from './interfaces';
+import type { ITitleProps } from './interfaces';
 import { useTheme } from '../../theme';
 
-const Title = React.memo(({ name, hideUnreadStatus, alert }: ITitleProps) => {
+const Title = ({ name, hideUnreadStatus, alert }: ITitleProps) => {
 	const { colors } = useTheme();
 	return (
 		<Text
@@ -15,6 +15,6 @@ const Title = React.memo(({ name, hideUnreadStatus, alert }: ITitleProps) => {
 			{name}
 		</Text>
 	);
-});
+};
 
-export default Title;
+export default memo(Title);

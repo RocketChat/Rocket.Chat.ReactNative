@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Provider } from 'react-redux';
 import { render, fireEvent } from '@testing-library/react-native';
 
@@ -6,7 +6,7 @@ import Reactions from './Reactions';
 import MessageContext from './Context';
 import { setUser } from '../../actions/login';
 import { mockedStore } from '../../reducers/mockedStore';
-import { type IReaction } from '../../definitions';
+import type { IReaction } from '../../definitions';
 
 const initialMockedStoreState = () => {
 	mockedStore.dispatch(

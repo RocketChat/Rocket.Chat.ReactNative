@@ -1,4 +1,4 @@
-import type React from 'react';
+import type { ReactNode } from 'react';
 
 export interface IProfileParams {
 	realname?: string;
@@ -13,7 +13,7 @@ export interface IProfileParams {
 
 export interface IAvatarButton {
 	key: string;
-	child: React.ReactNode;
+	child: ReactNode;
 	onPress: () => void;
 	disabled: boolean;
 }

@@ -1,6 +1,6 @@
 import { createContext, memo, type ReactElement } from 'react';
 
-import { type IRoomItem } from '../../../containers/RoomItem/interfaces';
+import type { IRoomItem } from '../../../containers/RoomItem/interfaces';
 import { useSearch } from '../hooks/useSearch';
 
 export const RoomsSearchContext = createContext<{
