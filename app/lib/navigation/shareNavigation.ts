@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { type NavigationContainerRef } from '@react-navigation/native';
 
-// TODO: we need change this any to the correctly types from our stacks
-const navigationRef = React.createRef<NavigationContainerRef<any>>();
-const routeNameRef: React.MutableRefObject<NavigationContainerRef<any> | null> = React.createRef();
+import { type ShareInsideStackParamList } from '../../definitions/navigationTypes';
+
+const navigationRef = React.createRef<NavigationContainerRef<ShareInsideStackParamList>>();
+const routeNameRef: React.MutableRefObject<NavigationContainerRef<ShareInsideStackParamList> | null> = React.createRef();
 
 export default {
 	navigationRef,
