@@ -17,6 +17,7 @@ Clone repository and install dependencies:
 ```sh
 git clone git@github.com:RocketChat/Rocket.Chat.ReactNative.git
 cd Rocket.Chat.ReactNative
+bundle install
 yarn
 ```
 
