@@ -1,5 +1,6 @@
 import type { SheetDetent } from '@lodev09/react-native-true-sheet';
 import { useMemo } from 'react';
+import { ToastAndroid } from 'react-native';
 
 const ACTION_SHEET_MIN_HEIGHT_FRACTION = 0.35;
 const ACTION_SHEET_MAX_HEIGHT_FRACTION = 0.75;
@@ -32,6 +33,10 @@ type UseActionSheetDetentsParams = {
 	contentHeight: number;
 };
 
+function heightToDetent(height: number, screenHeight: number): number {
+	return Math.max(0, height / screenHeight);
+}
+
 export function useActionSheetDetents({
 	windowHeight,
 	bottomInset,
@@ -41,27 +46,37 @@ export function useActionSheetDetents({
 	headerHeight = 0,
 	hasCancel = false,
 	contentHeight
-}: UseActionSheetDetentsParams): { detents: SheetDetent[]; maxHeight: number } {
+}: UseActionSheetDetentsParams): { detents: SheetDetent[]; maxHeight: number, scrollEnabled: boolean } {
 	return useMemo(() => {
 		const maxHeight = windowHeight * ACTION_SHEET_MAX_HEIGHT_FRACTION;
 		const hasOptions = optionsLength > 0;
 
 		const maxSnap = hasOptions
 			? Math.min(
-					(itemHeight + 0.5) * optionsLength + HANDLE_HEIGHT + headerHeight + bottomInset + (hasCancel ? CANCEL_HEIGHT : 0),
-					maxHeight
-			  )
+				(itemHeight + 0.5) * optionsLength + HANDLE_HEIGHT + headerHeight + bottomInset + (hasCancel ? CANCEL_HEIGHT : 0),
+				maxHeight
+			)
 			: 0;
 
 		let detents: SheetDetent[];
+		let scrollEnabled = false;
+
 		if (snaps?.length) {
 			detents = normalizeSnapsToDetents(snaps);
 		} else if (hasOptions) {
 			if (maxSnap > windowHeight * 0.6) {
 				detents = [0.5, ACTION_SHEET_MAX_HEIGHT_FRACTION];
+				ToastAndroid.show('Scrollable', ToastAndroid.SHORT);
+				scrollEnabled = true;
 			} else {
-				const fraction = Math.max(0.25, Math.min(maxSnap / windowHeight, ACTION_SHEET_MAX_HEIGHT_FRACTION));
-				detents = [fraction];
+				const measuredHeight =
+					(optionsLength * itemHeight) +
+					HANDLE_HEIGHT +
+					headerHeight +
+					(hasCancel ? CANCEL_HEIGHT : bottomInset);
+
+				scrollEnabled = false
+				detents = [heightToDetent(Math.round(measuredHeight), windowHeight)];
 			}
 		} else if (contentHeight > 0) {
 			const contentDetent = (contentHeight + bottomInset) / windowHeight;
@@ -71,6 +86,6 @@ export function useActionSheetDetents({
 			detents = [ACTION_SHEET_MIN_HEIGHT_FRACTION];
 		}
 
-		return { detents, maxHeight };
+		return { detents, maxHeight, scrollEnabled };
 	}, [bottomInset, contentHeight, hasCancel, headerHeight, itemHeight, optionsLength, snaps, windowHeight]);
 }

@@ -19,10 +19,11 @@ interface IBottomSheetContentProps {
 	onLayout: ViewProps['onLayout'];
 	fullContainer?: boolean;
 	contentMinHeight?: number;
+	scrollEnabled?: boolean;
 }
 
 const BottomSheetContent = React.memo(
-	({ options, hasCancel, hide, children, onLayout, fullContainer, contentMinHeight }: IBottomSheetContentProps) => {
+	({ options, hasCancel, hide, children, onLayout, fullContainer, contentMinHeight, scrollEnabled }: IBottomSheetContentProps) => {
 		'use memo';
 
 		const { colors } = useTheme();
@@ -61,7 +62,8 @@ const BottomSheetContent = React.memo(
 					ListHeaderComponent={List.Separator}
 					ListFooterComponent={renderFooter}
 					onLayout={onLayout}
-					nestedScrollEnabled={isAndroid}
+					scrollEnabled={scrollEnabled}
+					nestedScrollEnabled={scrollEnabled && isAndroid}
 				/>
 			);
 		}
