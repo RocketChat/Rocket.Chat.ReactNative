@@ -101,6 +101,12 @@ export const MentionsWithFormatting = () => (
 			username='rocket.cat'
 		/>
 		<Markdown
+			msg='Italic: _ @rocket.cat _ _ @name1 _ _ @all _ _ @here _ _ #test-channel _'
+			mentions={mentions}
+			channels={channels}
+			username='rocket.cat'
+		/>
+		<Markdown
 			msg='Strikethrough: ~@rocket.cat~ ~@name1~ ~@all~ ~@here~ ~#test-channel~'
 			mentions={mentions}
 			channels={channels}
