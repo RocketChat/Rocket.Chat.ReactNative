@@ -57,7 +57,6 @@ export default StyleSheet.create({
 		...Platform.select({
 			ios: {},
 			android: {
-				fontFamily: 'Inter-Bold',
 				fontWeight: '700'
 			}
 		})
