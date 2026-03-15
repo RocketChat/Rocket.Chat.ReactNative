@@ -677,9 +677,21 @@ export const getRoomRoles = (
 	// RC 0.65.0
 	sdk.get(`${roomTypeToApiType(type)}.roles`, { roomId });
 
-export const getAvatarSuggestion = (): Promise<{ [service: string]: IAvatarSuggestion }> =>
+export const getAvatarSuggestion = async (): Promise<{ [service: string]: IAvatarSuggestion }> => {
+	const serverVersion = reduxStore.getState().server.version;
+
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.4.0')) {
+		// RC 5.4.0
+		const result = await sdk.get('users.getAvatarSuggestion');
+		if (result.success && 'suggestions' in result) {
+			return result.suggestions;
+		}
+		return {};
+	}
+
 	// RC 0.51.0
-	sdk.methodCallWrapper('getAvatarSuggestion');
+	return sdk.methodCallWrapper('getAvatarSuggestion');
+};
 
 export const resetAvatar = (userId: string) =>
 	// RC 0.55.0
@@ -950,14 +962,14 @@ export const addUsersToRoom = (rid: string): Promise<boolean> => {
 	return sdk.methodCallWrapper('addUsersToRoom', { rid, users });
 };
 
-export const emitTyping = (room: IRoom, typing = true) => {
+export const emitTyping = (room: IRoom, typing = true, args: { tmid?: string } = {}) => {
 	const { login, settings, server } = reduxStore.getState();
 	const { UI_Use_Real_Name } = settings;
 	const { version: serverVersion } = server;
 	const { user } = login;
 	const name = UI_Use_Real_Name ? user.name : user.username;
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '4.0.0')) {
-		return sdk.methodCall('stream-notify-room', `${room}/user-activity`, name, typing ? ['user-typing'] : []);
+		return sdk.methodCall('stream-notify-room', `${room}/user-activity`, name, typing ? ['user-typing'] : [], args);
 	}
 	return sdk.methodCall('stream-notify-room', `${room}/typing`, name, typing);
 };
