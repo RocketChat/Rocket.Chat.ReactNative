@@ -32,7 +32,7 @@ const BottomSheetContent = React.memo(
 		const height = 48 * fontScale;
 		const paddingBottom = isAndroid ? bottom + height : bottom;
 		const minHeightStyle = isAndroid || !contentMinHeight ? undefined : { minHeight: contentMinHeight };
- 
+
 		const renderFooter = () =>
 			hasCancel ? (
 				<Touch
