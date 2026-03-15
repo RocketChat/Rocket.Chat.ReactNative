@@ -3,7 +3,6 @@ import * as Haptics from 'expo-haptics';
 import React, { forwardRef, isValidElement, useImperativeHandle, useRef, useState } from 'react';
 import { Keyboard, type LayoutChangeEvent, Platform, useWindowDimensions } from 'react-native';
 import { TrueSheet } from '@lodev09/react-native-true-sheet';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { useTheme } from '../../theme';
@@ -97,7 +96,7 @@ const ActionSheet = React.memo(
 
 		const hasOptions = !!data?.options?.length;
 		const hasSnaps = !!effectiveSnaps?.length;
-		const disableContentPanning = data?.enableContentPanningGesture === false;
+		const disableContentPanning = data?.enableContentPanningGesture === false || !scrollEnabled;
 		const isScrollable = hasOptions || (hasSnaps && !disableContentPanning);
 
 		const contentMinHeight =

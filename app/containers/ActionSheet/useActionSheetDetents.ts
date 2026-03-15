@@ -1,11 +1,10 @@
 import type { SheetDetent } from '@lodev09/react-native-true-sheet';
 import { useMemo } from 'react';
-import { ToastAndroid } from 'react-native';
 
 const ACTION_SHEET_MIN_HEIGHT_FRACTION = 0.35;
 const ACTION_SHEET_MAX_HEIGHT_FRACTION = 0.75;
 export const HANDLE_HEIGHT = 28;
-const CANCEL_HEIGHT = 64;
+const CANCEL_HEIGHT = 32;
 
 function normalizeSnapsToDetents(snaps: (string | number)[]): number[] {
 	return snaps
@@ -66,7 +65,6 @@ export function useActionSheetDetents({
 		} else if (hasOptions) {
 			if (maxSnap > windowHeight * 0.6) {
 				detents = [0.5, ACTION_SHEET_MAX_HEIGHT_FRACTION];
-				ToastAndroid.show('Scrollable', ToastAndroid.SHORT);
 				scrollEnabled = true;
 			} else {
 				const measuredHeight =
