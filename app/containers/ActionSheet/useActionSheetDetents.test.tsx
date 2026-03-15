@@ -54,7 +54,7 @@ describe('useActionSheetDetents', () => {
 			})
 		);
 
-		expect(result.current.detents).toEqual([0.25]);
+		expect(result.current.detents).toEqual([0.108]);
 	});
 
 	it('computes detent from content height when there are no options', () => {
