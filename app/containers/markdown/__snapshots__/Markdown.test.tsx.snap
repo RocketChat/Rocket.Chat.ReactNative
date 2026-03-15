@@ -3634,9 +3634,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   {
                     "color": "#9B1325",
                   },
-                  {
-                    "fontWeight": "bold",
-                  },
                 ]
               }
             >
@@ -3684,9 +3681,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   {
                     "color": "#8E6300",
                   },
-                  {
-                    "fontWeight": "bold",
-                  },
                 ]
               }
             >
@@ -3732,9 +3726,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   },
                   {
                     "color": "#974809",
-                  },
-                  {
-                    "fontWeight": "bold",
                   },
                 ]
               }
@@ -3782,9 +3773,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   {
                     "color": "#974809",
                   },
-                  {
-                    "fontWeight": "bold",
-                  },
                 ]
               }
             >
@@ -3831,9 +3819,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   },
                   {
                     "color": "#095AD2",
-                  },
-                  {
-                    "fontWeight": "bold",
                   },
                 ]
               }
@@ -3917,9 +3902,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   {
                     "color": "#9B1325",
                   },
-                  {
-                    "textDecorationLine": "line-through",
-                  },
                 ]
               }
             >
@@ -3964,9 +3946,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   {
                     "color": "#8E6300",
                   },
-                  {
-                    "textDecorationLine": "line-through",
-                  },
                 ]
               }
             >
@@ -4009,9 +3988,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   },
                   {
                     "color": "#974809",
-                  },
-                  {
-                    "textDecorationLine": "line-through",
                   },
                 ]
               }
@@ -4056,9 +4032,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   {
                     "color": "#974809",
                   },
-                  {
-                    "textDecorationLine": "line-through",
-                  },
                 ]
               }
             >
@@ -4102,9 +4075,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                   },
                   {
                     "color": "#095AD2",
-                  },
-                  {
-                    "textDecorationLine": "line-through",
                   },
                 ]
               }
@@ -4205,9 +4175,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                       {
                         "color": "#9B1325",
                       },
-                      {
-                        "fontWeight": "bold",
-                      },
                     ]
                   }
                 >
@@ -4271,9 +4238,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                       {
                         "color": "#8E6300",
                       },
-                      {
-                        "fontWeight": "bold",
-                      },
                     ]
                   }
                 >
@@ -4335,9 +4299,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                       },
                       {
                         "color": "#974809",
-                      },
-                      {
-                        "fontWeight": "bold",
                       },
                     ]
                   }
@@ -4401,9 +4362,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                       {
                         "color": "#974809",
                       },
-                      {
-                        "fontWeight": "bold",
-                      },
                     ]
                   }
                 >
@@ -4466,9 +4424,6 @@ exports[`Story Snapshots: MentionsWithFormatting should match snapshot 1`] = `
                       },
                       {
                         "color": "#095AD2",
-                      },
-                      {
-                        "fontWeight": "bold",
                       },
                     ]
                   }
