@@ -35,6 +35,10 @@ const ActionSheet = React.memo(
 		};
 
 		const hide = () => {
+			if (presentTimerRef.current) {
+				clearTimeout(presentTimerRef.current);
+				presentTimerRef.current = null;
+			}
 			onCloseSnapshotRef.current = data?.onClose;
 			sheetRef.current?.dismiss();
 			Keyboard.dismiss();
@@ -42,6 +46,11 @@ const ActionSheet = React.memo(
 		};
 
 		const show = (options: TActionSheetOptions) => {
+			// Clear any existing present timer to prevent stale presents
+			if (presentTimerRef.current) {
+				clearTimeout(presentTimerRef.current);
+				presentTimerRef.current = null;
+			}
 			setData(options);
 			setIsVisible(true);
 			Keyboard.dismiss();
