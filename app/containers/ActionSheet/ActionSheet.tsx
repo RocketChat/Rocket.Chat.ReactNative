@@ -26,6 +26,8 @@ const ActionSheet = React.memo(
 		const presentTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 		const onCloseSnapshotRef = useRef<TActionSheetOptions['onClose']>(undefined);
 
+		// TrueSheet detects the bottom inset for Android 16 and iOS
+		// To avoid content hiding behind navigation bar on older Android versions
 		const isNewAndroid = isAndroid && Number(Platform.Version) >= 36;
 		const bottom = isIOS || isNewAndroid ? 0 : windowHeight * 0.03;
 		const itemHeight = 48 * fontScale;
