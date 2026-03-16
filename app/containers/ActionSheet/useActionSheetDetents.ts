@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 
 const ACTION_SHEET_MIN_HEIGHT_FRACTION = 0.35;
 const ACTION_SHEET_MAX_HEIGHT_FRACTION = 0.75;
+const SCROLL_ENABLED_THRESHOLD = 0.6;
 export const HANDLE_HEIGHT = 28;
 const CANCEL_HEIGHT = 32;
 
@@ -63,12 +64,12 @@ export function useActionSheetDetents({
 		if (snaps?.length) {
 			detents = normalizeSnapsToDetents(snaps);
 		} else if (hasOptions) {
-			if (maxSnap > windowHeight * 0.6) {
+			if (maxSnap > windowHeight * SCROLL_ENABLED_THRESHOLD) {
 				detents = [0.5, ACTION_SHEET_MAX_HEIGHT_FRACTION];
 				scrollEnabled = true;
 			} else {
 				const measuredHeight =
-					optionsLength * itemHeight + HANDLE_HEIGHT + headerHeight + (hasCancel ? CANCEL_HEIGHT : bottomInset);
+					optionsLength * itemHeight + HANDLE_HEIGHT + headerHeight + bottomInset + (hasCancel ? CANCEL_HEIGHT : 0);
 
 				scrollEnabled = false;
 				detents = [heightToDetent(Math.round(measuredHeight), windowHeight)];

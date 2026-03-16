@@ -74,7 +74,7 @@ const ActionSheet = React.memo(
 
 		const onDidDismiss = () => {
 			setIsVisible(false);
-			setContentHeight(0);
+			// Keep contentHeight to avoid flickering on next show
 			const snapshotOnClose = onCloseSnapshotRef.current;
 			onCloseSnapshotRef.current = undefined;
 			snapshotOnClose?.();
