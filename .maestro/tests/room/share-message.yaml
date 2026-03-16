@@ -74,10 +74,7 @@ tags:
     timeout: 60000
 - tapOn:
     id: multi-select-item-${output.otherUser.username.toLowerCase()}
-- swipe:
-    from:
-      id: 'action-sheet-handle'
-    direction: DOWN
+- tapOn: Person or channel
 - extendedWaitUntil:
     notVisible:
       id: 'multi-select-search'
