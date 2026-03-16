@@ -19,10 +19,10 @@ describe('Serialize ASCII url on ios', () => {
 describe('Serialize ASCII url on android', () => {
 	jest.mock('react-native', () => ({ Platform: { OS: 'android' } }));
 	// By default android converts ASCII addresses
-	// test('ASCII url', () => {
-	// 	const result = serializeAsciiUrl(ASCIIUrl);
-	// 	expect(result).toBe('filename.png');
-	// });
+	test('ASCII url', () => {
+		const result = serializeAsciiUrl(ASCIIUrl);
+		expect(result).toBe(ASCIIUrlSerialized);
+	});
 	test('Non ASCII url', () => {
 		const result = serializeAsciiUrl(NonASCIIUrl);
 		expect(result).toBe(NonASCIIUrl);
