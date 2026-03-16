@@ -109,7 +109,6 @@ const DeleteAccountActionSheetContent = (): React.ReactElement => {
 				autoComplete='password'
 				testID='profile-view-delete-account-sheet-input'
 				secureTextEntry
-				bottomSheet={isIOS}
 				containerStyle={styles.inputContainer}
 				error={errors.password?.message}
 			/>

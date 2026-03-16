@@ -90,7 +90,6 @@ export interface IRCTextInputProps extends TextInputProps {
 	iconLeft?: TIconsName;
 	iconRight?: TIconsName;
 	left?: JSX.Element;
-	bottomSheet?: boolean;
 	onClearInput?: () => void;
 }
 
@@ -118,7 +117,6 @@ export const FormTextInput = ({
 	left,
 	testID,
 	secureTextEntry,
-	bottomSheet,
 	placeholder,
 	accessibilityLabel,
 	showErrorMessage = true,
