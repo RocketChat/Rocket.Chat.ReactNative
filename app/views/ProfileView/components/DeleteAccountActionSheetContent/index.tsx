@@ -11,7 +11,6 @@ import ConfirmDeleteAccountContent from './ConfirmDeleteAccountContent';
 import { deleteOwnAccount } from '../../../../lib/services/restApi';
 import { deleteAccount } from '../../../../actions/login';
 import { CustomIcon } from '../../../../containers/CustomIcon';
-import { isIOS } from '../../../../lib/methods/helpers';
 import { useTheme } from '../../../../theme';
 import { ControlledFormTextInput } from '../../../../containers/TextInput';
 import { useActionSheet } from '../../../../containers/ActionSheet/Provider';

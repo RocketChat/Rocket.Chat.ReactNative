@@ -3,7 +3,6 @@ import { StyleSheet, Text, type TextInputProps, View } from 'react-native';
 
 import { CustomIcon, type TIconsName } from '../../CustomIcon';
 import i18n from '../../../i18n';
-import { isIOS } from '../../../lib/methods/helpers';
 import { useTheme } from '../../../theme';
 import sharedStyles from '../../../views/Styles';
 import Button from '../../Button';
