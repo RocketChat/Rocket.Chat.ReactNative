@@ -23,6 +23,8 @@ tags:
 - assertVisible: 'Dialogs. Require manual dismissal. Unchecked'
 - tapOn:
     id: 'action-sheet-handle'
+- waitForAnimationToEnd:
+    timeout: 5000
 - tapOn: 'Menu'
 - tapOn: 'Edit status'
 - tapOn:
