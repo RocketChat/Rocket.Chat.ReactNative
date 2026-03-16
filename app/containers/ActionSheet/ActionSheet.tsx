@@ -131,19 +131,19 @@ const ActionSheet = React.memo(
 					draggable={!disableContentPanning}
 					header={renderHeader()}
 					scrollable={isScrollable}
-					style={[styles.container]}
+					style={styles.container}
 					onDidDismiss={onDidDismiss}>
 					<GestureHandlerRootView style={styles.contentContainer}>
 						<BottomSheetContent
 							options={data?.options}
 							hide={hide}
-							children={data?.children}
 							hasCancel={data?.hasCancel}
 							onLayout={handleContentLayout}
 							fullContainer={data.fullContainer}
 							contentMinHeight={isIOS ? contentMinHeight : undefined}
-							scrollEnabled={scrollEnabled}
-						/>
+							scrollEnabled={scrollEnabled}>
+							{data?.children}
+						</BottomSheetContent>
 					</GestureHandlerRootView>
 				</TrueSheet>
 			</>
