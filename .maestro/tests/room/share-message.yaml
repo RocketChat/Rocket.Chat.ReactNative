@@ -74,7 +74,8 @@ tags:
     timeout: 60000
 - tapOn:
     id: multi-select-item-${output.otherUser.username.toLowerCase()}
-- tapOn: Person or channel
+# this is to hide bottom sheet and keyboard together
+- tapOn: '.*Person or channel.*'
 - extendedWaitUntil:
     notVisible:
       id: 'multi-select-search'
