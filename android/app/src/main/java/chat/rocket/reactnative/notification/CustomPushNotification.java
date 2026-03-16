@@ -112,6 +112,11 @@ public class CustomPushNotification {
             return; // Exit early, notification will be processed in callback
         }
 
+        if (receivedEjson != null && receivedEjson.notificationType != null && receivedEjson.notificationType.equals("voip")) {
+            Log.d(TAG, "Notification is a voip notification, ignoring");
+            return;
+        }
+
         // For non-message-id-only notifications, process immediately
         processNotification();
     }
