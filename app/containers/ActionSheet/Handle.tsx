@@ -7,6 +7,8 @@ import { themes } from '../../lib/constants/colors';
 import { useTheme } from '../../theme';
 
 export const Handle = ({ onPress }: { onPress: () => void }) => {
+	'use memo';
+
 	const { theme } = useTheme();
 
 	// We should use Pressable from gesture-handler to avoid issues with the keyboard
