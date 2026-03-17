@@ -80,7 +80,7 @@ export function useActionSheetDetents({
 				ACTION_SHEET_MAX_HEIGHT_FRACTION,
 				Math.max(ACTION_SHEET_MIN_HEIGHT_FRACTION, rawContentDetent)
 			);
-		
+
 			detents = [contentDetent];
 		} else {
 			detents = [ACTION_SHEET_MIN_HEIGHT_FRACTION];
