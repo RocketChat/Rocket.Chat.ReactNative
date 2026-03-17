@@ -106,7 +106,7 @@ const ActionSheet = React.memo(
 
 		const hasOptions = !!data?.options?.length;
 		const hasSnaps = !!effectiveSnaps?.length;
-		const disableContentPanning = data?.enableContentPanningGesture === false || (!scrollEnabled && isAndroid)
+		const disableContentPanning = data?.enableContentPanningGesture === false || (!scrollEnabled && isAndroid);
 		const isScrollable = hasOptions || (hasSnaps && !disableContentPanning);
 
 		const contentMinHeight =
