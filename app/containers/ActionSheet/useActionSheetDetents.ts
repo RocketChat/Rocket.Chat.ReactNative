@@ -1,7 +1,7 @@
 import type { SheetDetent } from '@lodev09/react-native-true-sheet';
 import { useMemo } from 'react';
 
-const ACTION_SHEET_MIN_HEIGHT_FRACTION = 0.35;
+const ACTION_SHEET_MIN_HEIGHT_FRACTION = 0.15;
 const ACTION_SHEET_MAX_HEIGHT_FRACTION = 0.75;
 const SCROLL_ENABLED_THRESHOLD = 0.6;
 export const HANDLE_HEIGHT = 28;
