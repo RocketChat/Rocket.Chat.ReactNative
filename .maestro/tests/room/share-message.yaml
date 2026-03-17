@@ -74,7 +74,9 @@ tags:
     timeout: 60000
 - tapOn:
     id: multi-select-item-${output.otherUser.username.toLowerCase()}
-- runFlow: '../../helpers/hide-keyboard.yaml'
+# this is to hide bottom sheet and keyboard together
+- tapOn:
+    point: 5%,10%
 - extendedWaitUntil:
     notVisible:
       id: 'multi-select-search'
