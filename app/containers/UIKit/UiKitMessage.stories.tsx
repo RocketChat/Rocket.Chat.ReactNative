@@ -514,7 +514,30 @@ export const ActionSelect = () =>
 	]);
 ActionSelect.storyName = 'Action - Select';
 
-export const InfoCardSingleRow = () =>
+const getInfoCardAction = ({
+	appId,
+	blockId,
+	icon,
+	label
+}: {
+	appId?: string;
+	blockId?: string;
+	icon: string;
+	label?: string;
+}) => ({
+	type: 'icon_button',
+	actionId: 'open-history',
+	...(appId ? { appId } : {}),
+	...(blockId ? { blockId } : {}),
+	label: label ?? 'Call history',
+	icon: {
+		type: 'icon',
+		icon,
+		variant: 'default'
+	}
+});
+
+export const InfoCardVariants = () =>
 	UiKitMessage([
 		{
 			type: 'info_card',
@@ -524,37 +547,13 @@ export const InfoCardSingleRow = () =>
 				{
 					background: 'default',
 					elements: [
-						{
-							type: 'icon',
-							icon: 'phone-issue',
-							variant: 'danger',
-							framed: true
-						},
-						{
-							type: 'plain_text',
-							text: 'Voice call failed'
-						}
+						{ type: 'icon', icon: 'phone-issue', variant: 'danger', framed: true },
+						{ type: 'plain_text', text: 'Voice call failed' }
 					],
-					action: {
-						type: 'icon_button',
-						actionId: 'open-history',
-						appId: 'media-call-core',
-						blockId: 'failed-call',
-						label: 'Call history',
-						icon: {
-							type: 'icon',
-							icon: 'info',
-							variant: 'default'
-						}
-					}
+					action: getInfoCardAction({ appId: 'media-call-core', blockId: 'failed-call', icon: 'info' })
 				}
 			]
-		}
-	]);
-InfoCardSingleRow.storyName = 'Info Card - Single Row';
-
-export const InfoCardMultiRow = () =>
-	UiKitMessage([
+		},
 		{
 			type: 'info_card',
 			appId: 'media-call-core',
@@ -563,40 +562,104 @@ export const InfoCardMultiRow = () =>
 				{
 					background: 'default',
 					elements: [
-						{
-							type: 'icon',
-							icon: 'phone-question-mark',
-							variant: 'warning',
-							framed: true
-						},
-						{
-							type: 'mrkdwn',
-							text: 'Call not answered'
-						}
+						{ type: 'icon', icon: 'phone-question-mark', variant: 'warning', framed: true },
+						{ type: 'plain_text', text: 'Call not answered' }
 					],
-					action: {
-						type: 'icon_button',
-						actionId: 'open-history',
-						appId: 'media-call-core',
-						blockId: 'missed-call',
-						label: 'Call history',
-						icon: {
-							type: 'icon',
-							icon: 'info',
-							variant: 'default'
-						}
-					}
+					action: getInfoCardAction({ appId: 'media-call-core', blockId: 'missed-call', icon: 'info' })
+				},
+				{
+					background: 'secondary',
+					elements: [{ type: 'plain_text', text: '00:31' }]
+				}
+			]
+		},
+		{
+			type: 'info_card',
+			blockId: 'multiple-icons',
+			rows: [
+				{
+					background: 'default',
+					elements: [
+						{ type: 'plain_text', text: 'Framed icons' },
+						{ type: 'icon', icon: 'phone-off', variant: 'default', framed: true },
+						{ type: 'icon', icon: 'clock', variant: 'warning', framed: true },
+						{ type: 'icon', icon: 'phone-question-mark', variant: 'warning', framed: true },
+						{ type: 'icon', icon: 'phone-issue', variant: 'danger', framed: true }
+					]
 				},
 				{
 					background: 'secondary',
 					elements: [
+						{ type: 'plain_text', text: 'Icons' },
+						{ type: 'icon', icon: 'phone-off', variant: 'default' },
+						{ type: 'icon', icon: 'clock', variant: 'warning' },
+						{ type: 'icon', icon: 'phone-question-mark', variant: 'warning' },
+						{ type: 'icon', icon: 'phone-issue', variant: 'danger' },
+						{ type: 'icon', icon: 'info', variant: 'secondary' }
+					]
+				}
+			]
+		},
+		{
+			type: 'info_card',
+			blockId: 'i18n-keys',
+			rows: [
+				{
+					background: 'default',
+					elements: [{ type: 'mrkdwn', text: 'Call ended', i18n: { key: 'Call_ended_bold' } }]
+				},
+				{
+					background: 'default',
+					elements: [{ type: 'mrkdwn', text: 'Call failed', i18n: { key: 'Call_failed_bold' } }]
+				},
+				{
+					background: 'default',
+					elements: [{ type: 'mrkdwn', text: 'Call not answered', i18n: { key: 'Call_not_answered_bold' } }]
+				},
+				{
+					background: 'default',
+					elements: [{ type: 'mrkdwn', text: 'Call transferred', i18n: { key: 'Call_transferred_bold' } }]
+				}
+			]
+		},
+		{
+			type: 'info_card',
+			blockId: 'mixed-text',
+			rows: [
+				{
+					background: 'default',
+					elements: [
+						{ type: 'icon', icon: 'phone-off', variant: 'warning', framed: true },
+						{ type: 'mrkdwn', text: 'Call ended', i18n: { key: 'Call_ended_bold' } }
+					]
+				},
+				{
+					background: 'secondary',
+					elements: [{ type: 'mrkdwn', text: '*01:23*' }]
+				}
+			]
+		},
+		{
+			type: 'info_card',
+			appId: 'media-call-core',
+			blockId: 'edge-action-no-ids',
+			rows: [
+				{
+					background: 'default',
+					elements: [
+						{ type: 'icon', icon: 'phone-question-mark', variant: 'warning' },
 						{
 							type: 'plain_text',
-							text: '00:31'
+							text: 'This is a long info card message that should wrap across multiple lines to validate row alignment and spacing.'
 						}
-					]
+					],
+					action: getInfoCardAction({ icon: 'info', label: 'Details' })
+				},
+				{
+					background: 'secondary',
+					elements: [{ type: 'plain_text', text: 'No action on this row' }]
 				}
 			]
 		}
 	]);
-InfoCardMultiRow.storyName = 'Info Card - Multi Row';
+InfoCardVariants.storyName = 'Info Card - Variants';

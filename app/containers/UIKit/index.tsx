@@ -44,6 +44,7 @@ import {
 	type ISection
 } from './interfaces';
 import VideoConferenceBlock from './VideoConferenceBlock';
+import I18n from '../../i18n';
 
 const styles = StyleSheet.create({
 	input: {
@@ -92,7 +93,7 @@ class MessageParser extends UiKitParserMessage<React.ReactElement> {
 		if (isContext) {
 			return <MarkdownPreview msg={element.text} numberOfLines={0} />;
 		}
-		return <Markdown msg={element.text} />;
+		return <Markdown msg={element.i18n ? I18n.t(element.i18n.key) : element.text} />;
 	}
 
 	button(element: IButton, context: BlockContext): React.ReactElement {
@@ -136,7 +137,10 @@ class MessageParser extends UiKitParserMessage<React.ReactElement> {
 	}
 
 	datePicker(element: IElement, context: BlockContext): React.ReactElement {
-		const [{ loading, value, error, language }, action] = useBlockContext({ ...element, actionId: element.actionId || '' }, context);
+		const [{ loading, value, error, language }, action] = useBlockContext(
+			{ ...element, actionId: element.actionId || '' },
+			context
+		);
 		return (
 			<DatePicker
 				element={element}

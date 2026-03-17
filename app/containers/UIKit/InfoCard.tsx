@@ -7,12 +7,9 @@ import { type IIcon, type IIconButton, type IInfoCard, type IInfoCardRow } from 
 
 const styles = StyleSheet.create({
 	card: {
-		maxWidth: 345,
-		borderWidth: 1,
-		borderRadius: 16,
-		overflow: 'hidden',
-		alignSelf: 'flex-start',
-		marginBottom: 8
+		borderWidth: StyleSheet.hairlineWidth,
+		borderRadius: 4,
+		overflow: 'hidden'
 	},
 	row: {
 		flexDirection: 'row',
@@ -26,11 +23,7 @@ const styles = StyleSheet.create({
 		flexWrap: 'wrap'
 	},
 	rowElement: {
-		marginRight: 12,
-		marginBottom: 2
-	},
-	rowAction: {
-		marginLeft: 12
+		marginHorizontal: 4
 	}
 });
 
@@ -38,7 +31,7 @@ const renderRowElement = (parser: IInfoCard['parser'], element: IInfoCardRow['el
 	if (element.type === 'icon' && parser.icon) {
 		return (
 			<View key={key} style={styles.rowElement}>
-				{parser.icon(element as IIcon, BlockContext.SECTION)}
+				{parser.icon(element as IIcon, BlockContext.NONE)}
 			</View>
 		);
 	}
@@ -46,15 +39,15 @@ const renderRowElement = (parser: IInfoCard['parser'], element: IInfoCardRow['el
 	if (element.type === 'mrkdwn' && parser.mrkdwn) {
 		return (
 			<View key={key} style={styles.rowElement}>
-				{parser.mrkdwn(element as any, BlockContext.SECTION)}
+				{parser.mrkdwn(element as any, BlockContext.NONE)}
 			</View>
 		);
 	}
 
-	if (parser.plain_text) {
+	if (element.type === 'plain_text' && parser.plain_text) {
 		return (
 			<View key={key} style={styles.rowElement}>
-				{parser.plain_text(element as any, BlockContext.SECTION)}
+				{parser.plain_text(element as any, BlockContext.NONE)}
 			</View>
 		);
 	}
@@ -62,45 +55,44 @@ const renderRowElement = (parser: IInfoCard['parser'], element: IInfoCardRow['el
 	return null;
 };
 
-const renderRowAction = (parser: IInfoCard['parser'], action: IIconButton | undefined, appId?: string, blockId?: string) => {
+const renderRowAction = (parser: IInfoCard['parser'], action: IIconButton | undefined, _appId?: string, _blockId?: string) => {
 	if (!action || !parser.icon_button) {
 		return null;
 	}
 
-	return parser.icon_button(
-		{
-			...action,
-			appId: action.appId || appId || '',
-			blockId: action.blockId || blockId || ''
-		},
-		BlockContext.ACTION
-	);
+	// TODO: Temporarily removed until we have call history implemented
+	return null;
+
+	// return parser.icon_button(
+	// 	{
+	// 		...action,
+	// 		appId: action.appId || appId || '',
+	// 		blockId: action.blockId || blockId || ''
+	// 	},
+	// 	BlockContext.ACTION
+	// );
 };
 
 export const InfoCard = ({ rows, parser, appId, blockId }: IInfoCard) => {
 	const { colors } = useTheme();
 
 	return (
-		<View style={[styles.card, { backgroundColor: colors.surfaceNeutral, borderColor: colors.strokeLight }]}>
-			{rows.map((row, index) => {
-				const rowBackgroundColor = row.background === 'default' ? colors.surfaceLight : colors.surfaceNeutral;
-
-				return (
-					<View
-						key={`${blockId || 'info-card'}-${index}`}
-						style={[
-							styles.row,
-							{
-								backgroundColor: rowBackgroundColor
-							}
-						]}>
-						<View style={styles.rowContent}>
-							{row.elements.map((element, elementIndex) => renderRowElement(parser, element, `${index}-${elementIndex}`))}
-						</View>
-						{row.action ? <View style={styles.rowAction}>{renderRowAction(parser, row.action, appId, blockId)}</View> : null}
+		<View style={[styles.card, { backgroundColor: colors.surfaceNeutral, borderColor: colors.strokeExtraLight }]}>
+			{rows.map((row, index) => (
+				<View
+					key={`${blockId || 'info-card'}-${index}`}
+					style={[
+						styles.row,
+						{
+							backgroundColor: row.background === 'default' ? colors.surfaceLight : undefined
+						}
+					]}>
+					<View style={styles.rowContent}>
+						{row.elements.map((element, elementIndex) => renderRowElement(parser, element, `${index}-${elementIndex}`))}
 					</View>
-				);
-			})}
+					{row.action ? renderRowAction(parser, row.action, appId, blockId) : null}
+				</View>
+			))}
 		</View>
 	);
 };

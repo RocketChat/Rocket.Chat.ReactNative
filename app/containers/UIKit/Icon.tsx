@@ -15,9 +15,9 @@ const iconAliases: Record<string, string> = {
 
 const styles = StyleSheet.create({
 	frame: {
-		width: 32,
-		height: 32,
-		borderRadius: 8,
+		width: 28,
+		height: 28,
+		borderRadius: 4,
 		alignItems: 'center',
 		justifyContent: 'center'
 	}
@@ -36,40 +36,28 @@ export const resolveIconName = (icon: string) => {
 	return 'info' as any;
 };
 
-const getIconColors = (variant: IIcon['variant'], colors: ReturnType<typeof useTheme>['colors']) => {
+const getIconColor = (variant: IIcon['variant'], colors: ReturnType<typeof useTheme>['colors'], framed?: boolean) => {
 	switch (variant) {
 		case 'danger':
-			return {
-				icon: colors.fontDanger,
-				background: colors.statusBackgroundDanger
-			};
+			return framed ? colors.statusFontDanger : colors.fontDanger;
 		case 'secondary':
-			return {
-				icon: colors.fontInfo,
-				background: colors.statusBackgroundInfo
-			};
+			return colors.fontSecondaryInfo;
 		case 'warning':
-			return {
-				icon: colors.statusFontWarning,
-				background: colors.statusBackgroundWarning
-			};
+			return colors.statusFontWarning;
 		default:
-			return {
-				icon: colors.fontSecondaryInfo,
-				background: colors.surfaceTint
-			};
+			return colors.fontDefault;
 	}
 };
 
 export const Icon = ({ element }: { element: IIcon }) => {
 	const { colors } = useTheme();
 	const { icon, variant = 'default', framed } = element;
-	const palette = getIconColors(variant, colors);
-	const renderedIcon = <CustomIcon name={resolveIconName(icon)} size={20} color={palette.icon} />;
+	const color = getIconColor(variant, colors, framed);
+	const renderedIcon = <CustomIcon name={resolveIconName(icon)} size={24} color={color} />;
 
 	if (!framed) {
 		return renderedIcon;
 	}
 
-	return <View style={[styles.frame, { backgroundColor: palette.background }]}>{renderedIcon}</View>;
+	return <View style={[styles.frame, { backgroundColor: colors.surfaceTint }]}>{renderedIcon}</View>;
 };
