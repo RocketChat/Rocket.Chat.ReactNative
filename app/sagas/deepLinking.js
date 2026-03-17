@@ -1,4 +1,4 @@
-import { all, call, delay, put, select, take, takeLatest } from 'redux-saga/effects';
+import { all, call, delay, put, race, select, take, takeLatest } from 'redux-saga/effects';
 
 import { shareSetParams } from '../actions/share';
 import * as types from '../actions/actionsTypes';
@@ -119,6 +119,7 @@ const handleOAuth = function* handleOAuth({ params }) {
 		const meteorConnected = yield select(state => state.meteor.connected);
 
 		if (!meteorConnected || !sdkHost || sdkHost !== server) {
+			const previousServer = UserPreferences.getString(CURRENT_SERVER) || '';
 			const serverRecord = yield getServerById(server);
 			if (!serverRecord) {
 				// Server not in database yet, need to add it first
@@ -127,36 +128,39 @@ const handleOAuth = function* handleOAuth({ params }) {
 					yield put(appInit());
 					return;
 				}
-				yield put(serverInitAdd(server));
+				yield put(serverInitAdd(previousServer));
 				yield put(selectServerRequest(server, result.version));
 			} else {
 				yield put(selectServerRequest(server, serverRecord.version));
 			}
-			// Wait for the WebSocket connection to be fully ready
-			yield take(types.METEOR.SUCCESS);
+			// Wait for the WebSocket connection to be fully ready (with timeout)
+			const { timeout } = yield race({
+				success: take(types.METEOR.SUCCESS),
+				timeout: delay(15000)
+			});
+			if (timeout) {
+				log(new Error('Timeout waiting for Meteor connection during OAuth'));
+				yield put(appInit());
+				return;
+			}
 		}
 
 		// Retry logic for OAuth login - the external browser flow can have timing
 		// issues where the SDK is not fully ready even after METEOR.SUCCESS
 		const maxRetries = 3;
-		let lastError;
 		for (let attempt = 1; attempt <= maxRetries; attempt++) {
 			try {
-				const delayMs = attempt === 1 ? 500 : 1000 * attempt;
+				const delayMs = 500 * Math.pow(2, attempt - 1);
 				yield delay(delayMs);
-				yield loginOAuthOrSso({ oauth: { credentialToken, credentialSecret } }, false);
+				yield loginOAuthOrSso({ oauth: { credentialToken, credentialSecret } });
 				return;
 			} catch (e) {
-				lastError = e;
-				const isNetworkError = e?.message === 'Network request failed' || e?.message?.includes('network');
+				const isNetworkError = e?.message === 'Network request failed' || e?.message?.toLowerCase?.()?.includes?.('network');
 				if (attempt < maxRetries && isNetworkError) {
 					continue;
 				}
 				throw e;
 			}
-		}
-		if (lastError) {
-			throw lastError;
 		}
 	} catch (e) {
 		log(e);

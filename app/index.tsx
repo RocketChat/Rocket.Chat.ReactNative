@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppState, Dimensions, type EmitterSubscription, Linking, type AppStateStatus } from 'react-native';
+import { Dimensions, type EmitterSubscription, Linking } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { enableScreens } from 'react-native-screens';
@@ -76,6 +76,11 @@ const parseDeepLinking = (url: string) => {
 						type: 'oauth'
 					};
 				}
+				// If this looks like an OAuth redirect (has credentialSecret) but
+				// is missing credentialToken, treat as invalid — don't fall through
+				if (parsedQuery?.credentialSecret) {
+					return null;
+				}
 			}
 		}
 
@@ -102,10 +107,9 @@ const parseDeepLinking = (url: string) => {
 };
 
 export default class Root extends React.Component<{}, IState> {
+	private linkingSubscription?: ReturnType<typeof Linking.addEventListener>;
 	private dimensionsListener?: EmitterSubscription;
 	private videoConfActionCleanup?: () => void;
-	private appStateSubscription?: ReturnType<typeof AppState.addEventListener>;
-	private lastAppState: AppStateStatus = AppState.currentState;
 
 	constructor(props: any) {
 		super(props);
@@ -130,16 +134,12 @@ export default class Root extends React.Component<{}, IState> {
 	componentDidMount() {
 		// Set up deep link listener immediately (no delay) so OAuth redirects
 		// from external browser are handled promptly
-		Linking.addEventListener('url', ({ url }) => {
+		this.linkingSubscription = Linking.addEventListener('url', ({ url }) => {
 			const parsedDeepLinkingURL = parseDeepLinking(url);
 			if (parsedDeepLinkingURL) {
 				store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
 			}
 		});
-
-		// Handle app returning to foreground - check for pending OAuth deep links
-		// This is needed on iOS where Safari redirects may arrive while app is backgrounded
-		this.appStateSubscription = AppState.addEventListener('change', this.handleAppStateChange);
 
 		this.dimensionsListener = Dimensions.addEventListener('change', this.onDimensionsChange);
 
@@ -148,30 +148,12 @@ export default class Root extends React.Component<{}, IState> {
 	}
 
 	componentWillUnmount() {
+		this.linkingSubscription?.remove?.();
 		this.dimensionsListener?.remove?.();
-		this.appStateSubscription?.remove?.();
 		this.videoConfActionCleanup?.();
 
 		unsubscribeTheme();
 	}
-
-	handleAppStateChange = async (nextAppState: AppStateStatus) => {
-		// When app comes to foreground from background, check for pending deep links
-		if (this.lastAppState.match(/inactive|background/) && nextAppState === 'active') {
-			try {
-				const url = await Linking.getInitialURL();
-				if (url && url.startsWith('rocketchat://auth')) {
-					const parsedDeepLinkingURL = parseDeepLinking(url);
-					if (parsedDeepLinkingURL) {
-						store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
-					}
-				}
-			} catch (e) {
-				// Ignore errors checking for pending deep links
-			}
-		}
-		this.lastAppState = nextAppState;
-	};
 
 	init = async () => {
 		store.dispatch(appInitLocalSettings());
