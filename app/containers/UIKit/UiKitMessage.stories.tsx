@@ -1,3 +1,5 @@
+import { View } from 'react-native';
+
 import MessageContext from '../message/Context';
 import { UiKitMessage } from '.';
 import { themes } from '../../lib/constants/colors';
@@ -537,42 +539,52 @@ const getInfoCardAction = ({
 	}
 });
 
-export const InfoCardVariants = () =>
+export const InfoCard = () => (
+	<View style={{ padding: 10, gap: 10 }}>
+		{UiKitMessage([
+			{
+				type: 'info_card',
+				appId: 'media-call-core',
+				blockId: 'ended-call',
+				rows: [
+					{
+						background: 'default',
+						elements: [
+							{ type: 'icon', icon: 'phone-off', variant: 'warning', framed: true },
+							{ type: 'mrkdwn', text: 'Call ended', i18n: { key: 'Call_ended_bold' } }
+						],
+						action: getInfoCardAction({ appId: 'media-call-core', blockId: 'ended-call', icon: 'info' })
+					},
+					{
+						background: 'secondary',
+						elements: [{ type: 'mrkdwn', text: '00:06' }]
+					}
+				]
+			}
+		])}
+		{UiKitMessage([
+			{
+				type: 'info_card',
+				appId: 'media-call-core',
+				blockId: 'not-answered-call',
+				rows: [
+					{
+						background: 'default',
+						elements: [
+							{ type: 'icon', icon: 'phone-question-mark', variant: 'warning', framed: true },
+							{ type: 'mrkdwn', text: 'Call not answered', i18n: { key: 'Call_not_answered_bold' } }
+						],
+						action: getInfoCardAction({ appId: 'media-call-core', blockId: 'not-answered-call', icon: 'info' })
+					}
+				]
+			}
+		])}
+	</View>
+);
+InfoCard.storyName = 'Info Card';
+
+export const InfoCardIcons = () =>
 	UiKitMessage([
-		{
-			type: 'info_card',
-			appId: 'media-call-core',
-			blockId: 'failed-call',
-			rows: [
-				{
-					background: 'default',
-					elements: [
-						{ type: 'icon', icon: 'phone-issue', variant: 'danger', framed: true },
-						{ type: 'plain_text', text: 'Voice call failed' }
-					],
-					action: getInfoCardAction({ appId: 'media-call-core', blockId: 'failed-call', icon: 'info' })
-				}
-			]
-		},
-		{
-			type: 'info_card',
-			appId: 'media-call-core',
-			blockId: 'missed-call',
-			rows: [
-				{
-					background: 'default',
-					elements: [
-						{ type: 'icon', icon: 'phone-question-mark', variant: 'warning', framed: true },
-						{ type: 'plain_text', text: 'Call not answered' }
-					],
-					action: getInfoCardAction({ appId: 'media-call-core', blockId: 'missed-call', icon: 'info' })
-				},
-				{
-					background: 'secondary',
-					elements: [{ type: 'plain_text', text: '00:31' }]
-				}
-			]
-		},
 		{
 			type: 'info_card',
 			blockId: 'multiple-icons',
@@ -599,7 +611,12 @@ export const InfoCardVariants = () =>
 					]
 				}
 			]
-		},
+		}
+	]);
+InfoCardIcons.storyName = 'Info Card - Icons';
+
+export const InfoCardI18n = () =>
+	UiKitMessage([
 		{
 			type: 'info_card',
 			blockId: 'i18n-keys',
@@ -621,24 +638,12 @@ export const InfoCardVariants = () =>
 					elements: [{ type: 'mrkdwn', text: 'Call transferred', i18n: { key: 'Call_transferred_bold' } }]
 				}
 			]
-		},
-		{
-			type: 'info_card',
-			blockId: 'mixed-text',
-			rows: [
-				{
-					background: 'default',
-					elements: [
-						{ type: 'icon', icon: 'phone-off', variant: 'warning', framed: true },
-						{ type: 'mrkdwn', text: 'Call ended', i18n: { key: 'Call_ended_bold' } }
-					]
-				},
-				{
-					background: 'secondary',
-					elements: [{ type: 'mrkdwn', text: '*01:23*' }]
-				}
-			]
-		},
+		}
+	]);
+InfoCardI18n.storyName = 'Info Card - i18n';
+
+export const InfoCardLongText = () =>
+	UiKitMessage([
 		{
 			type: 'info_card',
 			appId: 'media-call-core',
@@ -662,4 +667,4 @@ export const InfoCardVariants = () =>
 			]
 		}
 	]);
-InfoCardVariants.storyName = 'Info Card - Variants';
+InfoCardLongText.storyName = 'Info Card - Long text';

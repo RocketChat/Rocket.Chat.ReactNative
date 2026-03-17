@@ -100,7 +100,7 @@ export interface IContainer {
 
 type TModalServerInteraction = Extract<ServerInteraction, { type: 'modal.open' | 'modal.update' | 'errors' }>;
 export type IUserInteraction = Omit<TModalServerInteraction, 'type'>;
-export type IEmitUserInteraction = TModalServerInteraction | { type: 'modal' } & IUserInteraction;
+export type IEmitUserInteraction = TModalServerInteraction | ({ type: 'modal' } & IUserInteraction);
 
 export interface ITriggerAction {
 	type: TActionType;
@@ -158,7 +158,12 @@ export interface IParser {
 		index?: number
 	) => JSX.Element | null;
 	renderActions: (data: TActionElement | IElement, context: BlockContext, parser?: IParser, index?: number) => JSX.Element | null;
-	renderContext: (data: TContextElement | IElement, context: BlockContext, parser?: IParser, index?: number) => JSX.Element | null;
+	renderContext: (
+		data: TContextElement | IElement,
+		context: BlockContext,
+		parser?: IParser,
+		index?: number
+	) => JSX.Element | null;
 	renderInputs: (data: TInputElement | IElement, context: BlockContext, parser?: IParser, index?: number) => JSX.Element | null;
 	text: (data: IText) => JSX.Element | null;
 	plain_text?: (data: PlainText | IText, context: BlockContext) => JSX.Element | null;

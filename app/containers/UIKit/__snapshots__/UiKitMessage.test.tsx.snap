@@ -828,21 +828,462 @@ exports[`Story Snapshots: Fields should match snapshot 1`] = `
 </View>
 `;
 
-exports[`Story Snapshots: InfoCardMultiRow should match snapshot 1`] = `
+exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
+<View
+  style={
+    {
+      "gap": 10,
+      "padding": 10,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "borderRadius": 4,
+          "borderWidth": 0.5,
+          "overflow": "hidden",
+        },
+        {
+          "backgroundColor": "#E4E7EA",
+          "borderColor": "#EBECEF",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "padding": 12,
+          },
+          {
+            "backgroundColor": "#FFFFFF",
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flex": 1,
+            "flexDirection": "row",
+            "flexWrap": "wrap",
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "marginHorizontal": 4,
+            }
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 4,
+                  "height": 28,
+                  "justifyContent": "center",
+                  "width": 28,
+                },
+                {
+                  "backgroundColor": "#F7F8FA",
+                },
+              ]
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#8E6300",
+                    "fontSize": 24,
+                  },
+                  [
+                    {
+                      "lineHeight": 24,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+        </View>
+        <View
+          style={
+            {
+              "marginHorizontal": 4,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "gap": 2,
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              <Text
+                style={
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <Text
+                  style={
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontWeight": "700",
+                      "textAlign": "left",
+                    }
+                  }
+                >
+                  <Text
+                    accessibilityLabel="Voice call ended"
+                    style={
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                        {
+                          "fontSize": 14,
+                        },
+                      ]
+                    }
+                  >
+                    Voice call ended
+                  </Text>
+                </Text>
+              </Text>
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "padding": 12,
+          },
+          {
+            "backgroundColor": undefined,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flex": 1,
+            "flexDirection": "row",
+            "flexWrap": "wrap",
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "marginHorizontal": 4,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "gap": 2,
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              <Text
+                style={
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <Text
+                  accessibilityLabel="00:06"
+                  style={
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                      {
+                        "fontSize": 14,
+                      },
+                    ]
+                  }
+                >
+                  00:06
+                </Text>
+              </Text>
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      [
+        {
+          "borderRadius": 4,
+          "borderWidth": 0.5,
+          "overflow": "hidden",
+        },
+        {
+          "backgroundColor": "#E4E7EA",
+          "borderColor": "#EBECEF",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "padding": 12,
+          },
+          {
+            "backgroundColor": "#FFFFFF",
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flex": 1,
+            "flexDirection": "row",
+            "flexWrap": "wrap",
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "marginHorizontal": 4,
+            }
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 4,
+                  "height": 28,
+                  "justifyContent": "center",
+                  "width": 28,
+                },
+                {
+                  "backgroundColor": "#F7F8FA",
+                },
+              ]
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#8E6300",
+                    "fontSize": 24,
+                  },
+                  [
+                    {
+                      "lineHeight": 24,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+        </View>
+        <View
+          style={
+            {
+              "marginHorizontal": 4,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "gap": 2,
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              <Text
+                style={
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <Text
+                  style={
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontWeight": "700",
+                      "textAlign": "left",
+                    }
+                  }
+                >
+                  <Text
+                    accessibilityLabel="Voice call not answered"
+                    style={
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                        {
+                          "fontSize": 14,
+                        },
+                      ]
+                    }
+                  >
+                    Voice call not answered
+                  </Text>
+                </Text>
+              </Text>
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
 <View
   style={
     [
       {
-        "alignSelf": "flex-start",
-        "borderRadius": 16,
-        "borderWidth": 1,
-        "marginBottom": 8,
-        "maxWidth": 345,
+        "borderRadius": 4,
+        "borderWidth": 0.5,
         "overflow": "hidden",
       },
       {
         "backgroundColor": "#E4E7EA",
-        "borderColor": "#CBCED1",
+        "borderColor": "#EBECEF",
       },
     ]
   }
@@ -853,7 +1294,7 @@ exports[`Story Snapshots: InfoCardMultiRow should match snapshot 1`] = `
         {
           "alignItems": "center",
           "flexDirection": "row",
-          "padding": 16,
+          "padding": 12,
         },
         {
           "backgroundColor": "#FFFFFF",
@@ -874,60 +1315,7 @@ exports[`Story Snapshots: InfoCardMultiRow should match snapshot 1`] = `
       <View
         style={
           {
-            "marginBottom": 2,
-            "marginRight": 12,
-          }
-        }
-      >
-        <View
-          style={
-            [
-              {
-                "alignItems": "center",
-                "borderRadius": 8,
-                "height": 32,
-                "justifyContent": "center",
-                "width": 32,
-              },
-              {
-                "backgroundColor": "#FFECAD",
-              },
-            ]
-          }
-        >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
-            style={
-              [
-                {
-                  "color": "#8E6300",
-                  "fontSize": 20,
-                },
-                [
-                  {
-                    "lineHeight": 20,
-                  },
-                  undefined,
-                ],
-                {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                {},
-              ]
-            }
-          >
-            
-          </Text>
-        </View>
-      </View>
-      <View
-        style={
-          {
-            "marginBottom": 2,
-            "marginRight": 12,
+            "marginHorizontal": 4,
           }
         }
       >
@@ -967,120 +1355,41 @@ exports[`Story Snapshots: InfoCardMultiRow should match snapshot 1`] = `
               }
             >
               <Text
-                accessibilityLabel="Call not answered"
                 style={
-                  [
-                    {
-                      "flexShrink": 1,
-                      "fontSize": 16,
-                      "lineHeight": 22,
-                    },
-                    {
-                      "color": "#2F343D",
-                    },
-                  ]
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontWeight": "700",
+                    "textAlign": "left",
+                  }
                 }
               >
-                Call not answered
+                <Text
+                  accessibilityLabel="Voice call ended"
+                  style={
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                      {
+                        "fontSize": 14,
+                      },
+                    ]
+                  }
+                >
+                  Voice call ended
+                </Text>
               </Text>
             </Text>
           </Text>
         </View>
       </View>
     </View>
-    <View
-      style={
-        {
-          "marginLeft": 12,
-        }
-      }
-    >
-      <View
-        accessibilityLabel="Call history"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": false,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        hitSlop={
-          {
-            "bottom": 4,
-            "left": 4,
-            "right": 4,
-            "top": 4,
-          }
-        }
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          [
-            {
-              "alignItems": "center",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "height": 32,
-              "justifyContent": "center",
-              "width": 32,
-            },
-            {
-              "backgroundColor": "#FFFFFF",
-              "borderColor": "#CBCED1",
-              "opacity": 1,
-            },
-          ]
-        }
-      >
-        <Text
-          allowFontScaling={false}
-          selectable={false}
-          style={
-            [
-              {
-                "color": "#6C727A",
-                "fontSize": 20,
-              },
-              [
-                {
-                  "lineHeight": 20,
-                },
-                undefined,
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
-            ]
-          }
-        >
-          
-        </Text>
-      </View>
-    </View>
   </View>
   <View
     style={
@@ -1088,84 +1397,7 @@ exports[`Story Snapshots: InfoCardMultiRow should match snapshot 1`] = `
         {
           "alignItems": "center",
           "flexDirection": "row",
-          "padding": 16,
-        },
-        {
-          "backgroundColor": "#E4E7EA",
-        },
-      ]
-    }
-  >
-    <View
-      style={
-        {
-          "alignItems": "center",
-          "flex": 1,
-          "flexDirection": "row",
-          "flexWrap": "wrap",
-        }
-      }
-    >
-      <View
-        style={
-          {
-            "marginBottom": 2,
-            "marginRight": 12,
-          }
-        }
-      >
-        <Text
-          style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontWeight": "400",
-                "lineHeight": 22,
-                "textAlign": "left",
-                "textAlignVertical": "center",
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
-          }
-        >
-          00:31
-        </Text>
-      </View>
-    </View>
-  </View>
-</View>
-`;
-
-exports[`Story Snapshots: InfoCardSingleRow should match snapshot 1`] = `
-<View
-  style={
-    [
-      {
-        "alignSelf": "flex-start",
-        "borderRadius": 16,
-        "borderWidth": 1,
-        "marginBottom": 8,
-        "maxWidth": 345,
-        "overflow": "hidden",
-      },
-      {
-        "backgroundColor": "#E4E7EA",
-        "borderColor": "#CBCED1",
-      },
-    ]
-  }
->
-  <View
-    style={
-      [
-        {
-          "alignItems": "center",
-          "flexDirection": "row",
-          "padding": 16,
+          "padding": 12,
         },
         {
           "backgroundColor": "#FFFFFF",
@@ -1186,60 +1418,335 @@ exports[`Story Snapshots: InfoCardSingleRow should match snapshot 1`] = `
       <View
         style={
           {
-            "marginBottom": 2,
-            "marginRight": 12,
+            "marginHorizontal": 4,
           }
         }
       >
         <View
           style={
-            [
-              {
-                "alignItems": "center",
-                "borderRadius": 8,
-                "height": 32,
-                "justifyContent": "center",
-                "width": 32,
-              },
-              {
-                "backgroundColor": "#FFC1C9",
-              },
-            ]
+            {
+              "gap": 2,
+            }
           }
         >
           <Text
-            allowFontScaling={false}
-            selectable={false}
             style={
               [
                 {
-                  "color": "#D40C26",
-                  "fontSize": 20,
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "lineHeight": 22,
+                  "textAlign": "left",
                 },
-                [
-                  {
-                    "lineHeight": 20,
-                  },
-                  undefined,
-                ],
                 {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
+                  "color": "#2F343D",
                 },
-                {},
               ]
             }
           >
-            
+            <Text
+              style={
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                }
+              }
+            >
+              <Text
+                style={
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontWeight": "700",
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <Text
+                  accessibilityLabel="Voice call failed"
+                  style={
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                      {
+                        "fontSize": 14,
+                      },
+                    ]
+                  }
+                >
+                  Voice call failed
+                </Text>
+              </Text>
+            </Text>
           </Text>
         </View>
       </View>
+    </View>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "padding": 12,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "flex": 1,
+          "flexDirection": "row",
+          "flexWrap": "wrap",
+        }
+      }
+    >
       <View
         style={
           {
-            "marginBottom": 2,
-            "marginRight": 12,
+            "marginHorizontal": 4,
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "gap": 2,
+            }
+          }
+        >
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "lineHeight": 22,
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            <Text
+              style={
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                }
+              }
+            >
+              <Text
+                style={
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontWeight": "700",
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <Text
+                  accessibilityLabel="Voice call not answered"
+                  style={
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                      {
+                        "fontSize": 14,
+                      },
+                    ]
+                  }
+                >
+                  Voice call not answered
+                </Text>
+              </Text>
+            </Text>
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "padding": 12,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "flex": 1,
+          "flexDirection": "row",
+          "flexWrap": "wrap",
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "marginHorizontal": 4,
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "gap": 2,
+            }
+          }
+        >
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "lineHeight": 22,
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            <Text
+              style={
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                }
+              }
+            >
+              <Text
+                style={
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontWeight": "700",
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <Text
+                  accessibilityLabel="Voice call transferred"
+                  style={
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                      {
+                        "fontSize": 14,
+                      },
+                    ]
+                  }
+                >
+                  Voice call transferred
+                </Text>
+              </Text>
+            </Text>
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
+<View
+  style={
+    [
+      {
+        "borderRadius": 4,
+        "borderWidth": 0.5,
+        "overflow": "hidden",
+      },
+      {
+        "backgroundColor": "#E4E7EA",
+        "borderColor": "#EBECEF",
+      },
+    ]
+  }
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "padding": 12,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "flex": 1,
+          "flexDirection": "row",
+          "flexWrap": "wrap",
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "marginHorizontal": 4,
           }
         }
       >
@@ -1261,73 +1768,408 @@ exports[`Story Snapshots: InfoCardSingleRow should match snapshot 1`] = `
             ]
           }
         >
-          Voice call failed
+          Framed icons
         </Text>
       </View>
+      <View
+        style={
+          {
+            "marginHorizontal": 4,
+          }
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": "center",
+                "borderRadius": 4,
+                "height": 28,
+                "justifyContent": "center",
+                "width": 28,
+              },
+              {
+                "backgroundColor": "#F7F8FA",
+              },
+            ]
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#2F343D",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "marginHorizontal": 4,
+          }
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": "center",
+                "borderRadius": 4,
+                "height": 28,
+                "justifyContent": "center",
+                "width": 28,
+              },
+              {
+                "backgroundColor": "#F7F8FA",
+              },
+            ]
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#8E6300",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "marginHorizontal": 4,
+          }
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": "center",
+                "borderRadius": 4,
+                "height": 28,
+                "justifyContent": "center",
+                "width": 28,
+              },
+              {
+                "backgroundColor": "#F7F8FA",
+              },
+            ]
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#8E6300",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "marginHorizontal": 4,
+          }
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": "center",
+                "borderRadius": 4,
+                "height": 28,
+                "justifyContent": "center",
+                "width": 28,
+              },
+              {
+                "backgroundColor": "#F7F8FA",
+              },
+            ]
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#9B1325",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </View>
     </View>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "padding": 12,
+        },
+        {
+          "backgroundColor": undefined,
+        },
+      ]
+    }
+  >
     <View
       style={
         {
-          "marginLeft": 12,
+          "alignItems": "center",
+          "flex": 1,
+          "flexDirection": "row",
+          "flexWrap": "wrap",
         }
       }
     >
       <View
-        accessibilityLabel="Call history"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": false,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        hitSlop={
-          {
-            "bottom": 4,
-            "left": 4,
-            "right": 4,
-            "top": 4,
-          }
-        }
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
         style={
-          [
-            {
-              "alignItems": "center",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "height": 32,
-              "justifyContent": "center",
-              "width": 32,
-            },
-            {
-              "backgroundColor": "#FFFFFF",
-              "borderColor": "#CBCED1",
-              "opacity": 1,
-            },
-          ]
+          {
+            "marginHorizontal": 4,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+                "textAlignVertical": "center",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          Icons
+        </Text>
+      </View>
+      <View
+        style={
+          {
+            "marginHorizontal": 4,
+          }
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#2F343D",
+                "fontSize": 24,
+              },
+              [
+                {
+                  "lineHeight": 24,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
+      <View
+        style={
+          {
+            "marginHorizontal": 4,
+          }
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#8E6300",
+                "fontSize": 24,
+              },
+              [
+                {
+                  "lineHeight": 24,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
+      <View
+        style={
+          {
+            "marginHorizontal": 4,
+          }
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#8E6300",
+                "fontSize": 24,
+              },
+              [
+                {
+                  "lineHeight": 24,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
+      <View
+        style={
+          {
+            "marginHorizontal": 4,
+          }
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#D40C26",
+                "fontSize": 24,
+              },
+              [
+                {
+                  "lineHeight": 24,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
+      <View
+        style={
+          {
+            "marginHorizontal": 4,
+          }
         }
       >
         <Text
@@ -1337,11 +2179,11 @@ exports[`Story Snapshots: InfoCardSingleRow should match snapshot 1`] = `
             [
               {
                 "color": "#6C727A",
-                "fontSize": 20,
+                "fontSize": 24,
               },
               [
                 {
-                  "lineHeight": 20,
+                  "lineHeight": 24,
                 },
                 undefined,
               ],
@@ -1355,6 +2197,167 @@ exports[`Story Snapshots: InfoCardSingleRow should match snapshot 1`] = `
           }
         >
           
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: InfoCardLongText should match snapshot 1`] = `
+<View
+  style={
+    [
+      {
+        "borderRadius": 4,
+        "borderWidth": 0.5,
+        "overflow": "hidden",
+      },
+      {
+        "backgroundColor": "#E4E7EA",
+        "borderColor": "#EBECEF",
+      },
+    ]
+  }
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "padding": 12,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "flex": 1,
+          "flexDirection": "row",
+          "flexWrap": "wrap",
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "marginHorizontal": 4,
+          }
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#8E6300",
+                "fontSize": 24,
+              },
+              [
+                {
+                  "lineHeight": 24,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
+      <View
+        style={
+          {
+            "marginHorizontal": 4,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+                "textAlignVertical": "center",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          This is a long info card message that should wrap across multiple lines to validate row alignment and spacing.
+        </Text>
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "padding": 12,
+        },
+        {
+          "backgroundColor": undefined,
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "flex": 1,
+          "flexDirection": "row",
+          "flexWrap": "wrap",
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "marginHorizontal": 4,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+                "textAlignVertical": "center",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          No action on this row
         </Text>
       </View>
     </View>
@@ -1429,6 +2432,9 @@ exports[`Story Snapshots: Section should match snapshot 1`] = `
                 },
                 {
                   "color": "#2F343D",
+                },
+                {
+                  "fontSize": 14,
                 },
               ]
             }
@@ -1509,6 +2515,9 @@ exports[`Story Snapshots: SectionButton should match snapshot 1`] = `
                 },
                 {
                   "color": "#2F343D",
+                },
+                {
+                  "fontSize": 14,
                 },
               ]
             }
@@ -1648,6 +2657,9 @@ exports[`Story Snapshots: SectionDatePicker should match snapshot 1`] = `
                 },
                 {
                   "color": "#2F343D",
+                },
+                {
+                  "fontSize": 14,
                 },
               ]
             }
@@ -1796,6 +2808,9 @@ exports[`Story Snapshots: SectionMarkdownList should match snapshot 1`] = `
                   {
                     "color": "#2F343D",
                   },
+                  {
+                    "fontSize": 14,
+                  },
                 ]
               }
             >
@@ -1813,6 +2828,9 @@ exports[`Story Snapshots: SectionMarkdownList should match snapshot 1`] = `
                 },
                 {
                   "color": "#2F343D",
+                },
+                {
+                  "fontSize": 14,
                 },
               ]
             }
@@ -1901,6 +2919,9 @@ exports[`Story Snapshots: SectionMarkdownList should match snapshot 1`] = `
                     {
                       "color": "#2F343D",
                     },
+                    {
+                      "fontSize": 14,
+                    },
                   ]
                 }
               >
@@ -1983,6 +3004,9 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
+                  },
+                  {
+                    "fontSize": 14,
                   },
                 ]
               }
@@ -2117,6 +3141,9 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
+                  },
+                  {
+                    "fontSize": 14,
                   },
                 ]
               }
@@ -2255,6 +3282,9 @@ exports[`Story Snapshots: SectionOverflow should match snapshot 1`] = `
                 },
                 {
                   "color": "#2F343D",
+                },
+                {
+                  "fontSize": 14,
                 },
               ]
             }
@@ -2432,6 +3462,9 @@ exports[`Story Snapshots: SectionSelect should match snapshot 1`] = `
                 },
                 {
                   "color": "#2F343D",
+                },
+                {
+                  "fontSize": 14,
                 },
               ]
             }

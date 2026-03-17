@@ -93,7 +93,7 @@ class MessageParser extends UiKitParserMessage<React.ReactElement> {
 		if (isContext) {
 			return <MarkdownPreview msg={element.text} numberOfLines={0} />;
 		}
-		return <Markdown msg={element.i18n ? I18n.t(element.i18n.key) : element.text} />;
+		return <Markdown msg={element.i18n ? I18n.t(element.i18n.key) : element.text} textStyle={{ fontSize: 14 }} />;
 	}
 
 	button(element: IButton, context: BlockContext): React.ReactElement {
