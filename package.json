@@ -48,7 +48,7 @@
 		"@react-navigation/native": "^7.1.16",
 		"@react-navigation/native-stack": "^7.3.23",
 		"@rocket.chat/message-parser": "^0.31.31",
-		"@rocket.chat/mobile-crypto": "RocketChat/rocket.chat-mobile-crypto#bd4dd7be640422a2ffbe93a58186081516a2823b",
+		"@rocket.chat/mobile-crypto": "RocketChat/rocket.chat-mobile-crypto#eaed78f349222f0f40f45f65a34e27712712a9a7",
 		"@rocket.chat/sdk": "RocketChat/Rocket.Chat.js.SDK#mobile",
 		"@rocket.chat/ui-kit": "0.31.19",
 		"axios": "~0.28.1",
