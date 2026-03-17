@@ -88,6 +88,6 @@ describe('useActionSheetDetents', () => {
 			})
 		);
 
-		expect(result.current.detents).toEqual([0.35]);
+		expect(result.current.detents).toEqual([0.15]);
 	});
 });
