@@ -513,3 +513,90 @@ export const ActionSelect = () =>
 		}
 	]);
 ActionSelect.storyName = 'Action - Select';
+
+export const InfoCardSingleRow = () =>
+	UiKitMessage([
+		{
+			type: 'info_card',
+			appId: 'media-call-core',
+			blockId: 'failed-call',
+			rows: [
+				{
+					background: 'default',
+					elements: [
+						{
+							type: 'icon',
+							icon: 'phone-issue',
+							variant: 'danger',
+							framed: true
+						},
+						{
+							type: 'plain_text',
+							text: 'Voice call failed'
+						}
+					],
+					action: {
+						type: 'icon_button',
+						actionId: 'open-history',
+						appId: 'media-call-core',
+						blockId: 'failed-call',
+						label: 'Call history',
+						icon: {
+							type: 'icon',
+							icon: 'info',
+							variant: 'default'
+						}
+					}
+				}
+			]
+		}
+	]);
+InfoCardSingleRow.storyName = 'Info Card - Single Row';
+
+export const InfoCardMultiRow = () =>
+	UiKitMessage([
+		{
+			type: 'info_card',
+			appId: 'media-call-core',
+			blockId: 'missed-call',
+			rows: [
+				{
+					background: 'default',
+					elements: [
+						{
+							type: 'icon',
+							icon: 'phone-question-mark',
+							variant: 'warning',
+							framed: true
+						},
+						{
+							type: 'mrkdwn',
+							text: 'Call not answered'
+						}
+					],
+					action: {
+						type: 'icon_button',
+						actionId: 'open-history',
+						appId: 'media-call-core',
+						blockId: 'missed-call',
+						label: 'Call history',
+						icon: {
+							type: 'icon',
+							icon: 'info',
+							variant: 'default'
+						}
+					}
+				},
+				{
+					background: 'secondary',
+					elements: [
+						{
+							type: 'plain_text',
+							text: '00:31'
+						}
+					]
+				}
+			]
+		}
+	]);
+InfoCardMultiRow.storyName = 'Info Card - Multi Row';
