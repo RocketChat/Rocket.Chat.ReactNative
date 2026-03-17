@@ -3,6 +3,12 @@ import { View } from 'react-native';
 import MessageContext from '../message/Context';
 import { UiKitMessage } from '.';
 import { themes } from '../../lib/constants/colors';
+import { longText } from '../../../.rnstorybook/utils';
+import {
+	BASE_ROW_HEIGHT,
+	BASE_ROW_HEIGHT_CONDENSED,
+	ResponsiveLayoutContext
+} from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const user = {
 	id: 'y8bd77ptZswPj3EW8',
@@ -16,22 +22,33 @@ export default {
 	title: 'UIKit/UiKitMessage',
 	decorators: [
 		(Story: any) => (
-			<MessageContext.Provider
+			<ResponsiveLayoutContext.Provider
 				value={{
-					user,
-					baseUrl,
-					onPress: () => {},
-					onLongPress: () => {},
-					reactionInit: () => {},
-					onErrorPress: () => {},
-					replyBroadcast: () => {},
-					onReactionPress: () => {},
-					onDiscussionPress: () => {},
-					onReactionLongPress: () => {},
-					threadBadgeColor: themes.light.fontInfo
+					fontScale: 1,
+					fontScaleLimited: 1,
+					isLargeFontScale: false,
+					rowHeight: BASE_ROW_HEIGHT,
+					rowHeightCondensed: BASE_ROW_HEIGHT_CONDENSED,
+					width: 350,
+					height: 800
 				}}>
-				<Story />
-			</MessageContext.Provider>
+				<MessageContext.Provider
+					value={{
+						user,
+						baseUrl,
+						onPress: () => {},
+						onLongPress: () => {},
+						reactionInit: () => {},
+						onErrorPress: () => {},
+						replyBroadcast: () => {},
+						onReactionPress: () => {},
+						onDiscussionPress: () => {},
+						onReactionLongPress: () => {},
+						threadBadgeColor: themes.light.fontInfo
+					}}>
+					<Story />
+				</MessageContext.Provider>
+			</ResponsiveLayoutContext.Provider>
 		)
 	]
 };
@@ -550,10 +567,30 @@ export const InfoCard = () => (
 					{
 						background: 'default',
 						elements: [
-							{ type: 'icon', icon: 'phone-off', variant: 'warning', framed: true },
+							{ type: 'icon', icon: 'phone-off', framed: true },
 							{ type: 'mrkdwn', text: 'Call ended', i18n: { key: 'Call_ended_bold' } }
 						],
 						action: getInfoCardAction({ appId: 'media-call-core', blockId: 'ended-call', icon: 'info' })
+					},
+					{
+						background: 'secondary',
+						elements: [{ type: 'mrkdwn', text: '00:06' }]
+					}
+				]
+			}
+		])}
+		{UiKitMessage([
+			{
+				type: 'info_card',
+				appId: 'media-call-core',
+				blockId: 'transferred-call',
+				rows: [
+					{
+						background: 'default',
+						elements: [
+							{ type: 'icon', icon: 'arrow-forward', framed: true },
+							{ type: 'mrkdwn', text: 'Call transferred', i18n: { key: 'Call_transferred_bold' } }
+						]
 					},
 					{
 						background: 'secondary',
@@ -571,10 +608,26 @@ export const InfoCard = () => (
 					{
 						background: 'default',
 						elements: [
-							{ type: 'icon', icon: 'phone-question-mark', variant: 'warning', framed: true },
+							{ type: 'icon', icon: 'phone-question-mark', framed: true, variant: 'warning' },
 							{ type: 'mrkdwn', text: 'Call not answered', i18n: { key: 'Call_not_answered_bold' } }
 						],
 						action: getInfoCardAction({ appId: 'media-call-core', blockId: 'not-answered-call', icon: 'info' })
+					}
+				]
+			}
+		])}
+		{UiKitMessage([
+			{
+				type: 'info_card',
+				appId: 'media-call-core',
+				blockId: 'failed-call',
+				rows: [
+					{
+						background: 'default',
+						elements: [
+							{ type: 'icon', icon: 'phone-issue', framed: true, variant: 'danger' },
+							{ type: 'mrkdwn', text: 'Call failed', i18n: { key: 'Call_failed_bold' } }
+						]
 					}
 				]
 			}
@@ -655,14 +708,14 @@ export const InfoCardLongText = () =>
 						{ type: 'icon', icon: 'phone-question-mark', variant: 'warning' },
 						{
 							type: 'plain_text',
-							text: 'This is a long info card message that should wrap across multiple lines to validate row alignment and spacing.'
+							text: longText
 						}
 					],
 					action: getInfoCardAction({ icon: 'info', label: 'Details' })
 				},
 				{
 					background: 'secondary',
-					elements: [{ type: 'plain_text', text: 'No action on this row' }]
+					elements: [{ type: 'plain_text', text: longText }]
 				}
 			]
 		}

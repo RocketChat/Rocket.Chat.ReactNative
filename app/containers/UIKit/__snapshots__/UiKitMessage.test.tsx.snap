@@ -905,12 +905,12 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
               style={
                 [
                   {
-                    "color": "#8E6300",
-                    "fontSize": 24,
+                    "color": "#2F343D",
+                    "fontSize": 20,
                   },
                   [
                     {
-                      "lineHeight": 24,
+                      "lineHeight": 20,
                     },
                     undefined,
                   ],
@@ -1167,12 +1167,274 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
               style={
                 [
                   {
-                    "color": "#8E6300",
-                    "fontSize": 24,
+                    "color": "#2F343D",
+                    "fontSize": 20,
                   },
                   [
                     {
-                      "lineHeight": 24,
+                      "lineHeight": 20,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+        </View>
+        <View
+          style={
+            {
+              "marginHorizontal": 4,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "gap": 2,
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              <Text
+                style={
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <Text
+                  style={
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontWeight": "700",
+                      "textAlign": "left",
+                    }
+                  }
+                >
+                  <Text
+                    accessibilityLabel="Voice call transferred"
+                    style={
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                        {
+                          "fontSize": 14,
+                        },
+                      ]
+                    }
+                  >
+                    Voice call transferred
+                  </Text>
+                </Text>
+              </Text>
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "padding": 12,
+          },
+          {
+            "backgroundColor": undefined,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flex": 1,
+            "flexDirection": "row",
+            "flexWrap": "wrap",
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "marginHorizontal": 4,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "gap": 2,
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              <Text
+                style={
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <Text
+                  accessibilityLabel="00:06"
+                  style={
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                      {
+                        "fontSize": 14,
+                      },
+                    ]
+                  }
+                >
+                  00:06
+                </Text>
+              </Text>
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      [
+        {
+          "borderRadius": 4,
+          "borderWidth": 0.5,
+          "overflow": "hidden",
+        },
+        {
+          "backgroundColor": "#E4E7EA",
+          "borderColor": "#EBECEF",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "padding": 12,
+          },
+          {
+            "backgroundColor": "#FFFFFF",
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flex": 1,
+            "flexDirection": "row",
+            "flexWrap": "wrap",
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "marginHorizontal": 4,
+            }
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 4,
+                  "height": 28,
+                  "justifyContent": "center",
+                  "width": 28,
+                },
+                {
+                  "backgroundColor": "#F7F8FA",
+                },
+              ]
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#8E6300",
+                    "fontSize": 20,
+                  },
+                  [
+                    {
+                      "lineHeight": 20,
                     },
                     undefined,
                   ],
@@ -1260,6 +1522,176 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                     }
                   >
                     Voice call not answered
+                  </Text>
+                </Text>
+              </Text>
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      [
+        {
+          "borderRadius": 4,
+          "borderWidth": 0.5,
+          "overflow": "hidden",
+        },
+        {
+          "backgroundColor": "#E4E7EA",
+          "borderColor": "#EBECEF",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "padding": 12,
+          },
+          {
+            "backgroundColor": "#FFFFFF",
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flex": 1,
+            "flexDirection": "row",
+            "flexWrap": "wrap",
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "marginHorizontal": 4,
+            }
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 4,
+                  "height": 28,
+                  "justifyContent": "center",
+                  "width": 28,
+                },
+                {
+                  "backgroundColor": "#F7F8FA",
+                },
+              ]
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#9B1325",
+                    "fontSize": 20,
+                  },
+                  [
+                    {
+                      "lineHeight": 20,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+        </View>
+        <View
+          style={
+            {
+              "marginHorizontal": 4,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "gap": 2,
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              <Text
+                style={
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <Text
+                  style={
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontWeight": "700",
+                      "textAlign": "left",
+                    }
+                  }
+                >
+                  <Text
+                    accessibilityLabel="Voice call failed"
+                    style={
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                        {
+                          "fontSize": 14,
+                        },
+                      ]
+                    }
+                  >
+                    Voice call failed
                   </Text>
                 </Text>
               </Text>
@@ -1801,11 +2233,11 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 20,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 20,
                   },
                   undefined,
                 ],
@@ -1852,11 +2284,11 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
               [
                 {
                   "color": "#8E6300",
-                  "fontSize": 24,
+                  "fontSize": 20,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 20,
                   },
                   undefined,
                 ],
@@ -1903,11 +2335,11 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
               [
                 {
                   "color": "#8E6300",
-                  "fontSize": 24,
+                  "fontSize": 20,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 20,
                   },
                   undefined,
                 ],
@@ -1954,11 +2386,11 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
               [
                 {
                   "color": "#9B1325",
-                  "fontSize": 24,
+                  "fontSize": 20,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 20,
                   },
                   undefined,
                 ],
@@ -1971,7 +2403,7 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
               ]
             }
           >
-            
+            
           </Text>
         </View>
       </View>
@@ -2043,11 +2475,11 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
             [
               {
                 "color": "#2F343D",
-                "fontSize": 24,
+                "fontSize": 20,
               },
               [
                 {
-                  "lineHeight": 24,
+                  "lineHeight": 20,
                 },
                 undefined,
               ],
@@ -2077,11 +2509,11 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
             [
               {
                 "color": "#8E6300",
-                "fontSize": 24,
+                "fontSize": 20,
               },
               [
                 {
-                  "lineHeight": 24,
+                  "lineHeight": 20,
                 },
                 undefined,
               ],
@@ -2111,11 +2543,11 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
             [
               {
                 "color": "#8E6300",
-                "fontSize": 24,
+                "fontSize": 20,
               },
               [
                 {
-                  "lineHeight": 24,
+                  "lineHeight": 20,
                 },
                 undefined,
               ],
@@ -2145,11 +2577,11 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
             [
               {
                 "color": "#D40C26",
-                "fontSize": 24,
+                "fontSize": 20,
               },
               [
                 {
-                  "lineHeight": 24,
+                  "lineHeight": 20,
                 },
                 undefined,
               ],
@@ -2162,7 +2594,7 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
             ]
           }
         >
-          
+          
         </Text>
       </View>
       <View
@@ -2179,11 +2611,11 @@ exports[`Story Snapshots: InfoCardIcons should match snapshot 1`] = `
             [
               {
                 "color": "#6C727A",
-                "fontSize": 24,
+                "fontSize": 20,
               },
               [
                 {
-                  "lineHeight": 24,
+                  "lineHeight": 20,
                 },
                 undefined,
               ],
@@ -2258,11 +2690,11 @@ exports[`Story Snapshots: InfoCardLongText should match snapshot 1`] = `
             [
               {
                 "color": "#8E6300",
-                "fontSize": 24,
+                "fontSize": 20,
               },
               [
                 {
-                  "lineHeight": 24,
+                  "lineHeight": 20,
                 },
                 undefined,
               ],
@@ -2303,7 +2735,7 @@ exports[`Story Snapshots: InfoCardLongText should match snapshot 1`] = `
             ]
           }
         >
-          This is a long info card message that should wrap across multiple lines to validate row alignment and spacing.
+          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
         </Text>
       </View>
     </View>
@@ -2357,7 +2789,7 @@ exports[`Story Snapshots: InfoCardLongText should match snapshot 1`] = `
             ]
           }
         >
-          No action on this row
+          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
         </Text>
       </View>
     </View>

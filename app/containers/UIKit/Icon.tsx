@@ -6,11 +6,7 @@ import { useTheme } from '../../theme';
 import { type IIcon } from './interfaces';
 
 const iconAliases: Record<string, string> = {
-	'phone-off': 'phone-end',
-	'phone-question-mark': 'phone-issue',
-	clock: 'clock-filled',
-	'arrow-forward': 'arrow-right',
-	info: 'info'
+	'phone-end': 'phone-off'
 };
 
 const styles = StyleSheet.create({
@@ -53,7 +49,7 @@ export const Icon = ({ element }: { element: IIcon }) => {
 	const { colors } = useTheme();
 	const { icon, variant = 'default', framed } = element;
 	const color = getIconColor(variant, colors, framed);
-	const renderedIcon = <CustomIcon name={resolveIconName(icon)} size={24} color={color} />;
+	const renderedIcon = <CustomIcon name={resolveIconName(icon)} size={20} color={color} />;
 
 	if (!framed) {
 		return renderedIcon;
