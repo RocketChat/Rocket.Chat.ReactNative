@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, TextInput, TouchableWithoutFeedback, useWindowDimensions, View } from 'react-native';
+import { StyleSheet, TouchableWithoutFeedback, useWindowDimensions, View } from 'react-native';
 import { type NavigationContainerProps } from '@react-navigation/core';
 import { useKeyboard } from '@react-native-community/hooks';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -26,30 +26,15 @@ const styles = StyleSheet.create({
 	},
 	backdrop: {
 		...StyleSheet.absoluteFillObject
-	},
-	focusTrap: {
-		position: 'absolute',
-		width: 1,
-		height: 1,
-		opacity: 0
 	}
 });
 
 export const ModalContainer = ({ navigation, children, theme }: IModalContainer): JSX.Element => {
 	'use memo';
 
-	const focusTrapRef = React.useRef<TextInput>(null);
 	const { keyboardHeight, keyboardShown } = useKeyboard();
 	const { height } = useWindowDimensions();
 	const modalHeight = sharedStyles.modalFormSheet.height;
-
-	React.useEffect(() => {
-		if (!isAndroid) {
-			return;
-		}
-		const id = requestAnimationFrame(() => focusTrapRef.current?.focus());
-		return () => cancelAnimationFrame(id);
-	}, []);
 
 	let heightModal: number;
 
@@ -62,10 +47,7 @@ export const ModalContainer = ({ navigation, children, theme }: IModalContainer)
 	}
 
 	return (
-		<View
-			style={[styles.root, { backgroundColor: `${themes[theme].backdropColor}70` }]}
-			accessibilityViewIsModal
-			importantForAccessibility='yes'>
+		<View style={[styles.root, { backgroundColor: `${themes[theme].backdropColor}70` }]}>
 			<TouchableWithoutFeedback onPress={() => navigation.pop()}>
 				<View style={styles.backdrop} />
 			</TouchableWithoutFeedback>
@@ -74,18 +56,6 @@ export const ModalContainer = ({ navigation, children, theme }: IModalContainer)
 					...sharedStyles.modalFormSheet,
 					height: heightModal
 				}}>
-				{isAndroid ? (
-					<TextInput
-						ref={focusTrapRef}
-						style={styles.focusTrap}
-						accessibilityElementsHidden
-						importantForAccessibility='no'
-						autoFocus
-						showSoftInputOnFocus={false}
-						caretHidden
-						value=''
-					/>
-				) : null}
 				{children}
 			</View>
 		</View>
