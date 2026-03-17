@@ -13,7 +13,13 @@ export const Handle = ({ onPress }: { onPress: () => void }) => {
 
 	// We should use Pressable from gesture-handler to avoid issues with the keyboard
 	return (
-		<Pressable onPress={onPress} style={styles.handle} testID='action-sheet-handle'>
+		<Pressable
+			onPress={onPress}
+			style={styles.handle}
+			testID='action-sheet-handle'
+			accessibilityRole='button'
+			accessibilityLabel='Close action sheet'
+			accessibilityHint='Dismisses the action sheet'>
 			<View style={[styles.handleIndicator, { backgroundColor: themes[theme].fontSecondaryInfo }]} />
 		</Pressable>
 	);

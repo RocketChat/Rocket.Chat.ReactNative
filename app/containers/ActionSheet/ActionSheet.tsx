@@ -41,7 +41,6 @@ const ActionSheet = React.memo(
 				clearTimeout(presentTimerRef.current);
 				presentTimerRef.current = null;
 			}
-			onCloseSnapshotRef.current = data?.onClose;
 			sheetRef.current?.dismiss();
 			Keyboard.dismiss();
 			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -107,7 +106,7 @@ const ActionSheet = React.memo(
 
 		const hasOptions = !!data?.options?.length;
 		const hasSnaps = !!effectiveSnaps?.length;
-		const disableContentPanning = data?.enableContentPanningGesture === false || !scrollEnabled;
+		const disableContentPanning = data?.enableContentPanningGesture === false;
 		const isScrollable = hasOptions || (hasSnaps && !disableContentPanning);
 
 		const contentMinHeight =
