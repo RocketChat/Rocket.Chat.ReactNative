@@ -106,8 +106,14 @@ export const forgotPassword = (email: string) =>
 	// RC 0.64.0
 	sdk.post('users.forgotPassword', { email });
 
-export const sendConfirmationEmail = (email: string): Promise<{ message: string; success: boolean }> =>
-	sdk.methodCallWrapper('sendConfirmationEmail', email);
+export const sendConfirmationEmail = (email: string): Promise<{ success: boolean }> => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.4.0')) {
+		return sdk.post('users.sendConfirmationEmail', { email });
+	}
+	// Method removed in 8.0.0
+	return sdk.methodCallWrapper('sendConfirmationEmail', email);
+};
 
 export const spotlight = (
 	search: string,
@@ -411,12 +417,15 @@ export const getTeamListRoom = ({
 };
 
 export const closeLivechat = (rid: string, comment?: string, tags?: string[]) => {
-	// RC 3.2.0
+	const serverVersion = reduxStore.getState().server.version;
 	let params;
 	if (tags && tags?.length) {
 		params = { tags };
 	}
-	// RC 0.29.0
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.0.0')) {
+		return sdk.post('livechat/room.close', { roomId: rid, comment, ...params });
+	}
+	// Method removed in 8.0.0
 	return sdk.methodCallWrapper('livechat:closeRoom', rid, comment, { clientAction: true, ...params });
 };
 
@@ -443,9 +452,14 @@ export const returnLivechat = (rid: string, departmentId?: string): Promise<any>
 
 export const onHoldLivechat = (roomId: string) => sdk.post('livechat/room.onHold', { roomId });
 
-export const forwardLivechat = (transferData: any) =>
-	// RC 0.36.0
-	sdk.methodCallWrapper('livechat:transfer', transferData);
+export const forwardLivechat = (transferData: any) => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.1.0')) {
+		return sdk.post('livechat/room.forward', transferData);
+	}
+	// Method removed in 8.0.0
+	return sdk.methodCallWrapper('livechat:transfer', transferData);
+};
 
 export const getDepartmentInfo = (departmentId: string) =>
 	// RC 2.2.0
@@ -489,9 +503,18 @@ export const getRoutingConfig = async (): Promise<{
 	return sdk.methodCallWrapper('livechat:getRoutingConfig');
 };
 
-export const getTagsList = (): Promise<ILivechatTag[]> =>
-	// RC 2.0.0
-	sdk.methodCallWrapper('livechat:getTagsList');
+export const getTagsList = async (): Promise<ILivechatTag[]> => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.2.0')) {
+		const result = await sdk.get('livechat/tags');
+		if (result.success) {
+			return result.tags || [];
+		}
+		return [];
+	}
+	// Method removed in 8.0.0
+	return sdk.methodCallWrapper('livechat:getTagsList');
+};
 
 export const getAgentDepartments = (uid: string) =>
 	// RC 2.4.0

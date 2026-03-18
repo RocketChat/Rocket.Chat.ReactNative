@@ -140,7 +140,10 @@ export type OmnichannelEndpoints = {
 	};
 
 	'livechat/inquiries.returnAsInquiry': {
-		POST: (params: { roomId: string; departmentId?: string }) => boolean;
+		POST: (params: { roomId: string; departmentId?: string }) => {
+			result: boolean;
+			success: boolean;
+		};
 	};
 
 	'livechat/rooms': {
@@ -250,5 +253,25 @@ export type OmnichannelEndpoints = {
 				slaId?: string;
 			};
 		}) => void;
+	};
+	'livechat/agent.status': {
+		POST: (params: { agentId?: string }) => void;
+	};
+	'livechat/room.close': {
+		POST: (params: { roomId: string; comment?: string; tags?: string[] }) => void;
+	};
+	'livechat/room.forward': {
+		POST: (params: { roomId: string; userId?: string; departmentId?: string; guestId?: string }) => void;
+	};
+	'livechat/tags': {
+		GET: () => {
+			tags: ILivechatTag[];
+			success: boolean;
+		};
+	};
+	'livechat/room.resumeOnHold': {
+		POST: (params: { roomId: string }) => {
+			success: boolean;
+		};
 	};
 };
