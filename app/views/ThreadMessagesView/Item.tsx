@@ -88,7 +88,7 @@ const Item = ({ item, useRealName, user, badgeColor, onPress, toggleFollowThread
 						<Text style={[styles.time, { color: themes[theme].fontSecondaryInfo }]}>{time}</Text>
 					</View>
 					<View style={styles.messageContainer}>
-						<MarkdownPreview msg={makeThreadName(item)} numberOfLines={2} style={[styles.markdown]} />
+						<MarkdownPreview msg={makeThreadName(item)} numberOfLines={2} style={styles.markdown} />
 						{badgeColor ? <View style={[styles.badge, { backgroundColor: badgeColor }]} /> : null}
 					</View>
 					<ThreadDetails item={item} user={user} toggleFollowThread={toggleFollowThread} style={styles.threadDetails} />
