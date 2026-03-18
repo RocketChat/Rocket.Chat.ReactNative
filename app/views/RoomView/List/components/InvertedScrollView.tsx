@@ -33,17 +33,7 @@ const styles = StyleSheet.create({
 });
 
 const InvertedScrollView = forwardRef<ScrollView, InvertedScrollViewProps>((props, ref) => {
-	const {
-		children,
-		contentContainerStyle,
-		onContentSizeChange,
-		removeClippedSubviews,
-		maintainVisibleContentPosition,
-		snapToAlignment,
-		stickyHeaderIndices,
-		horizontal,
-		...rest
-	} = props;
+	const { children, horizontal, ...rest } = props;
 	const ContentView = NativeInvertedScrollContentView as React.ComponentType<
 		ViewProps & { removeClippedSubviews?: boolean; isInvertedContent?: boolean; exitFocusNativeId?: string }
 	>;
