@@ -257,8 +257,17 @@ export type OmnichannelEndpoints = {
 	'livechat/agent.status': {
 		POST: (params: { agentId?: string }) => void;
 	};
-	'livechat/room.close': {
-		POST: (params: { roomId: string; comment?: string; tags?: string[] }) => void;
+	'livechat/room.closeByUser': {
+		POST: (params: {
+			rid: string;
+			comment?: string;
+			forceClose?: boolean;
+			tags?: string[];
+			generateTranscriptPdf?: boolean;
+			transcriptEmail?: { sendToVisitor: boolean; requestData?: { email?: string; subject?: string } };
+		}) => {
+			success: boolean;
+		};
 	};
 	'livechat/room.forward': {
 		POST: (params: { roomId: string; userId?: string; departmentId?: string; guestId?: string }) => void;

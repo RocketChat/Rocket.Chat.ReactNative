@@ -422,8 +422,8 @@ export const closeLivechat = (rid: string, comment?: string, tags?: string[]) =>
 	if (tags && tags?.length) {
 		params = { tags };
 	}
-	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.0.0')) {
-		return sdk.post('livechat/room.close', { roomId: rid, comment, ...params });
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.0.0')) {
+		return sdk.post('livechat/room.closeByUser', { rid, comment, ...params });
 	}
 	// Method removed in 8.0.0
 	return sdk.methodCallWrapper('livechat:closeRoom', rid, comment, { clientAction: true, ...params });
