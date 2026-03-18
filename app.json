@@ -1,6 +1,4 @@
 {
-  "name": "RocketChatRN",
-  "plugins": [
-    "expo-font"
-  ]
+	"name": "RocketChatRN",
+	"plugins": ["expo-font"]
 }
