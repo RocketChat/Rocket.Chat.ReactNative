@@ -141,18 +141,29 @@ export async function triggerAction({
 			throw new Error(`Failed to trigger action: ${result.status}`);
 		}
 
-		try {
-			const { type: interactionType, ...data } = await result.json();
-			const modalType = toServerModalInteractionType(interactionType);
-			if (!modalType || modalType === ModalActions.CLOSE) {
-				return ModalActions.CLOSE;
-			}
-
-			return handlePayloadUserInteraction(modalType, data);
-		} catch {
-			// modal.close has no body, so result.json will fail
-			// but it returns ok status
+		const text = await result.text();
+		if (!text || text.trim() === '') {
+			// modal.close has no body, but returns ok status
+			return ModalActions.CLOSE;
 		}
+
+		let parsed: { type?: string; [key: string]: unknown };
+		try {
+			parsed = JSON.parse(text);
+		} catch {
+			throw new Error('Invalid JSON response from server');
+		}
+
+		const { type: interactionType, ...data } = parsed;
+		const modalType = toServerModalInteractionType(interactionType ?? '');
+		if (!modalType) {
+			throw new Error(`Unknown modal interaction type: ${interactionType ?? 'undefined'}`);
+		}
+		if (modalType === ModalActions.CLOSE) {
+			return ModalActions.CLOSE;
+		}
+
+		return handlePayloadUserInteraction(modalType, data as THandledServerPayload);
 	} catch (e) {
 		throw e instanceof Error ? e : new Error('Failed to trigger action');
 	} finally {

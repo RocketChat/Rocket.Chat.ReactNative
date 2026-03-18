@@ -81,12 +81,14 @@ describe('actions', () => {
 		it('handles modal.open response', async () => {
 			mockedFetch.mockResolvedValueOnce({
 				ok: true,
-				json: () =>
-					Promise.resolve({
-						type: ModalActions.OPEN,
-						triggerId: 'trigger-fixed-id',
-						view: { id: 'view-open-id' }
-					})
+				text: () =>
+					Promise.resolve(
+						JSON.stringify({
+							type: ModalActions.OPEN,
+							triggerId: 'trigger-fixed-id',
+							view: { id: 'view-open-id' }
+						})
+					)
 			} as Response);
 
 			const result = await triggerAction(actionInput);
@@ -114,12 +116,14 @@ describe('actions', () => {
 		it('handles modal.update response', async () => {
 			mockedFetch.mockResolvedValueOnce({
 				ok: true,
-				json: () =>
-					Promise.resolve({
-						type: ModalActions.UPDATE,
-						triggerId: 'trigger-fixed-id',
-						viewId: 'view-update-id'
-					})
+				text: () =>
+					Promise.resolve(
+						JSON.stringify({
+							type: ModalActions.UPDATE,
+							triggerId: 'trigger-fixed-id',
+							viewId: 'view-update-id'
+						})
+					)
 			} as Response);
 
 			const result = await triggerAction(actionInput);
@@ -139,12 +143,14 @@ describe('actions', () => {
 		it('handles errors response', async () => {
 			mockedFetch.mockResolvedValueOnce({
 				ok: true,
-				json: () =>
-					Promise.resolve({
-						type: ModalActions.ERRORS,
-						triggerId: 'trigger-fixed-id',
-						viewId: 'view-errors-id'
-					})
+				text: () =>
+					Promise.resolve(
+						JSON.stringify({
+							type: ModalActions.ERRORS,
+							triggerId: 'trigger-fixed-id',
+							viewId: 'view-errors-id'
+						})
+					)
 			} as Response);
 
 			const result = await triggerAction(actionInput);
@@ -164,10 +170,12 @@ describe('actions', () => {
 		it('returns modal.close for explicit close response', async () => {
 			mockedFetch.mockResolvedValueOnce({
 				ok: true,
-				json: () =>
-					Promise.resolve({
-						type: ModalActions.CLOSE
-					})
+				text: () =>
+					Promise.resolve(
+						JSON.stringify({
+							type: ModalActions.CLOSE
+						})
+					)
 			} as Response);
 
 			const result = await triggerAction(actionInput);
@@ -175,15 +183,15 @@ describe('actions', () => {
 			expect(result).toBe(ModalActions.CLOSE);
 		});
 
-		it('returns undefined for empty response body with ok status', async () => {
+		it('returns modal.close for empty response body with ok status', async () => {
 			mockedFetch.mockResolvedValueOnce({
 				ok: true,
-				json: () => Promise.reject(new Error('No JSON body'))
+				text: () => Promise.resolve('')
 			} as Response);
 
 			const result = await triggerAction(actionInput);
 
-			expect(result).toBeUndefined();
+			expect(result).toBe(ModalActions.CLOSE);
 		});
 
 		it('throws when request is not ok', async () => {
@@ -195,15 +203,41 @@ describe('actions', () => {
 			await expect(triggerAction(actionInput)).rejects.toThrow('Failed to trigger action: 500');
 		});
 
+		it('throws when response body is malformed JSON', async () => {
+			mockedFetch.mockResolvedValueOnce({
+				ok: true,
+				text: () => Promise.resolve('{invalid json}')
+			} as Response);
+
+			await expect(triggerAction(actionInput)).rejects.toThrow('Invalid JSON response from server');
+		});
+
+		it('throws when response has unknown modal interaction type', async () => {
+			mockedFetch.mockResolvedValueOnce({
+				ok: true,
+				text: () =>
+					Promise.resolve(
+						JSON.stringify({
+							type: 'unknown.legacy',
+							triggerId: 'trigger-fixed-id'
+						})
+					)
+			} as Response);
+
+			await expect(triggerAction(actionInput)).rejects.toThrow('Unknown modal interaction type: unknown.legacy');
+		});
+
 		it('invalidates trigger id after processing', async () => {
 			mockedFetch.mockResolvedValueOnce({
 				ok: true,
-				json: () =>
-					Promise.resolve({
-						type: ModalActions.UPDATE,
-						triggerId: 'trigger-fixed-id',
-						viewId: 'view-id'
-					})
+				text: () =>
+					Promise.resolve(
+						JSON.stringify({
+							type: ModalActions.UPDATE,
+							triggerId: 'trigger-fixed-id',
+							viewId: 'view-id'
+						})
+					)
 			} as Response);
 
 			await triggerAction(actionInput);
