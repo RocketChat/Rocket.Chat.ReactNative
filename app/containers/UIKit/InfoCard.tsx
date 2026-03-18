@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
 	row: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		padding: 12
+		padding: 16
 	},
 	rowContent: {
 		flex: 1,
@@ -77,7 +77,7 @@ export const InfoCard = ({ rows, parser, appId, blockId }: IInfoCard) => {
 	const { colors } = useTheme();
 
 	return (
-		<View style={[styles.card, { backgroundColor: colors.surfaceNeutral, borderColor: colors.strokeExtraLight }]}>
+		<View style={[styles.card, { backgroundColor: colors.surfaceTint, borderColor: colors.strokeExtraLight }]}>
 			{rows.map((row, index) => (
 				<View
 					key={`${blockId || 'info-card'}-${index}`}

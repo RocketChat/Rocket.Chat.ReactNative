@@ -2,13 +2,14 @@ import { View } from 'react-native';
 
 import MessageContext from '../message/Context';
 import { UiKitMessage } from '.';
-import { themes } from '../../lib/constants/colors';
+import { themes, colors } from '../../lib/constants/colors';
 import { longText } from '../../../.rnstorybook/utils';
 import {
 	BASE_ROW_HEIGHT,
 	BASE_ROW_HEIGHT_CONDENSED,
 	ResponsiveLayoutContext
 } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { ThemeContext } from '../../theme';
 
 const user = {
 	id: 'y8bd77ptZswPj3EW8',
@@ -17,38 +18,41 @@ const user = {
 };
 
 const baseUrl = 'https://open.rocket.chat';
+const theme = 'dark';
 
 export default {
 	title: 'UIKit/UiKitMessage',
 	decorators: [
 		(Story: any) => (
-			<ResponsiveLayoutContext.Provider
-				value={{
-					fontScale: 1,
-					fontScaleLimited: 1,
-					isLargeFontScale: false,
-					rowHeight: BASE_ROW_HEIGHT,
-					rowHeightCondensed: BASE_ROW_HEIGHT_CONDENSED,
-					width: 350,
-					height: 800
-				}}>
-				<MessageContext.Provider
+			<ThemeContext.Provider value={{ theme, colors: colors[theme] }}>
+				<ResponsiveLayoutContext.Provider
 					value={{
-						user,
-						baseUrl,
-						onPress: () => {},
-						onLongPress: () => {},
-						reactionInit: () => {},
-						onErrorPress: () => {},
-						replyBroadcast: () => {},
-						onReactionPress: () => {},
-						onDiscussionPress: () => {},
-						onReactionLongPress: () => {},
-						threadBadgeColor: themes.light.fontInfo
+						fontScale: 1,
+						fontScaleLimited: 1,
+						isLargeFontScale: false,
+						rowHeight: BASE_ROW_HEIGHT,
+						rowHeightCondensed: BASE_ROW_HEIGHT_CONDENSED,
+						width: 350,
+						height: 800
 					}}>
-					<Story />
-				</MessageContext.Provider>
-			</ResponsiveLayoutContext.Provider>
+					<MessageContext.Provider
+						value={{
+							user,
+							baseUrl,
+							onPress: () => {},
+							onLongPress: () => {},
+							reactionInit: () => {},
+							onErrorPress: () => {},
+							replyBroadcast: () => {},
+							onReactionPress: () => {},
+							onDiscussionPress: () => {},
+							onReactionLongPress: () => {},
+							threadBadgeColor: themes.light.fontInfo
+						}}>
+						<Story />
+					</MessageContext.Provider>
+				</ResponsiveLayoutContext.Provider>
+			</ThemeContext.Provider>
 		)
 	]
 };
@@ -567,14 +571,14 @@ export const InfoCard = () => (
 					{
 						background: 'default',
 						elements: [
-							{ type: 'icon', icon: 'phone-off', framed: true },
+							{ type: 'icon', icon: 'phone-off', framed: true, variant: 'secondary' },
 							{ type: 'mrkdwn', text: 'Call ended', i18n: { key: 'Call_ended_bold' } }
 						],
 						action: getInfoCardAction({ appId: 'media-call-core', blockId: 'ended-call', icon: 'info' })
 					},
 					{
 						background: 'secondary',
-						elements: [{ type: 'mrkdwn', text: '00:06' }]
+						elements: [{ type: 'mrkdwn', text: '*00:06*' }]
 					}
 				]
 			}
@@ -588,13 +592,13 @@ export const InfoCard = () => (
 					{
 						background: 'default',
 						elements: [
-							{ type: 'icon', icon: 'arrow-forward', framed: true },
+							{ type: 'icon', icon: 'arrow-forward', framed: true, variant: 'secondary' },
 							{ type: 'mrkdwn', text: 'Call transferred', i18n: { key: 'Call_transferred_bold' } }
 						]
 					},
 					{
 						background: 'secondary',
-						elements: [{ type: 'mrkdwn', text: '00:06' }]
+						elements: [{ type: 'mrkdwn', text: '*00:06*' }]
 					}
 				]
 			}
