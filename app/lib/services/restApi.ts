@@ -108,7 +108,7 @@ export const forgotPassword = (email: string) =>
 
 export const sendConfirmationEmail = (email: string): Promise<{ success: boolean }> => {
 	const serverVersion = reduxStore.getState().server.version;
-	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.4.0')) {
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.0.0')) {
 		return sdk.post('users.sendConfirmationEmail', { email });
 	}
 	// Method removed in 8.0.0
@@ -454,7 +454,7 @@ export const onHoldLivechat = (roomId: string) => sdk.post('livechat/room.onHold
 
 export const forwardLivechat = (transferData: any) => {
 	const serverVersion = reduxStore.getState().server.version;
-	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.1.0')) {
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.0.0')) {
 		return sdk.post('livechat/room.forward', transferData);
 	}
 	// Method removed in 8.0.0
@@ -505,7 +505,7 @@ export const getRoutingConfig = async (): Promise<{
 
 export const getTagsList = async (): Promise<ILivechatTag[]> => {
 	const serverVersion = reduxStore.getState().server.version;
-	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.2.0')) {
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.0.0')) {
 		const result = await sdk.get('livechat/tags');
 		if (result.success) {
 			return result.tags || [];
