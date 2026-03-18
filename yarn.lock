@@ -4619,9 +4619,9 @@
   dependencies:
     tldts "~5.7.112"
 
-"@rocket.chat/mobile-crypto@RocketChat/rocket.chat-mobile-crypto#336bcba6ad61a139f351144c6ca1980c87ecad05":
+"@rocket.chat/mobile-crypto@RocketChat/rocket.chat-mobile-crypto#159d5f3e984345751bf4be196409604448be7131":
   version "0.2.2"
-  resolved "https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/336bcba6ad61a139f351144c6ca1980c87ecad05"
+  resolved "https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/159d5f3e984345751bf4be196409604448be7131"
 
 "@rocket.chat/sdk@RocketChat/Rocket.Chat.js.SDK#mobile":
   version "1.3.3-mobile"
