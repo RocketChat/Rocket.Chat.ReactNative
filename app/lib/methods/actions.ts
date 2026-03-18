@@ -40,7 +40,9 @@ export const handlePayloadUserInteraction = (
 		return;
 	}
 
-	if (!invalidateTriggerId(triggerId)) {
+	const triggerAppId = invalidateTriggerId(triggerId);
+	const payloadAppId = data.appId ?? triggerAppId;
+	if (!payloadAppId) {
 		return;
 	}
 
@@ -58,6 +60,7 @@ export const handlePayloadUserInteraction = (
 	if (type === ModalActions.ERRORS) {
 		EventEmitter.emit(viewId, {
 			...data,
+			appId: payloadAppId,
 			type,
 			triggerId,
 			viewId
@@ -68,8 +71,10 @@ export const handlePayloadUserInteraction = (
 	if (type === ModalActions.UPDATE) {
 		EventEmitter.emit(viewId, {
 			...data,
+			appId: payloadAppId,
 			type,
-			triggerId
+			triggerId,
+			viewId
 		} as any);
 		return ModalActions.UPDATE;
 	}
@@ -78,6 +83,7 @@ export const handlePayloadUserInteraction = (
 		Navigation.navigate('ModalBlockView', {
 			data: {
 				...data,
+				appId: payloadAppId,
 				triggerId,
 				viewId
 			}

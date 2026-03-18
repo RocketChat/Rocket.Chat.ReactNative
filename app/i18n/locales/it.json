@@ -80,7 +80,7 @@
   "Call_already_ended": "Chiamata già terminata!",
   "Call_ended_bold": "*Chiamata vocale terminata*",
   "Call_failed_bold": "*Chiamata vocale fallita*",
-  "Call_not_answered_bold": "*Chiamata vocale non risposta*",
+  "Call_not_answered_bold": "*Chiamata vocale senza risposta*",
   "Call_room_name": "Chiama {{roomName}}",
   "Call_transferred_bold": "*Chiamata vocale trasferita*",
   "Call_was_canceled_before_being_answered": "La chiamata è stata annullata prima di essere risposta.",
