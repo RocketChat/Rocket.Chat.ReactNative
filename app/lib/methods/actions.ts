@@ -94,59 +94,68 @@ export const handlePayloadUserInteraction = (
 	return ModalActions.CLOSE;
 };
 
-export function triggerAction({ type, actionId, appId, rid, mid, viewId, container, ...rest }: ITriggerAction) {
-	return new Promise<TModalAction | undefined | void>(async (resolve, reject) => {
-		const triggerId = generateTriggerId(appId);
-		const payload = rest.payload || rest.value;
+export async function triggerAction({
+	type,
+	actionId,
+	appId,
+	rid,
+	mid,
+	viewId,
+	container,
+	...rest
+}: ITriggerAction): Promise<TModalAction | undefined | void> {
+	const triggerId = generateTriggerId(appId);
+	const payload = rest.payload ?? rest.value;
+
+	try {
+		const { userId, authToken } = sdk.current.currentLogin;
+		const { host } = sdk.current.client;
+		const interaction = toUserInteraction({
+			type,
+			actionId,
+			appId,
+			rid,
+			mid,
+			viewId,
+			container,
+			payload,
+			blockId: rest.blockId,
+			value: rest.value,
+			view: rest.view,
+			isCleared: rest.isCleared,
+			triggerId
+		});
+
+		// we need to use fetch because this.sdk.post add /v1 to url
+		const result = await fetch(`${host}/api/apps/ui.interaction/${appId}/`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-Auth-Token': authToken,
+				'X-User-Id': userId
+			},
+			body: JSON.stringify(interaction)
+		});
+
+		if (!result.ok) {
+			throw new Error(`Failed to trigger action: ${result.status}`);
+		}
 
 		try {
-			const { userId, authToken } = sdk.current.currentLogin;
-			const { host } = sdk.current.client;
-			const interaction = toUserInteraction({
-				type,
-				actionId,
-				appId,
-				rid,
-				mid,
-				viewId,
-				container,
-				payload,
-				blockId: rest.blockId,
-				value: rest.value,
-				view: rest.view,
-				isCleared: rest.isCleared,
-				triggerId
-			});
-
-			// we need to use fetch because this.sdk.post add /v1 to url
-			const result = await fetch(`${host}/api/apps/ui.interaction/${appId}/`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'X-Auth-Token': authToken,
-					'X-User-Id': userId
-				},
-				body: JSON.stringify(interaction)
-			});
-
-			try {
-				const { type: interactionType, ...data } = await result.json();
-				const modalType = toServerModalInteractionType(interactionType);
-				if (!modalType || modalType === ModalActions.CLOSE) {
-					return resolve(ModalActions.CLOSE);
-				}
-
-				return resolve(handlePayloadUserInteraction(modalType, data));
-			} catch (e) {
-				// modal.close has no body, so result.json will fail
-				// but it returns ok status
-				if (result.ok) {
-					return resolve();
-				}
+			const { type: interactionType, ...data } = await result.json();
+			const modalType = toServerModalInteractionType(interactionType);
+			if (!modalType || modalType === ModalActions.CLOSE) {
+				return ModalActions.CLOSE;
 			}
-		} catch (e) {
-			// do nothing
+
+			return handlePayloadUserInteraction(modalType, data);
+		} catch {
+			// modal.close has no body, so result.json will fail
+			// but it returns ok status
 		}
-		return reject();
-	});
+	} catch (e) {
+		throw e instanceof Error ? e : new Error('Failed to trigger action');
+	} finally {
+		invalidateTriggerId(triggerId);
+	}
 }
