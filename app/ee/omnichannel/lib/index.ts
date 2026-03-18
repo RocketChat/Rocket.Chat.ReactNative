@@ -53,5 +53,4 @@ class Omnichannel {
 	};
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const omnichannel = new Omnichannel();
+new Omnichannel();
