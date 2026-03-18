@@ -48,9 +48,11 @@ const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: bool
 		custom: require('./static/fonts/custom.ttf')
 	});
 
-	if (fontError) {
-		log(fontError);
-	}
+	useEffect(() => {
+		if (fontError) {
+			log(fontError);
+		}
+	}, [fontError]);
 
 	if ((!loaded && !fontError) || !root) {
 		return null;
