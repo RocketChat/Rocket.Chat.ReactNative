@@ -1,4 +1,5 @@
-import { View } from 'react-native';
+import { type JSX } from 'react';
+import { ScrollView, View } from 'react-native';
 
 import MessageContext from '../message/Context';
 import { UiKitMessage } from '.';
@@ -9,7 +10,7 @@ import {
 	BASE_ROW_HEIGHT_CONDENSED,
 	ResponsiveLayoutContext
 } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
-import { ThemeContext } from '../../theme';
+import { ThemeContext, type TSupportedThemes } from '../../theme';
 
 const user = {
 	id: 'y8bd77ptZswPj3EW8',
@@ -18,41 +19,38 @@ const user = {
 };
 
 const baseUrl = 'https://open.rocket.chat';
-const theme = 'dark';
 
 export default {
 	title: 'UIKit/UiKitMessage',
 	decorators: [
 		(Story: any) => (
-			<ThemeContext.Provider value={{ theme, colors: colors[theme] }}>
-				<ResponsiveLayoutContext.Provider
+			<ResponsiveLayoutContext.Provider
+				value={{
+					fontScale: 1,
+					fontScaleLimited: 1,
+					isLargeFontScale: false,
+					rowHeight: BASE_ROW_HEIGHT,
+					rowHeightCondensed: BASE_ROW_HEIGHT_CONDENSED,
+					width: 350,
+					height: 800
+				}}>
+				<MessageContext.Provider
 					value={{
-						fontScale: 1,
-						fontScaleLimited: 1,
-						isLargeFontScale: false,
-						rowHeight: BASE_ROW_HEIGHT,
-						rowHeightCondensed: BASE_ROW_HEIGHT_CONDENSED,
-						width: 350,
-						height: 800
+						user,
+						baseUrl,
+						onPress: () => {},
+						onLongPress: () => {},
+						reactionInit: () => {},
+						onErrorPress: () => {},
+						replyBroadcast: () => {},
+						onReactionPress: () => {},
+						onDiscussionPress: () => {},
+						onReactionLongPress: () => {},
+						threadBadgeColor: themes.light.fontInfo
 					}}>
-					<MessageContext.Provider
-						value={{
-							user,
-							baseUrl,
-							onPress: () => {},
-							onLongPress: () => {},
-							reactionInit: () => {},
-							onErrorPress: () => {},
-							replyBroadcast: () => {},
-							onReactionPress: () => {},
-							onDiscussionPress: () => {},
-							onReactionLongPress: () => {},
-							threadBadgeColor: themes.light.fontInfo
-						}}>
-						<Story />
-					</MessageContext.Provider>
-				</ResponsiveLayoutContext.Provider>
-			</ThemeContext.Provider>
+					<Story />
+				</MessageContext.Provider>
+			</ResponsiveLayoutContext.Provider>
 		)
 	]
 };
@@ -560,8 +558,14 @@ const getInfoCardAction = ({
 	}
 });
 
-export const InfoCard = () => (
-	<View style={{ padding: 10, gap: 10 }}>
+const ThemedStory = ({ theme, story }: { theme: TSupportedThemes; story: () => JSX.Element }) => (
+	<ThemeContext.Provider value={{ theme, colors: colors[theme] }}>
+		<View style={{ padding: 10, gap: 10, backgroundColor: colors[theme].surfaceTint }}>{story()}</View>
+	</ThemeContext.Provider>
+);
+
+const ThemedStoryInfoCardList = () => (
+	<>
 		{UiKitMessage([
 			{
 				type: 'info_card',
@@ -636,9 +640,17 @@ export const InfoCard = () => (
 				]
 			}
 		])}
-	</View>
+	</>
 );
-InfoCard.storyName = 'Info Card';
+export const InfoCard = () => (
+	<ScrollView>
+		<ThemedStory theme={'light'} story={ThemedStoryInfoCardList} />
+		<ThemedStory theme={'dark'} story={ThemedStoryInfoCardList} />
+		<ThemedStory theme={'black'} story={ThemedStoryInfoCardList} />
+	</ScrollView>
+);
+
+InfoCard.storyName = 'UIKit/UiKitMessage/Info Card';
 
 export const InfoCardIcons = () =>
 	UiKitMessage([
