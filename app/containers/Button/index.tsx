@@ -1,6 +1,5 @@
 import React from 'react';
-import { type StyleProp, StyleSheet, Text, type TextStyle, type ViewStyle } from 'react-native';
-import { Pressable, type PressableProps } from 'react-native-gesture-handler';
+import { type StyleProp, StyleSheet, Text, type TextStyle, type ViewStyle, Pressable, type PressableProps } from 'react-native';
 
 import { useTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';
