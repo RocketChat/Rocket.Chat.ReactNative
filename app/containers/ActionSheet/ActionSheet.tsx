@@ -23,7 +23,6 @@ const ActionSheet = React.memo(
 		const [data, setData] = useState<TActionSheetOptions>({} as TActionSheetOptions);
 		const [isVisible, setIsVisible] = useState(false);
 		const [contentHeight, setContentHeight] = useState(0);
-		const presentTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 		const onCloseSnapshotRef = useRef<TActionSheetOptions['onClose']>(undefined);
 
 		// TrueSheet detects the bottom inset for Android 16 and iOS
@@ -37,30 +36,18 @@ const ActionSheet = React.memo(
 		};
 
 		const hide = () => {
-			if (presentTimerRef.current) {
-				clearTimeout(presentTimerRef.current);
-				presentTimerRef.current = null;
-			}
 			sheetRef.current?.dismiss();
 			Keyboard.dismiss();
 			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 		};
 
 		const show = (options: TActionSheetOptions) => {
-			// Clear any existing present timer to prevent stale presents
-			if (presentTimerRef.current) {
-				clearTimeout(presentTimerRef.current);
-				presentTimerRef.current = null;
-			}
 			setData(options);
 			setIsVisible(true);
 			Keyboard.dismiss();
 			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 			onCloseSnapshotRef.current = options.onClose;
-			presentTimerRef.current = setTimeout(() => {
-				presentTimerRef.current = null;
-				sheetRef.current?.present();
-			}, 200);
+			sheetRef.current?.present();
 		};
 
 		useBackHandler(() => {
