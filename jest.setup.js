@@ -161,6 +161,11 @@ jest.mock('expo-device', () => ({
 	isDevice: true
 }));
 
+
+jest.mock('react-native-worklets', () =>
+	require('react-native-worklets/lib/module/mock')
+);
+
 jest.mock('@discord/bottom-sheet', () => {
 	const react = require('react-native');
 	return {
