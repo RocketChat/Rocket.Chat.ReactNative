@@ -25,7 +25,15 @@ interface IGoRoomItem {
 
 export type TGoRoomItem = IGoRoomItem | TSubscriptionModel | ISubscription | IOmnichannelRoomVisitor;
 
-const navigate = ({ item, isMasterDetail, ...props }: { item: TGoRoomItem; isMasterDetail: boolean }) => {
+const navigate = ({
+	item,
+	isMasterDetail,
+	...props
+}: {
+	item: TGoRoomItem;
+	isMasterDetail: boolean;
+	focusHeaderOnOpen?: boolean;
+}) => {
 	const routeParams = {
 		rid: item.rid,
 		name: getRoomTitle(item),
@@ -34,7 +42,8 @@ const navigate = ({ item, isMasterDetail, ...props }: { item: TGoRoomItem; isMas
 		room: item,
 		visitor: item.visitor,
 		roomUserId: getUidDirectMessage(item),
-		...props
+		...props,
+		...(isMasterDetail && props.focusHeaderOnOpen ? { focusHeaderOnOpen: true } : {})
 	};
 
 	const currentRoute = Navigation.getCurrentRoute() as any;
@@ -91,6 +100,7 @@ export const goRoom = async ({
 	isMasterDetail: boolean;
 	jumpToMessageId?: string;
 	usedCannedResponse?: string;
+	focusHeaderOnOpen?: boolean;
 }): Promise<void> => {
 	if (!('id' in item) && item.t === SubscriptionType.DIRECT && item?.search) {
 		// if user is using the search we need first to join/create room

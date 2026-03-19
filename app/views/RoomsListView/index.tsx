@@ -73,7 +73,7 @@ const RoomsListView = memo(function RoomsListView() {
 
 		logEvent(events.RL_GO_ROOM);
 		stopSearch();
-		goRoom({ item, isMasterDetail });
+		goRoom({ item, isMasterDetail, focusHeaderOnOpen: true });
 	};
 
 	const renderItem = ({ item }: { item: IRoomItem }) => {

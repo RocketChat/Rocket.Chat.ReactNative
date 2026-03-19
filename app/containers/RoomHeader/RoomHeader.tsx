@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { AccessibilityInfo, findNodeHandle, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
@@ -83,6 +83,10 @@ interface IRoomHeader {
 	abacAttributes?: ISubscription['abacAttributes'];
 }
 
+export interface IRoomHeaderRef {
+	focus: () => void;
+}
+
 const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, scale }: TRoomHeaderSubTitle) => {
 	const { colors } = useTheme();
 	const fontSize = getSubTitleSize(scale);
@@ -131,27 +135,44 @@ const HeaderTitle = React.memo(({ title, tmid, prid, scale, testID }: TRoomHeade
 	return <MarkdownPreview msg={title} style={[styles.title, titleStyle]} testID={testID} />;
 });
 
-const Header = React.memo(
-	({
-		title,
-		subtitle,
-		parentTitle,
-		type,
-		status,
-		width,
-		height,
-		roomUserId,
-		prid,
-		tmid,
-		onPress,
-		isGroupChat,
-		teamMain,
-		testID,
-		usersTyping = [],
-		sourceType,
-		disabled,
-		abacAttributes
-	}: IRoomHeader) => {
+const Header = React.forwardRef<IRoomHeaderRef, IRoomHeader>(
+	(
+		{
+			title,
+			subtitle,
+			parentTitle,
+			type,
+			status,
+			width,
+			height,
+			roomUserId,
+			prid,
+			tmid,
+			onPress,
+			isGroupChat,
+			teamMain,
+			testID,
+			usersTyping = [],
+			sourceType,
+			disabled,
+			abacAttributes
+		}: IRoomHeader,
+		ref
+	) => {
+		const headerRef = React.useRef<View | null>(null);
+		React.useImperativeHandle(
+			ref,
+			() => ({
+				focus: () => {
+					const nodeHandle = headerRef.current ? findNodeHandle(headerRef.current) : null;
+					if (nodeHandle) {
+						AccessibilityInfo.setAccessibilityFocus(nodeHandle);
+					}
+				}
+			}),
+			[]
+		);
+
 		const statusAccessibilityLabel = useStatusAccessibilityLabel({
 			isGroupChat,
 			prid,
@@ -197,6 +218,7 @@ const Header = React.memo(
 
 		return (
 			<View
+				ref={headerRef}
 				style={[styles.container, { opacity: disabled ? 0.5 : 1, height: 36.9 * fontScale }]}
 				accessible
 				accessibilityLabel={accessibilityLabel}

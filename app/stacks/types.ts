@@ -41,6 +41,7 @@ export type ChatsStackParamList = {
 				jumpToThreadId?: string;
 				roomUserId?: string | null;
 				usedCannedResponse?: string;
+				focusHeaderOnOpen?: boolean;
 				status?: string;
 		  }
 		| undefined; // Navigates back to RoomView already on stack

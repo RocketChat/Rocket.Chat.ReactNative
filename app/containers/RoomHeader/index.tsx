@@ -3,7 +3,7 @@ import { shallowEqual, useSelector } from 'react-redux';
 
 import type { IApplicationState, TUserStatus, IOmnichannelSource, IVisitor, ISubscription } from '../../definitions';
 import I18n from '../../i18n';
-import RoomHeader from './RoomHeader';
+import RoomHeader, { type IRoomHeaderRef } from './RoomHeader';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 interface IRoomHeaderContainerProps {
@@ -25,76 +25,83 @@ interface IRoomHeaderContainerProps {
 }
 
 const RoomHeaderContainer = React.memo(
-	({
-		isGroupChat,
-		onPress,
-		parentTitle,
-		prid,
-		roomUserId,
-		subtitle: subtitleProp,
-		teamMain,
-		testID,
-		title,
-		tmid,
-		type,
-		sourceType,
-		visitor,
-		disabled,
-		abacAttributes
-	}: IRoomHeaderContainerProps) => {
-		let subtitle: string | undefined;
-		let statusVisitor: TUserStatus | undefined;
-		let statusText: string | undefined;
-		const { width, height } = useResponsiveLayout();
+	React.forwardRef<IRoomHeaderRef, IRoomHeaderContainerProps>(
+		(
+			{
+				isGroupChat,
+				onPress,
+				parentTitle,
+				prid,
+				roomUserId,
+				subtitle: subtitleProp,
+				teamMain,
+				testID,
+				title,
+				tmid,
+				type,
+				sourceType,
+				visitor,
+				disabled,
+				abacAttributes
+			}: IRoomHeaderContainerProps,
+			ref
+		) => {
+			let subtitle: string | undefined;
+			let statusVisitor: TUserStatus | undefined;
+			let statusText: string | undefined;
+			const { width, height } = useResponsiveLayout();
 
-		const connecting = useSelector((state: IApplicationState) => state.meteor.connecting || state.server.loading);
-		const usersTyping = useSelector((state: IApplicationState) => state.usersTyping, shallowEqual);
-		const connected = useSelector((state: IApplicationState) => state.meteor.connected);
-		const activeUser = useSelector(
-			(state: IApplicationState) => (roomUserId ? state.activeUsers?.[roomUserId] : undefined),
-			shallowEqual
-		);
+			const connecting = useSelector((state: IApplicationState) => state.meteor.connecting || state.server.loading);
+			const usersTyping = useSelector((state: IApplicationState) => state.usersTyping, shallowEqual);
+			const connected = useSelector((state: IApplicationState) => state.meteor.connected);
+			const activeUser = useSelector(
+				(state: IApplicationState) => (roomUserId ? state.activeUsers?.[roomUserId] : undefined),
+				shallowEqual
+			);
 
-		if (connecting) {
-			subtitle = I18n.t('Connecting');
-		} else if (!connected) {
-			subtitle = I18n.t('Waiting_for_network');
-		} else {
-			subtitle = subtitleProp;
-		}
-
-		if (connected) {
-			if ((type === 'd' || (tmid && roomUserId)) && activeUser) {
-				const { statusText: statusTextActiveUser } = activeUser;
-				statusText = statusTextActiveUser;
-			} else if (type === 'l' && visitor?.status) {
-				({ status: statusVisitor } = visitor);
+			if (connecting) {
+				subtitle = I18n.t('Connecting');
+			} else if (!connected) {
+				subtitle = I18n.t('Waiting_for_network');
+			} else {
+				subtitle = subtitleProp;
 			}
-		}
 
-		return (
-			<RoomHeader
-				roomUserId={roomUserId}
-				prid={prid}
-				tmid={tmid}
-				title={title}
-				subtitle={type === 'd' ? statusText : subtitle}
-				type={type}
-				teamMain={teamMain}
-				status={statusVisitor}
-				width={width}
-				height={height}
-				usersTyping={usersTyping}
-				parentTitle={parentTitle}
-				isGroupChat={isGroupChat}
-				testID={testID}
-				onPress={onPress}
-				sourceType={sourceType}
-				disabled={disabled}
-				abacAttributes={abacAttributes}
-			/>
-		);
-	}
+			if (connected) {
+				if ((type === 'd' || (tmid && roomUserId)) && activeUser) {
+					const { statusText: statusTextActiveUser } = activeUser;
+					statusText = statusTextActiveUser;
+				} else if (type === 'l' && visitor?.status) {
+					({ status: statusVisitor } = visitor);
+				}
+			}
+
+			return (
+				<RoomHeader
+					ref={ref}
+					roomUserId={roomUserId}
+					prid={prid}
+					tmid={tmid}
+					title={title}
+					subtitle={type === 'd' ? statusText : subtitle}
+					type={type}
+					teamMain={teamMain}
+					status={statusVisitor}
+					width={width}
+					height={height}
+					usersTyping={usersTyping}
+					parentTitle={parentTitle}
+					isGroupChat={isGroupChat}
+					testID={testID}
+					onPress={onPress}
+					sourceType={sourceType}
+					disabled={disabled}
+					abacAttributes={abacAttributes}
+				/>
+			);
+		}
+	)
 );
 
 export default RoomHeaderContainer;
+export type { IRoomHeaderRef };
