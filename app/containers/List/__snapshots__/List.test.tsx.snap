@@ -702,242 +702,34 @@ exports[`Story Snapshots: Icon should match snapshot 1`] = `
 `;
 
 exports[`Story Snapshots: ListItemWithRightContainerStyle should match snapshot 1`] = `
-<RNGestureHandlerButton
-  activeOpacity={1}
-  collapsable={false}
-  delayLongPress={600}
-  enabled={true}
-  handlerTag={1}
-  handlerType="NativeViewGestureHandler"
-  innerRef={null}
-  onActiveStateChange={[Function]}
-  onGestureHandlerEvent={[Function]}
-  onGestureHandlerStateChange={[Function]}
-  onPress={[Function]}
-  rippleColor="#E4E7EA"
-  style={
-    [
-      {
-        "backgroundColor": "#FFFFFF",
-        "borderRadius": undefined,
-        "margin": undefined,
-        "marginBottom": undefined,
-        "marginEnd": undefined,
-        "marginHorizontal": undefined,
-        "marginLeft": undefined,
-        "marginRight": undefined,
-        "marginStart": undefined,
-        "marginTop": undefined,
-        "marginVertical": undefined,
-      },
-      {
-        "cursor": undefined,
-      },
-    ]
-  }
-  underlayColor="#E4E7EA"
->
-  <View
-    collapsable={false}
-    style={
-      {
-        "backgroundColor": "#E4E7EA",
-        "borderBottomLeftRadius": undefined,
-        "borderBottomRightRadius": undefined,
-        "borderRadius": undefined,
-        "borderTopLeftRadius": undefined,
-        "borderTopRightRadius": undefined,
-        "bottom": 0,
-        "left": 0,
-        "opacity": 0,
-        "position": "absolute",
-        "right": 0,
-        "top": 0,
-      }
+<View
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": false,
+      "expanded": undefined,
+      "selected": undefined,
     }
-  />
-  <View
-    style={{}}
-  >
-    <View
-      accessibilityLabel="Chats All"
-      accessibilityRole="button"
-      accessible={true}
-      style={
-        [
-          {
-            "alignItems": "center",
-            "flex": 1,
-            "flexDirection": "row",
-            "justifyContent": "center",
-            "paddingHorizontal": 12,
-          },
-          undefined,
-          {
-            "height": 46,
-          },
-        ]
-      }
-    >
-      <View
-        style={
-          {
-            "paddingRight": 12,
-          }
-        }
-      >
-        <View
-          style={
-            [
-              {
-                "alignItems": "center",
-                "justifyContent": "center",
-              },
-              undefined,
-            ]
-          }
-        >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
-            style={
-              [
-                {
-                  "color": "#2F343D",
-                  "fontSize": 24,
-                },
-                [
-                  {
-                    "lineHeight": 24,
-                  },
-                  undefined,
-                ],
-                {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                {},
-              ]
-            }
-          >
-            
-          </Text>
-        </View>
-      </View>
-      <View
-        style={
-          {
-            "flex": 1,
-            "justifyContent": "center",
-          }
-        }
-      >
-        <View
-          style={
-            {
-              "alignItems": "center",
-              "flexDirection": "row",
-            }
-          }
-        >
-          <Text
-            style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "flex": 1,
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontWeight": "500",
-                  "textAlign": "left",
-                },
-                undefined,
-                {
-                  "color": "#2F343D",
-                },
-              ]
-            }
-          >
-            Chats
-          </Text>
-        </View>
-        <Text
-          numberOfLines={1}
-          style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 14,
-                "fontWeight": "400",
-                "textAlign": "left",
-              },
-              {
-                "color": "#6C727A",
-              },
-            ]
-          }
-        >
-          All
-        </Text>
-      </View>
-      <View
-        style={
-          [
-            {
-              "paddingLeft": 12,
-            },
-            {
-              "borderRadius": 4,
-              "borderWidth": 2,
-            },
-          ]
-        }
-      >
-        <View
-          style={
-            [
-              {
-                "alignItems": "center",
-                "justifyContent": "center",
-              },
-              undefined,
-            ]
-          }
-        >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
-            style={
-              [
-                {
-                  "color": "#2F343D",
-                  "fontSize": 24,
-                },
-                [
-                  {
-                    "lineHeight": 24,
-                  },
-                  undefined,
-                ],
-                {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                {},
-              ]
-            }
-          >
-            
-          </Text>
-        </View>
-      </View>
-    </View>
-  </View>
-</RNGestureHandlerButton>
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+/>
 `;
 
 exports[`Story Snapshots: Pressable should match snapshot 1`] = `
@@ -969,125 +761,34 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
         ]
       }
     />
-    <RNGestureHandlerButton
-      activeOpacity={1}
-      collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={2}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
-      rippleColor="#E4E7EA"
-      style={
-        [
-          {
-            "backgroundColor": "#FFFFFF",
-            "borderRadius": undefined,
-            "margin": undefined,
-            "marginBottom": undefined,
-            "marginEnd": undefined,
-            "marginHorizontal": undefined,
-            "marginLeft": undefined,
-            "marginRight": undefined,
-            "marginStart": undefined,
-            "marginTop": undefined,
-            "marginVertical": undefined,
-          },
-          {
-            "cursor": undefined,
-          },
-        ]
-      }
-      underlayColor="#E4E7EA"
-    >
-      <View
-        collapsable={false}
-        style={
-          {
-            "backgroundColor": "#E4E7EA",
-            "borderBottomLeftRadius": undefined,
-            "borderBottomRightRadius": undefined,
-            "borderRadius": undefined,
-            "borderTopLeftRadius": undefined,
-            "borderTopRightRadius": undefined,
-            "bottom": 0,
-            "left": 0,
-            "opacity": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          }
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
         }
-      />
-      <View
-        style={{}}
-      >
-        <View
-          accessibilityLabel="Press me"
-          accessibilityRole="button"
-          accessible={true}
-          style={
-            [
-              {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "row",
-                "justifyContent": "center",
-                "paddingHorizontal": 12,
-              },
-              undefined,
-              {
-                "height": 46,
-              },
-            ]
-          }
-        >
-          <View
-            style={
-              {
-                "flex": 1,
-                "justifyContent": "center",
-              }
-            }
-          >
-            <View
-              style={
-                {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                }
-              }
-            >
-              <Text
-                style={
-                  [
-                    {
-                      "backgroundColor": "transparent",
-                      "flex": 1,
-                      "flexShrink": 1,
-                      "fontFamily": "Inter",
-                      "fontSize": 16,
-                      "fontWeight": "500",
-                      "textAlign": "left",
-                    },
-                    undefined,
-                    {
-                      "color": "#2F343D",
-                    },
-                  ]
-                }
-              >
-                Press me
-              </Text>
-            </View>
-          </View>
-        </View>
-      </View>
-    </RNGestureHandlerButton>
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+    />
     <View
       style={
         [
@@ -1101,127 +802,34 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
         ]
       }
     />
-    <RNGestureHandlerButton
-      activeOpacity={1}
-      collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={3}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
-      rippleColor="#E4E7EA"
-      style={
-        [
-          {
-            "backgroundColor": "#FFFFFF",
-            "borderRadius": undefined,
-            "margin": undefined,
-            "marginBottom": undefined,
-            "marginEnd": undefined,
-            "marginHorizontal": undefined,
-            "marginLeft": undefined,
-            "marginRight": undefined,
-            "marginStart": undefined,
-            "marginTop": undefined,
-            "marginVertical": undefined,
-          },
-          {
-            "cursor": undefined,
-          },
-        ]
-      }
-      underlayColor="#E4E7EA"
-    >
-      <View
-        collapsable={false}
-        style={
-          {
-            "backgroundColor": "#E4E7EA",
-            "borderBottomLeftRadius": undefined,
-            "borderBottomRightRadius": undefined,
-            "borderRadius": undefined,
-            "borderTopLeftRadius": undefined,
-            "borderTopRightRadius": undefined,
-            "bottom": 0,
-            "left": 0,
-            "opacity": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          }
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
         }
-      />
-      <View
-        style={{}}
-      >
-        <View
-          accessibilityLabel="I'm disabled"
-          accessibilityRole="button"
-          accessible={true}
-          style={
-            [
-              {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "row",
-                "justifyContent": "center",
-                "paddingHorizontal": 12,
-              },
-              {
-                "opacity": 0.3,
-              },
-              {
-                "height": 46,
-              },
-            ]
-          }
-        >
-          <View
-            style={
-              {
-                "flex": 1,
-                "justifyContent": "center",
-              }
-            }
-          >
-            <View
-              style={
-                {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                }
-              }
-            >
-              <Text
-                style={
-                  [
-                    {
-                      "backgroundColor": "transparent",
-                      "flex": 1,
-                      "flexShrink": 1,
-                      "fontFamily": "Inter",
-                      "fontSize": 16,
-                      "fontWeight": "500",
-                      "textAlign": "left",
-                    },
-                    undefined,
-                    {
-                      "color": "#2F343D",
-                    },
-                  ]
-                }
-              >
-                I'm disabled
-              </Text>
-            </View>
-          </View>
-        </View>
-      </View>
-    </RNGestureHandlerButton>
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+    />
     <View
       style={
         [
@@ -1268,174 +876,34 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
         ]
       }
     />
-    <RNGestureHandlerButton
-      activeOpacity={1}
-      collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={4}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
-      rippleColor="#E4E7EA"
-      style={
-        [
-          {
-            "backgroundColor": "#FFFFFF",
-            "borderRadius": undefined,
-            "margin": undefined,
-            "marginBottom": undefined,
-            "marginEnd": undefined,
-            "marginHorizontal": undefined,
-            "marginLeft": undefined,
-            "marginRight": undefined,
-            "marginStart": undefined,
-            "marginTop": undefined,
-            "marginVertical": undefined,
-          },
-          {
-            "cursor": undefined,
-          },
-        ]
-      }
-      underlayColor="#E4E7EA"
-    >
-      <View
-        collapsable={false}
-        style={
-          {
-            "backgroundColor": "#E4E7EA",
-            "borderBottomLeftRadius": undefined,
-            "borderBottomRightRadius": undefined,
-            "borderRadius": undefined,
-            "borderTopLeftRadius": undefined,
-            "borderTopRightRadius": undefined,
-            "bottom": 0,
-            "left": 0,
-            "opacity": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          }
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
         }
-      />
-      <View
-        style={{}}
-      >
-        <View
-          accessibilityLabel="Option 1 Selected"
-          accessibilityRole="radio"
-          accessible={true}
-          style={
-            [
-              {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "row",
-                "justifyContent": "center",
-                "paddingHorizontal": 12,
-              },
-              undefined,
-              {
-                "height": 46,
-              },
-            ]
-          }
-        >
-          <View
-            style={
-              {
-                "flex": 1,
-                "justifyContent": "center",
-              }
-            }
-          >
-            <View
-              style={
-                {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                }
-              }
-            >
-              <Text
-                style={
-                  [
-                    {
-                      "backgroundColor": "transparent",
-                      "flex": 1,
-                      "flexShrink": 1,
-                      "fontFamily": "Inter",
-                      "fontSize": 16,
-                      "fontWeight": "500",
-                      "textAlign": "left",
-                    },
-                    undefined,
-                    {
-                      "color": "#2F343D",
-                    },
-                  ]
-                }
-              >
-                Option 1
-              </Text>
-            </View>
-          </View>
-          <View
-            style={
-              [
-                {
-                  "paddingLeft": 12,
-                },
-                {},
-              ]
-            }
-          >
-            <View
-              style={
-                [
-                  {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
-              }
-            >
-              <Text
-                allowFontScaling={false}
-                selectable={false}
-                style={
-                  [
-                    {
-                      "color": "#1D74F5",
-                      "fontSize": 24,
-                    },
-                    [
-                      {
-                        "lineHeight": 24,
-                      },
-                      undefined,
-                    ],
-                    {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    {},
-                  ]
-                }
-              >
-                
-              </Text>
-            </View>
-          </View>
-        </View>
-      </View>
-    </RNGestureHandlerButton>
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+    />
     <View
       style={
         [
@@ -1449,174 +917,34 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
         ]
       }
     />
-    <RNGestureHandlerButton
-      activeOpacity={1}
-      collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={5}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
-      rippleColor="#E4E7EA"
-      style={
-        [
-          {
-            "backgroundColor": "#FFFFFF",
-            "borderRadius": undefined,
-            "margin": undefined,
-            "marginBottom": undefined,
-            "marginEnd": undefined,
-            "marginHorizontal": undefined,
-            "marginLeft": undefined,
-            "marginRight": undefined,
-            "marginStart": undefined,
-            "marginTop": undefined,
-            "marginVertical": undefined,
-          },
-          {
-            "cursor": undefined,
-          },
-        ]
-      }
-      underlayColor="#E4E7EA"
-    >
-      <View
-        collapsable={false}
-        style={
-          {
-            "backgroundColor": "#E4E7EA",
-            "borderBottomLeftRadius": undefined,
-            "borderBottomRightRadius": undefined,
-            "borderRadius": undefined,
-            "borderTopLeftRadius": undefined,
-            "borderTopRightRadius": undefined,
-            "bottom": 0,
-            "left": 0,
-            "opacity": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          }
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
         }
-      />
-      <View
-        style={{}}
-      >
-        <View
-          accessibilityLabel="Option 2 Unselected"
-          accessibilityRole="radio"
-          accessible={true}
-          style={
-            [
-              {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "row",
-                "justifyContent": "center",
-                "paddingHorizontal": 12,
-              },
-              undefined,
-              {
-                "height": 46,
-              },
-            ]
-          }
-        >
-          <View
-            style={
-              {
-                "flex": 1,
-                "justifyContent": "center",
-              }
-            }
-          >
-            <View
-              style={
-                {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                }
-              }
-            >
-              <Text
-                style={
-                  [
-                    {
-                      "backgroundColor": "transparent",
-                      "flex": 1,
-                      "flexShrink": 1,
-                      "fontFamily": "Inter",
-                      "fontSize": 16,
-                      "fontWeight": "500",
-                      "textAlign": "left",
-                    },
-                    undefined,
-                    {
-                      "color": "#2F343D",
-                    },
-                  ]
-                }
-              >
-                Option 2
-              </Text>
-            </View>
-          </View>
-          <View
-            style={
-              [
-                {
-                  "paddingLeft": 12,
-                },
-                {},
-              ]
-            }
-          >
-            <View
-              style={
-                [
-                  {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
-              }
-            >
-              <Text
-                allowFontScaling={false}
-                selectable={false}
-                style={
-                  [
-                    {
-                      "color": "#9EA2A8",
-                      "fontSize": 24,
-                    },
-                    [
-                      {
-                        "lineHeight": 24,
-                      },
-                      undefined,
-                    ],
-                    {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    {},
-                  ]
-                }
-              >
-                
-              </Text>
-            </View>
-          </View>
-        </View>
-      </View>
-    </RNGestureHandlerButton>
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+    />
     <View
       style={
         [
@@ -1630,174 +958,34 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
         ]
       }
     />
-    <RNGestureHandlerButton
-      activeOpacity={1}
-      collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={6}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
-      rippleColor="#E4E7EA"
-      style={
-        [
-          {
-            "backgroundColor": "#FFFFFF",
-            "borderRadius": undefined,
-            "margin": undefined,
-            "marginBottom": undefined,
-            "marginEnd": undefined,
-            "marginHorizontal": undefined,
-            "marginLeft": undefined,
-            "marginRight": undefined,
-            "marginStart": undefined,
-            "marginTop": undefined,
-            "marginVertical": undefined,
-          },
-          {
-            "cursor": undefined,
-          },
-        ]
-      }
-      underlayColor="#E4E7EA"
-    >
-      <View
-        collapsable={false}
-        style={
-          {
-            "backgroundColor": "#E4E7EA",
-            "borderBottomLeftRadius": undefined,
-            "borderBottomRightRadius": undefined,
-            "borderRadius": undefined,
-            "borderTopLeftRadius": undefined,
-            "borderTopRightRadius": undefined,
-            "bottom": 0,
-            "left": 0,
-            "opacity": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          }
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
         }
-      />
-      <View
-        style={{}}
-      >
-        <View
-          accessibilityLabel="Option 3 Unselected"
-          accessibilityRole="radio"
-          accessible={true}
-          style={
-            [
-              {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "row",
-                "justifyContent": "center",
-                "paddingHorizontal": 12,
-              },
-              undefined,
-              {
-                "height": 46,
-              },
-            ]
-          }
-        >
-          <View
-            style={
-              {
-                "flex": 1,
-                "justifyContent": "center",
-              }
-            }
-          >
-            <View
-              style={
-                {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                }
-              }
-            >
-              <Text
-                style={
-                  [
-                    {
-                      "backgroundColor": "transparent",
-                      "flex": 1,
-                      "flexShrink": 1,
-                      "fontFamily": "Inter",
-                      "fontSize": 16,
-                      "fontWeight": "500",
-                      "textAlign": "left",
-                    },
-                    undefined,
-                    {
-                      "color": "#2F343D",
-                    },
-                  ]
-                }
-              >
-                Option 3
-              </Text>
-            </View>
-          </View>
-          <View
-            style={
-              [
-                {
-                  "paddingLeft": 12,
-                },
-                {},
-              ]
-            }
-          >
-            <View
-              style={
-                [
-                  {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
-              }
-            >
-              <Text
-                allowFontScaling={false}
-                selectable={false}
-                style={
-                  [
-                    {
-                      "color": "#9EA2A8",
-                      "fontSize": 24,
-                    },
-                    [
-                      {
-                        "lineHeight": 24,
-                      },
-                      undefined,
-                    ],
-                    {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    {},
-                  ]
-                }
-              >
-                
-              </Text>
-            </View>
-          </View>
-        </View>
-      </View>
-    </RNGestureHandlerButton>
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+    />
     <View
       style={
         [
@@ -1811,193 +999,34 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
         ]
       }
     />
-    <RNGestureHandlerButton
-      activeOpacity={1}
-      collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={7}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
-      rippleColor="#E4E7EA"
-      style={
-        [
-          {
-            "backgroundColor": "#FFFFFF",
-            "borderRadius": undefined,
-            "margin": undefined,
-            "marginBottom": undefined,
-            "marginEnd": undefined,
-            "marginHorizontal": undefined,
-            "marginLeft": undefined,
-            "marginRight": undefined,
-            "marginStart": undefined,
-            "marginTop": undefined,
-            "marginVertical": undefined,
-          },
-          {
-            "cursor": undefined,
-          },
-        ]
-      }
-      underlayColor="#E4E7EA"
-    >
-      <View
-        collapsable={false}
-        style={
-          {
-            "backgroundColor": "#E4E7EA",
-            "borderBottomLeftRadius": undefined,
-            "borderBottomRightRadius": undefined,
-            "borderRadius": undefined,
-            "borderTopLeftRadius": undefined,
-            "borderTopRightRadius": undefined,
-            "bottom": 0,
-            "left": 0,
-            "opacity": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          }
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
         }
-      />
-      <View
-        style={{}}
-      >
-        <View
-          accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries Selected"
-          accessibilityRole="radio"
-          accessible={true}
-          style={
-            [
-              {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "row",
-                "justifyContent": "center",
-                "paddingHorizontal": 12,
-              },
-              undefined,
-              {
-                "height": 46,
-              },
-            ]
-          }
-        >
-          <View
-            style={
-              {
-                "flex": 1,
-                "justifyContent": "center",
-              }
-            }
-          >
-            <View
-              style={
-                {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                }
-              }
-            >
-              <Text
-                style={
-                  [
-                    {
-                      "backgroundColor": "transparent",
-                      "flex": 1,
-                      "flexShrink": 1,
-                      "fontFamily": "Inter",
-                      "fontSize": 16,
-                      "fontWeight": "500",
-                      "textAlign": "left",
-                    },
-                    undefined,
-                    {
-                      "color": "#2F343D",
-                    },
-                  ]
-                }
-              >
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
-              </Text>
-            </View>
-            <Text
-              numberOfLines={1}
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
-                    "fontSize": 14,
-                    "fontWeight": "400",
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#6C727A",
-                  },
-                ]
-              }
-            >
-              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
-            </Text>
-          </View>
-          <View
-            style={
-              [
-                {
-                  "paddingLeft": 12,
-                },
-                {},
-              ]
-            }
-          >
-            <View
-              style={
-                [
-                  {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
-              }
-            >
-              <Text
-                allowFontScaling={false}
-                selectable={false}
-                style={
-                  [
-                    {
-                      "color": "#1D74F5",
-                      "fontSize": 24,
-                    },
-                    [
-                      {
-                        "lineHeight": 24,
-                      },
-                      undefined,
-                    ],
-                    {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    {},
-                  ]
-                }
-              >
-                
-              </Text>
-            </View>
-          </View>
-        </View>
-      </View>
-    </RNGestureHandlerButton>
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+    />
     <View
       style={
         [
@@ -3435,239 +2464,34 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
             ]
           }
         />
-        <RNGestureHandlerButton
-          activeOpacity={1}
-          collapsable={false}
-          delayLongPress={600}
-          enabled={true}
-          handlerTag={8}
-          handlerType="NativeViewGestureHandler"
-          innerRef={null}
-          onActiveStateChange={[Function]}
-          onGestureHandlerEvent={[Function]}
-          onGestureHandlerStateChange={[Function]}
-          onPress={[Function]}
-          rippleColor="#E4E7EA"
-          style={
-            [
-              {
-                "backgroundColor": "#FFFFFF",
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-              },
-              {
-                "cursor": undefined,
-              },
-            ]
-          }
-          underlayColor="#E4E7EA"
-        >
-          <View
-            collapsable={false}
-            style={
-              {
-                "backgroundColor": "#E4E7EA",
-                "borderBottomLeftRadius": undefined,
-                "borderBottomRightRadius": undefined,
-                "borderRadius": undefined,
-                "borderTopLeftRadius": undefined,
-                "borderTopRightRadius": undefined,
-                "bottom": 0,
-                "left": 0,
-                "opacity": 0,
-                "position": "absolute",
-                "right": 0,
-                "top": 0,
-              }
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": undefined,
             }
-          />
-          <View
-            style={{}}
-          >
-            <View
-              accessibilityLabel="Chats All"
-              accessibilityRole="button"
-              accessible={true}
-              style={
-                [
-                  {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                    "justifyContent": "center",
-                    "paddingHorizontal": 12,
-                  },
-                  undefined,
-                  {
-                    "height": 46,
-                  },
-                ]
-              }
-            >
-              <View
-                style={
-                  {
-                    "paddingRight": 12,
-                  }
-                }
-              >
-                <View
-                  style={
-                    [
-                      {
-                        "alignItems": "center",
-                        "justifyContent": "center",
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#2F343D",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-              </View>
-              <View
-                style={
-                  {
-                    "flex": 1,
-                    "justifyContent": "center",
-                  }
-                }
-              >
-                <View
-                  style={
-                    {
-                      "alignItems": "center",
-                      "flexDirection": "row",
-                    }
-                  }
-                >
-                  <Text
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "flex": 1,
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "textAlign": "left",
-                        },
-                        undefined,
-                        {
-                          "color": "#2F343D",
-                        },
-                      ]
-                    }
-                  >
-                    Chats
-                  </Text>
-                </View>
-                <Text
-                  numberOfLines={1}
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 14,
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#6C727A",
-                      },
-                    ]
-                  }
-                >
-                  All
-                </Text>
-              </View>
-              <View
-                style={
-                  [
-                    {
-                      "paddingLeft": 12,
-                    },
-                    {},
-                  ]
-                }
-              >
-                <View
-                  style={
-                    [
-                      {
-                        "alignItems": "center",
-                        "justifyContent": "center",
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#2F343D",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </View>
-        </RNGestureHandlerButton>
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+        />
         <View
           style={
             [
@@ -3681,241 +2505,34 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
             ]
           }
         />
-        <RNGestureHandlerButton
-          activeOpacity={1}
-          collapsable={false}
-          delayLongPress={600}
-          enabled={true}
-          handlerTag={9}
-          handlerType="NativeViewGestureHandler"
-          innerRef={null}
-          onActiveStateChange={[Function]}
-          onGestureHandlerEvent={[Function]}
-          onGestureHandlerStateChange={[Function]}
-          onPress={[Function]}
-          rippleColor="#E4E7EA"
-          style={
-            [
-              {
-                "backgroundColor": "#FFFFFF",
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-              },
-              {
-                "cursor": undefined,
-              },
-            ]
-          }
-          underlayColor="#E4E7EA"
-        >
-          <View
-            collapsable={false}
-            style={
-              {
-                "backgroundColor": "#E4E7EA",
-                "borderBottomLeftRadius": undefined,
-                "borderBottomRightRadius": undefined,
-                "borderRadius": undefined,
-                "borderTopLeftRadius": undefined,
-                "borderTopRightRadius": undefined,
-                "bottom": 0,
-                "left": 0,
-                "opacity": 0,
-                "position": "absolute",
-                "right": 0,
-                "top": 0,
-              }
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": undefined,
             }
-          />
-          <View
-            style={{}}
-          >
-            <View
-              accessibilityLabel="Chats All"
-              accessibilityRole="button"
-              accessible={true}
-              style={
-                [
-                  {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                    "justifyContent": "center",
-                    "paddingHorizontal": 12,
-                  },
-                  {
-                    "opacity": 0.3,
-                  },
-                  {
-                    "height": 46,
-                  },
-                ]
-              }
-            >
-              <View
-                style={
-                  {
-                    "paddingRight": 12,
-                  }
-                }
-              >
-                <View
-                  style={
-                    [
-                      {
-                        "alignItems": "center",
-                        "justifyContent": "center",
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#2F343D",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-              </View>
-              <View
-                style={
-                  {
-                    "flex": 1,
-                    "justifyContent": "center",
-                  }
-                }
-              >
-                <View
-                  style={
-                    {
-                      "alignItems": "center",
-                      "flexDirection": "row",
-                    }
-                  }
-                >
-                  <Text
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "flex": 1,
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "textAlign": "left",
-                        },
-                        undefined,
-                        {
-                          "color": "#2F343D",
-                        },
-                      ]
-                    }
-                  >
-                    Chats
-                  </Text>
-                </View>
-                <Text
-                  numberOfLines={1}
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 14,
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#6C727A",
-                      },
-                    ]
-                  }
-                >
-                  All
-                </Text>
-              </View>
-              <View
-                style={
-                  [
-                    {
-                      "paddingLeft": 12,
-                    },
-                    {},
-                  ]
-                }
-              >
-                <View
-                  style={
-                    [
-                      {
-                        "alignItems": "center",
-                        "justifyContent": "center",
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#2F343D",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </View>
-        </RNGestureHandlerButton>
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+        />
         <View
           style={
             [
@@ -4006,239 +2623,34 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
             ]
           }
         />
-        <RNGestureHandlerButton
-          activeOpacity={1}
-          collapsable={false}
-          delayLongPress={600}
-          enabled={true}
-          handlerTag={10}
-          handlerType="NativeViewGestureHandler"
-          innerRef={null}
-          onActiveStateChange={[Function]}
-          onGestureHandlerEvent={[Function]}
-          onGestureHandlerStateChange={[Function]}
-          onPress={[Function]}
-          rippleColor="#E4E7EA"
-          style={
-            [
-              {
-                "backgroundColor": "#FFFFFF",
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-              },
-              {
-                "cursor": undefined,
-              },
-            ]
-          }
-          underlayColor="#E4E7EA"
-        >
-          <View
-            collapsable={false}
-            style={
-              {
-                "backgroundColor": "#E4E7EA",
-                "borderBottomLeftRadius": undefined,
-                "borderBottomRightRadius": undefined,
-                "borderRadius": undefined,
-                "borderTopLeftRadius": undefined,
-                "borderTopRightRadius": undefined,
-                "bottom": 0,
-                "left": 0,
-                "opacity": 0,
-                "position": "absolute",
-                "right": 0,
-                "top": 0,
-              }
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": undefined,
             }
-          />
-          <View
-            style={{}}
-          >
-            <View
-              accessibilityLabel="Chats All"
-              accessibilityRole="button"
-              accessible={true}
-              style={
-                [
-                  {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                    "justifyContent": "center",
-                    "paddingHorizontal": 12,
-                  },
-                  undefined,
-                  {
-                    "height": 46,
-                  },
-                ]
-              }
-            >
-              <View
-                style={
-                  {
-                    "paddingRight": 12,
-                  }
-                }
-              >
-                <View
-                  style={
-                    [
-                      {
-                        "alignItems": "center",
-                        "justifyContent": "center",
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#2F343D",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-              </View>
-              <View
-                style={
-                  {
-                    "flex": 1,
-                    "justifyContent": "center",
-                  }
-                }
-              >
-                <View
-                  style={
-                    {
-                      "alignItems": "center",
-                      "flexDirection": "row",
-                    }
-                  }
-                >
-                  <Text
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "flex": 1,
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "textAlign": "left",
-                        },
-                        undefined,
-                        {
-                          "color": "#2F343D",
-                        },
-                      ]
-                    }
-                  >
-                    Chats
-                  </Text>
-                </View>
-                <Text
-                  numberOfLines={1}
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 14,
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#6C727A",
-                      },
-                    ]
-                  }
-                >
-                  All
-                </Text>
-              </View>
-              <View
-                style={
-                  [
-                    {
-                      "paddingLeft": 12,
-                    },
-                    {},
-                  ]
-                }
-              >
-                <View
-                  style={
-                    [
-                      {
-                        "alignItems": "center",
-                        "justifyContent": "center",
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#2F343D",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </View>
-        </RNGestureHandlerButton>
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+        />
         <View
           style={
             [
@@ -4252,241 +2664,34 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
             ]
           }
         />
-        <RNGestureHandlerButton
-          activeOpacity={1}
-          collapsable={false}
-          delayLongPress={600}
-          enabled={true}
-          handlerTag={11}
-          handlerType="NativeViewGestureHandler"
-          innerRef={null}
-          onActiveStateChange={[Function]}
-          onGestureHandlerEvent={[Function]}
-          onGestureHandlerStateChange={[Function]}
-          onPress={[Function]}
-          rippleColor="#E4E7EA"
-          style={
-            [
-              {
-                "backgroundColor": "#FFFFFF",
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-              },
-              {
-                "cursor": undefined,
-              },
-            ]
-          }
-          underlayColor="#E4E7EA"
-        >
-          <View
-            collapsable={false}
-            style={
-              {
-                "backgroundColor": "#E4E7EA",
-                "borderBottomLeftRadius": undefined,
-                "borderBottomRightRadius": undefined,
-                "borderRadius": undefined,
-                "borderTopLeftRadius": undefined,
-                "borderTopRightRadius": undefined,
-                "bottom": 0,
-                "left": 0,
-                "opacity": 0,
-                "position": "absolute",
-                "right": 0,
-                "top": 0,
-              }
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": undefined,
             }
-          />
-          <View
-            style={{}}
-          >
-            <View
-              accessibilityLabel="Chats All"
-              accessibilityRole="button"
-              accessible={true}
-              style={
-                [
-                  {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                    "justifyContent": "center",
-                    "paddingHorizontal": 12,
-                  },
-                  {
-                    "opacity": 0.3,
-                  },
-                  {
-                    "height": 46,
-                  },
-                ]
-              }
-            >
-              <View
-                style={
-                  {
-                    "paddingRight": 12,
-                  }
-                }
-              >
-                <View
-                  style={
-                    [
-                      {
-                        "alignItems": "center",
-                        "justifyContent": "center",
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#2F343D",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-              </View>
-              <View
-                style={
-                  {
-                    "flex": 1,
-                    "justifyContent": "center",
-                  }
-                }
-              >
-                <View
-                  style={
-                    {
-                      "alignItems": "center",
-                      "flexDirection": "row",
-                    }
-                  }
-                >
-                  <Text
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "flex": 1,
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "textAlign": "left",
-                        },
-                        undefined,
-                        {
-                          "color": "#2F343D",
-                        },
-                      ]
-                    }
-                  >
-                    Chats
-                  </Text>
-                </View>
-                <Text
-                  numberOfLines={1}
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 14,
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#6C727A",
-                      },
-                    ]
-                  }
-                >
-                  All
-                </Text>
-              </View>
-              <View
-                style={
-                  [
-                    {
-                      "paddingLeft": 12,
-                    },
-                    {},
-                  ]
-                }
-              >
-                <View
-                  style={
-                    [
-                      {
-                        "alignItems": "center",
-                        "justifyContent": "center",
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#2F343D",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </View>
-        </RNGestureHandlerButton>
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+        />
         <View
           style={
             [
@@ -4619,239 +2824,34 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
             ]
           }
         />
-        <RNGestureHandlerButton
-          activeOpacity={1}
-          collapsable={false}
-          delayLongPress={600}
-          enabled={true}
-          handlerTag={12}
-          handlerType="NativeViewGestureHandler"
-          innerRef={null}
-          onActiveStateChange={[Function]}
-          onGestureHandlerEvent={[Function]}
-          onGestureHandlerStateChange={[Function]}
-          onPress={[Function]}
-          rippleColor="#16181a"
-          style={
-            [
-              {
-                "backgroundColor": "#000000",
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-              },
-              {
-                "cursor": undefined,
-              },
-            ]
-          }
-          underlayColor="#16181a"
-        >
-          <View
-            collapsable={false}
-            style={
-              {
-                "backgroundColor": "#16181a",
-                "borderBottomLeftRadius": undefined,
-                "borderBottomRightRadius": undefined,
-                "borderRadius": undefined,
-                "borderTopLeftRadius": undefined,
-                "borderTopRightRadius": undefined,
-                "bottom": 0,
-                "left": 0,
-                "opacity": 0,
-                "position": "absolute",
-                "right": 0,
-                "top": 0,
-              }
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": undefined,
             }
-          />
-          <View
-            style={{}}
-          >
-            <View
-              accessibilityLabel="Chats All"
-              accessibilityRole="button"
-              accessible={true}
-              style={
-                [
-                  {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                    "justifyContent": "center",
-                    "paddingHorizontal": 12,
-                  },
-                  undefined,
-                  {
-                    "height": 46,
-                  },
-                ]
-              }
-            >
-              <View
-                style={
-                  {
-                    "paddingRight": 12,
-                  }
-                }
-              >
-                <View
-                  style={
-                    [
-                      {
-                        "alignItems": "center",
-                        "justifyContent": "center",
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#E4E7EA",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-              </View>
-              <View
-                style={
-                  {
-                    "flex": 1,
-                    "justifyContent": "center",
-                  }
-                }
-              >
-                <View
-                  style={
-                    {
-                      "alignItems": "center",
-                      "flexDirection": "row",
-                    }
-                  }
-                >
-                  <Text
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "flex": 1,
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "textAlign": "left",
-                        },
-                        undefined,
-                        {
-                          "color": "#E4E7EA",
-                        },
-                      ]
-                    }
-                  >
-                    Chats
-                  </Text>
-                </View>
-                <Text
-                  numberOfLines={1}
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 14,
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#9EA2A8",
-                      },
-                    ]
-                  }
-                >
-                  All
-                </Text>
-              </View>
-              <View
-                style={
-                  [
-                    {
-                      "paddingLeft": 12,
-                    },
-                    {},
-                  ]
-                }
-              >
-                <View
-                  style={
-                    [
-                      {
-                        "alignItems": "center",
-                        "justifyContent": "center",
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#E4E7EA",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </View>
-        </RNGestureHandlerButton>
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+        />
         <View
           style={
             [
@@ -4865,241 +2865,34 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
             ]
           }
         />
-        <RNGestureHandlerButton
-          activeOpacity={1}
-          collapsable={false}
-          delayLongPress={600}
-          enabled={true}
-          handlerTag={13}
-          handlerType="NativeViewGestureHandler"
-          innerRef={null}
-          onActiveStateChange={[Function]}
-          onGestureHandlerEvent={[Function]}
-          onGestureHandlerStateChange={[Function]}
-          onPress={[Function]}
-          rippleColor="#16181a"
-          style={
-            [
-              {
-                "backgroundColor": "#000000",
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-              },
-              {
-                "cursor": undefined,
-              },
-            ]
-          }
-          underlayColor="#16181a"
-        >
-          <View
-            collapsable={false}
-            style={
-              {
-                "backgroundColor": "#16181a",
-                "borderBottomLeftRadius": undefined,
-                "borderBottomRightRadius": undefined,
-                "borderRadius": undefined,
-                "borderTopLeftRadius": undefined,
-                "borderTopRightRadius": undefined,
-                "bottom": 0,
-                "left": 0,
-                "opacity": 0,
-                "position": "absolute",
-                "right": 0,
-                "top": 0,
-              }
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": undefined,
             }
-          />
-          <View
-            style={{}}
-          >
-            <View
-              accessibilityLabel="Chats All"
-              accessibilityRole="button"
-              accessible={true}
-              style={
-                [
-                  {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                    "justifyContent": "center",
-                    "paddingHorizontal": 12,
-                  },
-                  {
-                    "opacity": 0.3,
-                  },
-                  {
-                    "height": 46,
-                  },
-                ]
-              }
-            >
-              <View
-                style={
-                  {
-                    "paddingRight": 12,
-                  }
-                }
-              >
-                <View
-                  style={
-                    [
-                      {
-                        "alignItems": "center",
-                        "justifyContent": "center",
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#E4E7EA",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-              </View>
-              <View
-                style={
-                  {
-                    "flex": 1,
-                    "justifyContent": "center",
-                  }
-                }
-              >
-                <View
-                  style={
-                    {
-                      "alignItems": "center",
-                      "flexDirection": "row",
-                    }
-                  }
-                >
-                  <Text
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "flex": 1,
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "textAlign": "left",
-                        },
-                        undefined,
-                        {
-                          "color": "#E4E7EA",
-                        },
-                      ]
-                    }
-                  >
-                    Chats
-                  </Text>
-                </View>
-                <Text
-                  numberOfLines={1}
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 14,
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#9EA2A8",
-                      },
-                    ]
-                  }
-                >
-                  All
-                </Text>
-              </View>
-              <View
-                style={
-                  [
-                    {
-                      "paddingLeft": 12,
-                    },
-                    {},
-                  ]
-                }
-              >
-                <View
-                  style={
-                    [
-                      {
-                        "alignItems": "center",
-                        "justifyContent": "center",
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#E4E7EA",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </View>
-        </RNGestureHandlerButton>
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+        />
         <View
           style={
             [
@@ -5190,239 +2983,34 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
             ]
           }
         />
-        <RNGestureHandlerButton
-          activeOpacity={1}
-          collapsable={false}
-          delayLongPress={600}
-          enabled={true}
-          handlerTag={14}
-          handlerType="NativeViewGestureHandler"
-          innerRef={null}
-          onActiveStateChange={[Function]}
-          onGestureHandlerEvent={[Function]}
-          onGestureHandlerStateChange={[Function]}
-          onPress={[Function]}
-          rippleColor="#16181a"
-          style={
-            [
-              {
-                "backgroundColor": "#000000",
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-              },
-              {
-                "cursor": undefined,
-              },
-            ]
-          }
-          underlayColor="#16181a"
-        >
-          <View
-            collapsable={false}
-            style={
-              {
-                "backgroundColor": "#16181a",
-                "borderBottomLeftRadius": undefined,
-                "borderBottomRightRadius": undefined,
-                "borderRadius": undefined,
-                "borderTopLeftRadius": undefined,
-                "borderTopRightRadius": undefined,
-                "bottom": 0,
-                "left": 0,
-                "opacity": 0,
-                "position": "absolute",
-                "right": 0,
-                "top": 0,
-              }
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": undefined,
             }
-          />
-          <View
-            style={{}}
-          >
-            <View
-              accessibilityLabel="Chats All"
-              accessibilityRole="button"
-              accessible={true}
-              style={
-                [
-                  {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                    "justifyContent": "center",
-                    "paddingHorizontal": 12,
-                  },
-                  undefined,
-                  {
-                    "height": 46,
-                  },
-                ]
-              }
-            >
-              <View
-                style={
-                  {
-                    "paddingRight": 12,
-                  }
-                }
-              >
-                <View
-                  style={
-                    [
-                      {
-                        "alignItems": "center",
-                        "justifyContent": "center",
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#E4E7EA",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-              </View>
-              <View
-                style={
-                  {
-                    "flex": 1,
-                    "justifyContent": "center",
-                  }
-                }
-              >
-                <View
-                  style={
-                    {
-                      "alignItems": "center",
-                      "flexDirection": "row",
-                    }
-                  }
-                >
-                  <Text
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "flex": 1,
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "textAlign": "left",
-                        },
-                        undefined,
-                        {
-                          "color": "#E4E7EA",
-                        },
-                      ]
-                    }
-                  >
-                    Chats
-                  </Text>
-                </View>
-                <Text
-                  numberOfLines={1}
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 14,
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#9EA2A8",
-                      },
-                    ]
-                  }
-                >
-                  All
-                </Text>
-              </View>
-              <View
-                style={
-                  [
-                    {
-                      "paddingLeft": 12,
-                    },
-                    {},
-                  ]
-                }
-              >
-                <View
-                  style={
-                    [
-                      {
-                        "alignItems": "center",
-                        "justifyContent": "center",
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#E4E7EA",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </View>
-        </RNGestureHandlerButton>
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+        />
         <View
           style={
             [
@@ -5436,241 +3024,34 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
             ]
           }
         />
-        <RNGestureHandlerButton
-          activeOpacity={1}
-          collapsable={false}
-          delayLongPress={600}
-          enabled={true}
-          handlerTag={15}
-          handlerType="NativeViewGestureHandler"
-          innerRef={null}
-          onActiveStateChange={[Function]}
-          onGestureHandlerEvent={[Function]}
-          onGestureHandlerStateChange={[Function]}
-          onPress={[Function]}
-          rippleColor="#16181a"
-          style={
-            [
-              {
-                "backgroundColor": "#000000",
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-              },
-              {
-                "cursor": undefined,
-              },
-            ]
-          }
-          underlayColor="#16181a"
-        >
-          <View
-            collapsable={false}
-            style={
-              {
-                "backgroundColor": "#16181a",
-                "borderBottomLeftRadius": undefined,
-                "borderBottomRightRadius": undefined,
-                "borderRadius": undefined,
-                "borderTopLeftRadius": undefined,
-                "borderTopRightRadius": undefined,
-                "bottom": 0,
-                "left": 0,
-                "opacity": 0,
-                "position": "absolute",
-                "right": 0,
-                "top": 0,
-              }
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": undefined,
             }
-          />
-          <View
-            style={{}}
-          >
-            <View
-              accessibilityLabel="Chats All"
-              accessibilityRole="button"
-              accessible={true}
-              style={
-                [
-                  {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                    "justifyContent": "center",
-                    "paddingHorizontal": 12,
-                  },
-                  {
-                    "opacity": 0.3,
-                  },
-                  {
-                    "height": 46,
-                  },
-                ]
-              }
-            >
-              <View
-                style={
-                  {
-                    "paddingRight": 12,
-                  }
-                }
-              >
-                <View
-                  style={
-                    [
-                      {
-                        "alignItems": "center",
-                        "justifyContent": "center",
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#E4E7EA",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-              </View>
-              <View
-                style={
-                  {
-                    "flex": 1,
-                    "justifyContent": "center",
-                  }
-                }
-              >
-                <View
-                  style={
-                    {
-                      "alignItems": "center",
-                      "flexDirection": "row",
-                    }
-                  }
-                >
-                  <Text
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "flex": 1,
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "textAlign": "left",
-                        },
-                        undefined,
-                        {
-                          "color": "#E4E7EA",
-                        },
-                      ]
-                    }
-                  >
-                    Chats
-                  </Text>
-                </View>
-                <Text
-                  numberOfLines={1}
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 14,
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#9EA2A8",
-                      },
-                    ]
-                  }
-                >
-                  All
-                </Text>
-              </View>
-              <View
-                style={
-                  [
-                    {
-                      "paddingLeft": 12,
-                    },
-                    {},
-                  ]
-                }
-              >
-                <View
-                  style={
-                    [
-                      {
-                        "alignItems": "center",
-                        "justifyContent": "center",
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#E4E7EA",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </View>
-        </RNGestureHandlerButton>
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+        />
         <View
           style={
             [
@@ -5828,125 +3209,34 @@ exports[`Story Snapshots: WithCustomColors should match snapshot 1`] = `
         ]
       }
     />
-    <RNGestureHandlerButton
-      activeOpacity={1}
-      collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={16}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
-      rippleColor="#E4E7EA"
-      style={
-        [
-          {
-            "backgroundColor": "red",
-            "borderRadius": undefined,
-            "margin": undefined,
-            "marginBottom": undefined,
-            "marginEnd": undefined,
-            "marginHorizontal": undefined,
-            "marginLeft": undefined,
-            "marginRight": undefined,
-            "marginStart": undefined,
-            "marginTop": undefined,
-            "marginVertical": undefined,
-          },
-          {
-            "cursor": undefined,
-          },
-        ]
-      }
-      underlayColor="green"
-    >
-      <View
-        collapsable={false}
-        style={
-          {
-            "backgroundColor": "green",
-            "borderBottomLeftRadius": undefined,
-            "borderBottomRightRadius": undefined,
-            "borderRadius": undefined,
-            "borderTopLeftRadius": undefined,
-            "borderTopRightRadius": undefined,
-            "bottom": 0,
-            "left": 0,
-            "opacity": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          }
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
         }
-      />
-      <View
-        style={{}}
-      >
-        <View
-          accessibilityLabel="Press me!"
-          accessibilityRole="button"
-          accessible={true}
-          style={
-            [
-              {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "row",
-                "justifyContent": "center",
-                "paddingHorizontal": 12,
-              },
-              undefined,
-              {
-                "height": 46,
-              },
-            ]
-          }
-        >
-          <View
-            style={
-              {
-                "flex": 1,
-                "justifyContent": "center",
-              }
-            }
-          >
-            <View
-              style={
-                {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                }
-              }
-            >
-              <Text
-                style={
-                  [
-                    {
-                      "backgroundColor": "transparent",
-                      "flex": 1,
-                      "flexShrink": 1,
-                      "fontFamily": "Inter",
-                      "fontSize": 16,
-                      "fontWeight": "500",
-                      "textAlign": "left",
-                    },
-                    undefined,
-                    {
-                      "color": "white",
-                    },
-                  ]
-                }
-              >
-                Press me!
-              </Text>
-            </View>
-          </View>
-        </View>
-      </View>
-    </RNGestureHandlerButton>
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+    />
     <View
       style={
         [
@@ -6049,239 +3339,34 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
             ]
           }
         />
-        <RNGestureHandlerButton
-          activeOpacity={1}
-          collapsable={false}
-          delayLongPress={600}
-          enabled={true}
-          handlerTag={17}
-          handlerType="NativeViewGestureHandler"
-          innerRef={null}
-          onActiveStateChange={[Function]}
-          onGestureHandlerEvent={[Function]}
-          onGestureHandlerStateChange={[Function]}
-          onPress={[Function]}
-          rippleColor="#2D3039"
-          style={
-            [
-              {
-                "backgroundColor": "#1F2329",
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-              },
-              {
-                "cursor": undefined,
-              },
-            ]
-          }
-          underlayColor="#2D3039"
-        >
-          <View
-            collapsable={false}
-            style={
-              {
-                "backgroundColor": "#2D3039",
-                "borderBottomLeftRadius": undefined,
-                "borderBottomRightRadius": undefined,
-                "borderRadius": undefined,
-                "borderTopLeftRadius": undefined,
-                "borderTopRightRadius": undefined,
-                "bottom": 0,
-                "left": 0,
-                "opacity": 0,
-                "position": "absolute",
-                "right": 0,
-                "top": 0,
-              }
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": undefined,
             }
-          />
-          <View
-            style={{}}
-          >
-            <View
-              accessibilityLabel="Chats All"
-              accessibilityRole="button"
-              accessible={true}
-              style={
-                [
-                  {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                    "justifyContent": "center",
-                    "paddingHorizontal": 12,
-                  },
-                  undefined,
-                  {
-                    "height": 46,
-                  },
-                ]
-              }
-            >
-              <View
-                style={
-                  {
-                    "paddingRight": 12,
-                  }
-                }
-              >
-                <View
-                  style={
-                    [
-                      {
-                        "alignItems": "center",
-                        "justifyContent": "center",
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#E4E7EA",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-              </View>
-              <View
-                style={
-                  {
-                    "flex": 1,
-                    "justifyContent": "center",
-                  }
-                }
-              >
-                <View
-                  style={
-                    {
-                      "alignItems": "center",
-                      "flexDirection": "row",
-                    }
-                  }
-                >
-                  <Text
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "flex": 1,
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "textAlign": "left",
-                        },
-                        undefined,
-                        {
-                          "color": "#E4E7EA",
-                        },
-                      ]
-                    }
-                  >
-                    Chats
-                  </Text>
-                </View>
-                <Text
-                  numberOfLines={1}
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 14,
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#9EA2A8",
-                      },
-                    ]
-                  }
-                >
-                  All
-                </Text>
-              </View>
-              <View
-                style={
-                  [
-                    {
-                      "paddingLeft": 12,
-                    },
-                    {},
-                  ]
-                }
-              >
-                <View
-                  style={
-                    [
-                      {
-                        "alignItems": "center",
-                        "justifyContent": "center",
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#E4E7EA",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </View>
-        </RNGestureHandlerButton>
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+        />
         <View
           style={
             [
@@ -6295,241 +3380,34 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
             ]
           }
         />
-        <RNGestureHandlerButton
-          activeOpacity={1}
-          collapsable={false}
-          delayLongPress={600}
-          enabled={true}
-          handlerTag={18}
-          handlerType="NativeViewGestureHandler"
-          innerRef={null}
-          onActiveStateChange={[Function]}
-          onGestureHandlerEvent={[Function]}
-          onGestureHandlerStateChange={[Function]}
-          onPress={[Function]}
-          rippleColor="#2D3039"
-          style={
-            [
-              {
-                "backgroundColor": "#1F2329",
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-              },
-              {
-                "cursor": undefined,
-              },
-            ]
-          }
-          underlayColor="#2D3039"
-        >
-          <View
-            collapsable={false}
-            style={
-              {
-                "backgroundColor": "#2D3039",
-                "borderBottomLeftRadius": undefined,
-                "borderBottomRightRadius": undefined,
-                "borderRadius": undefined,
-                "borderTopLeftRadius": undefined,
-                "borderTopRightRadius": undefined,
-                "bottom": 0,
-                "left": 0,
-                "opacity": 0,
-                "position": "absolute",
-                "right": 0,
-                "top": 0,
-              }
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": undefined,
             }
-          />
-          <View
-            style={{}}
-          >
-            <View
-              accessibilityLabel="Chats All"
-              accessibilityRole="button"
-              accessible={true}
-              style={
-                [
-                  {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                    "justifyContent": "center",
-                    "paddingHorizontal": 12,
-                  },
-                  {
-                    "opacity": 0.3,
-                  },
-                  {
-                    "height": 46,
-                  },
-                ]
-              }
-            >
-              <View
-                style={
-                  {
-                    "paddingRight": 12,
-                  }
-                }
-              >
-                <View
-                  style={
-                    [
-                      {
-                        "alignItems": "center",
-                        "justifyContent": "center",
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#E4E7EA",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-              </View>
-              <View
-                style={
-                  {
-                    "flex": 1,
-                    "justifyContent": "center",
-                  }
-                }
-              >
-                <View
-                  style={
-                    {
-                      "alignItems": "center",
-                      "flexDirection": "row",
-                    }
-                  }
-                >
-                  <Text
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "flex": 1,
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "textAlign": "left",
-                        },
-                        undefined,
-                        {
-                          "color": "#E4E7EA",
-                        },
-                      ]
-                    }
-                  >
-                    Chats
-                  </Text>
-                </View>
-                <Text
-                  numberOfLines={1}
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 14,
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#9EA2A8",
-                      },
-                    ]
-                  }
-                >
-                  All
-                </Text>
-              </View>
-              <View
-                style={
-                  [
-                    {
-                      "paddingLeft": 12,
-                    },
-                    {},
-                  ]
-                }
-              >
-                <View
-                  style={
-                    [
-                      {
-                        "alignItems": "center",
-                        "justifyContent": "center",
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#E4E7EA",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </View>
-        </RNGestureHandlerButton>
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+        />
         <View
           style={
             [
@@ -6620,239 +3498,34 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
             ]
           }
         />
-        <RNGestureHandlerButton
-          activeOpacity={1}
-          collapsable={false}
-          delayLongPress={600}
-          enabled={true}
-          handlerTag={19}
-          handlerType="NativeViewGestureHandler"
-          innerRef={null}
-          onActiveStateChange={[Function]}
-          onGestureHandlerEvent={[Function]}
-          onGestureHandlerStateChange={[Function]}
-          onPress={[Function]}
-          rippleColor="#2D3039"
-          style={
-            [
-              {
-                "backgroundColor": "#1F2329",
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-              },
-              {
-                "cursor": undefined,
-              },
-            ]
-          }
-          underlayColor="#2D3039"
-        >
-          <View
-            collapsable={false}
-            style={
-              {
-                "backgroundColor": "#2D3039",
-                "borderBottomLeftRadius": undefined,
-                "borderBottomRightRadius": undefined,
-                "borderRadius": undefined,
-                "borderTopLeftRadius": undefined,
-                "borderTopRightRadius": undefined,
-                "bottom": 0,
-                "left": 0,
-                "opacity": 0,
-                "position": "absolute",
-                "right": 0,
-                "top": 0,
-              }
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": undefined,
             }
-          />
-          <View
-            style={{}}
-          >
-            <View
-              accessibilityLabel="Chats All"
-              accessibilityRole="button"
-              accessible={true}
-              style={
-                [
-                  {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                    "justifyContent": "center",
-                    "paddingHorizontal": 12,
-                  },
-                  undefined,
-                  {
-                    "height": 46,
-                  },
-                ]
-              }
-            >
-              <View
-                style={
-                  {
-                    "paddingRight": 12,
-                  }
-                }
-              >
-                <View
-                  style={
-                    [
-                      {
-                        "alignItems": "center",
-                        "justifyContent": "center",
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#E4E7EA",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-              </View>
-              <View
-                style={
-                  {
-                    "flex": 1,
-                    "justifyContent": "center",
-                  }
-                }
-              >
-                <View
-                  style={
-                    {
-                      "alignItems": "center",
-                      "flexDirection": "row",
-                    }
-                  }
-                >
-                  <Text
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "flex": 1,
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "textAlign": "left",
-                        },
-                        undefined,
-                        {
-                          "color": "#E4E7EA",
-                        },
-                      ]
-                    }
-                  >
-                    Chats
-                  </Text>
-                </View>
-                <Text
-                  numberOfLines={1}
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 14,
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#9EA2A8",
-                      },
-                    ]
-                  }
-                >
-                  All
-                </Text>
-              </View>
-              <View
-                style={
-                  [
-                    {
-                      "paddingLeft": 12,
-                    },
-                    {},
-                  ]
-                }
-              >
-                <View
-                  style={
-                    [
-                      {
-                        "alignItems": "center",
-                        "justifyContent": "center",
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#E4E7EA",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </View>
-        </RNGestureHandlerButton>
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+        />
         <View
           style={
             [
@@ -6866,241 +3539,34 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
             ]
           }
         />
-        <RNGestureHandlerButton
-          activeOpacity={1}
-          collapsable={false}
-          delayLongPress={600}
-          enabled={true}
-          handlerTag={20}
-          handlerType="NativeViewGestureHandler"
-          innerRef={null}
-          onActiveStateChange={[Function]}
-          onGestureHandlerEvent={[Function]}
-          onGestureHandlerStateChange={[Function]}
-          onPress={[Function]}
-          rippleColor="#2D3039"
-          style={
-            [
-              {
-                "backgroundColor": "#1F2329",
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-              },
-              {
-                "cursor": undefined,
-              },
-            ]
-          }
-          underlayColor="#2D3039"
-        >
-          <View
-            collapsable={false}
-            style={
-              {
-                "backgroundColor": "#2D3039",
-                "borderBottomLeftRadius": undefined,
-                "borderBottomRightRadius": undefined,
-                "borderRadius": undefined,
-                "borderTopLeftRadius": undefined,
-                "borderTopRightRadius": undefined,
-                "bottom": 0,
-                "left": 0,
-                "opacity": 0,
-                "position": "absolute",
-                "right": 0,
-                "top": 0,
-              }
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": undefined,
             }
-          />
-          <View
-            style={{}}
-          >
-            <View
-              accessibilityLabel="Chats All"
-              accessibilityRole="button"
-              accessible={true}
-              style={
-                [
-                  {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                    "justifyContent": "center",
-                    "paddingHorizontal": 12,
-                  },
-                  {
-                    "opacity": 0.3,
-                  },
-                  {
-                    "height": 46,
-                  },
-                ]
-              }
-            >
-              <View
-                style={
-                  {
-                    "paddingRight": 12,
-                  }
-                }
-              >
-                <View
-                  style={
-                    [
-                      {
-                        "alignItems": "center",
-                        "justifyContent": "center",
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#E4E7EA",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-              </View>
-              <View
-                style={
-                  {
-                    "flex": 1,
-                    "justifyContent": "center",
-                  }
-                }
-              >
-                <View
-                  style={
-                    {
-                      "alignItems": "center",
-                      "flexDirection": "row",
-                    }
-                  }
-                >
-                  <Text
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "flex": 1,
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "textAlign": "left",
-                        },
-                        undefined,
-                        {
-                          "color": "#E4E7EA",
-                        },
-                      ]
-                    }
-                  >
-                    Chats
-                  </Text>
-                </View>
-                <Text
-                  numberOfLines={1}
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 14,
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#9EA2A8",
-                      },
-                    ]
-                  }
-                >
-                  All
-                </Text>
-              </View>
-              <View
-                style={
-                  [
-                    {
-                      "paddingLeft": 12,
-                    },
-                    {},
-                  ]
-                }
-              >
-                <View
-                  style={
-                    [
-                      {
-                        "alignItems": "center",
-                        "justifyContent": "center",
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#E4E7EA",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </View>
-        </RNGestureHandlerButton>
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+        />
         <View
           style={
             [
@@ -8865,239 +5331,34 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
             ]
           }
         />
-        <RNGestureHandlerButton
-          activeOpacity={1}
-          collapsable={false}
-          delayLongPress={600}
-          enabled={true}
-          handlerTag={21}
-          handlerType="NativeViewGestureHandler"
-          innerRef={null}
-          onActiveStateChange={[Function]}
-          onGestureHandlerEvent={[Function]}
-          onGestureHandlerStateChange={[Function]}
-          onPress={[Function]}
-          rippleColor="#E4E7EA"
-          style={
-            [
-              {
-                "backgroundColor": "#FFFFFF",
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-              },
-              {
-                "cursor": undefined,
-              },
-            ]
-          }
-          underlayColor="#E4E7EA"
-        >
-          <View
-            collapsable={false}
-            style={
-              {
-                "backgroundColor": "#E4E7EA",
-                "borderBottomLeftRadius": undefined,
-                "borderBottomRightRadius": undefined,
-                "borderRadius": undefined,
-                "borderTopLeftRadius": undefined,
-                "borderTopRightRadius": undefined,
-                "bottom": 0,
-                "left": 0,
-                "opacity": 0,
-                "position": "absolute",
-                "right": 0,
-                "top": 0,
-              }
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": undefined,
             }
-          />
-          <View
-            style={{}}
-          >
-            <View
-              accessibilityLabel="Chats All"
-              accessibilityRole="button"
-              accessible={true}
-              style={
-                [
-                  {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                    "justifyContent": "center",
-                    "paddingHorizontal": 12,
-                  },
-                  undefined,
-                  {
-                    "height": 46,
-                  },
-                ]
-              }
-            >
-              <View
-                style={
-                  {
-                    "paddingRight": 12,
-                  }
-                }
-              >
-                <View
-                  style={
-                    [
-                      {
-                        "alignItems": "center",
-                        "justifyContent": "center",
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#2F343D",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-              </View>
-              <View
-                style={
-                  {
-                    "flex": 1,
-                    "justifyContent": "center",
-                  }
-                }
-              >
-                <View
-                  style={
-                    {
-                      "alignItems": "center",
-                      "flexDirection": "row",
-                    }
-                  }
-                >
-                  <Text
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "flex": 1,
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "textAlign": "left",
-                        },
-                        undefined,
-                        {
-                          "color": "#2F343D",
-                        },
-                      ]
-                    }
-                  >
-                    Chats
-                  </Text>
-                </View>
-                <Text
-                  numberOfLines={1}
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 14,
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#6C727A",
-                      },
-                    ]
-                  }
-                >
-                  All
-                </Text>
-              </View>
-              <View
-                style={
-                  [
-                    {
-                      "paddingLeft": 12,
-                    },
-                    {},
-                  ]
-                }
-              >
-                <View
-                  style={
-                    [
-                      {
-                        "alignItems": "center",
-                        "justifyContent": "center",
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#2F343D",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </View>
-        </RNGestureHandlerButton>
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+        />
         <View
           style={
             [
@@ -9111,241 +5372,34 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
             ]
           }
         />
-        <RNGestureHandlerButton
-          activeOpacity={1}
-          collapsable={false}
-          delayLongPress={600}
-          enabled={true}
-          handlerTag={22}
-          handlerType="NativeViewGestureHandler"
-          innerRef={null}
-          onActiveStateChange={[Function]}
-          onGestureHandlerEvent={[Function]}
-          onGestureHandlerStateChange={[Function]}
-          onPress={[Function]}
-          rippleColor="#E4E7EA"
-          style={
-            [
-              {
-                "backgroundColor": "#FFFFFF",
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-              },
-              {
-                "cursor": undefined,
-              },
-            ]
-          }
-          underlayColor="#E4E7EA"
-        >
-          <View
-            collapsable={false}
-            style={
-              {
-                "backgroundColor": "#E4E7EA",
-                "borderBottomLeftRadius": undefined,
-                "borderBottomRightRadius": undefined,
-                "borderRadius": undefined,
-                "borderTopLeftRadius": undefined,
-                "borderTopRightRadius": undefined,
-                "bottom": 0,
-                "left": 0,
-                "opacity": 0,
-                "position": "absolute",
-                "right": 0,
-                "top": 0,
-              }
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": undefined,
             }
-          />
-          <View
-            style={{}}
-          >
-            <View
-              accessibilityLabel="Chats All"
-              accessibilityRole="button"
-              accessible={true}
-              style={
-                [
-                  {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                    "justifyContent": "center",
-                    "paddingHorizontal": 12,
-                  },
-                  {
-                    "opacity": 0.3,
-                  },
-                  {
-                    "height": 46,
-                  },
-                ]
-              }
-            >
-              <View
-                style={
-                  {
-                    "paddingRight": 12,
-                  }
-                }
-              >
-                <View
-                  style={
-                    [
-                      {
-                        "alignItems": "center",
-                        "justifyContent": "center",
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#2F343D",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-              </View>
-              <View
-                style={
-                  {
-                    "flex": 1,
-                    "justifyContent": "center",
-                  }
-                }
-              >
-                <View
-                  style={
-                    {
-                      "alignItems": "center",
-                      "flexDirection": "row",
-                    }
-                  }
-                >
-                  <Text
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "flex": 1,
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "textAlign": "left",
-                        },
-                        undefined,
-                        {
-                          "color": "#2F343D",
-                        },
-                      ]
-                    }
-                  >
-                    Chats
-                  </Text>
-                </View>
-                <Text
-                  numberOfLines={1}
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 14,
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#6C727A",
-                      },
-                    ]
-                  }
-                >
-                  All
-                </Text>
-              </View>
-              <View
-                style={
-                  [
-                    {
-                      "paddingLeft": 12,
-                    },
-                    {},
-                  ]
-                }
-              >
-                <View
-                  style={
-                    [
-                      {
-                        "alignItems": "center",
-                        "justifyContent": "center",
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#2F343D",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </View>
-        </RNGestureHandlerButton>
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+        />
         <View
           style={
             [
@@ -9436,239 +5490,34 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
             ]
           }
         />
-        <RNGestureHandlerButton
-          activeOpacity={1}
-          collapsable={false}
-          delayLongPress={600}
-          enabled={true}
-          handlerTag={23}
-          handlerType="NativeViewGestureHandler"
-          innerRef={null}
-          onActiveStateChange={[Function]}
-          onGestureHandlerEvent={[Function]}
-          onGestureHandlerStateChange={[Function]}
-          onPress={[Function]}
-          rippleColor="#E4E7EA"
-          style={
-            [
-              {
-                "backgroundColor": "#FFFFFF",
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-              },
-              {
-                "cursor": undefined,
-              },
-            ]
-          }
-          underlayColor="#E4E7EA"
-        >
-          <View
-            collapsable={false}
-            style={
-              {
-                "backgroundColor": "#E4E7EA",
-                "borderBottomLeftRadius": undefined,
-                "borderBottomRightRadius": undefined,
-                "borderRadius": undefined,
-                "borderTopLeftRadius": undefined,
-                "borderTopRightRadius": undefined,
-                "bottom": 0,
-                "left": 0,
-                "opacity": 0,
-                "position": "absolute",
-                "right": 0,
-                "top": 0,
-              }
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": undefined,
             }
-          />
-          <View
-            style={{}}
-          >
-            <View
-              accessibilityLabel="Chats All"
-              accessibilityRole="button"
-              accessible={true}
-              style={
-                [
-                  {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                    "justifyContent": "center",
-                    "paddingHorizontal": 12,
-                  },
-                  undefined,
-                  {
-                    "height": 46,
-                  },
-                ]
-              }
-            >
-              <View
-                style={
-                  {
-                    "paddingRight": 12,
-                  }
-                }
-              >
-                <View
-                  style={
-                    [
-                      {
-                        "alignItems": "center",
-                        "justifyContent": "center",
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#2F343D",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-              </View>
-              <View
-                style={
-                  {
-                    "flex": 1,
-                    "justifyContent": "center",
-                  }
-                }
-              >
-                <View
-                  style={
-                    {
-                      "alignItems": "center",
-                      "flexDirection": "row",
-                    }
-                  }
-                >
-                  <Text
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "flex": 1,
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "textAlign": "left",
-                        },
-                        undefined,
-                        {
-                          "color": "#2F343D",
-                        },
-                      ]
-                    }
-                  >
-                    Chats
-                  </Text>
-                </View>
-                <Text
-                  numberOfLines={1}
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 14,
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#6C727A",
-                      },
-                    ]
-                  }
-                >
-                  All
-                </Text>
-              </View>
-              <View
-                style={
-                  [
-                    {
-                      "paddingLeft": 12,
-                    },
-                    {},
-                  ]
-                }
-              >
-                <View
-                  style={
-                    [
-                      {
-                        "alignItems": "center",
-                        "justifyContent": "center",
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#2F343D",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </View>
-        </RNGestureHandlerButton>
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+        />
         <View
           style={
             [
@@ -9682,241 +5531,34 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
             ]
           }
         />
-        <RNGestureHandlerButton
-          activeOpacity={1}
-          collapsable={false}
-          delayLongPress={600}
-          enabled={true}
-          handlerTag={24}
-          handlerType="NativeViewGestureHandler"
-          innerRef={null}
-          onActiveStateChange={[Function]}
-          onGestureHandlerEvent={[Function]}
-          onGestureHandlerStateChange={[Function]}
-          onPress={[Function]}
-          rippleColor="#E4E7EA"
-          style={
-            [
-              {
-                "backgroundColor": "#FFFFFF",
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-              },
-              {
-                "cursor": undefined,
-              },
-            ]
-          }
-          underlayColor="#E4E7EA"
-        >
-          <View
-            collapsable={false}
-            style={
-              {
-                "backgroundColor": "#E4E7EA",
-                "borderBottomLeftRadius": undefined,
-                "borderBottomRightRadius": undefined,
-                "borderRadius": undefined,
-                "borderTopLeftRadius": undefined,
-                "borderTopRightRadius": undefined,
-                "bottom": 0,
-                "left": 0,
-                "opacity": 0,
-                "position": "absolute",
-                "right": 0,
-                "top": 0,
-              }
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": undefined,
             }
-          />
-          <View
-            style={{}}
-          >
-            <View
-              accessibilityLabel="Chats All"
-              accessibilityRole="button"
-              accessible={true}
-              style={
-                [
-                  {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                    "justifyContent": "center",
-                    "paddingHorizontal": 12,
-                  },
-                  {
-                    "opacity": 0.3,
-                  },
-                  {
-                    "height": 46,
-                  },
-                ]
-              }
-            >
-              <View
-                style={
-                  {
-                    "paddingRight": 12,
-                  }
-                }
-              >
-                <View
-                  style={
-                    [
-                      {
-                        "alignItems": "center",
-                        "justifyContent": "center",
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#2F343D",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-              </View>
-              <View
-                style={
-                  {
-                    "flex": 1,
-                    "justifyContent": "center",
-                  }
-                }
-              >
-                <View
-                  style={
-                    {
-                      "alignItems": "center",
-                      "flexDirection": "row",
-                    }
-                  }
-                >
-                  <Text
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "flex": 1,
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "textAlign": "left",
-                        },
-                        undefined,
-                        {
-                          "color": "#2F343D",
-                        },
-                      ]
-                    }
-                  >
-                    Chats
-                  </Text>
-                </View>
-                <Text
-                  numberOfLines={1}
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 14,
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#6C727A",
-                      },
-                    ]
-                  }
-                >
-                  All
-                </Text>
-              </View>
-              <View
-                style={
-                  [
-                    {
-                      "paddingLeft": 12,
-                    },
-                    {},
-                  ]
-                }
-              >
-                <View
-                  style={
-                    [
-                      {
-                        "alignItems": "center",
-                        "justifyContent": "center",
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#2F343D",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </View>
-        </RNGestureHandlerButton>
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+        />
         <View
           style={
             [
