@@ -12,11 +12,10 @@ export const messageBlockWithContext = (context: any) => (props: any) =>
 
 const MessageBlock = ({ blocks }: any) => UiKitMessage(blocks);
 
-export const modalBlockWithContext = (context: any) => (data: any) =>
-	(
-		<KitContext.Provider value={{ ...context, ...data }}>
-			<ModalBlock {...data} />
-		</KitContext.Provider>
-	);
+export const ModalBlockWithContext = (props: any) => (
+	<KitContext.Provider value={props}>
+		<ModalBlock {...props} />
+	</KitContext.Provider>
+);
 
 const ModalBlock = ({ blocks }: any) => UiKitModal(blocks);

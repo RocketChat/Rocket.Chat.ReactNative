@@ -7,6 +7,9 @@ import { dequal } from 'dequal';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { type Subscription } from 'rxjs';
 import * as Haptics from 'expo-haptics';
+import { type NavigatorScreenParams } from '@react-navigation/native';
+
+import { type TNavigation } from 'stacks/stackType';
 
 import dayjs from '../../lib/dayjs';
 import {
@@ -589,7 +592,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					joined,
 					omnichannelPermissions: { canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold }
 				}
-			});
+			} as NavigatorScreenParams<ModalStackParamList & TNavigation>);
 		} else if (this.rid && this.t) {
 			navigation.push('RoomActionsView', {
 				rid: this.rid,

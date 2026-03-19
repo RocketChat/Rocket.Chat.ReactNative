@@ -91,11 +91,11 @@ class VideoConfNotification(private val context: Context) {
 
         if (ejson.caller != null) {
             callerId = ejson.caller._id ?: ""
-            callerName = ejson.caller.name ?: "Unknown"
+            callerName = ejson.senderName ?: ejson.caller.name ?: "Unknown"
         } else if (ejson.sender != null) {
             // Fallback to sender if caller is not present
             callerId = ejson.sender._id ?: ""
-            callerName = ejson.sender.name ?: ejson.senderName ?: "Unknown"
+            callerName = ejson.senderName ?: ejson.sender.name ?: "Unknown"
         } else {
             callerId = ""
             callerName = "Unknown"

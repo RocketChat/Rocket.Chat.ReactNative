@@ -29,17 +29,35 @@ platform :ios do
 
   desc "Submit a new Beta Build to Apple TestFlight"
   lane :beta do |options|
+    changelog_path = File.expand_path('../../changelog.txt', __dir__)
+
+    changelog = if File.exist?(changelog_path)
+        content = File.read(changelog_path)
+        content.length > 4000 ? content[0, 3997] + "..." : content
+    end
+
     api_key = app_store_connect_api_key(
       key_id: ENV["APP_STORE_CONNECT_API_KEY_ID"],
       issuer_id: ENV["APP_STORE_CONNECT_API_KEY_ISSUER_ID"],
       key_filepath: 'fastlane/app_store_connect_api_key.p8',
       in_house: false
     )
-    pilot(
-      ipa: 'Rocket.Chat.ipa',
-      app_identifier: options[:official] ? 'chat.rocket.ios' : 'chat.rocket.reactnative',
-      skip_waiting_for_build_processing: true
-    )
+
+    pilot_options = {
+        ipa: 'Rocket.Chat.ipa',
+        app_identifier: options[:official] ? 'chat.rocket.ios' : 'chat.rocket.reactnative',
+        skip_waiting_for_build_processing: !(options[:official] && changelog),
+        reject_build_waiting_for_review: true,
+    }
+
+    if options[:official] && changelog
+        pilot_options[:changelog] = changelog
+        pilot_options[:distribute_external] = true
+        pilot_options[:notify_external_testers] = true
+        pilot_options[:groups] = ["External Testers"]
+    end
+
+    pilot(pilot_options)
     upload_symbols_to_crashlytics(dsym_path: "Rocket.Chat.app.dSYM.zip")
     upload_symbols_to_bugsnag(
       config_file: "RocketChatRN/Info.plist",

@@ -2,7 +2,6 @@ package chat.rocket.reactnative.notification;
 
 import android.util.Log;
 
-import com.facebook.react.bridge.Callback;
 import com.tencent.mmkv.MMKV;
 
 import java.math.BigInteger;
@@ -11,12 +10,6 @@ import java.io.UnsupportedEncodingException;
 
 import chat.rocket.reactnative.BuildConfig;
 import chat.rocket.reactnative.storage.MMKVKeyManager;
-
-class RNCallback implements Callback {
-    public void invoke(Object... args) {
-
-    }
-}
 
 class Utils {
     static public String toHex(String arg) {
@@ -74,20 +67,18 @@ public class Ejson {
         String userToken = token();
         String uid = userId();
         
-        if (userToken.isEmpty() || uid.isEmpty()) {
-            Log.w(TAG, "Cannot generate " + errorContext + " avatar URI: missing auth credentials");
-            return null;
+        String finalUri = server + avatarPath + "?format=png&size=100";
+        if (!userToken.isEmpty() && !uid.isEmpty()) {
+            finalUri += "&rc_token=" + userToken + "&rc_uid=" + uid;
         }
         
-        return server + avatarPath + "?format=png&size=100&rc_token=" + userToken + "&rc_uid=" + uid;
+        return finalUri;
     }
 
     public String getAvatarUri() {
         String avatarPath;
         
-        // For DMs, show sender's avatar; for groups/channels, show room avatar
         if ("d".equals(type)) {
-            // Direct message: use sender's avatar
             if (sender == null || sender.username == null || sender.username.isEmpty()) {
                 Log.w(TAG, "Cannot generate avatar URI: sender or username is null");
                 return null;
@@ -99,7 +90,6 @@ public class Ejson {
                 return null;
             }
         } else {
-            // Group/Channel/Livechat: use room avatar
             if (rid == null || rid.isEmpty()) {
                 Log.w(TAG, "Cannot generate avatar URI: rid is null for non-DM");
                 return null;
