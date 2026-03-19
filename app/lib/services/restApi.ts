@@ -425,7 +425,7 @@ export const closeLivechat = (rid: string, comment?: string, tags?: string[]) =>
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.0.0')) {
 		return sdk.post('livechat/room.closeByUser', { rid, comment, ...params });
 	}
-	// Method removed in 8.0.0
+	// RC 0.29.0
 	return sdk.methodCallWrapper('livechat:closeRoom', rid, comment, { clientAction: true, ...params });
 };
 
@@ -457,7 +457,7 @@ export const forwardLivechat = (transferData: any) => {
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.0.0')) {
 		return sdk.post('livechat/room.forward', transferData);
 	}
-	// Method removed in 8.0.0
+	// RC 0.36.0
 	return sdk.methodCallWrapper('livechat:transfer', transferData);
 };
 
@@ -512,7 +512,7 @@ export const getTagsList = async (): Promise<ILivechatTag[]> => {
 		}
 		return [];
 	}
-	// Method removed in 8.0.0
+	// RC 2.0.0
 	return sdk.methodCallWrapper('livechat:getTagsList');
 };
 
