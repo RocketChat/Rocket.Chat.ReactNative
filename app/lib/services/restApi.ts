@@ -418,6 +418,7 @@ export const getTeamListRoom = ({
 
 export const closeLivechat = (rid: string, comment?: string, tags?: string[]) => {
 	const serverVersion = reduxStore.getState().server.version;
+    // RC 3.2.0
 	let params;
 	if (tags && tags?.length) {
 		params = { tags };
