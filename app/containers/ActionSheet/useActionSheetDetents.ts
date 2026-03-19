@@ -1,11 +1,11 @@
 import type { SheetDetent } from '@lodev09/react-native-true-sheet';
 import { useMemo } from 'react';
+import { useWindowDimensions } from 'react-native';
 
 const ACTION_SHEET_MIN_HEIGHT_FRACTION = 0.15;
 const ACTION_SHEET_MAX_HEIGHT_FRACTION = 0.75;
 const SCROLL_ENABLED_THRESHOLD = 0.6;
 export const HANDLE_HEIGHT = 28;
-const CANCEL_HEIGHT = 32;
 
 function normalizeSnapsToDetents(snaps: (string | number)[]): number[] {
 	return snaps
@@ -47,6 +47,9 @@ export function useActionSheetDetents({
 	hasCancel = false,
 	contentHeight
 }: UseActionSheetDetentsParams): { detents: SheetDetent[]; maxHeight: number; scrollEnabled: boolean } {
+	const { fontScale } = useWindowDimensions();
+	const CANCEL_HEIGHT = 48 * fontScale;
+
 	return useMemo(() => {
 		const maxHeight = windowHeight * ACTION_SHEET_MAX_HEIGHT_FRACTION;
 		const hasOptions = optionsLength > 0;
