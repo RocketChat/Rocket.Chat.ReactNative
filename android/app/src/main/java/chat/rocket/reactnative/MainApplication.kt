@@ -62,7 +62,6 @@ open class MainApplication : Application(), ReactApplication {
 
   override fun onCreate() {
     super.onCreate()
-    
     Bugsnag.start(this)
     
     // Initialize MMKV encryption - reads existing key or generates new one
