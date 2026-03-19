@@ -1,45 +1,59 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Story Snapshots: CustomButton should match snapshot 1`] = `
-<RNGestureHandlerButton
+<View
   accessibilityLabel="Press me!"
   accessibilityRole="button"
-  collapsable={false}
-  enabled={true}
-  hitSlop={
+  accessibilityState={
     {
-      "bottom": 0,
-      "left": 0,
-      "right": 0,
-      "top": 0,
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
     }
   }
-  rippleColor="transparent"
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
   style={
     [
+      {
+        "justifyContent": "center",
+        "paddingHorizontal": 16,
+        "paddingVertical": 14,
+      },
+      {
+        "borderRadius": 4,
+        "marginBottom": 12,
+      },
+      {
+        "backgroundColor": "purple",
+      },
       {},
-      [
-        {
-          "justifyContent": "center",
-          "paddingHorizontal": 16,
-          "paddingVertical": 14,
-        },
-        {
-          "borderRadius": 4,
-          "marginBottom": 12,
-        },
-        {
-          "backgroundColor": "purple",
-        },
-        {},
-        {
-          "padding": 10,
-        },
-      ],
+      {
+        "padding": 10,
+      },
     ]
   }
   testID="testButton"
-  testOnly_onPress={[Function]}
 >
   <Text
     style={
@@ -64,47 +78,61 @@ exports[`Story Snapshots: CustomButton should match snapshot 1`] = `
   >
     Press me!
   </Text>
-</RNGestureHandlerButton>
+</View>
 `;
 
 exports[`Story Snapshots: DisabledButton should match snapshot 1`] = `
-<RNGestureHandlerButton
+<View
   accessibilityLabel="Press me!"
   accessibilityRole="button"
-  collapsable={false}
-  enabled={false}
-  hitSlop={
+  accessibilityState={
     {
-      "bottom": 0,
-      "left": 0,
-      "right": 0,
-      "top": 0,
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": true,
+      "expanded": undefined,
+      "selected": undefined,
     }
   }
-  rippleColor="transparent"
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
   style={
     [
+      {
+        "justifyContent": "center",
+        "paddingHorizontal": 16,
+        "paddingVertical": 14,
+      },
+      {
+        "borderRadius": 4,
+        "marginBottom": 12,
+      },
+      {
+        "backgroundColor": "#D1EBFE",
+      },
       {},
-      [
-        {
-          "justifyContent": "center",
-          "paddingHorizontal": 16,
-          "paddingVertical": 14,
-        },
-        {
-          "borderRadius": 4,
-          "marginBottom": 12,
-        },
-        {
-          "backgroundColor": "#D1EBFE",
-        },
-        {},
-        undefined,
-      ],
+      undefined,
     ]
   }
   testID="testButton"
-  testOnly_onPress={[Function]}
 >
   <Text
     style={
@@ -125,47 +153,61 @@ exports[`Story Snapshots: DisabledButton should match snapshot 1`] = `
   >
     Press me!
   </Text>
-</RNGestureHandlerButton>
+</View>
 `;
 
 exports[`Story Snapshots: DisabledLoadingButton should match snapshot 1`] = `
-<RNGestureHandlerButton
+<View
   accessibilityLabel="Press me!"
   accessibilityRole="button"
-  collapsable={false}
-  enabled={false}
-  hitSlop={
+  accessibilityState={
     {
-      "bottom": 0,
-      "left": 0,
-      "right": 0,
-      "top": 0,
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": true,
+      "expanded": undefined,
+      "selected": undefined,
     }
   }
-  rippleColor="transparent"
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
   style={
     [
+      {
+        "justifyContent": "center",
+        "paddingHorizontal": 16,
+        "paddingVertical": 14,
+      },
+      {
+        "borderRadius": 4,
+        "marginBottom": 12,
+      },
+      {
+        "backgroundColor": "#D1EBFE",
+      },
       {},
-      [
-        {
-          "justifyContent": "center",
-          "paddingHorizontal": 16,
-          "paddingVertical": 14,
-        },
-        {
-          "borderRadius": 4,
-          "marginBottom": 12,
-        },
-        {
-          "backgroundColor": "#D1EBFE",
-        },
-        {},
-        undefined,
-      ],
+      undefined,
     ]
   }
   testID="testButton"
-  testOnly_onPress={[Function]}
 >
   <ActivityIndicator
     color="#FFFFFF"
@@ -175,47 +217,61 @@ exports[`Story Snapshots: DisabledLoadingButton should match snapshot 1`] = `
       }
     }
   />
-</RNGestureHandlerButton>
+</View>
 `;
 
 exports[`Story Snapshots: LoadingButton should match snapshot 1`] = `
-<RNGestureHandlerButton
+<View
   accessibilityLabel="Press me!"
   accessibilityRole="button"
-  collapsable={false}
-  enabled={false}
-  hitSlop={
+  accessibilityState={
     {
-      "bottom": 0,
-      "left": 0,
-      "right": 0,
-      "top": 0,
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": true,
+      "expanded": undefined,
+      "selected": undefined,
     }
   }
-  rippleColor="transparent"
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
   style={
     [
+      {
+        "justifyContent": "center",
+        "paddingHorizontal": 16,
+        "paddingVertical": 14,
+      },
+      {
+        "borderRadius": 4,
+        "marginBottom": 12,
+      },
+      {
+        "backgroundColor": "#D1EBFE",
+      },
       {},
-      [
-        {
-          "justifyContent": "center",
-          "paddingHorizontal": 16,
-          "paddingVertical": 14,
-        },
-        {
-          "borderRadius": 4,
-          "marginBottom": 12,
-        },
-        {
-          "backgroundColor": "#D1EBFE",
-        },
-        {},
-        undefined,
-      ],
+      undefined,
     ]
   }
   testID="testButton"
-  testOnly_onPress={[Function]}
 >
   <ActivityIndicator
     color="#FFFFFF"
@@ -225,47 +281,61 @@ exports[`Story Snapshots: LoadingButton should match snapshot 1`] = `
       }
     }
   />
-</RNGestureHandlerButton>
+</View>
 `;
 
 exports[`Story Snapshots: PrimaryButton should match snapshot 1`] = `
-<RNGestureHandlerButton
+<View
   accessibilityLabel="Press me!"
   accessibilityRole="button"
-  collapsable={false}
-  enabled={true}
-  hitSlop={
+  accessibilityState={
     {
-      "bottom": 0,
-      "left": 0,
-      "right": 0,
-      "top": 0,
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
     }
   }
-  rippleColor="transparent"
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
   style={
     [
+      {
+        "justifyContent": "center",
+        "paddingHorizontal": 16,
+        "paddingVertical": 14,
+      },
+      {
+        "borderRadius": 4,
+        "marginBottom": 12,
+      },
+      {
+        "backgroundColor": "#156FF5",
+      },
       {},
-      [
-        {
-          "justifyContent": "center",
-          "paddingHorizontal": 16,
-          "paddingVertical": 14,
-        },
-        {
-          "borderRadius": 4,
-          "marginBottom": 12,
-        },
-        {
-          "backgroundColor": "#156FF5",
-        },
-        {},
-        undefined,
-      ],
+      undefined,
     ]
   }
   testID="testButton"
-  testOnly_onPress={[Function]}
 >
   <Text
     style={
@@ -286,47 +356,61 @@ exports[`Story Snapshots: PrimaryButton should match snapshot 1`] = `
   >
     Press me!
   </Text>
-</RNGestureHandlerButton>
+</View>
 `;
 
 exports[`Story Snapshots: SecondaryButton should match snapshot 1`] = `
-<RNGestureHandlerButton
+<View
   accessibilityLabel="Press me!"
   accessibilityRole="button"
-  collapsable={false}
-  enabled={true}
-  hitSlop={
+  accessibilityState={
     {
-      "bottom": 0,
-      "left": 0,
-      "right": 0,
-      "top": 0,
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
     }
   }
-  rippleColor="transparent"
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
   style={
     [
+      {
+        "justifyContent": "center",
+        "paddingHorizontal": 16,
+        "paddingVertical": 14,
+      },
+      {
+        "borderRadius": 4,
+        "marginBottom": 12,
+      },
+      {
+        "backgroundColor": "#E4E7EA",
+      },
       {},
-      [
-        {
-          "justifyContent": "center",
-          "paddingHorizontal": 16,
-          "paddingVertical": 14,
-        },
-        {
-          "borderRadius": 4,
-          "marginBottom": 12,
-        },
-        {
-          "backgroundColor": "#E4E7EA",
-        },
-        {},
-        undefined,
-      ],
+      undefined,
     ]
   }
   testID="testButton"
-  testOnly_onPress={[Function]}
 >
   <Text
     style={
@@ -347,47 +431,61 @@ exports[`Story Snapshots: SecondaryButton should match snapshot 1`] = `
   >
     Press me!
   </Text>
-</RNGestureHandlerButton>
+</View>
 `;
 
 exports[`Story Snapshots: SmallButton should match snapshot 1`] = `
-<RNGestureHandlerButton
+<View
   accessibilityLabel="Press me!"
   accessibilityRole="button"
-  collapsable={false}
-  enabled={true}
-  hitSlop={
+  accessibilityState={
     {
-      "bottom": 0,
-      "left": 0,
-      "right": 0,
-      "top": 0,
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
     }
   }
-  rippleColor="transparent"
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
   style={
     [
+      {
+        "alignSelf": "center",
+        "paddingHorizontal": 12,
+        "paddingVertical": 8,
+      },
+      {
+        "borderRadius": 4,
+        "marginBottom": 12,
+      },
+      {
+        "backgroundColor": "#156FF5",
+      },
       {},
-      [
-        {
-          "alignSelf": "center",
-          "paddingHorizontal": 12,
-          "paddingVertical": 8,
-        },
-        {
-          "borderRadius": 4,
-          "marginBottom": 12,
-        },
-        {
-          "backgroundColor": "#156FF5",
-        },
-        {},
-        undefined,
-      ],
+      undefined,
     ]
   }
   testID="testButton"
-  testOnly_onPress={[Function]}
 >
   <Text
     style={
@@ -410,5 +508,5 @@ exports[`Story Snapshots: SmallButton should match snapshot 1`] = `
   >
     Press me!
   </Text>
-</RNGestureHandlerButton>
+</View>
 `;

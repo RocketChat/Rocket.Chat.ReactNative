@@ -124,51 +124,65 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
             Private
           </Text>
         </View>
-        <RNGestureHandlerButton
+        <View
           accessibilityLabel="Use"
           accessibilityRole="button"
-          collapsable={false}
-          enabled={true}
-          hitSlop={
+          accessibilityState={
             {
-              "bottom": 0,
-              "left": 0,
-              "right": 0,
-              "top": 0,
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
             }
           }
-          rippleColor="transparent"
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
             [
+              {
+                "justifyContent": "center",
+                "paddingHorizontal": 16,
+                "paddingVertical": 14,
+              },
+              {
+                "borderRadius": 4,
+                "marginBottom": 12,
+              },
+              {
+                "backgroundColor": "#156FF5",
+              },
               {},
               [
                 {
-                  "justifyContent": "center",
-                  "paddingHorizontal": 16,
-                  "paddingVertical": 14,
+                  "height": 28,
+                  "marginLeft": 8,
+                  "width": 56,
                 },
                 {
-                  "borderRadius": 4,
-                  "marginBottom": 12,
+                  "backgroundColor": "#F7F8FA",
                 },
-                {
-                  "backgroundColor": "#156FF5",
-                },
-                {},
-                [
-                  {
-                    "height": 28,
-                    "marginLeft": 8,
-                    "width": 56,
-                  },
-                  {
-                    "backgroundColor": "#F7F8FA",
-                  },
-                ],
               ],
             ]
           }
-          testOnly_onPress={[Function]}
         >
           <Text
             style={
@@ -189,7 +203,7 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
           >
             Use
           </Text>
-        </RNGestureHandlerButton>
+        </View>
       </View>
       <Text
         ellipsizeMode="tail"
@@ -348,51 +362,65 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
             Private
           </Text>
         </View>
-        <RNGestureHandlerButton
+        <View
           accessibilityLabel="Use"
           accessibilityRole="button"
-          collapsable={false}
-          enabled={true}
-          hitSlop={
+          accessibilityState={
             {
-              "bottom": 0,
-              "left": 0,
-              "right": 0,
-              "top": 0,
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
             }
           }
-          rippleColor="transparent"
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
             [
+              {
+                "justifyContent": "center",
+                "paddingHorizontal": 16,
+                "paddingVertical": 14,
+              },
+              {
+                "borderRadius": 4,
+                "marginBottom": 12,
+              },
+              {
+                "backgroundColor": "#156FF5",
+              },
               {},
               [
                 {
-                  "justifyContent": "center",
-                  "paddingHorizontal": 16,
-                  "paddingVertical": 14,
+                  "height": 28,
+                  "marginLeft": 8,
+                  "width": 56,
                 },
                 {
-                  "borderRadius": 4,
-                  "marginBottom": 12,
+                  "backgroundColor": "#F7F8FA",
                 },
-                {
-                  "backgroundColor": "#156FF5",
-                },
-                {},
-                [
-                  {
-                    "height": 28,
-                    "marginLeft": 8,
-                    "width": 56,
-                  },
-                  {
-                    "backgroundColor": "#F7F8FA",
-                  },
-                ],
               ],
             ]
           }
-          testOnly_onPress={[Function]}
         >
           <Text
             style={
@@ -413,7 +441,7 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
           >
             Use
           </Text>
-        </RNGestureHandlerButton>
+        </View>
       </View>
       <Text
         ellipsizeMode="tail"
