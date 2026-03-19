@@ -111,7 +111,7 @@ export const sendConfirmationEmail = (email: string): Promise<{ success: boolean
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.0.0')) {
 		return sdk.post('users.sendConfirmationEmail', { email });
 	}
-	// Method removed in 8.0.0
+    
 	return sdk.methodCallWrapper('sendConfirmationEmail', email);
 };
 
