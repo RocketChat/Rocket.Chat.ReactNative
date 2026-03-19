@@ -15,7 +15,7 @@ export const changeLivechatStatus = (status?: string) => {
 	// Method removed in 8.0.0
 	return sdk.methodCallWrapper('livechat:changeLivechatStatus', status);
 };
-
+ 
 // RC 2.4.0
 // @ts-ignore
 export const getInquiriesQueued = (serverVersion: string) => {
