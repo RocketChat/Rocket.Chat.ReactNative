@@ -111,7 +111,7 @@ export const sendConfirmationEmail = (email: string): Promise<{ success: boolean
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.0.0')) {
 		return sdk.post('users.sendConfirmationEmail', { email });
 	}
-    
+
 	return sdk.methodCallWrapper('sendConfirmationEmail', email);
 };
 
@@ -418,7 +418,7 @@ export const getTeamListRoom = ({
 
 export const closeLivechat = (rid: string, comment?: string, tags?: string[]) => {
 	const serverVersion = reduxStore.getState().server.version;
-    // RC 3.2.0
+	// RC 3.2.0
 	let params;
 	if (tags && tags?.length) {
 		params = { tags };
