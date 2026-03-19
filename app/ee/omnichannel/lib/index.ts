@@ -42,7 +42,7 @@ export const takeResume = (roomId: string) => {
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.0.0')) {
 		return sdk.post('livechat/room.resumeOnHold', { roomId });
 	}
-    // Method removed in 8.0.0
+	// Method removed in 8.0.0
 	return sdk.methodCallWrapper('livechat:resumeOnHold', roomId);
 };
 
