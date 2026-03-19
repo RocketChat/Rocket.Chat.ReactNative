@@ -978,7 +978,7 @@ export const createGroupChat = () => {
 	// RC 3.1.0
 	return sdk.post('im.create', { usernames });
 };
-
+ 
 export const addUsersToRoom = (rid: string): Promise<boolean> => {
 	const { users: selectedUsers } = reduxStore.getState().selectedUsers;
 	const users = selectedUsers.map(u => u.name);
