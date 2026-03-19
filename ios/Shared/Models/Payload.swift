@@ -11,6 +11,7 @@ import Foundation
 struct Caller: Codable {
   let _id: String?
   let name: String?
+  let username: String?
 }
 
 struct Payload: Codable {

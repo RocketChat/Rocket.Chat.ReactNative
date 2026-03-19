@@ -28,7 +28,9 @@ export const MessageImage = React.memo(({ uri, status, encrypted = false, imageP
 			Image.loadAsync(uri, {
 				onError: e => {
 					log(e);
-				}
+				},
+				maxHeight: 1000,
+				maxWidth: 1000
 			}).then(image => {
 				setImageDimensions({ width: image.width, height: image.height });
 			});

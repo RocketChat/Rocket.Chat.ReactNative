@@ -220,7 +220,7 @@ exports[`MessageComposer Audio tap record 1`] = `
             style={
               [
                 {
-                  "color": "#FFFFFF",
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [

@@ -44,7 +44,7 @@ tags:
 - tapOn:
     id: 'create-channel-name'
 - inputText: ${ROOM}
-- hideKeyboard
+- runFlow: '../../../helpers/hide-keyboard.yaml'
 - extendedWaitUntil:
     visible:
       id: 'create-channel-encrypted'
