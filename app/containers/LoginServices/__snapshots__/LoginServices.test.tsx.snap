@@ -2,44 +2,58 @@
 
 exports[`Story Snapshots: Separators should match snapshot 1`] = `
 [
-  <RNGestureHandlerButton
+  <View
     accessibilityLabel="More options"
     accessibilityRole="button"
-    collapsable={false}
-    enabled={true}
-    hitSlop={
+    accessibilityState={
       {
-        "bottom": 0,
-        "left": 0,
-        "right": 0,
-        "top": 0,
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
       }
     }
-    rippleColor="transparent"
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
     style={
       [
+        {
+          "justifyContent": "center",
+          "paddingHorizontal": 16,
+          "paddingVertical": 14,
+        },
+        {
+          "borderRadius": 4,
+          "marginBottom": 12,
+        },
+        {
+          "backgroundColor": "#E4E7EA",
+        },
         {},
-        [
-          {
-            "justifyContent": "center",
-            "paddingHorizontal": 16,
-            "paddingVertical": 14,
-          },
-          {
-            "borderRadius": 4,
-            "marginBottom": 12,
-          },
-          {
-            "backgroundColor": "#E4E7EA",
-          },
-          {},
-          {
-            "marginBottom": 0,
-          },
-        ],
+        {
+          "marginBottom": 0,
+        },
       ]
     }
-    testOnly_onPress={[Function]}
   >
     <Text
       style={
@@ -60,7 +74,7 @@ exports[`Story Snapshots: Separators should match snapshot 1`] = `
     >
       More options
     </Text>
-  </RNGestureHandlerButton>,
+  </View>,
   <View
     accessible={true}
     style={
@@ -117,44 +131,58 @@ exports[`Story Snapshots: Separators should match snapshot 1`] = `
       }
     />
   </View>,
-  <RNGestureHandlerButton
+  <View
     accessibilityLabel="Less options"
     accessibilityRole="button"
-    collapsable={false}
-    enabled={true}
-    hitSlop={
+    accessibilityState={
       {
-        "bottom": 0,
-        "left": 0,
-        "right": 0,
-        "top": 0,
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
       }
     }
-    rippleColor="transparent"
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
     style={
       [
+        {
+          "justifyContent": "center",
+          "paddingHorizontal": 16,
+          "paddingVertical": 14,
+        },
+        {
+          "borderRadius": 4,
+          "marginBottom": 12,
+        },
+        {
+          "backgroundColor": "#E4E7EA",
+        },
         {},
-        [
-          {
-            "justifyContent": "center",
-            "paddingHorizontal": 16,
-            "paddingVertical": 14,
-          },
-          {
-            "borderRadius": 4,
-            "marginBottom": 12,
-          },
-          {
-            "backgroundColor": "#E4E7EA",
-          },
-          {},
-          {
-            "marginBottom": 0,
-          },
-        ],
+        {
+          "marginBottom": 0,
+        },
       ]
     }
-    testOnly_onPress={[Function]}
   >
     <Text
       style={
@@ -175,7 +203,7 @@ exports[`Story Snapshots: Separators should match snapshot 1`] = `
     >
       Less options
     </Text>
-  </RNGestureHandlerButton>,
+  </View>,
   <View
     accessible={true}
     style={
@@ -242,7 +270,7 @@ exports[`Story Snapshots: ServiceList should match snapshot 1`] = `
     collapsable={false}
     delayLongPress={600}
     enabled={true}
-    handlerTag={7}
+    handlerTag={1}
     handlerType="NativeViewGestureHandler"
     innerRef={null}
     onActiveStateChange={[Function]}
@@ -378,7 +406,7 @@ exports[`Story Snapshots: ServiceList should match snapshot 1`] = `
     collapsable={false}
     delayLongPress={600}
     enabled={true}
-    handlerTag={8}
+    handlerTag={2}
     handlerType="NativeViewGestureHandler"
     innerRef={null}
     onActiveStateChange={[Function]}
@@ -514,7 +542,7 @@ exports[`Story Snapshots: ServiceList should match snapshot 1`] = `
     collapsable={false}
     delayLongPress={600}
     enabled={true}
-    handlerTag={9}
+    handlerTag={3}
     handlerType="NativeViewGestureHandler"
     innerRef={null}
     onActiveStateChange={[Function]}
@@ -650,7 +678,7 @@ exports[`Story Snapshots: ServiceList should match snapshot 1`] = `
     collapsable={false}
     delayLongPress={600}
     enabled={true}
-    handlerTag={10}
+    handlerTag={4}
     handlerType="NativeViewGestureHandler"
     innerRef={null}
     onActiveStateChange={[Function]}
