@@ -2,6 +2,7 @@ import { type SubscriptionType, type TAnyMessageModel } from '../../definitions'
 import { loadNextMessages } from './loadNextMessages';
 import { loadMessagesForRoom } from './loadMessagesForRoom';
 import { MessageTypeLoad } from '../constants/messageTypeLoad';
+import { type RoomTypes } from './roomTypeToApiType';
 
 const getMoreMessages = ({
 	rid,
@@ -15,7 +16,7 @@ const getMoreMessages = ({
 	if ([MessageTypeLoad.MORE, MessageTypeLoad.PREVIOUS_CHUNK].includes(loaderItem.t as MessageTypeLoad)) {
 		return loadMessagesForRoom({
 			rid,
-			t: t as any,
+			t: t as RoomTypes,
 			latest: loaderItem.ts as Date,
 			loaderItem
 		});

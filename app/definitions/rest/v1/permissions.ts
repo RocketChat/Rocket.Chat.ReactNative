@@ -1,17 +1,5 @@
-import { type IPermission } from '../../IPermission';
+import type { PermissionsEndpoints as RestTypingsPermissionsEndpoints } from '@rocket.chat/rest-typings';
 
-type PermissionsUpdateProps = { permissions: { _id: string; roles: string[] }[] };
+import type { AdaptEndpoints } from '../adaptEndpoints';
 
-export type PermissionsEndpoints = {
-	'permissions.listAll': {
-		GET: (params: { updatedSince?: string }) => {
-			update: IPermission[];
-			remove: IPermission[];
-		};
-	};
-	'permissions.update': {
-		POST: (params: PermissionsUpdateProps) => {
-			permissions: IPermission[];
-		};
-	};
-};
+export type PermissionsEndpoints = AdaptEndpoints<RestTypingsPermissionsEndpoints>;

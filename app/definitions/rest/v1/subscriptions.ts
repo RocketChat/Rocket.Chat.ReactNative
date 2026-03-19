@@ -1,8 +1,5 @@
-export type SubscriptionsEndpoints = {
-	'subscriptions.unread': {
-		POST: (params: { firstUnreadMessage: { _id: string } } | { roomId: string }) => {};
-	};
-	'subscriptions.read': {
-		POST: (params: { rid: string; readThreads?: boolean }) => {};
-	};
-};
+import type { SubscriptionsEndpoints as RestTypingsSubscriptionsEndpoints } from '@rocket.chat/rest-typings';
+
+import type { AdaptEndpoints } from '../adaptEndpoints';
+
+export type SubscriptionsEndpoints = AdaptEndpoints<RestTypingsSubscriptionsEndpoints>;

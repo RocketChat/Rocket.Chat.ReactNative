@@ -22,7 +22,13 @@ import database from '../../lib/database';
 import { hasPermission, showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers';
 import { closeLivechat as closeLivechatService } from '../../lib/methods/helpers/closeLivechat';
 import { events, logEvent } from '../../lib/methods/helpers/log';
-import { getDepartmentInfo, getTagsList, onHoldLivechat, returnLivechat } from '../../lib/services/restApi';
+import {
+	getDepartmentFromInfo,
+	getDepartmentInfo,
+	getTagsList,
+	onHoldLivechat,
+	returnLivechat
+} from '../../lib/services/restApi';
 import { getUserSelector } from '../../selectors/login';
 import { type TNavigation } from '../../stacks/stackType';
 import { type ChatsStackParamList } from '../../stacks/types';
@@ -276,9 +282,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 
 			if (departmentId) {
 				const result = await getDepartmentInfo(departmentId);
-				if (result.success) {
-					departmentInfo = result.department as ILivechatDepartment;
-				}
+				departmentInfo = getDepartmentFromInfo(result);
 			}
 
 			if (departmentInfo?.requestTagBeforeClosingChat) {

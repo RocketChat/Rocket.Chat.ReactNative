@@ -1,13 +1,11 @@
-import { type IServerRoom } from '../../IRoom';
-import { type PaginatedResult } from '../helpers/PaginatedResult';
+import type { Endpoints } from '@rocket.chat/rest-typings';
 
-export type DirectoryEndpoint = {
-	directory: {
-		GET: (params: {
-			query: { [key: string]: string };
-			count: number;
-			offset: number;
-			sort: { [key: string]: number };
-		}) => PaginatedResult<{ result: IServerRoom[]; count: number }>;
-	};
+import type { AdaptEndpoints } from '../adaptEndpoints';
+
+type ExtractDirectoryEndpoint<T> = {
+	[K in keyof T as K extends `/v1/directory` ? K : never]: T[K];
 };
+
+type RestTypingsDirectoryEndpoint = ExtractDirectoryEndpoint<Endpoints>;
+
+export type DirectoryEndpoint = AdaptEndpoints<RestTypingsDirectoryEndpoint>;

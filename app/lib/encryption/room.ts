@@ -321,11 +321,15 @@ export default class EncryptionRoom {
 				}
 				const { version } = store.getState().server;
 				if (compareServerVersion(version, 'greaterThanOrEqualTo', '7.0.0')) {
-					const usersSuggestedGroupKeys = { [this.roomId]: [] as any[] };
+					const usersSuggestedGroupKeys: Record<string, Array<{ _id: string; key: string; oldKeys?: unknown }>> = {
+						[this.roomId]: []
+					};
 					for await (const user of users) {
-						const key = await this.encryptRoomKeyForUser(user.e2e!.public_key);
-						const oldKeys = await this.encryptOldKeysForParticipant(user.e2e?.public_key, decryptedOldGroupKeys);
-
+						const publicKey = user.e2e?.public_key;
+						if (!publicKey || !user._id) continue;
+						const key = await this.encryptRoomKeyForUser(publicKey);
+						if (!key) continue;
+						const oldKeys = await this.encryptOldKeysForParticipant(publicKey, decryptedOldGroupKeys);
 						usersSuggestedGroupKeys[this.roomId].push({ _id: user._id, key, ...(oldKeys && { oldKeys }) });
 					}
 					await provideUsersSuggestedGroupKeys(usersSuggestedGroupKeys);

@@ -38,7 +38,7 @@ export const useAutoSaveDraft = (text = '') => {
 	// if focused on composer input, saves every N seconds
 	useEffect(() => {
 		if (focused) {
-			intervalRef.current = setInterval(saveMessageDraft, 3000) as any;
+			intervalRef.current = setInterval(saveMessageDraft, 3000) as unknown as number;
 		} else if (intervalRef.current) {
 			saveMessageDraft();
 			clearInterval(intervalRef.current);

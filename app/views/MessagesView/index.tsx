@@ -29,7 +29,8 @@ import {
 	type TAnyMessageModel,
 	type IUrl,
 	type TGetCustomEmoji,
-	type ICustomEmoji
+	type ICustomEmoji,
+	type IServerAttachment
 } from '../../definitions';
 import { getFiles, getMessages, getPinnedMessages, togglePinMessage, toggleStarMessage } from '../../lib/services/restApi';
 import { type TNavigation } from '../../stacks/stackType';
@@ -187,7 +188,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 					const { messages } = this.state;
 					const result = await getFiles(this.rid, this.t, messages.length);
 					if (result.success) {
-						return { ...result, messages: await Encryption.decryptFiles(result.files) };
+						return { ...result, messages: await Encryption.decryptFiles(result.files as unknown as IServerAttachment[]) };
 					}
 				},
 				noDataMsg: I18n.t('No_files'),

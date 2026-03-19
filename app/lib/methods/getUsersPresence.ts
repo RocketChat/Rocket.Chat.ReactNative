@@ -61,7 +61,7 @@ export async function getUsersPresence(usersParams: string[]) {
 
 		try {
 			// RC 1.1.0
-			const result = (await sdk.get('users.presence' as any, params as any)) as any;
+			const result = await sdk.get('users.presence', params as { ids?: string });
 
 			if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '4.1.0')) {
 				sdk.subscribeRaw('stream-user-presence', ['', { added: usersParams }]);
@@ -71,14 +71,15 @@ export async function getUsersPresence(usersParams: string[]) {
 				const { users } = result;
 
 				const activeUsers = usersParams.reduce((ret: IActiveUsers, id) => {
-					const user = users.find((u: IUser) => u._id === id) ?? { _id: id, status: 'offline' };
-					const { _id, status, statusText } = user;
+					const presenceUser = users.find(u => u._id === id) ?? { _id: id, status: 'offline' as const };
+					const status = (presenceUser.status ?? 'offline') as IActiveUsers[string]['status'];
+					const statusText = ('statusText' in presenceUser ? presenceUser.statusText : '') ?? '';
 
-					if (loggedUser && loggedUser.id === _id) {
+					if (loggedUser && loggedUser.id === presenceUser._id) {
 						reduxStore.dispatch(setUser({ status, statusText }));
 					}
 
-					ret[_id] = { status, statusText };
+					ret[presenceUser._id] = { status, statusText };
 					return ret;
 				}, {});
 				InteractionManager.runAfterInteractions(() => {
@@ -87,7 +88,8 @@ export async function getUsersPresence(usersParams: string[]) {
 
 				const db = database.active;
 				const userCollection = db.get('users');
-				users.forEach(async (user: IUser) => {
+				users.forEach(async presenceUser => {
+					const user = presenceUser as unknown as IUser;
 					try {
 						const userRecord = await userCollection.find(user._id);
 						await db.write(async () => {

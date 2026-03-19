@@ -24,6 +24,7 @@ import {
 	SubscriptionType,
 	type TSubscriptionModel
 } from '../../definitions';
+import { type TDataSelect } from '../../definitions/IDataSelect';
 import { withDimensions } from '../../dimensions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
@@ -50,10 +51,12 @@ import {
 	compareServerVersion,
 	isTeamRoom
 } from '../../lib/methods/helpers';
+import { type RoomTypes } from '../../lib/methods/roomTypeToApiType';
 import {
 	getUserInfo,
 	toggleBlockUser,
 	getRoomCounters,
+	getDepartmentFromInfo,
 	getDepartmentInfo,
 	getTagsList,
 	getChannelInfo,
@@ -197,15 +200,17 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 				// If the previous users count changes, we will update it and the members count to the value from the room counter.
 				if (this.prevUsersCount !== changes.usersCount) {
-					const counters = await getRoomCounters(room.rid, room.t as any);
+					const counters = await getRoomCounters(room.rid, room.t as RoomTypes);
 					if (counters.success) {
 						if (this.mounted) {
-							this.setState({ membersCount: counters.members });
+							this.setState({ membersCount: counters.members ?? undefined });
 						} else {
 							// @ts-ignore
-							this.state.membersCount = counters.members;
+							this.state.membersCount = counters.members ?? undefined;
 						}
-						this.updateUsersCount(counters.members);
+						if (typeof counters.members === 'number') {
+							this.updateUsersCount(counters.members);
+						}
 						this.prevUsersCount = changes.usersCount;
 					}
 				}
@@ -241,10 +246,12 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 			if (room && (await this.canViewMembers())) {
 				try {
-					const counters = await getRoomCounters(room.rid, room.t as any);
+					const counters = await getRoomCounters(room.rid, room.t as RoomTypes);
 					if (counters.success) {
-						await this.updateUsersCount(counters.members);
-						this.setState({ joined: counters.joined, membersCount: counters.members });
+						if (typeof counters.members === 'number') {
+							await this.updateUsersCount(counters.members);
+						}
+						this.setState({ joined: counters.joined, membersCount: counters.members ?? undefined });
 					}
 				} catch (e) {
 					log(e);
@@ -407,9 +414,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 			if (departmentId) {
 				const result = await getDepartmentInfo(departmentId);
-				if (result.success) {
-					departmentInfo = result.department as ILivechatDepartment;
-				}
+				departmentInfo = getDepartmentFromInfo(result);
 			}
 
 			if (departmentInfo?.requestTagBeforeClosingChat) {
@@ -608,11 +613,11 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 						rid: r._id,
 						name: r.name,
 						teamId: r.teamId,
-						alert: r.isLastOwner
+						alert: 'isLastOwner' in r ? (r as { isLastOwner?: boolean }).isLastOwner : undefined
 					}));
 					navigation.navigate('SelectListView', {
 						title: 'Leave_Team',
-						data: teamChannels as any,
+						data: teamChannels as TDataSelect[],
 						infoText: 'Select_Team_Channels',
 						nextAction: data => dispatch(leaveRoom(ERoomType.t, room, data)),
 						showAlert: () => showErrorAlert(I18n.t('Last_owner_team_room'), I18n.t('Cannot_leave'))
@@ -639,7 +644,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		logEvent(events.RA_CONVERT_TO_TEAM);
 		try {
 			const { room } = this.state;
-			const result = await convertChannelToTeam({ rid: room.rid, name: room.name, type: room.t as any });
+			const result = await convertChannelToTeam({ rid: room.rid, name: room.name, type: room.t as 'c' | 'p' });
 
 			if (result.success) {
 				Navigation.resetTo();

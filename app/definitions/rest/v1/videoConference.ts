@@ -1,45 +1,8 @@
-import {
-	type VideoConfCall,
-	type VideoConfCancelProps,
-	type VideoConference,
-	type VideoConferenceCapabilities,
-	type VideoConferenceInstructions,
-	type VideoConfInfoProps,
-	type VideoConfJoinProps,
-	type VideoConfListProps,
-	type VideoConfStartProps
-} from '../../IVideoConference';
-import { type PaginatedResult } from '../helpers/PaginatedResult';
+import type { VideoConferenceEndpoints as RestTypingsVideoConferenceEndpoints } from '@rocket.chat/rest-typings';
 
-export type VideoConferenceEndpoints = {
-	'video-conference.start': {
-		POST: (params: VideoConfStartProps) => { data: VideoConferenceInstructions & { providerName: string } };
-	};
+import type { AdaptEndpoints } from '../adaptEndpoints';
 
-	'video-conference.join': {
-		POST: (params: VideoConfJoinProps) => { url: string; providerName: string };
-	};
-
-	'video-conference.cancel': {
-		POST: (params: VideoConfCancelProps) => void;
-	};
-
-	'video-conference.info': {
-		GET: (params: VideoConfInfoProps) => VideoConfCall;
-	};
-
-	'video-conference.list': {
-		GET: (params: VideoConfListProps) => PaginatedResult<{ data: VideoConference[] }>;
-	};
-
-	'video-conference.capabilities': {
-		GET: () => { providerName: string; capabilities: VideoConferenceCapabilities };
-	};
-
-	'video-conference.providers': {
-		GET: () => { data: { key: string; label: string }[] };
-	};
-
+export type VideoConferenceEndpoints = AdaptEndpoints<RestTypingsVideoConferenceEndpoints> & {
 	'video-conference/jitsi.update-timeout': {
 		POST: (params: { roomId: string }) => void;
 	};

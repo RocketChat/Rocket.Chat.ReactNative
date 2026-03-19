@@ -5,7 +5,7 @@ import { type ISubscription } from '../../definitions';
 import { type ILivechatDepartment } from '../../definitions/ILivechatDepartment';
 import { type ILivechatVisitorModified } from '../../definitions/ILivechatVisitor';
 import I18n from '../../i18n';
-import { getDepartmentInfo } from '../../lib/services/restApi';
+import { getDepartmentFromInfo, getDepartmentInfo } from '../../lib/services/restApi';
 import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
 import CustomFields from './CustomFields';
@@ -31,9 +31,8 @@ const Livechat = ({ room, roomUser }: { room: ISubscription; roomUser: ILivechat
 	const getDepartment = async (id: string) => {
 		if (id) {
 			const result = await getDepartmentInfo(id);
-			if (result.success) {
-				setDepartment(result.department as ILivechatDepartment);
-			}
+			const dept = getDepartmentFromInfo(result);
+			if (dept) setDepartment(dept);
 		}
 	};
 

@@ -10,7 +10,7 @@ export const mapMessageFromDB = (messageModel: TMessageModel) => {
 		...(parsedMessage.attachments && {
 			attachments: parsedMessage.attachments.map(({ ts, ...attachment }) => ({
 				...(ts && { ts: new Date(ts) }),
-				...(attachment as any)
+				...attachment
 			}))
 		})
 	};

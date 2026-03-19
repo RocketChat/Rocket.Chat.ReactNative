@@ -1,3 +1,5 @@
+import type { Notifications as RestNotifications } from '@rocket.chat/rest-typings';
+
 import {
 	type IAvatarSuggestion,
 	type IMessage,
@@ -13,11 +15,11 @@ import {
 	type SubscriptionType
 } from '../../definitions';
 import { type TParams } from '../../definitions/ILivechatEditView';
+import { type ILivechatDepartment } from '../../definitions/ILivechatDepartment';
+import { type ILivechatDepartmentAgents } from '../../definitions/ILivechatDepartmentAgents';
 import { type ILivechatTag } from '../../definitions/ILivechatTag';
 import { type ISpotlight } from '../../definitions/ISpotlight';
 import { TEAM_TYPE } from '../../definitions/ITeam';
-import { type OperationParams, type ResultFor } from '../../definitions/rest/helpers';
-import { type SubscriptionsEndpoints } from '../../definitions/rest/v1/subscriptions';
 import { Encryption } from '../encryption';
 import { type RoomTypes, roomTypeToApiType } from '../methods/roomTypeToApiType';
 import { unsubscribeRooms } from '../methods/subscribeRooms';
@@ -243,23 +245,15 @@ export const teamListRoomsOfUser = ({ teamId, userId }: { teamId: string; userId
 
 export const convertChannelToTeam = ({ rid, name, type }: { rid: string; name: string; type: 'c' | 'p' }) => {
 	const serverVersion = reduxStore.getState().server.version;
-	let params;
 	if (type === 'c') {
 		// https://github.com/RocketChat/Rocket.Chat/pull/25279
-		params = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '4.8.0')
+		const params = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '4.8.0')
 			? { channelId: rid }
-			: {
-					channelId: rid,
-					channelName: name
-			  };
-	} else {
-		params = {
-			roomId: rid,
-			roomName: name
-		};
+			: { channelId: rid, channelName: name };
+		return sdk.post('channels.convertToTeam', params);
 	}
-
-	return sdk.post(type === 'c' ? 'channels.convertToTeam' : 'groups.convertToTeam', params);
+	const params = { roomId: rid, roomName: name };
+	return sdk.post('groups.convertToTeam', params);
 };
 
 export const convertTeamToChannel = ({ teamId, selected }: { teamId: string; selected: string[] }) => {
@@ -275,7 +269,7 @@ export const joinRoom = (roomId: string, joinCode: string | null, type: 'c' | 'p
 	if (type === 'p') {
 		return sdk.methodCallWrapper('joinRoom', roomId) as Promise<boolean>;
 	}
-	return sdk.post('channels.join', { roomId, joinCode });
+	return sdk.post('channels.join', { roomId, joinCode: joinCode ?? undefined });
 };
 
 export const deleteMessage = (messageId: string, rid: string) =>
@@ -324,39 +318,22 @@ export const setReaction = (emoji: string, messageId: string) =>
 	// RC 0.62.2
 	sdk.post('chat.react', { emoji, messageId });
 
-/**
- * Toggles the read status of a room.
- *
- * @param isRead - Whether to mark the room as read or unread.
- * @param roomId - The ID of the room.
- * @param includeThreads - Optional flag to include threads when marking as read.
- * @returns A promise from the sdk post method.
- */
 export const toggleReadStatus = (
 	isRead: boolean,
 	roomId: string,
 	includeThreads?: boolean
-): Promise<ResultFor<'POST', keyof SubscriptionsEndpoints>> => {
-	let endpoint: keyof SubscriptionsEndpoints;
-	let payload: OperationParams<'POST', keyof SubscriptionsEndpoints> = { roomId };
-
+): Promise<{ success?: boolean } | { success: false; error: unknown }> => {
 	if (isRead) {
-		endpoint = 'subscriptions.unread';
-	} else {
-		endpoint = 'subscriptions.read';
-		payload = { rid: roomId };
-		if (includeThreads) {
-			payload.readThreads = includeThreads;
-		}
+		return sdk.post('subscriptions.unread', { roomId });
 	}
-
-	return sdk.post(endpoint, payload);
+	const payload: { rid: string; readThreads?: boolean } = { rid: roomId };
+	if (includeThreads) {
+		payload.readThreads = includeThreads;
+	}
+	return sdk.post('subscriptions.read', payload);
 };
 
-export const getRoomCounters = (
-	roomId: string,
-	t: SubscriptionType.CHANNEL | SubscriptionType.GROUP | SubscriptionType.OMNICHANNEL
-) =>
+export const getRoomCounters = (roomId: string, t: RoomTypes) =>
 	// RC 0.65.0
 	sdk.get(`${roomTypeToApiType(t)}.counters`, { roomId });
 
@@ -364,9 +341,9 @@ export const getChannelInfo = (roomId: string) =>
 	// RC 0.48.0
 	sdk.get('channels.info', { roomId });
 
-export const getUserPreferences = (userId: string) =>
+export const getUserPreferences = () =>
 	// RC 0.62.0
-	sdk.get('users.getPreferences', { userId });
+	sdk.get('users.getPreferences');
 
 export const getRoomInfo = (roomId: string) =>
 	// RC 0.72.0
@@ -420,17 +397,22 @@ export const closeLivechat = (rid: string, comment?: string, tags?: string[]) =>
 	return sdk.methodCallWrapper('livechat:closeRoom', rid, comment, { clientAction: true, ...params });
 };
 
-export const editLivechat = (userData: TParams, roomData: TParams): Promise<{ error?: string }> => {
+export const editLivechat = async (userData: TParams, roomData: TParams): Promise<{ error?: string }> => {
 	const serverVersion = reduxStore.getState().server.version;
 	if (compareServerVersion(serverVersion, 'lowerThan', '5.3.0')) {
 		// RC 0.55.0
 		return sdk.methodCallWrapper('livechat:saveInfo', userData, roomData);
 	}
 	// RC 5.3.0
-	return sdk.post('livechat/room.saveInfo', { guestData: userData, roomData }) as any;
+	try {
+		await sdk.post('livechat/room.saveInfo', { guestData: userData, roomData });
+		return {};
+	} catch (e: unknown) {
+		return { error: e instanceof Error ? e.message : String(e) };
+	}
 };
 
-export const returnLivechat = (rid: string, departmentId?: string): Promise<any> => {
+export const returnLivechat = (rid: string, departmentId?: string): Promise<unknown> => {
 	const serverVersion = reduxStore.getState().server.version;
 
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.12.0')) {
@@ -447,9 +429,16 @@ export const forwardLivechat = (transferData: any) =>
 	// RC 0.36.0
 	sdk.methodCallWrapper('livechat:transfer', transferData);
 
-export const getDepartmentInfo = (departmentId: string) =>
+type IDepartmentInfoResult =
+	| { success: true; department: ILivechatDepartment; agents?: ILivechatDepartmentAgents[] }
+	| { success: false; error: unknown };
+
+export const getDepartmentInfo = (departmentId: string): Promise<IDepartmentInfoResult> =>
 	// RC 2.2.0
-	sdk.get(`livechat/department/${departmentId}?includeAgents=false`);
+	sdk.get(`livechat/department/${departmentId}?includeAgents=false`) as Promise<IDepartmentInfoResult>;
+
+export const getDepartmentFromInfo = (result: IDepartmentInfoResult): ILivechatDepartment | undefined =>
+	result.success ? result.department : undefined;
 
 export const getDepartments = (args?: { count: number; offset: number; text: string }) => {
 	let params;
@@ -480,7 +469,7 @@ export const getRoutingConfig = async (): Promise<{
 	const serverVersion = reduxStore.getState().server.version;
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.11.0')) {
 		const result = await sdk.get('livechat/config/routing');
-		if (result.success) {
+		if (result.success && result.config) {
 			return result.config;
 		}
 	}
@@ -493,9 +482,13 @@ export const getTagsList = (): Promise<ILivechatTag[]> =>
 	// RC 2.0.0
 	sdk.methodCallWrapper('livechat:getTagsList');
 
-export const getAgentDepartments = (uid: string) =>
+type IAgentDepartmentsResult = { success: true; departments: ILivechatDepartmentAgents[] } | { success: false; error: unknown };
+
+export const getAgentDepartments = (uid: string): Promise<IAgentDepartmentsResult> =>
 	// RC 2.4.0
-	sdk.get(`livechat/agents/${uid}/departments?enabledDepartmentsOnly=true`);
+	sdk.get(
+		`livechat/agents/${uid}/departments?enabledDepartmentsOnly=true` as 'livechat/agents/:uid/departments'
+	) as Promise<IAgentDepartmentsResult>;
 
 export const getCustomFields = () =>
 	// RC 2.2.0
@@ -606,7 +599,7 @@ export const removeUserFromRoom = ({ roomId, t, userId }: { roomId: string; t: R
 
 export const ignoreUser = ({ rid, userId, ignore }: { rid: string; userId: string; ignore: boolean }) =>
 	// RC 0.64.0
-	sdk.get('chat.ignoreUser', { rid, userId, ignore });
+	sdk.get('chat.ignoreUser', { rid, userId, ignore: ignore.toString() });
 
 export const toggleArchiveRoom = (roomId: string, t: SubscriptionType, archive: boolean) => {
 	const type = t as SubscriptionType.CHANNEL | SubscriptionType.GROUP;
@@ -664,7 +657,7 @@ export const saveUserPreferences = (data: Partial<INotificationPreferences & IMe
 
 export const saveNotificationSettings = (roomId: string, notifications: IRoomNotifications) =>
 	// RC 0.63.0
-	sdk.post('rooms.saveNotification', { roomId, notifications });
+	sdk.post('rooms.saveNotification', { roomId, notifications: notifications as unknown as RestNotifications });
 
 export const getSingleMessage = (msgId: string) =>
 	// RC 0.47.0
@@ -719,7 +712,7 @@ export const getFiles = (roomId: string, type: SubscriptionType, offset: number)
 	return sdk.get(`${roomTypeToApiType(t)}.files`, {
 		roomId,
 		offset,
-		sort: { uploadedAt: -1 }
+		sort: '{ "uploadedAt": -1 }'
 	});
 };
 
@@ -835,7 +828,7 @@ export const getSyncThreadsList = ({ rid, updatedSince }: { rid: string; updated
 		updatedSince
 	});
 
-export const runSlashCommand = (command: string, roomId: string, params: string, triggerId?: string, tmid?: string) =>
+export const runSlashCommand = (command: string, roomId: string, params: string, triggerId: string, tmid?: string) =>
 	// RC 0.60.2
 	sdk.post('commands.run', {
 		command,
@@ -983,7 +976,6 @@ export function e2eResetOwnKey(): Promise<{ success?: boolean }> {
 }
 
 export function e2eResetRoomKey(rid: string, e2eKey: string, e2eKeyId: string): Promise<boolean | {}> {
-	// RC ?
 	return sdk.post('e2e.resetRoomKey', { rid, e2eKey, e2eKeyId });
 }
 
@@ -994,7 +986,6 @@ export const editMessage = async (message: Pick<IMessage, 'id' | 'msg' | 'rid' |
 	}
 
 	if (result.content) {
-		// RC 0.49.0
 		return sdk.post('chat.update', {
 			roomId: message.rid,
 			msgId: message.id,
@@ -1014,7 +1005,7 @@ export const registerPushToken = () =>
 	new Promise<void>(async resolve => {
 		const token = getDeviceToken();
 		if (token) {
-			const type = isIOS ? 'apn' : 'gcm';
+			const type: 'apn' | 'gcm' = isIOS ? 'apn' : 'gcm';
 			const data = {
 				value: token,
 				type,
@@ -1089,7 +1080,6 @@ export const getRoomMembers = async ({
 export const e2eFetchMyKeys = async () => {
 	// RC 0.70.0
 	const result = await sdk.get('e2e.fetchMyKeys');
-	// snake_case -> camelCase
 	if (result.success) {
 		return {
 			success: result.success,
@@ -1102,7 +1092,10 @@ export const e2eFetchMyKeys = async () => {
 
 export const logoutOtherLocations = () => {
 	const { id } = reduxStore.getState().login.user;
-	return sdk.post('users.removeOtherTokens', { userId: id as string });
+	if (!id) {
+		return Promise.reject(new Error('User not logged in'));
+	}
+	return sdk.post('users.removeOtherTokens');
 };
 
 export function getUserInfo(userId: string) {

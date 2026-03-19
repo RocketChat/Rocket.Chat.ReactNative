@@ -168,8 +168,8 @@ const RoomInfoView = (): React.ReactElement => {
 				const result = await getUserInfo(roomUserId);
 				if (result.success) {
 					const { user } = result;
-					const r = handleRoles(user);
-					setRoomUser({ ...user, roles: r });
+					const r = handleRoles(user as Pick<IUser, 'username' | 'roles'>);
+					setRoomUser({ ...user, roles: r } as typeof roomUser);
 				}
 			} catch {
 				// do nothing

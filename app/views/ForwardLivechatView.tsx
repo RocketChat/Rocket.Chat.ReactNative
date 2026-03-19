@@ -80,7 +80,7 @@ const ForwardLivechatView = (): React.ReactElement => {
 		try {
 			const result = await getRoomInfo(rid);
 			if (result.success) {
-				setRoom(result.room as IServerRoom);
+				setRoom(result.room as unknown as IServerRoom);
 			}
 		} catch {
 			// do nothing
