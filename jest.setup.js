@@ -73,18 +73,20 @@ jest.mock('expo-av', () => {
 				getStatusAsync: jest.fn(() => Promise.resolve())
 			})),
 			Sound: {
-				createAsync: jest.fn(() => Promise.resolve({
-					sound: {
-						setOnPlaybackStatusUpdate: jest.fn(),
-						playAsync: jest.fn(() => Promise.resolve()),
-						pauseAsync: jest.fn(() => Promise.resolve()),
-						stopAsync: jest.fn(() => Promise.resolve()),
-						unloadAsync: jest.fn(() => Promise.resolve()),
-						getStatusAsync: jest.fn(() => Promise.resolve()),
-						setPositionAsync: jest.fn(() => Promise.resolve())
-					},
-					status: {}
-				})),
+				createAsync: jest.fn(() =>
+					Promise.resolve({
+						sound: {
+							setOnPlaybackStatusUpdate: jest.fn(),
+							playAsync: jest.fn(() => Promise.resolve()),
+							pauseAsync: jest.fn(() => Promise.resolve()),
+							stopAsync: jest.fn(() => Promise.resolve()),
+							unloadAsync: jest.fn(() => Promise.resolve()),
+							getStatusAsync: jest.fn(() => Promise.resolve()),
+							setPositionAsync: jest.fn(() => Promise.resolve())
+						},
+						status: {}
+					})
+				),
 				create: jest.fn(() => ({
 					setOnPlaybackStatusUpdate: jest.fn(),
 					playAsync: jest.fn(() => Promise.resolve()),
@@ -256,10 +258,7 @@ jest.mock('expo-device', () => ({
 	isDevice: true
 }));
 
-
-jest.mock('react-native-worklets', () =>
-	require('react-native-worklets/lib/module/mock')
-);
+jest.mock('react-native-worklets', () => require('react-native-worklets/lib/module/mock'));
 
 jest.mock('@discord/bottom-sheet', () => {
 	const react = require('react-native');
