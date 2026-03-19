@@ -90,8 +90,8 @@ export default function subscribeInquiry() {
 					sdk.subscribe(streamTopic, 'public').catch((e: unknown) => console.log(e));
 				}
 
-				const departmentIds = departments.map(({ departmentId }) => departmentId);
-				departmentIds.forEach(departmentId => {
+				const departmentIds = departments.map(({ departmentId }: { departmentId: string }) => departmentId);
+				departmentIds.forEach((departmentId: string) => {
 					// subscribe to all departments of the agent
 					sdk.subscribe(streamTopic, `department/${departmentId}`).catch((e: unknown) => console.log(e));
 				});

@@ -37,8 +37,7 @@ export const fetchRole = (role: string, selectedUser: TUserModel, roomRoles?: IG
 
 export const fetchRoomMembersRoles = async (roomType: TRoomType, rid: string, updateState: any): Promise<void> => {
 	try {
-		const type = roomType;
-		const result = await getRoomRoles(rid, type);
+		const result = await getRoomRoles(rid, roomType);
 		if (result?.success) {
 			updateState({ roomRoles: result.roles });
 		}

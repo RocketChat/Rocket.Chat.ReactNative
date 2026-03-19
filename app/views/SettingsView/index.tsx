@@ -4,6 +4,7 @@ import React, { useLayoutEffect } from 'react';
 import { Linking, Share } from 'react-native';
 import { Image } from 'expo-image';
 import { useDispatch } from 'react-redux';
+import { type DrawerNavigationProp } from '@react-navigation/drawer';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { appStart } from '../../actions/app';
@@ -26,7 +27,7 @@ import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import openLink from '../../lib/methods/helpers/openLink';
 import { onReviewPress } from '../../lib/methods/helpers/review';
-import { type SettingsStackParamList } from '../../stacks/types';
+import { type DrawerParamList, type SettingsStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
 import { disconnect } from '../../lib/services/connect';
 import SidebarView from '../SidebarView';
@@ -139,7 +140,7 @@ const SettingsView = (): React.ReactElement => {
 				{isMasterDetail ? (
 					<>
 						<List.Section>
-							<SidebarView navigation={navigation as any} />
+							<SidebarView navigation={navigation as unknown as DrawerNavigationProp<DrawerParamList>} />
 						</List.Section>
 						<List.Section>
 							<List.Separator />

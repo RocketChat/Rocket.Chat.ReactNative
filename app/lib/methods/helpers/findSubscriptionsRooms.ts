@@ -60,7 +60,7 @@ export default async function findSubscriptionsRooms(subscriptions: IServerSubsc
 			roles: s.roles
 		}));
 		// Assign
-		sub = subscriptions.concat(mappedExistingSubs as unknown as IServerSubscription);
+		sub = subscriptions.concat(mappedExistingSubs as unknown as IServerSubscription[]);
 	} catch {
 		// do nothing
 	}

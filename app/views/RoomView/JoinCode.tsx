@@ -67,7 +67,7 @@ const JoinCode = React.memo(
 
 		const handleJoinRoom = async () => {
 			try {
-				await joinRoom(rid, code, t as any);
+				await joinRoom(rid, code, t as 'c' | 'p');
 				onJoin();
 				hide();
 			} catch (e) {

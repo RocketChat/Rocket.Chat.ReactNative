@@ -9,7 +9,7 @@ import styles from './styles';
 import { categories } from '../../lib/constants/emojis';
 import { type IEmoji } from '../../definitions';
 import { addFrequentlyUsed } from '../../lib/methods/emojis';
-import { type IEmojiPickerProps, EventTypes } from './interfaces';
+import { type IEmojiPickerProps, type TEmojiCategory, EventTypes } from './interfaces';
 import { CustomIcon, type TIconsName } from '../CustomIcon';
 import { TabView } from '../TabView';
 import { useTheme } from '../../theme';
@@ -39,7 +39,7 @@ const EmojiPicker = ({
 	);
 
 	const renderScene = ({ route }: { route: Route }) => (
-		<EmojiCategory parentWidth={parentWidth} onEmojiSelected={handleEmojiSelect} category={route.key as any} />
+		<EmojiCategory parentWidth={parentWidth} onEmojiSelected={handleEmojiSelect} category={route.key as TEmojiCategory} />
 	);
 
 	const renderTabItem = (tab: Route, color: string) => (

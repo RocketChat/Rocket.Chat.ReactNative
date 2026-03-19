@@ -251,7 +251,11 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 							iconName='create'
 							testID='team-channels-view-create'
 							onPress={() =>
-								navigation.navigate('AddChannelTeamView', { teamId: this.teamId, rid: this.team.rid, t: this.team.t as any })
+								navigation.navigate('AddChannelTeamView', {
+									teamId: this.teamId,
+									rid: this.team.rid,
+									t: this.team.t as 'c' | 'p'
+								})
 							}
 						/>
 					) : null}
@@ -340,7 +344,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 			try {
 				let params = {};
 				const result = await getRoomInfo(item._id);
-				if (result.success) {
+				if (result.success && result.room) {
 					params = {
 						rid: item._id,
 						name: getRoomTitle(result.room),

@@ -12,8 +12,7 @@ export interface IRoomNativeFederated extends IRoomFederated {
 	};
 }
 
-export const isRoomFederated = (room: ISubscription): room is IRoomFederated =>
-	'federated' in room && (room as any).federated === true;
+export const isRoomFederated = (room: ISubscription): room is IRoomFederated => 'federated' in room && room.federated === true;
 
 export const isRoomNativeFederated = (room: ISubscription): room is IRoomNativeFederated =>
 	isRoomFederated(room) && 'federation' in room && !!room.federation;

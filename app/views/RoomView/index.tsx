@@ -1120,7 +1120,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				if (joinCodeRequired) {
 					this.joinCode.current?.show();
 				} else {
-					await joinRoom(rid, null, this.t as any);
+					await joinRoom(rid, null, this.t as 'c' | 'p');
 					this.onJoin();
 				}
 			}
@@ -1432,7 +1432,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			content = (
 				<Message
 					item={item}
-					user={user as any}
+					user={user as { id: string; username: string; token: string }}
 					rid={room.rid}
 					archived={'id' in room && room.archived}
 					broadcast={'id' in room && room.broadcast}

@@ -8,7 +8,7 @@ export const mapMessageFromAPI = ({ attachments, tlm, ts, _updatedAt, ...message
 	...(attachments && {
 		attachments: attachments.map(({ ts, ...attachment }) => ({
 			...(ts && { ts: new Date(ts) }),
-			...(attachment as any)
+			...attachment
 		}))
 	})
 });

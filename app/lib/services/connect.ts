@@ -437,19 +437,20 @@ async function getWebsocketInfo({
 
 async function getLoginServices(server: string) {
 	try {
-		let loginServices = [];
+		let loginServices: IServices[] = [];
 		const loginServicesResult = await fetch(`${server}/api/v1/settings.oauth`).then(response => response.json());
 
-		if (loginServicesResult.success && loginServicesResult.services) {
+		if (loginServicesResult.success && Array.isArray(loginServicesResult.services)) {
 			const { services } = loginServicesResult;
-			loginServices = services;
+			loginServices = services as IServices[];
 
-			const loginServicesReducer = loginServices.reduce((ret: IServices[], item: IServices) => {
+			type LoginServiceEntry = IServices & { name: string; authType: string };
+			const loginServicesReducer = loginServices.reduce<Record<string, LoginServiceEntry>>((ret, item) => {
 				const name = item.name || item.buttonLabelText || item.service;
 				const authType = determineAuthType(item);
 
 				if (authType !== 'not_supported') {
-					ret[name as unknown as number] = { ...item, name, authType };
+					ret[name] = { ...item, name, authType };
 				}
 
 				return ret;

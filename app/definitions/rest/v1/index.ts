@@ -10,7 +10,7 @@ import { type OmnichannelEndpoints } from './omnichannel';
 import { type PermissionsEndpoints } from './permissions';
 import { type RolesEndpoints } from './roles';
 import { type RoomsEndpoints } from './rooms';
-import { type OauthCustomConfiguration } from './settings';
+import { type SettingsEndpoints } from './settings';
 import { type UsersEndpoints } from './users';
 import { type TeamsEndpoints } from './teams';
 import { type E2eEndpoints } from './e2e';
@@ -34,7 +34,7 @@ export type Endpoints = ChannelsEndpoints &
 	PermissionsEndpoints &
 	RolesEndpoints &
 	RoomsEndpoints &
-	OauthCustomConfiguration &
+	SettingsEndpoints &
 	UsersEndpoints &
 	TeamsEndpoints &
 	E2eEndpoints &

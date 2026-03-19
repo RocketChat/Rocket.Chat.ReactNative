@@ -87,7 +87,7 @@ class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceip
 			const result = await getReadReceipts(this.messageId);
 			if (result.success) {
 				this.setState({
-					receipts: result.receipts,
+					receipts: result.receipts as unknown as IReadReceipts[],
 					loading: false
 				});
 			}

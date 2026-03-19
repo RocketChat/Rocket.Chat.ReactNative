@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { StyleSheet, Text, type TextInputProps, View } from 'react-native';
+import { StyleSheet, Text, type TextInput, type TextInputProps, View } from 'react-native';
 
 import { CustomIcon, type TIconsName } from '../../CustomIcon';
 import i18n from '../../../i18n';
@@ -107,7 +107,7 @@ const ActionSheetContentWithInputAndSubmit = ({
 }): React.ReactElement => {
 	const { colors } = useTheme();
 	const [inputValues, setInputValues] = useState(inputs.map(() => ''));
-	const inputRefs = useRef(inputs.map(() => React.createRef()));
+	const inputRefs = useRef(inputs.map(() => React.createRef<TextInput>()));
 
 	const handleInputChange = (value: string, index: number) => {
 		const newInputValues = [...inputValues];
@@ -126,7 +126,7 @@ const ActionSheetContentWithInputAndSubmit = ({
 					onChangeText={value => handleInputChange(value, index)}
 					onSubmitEditing={() => {
 						if (index < inputs.length - 1) {
-							(inputRefs.current[index + 1] as any).current.focus();
+							inputRefs.current[index + 1]?.current?.focus();
 						} else {
 							setTimeout(() => {
 								hideActionSheet();
@@ -134,7 +134,7 @@ const ActionSheetContentWithInputAndSubmit = ({
 							if (inputValues.every(value => value)) onSubmit(inputValues);
 						}
 					}}
-					inputRef={inputRefs.current[index] as any}
+					inputRef={inputRefs.current[index]}
 					testID={`${testID}-input-${inputConfig.key}`}
 					secureTextEntry={inputConfig.secureTextEntry}
 					bottomSheet={isIOS}

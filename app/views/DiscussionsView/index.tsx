@@ -64,12 +64,21 @@ const DiscussionsView = () => {
 			});
 
 			if (result.success) {
-				offset.current += result.count;
-				total.current = result.total;
+				const resultData = result as unknown as {
+					messages?: IMessageFromServer[];
+					total?: number;
+					count?: number;
+				};
+				const messages = resultData.messages ?? [];
+				const count = resultData.count ?? messages.length;
+				const totalValue = resultData.total ?? 0;
+
+				offset.current += count;
+				total.current = totalValue;
 				if (isSearching) {
-					setSearch(prevState => (offset.current ? [...prevState, ...result.messages] : result.messages));
+					setSearch(prevState => (offset.current ? [...prevState, ...messages] : messages));
 				} else {
-					setDiscussions(result.messages);
+					setDiscussions(messages);
 				}
 			}
 			setLoading(false);
