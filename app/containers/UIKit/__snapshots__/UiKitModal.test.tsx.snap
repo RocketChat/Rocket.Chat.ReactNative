@@ -121,7 +121,6 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
     <View
       style={
         {
-          "flex": 1,
           "padding": 4,
         }
       }
@@ -818,7 +817,6 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
     <View
       style={
         {
-          "flex": 1,
           "padding": 4,
         }
       }
@@ -1579,7 +1577,6 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
     <View
       style={
         {
-          "flex": 1,
           "padding": 4,
         }
       }
@@ -1801,7 +1798,6 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
     <View
       style={
         {
-          "flex": 1,
           "padding": 4,
         }
       }
@@ -1975,7 +1971,6 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
     <View
       style={
         {
-          "flex": 1,
           "padding": 4,
         }
       }
@@ -2149,7 +2144,6 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
     <View
       style={
         {
-          "flex": 1,
           "padding": 4,
         }
       }
@@ -2897,7 +2891,6 @@ exports[`Story Snapshots: ModalFormTextArea should match snapshot 1`] = `
     <View
       style={
         {
-          "flex": 1,
           "padding": 4,
         }
       }
@@ -4184,7 +4177,6 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
     <View
       style={
         {
-          "flex": 1,
           "padding": 4,
         }
       }
@@ -4524,7 +4516,6 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
     <View
       style={
         {
-          "flex": 1,
           "padding": 4,
         }
       }
@@ -4659,7 +4650,6 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
     <View
       style={
         {
-          "flex": 1,
           "padding": 4,
         }
       }
@@ -4794,7 +4784,6 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
     <View
       style={
         {
-          "flex": 1,
           "padding": 4,
         }
       }
@@ -4929,7 +4918,6 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
     <View
       style={
         {
-          "flex": 1,
           "padding": 4,
         }
       }
@@ -5069,7 +5057,6 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
     <View
       style={
         {
-          "flex": 1,
           "padding": 4,
         }
       }
@@ -5273,18 +5260,14 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
       ]
     }
   >
-    <Text
+    <View
       style={
         [
           {
-            "flex": 1,
             "padding": 4,
           },
           {
             "marginVertical": 6,
-          },
-          {
-            "color": "#2F343D",
           },
         ]
       }
@@ -5402,19 +5385,15 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
           </Text>
         </Text>
       </View>
-    </Text>
-    <Text
+    </View>
+    <View
       style={
         [
           {
-            "flex": 1,
             "padding": 4,
           },
           {
             "marginVertical": 6,
-          },
-          {
-            "color": "#2F343D",
           },
         ]
       }
@@ -5532,7 +5511,7 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
           </Text>
         </Text>
       </View>
-    </Text>
+    </View>
   </View>,
   <View
     style={
@@ -5546,18 +5525,14 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
       ]
     }
   >
-    <Text
+    <View
       style={
         [
           {
-            "flex": 1,
             "padding": 4,
           },
           {
             "marginVertical": 6,
-          },
-          {
-            "color": "#2F343D",
           },
         ]
       }
@@ -5675,19 +5650,15 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
           </Text>
         </Text>
       </View>
-    </Text>
-    <Text
+    </View>
+    <View
       style={
         [
           {
-            "flex": 1,
             "padding": 4,
           },
           {
             "marginVertical": 6,
-          },
-          {
-            "color": "#2F343D",
           },
         ]
       }
@@ -5805,7 +5776,7 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
           </Text>
         </Text>
       </View>
-    </Text>
+    </View>
   </View>,
 ]
 `;
