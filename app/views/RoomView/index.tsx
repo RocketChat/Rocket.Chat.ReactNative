@@ -262,7 +262,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					navigation.setParams({ focusHeaderOnOpen: undefined });
 					return;
 				}
-				this.messageComposerRef.current?.focus();
+				this.messageComposerRef.current?.focus?.();
 			});
 		});
 	}

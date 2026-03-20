@@ -1,12 +1,16 @@
 import React, { forwardRef } from 'react';
-import { type ScrollView, requireNativeComponent, type ScrollViewProps, type ViewProps, StyleSheet } from 'react-native';
+import { requireNativeComponent, type ScrollViewProps, type ViewProps, StyleSheet } from 'react-native';
 
 interface IInvertedScrollContentViewProps extends ViewProps {
 	exitFocusNativeId?: string;
 }
 
+interface IInvertedScrollViewNativeProps extends ScrollViewProps {
+	exitFocusNativeId?: string;
+}
+
+const NativeInvertedScrollView = requireNativeComponent<IInvertedScrollViewNativeProps>('InvertedScrollView');
 const NativeInvertedScrollContentView = requireNativeComponent<IInvertedScrollContentViewProps>('InvertedScrollContentView');
-const NativeInvertedScrollView = requireNativeComponent<ScrollViewProps>('InvertedScrollView');
 /**
  * Android-only scroll component that wraps the standard ScrollView but uses a native content view
  * that reverses accessibility traversal order. This fixes TalkBack reading inverted FlatList items
@@ -32,19 +36,24 @@ const styles = StyleSheet.create({
 	}
 });
 
-const InvertedScrollView = forwardRef<ScrollView, InvertedScrollViewProps>((props, ref) => {
+const InvertedScrollView = forwardRef<any, InvertedScrollViewProps>((props, ref) => {
 	const { children, horizontal, ...rest } = props;
 	const ContentView = NativeInvertedScrollContentView as React.ComponentType<
 		ViewProps & { removeClippedSubviews?: boolean; isInvertedContent?: boolean; exitFocusNativeId?: string }
 	>;
+	const ScrollContainer = NativeInvertedScrollView as React.ComponentType<IInvertedScrollViewNativeProps & { ref?: any }>;
 	const baseStyle = horizontal ? styles.baseHorizontal : styles.baseVertical;
 	const { style, ...restWithoutStyle } = rest;
 	return (
-		<NativeInvertedScrollView ref={ref as any} {...restWithoutStyle} style={StyleSheet.compose(baseStyle, style)}>
-			<ContentView isInvertedContent={true} collapsable={false} exitFocusNativeId={props.exitFocusNativeId}>
+		<ScrollContainer
+			ref={ref}
+			{...(restWithoutStyle as IInvertedScrollViewNativeProps)}
+			exitFocusNativeId={props.exitFocusNativeId}
+			style={StyleSheet.compose(baseStyle, style)}>
+			<ContentView isInvertedContent={true} collapsable={false}>
 				{children}
 			</ContentView>
-		</NativeInvertedScrollView>
+		</ScrollContainer>
 	);
 });
 
