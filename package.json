@@ -135,7 +135,6 @@
 		"yup": "0.32.11"
 	},
 	"resolutions": {
-		"ua-parser-js": "1.0.2",
 		"jpeg-js": "0.4.4"
 	},
 	"devDependencies": {
@@ -196,7 +195,9 @@
 		"prettier": "2.8.8",
 		"react-native-dotenv": "~3.4.11",
 		"storybook": "~9.0.9",
-		"typescript": "~5.9.3"
+		"typescript": "~5.9.3",
+		"eslint-import-resolver-typescript": "^4.4.4",
+		"lint-staged": "11.1.0"
 	},
 	"snyk": true,
 	"engines": {
