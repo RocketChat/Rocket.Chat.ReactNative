@@ -858,7 +858,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				onClose: this.resetAction,
 				fullContainer: true
 			});
-		}, 250);
+		}, 300);
 	};
 
 	onReactionInit = (messageId: string) => {
