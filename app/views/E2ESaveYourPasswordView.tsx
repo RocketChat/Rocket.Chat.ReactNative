@@ -23,27 +23,29 @@ import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
-		paddingTop: 32
+		flex: 1
 	},
 	content: {
-		marginVertical: 68,
-		alignItems: 'center'
+		alignItems: 'center',
+		gap: 20
 	},
 	warning: {
+		marginTop: 24,
 		fontSize: 16,
 		...sharedStyles.textMedium,
 		textAlign: 'center'
 	},
 	passwordText: {
-		fontSize: 14,
-		marginBottom: 8,
+		fontSize: 16,
 		...sharedStyles.textAlignCenter
 	},
 	password: {
 		fontSize: 24,
-		marginBottom: 24,
-		...sharedStyles.textBold
+		...sharedStyles.textMedium,
+		fontFamily: 'monospace',
+		textAlign: 'justify',
+		borderRadius: 4,
+		padding: 12
 	},
 	copyButton: {
 		paddingHorizontal: 20,
@@ -51,8 +53,7 @@ const styles = StyleSheet.create({
 	},
 	info: {
 		fontSize: 16,
-		marginBottom: 64,
-		...sharedStyles.textRegular,
+		...sharedStyles.textMedium,
 		textAlign: 'center'
 	}
 });
@@ -101,29 +102,43 @@ const E2ESaveYourPasswordView = () => {
 
 	return (
 		<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='e2e-save-password-view'>
-			<ScrollView {...scrollPersistTaps} style={sharedStyles.container} contentContainerStyle={sharedStyles.containerScrollView}>
+			<ScrollView
+				{...scrollPersistTaps}
+				style={sharedStyles.container}
+				contentContainerStyle={[sharedStyles.containerScrollView, { flexGrow: 1 }]}>
 				<View style={[styles.container, { backgroundColor: colors.surfaceRoom }]}>
-					<Text style={[styles.warning, { color: colors.fontDanger }]}>{I18n.t('Save_Your_Encryption_Password_warning')}</Text>
-					<View style={styles.content}>
-						<Text style={[styles.passwordText, { color: colors.fontDefault }]}>{I18n.t('Your_password_is')}</Text>
-						<Text style={[styles.password, { color: colors.fontDefault }]}>{password}</Text>
+					<View style={{ flex: 1, gap: 64 }}>
+						<Text style={[styles.warning, { color: colors.fontDanger }]}>{I18n.t('Save_Your_Encryption_Password_warning')}</Text>
+						<View style={styles.content}>
+							<Text style={[styles.passwordText, { color: colors.fontDefault }]}>{I18n.t('Your_password_is')}</Text>
+							<Text style={[styles.password, { color: colors.fontDefault, backgroundColor: colors.surfaceHover }]}>
+								{password}
+							</Text>
+							<Button
+								onPress={onCopy}
+								style={[styles.copyButton, { backgroundColor: colors.surfaceHover }]}
+								title={I18n.t('Copy')}
+								type='secondary'
+								fontSize={14}
+							/>
+						</View>
+						<Text style={[styles.info, { color: colors.fontDefault }]}>{I18n.t('Save_Your_Encryption_Password_info')}</Text>
+					</View>
+					<View style={{ gap: 8, flex: 1, justifyContent: 'flex-end' }}>
 						<Button
-							onPress={onCopy}
-							style={[styles.copyButton, { backgroundColor: colors.surfaceHover }]}
-							title={I18n.t('Copy')}
+							onPress={onHowItWorks}
+							style={{ backgroundColor: colors.surfaceHover, marginBottom: 0 }}
+							title={I18n.t('How_It_Works')}
 							type='secondary'
-							fontSize={14}
+							testID='e2e-save-password-view-how-it-works'
+						/>
+						<Button
+							onPress={onSaved}
+							style={{ marginBottom: 0 }}
+							title={I18n.t('I_Saved_My_E2E_Password')}
+							testID='e2e-save-password-view-saved-password'
 						/>
 					</View>
-					<Text style={[styles.info, { color: colors.fontDefault }]}>{I18n.t('Save_Your_Encryption_Password_info')}</Text>
-					<Button
-						onPress={onHowItWorks}
-						style={{ backgroundColor: colors.surfaceHover }}
-						title={I18n.t('How_It_Works')}
-						type='secondary'
-						testID='e2e-save-password-view-how-it-works'
-					/>
-					<Button onPress={onSaved} title={I18n.t('I_Saved_My_E2E_Password')} testID='e2e-save-password-view-saved-password' />
 				</View>
 			</ScrollView>
 		</SafeAreaView>

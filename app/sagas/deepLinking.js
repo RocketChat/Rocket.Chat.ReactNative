@@ -46,7 +46,7 @@ const waitForNavigation = () => {
 	if (Navigation.navigationRef.current) {
 		return Promise.resolve();
 	}
-	return new Promise((resolve) => {
+	return new Promise(resolve => {
 		const listener = () => {
 			emitter.off('navigationReady', listener);
 			resolve();
@@ -223,7 +223,7 @@ const handleNavigateCallRoom = function* handleNavigateCallRoom({ params }) {
 		if (room) {
 			const isMasterDetail = yield select(state => state.app.isMasterDetail);
 			yield navigateToRoom({ item: room, isMasterDetail });
-			const uid = params.caller._id;
+			const uid = params.caller?._id;
 			const { rid, callId, event } = params;
 			if (event === 'accept') {
 				yield call(notifyUser, `${uid}/video-conference`, {
@@ -245,6 +245,10 @@ const handleNavigateCallRoom = function* handleNavigateCallRoom({ params }) {
 
 const handleClickCallPush = function* handleClickCallPush({ params }) {
 	let { host } = params;
+
+	if (!host) {
+		return;
+	}
 
 	if (host.slice(-1) === '/') {
 		host = host.slice(0, host.length - 1);

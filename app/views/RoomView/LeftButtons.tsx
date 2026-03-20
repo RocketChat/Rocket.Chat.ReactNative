@@ -20,7 +20,7 @@ interface ILeftButtonsProps {
 	token?: string;
 	title?: string;
 	t: string;
-	goRoomActionsView: Function;
+	goRoomActionsView: () => void;
 	isMasterDetail: boolean;
 }
 

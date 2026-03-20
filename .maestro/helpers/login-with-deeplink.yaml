@@ -4,8 +4,15 @@ tags:
   - 'util'
 
 ---
-- clearState
 - stopApp: chat.rocket.reactnative
+- runFlow:
+    when:
+      true: CLEAR_STATE
+    commands:
+      - clearState: chat.rocket.reactnative
+- setPermissions:
+    permissions:
+      all: allow
 - evalScript: ${output.login = output.utils.login(USERNAME, PASSWORD)}
 - runFlow:
     file: 'open-deeplink.yaml'
@@ -20,24 +27,6 @@ tags:
             visible: '.*Pixel Launcher.*'
           commands:
             - tapOn: 'Close App'
-      - extendedWaitUntil:
-          visible:
-            text: '.*Allow.*'
-          timeout: 30000
-          optional: true
-      - tapOn:
-          text: '.*Allow.*'
-          optional: true
-      - assertNotVisible:
-          text: '.*Allow.*'
-          optional: true
-- runFlow:
-    when:
-      visible: '.*Would like to send you notifications.*'
-      platform: iOS
-    commands:
-      - tapOn:
-          point: 65%,60%
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'

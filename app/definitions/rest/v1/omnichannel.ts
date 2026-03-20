@@ -19,6 +19,19 @@ export type OmnichannelEndpoints = {
 			appearance: ISetting[];
 		};
 	};
+	'livechat/config/routing': {
+		GET: () => {
+			config: {
+				previewRoom: boolean;
+				showConnecting: boolean;
+				showQueue: boolean;
+				showQueueLink: boolean;
+				returnQueue: boolean;
+				enableTriggerAction: boolean;
+				autoAssignAgent: boolean;
+			};
+		};
+	};
 	'livechat/visitors.info': {
 		GET: (params: { visitorId: string }) => {
 			visitor: ILivechatVisitor;
@@ -120,6 +133,14 @@ export type OmnichannelEndpoints = {
 		GET: () => PaginatedResult<{
 			inquiries: IOmnichannelRoom[];
 		}>;
+	};
+
+	'livechat/inquiries.take': {
+		POST: (params: { inquiryId: string }) => void;
+	};
+
+	'livechat/inquiries.returnAsInquiry': {
+		POST: (params: { roomId: string; departmentId?: string }) => boolean;
 	};
 
 	'livechat/rooms': {

@@ -82,7 +82,11 @@ exports[`MessageComposer Audio tap record 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
+<<<<<<< HEAD
         handlerTag={249}
+=======
+        handlerTag={289}
+>>>>>>> origin/develop
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -177,7 +181,11 @@ exports[`MessageComposer Audio tap record 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
+<<<<<<< HEAD
         handlerTag={250}
+=======
+        handlerTag={290}
+>>>>>>> origin/develop
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -220,7 +228,7 @@ exports[`MessageComposer Audio tap record 1`] = `
             style={
               [
                 {
-                  "color": "#FFFFFF",
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -299,7 +307,11 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
+<<<<<<< HEAD
           handlerTag={236}
+=======
+          handlerTag={276}
+>>>>>>> origin/develop
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -415,7 +427,11 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
+<<<<<<< HEAD
           handlerTag={237}
+=======
+          handlerTag={277}
+>>>>>>> origin/develop
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -587,7 +603,11 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
                 borderless={true}
                 collapsable={false}
                 delayLongPress={600}
+<<<<<<< HEAD
                 handlerTag={238}
+=======
+                handlerTag={278}
+>>>>>>> origin/develop
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   {
@@ -744,7 +764,11 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
+<<<<<<< HEAD
           handlerTag={239}
+=======
+          handlerTag={279}
+>>>>>>> origin/develop
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -860,7 +884,11 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
+<<<<<<< HEAD
           handlerTag={240}
+=======
+          handlerTag={280}
+>>>>>>> origin/develop
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -1033,7 +1061,11 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                 borderless={true}
                 collapsable={false}
                 delayLongPress={600}
+<<<<<<< HEAD
                 handlerTag={241}
+=======
+                handlerTag={281}
+>>>>>>> origin/develop
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   {
@@ -1214,7 +1246,11 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                 borderless={true}
                 collapsable={false}
                 delayLongPress={600}
+<<<<<<< HEAD
                 handlerTag={242}
+=======
+                handlerTag={282}
+>>>>>>> origin/develop
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   {
@@ -1371,7 +1407,11 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
+<<<<<<< HEAD
           handlerTag={243}
+=======
+          handlerTag={283}
+>>>>>>> origin/develop
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -1487,7 +1527,11 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
+<<<<<<< HEAD
           handlerTag={244}
+=======
+          handlerTag={284}
+>>>>>>> origin/develop
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -1660,7 +1704,11 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                 borderless={true}
                 collapsable={false}
                 delayLongPress={600}
+<<<<<<< HEAD
                 handlerTag={245}
+=======
+                handlerTag={285}
+>>>>>>> origin/develop
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   {
@@ -1841,7 +1889,11 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                 borderless={true}
                 collapsable={false}
                 delayLongPress={600}
+<<<<<<< HEAD
                 handlerTag={246}
+=======
+                handlerTag={286}
+>>>>>>> origin/develop
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   {

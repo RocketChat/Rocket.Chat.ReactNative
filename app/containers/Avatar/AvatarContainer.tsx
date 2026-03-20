@@ -20,7 +20,8 @@ const AvatarContainer = ({
 	getCustomEmoji,
 	isStatic,
 	rid,
-	accessibilityLabel
+	accessibilityLabel,
+	accessible
 }: IAvatar): React.ReactElement => {
 	const server = useAppSelector(state => state.server.server);
 	const serverVersion = useAppSelector(state => state.server.version);
@@ -57,7 +58,6 @@ const AvatarContainer = ({
 			size={size}
 			borderRadius={borderRadius}
 			type={type}
-			children={children}
 			userId={id}
 			token={token}
 			onPress={onPress}
@@ -71,7 +71,9 @@ const AvatarContainer = ({
 			serverVersion={serverVersion}
 			cdnPrefix={cdnPrefix}
 			accessibilityLabel={accessibilityLabel}
-		/>
+			accessible={accessible}>
+			{children}
+		</Avatar>
 	);
 };
 

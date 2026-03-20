@@ -7,12 +7,37 @@ function random(length = 10) {
 	return text;
 }
 
+function generatePassword(length = 10) {
+    const lower = 'abcdefghijklmnopqrstuvwxyz'
+    const upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    const nums = '0123456789'
+    const all = lower + upper + nums
+
+    let password = ''
+    password += lower[Math.floor(Math.random() * lower.length)]
+    password += upper[Math.floor(Math.random() * upper.length)]
+    password += nums[Math.floor(Math.random() * nums.length)]
+
+    while (password.length < length) {
+        const char = all[Math.floor(Math.random() * all.length)]
+        const last = password[password.length - 1]
+        const secondLast = password[password.length - 2]
+        const thirdLast = password[password.length - 3]
+
+        if (char === last && char === secondLast && char === thirdLast) continue
+        password += char
+    }
+
+    return password
+}
+
+
 const randomUser = () => {
     const randomVal = random();
     return {
         username: 'user' + randomVal,
         name: 'user' + randomVal,
-        password: 'Password1@' + randomVal,
+        password: generatePassword(),
         email: 'mobile+' + randomVal + '@rocket.chat'
     };
 }

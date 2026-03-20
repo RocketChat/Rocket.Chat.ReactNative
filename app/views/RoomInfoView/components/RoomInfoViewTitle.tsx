@@ -63,6 +63,7 @@ const RoomInfoViewTitle = ({ room, name, username, statusText, type }: IRoomInfo
 				key='room-info-type'
 				status={room?.visitor?.status}
 				sourceType={room?.source}
+				abacAttributes={room?.abacAttributes}
 			/>
 			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: colors.fontTitlesLabels }]} key='room-info-name'>
 				{getRoomTitle(room)}

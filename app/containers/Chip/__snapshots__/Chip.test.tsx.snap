@@ -1,5 +1,109 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Story Snapshots: ChipFullWidth should match snapshot 1`] = `
+<View
+  style={
+    {
+      "alignItems": "flex-start",
+      "flex": 1,
+      "padding": 16,
+    }
+  }
+>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": true,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "borderRadius": 4,
+          "justifyContent": "center",
+          "marginHorizontal": 4,
+          "maxWidth": 192,
+          "paddingHorizontal": 4,
+        },
+        {
+          "backgroundColor": "#E4E7EA",
+          "maxWidth": undefined,
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+        }
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "flexShrink": 1,
+              "marginRight": 8,
+              "maxWidth": 110,
+            },
+            {
+              "maxWidth": undefined,
+            },
+          ]
+        }
+      >
+        <Text
+          numberOfLines={1}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "500",
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          Full Width Text With Long Text That Should Be Wrapped
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
 exports[`Story Snapshots: ChipText should match snapshot 1`] = `
 <View
   style={
@@ -45,12 +149,13 @@ exports[`Story Snapshots: ChipText should match snapshot 1`] = `
         {
           "borderRadius": 4,
           "justifyContent": "center",
-          "marginRight": 8,
+          "marginHorizontal": 4,
           "maxWidth": 192,
-          "paddingHorizontal": 8,
+          "paddingHorizontal": 4,
         },
         {
-          "backgroundColor": "#F2F3F5",
+          "backgroundColor": "#E4E7EA",
+          "maxWidth": 192,
         },
         undefined,
       ]
@@ -121,10 +226,14 @@ exports[`Story Snapshots: ChipText should match snapshot 1`] = `
       </View>
       <View
         style={
-          {
-            "marginRight": 8,
-            "maxWidth": 120,
-          }
+          [
+            {
+              "flexShrink": 1,
+              "marginRight": 8,
+              "maxWidth": 110,
+            },
+            undefined,
+          ]
         }
       >
         <Text
@@ -223,12 +332,13 @@ exports[`Story Snapshots: ChipWithShortText should match snapshot 1`] = `
         {
           "borderRadius": 4,
           "justifyContent": "center",
-          "marginRight": 8,
+          "marginHorizontal": 4,
           "maxWidth": 192,
-          "paddingHorizontal": 8,
+          "paddingHorizontal": 4,
         },
         {
-          "backgroundColor": "#F2F3F5",
+          "backgroundColor": "#E4E7EA",
+          "maxWidth": 192,
         },
         undefined,
       ]
@@ -299,10 +409,14 @@ exports[`Story Snapshots: ChipWithShortText should match snapshot 1`] = `
       </View>
       <View
         style={
-          {
-            "marginRight": 8,
-            "maxWidth": 120,
-          }
+          [
+            {
+              "flexShrink": 1,
+              "marginRight": 8,
+              "maxWidth": 110,
+            },
+            undefined,
+          ]
         }
       >
         <Text
@@ -401,12 +515,13 @@ exports[`Story Snapshots: ChipWithoutAvatar should match snapshot 1`] = `
         {
           "borderRadius": 4,
           "justifyContent": "center",
-          "marginRight": 8,
+          "marginHorizontal": 4,
           "maxWidth": 192,
-          "paddingHorizontal": 8,
+          "paddingHorizontal": 4,
         },
         {
-          "backgroundColor": "#F2F3F5",
+          "backgroundColor": "#E4E7EA",
+          "maxWidth": 192,
         },
         undefined,
       ]
@@ -422,10 +537,14 @@ exports[`Story Snapshots: ChipWithoutAvatar should match snapshot 1`] = `
     >
       <View
         style={
-          {
-            "marginRight": 8,
-            "maxWidth": 120,
-          }
+          [
+            {
+              "flexShrink": 1,
+              "marginRight": 8,
+              "maxWidth": 110,
+            },
+            undefined,
+          ]
         }
       >
         <Text
@@ -524,12 +643,13 @@ exports[`Story Snapshots: ChipWithoutAvatarAndIcon should match snapshot 1`] = `
         {
           "borderRadius": 4,
           "justifyContent": "center",
-          "marginRight": 8,
+          "marginHorizontal": 4,
           "maxWidth": 192,
-          "paddingHorizontal": 8,
+          "paddingHorizontal": 4,
         },
         {
-          "backgroundColor": "#F2F3F5",
+          "backgroundColor": "#E4E7EA",
+          "maxWidth": 192,
         },
         undefined,
       ]
@@ -545,10 +665,14 @@ exports[`Story Snapshots: ChipWithoutAvatarAndIcon should match snapshot 1`] = `
     >
       <View
         style={
-          {
-            "marginRight": 8,
-            "maxWidth": 120,
-          }
+          [
+            {
+              "flexShrink": 1,
+              "marginRight": 8,
+              "maxWidth": 110,
+            },
+            undefined,
+          ]
         }
       >
         <Text
@@ -621,12 +745,13 @@ exports[`Story Snapshots: ChipWithoutIcon should match snapshot 1`] = `
         {
           "borderRadius": 4,
           "justifyContent": "center",
-          "marginRight": 8,
+          "marginHorizontal": 4,
           "maxWidth": 192,
-          "paddingHorizontal": 8,
+          "paddingHorizontal": 4,
         },
         {
-          "backgroundColor": "#F2F3F5",
+          "backgroundColor": "#E4E7EA",
+          "maxWidth": 192,
         },
         undefined,
       ]
@@ -697,10 +822,14 @@ exports[`Story Snapshots: ChipWithoutIcon should match snapshot 1`] = `
       </View>
       <View
         style={
-          {
-            "marginRight": 8,
-            "maxWidth": 120,
-          }
+          [
+            {
+              "flexShrink": 1,
+              "marginRight": 8,
+              "maxWidth": 110,
+            },
+            undefined,
+          ]
         }
       >
         <Text

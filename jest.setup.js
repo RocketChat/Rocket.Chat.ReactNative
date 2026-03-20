@@ -91,16 +91,22 @@ jest.mock('react-native/Libraries/Utilities/useWindowDimensions', () => ({
 	}))
 }));
 
-jest.mock('./app/lib/hooks/useResponsiveLayout/useResponsiveLayout', () => ({
-	useResponsiveLayout: jest.fn(() => ({
-		fontScale: 1,
-		isLargeFontScale: false,
-		fontScaleLimited: 1,
-		rowHeight: 75,
-		rowHeightCondensed: 60
-	})),
-	FONT_SCALE_LIMIT: 1.3
-}));
+jest.mock('./app/lib/hooks/useResponsiveLayout/useResponsiveLayout', () => {
+	const actual = jest.requireActual('./app/lib/hooks/useResponsiveLayout/useResponsiveLayout');
+	return {
+		...actual,
+		useResponsiveLayout: jest.fn(() => ({
+			fontScale: 1,
+			width: 390,
+			height: 844,
+			isLargeFontScale: false,
+			fontScaleLimited: 1,
+			rowHeight: actual.BASE_ROW_HEIGHT,
+			rowHeightCondensed: actual.BASE_ROW_HEIGHT_CONDENSED
+		})),
+		FONT_SCALE_LIMIT: actual.FONT_SCALE_LIMIT
+	};
+});
 
 jest.mock('./app/containers/CustomIcon', () => {
 	const actualNav = jest.requireActual('./app/containers/CustomIcon');
@@ -136,18 +142,23 @@ jest.mock('@react-navigation/native', () => {
 	};
 });
 
-jest.mock('react-native-notifications', () => ({
-	Notifications: {
-		getInitialNotification: jest.fn(() => Promise.resolve()),
-		registerRemoteNotifications: jest.fn(),
-		events: () => ({
-			registerRemoteNotificationsRegistered: jest.fn(),
-			registerRemoteNotificationsRegistrationFailed: jest.fn(),
-			registerNotificationReceivedForeground: jest.fn(),
-			registerNotificationReceivedBackground: jest.fn(),
-			registerNotificationOpened: jest.fn()
-		})
-	}
+jest.mock('expo-notifications', () => ({
+	getDevicePushTokenAsync: jest.fn(() => Promise.resolve({ data: 'mock-token' })),
+	getPermissionsAsync: jest.fn(() => Promise.resolve({ status: 'granted' })),
+	requestPermissionsAsync: jest.fn(() => Promise.resolve({ status: 'granted' })),
+	setBadgeCountAsync: jest.fn(() => Promise.resolve(true)),
+	dismissAllNotificationsAsync: jest.fn(() => Promise.resolve()),
+	setNotificationHandler: jest.fn(),
+	setNotificationCategoryAsync: jest.fn(() => Promise.resolve()),
+	addNotificationReceivedListener: jest.fn(() => ({ remove: jest.fn() })),
+	addNotificationResponseReceivedListener: jest.fn(() => ({ remove: jest.fn() })),
+	addPushTokenListener: jest.fn(() => ({ remove: jest.fn() })),
+	getLastNotificationResponse: jest.fn(() => null),
+	DEFAULT_ACTION_IDENTIFIER: 'expo.modules.notifications.actions.DEFAULT'
+}));
+
+jest.mock('expo-device', () => ({
+	isDevice: true
 }));
 
 jest.mock('@discord/bottom-sheet', () => {
