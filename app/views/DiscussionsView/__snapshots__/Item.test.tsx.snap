@@ -231,14 +231,12 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
             </View>
             <View
               style={
-                [
-                  {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                    "marginTop": 8,
-                  },
-                ]
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "marginTop": 8,
+                }
               }
             >
               <View
@@ -593,14 +591,12 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
             </View>
             <View
               style={
-                [
-                  {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                    "marginTop": 8,
-                  },
-                ]
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "marginTop": 8,
+                }
               }
             >
               <View
@@ -955,14 +951,12 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
             </View>
             <View
               style={
-                [
-                  {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                    "marginTop": 8,
-                  },
-                ]
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "marginTop": 8,
+                }
               }
             >
               <View
@@ -1319,14 +1313,12 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
             </View>
             <View
               style={
-                [
-                  {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                    "marginTop": 8,
-                  },
-                ]
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "marginTop": 8,
+                }
               }
             >
               <View
@@ -1681,14 +1673,12 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
             </View>
             <View
               style={
-                [
-                  {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                    "marginTop": 8,
-                  },
-                ]
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "marginTop": 8,
+                }
               }
             >
               <View
@@ -2063,14 +2053,12 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             </View>
             <View
               style={
-                [
-                  {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                    "marginTop": 8,
-                  },
-                ]
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "marginTop": 8,
+                }
               }
             >
               <View
@@ -2412,14 +2400,12 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             </View>
             <View
               style={
-                [
-                  {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                    "marginTop": 8,
-                  },
-                ]
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "marginTop": 8,
+                }
               }
             >
               <View
@@ -2761,14 +2747,12 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             </View>
             <View
               style={
-                [
-                  {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                    "marginTop": 8,
-                  },
-                ]
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "marginTop": 8,
+                }
               }
             >
               <View
