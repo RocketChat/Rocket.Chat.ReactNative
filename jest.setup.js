@@ -339,7 +339,7 @@ const _isReactRefObject = val => {
  * it replaces it with a simple JSON object containing the component's name.
  */
 const _printRefObject = val => {
-	const current = val.current;
+	const { current } = val;
 	const name = current?.constructor?.name || current?.displayName || current?.name || 'Object';
 	return JSON.stringify({ current: name });
 };
