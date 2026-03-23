@@ -258,8 +258,6 @@ jest.mock('expo-device', () => ({
 	isDevice: true
 }));
 
-jest.mock('react-native-worklets', () => require('react-native-worklets/lib/module/mock'));
-
 jest.mock('@lodev09/react-native-true-sheet', () => {
 	const React = require('react');
 	const { View } = require('react-native');
