@@ -1895,7 +1895,7 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
           "top": 4,
         }
       }
-      innerRef={[Function]}
+      innerRef={{"current":"Component"}}
       onActiveStateChange={[Function]}
       onGestureHandlerEvent={[Function]}
       onGestureHandlerStateChange={[Function]}
@@ -2069,7 +2069,7 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
           "top": 4,
         }
       }
-      innerRef={[Function]}
+      innerRef={{"current":"Component"}}
       onActiveStateChange={[Function]}
       onGestureHandlerEvent={[Function]}
       onGestureHandlerStateChange={[Function]}
@@ -2243,7 +2243,7 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
           "top": 4,
         }
       }
-      innerRef={[Function]}
+      innerRef={{"current":"Component"}}
       onActiveStateChange={[Function]}
       onGestureHandlerEvent={[Function]}
       onGestureHandlerStateChange={[Function]}
@@ -4479,7 +4479,7 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
     </View>
     <ViewManagerAdapter_ExpoImage
       borderRadius={2}
-      containerViewRef={"[React.ref]"}
+      containerViewRef={{"current":"Object"}}
       contentFit="cover"
       contentPosition={
         {
@@ -4488,7 +4488,7 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
         }
       }
       height={88}
-      nativeViewRef={"[React.ref]"}
+      nativeViewRef={{"current":"NativeComponent"}}
       onError={[Function]}
       onLoad={[Function]}
       onLoadStart={[Function]}

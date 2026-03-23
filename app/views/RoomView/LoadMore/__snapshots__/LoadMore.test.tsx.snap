@@ -585,7 +585,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                         >
                           <ViewManagerAdapter_ExpoImage
                             borderRadius={4}
-                            containerViewRef={"[React.ref]"}
+                            containerViewRef={{"current":"Object"}}
                             contentFit="cover"
                             contentPosition={
                               {
@@ -594,7 +594,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                               }
                             }
                             height={36}
-                            nativeViewRef={"[React.ref]"}
+                            nativeViewRef={{"current":"NativeComponent"}}
                             onError={[Function]}
                             onLoad={[Function]}
                             onLoadStart={[Function]}
@@ -1565,7 +1565,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                         >
                           <ViewManagerAdapter_ExpoImage
                             borderRadius={4}
-                            containerViewRef={"[React.ref]"}
+                            containerViewRef={{"current":"Object"}}
                             contentFit="cover"
                             contentPosition={
                               {
@@ -1574,7 +1574,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                               }
                             }
                             height={36}
-                            nativeViewRef={"[React.ref]"}
+                            nativeViewRef={{"current":"NativeComponent"}}
                             onError={[Function]}
                             onLoad={[Function]}
                             onLoadStart={[Function]}
@@ -2379,7 +2379,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                         >
                           <ViewManagerAdapter_ExpoImage
                             borderRadius={4}
-                            containerViewRef={"[React.ref]"}
+                            containerViewRef={{"current":"Object"}}
                             contentFit="cover"
                             contentPosition={
                               {
@@ -2388,7 +2388,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                               }
                             }
                             height={36}
-                            nativeViewRef={"[React.ref]"}
+                            nativeViewRef={{"current":"NativeComponent"}}
                             onError={[Function]}
                             onLoad={[Function]}
                             onLoadStart={[Function]}
@@ -2903,7 +2903,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                         >
                           <ViewManagerAdapter_ExpoImage
                             borderRadius={4}
-                            containerViewRef={"[React.ref]"}
+                            containerViewRef={{"current":"Object"}}
                             contentFit="cover"
                             contentPosition={
                               {
@@ -2912,7 +2912,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                               }
                             }
                             height={36}
-                            nativeViewRef={"[React.ref]"}
+                            nativeViewRef={{"current":"NativeComponent"}}
                             onError={[Function]}
                             onLoad={[Function]}
                             onLoadStart={[Function]}
@@ -3883,7 +3883,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                         >
                           <ViewManagerAdapter_ExpoImage
                             borderRadius={4}
-                            containerViewRef={"[React.ref]"}
+                            containerViewRef={{"current":"Object"}}
                             contentFit="cover"
                             contentPosition={
                               {
@@ -3892,7 +3892,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                               }
                             }
                             height={36}
-                            nativeViewRef={"[React.ref]"}
+                            nativeViewRef={{"current":"NativeComponent"}}
                             onError={[Function]}
                             onLoad={[Function]}
                             onLoadStart={[Function]}
@@ -4697,7 +4697,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                         >
                           <ViewManagerAdapter_ExpoImage
                             borderRadius={4}
-                            containerViewRef={"[React.ref]"}
+                            containerViewRef={{"current":"Object"}}
                             contentFit="cover"
                             contentPosition={
                               {
@@ -4706,7 +4706,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                               }
                             }
                             height={36}
-                            nativeViewRef={"[React.ref]"}
+                            nativeViewRef={{"current":"NativeComponent"}}
                             onError={[Function]}
                             onLoad={[Function]}
                             onLoadStart={[Function]}
@@ -5221,7 +5221,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                         >
                           <ViewManagerAdapter_ExpoImage
                             borderRadius={4}
-                            containerViewRef={"[React.ref]"}
+                            containerViewRef={{"current":"Object"}}
                             contentFit="cover"
                             contentPosition={
                               {
@@ -5230,7 +5230,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                               }
                             }
                             height={36}
-                            nativeViewRef={"[React.ref]"}
+                            nativeViewRef={{"current":"NativeComponent"}}
                             onError={[Function]}
                             onLoad={[Function]}
                             onLoadStart={[Function]}
@@ -6201,7 +6201,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                         >
                           <ViewManagerAdapter_ExpoImage
                             borderRadius={4}
-                            containerViewRef={"[React.ref]"}
+                            containerViewRef={{"current":"Object"}}
                             contentFit="cover"
                             contentPosition={
                               {
@@ -6210,7 +6210,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                               }
                             }
                             height={36}
-                            nativeViewRef={"[React.ref]"}
+                            nativeViewRef={{"current":"NativeComponent"}}
                             onError={[Function]}
                             onLoad={[Function]}
                             onLoadStart={[Function]}
@@ -7015,7 +7015,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                         >
                           <ViewManagerAdapter_ExpoImage
                             borderRadius={4}
-                            containerViewRef={"[React.ref]"}
+                            containerViewRef={{"current":"Object"}}
                             contentFit="cover"
                             contentPosition={
                               {
@@ -7024,7 +7024,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                               }
                             }
                             height={36}
-                            nativeViewRef={"[React.ref]"}
+                            nativeViewRef={{"current":"NativeComponent"}}
                             onError={[Function]}
                             onLoad={[Function]}
                             onLoadStart={[Function]}

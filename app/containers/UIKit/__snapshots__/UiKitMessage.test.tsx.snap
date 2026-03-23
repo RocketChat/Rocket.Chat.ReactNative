@@ -1770,7 +1770,7 @@ exports[`Story Snapshots: SectionOverflow should match snapshot 1`] = `
         "top": 4,
       }
     }
-    innerRef={[Function]}
+    innerRef={{"current":"Component"}}
     onActiveStateChange={[Function]}
     onGestureHandlerEvent={[Function]}
     onGestureHandlerStateChange={[Function]}
