@@ -260,12 +260,22 @@ jest.mock('expo-device', () => ({
 
 jest.mock('react-native-worklets', () => require('react-native-worklets/lib/module/mock'));
 
-jest.mock('@discord/bottom-sheet', () => {
-	const react = require('react-native');
+jest.mock('@lodev09/react-native-true-sheet', () => {
+	const React = require('react');
+	const { View } = require('react-native');
+	const TrueSheet = React.forwardRef((props, ref) => {
+		React.useImperativeHandle(ref, () => ({
+			present: () => Promise.resolve(),
+			dismiss: () => Promise.resolve(),
+			resize: () => Promise.resolve()
+		}));
+		return <View {...props} />;
+	});
+	TrueSheet.displayName = 'TrueSheet';
 	return {
 		__esModule: true,
-		default: react.View,
-		BottomSheetScrollView: react.ScrollView
+		TrueSheet,
+		TrueSheetProvider: ({ children }) => children
 	};
 });
 
