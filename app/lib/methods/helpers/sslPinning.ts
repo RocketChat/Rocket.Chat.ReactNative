@@ -61,7 +61,7 @@ const RCSSLPinning = Platform.select({
 						[
 							{
 								text: 'OK',
-								onPress: async password => {
+								onPress: async (password?: string) => {
 									try {
 										const certificatePath = getPath(name);
 										await FileSystem.copyAsync({ from: uri, to: certificatePath });
