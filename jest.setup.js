@@ -295,3 +295,55 @@ jest.mock('react-native-webview', () => {
 	WebView.defaultProps = {};
 	return { WebView };
 });
+
+/**
+ * Custom serializer to address an issue where `ref` causes React internals
+ * to appear in snapshots or triggers "RangeError: Invalid string length", or
+ * "Maximum call stack size exceeded"
+ *
+ * If this issue is resolved in the future, these serializers can likely be removed,
+ * and snapshots updated accordingly.
+ *
+ * See: https://github.com/jestjs/jest/issues/15402
+ */
+
+/**
+ * This serializer is **shallow**:
+ * - It only cleans the top-level object passed to it.
+ * - Removes React internal properties that can cause huge or circular snapshots
+ * - Removes `ref` from `props` to avoid dumping the full React internal instance.
+ *
+ * Note: Nested refs inside `props.children` or deeper objects are not affected.
+ */
+expect.addSnapshotSerializer({
+	test: val => val && !!val.ref,
+	print: (value, serialize) => {
+		return serialize({
+			...value,
+			_debugOwner: undefined,
+			child: undefined,
+			return: undefined,
+			ref: undefined,
+			props: { ...value.props, ref: undefined }
+		});
+	}
+});
+
+const _isReactRefObject = val => {
+	return (
+		val && typeof val === 'object' && val.constructor === Object && Object.keys(val).length === 1 && 'current' in val
+	);
+};
+
+/**
+ * Serializes a React ref object for snapshots.
+ * Instead of including the full component instance (which can be huge and circular),
+ * it replaces it with a simple JSON object containing the component's name.
+ */
+const _printRefObject = val => {
+	const current = val.current;
+	const name = current?.constructor?.name || current?.displayName || current?.name || 'Object';
+	return JSON.stringify({ current: name });
+};
+
+expect.addSnapshotSerializer({ test: _isReactRefObject, print: _printRefObject });
