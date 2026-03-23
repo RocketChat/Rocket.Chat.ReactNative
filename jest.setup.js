@@ -330,9 +330,7 @@ expect.addSnapshotSerializer({
 });
 
 const _isReactRefObject = val => {
-	return (
-		val && typeof val === 'object' && val.constructor === Object && Object.keys(val).length === 1 && 'current' in val
-	);
+	return val && typeof val === 'object' && val.constructor === Object && Object.keys(val).length === 1 && 'current' in val;
 };
 
 /**
