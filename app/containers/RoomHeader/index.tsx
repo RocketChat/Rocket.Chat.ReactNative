@@ -14,7 +14,7 @@ interface IRoomHeaderContainerProps {
 	tmid?: string;
 	teamMain?: boolean;
 	roomUserId?: string | null;
-	onPress: Function;
+	onPress: () => void;
 	parentTitle?: string;
 	isGroupChat?: boolean;
 	testID?: string;

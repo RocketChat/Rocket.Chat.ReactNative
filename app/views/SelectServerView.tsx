@@ -15,7 +15,7 @@ import { type TServerModel } from '../definitions';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { selectServerRequest } from '../actions/server';
 
-const getItemLayout = (data: any, index: number) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
+const getItemLayout = (_data: any, index: number) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
 const keyExtractor = (item: TServerModel) => item.id;
 
 const SelectServerView = () => {
