@@ -71,6 +71,10 @@ class MediaSessionInstance {
 			}
 		});
 
+		this.instance?.on('registered', ({ activeCalls }) => {
+			console.log('[VoIP] Media session registered, activeCalls:', activeCalls);
+		});
+
 		this.instance?.on('newCall', ({ call }: { call: IClientMediaCall }) => {
 			if (call && !call.hidden) {
 				call.emitter.on('stateChange', oldState => {
