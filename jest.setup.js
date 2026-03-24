@@ -91,16 +91,22 @@ jest.mock('react-native/Libraries/Utilities/useWindowDimensions', () => ({
 	}))
 }));
 
-jest.mock('./app/lib/hooks/useResponsiveLayout/useResponsiveLayout', () => ({
-	useResponsiveLayout: jest.fn(() => ({
-		fontScale: 1,
-		isLargeFontScale: false,
-		fontScaleLimited: 1,
-		rowHeight: 75,
-		rowHeightCondensed: 60
-	})),
-	FONT_SCALE_LIMIT: 1.3
-}));
+jest.mock('./app/lib/hooks/useResponsiveLayout/useResponsiveLayout', () => {
+	const actual = jest.requireActual('./app/lib/hooks/useResponsiveLayout/useResponsiveLayout');
+	return {
+		...actual,
+		useResponsiveLayout: jest.fn(() => ({
+			fontScale: 1,
+			width: 390,
+			height: 844,
+			isLargeFontScale: false,
+			fontScaleLimited: 1,
+			rowHeight: actual.BASE_ROW_HEIGHT,
+			rowHeightCondensed: actual.BASE_ROW_HEIGHT_CONDENSED
+		})),
+		FONT_SCALE_LIMIT: actual.FONT_SCALE_LIMIT
+	};
+});
 
 jest.mock('./app/containers/CustomIcon', () => {
 	const actualNav = jest.requireActual('./app/containers/CustomIcon');
@@ -155,12 +161,22 @@ jest.mock('expo-device', () => ({
 	isDevice: true
 }));
 
-jest.mock('@discord/bottom-sheet', () => {
-	const react = require('react-native');
+jest.mock('@lodev09/react-native-true-sheet', () => {
+	const React = require('react');
+	const { View } = require('react-native');
+	const TrueSheet = React.forwardRef((props, ref) => {
+		React.useImperativeHandle(ref, () => ({
+			present: () => Promise.resolve(),
+			dismiss: () => Promise.resolve(),
+			resize: () => Promise.resolve()
+		}));
+		return <View {...props} />;
+	});
+	TrueSheet.displayName = 'TrueSheet';
 	return {
 		__esModule: true,
-		default: react.View,
-		BottomSheetScrollView: react.ScrollView
+		TrueSheet,
+		TrueSheetProvider: ({ children }) => children
 	};
 });
 

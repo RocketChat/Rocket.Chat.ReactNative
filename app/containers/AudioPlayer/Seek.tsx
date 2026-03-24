@@ -65,7 +65,7 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 	};
 
 	const onGestureEvent = useAnimatedGestureHandler<PanGestureHandlerGestureEvent, { offsetX: number }>({
-		onStart: (event, ctx) => {
+		onStart: (_event, ctx) => {
 			isPanning.value = true;
 			ctx.offsetX = translateX.value;
 		},
