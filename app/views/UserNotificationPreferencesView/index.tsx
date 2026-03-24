@@ -101,7 +101,13 @@ const UserNotificationPreferencesView = () => {
 							<List.Separator />
 							<List.Item
 								title='Notifications_vibrate_from_new_messages'
-								right={() => <Switch value={inAppVibration} onValueChange={toggleInAppVibration} testID='user-notification-preference-view-in-app-vibration' />}
+								right={() => (
+									<Switch
+										value={inAppVibration}
+										onValueChange={toggleInAppVibration}
+										testID='user-notification-preference-view-in-app-vibration'
+									/>
+								)}
 							/>
 							<List.Separator />
 							<List.Info info='In_App_Alert_info' />

@@ -86,7 +86,13 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 						<List.Separator />
 						<List.Item
 							title='Enable_Message_Parser'
-							right={() => <Switch value={enableMessageParserEarlyAdoption} onValueChange={toggleMessageParser} testID='preferences-view-enable-message-parser' />}
+							right={() => (
+								<Switch
+									value={enableMessageParserEarlyAdoption}
+									onValueChange={toggleMessageParser}
+									testID='preferences-view-enable-message-parser'
+								/>
+							)}
 						/>
 						<List.Separator />
 					</List.Section>
@@ -109,7 +115,13 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 					<List.Separator />
 					<List.Item
 						title='Convert_ASCII_to_emoji'
-						right={() => <Switch value={convertAsciiEmoji} onValueChange={toggleConvertAsciiToEmoji} testID='preferences-view-convert-ascii-to-emoji' />}
+						right={() => (
+							<Switch
+								value={convertAsciiEmoji}
+								onValueChange={toggleConvertAsciiToEmoji}
+								testID='preferences-view-convert-ascii-to-emoji'
+							/>
+						)}
 						onPress={() => toggleConvertAsciiToEmoji(!convertAsciiEmoji)}
 					/>
 					<List.Separator />
