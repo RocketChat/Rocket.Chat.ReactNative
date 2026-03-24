@@ -1,17 +1,22 @@
 import hoistNonReactStatics from 'hoist-non-react-statics';
-import React, { createRef, ForwardedRef, forwardRef, useContext } from 'react';
+import React, { createRef, type ForwardedRef, forwardRef, useContext } from 'react';
+import { type AccessibilityRole } from 'react-native';
 
-import { TIconsName } from '../CustomIcon';
+import { type TIconsName } from '../CustomIcon';
 import ActionSheet from './ActionSheet';
 
 export type TActionSheetOptionsItem = {
 	title: string;
+	subtitle?: string;
+	accessibilityLabel?: string;
 	icon?: TIconsName;
 	danger?: boolean;
 	testID?: string;
 	onPress: () => void;
 	right?: () => React.ReactElement;
 	enabled?: boolean;
+	accessibilityRole?: AccessibilityRole;
+	disabledReason?: string;
 };
 
 export type TActionSheetOptions = {
@@ -21,10 +26,15 @@ export type TActionSheetOptions = {
 	hasCancel?: boolean;
 	// children can both use snaps or dynamic
 	children?: React.ReactElement | null;
-	/** Required if your action sheet needs vertical scroll */
+	// Required if your action sheet needs vertical scroll
 	snaps?: (string | number)[];
+	// Optional snaps specifically for portrait orientation
+	portraitSnaps?: (string | number)[];
+	// Optional snaps specifically for landscape orientation
+	landscapeSnaps?: (string | number)[];
 	onClose?: () => void;
 	enableContentPanningGesture?: boolean;
+	fullContainer?: boolean;
 };
 export interface IActionSheetProvider {
 	showActionSheet: (item: TActionSheetOptions) => void;
@@ -52,6 +62,8 @@ export const withActionSheet = (Component: React.ComponentType<any>): typeof Com
 const actionSheetRef: React.Ref<IActionSheetProvider> = createRef();
 
 export const ActionSheetProvider = React.memo(({ children }: { children: React.ReactElement | React.ReactElement[] }) => {
+	'use memo';
+
 	const getContext = (): IActionSheetProvider => ({
 		showActionSheet: options => {
 			actionSheetRef.current?.showActionSheet(options);

@@ -1,11 +1,14 @@
 import { memo, useMemo } from 'react';
 
 import * as List from '../../../containers/List';
-import { useAppSelector, usePermissions } from '../../../lib/hooks';
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
+import { usePermissions } from '../../../lib/hooks/usePermissions';
 import { useTheme } from '../../../theme';
 import { sidebarNavigate } from '../methods/sidebarNavigate';
 
 const Admin = ({ currentScreen }: { currentScreen: string | null }) => {
+	'use memo';
+
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 	const { colors } = useTheme();
 	const [

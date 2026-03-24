@@ -1,4 +1,4 @@
-import { getPermalinkMessage } from '../../../lib/methods';
+import { getPermalinkMessage } from '../../../lib/methods/getPermalinks';
 import { getMessageById } from '../../../lib/database/services/Message';
 import { store } from '../../../lib/store/auxStore';
 import { compareServerVersion } from '../../../lib/methods/helpers';

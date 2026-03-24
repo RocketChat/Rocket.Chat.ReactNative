@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { CustomIcon } from '../../containers/CustomIcon';
 import sharedStyles from '../Styles';
 import { useTheme } from '../../theme';
-import { IMessageFromServer } from '../../definitions';
+import { type IMessageFromServer } from '../../definitions';
 
 const styles = StyleSheet.create({
 	container: {
@@ -42,7 +42,7 @@ const DiscussionDetails = ({ item, date }: IDiscussionDetails): React.ReactEleme
 	}
 
 	return (
-		<View style={[styles.container]}>
+		<View style={styles.container}>
 			<View style={styles.detailsContainer}>
 				<View style={styles.detailContainer}>
 					<CustomIcon name={'discussions'} size={24} color={colors.fontSecondaryInfo} />

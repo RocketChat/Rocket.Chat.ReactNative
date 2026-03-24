@@ -5,7 +5,13 @@ import isEmpty from 'lodash/isEmpty';
 import { twoFactor } from './twoFactor';
 import { isSsl } from '../methods/helpers/isSsl';
 import { store as reduxStore } from '../store/auxStore';
-import { Serialized, MatchPathPattern, OperationParams, PathFor, ResultFor } from '../../definitions/rest/helpers';
+import {
+	type Serialized,
+	type MatchPathPattern,
+	type OperationParams,
+	type PathFor,
+	type ResultFor
+} from '../../definitions/rest/helpers';
 import { compareServerVersion, random } from '../methods/helpers';
 
 class Sdk {
@@ -167,7 +173,8 @@ class Sdk {
 			this.subscribe('stream-room-messages', args[0], ...args),
 			eventUserTyping,
 			this.subscribe(topic, `${args[0]}/deleteMessage`, ...args),
-			this.subscribe(topic, `${args[0]}/deleteMessageBulk`, ...args)
+			this.subscribe(topic, `${args[0]}/deleteMessageBulk`, ...args),
+			this.subscribe(topic, `${args[0]}/messagesRead`, ...args)
 		]);
 	}
 

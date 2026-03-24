@@ -1,4 +1,4 @@
-import { HeaderBackButtonProps, HeaderBackButton as RNHeaderBackButton } from '@react-navigation/elements';
+import { type HeaderBackButtonProps, HeaderBackButton as RNHeaderBackButton } from '@react-navigation/elements';
 import { Platform, StyleSheet } from 'react-native';
 
 import { useTheme } from '../../../theme';
@@ -20,6 +20,8 @@ const styles = StyleSheet.create({
 });
 
 export const HeaderBackButton = ({ ...props }: HeaderBackButtonProps) => {
+	'use memo';
+
 	const { colors } = useTheme();
 	return (
 		<RNHeaderBackButton

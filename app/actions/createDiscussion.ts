@@ -1,4 +1,4 @@
-import { Action } from 'redux';
+import { type Action } from 'redux';
 
 import { CREATE_DISCUSSION } from './actionsTypes';
 

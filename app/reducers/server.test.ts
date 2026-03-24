@@ -49,7 +49,7 @@ describe('test server reducer', () => {
 	});
 
 	it('should return modified store after serverRequestInitAdd', () => {
-		const previousServer = 'https://mobile.rocket.chat';
+		const previousServer = 'https://mobile.qa.rocket.chat';
 		mockedStore.dispatch(serverInitAdd(previousServer));
 		const state = mockedStore.getState().server.previousServer;
 		expect(state).toEqual(previousServer);

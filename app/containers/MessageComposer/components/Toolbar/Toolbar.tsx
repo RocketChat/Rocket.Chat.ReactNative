@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { type ReactElement } from 'react';
 
 import { useFocused, useShowMarkdownToolbar } from '../../context';
 import { Markdown } from './Markdown';
@@ -11,6 +11,8 @@ import { CancelEdit } from '../CancelEdit';
 import { useEmojiKeyboard } from '../../hooks/useEmojiKeyboard';
 
 export const Toolbar = (): ReactElement | null => {
+	'use memo';
+
 	const focused = useFocused();
 	const { showEmojiKeyboard, showEmojiSearchbar } = useEmojiKeyboard();
 	const showMarkdownToolbar = useShowMarkdownToolbar();

@@ -1,6 +1,7 @@
-import { SubscriptionType, TAnyMessageModel } from '../../definitions';
-import { loadNextMessages, loadMessagesForRoom } from '.';
-import { MessageTypeLoad } from '../constants';
+import { type SubscriptionType, type TAnyMessageModel } from '../../definitions';
+import { loadNextMessages } from './loadNextMessages';
+import { loadMessagesForRoom } from './loadMessagesForRoom';
+import { MessageTypeLoad } from '../constants/messageTypeLoad';
 
 const getMoreMessages = ({
 	rid,

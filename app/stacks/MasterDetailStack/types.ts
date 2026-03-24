@@ -1,11 +1,11 @@
-import { NavigatorScreenParams } from '@react-navigation/core';
+import { type NavigatorScreenParams } from '@react-navigation/core';
 
-import { IAttachment } from '../../definitions/IAttachment';
-import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
-import { ILivechatTag } from '../../definitions/ILivechatTag';
-import { IMessage, TAnyMessageModel } from '../../definitions/IMessage';
-import { ISubscription, SubscriptionType, TSubscriptionModel } from '../../definitions/ISubscription';
-import { TChangeAvatarViewContext } from '../../definitions/TChangeAvatarViewContext';
+import { type IAttachment } from '../../definitions/IAttachment';
+import { type ILivechatDepartment } from '../../definitions/ILivechatDepartment';
+import { type ILivechatTag } from '../../definitions/ILivechatTag';
+import { type IMessage, type TAnyMessageModel } from '../../definitions/IMessage';
+import { type ISubscription, type SubscriptionType, type TSubscriptionModel } from '../../definitions/ISubscription';
+import { type TChangeAvatarViewContext } from '../../definitions/TChangeAvatarViewContext';
 
 export type MasterDetailChatsStackParamList = {
 	RoomView: {
@@ -83,11 +83,12 @@ export type ModalStackParamList = {
 		showCloseModal?: boolean;
 	};
 	SelectedUsersView: {
-		maxUsers: number;
-		showButton: boolean;
-		title: string;
-		buttonText: string;
-		nextAction: Function;
+		maxUsers?: number;
+		showButton?: boolean;
+		title?: string;
+		buttonText?: string;
+		showSkipText?: boolean;
+		nextAction?: Function;
 	};
 	InviteUsersView: {
 		rid: string;
@@ -170,13 +171,6 @@ export type ModalStackParamList = {
 	DisplayPrefsView: undefined;
 	AdminPanelView: undefined;
 	NewMessageView: undefined;
-	SelectedUsersViewCreateChannel: {
-		maxUsers: number;
-		showButton: boolean;
-		title: string;
-		buttonText: string;
-		nextAction: Function;
-	}; // TODO: Change
 	CreateChannelView: {
 		isTeam?: boolean; // TODO: To check
 		teamId?: string;

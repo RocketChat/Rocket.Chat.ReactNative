@@ -1,5 +1,5 @@
 import { SET_CUSTOM_EMOJIS } from '../actions/actionsTypes';
-import { ICustomEmojis, TApplicationActions } from '../definitions';
+import { type ICustomEmojis, type TApplicationActions } from '../definitions';
 
 export const initialState: ICustomEmojis = {};
 

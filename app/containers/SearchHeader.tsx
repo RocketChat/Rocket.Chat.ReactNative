@@ -1,10 +1,10 @@
 import React from 'react';
-import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { type StyleProp, StyleSheet, View, type ViewStyle } from 'react-native';
 
 import I18n from '../i18n';
 import { useTheme } from '../theme';
 import sharedStyles from '../views/Styles';
-import { themes } from '../lib/constants';
+import { themes } from '../lib/constants/colors';
 import { TextInput } from './TextInput';
 
 const styles = StyleSheet.create({

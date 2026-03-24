@@ -1,9 +1,9 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 
 import Markdown from '../../containers/markdown';
-import { useTheme } from '../../theme';
 import styles from './styles';
+import { ItemLabel } from './components/ItemLabel';
 
 interface IItem {
 	label?: string;
@@ -12,16 +12,12 @@ interface IItem {
 }
 
 const Item = ({ label, content, testID }: IItem): React.ReactElement | null => {
-	const { colors } = useTheme();
-
 	if (!content) return null;
 
 	return (
 		<View style={styles.item} testID={testID}>
-			<Text accessibilityLabel={label} style={[styles.itemLabel, { color: colors.fontTitlesLabels }]}>
-				{label}
-			</Text>
-			<Markdown style={[styles.itemContent, { color: colors.fontSecondaryInfo }]} msg={content} />
+			{label ? <ItemLabel label={label} testID={testID} /> : null}
+			<Markdown msg={content} />
 		</View>
 	);
 };

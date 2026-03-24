@@ -1,0 +1,64 @@
+appId: chat.rocket.reactnative
+name: Server History
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowEnd:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-3
+
+---
+- evalScript: ${output.user = output.utils.createUser()}
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+- runFlow: ../../helpers/logout.yaml
+
+- assertVisible:
+    id: 'servers-history-button'
+- tapOn:
+    id: 'servers-history-button'
+- assertVisible:
+    id: 'action-sheet'
+- assertVisible:
+    id: 'servers-history-https://mobile.qa.rocket.chat'
+
+# should tap on a server history and navigate to login
+- tapOn:
+    id: 'servers-history-https://mobile.qa.rocket.chat'
+- assertVisible:
+    id: 'login-view-submit'
+- assertVisible: ${output.user.username}
+
+# we are going back to add workspace from login screen
+- runFlow: ../../helpers/go-back.yaml
+- runFlow: ../../helpers/go-back.yaml
+
+- extendedWaitUntil:
+    visible:
+      id: 'new-server-view'
+    timeout: 60000
+- tapOn:
+    id: 'servers-history-button'
+- assertVisible:
+    id: 'servers-history-https://mobile.qa.rocket.chat'
+
+# swipe left to reveal delete button and delete the server history
+- swipe:
+    direction: LEFT
+    from:
+      id: 'servers-history-https://mobile.qa.rocket.chat'
+- waitForAnimationToEnd:
+    timeout: 500
+- tapOn:
+    id: 'servers-history-https://mobile.qa.rocket.chat-delete'
+- extendedWaitUntil:
+    notVisible:
+      id: 'servers-history-button'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'new-server-view'
+    timeout: 60000

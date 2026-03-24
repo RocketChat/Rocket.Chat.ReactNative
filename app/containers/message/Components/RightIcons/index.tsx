@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { MessageType } from '../../../../definitions';
+import { type MessageType } from '../../../../definitions';
 import Edited from './Edited';
 import Encrypted from './Encrypted';
 import MessageError from './MessageError';
@@ -35,15 +35,19 @@ const RightIcons = ({
 	unread,
 	isTranslated,
 	pinned
-}: IRightIcons): React.ReactElement => (
-	<View style={styles.actionIcons}>
-		<Pinned pinned={pinned} testID={`${msg}-pinned`} />
-		<Encrypted type={type} />
-		<Edited testID={`${msg}-edited`} isEdited={isEdited} />
-		<MessageError hasError={hasError} />
-		<Translated isTranslated={isTranslated} />
-		<ReadReceipt isReadReceiptEnabled={isReadReceiptEnabled} unread={unread} />
-	</View>
-);
+}: IRightIcons): React.ReactElement => {
+	'use memo';
+
+	return (
+		<View style={styles.actionIcons}>
+			<Pinned pinned={pinned} testID={`${msg}-pinned`} />
+			<Encrypted type={type} />
+			<Edited testID={`${msg}-edited`} isEdited={isEdited} />
+			<MessageError hasError={hasError} />
+			<Translated isTranslated={isTranslated} />
+			<ReadReceipt isReadReceiptEnabled={isReadReceiptEnabled} unread={unread} />
+		</View>
+	);
+};
 
 export default RightIcons;

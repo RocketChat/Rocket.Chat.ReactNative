@@ -1,16 +1,16 @@
 import { InteractionManager } from 'react-native';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
-import { IActiveUsers } from '../../reducers/activeUsers';
+import { type IActiveUsers } from '../../reducers/activeUsers';
 import { store as reduxStore } from '../store/auxStore';
 import { setActiveUsers } from '../../actions/activeUsers';
 import { setUser } from '../../actions/login';
 import database from '../database';
-import { IUser } from '../../definitions';
+import { type IUser } from '../../definitions';
 import sdk from '../services/sdk';
 import { compareServerVersion } from './helpers';
 import userPreferences from './userPreferences';
-import { NOTIFICATION_PRESENCE_CAP } from '../constants';
+import { NOTIFICATION_PRESENCE_CAP } from '../constants/notifications';
 import { setNotificationPresenceCap } from '../../actions/app';
 
 export const _activeUsersSubTimeout: { activeUsersSubTimeout: boolean | ReturnType<typeof setTimeout> | number } = {

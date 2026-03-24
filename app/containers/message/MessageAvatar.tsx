@@ -1,10 +1,10 @@
-import React, { ReactElement, useContext } from 'react';
+import React, { type ReactElement, useContext } from 'react';
 import { View } from 'react-native';
 
 import Avatar from '../Avatar';
 import styles from './styles';
 import MessageContext from './Context';
-import { IMessageAvatar } from './interfaces';
+import { type IMessageAvatar } from './interfaces';
 import { SubscriptionType } from '../../definitions';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
@@ -17,6 +17,8 @@ export const AvatarContainer = ({ children }: { children?: ReactElement | null }
 };
 
 const MessageAvatar = React.memo(({ isHeader, avatar, author, small, navToRoomInfo, emoji, getCustomEmoji }: IMessageAvatar) => {
+	'use memo';
+
 	const { user } = useContext(MessageContext);
 	const { fontScaleLimited } = useResponsiveLayout();
 	const smallSize = 20 * fontScaleLimited;

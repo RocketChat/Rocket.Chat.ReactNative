@@ -2,11 +2,12 @@ import * as FileSystem from 'expo-file-system';
 import FileViewer from 'react-native-file-viewer';
 
 import { LISTENER } from '../../../containers/Toast';
-import { IAttachment } from '../../../definitions';
+import { type IAttachment } from '../../../definitions';
 import i18n from '../../../i18n';
 import EventEmitter from './events';
 import { Encryption } from '../../encryption';
 import { sanitizeFileName } from '../handleMediaDownload';
+import { headers } from './fetch';
 
 export const getLocalFilePathFromFile = (localPath: string, attachment: IAttachment): string => `${localPath}${attachment.title}`;
 
@@ -18,7 +19,7 @@ export const fileDownload = async (url: string, attachment?: IAttachment, fileNa
 	if (attachment?.title) {
 		path = `${path}${sanitizeFileName(attachment.title)}`;
 	}
-	const file = await FileSystem.downloadAsync(url, path);
+	const file = await FileSystem.downloadAsync(url, path, { headers: headers as Record<string, string> });
 	return file.uri;
 };
 

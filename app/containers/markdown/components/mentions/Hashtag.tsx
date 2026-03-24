@@ -1,29 +1,31 @@
-import React from 'react';
-import { StyleProp, Text, TextStyle } from 'react-native';
+import React, { useContext } from 'react';
+import { Text } from 'react-native';
 
 import i18n from '../../../../i18n';
-import { ROOM_MENTIONS_PREFERENCES_KEY, themes } from '../../../../lib/constants';
+import { themes } from '../../../../lib/constants/colors';
+import { ROOM_MENTIONS_PREFERENCES_KEY } from '../../../../lib/constants/keys';
 import { getSubscriptionByRoomId } from '../../../../lib/database/services/Subscription';
-import { useAppSelector } from '../../../../lib/hooks';
-import { useUserPreferences } from '../../../../lib/methods';
-import { showErrorAlert } from '../../../../lib/methods/helpers';
+import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
+import { useUserPreferences } from '../../../../lib/methods/userPreferences';
+import { showErrorAlert } from '../../../../lib/methods/helpers/info';
 import { goRoom } from '../../../../lib/methods/helpers/goRoom';
-import { Services } from '../../../../lib/services';
+import { getRoomInfo } from '../../../../lib/services/restApi';
 import { useTheme } from '../../../../theme';
 import { sendLoadingEvent } from '../../../Loading';
-import { IUserChannel } from '../../interfaces';
+import { type IUserChannel } from '../../interfaces';
 import styles from '../../styles';
+import MarkdownContext from '../../contexts/MarkdownContext';
 
 interface IHashtag {
 	hashtag: string;
 	navToRoomInfo?: Function;
-	style?: StyleProp<TextStyle>[];
 	channels?: IUserChannel[];
 }
 
-const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IHashtag) => {
+const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo }: IHashtag) => {
 	const { theme } = useTheme();
-	const [roomsWithHashTagSymbol] = useUserPreferences<boolean>(ROOM_MENTIONS_PREFERENCES_KEY);
+	const { textStyle } = useContext(MarkdownContext);
+	const [roomsWithHashTagSymbol] = useUserPreferences<boolean>(ROOM_MENTIONS_PREFERENCES_KEY, false);
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 	const preffix = roomsWithHashTagSymbol ? '#' : '';
 	const handlePress = async () => {
@@ -39,7 +41,7 @@ const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IH
 			} else if (navParam.rid) {
 				sendLoadingEvent({ visible: true });
 				try {
-					await Services.getRoomInfo(navParam.rid);
+					await getRoomInfo(navParam.rid);
 					sendLoadingEvent({ visible: false });
 					navToRoomInfo(navParam);
 				} catch (error) {
@@ -55,17 +57,19 @@ const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IH
 			<Text
 				style={[
 					styles.mention,
+					...(textStyle ? [textStyle] : []),
 					{
 						color: themes[theme].fontInfo
-					},
-					...style
+					}
 				]}
 				onPress={handlePress}>
 				{`${preffix}${hashtag}`}
 			</Text>
 		);
 	}
-	return <Text style={[styles.text, { color: themes[theme].fontDefault }, ...style]}>{`#${hashtag}`}</Text>;
+	return (
+		<Text style={[styles.text, ...(textStyle ? [textStyle] : []), { color: themes[theme].fontDefault }]}>{`#${hashtag}`}</Text>
+	);
 });
 
 export default Hashtag;

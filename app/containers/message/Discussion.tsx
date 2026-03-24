@@ -9,12 +9,14 @@ import { CustomIcon } from '../CustomIcon';
 import { DISCUSSION } from './constants';
 import MessageContext from './Context';
 import { formatDateThreads } from '../../lib/methods/helpers/room';
-import { IMessage } from '../../definitions';
+import { type IMessage } from '../../definitions';
 import { useTheme } from '../../theme';
 
 // TODO: Create a reusable button component for message
 const Discussion = React.memo(
 	({ msg, dcount, dlm }: Pick<IMessage, 'msg' | 'dcount' | 'dlm'>) => {
+		'use memo';
+
 		const { colors } = useTheme();
 		let time;
 		if (dlm) {
@@ -29,7 +31,6 @@ const Discussion = React.memo(
 				<View style={[styles.buttonContainer, { gap: 8 }]}>
 					<Touchable
 						onPress={onDiscussionPress}
-						background={Touchable.Ripple(colors.surfaceNeutral)}
 						style={[styles.button, { backgroundColor: colors.badgeBackgroundLevel2 }]}
 						hitSlop={BUTTON_HIT_SLOP}>
 						<View style={styles.buttonInnerContainer}>

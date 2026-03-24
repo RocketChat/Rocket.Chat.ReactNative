@@ -3,12 +3,12 @@ import { StyleSheet } from 'react-native';
 
 import Button from '../Button';
 import AvatarContainer from './AvatarContainer';
-import { IAvatar } from './interfaces';
+import { type IAvatar } from './interfaces';
 import I18n from '../../i18n';
 import { useTheme } from '../../theme';
 import { BUTTON_HIT_SLOP } from '../message/utils';
-import { useAppSelector } from '../../lib/hooks';
-import { compareServerVersion } from '../../lib/methods/helpers';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
 import sharedStyles from '../../views/Styles';
 
 const styles = StyleSheet.create({
@@ -61,12 +61,12 @@ const AvatarWithEdit = ({
 				size={120}
 				borderRadius={borderRadius}
 				type={type}
-				children={children}
 				onPress={onPress}
 				getCustomEmoji={getCustomEmoji}
 				isStatic={isStatic}
-				rid={rid}
-			/>
+				rid={rid}>
+				{children}
+			</AvatarContainer>
 			{handleEdit && serverVersion && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.6.0') ? (
 				<Button
 					accessibilityLabel={editAccessibilityLabel}

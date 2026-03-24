@@ -1,20 +1,20 @@
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
+import { type RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import React, { useEffect, useState } from 'react';
 import { Text } from 'react-native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { TActionSheetOptionsItem, useActionSheet } from '../../containers/ActionSheet';
+import { type TActionSheetOptionsItem, useActionSheet } from '../../containers/ActionSheet';
 import { CustomIcon } from '../../containers/CustomIcon';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
-import { IRoomNotifications, TRoomNotificationsModel } from '../../definitions';
+import { type IRoomNotifications, type TRoomNotificationsModel } from '../../definitions';
 import I18n from '../../i18n';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { showErrorAlertWithEMessage } from '../../lib/methods/helpers';
 import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import { Services } from '../../lib/services';
-import { ChatsStackParamList } from '../../stacks/types';
+import { saveNotificationSettings } from '../../lib/services/restApi';
+import { type ChatsStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
 import { OPTIONS } from './options';
@@ -67,7 +67,7 @@ const RenderListPicker = ({
 			testID={testID}
 			onPress={() => showActionSheet({ options })}
 			right={() => <Text style={[{ ...sharedStyles.textRegular, fontSize: 16 }, { color: colors.fontHint }]}>{label}</Text>}
-			additionalAcessibilityLabel={label}
+			additionalAccessibilityLabel={label}
 		/>
 	);
 };
@@ -117,11 +117,15 @@ const NotificationPreferencesView = (): React.ReactElement => {
 		}
 	};
 
-	const saveNotificationSettings = async (key: TUnionOptionsRoomNotifications, params: IRoomNotifications, onError: Function) => {
+	const handleSaveNotificationSettings = async (
+		key: TUnionOptionsRoomNotifications,
+		params: IRoomNotifications,
+		onError: Function
+	) => {
 		try {
 			// @ts-ignore
 			logEvent(events[`NP_${key.toUpperCase()}`]);
-			await Services.saveNotificationSettings(rid, params);
+			await saveNotificationSettings(rid, params);
 		} catch (e) {
 			// @ts-ignore
 			logEvent(events[`NP_${key.toUpperCase()}_F`]);
@@ -139,8 +143,10 @@ const NotificationPreferencesView = (): React.ReactElement => {
 					<List.Item
 						title='Receive_Notification'
 						testID='notification-preference-view-receive-notification'
-						right={() => <RenderSwitch preference='disableNotifications' room={room} onChangeValue={saveNotificationSettings} />}
-						additionalAcessibilityLabel={!room.disableNotifications}
+						right={() => (
+							<RenderSwitch preference='disableNotifications' room={room} onChangeValue={handleSaveNotificationSettings} />
+						)}
+						additionalAccessibilityLabel={!room.disableNotifications}
 					/>
 					<List.Separator />
 					<List.Info info={I18n.t('Receive_notifications_from', { name: room.name })} translateInfo={false} />
@@ -151,9 +157,11 @@ const NotificationPreferencesView = (): React.ReactElement => {
 					<List.Item
 						title='Receive_Group_Mentions'
 						testID='notification-preference-view-group-mentions'
-						right={() => <RenderSwitch preference='muteGroupMentions' room={room} onChangeValue={saveNotificationSettings} />}
+						right={() => (
+							<RenderSwitch preference='muteGroupMentions' room={room} onChangeValue={handleSaveNotificationSettings} />
+						)}
 						// @ts-ignore
-						additionalAcessibilityLabel={!room.muteGroupMentions}
+						additionalAccessibilityLabel={!room.muteGroupMentions}
 					/>
 					<List.Separator />
 					<List.Info info='Receive_Group_Mentions_Info' />
@@ -164,8 +172,10 @@ const NotificationPreferencesView = (): React.ReactElement => {
 					<List.Item
 						title='Mark_as_unread'
 						testID='notification-preference-view-mark-as-unread'
-						right={() => <RenderSwitch preference='hideUnreadStatus' room={room} onChangeValue={saveNotificationSettings} />}
-						additionalAcessibilityLabel={!room.hideUnreadStatus}
+						right={() => (
+							<RenderSwitch preference='hideUnreadStatus' room={room} onChangeValue={handleSaveNotificationSettings} />
+						)}
+						additionalAccessibilityLabel={!room.hideUnreadStatus}
 					/>
 					<List.Separator />
 					<List.Info info='Mark_as_unread_Info' />
@@ -177,8 +187,10 @@ const NotificationPreferencesView = (): React.ReactElement => {
 						<List.Item
 							title='Show_badge_for_mentions'
 							testID='notification-preference-view-badge-for-mentions'
-							right={() => <RenderSwitch preference='hideMentionStatus' room={room} onChangeValue={saveNotificationSettings} />}
-							additionalAcessibilityLabel={!room.hideMentionStatus}
+							right={() => (
+								<RenderSwitch preference='hideMentionStatus' room={room} onChangeValue={handleSaveNotificationSettings} />
+							)}
+							additionalAccessibilityLabel={!room.hideMentionStatus}
 						/>
 						<List.Separator />
 						<List.Info info='Show_badge_for_mentions_Info' />
@@ -192,7 +204,7 @@ const NotificationPreferencesView = (): React.ReactElement => {
 						room={room}
 						title='Alert'
 						testID='notification-preference-view-alert'
-						onChangeValue={saveNotificationSettings}
+						onChangeValue={handleSaveNotificationSettings}
 					/>
 					<List.Separator />
 					<RenderListPicker
@@ -200,7 +212,7 @@ const NotificationPreferencesView = (): React.ReactElement => {
 						room={room}
 						title='Sound'
 						testID='notification-preference-view-sound'
-						onChangeValue={saveNotificationSettings}
+						onChangeValue={handleSaveNotificationSettings}
 					/>
 					<List.Separator />
 					<List.Info info='In_App_and_Desktop_Alert_info' />
@@ -212,7 +224,7 @@ const NotificationPreferencesView = (): React.ReactElement => {
 						room={room}
 						title='Alert'
 						testID='notification-preference-view-push-notification'
-						onChangeValue={saveNotificationSettings}
+						onChangeValue={handleSaveNotificationSettings}
 					/>
 					<List.Separator />
 					<List.Item
@@ -231,7 +243,7 @@ const NotificationPreferencesView = (): React.ReactElement => {
 						room={room}
 						title='Alert'
 						testID='notification-preference-view-email-alert'
-						onChangeValue={saveNotificationSettings}
+						onChangeValue={handleSaveNotificationSettings}
 					/>
 					<List.Separator />
 				</List.Section>

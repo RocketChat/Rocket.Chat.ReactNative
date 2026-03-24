@@ -6,7 +6,7 @@ import Reactions from './Reactions';
 import MessageContext from './Context';
 import { setUser } from '../../actions/login';
 import { mockedStore } from '../../reducers/mockedStore';
-import { IReaction } from '../../definitions';
+import { type IReaction } from '../../definitions';
 
 const initialMockedStoreState = () => {
 	mockedStore.dispatch(

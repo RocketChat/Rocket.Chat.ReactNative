@@ -1,7 +1,7 @@
-import { Action } from 'redux';
+import { type Action } from 'redux';
 
 import { TROUBLESHOOTING_NOTIFICATION } from './actionsTypes';
-import { ITroubleshootingNotification } from '../reducers/troubleshootingNotification';
+import { type ITroubleshootingNotification } from '../reducers/troubleshootingNotification';
 
 type TSetTroubleshootingNotification = Action & { payload: Partial<ITroubleshootingNotification> };
 

@@ -1,4 +1,4 @@
-import { ISupportedVersionsData } from '../../definitions';
+import { type ISupportedVersionsData } from '../../definitions';
 import { checkSupportedVersions, getMessage } from './checkSupportedVersions';
 
 const MOCK_I18N = {

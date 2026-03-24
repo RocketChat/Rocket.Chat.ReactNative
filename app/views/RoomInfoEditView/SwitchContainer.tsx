@@ -1,5 +1,5 @@
-import React, { ReactElement } from 'react';
-import { Text, TextStyle, View, ViewStyle } from 'react-native';
+import React, { type ReactElement } from 'react';
+import { Text, type TextStyle, View, type ViewStyle } from 'react-native';
 
 import { useTheme } from '../../theme';
 import styles from './styles';

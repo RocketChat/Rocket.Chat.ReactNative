@@ -1,12 +1,12 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import { textInputDebounceTime } from '../../lib/constants/index';
+import { textInputDebounceTime } from '../../lib/constants/debounceConfig';
 import EmojiPicker from '../../containers/EmojiPicker';
 import styles from './styles';
-import { IEmoji } from '../../definitions';
-import { EventTypes } from '../../containers/EmojiPicker/interfaces';
-import { searchEmojis } from '../../lib/methods';
+import { type IEmoji } from '../../definitions';
+import { type EventTypes } from '../../containers/EmojiPicker/interfaces';
+import { searchEmojis } from '../../lib/methods/emojis';
 import { useDebounce } from '../../lib/methods/helpers/debounce';
 import { EmojiSearch } from '../../containers/EmojiPicker/EmojiSearch';
 import { events, logEvent } from '../../lib/methods/helpers/log';
@@ -45,7 +45,7 @@ const ReactionPicker = ({ onEmojiSelected, messageId, reactionClose }: IReaction
 			<View style={styles.reactionSearchContainer}>
 				<EmojiSearch onChangeText={handleTextChange} bottomSheet />
 			</View>
-			<EmojiPicker onItemClicked={handleEmojiSelect} searching={searching} searchedEmojis={searchedEmojis} />
+			<EmojiPicker onItemClicked={handleEmojiSelect} searching={searching} searchedEmojis={searchedEmojis} bottomSheet />
 		</View>
 	);
 };

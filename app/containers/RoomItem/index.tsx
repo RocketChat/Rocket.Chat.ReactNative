@@ -1,10 +1,11 @@
 import React, { useEffect, useReducer, useRef } from 'react';
-import { Subscription } from 'rxjs';
+import { type Subscription } from 'rxjs';
 
 import { isGroupChat } from '../../lib/methods/helpers';
 import { formatDate, formatDateAccessibility } from '../../lib/methods/helpers/room';
-import { IRoomItemContainerProps } from './interfaces';
+import { type IRoomItemContainerProps } from './interfaces';
 import RoomItem from './RoomItem';
+import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
 
 const attrs = ['width', 'isFocused', 'showLastMessage', 'autoJoin', 'showAvatar', 'displayMode'];
 
@@ -61,6 +62,7 @@ const RoomItemContainer = React.memo(
 				name={name}
 				avatar={avatar}
 				isGroupChat={isGroupChat(item)}
+				isInvited={isInviteSubscription(item)}
 				isRead={isRead}
 				onPress={handleOnPress}
 				onLongPress={handleOnLongPress}
@@ -94,6 +96,7 @@ const RoomItemContainer = React.memo(
 				displayMode={displayMode}
 				status={item.t === 'l' ? item?.visitor?.status : null}
 				sourceType={item.t === 'l' ? item.source : null}
+				abacAttributes={item.abacAttributes}
 			/>
 		);
 	},

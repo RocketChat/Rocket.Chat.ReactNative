@@ -2,15 +2,16 @@ import React, { forwardRef, useImperativeHandle, useState } from 'react';
 import { InteractionManager, StyleSheet, Text, View } from 'react-native';
 import Modal from 'react-native-modal';
 import { connect } from 'react-redux';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import { FormTextInput } from '../../containers/TextInput';
 import sharedStyles from '../Styles';
-import { themes } from '../../lib/constants';
-import { IApplicationState } from '../../definitions';
-import { Services } from '../../lib/services';
-import { TSupportedThemes } from '../../theme';
+import { themes } from '../../lib/constants/colors';
+import { type IApplicationState } from '../../definitions';
+import { joinRoom } from '../../lib/services/restApi';
+import { type TSupportedThemes } from '../../theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -66,7 +67,7 @@ const JoinCode = React.memo(
 
 		const handleJoinRoom = async () => {
 			try {
-				await Services.joinRoom(rid, code, t as any);
+				await joinRoom(rid, code, t as any);
 				onJoin();
 				hide();
 			} catch (e) {
@@ -78,7 +79,7 @@ const JoinCode = React.memo(
 
 		return (
 			<Modal avoidKeyboard useNativeDriver isVisible={visible} hideModalContentWhileAnimating>
-				<View style={styles.container} testID='join-code'>
+				<GestureHandlerRootView style={styles.container} testID='join-code'>
 					<View
 						style={[
 							styles.content,
@@ -122,7 +123,7 @@ const JoinCode = React.memo(
 							/>
 						</View>
 					</View>
-				</View>
+				</GestureHandlerRootView>
 			</Modal>
 		);
 	})

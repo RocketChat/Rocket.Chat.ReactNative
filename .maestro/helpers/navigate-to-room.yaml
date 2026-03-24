@@ -4,9 +4,11 @@ tags:
   - 'util'
 
 ---
+- waitForAnimationToEnd
 - scrollUntilVisible:
     element:
       id: 'rooms-list-view-item-${ROOM}'
+- waitForAnimationToEnd
 - tapOn:
     id: 'rooms-list-view-item-${ROOM}'
 - extendedWaitUntil:

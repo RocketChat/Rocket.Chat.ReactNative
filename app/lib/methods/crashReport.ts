@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { ANALYTICS_EVENTS_KEY, CRASH_REPORT_KEY } from '../constants';
+import { ANALYTICS_EVENTS_KEY, CRASH_REPORT_KEY } from '../constants/keys';
 
 export async function getAllowCrashReport() {
 	const allowCrashReport = await AsyncStorage.getItem(CRASH_REPORT_KEY);

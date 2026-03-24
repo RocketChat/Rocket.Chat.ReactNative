@@ -1,14 +1,19 @@
 import React, { memo } from 'react';
 import { FlatList } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { ICustomEmojis, IEmoji } from '../../definitions/IEmoji';
+import { type ICustomEmojis, type IEmoji } from '../../definitions/IEmoji';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import { PressableEmoji } from './PressableEmoji';
 import { EMOJI_BUTTON_SIZE } from './styles';
-import { emojisByCategory } from '../../lib/constants';
+import { emojisByCategory } from '../../lib/constants/emojis';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { useFrequentlyUsedEmoji } from '../../lib/hooks/useFrequentlyUsedEmoji';
-import { IEmojiCategoryProps, TEmojiCategory } from './interfaces';
+import { type IEmojiCategoryProps, type TEmojiCategory } from './interfaces';
+import { isAndroid } from '../../lib/methods/helpers';
+
+const ANDROID_BOTTOM_SHEET_EXTRA_OFFSET = 24;
+const ANDROID_BOTTOM_SHEET_CONTENT_PADDING = EMOJI_BUTTON_SIZE + ANDROID_BOTTOM_SHEET_EXTRA_OFFSET;
 
 const useEmojis = (category?: TEmojiCategory) => {
 	const { frequentlyUsed, loaded } = useFrequentlyUsedEmoji();
@@ -38,8 +43,15 @@ const useEmojis = (category?: TEmojiCategory) => {
 	return emojisByCategory[category];
 };
 
-const EmojiCategory = ({ parentWidth, category, emojis, onEmojiSelected }: IEmojiCategoryProps): React.ReactElement | null => {
+const EmojiCategory = ({
+	parentWidth,
+	category,
+	emojis,
+	onEmojiSelected,
+	bottomSheet = false
+}: IEmojiCategoryProps): React.ReactElement | null => {
 	const items = useEmojis(category);
+	const { bottom } = useSafeAreaInsets();
 
 	if (!parentWidth) {
 		return null;
@@ -47,6 +59,7 @@ const EmojiCategory = ({ parentWidth, category, emojis, onEmojiSelected }: IEmoj
 
 	const numColumns = Math.trunc(parentWidth / EMOJI_BUTTON_SIZE);
 	const marginHorizontal = (parentWidth % EMOJI_BUTTON_SIZE) / 2;
+	const contentPaddingBottom = isAndroid && bottomSheet ? ANDROID_BOTTOM_SHEET_CONTENT_PADDING + bottom : undefined;
 
 	const renderItem = ({ item }: { item: IEmoji }) => <PressableEmoji emoji={item} onPress={onEmojiSelected} />;
 
@@ -57,9 +70,13 @@ const EmojiCategory = ({ parentWidth, category, emojis, onEmojiSelected }: IEmoj
 			data={emojis || items}
 			renderItem={renderItem}
 			numColumns={numColumns}
-			contentContainerStyle={{ marginHorizontal }}
+			contentContainerStyle={{
+				marginHorizontal,
+				...(contentPaddingBottom != null && { paddingBottom: contentPaddingBottom })
+			}}
 			{...scrollPersistTaps}
-			keyboardDismissMode={'none'}
+			keyboardDismissMode='none'
+			nestedScrollEnabled
 		/>
 	);
 };

@@ -4,8 +4,9 @@ import Animated, { runOnJS, useAnimatedScrollHandler } from 'react-native-reanim
 
 import { isIOS } from '../../../../lib/methods/helpers';
 import scrollPersistTaps from '../../../../lib/methods/helpers/scrollPersistTaps';
+import InvertedScrollView from './InvertedScrollView';
 import NavBottomFAB from './NavBottomFAB';
-import { IListProps } from '../definitions';
+import { type IListProps } from '../definitions';
 import { SCROLL_LIMIT } from '../constants';
 import { useRoomContext } from '../../context';
 
@@ -18,7 +19,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
+const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 	const [visible, setVisible] = useState(false);
 	const { isAutocompleteVisible } = useRoomContext();
 	const scrollHandler = useAnimatedScrollHandler({
@@ -43,6 +44,7 @@ export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 				contentContainerStyle={styles.contentContainer}
 				style={styles.list}
 				inverted
+				renderScrollComponent={isIOS ? undefined : props => <InvertedScrollView {...props} />}
 				removeClippedSubviews={isIOS}
 				initialNumToRender={7}
 				onEndReachedThreshold={0.5}
@@ -57,3 +59,5 @@ export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 		</View>
 	);
 };
+
+export default List;

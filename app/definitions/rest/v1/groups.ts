@@ -1,10 +1,10 @@
-import { ITeam } from '../../ITeam';
+import { type ITeam } from '../../ITeam';
 import type { IMessageFromServer } from '../../IMessage';
 import type { IServerRoom } from '../../IRoom';
 import type { IUser } from '../../IUser';
-import { IGetRoomRoles } from '../../IRole';
-import { IServerAttachment } from '../../IAttachment';
-import { PaginatedRequest } from '../helpers/PaginatedRequest';
+import { type IGetRoomRoles } from '../../IRole';
+import { type IServerAttachment } from '../../IAttachment';
+import { type PaginatedRequest } from '../helpers/PaginatedRequest';
 
 export type GroupsEndpoints = {
 	'groups.files': {

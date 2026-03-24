@@ -5,6 +5,8 @@ import { CustomIcon } from '../../../CustomIcon';
 import styles from '../../styles';
 
 const Edited = memo(({ isEdited, testID }: { isEdited: boolean; testID?: string }) => {
+	'use memo';
+
 	if (!isEdited) {
 		return null;
 	}

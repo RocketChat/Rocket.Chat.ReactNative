@@ -1,13 +1,14 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { Model } from '@nozbe/watermelondb';
+import { type Model } from '@nozbe/watermelondb';
 
 import database from '../database';
 import log from './helpers/log';
 import { random } from './helpers';
 import { Encryption } from '../encryption';
-import { E2EType, IMessage, IUser, TMessageModel } from '../../definitions';
+import type { E2EType, IMessage, IUser, MessageType, TMessageModel } from '../../definitions';
 import sdk from '../services/sdk';
-import { E2E_MESSAGE_TYPE, E2E_STATUS, messagesStatus } from '../constants';
+import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../constants/keys';
+import { messagesStatus } from '../constants/messagesStatus';
 
 const changeMessageStatus = async (id: string, status: number, tmid?: string, message?: IMessage) => {
 	const db = database.active;
@@ -142,9 +143,9 @@ export async function sendMessage(
 							tm._updatedAt = messageDate;
 							tm.status = messagesStatus.SENT; // Original message was sent already
 							tm.u = tMessageRecord.u;
-							tm.t = message.t;
+							tm.t = message?.t as MessageType;
 							tm.attachments = tMessageRecord.attachments;
-							if (message.t === E2E_MESSAGE_TYPE) {
+							if (message?.t === E2E_MESSAGE_TYPE) {
 								tm.e2e = E2E_STATUS.DONE as E2EType;
 							}
 						})
@@ -168,8 +169,8 @@ export async function sendMessage(
 							username: user.username,
 							name: user.name
 						};
-						tm.t = message.t;
-						if (message.t === E2E_MESSAGE_TYPE) {
+						tm.t = message?.t as MessageType;
+						if (message?.t === E2E_MESSAGE_TYPE) {
 							tm.e2e = E2E_STATUS.DONE as E2EType;
 						}
 					})
@@ -201,8 +202,8 @@ export async function sendMessage(
 					m.tmsg = tMessageRecord.msg;
 					m.tshow = tshow;
 				}
-				m.t = message.t;
-				if (message.t === E2E_MESSAGE_TYPE) {
+				m.t = message?.t as MessageType;
+				if (message?.t === E2E_MESSAGE_TYPE) {
 					m.e2e = E2E_STATUS.DONE as E2EType;
 				}
 			})

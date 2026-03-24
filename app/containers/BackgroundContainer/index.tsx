@@ -3,7 +3,7 @@ import { ActivityIndicator, ImageBackground, StyleSheet, Text, View } from 'reac
 
 import { useTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 
 export interface IBackgroundContainer {
 	text?: string;

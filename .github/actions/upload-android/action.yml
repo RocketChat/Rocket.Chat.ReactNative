@@ -53,6 +53,26 @@ runs:
         echo "${{ inputs.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}" | base64 --decode > service_account.json
       shell: bash
 
+    - uses: actions/download-artifact@v4
+      if: ${{ inputs.trigger == 'develop' }}
+      with:
+        name: release-changelog
+        path: .
+
+    - name: Prepare Play Store changelog metadata
+      if: ${{ inputs.trigger == 'develop' }}
+      run: |
+        mkdir -p android/fastlane/metadata/android/en-US/changelogs
+
+        if [ -f changelog.txt ]; then
+          node .github/scripts/prepare-changelog.js
+        else
+          printf "Internal improvements and bug fixes" > "android/fastlane/metadata/android/en-US/changelogs/${BUILD_VERSION}.txt"
+        fi
+      shell: bash
+      env:
+        BUILD_VERSION: ${{ inputs.BUILD_VERSION }}
+
     - name: Fastlane Play Store Upload
       working-directory: android
       run: |
@@ -65,7 +85,6 @@ runs:
         if [[ ${{ inputs.trigger }} == "develop" ]] && [[ ${{ inputs.type }} == 'official' ]]; then
           bundle exec fastlane android official_open_testing
         fi
-          
       shell: bash
     
     - name: Leave a comment on PR

@@ -6,7 +6,7 @@ import Modal from 'react-native-modal';
 import sharedStyles from '../Styles';
 import Button from '../../containers/Button';
 import { useTheme } from '../../theme';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { getUserSelector } from '../../selectors/login';
 import i18n from '../../i18n';
 

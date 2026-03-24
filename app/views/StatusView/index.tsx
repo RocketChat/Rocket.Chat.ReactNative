@@ -14,16 +14,15 @@ import { sendLoadingEvent } from '../../containers/Loading';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusIcon from '../../containers/Status/Status';
 import { ControlledFormTextInput } from '../../containers/TextInput';
-import { IApplicationState, TUserStatus } from '../../definitions';
+import { type IApplicationState, type TUserStatus } from '../../definitions';
 import I18n from '../../i18n';
 import { showToast } from '../../lib/methods/helpers/showToast';
-import { Services } from '../../lib/services';
+import { setUserStatus } from '../../lib/services/restApi';
 import { getUserSelector } from '../../selectors/login';
 import { showErrorAlert } from '../../lib/methods/helpers';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { useTheme } from '../../theme';
 import Button from '../../containers/Button';
-import Check from '../../containers/Check';
 import { USER_STATUS_TEXT_MAX_LENGTH } from '../../lib/constants/maxLength';
 
 interface IStatus {
@@ -79,19 +78,20 @@ const Status = ({
 	const { id, name } = statusType;
 	return (
 		<>
-			<List.Item
-				additionalAcessibilityLabel={`${status === id ? I18n.t('Current_Status') : ''}`}
+			<List.Radio
+				isSelected={status === id}
+				additionalAccessibilityLabel={`${status === id ? I18n.t('Current_Status') : ''}`}
 				title={name}
 				onPress={() => {
-					const key = `STATUS_${statusType.id.toUpperCase()}` as keyof typeof events;
+					const key = `STATUS_${id.toUpperCase()}` as keyof typeof events;
 					logEvent(events[key]);
-					if (status !== statusType.id) {
-						setStatus(statusType.id);
+					if (status !== id) {
+						setStatus(id);
 					}
 				}}
 				testID={`status-view-${id}`}
+				value={statusType.id}
 				left={() => <StatusIcon size={24} status={statusType.id} />}
-				right={() => (status === id ? <Check /> : null)}
 			/>
 			<List.Separator />
 		</>
@@ -157,7 +157,7 @@ const StatusView = (): React.ReactElement => {
 	const setCustomStatus = async (status: TUserStatus, statusText: string) => {
 		sendLoadingEvent({ visible: true });
 		try {
-			await Services.setUserStatus(status, statusText);
+			await setUserStatus(status, statusText);
 			dispatch(setUser({ statusText, status }));
 			logEvent(events.STATUS_CUSTOM);
 			showToast(I18n.t('Status_saved_successfully'));

@@ -3,12 +3,14 @@ import { memo } from 'react';
 import { useTheme } from '../../../theme';
 import { CustomIcon } from '../../../containers/CustomIcon';
 import * as List from '../../../containers/List';
-import { useAppSelector } from '../../../lib/hooks';
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { showActionSheetRef } from '../../../containers/ActionSheet';
 import Navigation from '../../../lib/navigation/appNavigation';
 import { SupportedVersionsWarning } from '../../../containers/SupportedVersions';
 
 const SupportedVersionsWarnItem = () => {
+	'use memo';
+
 	const { colors } = useTheme();
 	const supportedVersionsStatus = useAppSelector(state => state.supportedVersions.status);
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);

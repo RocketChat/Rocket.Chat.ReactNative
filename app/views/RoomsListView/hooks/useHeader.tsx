@@ -3,7 +3,8 @@ import { useCallback, useContext, useLayoutEffect, useState } from 'react';
 
 import * as HeaderButton from '../../../containers/Header/components/HeaderButton';
 import i18n from '../../../i18n';
-import { useAppSelector, usePermissions } from '../../../lib/hooks';
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
+import { usePermissions } from '../../../lib/hooks/usePermissions';
 import { isTablet } from '../../../lib/methods/helpers';
 import { events, logEvent } from '../../../lib/methods/helpers/log';
 import { getUserSelector } from '../../../selectors/login';
@@ -12,6 +13,8 @@ import RoomsListHeaderView from '../components/Header';
 import { RoomsSearchContext } from '../contexts/RoomsSearchProvider';
 
 export const useHeader = () => {
+	'use memo';
+
 	const { searchEnabled, search, startSearch, stopSearch } = useContext(RoomsSearchContext);
 	const [options, setOptions] = useState<any>(null);
 	const supportedVersionsStatus = useAppSelector(state => state.supportedVersions.status);

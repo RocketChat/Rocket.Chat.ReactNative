@@ -1,5 +1,5 @@
-import { IServerRoom } from './IRoom';
-import { IUser } from './IUser';
+import { type IServerRoom } from './IRoom';
+import { type IUser } from './IUser';
 
 export type TSpotlightUser = Pick<IUser, '_id' | 'status' | 'name' | 'username'> & { outside: boolean };
 

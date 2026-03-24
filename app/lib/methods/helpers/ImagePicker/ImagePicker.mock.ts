@@ -1,5 +1,5 @@
 import { random } from 'lodash';
-import { Image as ImageType, ImageOrVideo as ImageOrVideoType } from 'react-native-image-crop-picker';
+import { type Image as ImageType, type ImageOrVideo as ImageOrVideoType } from 'react-native-image-crop-picker';
 
 export type Image = ImageType;
 export type ImageOrVideo = ImageOrVideoType;

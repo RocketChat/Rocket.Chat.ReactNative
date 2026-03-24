@@ -1,0 +1,81 @@
+appId: chat.rocket.reactnative
+name: Join Protected Room
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-7
+
+---
+- evalScript: ${output.user = output.utils.createUser()}
+
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+- runFlow:
+    file: '../../helpers/search-and-navigate-room.yaml'
+    env:
+      ROOM: ${output.data.channels.detoxpublicprotected.name}
+
+# should tap join and ask for join code
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-join-button'
+    timeout: 60000
+- tapOn:
+    id: 'room-view-join-button'
+- extendedWaitUntil:
+    visible:
+      id: 'join-code'
+    timeout: 60000
+
+# should cancel join room
+- assertVisible:
+    id: 'join-code'
+- tapOn:
+    id: 'join-code-cancel'
+- extendedWaitUntil:
+    notVisible:
+      id: 'join-code'
+    timeout: 60000
+- assertNotVisible:
+    id: 'message-composer'
+- assertVisible:
+    id: 'room-view-join-button'
+
+# should join room
+- assertVisible:
+    id: 'room-view-join-button'
+- tapOn:
+    id: 'room-view-join-button'
+- extendedWaitUntil:
+    visible:
+      id: 'join-code'
+    timeout: 60000
+- tapOn:
+    id: 'join-code-input'
+- inputText:
+    text: ${output.data.channels.detoxpublicprotected.joinCode}
+- assertVisible:
+    id: 'join-code-submit'
+- tapOn:
+    id: 'join-code-submit'
+- extendedWaitUntil:
+    notVisible:
+      id: 'join-code'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'message-composer'
+    timeout: 60000
+- extendedWaitUntil:
+    notVisible:
+      id: 'room-view-join'
+    timeout: 60000
+- runFlow:
+    file: '../../helpers/send-message.yaml'
+    env:
+      message: '${output.random(10)}message'

@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
-import { ISearchLocal } from '../../definitions';
+import { type ISearchLocal } from '../../definitions';
 import I18n from '../../i18n';
 import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
-import { ICreateDiscussionViewSelectChannel } from './interfaces';
+import { type ICreateDiscussionViewSelectChannel } from './interfaces';
 import styles from './styles';
-import { localSearchSubscription } from '../../lib/methods';
+import { localSearchSubscription } from '../../lib/methods/search';
 import { getRoomAvatar, getRoomTitle } from '../../lib/methods/helpers';
 import { useTheme } from '../../theme';
 
@@ -65,7 +65,6 @@ const SelectChannel = ({
 				onChange={onChannelSelect}
 				onSearch={getChannels}
 				value={initial && [initial]}
-				disabled={!!initial}
 				options={channels.map(channel => ({
 					value: channel,
 					text: { text: getRoomTitle(channel) },
@@ -73,6 +72,7 @@ const SelectChannel = ({
 				}))}
 				onClose={() => getChannels('')}
 				placeholder={{ text: I18n.t('Select_a_Channel') }}
+				testID='create-discussion-select-channel'
 			/>
 		</View>
 	);

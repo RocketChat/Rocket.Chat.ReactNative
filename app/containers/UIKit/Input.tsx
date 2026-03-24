@@ -3,8 +3,8 @@ import { StyleSheet, Text, View } from 'react-native';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
 import sharedStyles from '../../views/Styles';
-import { themes } from '../../lib/constants';
-import { IInput } from './interfaces';
+import { themes } from '../../lib/constants/colors';
+import { type IInput } from './interfaces';
 
 const styles = StyleSheet.create({
 	container: {
@@ -38,7 +38,7 @@ export const Input = ({ element, parser, label, description, error, hint, theme 
 			<Text style={[styles.label, { color: error ? themes[theme].fontDanger : themes[theme].fontTitlesLabels }]}>{label}</Text>
 		) : null}
 		{description ? <Text style={[styles.description, { color: themes[theme].fontSecondaryInfo }]}>{description}</Text> : null}
-		{parser.renderInputs({ ...element }, BlockContext.FORM, parser)}
+		{parser.renderInputs({ ...element }, BlockContext.FORM)}
 		{error ? <Text style={[styles.error, { color: themes[theme].fontDanger }]}>{error}</Text> : null}
 		{hint ? <Text style={[styles.hint, { color: themes[theme].fontSecondaryInfo }]}>{hint}</Text> : null}
 	</View>

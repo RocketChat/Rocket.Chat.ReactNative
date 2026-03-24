@@ -2,13 +2,13 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import { Alert } from 'react-native';
 
-import { IUser, TSendFileMessageFileInfo, TUploadModel } from '../../../definitions';
+import { type IUser, type TSendFileMessageFileInfo, type TUploadModel } from '../../../definitions';
 import i18n from '../../../i18n';
 import database from '../../database';
 import FileUpload from '../helpers/fileUpload';
 import log from '../helpers/log';
 import { copyFileToCacheDirectoryIfNeeded, getUploadPath, persistUploadError, uploadQueue } from './utils';
-import { IFormData } from '../helpers/fileUpload/definitions';
+import { type IFormData } from '../helpers/fileUpload/definitions';
 
 export async function sendFileMessage(
 	rid: string,

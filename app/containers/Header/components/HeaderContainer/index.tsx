@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { useWindowDimensions, View, ViewProps, StyleSheet } from 'react-native';
+import { useWindowDimensions, View, type ViewProps, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '../../../../theme';
@@ -13,6 +13,8 @@ interface IHeaderContainer extends ViewProps {
 
 const HeaderContainer = memo(
 	({ addExtraNotchPadding = false, isMasterDetail = false, customRightIcon, customLeftIcon, children }: IHeaderContainer) => {
+		'use memo';
+
 		const insets = useSafeAreaInsets();
 		const { colors } = useTheme();
 		const { height, width } = useWindowDimensions();

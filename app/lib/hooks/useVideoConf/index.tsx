@@ -4,10 +4,11 @@ import React, { useMemo } from 'react';
 import { useActionSheet } from '../../../containers/ActionSheet';
 import i18n from '../../../i18n';
 import { getUserSelector } from '../../../selectors/login';
-import { compareServerVersion, showErrorAlert } from '../../methods/helpers';
+import { compareServerVersion } from '../../methods/helpers/compareServerVersion';
+import { showErrorAlert } from '../../methods/helpers/info';
 import log from '../../methods/helpers/log';
 import { handleAndroidBltPermission } from '../../methods/videoConf';
-import { Services } from '../../services';
+import { videoConferenceGetCapabilities } from '../../services/restApi';
 import { useAppSelector } from '../useAppSelector';
 import StartACallActionSheet from './StartACallActionSheet';
 import { useVideoConfCall } from './useVideoConfCall';
@@ -30,7 +31,6 @@ export const useVideoConf = (
 ): { showInitCallActionSheet: () => Promise<void>; callEnabled: boolean; disabledTooltip?: boolean } => {
 	const user = useAppSelector(state => getUserSelector(state));
 	const serverVersion = useAppSelector(state => state.server.version);
-
 	const { callEnabled, disabledTooltip, roomType } = useVideoConfCall(rid);
 
 	const [permission, requestPermission] = useCameraPermissions();
@@ -43,7 +43,7 @@ export const useVideoConf = (
 
 		if (isServer5OrNewer) {
 			try {
-				await Services.videoConferenceGetCapabilities();
+				await videoConferenceGetCapabilities();
 				return true;
 			} catch (error: any) {
 				const isAdmin = !!user.roles?.includes('admin');
@@ -60,7 +60,10 @@ export const useVideoConf = (
 			if (canInit) {
 				showActionSheet({
 					children: <StartACallActionSheet rid={rid} roomType={roomType} />,
-					snaps: [480]
+					portraitSnaps: ['60%'],
+					landscapeSnaps: ['90%'],
+					enableContentPanningGesture: false,
+					fullContainer: true
 				});
 
 				if (!permission?.granted) {

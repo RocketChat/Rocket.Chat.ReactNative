@@ -1,147 +1,127 @@
-import { BlockContext } from '@rocket.chat/ui-kit';
+import type {
+	BlockContext,
+	FrameableIconElement,
+	IconButtonElement,
+	InfoCardBlock,
+	Markdown,
+	ModalView,
+	PlainText,
+	ServerInteraction,
+	ViewBlockActionUserInteraction,
+	ViewClosedUserInteraction,
+	ViewSubmitUserInteraction
+} from '@rocket.chat/ui-kit';
 
-import { TSupportedThemes } from '../../theme';
+import { type TSupportedThemes } from '../../theme';
 
-export enum ElementTypes {
-	IMAGE = 'image',
-	BUTTON = 'button',
-	STATIC_SELECT = 'static_select',
-	MULTI_STATIC_SELECT = 'multi_static_select',
-	CONVERSATION_SELECT = 'conversations_select',
-	CHANNEL_SELECT = 'channels_select',
-	USER_SELECT = 'users_select',
-	OVERFLOW = 'overflow',
-	DATEPICKER = 'datepicker',
-	PLAIN_TEXT_INPUT = 'plain_text_input',
-	SECTION = 'section',
-	DIVIDER = 'divider',
-	ACTIONS = 'actions',
-	CONTEXT = 'context',
-	FIELDS = 'fields',
-	INPUT = 'input',
-	PLAIN_TEXT = 'plain_text',
-	TEXT = 'text',
-	MARKDOWN = 'mrkdwn'
-}
+export const ActionTypes = {
+	ACTION: 'blockAction',
+	SUBMIT: 'viewSubmit',
+	CLOSED: 'viewClosed'
+} as const;
 
-export enum ActionTypes {
-	ACTION = 'blockAction',
-	SUBMIT = 'viewSubmit',
-	CLOSED = 'viewClosed'
-}
+export const ContainerTypes = {
+	VIEW: 'view',
+	MESSAGE: 'message'
+} as const;
 
-export enum ContainerTypes {
-	VIEW = 'view',
-	MESSAGE = 'message'
-}
+export const ModalActions = {
+	MODAL: 'modal',
+	OPEN: 'modal.open',
+	CLOSE: 'modal.close',
+	UPDATE: 'modal.update',
+	ERRORS: 'errors'
+} as const;
 
-export enum ModalActions {
-	MODAL = 'modal',
-	OPEN = 'modal.open',
-	CLOSE = 'modal.close',
-	UPDATE = 'modal.update',
-	ERRORS = 'errors'
-}
+export type TActionType = (typeof ActionTypes)[keyof typeof ActionTypes];
+export type TContainerType = (typeof ContainerTypes)[keyof typeof ContainerTypes];
+export type TModalAction = (typeof ModalActions)[keyof typeof ModalActions];
 
-export interface IStateView {
-	[key: string]: { [settings: string]: string | number };
-}
-
-export interface IView {
-	appId: string;
-	type: ModalActions;
-	id: string;
-	title: IText;
-	submit: IButton;
-	close: IButton;
-	blocks: Block[];
-	showIcon: boolean;
-	state?: IStateView;
-}
-
+export type IStateView = ViewSubmitUserInteraction['payload']['view']['state'];
+export type IView = ModalView;
 export interface Block {
-	type: ElementTypes;
-	blockId: string;
+	type: string;
+	blockId?: string;
 	element?: IElement;
 	label?: string;
-	appId: string;
+	appId?: string;
 	optional?: boolean;
 	elements?: IElement[];
 }
-
 export interface IElement {
-	type: ElementTypes;
+	type: string;
 	placeholder?: IText;
-	actionId: string;
-	initialValue?: string;
+	actionId?: string;
+	initialValue?: any;
 	options?: Option[];
 	text?: IText;
-	value?: string;
+	value?: any;
 	initialDate?: any;
 	imageUrl?: string;
 	appId?: string;
 	blockId?: string;
 	multiline?: boolean;
+	icon?: string;
+	variant?: 'default' | 'danger' | 'secondary' | 'warning';
+	framed?: boolean;
+	label?: string | IText;
+	url?: string;
+	callId?: string;
 }
-
-export interface IText {
-	type?: ElementTypes;
+export type IText = {
+	type?: 'plain_text' | 'mrkdwn';
 	text: string;
 	emoji?: boolean;
-}
-
+	i18n?: {
+		key: string;
+		args?: {
+			[key: string]: string | number;
+		};
+	};
+};
 export interface Option {
 	text: IText;
 	value: string;
 	imageUrl?: string;
 }
-
-export interface IButton {
-	type: ElementTypes;
+export interface IButton extends IElement {
+	type: 'button';
 	text: IText;
 	actionId: string;
 	blockId: string;
 	appId: string;
-	value?: any;
 	style?: any;
 }
 
 export interface IContainer {
-	type: ContainerTypes;
+	type: TContainerType;
 	id: string;
 }
 
-// methods/actions
-export interface IUserInteraction {
-	triggerId: string;
-	appId?: string;
-	viewId?: string;
-	view: IView;
-}
-
-export interface IEmitUserInteraction extends IUserInteraction {
-	type: ModalActions;
-}
+type TModalServerInteraction = Extract<ServerInteraction, { type: 'modal.open' | 'modal.update' | 'errors' }>;
+export type IUserInteraction = Omit<TModalServerInteraction, 'type'>;
+export type IEmitUserInteraction = TModalServerInteraction | ({ type: 'modal' } & IUserInteraction);
 
 export interface ITriggerAction {
-	type: ActionTypes;
+	type: TActionType;
 	actionId?: string;
 	appId?: string;
 	container?: IContainer;
-	value?: number;
+	value?: unknown;
 	blockId?: string;
 	rid?: string;
 	mid?: string;
 	viewId?: string;
 	payload?: any;
 	view?: IView;
+	isCleared?: boolean;
 }
 
 export interface ITriggerBlockAction {
 	container: IContainer;
 	actionId: string;
 	appId: string;
-	value: number;
+	value: unknown;
 	blockId?: string;
 	mid?: string;
 	rid?: string;
@@ -165,46 +145,73 @@ export interface ITriggerCancel {
 	isCleared: boolean;
 }
 
-// UiKit components
+type TActionElement = IElement;
+type TContextElement = IElement;
+type TInputElement = IElement;
+export type TElementAccessory = IElement & { blockId?: string; appId?: string };
+
 export interface IParser {
-	renderAccessories: (data: TElementAccessory, context: BlockContext, parser: IParser) => JSX.Element;
-	renderActions: (data: Block, context: BlockContext, parser: IParser) => JSX.Element;
-	renderContext: (data: IElement, context: BlockContext, parser: IParser) => JSX.Element;
-	renderInputs: (data: Partial<IElement>, context: BlockContext, parser: IParser) => JSX.Element;
-	text: (data: IText) => JSX.Element;
+	renderAccessories: (
+		data: TElementAccessory | IElement,
+		context: BlockContext,
+		parser?: IParser,
+		index?: number
+	) => JSX.Element | null;
+	renderActions: (data: TActionElement | IElement, context: BlockContext, parser?: IParser, index?: number) => JSX.Element | null;
+	renderContext: (
+		data: TContextElement | IElement,
+		context: BlockContext,
+		parser?: IParser,
+		index?: number
+	) => JSX.Element | null;
+	renderInputs: (data: TInputElement | IElement, context: BlockContext, parser?: IParser, index?: number) => JSX.Element | null;
+	text: (data: IText) => JSX.Element | null;
+	plain_text?: (data: PlainText | IText, context: BlockContext) => JSX.Element | null;
+	mrkdwn?: (data: Markdown | IText, context: BlockContext) => JSX.Element | null;
+	icon?: (data: IIcon, context: BlockContext) => JSX.Element | null;
+	icon_button?: (data: IIconButton, context: BlockContext) => JSX.Element | null;
 }
+
 export interface IActions extends Block {
+	blockId?: string;
+	appId?: string;
+	elements?: IElement[];
 	parser?: IParser;
 }
 
 export interface IContext extends Block {
+	elements?: IElement[];
 	parser: IParser;
+	theme?: TSupportedThemes;
 }
 
-export interface IDatePicker extends Partial<Block> {
+export interface IDatePicker {
+	element: IElement;
 	language: string;
-	action: Function;
-	context: number;
+	action: (params: { value: unknown }) => Promise<void>;
+	context: BlockContext;
 	loading: boolean;
 	value: string;
 	error: string;
 }
 
-export interface IInput extends Partial<Block> {
+export interface IInput {
+	element: IElement;
 	parser: IParser;
-	description: string;
-	error: string;
-	hint: string;
+	label?: string;
+	description?: string;
+	error?: string;
+	hint?: string;
 	theme: TSupportedThemes;
 }
 
 export interface IInputIndex {
 	element: IElement;
-	blockId: string;
-	appId: string;
-	label: IText;
-	description: IText;
-	hint: IText;
+	blockId?: string;
+	appId?: string;
+	label?: IText;
+	description?: IText;
+	hint?: IText;
 }
 
 export interface IThumb {
@@ -216,51 +223,61 @@ export interface IImage {
 	context?: BlockContext;
 }
 
-// UiKit/Overflow
-export interface IOverflow extends Partial<Block> {
-	action: Function;
+export interface IOverflow {
+	element: IElement;
+	action: (params: { value: unknown }) => Promise<void>;
 	loading: boolean;
 	parser: IParser;
-	context: number;
+	context: BlockContext;
 }
 
 interface PropsOption {
-	onOptionPress: Function;
+	onOptionPress: (params: { value: Option['value'] }) => void;
 	parser: IParser;
 	theme: TSupportedThemes;
 }
 export interface IOptions extends PropsOption {
-	options: Option[];
+	options: readonly Option[];
 }
 
 export interface IOption extends PropsOption {
 	option: Option;
 }
 
-// UiKit/Section
-interface IAccessory {
-	type: ElementTypes;
-	actionId: string;
-	value: number;
-	text: IText;
-}
-
-type TElementAccessory = IAccessory & { blockId: string; appId: string };
 export interface IAccessoryComponent {
-	element: TElementAccessory;
+	element: TElementAccessory | IElement;
 	parser: IParser;
 }
-export interface ISection {
+export interface ISection extends Block {
 	blockId: string;
 	appId: string;
 	text?: IText;
-	accessory?: IAccessory;
+	accessory?: IElement;
+	fields?: IText[];
 	parser: IParser;
-	fields?: any[];
 }
 
 export interface IFields {
 	parser: IParser;
 	theme: TSupportedThemes;
-	fields: any[];
+	fields: readonly IText[];
 }
+
+export type IIcon = FrameableIconElement & {
+	variant?: FrameableIconElement['variant'];
+};
+
+export type IIconButton = Omit<IconButtonElement, 'icon'> & {
+	icon: IIcon;
+	label?: string | IText;
+};
+
+export type IInfoCardRow = InfoCardBlock['rows'][number];
+export interface IInfoCard extends Omit<InfoCardBlock, 'rows'> {
+	rows: IInfoCardRow[];
+	appId?: string;
+	blockId?: string;
+	parser: IParser;
+}
+export type IBlockActionForView = ViewBlockActionUserInteraction;
+export type IViewClosedInteraction = ViewClosedUserInteraction;

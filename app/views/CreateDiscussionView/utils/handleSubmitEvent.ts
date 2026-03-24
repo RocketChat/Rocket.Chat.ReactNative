@@ -2,7 +2,7 @@ import I18n from '../../../i18n';
 import { sendLoadingEvent } from '../../../containers/Loading';
 import { getRoomTitle, showErrorAlert } from '../../../lib/methods/helpers';
 import { goRoom } from '../../../lib/methods/helpers/goRoom';
-import { IError, IResult } from '../interfaces';
+import { type IError, type IResult } from '../interfaces';
 
 interface IHandleLoadingChange {
 	loading: boolean;

@@ -1,5 +1,5 @@
-import { TRoomsMediaResponse } from '../../../../definitions/rest/v1/rooms';
-import { IFormData } from './definitions';
+import { type TRoomsMediaResponse } from '../../../../definitions/rest/v1/rooms';
+import { type IFormData } from './definitions';
 
 export class Upload {
 	private xhr: XMLHttpRequest;

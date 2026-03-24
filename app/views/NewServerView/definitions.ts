@@ -1,5 +1,5 @@
-import { IBaseScreen } from '../../definitions';
-import { OutsideParamList } from '../../stacks/types';
+import { type IBaseScreen } from '../../definitions';
+import { type OutsideParamList } from '../../stacks/types';
 
 export interface INewServerViewProps extends IBaseScreen<OutsideParamList, 'NewServerView'> {
 	connecting: boolean;

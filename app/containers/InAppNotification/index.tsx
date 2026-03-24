@@ -1,13 +1,15 @@
-import React, { ElementType, memo, useEffect } from 'react';
+import React, { type ElementType, memo, useEffect } from 'react';
 import { Easing, Notifier, NotifierRoot } from 'react-native-notifier';
 import { useDispatch } from 'react-redux';
+import { AccessibilityInfo } from 'react-native';
 
-import NotifierComponent, { INotifierComponent } from './NotifierComponent';
+import NotifierComponent, { type INotifierComponent } from './NotifierComponent';
 import EventEmitter from '../../lib/methods/helpers/events';
 import Navigation from '../../lib/navigation/appNavigation';
 import { getActiveRoute } from '../../lib/methods/helpers/navigation';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { setInAppFeedback } from '../../actions/inAppFeedback';
+import I18n from '../../i18n';
 
 export const INAPP_NOTIFICATION_EMITTER = 'NotificationInApp';
 
@@ -42,13 +44,22 @@ const InAppNotification = memo(() => {
 				return;
 			}
 
+			if (payload?.name && payload?.message) {
+				AccessibilityInfo.announceForAccessibility(
+					I18n.t('A11y_in_app_notification', {
+						name: payload?.name || payload?.sender?.username || '',
+						message: payload?.message?.message || payload?.message?.msg || ''
+					})
+				);
+			}
+
 			Notifier.showNotification({
 				showEasing: Easing.inOut(Easing.quad),
 				Component: notification.customComponent || NotifierComponent,
 				componentProps: {
 					notification
 				},
-				duration: notification.customTime || 3000, // default 3s,
+				duration: notification.customTime || (process.env.RUNNING_E2E_TESTS ? 5000 : 3000), // default 3s,
 				hideOnPress: notification.hideOnPress ?? true,
 				swipeEnabled: notification.swipeEnabled ?? true
 			});

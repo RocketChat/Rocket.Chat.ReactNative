@@ -3,7 +3,7 @@ import { LISTENER } from '../../../containers/Toast';
 import EventEmitter from '../../../lib/methods/helpers/events';
 import { showConfirmationAlert } from '../../../lib/methods/helpers';
 import { events, logEvent } from '../../../lib/methods/helpers/log';
-import { Services } from '../../../lib/services';
+import { logoutOtherLocations as logoutOtherLocationsService } from '../../../lib/services/restApi';
 
 const logoutOtherLocations = () => {
 	logEvent(events.PL_OTHER_LOCATIONS);
@@ -12,7 +12,7 @@ const logoutOtherLocations = () => {
 		confirmationText: I18n.t('Logout'),
 		onPress: async () => {
 			try {
-				await Services.logoutOtherLocations();
+				await logoutOtherLocationsService();
 				EventEmitter.emit(LISTENER, { message: I18n.t('Logged_out_of_other_clients_successfully') });
 			} catch {
 				logEvent(events.PL_OTHER_LOCATIONS_F);

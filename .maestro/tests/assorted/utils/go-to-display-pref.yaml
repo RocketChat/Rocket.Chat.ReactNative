@@ -1,0 +1,26 @@
+appId: chat.rocket.reactnative
+name: Go To Display Pref
+tags:
+  - 'util'
+
+---
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view-sidebar'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-view-sidebar'
+- extendedWaitUntil:
+    visible:
+      id: 'sidebar-accessibility'
+    timeout: 60000
+- tapOn:
+    id: 'sidebar-accessibility'
+- waitForAnimationToEnd:
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'accessibility-display-button'
+    timeout: 60000
+- tapOn:
+    id: 'accessibility-display-button'

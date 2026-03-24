@@ -1,4 +1,5 @@
 appId: chat.rocket.reactnative
+name: Logout
 tags:
   - 'util'
 
@@ -42,24 +43,35 @@ tags:
 - tapOn:
     id: 'settings-logout'
 
+- extendedWaitUntil:
+    visible:
+      text: '.*You will be logged out of this application.*'
+    timeout: 60000
+
+- assertVisible:
+    text: Logout
+    index: 0
+
 - runFlow:
     when:
       platform: Android
     commands:
       - extendedWaitUntil:
           visible:
-            text: 'LOGOUT'
+            id: 'android:id/button1'
           timeout: 60000
-      - tapOn: 'LOGOUT'
+      - tapOn:
+          text: Logout
+          index: 0
 
 - runFlow:
     when:
       platform: iOS
     commands:
       - tapOn:
-          point: '67%,57%'
+          point: '65%,56%'
 
 - extendedWaitUntil:
     visible:
       id: 'new-server-view'
-    timeout: 60000
+    timeout: 5000

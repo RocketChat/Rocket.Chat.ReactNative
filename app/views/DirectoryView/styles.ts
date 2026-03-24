@@ -9,10 +9,6 @@ export default StyleSheet.create({
 	listContainer: {
 		paddingBottom: 30
 	},
-	filterItemButton: {
-		paddingVertical: 12,
-		justifyContent: 'center'
-	},
 	filterItemContainer: {
 		flex: 1,
 		flexDirection: 'row',

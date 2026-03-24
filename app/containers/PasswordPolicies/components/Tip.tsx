@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { useTheme } from '../../../theme';
-import { CustomIcon, TIconsName } from '../../CustomIcon';
+import { CustomIcon, type TIconsName } from '../../CustomIcon';
 import I18n from '../../../i18n';
 import sharedStyles from '../../../views/Styles';
 

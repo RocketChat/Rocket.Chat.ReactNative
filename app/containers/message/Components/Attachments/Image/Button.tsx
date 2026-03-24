@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { useTheme } from '../../../../../theme';
 import Touchable from '../../../Touchable';
 import styles from '../../../styles';
 
@@ -11,13 +10,10 @@ interface IMessageButton {
 }
 
 export const Button = ({ children, onPress, disabled }: IMessageButton) => {
-	const { colors } = useTheme();
+	'use memo';
+
 	return (
-		<Touchable
-			disabled={disabled}
-			onPress={onPress}
-			style={styles.imageContainer}
-			background={Touchable.Ripple(colors.surfaceNeutral)}>
+		<Touchable disabled={disabled} onPress={onPress} style={styles.imageContainer}>
 			{children}
 		</Touchable>
 	);

@@ -1,5 +1,5 @@
-import { IServerRoom } from '../../IRoom';
-import { PaginatedResult } from '../helpers/PaginatedResult';
+import { type IServerRoom } from '../../IRoom';
+import { type PaginatedResult } from '../helpers/PaginatedResult';
 
 export type DirectoryEndpoint = {
 	directory: {
@@ -8,6 +8,6 @@ export type DirectoryEndpoint = {
 			count: number;
 			offset: number;
 			sort: { [key: string]: number };
-		}) => PaginatedResult<{ result: IServerRoom[] }>;
+		}) => PaginatedResult<{ result: IServerRoom[]; count: number }>;
 	};
 };

@@ -4,9 +4,9 @@ import { FlatList } from 'react-native';
 import * as List from '.';
 import SafeAreaView from '../SafeAreaView';
 import { longText } from '../../../.rnstorybook/utils';
-import { ThemeContext, TSupportedThemes } from '../../theme';
+import { ThemeContext, type TSupportedThemes } from '../../theme';
 import { DimensionsContext } from '../../dimensions';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 
 export default {
 	title: 'List'
@@ -20,6 +20,8 @@ export const TitleAndSubtitle = () => (
 		<List.Item title='Chats' subtitle='All' />
 		<List.Separator />
 		<List.Item title={longText} subtitle={longText} translateTitle={false} translateSubtitle={false} testID='test-id' />
+		<List.Separator />
+		<List.Item title={longText} subtitle={longText} translateTitle={false} translateSubtitle={false} numberOfLines={1} />
 		<List.Separator />
 	</List.Container>
 );
@@ -63,6 +65,49 @@ export const Icon = () => (
 
 export const Separator = () => (
 	<List.Container>
+		<List.Separator />
+	</List.Container>
+);
+
+export const Radio = () => (
+	<List.Container>
+		<List.Separator />
+		<List.Radio
+			translateTitle={false}
+			translateSubtitle={false}
+			title='Option 1'
+			value='option1'
+			isSelected={true}
+			onPress={() => alert('Option 1 selected')}
+		/>
+		<List.Separator />
+		<List.Radio
+			translateTitle={false}
+			translateSubtitle={false}
+			title='Option 2'
+			value='option2'
+			isSelected={false}
+			onPress={() => alert('Option 2 selected')}
+		/>
+		<List.Separator />
+		<List.Radio
+			translateTitle={false}
+			translateSubtitle={false}
+			title='Option 3'
+			value='option3'
+			isSelected={false}
+			onPress={() => alert('Option 3 selected')}
+		/>
+		<List.Separator />
+		<List.Radio
+			title={longText}
+			subtitle={longText}
+			value='option4'
+			isSelected={true}
+			translateTitle={false}
+			translateSubtitle={false}
+			onPress={() => alert('Option 4 selected')}
+		/>
 		<List.Separator />
 	</List.Container>
 );

@@ -6,10 +6,10 @@ import { CustomIcon } from '../CustomIcon';
 import styles from './styles';
 import Emoji from './Emoji';
 import { BUTTON_HIT_SLOP } from './utils';
-import { themes } from '../../lib/constants';
-import { TSupportedThemes, useTheme } from '../../theme';
+import { themes } from '../../lib/constants/colors';
+import { type TSupportedThemes, useTheme } from '../../theme';
 import MessageContext from './Context';
-import { TGetCustomEmoji } from '../../definitions/IEmoji';
+import { type TGetCustomEmoji } from '../../definitions/IEmoji';
 
 interface IReaction {
 	_id: string;
@@ -29,6 +29,8 @@ interface IMessageReactions {
 }
 
 const AddReaction = React.memo(({ theme }: { theme: TSupportedThemes }) => {
+	'use memo';
+
 	const { reactionInit } = useContext(MessageContext);
 	const { fontScale } = useWindowDimensions();
 	const height = 28 * fontScale;
@@ -38,7 +40,6 @@ const AddReaction = React.memo(({ theme }: { theme: TSupportedThemes }) => {
 			key='message-add-reaction'
 			testID='message-add-reaction'
 			style={[styles.reactionButton, { backgroundColor: themes[theme].surfaceRoom }]}
-			background={Touchable.Ripple(themes[theme].surfaceNeutral)}
 			hitSlop={BUTTON_HIT_SLOP}>
 			<View style={[styles.reactionContainer, { borderColor: themes[theme].strokeLight, height }]}>
 				<CustomIcon name='reaction-add' size={20} color={themes[theme].badgeBackgroundLevel2} />
@@ -48,6 +49,8 @@ const AddReaction = React.memo(({ theme }: { theme: TSupportedThemes }) => {
 });
 
 const Reaction = React.memo(({ reaction, getCustomEmoji, theme }: IMessageReaction) => {
+	'use memo';
+
 	const { onReactionPress, onReactionLongPress, user } = useContext(MessageContext);
 	const { fontScale } = useWindowDimensions();
 	const height = 28 * fontScale;
@@ -59,7 +62,6 @@ const Reaction = React.memo(({ reaction, getCustomEmoji, theme }: IMessageReacti
 			key={reaction.emoji}
 			testID={`message-reaction-${reaction.emoji}`}
 			style={[styles.reactionButton, { backgroundColor: reacted ? themes[theme].surfaceNeutral : themes[theme].surfaceRoom }]}
-			background={Touchable.Ripple(themes[theme].surfaceNeutral)}
 			hitSlop={BUTTON_HIT_SLOP}>
 			<View
 				style={[
@@ -79,6 +81,8 @@ const Reaction = React.memo(({ reaction, getCustomEmoji, theme }: IMessageReacti
 });
 
 const Reactions = React.memo(({ reactions, getCustomEmoji }: IMessageReactions) => {
+	'use memo';
+
 	const { theme } = useTheme();
 
 	if (!Array.isArray(reactions) || reactions.length === 0) {

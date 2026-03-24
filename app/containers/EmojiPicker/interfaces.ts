@@ -1,7 +1,7 @@
-import { ImageStyle, StyleProp, TextInputProps } from 'react-native';
+import { type ImageStyle, type StyleProp, type TextInputProps } from 'react-native';
 
-import { emojisByCategory } from '../../lib/constants';
-import { ICustomEmoji, IEmoji } from '../../definitions';
+import { type emojisByCategory } from '../../lib/constants/emojis';
+import { type ICustomEmoji, type IEmoji } from '../../definitions';
 
 export enum EventTypes {
 	EMOJI_PRESSED = 'emojiPressed',
@@ -14,6 +14,7 @@ export interface IEmojiPickerProps {
 	isEmojiKeyboard?: boolean;
 	searching?: boolean;
 	searchedEmojis?: IEmoji[];
+	bottomSheet?: boolean;
 }
 
 export interface IFooterProps {
@@ -28,6 +29,7 @@ export interface IEmojiCategoryProps {
 	parentWidth: number;
 	category?: TEmojiCategory;
 	emojis?: IEmoji[];
+	bottomSheet?: boolean;
 }
 
 export interface IEmojiSearchBarProps {

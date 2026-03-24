@@ -1,4 +1,4 @@
-import { createContext, ReactElement, useState } from 'react';
+import { createContext, type ReactElement, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 
 export const WidthAwareContext = createContext(0);
@@ -10,6 +10,8 @@ const styles = StyleSheet.create({
 });
 
 export const WidthAwareView = ({ children }: { children: ReactElement }) => {
+	'use memo';
+
 	const [width, setWidth] = useState(0);
 
 	return (

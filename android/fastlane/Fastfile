@@ -32,23 +32,6 @@ platform :android do
     end
   end
 
-  desc "Upload App to Play Store Internal (Circle CI)"
-  lane :beta_circle_ci do |options|
-    if options[:official]
-      upload_to_play_store(
-        package_name: 'chat.rocket.android',
-        track: 'internal',
-        aab: 'android/app/build/outputs/bundle/officialRelease/app-official-release.aab'
-      )
-    else
-      upload_to_play_store(
-        package_name: 'chat.rocket.reactnative',
-        track: 'internal',
-        aab: 'android/app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab'
-      )
-    end
-  end
-
   desc "Upload App to Play Store Internal"
   lane :beta do |options|
     if options[:official]
@@ -62,21 +45,6 @@ platform :android do
         package_name: 'chat.rocket.reactnative',
         track: 'internal',
         aab: 'app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab'
-      )
-    end
-  end
-
-  desc "Upload App to Internal App Sharing (Circle CI)"
-  lane :internal_app_sharing_circle_ci do |options|
-    if options[:official]
-      upload_to_play_store_internal_app_sharing(
-        package_name: 'chat.rocket.android',
-        aab: 'android/app/build/outputs/bundle/officialRelease/app-official-release.aab'
-      )
-    else
-      upload_to_play_store_internal_app_sharing(
-        package_name: 'chat.rocket.reactnative',
-        aab: 'android/app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab'
       )
     end
   end
@@ -96,15 +64,6 @@ platform :android do
     end
   end
 
-  desc "Upload App to Play Store Production (Circle CI)"
-  lane :production_circle_ci do |options|
-    upload_to_play_store(
-      package_name: 'chat.rocket.reactnative',
-      track: 'production',
-      aab: 'android/app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab'
-    )
-  end
-
   desc "Upload App to Play Store Production"
   lane :experimental_production do
     upload_to_play_store(
@@ -119,7 +78,11 @@ platform :android do
     upload_to_play_store(
       package_name: 'chat.rocket.android',
       track: 'beta',
-      aab: 'app/build/outputs/bundle/officialRelease/app-official-release.aab'
+      aab: 'app/build/outputs/bundle/officialRelease/app-official-release.aab',
+      skip_upload_metadata: true,
+      skip_upload_changelogs: false,
+      skip_upload_images: true,
+      skip_upload_screenshots: true
     )
   end
 end

@@ -3,7 +3,9 @@ import { ScrollView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
 import MessageComponent from './Message';
-import { E2E_MESSAGE_TYPE, messagesStatus, themes } from '../../lib/constants';
+import { E2E_MESSAGE_TYPE } from '../../lib/constants/keys';
+import { messagesStatus } from '../../lib/constants/messagesStatus';
+import { themes } from '../../lib/constants/colors';
 import MessageSeparator from '../MessageSeparator';
 import {
 	BASE_ROW_HEIGHT,
@@ -387,24 +389,20 @@ export const FullNameLargeFont = () => (
 	/>
 );
 
+const msgMentions = '@rocket.cat @diego.mello @all @here #general @team';
+const mentions = [
+	{ _id: 'random', name: 'Rocket Cat', username: 'rocket.cat', type: 'user' },
+	{ _id: 'random2', name: 'Diego Mello', username: 'diego.mello', type: 'user' },
+	{ _id: 'here', username: 'here', type: 'user' },
+	{ _id: 'all', username: 'all', type: 'user' },
+	{ _id: 'team', name: 'team', type: 'team' }
+];
+
 export const Mentions = () => (
 	<>
 		<Message
-			msg='@rocket.cat @diego.mello @all @here #general'
-			mentions={[
-				{
-					username: 'rocket.cat'
-				},
-				{
-					username: 'diego.mello'
-				},
-				{
-					username: 'all'
-				},
-				{
-					username: 'here'
-				}
-			]}
+			msg={msgMentions}
+			mentions={mentions}
 			channels={[
 				{
 					name: 'general'
@@ -413,20 +411,7 @@ export const Mentions = () => (
 		/>
 		<Message
 			msg='@rocket.cat Lorem ipsum dolor @diego.mello sit amet, @all consectetur adipiscing @here elit, sed do eiusmod tempor #general incididunt ut labore et dolore magna aliqua.'
-			mentions={[
-				{
-					username: 'rocket.cat'
-				},
-				{
-					username: 'diego.mello'
-				},
-				{
-					username: 'all'
-				},
-				{
-					username: 'here'
-				}
-			]}
+			mentions={mentions}
 			channels={[
 				{
 					name: 'general'
@@ -439,21 +424,8 @@ export const Mentions = () => (
 export const MentionsLargeFont = () => (
 	<>
 		<MessageLargeFont
-			msg='@rocket.cat @diego.mello @all @here #general'
-			mentions={[
-				{
-					username: 'rocket.cat'
-				},
-				{
-					username: 'diego.mello'
-				},
-				{
-					username: 'all'
-				},
-				{
-					username: 'here'
-				}
-			]}
+			msg={msgMentions}
+			mentions={mentions}
 			channels={[
 				{
 					name: 'general'
@@ -462,20 +434,7 @@ export const MentionsLargeFont = () => (
 		/>
 		<MessageLargeFont
 			msg='@rocket.cat Lorem ipsum dolor @diego.mello sit amet, @all consectetur adipiscing @here elit, sed do eiusmod tempor #general incididunt ut labore et dolore magna aliqua.'
-			mentions={[
-				{
-					username: 'rocket.cat'
-				},
-				{
-					username: 'diego.mello'
-				},
-				{
-					username: 'all'
-				},
-				{
-					username: 'here'
-				}
-			]}
+			mentions={mentions}
 			channels={[
 				{
 					name: 'general'
@@ -714,7 +673,7 @@ export const WithImage = () => (
 			attachments={[
 				{
 					title: 'This is a title',
-					description: 'This is a description',
+					description: 'This is a description :nyan_rocket:',
 					image_url: '/dummypath'
 				}
 			]}
@@ -730,6 +689,19 @@ export const WithImage = () => (
 				{
 					title: 'This is a title',
 					description: 'This is a description :nyan_rocket:',
+					image_url: '/dummypath'
+				},
+				{
+					title: 'This is a title',
+					image_url: '/dummypath'
+				}
+			]}
+		/>
+		<Message
+			msg='multi file'
+			attachments={[
+				{
+					title: 'This is a title',
 					image_url: '/dummypath'
 				},
 				{
@@ -765,7 +737,21 @@ export const WithImageLargeFont = () => (
 			attachments={[
 				{
 					title: 'This is a title',
-					description: 'This is a description :nyan_rocket:',
+					description: 'Header false',
+					image_url: '/dummypath'
+				}
+			]}
+			isHeader={false}
+		/>
+		<Message
+			msg='multi file'
+			attachments={[
+				{
+					title: 'This is a title',
+					image_url: '/dummypath'
+				},
+				{
+					title: 'This is a title',
 					image_url: '/dummypath'
 				}
 			]}
@@ -797,16 +783,22 @@ export const WithVideo = () => (
 			attachments={[
 				{
 					title: 'This is a title',
+					description: 'Header false',
+					video_url: '/dummypath'
+				}
+			]}
+			isHeader={false}
+		/>
+		<Message
+			msg='multi file'
+			attachments={[
+				{
+					title: 'This is a title',
 					video_url: '/dummypath'
 				},
 				{
 					title: 'This is a title',
-					description: 'This is a description :nyan_rocket:',
 					video_url: '/dummypath'
-				},
-				{
-					title: 'This is a title',
-					video_url: '/dummypath2'
 				}
 			]}
 		/>
@@ -832,6 +824,19 @@ export const WithVideoLargeFont = () => (
 				}
 			]}
 		/>
+		<MessageLargeFont
+			msg='multi file'
+			attachments={[
+				{
+					title: 'This is a title',
+					video_url: '/dummypath'
+				},
+				{
+					title: 'This is a title',
+					video_url: '/dummypath'
+				}
+			]}
+		/>
 	</>
 );
 
@@ -846,19 +851,23 @@ export const WithAudio = () => (
 				}
 			]}
 		/>
-		<Message msg='First message' isHeader={false} />
 		<Message
 			attachments={[
 				{
 					title: 'This is a title',
-					description: 'This is a description',
+					description: 'Header false',
 					audio_url: '/dummypath'
 				}
 			]}
 			isHeader={false}
 		/>
 		<Message
+			msg='multi file'
 			attachments={[
+				{
+					title: 'This is a title',
+					audio_url: '/dummypath'
+				},
 				{
 					title: 'This is a title',
 					audio_url: '/dummypath'
@@ -919,7 +928,17 @@ export const WithAudioLargeFont = () => (
 			isHeader={false}
 		/>
 		<MessageLargeFont
+			msg='multi file'
 			attachments={[
+				{
+					title: 'This is a title',
+					audio_url: '/dummypath'
+				},
+				{
+					title: 'This is a title',
+					description: 'This is a description :nyan_rocket:',
+					audio_url: '/dummypath'
+				},
 				{
 					title: 'This is a title',
 					audio_url: '/dummypath'
@@ -974,6 +993,139 @@ export const WithFileLargeFont = () => (
 				}
 			]}
 			isHeader={false}
+		/>
+	</>
+);
+
+export const FileAttachmentsWithFilenames = () => (
+	<>
+		<Message
+			msg='Check out this Python file'
+			attachments={[
+				{
+					type: 'file',
+					title: 'test.py',
+					title_link: '/file-upload/abc123/test.py'
+				}
+			]}
+		/>
+		<Message
+			msg='TypeScript component'
+			attachments={[
+				{
+					type: 'file',
+					title: 'Component.tsx',
+					title_link: '/file-upload/def456/Component.tsx'
+				}
+			]}
+		/>
+		<Message
+			msg='Configuration file'
+			attachments={[
+				{
+					type: 'file',
+					title: 'config.json',
+					title_link: '/file-upload/ghi789/config.json'
+				}
+			]}
+		/>
+		<Message
+			msg='File with description'
+			attachments={[
+				{
+					type: 'file',
+					title: 'main.go',
+					text: 'This is the **main** entry point for the application',
+					title_link: '/file-upload/jkl012/main.go'
+				}
+			]}
+		/>
+		<Message
+			attachments={[
+				{
+					type: 'file',
+					title: 'document.pdf',
+					title_link: '/file-upload/mno345/document.pdf'
+				},
+				{
+					type: 'file',
+					title: 'image.png',
+					title_link: '/file-upload/pqr678/image.png'
+				}
+			]}
+			isHeader={false}
+		/>
+	</>
+);
+
+export const FileAttachmentsWithFilenamesLargeFont = () => (
+	<>
+		<MessageLargeFont
+			msg='Check out this Python file'
+			attachments={[
+				{
+					type: 'file',
+					title: 'test.py',
+					title_link: '/file-upload/abc123/test.py'
+				}
+			]}
+		/>
+		<MessageLargeFont
+			msg='TypeScript component'
+			attachments={[
+				{
+					type: 'file',
+					title: 'Component.tsx',
+					title_link: '/file-upload/def456/Component.tsx'
+				}
+			]}
+		/>
+		<MessageLargeFont
+			msg='Configuration file'
+			attachments={[
+				{
+					type: 'file',
+					title: 'config.json',
+					title_link: '/file-upload/ghi789/config.json'
+				}
+			]}
+		/>
+		<MessageLargeFont
+			msg='File with description'
+			attachments={[
+				{
+					type: 'file',
+					title: 'main.go',
+					text: 'This is the **main** entry point for the application',
+					title_link: '/file-upload/jkl012/main.go'
+				}
+			]}
+		/>
+		<MessageLargeFont
+			attachments={[
+				{
+					type: 'file',
+					title: 'document.pdf',
+					title_link: '/file-upload/mno345/document.pdf'
+				},
+				{
+					type: 'file',
+					title: 'image.png',
+					title_link: '/file-upload/pqr678/image.png'
+				}
+			]}
+			isHeader={false}
+		/>
+		<MessageLargeFont
+			msg='multi file'
+			attachments={[
+				{
+					text: 'File.pdf'
+				},
+				{
+					text: 'File.pdf'
+				}
+			]}
 		/>
 	</>
 );
@@ -1048,6 +1200,59 @@ export const MessageWithReply = () => (
 	</>
 );
 
+export const MessageWithReplyAndFile = () => (
+	<>
+		<Message
+			msg='Here is the file'
+			attachments={[
+				{
+					author_name: 'rocket.cat',
+					ts: date,
+					timeFormat: 'LT',
+					type: 'file',
+					title: 'script.sh',
+					title_link: '/file-upload/xyz789/script.sh'
+				}
+			]}
+		/>
+		<Message
+			msg='Got it!'
+			attachments={[
+				{
+					author_name: 'rocket.cat',
+					ts: date,
+					timeFormat: 'LT',
+					type: 'file',
+					title: 'config.yaml',
+					text: 'This is a configuration file with **important** settings',
+					title_link: '/file-upload/abc123/config.yaml'
+				}
+			]}
+		/>
+		<Message
+			msg='Multiple files'
+			attachments={[
+				{
+					author_name: 'rocket.cat',
+					ts: date,
+					timeFormat: 'LT',
+					type: 'file',
+					title: 'index.ts',
+					title_link: '/file-upload/def456/index.ts'
+				},
+				{
+					author_name: 'rocket.cat',
+					ts: date,
+					timeFormat: 'LT',
+					type: 'file',
+					title: 'styles.css',
+					title_link: '/file-upload/ghi789/styles.css'
+				}
+			]}
+		/>
+	</>
+);
+
 export const MessageWithReplyLargeFont = () => (
 	<>
 		<MessageLargeFont
@@ -1105,6 +1310,106 @@ export const MessageWithReplyLargeFont = () => (
 						}
 					],
 					text: ''
+				}
+			]}
+		/>
+	</>
+);
+
+export const MessageWithNestedReplyAndFile = () => (
+	<>
+		<Message
+			msg='Forwarded message with file inside'
+			attachments={[
+				{
+					author_name: 'rocket.cat',
+					message_link: 'https://open.rocket.chat/group/msg-id',
+					ts: date,
+					timeFormat: 'LT',
+					text: '',
+					attachments: [
+						{
+							author_name: 'user',
+							ts: date,
+							timeFormat: 'LT',
+							type: 'file',
+							title: 'document.pdf',
+							title_link: '/file-upload/abc/document.pdf'
+						}
+					]
+				}
+			]}
+		/>
+		<Message
+			msg='Forwarded message with nested image'
+			attachments={[
+				{
+					author_name: 'rocket.cat',
+					ts: date,
+					timeFormat: 'LT',
+					text: '',
+					attachments: [
+						{
+							author_name: 'user',
+							ts: date,
+							timeFormat: 'LT',
+							description: 'Nested image from forwarded message',
+							image_url: 'https://octodex.github.com/images/yaktocat.png'
+						}
+					]
+				}
+			]}
+		/>
+	</>
+);
+
+export const MessageWithReplyAndFileLargeFont = () => (
+	<>
+		<MessageLargeFont
+			msg='Here is the file'
+			attachments={[
+				{
+					author_name: 'rocket.cat',
+					ts: date,
+					timeFormat: 'LT',
+					type: 'file',
+					title: 'script.sh',
+					title_link: '/file-upload/xyz789/script.sh'
+				}
+			]}
+		/>
+		<MessageLargeFont
+			msg='Got it!'
+			attachments={[
+				{
+					author_name: 'rocket.cat',
+					ts: date,
+					timeFormat: 'LT',
+					type: 'file',
+					title: 'config.yaml',
+					text: 'This is a configuration file with **important** settings',
+					title_link: '/file-upload/abc123/config.yaml'
+				}
+			]}
+		/>
+		<MessageLargeFont
+			msg='Multiple files'
+			attachments={[
+				{
+					author_name: 'rocket.cat',
+					ts: date,
+					timeFormat: 'LT',
+					type: 'file',
+					title: 'index.ts',
+					title_link: '/file-upload/def456/index.ts'
+				},
+				{
+					author_name: 'rocket.cat',
+					ts: date,
+					timeFormat: 'LT',
+					type: 'file',
+					title: 'styles.css',
+					title_link: '/file-upload/ghi789/styles.css'
 				}
 			]}
 		/>
@@ -1732,6 +2037,8 @@ export const SystemMessages = () => (
 		<Message type='user-converted-to-channel' isInfo msg='channel-name' />
 		<Message type='user-deleted-room-from-team' isInfo msg='channel-name' />
 		<Message type='user-removed-room-from-team' isInfo msg='channel-name' />
+		<Message type='abac-removed-user-from-room' isInfo />
+		<Message type='unsupported' isInfo />
 	</>
 );
 
@@ -1773,6 +2080,8 @@ export const SystemMessagesLargeFont = () => (
 		<MessageLargeFont type='user-converted-to-channel' isInfo msg='channel-name' />
 		<MessageLargeFont type='user-deleted-room-from-team' isInfo msg='channel-name' />
 		<MessageLargeFont type='user-removed-room-from-team' isInfo msg='channel-name' />
+		<MessageLargeFont type='abac-removed-user-from-room' isInfo />
+		<MessageLargeFont type='unsupported' isInfo />
 	</>
 );
 
@@ -1985,3 +2294,136 @@ export const LongNameUserLargeFont = () => (
 		/>
 	</>
 );
+
+const collapsedAttachments = {
+	collapsed: true,
+	title: 'Title collapsed',
+	fields: [
+		{
+			title: 'Field 1',
+			value: 'Value 1'
+		},
+		{
+			title: 'Field 2',
+			value: 'Value 2'
+		}
+	]
+};
+
+const collapsibleAttachmentWithText = {
+	collapsed: true,
+	title: 'Collapsed attachment block',
+	text: 'This attachment text should NOT appear as plain text above the message or duplicate before the block.',
+	description: 'Attachment description that might also leak as duplicate plain text.',
+	color: '#2c3e50',
+	fields: [
+		{ title: 'Field 1', value: 'Value 1', short: true },
+		{ title: 'Field 2', value: 'Value 2', short: true },
+		{ title: 'Long field', value: 'This field value could also contribute to duplicate text when expanded.', short: false }
+	]
+};
+
+export const CollapsedAttachments = () => (
+	<>
+		<Message msg='Message' attachments={[collapsedAttachments]} />
+		{/* technically not CollapsibleQuote, but it's similar enough to write a story for */}
+		<Message msg='Message' attachments={[{ ...collapsedAttachments, collapsed: false }]} />
+	</>
+);
+
+export const CollapsedAttachmentsLargeFont = () => (
+	<>
+		<MessageLargeFont msg='Message' attachments={[collapsedAttachments]} />
+		{/* technically not CollapsibleQuote, but it's similar enough to write a story for */}
+		<MessageLargeFont msg='Message' attachments={[{ ...collapsedAttachments, collapsed: false }]} />
+	</>
+);
+
+export const CollapsibleAttachmentWithText = () => (
+	<>
+		<Message msg='This is the main message body.' attachments={[collapsibleAttachmentWithText]} />
+		<Message msg='This is the main message body.' attachments={[{ ...collapsibleAttachmentWithText, collapsed: false }]} />
+	</>
+);
+
+export const CollapsibleAttachmentWithTextLargeFont = () => (
+	<>
+		<MessageLargeFont msg='This is the main message body.' attachments={[collapsibleAttachmentWithText]} />
+		<MessageLargeFont
+			msg='This is the main message body.'
+			attachments={[{ ...collapsibleAttachmentWithText, collapsed: false }]}
+		/>
+	</>
+);
+
+const attachmentWithTextAndLink = [
+	{
+		title: 'Rocket.Chat',
+		title_link: 'https://rocket.chat',
+		text: 'Rocket.Chat, the best open source chat',
+		image_url: 'https://rc.jena.de/images/integration-attachment-example.png',
+		color: '#764FA5'
+	}
+];
+
+export const AttachmentWithTextAndLink = () => <Message attachments={attachmentWithTextAndLink} />;
+
+export const AttachmentWithTextAndLinkLargeFont = () => <MessageLargeFont attachments={attachmentWithTextAndLink} />;
+const katex = {
+	msg: '\\[ \\color{black} \\colorbox{white}{ \\boxed{ \\begin{matrix} \\;\\;\\;\\; \\overlinesegment {\\underlinesegment{ \\Huge Test\\; Test \\; in \\; Test} } & \\\\ \\;\\;\\textit{develop}\\end{matrix} } }\\]',
+	md: [
+		{
+			type: 'KATEX',
+			value:
+				' \\color{black} \\colorbox{white}{ \\boxed{ \\begin{matrix} \\;\\;\\;\\; \\overlinesegment {\\underlinesegment{ \\Huge Test\\; Test \\; in \\; Test} } & \\\\ \\;\\;\\textit{develop}\\end{matrix} } }'
+		}
+	]
+};
+
+export const Katex = () => (
+	<>
+		<Message {...katex} />
+	</>
+);
+export const KatexLargeFont = () => <MessageLargeFont {...katex} />;
+
+const katexArray = {
+	msg: '\\begin{array}{|c|c|c|c|c|c|} \\hline \\text{...} & \\text{...} \\\\ \\hline \\end{array}',
+	md: [
+		{
+			type: 'KATEX',
+			value:
+				' \\begin{array}{|c|c|c|c|c|c|} \\hline \\text{testing} & \\text{testingII} & \\text{testing III} & \\text{testing IV} & \\text{testV} & \\text{testVI} \\\\ \\hline \\text{TEST} & \\text{TEST} & \\text{TEST} & \\text{TEST} & \\text{TEST} & \\text{TEST} \\\\ \\hline\\text{TEST} & \\text{✅} & \\text{test} & \\text{test} & \\text{test} & \\text{✅} \\\\ \\hline \\end{array} '
+		}
+	]
+};
+
+export const KatexArray = () => (
+	<>
+		<Message {...katexArray} />
+	</>
+);
+
+export const KatexArrayLargeFont = () => <MessageLargeFont {...katexArray} />;
+
+const inlineKatex = {
+	msg: '\\(xˆ2 + yˆ2 - zˆ2\\)',
+	md: [
+		{
+			type: 'PARAGRAPH',
+			value: [
+				{
+					type: 'INLINE_KATEX',
+					value: 'xˆ2 + yˆ2 - zˆ2'
+				}
+			]
+		}
+	]
+};
+
+export const InlineKatex = () => (
+	<>
+		<Message {...inlineKatex} />
+	</>
+);
+export const InlineKatexLargeFont = () => <MessageLargeFont {...inlineKatex} />;

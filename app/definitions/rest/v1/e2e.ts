@@ -1,4 +1,4 @@
-import { IUser } from '../../IUser';
+import { type IUser } from '../../IUser';
 
 export type E2eEndpoints = {
 	'e2e.setUserPublicAndPrivateKeys': {
@@ -34,5 +34,8 @@ export type E2eEndpoints = {
 	};
 	'e2e.resetRoomKey': {
 		POST: (params: { rid: string; e2eKey: string; e2eKeyId: string }) => void;
+	};
+	'users.resetE2EKey': {
+		POST: () => { success: boolean };
 	};
 };

@@ -1,6 +1,6 @@
-import { Action } from 'redux';
+import { type Action } from 'redux';
 
-import { ERoomType, RoomType } from '../definitions';
+import { type ERoomType, type RoomType } from '../definitions';
 import { ROOM } from './actionsTypes';
 
 // TYPE RETURN RELATED
@@ -39,9 +39,14 @@ interface IForwardRoom extends Action {
 	rid: string;
 }
 
+type IUserTypingArgs = {
+	tmid?: string;
+};
+
 interface IUserTyping extends Action {
 	rid: string;
 	status: boolean;
+	args?: IUserTypingArgs;
 }
 
 export interface IRoomHistoryRequest extends Action {
@@ -109,11 +114,12 @@ export function removedRoom(): Action {
 	};
 }
 
-export function userTyping(rid: string, status = true): IUserTyping {
+export function userTyping(rid: string, status = true, args?: IUserTypingArgs): IUserTyping {
 	return {
 		type: ROOM.USER_TYPING,
 		rid,
-		status
+		status,
+		args
 	};
 }
 

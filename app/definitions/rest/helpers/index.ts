@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Endpoints } from '../v1';
+import { type Endpoints } from '../v1';
 
 type ReplacePlaceholders<TPath extends string> = string extends TPath
 	? TPath

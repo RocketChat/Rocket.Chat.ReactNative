@@ -4,7 +4,7 @@ import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import I18n from '../i18n';
 import { useTheme } from '../theme';
 import sharedStyles from './Styles';
-import { useAppSelector } from '../lib/hooks';
+import { useAppSelector } from '../lib/hooks/useAppSelector';
 
 const styles = StyleSheet.create({
 	container: {

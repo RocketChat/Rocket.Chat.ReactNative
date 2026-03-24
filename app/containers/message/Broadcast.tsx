@@ -6,13 +6,15 @@ import { CustomIcon } from '../CustomIcon';
 import styles from './styles';
 import { BUTTON_HIT_SLOP } from './utils';
 import I18n from '../../i18n';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import MessageContext from './Context';
-import { IMessageBroadcast } from './interfaces';
+import { type IMessageBroadcast } from './interfaces';
 import { useTheme } from '../../theme';
 
 // TODO: Create a reusable button component for message
 const Broadcast = React.memo(({ author, broadcast }: IMessageBroadcast) => {
+	'use memo';
+
 	const { user, replyBroadcast } = useContext(MessageContext);
 	const { theme } = useTheme();
 	const isOwn = author?._id === user.id;
@@ -22,7 +24,6 @@ const Broadcast = React.memo(({ author, broadcast }: IMessageBroadcast) => {
 			<View style={styles.buttonContainer}>
 				<Touchable
 					onPress={replyBroadcast}
-					background={Touchable.Ripple(themes[theme].surfaceNeutral)}
 					style={[styles.button, { backgroundColor: themes[theme].badgeBackgroundLevel2 }]}
 					hitSlop={BUTTON_HIT_SLOP}
 					testID='message-broadcast-reply'>

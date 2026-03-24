@@ -1,7 +1,7 @@
-import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { sha256 } from 'js-sha256';
 import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
-import { Keyboard, ScrollView, View, TextInput } from 'react-native';
+import { Keyboard, ScrollView, View, type TextInput } from 'react-native';
 import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -18,22 +18,22 @@ import KeyboardView from '../../containers/KeyboardView';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { ControlledFormTextInput } from '../../containers/TextInput';
 import { LISTENER } from '../../containers/Toast';
-import { IProfileParams } from '../../definitions';
+import { type IProfileParams } from '../../definitions';
 import { TwoFactorMethods } from '../../definitions/ITotp';
 import I18n from '../../i18n';
 import { compareServerVersion } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
-import { Services } from '../../lib/services';
+import { saveUserProfile } from '../../lib/services/restApi';
 import { twoFactor } from '../../lib/services/twoFactor';
 import { getUserSelector } from '../../selectors/login';
-import { ProfileStackParamList } from '../../stacks/types';
+import { type ProfileStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
 import DeleteAccountActionSheetContent from './components/DeleteAccountActionSheetContent';
 import styles from './styles';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import useParsedCustomFields from '../../lib/hooks/useParsedCustomFields';
 import CustomFields from '../../containers/CustomFields';
 import ListSeparator from '../../containers/List/ListSeparator';
@@ -155,6 +155,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		showActionSheet({ children: <DeleteAccountActionSheetContent /> });
 	};
 
+	// TODO: function is too long, split it
 	const submit = async (): Promise<void> => {
 		Keyboard.dismiss();
 
@@ -167,7 +168,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		const { name, username, email, currentPassword, bio, nickname } = getValues();
 		const params = {} as IProfileParams;
 
-		if (user.name !== name) params.realname = name;
+		if (user.name !== name) params.name = name;
 		if (user.username !== username) params.username = username;
 		if (user.emails?.[0].address !== email) params.email = email;
 		if (user.bio !== bio) params.bio = bio;
@@ -193,18 +194,10 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		}
 
 		try {
-			const twoFactorOptions = params.currentPassword
-				? { twoFactorCode: params.currentPassword, twoFactorMethod: TwoFactorMethods.PASSWORD }
-				: null;
-
-			const result = await Services.saveUserProfileMethod(params, customFields, twoFactorCode || twoFactorOptions);
+			const result = await saveUserProfile(params, customFields);
 
 			if (result) {
 				logEvent(events.PROFILE_SAVE_CHANGES);
-				if ('realname' in params) {
-					params.name = params.realname;
-					delete params.realname;
-				}
 				if (customFields) {
 					dispatch(setUser({ customFields, ...params }));
 					setCustomFields(customFields);
@@ -213,6 +206,21 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 					const user = { ...getValues(), ...params };
 					Object.entries(user).forEach(([key, value]) => setValue(key as any, value));
 				}
+
+				const updatedUser = {
+					...user,
+					...params
+				};
+
+				reset({
+					name: updatedUser.name || '',
+					username: updatedUser.username || '',
+					email: updatedUser.emails?.[0]?.address || updatedUser.email || '',
+					currentPassword: null,
+					bio: updatedUser.bio || '',
+					nickname: updatedUser.nickname || '',
+					saving: false
+				});
 				dispatch(setUser({ ...user, ...params, customFields }));
 				EventEmitter.emit(LISTENER, { message: I18n.t('Profile_saved_successfully') });
 			}
@@ -380,14 +388,6 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 							customFields={customFields}
 							onCustomFieldChange={value => setCustomFields(value)}
 						/>
-						{Accounts_AllowPasswordChange ? (
-							<Button
-								title={I18n.t('Change_my_password')}
-								type='secondary'
-								onPress={navigateToChangePasswordView}
-								testID='profile-view-change-my-password-button'
-							/>
-						) : null}
 					</View>
 
 					<Button
@@ -401,6 +401,14 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 					/>
 
 					<ListSeparator style={{ marginVertical: 12 }} />
+					{Accounts_AllowPasswordChange ? (
+						<Button
+							title={I18n.t('Change_my_password')}
+							type='secondary'
+							onPress={navigateToChangePasswordView}
+							testID='profile-view-change-my-password-button'
+						/>
+					) : null}
 					<Button
 						title={I18n.t('Logout_from_other_logged_in_locations')}
 						type='secondary'

@@ -1,8 +1,8 @@
 import type { IMessageFromServer } from '../../IMessage';
 import type { IServerRoom, RoomID, RoomType } from '../../IRoom';
 import type { IUser } from '../../IUser';
-import { IServerAttachment } from '../../IAttachment';
-import { PaginatedRequest } from '../helpers/PaginatedRequest';
+import { type IServerAttachment } from '../../IAttachment';
+import { type PaginatedRequest } from '../helpers/PaginatedRequest';
 
 export type ImEndpoints = {
 	'im.create': {

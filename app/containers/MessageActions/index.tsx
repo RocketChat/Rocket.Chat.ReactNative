@@ -2,8 +2,8 @@ import React, { forwardRef, useImperativeHandle } from 'react';
 import { Alert, Share } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { connect } from 'react-redux';
-import moment from 'moment';
 
+import dayjs from '../../lib/dayjs';
 import database from '../../lib/database';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
 import I18n from '../../i18n';
@@ -13,13 +13,28 @@ import { getMessageTranslation } from '../message/utils';
 import { LISTENER } from '../Toast';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { showConfirmationAlert } from '../../lib/methods/helpers/info';
-import { TActionSheetOptionsItem, useActionSheet, ACTION_SHEET_ANIMATION_DURATION } from '../ActionSheet';
-import Header, { HEADER_HEIGHT, IHeader } from './Header';
+import { type TActionSheetOptionsItem, useActionSheet, ACTION_SHEET_ANIMATION_DURATION } from '../ActionSheet';
+import Header, { HEADER_HEIGHT, type IHeader } from './Header';
 import events from '../../lib/methods/helpers/log/events';
-import { IApplicationState, IEmoji, ILoggedUser, TAnyMessageModel, TSubscriptionModel } from '../../definitions';
-import { getPermalinkMessage, getQuoteMessageLink } from '../../lib/methods';
+import {
+	type IApplicationState,
+	type IEmoji,
+	type ILoggedUser,
+	type TAnyMessageModel,
+	type TSubscriptionModel
+} from '../../definitions';
+import { getPermalinkMessage } from '../../lib/methods/getPermalinks';
+import { getQuoteMessageLink } from '../../lib/methods/getQuoteMessageLink';
 import { compareServerVersion, getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/methods/helpers';
-import { Services } from '../../lib/services';
+import {
+	deleteMessage,
+	markAsUnread,
+	toggleStarMessage,
+	togglePinMessage,
+	createDirectMessage,
+	translateMessage,
+	reportMessage
+} from '../../lib/services/restApi';
 
 export interface IMessageActionsProps {
 	room: TSubscriptionModel;
@@ -139,11 +154,11 @@ const MessageActions = React.memo(
 				if (blockEditInMinutes) {
 					let msgTs;
 					if (message.ts != null) {
-						msgTs = moment(message.ts);
+						msgTs = dayjs(message.ts);
 					}
 					let currentTsDiff = 0;
 					if (msgTs != null) {
-						currentTsDiff = moment().diff(msgTs, 'minutes');
+						currentTsDiff = dayjs().diff(msgTs, 'minutes');
 					}
 					return currentTsDiff < blockEditInMinutes;
 				}
@@ -170,11 +185,11 @@ const MessageActions = React.memo(
 				if (blockDeleteInMinutes != null && blockDeleteInMinutes !== 0) {
 					let msgTs;
 					if (message.ts != null) {
-						msgTs = moment(message.ts);
+						msgTs = dayjs(message.ts);
 					}
 					let currentTsDiff = 0;
 					if (msgTs != null) {
-						currentTsDiff = moment().diff(msgTs, 'minutes');
+						currentTsDiff = dayjs().diff(msgTs, 'minutes');
 					}
 					return currentTsDiff < blockDeleteInMinutes;
 				}
@@ -218,7 +233,7 @@ const MessageActions = React.memo(
 				const { rid } = room;
 				try {
 					const db = database.active;
-					const result = await Services.markAsUnread({ messageId });
+					const result = await markAsUnread({ messageId });
 					if (result.success) {
 						const subRecord = await getSubscriptionByRoomId(rid);
 						if (!subRecord) {
@@ -276,7 +291,7 @@ const MessageActions = React.memo(
 
 			const handleReplyInDM = async (message: TAnyMessageModel) => {
 				if (message?.u?.username) {
-					const result = await Services.createDirectMessage(message.u.username);
+					const result = await createDirectMessage(message.u.username);
 					if (result.success) {
 						const { room } = result;
 						const params = {
@@ -291,11 +306,11 @@ const MessageActions = React.memo(
 				}
 			};
 
-			const handleStar = async (message: TAnyMessageModel) => {
-				logEvent(message.starred ? events.ROOM_MSG_ACTION_UNSTAR : events.ROOM_MSG_ACTION_STAR);
+			const handleStar = async (messageId: string, starred: boolean) => {
+				logEvent(starred ? events.ROOM_MSG_ACTION_UNSTAR : events.ROOM_MSG_ACTION_STAR);
 				try {
-					await Services.toggleStarMessage(message.id, message.starred as boolean); // TODO: reevaluate `message.starred` type on IMessage
-					EventEmitter.emit(LISTENER, { message: message.starred ? I18n.t('Message_unstarred') : I18n.t('Message_starred') });
+					await toggleStarMessage(messageId, starred);
+					EventEmitter.emit(LISTENER, { message: starred ? I18n.t('Message_unstarred') : I18n.t('Message_starred') });
 				} catch (e) {
 					logEvent(events.ROOM_MSG_ACTION_STAR_F);
 					log(e);
@@ -305,7 +320,7 @@ const MessageActions = React.memo(
 			const handlePin = async (message: TAnyMessageModel) => {
 				logEvent(events.ROOM_MSG_ACTION_PIN);
 				try {
-					await Services.togglePinMessage(message.id, message.pinned as boolean); // TODO: reevaluate `message.pinned` type on IMessage
+					await togglePinMessage(message.id, message.pinned as boolean); // TODO: reevaluate `message.pinned` type on IMessage
 				} catch (e) {
 					logEvent(events.ROOM_MSG_ACTION_PIN_F);
 					log(e);
@@ -344,7 +359,7 @@ const MessageActions = React.memo(
 					});
 					const translatedMessage = getMessageTranslation(message, room.autoTranslateLanguage);
 					if (!translatedMessage) {
-						await Services.translateMessage(message.id, room.autoTranslateLanguage);
+						await translateMessage(message.id, room.autoTranslateLanguage);
 					}
 				} catch (e) {
 					log(e);
@@ -354,7 +369,7 @@ const MessageActions = React.memo(
 			const handleReport = async (message: TAnyMessageModel) => {
 				logEvent(events.ROOM_MSG_ACTION_REPORT);
 				try {
-					await Services.reportMessage(message.id);
+					await reportMessage(message.id);
 					Alert.alert(I18n.t('Message_Reported'));
 				} catch (e) {
 					logEvent(events.ROOM_MSG_ACTION_REPORT_F);
@@ -369,7 +384,7 @@ const MessageActions = React.memo(
 					onPress: async () => {
 						try {
 							logEvent(events.ROOM_MSG_ACTION_DELETE);
-							await Services.deleteMessage(message.id, message.subscription ? message.subscription.id : '');
+							await deleteMessage(message.id, message.subscription ? message.subscription.id : '');
 						} catch (e) {
 							logEvent(events.ROOM_MSG_ACTION_DELETE_F);
 							log(e);
@@ -389,7 +404,8 @@ const MessageActions = React.memo(
 						title: I18n.t('Edit'),
 						icon: 'edit',
 						onPress: () => handleEdit(message.id),
-						enabled: isEditAllowed
+						enabled: isEditAllowed,
+						testID: 'message-actions-edit'
 					});
 				}
 
@@ -399,7 +415,8 @@ const MessageActions = React.memo(
 					options.push({
 						title: I18n.t('Jump_to_message'),
 						icon: 'jump-to-message',
-						onPress: () => jumpToMessage(quoteMessageLink, true)
+						onPress: () => jumpToMessage(quoteMessageLink, true),
+						testID: 'message-actions-jump-to-message'
 					});
 				}
 
@@ -408,7 +425,8 @@ const MessageActions = React.memo(
 					options.push({
 						title: I18n.t('Quote'),
 						icon: 'quote',
-						onPress: () => handleQuote(message.id)
+						onPress: () => handleQuote(message.id),
+						testID: 'message-actions-quote'
 					});
 				}
 
@@ -417,7 +435,8 @@ const MessageActions = React.memo(
 					options.push({
 						title: I18n.t('Reply_in_Thread'),
 						icon: 'threads',
-						onPress: () => handleReply(message.id)
+						onPress: () => handleReply(message.id),
+						testID: 'message-actions-reply-in-thread'
 					});
 				}
 
@@ -427,7 +446,9 @@ const MessageActions = React.memo(
 						title: I18n.t('Reply_in_direct_message'),
 						icon: 'arrow-back',
 						onPress: () => handleReplyInDM(message),
-						enabled: permissions.hasCreateDirectMessagePermission
+						enabled: permissions.hasCreateDirectMessagePermission && !room.abacAttributes,
+						disabledReason: room.abacAttributes && I18n.t('ABAC_disabled_action_reason'),
+						testID: 'message-actions-reply-in-dm'
 					});
 				}
 
@@ -436,22 +457,30 @@ const MessageActions = React.memo(
 					title: I18n.t('Start_a_Discussion'),
 					icon: 'discussions',
 					onPress: () => handleCreateDiscussion(message),
-					enabled: permissions.hasCreateDiscussionOtherUserPermission
+					enabled: permissions.hasCreateDiscussionOtherUserPermission,
+					testID: 'message-actions-create-discussion'
 				});
 
+				// Forward
 				if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.2.0') && !videoConfBlock) {
 					options.push({
 						title: I18n.t('Forward'),
 						icon: 'arrow-forward',
-						onPress: () => handleShareMessage(message)
+						onPress: () => handleShareMessage(message),
+						enabled: !room.abacAttributes,
+						disabledReason: room.abacAttributes && I18n.t('ABAC_disabled_action_reason'),
+						testID: 'message-actions-forward'
 					});
 				}
 
-				// Permalink
+				// Get link
 				options.push({
 					title: I18n.t('Get_link'),
 					icon: 'link',
-					onPress: () => handlePermalink(message)
+					onPress: () => handlePermalink(message),
+					enabled: !room.abacAttributes,
+					disabledReason: room.abacAttributes && I18n.t('ABAC_disabled_action_reason'),
+					testID: 'message-actions-get-link'
 				});
 
 				// Copy
@@ -459,7 +488,8 @@ const MessageActions = React.memo(
 					options.push({
 						title: I18n.t('Copy'),
 						icon: 'copy',
-						onPress: () => handleCopy(message)
+						onPress: () => handleCopy(message),
+						testID: 'message-actions-copy'
 					});
 				}
 
@@ -467,7 +497,8 @@ const MessageActions = React.memo(
 				options.push({
 					title: I18n.t('Share'),
 					icon: 'share',
-					onPress: () => handleShare(message)
+					onPress: () => handleShare(message),
+					testID: 'message-actions-share'
 				});
 
 				// Pin
@@ -476,7 +507,8 @@ const MessageActions = React.memo(
 						title: I18n.t(message.pinned ? 'Unpin' : 'Pin'),
 						icon: 'pin',
 						onPress: () => handlePin(message),
-						enabled: permissions?.hasPinPermission
+						enabled: permissions?.hasPinPermission,
+						testID: `message-actions-${message.pinned ? 'unpin' : 'pin'}`
 					});
 				}
 
@@ -485,7 +517,8 @@ const MessageActions = React.memo(
 					options.push({
 						title: I18n.t(message.starred ? 'Unstar' : 'Star'),
 						icon: message.starred ? 'star-filled' : 'star',
-						onPress: () => handleStar(message)
+						onPress: () => handleStar(message.id, message.starred || false),
+						testID: `message-actions-${message.starred ? 'unstar' : 'star'}`
 					});
 				}
 
@@ -494,7 +527,8 @@ const MessageActions = React.memo(
 					options.push({
 						title: I18n.t('Mark_unread'),
 						icon: 'flag',
-						onPress: () => handleUnread(message)
+						onPress: () => handleUnread(message),
+						testID: 'message-actions-mark-unread'
 					});
 				}
 
@@ -503,7 +537,8 @@ const MessageActions = React.memo(
 					options.push({
 						title: I18n.t('Read_Receipt'),
 						icon: 'info',
-						onPress: () => handleReadReceipt(message)
+						onPress: () => handleReadReceipt(message),
+						testID: 'message-actions-read-receipt'
 					});
 				}
 
@@ -512,7 +547,8 @@ const MessageActions = React.memo(
 					options.push({
 						title: I18n.t(message.autoTranslate !== false ? 'View_Original' : 'Translate'),
 						icon: 'language',
-						onPress: () => handleToggleTranslation(message)
+						onPress: () => handleToggleTranslation(message),
+						testID: 'message-actions-toggle-translation'
 					});
 				}
 
@@ -521,7 +557,8 @@ const MessageActions = React.memo(
 					title: I18n.t('Report'),
 					icon: 'warning',
 					danger: true,
-					onPress: () => handleReport(message)
+					onPress: () => handleReport(message),
+					testID: 'message-actions-report'
 				});
 
 				// Delete
@@ -532,7 +569,8 @@ const MessageActions = React.memo(
 						icon: 'delete',
 						danger: true,
 						onPress: () => handleDelete(message),
-						enabled: isDeleteAllowed
+						enabled: isDeleteAllowed,
+						testID: 'message-actions-delete'
 					});
 				}
 

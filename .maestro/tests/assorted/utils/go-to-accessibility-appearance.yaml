@@ -1,0 +1,18 @@
+appId: chat.rocket.reactnative
+name: Go To Accessibility and Appearance
+tags:
+  - 'util'
+
+---
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view-sidebar'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-view-sidebar'
+- extendedWaitUntil:
+    visible:
+      id: 'sidebar-accessibility'
+    timeout: 60000
+- tapOn:
+    id: 'sidebar-accessibility'
