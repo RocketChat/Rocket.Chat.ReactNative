@@ -195,7 +195,7 @@ export function useMMKVListener(valueChangedListener, instance) {
 	}, [valueChangedListener]);
 
 	useEffect(() => {
-		const listener = mmkv.addOnValueChangedListener((changedKey) => {
+		const listener = mmkv.addOnValueChangedListener(changedKey => {
 			ref.current(changedKey);
 		});
 		return () => listener.remove();
@@ -209,7 +209,7 @@ export function useMMKVKeys(instance) {
 	const mmkv = instance ?? getDefaultMMKVInstance();
 	const [allKeys, setKeys] = useState(() => mmkv.getAllKeys());
 
-	useMMKVListener((key) => {
+	useMMKVListener(key => {
 		const currentlyHasKey = allKeys.includes(key);
 		const hasKey = mmkv.contains(key);
 		if (hasKey !== currentlyHasKey) {
@@ -234,7 +234,7 @@ function createMMKVHook(getter) {
 		}, [mmkv, key, bump]);
 
 		const set = useCallback(
-			(v) => {
+			v => {
 				const newValue = typeof v === 'function' ? v(getter(mmkv, key)) : v;
 				switch (typeof newValue) {
 					case 'number':
@@ -260,7 +260,7 @@ function createMMKVHook(getter) {
 		);
 
 		useEffect(() => {
-			const listener = mmkv.addOnValueChangedListener((changedKey) => {
+			const listener = mmkv.addOnValueChangedListener(changedKey => {
 				if (changedKey === key) {
 					setBump(b => b + 1);
 				}
