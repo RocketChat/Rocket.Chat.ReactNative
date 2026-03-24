@@ -171,8 +171,7 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 						<>
 							<List.Item
 								title='Encrypted'
-								testID='room-actions-encrypt'
-								right={() => <Switch value={encrypted} onValueChange={onEncryptedChange} />}
+								right={() => <Switch value={encrypted} onValueChange={onEncryptedChange} testID='room-actions-encrypt'/>}
 								additionalAccessibilityLabel={encrypted}
 							/>
 						</>

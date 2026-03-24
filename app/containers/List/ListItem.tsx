@@ -171,7 +171,7 @@ const Content = React.memo(
 			<View
 				style={[styles.container, disabled && styles.disabled, { height: (heightContainer || BASE_HEIGHT) * fontScale }]}
 				testID={testID}
-				accessible
+				accessible={process.env.RUNNING_E2E_TESTS !== 'true'}
 				accessibilityLabel={handleAcessibilityLabel}
 				accessibilityRole={accessibilityRole ?? 'button'}>
 				{left ? <View style={styles.leftContainer}>{left()}</View> : null}
