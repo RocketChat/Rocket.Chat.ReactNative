@@ -73,7 +73,7 @@ import {
 	type MasterDetailInsideStackParamList,
 	type ModalStackParamList
 } from './types';
-import { isAndroid, isIOS } from '../../lib/methods/helpers';
+import { isIOS } from '../../lib/methods/helpers';
 import { type TNavigation } from '../stackType';
 import { SupportedVersionsWarning } from '../../containers/SupportedVersions';
 
@@ -217,7 +217,7 @@ const InsideStackNavigator = React.memo(() => {
 			screenOptions={{
 				...defaultHeader,
 				...themedHeader(theme),
-				presentation: isAndroid ? 'containedModal' : 'containedTransparentModal'
+				presentation: isIOS ? 'containedTransparentModal' : 'containedModal'
 			}}>
 			<InsideStack.Screen name='DrawerNavigator' component={DrawerNavigator} options={{ headerShown: false }} />
 			<InsideStack.Screen name='ModalStackNavigator' component={ModalStackNavigator} options={{ headerShown: false }} />
