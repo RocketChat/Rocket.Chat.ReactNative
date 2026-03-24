@@ -14,7 +14,7 @@ const EndCall = () => {
 				testID='media-call-header-end'
 				accessibilityLabel={I18n.t('End')}
 				onPress={endCall}
-				iconName='phone-end'
+				iconName='phone-off'
 				color={colors.fontDanger}
 			/>
 		</HeaderButton.Container>

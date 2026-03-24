@@ -645,7 +645,7 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
               "top": 0,
             },
             {
-              "width": undefined,
+              "width": 350,
             },
             {
               "height": 68,
@@ -994,7 +994,7 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
               "top": 0,
             },
             {
-              "width": undefined,
+              "width": 350,
             },
             {
               "height": 68,

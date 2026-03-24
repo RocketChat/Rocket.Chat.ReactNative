@@ -72,7 +72,7 @@ export const CallButtons = () => {
 			<View style={styles.buttonsRow}>
 				<CallActionButton icon='message' label={I18n.t('Message')} onPress={handleMessage} testID='call-view-message' />
 				<CallActionButton
-					icon='phone-end'
+					icon='phone-off'
 					label={isConnecting ? I18n.t('Cancel') : I18n.t('End')}
 					onPress={handleEndCall}
 					variant='danger'

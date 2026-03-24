@@ -57,7 +57,7 @@ describe('CallActionButton', () => {
 
 	it('should render with danger variant', () => {
 		const { getByTestId } = render(
-			<CallActionButton icon='phone-end' label='End' onPress={onPressMock} variant='danger' testID='call-action-button' />
+			<CallActionButton icon='phone-off' label='End' onPress={onPressMock} variant='danger' testID='call-action-button' />
 		);
 		expect(getByTestId('call-action-button')).toBeTruthy();
 	});

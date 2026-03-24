@@ -35,7 +35,7 @@ export const ActiveButton = () => (
 
 export const DangerButton = () => (
 	<Wrapper>
-		<CallActionButton icon='phone-end' label='End' onPress={() => {}} variant='danger' testID='call-action-button' />
+		<CallActionButton icon='phone-off' label='End' onPress={() => {}} variant='danger' testID='call-action-button' />
 	</Wrapper>
 );
 
@@ -54,7 +54,7 @@ export const AllVariants = () => (
 		</View>
 		<View style={[styles.row, { marginTop: 24 }]}>
 			<CallActionButton icon='message' label='Message' onPress={() => {}} testID='message' />
-			<CallActionButton icon='phone-end' label='End' onPress={() => {}} variant='danger' testID='end' />
+			<CallActionButton icon='phone-off' label='End' onPress={() => {}} variant='danger' testID='end' />
 			<CallActionButton icon='kebab' label='More' onPress={() => {}} testID='more' />
 		</View>
 	</Wrapper>

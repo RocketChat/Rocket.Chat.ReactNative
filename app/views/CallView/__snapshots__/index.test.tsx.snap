@@ -323,7 +323,7 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
           </View>
           <Text
@@ -1081,7 +1081,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
           </View>
           <Text
@@ -1839,7 +1839,7 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
           </View>
           <Text
@@ -2593,7 +2593,7 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
           </View>
           <Text
@@ -3347,7 +3347,7 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
           </View>
           <Text
@@ -4101,7 +4101,7 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
           </View>
           <Text
