@@ -110,8 +110,6 @@
 		<key>apiKey</key>
 		<string>apiKeyValue</string>
 	</dict>
-	<key>UIDesignRequiresCompatibility</key>
-	<true/>
 	<key>NSUserActivityTypes</key>
 	<array>
 		<string>INSendMessageIntent</string>
