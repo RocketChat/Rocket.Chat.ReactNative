@@ -199,7 +199,8 @@ const RoomMembersView = (): React.ReactElement => {
 										right: () => <Radio check={!allUsers} />,
 										testID: 'room-members-view-toggle-status-all'
 									}
-								]
+								],
+								enableContentPanningGesture: false
 							})
 						}
 						testID='room-members-view-filter'

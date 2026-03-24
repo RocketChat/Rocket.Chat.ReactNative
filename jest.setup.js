@@ -38,20 +38,7 @@ jest.mock('react-native-file-viewer', () => ({
 	open: jest.fn(() => null)
 }));
 
-jest.mock('react-native-incall-manager', () => ({
-	start: jest.fn(),
-	stop: jest.fn(),
-	setForceSpeakerphoneOn: jest.fn(() => Promise.resolve())
-}));
-
-jest.mock('expo-haptics', () => ({
-	impactAsync: jest.fn(),
-	ImpactFeedbackStyle: {
-		Light: 'light',
-		Medium: 'medium',
-		Heavy: 'heavy'
-	}
-}));
+jest.mock('expo-haptics', () => jest.fn(() => null));
 
 jest.mock('expo-font', () => ({
 	isLoaded: jest.fn(() => true),
@@ -105,29 +92,19 @@ jest.mock('react-native/Libraries/Utilities/useWindowDimensions', () => ({
 }));
 
 jest.mock('./app/lib/hooks/useResponsiveLayout/useResponsiveLayout', () => {
-	const { createContext } = require('react');
+	const actual = jest.requireActual('./app/lib/hooks/useResponsiveLayout/useResponsiveLayout');
 	return {
+		...actual,
 		useResponsiveLayout: jest.fn(() => ({
 			fontScale: 1,
+			width: 390,
+			height: 844,
 			isLargeFontScale: false,
 			fontScaleLimited: 1,
-			rowHeight: 75,
-			rowHeightCondensed: 60,
-			width: 350,
-			height: 800
+			rowHeight: actual.BASE_ROW_HEIGHT,
+			rowHeightCondensed: actual.BASE_ROW_HEIGHT_CONDENSED
 		})),
-		FONT_SCALE_LIMIT: 1.3,
-		BASE_ROW_HEIGHT: 75,
-		BASE_ROW_HEIGHT_CONDENSED: 60,
-		ResponsiveLayoutContext: createContext({
-			fontScale: 1,
-			isLargeFontScale: false,
-			fontScaleLimited: 1,
-			rowHeight: 75,
-			rowHeightCondensed: 60,
-			width: 350,
-			height: 800
-		})
+		FONT_SCALE_LIMIT: actual.FONT_SCALE_LIMIT
 	};
 });
 
@@ -184,13 +161,22 @@ jest.mock('expo-device', () => ({
 	isDevice: true
 }));
 
-jest.mock('@discord/bottom-sheet', () => {
-	const react = require('react-native');
+jest.mock('@lodev09/react-native-true-sheet', () => {
+	const React = require('react');
+	const { View } = require('react-native');
+	const TrueSheet = React.forwardRef((props, ref) => {
+		React.useImperativeHandle(ref, () => ({
+			present: () => Promise.resolve(),
+			dismiss: () => Promise.resolve(),
+			resize: () => Promise.resolve()
+		}));
+		return <View {...props} />;
+	});
+	TrueSheet.displayName = 'TrueSheet';
 	return {
 		__esModule: true,
-		default: react.View,
-		BottomSheetScrollView: react.ScrollView,
-		BottomSheetTextInput: react.TextInput
+		TrueSheet,
+		TrueSheetProvider: ({ children }) => children
 	};
 });
 
