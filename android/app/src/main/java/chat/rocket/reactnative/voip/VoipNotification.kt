@@ -407,6 +407,10 @@ class VoipNotification(private val context: Context) {
             Log.d(TAG, "Queued native accept signal for ${payload.callId}")
         }
 
+        /**
+         * Resolves user id for this host and Android [Settings.Secure.ANDROID_ID] as media-signaling contractId.
+         * Must match JS `getUniqueIdSync()` from react-native-device-info (iOS native code uses `DeviceUID`).
+         */
         private fun resolveVoipMediaCallIdentity(context: Context, payload: VoipPayload): VoipMediaCallIdentity? {
             val ejson = Ejson().apply {
                 host = payload.host

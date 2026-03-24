@@ -42,7 +42,14 @@ public final class VoipService: NSObject {
     private static var isCallObserverConfigured = false
     private static var observedIncomingCall: ObservedIncomingCall?
     private static var isDdpLoggedIn = false
-    
+    /// Prevents duplicate native accepts if `hasConnected` is reported more than once for the same `callId`.
+    private static var nativeAcceptHandledCallIds = Set<String>()
+
+    private enum VoipMediaCallAnswerKind {
+        case accept
+        case reject
+    }
+
     // MARK: - Static Methods (Called from VoipModule.mm and AppDelegate)
     
     /// Registers for VoIP push notifications via PushKit
@@ -327,7 +334,7 @@ public final class VoipService: NSObject {
                 }
 
                 isDdpLoggedIn = true
-                if flushPendingRejectSignalIfNeeded() {
+                if flushPendingQueuedSignalsIfNeeded() {
                     return
                 }
 
@@ -368,22 +375,28 @@ public final class VoipService: NSObject {
         ddpClient = nil
     }
 
-    private static func buildRejectMethodParams(payload: VoipPayload) -> [Any]? {
+    // MARK: - Native DDP signaling (accept / reject)
+
+    /// `contractId` must match JS `getUniqueIdSync()` from react-native-device-info (`DeviceUID` on iOS; Android uses `Settings.Secure.ANDROID_ID` in VoipNotification).
+    private static func buildMediaCallAnswerParams(payload: VoipPayload, kind: VoipMediaCallAnswerKind) -> [Any]? {
         let credentialStorage = Storage()
         guard let credentials = credentialStorage.getCredentials(server: payload.host.removeTrailingSlash()) else {
             #if DEBUG
-            print("[\(TAG)] Missing credentials, cannot send reject for \(payload.callId)")
+            print("[\(TAG)] Missing credentials, cannot build media-call answer params for \(payload.callId)")
             #endif
             stopDDPClientInternal()
             return nil
         }
 
-        let signal: [String: Any] = [
+        var signal: [String: Any] = [
             "callId": payload.callId,
             "contractId": DeviceUID.uid(),
             "type": "answer",
-            "answer": "reject"
+            "answer": kind == .accept ? "accept" : "reject"
         ]
+        if kind == .accept {
+            signal["supportedFeatures"] = ["audio"]
+        }
 
         guard
             let signalData = try? JSONSerialization.data(withJSONObject: signal),
@@ -396,6 +409,55 @@ public final class VoipService: NSObject {
         return ["\(credentials.userId)/media-calls", signalString]
     }
 
+    /// Native DDP accept when the user answers via CallKit (parity with Android `VoipNotification.handleAcceptAction`).
+    private static func handleNativeAccept(payload: VoipPayload) {
+        if nativeAcceptHandledCallIds.contains(payload.callId) {
+            return
+        }
+        nativeAcceptHandledCallIds.insert(payload.callId)
+
+        cancelIncomingCallTimeout(for: payload.callId)
+
+        let finishAccept: (Bool) -> Void = { success in
+            storeInitialEvents(payload)
+            if success {
+                stopDDPClientInternal()
+            }
+        }
+
+        guard let client = ddpClient else {
+            #if DEBUG
+            print("[\(TAG)] Native DDP client unavailable for accept \(payload.callId); relying on JS")
+            #endif
+            finishAccept(false)
+            return
+        }
+
+        guard let params = buildMediaCallAnswerParams(payload: payload, kind: .accept) else {
+            finishAccept(false)
+            return
+        }
+
+        if isDdpLoggedIn {
+            client.callMethod("stream-notify-user", params: params) { success in
+                #if DEBUG
+                print("[\(TAG)] Native accept signal result for \(payload.callId): \(success)")
+                #endif
+                finishAccept(success)
+            }
+        } else {
+            client.queueMethodCall("stream-notify-user", params: params) { success in
+                #if DEBUG
+                print("[\(TAG)] Queued native accept signal result for \(payload.callId): \(success)")
+                #endif
+                finishAccept(success)
+            }
+            #if DEBUG
+            print("[\(TAG)] Queued native accept signal for \(payload.callId)")
+            #endif
+        }
+    }
+
     private static func sendRejectSignal(payload: VoipPayload) {
         guard let client = ddpClient else {
             #if DEBUG
@@ -404,7 +466,7 @@ public final class VoipService: NSObject {
             return
         }
 
-        guard let params = buildRejectMethodParams(payload: payload) else {
+        guard let params = buildMediaCallAnswerParams(payload: payload, kind: .reject) else {
             return
         }
 
@@ -424,7 +486,7 @@ public final class VoipService: NSObject {
             return
         }
 
-        guard let params = buildRejectMethodParams(payload: payload) else {
+        guard let params = buildMediaCallAnswerParams(payload: payload, kind: .reject) else {
             return
         }
 
@@ -436,7 +498,7 @@ public final class VoipService: NSObject {
         }
     }
 
-    private static func flushPendingRejectSignalIfNeeded() -> Bool {
+    private static func flushPendingQueuedSignalsIfNeeded() -> Bool {
         guard let client = ddpClient, client.hasQueuedMethodCalls() else {
             return false
         }
@@ -489,7 +551,9 @@ public final class VoipService: NSObject {
         }
 
         if call.hasConnected {
+            let payload = observedCall.payload
             observedIncomingCall = nil
+            handleNativeAccept(payload: payload)
             return
         }
 

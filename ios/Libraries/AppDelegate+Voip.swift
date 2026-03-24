@@ -1,5 +1,7 @@
 import PushKit
 
+let TAG = "RocketChat.AppDelegate+Voip"
+
 // MARK: - PKPushRegistryDelegate
 
 extension AppDelegate: PKPushRegistryDelegate {
@@ -22,7 +24,7 @@ extension AppDelegate: PKPushRegistryDelegate {
 
     guard let voipPayload = VoipPayload.fromDictionary(payloadDict) else {
       #if DEBUG
-      print("[\(TAG)] Failed to parse incoming VoIP payload")
+      print("[\(TAG)] Failed to parse incoming VoIP payload: \(payloadDict)")
       #endif
       completion()
       return
@@ -32,7 +34,7 @@ extension AppDelegate: PKPushRegistryDelegate {
     let caller = voipPayload.caller
     guard !voipPayload.isExpired() else {
       #if DEBUG
-      print("[\(TAG)] Skipping expired or invalid VoIP payload for callId: \(callId)")
+      print("[\(TAG)] Skipping expired or invalid VoIP payload for callId: \(callId): \(voipPayload)")
       #endif
       completion()
       return

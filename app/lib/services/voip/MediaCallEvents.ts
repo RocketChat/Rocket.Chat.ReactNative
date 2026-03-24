@@ -32,14 +32,16 @@ export const setupMediaCallEvents = (): (() => void) => {
 			})
 		);
 
-		subscriptions.push(
-			RNCallKeep.addEventListener('answerCall', ({ callUUID }) => {
-				console.log(`${TAG} Answer call event listener:`, callUUID);
-				mediaSessionInstance.answerCall(callUUID);
-				NativeVoipModule.clearInitialEvents();
-				RNCallKeep.clearInitialEvents();
-			})
-		);
+		// Native iOS sends DDP accept from VoipService when CallKit connects; JS completes via
+		// MediaSessionInstance stream (accepted + signedContractId -> answerCall). Avoid duplicate answerCall.
+		// subscriptions.push(
+		// 	RNCallKeep.addEventListener('answerCall', ({ callUUID }) => {
+		// 		console.log(`${TAG} Answer call event listener:`, callUUID);
+		// 		mediaSessionInstance.answerCall(callUUID);
+		// 		NativeVoipModule.clearInitialEvents();
+		// 		RNCallKeep.clearInitialEvents();
+		// 	})
+		// );
 		subscriptions.push(
 			RNCallKeep.addEventListener('endCall', ({ callUUID }) => {
 				console.log(`${TAG} End call event listener:`, callUUID);

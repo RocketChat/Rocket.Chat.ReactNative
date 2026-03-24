@@ -53,6 +53,7 @@ class MediaSessionStore extends Emitter<{ change: void }> {
 			throw new Error('WebRTC processor factory and send signal function must be set');
 		}
 
+		// Must match native VoIP DDP contractId: iOS `DeviceUID`, Android `Settings.Secure.ANDROID_ID` (see native VoipService / VoipNotification).
 		const mobileDeviceId = getUniqueIdSync();
 		console.log('[VoIP] Mobile device ID:', mobileDeviceId);
 		this.sessionInstance = new MediaSignalingSession({

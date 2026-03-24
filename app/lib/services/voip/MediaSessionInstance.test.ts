@@ -45,7 +45,8 @@ jest.mock('react-native-webrtc', () => ({
 jest.mock('react-native-callkeep', () => ({}));
 
 jest.mock('react-native-device-info', () => ({
-	getUniqueId: jest.fn(() => 'test-device-id')
+	getUniqueId: jest.fn(() => 'test-device-id'),
+	getUniqueIdSync: jest.fn(() => 'test-device-id')
 }));
 
 jest.mock('../../native/NativeVoip', () => ({
