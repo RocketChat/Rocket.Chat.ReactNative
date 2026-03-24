@@ -21,7 +21,10 @@ tags:
 - tapOn: 'Show alerts as. Toasts'
 - assertVisible: 'Toasts. Dismissed automatically. Checked'
 - assertVisible: 'Dialogs. Require manual dismissal. Unchecked'
-- tapOn: 'Bottom Sheet backdrop'
+- tapOn:
+    id: 'action-sheet-handle'
+- waitForAnimationToEnd:
+    timeout: 5000
 - tapOn: 'Menu'
 - tapOn: 'Edit status'
 - tapOn:
