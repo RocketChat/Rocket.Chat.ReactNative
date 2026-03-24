@@ -7,6 +7,7 @@ import type {
 	MediaCallWebRTCProcessor
 } from '@rocket.chat/media-signaling';
 import { mediaDevices } from 'react-native-webrtc';
+import { getUniqueIdSync } from 'react-native-device-info';
 
 import { MediaCallLogger } from './MediaCallLogger';
 
@@ -52,6 +53,8 @@ class MediaSessionStore extends Emitter<{ change: void }> {
 			throw new Error('WebRTC processor factory and send signal function must be set');
 		}
 
+		const mobileDeviceId = getUniqueIdSync();
+		console.log('[VoIP] Mobile device ID:', mobileDeviceId);
 		this.sessionInstance = new MediaSignalingSession({
 			userId,
 			transport: (signal: ClientMediaSignal) => this.sendSignal(signal),
@@ -59,9 +62,11 @@ class MediaSessionStore extends Emitter<{ change: void }> {
 				webrtc: (config: WebRTCProcessorConfig) => this.webrtcProcessorFactory(config)
 			},
 			mediaStreamFactory: (constraints: any) => mediaDevices.getUserMedia(constraints) as unknown as Promise<MediaStream>,
+			displayMediaFactory: (constraints: any) => mediaDevices.getUserMedia(constraints) as unknown as Promise<MediaStream>,
 			randomStringFactory,
 			logger: new MediaCallLogger(),
-			features: ['audio']
+			features: ['audio'],
+			mobileDeviceId
 		});
 
 		this.change();
