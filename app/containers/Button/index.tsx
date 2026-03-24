@@ -1,11 +1,12 @@
 import React from 'react';
-import { type StyleProp, StyleSheet, Text, type TextStyle, type ViewStyle, Pressable, type PressableProps } from 'react-native';
+import { type StyleProp, StyleSheet, Text, type TextStyle, type ViewStyle } from 'react-native';
+import { RectButton, type RectButtonProps } from 'react-native-gesture-handler';
 
 import { useTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';
 import ActivityIndicator from '../ActivityIndicator';
 
-interface IButtonProps extends PressableProps {
+interface IButtonProps extends Omit<RectButtonProps, 'children' | 'enabled'> {
 	title: string;
 	onPress: () => void;
 	type?: 'primary' | 'secondary';
@@ -16,7 +17,11 @@ interface IButtonProps extends PressableProps {
 	style?: StyleProp<ViewStyle> | StyleProp<ViewStyle>[];
 	styleText?: StyleProp<TextStyle> | StyleProp<TextStyle>[];
 	small?: boolean;
+	disabled?: boolean;
 }
+
+const RIPPLE_PRIMARY = 'rgba(255, 255, 255, 0.2)';
+const RIPPLE_SECONDARY = 'rgba(0, 0, 0, 0.12)';
 
 const styles = StyleSheet.create({
 	container: {
@@ -85,16 +90,21 @@ const Button: React.FC<IButtonProps> = ({
 		styleText
 	];
 
+	const rippleColor = isPrimary ? RIPPLE_PRIMARY : RIPPLE_SECONDARY;
+
 	return (
-		<Pressable
+		<RectButton
 			onPress={onPress}
-			disabled={isDisabled}
+			enabled={!isDisabled}
+			activeOpacity={0.2}
+			underlayColor='transparent'
+			rippleColor={rippleColor}
 			style={containerStyle}
 			accessibilityLabel={title}
 			accessibilityRole='button'
 			{...otherProps}>
 			{loading ? <ActivityIndicator color={resolvedTextColor} style={{ padding: 0 }} /> : <Text style={textStyle}>{title}</Text>}
-		</Pressable>
+		</RectButton>
 	);
 };
 
