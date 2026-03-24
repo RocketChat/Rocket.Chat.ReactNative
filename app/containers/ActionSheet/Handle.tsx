@@ -1,6 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
-import { Pressable } from 'react-native-gesture-handler';
+import { View, Pressable } from 'react-native';
 
 import styles from './styles';
 import { themes } from '../../lib/constants/colors';
