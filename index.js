@@ -22,9 +22,8 @@ if (process.env.USE_STORYBOOK) {
 
 	LogBox.ignoreAllLogs();
 
-	if (isAndroid) {
-		require('./app/lib/notifications/videoConf/backgroundNotificationHandler');
-	}
+	// Note: Android video conference notifications are now handled natively
+	// in RCFirebaseMessagingService -> CustomPushNotification -> VideoConfNotification
 
 	AppRegistry.registerComponent(appName, () => require('./app/index').default);
 }

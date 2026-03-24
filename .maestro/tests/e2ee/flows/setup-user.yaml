@@ -1,0 +1,13 @@
+appId: chat.rocket.reactnative
+name: Setup User
+tags:
+  - 'flow'
+---
+- runFlow: ../../../helpers/launch-app.yaml
+- runFlow:
+    file: '../../../helpers/login.yaml'
+    env:
+      USERNAME: ${USERNAME}
+      PASSWORD: ${PASSWORD}
+- runFlow: '../utils/navigate-to-e2ee-security.yaml'
+- runFlow: '../utils/change-e2ee-key.yaml'

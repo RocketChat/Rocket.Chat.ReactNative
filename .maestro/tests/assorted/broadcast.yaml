@@ -65,7 +65,7 @@ tags:
 - tapOn:
     id: 'create-channel-name'
 - inputText: ${output.room}
-- hideKeyboard
+- runFlow: '../../helpers/hide-keyboard.yaml'
 - assertVisible:
     id: 'create-channel-broadcast'
 - tapOn:
@@ -132,7 +132,7 @@ tags:
 
 # should have the message created earlier
 - assertVisible:
-    text: 'message'
+    id: 'message-content-message'
 
 # should tap on reply button and navigate to direct room
 - assertVisible:

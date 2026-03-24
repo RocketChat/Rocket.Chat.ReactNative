@@ -72,6 +72,7 @@ const CustomStatus = () => {
 				onPress={() => (presenceBroadcastDisabled ? onPressPresenceLearnMore() : sidebarNavigate('StatusView'))}
 				translateTitle={!statusText}
 				testID={`sidebar-custom-status-${status}`}
+				numberOfLines={1}
 			/>
 			<List.Separator />
 		</>

@@ -16,6 +16,7 @@ tags:
       - runFlow:
           when:
             visible: '.*Pixel Launcher.*'
+            platform: Android
           commands:
             - tapOn: 'Close App'
       - assertVisible: 'Add workspace'

@@ -100,7 +100,7 @@ const ListPicker = ({
 				</View>
 			)}
 			rightContainerStyle={styles.rightContainer}
-			additionalAcessibilityLabel={option?.label}
+			additionalAccessibilityLabel={option?.label}
 		/>
 	);
 };

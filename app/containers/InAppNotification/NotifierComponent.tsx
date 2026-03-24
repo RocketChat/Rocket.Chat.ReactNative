@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
 import { connect } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -13,6 +12,7 @@ import { goRoom } from '../../lib/methods/helpers/goRoom';
 import { type IApplicationState, type ISubscription, type SubscriptionType } from '../../definitions';
 import { hideNotification } from '../../lib/methods/helpers/notifications';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import Touch from '../Touch';
 
 export interface INotifierComponent {
 	notification: {
@@ -20,7 +20,7 @@ export interface INotifierComponent {
 		payload: {
 			sender: { username: string };
 			type: SubscriptionType;
-			message?: { message: string; t?: string };
+			message?: { message?: string; msg?: string; t?: string };
 		} & Pick<ISubscription, '_id' | 'name' | 'rid' | 'prid'>;
 		title: string;
 		avatar: string;
@@ -45,9 +45,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center'
-	},
-	inner: {
-		flex: 1
 	},
 	avatar: {
 		marginRight: 10
@@ -109,15 +106,10 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifie
 					height: rowHeight
 				}
 			]}>
-			<Touchable
-				style={styles.content}
-				onPress={onPress}
-				hitSlop={BUTTON_HIT_SLOP}
-				background={Touchable.SelectableBackgroundBorderless()}
-				testID={`in-app-notification-${text}`}>
+			<Touch style={styles.content} onPress={onPress} hitSlop={BUTTON_HIT_SLOP} testID={`in-app-notification-${text}`}>
 				<>
 					<Avatar text={avatar} size={AVATAR_SIZE} type={type} rid={rid} style={styles.avatar} />
-					<View style={styles.inner}>
+					<View>
 						<Text style={[styles.roomName, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
 							{title}
 						</Text>
@@ -126,10 +118,10 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifie
 						</Text>
 					</View>
 				</>
-			</Touchable>
-			<Touchable onPress={hideNotification} hitSlop={BUTTON_HIT_SLOP} background={Touchable.SelectableBackgroundBorderless()}>
+			</Touch>
+			<Touch onPress={hideNotification} hitSlop={BUTTON_HIT_SLOP}>
 				<CustomIcon name='close' size={20} style={styles.close} />
-			</Touchable>
+			</Touch>
 		</View>
 	);
 });

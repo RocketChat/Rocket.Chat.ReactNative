@@ -1,5 +1,5 @@
 import ByteBuffer from 'bytebuffer';
-import { aesDecryptFile, aesEncryptFile, getRandomValues, randomBytes } from '@rocket.chat/mobile-crypto';
+import { aesDecryptFile, aesEncryptFile, randomBytes } from '@rocket.chat/mobile-crypto';
 
 import { compareServerVersion } from '../methods/helpers';
 import { fromByteArray, toByteArray } from './helpers/base64-js';
@@ -77,7 +77,7 @@ export const joinVectorData = (vector: ArrayBuffer, data: ArrayBuffer): ArrayBuf
 	return output.buffer;
 };
 
-export const toString = (thing: string | ByteBuffer | Buffer | ArrayBuffer | Uint8Array): string | ByteBuffer => {
+export const toString = (thing: string | ByteBuffer | Buffer | ArrayBuffer | Uint8Array): string => {
 	if (typeof thing === 'string') {
 		return thing;
 	}
@@ -100,11 +100,6 @@ export const getE2EEMentions = (message?: string) => {
 		e2eUserMentions: (message.match(userMentionRegex(utf8UserNamesValidation)) || []).map(match => match.trim()),
 		e2eChannelMentions: (message.match(channelMentionRegex(utf8UserNamesValidation)) || []).map(match => match.trim())
 	};
-};
-
-export const randomPassword = async (): Promise<string> => {
-	const random = await Promise.all(Array.from({ length: 4 }, () => getRandomValues(3)));
-	return `${random[0]}-${random[1]}-${random[2]}-${random[3]}`;
 };
 
 export const generateAESCTRKey = () => randomBytes(32);
@@ -197,6 +192,89 @@ export const hasE2EEWarning = ({
 };
 
 // https://github.com/RocketChat/Rocket.Chat/blob/7a57f3452fd26a603948b70af8f728953afee53f/apps/meteor/lib/utils/getFileExtension.ts#L1
+// A 256-byte array always encodes to 344 characters in Base64.
+const DECODED_LENGTH = 256;
+// ((4 * 256 / 3) + 3) & ~3 = 344
+const ENCODED_LENGTH = 344;
+
+export const decodePrefixedBase64 = (input: string): [prefix: string, data: ArrayBuffer] => {
+	// 1. Validate the input string length
+	if (input.length < ENCODED_LENGTH) {
+		throw new RangeError('Invalid input length.');
+	}
+
+	// 2. Split the string into its two parts
+	const prefix = input.slice(0, -ENCODED_LENGTH);
+	const base64Data = input.slice(-ENCODED_LENGTH);
+
+	// 3. Decode the Base64 string
+	const bytes = b64ToBuffer(base64Data);
+
+	if (bytes.byteLength !== DECODED_LENGTH) {
+		// This is a sanity check in case the Base64 string was valid but didn't decode to 256 bytes.
+		throw new RangeError('Decoded data length is too short.');
+	}
+
+	return [prefix, bytes];
+};
+
+export const encodePrefixedBase64 = (prefix: string, data: ArrayBuffer): string => {
+	// 1. Validate the input data length
+	if (data.byteLength !== DECODED_LENGTH) {
+		throw new RangeError(`Input data length is ${data.byteLength}, but expected ${DECODED_LENGTH} bytes.`);
+	}
+
+	// 2. Convert the byte array to base64
+	const base64Data = bufferToB64(data);
+
+	if (base64Data.length !== ENCODED_LENGTH) {
+		// This is a sanity check in case something went wrong during encoding.
+		throw new RangeError(`Encoded Base64 length is ${base64Data.length}, but expected ${ENCODED_LENGTH} characters.`);
+	}
+
+	// 3. Concatenate the prefix and the Base64 string
+	return prefix + base64Data;
+};
+
+export const parsePrivateKey = (
+	privateKey: string,
+	userId: string
+): { iv: ArrayBuffer; ciphertext: ArrayBuffer; salt: string; iterations: number; version: 'v1' | 'v2' } => {
+	const json: unknown = JSON.parse(privateKey);
+	if (typeof json !== 'object' || json === null) {
+		throw new TypeError('Invalid private key format');
+	}
+
+	const salt = 'salt' in json && typeof json.salt === 'string' ? json.salt : userId;
+
+	if (
+		'iv' in json &&
+		'ciphertext' in json &&
+		typeof json.iv === 'string' &&
+		typeof json.ciphertext === 'string' &&
+		'iterations' in json &&
+		typeof json.iterations === 'number'
+	) {
+		// v2: { iv: base64, ciphertext: base64, salt: string }
+		return {
+			iv: b64ToBuffer(json.iv),
+			ciphertext: b64ToBuffer(json.ciphertext),
+			salt,
+			iterations: json.iterations,
+			version: 'v2'
+		};
+	}
+
+	if ('$binary' in json && typeof json.$binary === 'string') {
+		// v1: { $binary: base64(iv[16] + ciphertext) }
+		const binary = b64ToBuffer(json.$binary);
+		const [iv, ciphertext] = splitVectorData(binary);
+		return { iv, ciphertext, salt, iterations: 1000, version: 'v1' };
+	}
+
+	throw new TypeError('Invalid private key format');
+};
+
 export const getFileExtension = (fileName?: string): string => {
 	if (!fileName) {
 		return 'file';
@@ -210,3 +288,42 @@ export const getFileExtension = (fileName?: string): string => {
 
 	return arr.pop()?.toLocaleUpperCase() || 'file';
 };
+
+/**
+ * Generates 12 uniformly random words from the word list.
+ *
+ * @remarks
+ * Uses {@link https://en.wikipedia.org/wiki/Rejection_sampling | rejection sampling} to ensure uniform distribution.
+ *
+ * @returns A space-separated passphrase.
+ */
+export async function generatePassphrase() {
+	const { wordlist } = await import('./wordList');
+
+	const WORD_COUNT = 12;
+	const MAX_UINT32 = 0xffffffff;
+	const range = wordlist.length; // 2048
+	const rejectionThreshold = Math.floor(MAX_UINT32 / range) * range;
+
+	const words: string[] = [];
+
+	for (let i = 0; i < WORD_COUNT; i++) {
+		let v: number;
+		do {
+			// eslint-disable-next-line no-await-in-loop
+			const randomBase64 = await randomBytes(4);
+			const randomBuffer = b64ToBuffer(randomBase64);
+			const randomArray = new Uint8Array(randomBuffer);
+
+			// Combine 4 bytes into 32-bit big-endian integer
+			v = (randomArray[0] << 24) | (randomArray[1] << 16) | (randomArray[2] << 8) | randomArray[3];
+
+			// Convert to unsigned 32-bit (JavaScript numbers are signed)
+			v >>>= 0;
+		} while (v >= rejectionThreshold);
+
+		words.push(wordlist[v % range]);
+	}
+
+	return words.join(' ');
+}

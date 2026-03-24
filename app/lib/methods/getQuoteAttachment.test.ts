@@ -19,7 +19,7 @@ const imageAttachmentWithAQuote = [
 	...imageAttachment,
 
 	{
-		text: '[ ](https://mobile.rocket.chat/group/channel-etc?msg=cIqhbvkOSgiCOK4Wh) \nhttps://www.youtube.com/watch?v=5yx6BWlEVcY',
+		text: '[ ](https://mobile.qa.rocket.chat/group/channel-etc?msg=cIqhbvkOSgiCOK4Wh) \nhttps://www.youtube.com/watch?v=5yx6BWlEVcY',
 		md: [
 			{
 				type: 'PARAGRAPH',
@@ -27,7 +27,7 @@ const imageAttachmentWithAQuote = [
 					{
 						type: 'LINK',
 						value: {
-							src: { type: 'PLAIN_TEXT', value: 'https://mobile.rocket.chat/group/channel-etc?msg=cIqhbvkOSgiCOK4Wh' },
+							src: { type: 'PLAIN_TEXT', value: 'https://mobile.qa.rocket.chat/group/channel-etc?msg=cIqhbvkOSgiCOK4Wh' },
 							label: [{ type: 'PLAIN_TEXT', value: ' ' }]
 						}
 					},
@@ -47,7 +47,7 @@ const imageAttachmentWithAQuote = [
 				]
 			}
 		],
-		message_link: 'https://mobile.rocket.chat/group/channel-etc?msg=n5WaK5NRJN42Hg26w',
+		message_link: 'https://mobile.qa.rocket.chat/group/channel-etc?msg=n5WaK5NRJN42Hg26w',
 		author_name: 'user-two',
 		author_icon: '/avatar/user-two',
 		attachments: [
@@ -67,7 +67,7 @@ const imageAttachmentWithAQuote = [
 						]
 					}
 				],
-				message_link: 'https://mobile.rocket.chat/group/channel-etc?msg=cIqhbvkOSgiCOK4Wh',
+				message_link: 'https://mobile.qa.rocket.chat/group/channel-etc?msg=cIqhbvkOSgiCOK4Wh',
 				author_name: 'user-two',
 				author_icon: '/avatar/user-two',
 				ts: '2023-11-23T14:10:18.520Z',
@@ -88,7 +88,7 @@ describe('Test the getQuoteMessageLink', () => {
 		expect(getQuoteMessageLink(imageAttachment)).toBe(undefined);
 	});
 	it('return the message link from an image message with a quote', () => {
-		const expectedResult = 'https://mobile.rocket.chat/group/channel-etc?msg=n5WaK5NRJN42Hg26w';
+		const expectedResult = 'https://mobile.qa.rocket.chat/group/channel-etc?msg=n5WaK5NRJN42Hg26w';
 		expect(getQuoteMessageLink(imageAttachmentWithAQuote)).toBe(expectedResult);
 	});
 });

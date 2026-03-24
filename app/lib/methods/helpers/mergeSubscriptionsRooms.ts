@@ -14,6 +14,7 @@ import {
 } from '../../../definitions';
 import { compareServerVersion } from './compareServerVersion';
 
+// eslint-disable-next-line complexity
 export const merge = (
 	subscription: ISubscription | IServerSubscription,
 	room?: IRoom | IServerRoom | IOmnichannelRoom
@@ -64,6 +65,9 @@ export const merge = (
 		mergedSubscription.teamId = room?.teamId;
 		mergedSubscription.teamMain = room?.teamMain;
 		mergedSubscription.federated = room?.federated;
+		if (room && 'abacAttributes' in room) {
+			mergedSubscription.abacAttributes = room.abacAttributes || [];
+		}
 		if (!mergedSubscription.roles || !mergedSubscription.roles.length) {
 			mergedSubscription.roles = [];
 		}
@@ -102,6 +106,10 @@ export const merge = (
 		if (room && 'usersCount' in room) {
 			mergedSubscription.usersCount = room.usersCount;
 		}
+
+		if (room && 'federation' in room) {
+			mergedSubscription.federation = room.federation;
+		}
 	}
 
 	if (!mergedSubscription.name) {
@@ -112,6 +120,8 @@ export const merge = (
 		mergedSubscription.autoTranslate = false;
 	}
 
+	mergedSubscription.status = mergedSubscription.status ?? undefined;
+	mergedSubscription.inviter = mergedSubscription.inviter ?? undefined;
 	mergedSubscription.blocker = !!mergedSubscription.blocker;
 	mergedSubscription.blocked = !!mergedSubscription.blocked;
 	mergedSubscription.hideMentionStatus = !!mergedSubscription.hideMentionStatus;

@@ -183,7 +183,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 					alert={item.alert}
 					left={() => <List.Icon name={icon} color={themes[theme].fontHint} />}
 					right={() => (this.isRadio ? showRadio() : showCheck())}
-					additionalAcessibilityLabel={handleAcessibilityLabel(item.rid)}
+					additionalAccessibilityLabel={handleAcessibilityLabel(item.rid)}
 				/>
 			</>
 		);

@@ -1,6 +1,7 @@
 import { type Action } from 'redux';
 import { delay, put, takeEvery } from 'redux-saga/effects';
 import { call } from 'typed-redux-saga';
+import { AccessibilityInfo } from 'react-native';
 
 import { VIDEO_CONF } from '../actions/actionsTypes';
 import { removeVideoConfCall, setCalling, setVideoConfCall, type TCallProps } from '../actions/videoConf';
@@ -71,6 +72,10 @@ function* onDirectCallCanceled(payload: ICallInfo) {
 	if (currentCall) {
 		yield put(removeVideoConfCall(currentCall));
 		hideNotification();
+		// Delay to hide the notification and move the accessibility focus
+		setTimeout(() => {
+			AccessibilityInfo.announceForAccessibility(i18n.t('Call_was_canceled_before_being_answered'));
+		}, 1200);
 	}
 }
 

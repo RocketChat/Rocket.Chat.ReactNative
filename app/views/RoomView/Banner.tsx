@@ -30,7 +30,7 @@ const Banner = React.memo(
 						style={[styles.bannerContainer, { backgroundColor: themes[theme].surfaceNeutral }]}
 						testID='room-view-banner'
 						onPress={toggleModal}>
-						<MarkdownPreview msg={text} style={[styles.bannerText]} />
+						<MarkdownPreview msg={text} style={styles.bannerText} />
 						<BorderlessButton onPress={closeBanner} hitSlop={10}>
 							<CustomIcon color={themes[theme].fontSecondaryInfo} name='close' size={20} />
 						</BorderlessButton>

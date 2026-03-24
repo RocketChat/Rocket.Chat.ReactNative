@@ -2,7 +2,7 @@ import CookieManager from '@react-native-cookies/cookies';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import React, { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, BackHandler, Linking, SafeAreaView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Linking, SafeAreaView, StyleSheet, View } from 'react-native';
 import WebView, { type WebViewNavigation } from 'react-native-webview';
 
 import { userAgent } from '../../lib/constants/userAgent';
@@ -52,8 +52,8 @@ const JitsiMeetView = (): React.ReactElement => {
 			await Linking.openURL(`org.jitsi.meet://${callUrl}`);
 			goBack();
 		} catch (error) {
-			// As the jitsi app was not opened, disable the backhandler on android
-			BackHandler.addEventListener('hardwareBackPress', () => true);
+			// Jitsi app not installed - will use WebView instead
+			// No need to block back button as WebView handles navigation
 		}
 	}, [goBack, url]);
 

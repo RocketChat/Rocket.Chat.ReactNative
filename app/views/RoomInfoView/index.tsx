@@ -284,7 +284,7 @@ const RoomInfoView = (): React.ReactElement => {
 	};
 
 	return (
-		<ScrollView style={[styles.scroll, { backgroundColor: colors.surfaceRoom }]}>
+		<ScrollView style={[styles.scroll, { backgroundColor: colors.surfaceRoom }]} contentContainerStyle={{ paddingBottom: 30 }}>
 			<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='room-info-view'>
 				<View style={[styles.avatarContainer, { backgroundColor: colors.surfaceHover }]}>
 					<RoomInfoViewAvatar

@@ -44,13 +44,3 @@ export interface ICreateDiscussionViewSelectChannel {
 	serverVersion: string;
 	required?: boolean;
 }
-
-export interface ICreateDiscussionViewSelectUsers {
-	server: string;
-	token: string;
-	userId: string;
-	selected: any[];
-	onUserSelect: ({ value }: { value: string[] }) => void;
-	blockUnauthenticatedAccess: boolean;
-	serverVersion: string;
-}

@@ -71,7 +71,7 @@ const OmnichannelStatus = memo(() => {
 				title='Omnichannel'
 				color={colors.fontDefault}
 				onPress={toggleLivechat}
-				additionalAcessibilityLabel={statusLivechat}
+				additionalAccessibilityLabel={statusLivechat}
 				right={() => (
 					<View style={styles.omnichannelRightContainer}>
 						<Switch value={isOmnichannelStatusAvailable(statusLivechat)} onValueChange={toggleLivechat} />

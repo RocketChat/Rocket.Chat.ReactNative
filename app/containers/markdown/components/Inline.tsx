@@ -10,6 +10,7 @@ import Plain from './Plain';
 import InlineCode from './InlineCode';
 import Image from './Image';
 import MarkdownContext from '../contexts/MarkdownContext';
+import Timestamp from './Timestamp';
 // import { InlineKaTeX, KaTeX } from './Katex';
 
 interface IParagraphProps {
@@ -70,6 +71,8 @@ const Inline = ({ value, forceTrim }: IParagraphProps): React.ReactElement | nul
 					case 'INLINE_KATEX':
 						// return <InlineKaTeX value={block.value} />;
 						return <Text>{block.value}</Text>;
+					case 'TIMESTAMP':
+						return <Timestamp value={block.value} />;
 					default:
 						return null;
 				}

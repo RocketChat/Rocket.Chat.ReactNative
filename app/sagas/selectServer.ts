@@ -248,6 +248,7 @@ const handleServerRequest = function* handleServerRequest({ server, username, fr
 					if (!serversHistory?.length) {
 						await serversHistoryCollection.create(s => {
 							s.url = server;
+							s.iconURL = serverInfo.iconURL;
 						});
 					}
 				} catch (e) {

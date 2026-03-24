@@ -16,12 +16,16 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'rooms-list-view-sidebar'
+- waitForAnimationToEnd:
+    timeout: 60000
 - extendedWaitUntil:
     visible:
       id: 'sidebar-settings'
     timeout: 60000
 - tapOn:
     id: 'sidebar-settings'
+- waitForAnimationToEnd:
+    timeout: 60000
 - extendedWaitUntil:
     visible:
       id: 'settings-view-clear-cache'

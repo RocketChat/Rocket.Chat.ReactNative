@@ -23,8 +23,8 @@ export type TAlertDisplayType = 'TOAST' | 'DIALOG';
 const AccessibilityAndAppearanceView = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<AccessibilityStackParamList>>();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail as boolean);
-	const [mentionsWithAtSymbol, setMentionsWithAtSymbol] = useUserPreferences<boolean>(USER_MENTIONS_PREFERENCES_KEY);
-	const [roomsWithHashTagSymbol, setRoomsWithHashTagSymbol] = useUserPreferences<boolean>(ROOM_MENTIONS_PREFERENCES_KEY);
+	const [mentionsWithAtSymbol, setMentionsWithAtSymbol] = useUserPreferences<boolean>(USER_MENTIONS_PREFERENCES_KEY, false);
+	const [roomsWithHashTagSymbol, setRoomsWithHashTagSymbol] = useUserPreferences<boolean>(ROOM_MENTIONS_PREFERENCES_KEY, false);
 	const [autoplayGifs, setAutoplayGifs] = useUserPreferences<boolean>(AUTOPLAY_GIFS_PREFERENCES_KEY, true);
 	const [alertDisplayType, setAlertDisplayType] = useUserPreferences<TAlertDisplayType>(
 		ALERT_DISPLAY_TYPE_PREFERENCES_KEY,
@@ -88,6 +88,7 @@ const AccessibilityAndAppearanceView = () => {
 						title='Autoplay_gifs'
 						right={renderAutoplayGifs}
 						onPress={toggleAutoplayGifs}
+						accessibilityRole='switch'
 					/>
 					<List.Separator />
 					<List.Item
@@ -95,6 +96,7 @@ const AccessibilityAndAppearanceView = () => {
 						title='Mentions_With_@_Symbol'
 						right={renderMentionsWithAtSymbolSwitch}
 						onPress={toggleMentionsWithAtSymbol}
+						accessibilityRole='switch'
 					/>
 					<List.Separator />
 					<List.Item
@@ -102,6 +104,7 @@ const AccessibilityAndAppearanceView = () => {
 						title='Rooms_With_#_Symbol'
 						right={renderRoomsWithHashTagSwitch}
 						onPress={toggleRoomsWithHashTag}
+						accessibilityRole='switch'
 					/>
 					<List.Separator />
 				</List.Section>
@@ -112,7 +115,7 @@ const AccessibilityAndAppearanceView = () => {
 							setAlertDisplayType(value);
 						}}
 						title={I18n.t('A11y_appearance_show_alerts_as')}
-						value={alertDisplayType}
+						value={alertDisplayType || 'TOAST'}
 					/>
 					<List.Separator />
 				</List.Section>

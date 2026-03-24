@@ -273,7 +273,7 @@ const NewMessageStackNavigator = () => {
 	return (
 		<NewMessageStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
 			<NewMessageStack.Screen name='NewMessageView' component={NewMessageView} />
-			<NewMessageStack.Screen name='SelectedUsersViewCreateChannel' component={SelectedUsersView} />
+			<NewMessageStack.Screen name='SelectedUsersView' component={SelectedUsersView} />
 			<NewMessageStack.Screen name='CreateChannelView' component={CreateChannelView} />
 			{/* @ts-ignore */}
 			<NewMessageStack.Screen name='CreateDiscussionView' component={CreateDiscussionView} />
@@ -307,6 +307,7 @@ const E2EEnterYourPasswordStackNavigator = () => {
 	return (
 		<E2EEnterYourPasswordStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
 			<E2EEnterYourPasswordStack.Screen name='E2EEnterYourPasswordView' component={E2EEnterYourPasswordView} />
+			<E2EEnterYourPasswordStack.Screen name='E2EEncryptionSecurityView' component={E2EEncryptionSecurityView} />
 		</E2EEnterYourPasswordStack.Navigator>
 	);
 };

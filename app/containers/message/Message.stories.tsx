@@ -389,24 +389,20 @@ export const FullNameLargeFont = () => (
 	/>
 );
 
+const msgMentions = '@rocket.cat @diego.mello @all @here #general @team';
+const mentions = [
+	{ _id: 'random', name: 'Rocket Cat', username: 'rocket.cat', type: 'user' },
+	{ _id: 'random2', name: 'Diego Mello', username: 'diego.mello', type: 'user' },
+	{ _id: 'here', username: 'here', type: 'user' },
+	{ _id: 'all', username: 'all', type: 'user' },
+	{ _id: 'team', name: 'team', type: 'team' }
+];
+
 export const Mentions = () => (
 	<>
 		<Message
-			msg='@rocket.cat @diego.mello @all @here #general'
-			mentions={[
-				{
-					username: 'rocket.cat'
-				},
-				{
-					username: 'diego.mello'
-				},
-				{
-					username: 'all'
-				},
-				{
-					username: 'here'
-				}
-			]}
+			msg={msgMentions}
+			mentions={mentions}
 			channels={[
 				{
 					name: 'general'
@@ -415,20 +411,7 @@ export const Mentions = () => (
 		/>
 		<Message
 			msg='@rocket.cat Lorem ipsum dolor @diego.mello sit amet, @all consectetur adipiscing @here elit, sed do eiusmod tempor #general incididunt ut labore et dolore magna aliqua.'
-			mentions={[
-				{
-					username: 'rocket.cat'
-				},
-				{
-					username: 'diego.mello'
-				},
-				{
-					username: 'all'
-				},
-				{
-					username: 'here'
-				}
-			]}
+			mentions={mentions}
 			channels={[
 				{
 					name: 'general'
@@ -441,21 +424,8 @@ export const Mentions = () => (
 export const MentionsLargeFont = () => (
 	<>
 		<MessageLargeFont
-			msg='@rocket.cat @diego.mello @all @here #general'
-			mentions={[
-				{
-					username: 'rocket.cat'
-				},
-				{
-					username: 'diego.mello'
-				},
-				{
-					username: 'all'
-				},
-				{
-					username: 'here'
-				}
-			]}
+			msg={msgMentions}
+			mentions={mentions}
 			channels={[
 				{
 					name: 'general'
@@ -464,20 +434,7 @@ export const MentionsLargeFont = () => (
 		/>
 		<MessageLargeFont
 			msg='@rocket.cat Lorem ipsum dolor @diego.mello sit amet, @all consectetur adipiscing @here elit, sed do eiusmod tempor #general incididunt ut labore et dolore magna aliqua.'
-			mentions={[
-				{
-					username: 'rocket.cat'
-				},
-				{
-					username: 'diego.mello'
-				},
-				{
-					username: 'all'
-				},
-				{
-					username: 'here'
-				}
-			]}
+			mentions={mentions}
 			channels={[
 				{
 					name: 'general'
@@ -716,7 +673,7 @@ export const WithImage = () => (
 			attachments={[
 				{
 					title: 'This is a title',
-					description: 'This is a description',
+					description: 'This is a description :nyan_rocket:',
 					image_url: '/dummypath'
 				}
 			]}
@@ -732,6 +689,19 @@ export const WithImage = () => (
 				{
 					title: 'This is a title',
 					description: 'This is a description :nyan_rocket:',
+					image_url: '/dummypath'
+				},
+				{
+					title: 'This is a title',
+					image_url: '/dummypath'
+				}
+			]}
+		/>
+		<Message
+			msg='multi file'
+			attachments={[
+				{
+					title: 'This is a title',
 					image_url: '/dummypath'
 				},
 				{
@@ -767,7 +737,21 @@ export const WithImageLargeFont = () => (
 			attachments={[
 				{
 					title: 'This is a title',
-					description: 'This is a description :nyan_rocket:',
+					description: 'Header false',
+					image_url: '/dummypath'
+				}
+			]}
+			isHeader={false}
+		/>
+		<Message
+			msg='multi file'
+			attachments={[
+				{
+					title: 'This is a title',
+					image_url: '/dummypath'
+				},
+				{
+					title: 'This is a title',
 					image_url: '/dummypath'
 				}
 			]}
@@ -799,16 +783,22 @@ export const WithVideo = () => (
 			attachments={[
 				{
 					title: 'This is a title',
+					description: 'Header false',
+					video_url: '/dummypath'
+				}
+			]}
+			isHeader={false}
+		/>
+		<Message
+			msg='multi file'
+			attachments={[
+				{
+					title: 'This is a title',
 					video_url: '/dummypath'
 				},
 				{
 					title: 'This is a title',
-					description: 'This is a description :nyan_rocket:',
 					video_url: '/dummypath'
-				},
-				{
-					title: 'This is a title',
-					video_url: '/dummypath2'
 				}
 			]}
 		/>
@@ -834,6 +824,19 @@ export const WithVideoLargeFont = () => (
 				}
 			]}
 		/>
+		<MessageLargeFont
+			msg='multi file'
+			attachments={[
+				{
+					title: 'This is a title',
+					video_url: '/dummypath'
+				},
+				{
+					title: 'This is a title',
+					video_url: '/dummypath'
+				}
+			]}
+		/>
 	</>
 );
 
@@ -848,19 +851,23 @@ export const WithAudio = () => (
 				}
 			]}
 		/>
-		<Message msg='First message' isHeader={false} />
 		<Message
 			attachments={[
 				{
 					title: 'This is a title',
-					description: 'This is a description',
+					description: 'Header false',
 					audio_url: '/dummypath'
 				}
 			]}
 			isHeader={false}
 		/>
 		<Message
+			msg='multi file'
 			attachments={[
+				{
+					title: 'This is a title',
+					audio_url: '/dummypath'
+				},
 				{
 					title: 'This is a title',
 					audio_url: '/dummypath'
@@ -921,7 +928,17 @@ export const WithAudioLargeFont = () => (
 			isHeader={false}
 		/>
 		<MessageLargeFont
+			msg='multi file'
 			attachments={[
+				{
+					title: 'This is a title',
+					audio_url: '/dummypath'
+				},
+				{
+					title: 'This is a title',
+					description: 'This is a description :nyan_rocket:',
+					audio_url: '/dummypath'
+				},
 				{
 					title: 'This is a title',
 					audio_url: '/dummypath'
@@ -1098,6 +1115,17 @@ export const FileAttachmentsWithFilenamesLargeFont = () => (
 				}
 			]}
 			isHeader={false}
+		/>
+		<MessageLargeFont
+			msg='multi file'
+			attachments={[
+				{
+					text: 'File.pdf'
+				},
+				{
+					text: 'File.pdf'
+				}
+			]}
 		/>
 	</>
 );
@@ -1282,6 +1310,53 @@ export const MessageWithReplyLargeFont = () => (
 						}
 					],
 					text: ''
+				}
+			]}
+		/>
+	</>
+);
+
+export const MessageWithNestedReplyAndFile = () => (
+	<>
+		<Message
+			msg='Forwarded message with file inside'
+			attachments={[
+				{
+					author_name: 'rocket.cat',
+					message_link: 'https://open.rocket.chat/group/msg-id',
+					ts: date,
+					timeFormat: 'LT',
+					text: '',
+					attachments: [
+						{
+							author_name: 'user',
+							ts: date,
+							timeFormat: 'LT',
+							type: 'file',
+							title: 'document.pdf',
+							title_link: '/file-upload/abc/document.pdf'
+						}
+					]
+				}
+			]}
+		/>
+		<Message
+			msg='Forwarded message with nested image'
+			attachments={[
+				{
+					author_name: 'rocket.cat',
+					ts: date,
+					timeFormat: 'LT',
+					text: '',
+					attachments: [
+						{
+							author_name: 'user',
+							ts: date,
+							timeFormat: 'LT',
+							description: 'Nested image from forwarded message',
+							image_url: 'https://octodex.github.com/images/yaktocat.png'
+						}
+					]
 				}
 			]}
 		/>
@@ -1962,6 +2037,8 @@ export const SystemMessages = () => (
 		<Message type='user-converted-to-channel' isInfo msg='channel-name' />
 		<Message type='user-deleted-room-from-team' isInfo msg='channel-name' />
 		<Message type='user-removed-room-from-team' isInfo msg='channel-name' />
+		<Message type='abac-removed-user-from-room' isInfo />
+		<Message type='unsupported' isInfo />
 	</>
 );
 
@@ -2003,6 +2080,8 @@ export const SystemMessagesLargeFont = () => (
 		<MessageLargeFont type='user-converted-to-channel' isInfo msg='channel-name' />
 		<MessageLargeFont type='user-deleted-room-from-team' isInfo msg='channel-name' />
 		<MessageLargeFont type='user-removed-room-from-team' isInfo msg='channel-name' />
+		<MessageLargeFont type='abac-removed-user-from-room' isInfo />
+		<MessageLargeFont type='unsupported' isInfo />
 	</>
 );
 
@@ -2230,6 +2309,20 @@ const collapsedAttachments = {
 		}
 	]
 };
+
+const collapsibleAttachmentWithText = {
+	collapsed: true,
+	title: 'Collapsed attachment block',
+	text: 'This attachment text should NOT appear as plain text above the message or duplicate before the block.',
+	description: 'Attachment description that might also leak as duplicate plain text.',
+	color: '#2c3e50',
+	fields: [
+		{ title: 'Field 1', value: 'Value 1', short: true },
+		{ title: 'Field 2', value: 'Value 2', short: true },
+		{ title: 'Long field', value: 'This field value could also contribute to duplicate text when expanded.', short: false }
+	]
+};
+
 export const CollapsedAttachments = () => (
 	<>
 		<Message msg='Message' attachments={[collapsedAttachments]} />
@@ -2243,6 +2336,23 @@ export const CollapsedAttachmentsLargeFont = () => (
 		<MessageLargeFont msg='Message' attachments={[collapsedAttachments]} />
 		{/* technically not CollapsibleQuote, but it's similar enough to write a story for */}
 		<MessageLargeFont msg='Message' attachments={[{ ...collapsedAttachments, collapsed: false }]} />
+	</>
+);
+
+export const CollapsibleAttachmentWithText = () => (
+	<>
+		<Message msg='This is the main message body.' attachments={[collapsibleAttachmentWithText]} />
+		<Message msg='This is the main message body.' attachments={[{ ...collapsibleAttachmentWithText, collapsed: false }]} />
+	</>
+);
+
+export const CollapsibleAttachmentWithTextLargeFont = () => (
+	<>
+		<MessageLargeFont msg='This is the main message body.' attachments={[collapsibleAttachmentWithText]} />
+		<MessageLargeFont
+			msg='This is the main message body.'
+			attachments={[{ ...collapsibleAttachmentWithText, collapsed: false }]}
+		/>
 	</>
 );
 
@@ -2276,6 +2386,25 @@ export const Katex = () => (
 	</>
 );
 export const KatexLargeFont = () => <MessageLargeFont {...katex} />;
+
+const katexArray = {
+	msg: '\\begin{array}{|c|c|c|c|c|c|} \\hline \\text{...} & \\text{...} \\\\ \\hline \\end{array}',
+	md: [
+		{
+			type: 'KATEX',
+			value:
+				' \\begin{array}{|c|c|c|c|c|c|} \\hline \\text{testing} & \\text{testingII} & \\text{testing III} & \\text{testing IV} & \\text{testV} & \\text{testVI} \\\\ \\hline \\text{TEST} & \\text{TEST} & \\text{TEST} & \\text{TEST} & \\text{TEST} & \\text{TEST} \\\\ \\hline\\text{TEST} & \\text{✅} & \\text{test} & \\text{test} & \\text{test} & \\text{✅} \\\\ \\hline \\end{array} '
+		}
+	]
+};
+
+export const KatexArray = () => (
+	<>
+		<Message {...katexArray} />
+	</>
+);
+
+export const KatexArrayLargeFont = () => <MessageLargeFont {...katexArray} />;
 
 const inlineKatex = {
 	msg: '\\(xˆ2 + yˆ2 - zˆ2\\)',

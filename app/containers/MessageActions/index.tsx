@@ -2,8 +2,8 @@ import React, { forwardRef, useImperativeHandle } from 'react';
 import { Alert, Share } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { connect } from 'react-redux';
-import moment from 'moment';
 
+import dayjs from '../../lib/dayjs';
 import database from '../../lib/database';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
 import I18n from '../../i18n';
@@ -154,11 +154,11 @@ const MessageActions = React.memo(
 				if (blockEditInMinutes) {
 					let msgTs;
 					if (message.ts != null) {
-						msgTs = moment(message.ts);
+						msgTs = dayjs(message.ts);
 					}
 					let currentTsDiff = 0;
 					if (msgTs != null) {
-						currentTsDiff = moment().diff(msgTs, 'minutes');
+						currentTsDiff = dayjs().diff(msgTs, 'minutes');
 					}
 					return currentTsDiff < blockEditInMinutes;
 				}
@@ -185,11 +185,11 @@ const MessageActions = React.memo(
 				if (blockDeleteInMinutes != null && blockDeleteInMinutes !== 0) {
 					let msgTs;
 					if (message.ts != null) {
-						msgTs = moment(message.ts);
+						msgTs = dayjs(message.ts);
 					}
 					let currentTsDiff = 0;
 					if (msgTs != null) {
-						currentTsDiff = moment().diff(msgTs, 'minutes');
+						currentTsDiff = dayjs().diff(msgTs, 'minutes');
 					}
 					return currentTsDiff < blockDeleteInMinutes;
 				}
@@ -442,7 +442,8 @@ const MessageActions = React.memo(
 						title: I18n.t('Reply_in_direct_message'),
 						icon: 'arrow-back',
 						onPress: () => handleReplyInDM(message),
-						enabled: permissions.hasCreateDirectMessagePermission
+						enabled: permissions.hasCreateDirectMessagePermission && !room.abacAttributes,
+						disabledReason: room.abacAttributes && I18n.t('ABAC_disabled_action_reason')
 					});
 				}
 
@@ -454,19 +455,24 @@ const MessageActions = React.memo(
 					enabled: permissions.hasCreateDiscussionOtherUserPermission
 				});
 
+				// Forward
 				if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.2.0') && !videoConfBlock) {
 					options.push({
 						title: I18n.t('Forward'),
 						icon: 'arrow-forward',
-						onPress: () => handleShareMessage(message)
+						onPress: () => handleShareMessage(message),
+						enabled: !room.abacAttributes,
+						disabledReason: room.abacAttributes && I18n.t('ABAC_disabled_action_reason')
 					});
 				}
 
-				// Permalink
+				// Get link
 				options.push({
 					title: I18n.t('Get_link'),
 					icon: 'link',
-					onPress: () => handlePermalink(message)
+					onPress: () => handlePermalink(message),
+					enabled: !room.abacAttributes,
+					disabledReason: room.abacAttributes && I18n.t('ABAC_disabled_action_reason')
 				});
 
 				// Copy
