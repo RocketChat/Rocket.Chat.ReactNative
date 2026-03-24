@@ -25,6 +25,8 @@ import android.telecom.PhoneAccountHandle
 import android.telecom.TelecomManager
 import io.wazo.callkeep.VoiceConnection
 import io.wazo.callkeep.VoiceConnectionService
+import android.app.Activity
+import android.app.KeyguardManager
 import chat.rocket.reactnative.MainActivity
 import chat.rocket.reactnative.notification.Ejson
 import org.json.JSONArray
@@ -48,12 +50,25 @@ class VoipNotification(private val context: Context) {
 
         const val ACTION_ACCEPT = "chat.rocket.reactnative.ACTION_VOIP_ACCEPT"
         const val ACTION_DECLINE = "chat.rocket.reactnative.ACTION_VOIP_DECLINE"
+
+        /**
+         * Set on the heads-up Accept action [PendingIntent] ([PendingIntent.getActivity] → MainActivity).
+         * Android 12+ blocks starting an activity from a notification [BroadcastReceiver] trampoline;
+         * MainActivity opens first, then [handleMainActivityVoipIntent] runs accept with
+         * [handleAcceptAction] and `skipLaunchMainActivity = true`.
+         */
+        const val ACTION_VOIP_ACCEPT_HEADS_UP = "chat.rocket.reactnative.ACTION_VOIP_ACCEPT_HEADS_UP"
         const val ACTION_TIMEOUT = "chat.rocket.reactnative.ACTION_VOIP_TIMEOUT"
         const val ACTION_DISMISS = "chat.rocket.reactnative.ACTION_VOIP_DISMISS"
 
         // react-native-callkeep's ConnectionService class name
         private const val CALLKEEP_CONNECTION_SERVICE_CLASS = "io.wazo.callkeep.VoiceConnectionService"
         private const val DISCONNECT_REASON_MISSED = 6
+
+        private data class VoipMediaCallIdentity(val userId: String, val deviceId: String)
+
+        /** Keep in sync with MediaSessionStore features (audio-only today). */
+        private val SUPPORTED_VOIP_FEATURES = JSONArray().apply { put("audio") }
         private val timeoutHandler = Handler(Looper.getMainLooper())
         private val timeoutCallbacks = mutableMapOf<String, Runnable>()
         private var ddpClient: DDPClient? = null
@@ -141,6 +156,135 @@ class VoipNotification(private val context: Context) {
             )
         }
 
+        /**
+         * Routes VoIP-related intents delivered to [MainActivity] (cold start or [Activity.onNewIntent]).
+         *
+         * @return `true` if the intent was handled as VoIP and downstream handlers should not process it.
+         */
+        @JvmStatic
+        fun handleMainActivityVoipIntent(context: Context, intent: Intent): Boolean {
+            val payload = VoipPayload.fromBundle(intent.extras)
+            if (payload == null || !payload.isVoipIncomingCall()) {
+                return false
+            }
+
+            val headsUpAccept = intent.action == ACTION_VOIP_ACCEPT_HEADS_UP
+            if (headsUpAccept) {
+                intent.action = Intent.ACTION_MAIN
+                prepareMainActivityForIncomingVoip(context, payload)
+                handleAcceptAction(context, payload, skipLaunchMainActivity = true)
+                intent.removeExtra("voipAction")
+                return true
+            }
+
+            if (intent.getBooleanExtra("voipAction", false)) {
+                prepareMainActivityForIncomingVoip(context, payload)
+                intent.removeExtra("voipAction")
+                return true
+            }
+
+            return false
+        }
+
+        /**
+         * Prepares MainActivity after launch with incoming-call context: cancel notification and timeout,
+         * stash payload for JS, and unlock/show above keyguard when [context] is an [Activity].
+         */
+        private fun prepareMainActivityForIncomingVoip(context: Context, payload: VoipPayload) {
+            Log.d(TAG, "prepareMainActivityForIncomingVoip — callId: ${payload.callId}")
+            cancelById(context, payload.notificationId)
+            cancelTimeout(payload.callId)
+            VoipModule.storeInitialEvents(payload)
+
+            if (context is Activity && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+                context.setShowWhenLocked(true)
+                context.setTurnScreenOn(true)
+                val keyguardManager = context.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+                keyguardManager.requestDismissKeyguard(context, null)
+            }
+        }
+
+        /**
+         * Accept from notification or IncomingCallActivity: send accept over native DDP, sync Telecom,
+         * dismiss UI, then open MainActivity (unless [skipLaunchMainActivity] — already in MainActivity
+         * from heads-up Accept [PendingIntent.getActivity]). JS still runs answerCall afterward.
+         *
+         * The DDP call is asynchronous; [VoipModule.storeInitialEvents], notification cancel, Telecom
+         * answer, and [ACTION_DISMISS] run from an internal completion callback. [IncomingCallActivity]
+         * stays open until that broadcast is received.
+         */
+        @JvmStatic
+        @JvmOverloads
+        fun handleAcceptAction(context: Context, payload: VoipPayload, skipLaunchMainActivity: Boolean = false) {
+            Log.d(TAG, "Accept action triggered for callId: ${payload.callId}")
+            cancelTimeout(payload.callId)
+
+            val appCtx = context.applicationContext
+            fun finish(ddpSuccess: Boolean) {
+                if (ddpSuccess) {
+                    answerIncomingCall(payload.callId)
+                } else {
+                    Log.d(TAG, "Native accept did not succeed over DDP for ${payload.callId}; opening app for JS recovery")
+                }
+                cancelById(appCtx, payload.notificationId)
+                LocalBroadcastManager.getInstance(appCtx).sendBroadcast(
+                    Intent(ACTION_DISMISS).apply {
+                        putExtras(payload.toBundle())
+                    }
+                )
+                VoipModule.storeInitialEvents(payload)
+                if (!skipLaunchMainActivity) {
+                    launchMainActivityForVoip(context, payload)
+                }
+            }
+
+            val client = ddpClient
+            if (client == null) {
+                Log.d(TAG, "Native DDP client unavailable for accept ${payload.callId}")
+                finish(false)
+                return
+            }
+
+            if (isDdpLoggedIn) {
+                sendAcceptSignal(context, payload) { success ->
+                    finish(success)
+                    if (success) {
+                        stopDDPClientInternal()
+                    }
+                }
+            } else {
+                queueAcceptSignal(context, payload) { success ->
+                    finish(success)
+                    if (success) {
+                        stopDDPClientInternal()
+                    }
+                }
+            }
+        }
+
+        private fun launchMainActivityForVoip(context: Context, payload: VoipPayload) {
+            val intent = Intent(context, MainActivity::class.java).apply {
+                putExtras(payload.toBundle())
+                if (context is Activity) {
+                    flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                } else {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or
+                        Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                        Intent.FLAG_ACTIVITY_SINGLE_TOP
+                }
+            }
+            context.startActivity(intent)
+        }
+
+        private fun answerIncomingCall(callId: String) {
+            val connection = VoiceConnectionService.getConnection(callId)
+            when (connection) {
+                is VoiceConnection -> connection.onAnswer()
+                null -> Log.d(TAG, "No active VoiceConnection found for accepted call: $callId")
+                else -> Log.d(TAG, "Non-VoiceConnection for accept, callId: $callId")
+            }
+        }
+
         // TODO: unify these three functions and check VoiceConnectionService
         private fun disconnectTimedOutCall(callId: String) {
             val connection = VoiceConnectionService.getConnection(callId)
@@ -206,7 +350,7 @@ class VoipNotification(private val context: Context) {
             Log.d(TAG, "Queued native reject signal for ${payload.callId}")
         }
 
-        private fun flushPendingRejectSignalIfNeeded(): Boolean {
+        private fun flushPendingQueuedSignalsIfNeeded(): Boolean {
             val client = ddpClient ?: return false
             if (!client.hasQueuedMethodCalls()) {
                 return false
@@ -216,33 +360,97 @@ class VoipNotification(private val context: Context) {
             return true
         }
 
-        private fun buildRejectSignalParams(context: Context, payload: VoipPayload): JSONArray? {
+        private fun sendAcceptSignal(
+            context: Context,
+            payload: VoipPayload,
+            onComplete: (Boolean) -> Unit
+        ) {
+            val client = ddpClient
+            if (client == null) {
+                Log.d(TAG, "Native DDP client unavailable, cannot send accept for ${payload.callId}")
+                onComplete(false)
+                return
+            }
+
+            val params = buildAcceptSignalParams(context, payload) ?: run {
+                onComplete(false)
+                return
+            }
+
+            client.callMethod("stream-notify-user", params) { success ->
+                Log.d(TAG, "Native accept signal result for ${payload.callId}: $success")
+                onComplete(success)
+            }
+        }
+
+        private fun queueAcceptSignal(
+            context: Context,
+            payload: VoipPayload,
+            onComplete: (Boolean) -> Unit
+        ) {
+            val client = ddpClient
+            if (client == null) {
+                Log.d(TAG, "Native DDP client unavailable, cannot queue accept for ${payload.callId}")
+                onComplete(false)
+                return
+            }
+
+            val params = buildAcceptSignalParams(context, payload) ?: run {
+                onComplete(false)
+                return
+            }
+
+            client.queueMethodCall("stream-notify-user", params) { success ->
+                Log.d(TAG, "Queued native accept signal result for ${payload.callId}: $success")
+                onComplete(success)
+            }
+            Log.d(TAG, "Queued native accept signal for ${payload.callId}")
+        }
+
+        private fun resolveVoipMediaCallIdentity(context: Context, payload: VoipPayload): VoipMediaCallIdentity? {
             val ejson = Ejson().apply {
                 host = payload.host
             }
             val userId = ejson.userId()
             if (userId.isNullOrEmpty()) {
-                Log.d(TAG, "Missing userId, cannot send reject for ${payload.callId}")
+                Log.d(TAG, "Missing userId, cannot build stream-notify-user params for ${payload.callId}")
                 stopDDPClientInternal()
                 return null
             }
-
             val deviceId = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
             if (deviceId.isNullOrEmpty()) {
-                Log.d(TAG, "Missing deviceId, cannot send reject for ${payload.callId}")
+                Log.d(TAG, "Missing deviceId, cannot build stream-notify-user params for ${payload.callId}")
                 stopDDPClientInternal()
                 return null
             }
+            return VoipMediaCallIdentity(userId, deviceId)
+        }
 
+        private fun buildAcceptSignalParams(context: Context, payload: VoipPayload): JSONArray? {
+            val ids = resolveVoipMediaCallIdentity(context, payload) ?: return null
             val signal = JSONObject().apply {
                 put("callId", payload.callId)
-                put("contractId", deviceId)
+                put("contractId", ids.deviceId)
+                put("type", "answer")
+                put("answer", "accept")
+                put("supportedFeatures", SUPPORTED_VOIP_FEATURES)
+            }
+            return JSONArray().apply {
+                put("${ids.userId}/media-calls")
+                put(signal.toString())
+            }
+        }
+
+        private fun buildRejectSignalParams(context: Context, payload: VoipPayload): JSONArray? {
+            val ids = resolveVoipMediaCallIdentity(context, payload) ?: return null
+            val signal = JSONObject().apply {
+                put("callId", payload.callId)
+                put("contractId", ids.deviceId)
                 put("type", "answer")
                 put("answer", "reject")
             }
-
             return JSONArray().apply {
-                put("$userId/media-calls")
+                put("${ids.userId}/media-calls")
                 put(signal.toString())
             }
         }
@@ -327,7 +535,7 @@ class VoipNotification(private val context: Context) {
                     }
 
                     isDdpLoggedIn = true
-                    if (flushPendingRejectSignalIfNeeded()) {
+                    if (flushPendingQueuedSignalsIfNeeded()) {
                         return@login
                     }
 
@@ -535,12 +743,31 @@ class VoipNotification(private val context: Context) {
         }
         val fullScreenPendingIntent = createPendingIntent(notificationId, fullScreenIntent)
 
-        // Create Accept action
+        // Accept: must use getActivity — Android 12+ blocks starting MainActivity from a
+        // notification BroadcastReceiver ("trampoline"). MainActivity runs native accept with
+        // skipLaunchMainActivity after opening.
         val acceptIntent = Intent(context, MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            action = ACTION_VOIP_ACCEPT_HEADS_UP
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or
+                Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                Intent.FLAG_ACTIVITY_SINGLE_TOP
             putExtras(voipPayload.toBundle())
         }
-        val acceptPendingIntent = createPendingIntent(notificationId + 1, acceptIntent)
+        val acceptPendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.getActivity(
+                context,
+                notificationId + 1,
+                acceptIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+        } else {
+            PendingIntent.getActivity(
+                context,
+                notificationId + 1,
+                acceptIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+            )
+        }
 
         // Create Decline action
         val declineIntent = Intent(context, DeclineReceiver::class.java).apply {

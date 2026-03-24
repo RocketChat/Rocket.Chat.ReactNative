@@ -24,7 +24,6 @@ import android.widget.FrameLayout
 import android.util.Log
 import android.view.ViewOutlineProvider
 import com.bumptech.glide.Glide
-import chat.rocket.reactnative.MainActivity
 import chat.rocket.reactnative.R
 import android.graphics.Typeface
 import chat.rocket.reactnative.notification.Ejson
@@ -283,15 +282,8 @@ class IncomingCallActivity : Activity() {
         clearTimeout()
         VoipNotification.cancelTimeout(payload.callId)
         stopRingtone()
-
-        // Launch MainActivity with call data
-        val launchIntent = Intent(this, MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-            putExtras(payload.toBundle())
-        }
-        startActivity(launchIntent)
-
-        finish()
+        VoipNotification.handleAcceptAction(this, payload)
+        // Activity finishes when ACTION_DISMISS is broadcast from handleAcceptAction (async DDP).
     }
 
     private fun handleDecline(payload: VoipPayload) {

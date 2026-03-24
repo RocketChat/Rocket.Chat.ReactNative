@@ -73,6 +73,7 @@ class MediaSessionInstance {
 
 		this.instance?.on('registered', ({ activeCalls }) => {
 			// prevent JS and native DDP clients from interfering with each other
+			// TODO: check if this is needed
 			NativeVoipModule.stopNativeDDPClient();
 			console.log('[VoIP] Media session registered, activeCalls:', activeCalls);
 
