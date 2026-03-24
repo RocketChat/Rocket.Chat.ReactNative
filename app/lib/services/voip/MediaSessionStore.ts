@@ -93,6 +93,16 @@ class MediaSessionStore extends Emitter<{ change: void }> {
 	public getCurrentInstance(): MediaSignalingSession | null {
 		return this.sessionInstance;
 	}
+
+	public dispose(): void {
+		if (this.sessionInstance !== null) {
+			this.sessionInstance.endSession();
+			this.sessionInstance = null;
+		}
+		this.sendSignalFn = null;
+		this._webrtcProcessorFactory = null;
+		this.change();
+	}
 }
 
 // TODO: change name

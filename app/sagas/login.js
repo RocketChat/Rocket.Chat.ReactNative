@@ -32,7 +32,7 @@ import { getSlashCommands } from '../lib/methods/getSlashCommands';
 import { getUserPresence, subscribeUsersPresence } from '../lib/methods/getUsersPresence';
 import { logout, removeServerData, removeServerDatabase } from '../lib/methods/logout';
 import { subscribeSettings } from '../lib/methods/getSettings';
-import { loginWithPassword, login } from '../lib/services/connect';
+import { disconnect, loginWithPassword, login } from '../lib/services/connect';
 import { saveUserProfile, registerPushToken, getUsersRoles } from '../lib/services/restApi';
 import { setUsersRoles } from '../actions/usersRoles';
 import { getServerById } from '../lib/database/services/Server';
@@ -234,6 +234,8 @@ const startVoipFork = function* startVoipFork() {
 		if (isVoipModuleAvailable() && (hasPermissions[0] || hasPermissions[1])) {
 			const userId = yield select(state => state.login.user.id);
 			mediaSessionInstance.init(userId);
+		} else {
+			mediaSessionInstance.reset();
 		}
 	} catch (e) {
 		log(e);
@@ -411,10 +413,10 @@ const handleDeleteAccount = function* handleDeleteAccount() {
 				}
 			}
 			// if there's no servers, go outside
-			sdk.disconnect();
+			disconnect();
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		} catch (e) {
-			sdk.disconnect();
+			disconnect();
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 			log(e);
 		}
