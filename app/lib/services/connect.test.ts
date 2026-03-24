@@ -1,5 +1,9 @@
 import { determineAuthType } from './connect';
 
+jest.mock('./voip/MediaSessionInstance', () => ({
+	mediaSessionInstance: { reset: jest.fn(), init: jest.fn() }
+}));
+
 // Mock the isIOS helper
 jest.mock('../methods/helpers/deviceInfo', () => ({
 	...jest.requireActual('../methods/helpers/deviceInfo'),

@@ -39,6 +39,7 @@ import { setPermissions } from '../lib/methods/getPermissions';
 import { setRoles } from '../lib/methods/getRoles';
 import { connect, disconnect, getWebsocketInfo, getLoginServices } from '../lib/services/connect';
 import sdk from '../lib/services/sdk';
+import { mediaSessionInstance } from '../lib/services/voip/MediaSessionInstance';
 import { appSelector } from '../lib/hooks/useAppSelector';
 import { getServerById } from '../lib/database/services/Server';
 import { getLoggedUserById } from '../lib/database/services/LoggedUser';
@@ -150,6 +151,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		yield put(inquiryReset());
 		yield put(encryptionStop());
 		yield put(clearActiveUsers());
+		mediaSessionInstance.reset();
 		const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
 		let user = null;
 		if (userId) {

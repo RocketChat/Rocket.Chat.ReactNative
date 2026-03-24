@@ -11,6 +11,7 @@ import { twoFactor } from './twoFactor';
 import { store } from '../store/auxStore';
 import { loginRequest, logout, setLoginServices, setUser } from '../../actions/login';
 import sdk from './sdk';
+import { mediaSessionInstance } from './voip/MediaSessionInstance';
 import I18n from '../../i18n';
 import { type ICredentials, type ILoggedUser, STATUSES } from '../../definitions';
 import { connectRequest, connectSuccess, disconnect as disconnectAction } from '../../actions/connect';
@@ -407,7 +408,9 @@ function checkAndReopen() {
 }
 
 function disconnect() {
-	return sdk.disconnect();
+	const result = sdk.disconnect();
+	mediaSessionInstance.reset();
+	return result;
 }
 
 async function getWebsocketInfo({

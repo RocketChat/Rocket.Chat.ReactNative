@@ -26,13 +26,13 @@ class MediaSessionInstance {
 	private iceServers: IceServer[] = [];
 	private iceGatheringTimeout: number = 5000;
 	private mediaSignalListener: { stop: () => void } | null = null;
-	private mediaSignalsListener: { stop: () => void } | null = null;
 	private instance: MediaSignalingSession | null = null;
+	private mediaSessionStoreChangeUnsubscribe: (() => void) | null = null;
 	private storeTimeoutUnsubscribe: (() => void) | null = null;
 	private storeIceServersUnsubscribe: (() => void) | null = null;
 
 	public init(userId: string): void {
-		this.stop();
+		this.reset();
 		registerGlobals();
 		this.configureIceServers();
 		// prevent JS and native DDP clients from interfering with each other
@@ -50,7 +50,9 @@ class MediaSessionInstance {
 			sdk.methodCall('stream-notify-user', `${userId}/media-calls`, JSON.stringify(signal));
 		});
 		this.instance = mediaSessionStore.getInstance(userId);
-		mediaSessionStore.onChange(() => (this.instance = mediaSessionStore.getInstance(userId)));
+		this.mediaSessionStoreChangeUnsubscribe = mediaSessionStore.onChange(() => {
+			this.instance = mediaSessionStore.getInstance(userId);
+		});
 
 		this.mediaSignalListener = sdk.onStreamData('stream-notify-user', (ddpMessage: IDDPMessage) => {
 			if (!this.instance) {
@@ -168,22 +170,26 @@ class MediaSessionInstance {
 		});
 	}
 
-	private stop() {
+	public reset() {
+		if (this.mediaSessionStoreChangeUnsubscribe) {
+			this.mediaSessionStoreChangeUnsubscribe();
+			this.mediaSessionStoreChangeUnsubscribe = null;
+		}
 		if (this.mediaSignalListener?.stop) {
 			this.mediaSignalListener.stop();
 		}
-		if (this.mediaSignalsListener?.stop) {
-			this.mediaSignalsListener.stop();
-		}
+		this.mediaSignalListener = null;
 		if (this.storeTimeoutUnsubscribe) {
 			this.storeTimeoutUnsubscribe();
+			this.storeTimeoutUnsubscribe = null;
 		}
 		if (this.storeIceServersUnsubscribe) {
 			this.storeIceServersUnsubscribe();
+			this.storeIceServersUnsubscribe = null;
 		}
-		if (this.instance) {
-			this.instance.endSession();
-		}
+		mediaSessionStore.dispose();
+		this.instance = null;
+		useCallStore.getState().reset();
 	}
 }
 
