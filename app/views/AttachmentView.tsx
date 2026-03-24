@@ -1,6 +1,6 @@
 import { CameraRoll } from '@react-native-camera-roll/camera-roll';
 import { useHeaderHeight } from '@react-navigation/elements';
-import { useVideoPlayer, VideoPlayer, VideoView } from 'expo-video';
+import { useVideoPlayer, type VideoPlayer, VideoView } from 'expo-video';
 import React, { useEffect } from 'react';
 import { PermissionsAndroid, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
