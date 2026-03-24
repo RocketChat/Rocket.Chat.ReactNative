@@ -2,59 +2,57 @@
 
 exports[`Story Snapshots: Separators should match snapshot 1`] = `
 [
-  <View
+  <RNGestureHandlerButton
     accessibilityLabel="More options"
     accessibilityRole="button"
-    accessibilityState={
-      {
-        "busy": undefined,
-        "checked": undefined,
-        "disabled": undefined,
-        "expanded": undefined,
-        "selected": undefined,
-      }
-    }
-    accessibilityValue={
-      {
-        "max": undefined,
-        "min": undefined,
-        "now": undefined,
-        "text": undefined,
-      }
-    }
-    accessible={true}
+    activeOpacity={0.2}
     collapsable={false}
-    focusable={true}
-    onBlur={[Function]}
-    onClick={[Function]}
-    onFocus={[Function]}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
+    delayLongPress={600}
+    enabled={true}
+    handlerTag={1}
+    handlerType="NativeViewGestureHandler"
+    innerRef={null}
+    onActiveStateChange={[Function]}
+    onGestureHandlerEvent={[Function]}
+    onGestureHandlerStateChange={[Function]}
+    onPress={[Function]}
+    rippleColor="rgba(0, 0, 0, 0.12)"
     style={
       [
         {
+          "backgroundColor": "#E4E7EA",
+          "borderRadius": 4,
           "justifyContent": "center",
+          "marginBottom": 0,
           "paddingHorizontal": 16,
           "paddingVertical": 14,
         },
         {
-          "borderRadius": 4,
-          "marginBottom": 12,
-        },
-        {
-          "backgroundColor": "#E4E7EA",
-        },
-        {},
-        {
-          "marginBottom": 0,
+          "cursor": undefined,
         },
       ]
     }
+    underlayColor="transparent"
   >
+    <View
+      collapsable={false}
+      style={
+        {
+          "backgroundColor": "transparent",
+          "borderBottomLeftRadius": undefined,
+          "borderBottomRightRadius": undefined,
+          "borderRadius": 4,
+          "borderTopLeftRadius": undefined,
+          "borderTopRightRadius": undefined,
+          "bottom": 0,
+          "left": 0,
+          "opacity": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
+      }
+    />
     <Text
       style={
         [
@@ -74,7 +72,7 @@ exports[`Story Snapshots: Separators should match snapshot 1`] = `
     >
       More options
     </Text>
-  </View>,
+  </RNGestureHandlerButton>,
   <View
     accessible={true}
     style={
@@ -131,59 +129,57 @@ exports[`Story Snapshots: Separators should match snapshot 1`] = `
       }
     />
   </View>,
-  <View
+  <RNGestureHandlerButton
     accessibilityLabel="Less options"
     accessibilityRole="button"
-    accessibilityState={
-      {
-        "busy": undefined,
-        "checked": undefined,
-        "disabled": undefined,
-        "expanded": undefined,
-        "selected": undefined,
-      }
-    }
-    accessibilityValue={
-      {
-        "max": undefined,
-        "min": undefined,
-        "now": undefined,
-        "text": undefined,
-      }
-    }
-    accessible={true}
+    activeOpacity={0.2}
     collapsable={false}
-    focusable={true}
-    onBlur={[Function]}
-    onClick={[Function]}
-    onFocus={[Function]}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
+    delayLongPress={600}
+    enabled={true}
+    handlerTag={2}
+    handlerType="NativeViewGestureHandler"
+    innerRef={null}
+    onActiveStateChange={[Function]}
+    onGestureHandlerEvent={[Function]}
+    onGestureHandlerStateChange={[Function]}
+    onPress={[Function]}
+    rippleColor="rgba(0, 0, 0, 0.12)"
     style={
       [
         {
+          "backgroundColor": "#E4E7EA",
+          "borderRadius": 4,
           "justifyContent": "center",
+          "marginBottom": 0,
           "paddingHorizontal": 16,
           "paddingVertical": 14,
         },
         {
-          "borderRadius": 4,
-          "marginBottom": 12,
-        },
-        {
-          "backgroundColor": "#E4E7EA",
-        },
-        {},
-        {
-          "marginBottom": 0,
+          "cursor": undefined,
         },
       ]
     }
+    underlayColor="transparent"
   >
+    <View
+      collapsable={false}
+      style={
+        {
+          "backgroundColor": "transparent",
+          "borderBottomLeftRadius": undefined,
+          "borderBottomRightRadius": undefined,
+          "borderRadius": 4,
+          "borderTopLeftRadius": undefined,
+          "borderTopRightRadius": undefined,
+          "bottom": 0,
+          "left": 0,
+          "opacity": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
+      }
+    />
     <Text
       style={
         [
@@ -203,7 +199,7 @@ exports[`Story Snapshots: Separators should match snapshot 1`] = `
     >
       Less options
     </Text>
-  </View>,
+  </RNGestureHandlerButton>,
   <View
     accessible={true}
     style={
@@ -270,7 +266,7 @@ exports[`Story Snapshots: ServiceList should match snapshot 1`] = `
     collapsable={false}
     delayLongPress={600}
     enabled={true}
-    handlerTag={1}
+    handlerTag={3}
     handlerType="NativeViewGestureHandler"
     innerRef={null}
     onActiveStateChange={[Function]}
@@ -406,7 +402,7 @@ exports[`Story Snapshots: ServiceList should match snapshot 1`] = `
     collapsable={false}
     delayLongPress={600}
     enabled={true}
-    handlerTag={2}
+    handlerTag={4}
     handlerType="NativeViewGestureHandler"
     innerRef={null}
     onActiveStateChange={[Function]}
@@ -542,7 +538,7 @@ exports[`Story Snapshots: ServiceList should match snapshot 1`] = `
     collapsable={false}
     delayLongPress={600}
     enabled={true}
-    handlerTag={3}
+    handlerTag={5}
     handlerType="NativeViewGestureHandler"
     innerRef={null}
     onActiveStateChange={[Function]}
@@ -678,7 +674,7 @@ exports[`Story Snapshots: ServiceList should match snapshot 1`] = `
     collapsable={false}
     delayLongPress={600}
     enabled={true}
-    handlerTag={4}
+    handlerTag={6}
     handlerType="NativeViewGestureHandler"
     innerRef={null}
     onActiveStateChange={[Function]}
