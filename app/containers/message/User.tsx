@@ -63,6 +63,7 @@ interface IMessageUser {
 	isReadReceiptEnabled?: boolean;
 	unread?: boolean;
 	pinned?: boolean;
+	starred?: boolean;
 	isTranslated: boolean;
 }
 
@@ -130,6 +131,7 @@ const User = React.memo(
 						isReadReceiptEnabled={props.isReadReceiptEnabled}
 						unread={props.unread}
 						pinned={props.pinned}
+						starred={props.starred}
 						isTranslated={isTranslated}
 					/>
 				</View>
