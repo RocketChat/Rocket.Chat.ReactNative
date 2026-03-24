@@ -3453,34 +3453,6 @@ PODS:
     - SDWebImage/Core (= 5.21.5)
   - SDWebImage/Core (5.21.5)
   - SDWebImageAVIFCoder (0.11.1):
-  - RNTrueSheet (3.7.3):
-    - DoubleConversion
-    - glog
-    - hermes-engine
-    - RCT-Folly (= 2024.11.18.00)
-    - RCTRequired
-    - RCTTypeSafety
-    - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-hermes
-    - React-ImageManager
-    - React-jsi
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-renderercss
-    - React-rendererdebug
-    - React-utils
-    - ReactCodegen
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - Yoga
-  - SDWebImage (5.21.0):
-    - SDWebImage/Core (= 5.21.0)
-  - SDWebImage/Core (5.21.0)
-  - SDWebImageAVIFCoder (0.11.0):
     - libavif/core (>= 0.11.0)
     - SDWebImage (~> 5.10)
   - SDWebImageSVGCoder (1.7.0):
@@ -3908,6 +3880,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-svg"
   RNTrueSheet:
     :path: "../node_modules/@lodev09/react-native-true-sheet"
+  RNWorklets:
+    :path: "../node_modules/react-native-worklets"
   simdjson:
     :path: "../node_modules/@nozbe/simdjson"
   WatermelonDB:
@@ -4053,21 +4027,22 @@ SPEC CHECKSUMS:
   RNGestureHandler: b8d2e75c2e88fc2a1f6be3b3beeeed80b88fa37d
   RNImageCropPicker: 0a63af4b79e514c1edd6c3152f19300c5ed85312
   RNLocalize: ca86348d88b9a89da0e700af58d428ab3f343c4e
-  RNReanimated: f52ccd5ceea2bae48d7421eec89b3f0c10d7b642
-  RNScreens: b13e4c45f0406f33986a39c0d8da0324bff94435
-  RNSVG: 680e961f640e381aab730a04b2371969686ed9f7
-  RNTrueSheet: e9ee7ff82a7854295eac6fc225e54f1539e6cd7b
-  SDWebImage: f84b0feeb08d2d11e6a9b843cb06d75ebf5b8868
-  SDWebImageAVIFCoder: 00310d246aab3232ce77f1d8f0076f8c4b021d90
+  RNReanimated: e1690cdd7f215cfb96a3b7986b81889867dfdb4f
+  RNScreens: 2e9c41cd099b1ca50136af8d57c3594214d0086a
+  RNSVG: 94a1be05fab4043354bcf7104f0f9b0e2231ef05
+  RNTrueSheet: 53f29088da313dabff8b81d7c4d52afd8e609cfa
+  RNWorklets: ab618bf7d1c7fd2cb793b9f0f39c3e29274b3ebf
+  SDWebImage: e9c98383c7572d713c1a0d7dd2783b10599b9838
+  SDWebImageAVIFCoder: afe194a084e851f70228e4be35ef651df0fc5c57
   SDWebImageSVGCoder: 15a300a97ec1c8ac958f009c02220ac0402e936c
   SDWebImageWebPCoder: e38c0a70396191361d60c092933e22c20d5b1380
   simdjson: 7bb9e33d87737cec966e7b427773c67baa4458fe
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   TOCropViewController: 80b8985ad794298fb69d3341de183f33d1853654
   WatermelonDB: 4c846c8cb94eef3cba90fa034d15310163226703
-  Yoga: cc4a6600d61e4e9276e860d4d68eebb834a050ba
+  Yoga: 1e91d83a5286cfd3b725eade59274c92270540d4
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
 PODFILE CHECKSUM: 199f6fbbe6fb415c822cca992e6152000ac55b3e
 
-COCOAPODS: 1.16.2
+COCOAPODS: 1.15.2
