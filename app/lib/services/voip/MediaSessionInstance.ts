@@ -16,7 +16,6 @@ import { store } from '../../store/auxStore';
 import sdk from '../sdk';
 import Navigation from '../../navigation/appNavigation';
 import { parseStringToIceServers } from './parseStringToIceServers';
-import NativeVoipModule from '../../native/NativeVoip';
 import type { IceServer } from '../../../definitions/Voip';
 import type { IDDPMessage } from '../../../definitions/IDDPMessage';
 import type { ISubscription, TSubscriptionModel } from '../../../definitions';
@@ -72,21 +71,7 @@ class MediaSessionInstance {
 		});
 
 		this.instance?.on('registered', ({ activeCalls }) => {
-			// prevent JS and native DDP clients from interfering with each other
-			// TODO: check if this is needed
-			NativeVoipModule.stopNativeDDPClient();
 			console.log('[VoIP] Media session registered, activeCalls:', activeCalls);
-
-			// if (activeCalls.length === 0) {
-			// 	return;
-			// }
-
-			// // fetch call by id and answer it
-			// const call = this.instance?.getCallData(activeCalls[0]);
-			// console.log('[VoIP] Registered call:', call);
-			// // if (call) {
-			// this.answerCall(activeCalls[0]);
-			// // }
 		});
 
 		this.instance?.on('newCall', ({ call }: { call: IClientMediaCall }) => {
@@ -95,14 +80,6 @@ class MediaSessionInstance {
 					console.log(`📊 ${oldState} → ${call.state}`);
 					console.log('🤙 [VoIP] New call data:', call);
 				});
-
-				// const existingCallId = useCallStore.getState().callId;
-				// console.log('[VoIP] Existing call Id:', existingCallId);
-				// // // TODO: need to answer the call here?
-				// if (existingCallId) {
-				// 	this.answerCall(existingCallId);
-				// 	return;
-				// }
 
 				if (call.role === 'caller') {
 					useCallStore.getState().setCall(call);

@@ -10,19 +10,13 @@ interface IParams {
 	fullURL: string;
 	type: string;
 	token: string;
+	callId?: string;
+	username?: string;
+	voipAcceptFailed?: boolean;
 }
 
 interface IDeepLinkingOpen extends Action {
 	params: Partial<IParams>;
-}
-
-interface IVoipCallParams {
-	callId: string;
-	host: string;
-}
-
-interface IVoipCallOpen extends Action {
-	params: IVoipCallParams;
 }
 
 export function deepLinkingOpen(params: Partial<IParams>): IDeepLinkingOpen {
@@ -39,13 +33,3 @@ export function deepLinkingClickCallPush(params: any): IDeepLinkingOpen {
 	};
 }
 
-/**
- * Action to handle VoIP call from push notification.
- * Triggers server switching if needed and processes the incoming call.
- */
-export function voipCallOpen(params: IVoipCallParams): IVoipCallOpen {
-	return {
-		type: DEEP_LINKING.VOIP_CALL,
-		params
-	};
-}

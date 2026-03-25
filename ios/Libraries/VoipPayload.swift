@@ -67,7 +67,8 @@ private struct RemoteVoipPayload {
             type: payloadType,
             hostName: payloadHostName,
             avatarUrl: caller?.avatarUrl,
-            createdAt: payloadCreatedAt
+            createdAt: payloadCreatedAt,
+            voipAcceptFailed: false
         )
     }
 }
@@ -87,6 +88,7 @@ public class VoipPayload: NSObject {
     @objc public let hostName: String
     @objc public let avatarUrl: String?
     @objc public let createdAt: String?
+    @objc public let voipAcceptFailed: Bool
 
     private var createdAtDate: Date? {
         return Self.parseCreatedAt(createdAt)
@@ -124,7 +126,18 @@ public class VoipPayload: NSObject {
         return Int(hash)
     }
 
-    init(callId: String, callUUID: UUID, caller: String, username: String, host: String, type: String, hostName: String, avatarUrl: String?, createdAt: String?) {
+    init(
+        callId: String,
+        callUUID: UUID,
+        caller: String,
+        username: String,
+        host: String,
+        type: String,
+        hostName: String,
+        avatarUrl: String?,
+        createdAt: String?,
+        voipAcceptFailed: Bool = false
+    ) {
         self.callId = callId
         self.callUUID = callUUID
         self.caller = caller
@@ -134,6 +147,7 @@ public class VoipPayload: NSObject {
         self.hostName = hostName
         self.avatarUrl = avatarUrl
         self.createdAt = createdAt
+        self.voipAcceptFailed = voipAcceptFailed
         super.init()
     }
 
@@ -144,7 +158,7 @@ public class VoipPayload: NSObject {
 
     @objc
     public func toDictionary() -> [String: Any] {
-        return [
+        var dict: [String: Any] = [
             "callId": callId,
             "caller": caller,
             "username": username,
@@ -155,6 +169,10 @@ public class VoipPayload: NSObject {
             "createdAt": createdAt ?? NSNull(),
             "notificationId": notificationId
         ]
+        if voipAcceptFailed {
+            dict["voipAcceptFailed"] = true
+        }
+        return dict
     }
 
     public func remainingLifetime(now: Date = Date()) -> TimeInterval? {

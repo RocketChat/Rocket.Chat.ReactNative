@@ -221,10 +221,15 @@ public final class VoipService: NSObject {
         incomingCallTimeouts.removeValue(forKey: callId)?.cancel()
     }
 
+    private static func clearNativeAcceptDedupe(for callId: String) {
+        nativeAcceptHandledCallIds.remove(callId)
+    }
+
     private static func handleIncomingCallTimeout(for payload: VoipPayload) {
         incomingCallTimeouts.removeValue(forKey: payload.callId)
         clearTrackedIncomingCall(for: payload.callUUID)
         stopDDPClientInternal()
+        clearNativeAcceptDedupe(for: payload.callId)
 
         let callId = payload.callId
         let callUUID = payload.callUUID
@@ -303,6 +308,7 @@ public final class VoipService: NSObject {
                     return
                 }
                 clearTrackedIncomingCall(for: payload.callUUID)
+                clearNativeAcceptDedupe(for: callId)
                 RNCallKeep.endCall(withUUID: callId, reason: 3)
                 cancelIncomingCallTimeout(for: callId)
                 stopDDPClientInternal()
@@ -419,9 +425,46 @@ public final class VoipService: NSObject {
         cancelIncomingCallTimeout(for: payload.callId)
 
         let finishAccept: (Bool) -> Void = { success in
-            storeInitialEvents(payload)
+            stopDDPClientInternal()
             if success {
-                stopDDPClientInternal()
+                storeInitialEvents(payload)
+            } else {
+                clearNativeAcceptDedupe(for: payload.callId)
+                RNCallKeep.endCall(withUUID: payload.callId, reason: 6)
+                let failedPayload = VoipPayload(
+                    callId: payload.callId,
+                    callUUID: payload.callUUID,
+                    caller: payload.caller,
+                    username: payload.username,
+                    host: payload.host,
+                    type: payload.type,
+                    hostName: payload.hostName,
+                    avatarUrl: payload.avatarUrl,
+                    createdAt: payload.createdAt,
+                    voipAcceptFailed: true
+                )
+                storeInitialEvents(failedPayload)
+                var acceptFailedUserInfo: [String: Any] = [
+                    "callId": failedPayload.callId,
+                    "caller": failedPayload.caller,
+                    "username": failedPayload.username,
+                    "host": failedPayload.host,
+                    "type": failedPayload.type,
+                    "hostName": failedPayload.hostName,
+                    "notificationId": failedPayload.notificationId,
+                    "voipAcceptFailed": true
+                ]
+                if let avatarUrl = failedPayload.avatarUrl {
+                    acceptFailedUserInfo["avatarUrl"] = avatarUrl
+                }
+                if let createdAt = failedPayload.createdAt {
+                    acceptFailedUserInfo["createdAt"] = createdAt
+                }
+                NotificationCenter.default.post(
+                    name: NSNotification.Name("VoipAcceptFailed"),
+                    object: nil,
+                    userInfo: acceptFailedUserInfo
+                )
             }
         }
 
@@ -563,6 +606,7 @@ public final class VoipService: NSObject {
 
         observedIncomingCall = nil
         cancelIncomingCallTimeout(for: observedCall.payload.callId)
+        clearNativeAcceptDedupe(for: observedCall.payload.callId)
 
         if isDdpLoggedIn {
             sendRejectSignal(payload: observedCall.payload)

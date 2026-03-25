@@ -41,6 +41,8 @@ data class VoipPayload(
 
     @SerializedName("createdAt")
     val createdAt: String?,
+
+    val voipAcceptFailed: Boolean = false,
 ) {
     val notificationId: Int = callId.hashCode()
     val pushType: VoipPushType?
@@ -86,6 +88,9 @@ data class VoipPayload(
             putString("avatarUrl", avatarUrl)
             putString("createdAt", createdAt)
             putInt("notificationId", notificationId)
+            if (voipAcceptFailed) {
+                putBoolean("voipAcceptFailed", true)
+            }
         }
     }
 
@@ -164,6 +169,7 @@ data class VoipPayload(
                     hostName = hostName.orEmpty(),
                     avatarUrl = caller?.avatarUrl,
                     createdAt = payloadCreatedAt,
+                    voipAcceptFailed = false,
                 )
             }
         }
@@ -188,7 +194,8 @@ data class VoipPayload(
                 return null
             }
 
-            return VoipPayload(callId, caller, username, host, type, hostName, avatarUrl, createdAt)
+            val voipAcceptFailed = bundle.getBoolean("voipAcceptFailed", false)
+            return VoipPayload(callId, caller, username, host, type, hostName, avatarUrl, createdAt, voipAcceptFailed)
         }
 
         private fun parseRemotePayload(data: Map<String, String>): RemoteVoipPayload? {

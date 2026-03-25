@@ -171,7 +171,7 @@ class VoipNotification(private val context: Context) {
             val headsUpAccept = intent.action == ACTION_VOIP_ACCEPT_HEADS_UP
             if (headsUpAccept) {
                 intent.action = Intent.ACTION_MAIN
-                prepareMainActivityForIncomingVoip(context, payload)
+                prepareMainActivityForIncomingVoip(context, payload, storePayloadForJs = false)
                 handleAcceptAction(context, payload, skipLaunchMainActivity = true)
                 intent.removeExtra("voipAction")
                 return true
@@ -190,11 +190,17 @@ class VoipNotification(private val context: Context) {
          * Prepares MainActivity after launch with incoming-call context: cancel notification and timeout,
          * stash payload for JS, and unlock/show above keyguard when [context] is an [Activity].
          */
-        private fun prepareMainActivityForIncomingVoip(context: Context, payload: VoipPayload) {
+        private fun prepareMainActivityForIncomingVoip(
+            context: Context,
+            payload: VoipPayload,
+            storePayloadForJs: Boolean = true
+        ) {
             Log.d(TAG, "prepareMainActivityForIncomingVoip — callId: ${payload.callId}")
             cancelById(context, payload.notificationId)
             cancelTimeout(payload.callId)
-            VoipModule.storeInitialEvents(payload)
+            if (storePayloadForJs) {
+                VoipModule.storeInitialEvents(payload)
+            }
 
             if (context is Activity && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
                 context.setShowWhenLocked(true)
@@ -221,10 +227,14 @@ class VoipNotification(private val context: Context) {
 
             val appCtx = context.applicationContext
             fun finish(ddpSuccess: Boolean) {
+                stopDDPClientInternal()
                 if (ddpSuccess) {
                     answerIncomingCall(payload.callId)
+                    VoipModule.storeInitialEvents(payload)
                 } else {
                     Log.d(TAG, "Native accept did not succeed over DDP for ${payload.callId}; opening app for JS recovery")
+                    disconnectIncomingCall(payload.callId, false)
+                    VoipModule.storeAcceptFailureForJs(payload)
                 }
                 cancelById(appCtx, payload.notificationId)
                 LocalBroadcastManager.getInstance(appCtx).sendBroadcast(
@@ -232,7 +242,6 @@ class VoipNotification(private val context: Context) {
                         putExtras(payload.toBundle())
                     }
                 )
-                VoipModule.storeInitialEvents(payload)
                 if (!skipLaunchMainActivity) {
                     launchMainActivityForVoip(context, payload)
                 }
@@ -248,16 +257,10 @@ class VoipNotification(private val context: Context) {
             if (isDdpLoggedIn) {
                 sendAcceptSignal(context, payload) { success ->
                     finish(success)
-                    if (success) {
-                        stopDDPClientInternal()
-                    }
                 }
             } else {
                 queueAcceptSignal(context, payload) { success ->
                     finish(success)
-                    if (success) {
-                        stopDDPClientInternal()
-                    }
                 }
             }
         }
