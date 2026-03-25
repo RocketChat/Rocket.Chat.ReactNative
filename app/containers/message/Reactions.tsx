@@ -39,6 +39,8 @@ const AddReaction = React.memo(({ theme }: { theme: TSupportedThemes }) => {
 			onPress={reactionInit}
 			key='message-add-reaction'
 			testID='message-add-reaction'
+			accessibilityRole='button'
+			accessibilityLabel='Add reaction'
 			style={[styles.reactionButton, { backgroundColor: themes[theme].surfaceRoom }]}
 			hitSlop={BUTTON_HIT_SLOP}>
 			<View style={[styles.reactionContainer, { borderColor: themes[theme].strokeLight, height }]}>
@@ -61,6 +63,9 @@ const Reaction = React.memo(({ reaction, getCustomEmoji, theme }: IMessageReacti
 			onLongPress={onReactionLongPress}
 			key={reaction.emoji}
 			testID={`message-reaction-${reaction.emoji}`}
+			accessibilityRole='button'
+			accessibilityLabel={`${reaction.emoji}, ${reaction.usernames.length}`}
+			accessibilityState={{ selected: reacted }}
 			style={[styles.reactionButton, { backgroundColor: reacted ? themes[theme].surfaceNeutral : themes[theme].surfaceRoom }]}
 			hitSlop={BUTTON_HIT_SLOP}>
 			<View

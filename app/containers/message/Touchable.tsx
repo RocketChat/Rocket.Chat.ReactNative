@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { Pressable, type PressableProps } from 'react-native';
+import { withKeyboardFocus } from 'react-native-external-keyboard';
 
 import MessageContext from './Context';
 
@@ -8,15 +9,23 @@ interface IProps extends PressableProps {
 	onLongPress?: () => void;
 }
 
+const KeyboardPressable = withKeyboardFocus(Pressable);
+
 const RCTouchable: React.FC<IProps> = React.memo(({ children, ...props }) => {
 	'use memo';
 
 	const { onLongPress } = useContext(MessageContext);
+	const { onHoverIn, onHoverOut, ...rest } = props;
 
 	return (
-		<Pressable onLongPress={onLongPress} {...props}>
+		<KeyboardPressable
+			focusable
+			onLongPress={onLongPress}
+			onHoverIn={onHoverIn || undefined}
+			onHoverOut={onHoverOut || onLongPress}
+			{...rest}>
 			{children}
-		</Pressable>
+		</KeyboardPressable>
 	);
 });
 
