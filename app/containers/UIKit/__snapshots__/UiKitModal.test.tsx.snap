@@ -1025,7 +1025,7 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
       onGestureHandlerEvent={[Function]}
       onGestureHandlerStateChange={[Function]}
       onPress={[Function]}
-      rippleColor="rgba(255, 255, 255, 0.2)"
+      rippleColor="transparent"
       style={
         [
           {
@@ -1098,7 +1098,7 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
       onGestureHandlerEvent={[Function]}
       onGestureHandlerStateChange={[Function]}
       onPress={[Function]}
-      rippleColor="rgba(255, 255, 255, 0.2)"
+      rippleColor="transparent"
       style={
         [
           {
@@ -1171,7 +1171,7 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
       onGestureHandlerEvent={[Function]}
       onGestureHandlerStateChange={[Function]}
       onPress={[Function]}
-      rippleColor="rgba(0, 0, 0, 0.12)"
+      rippleColor="transparent"
       style={
         [
           {
@@ -1244,7 +1244,7 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
       onGestureHandlerEvent={[Function]}
       onGestureHandlerStateChange={[Function]}
       onPress={[Function]}
-      rippleColor="rgba(255, 255, 255, 0.2)"
+      rippleColor="transparent"
       style={
         [
           {
@@ -1317,7 +1317,7 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
       onGestureHandlerEvent={[Function]}
       onGestureHandlerStateChange={[Function]}
       onPress={[Function]}
-      rippleColor="rgba(255, 255, 255, 0.2)"
+      rippleColor="transparent"
       style={
         [
           {
@@ -1397,7 +1397,7 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
       onGestureHandlerEvent={[Function]}
       onGestureHandlerStateChange={[Function]}
       onPress={[Function]}
-      rippleColor="rgba(255, 255, 255, 0.2)"
+      rippleColor="transparent"
       style={
         [
           {
@@ -1477,7 +1477,7 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
       onGestureHandlerEvent={[Function]}
       onGestureHandlerStateChange={[Function]}
       onPress={[Function]}
-      rippleColor="rgba(255, 255, 255, 0.2)"
+      rippleColor="transparent"
       style={
         [
           {
@@ -1557,7 +1557,7 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
       onGestureHandlerEvent={[Function]}
       onGestureHandlerStateChange={[Function]}
       onPress={[Function]}
-      rippleColor="rgba(255, 255, 255, 0.2)"
+      rippleColor="transparent"
       style={
         [
           {
@@ -1629,7 +1629,7 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
     onGestureHandlerEvent={[Function]}
     onGestureHandlerStateChange={[Function]}
     onPress={[Function]}
-    rippleColor="rgba(255, 255, 255, 0.2)"
+    rippleColor="transparent"
     style={
       [
         {
@@ -3121,7 +3121,7 @@ exports[`Story Snapshots: ModalFormTextArea should match snapshot 1`] = `
       onGestureHandlerEvent={[Function]}
       onGestureHandlerStateChange={[Function]}
       onPress={[Function]}
-      rippleColor="rgba(255, 255, 255, 0.2)"
+      rippleColor="transparent"
       style={
         [
           {

@@ -15,7 +15,7 @@ exports[`Story Snapshots: CustomButton should match snapshot 1`] = `
   onGestureHandlerEvent={[Function]}
   onGestureHandlerStateChange={[Function]}
   onPress={[Function]}
-  rippleColor="rgba(255, 255, 255, 0.2)"
+  rippleColor="transparent"
   style={
     [
       {
@@ -95,7 +95,7 @@ exports[`Story Snapshots: DisabledButton should match snapshot 1`] = `
   onGestureHandlerEvent={[Function]}
   onGestureHandlerStateChange={[Function]}
   onPress={[Function]}
-  rippleColor="rgba(255, 255, 255, 0.2)"
+  rippleColor="transparent"
   style={
     [
       {
@@ -170,7 +170,7 @@ exports[`Story Snapshots: DisabledLoadingButton should match snapshot 1`] = `
   onGestureHandlerEvent={[Function]}
   onGestureHandlerStateChange={[Function]}
   onPress={[Function]}
-  rippleColor="rgba(255, 255, 255, 0.2)"
+  rippleColor="transparent"
   style={
     [
       {
@@ -234,7 +234,7 @@ exports[`Story Snapshots: LoadingButton should match snapshot 1`] = `
   onGestureHandlerEvent={[Function]}
   onGestureHandlerStateChange={[Function]}
   onPress={[Function]}
-  rippleColor="rgba(255, 255, 255, 0.2)"
+  rippleColor="transparent"
   style={
     [
       {
@@ -298,7 +298,7 @@ exports[`Story Snapshots: PrimaryButton should match snapshot 1`] = `
   onGestureHandlerEvent={[Function]}
   onGestureHandlerStateChange={[Function]}
   onPress={[Function]}
-  rippleColor="rgba(255, 255, 255, 0.2)"
+  rippleColor="transparent"
   style={
     [
       {
@@ -373,7 +373,7 @@ exports[`Story Snapshots: SecondaryButton should match snapshot 1`] = `
   onGestureHandlerEvent={[Function]}
   onGestureHandlerStateChange={[Function]}
   onPress={[Function]}
-  rippleColor="rgba(0, 0, 0, 0.12)"
+  rippleColor="transparent"
   style={
     [
       {
@@ -448,7 +448,7 @@ exports[`Story Snapshots: SmallButton should match snapshot 1`] = `
   onGestureHandlerEvent={[Function]}
   onGestureHandlerStateChange={[Function]}
   onPress={[Function]}
-  rippleColor="rgba(255, 255, 255, 0.2)"
+  rippleColor="transparent"
   style={
     [
       {

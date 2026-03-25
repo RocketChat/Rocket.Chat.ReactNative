@@ -16,7 +16,7 @@ exports[`Story Snapshots: Separators should match snapshot 1`] = `
     onGestureHandlerEvent={[Function]}
     onGestureHandlerStateChange={[Function]}
     onPress={[Function]}
-    rippleColor="rgba(0, 0, 0, 0.12)"
+    rippleColor="transparent"
     style={
       [
         {
@@ -143,7 +143,7 @@ exports[`Story Snapshots: Separators should match snapshot 1`] = `
     onGestureHandlerEvent={[Function]}
     onGestureHandlerStateChange={[Function]}
     onPress={[Function]}
-    rippleColor="rgba(0, 0, 0, 0.12)"
+    rippleColor="transparent"
     style={
       [
         {
