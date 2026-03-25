@@ -17,7 +17,7 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
       onGestureHandlerEvent={[Function]}
       onGestureHandlerStateChange={[Function]}
       onPress={[Function]}
-      rippleColor="rgba(255, 255, 255, 0.2)"
+      rippleColor="transparent"
       style={
         [
           {
@@ -90,7 +90,7 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
       onGestureHandlerEvent={[Function]}
       onGestureHandlerStateChange={[Function]}
       onPress={[Function]}
-      rippleColor="rgba(0, 0, 0, 0.12)"
+      rippleColor="transparent"
       style={
         [
           {
@@ -163,7 +163,7 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
       onGestureHandlerEvent={[Function]}
       onGestureHandlerStateChange={[Function]}
       onPress={[Function]}
-      rippleColor="rgba(0, 0, 0, 0.12)"
+      rippleColor="transparent"
       style={
         [
           {
@@ -236,7 +236,7 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
       onGestureHandlerEvent={[Function]}
       onGestureHandlerStateChange={[Function]}
       onPress={[Function]}
-      rippleColor="rgba(0, 0, 0, 0.12)"
+      rippleColor="transparent"
       style={
         [
           {
@@ -309,7 +309,7 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
       onGestureHandlerEvent={[Function]}
       onGestureHandlerStateChange={[Function]}
       onPress={[Function]}
-      rippleColor="rgba(0, 0, 0, 0.12)"
+      rippleColor="transparent"
       style={
         [
           {
@@ -389,7 +389,7 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
       onGestureHandlerEvent={[Function]}
       onGestureHandlerStateChange={[Function]}
       onPress={[Function]}
-      rippleColor="rgba(0, 0, 0, 0.12)"
+      rippleColor="transparent"
       style={
         [
           {
@@ -469,7 +469,7 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
       onGestureHandlerEvent={[Function]}
       onGestureHandlerStateChange={[Function]}
       onPress={[Function]}
-      rippleColor="rgba(0, 0, 0, 0.12)"
+      rippleColor="transparent"
       style={
         [
           {
@@ -541,7 +541,7 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
     onGestureHandlerEvent={[Function]}
     onGestureHandlerStateChange={[Function]}
     onPress={[Function]}
-    rippleColor="rgba(255, 255, 255, 0.2)"
+    rippleColor="transparent"
     style={
       [
         {
@@ -4891,7 +4891,7 @@ exports[`Story Snapshots: SectionButton should match snapshot 1`] = `
     onGestureHandlerEvent={[Function]}
     onGestureHandlerStateChange={[Function]}
     onPress={[Function]}
-    rippleColor="rgba(255, 255, 255, 0.2)"
+    rippleColor="transparent"
     style={
       [
         {
@@ -5045,7 +5045,7 @@ exports[`Story Snapshots: SectionDatePicker should match snapshot 1`] = `
     onGestureHandlerEvent={[Function]}
     onGestureHandlerStateChange={[Function]}
     onPress={[Function]}
-    rippleColor="rgba(255, 255, 255, 0.2)"
+    rippleColor="transparent"
     style={
       [
         {
@@ -5406,7 +5406,7 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
       onGestureHandlerEvent={[Function]}
       onGestureHandlerStateChange={[Function]}
       onPress={[Function]}
-      rippleColor="rgba(255, 255, 255, 0.2)"
+      rippleColor="transparent"
       style={
         [
           {
@@ -5557,7 +5557,7 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
       onGestureHandlerEvent={[Function]}
       onGestureHandlerStateChange={[Function]}
       onPress={[Function]}
-      rippleColor="rgba(255, 255, 255, 0.2)"
+      rippleColor="transparent"
       style={
         [
           {

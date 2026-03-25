@@ -20,9 +20,6 @@ interface IButtonProps extends Omit<RectButtonProps, 'children' | 'enabled'> {
 	disabled?: boolean;
 }
 
-const RIPPLE_PRIMARY = 'rgba(255, 255, 255, 0.2)';
-const RIPPLE_SECONDARY = 'rgba(0, 0, 0, 0.12)';
-
 const styles = StyleSheet.create({
 	container: {
 		marginBottom: 12,
@@ -90,15 +87,14 @@ const Button: React.FC<IButtonProps> = ({
 		styleText
 	];
 
-	const rippleColor = isPrimary ? RIPPLE_PRIMARY : RIPPLE_SECONDARY;
-
 	return (
 		<RectButton
 			onPress={onPress}
 			enabled={!isDisabled}
 			activeOpacity={0.2}
 			underlayColor='transparent'
-			rippleColor={rippleColor}
+			// No Android ink ripple; matches Pressable with `android_ripple` disabled.
+			rippleColor='transparent'
 			style={containerStyle}
 			accessibilityLabel={title}
 			accessibilityRole='button'

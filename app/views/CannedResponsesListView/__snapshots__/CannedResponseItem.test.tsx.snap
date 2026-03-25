@@ -138,7 +138,7 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
           onGestureHandlerEvent={[Function]}
           onGestureHandlerStateChange={[Function]}
           onPress={[Function]}
-          rippleColor="rgba(255, 255, 255, 0.2)"
+          rippleColor="transparent"
           style={
             [
               {
@@ -370,7 +370,7 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
           onGestureHandlerEvent={[Function]}
           onGestureHandlerStateChange={[Function]}
           onPress={[Function]}
-          rippleColor="rgba(255, 255, 255, 0.2)"
+          rippleColor="transparent"
           style={
             [
               {
