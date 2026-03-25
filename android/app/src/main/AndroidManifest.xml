@@ -133,11 +133,6 @@
             android:enabled="true"
             android:exported="false" />
 
-        <service
-            android:name="chat.rocket.reactnative.voip.VoipForegroundService"
-            android:exported="false"
-            android:foregroundServiceType="phoneCall" />
-
         <service android:name="io.wazo.callkeep.VoiceConnectionService"
             android:label="Wazo"
             android:permission="android.permission.BIND_TELECOM_CONNECTION_SERVICE"
