@@ -1014,44 +1014,53 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Primary Action"
       accessibilityRole="button"
-      accessible={true}
+      activeOpacity={0.105}
       collapsable={false}
+      delayLongPress={600}
       enabled={true}
-      hitSlop={
-        {
-          "bottom": 0,
-          "left": 0,
-          "right": 0,
-          "top": 0,
-        }
-      }
-      onLayout={[Function]}
-      rippleColor="transparent"
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
       style={
         [
-          {},
-          [
-            {
-              "justifyContent": "center",
-              "paddingHorizontal": 16,
-              "paddingVertical": 14,
-            },
-            {
-              "borderRadius": 4,
-              "marginBottom": 12,
-            },
-            {
-              "backgroundColor": "#156FF5",
-            },
-            {},
-            {
-              "marginBottom": 16,
-            },
-          ],
+          {
+            "backgroundColor": "#156FF5",
+            "borderRadius": 4,
+            "justifyContent": "center",
+            "marginBottom": 16,
+            "paddingHorizontal": 16,
+            "paddingVertical": 14,
+          },
+          {
+            "cursor": undefined,
+          },
         ]
       }
-      testOnly_onPress={[Function]}
+      underlayColor="black"
     >
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "black",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": 4,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
       <Text
         style={
           [
@@ -1077,44 +1086,53 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Secondary"
       accessibilityRole="button"
-      accessible={true}
+      activeOpacity={0.105}
       collapsable={false}
+      delayLongPress={600}
       enabled={true}
-      hitSlop={
-        {
-          "bottom": 0,
-          "left": 0,
-          "right": 0,
-          "top": 0,
-        }
-      }
-      onLayout={[Function]}
-      rippleColor="transparent"
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
       style={
         [
-          {},
-          [
-            {
-              "justifyContent": "center",
-              "paddingHorizontal": 16,
-              "paddingVertical": 14,
-            },
-            {
-              "borderRadius": 4,
-              "marginBottom": 12,
-            },
-            {
-              "backgroundColor": "#156FF5",
-            },
-            {},
-            {
-              "marginBottom": 16,
-            },
-          ],
+          {
+            "backgroundColor": "#156FF5",
+            "borderRadius": 4,
+            "justifyContent": "center",
+            "marginBottom": 16,
+            "paddingHorizontal": 16,
+            "paddingVertical": 14,
+          },
+          {
+            "cursor": undefined,
+          },
         ]
       }
-      testOnly_onPress={[Function]}
+      underlayColor="black"
     >
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "black",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": 4,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
       <Text
         style={
           [
@@ -1140,44 +1158,53 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Danger Action"
       accessibilityRole="button"
-      accessible={true}
+      activeOpacity={0.105}
       collapsable={false}
+      delayLongPress={600}
       enabled={true}
-      hitSlop={
-        {
-          "bottom": 0,
-          "left": 0,
-          "right": 0,
-          "top": 0,
-        }
-      }
-      onLayout={[Function]}
-      rippleColor="transparent"
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
       style={
         [
-          {},
-          [
-            {
-              "justifyContent": "center",
-              "paddingHorizontal": 16,
-              "paddingVertical": 14,
-            },
-            {
-              "borderRadius": 4,
-              "marginBottom": 12,
-            },
-            {
-              "backgroundColor": "#E4E7EA",
-            },
-            {},
-            {
-              "marginBottom": 16,
-            },
-          ],
+          {
+            "backgroundColor": "#E4E7EA",
+            "borderRadius": 4,
+            "justifyContent": "center",
+            "marginBottom": 16,
+            "paddingHorizontal": 16,
+            "paddingVertical": 14,
+          },
+          {
+            "cursor": undefined,
+          },
         ]
       }
-      testOnly_onPress={[Function]}
+      underlayColor="black"
     >
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "black",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": 4,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
       <Text
         style={
           [
@@ -1203,44 +1230,53 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Button 4"
       accessibilityRole="button"
-      accessible={true}
+      activeOpacity={0.105}
       collapsable={false}
+      delayLongPress={600}
       enabled={true}
-      hitSlop={
-        {
-          "bottom": 0,
-          "left": 0,
-          "right": 0,
-          "top": 0,
-        }
-      }
-      onLayout={[Function]}
-      rippleColor="transparent"
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
       style={
         [
-          {},
-          [
-            {
-              "justifyContent": "center",
-              "paddingHorizontal": 16,
-              "paddingVertical": 14,
-            },
-            {
-              "borderRadius": 4,
-              "marginBottom": 12,
-            },
-            {
-              "backgroundColor": "#156FF5",
-            },
-            {},
-            {
-              "marginBottom": 16,
-            },
-          ],
+          {
+            "backgroundColor": "#156FF5",
+            "borderRadius": 4,
+            "justifyContent": "center",
+            "marginBottom": 16,
+            "paddingHorizontal": 16,
+            "paddingVertical": 14,
+          },
+          {
+            "cursor": undefined,
+          },
         ]
       }
-      testOnly_onPress={[Function]}
+      underlayColor="black"
     >
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "black",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": 4,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
       <Text
         style={
           [
@@ -1266,44 +1302,53 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Button 5"
       accessibilityRole="button"
-      accessible={true}
+      activeOpacity={0.105}
       collapsable={false}
+      delayLongPress={600}
       enabled={true}
-      hitSlop={
-        {
-          "bottom": 0,
-          "left": 0,
-          "right": 0,
-          "top": 0,
-        }
-      }
-      onLayout={[Function]}
-      rippleColor="transparent"
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
       style={
         [
-          {},
-          [
-            {
-              "justifyContent": "center",
-              "paddingHorizontal": 16,
-              "paddingVertical": 14,
-            },
-            {
-              "borderRadius": 4,
-              "marginBottom": 12,
-            },
-            {
-              "backgroundColor": "#156FF5",
-            },
-            {},
-            {
-              "marginBottom": 16,
-            },
-          ],
+          {
+            "backgroundColor": "#156FF5",
+            "borderRadius": 4,
+            "justifyContent": "center",
+            "marginBottom": 16,
+            "paddingHorizontal": 16,
+            "paddingVertical": 14,
+          },
+          {
+            "cursor": undefined,
+          },
         ]
       }
-      testOnly_onPress={[Function]}
+      underlayColor="black"
     >
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "black",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": 4,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
       <Text
         style={
           [
@@ -1336,44 +1381,53 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Button 6 - Hidden"
       accessibilityRole="button"
-      accessible={true}
+      activeOpacity={0.105}
       collapsable={false}
+      delayLongPress={600}
       enabled={true}
-      hitSlop={
-        {
-          "bottom": 0,
-          "left": 0,
-          "right": 0,
-          "top": 0,
-        }
-      }
-      onLayout={[Function]}
-      rippleColor="transparent"
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
       style={
         [
-          {},
-          [
-            {
-              "justifyContent": "center",
-              "paddingHorizontal": 16,
-              "paddingVertical": 14,
-            },
-            {
-              "borderRadius": 4,
-              "marginBottom": 12,
-            },
-            {
-              "backgroundColor": "#156FF5",
-            },
-            {},
-            {
-              "marginBottom": 16,
-            },
-          ],
+          {
+            "backgroundColor": "#156FF5",
+            "borderRadius": 4,
+            "justifyContent": "center",
+            "marginBottom": 16,
+            "paddingHorizontal": 16,
+            "paddingVertical": 14,
+          },
+          {
+            "cursor": undefined,
+          },
         ]
       }
-      testOnly_onPress={[Function]}
+      underlayColor="black"
     >
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "black",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": 4,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
       <Text
         style={
           [
@@ -1406,44 +1460,53 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Button 7 - Hidden"
       accessibilityRole="button"
-      accessible={true}
+      activeOpacity={0.105}
       collapsable={false}
+      delayLongPress={600}
       enabled={true}
-      hitSlop={
-        {
-          "bottom": 0,
-          "left": 0,
-          "right": 0,
-          "top": 0,
-        }
-      }
-      onLayout={[Function]}
-      rippleColor="transparent"
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
       style={
         [
-          {},
-          [
-            {
-              "justifyContent": "center",
-              "paddingHorizontal": 16,
-              "paddingVertical": 14,
-            },
-            {
-              "borderRadius": 4,
-              "marginBottom": 12,
-            },
-            {
-              "backgroundColor": "#156FF5",
-            },
-            {},
-            {
-              "marginBottom": 16,
-            },
-          ],
+          {
+            "backgroundColor": "#156FF5",
+            "borderRadius": 4,
+            "justifyContent": "center",
+            "marginBottom": 16,
+            "paddingHorizontal": 16,
+            "paddingVertical": 14,
+          },
+          {
+            "cursor": undefined,
+          },
         ]
       }
-      testOnly_onPress={[Function]}
+      underlayColor="black"
     >
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "black",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": 4,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
       <Text
         style={
           [
@@ -1476,44 +1539,53 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Button 8 - Hidden"
       accessibilityRole="button"
-      accessible={true}
+      activeOpacity={0.105}
       collapsable={false}
+      delayLongPress={600}
       enabled={true}
-      hitSlop={
-        {
-          "bottom": 0,
-          "left": 0,
-          "right": 0,
-          "top": 0,
-        }
-      }
-      onLayout={[Function]}
-      rippleColor="transparent"
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
       style={
         [
-          {},
-          [
-            {
-              "justifyContent": "center",
-              "paddingHorizontal": 16,
-              "paddingVertical": 14,
-            },
-            {
-              "borderRadius": 4,
-              "marginBottom": 12,
-            },
-            {
-              "backgroundColor": "#156FF5",
-            },
-            {},
-            {
-              "marginBottom": 16,
-            },
-          ],
+          {
+            "backgroundColor": "#156FF5",
+            "borderRadius": 4,
+            "justifyContent": "center",
+            "marginBottom": 16,
+            "paddingHorizontal": 16,
+            "paddingVertical": 14,
+          },
+          {
+            "cursor": undefined,
+          },
         ]
       }
-      testOnly_onPress={[Function]}
+      underlayColor="black"
     >
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "black",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": 4,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
       <Text
         style={
           [
@@ -1538,42 +1610,53 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
   <RNGestureHandlerButton
     accessibilityLabel="Show more"
     accessibilityRole="button"
-    accessible={true}
+    activeOpacity={0.105}
     collapsable={false}
+    delayLongPress={600}
     enabled={true}
-    hitSlop={
-      {
-        "bottom": 0,
-        "left": 0,
-        "right": 0,
-        "top": 0,
-      }
-    }
-    onLayout={[Function]}
-    rippleColor="transparent"
+    handlerTag={-1}
+    handlerType="NativeViewGestureHandler"
+    innerRef={null}
+    onActiveStateChange={[Function]}
+    onGestureHandlerEvent={[Function]}
+    onGestureHandlerStateChange={[Function]}
+    onPress={[Function]}
     style={
       [
-        {},
-        [
-          {
-            "justifyContent": "center",
-            "paddingHorizontal": 16,
-            "paddingVertical": 14,
-          },
-          {
-            "borderRadius": 4,
-            "marginBottom": 12,
-          },
-          {
-            "backgroundColor": "#156FF5",
-          },
-          {},
-          undefined,
-        ],
+        {
+          "backgroundColor": "#156FF5",
+          "borderRadius": 4,
+          "justifyContent": "center",
+          "marginBottom": 12,
+          "paddingHorizontal": 16,
+          "paddingVertical": 14,
+        },
+        {
+          "cursor": undefined,
+        },
       ]
     }
-    testOnly_onPress={[Function]}
+    underlayColor="black"
   >
+    <View
+      collapsable={false}
+      style={
+        {
+          "backgroundColor": "black",
+          "borderBottomLeftRadius": undefined,
+          "borderBottomRightRadius": undefined,
+          "borderRadius": 4,
+          "borderTopLeftRadius": undefined,
+          "borderTopRightRadius": undefined,
+          "bottom": 0,
+          "left": 0,
+          "opacity": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
+      }
+    />
     <Text
       style={
         [
@@ -3018,44 +3101,53 @@ exports[`Story Snapshots: ModalFormTextArea should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Change"
       accessibilityRole="button"
-      accessible={true}
+      activeOpacity={0.105}
       collapsable={false}
+      delayLongPress={600}
       enabled={true}
-      hitSlop={
-        {
-          "bottom": 0,
-          "left": 0,
-          "right": 0,
-          "top": 0,
-        }
-      }
-      onLayout={[Function]}
-      rippleColor="transparent"
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
       style={
         [
-          {},
-          [
-            {
-              "justifyContent": "center",
-              "paddingHorizontal": 16,
-              "paddingVertical": 14,
-            },
-            {
-              "borderRadius": 4,
-              "marginBottom": 12,
-            },
-            {
-              "backgroundColor": "#156FF5",
-            },
-            {},
-            {
-              "marginBottom": 16,
-            },
-          ],
+          {
+            "backgroundColor": "#156FF5",
+            "borderRadius": 4,
+            "justifyContent": "center",
+            "marginBottom": 16,
+            "paddingHorizontal": 16,
+            "paddingVertical": 14,
+          },
+          {
+            "cursor": undefined,
+          },
         ]
       }
-      testOnly_onPress={[Function]}
+      underlayColor="black"
     >
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "black",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": 4,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
       <Text
         style={
           [
