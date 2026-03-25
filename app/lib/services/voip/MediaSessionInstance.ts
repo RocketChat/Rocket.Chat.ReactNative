@@ -64,9 +64,11 @@ class MediaSessionInstance {
 
 			console.log('🤙 [VoIP] Processed signal:', signal);
 
-			// If the call was accepted from another device, end the call
+			// If the call was accepted from this device, answer it
 			if (signal.type === 'notification' && signal.notification === 'accepted' && signal.signedContractId === getUniqueIdSync()) {
-				this.answerCall(signal.callId);
+				this.answerCall(signal.callId).catch(error => {
+					console.error('[VoIP] Error answering call :', error);
+				});
 			}
 		});
 

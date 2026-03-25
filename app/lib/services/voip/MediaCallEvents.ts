@@ -56,14 +56,6 @@ export const setupMediaCallEvents = (): (() => void) => {
 		);
 
 		subscriptions.push(
-			Emitter.addListener(EVENT_VOIP_ACCEPT_FAILED, (data: VoipPayload & { voipAcceptFailed?: boolean }) => {
-				console.log(`${TAG} VoipAcceptFailed event:`, data);
-				dispatchVoipAcceptFailureFromNative({ ...data, voipAcceptFailed: true });
-				NativeVoipModule.clearInitialEvents();
-			})
-		);
-
-		subscriptions.push(
 			RNCallKeep.addEventListener('endCall', ({ callUUID }) => {
 				console.log(`${TAG} End call event listener:`, callUUID);
 				mediaSessionInstance.endCall(callUUID);
@@ -98,15 +90,15 @@ export const setupMediaCallEvents = (): (() => void) => {
 				}
 			})
 		);
-
-		subscriptions.push(
-			Emitter.addListener(EVENT_VOIP_ACCEPT_FAILED, (data: VoipPayload & { voipAcceptFailed?: boolean }) => {
-				console.log(`${TAG} VoipAcceptFailed event:`, data);
-				dispatchVoipAcceptFailureFromNative({ ...data, voipAcceptFailed: true });
-				NativeVoipModule.clearInitialEvents();
-			})
-		);
 	}
+
+	subscriptions.push(
+		Emitter.addListener(EVENT_VOIP_ACCEPT_FAILED, (data: VoipPayload & { voipAcceptFailed?: boolean }) => {
+			console.log(`${TAG} VoipAcceptFailed event:`, data);
+			dispatchVoipAcceptFailureFromNative({ ...data, voipAcceptFailed: true });
+			NativeVoipModule.clearInitialEvents();
+		})
+	);
 
 	return () => {
 		subscriptions.forEach(sub => sub.remove());
@@ -114,8 +106,8 @@ export const setupMediaCallEvents = (): (() => void) => {
 };
 
 /**
- * Handles initial media call events.
- * @returns true if the call was answered, false otherwise
+ * Handles initial media call events (cold start).
+ * @returns true if startup should skip the default `appInit()` path (answered call, or accept failure handed to deep linking)
  */
 export const getInitialMediaCallEvents = async (): Promise<boolean> => {
 	try {
@@ -130,7 +122,9 @@ export const getInitialMediaCallEvents = async (): Promise<boolean> => {
 		if (initialEvents.voipAcceptFailed && initialEvents.callId && initialEvents.host) {
 			dispatchVoipAcceptFailureFromNative(initialEvents);
 			RNCallKeep.clearInitialEvents();
-			return false;
+			NativeVoipModule.clearInitialEvents();
+			// Avoid racing `appInit()` with the deep-linking saga that handles the failure
+			return true;
 		}
 
 		if (!initialEvents.callId || !initialEvents.host || initialEvents.type !== 'incoming_call') {

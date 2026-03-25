@@ -108,12 +108,14 @@ RCT_EXPORT_MODULE()
     [VoipService stopDDPClient];
 }
 
+// TurboModule codegen calls these on VoipModule directly. Empty implementations replaced
+// RCTEventEmitter's logic, so startObserving/stopObserving never ran and no events reached JS.
 - (void)addListener:(NSString *)eventName {
-    // Required for NativeEventEmitter - starts observing
+    [super addListener:eventName];
 }
 
 - (void)removeListeners:(double)count {
-    // Required for NativeEventEmitter - stops observing
+    [super removeListeners:count];
 }
 
 #pragma mark - TurboModule
