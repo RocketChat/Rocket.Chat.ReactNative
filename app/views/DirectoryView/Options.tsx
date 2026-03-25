@@ -71,7 +71,7 @@ const DirectoryOptions = ({
 								{I18n.t('Search_global_users_description')}
 							</Text>
 						</View>
-						<Switch value={globalUsers} onValueChange={toggleWorkspace} testID="directory-switch-global-users" />
+						<Switch value={globalUsers} onValueChange={toggleWorkspace} testID='directory-switch-global-users' />
 					</View>
 				</>
 			) : null}
