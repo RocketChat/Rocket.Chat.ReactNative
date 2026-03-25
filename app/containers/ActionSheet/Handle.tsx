@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Pressable } from 'react-native';
+import { View } from 'react-native';
+import { RectButton } from 'react-native-gesture-handler'
 
 import styles from './styles';
 import { themes } from '../../lib/constants/colors';
@@ -10,9 +11,9 @@ export const Handle = ({ onPress }: { onPress: () => void }) => {
 
 	const { theme } = useTheme();
 
-	// We should use Pressable from gesture-handler to avoid issues with the keyboard
+	// We should use RectButton from gesture-handler to avoid issues with the keyboard
 	return (
-		<Pressable
+		<RectButton
 			onPress={onPress}
 			style={styles.handle}
 			testID='action-sheet-handle'
@@ -20,6 +21,6 @@ export const Handle = ({ onPress }: { onPress: () => void }) => {
 			accessibilityLabel='Close action sheet'
 			accessibilityHint='Dismisses the action sheet'>
 			<View style={[styles.handleIndicator, { backgroundColor: themes[theme].fontSecondaryInfo }]} />
-		</Pressable>
+		</RectButton>
 	);
 };
