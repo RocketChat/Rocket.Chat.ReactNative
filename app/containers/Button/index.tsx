@@ -1,11 +1,12 @@
 import React from 'react';
-import { Pressable, type PressableProps, type StyleProp, StyleSheet, Text, type TextStyle, type ViewStyle } from 'react-native';
+import { type StyleProp, StyleSheet, Text, type TextStyle, type ViewStyle } from 'react-native';
+import { RectButton, type RectButtonProps } from 'react-native-gesture-handler';
 
 import { useTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';
 import ActivityIndicator from '../ActivityIndicator';
 
-interface IButtonProps extends PressableProps {
+interface IButtonProps extends RectButtonProps {
 	title: string;
 	onPress: () => void;
 	type?: 'primary' | 'secondary';
@@ -16,6 +17,7 @@ interface IButtonProps extends PressableProps {
 	style?: StyleProp<ViewStyle> | StyleProp<ViewStyle>[];
 	styleText?: StyleProp<TextStyle> | StyleProp<TextStyle>[];
 	small?: boolean;
+	disabled?: boolean;
 }
 
 const styles = StyleSheet.create({
@@ -86,15 +88,15 @@ const Button: React.FC<IButtonProps> = ({
 	];
 
 	return (
-		<Pressable
+		<RectButton
 			onPress={onPress}
-			disabled={isDisabled}
+			enabled={!isDisabled}
 			style={containerStyle}
 			accessibilityLabel={title}
 			accessibilityRole='button'
 			{...otherProps}>
 			{loading ? <ActivityIndicator color={resolvedTextColor} style={{ padding: 0 }} /> : <Text style={textStyle}>{title}</Text>}
-		</Pressable>
+		</RectButton>
 	);
 };
 
