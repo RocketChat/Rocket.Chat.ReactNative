@@ -67,10 +67,8 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 	const panGesture = Gesture.Pan()
 		.enabled(loaded)
 		.activeOffsetX([-ACTIVE_OFFSET_X, ACTIVE_OFFSET_X])
-		.onBegin(() => {
-			isPanning.value = true;
-		})
 		.onStart(() => {
+			isPanning.value = true;
 			contextX.value = translateX.value;
 			scale.value = withTiming(1.3, { duration: 150 });
 		})
@@ -79,9 +77,11 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 			translateX.value = clamp(newX, 0, maxWidth.value);
 		})
 		.onEnd(() => {
-			scale.value = withTiming(1, { duration: 150 });
-			isPanning.value = false;
 			scheduleOnRN(onChangeTime, Math.round(currentTime.value * 1000));
+		})
+		.onFinalize(() => {
+			isPanning.value = false;
+			scale.value = withTiming(1, { duration: 150 });
 		});
 
 	useDerivedValue(() => {
