@@ -32,4 +32,3 @@ export function deepLinkingClickCallPush(params: any): IDeepLinkingOpen {
 		params
 	};
 }
-
