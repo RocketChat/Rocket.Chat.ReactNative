@@ -97,7 +97,7 @@ tags:
       id: 'profile-view-username'
 - inputText: ${output.user.username + 'username'}
 - runFlow:
-    file: '../../hide-keyboard.yaml'
+    file: '../../helpers/hide-keyboard.yaml'
 - scrollUntilVisible:
     element:
       id: 'profile-view-submit'
@@ -113,7 +113,7 @@ tags:
     id: 'profile-view-nickname'
 - inputText: ${output.user.username + 'newnickname'}
 - runFlow:
-    file: '../../hide-keyboard.yaml'
+    file: '../../helpers/hide-keyboard.yaml'
 - assertVisible:
     id: 'profile-view-bio'
 - tapOn:
