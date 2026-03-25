@@ -868,9 +868,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				),
 				snaps: ['50%'],
 				enableContentPanningGesture: false,
-				onClose: this.resetAction
+				onClose: this.resetAction,
+				fullContainer: true
 			});
-		}, 100);
+		}, 300);
 	};
 
 	onReactionInit = (messageId: string) => {
@@ -927,7 +928,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.handleCloseEmoji(showActionSheet, {
 			children: <ReactionsList reactions={message?.reactions} getCustomEmoji={this.getCustomEmoji} />,
 			snaps: ['50%'],
-			enableContentPanningGesture: false
+			enableContentPanningGesture: false,
+			fullContainer: true
 		});
 	};
 
