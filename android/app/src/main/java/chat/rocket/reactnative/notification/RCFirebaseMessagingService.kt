@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.google.gson.Gson
 import chat.rocket.reactnative.voip.VoipNotification
 import chat.rocket.reactnative.voip.VoipPayload
 
@@ -19,7 +18,6 @@ class RCFirebaseMessagingService : FirebaseMessagingService() {
 
     companion object {
         private const val TAG = "RocketChat.FCM"
-        private val gson = Gson()
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
@@ -50,22 +48,6 @@ class RCFirebaseMessagingService : FirebaseMessagingService() {
             notification.onReceived()
         } catch (e: Exception) {
             Log.e(TAG, "Error processing FCM message", e)
-        }
-    }
-
-    /**
-     * Safely parses ejson string to Ejson object.
-     */
-    private fun parseEjson(ejsonStr: String?): Ejson? {
-        if (ejsonStr.isNullOrEmpty() || ejsonStr == "{}") {
-            return null
-        }
-
-        return try {
-            gson.fromJson(ejsonStr, Ejson::class.java)
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed to parse ejson", e)
-            null
         }
     }
 

@@ -5016,9 +5016,9 @@
   dependencies:
     eslint-plugin-import "^2.17.2"
 
-"@rocket.chat/media-signaling@file:./packages/rocket.chat-media-signaling-0.1.1.tgz":
-  version "0.1.1"
-  resolved "file:./packages/rocket.chat-media-signaling-0.1.1.tgz#b9859941d78af41e1fd82d2e0cf53d119aeaac9b"
+"@rocket.chat/media-signaling@file:./packages/rocket.chat-media-signaling-0.1.3.tgz":
+  version "0.1.3"
+  resolved "file:./packages/rocket.chat-media-signaling-0.1.3.tgz#d120c37812a26c2223a53761c7936938ad05ccfb"
   dependencies:
     "@rocket.chat/emitter" "^0.32.0"
     ajv "^8.17.1"

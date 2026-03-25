@@ -460,6 +460,7 @@
   "Version_no": "Versión de la aplicación: {{version}}",
   "View_Original": "Ver original",
   "View_Thread": "Ver hilo",
+  "VoIP_Call_Issue": "Hubo un problema con la llamada, inténtelo de nuevo más tarde.",
   "Websocket_disabled": "Websocket está deshabilitado para este servidor.\n{{contact}}",
   "Whats_the_password_for_your_certificate": "¿Cuál es la contraseña de tu certificado?",
   "Without_Servers": "Sin servidores",

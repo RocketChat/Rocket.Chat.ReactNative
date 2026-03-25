@@ -668,6 +668,7 @@
   "Version_no": "Versione dell'app: {{version}}",
   "View_Original": "Mostra originale",
   "View_Thread": "Visualizza thread",
+  "VoIP_Call_Issue": "Si è verificato un problema con la chiamata, riprova più tardi.",
   "Wait_activation_warning": "Prima di poter accedere, il tuo account deve essere attivato manualmente da un amministratore.",
   "Waiting_for_network": "In attesa di connessione ...",
   "Websocket_disabled": "Websocket disabilitata per questo server.\n{{contact}}",

@@ -17,6 +17,7 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
     companion object {
         private const val TAG = "RocketChat.VoipModule"
         private const val EVENT_INITIAL_EVENTS = "VoipPushInitialEvents"
+        private const val EVENT_VOIP_ACCEPT_FAILED = "VoipAcceptFailed"
 
         private var reactContextRef: WeakReference<ReactApplicationContext>? = null
         private var initialEventsData: VoipPayload? = null
@@ -55,6 +56,30 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
         fun storeInitialEvents(voipPayload: VoipPayload) {
             initialEventsData = voipPayload
             emitInitialEventsEvent(voipPayload)
+        }
+
+        /**
+         * Stash native accept failure for cold start [getInitialEvents] and emit [EVENT_VOIP_ACCEPT_FAILED] when JS is running.
+         */
+        @JvmStatic
+        fun storeAcceptFailureForJs(payload: VoipPayload) {
+            val failed = payload.copy(voipAcceptFailed = true)
+            initialEventsData = failed
+            emitVoipAcceptFailedEvent(failed)
+        }
+
+        private fun emitVoipAcceptFailedEvent(voipPayload: VoipPayload) {
+            try {
+                reactContextRef?.get()?.let { context ->
+                    if (context.hasActiveReactInstance()) {
+                        context
+                            .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+                            .emit(EVENT_VOIP_ACCEPT_FAILED, voipPayload.toWritableMap())
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to emit VoipAcceptFailed", e)
+            }
         }
 
         @JvmStatic

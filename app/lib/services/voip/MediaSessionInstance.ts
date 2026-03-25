@@ -8,7 +8,7 @@ import {
 } from '@rocket.chat/media-signaling';
 import RNCallKeep from 'react-native-callkeep';
 import { registerGlobals } from 'react-native-webrtc';
-import { getUniqueId } from 'react-native-device-info';
+import { getUniqueIdSync } from 'react-native-device-info';
 
 import { mediaSessionStore } from './MediaSessionStore';
 import { useCallStore } from './useCallStore';
@@ -16,7 +16,6 @@ import { store } from '../../store/auxStore';
 import sdk from '../sdk';
 import Navigation from '../../navigation/appNavigation';
 import { parseStringToIceServers } from './parseStringToIceServers';
-import NativeVoipModule from '../../native/NativeVoip';
 import type { IceServer } from '../../../definitions/Voip';
 import type { IDDPMessage } from '../../../definitions/IDDPMessage';
 import type { ISubscription, TSubscriptionModel } from '../../../definitions';
@@ -35,8 +34,6 @@ class MediaSessionInstance {
 		this.reset();
 		registerGlobals();
 		this.configureIceServers();
-		// prevent JS and native DDP clients from interfering with each other
-		NativeVoipModule.stopNativeDDPClient();
 
 		mediaSessionStore.setWebRTCProcessorFactory(
 			(config: WebRTCProcessorConfig) =>
@@ -65,25 +62,26 @@ class MediaSessionInstance {
 			const signal = ddpMessage.fields.args[0];
 			this.instance.processSignal(signal);
 
-			// If the call was accepted from another device, end the call
-			if (signal.type === 'notification' && signal.notification === 'accepted' && signal.signedContractId !== getUniqueId()) {
-				// TODO: pop from call view, end callkeep and remove incoming call notification
+			console.log('🤙 [VoIP] Processed signal:', signal);
+
+			// If the call was accepted from this device, answer it
+			if (signal.type === 'notification' && signal.notification === 'accepted' && signal.signedContractId === getUniqueIdSync()) {
+				this.answerCall(signal.callId).catch(error => {
+					console.error('[VoIP] Error answering call :', error);
+				});
 			}
+		});
+
+		this.instance?.on('registered', ({ activeCalls }) => {
+			console.log('[VoIP] Media session registered, activeCalls:', activeCalls);
 		});
 
 		this.instance?.on('newCall', ({ call }: { call: IClientMediaCall }) => {
 			if (call && !call.hidden) {
 				call.emitter.on('stateChange', oldState => {
 					console.log(`📊 ${oldState} → ${call.state}`);
+					console.log('🤙 [VoIP] New call data:', call);
 				});
-
-				const existingCallId = useCallStore.getState().callId;
-				console.log('[VoIP] Existing call Id:', existingCallId);
-				// // TODO: need to answer the call here?
-				if (existingCallId) {
-					this.answerCall(existingCallId);
-					return;
-				}
 
 				if (call.role === 'caller') {
 					useCallStore.getState().setCall(call);
@@ -111,7 +109,7 @@ class MediaSessionInstance {
 			Navigation.navigate('CallView');
 		} else {
 			RNCallKeep.endCall(callId);
-			alert('Call not found'); // TODO: Show error message?
+			console.warn('[VoIP] Call not found:', callId); // TODO: Show error message?
 		}
 	};
 

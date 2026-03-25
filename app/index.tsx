@@ -153,9 +153,9 @@ export default class Root extends React.Component<{}, IState> {
 			return;
 		}
 
-		// TODO: change name
-		const handledVoipCall = await getInitialMediaCallEvents();
-		if (handledVoipCall) {
+		const voipInitialHandled = await getInitialMediaCallEvents();
+		if (voipInitialHandled) {
+			// VoIP path already dispatched navigation (or will via deep linking); do not call appInit() in parallel
 			return;
 		}
 

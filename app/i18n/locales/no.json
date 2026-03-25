@@ -919,6 +919,7 @@
   "video-conf-provider-not-configured-header": "Konferansesamtale ikke aktivert",
   "View_Original": "Se originalen",
   "View_Thread": "Se tråden",
+  "VoIP_Call_Issue": "Det oppstod et problem med samtalen, prøv igjen senere.",
   "Wait_activation_warning": "Før du kan logge på, må kontoen din aktiveres manuelt av en administrator.",
   "Waiting_for_answer": "Venter på svar",
   "Waiting_for_network": "Venter på nettverket ...",

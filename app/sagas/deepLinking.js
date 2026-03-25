@@ -1,3 +1,6 @@
+import { InteractionManager } from 'react-native';
+import RNCallKeep from 'react-native-callkeep';
+import I18n from 'i18n-js';
 import { all, call, delay, put, select, take, takeLatest } from 'redux-saga/effects';
 
 import { shareSetParams } from '../actions/share';
@@ -17,12 +20,14 @@ import EventEmitter from '../lib/methods/helpers/events';
 import { goRoom, navigateToRoom } from '../lib/methods/helpers/goRoom';
 import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
 import log from '../lib/methods/helpers/log';
+import { showToast } from '../lib/methods/helpers/showToast';
 import UserPreferences from '../lib/methods/userPreferences';
 import { videoConfJoin } from '../lib/methods/videoConf';
 import { loginOAuthOrSso } from '../lib/services/connect';
 import { notifyUser } from '../lib/services/restApi';
 import sdk from '../lib/services/sdk';
 import Navigation from '../lib/navigation/appNavigation';
+import { useCallStore } from '../lib/services/voip/useCallStore';
 
 const roomTypes = {
 	channel: 'c',
@@ -87,6 +92,47 @@ const navigate = function* navigate({ params }) {
 	yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
 };
 
+/**
+ * After native VoIP accept fails: reset call state, end CallKit session, land inside root,
+ * optionally open DM via same pipeline as deep links (`direct/username`), then toast/dialog per a11y.
+ */
+const handleVoipAcceptFailed = function* handleVoipAcceptFailed(params) {
+	try {
+		const { callId, username } = params;
+		useCallStore.getState().reset();
+		if (callId) {
+			RNCallKeep.endCall(callId);
+		}
+
+		yield call(waitForNavigation);
+
+		const navigateParams = {
+			...params,
+			path: username ? `direct/${username}` : params.path
+		};
+		yield navigate({ params: navigateParams });
+
+		yield call(
+			() =>
+				new Promise((resolve) => {
+					InteractionManager.runAfterInteractions(() => resolve());
+				})
+		);
+
+		showToast(I18n.t('VoIP_Call_Issue'));
+	} catch (e) {
+		log(e);
+	}
+};
+
+const completeDeepLinkNavigation = function* completeDeepLinkNavigation(params) {
+	if (params.voipAcceptFailed) {
+		yield call(handleVoipAcceptFailed, params);
+	} else {
+		yield navigate({ params });
+	}
+};
+
 const fallbackNavigation = function* fallbackNavigation() {
 	const currentRoot = yield select(state => state.app.root);
 	if (currentRoot) {
@@ -140,6 +186,10 @@ const handleOpen = function* handleOpen({ params }) {
 	// If there's no host on the deep link params and the app is opened, just call appInit()
 	let { host } = params;
 	if (!host) {
+		if (params.voipAcceptFailed) {
+			yield call(handleVoipAcceptFailed, params);
+			return;
+		}
 		yield fallbackNavigation();
 		return;
 	}
@@ -176,7 +226,7 @@ const handleOpen = function* handleOpen({ params }) {
 			yield put(selectServerRequest(host, serverRecord.version, true));
 			yield take(types.LOGIN.SUCCESS);
 		}
-		yield navigate({ params });
+		yield completeDeepLinkNavigation(params);
 	} else {
 		// search if deep link's server already exists
 		try {
@@ -184,7 +234,7 @@ const handleOpen = function* handleOpen({ params }) {
 				yield localAuthenticate(host);
 				yield put(selectServerRequest(host, serverRecord.version, true, true));
 				yield take(types.LOGIN.SUCCESS);
-				yield navigate({ params });
+				yield completeDeepLinkNavigation(params);
 				return;
 			}
 		} catch (e) {
@@ -193,6 +243,10 @@ const handleOpen = function* handleOpen({ params }) {
 		// if deep link is from a different server
 		const result = yield getServerInfo(host);
 		if (!result.success) {
+			if (params.voipAcceptFailed) {
+				yield call(handleVoipAcceptFailed, params);
+				return;
+			}
 			// Fallback to prevent the app from being stuck on splash screen
 			yield fallbackNavigation();
 			return;
@@ -207,7 +261,7 @@ const handleOpen = function* handleOpen({ params }) {
 			yield put(loginRequest({ resume: params.token }, true));
 			yield take(types.LOGIN.SUCCESS);
 			yield put(appReady({}));
-			yield navigate({ params });
+			yield completeDeepLinkNavigation(params);
 		} else {
 			yield handleInviteLink({ params, requireLogin: true });
 		}
@@ -297,18 +351,8 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 	}
 };
 
-/**
- * Handle VoIP call from push notification.
- * Ensures the app is connected to the correct server before the call can be processed.
- * The actual call handling is done by MediaSessionInstance via the pending call store.
- */
-const handleVoipCall = function* handleVoipCall({ params }) {
-	yield handleOpen({ params });
-};
-
 const root = function* root() {
 	yield takeLatest(types.DEEP_LINKING.OPEN, handleOpen);
 	yield takeLatest(types.DEEP_LINKING.OPEN_VIDEO_CONF, handleClickCallPush);
-	yield takeLatest(types.DEEP_LINKING.VOIP_CALL, handleVoipCall);
 };
 export default root;

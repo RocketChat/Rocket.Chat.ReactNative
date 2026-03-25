@@ -29,7 +29,7 @@ class MainActivity : ReactActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     RNBootSplash.init(this, R.style.BootTheme)
     super.onCreate(null)
-    
+
     // Handle notification intents
     intent?.let { NotificationIntentHandler.handleIntent(this, it) }
   }
@@ -37,7 +37,7 @@ class MainActivity : ReactActivity() {
   public override fun onNewIntent(intent: Intent) {
     super.onNewIntent(intent)
     setIntent(intent)
-    
+
     // Handle notification intents when activity is already running
     NotificationIntentHandler.handleIntent(this, intent)
   }

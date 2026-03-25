@@ -29,6 +29,7 @@ interface CallStoreState {
 interface CallStoreActions {
 	setCallId: (callId: string | null) => void;
 	setCall: (call: IClientMediaCall) => void;
+	_cleanupCallListeners: () => void;
 	toggleMute: () => void;
 	toggleHold: () => void;
 	toggleSpeaker: () => void;
@@ -39,6 +40,8 @@ interface CallStoreActions {
 }
 
 export type CallStore = CallStoreState & CallStoreActions;
+
+let callListenersCleanup: (() => void) | null = null;
 
 const initialState: CallStoreState = {
 	call: null,
@@ -62,7 +65,13 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		set({ callId });
 	},
 
+	_cleanupCallListeners: () => {
+		callListenersCleanup?.();
+		callListenersCleanup = null;
+	},
+
 	setCall: (call: IClientMediaCall) => {
+		get()._cleanupCallListeners();
 		// Update state with call info
 		set({
 			call,
@@ -121,6 +130,12 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		call.emitter.on('stateChange', handleStateChange);
 		call.emitter.on('trackStateChange', handleTrackStateChange);
 		call.emitter.on('ended', handleEnded);
+
+		callListenersCleanup = () => {
+			call.emitter.off('stateChange', handleStateChange);
+			call.emitter.off('trackStateChange', handleTrackStateChange);
+			call.emitter.off('ended', handleEnded);
+		};
 	},
 
 	toggleMute: () => {
@@ -189,6 +204,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 	},
 
 	reset: () => {
+		get()._cleanupCallListeners();
 		try {
 			InCallManager.stop();
 		} catch (error) {

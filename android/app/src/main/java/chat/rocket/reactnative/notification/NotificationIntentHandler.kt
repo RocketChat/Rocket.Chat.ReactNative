@@ -6,11 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import com.google.gson.GsonBuilder
 import chat.rocket.reactnative.voip.VoipNotification
-import chat.rocket.reactnative.voip.VoipModule
-import chat.rocket.reactnative.voip.VoipPayload
-import android.os.Build
-import android.app.KeyguardManager
-import android.app.Activity
 
 /**
  * Handles notification Intent processing from MainActivity.
@@ -27,8 +22,7 @@ class NotificationIntentHandler {
          */
         @JvmStatic
         fun handleIntent(context: Context, intent: Intent) {
-            // Handle VoIP action first
-            if (handleVoipIntent(context, intent)) {
+            if (VoipNotification.handleMainActivityVoipIntent(context, intent)) {
                 return
             }
 
@@ -39,41 +33,6 @@ class NotificationIntentHandler {
 
             // Handle regular notification tap
             handleNotificationIntent(context, intent)
-        }
-
-        /**
-         * Handles VoIP call notification Intent.
-         * @return true if this was a VoIP intent, false otherwise
-         */
-        @JvmStatic
-        private fun handleVoipIntent(context: Context, intent: Intent): Boolean {
-            if (!intent.getBooleanExtra("voipAction", false)) {
-                return false
-            }
-            val voipPayload = VoipPayload.fromBundle(intent.extras)
-            if (voipPayload == null || !voipPayload.isVoipIncomingCall()) {
-                return false
-            }
-
-            Log.d(TAG, "Handling VoIP intent - voipPayload: $voipPayload")
-
-            VoipNotification.cancelById(context, voipPayload.notificationId)
-            VoipNotification.cancelTimeout(voipPayload.callId)
-            VoipModule.storeInitialEvents(voipPayload)
-
-            if (context is Activity) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
-                    context.setShowWhenLocked(true)
-                    context.setTurnScreenOn(true)
-                    val keyguardManager = context.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
-                    keyguardManager.requestDismissKeyguard(context, null)
-                }
-            }
-
-            // Clear the voip flag to prevent re-processing
-            intent.removeExtra("voipAction")
-
-            return true
         }
 
         /**

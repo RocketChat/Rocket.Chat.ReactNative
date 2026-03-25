@@ -761,6 +761,7 @@
   "Version_no": "App-versie: {{version}}",
   "View_Original": "Bekijk origineel",
   "View_Thread": "Bekijk thread",
+  "VoIP_Call_Issue": "Er was een probleem met het gesprek, probeer het later opnieuw.",
   "Wait_activation_warning": "Voordat u kunt inloggen, moet uw account handmatig worden geactiveerd door een beheerder.",
   "Waiting_for_network": "Wachten op netwerk...",
   "Websocket_disabled": "Websocket is uitgeschakeld voor deze server.\n{{contact}}",

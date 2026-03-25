@@ -776,6 +776,7 @@
   "Version_no": "Različica aplikacije: {{version}}",
   "View_Original": "Pogled original",
   "View_Thread": "Pogled nit",
+  "VoIP_Call_Issue": "Pri klicu je prišlo do težave, poskusite znova pozneje.",
   "Wait_activation_warning": "Preden se lahko prijavite, mora skrbnik ročno aktivirati vaš račun.",
   "Waiting_for_network": "Čakanje na omrežje ...",
   "Websocket_disabled": "WebSocket je onemogočen za ta strežnik.\n{{contact}}",

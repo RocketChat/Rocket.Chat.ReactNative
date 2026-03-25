@@ -14,4 +14,5 @@ export interface VoipPayload {
 	readonly avatarUrl?: string | null;
 	readonly createdAt?: string | null;
 	readonly notificationId: number;
+	readonly voipAcceptFailed?: boolean;
 }

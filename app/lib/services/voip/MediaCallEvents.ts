@@ -3,7 +3,7 @@ import { DeviceEventEmitter, NativeEventEmitter } from 'react-native';
 
 import { isIOS } from '../../methods/helpers';
 import store from '../../store';
-import { voipCallOpen } from '../../../actions/deepLinking';
+import { deepLinkingOpen } from '../../../actions/deepLinking';
 import { useCallStore } from './useCallStore';
 import { mediaSessionInstance } from './MediaSessionInstance';
 import type { VoipPayload } from '../../../definitions/Voip';
@@ -13,6 +13,30 @@ import { registerPushToken } from '../restApi';
 const Emitter = isIOS ? new NativeEventEmitter(NativeVoipModule) : DeviceEventEmitter;
 const platform = isIOS ? 'iOS' : 'Android';
 const TAG = `[MediaCallEvents][${platform}]`;
+
+const EVENT_VOIP_ACCEPT_FAILED = 'VoipAcceptFailed';
+
+/** Dedupe native emit + stash replay for the same failed accept. */
+let lastHandledVoipAcceptFailureCallId: string | null = null;
+
+function dispatchVoipAcceptFailureFromNative(raw: VoipPayload & { voipAcceptFailed?: boolean }) {
+	if (!raw.voipAcceptFailed) {
+		return;
+	}
+	const { callId } = raw;
+	if (callId && lastHandledVoipAcceptFailureCallId === callId) {
+		return;
+	}
+	lastHandledVoipAcceptFailureCallId = callId;
+	store.dispatch(
+		deepLinkingOpen({
+			host: raw.host,
+			callId: raw.callId,
+			username: raw.username,
+			voipAcceptFailed: true
+		})
+	);
+}
 
 /**
  * Sets up listeners for media call events.
@@ -33,24 +57,27 @@ export const setupMediaCallEvents = (): (() => void) => {
 		);
 
 		subscriptions.push(
-			RNCallKeep.addEventListener('answerCall', ({ callUUID }) => {
-				console.log(`${TAG} Answer call event listener:`, callUUID);
-				mediaSessionInstance.answerCall(callUUID);
-				NativeVoipModule.clearInitialEvents();
-				RNCallKeep.clearInitialEvents();
-			})
-		);
-		subscriptions.push(
 			RNCallKeep.addEventListener('endCall', ({ callUUID }) => {
 				console.log(`${TAG} End call event listener:`, callUUID);
 				mediaSessionInstance.endCall(callUUID);
 			})
 		);
+
+		// Note: there is intentionally no 'answerCall' listener here.
+		// VoipService.swift handles accept natively: handleObservedCallChanged detects
+		// hasConnected = true and calls handleNativeAccept(), which sends the DDP accept
+		// signal before JS runs. JS only reads the stored initialEventsData payload after the fact.
 	} else {
 		// Android listens for media call events from VoipModule
 		subscriptions.push(
-			Emitter.addListener('VoipPushInitialEvents', async (data: VoipPayload) => {
+			Emitter.addListener('VoipPushInitialEvents', async (data: VoipPayload & { voipAcceptFailed?: boolean }) => {
 				try {
+					if (data.voipAcceptFailed) {
+						console.log(`${TAG} Accept failed initial event`);
+						dispatchVoipAcceptFailureFromNative(data);
+						NativeVoipModule.clearInitialEvents();
+						return;
+					}
 					if (data.type !== 'incoming_call') {
 						console.log(`${TAG} Not an incoming call`);
 						return;
@@ -59,7 +86,7 @@ export const setupMediaCallEvents = (): (() => void) => {
 					NativeVoipModule.clearInitialEvents();
 					useCallStore.getState().setCallId(data.callId);
 					store.dispatch(
-						voipCallOpen({
+						deepLinkingOpen({
 							callId: data.callId,
 							host: data.host
 						})
@@ -72,26 +99,40 @@ export const setupMediaCallEvents = (): (() => void) => {
 		);
 	}
 
-	// Return cleanup function
+	subscriptions.push(
+		Emitter.addListener(EVENT_VOIP_ACCEPT_FAILED, (data: VoipPayload & { voipAcceptFailed?: boolean }) => {
+			console.log(`${TAG} VoipAcceptFailed event:`, data);
+			dispatchVoipAcceptFailureFromNative({ ...data, voipAcceptFailed: true });
+			NativeVoipModule.clearInitialEvents();
+		})
+	);
+
 	return () => {
 		subscriptions.forEach(sub => sub.remove());
 	};
 };
 
 /**
- * Handles initial media call events.
- * @returns true if the call was answered, false otherwise
+ * Handles initial media call events (cold start).
+ * @returns true if startup should skip the default `appInit()` path (answered call, or accept failure handed to deep linking)
  */
 export const getInitialMediaCallEvents = async (): Promise<boolean> => {
 	try {
-		// Get initial events from native module
-		const initialEvents = NativeVoipModule.getInitialEvents() as VoipPayload | null;
+		const initialEvents = NativeVoipModule.getInitialEvents() as (VoipPayload & { voipAcceptFailed?: boolean }) | null;
 		if (!initialEvents) {
 			console.log(`${TAG} No initial events from native module`);
 			RNCallKeep.clearInitialEvents();
 			return false;
 		}
 		console.log(`${TAG} Found initial events:`, initialEvents);
+
+		if (initialEvents.voipAcceptFailed && initialEvents.callId && initialEvents.host) {
+			dispatchVoipAcceptFailureFromNative(initialEvents);
+			RNCallKeep.clearInitialEvents();
+			NativeVoipModule.clearInitialEvents();
+			// Avoid racing `appInit()` with the deep-linking saga that handles the failure
+			return true;
+		}
 
 		if (!initialEvents.callId || !initialEvents.host || initialEvents.type !== 'incoming_call') {
 			console.log(`${TAG} Missing required call data`);
@@ -101,12 +142,12 @@ export const getInitialMediaCallEvents = async (): Promise<boolean> => {
 
 		let wasAnswered = false;
 
+		// iOS loops through the events and checks if the call was already answered
 		if (isIOS) {
 			const callKeepInitialEvents = await RNCallKeep.getInitialEvents();
 			RNCallKeep.clearInitialEvents();
 			console.log(`${TAG} CallKeep initial events:`, JSON.stringify(callKeepInitialEvents, null, 2));
 
-			// iOS loops through the events and checks if the call was already answered
 			for (const event of callKeepInitialEvents) {
 				const { name, data } = event;
 				if (name === 'RNCallKeepPerformAnswerCallAction') {
@@ -127,12 +168,12 @@ export const getInitialMediaCallEvents = async (): Promise<boolean> => {
 			useCallStore.getState().setCallId(initialEvents.callId);
 
 			store.dispatch(
-				voipCallOpen({
+				deepLinkingOpen({
 					callId: initialEvents.callId,
 					host: initialEvents.host
 				})
 			);
-			console.log(`${TAG} Dispatched voipCallOpen action`);
+			console.log(`${TAG} Dispatched deepLinkingOpen for VoIP`);
 		}
 
 		return Promise.resolve(wasAnswered);

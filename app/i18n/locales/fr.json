@@ -761,6 +761,7 @@
   "Version_no": "Version de l'application : {{version}}",
   "View_Original": "Voir l'original",
   "View_Thread": "Afficher le fil",
+  "VoIP_Call_Issue": "Un problème est survenu avec l'appel, veuillez réessayer plus tard.",
   "Wait_activation_warning": "Avant de pouvoir vous connecter, votre compte doit être activé manuellement par un administrateur.",
   "Waiting_for_network": "En attente du réseau...",
   "Websocket_disabled": "Le Websocket est désactivé pour ce serveur.\n{{contact}}",

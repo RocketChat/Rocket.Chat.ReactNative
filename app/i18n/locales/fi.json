@@ -839,6 +839,7 @@
   "Version_no": "Sovelluksen versio: {{version}}",
   "View_Original": "Näytä alkuperäinen",
   "View_Thread": "Katsele säiettä",
+  "VoIP_Call_Issue": "Puhelussa ilmeni ongelma, yritä myöhemmin uudelleen.",
   "Wait_activation_warning": "Ennen kuin voit kirjautua, järjestelmänvalvojan on aktivoitava tilisi manuaalisesti.",
   "Waiting_for_answer": "Odotetaan vastausta",
   "Waiting_for_network": "Odotetaan verkkoa...",
