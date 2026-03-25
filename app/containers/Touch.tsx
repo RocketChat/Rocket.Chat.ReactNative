@@ -1,17 +1,18 @@
 import React from 'react';
-import { RectButton, type RectButtonProps } from 'react-native-gesture-handler';
 import {
 	View,
+	Pressable,
 	StyleSheet,
 	type ViewStyle,
 	type StyleProp,
+	type PressableProps,
 	type AccessibilityActionEvent,
 	type AccessibilityActionInfo
 } from 'react-native';
 
 import { useTheme } from '../theme';
 
-export interface ITouchProps extends RectButtonProps {
+export interface ITouchProps extends Omit<PressableProps, 'style' | 'children'> {
 	children: React.ReactNode;
 	accessible?: boolean;
 	accessibilityLabel?: string;
@@ -20,15 +21,19 @@ export interface ITouchProps extends RectButtonProps {
 	onAccessibilityAction?: (event: AccessibilityActionEvent) => void;
 	testID?: string;
 	rectButtonStyle?: StyleProp<ViewStyle>;
+	underlayColor?: string;
+	activeOpacity?: number;
 	disabled?: boolean;
+	style?: StyleProp<ViewStyle>;
 }
 
-const Touch = React.forwardRef<React.ElementRef<typeof RectButton>, ITouchProps>(
+const Touch = React.forwardRef<React.ElementRef<typeof Pressable>, ITouchProps>(
 	(
 		{
 			children,
 			onPress,
 			underlayColor,
+			activeOpacity = 1,
 			accessible,
 			accessibilityLabel,
 			accessibilityHint,
@@ -73,15 +78,21 @@ const Touch = React.forwardRef<React.ElementRef<typeof RectButton>, ITouchProps>
 			marginTop
 		};
 		return (
-			<RectButton
+			<Pressable
 				ref={ref}
 				onPress={onPress}
-				activeOpacity={1}
-				underlayColor={underlayColor || colors.surfaceNeutral}
-				rippleColor={colors.surfaceNeutral}
-				style={[rectButtonStyle, marginStyles, { backgroundColor, borderRadius }]}
+				android_ripple={{ color: underlayColor || colors.surfaceNeutral, borderless: false }}
+				style={({ pressed }) => [
+					rectButtonStyle,
+					marginStyles,
+					{
+						backgroundColor: pressed ? underlayColor || colors.surfaceNeutral : backgroundColor,
+						borderRadius,
+						opacity: pressed ? activeOpacity : 1
+					}
+				]}
 				{...props}
-				enabled={!disabled}>
+				disabled={disabled}>
 				<View
 					accessible={accessible}
 					accessibilityRole={props.accessibilityRole}
@@ -92,7 +103,7 @@ const Touch = React.forwardRef<React.ElementRef<typeof RectButton>, ITouchProps>
 					style={viewStyle}>
 					{children}
 				</View>
-			</RectButton>
+			</Pressable>
 		);
 	}
 );
