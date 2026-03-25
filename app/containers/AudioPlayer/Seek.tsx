@@ -72,11 +72,11 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 		})
 		.onStart(() => {
 			contextX.value = translateX.value;
+			scale.value = withTiming(1.3, { duration: 150 });
 		})
 		.onUpdate(event => {
 			const newX = contextX.value + event.translationX;
 			translateX.value = clamp(newX, 0, maxWidth.value);
-			scale.value = withTiming(1.3, { duration: 150 });
 		})
 		.onEnd(() => {
 			scale.value = withTiming(1, { duration: 150 });
