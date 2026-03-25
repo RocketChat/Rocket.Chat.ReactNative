@@ -955,6 +955,7 @@
   "video-conf-provider-not-configured-header": "Video conferência não ativada",
   "View_Original": "Visualizar original",
   "View_Thread": "Exibir thread",
+  "VoIP_Call_Issue": "Houve um problema com a chamada, tente novamente mais tarde.",
   "Wait_activation_warning": "Antes que você possa fazer o login, sua conta deve ser manualmente ativada por um administrador.",
   "Waiting_for_answer": "Esperando por resposta",
   "Waiting_for_network": "Aguardando rede...",

@@ -945,6 +945,7 @@
   "video-conf-provider-not-configured-header": "Konferenční hovor není povolen",
   "View_Original": "Zobrazit originál",
   "View_Thread": "Zobrazit vlákno",
+  "VoIP_Call_Issue": "Došlo k problému s hovorem, zkuste to znovu později.",
   "Wait_activation_warning": "Než se budete moci přihlásit, váš účet musí být ručně aktivován administrátorem.",
   "Waiting_for_answer": "Čekání na odpověď",
   "Waiting_for_network": "Čekání na síť...",

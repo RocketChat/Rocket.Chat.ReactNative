@@ -551,6 +551,7 @@
   "Version_no": "アプリバージョン: {{version}}",
   "View_Original": "オリジナルを見る",
   "View_Thread": "スレッドを表示します",
+  "VoIP_Call_Issue": "通話に問題が発生しました。しばらくしてからもう一度お試しください。",
   "Websocket_disabled": "Websocketはこのサーバーでは無効化されています。\n{{contact}}",
   "Whats_the_password_for_your_certificate": "証明書のパスワードはなんですか？",
   "Without_Servers": "サーバーを除く",

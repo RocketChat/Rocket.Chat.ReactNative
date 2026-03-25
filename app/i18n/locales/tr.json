@@ -651,6 +651,7 @@
   "Version_no": "Uygulama sürümü: {{version}}",
   "View_Original": "Orijinali Görüntüle",
   "View_Thread": "İpliği görüntüleyin",
+  "VoIP_Call_Issue": "Görüşmede bir sorun oluştu, daha sonra tekrar deneyin.",
   "Wait_activation_warning": "Giriş yapmadan önce, hesabınız bir yönetici tarafından manuel olarak etkinleştirilmelidir.",
   "Waiting_for_network": "Ağ bağlantısı bekleniyor ...",
   "Websocket_disabled": "Bu sunucu için Websocket devre dışı bırakıldı.\n{{contact}}",

@@ -621,6 +621,7 @@
   "Version_no": "إصدار التطبيق: {{version}}",
   "View_Original": "عرض المحتوى الأصلي",
   "View_Thread": "عرض الموضوع",
+  "VoIP_Call_Issue": "حدثت مشكلة في المكالمة، حاول مرة أخرى لاحقًا.",
   "Wait_activation_warning": "يحب تفعيل حسابك من المشرف قبل تسجيل الدخول",
   "Waiting_for_network": "بانتظار توفر شبكة...",
   "Websocket_disabled": "تم تعطيل Websocket لهذا الخادم.\n{{contact}}",
