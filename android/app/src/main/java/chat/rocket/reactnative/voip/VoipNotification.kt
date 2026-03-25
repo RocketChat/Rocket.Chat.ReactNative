@@ -31,6 +31,7 @@ import chat.rocket.reactnative.MainActivity
 import chat.rocket.reactnative.notification.Ejson
 import org.json.JSONArray
 import org.json.JSONObject
+import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * Handles VoIP call notifications using Android's Telecom framework via CallKeep.
@@ -226,7 +227,20 @@ class VoipNotification(private val context: Context) {
             cancelTimeout(payload.callId)
 
             val appCtx = context.applicationContext
+            // Guard so finish() is called at most once, whether by the DDP callback or the timeout.
+            val finished = AtomicBoolean(false)
+            val timeoutHandler = Handler(Looper.getMainLooper())
+            val timeoutRunnable = Runnable {
+                if (finished.compareAndSet(false, true)) {
+                    Log.w(TAG, "Native accept timed out for ${payload.callId}; falling back to JS recovery")
+                    finish(false)
+                }
+            }
+            timeoutHandler.postDelayed(timeoutRunnable, 10_000L)
+
             fun finish(ddpSuccess: Boolean) {
+                if (!finished.compareAndSet(false, true)) return
+                timeoutHandler.removeCallbacks(timeoutRunnable)
                 stopDDPClientInternal()
                 if (ddpSuccess) {
                     answerIncomingCall(payload.callId)

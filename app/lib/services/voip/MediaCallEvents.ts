@@ -45,6 +45,7 @@ function dispatchVoipAcceptFailureFromNative(raw: VoipPayload & { voipAcceptFail
 export const setupMediaCallEvents = (): (() => void) => {
 	const subscriptions: { remove: () => void }[] = [];
 
+	// iOS listens for VoIP push token registration and CallKeep events
 	if (isIOS) {
 		subscriptions.push(
 			Emitter.addListener('VoipPushTokenRegistered', ({ token }: { token: string }) => {
@@ -61,7 +62,13 @@ export const setupMediaCallEvents = (): (() => void) => {
 				mediaSessionInstance.endCall(callUUID);
 			})
 		);
+
+		// Note: there is intentionally no 'answerCall' listener here.
+		// VoipService.swift handles accept natively: handleObservedCallChanged detects
+		// hasConnected = true and calls handleNativeAccept(), which sends the DDP accept
+		// signal before JS runs. JS only reads the stored initialEventsData payload after the fact.
 	} else {
+		// Android listens for media call events from VoipModule
 		subscriptions.push(
 			Emitter.addListener('VoipPushInitialEvents', async (data: VoipPayload & { voipAcceptFailed?: boolean }) => {
 				try {
@@ -135,6 +142,7 @@ export const getInitialMediaCallEvents = async (): Promise<boolean> => {
 
 		let wasAnswered = false;
 
+		// iOS loops through the events and checks if the call was already answered
 		if (isIOS) {
 			const callKeepInitialEvents = await RNCallKeep.getInitialEvents();
 			RNCallKeep.clearInitialEvents();
@@ -152,6 +160,7 @@ export const getInitialMediaCallEvents = async (): Promise<boolean> => {
 				}
 			}
 		} else {
+			// Android only sends answered event, so we can assume the call was answered
 			wasAnswered = true;
 		}
 
