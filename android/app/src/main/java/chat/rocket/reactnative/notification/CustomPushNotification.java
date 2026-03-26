@@ -1,5 +1,8 @@
 package chat.rocket.reactnative.notification;
 
+import com.facebook.react.bridge.ReactApplicationContext;
+
+
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -47,6 +50,8 @@ public class CustomPushNotification {
     // Shared state
     private static final Gson gson = new Gson();
     private static final Map<String, List<Bundle>> notificationMessages = new ConcurrentHashMap<>();
+    private static volatile ReactApplicationContext reactApplicationContext;
+
 
     // Constants
     public static final String KEY_REPLY = "KEY_REPLY";
@@ -71,6 +76,11 @@ public class CustomPushNotification {
     public static void clearMessages(int notId) {
         notificationMessages.remove(Integer.toString(notId));
     }
+
+    public static void setReactApplicationContext(ReactApplicationContext reactContext) {
+        reactApplicationContext = reactContext;
+    }
+
 
     /**
      * Check if React Native is initialized
@@ -246,13 +256,22 @@ public class CustomPushNotification {
      * No longer waits for React Native initialization.
      */
     private void handleE2ENotification(Bundle bundle, Ejson ejson, String notId) {
+        ReactApplicationContext reactContext = reactApplicationContext;
         // Check if React context is immediately available
-        if (reactApplicationContext != null) {
+        if (reactContext != null) {
             // Fast path: decrypt immediately
-            String decrypted = Encryption.shared.decryptMessage(ejson, reactApplicationContext);
+            String decrypted = Encryption.shared.decryptMessage(ejson, reactContext);
 
             if (decrypted != null) {
                 bundle.putString("message", decrypted);
+                synchronized (this) {
+                    mBundle = bundle;
+                }
+                showNotification(bundle, ejson, notId);
+                return;
+            }
+        }
+
         // Decrypt immediately using regular Android Context (mContext)
         // This works without React Native initialization
         String decrypted = Encryption.shared.decryptMessage(ejson, mContext);
@@ -262,6 +281,7 @@ public class CustomPushNotification {
             synchronized(this) {
                 mBundle = bundle;
             }
+            showNotification(bundle, ejson, notId);
             return;
         }
 
@@ -284,27 +304,28 @@ public class CustomPushNotification {
 
                     @Override
                     public void onDecryptionFailed(Bundle originalBundle, Ejson originalEjson, String notificationId) {
-                        Log.w(TAG, "E2E decryption failed for notification");
+                        Log.w(TAG, "E2E decryption failed for notification, showing fallback notification");
+                        showFallbackNotification(originalBundle, originalEjson, notificationId);
                     }
 
                     @Override
                     public void onTimeout(Bundle originalBundle, Ejson originalEjson, String notificationId) {
-                        Log.w(TAG, "Timeout waiting for React context for E2E notification");
+                        Log.w(TAG, "Timeout waiting for React context for E2E notification, showing fallback notification");
+                        showFallbackNotification(originalBundle, originalEjson, notificationId);
                     }
                 });
 
         processor.processAsync(bundle, ejson, notId);
-            showNotification(bundle, ejson, notId);
-        } else {
-            Log.w(TAG, "E2E decryption failed for notification, showing fallback notification");
-            // Show fallback notification so user knows a message arrived
-            // Use a placeholder message since we can't decrypt
-            bundle.putString("message", "Encrypted message");
-            synchronized(this) {
-                mBundle = bundle;
-            }
-            showNotification(bundle, ejson, notId);
+    }
+
+    private void showFallbackNotification(Bundle bundle, Ejson ejson, String notId) {
+        // Show fallback notification so user knows a message arrived
+        // Use a placeholder message since we can't decrypt
+        bundle.putString("message", "Encrypted message");
+        synchronized(this) {
+            mBundle = bundle;
         }
+        showNotification(bundle, ejson, notId);
     }
 
     /**

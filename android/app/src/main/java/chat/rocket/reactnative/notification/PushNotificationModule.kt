@@ -11,6 +11,11 @@ import com.facebook.react.bridge.ReactMethod
  */
 class PushNotificationModule(reactContext: ReactApplicationContext) : NativePushNotificationSpec(reactContext) {
 
+    init {
+        CustomPushNotification.setReactApplicationContext(reactContext)
+    }
+
+
     companion object {
         private const val PREFS_NAME = "RocketChatPrefs"
         private const val KEY_PENDING_NOTIFICATION = "pendingNotification"
