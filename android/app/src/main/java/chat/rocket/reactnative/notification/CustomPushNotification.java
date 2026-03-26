@@ -51,8 +51,6 @@ public class CustomPushNotification {
     private static final Gson gson = new Gson();
     private static final Map<String, List<Bundle>> notificationMessages = new ConcurrentHashMap<>();
     private static volatile ReactApplicationContext reactApplicationContext;
-
-
     // Constants
     public static final String KEY_REPLY = "KEY_REPLY";
     public static final String NOTIFICATION_ID = "NOTIFICATION_ID";
@@ -80,8 +78,6 @@ public class CustomPushNotification {
     public static void setReactApplicationContext(ReactApplicationContext reactContext) {
         reactApplicationContext = reactContext;
     }
-
-
     /**
      * Check if React Native is initialized
      */
@@ -89,15 +85,12 @@ public class CustomPushNotification {
         return reactApplicationContext != null;
     }
 
-    
     public void onReceived() {
         String notId = mBundle.getString("notId");
-
         if (notId == null || notId.isEmpty()) {
             Log.w(TAG, "Missing notification ID, ignoring notification");
             return;
         }
-
         try {
             Integer.parseInt(notId);
         } catch (NumberFormatException e) {
@@ -155,8 +148,7 @@ public class CustomPushNotification {
         if (ENABLE_VERBOSE_LOGS) {
             Log.d(TAG, "React already initialized, proceeding with notification");
         }
-
-        
+ 
         // Process notification immediately - no need to wait for React Native
         // MMKV is initialized at app startup, so all notification types can work without React
         try {
