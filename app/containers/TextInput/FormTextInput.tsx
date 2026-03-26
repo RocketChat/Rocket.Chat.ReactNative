@@ -9,7 +9,6 @@ import {
 	View,
 	type ViewStyle
 } from 'react-native';
-import { BottomSheetTextInput } from '@discord/bottom-sheet';
 import { A11y } from 'react-native-a11y-order';
 
 import i18n from '../../i18n';
@@ -91,7 +90,6 @@ export interface IRCTextInputProps extends TextInputProps {
 	iconLeft?: TIconsName;
 	iconRight?: TIconsName;
 	left?: JSX.Element;
-	bottomSheet?: boolean;
 	onClearInput?: () => void;
 }
 
@@ -119,7 +117,6 @@ export const FormTextInput = ({
 	left,
 	testID,
 	secureTextEntry,
-	bottomSheet,
 	placeholder,
 	accessibilityLabel,
 	showErrorMessage = true,
@@ -128,8 +125,6 @@ export const FormTextInput = ({
 	const { colors } = useTheme();
 	const [showPassword, setShowPassword] = useState(false);
 	const showClearInput = onClearInput && value && value.length > 0;
-	const Input = bottomSheet ? BottomSheetTextInput : TextInput;
-
 	const inputError = getInputError(error);
 	const accessibilityLabelText = useMemo(() => {
 		const baseLabel = `${accessibilityLabel || label || ''}`;
@@ -155,7 +150,7 @@ export const FormTextInput = ({
 					) : null}
 
 					<View accessible={false} style={styles.wrap}>
-						<Input
+						<TextInput
 							accessible
 							accessibilityLabel={accessibilityLabelText}
 							style={[
