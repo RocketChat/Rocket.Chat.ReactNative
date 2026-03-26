@@ -30,7 +30,7 @@ export const Actions = ({ blockId, appId, elements, parser }: IActions) => {
 		<>
 			{elements.map((element, index) => {
 				const isVisible = !showMoreVisible || index < maxVisible;
-				const component = parser.renderActions({ blockId, appId, ...element }, BlockContext.ACTION, parser);
+				const component = parser?.renderActions({ blockId, appId, ...element }, BlockContext.ACTION);
 				// Always render the component, but hide it with styles if needed
 				return (
 					<View key={element.actionId || `action-${index}`} style={!isVisible ? styles.hidden : undefined}>
