@@ -835,40 +835,24 @@ exports[`Story Snapshots: Touchable should match snapshot 1`] = `
   }
   testID="avatar"
 >
-  <View
-    accessibilityState={
-      {
-        "busy": undefined,
-        "checked": undefined,
-        "disabled": undefined,
-        "expanded": undefined,
-        "selected": undefined,
-      }
-    }
-    accessibilityValue={
-      {
-        "max": undefined,
-        "min": undefined,
-        "now": undefined,
-        "text": undefined,
-      }
-    }
-    accessible={true}
+  <RNGestureHandlerButton
+    activeOpacity={1}
     collapsable={false}
-    focusable={true}
-    onBlur={[Function]}
-    onClick={[Function]}
-    onFocus={[Function]}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
+    delayLongPress={600}
+    enabled={true}
+    handlerTag={1}
+    handlerType="NativeViewGestureHandler"
+    innerRef={null}
+    onActiveStateChange={[Function]}
+    onGestureHandlerEvent={[Function]}
+    onGestureHandlerStateChange={[Function]}
+    onPress={[Function]}
+    rippleColor="#E4E7EA"
     style={
       [
-        undefined,
         {
+          "backgroundColor": undefined,
+          "borderRadius": undefined,
           "margin": undefined,
           "marginBottom": undefined,
           "marginEnd": undefined,
@@ -880,13 +864,31 @@ exports[`Story Snapshots: Touchable should match snapshot 1`] = `
           "marginVertical": undefined,
         },
         {
-          "backgroundColor": undefined,
-          "borderRadius": undefined,
-          "opacity": 1,
+          "cursor": undefined,
         },
       ]
     }
+    underlayColor="#E4E7EA"
   >
+    <View
+      collapsable={false}
+      style={
+        {
+          "backgroundColor": "#E4E7EA",
+          "borderBottomLeftRadius": undefined,
+          "borderBottomRightRadius": undefined,
+          "borderRadius": undefined,
+          "borderTopLeftRadius": undefined,
+          "borderTopRightRadius": undefined,
+          "bottom": 0,
+          "left": 0,
+          "opacity": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
+      }
+    />
     <View
       accessibilityLabel="Avatar's avatar"
       accessible={true}
@@ -929,7 +931,7 @@ exports[`Story Snapshots: Touchable should match snapshot 1`] = `
         width={56}
       />
     </View>
-  </View>
+  </RNGestureHandlerButton>
 </View>
 `;
 
