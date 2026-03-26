@@ -14,8 +14,6 @@ class PushNotificationModule(reactContext: ReactApplicationContext) : NativePush
     init {
         CustomPushNotification.setReactApplicationContext(reactContext)
     }
-
-
     companion object {
         private const val PREFS_NAME = "RocketChatPrefs"
         private const val KEY_PENDING_NOTIFICATION = "pendingNotification"
