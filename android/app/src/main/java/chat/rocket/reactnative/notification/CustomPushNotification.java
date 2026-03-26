@@ -546,21 +546,6 @@ public class CustomPushNotification {
             Log.d(TAG, "Fetching avatar from: " + sanitizedUri);
         }
 
-        try {
-            // Use a 3-second timeout to avoid blocking the FCM service for too long
-            // FCM has a 10-second limit, so we need to fail fast and use fallback icon
-            Bitmap avatar = Glide.with(mContext)
-                    .asBitmap()
-                    .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
-                    .load(uri)
-                    .submit(100, 100)
-                    .get(3, TimeUnit.SECONDS);
-
-            return avatar != null ? avatar : largeIcon();
-        } catch (final ExecutionException | InterruptedException | TimeoutException e) {
-            Log.e(TAG, "Failed to fetch avatar: " + e.getMessage(), e);
-            return largeIcon();
-        }
         return NotificationHelper.fetchAvatarBitmap(mContext, uri, largeIcon());
     }
 
