@@ -52,7 +52,7 @@ const DirectoryOptions = ({
 	};
 
 	return (
-		<View style={{ backgroundColor: colors.surfaceRoom, marginBottom: insets.bottom }}>
+		<List.Container contentContainerStyle={{ backgroundColor: colors.surfaceRoom, marginBottom: insets.bottom }}>
 			<List.Separator />
 			{renderItem('channels')}
 			<List.Separator />
@@ -74,7 +74,7 @@ const DirectoryOptions = ({
 					</View>
 				</>
 			) : null}
-		</View>
+		</List.Container>
 	);
 };
 

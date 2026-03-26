@@ -44,7 +44,7 @@ export const byteLength = (b64: string): number => {
 	return ((validLen + placeHoldersLen) * 3) / 4 - placeHoldersLen;
 };
 
-const _byteLength = (b64: string, validLen: number, placeHoldersLen: number) =>
+const _byteLength = (_b64: string, validLen: number, placeHoldersLen: number) =>
 	((validLen + placeHoldersLen) * 3) / 4 - placeHoldersLen;
 
 export const toByteArray = (b64: string): any[] | Uint8Array => {
