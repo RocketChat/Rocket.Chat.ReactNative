@@ -2,25 +2,41 @@
 
 exports[`Story Snapshots: Content should match snapshot 1`] = `
 [
-  <RNGestureHandlerButton
+  <View
     accessibilityRole="radio"
-    activeOpacity={1}
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
     collapsable={false}
-    delayLongPress={600}
-    enabled={true}
-    handlerTag={1}
-    handlerType="NativeViewGestureHandler"
-    innerRef={null}
-    onActiveStateChange={[Function]}
-    onGestureHandlerEvent={[Function]}
-    onGestureHandlerStateChange={[Function]}
-    onPress={[Function]}
-    rippleColor="#E4E7EA"
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
     style={
       [
+        undefined,
         {
-          "backgroundColor": "#FFFFFF",
-          "borderRadius": undefined,
           "margin": undefined,
           "marginBottom": undefined,
           "marginEnd": undefined,
@@ -32,32 +48,14 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
           "marginVertical": undefined,
         },
         {
-          "cursor": undefined,
+          "backgroundColor": "#FFFFFF",
+          "borderRadius": undefined,
+          "opacity": 1,
         },
       ]
     }
     testID="server-item-https://open.rocket.chat/"
-    underlayColor="#E4E7EA"
   >
-    <View
-      collapsable={false}
-      style={
-        {
-          "backgroundColor": "#E4E7EA",
-          "borderBottomLeftRadius": undefined,
-          "borderBottomRightRadius": undefined,
-          "borderRadius": undefined,
-          "borderTopLeftRadius": undefined,
-          "borderTopRightRadius": undefined,
-          "bottom": 0,
-          "left": 0,
-          "opacity": 0,
-          "position": "absolute",
-          "right": 0,
-          "top": 0,
-        }
-      }
-    />
     <View
       accessibilityHint="Activate to select server"
       accessibilityLabel="Rocket.Chat. https://open.rocket.chat/. Selected"
@@ -204,26 +202,42 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
         </View>
       </View>
     </View>
-  </RNGestureHandlerButton>,
-  <RNGestureHandlerButton
+  </View>,
+  <View
     accessibilityRole="radio"
-    activeOpacity={1}
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
     collapsable={false}
-    delayLongPress={600}
-    enabled={true}
-    handlerTag={2}
-    handlerType="NativeViewGestureHandler"
-    innerRef={null}
-    onActiveStateChange={[Function]}
-    onGestureHandlerEvent={[Function]}
-    onGestureHandlerStateChange={[Function]}
-    onPress={[Function]}
-    rippleColor="#E4E7EA"
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
     style={
       [
+        undefined,
         {
-          "backgroundColor": "#FFFFFF",
-          "borderRadius": undefined,
           "margin": undefined,
           "marginBottom": undefined,
           "marginEnd": undefined,
@@ -235,32 +249,14 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
           "marginVertical": undefined,
         },
         {
-          "cursor": undefined,
+          "backgroundColor": "#FFFFFF",
+          "borderRadius": undefined,
+          "opacity": 1,
         },
       ]
     }
     testID="server-item-https://superlongservername.tologintoasuperlongservername/"
-    underlayColor="#E4E7EA"
   >
-    <View
-      collapsable={false}
-      style={
-        {
-          "backgroundColor": "#E4E7EA",
-          "borderBottomLeftRadius": undefined,
-          "borderBottomRightRadius": undefined,
-          "borderRadius": undefined,
-          "borderTopLeftRadius": undefined,
-          "borderTopRightRadius": undefined,
-          "bottom": 0,
-          "left": 0,
-          "opacity": 0,
-          "position": "absolute",
-          "right": 0,
-          "top": 0,
-        }
-      }
-    />
     <View
       accessibilityHint="Activate to select server"
       accessibilityLabel="Super Long Server Name in Rocket.Chat. https://superlongservername.tologintoasuperlongservername/. Unselected"
@@ -407,26 +403,42 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
         </View>
       </View>
     </View>
-  </RNGestureHandlerButton>,
-  <RNGestureHandlerButton
+  </View>,
+  <View
     accessibilityRole="radio"
-    activeOpacity={1}
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
     collapsable={false}
-    delayLongPress={600}
-    enabled={true}
-    handlerTag={3}
-    handlerType="NativeViewGestureHandler"
-    innerRef={null}
-    onActiveStateChange={[Function]}
-    onGestureHandlerEvent={[Function]}
-    onGestureHandlerStateChange={[Function]}
-    onPress={[Function]}
-    rippleColor="#E4E7EA"
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
     style={
       [
+        undefined,
         {
-          "backgroundColor": "#FFFFFF",
-          "borderRadius": undefined,
           "margin": undefined,
           "marginBottom": undefined,
           "marginEnd": undefined,
@@ -438,32 +450,14 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
           "marginVertical": undefined,
         },
         {
-          "cursor": undefined,
+          "backgroundColor": "#FFFFFF",
+          "borderRadius": undefined,
+          "opacity": 1,
         },
       ]
     }
     testID="server-item-https://stable.rocket.chat/"
-    underlayColor="#E4E7EA"
   >
-    <View
-      collapsable={false}
-      style={
-        {
-          "backgroundColor": "#E4E7EA",
-          "borderBottomLeftRadius": undefined,
-          "borderBottomRightRadius": undefined,
-          "borderRadius": undefined,
-          "borderTopLeftRadius": undefined,
-          "borderTopRightRadius": undefined,
-          "bottom": 0,
-          "left": 0,
-          "opacity": 0,
-          "position": "absolute",
-          "right": 0,
-          "top": 0,
-        }
-      }
-    />
     <View
       accessibilityHint="Activate to select server"
       accessibilityLabel="Rocket.Chat. https://stable.rocket.chat/. Unselected"
@@ -610,7 +604,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
         </View>
       </View>
     </View>
-  </RNGestureHandlerButton>,
+  </View>,
 ]
 `;
 
@@ -671,7 +665,7 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={4}
+          handlerTag={1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -754,24 +748,40 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
         }
       }
     >
-      <RNGestureHandlerButton
-        activeOpacity={1}
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
         collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        handlerTag={5}
-        handlerType="NativeViewGestureHandler"
-        innerRef={null}
-        onActiveStateChange={[Function]}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        onPress={[Function]}
-        rippleColor="#E4E7EA"
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
           [
+            undefined,
             {
-              "backgroundColor": "#FFFFFF",
-              "borderRadius": undefined,
               "margin": undefined,
               "marginBottom": undefined,
               "marginEnd": undefined,
@@ -783,32 +793,14 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
               "marginVertical": undefined,
             },
             {
-              "cursor": undefined,
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": undefined,
+              "opacity": 1,
             },
           ]
         }
         testID="server-item-https://open.rocket.chat/"
-        underlayColor="#E4E7EA"
       >
-        <View
-          collapsable={false}
-          style={
-            {
-              "backgroundColor": "#E4E7EA",
-              "borderBottomLeftRadius": undefined,
-              "borderBottomRightRadius": undefined,
-              "borderRadius": undefined,
-              "borderTopLeftRadius": undefined,
-              "borderTopRightRadius": undefined,
-              "bottom": 0,
-              "left": 0,
-              "opacity": 0,
-              "position": "absolute",
-              "right": 0,
-              "top": 0,
-            }
-          }
-        />
         <View
           accessibilityActions={
             [
@@ -963,7 +955,7 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
             </View>
           </View>
         </View>
-      </RNGestureHandlerButton>
+      </View>
     </View>
   </View>,
   <View
@@ -1021,7 +1013,7 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={6}
+          handlerTag={2}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -1104,24 +1096,40 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
         }
       }
     >
-      <RNGestureHandlerButton
-        activeOpacity={1}
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
         collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        handlerTag={7}
-        handlerType="NativeViewGestureHandler"
-        innerRef={null}
-        onActiveStateChange={[Function]}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        onPress={[Function]}
-        rippleColor="#E4E7EA"
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
           [
+            undefined,
             {
-              "backgroundColor": "#FFFFFF",
-              "borderRadius": undefined,
               "margin": undefined,
               "marginBottom": undefined,
               "marginEnd": undefined,
@@ -1133,32 +1141,14 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
               "marginVertical": undefined,
             },
             {
-              "cursor": undefined,
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": undefined,
+              "opacity": 1,
             },
           ]
         }
         testID="server-item-https://example.com/"
-        underlayColor="#E4E7EA"
       >
-        <View
-          collapsable={false}
-          style={
-            {
-              "backgroundColor": "#E4E7EA",
-              "borderBottomLeftRadius": undefined,
-              "borderBottomRightRadius": undefined,
-              "borderRadius": undefined,
-              "borderTopLeftRadius": undefined,
-              "borderTopRightRadius": undefined,
-              "bottom": 0,
-              "left": 0,
-              "opacity": 0,
-              "position": "absolute",
-              "right": 0,
-              "top": 0,
-            }
-          }
-        />
         <View
           accessibilityActions={
             [
@@ -1313,7 +1303,7 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
             </View>
           </View>
         </View>
-      </RNGestureHandlerButton>
+      </View>
     </View>
   </View>,
 ]
@@ -1321,25 +1311,41 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
 
 exports[`Story Snapshots: Themes should match snapshot 1`] = `
 [
-  <RNGestureHandlerButton
+  <View
     accessibilityRole="radio"
-    activeOpacity={1}
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
     collapsable={false}
-    delayLongPress={600}
-    enabled={true}
-    handlerTag={10}
-    handlerType="NativeViewGestureHandler"
-    innerRef={null}
-    onActiveStateChange={[Function]}
-    onGestureHandlerEvent={[Function]}
-    onGestureHandlerStateChange={[Function]}
-    onPress={[Function]}
-    rippleColor="#E4E7EA"
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
     style={
       [
+        undefined,
         {
-          "backgroundColor": "#FFFFFF",
-          "borderRadius": undefined,
           "margin": undefined,
           "marginBottom": undefined,
           "marginEnd": undefined,
@@ -1351,32 +1357,14 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           "marginVertical": undefined,
         },
         {
-          "cursor": undefined,
+          "backgroundColor": "#FFFFFF",
+          "borderRadius": undefined,
+          "opacity": 1,
         },
       ]
     }
     testID="server-item-https://open.rocket.chat/"
-    underlayColor="#E4E7EA"
   >
-    <View
-      collapsable={false}
-      style={
-        {
-          "backgroundColor": "#E4E7EA",
-          "borderBottomLeftRadius": undefined,
-          "borderBottomRightRadius": undefined,
-          "borderRadius": undefined,
-          "borderTopLeftRadius": undefined,
-          "borderTopRightRadius": undefined,
-          "bottom": 0,
-          "left": 0,
-          "opacity": 0,
-          "position": "absolute",
-          "right": 0,
-          "top": 0,
-        }
-      }
-    />
     <View
       accessibilityHint="Activate to select server"
       accessibilityLabel="Rocket.Chat. https://open.rocket.chat/. Unselected"
@@ -1523,63 +1511,61 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
         </View>
       </View>
     </View>
-  </RNGestureHandlerButton>,
-  <RNGestureHandlerButton
+  </View>,
+  <View
     accessibilityRole="radio"
-    activeOpacity={1}
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
     collapsable={false}
-    delayLongPress={600}
-    enabled={true}
-    handlerTag={11}
-    handlerType="NativeViewGestureHandler"
-    innerRef={null}
-    onActiveStateChange={[Function]}
-    onGestureHandlerEvent={[Function]}
-    onGestureHandlerStateChange={[Function]}
-    onPress={[Function]}
-    rippleColor="#2D3039"
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
     style={
       [
+        undefined,
+        {
+          "margin": undefined,
+          "marginBottom": undefined,
+          "marginEnd": undefined,
+          "marginHorizontal": undefined,
+          "marginLeft": undefined,
+          "marginRight": undefined,
+          "marginStart": undefined,
+          "marginTop": undefined,
+          "marginVertical": undefined,
+        },
         {
           "backgroundColor": "#262931",
           "borderRadius": undefined,
-          "margin": undefined,
-          "marginBottom": undefined,
-          "marginEnd": undefined,
-          "marginHorizontal": undefined,
-          "marginLeft": undefined,
-          "marginRight": undefined,
-          "marginStart": undefined,
-          "marginTop": undefined,
-          "marginVertical": undefined,
-        },
-        {
-          "cursor": undefined,
+          "opacity": 1,
         },
       ]
     }
     testID="server-item-https://open.rocket.chat/"
-    underlayColor="#2D3039"
   >
-    <View
-      collapsable={false}
-      style={
-        {
-          "backgroundColor": "#2D3039",
-          "borderBottomLeftRadius": undefined,
-          "borderBottomRightRadius": undefined,
-          "borderRadius": undefined,
-          "borderTopLeftRadius": undefined,
-          "borderTopRightRadius": undefined,
-          "bottom": 0,
-          "left": 0,
-          "opacity": 0,
-          "position": "absolute",
-          "right": 0,
-          "top": 0,
-        }
-      }
-    />
     <View
       accessibilityHint="Activate to select server"
       accessibilityLabel="Rocket.Chat. https://open.rocket.chat/. Unselected"
@@ -1726,63 +1712,61 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
         </View>
       </View>
     </View>
-  </RNGestureHandlerButton>,
-  <RNGestureHandlerButton
+  </View>,
+  <View
     accessibilityRole="radio"
-    activeOpacity={1}
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
     collapsable={false}
-    delayLongPress={600}
-    enabled={true}
-    handlerTag={12}
-    handlerType="NativeViewGestureHandler"
-    innerRef={null}
-    onActiveStateChange={[Function]}
-    onGestureHandlerEvent={[Function]}
-    onGestureHandlerStateChange={[Function]}
-    onPress={[Function]}
-    rippleColor="#16181a"
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
     style={
       [
+        undefined,
+        {
+          "margin": undefined,
+          "marginBottom": undefined,
+          "marginEnd": undefined,
+          "marginHorizontal": undefined,
+          "marginLeft": undefined,
+          "marginRight": undefined,
+          "marginStart": undefined,
+          "marginTop": undefined,
+          "marginVertical": undefined,
+        },
         {
           "backgroundColor": "#0d0d0d",
           "borderRadius": undefined,
-          "margin": undefined,
-          "marginBottom": undefined,
-          "marginEnd": undefined,
-          "marginHorizontal": undefined,
-          "marginLeft": undefined,
-          "marginRight": undefined,
-          "marginStart": undefined,
-          "marginTop": undefined,
-          "marginVertical": undefined,
-        },
-        {
-          "cursor": undefined,
+          "opacity": 1,
         },
       ]
     }
     testID="server-item-https://open.rocket.chat/"
-    underlayColor="#16181a"
   >
-    <View
-      collapsable={false}
-      style={
-        {
-          "backgroundColor": "#16181a",
-          "borderBottomLeftRadius": undefined,
-          "borderBottomRightRadius": undefined,
-          "borderRadius": undefined,
-          "borderTopLeftRadius": undefined,
-          "borderTopRightRadius": undefined,
-          "bottom": 0,
-          "left": 0,
-          "opacity": 0,
-          "position": "absolute",
-          "right": 0,
-          "top": 0,
-        }
-      }
-    />
     <View
       accessibilityHint="Activate to select server"
       accessibilityLabel="Rocket.Chat. https://open.rocket.chat/. Unselected"
@@ -1929,6 +1913,6 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
         </View>
       </View>
     </View>
-  </RNGestureHandlerButton>,
+  </View>,
 ]
 `;

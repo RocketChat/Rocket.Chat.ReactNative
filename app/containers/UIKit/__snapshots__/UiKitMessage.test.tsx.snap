@@ -3,57 +3,794 @@
 exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
 [
   <View>
-    <RNGestureHandlerButton
-      accessibilityLabel="Approve"
-      accessibilityRole="button"
-      activeOpacity={0.2}
-      collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
-      rippleColor="transparent"
+    <ExternalKeyboardView
+      canBeFocused={true}
+      enableA11yFocus={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onContextMenuPress={[Function]}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={300}
       style={
         [
-          {
-            "backgroundColor": "#156FF5",
-            "borderRadius": 4,
-            "justifyContent": "center",
-            "marginBottom": 16,
-            "paddingHorizontal": 16,
-            "paddingVertical": 14,
-          },
-          {
-            "cursor": undefined,
-          },
+          undefined,
+          undefined,
         ]
       }
-      underlayColor="transparent"
     >
       <View
-        collapsable={false}
-        style={
+        accessibilityLabel="Approve"
+        accessibilityRole="button"
+        accessibilityState={
           {
-            "backgroundColor": "transparent",
-            "borderBottomLeftRadius": undefined,
-            "borderBottomRightRadius": undefined,
-            "borderRadius": 4,
-            "borderTopLeftRadius": undefined,
-            "borderTopRightRadius": undefined,
-            "bottom": 0,
-            "left": 0,
-            "opacity": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
           }
         }
-      />
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            [
+              {
+                "justifyContent": "center",
+                "paddingHorizontal": 16,
+                "paddingVertical": 14,
+              },
+              {
+                "borderRadius": 4,
+                "marginBottom": 12,
+              },
+              {
+                "backgroundColor": "#156FF5",
+              },
+              {},
+              {
+                "marginBottom": 16,
+              },
+            ],
+            undefined,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#FFFFFF",
+                "fontSize": 16,
+              },
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "500",
+                "textAlign": "center",
+              },
+              undefined,
+            ]
+          }
+        >
+          Approve
+        </Text>
+      </View>
+    </ExternalKeyboardView>
+  </View>,
+  <View>
+    <ExternalKeyboardView
+      canBeFocused={true}
+      enableA11yFocus={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onContextMenuPress={[Function]}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={300}
+      style={
+        [
+          undefined,
+          undefined,
+        ]
+      }
+    >
+      <View
+        accessibilityLabel="Deny"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            [
+              {
+                "justifyContent": "center",
+                "paddingHorizontal": 16,
+                "paddingVertical": 14,
+              },
+              {
+                "borderRadius": 4,
+                "marginBottom": 12,
+              },
+              {
+                "backgroundColor": "#E4E7EA",
+              },
+              {},
+              {
+                "marginBottom": 16,
+              },
+            ],
+            undefined,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#2F343D",
+                "fontSize": 16,
+              },
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "500",
+                "textAlign": "center",
+              },
+              undefined,
+            ]
+          }
+        >
+          Deny
+        </Text>
+      </View>
+    </ExternalKeyboardView>
+  </View>,
+  <View>
+    <ExternalKeyboardView
+      canBeFocused={true}
+      enableA11yFocus={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onContextMenuPress={[Function]}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={300}
+      style={
+        [
+          undefined,
+          undefined,
+        ]
+      }
+    >
+      <View
+        accessibilityLabel="Deny"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            [
+              {
+                "justifyContent": "center",
+                "paddingHorizontal": 16,
+                "paddingVertical": 14,
+              },
+              {
+                "borderRadius": 4,
+                "marginBottom": 12,
+              },
+              {
+                "backgroundColor": "#E4E7EA",
+              },
+              {},
+              {
+                "marginBottom": 16,
+              },
+            ],
+            undefined,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#2F343D",
+                "fontSize": 16,
+              },
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "500",
+                "textAlign": "center",
+              },
+              undefined,
+            ]
+          }
+        >
+          Deny
+        </Text>
+      </View>
+    </ExternalKeyboardView>
+  </View>,
+  <View>
+    <ExternalKeyboardView
+      canBeFocused={true}
+      enableA11yFocus={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onContextMenuPress={[Function]}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={300}
+      style={
+        [
+          undefined,
+          undefined,
+        ]
+      }
+    >
+      <View
+        accessibilityLabel="Deny"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            [
+              {
+                "justifyContent": "center",
+                "paddingHorizontal": 16,
+                "paddingVertical": 14,
+              },
+              {
+                "borderRadius": 4,
+                "marginBottom": 12,
+              },
+              {
+                "backgroundColor": "#E4E7EA",
+              },
+              {},
+              {
+                "marginBottom": 16,
+              },
+            ],
+            undefined,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#2F343D",
+                "fontSize": 16,
+              },
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "500",
+                "textAlign": "center",
+              },
+              undefined,
+            ]
+          }
+        >
+          Deny
+        </Text>
+      </View>
+    </ExternalKeyboardView>
+  </View>,
+  <View>
+    <ExternalKeyboardView
+      canBeFocused={true}
+      enableA11yFocus={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onContextMenuPress={[Function]}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={300}
+      style={
+        [
+          undefined,
+          undefined,
+        ]
+      }
+    >
+      <View
+        accessibilityLabel="Deny"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            [
+              {
+                "justifyContent": "center",
+                "paddingHorizontal": 16,
+                "paddingVertical": 14,
+              },
+              {
+                "borderRadius": 4,
+                "marginBottom": 12,
+              },
+              {
+                "backgroundColor": "#E4E7EA",
+              },
+              {},
+              {
+                "marginBottom": 16,
+              },
+            ],
+            undefined,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#2F343D",
+                "fontSize": 16,
+              },
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "500",
+                "textAlign": "center",
+              },
+              undefined,
+            ]
+          }
+        >
+          Deny
+        </Text>
+      </View>
+    </ExternalKeyboardView>
+  </View>,
+  <View
+    style={
+      {
+        "height": 0,
+        "overflow": "hidden",
+      }
+    }
+  >
+    <ExternalKeyboardView
+      canBeFocused={true}
+      enableA11yFocus={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onContextMenuPress={[Function]}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={300}
+      style={
+        [
+          undefined,
+          undefined,
+        ]
+      }
+    >
+      <View
+        accessibilityLabel="Deny"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            [
+              {
+                "justifyContent": "center",
+                "paddingHorizontal": 16,
+                "paddingVertical": 14,
+              },
+              {
+                "borderRadius": 4,
+                "marginBottom": 12,
+              },
+              {
+                "backgroundColor": "#E4E7EA",
+              },
+              {},
+              {
+                "marginBottom": 16,
+              },
+            ],
+            undefined,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#2F343D",
+                "fontSize": 16,
+              },
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "500",
+                "textAlign": "center",
+              },
+              undefined,
+            ]
+          }
+        >
+          Deny
+        </Text>
+      </View>
+    </ExternalKeyboardView>
+  </View>,
+  <View
+    style={
+      {
+        "height": 0,
+        "overflow": "hidden",
+      }
+    }
+  >
+    <ExternalKeyboardView
+      canBeFocused={true}
+      enableA11yFocus={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onContextMenuPress={[Function]}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={300}
+      style={
+        [
+          undefined,
+          undefined,
+        ]
+      }
+    >
+      <View
+        accessibilityLabel="Deny"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            [
+              {
+                "justifyContent": "center",
+                "paddingHorizontal": 16,
+                "paddingVertical": 14,
+              },
+              {
+                "borderRadius": 4,
+                "marginBottom": 12,
+              },
+              {
+                "backgroundColor": "#E4E7EA",
+              },
+              {},
+              {
+                "marginBottom": 16,
+              },
+            ],
+            undefined,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#2F343D",
+                "fontSize": 16,
+              },
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "500",
+                "textAlign": "center",
+              },
+              undefined,
+            ]
+          }
+        >
+          Deny
+        </Text>
+      </View>
+    </ExternalKeyboardView>
+  </View>,
+  <ExternalKeyboardView
+    canBeFocused={true}
+    enableA11yFocus={false}
+    group={false}
+    haloEffect={true}
+    hasKeyDownPress={false}
+    hasKeyUpPress={true}
+    hasOnFocusChanged={true}
+    lockFocus={0}
+    onContextMenuPress={[Function]}
+    onFocusChange={[Function]}
+    onKeyUpPress={[Function]}
+    orderIndex={-1}
+    screenAutoA11yFocusDelay={300}
+    style={
+      [
+        undefined,
+        undefined,
+      ]
+    }
+  >
+    <View
+      accessibilityLabel="Show more"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          [
+            {
+              "justifyContent": "center",
+              "paddingHorizontal": 16,
+              "paddingVertical": 14,
+            },
+            {
+              "borderRadius": 4,
+              "marginBottom": 12,
+            },
+            {
+              "backgroundColor": "#156FF5",
+            },
+            {},
+            undefined,
+          ],
+          undefined,
+        ]
+      }
+    >
       <Text
         style={
           [
@@ -71,533 +808,10 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
           ]
         }
       >
-        Approve
+        Show more
       </Text>
-    </RNGestureHandlerButton>
-  </View>,
-  <View>
-    <RNGestureHandlerButton
-      accessibilityLabel="Deny"
-      accessibilityRole="button"
-      activeOpacity={0.2}
-      collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={2}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
-      rippleColor="transparent"
-      style={
-        [
-          {
-            "backgroundColor": "#E4E7EA",
-            "borderRadius": 4,
-            "justifyContent": "center",
-            "marginBottom": 16,
-            "paddingHorizontal": 16,
-            "paddingVertical": 14,
-          },
-          {
-            "cursor": undefined,
-          },
-        ]
-      }
-      underlayColor="transparent"
-    >
-      <View
-        collapsable={false}
-        style={
-          {
-            "backgroundColor": "transparent",
-            "borderBottomLeftRadius": undefined,
-            "borderBottomRightRadius": undefined,
-            "borderRadius": 4,
-            "borderTopLeftRadius": undefined,
-            "borderTopRightRadius": undefined,
-            "bottom": 0,
-            "left": 0,
-            "opacity": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          }
-        }
-      />
-      <Text
-        style={
-          [
-            {
-              "color": "#2F343D",
-              "fontSize": 16,
-            },
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontWeight": "500",
-              "textAlign": "center",
-            },
-            undefined,
-          ]
-        }
-      >
-        Deny
-      </Text>
-    </RNGestureHandlerButton>
-  </View>,
-  <View>
-    <RNGestureHandlerButton
-      accessibilityLabel="Deny"
-      accessibilityRole="button"
-      activeOpacity={0.2}
-      collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={3}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
-      rippleColor="transparent"
-      style={
-        [
-          {
-            "backgroundColor": "#E4E7EA",
-            "borderRadius": 4,
-            "justifyContent": "center",
-            "marginBottom": 16,
-            "paddingHorizontal": 16,
-            "paddingVertical": 14,
-          },
-          {
-            "cursor": undefined,
-          },
-        ]
-      }
-      underlayColor="transparent"
-    >
-      <View
-        collapsable={false}
-        style={
-          {
-            "backgroundColor": "transparent",
-            "borderBottomLeftRadius": undefined,
-            "borderBottomRightRadius": undefined,
-            "borderRadius": 4,
-            "borderTopLeftRadius": undefined,
-            "borderTopRightRadius": undefined,
-            "bottom": 0,
-            "left": 0,
-            "opacity": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          }
-        }
-      />
-      <Text
-        style={
-          [
-            {
-              "color": "#2F343D",
-              "fontSize": 16,
-            },
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontWeight": "500",
-              "textAlign": "center",
-            },
-            undefined,
-          ]
-        }
-      >
-        Deny
-      </Text>
-    </RNGestureHandlerButton>
-  </View>,
-  <View>
-    <RNGestureHandlerButton
-      accessibilityLabel="Deny"
-      accessibilityRole="button"
-      activeOpacity={0.2}
-      collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={4}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
-      rippleColor="transparent"
-      style={
-        [
-          {
-            "backgroundColor": "#E4E7EA",
-            "borderRadius": 4,
-            "justifyContent": "center",
-            "marginBottom": 16,
-            "paddingHorizontal": 16,
-            "paddingVertical": 14,
-          },
-          {
-            "cursor": undefined,
-          },
-        ]
-      }
-      underlayColor="transparent"
-    >
-      <View
-        collapsable={false}
-        style={
-          {
-            "backgroundColor": "transparent",
-            "borderBottomLeftRadius": undefined,
-            "borderBottomRightRadius": undefined,
-            "borderRadius": 4,
-            "borderTopLeftRadius": undefined,
-            "borderTopRightRadius": undefined,
-            "bottom": 0,
-            "left": 0,
-            "opacity": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          }
-        }
-      />
-      <Text
-        style={
-          [
-            {
-              "color": "#2F343D",
-              "fontSize": 16,
-            },
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontWeight": "500",
-              "textAlign": "center",
-            },
-            undefined,
-          ]
-        }
-      >
-        Deny
-      </Text>
-    </RNGestureHandlerButton>
-  </View>,
-  <View>
-    <RNGestureHandlerButton
-      accessibilityLabel="Deny"
-      accessibilityRole="button"
-      activeOpacity={0.2}
-      collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={5}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
-      rippleColor="transparent"
-      style={
-        [
-          {
-            "backgroundColor": "#E4E7EA",
-            "borderRadius": 4,
-            "justifyContent": "center",
-            "marginBottom": 16,
-            "paddingHorizontal": 16,
-            "paddingVertical": 14,
-          },
-          {
-            "cursor": undefined,
-          },
-        ]
-      }
-      underlayColor="transparent"
-    >
-      <View
-        collapsable={false}
-        style={
-          {
-            "backgroundColor": "transparent",
-            "borderBottomLeftRadius": undefined,
-            "borderBottomRightRadius": undefined,
-            "borderRadius": 4,
-            "borderTopLeftRadius": undefined,
-            "borderTopRightRadius": undefined,
-            "bottom": 0,
-            "left": 0,
-            "opacity": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          }
-        }
-      />
-      <Text
-        style={
-          [
-            {
-              "color": "#2F343D",
-              "fontSize": 16,
-            },
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontWeight": "500",
-              "textAlign": "center",
-            },
-            undefined,
-          ]
-        }
-      >
-        Deny
-      </Text>
-    </RNGestureHandlerButton>
-  </View>,
-  <View
-    style={
-      {
-        "height": 0,
-        "overflow": "hidden",
-      }
-    }
-  >
-    <RNGestureHandlerButton
-      accessibilityLabel="Deny"
-      accessibilityRole="button"
-      activeOpacity={0.2}
-      collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={6}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
-      rippleColor="transparent"
-      style={
-        [
-          {
-            "backgroundColor": "#E4E7EA",
-            "borderRadius": 4,
-            "justifyContent": "center",
-            "marginBottom": 16,
-            "paddingHorizontal": 16,
-            "paddingVertical": 14,
-          },
-          {
-            "cursor": undefined,
-          },
-        ]
-      }
-      underlayColor="transparent"
-    >
-      <View
-        collapsable={false}
-        style={
-          {
-            "backgroundColor": "transparent",
-            "borderBottomLeftRadius": undefined,
-            "borderBottomRightRadius": undefined,
-            "borderRadius": 4,
-            "borderTopLeftRadius": undefined,
-            "borderTopRightRadius": undefined,
-            "bottom": 0,
-            "left": 0,
-            "opacity": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          }
-        }
-      />
-      <Text
-        style={
-          [
-            {
-              "color": "#2F343D",
-              "fontSize": 16,
-            },
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontWeight": "500",
-              "textAlign": "center",
-            },
-            undefined,
-          ]
-        }
-      >
-        Deny
-      </Text>
-    </RNGestureHandlerButton>
-  </View>,
-  <View
-    style={
-      {
-        "height": 0,
-        "overflow": "hidden",
-      }
-    }
-  >
-    <RNGestureHandlerButton
-      accessibilityLabel="Deny"
-      accessibilityRole="button"
-      activeOpacity={0.2}
-      collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={7}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
-      rippleColor="transparent"
-      style={
-        [
-          {
-            "backgroundColor": "#E4E7EA",
-            "borderRadius": 4,
-            "justifyContent": "center",
-            "marginBottom": 16,
-            "paddingHorizontal": 16,
-            "paddingVertical": 14,
-          },
-          {
-            "cursor": undefined,
-          },
-        ]
-      }
-      underlayColor="transparent"
-    >
-      <View
-        collapsable={false}
-        style={
-          {
-            "backgroundColor": "transparent",
-            "borderBottomLeftRadius": undefined,
-            "borderBottomRightRadius": undefined,
-            "borderRadius": 4,
-            "borderTopLeftRadius": undefined,
-            "borderTopRightRadius": undefined,
-            "bottom": 0,
-            "left": 0,
-            "opacity": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          }
-        }
-      />
-      <Text
-        style={
-          [
-            {
-              "color": "#2F343D",
-              "fontSize": 16,
-            },
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontWeight": "500",
-              "textAlign": "center",
-            },
-            undefined,
-          ]
-        }
-      >
-        Deny
-      </Text>
-    </RNGestureHandlerButton>
-  </View>,
-  <RNGestureHandlerButton
-    accessibilityLabel="Show more"
-    accessibilityRole="button"
-    activeOpacity={0.2}
-    collapsable={false}
-    delayLongPress={600}
-    enabled={true}
-    handlerTag={8}
-    handlerType="NativeViewGestureHandler"
-    innerRef={null}
-    onActiveStateChange={[Function]}
-    onGestureHandlerEvent={[Function]}
-    onGestureHandlerStateChange={[Function]}
-    onPress={[Function]}
-    rippleColor="transparent"
-    style={
-      [
-        {
-          "backgroundColor": "#156FF5",
-          "borderRadius": 4,
-          "justifyContent": "center",
-          "marginBottom": 12,
-          "paddingHorizontal": 16,
-          "paddingVertical": 14,
-        },
-        {
-          "cursor": undefined,
-        },
-      ]
-    }
-    underlayColor="transparent"
-  >
-    <View
-      collapsable={false}
-      style={
-        {
-          "backgroundColor": "transparent",
-          "borderBottomLeftRadius": undefined,
-          "borderBottomRightRadius": undefined,
-          "borderRadius": 4,
-          "borderTopLeftRadius": undefined,
-          "borderTopRightRadius": undefined,
-          "bottom": 0,
-          "left": 0,
-          "opacity": 0,
-          "position": "absolute",
-          "right": 0,
-          "top": 0,
-        }
-      }
-    />
-    <Text
-      style={
-        [
-          {
-            "color": "#FFFFFF",
-            "fontSize": 16,
-          },
-          {
-            "backgroundColor": "transparent",
-            "fontFamily": "Inter",
-            "fontWeight": "500",
-            "textAlign": "center",
-          },
-          undefined,
-        ]
-      }
-    >
-      Show more
-    </Text>
-  </RNGestureHandlerButton>,
+    </View>
+  </ExternalKeyboardView>,
 ]
 `;
 
@@ -4877,77 +5091,104 @@ exports[`Story Snapshots: SectionButton should match snapshot 1`] = `
       </Text>
     </View>
   </View>
-  <RNGestureHandlerButton
-    accessibilityLabel="button"
-    accessibilityRole="button"
-    activeOpacity={0.2}
-    collapsable={false}
-    delayLongPress={600}
-    enabled={true}
-    handlerTag={9}
-    handlerType="NativeViewGestureHandler"
-    innerRef={null}
-    onActiveStateChange={[Function]}
-    onGestureHandlerEvent={[Function]}
-    onGestureHandlerStateChange={[Function]}
-    onPress={[Function]}
-    rippleColor="transparent"
+  <ExternalKeyboardView
+    canBeFocused={true}
+    enableA11yFocus={false}
+    group={false}
+    haloEffect={true}
+    hasKeyDownPress={false}
+    hasKeyUpPress={true}
+    hasOnFocusChanged={true}
+    lockFocus={0}
+    onContextMenuPress={[Function]}
+    onFocusChange={[Function]}
+    onKeyUpPress={[Function]}
+    orderIndex={-1}
+    screenAutoA11yFocusDelay={300}
     style={
       [
-        {
-          "backgroundColor": "#156FF5",
-          "borderRadius": 4,
-          "justifyContent": "center",
-          "marginBottom": 16,
-          "paddingHorizontal": 16,
-          "paddingVertical": 14,
-        },
-        {
-          "cursor": undefined,
-        },
+        undefined,
+        undefined,
       ]
     }
-    underlayColor="transparent"
   >
     <View
-      collapsable={false}
-      style={
+      accessibilityLabel="button"
+      accessibilityRole="button"
+      accessibilityState={
         {
-          "backgroundColor": "transparent",
-          "borderBottomLeftRadius": undefined,
-          "borderBottomRightRadius": undefined,
-          "borderRadius": 4,
-          "borderTopLeftRadius": undefined,
-          "borderTopRightRadius": undefined,
-          "bottom": 0,
-          "left": 0,
-          "opacity": 0,
-          "position": "absolute",
-          "right": 0,
-          "top": 0,
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
         }
       }
-    />
-    <Text
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         [
-          {
-            "color": "#FFFFFF",
-            "fontSize": 16,
-          },
-          {
-            "backgroundColor": "transparent",
-            "fontFamily": "Inter",
-            "fontWeight": "500",
-            "textAlign": "center",
-          },
+          [
+            {
+              "justifyContent": "center",
+              "paddingHorizontal": 16,
+              "paddingVertical": 14,
+            },
+            {
+              "borderRadius": 4,
+              "marginBottom": 12,
+            },
+            {
+              "backgroundColor": "#156FF5",
+            },
+            {},
+            {
+              "marginBottom": 16,
+            },
+          ],
           undefined,
         ]
       }
     >
-      button
-    </Text>
-  </RNGestureHandlerButton>
+      <Text
+        style={
+          [
+            {
+              "color": "#FFFFFF",
+              "fontSize": 16,
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontWeight": "500",
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        button
+      </Text>
+    </View>
+  </ExternalKeyboardView>
 </View>
 `;
 
@@ -5031,77 +5272,102 @@ exports[`Story Snapshots: SectionDatePicker should match snapshot 1`] = `
       </Text>
     </View>
   </View>
-  <RNGestureHandlerButton
-    accessibilityLabel="Select a date"
-    accessibilityRole="button"
-    activeOpacity={0.2}
-    collapsable={false}
-    delayLongPress={600}
-    enabled={true}
-    handlerTag={10}
-    handlerType="NativeViewGestureHandler"
-    innerRef={null}
-    onActiveStateChange={[Function]}
-    onGestureHandlerEvent={[Function]}
-    onGestureHandlerStateChange={[Function]}
-    onPress={[Function]}
-    rippleColor="transparent"
+  <ExternalKeyboardView
+    canBeFocused={true}
+    enableA11yFocus={false}
+    group={false}
+    haloEffect={true}
+    hasKeyDownPress={false}
+    hasKeyUpPress={true}
+    hasOnFocusChanged={true}
+    lockFocus={0}
+    onContextMenuPress={[Function]}
+    onFocusChange={[Function]}
+    onKeyUpPress={[Function]}
+    orderIndex={-1}
+    screenAutoA11yFocusDelay={300}
     style={
       [
-        {
-          "backgroundColor": "#156FF5",
-          "borderRadius": 4,
-          "justifyContent": "center",
-          "marginBottom": 12,
-          "paddingHorizontal": 16,
-          "paddingVertical": 14,
-        },
-        {
-          "cursor": undefined,
-        },
+        undefined,
+        undefined,
       ]
     }
-    underlayColor="transparent"
   >
     <View
-      collapsable={false}
-      style={
+      accessibilityLabel="Select a date"
+      accessibilityRole="button"
+      accessibilityState={
         {
-          "backgroundColor": "transparent",
-          "borderBottomLeftRadius": undefined,
-          "borderBottomRightRadius": undefined,
-          "borderRadius": 4,
-          "borderTopLeftRadius": undefined,
-          "borderTopRightRadius": undefined,
-          "bottom": 0,
-          "left": 0,
-          "opacity": 0,
-          "position": "absolute",
-          "right": 0,
-          "top": 0,
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
         }
       }
-    />
-    <Text
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         [
-          {
-            "color": "#FFFFFF",
-            "fontSize": 16,
-          },
-          {
-            "backgroundColor": "transparent",
-            "fontFamily": "Inter",
-            "fontWeight": "500",
-            "textAlign": "center",
-          },
+          [
+            {
+              "justifyContent": "center",
+              "paddingHorizontal": 16,
+              "paddingVertical": 14,
+            },
+            {
+              "borderRadius": 4,
+              "marginBottom": 12,
+            },
+            {
+              "backgroundColor": "#156FF5",
+            },
+            {},
+            undefined,
+          ],
           undefined,
         ]
       }
     >
-      Select a date
-    </Text>
-  </RNGestureHandlerButton>
+      <Text
+        style={
+          [
+            {
+              "color": "#FFFFFF",
+              "fontSize": 16,
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontWeight": "500",
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        Select a date
+      </Text>
+    </View>
+  </ExternalKeyboardView>
 </View>
 `;
 
@@ -5392,77 +5658,102 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
         </Text>
       </View>
     </View>
-    <RNGestureHandlerButton
-      accessibilityLabel="2 selecteds"
-      accessibilityRole="button"
-      activeOpacity={0.2}
-      collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={11}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
-      rippleColor="transparent"
+    <ExternalKeyboardView
+      canBeFocused={true}
+      enableA11yFocus={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onContextMenuPress={[Function]}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={300}
       style={
         [
-          {
-            "backgroundColor": "#156FF5",
-            "borderRadius": 4,
-            "justifyContent": "center",
-            "marginBottom": 12,
-            "paddingHorizontal": 16,
-            "paddingVertical": 14,
-          },
-          {
-            "cursor": undefined,
-          },
+          undefined,
+          undefined,
         ]
       }
-      underlayColor="transparent"
     >
       <View
-        collapsable={false}
-        style={
+        accessibilityLabel="2 selecteds"
+        accessibilityRole="button"
+        accessibilityState={
           {
-            "backgroundColor": "transparent",
-            "borderBottomLeftRadius": undefined,
-            "borderBottomRightRadius": undefined,
-            "borderRadius": 4,
-            "borderTopLeftRadius": undefined,
-            "borderTopRightRadius": undefined,
-            "bottom": 0,
-            "left": 0,
-            "opacity": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
           }
         }
-      />
-      <Text
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
           [
-            {
-              "color": "#FFFFFF",
-              "fontSize": 16,
-            },
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontWeight": "500",
-              "textAlign": "center",
-            },
+            [
+              {
+                "justifyContent": "center",
+                "paddingHorizontal": 16,
+                "paddingVertical": 14,
+              },
+              {
+                "borderRadius": 4,
+                "marginBottom": 12,
+              },
+              {
+                "backgroundColor": "#156FF5",
+              },
+              {},
+              undefined,
+            ],
             undefined,
           ]
         }
       >
-        2 selecteds
-      </Text>
-    </RNGestureHandlerButton>
+        <Text
+          style={
+            [
+              {
+                "color": "#FFFFFF",
+                "fontSize": 16,
+              },
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "500",
+                "textAlign": "center",
+              },
+              undefined,
+            ]
+          }
+        >
+          2 selecteds
+        </Text>
+      </View>
+    </ExternalKeyboardView>
   </View>,
   <View
     style={
@@ -5543,77 +5834,102 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
         </Text>
       </View>
     </View>
-    <RNGestureHandlerButton
-      accessibilityLabel="0 selecteds"
-      accessibilityRole="button"
-      activeOpacity={0.2}
-      collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={12}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
-      rippleColor="transparent"
+    <ExternalKeyboardView
+      canBeFocused={true}
+      enableA11yFocus={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onContextMenuPress={[Function]}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={300}
       style={
         [
-          {
-            "backgroundColor": "#156FF5",
-            "borderRadius": 4,
-            "justifyContent": "center",
-            "marginBottom": 12,
-            "paddingHorizontal": 16,
-            "paddingVertical": 14,
-          },
-          {
-            "cursor": undefined,
-          },
+          undefined,
+          undefined,
         ]
       }
-      underlayColor="transparent"
     >
       <View
-        collapsable={false}
-        style={
+        accessibilityLabel="0 selecteds"
+        accessibilityRole="button"
+        accessibilityState={
           {
-            "backgroundColor": "transparent",
-            "borderBottomLeftRadius": undefined,
-            "borderBottomRightRadius": undefined,
-            "borderRadius": 4,
-            "borderTopLeftRadius": undefined,
-            "borderTopRightRadius": undefined,
-            "bottom": 0,
-            "left": 0,
-            "opacity": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
           }
         }
-      />
-      <Text
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
           [
-            {
-              "color": "#FFFFFF",
-              "fontSize": 16,
-            },
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontWeight": "500",
-              "textAlign": "center",
-            },
+            [
+              {
+                "justifyContent": "center",
+                "paddingHorizontal": 16,
+                "paddingVertical": 14,
+              },
+              {
+                "borderRadius": 4,
+                "marginBottom": 12,
+              },
+              {
+                "backgroundColor": "#156FF5",
+              },
+              {},
+              undefined,
+            ],
             undefined,
           ]
         }
       >
-        0 selecteds
-      </Text>
-    </RNGestureHandlerButton>
+        <Text
+          style={
+            [
+              {
+                "color": "#FFFFFF",
+                "fontSize": 16,
+              },
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "500",
+                "textAlign": "center",
+              },
+              undefined,
+            ]
+          }
+        >
+          0 selecteds
+        </Text>
+      </View>
+    </ExternalKeyboardView>
   </View>,
 ]
 `;
@@ -5698,13 +6014,27 @@ exports[`Story Snapshots: SectionOverflow should match snapshot 1`] = `
       </Text>
     </View>
   </View>
-  <RNGestureHandlerButton
-    activeOpacity={1}
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
     collapsable={false}
-    delayLongPress={600}
-    enabled={true}
-    handlerTag={13}
-    handlerType="NativeViewGestureHandler"
+    focusable={true}
     hitSlop={
       {
         "bottom": 4,
@@ -5713,17 +6043,19 @@ exports[`Story Snapshots: SectionOverflow should match snapshot 1`] = `
         "top": 4,
       }
     }
-    innerRef={[Function]}
-    onActiveStateChange={[Function]}
-    onGestureHandlerEvent={[Function]}
-    onGestureHandlerStateChange={[Function]}
-    onPress={[Function]}
-    rippleColor="#E4E7EA"
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
     style={
       [
+        undefined,
         {
-          "backgroundColor": undefined,
-          "borderRadius": undefined,
           "margin": undefined,
           "marginBottom": undefined,
           "marginEnd": undefined,
@@ -5735,31 +6067,13 @@ exports[`Story Snapshots: SectionOverflow should match snapshot 1`] = `
           "marginVertical": undefined,
         },
         {
-          "cursor": undefined,
+          "backgroundColor": undefined,
+          "borderRadius": undefined,
+          "opacity": 1,
         },
       ]
     }
-    underlayColor="#E4E7EA"
   >
-    <View
-      collapsable={false}
-      style={
-        {
-          "backgroundColor": "#E4E7EA",
-          "borderBottomLeftRadius": undefined,
-          "borderBottomRightRadius": undefined,
-          "borderRadius": undefined,
-          "borderTopLeftRadius": undefined,
-          "borderTopRightRadius": undefined,
-          "bottom": 0,
-          "left": 0,
-          "opacity": 0,
-          "position": "absolute",
-          "right": 0,
-          "top": 0,
-        }
-      }
-    />
     <View
       style={
         {
@@ -5794,7 +6108,7 @@ exports[`Story Snapshots: SectionOverflow should match snapshot 1`] = `
         
       </Text>
     </View>
-  </RNGestureHandlerButton>
+  </View>
 </View>
 `;
 
