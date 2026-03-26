@@ -20,6 +20,7 @@ import chat.rocket.reactnative.storage.MMKVKeyManager;
 import chat.rocket.reactnative.storage.SecureStoragePackage;
 import chat.rocket.reactnative.notification.VideoConfTurboPackage
 import chat.rocket.reactnative.notification.PushNotificationTurboPackage
+import chat.rocket.reactnative.scroll.InvertedScrollPackage
 
 /**
  * Main Application class.
@@ -44,6 +45,7 @@ open class MainApplication : Application(), ReactApplication {
               add(VideoConfTurboPackage())
               add(PushNotificationTurboPackage())
               add(SecureStoragePackage())
+              add(InvertedScrollPackage())
             }
 
         override fun getJSMainModuleName(): String = "index"
