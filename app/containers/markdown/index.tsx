@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { type StyleProp, type TextStyle, View } from 'react-native';
 import { parse } from '@rocket.chat/message-parser';
 import type { Root } from '@rocket.chat/message-parser';
 import isEmpty from 'lodash/isEmpty';

@@ -1,4 +1,5 @@
 import React from 'react';
+import { type StyleProp, type TextStyle } from 'react-native';
 
 import { type IUserMention, type IUserChannel } from '../interfaces';
 

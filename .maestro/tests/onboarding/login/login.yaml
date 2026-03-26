@@ -18,7 +18,7 @@ tags:
 - tapOn:
     id: 'login-view-password'
 - inputText: ${output.createdUser.password}
-- hideKeyboard
+- runFlow: '../../../helpers/hide-keyboard.yaml'
 - tapOn:
     id: login-view-submit
 - extendedWaitUntil:

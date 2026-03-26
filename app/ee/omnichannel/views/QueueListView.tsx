@@ -67,7 +67,7 @@ const QueueListView = React.memo(() => {
 		navigation.setOptions(options);
 	}, [isMasterDetail, navigation]);
 
-	const getItemLayout = (data: ArrayLike<IOmnichannelRoom> | null | undefined, index: number) => {
+	const getItemLayout = (_data: ArrayLike<IOmnichannelRoom> | null | undefined, index: number) => {
 		const rowHeight = 75 * fontScale;
 		return {
 			length: rowHeight,
