@@ -122,111 +122,80 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
             Private
           </Text>
         </View>
-        <ExternalKeyboardView
-          canBeFocused={true}
-          enableA11yFocus={false}
-          group={false}
-          haloEffect={true}
-          hasKeyDownPress={false}
-          hasKeyUpPress={true}
-          hasOnFocusChanged={true}
-          lockFocus={0}
-          onContextMenuPress={[Function]}
-          onFocusChange={[Function]}
-          onKeyUpPress={[Function]}
-          orderIndex={-1}
-          screenAutoA11yFocusDelay={300}
+        <RNGestureHandlerButton
+          accessibilityLabel="Use"
+          accessibilityRole="button"
+          activeOpacity={0.2}
+          collapsable={false}
+          delayLongPress={600}
+          enabled={true}
+          handlerTag={1}
+          handlerType="NativeViewGestureHandler"
+          innerRef={null}
+          onActiveStateChange={[Function]}
+          onGestureHandlerEvent={[Function]}
+          onGestureHandlerStateChange={[Function]}
+          onPress={[Function]}
+          rippleColor="transparent"
           style={
             [
-              undefined,
-              undefined,
+              {
+                "backgroundColor": "#F7F8FA",
+                "borderRadius": 4,
+                "height": 28,
+                "justifyContent": "center",
+                "marginBottom": 12,
+                "marginLeft": 8,
+                "paddingHorizontal": 16,
+                "paddingVertical": 14,
+                "width": 56,
+              },
+              {
+                "cursor": undefined,
+              },
             ]
           }
+          underlayColor="transparent"
         >
           <View
-            accessibilityLabel="Use"
-            accessibilityRole="button"
-            accessibilityState={
-              {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": undefined,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
             collapsable={false}
-            focusable={true}
-            onBlur={[Function]}
-            onClick={[Function]}
-            onFocus={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "backgroundColor": "transparent",
+                "borderBottomLeftRadius": undefined,
+                "borderBottomRightRadius": undefined,
+                "borderRadius": 4,
+                "borderTopLeftRadius": undefined,
+                "borderTopRightRadius": undefined,
+                "bottom": 0,
+                "left": 0,
+                "opacity": 0,
+                "position": "absolute",
+                "right": 0,
+                "top": 0,
+              }
+            }
+          />
+          <Text
             style={
               [
-                [
-                  {
-                    "justifyContent": "center",
-                    "paddingHorizontal": 16,
-                    "paddingVertical": 14,
-                  },
-                  {
-                    "borderRadius": 4,
-                    "marginBottom": 12,
-                  },
-                  {
-                    "backgroundColor": "#156FF5",
-                  },
-                  {},
-                  [
-                    {
-                      "height": 28,
-                      "marginLeft": 8,
-                      "width": 56,
-                    },
-                    {
-                      "backgroundColor": "#F7F8FA",
-                    },
-                  ],
-                ],
+                {
+                  "color": "#1F2329",
+                  "fontSize": 12,
+                },
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontWeight": "500",
+                  "textAlign": "center",
+                },
                 undefined,
               ]
             }
           >
-            <Text
-              style={
-                [
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 12,
-                  },
-                  {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
-                    "fontWeight": "500",
-                    "textAlign": "center",
-                  },
-                  undefined,
-                ]
-              }
-            >
-              Use
-            </Text>
-          </View>
-        </ExternalKeyboardView>
+            Use
+          </Text>
+        </RNGestureHandlerButton>
       </View>
       <Text
         ellipsizeMode="tail"
@@ -383,111 +352,80 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
             Private
           </Text>
         </View>
-        <ExternalKeyboardView
-          canBeFocused={true}
-          enableA11yFocus={false}
-          group={false}
-          haloEffect={true}
-          hasKeyDownPress={false}
-          hasKeyUpPress={true}
-          hasOnFocusChanged={true}
-          lockFocus={0}
-          onContextMenuPress={[Function]}
-          onFocusChange={[Function]}
-          onKeyUpPress={[Function]}
-          orderIndex={-1}
-          screenAutoA11yFocusDelay={300}
+        <RNGestureHandlerButton
+          accessibilityLabel="Use"
+          accessibilityRole="button"
+          activeOpacity={0.2}
+          collapsable={false}
+          delayLongPress={600}
+          enabled={true}
+          handlerTag={2}
+          handlerType="NativeViewGestureHandler"
+          innerRef={null}
+          onActiveStateChange={[Function]}
+          onGestureHandlerEvent={[Function]}
+          onGestureHandlerStateChange={[Function]}
+          onPress={[Function]}
+          rippleColor="transparent"
           style={
             [
-              undefined,
-              undefined,
+              {
+                "backgroundColor": "#F7F8FA",
+                "borderRadius": 4,
+                "height": 28,
+                "justifyContent": "center",
+                "marginBottom": 12,
+                "marginLeft": 8,
+                "paddingHorizontal": 16,
+                "paddingVertical": 14,
+                "width": 56,
+              },
+              {
+                "cursor": undefined,
+              },
             ]
           }
+          underlayColor="transparent"
         >
           <View
-            accessibilityLabel="Use"
-            accessibilityRole="button"
-            accessibilityState={
-              {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": undefined,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
             collapsable={false}
-            focusable={true}
-            onBlur={[Function]}
-            onClick={[Function]}
-            onFocus={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "backgroundColor": "transparent",
+                "borderBottomLeftRadius": undefined,
+                "borderBottomRightRadius": undefined,
+                "borderRadius": 4,
+                "borderTopLeftRadius": undefined,
+                "borderTopRightRadius": undefined,
+                "bottom": 0,
+                "left": 0,
+                "opacity": 0,
+                "position": "absolute",
+                "right": 0,
+                "top": 0,
+              }
+            }
+          />
+          <Text
             style={
               [
-                [
-                  {
-                    "justifyContent": "center",
-                    "paddingHorizontal": 16,
-                    "paddingVertical": 14,
-                  },
-                  {
-                    "borderRadius": 4,
-                    "marginBottom": 12,
-                  },
-                  {
-                    "backgroundColor": "#156FF5",
-                  },
-                  {},
-                  [
-                    {
-                      "height": 28,
-                      "marginLeft": 8,
-                      "width": 56,
-                    },
-                    {
-                      "backgroundColor": "#F7F8FA",
-                    },
-                  ],
-                ],
+                {
+                  "color": "#1F2329",
+                  "fontSize": 12,
+                },
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontWeight": "500",
+                  "textAlign": "center",
+                },
                 undefined,
               ]
             }
           >
-            <Text
-              style={
-                [
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 12,
-                  },
-                  {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
-                    "fontWeight": "500",
-                    "textAlign": "center",
-                  },
-                  undefined,
-                ]
-              }
-            >
-              Use
-            </Text>
-          </View>
-        </ExternalKeyboardView>
+            Use
+          </Text>
+        </RNGestureHandlerButton>
       </View>
       <Text
         ellipsizeMode="tail"

@@ -2,104 +2,77 @@
 
 exports[`Story Snapshots: Separators should match snapshot 1`] = `
 [
-  <ExternalKeyboardView
-    canBeFocused={true}
-    enableA11yFocus={false}
-    group={false}
-    haloEffect={true}
-    hasKeyDownPress={false}
-    hasKeyUpPress={true}
-    hasOnFocusChanged={true}
-    lockFocus={0}
-    onContextMenuPress={[Function]}
-    onFocusChange={[Function]}
-    onKeyUpPress={[Function]}
-    orderIndex={-1}
-    screenAutoA11yFocusDelay={300}
+  <RNGestureHandlerButton
+    accessibilityLabel="More options"
+    accessibilityRole="button"
+    activeOpacity={0.2}
+    collapsable={false}
+    delayLongPress={600}
+    enabled={true}
+    handlerTag={1}
+    handlerType="NativeViewGestureHandler"
+    innerRef={null}
+    onActiveStateChange={[Function]}
+    onGestureHandlerEvent={[Function]}
+    onGestureHandlerStateChange={[Function]}
+    onPress={[Function]}
+    rippleColor="transparent"
     style={
       [
-        undefined,
-        undefined,
+        {
+          "backgroundColor": "#E4E7EA",
+          "borderRadius": 4,
+          "justifyContent": "center",
+          "marginBottom": 0,
+          "paddingHorizontal": 16,
+          "paddingVertical": 14,
+        },
+        {
+          "cursor": undefined,
+        },
       ]
     }
+    underlayColor="transparent"
   >
     <View
-      accessibilityLabel="More options"
-      accessibilityRole="button"
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": undefined,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
       collapsable={false}
-      focusable={true}
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "transparent",
+          "borderBottomLeftRadius": undefined,
+          "borderBottomRightRadius": undefined,
+          "borderRadius": 4,
+          "borderTopLeftRadius": undefined,
+          "borderTopRightRadius": undefined,
+          "bottom": 0,
+          "left": 0,
+          "opacity": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
+      }
+    />
+    <Text
       style={
         [
-          [
-            {
-              "justifyContent": "center",
-              "paddingHorizontal": 16,
-              "paddingVertical": 14,
-            },
-            {
-              "borderRadius": 4,
-              "marginBottom": 12,
-            },
-            {
-              "backgroundColor": "#E4E7EA",
-            },
-            {},
-            {
-              "marginBottom": 0,
-            },
-          ],
+          {
+            "color": "#6C727A",
+            "fontSize": 16,
+          },
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontWeight": "500",
+            "textAlign": "center",
+          },
           undefined,
         ]
       }
     >
-      <Text
-        style={
-          [
-            {
-              "color": "#6C727A",
-              "fontSize": 16,
-            },
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontWeight": "500",
-              "textAlign": "center",
-            },
-            undefined,
-          ]
-        }
-      >
-        More options
-      </Text>
-    </View>
-  </ExternalKeyboardView>,
+      More options
+    </Text>
+  </RNGestureHandlerButton>,
   <View
     accessible={true}
     style={
@@ -156,104 +129,77 @@ exports[`Story Snapshots: Separators should match snapshot 1`] = `
       }
     />
   </View>,
-  <ExternalKeyboardView
-    canBeFocused={true}
-    enableA11yFocus={false}
-    group={false}
-    haloEffect={true}
-    hasKeyDownPress={false}
-    hasKeyUpPress={true}
-    hasOnFocusChanged={true}
-    lockFocus={0}
-    onContextMenuPress={[Function]}
-    onFocusChange={[Function]}
-    onKeyUpPress={[Function]}
-    orderIndex={-1}
-    screenAutoA11yFocusDelay={300}
+  <RNGestureHandlerButton
+    accessibilityLabel="Less options"
+    accessibilityRole="button"
+    activeOpacity={0.2}
+    collapsable={false}
+    delayLongPress={600}
+    enabled={true}
+    handlerTag={2}
+    handlerType="NativeViewGestureHandler"
+    innerRef={null}
+    onActiveStateChange={[Function]}
+    onGestureHandlerEvent={[Function]}
+    onGestureHandlerStateChange={[Function]}
+    onPress={[Function]}
+    rippleColor="transparent"
     style={
       [
-        undefined,
-        undefined,
+        {
+          "backgroundColor": "#E4E7EA",
+          "borderRadius": 4,
+          "justifyContent": "center",
+          "marginBottom": 0,
+          "paddingHorizontal": 16,
+          "paddingVertical": 14,
+        },
+        {
+          "cursor": undefined,
+        },
       ]
     }
+    underlayColor="transparent"
   >
     <View
-      accessibilityLabel="Less options"
-      accessibilityRole="button"
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": undefined,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
       collapsable={false}
-      focusable={true}
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "transparent",
+          "borderBottomLeftRadius": undefined,
+          "borderBottomRightRadius": undefined,
+          "borderRadius": 4,
+          "borderTopLeftRadius": undefined,
+          "borderTopRightRadius": undefined,
+          "bottom": 0,
+          "left": 0,
+          "opacity": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
+      }
+    />
+    <Text
       style={
         [
-          [
-            {
-              "justifyContent": "center",
-              "paddingHorizontal": 16,
-              "paddingVertical": 14,
-            },
-            {
-              "borderRadius": 4,
-              "marginBottom": 12,
-            },
-            {
-              "backgroundColor": "#E4E7EA",
-            },
-            {},
-            {
-              "marginBottom": 0,
-            },
-          ],
+          {
+            "color": "#6C727A",
+            "fontSize": 16,
+          },
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontWeight": "500",
+            "textAlign": "center",
+          },
           undefined,
         ]
       }
     >
-      <Text
-        style={
-          [
-            {
-              "color": "#6C727A",
-              "fontSize": 16,
-            },
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontWeight": "500",
-              "textAlign": "center",
-            },
-            undefined,
-          ]
-        }
-      >
-        Less options
-      </Text>
-    </View>
-  </ExternalKeyboardView>,
+      Less options
+    </Text>
+  </RNGestureHandlerButton>,
   <View
     accessible={true}
     style={

@@ -1,14 +1,12 @@
 import React from 'react';
-import { Pressable, type PressableProps, type StyleProp, StyleSheet, Text, type TextStyle, type ViewStyle } from 'react-native';
-import { withKeyboardFocus } from 'react-native-external-keyboard';
+import { type StyleProp, StyleSheet, Text, type TextStyle, type ViewStyle } from 'react-native';
+import { RectButton, type RectButtonProps } from 'react-native-gesture-handler';
 
 import { useTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';
 import ActivityIndicator from '../ActivityIndicator';
 
-const KeyboardFocusablePressable = withKeyboardFocus(Pressable);
-
-interface IButtonProps extends Omit<PressableProps, 'children' | 'disabled' | 'onPress' | 'style'> {
+interface IButtonProps extends Omit<RectButtonProps, 'children' | 'enabled'> {
 	title: string;
 	onPress: () => void;
 	type?: 'primary' | 'secondary';
@@ -90,18 +88,19 @@ const Button: React.FC<IButtonProps> = ({
 	];
 
 	return (
-		<KeyboardFocusablePressable
+		<RectButton
 			onPress={onPress}
-			disabled={isDisabled}
-			focusable
+			enabled={!isDisabled}
+			activeOpacity={0.2}
+			underlayColor='transparent'
+			// No Android ink ripple; matches Pressable with `android_ripple` disabled.
+			rippleColor='transparent'
 			style={containerStyle}
 			accessibilityLabel={title}
 			accessibilityRole='button'
-			accessible
-			canBeFocused={!isDisabled}
 			{...otherProps}>
 			{loading ? <ActivityIndicator color={resolvedTextColor} style={{ padding: 0 }} /> : <Text style={textStyle}>{title}</Text>}
-		</KeyboardFocusablePressable>
+		</RectButton>
 	);
 };
 
