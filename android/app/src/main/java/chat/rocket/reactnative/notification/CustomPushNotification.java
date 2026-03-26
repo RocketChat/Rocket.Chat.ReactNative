@@ -17,6 +17,8 @@ import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.ProcessLifecycleOwner;
 
 import com.google.gson.Gson;
 
@@ -164,6 +166,11 @@ public class CustomPushNotification {
             Log.d(TAG, "Detected message-id-only notification, will fetch full content from server");
             loadNotificationAndProcess(receivedEjson);
             return; // Exit early, notification will be processed in callback
+        }
+
+        if (receivedEjson != null && receivedEjson.notificationType != null && receivedEjson.notificationType.equals("voip")) {
+            Log.d(TAG, "Notification is a voip notification, ignoring");
+            return;
         }
 
         // For non-message-id-only notifications, process immediately
@@ -343,6 +350,15 @@ public class CustomPushNotification {
                                 + (bundle.getString("message") != null ? bundle.getString("message").length() : 0)
                                 + ", bundle.notificationLoaded=" + bundle.getBoolean("notificationLoaded", false));
             }
+
+            // Don't show notification if app is in foreground
+            if (isAppInForeground()) {
+                if (ENABLE_VERBOSE_LOGS) {
+                    Log.d(TAG, "App is in foreground, skipping native notification");
+                }
+                return;
+            }
+
             notificationMessages.get(notId).add(bundle);
             if (ENABLE_VERBOSE_LOGS) {
                 Log.d(TAG, "[After add] notificationMessages[" + notId + "].size="
