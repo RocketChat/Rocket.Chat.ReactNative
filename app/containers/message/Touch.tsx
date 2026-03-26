@@ -6,10 +6,10 @@ import {
 	type StyleProp,
 	type AccessibilityActionEvent,
 	type AccessibilityActionInfo,
-	TouchableNativeFeedback,
 	TouchableOpacity,
 	type TouchableWithoutFeedbackProps
 } from 'react-native';
+import { TouchableNativeFeedback } from 'react-native-gesture-handler';
 
 import { useTheme } from '../../theme';
 import { isIOS } from '../../lib/methods/helpers';
@@ -80,7 +80,7 @@ const Touch = React.forwardRef<View, ITouchProps>(
 		};
 		const touchableProps = isIOS
 			? {}
-			: { background: TouchableNativeFeedback.Ripple(android_rippleColor ?? colors.surfaceNeutral, false) };
+			: { background: TouchableNativeFeedback.Ripple(android_rippleColor ?? colors.surfaceNeutral, false), useForeground: false };
 
 		return (
 			<Component
