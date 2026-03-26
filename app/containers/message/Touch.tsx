@@ -27,7 +27,7 @@ export interface ITouchProps extends TouchableWithoutFeedbackProps {
 	android_rippleColor?: string;
 }
 
-const Component = isIOS ? TouchableOpacity : TouchableHighlight; 
+const Component = isIOS ? TouchableOpacity : TouchableHighlight;
 
 const Touch = React.forwardRef<View, ITouchProps>(
 	(
