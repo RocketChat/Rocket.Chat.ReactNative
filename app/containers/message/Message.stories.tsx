@@ -673,7 +673,7 @@ export const WithImage = () => (
 			attachments={[
 				{
 					title: 'This is a title',
-					description: 'This is a description',
+					description: 'This is a description :nyan_rocket:',
 					image_url: '/dummypath'
 				}
 			]}
@@ -689,6 +689,19 @@ export const WithImage = () => (
 				{
 					title: 'This is a title',
 					description: 'This is a description :nyan_rocket:',
+					image_url: '/dummypath'
+				},
+				{
+					title: 'This is a title',
+					image_url: '/dummypath'
+				}
+			]}
+		/>
+		<Message
+			msg='multi file'
+			attachments={[
+				{
+					title: 'This is a title',
 					image_url: '/dummypath'
 				},
 				{
@@ -724,7 +737,21 @@ export const WithImageLargeFont = () => (
 			attachments={[
 				{
 					title: 'This is a title',
-					description: 'This is a description :nyan_rocket:',
+					description: 'Header false',
+					image_url: '/dummypath'
+				}
+			]}
+			isHeader={false}
+		/>
+		<Message
+			msg='multi file'
+			attachments={[
+				{
+					title: 'This is a title',
+					image_url: '/dummypath'
+				},
+				{
+					title: 'This is a title',
 					image_url: '/dummypath'
 				}
 			]}
@@ -756,16 +783,22 @@ export const WithVideo = () => (
 			attachments={[
 				{
 					title: 'This is a title',
+					description: 'Header false',
+					video_url: '/dummypath'
+				}
+			]}
+			isHeader={false}
+		/>
+		<Message
+			msg='multi file'
+			attachments={[
+				{
+					title: 'This is a title',
 					video_url: '/dummypath'
 				},
 				{
 					title: 'This is a title',
-					description: 'This is a description :nyan_rocket:',
 					video_url: '/dummypath'
-				},
-				{
-					title: 'This is a title',
-					video_url: '/dummypath2'
 				}
 			]}
 		/>
@@ -791,6 +824,19 @@ export const WithVideoLargeFont = () => (
 				}
 			]}
 		/>
+		<MessageLargeFont
+			msg='multi file'
+			attachments={[
+				{
+					title: 'This is a title',
+					video_url: '/dummypath'
+				},
+				{
+					title: 'This is a title',
+					video_url: '/dummypath'
+				}
+			]}
+		/>
 	</>
 );
 
@@ -805,19 +851,23 @@ export const WithAudio = () => (
 				}
 			]}
 		/>
-		<Message msg='First message' isHeader={false} />
 		<Message
 			attachments={[
 				{
 					title: 'This is a title',
-					description: 'This is a description',
+					description: 'Header false',
 					audio_url: '/dummypath'
 				}
 			]}
 			isHeader={false}
 		/>
 		<Message
+			msg='multi file'
 			attachments={[
+				{
+					title: 'This is a title',
+					audio_url: '/dummypath'
+				},
 				{
 					title: 'This is a title',
 					audio_url: '/dummypath'
@@ -878,7 +928,17 @@ export const WithAudioLargeFont = () => (
 			isHeader={false}
 		/>
 		<MessageLargeFont
+			msg='multi file'
 			attachments={[
+				{
+					title: 'This is a title',
+					audio_url: '/dummypath'
+				},
+				{
+					title: 'This is a title',
+					description: 'This is a description :nyan_rocket:',
+					audio_url: '/dummypath'
+				},
 				{
 					title: 'This is a title',
 					audio_url: '/dummypath'
@@ -1055,6 +1115,17 @@ export const FileAttachmentsWithFilenamesLargeFont = () => (
 				}
 			]}
 			isHeader={false}
+		/>
+		<MessageLargeFont
+			msg='multi file'
+			attachments={[
+				{
+					text: 'File.pdf'
+				},
+				{
+					text: 'File.pdf'
+				}
+			]}
 		/>
 	</>
 );

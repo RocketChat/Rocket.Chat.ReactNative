@@ -25,13 +25,16 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Accessory = ({ element, parser }: IAccessoryComponent) =>
-	parser.renderAccessories({ ...element }, BlockContext.SECTION, parser);
+const Accessory = ({ element, parser }: IAccessoryComponent) => parser.renderAccessories({ ...element }, BlockContext.SECTION);
 
 const Fields = ({ fields, parser, theme }: IFields) => (
 	<>
-		{fields.map(field => (
-			<Text style={[styles.text, styles.field, { color: themes[theme].fontDefault }]}>{parser.text(field)}</Text>
+		{fields.map((field, index) => (
+			<Text
+				key={`${(field as any).type || 'field'}-${index}`}
+				style={[styles.text, styles.field, { color: themes[theme].fontDefault }]}>
+				{parser.text(field)}
+			</Text>
 		))}
 	</>
 );

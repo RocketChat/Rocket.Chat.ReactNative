@@ -7,10 +7,12 @@ tags:
 - tapOn: Enter manually
 - tapOn: New password
 - inputText: ${output.data.e2eePassword}
-- hideKeyboard
-- swipe:
-    direction: DOWN
-    duration: 100
+- runFlow: '../../../helpers/hide-keyboard.yaml'
+- scrollUntilVisible:
+    element:
+      text: 'Save Changes'
+    timeout: 60000
+    centerElement: true
 - tapOn: Save Changes
 - extendedWaitUntil:
     visible:
