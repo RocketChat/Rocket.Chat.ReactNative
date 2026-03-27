@@ -230,17 +230,11 @@ class VoipNotification(private val context: Context) {
             // Guard so finish() is called at most once, whether by the DDP callback or the timeout.
             val finished = AtomicBoolean(false)
             val timeoutHandler = Handler(Looper.getMainLooper())
-            val timeoutRunnable = Runnable {
-                if (finished.compareAndSet(false, true)) {
-                    Log.w(TAG, "Native accept timed out for ${payload.callId}; falling back to JS recovery")
-                    finish(false)
-                }
-            }
-            timeoutHandler.postDelayed(timeoutRunnable, 10_000L)
+            var timeoutRunnable: Runnable? = null
 
             fun finish(ddpSuccess: Boolean) {
                 if (!finished.compareAndSet(false, true)) return
-                timeoutHandler.removeCallbacks(timeoutRunnable)
+                timeoutRunnable?.let { timeoutHandler.removeCallbacks(it) }
                 stopDDPClientInternal()
                 if (ddpSuccess) {
                     answerIncomingCall(payload.callId)
@@ -260,6 +254,13 @@ class VoipNotification(private val context: Context) {
                     launchMainActivityForVoip(context, payload)
                 }
             }
+
+            val postedTimeout = Runnable {
+                Log.w(TAG, "Native accept timed out for ${payload.callId}; falling back to JS recovery")
+                finish(false)
+            }
+            timeoutRunnable = postedTimeout
+            timeoutHandler.postDelayed(postedTimeout, 10_000L)
 
             val client = ddpClient
             if (client == null) {

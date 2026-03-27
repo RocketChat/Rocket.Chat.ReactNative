@@ -32,6 +32,7 @@ class MediaSessionInstance {
 
 	public init(userId: string): void {
 		this.reset();
+
 		registerGlobals();
 		this.configureIceServers();
 
@@ -64,16 +65,21 @@ class MediaSessionInstance {
 
 			console.log('🤙 [VoIP] Processed signal:', signal);
 
-			// If the call was accepted from this device, answer it
-			if (signal.type === 'notification' && signal.notification === 'accepted' && signal.signedContractId === getUniqueIdSync()) {
+			// Answer when native already accepted and stream matches device contract + callId.
+			const storeSlice = useCallStore.getState();
+			const { call, nativeAcceptedCallId } = storeSlice;
+
+			if (
+				signal.type === 'notification' &&
+				signal.notification === 'accepted' &&
+				signal.signedContractId === getUniqueIdSync() &&
+				nativeAcceptedCallId === signal.callId &&
+				call == null
+			) {
 				this.answerCall(signal.callId).catch(error => {
-					console.error('[VoIP] Error answering call :', error);
+					console.error('[VoIP] Error answering call on notification/accepted:', error);
 				});
 			}
-		});
-
-		this.instance?.on('registered', ({ activeCalls }) => {
-			console.log('[VoIP] Media session registered, activeCalls:', activeCalls);
 		});
 
 		this.instance?.on('newCall', ({ call }: { call: IClientMediaCall }) => {
@@ -96,6 +102,12 @@ class MediaSessionInstance {
 	}
 
 	public answerCall = async (callId: string) => {
+		const { call: existingCall } = useCallStore.getState();
+		if (existingCall != null && existingCall.callId === callId) {
+			console.log('[VoIP] answerCall skipped — call already bound in store:', callId);
+			return;
+		}
+
 		console.log('[VoIP] Answering call:', callId);
 		const mainCall = this.instance?.getMainCall();
 		console.log('[VoIP] Main call:', mainCall);
@@ -109,6 +121,10 @@ class MediaSessionInstance {
 			Navigation.navigate('CallView');
 		} else {
 			RNCallKeep.endCall(callId);
+			const st = useCallStore.getState();
+			if (st.nativeAcceptedCallId === callId) {
+				st.resetNativeCallId();
+			}
 			console.warn('[VoIP] Call not found:', callId); // TODO: Show error message?
 		}
 	};
@@ -138,7 +154,7 @@ class MediaSessionInstance {
 		RNCallKeep.endCall(callId);
 		RNCallKeep.setCurrentCallActive('');
 		RNCallKeep.setAvailable(true);
-		// Reset Zustand store
+		useCallStore.getState().resetNativeCallId();
 		useCallStore.getState().reset();
 	};
 

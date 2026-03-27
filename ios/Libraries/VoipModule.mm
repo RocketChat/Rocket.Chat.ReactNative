@@ -35,7 +35,7 @@ RCT_EXPORT_MODULE()
 }
 
 - (NSArray<NSString *> *)supportedEvents {
-    return @[@"VoipPushTokenRegistered", @"VoipAcceptFailed"];
+    return @[@"VoipPushTokenRegistered", @"VoipAcceptFailed", @"VoipAcceptSucceeded"];
 }
 
 - (void)startObserving {
@@ -49,6 +49,11 @@ RCT_EXPORT_MODULE()
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleVoipAcceptFailed:)
                                                  name:@"VoipAcceptFailed"
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleVoipAcceptSucceeded:)
+                                                 name:@"VoipAcceptSucceeded"
                                                object:nil];
 
     // Send any delayed events
@@ -74,6 +79,10 @@ RCT_EXPORT_MODULE()
 
 - (void)handleVoipAcceptFailed:(NSNotification *)notification {
     [self sendEventWrapper:@"VoipAcceptFailed" body:notification.userInfo];
+}
+
+- (void)handleVoipAcceptSucceeded:(NSNotification *)notification {
+    [self sendEventWrapper:@"VoipAcceptSucceeded" body:notification.userInfo];
 }
 
 - (void)sendEventWrapper:(NSString *)name body:(id)body {

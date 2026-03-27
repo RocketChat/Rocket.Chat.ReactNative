@@ -440,6 +440,11 @@ public final class VoipService: NSObject {
             if success {
                 storeInitialEvents(payload)
                 clearNativeAcceptDedupe(for: payload.callId)
+                NotificationCenter.default.post(
+                    name: NSNotification.Name("VoipAcceptSucceeded"),
+                    object: nil,
+                    userInfo: payload.toDictionary()
+                )
             } else {
                 clearNativeAcceptDedupe(for: payload.callId)
                 RNCallKeep.endCall(withUUID: payload.callId, reason: 6)
