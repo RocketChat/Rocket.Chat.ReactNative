@@ -9,6 +9,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.media.AudioAttributes
+import android.media.AudioManager
 import android.media.RingtoneManager
 import android.os.Build
 import android.os.Bundle
@@ -477,6 +478,48 @@ class VoipNotification(private val context: Context) {
             }
         }
 
+        /**
+         * True when the user is already in a call: this app's Telecom connections (active/hold),
+         * any system in-call state (API 26+), or audio in communication mode (fallback before API 26).
+         */
+        private fun hasActiveCall(context: Context): Boolean {
+            val ownBusy = VoiceConnectionService.currentConnections.values.any { connection ->
+                connection.state == android.telecom.Connection.STATE_ACTIVE ||
+                    connection.state == android.telecom.Connection.STATE_HOLDING
+            }
+            if (ownBusy) {
+                return true
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val telecom = context.getSystemService(Context.TELECOM_SERVICE) as? TelecomManager
+                if (telecom?.isInCall == true) {
+                    return true
+                }
+            } else {
+                val audio = context.getSystemService(Context.AUDIO_SERVICE) as? AudioManager
+                if (audio?.mode == AudioManager.MODE_IN_COMMUNICATION) {
+                    return true
+                }
+            }
+            return false
+        }
+
+        /**
+         * Rejects an incoming call because the user is already on another call.
+         * Sends a reject signal via DDP and cleans up without showing any UI.
+         */
+        @JvmStatic
+        fun rejectBusyCall(context: Context, payload: VoipPayload) {
+            Log.d(TAG, "Rejected busy call ${payload.callId} — user already on a call")
+            cancelTimeout(payload.callId)
+            startListeningForCallEnd(context, payload)
+            if (isDdpLoggedIn) {
+                sendRejectSignal(context, payload)
+            } else {
+                queueRejectSignal(context, payload)
+            }
+        }
+
         // -- Native DDP Listener (Call End Detection) --
 
         @JvmStatic
@@ -613,7 +656,13 @@ class VoipNotification(private val context: Context) {
 
     fun onMessageReceived(voipPayload: VoipPayload) {
         when {
-            voipPayload.isVoipIncomingCall() -> showIncomingCall(voipPayload)
+            voipPayload.isVoipIncomingCall() -> {
+                if (hasActiveCall(context)) {
+                    rejectBusyCall(context, voipPayload)
+                } else {
+                    showIncomingCall(voipPayload)
+                }
+            }
             else -> Log.w(TAG, "Ignoring unsupported VoIP payload type: ${voipPayload.type}")
         }
     }

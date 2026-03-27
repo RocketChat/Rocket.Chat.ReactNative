@@ -40,6 +40,10 @@ extension AppDelegate: PKPushRegistryDelegate {
       return
     }
 
+    // Check BEFORE reporting — if the user is already on a call, we still must
+    // report to CallKit (PushKit requirement) but will immediately reject it.
+    let isBusy = VoipService.hasActiveCall()
+
     VoipService.prepareIncomingCall(voipPayload)
 
     RNCallKeep.reportNewIncomingCall(
@@ -56,6 +60,11 @@ extension AppDelegate: PKPushRegistryDelegate {
       payload: payloadDict,
       withCompletionHandler: {}
     )
+
+    if isBusy {
+      VoipService.rejectBusyCall(voipPayload)
+    }
+
     completion()
   }
 }

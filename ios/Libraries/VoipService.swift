@@ -135,6 +135,13 @@ public final class VoipService: NSObject {
         #endif
     }
 
+    /// Returns `true` when CXCallObserver reports any non-ended call (ringing or connected),
+    /// including phone, FaceTime, and third-party VoIP.
+    public static func hasActiveCall() -> Bool {
+        configureCallObserverIfNeeded()
+        return callObserver.calls.contains { !$0.hasEnded }
+    }
+
     public static func prepareIncomingCall(_ payload: VoipPayload) {
         storeInitialEvents(payload)
         scheduleIncomingCallTimeout(for: payload)
@@ -516,6 +523,27 @@ public final class VoipService: NSObject {
             print("[\(TAG)] Queued native accept signal for \(payload.callId)")
             #endif
         }
+    }
+
+    /// Rejects an incoming call because the user is already on another call.
+    /// Must be called **after** `reportNewIncomingCall` (PushKit requirement).
+    public static func rejectBusyCall(_ payload: VoipPayload) {
+        cancelIncomingCallTimeout(for: payload.callId)
+        clearTrackedIncomingCall(for: payload.callUUID)
+
+        // End the just-reported CallKit call immediately (reason 2 = unanswered / declined).
+        RNCallKeep.endCall(withUUID: payload.callId, reason: 2)
+
+        // Send reject signal via native DDP if available, otherwise queue it.
+        if isDdpLoggedIn {
+            sendRejectSignal(payload: payload)
+        } else {
+            queueRejectSignal(payload: payload)
+        }
+
+        #if DEBUG
+        print("[\(TAG)] Rejected busy call \(payload.callId) — user already on a call")
+        #endif
     }
 
     private static func sendRejectSignal(payload: VoipPayload) {

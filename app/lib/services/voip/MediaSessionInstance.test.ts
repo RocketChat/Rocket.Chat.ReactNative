@@ -1,3 +1,5 @@
+import type { IClientMediaCall } from '@rocket.chat/media-signaling';
+
 import type { IDDPMessage } from '../../../definitions/IDDPMessage';
 import { mediaSessionStore } from './MediaSessionStore';
 import { mediaSessionInstance } from './MediaSessionInstance';
@@ -47,7 +49,15 @@ jest.mock('react-native-webrtc', () => ({
 	mediaDevices: { getUserMedia: jest.fn() }
 }));
 
-jest.mock('react-native-callkeep', () => ({}));
+const mockRNCallKeepEndCall = jest.fn();
+jest.mock('react-native-callkeep', () => ({
+	__esModule: true,
+	default: {
+		endCall: (...args: unknown[]) => mockRNCallKeepEndCall(...args),
+		setCurrentCallActive: jest.fn(),
+		setAvailable: jest.fn()
+	}
+}));
 
 jest.mock('react-native-device-info', () => ({
 	getUniqueId: jest.fn(() => 'test-device-id'),
@@ -108,6 +118,41 @@ function getStreamNotifyHandler(): (ddpMessage: IDDPMessage) => void {
 		}
 	}
 	throw new Error('stream-notify-user handler not registered');
+}
+
+function getNewCallHandler(): (payload: { call: IClientMediaCall }) => void {
+	const session = createdSessions[0];
+	if (!session) {
+		throw new Error('no session created');
+	}
+	const calls = session.on.mock.calls as [string, (payload: { call: IClientMediaCall }) => void][];
+	const entry = calls.find(([eventName]) => eventName === 'newCall');
+	if (!entry) {
+		throw new Error('newCall handler not registered');
+	}
+	return entry[1];
+}
+
+function createMockIncomingCall(callId: string): IClientMediaCall {
+	const reject = jest.fn();
+	return {
+		callId,
+		role: 'callee',
+		hidden: false,
+		reject,
+		emitter: { on: jest.fn() }
+	} as unknown as IClientMediaCall;
+}
+
+function createMockOutgoingCall(callId: string): IClientMediaCall {
+	const reject = jest.fn();
+	return {
+		callId,
+		role: 'caller',
+		hidden: false,
+		reject,
+		emitter: { on: jest.fn() }
+	} as unknown as IClientMediaCall;
 }
 
 describe('MediaSessionInstance', () => {
@@ -312,6 +357,86 @@ describe('MediaSessionInstance', () => {
 			await Promise.resolve();
 			expect(answerSpy).not.toHaveBeenCalled();
 			answerSpy.mockRestore();
+		});
+	});
+
+	describe('newCall busy guard', () => {
+		it('rejects incoming call and ends CallKeep when already on a call', () => {
+			mockUseCallStoreGetState.mockReturnValue({
+				reset: mockCallStoreReset,
+				setCall: jest.fn(),
+				resetNativeCallId: jest.fn(),
+				call: { callId: 'existing' } as any,
+				callId: 'existing',
+				nativeAcceptedCallId: null
+			});
+			mediaSessionInstance.init('user-1');
+			const newCallHandler = getNewCallHandler();
+			const incoming = createMockIncomingCall('incoming-second');
+			newCallHandler({ call: incoming });
+			expect(incoming.reject).toHaveBeenCalled();
+			expect(mockRNCallKeepEndCall).toHaveBeenCalledWith('incoming-second');
+		});
+
+		it('rejects incoming call when nativeAcceptedCallId is set but incoming callId differs', () => {
+			mockUseCallStoreGetState.mockReturnValue({
+				reset: mockCallStoreReset,
+				setCall: jest.fn(),
+				resetNativeCallId: jest.fn(),
+				call: null,
+				callId: null,
+				nativeAcceptedCallId: 'pending-call'
+			});
+			mediaSessionInstance.init('user-1');
+			const newCallHandler = getNewCallHandler();
+			const incoming = createMockIncomingCall('incoming-second');
+			newCallHandler({ call: incoming });
+			expect(incoming.reject).toHaveBeenCalled();
+			expect(mockRNCallKeepEndCall).toHaveBeenCalledWith('incoming-second');
+		});
+
+		it('allows incoming newCall when nativeAcceptedCallId matches incoming callId', () => {
+			mockUseCallStoreGetState.mockReturnValue({
+				reset: mockCallStoreReset,
+				setCall: jest.fn(),
+				resetNativeCallId: jest.fn(),
+				call: null,
+				callId: null,
+				nativeAcceptedCallId: 'same-native-id'
+			});
+			mediaSessionInstance.init('user-1');
+			const newCallHandler = getNewCallHandler();
+			const incoming = createMockIncomingCall('same-native-id');
+			newCallHandler({ call: incoming });
+			expect(incoming.reject).not.toHaveBeenCalled();
+			expect(incoming.emitter.on).toHaveBeenCalledWith('stateChange', expect.any(Function));
+		});
+
+		it('does not reject outgoing newCall when store already has a call', () => {
+			const mockSetCall = jest.fn();
+			mockUseCallStoreGetState.mockReturnValue({
+				reset: mockCallStoreReset,
+				setCall: mockSetCall,
+				resetNativeCallId: jest.fn(),
+				call: { callId: 'existing' } as any,
+				callId: 'existing',
+				nativeAcceptedCallId: null
+			});
+			mediaSessionInstance.init('user-1');
+			const newCallHandler = getNewCallHandler();
+			const outgoing = createMockOutgoingCall('out-new');
+			newCallHandler({ call: outgoing });
+			expect(outgoing.reject).not.toHaveBeenCalled();
+			expect(mockSetCall).toHaveBeenCalledWith(outgoing);
+		});
+
+		it('allows incoming call when store is empty and registers stateChange listener', () => {
+			mediaSessionInstance.init('user-1');
+			const newCallHandler = getNewCallHandler();
+			const incoming = createMockIncomingCall('incoming-first');
+			newCallHandler({ call: incoming });
+			expect(incoming.reject).not.toHaveBeenCalled();
+			expect(incoming.emitter.on).toHaveBeenCalledWith('stateChange', expect.any(Function));
 		});
 	});
 });

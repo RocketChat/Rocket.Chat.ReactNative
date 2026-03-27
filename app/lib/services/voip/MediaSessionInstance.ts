@@ -84,6 +84,18 @@ class MediaSessionInstance {
 
 		this.instance?.on('newCall', ({ call }: { call: IClientMediaCall }) => {
 			if (call && !call.hidden) {
+				if (call.role === 'callee') {
+					// media-signaling emits newCall only when session goes from no call to has call; reject if app is busy with another id.
+					const { call: existingCall, nativeAcceptedCallId } = useCallStore.getState();
+					const activeCallId = existingCall?.callId ?? nativeAcceptedCallId ?? null;
+					if (activeCallId != null && call.callId !== activeCallId) {
+						console.log('[VoIP] Rejecting incoming call — busy with different call:', call.callId);
+						call.reject();
+						RNCallKeep.endCall(call.callId);
+						return;
+					}
+				}
+
 				call.emitter.on('stateChange', oldState => {
 					console.log(`📊 ${oldState} → ${call.state}`);
 					console.log('🤙 [VoIP] New call data:', call);
