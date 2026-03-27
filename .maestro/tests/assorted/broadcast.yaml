@@ -65,7 +65,7 @@ tags:
 - tapOn:
     id: 'create-channel-name'
 - inputText: ${output.room}
-- hideKeyboard
+- runFlow: '../../helpers/hide-keyboard.yaml'
 - assertVisible:
     id: 'create-channel-broadcast'
 - tapOn:

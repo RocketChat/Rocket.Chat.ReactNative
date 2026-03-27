@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { type StyleProp, type TextStyle, View } from 'react-native';
 import { parse } from '@rocket.chat/message-parser';
 import type { Root } from '@rocket.chat/message-parser';
 import isEmpty from 'lodash/isEmpty';
@@ -32,6 +32,7 @@ interface IMarkdownProps {
 	navToRoomInfo?: Function;
 	onLinkPress?: TOnLinkPress;
 	isTranslated?: boolean;
+	textStyle?: StyleProp<TextStyle>;
 }
 
 const generateId = (size = 16) => {
@@ -66,7 +67,8 @@ const Markdown: React.FC<IMarkdownProps> = ({
 	username = '',
 	getCustomEmoji,
 	onLinkPress,
-	isTranslated
+	isTranslated,
+	textStyle
 }: IMarkdownProps) => {
 	if (!msg) return null;
 
@@ -91,7 +93,8 @@ const Markdown: React.FC<IMarkdownProps> = ({
 					username,
 					navToRoomInfo,
 					getCustomEmoji,
-					onLinkPress
+					onLinkPress,
+					textStyle
 				}}>
 				{tokens?.map(block => {
 					switch (block.type) {
