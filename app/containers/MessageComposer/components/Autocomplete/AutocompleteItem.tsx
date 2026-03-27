@@ -92,3 +92,5 @@ export const AutocompleteItem = ({ item, onPress }: IAutocompleteItemProps) => {
 		</RectButton>
 	);
 };
+
+// test
