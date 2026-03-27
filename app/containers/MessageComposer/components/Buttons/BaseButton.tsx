@@ -27,12 +27,13 @@ export const BaseButton = ({ accessibilityLabel, icon, color, testID, onPress }:
 	const size = 24 * fontScale;
 
 	return (
-		<BorderlessButton
-			style={[styles.button, { width: size, height: size }]}
-			onPress={() => onPress()}
-			testID={testID}
-			hitSlop={hitSlop}>
-			<View accessible accessibilityLabel={I18n.t(accessibilityLabel)} accessibilityRole='button'>
+		<BorderlessButton style={[styles.button, { width: size, height: size }]} onPress={() => onPress()} hitSlop={hitSlop}>
+			<View
+				accessible
+				accessibilityLabel={I18n.t(accessibilityLabel)}
+				accessibilityRole='button'
+				collapsable={false}
+				testID={testID}>
 				<CustomIcon name={icon} size={24} color={color} />
 			</View>
 		</BorderlessButton>
