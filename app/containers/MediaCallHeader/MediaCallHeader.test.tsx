@@ -89,12 +89,8 @@ describe('MediaCallHeader', () => {
 		expect(queryByTestId('media-call-header-end')).toBeNull();
 	});
 
-	it('should render empty placeholder when only callId is set (native accepted call, before answerCall completes)', () => {
-		useCallStore.setState({
-			call: null,
-			callId: 'e3246c4d-d23a-412f-8a8b-37ec9f29ef1a',
-			callState: 'none'
-		});
+	it('should render empty placeholder when native accepted but call not bound yet (before answerCall completes)', () => {
+		useCallStore.getState().setNativeAcceptedCallId('e3246c4d-d23a-412f-8a8b-37ec9f29ef1a');
 		const { getByTestId, queryByTestId } = render(
 			<Wrapper>
 				<MediaCallHeader />

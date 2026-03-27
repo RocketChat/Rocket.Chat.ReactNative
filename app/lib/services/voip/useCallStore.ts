@@ -10,7 +10,7 @@ const STALE_NATIVE_MS = 15_000;
 
 let callListenersCleanup: (() => void) | null = null;
 let staleNativeTimer: ReturnType<typeof setTimeout> | null = null;
-/** Id this timer may clear; must match `nativeAcceptedCallId` at fire time. */
+/** Call id this timer is for; only `nativeAcceptedCallId` is cleared when it fires, not `callId`. */
 let staleNativeScheduledId: string | null = null;
 
 export function cleanupCallListeners(): void {
@@ -26,7 +26,15 @@ function cancelStaleNativeTimer(): void {
 	staleNativeScheduledId = null;
 }
 
-function armStaleNativeTimer(get: () => CallStore): void {
+function clearStaleNativeIfStillUnbound(get: () => CallStore, scheduled: string): void {
+	const st = get();
+	if (st.call != null || st.nativeAcceptedCallId !== scheduled) {
+		return;
+	}
+	useCallStore.setState({ nativeAcceptedCallId: null });
+}
+
+function createStaleNativeTimer(get: () => CallStore): void {
 	cancelStaleNativeTimer();
 	const scheduledId = get().nativeAcceptedCallId;
 	if (scheduledId == null || scheduledId === '') {
@@ -35,19 +43,11 @@ function armStaleNativeTimer(get: () => CallStore): void {
 	staleNativeScheduledId = scheduledId;
 	staleNativeTimer = setTimeout(() => {
 		staleNativeTimer = null;
-		const scheduled = staleNativeScheduledId;
-		staleNativeScheduledId = null;
-		const st = get();
-		if (st.call != null) {
-			return;
+		// Timer uses the id from when it was created, not the current module variable.
+		if (staleNativeScheduledId === scheduledId) {
+			staleNativeScheduledId = null;
 		}
-		if (st.nativeAcceptedCallId !== scheduled) {
-			return;
-		}
-		useCallStore.setState({
-			nativeAcceptedCallId: null,
-			callId: null
-		});
+		clearStaleNativeIfStillUnbound(get, scheduledId);
 	}, STALE_NATIVE_MS);
 }
 
@@ -75,10 +75,9 @@ interface CallStoreState {
 }
 
 interface CallStoreActions {
-	setCallId: (callId: string | null) => void;
-	/** Native accept paths: sets sticky id only; starts/restarts stale-native timer. */
+	/** Sets native-accepted call id and (re)starts the 15s timer. */
 	setNativeAcceptedCallId: (callId: string) => void;
-	/** Clears sticky native id (+ transient `callId` when unbound); cancels stale timer. */
+	/** Clears native-accepted id and related state; cancels the timer. */
 	resetNativeCallId: () => void;
 	setCall: (call: IClientMediaCall) => void;
 	toggleMute: () => void;
@@ -86,7 +85,7 @@ interface CallStoreActions {
 	toggleSpeaker: () => void;
 	toggleFocus: () => void;
 	endCall: () => void;
-	/** Clears ring/UI/transient fields; preserves `nativeAcceptedCallId`; restarts stale timer when id preserved. */
+	/** Clears UI/call fields but keeps nativeAcceptedCallId. Restarts the 15s timer (media init calls reset and clears the old timer first). */
 	reset: () => void;
 	setDialpadValue: (value: string) => void;
 }
@@ -112,14 +111,10 @@ const initialState: CallStoreState = {
 export const useCallStore = create<CallStore>((set, get) => ({
 	...initialState,
 
-	setCallId: (callId: string | null) => {
-		set({ callId });
-	},
-
 	setNativeAcceptedCallId: (callId: string) => {
 		cancelStaleNativeTimer();
 		set({ nativeAcceptedCallId: callId });
-		armStaleNativeTimer(get);
+		createStaleNativeTimer(get);
 	},
 
 	resetNativeCallId: () => {
@@ -278,7 +273,8 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		}
 		set({ ...initialState, nativeAcceptedCallId });
 		hideActionSheetRef();
-		armStaleNativeTimer(get);
+		// Old timer was cleared above; start a new one if nativeAcceptedCallId is still set.
+		createStaleNativeTimer(get);
 	}
 }));
 

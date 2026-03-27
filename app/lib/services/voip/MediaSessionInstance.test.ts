@@ -6,7 +6,6 @@ const mockCallStoreReset = jest.fn();
 const mockUseCallStoreGetState = jest.fn(() => ({
 	reset: mockCallStoreReset,
 	setCall: jest.fn(),
-	setCallId: jest.fn(),
 	resetNativeCallId: jest.fn(),
 	call: null as unknown,
 	callId: null as string | null,
@@ -98,14 +97,17 @@ jest.mock('@rocket.chat/media-signaling', () => ({
 		})
 }));
 
+const STREAM_NOTIFY_USER = 'stream-notify-user';
+
 function getStreamNotifyHandler(): (ddpMessage: IDDPMessage) => void {
 	const calls = mockOnStreamData.mock.calls as unknown as [string, (m: IDDPMessage) => void][];
-	const last = calls[calls.length - 1];
-	const handler = last?.[1];
-	if (typeof handler !== 'function') {
-		throw new Error('stream-notify-user handler not registered');
+	for (let i = calls.length - 1; i >= 0; i--) {
+		const [eventName, handler] = calls[i];
+		if (eventName === STREAM_NOTIFY_USER && typeof handler === 'function') {
+			return handler;
+		}
 	}
-	return handler;
+	throw new Error('stream-notify-user handler not registered');
 }
 
 describe('MediaSessionInstance', () => {
@@ -115,7 +117,6 @@ describe('MediaSessionInstance', () => {
 		mockUseCallStoreGetState.mockReturnValue({
 			reset: mockCallStoreReset,
 			setCall: jest.fn(),
-			setCallId: jest.fn(),
 			resetNativeCallId: jest.fn(),
 			call: null,
 			callId: null,
@@ -197,40 +198,8 @@ describe('MediaSessionInstance', () => {
 	});
 
 	describe('stream-notify-user (notification/accepted gated)', () => {
-		it('does not call answerCall when store has no native-accepted callId', async () => {
+		it('does not call answerCall when nativeAcceptedCallId is null', async () => {
 			const answerSpy = jest.spyOn(mediaSessionInstance, 'answerCall').mockResolvedValue(undefined);
-			mediaSessionInstance.init('user-1');
-			const streamHandler = getStreamNotifyHandler();
-			streamHandler({
-				msg: 'changed',
-				fields: {
-					eventName: 'uid/media-signal',
-					args: [
-						{
-							type: 'notification',
-							notification: 'accepted',
-							signedContractId: 'test-device-id',
-							callId: 'from-signal'
-						}
-					]
-				}
-			});
-			await Promise.resolve();
-			expect(answerSpy).not.toHaveBeenCalled();
-			answerSpy.mockRestore();
-		});
-
-		it('does not call answerCall when transient callId matches signal but nativeAcceptedCallId does not', async () => {
-			const answerSpy = jest.spyOn(mediaSessionInstance, 'answerCall').mockResolvedValue(undefined);
-			mockUseCallStoreGetState.mockReturnValue({
-				reset: mockCallStoreReset,
-				setCall: jest.fn(),
-				setCallId: jest.fn(),
-				resetNativeCallId: jest.fn(),
-				call: null,
-				callId: 'from-signal',
-				nativeAcceptedCallId: null
-			});
 			mediaSessionInstance.init('user-1');
 			const streamHandler = getStreamNotifyHandler();
 			streamHandler({
@@ -257,7 +226,6 @@ describe('MediaSessionInstance', () => {
 			mockUseCallStoreGetState.mockReturnValue({
 				reset: mockCallStoreReset,
 				setCall: jest.fn(),
-				setCallId: jest.fn(),
 				resetNativeCallId: jest.fn(),
 				call: null,
 				callId: null,
@@ -289,7 +257,6 @@ describe('MediaSessionInstance', () => {
 			mockUseCallStoreGetState.mockReturnValue({
 				reset: mockCallStoreReset,
 				setCall: jest.fn(),
-				setCallId: jest.fn(),
 				resetNativeCallId: jest.fn(),
 				call: null,
 				callId: null,
@@ -321,7 +288,6 @@ describe('MediaSessionInstance', () => {
 			mockUseCallStoreGetState.mockReturnValue({
 				reset: mockCallStoreReset,
 				setCall: jest.fn(),
-				setCallId: jest.fn(),
 				resetNativeCallId: jest.fn(),
 				call: { callId: 'from-signal' } as any,
 				callId: 'from-signal',
