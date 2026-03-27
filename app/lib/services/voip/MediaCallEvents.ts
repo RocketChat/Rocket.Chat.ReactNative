@@ -84,7 +84,7 @@ export const setupMediaCallEvents = (): (() => void) => {
 					}
 					console.log(`${TAG} Initial events event:`, data);
 					NativeVoipModule.clearInitialEvents();
-					useCallStore.getState().setCallId(data.callId);
+					useCallStore.getState().setNativePendingAccept(data.callId);
 					store.dispatch(
 						deepLinkingOpen({
 							callId: data.callId,
@@ -165,7 +165,7 @@ export const getInitialMediaCallEvents = async (): Promise<boolean> => {
 		}
 
 		if (wasAnswered) {
-			useCallStore.getState().setCallId(initialEvents.callId);
+			useCallStore.getState().setNativePendingAccept(initialEvents.callId);
 
 			store.dispatch(
 				deepLinkingOpen({

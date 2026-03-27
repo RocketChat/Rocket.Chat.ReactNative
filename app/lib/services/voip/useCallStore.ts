@@ -5,11 +5,15 @@ import InCallManager from 'react-native-incall-manager';
 
 import Navigation from '../../navigation/appNavigation';
 import { hideActionSheetRef } from '../../../containers/ActionSheet';
+import { getEffectiveNativeAcceptedCallId } from './nativeAcceptHelpers';
 
 interface CallStoreState {
 	// Call reference
 	call: IClientMediaCall | null;
 	callId: string | null;
+
+	/** Survives `reset()` until explicit clear — native-accepted incoming call id. */
+	nativeAcceptedCallId: string | null;
 
 	// Call state
 	callState: CallState;
@@ -28,6 +32,11 @@ interface CallStoreState {
 
 interface CallStoreActions {
 	setCallId: (callId: string | null) => void;
+	/** Native-driven paths: sets sticky id + transient `callId` (overwrites previous sticky). */
+	setNativePendingAccept: (callId: string) => void;
+	clearNativePendingAccept: () => void;
+	/** After `reset()`, restores transient `callId` from sticky `nativeAcceptedCallId`. */
+	syncTransientCallIdFromNativePending: () => void;
 	setCall: (call: IClientMediaCall) => void;
 	_cleanupCallListeners: () => void;
 	toggleMute: () => void;
@@ -35,6 +44,7 @@ interface CallStoreActions {
 	toggleSpeaker: () => void;
 	toggleFocus: () => void;
 	endCall: () => void;
+	/** Clears ring/UI/transient fields; preserves `nativeAcceptedCallId`. */
 	reset: () => void;
 	setDialpadValue: (value: string) => void;
 }
@@ -46,6 +56,7 @@ let callListenersCleanup: (() => void) | null = null;
 const initialState: CallStoreState = {
 	call: null,
 	callId: null,
+	nativeAcceptedCallId: null,
 	callState: 'none',
 	isMuted: false,
 	isOnHold: false,
@@ -65,6 +76,22 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		set({ callId });
 	},
 
+	setNativePendingAccept: (callId: string) => {
+		set({ nativeAcceptedCallId: callId, callId });
+	},
+
+	clearNativePendingAccept: () => {
+		const { call, callId } = get();
+		set({
+			nativeAcceptedCallId: null,
+			callId: call != null ? callId : null
+		});
+	},
+
+	syncTransientCallIdFromNativePending: () => {
+		set({ callId: getEffectiveNativeAcceptedCallId(get()) });
+	},
+
 	_cleanupCallListeners: () => {
 		callListenersCleanup?.();
 		callListenersCleanup = null;
@@ -72,6 +99,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 
 	setCall: (call: IClientMediaCall) => {
 		get()._cleanupCallListeners();
+		get().clearNativePendingAccept();
 		// Update state with call info
 		set({
 			call,
@@ -123,6 +151,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		};
 
 		const handleEnded = () => {
+			get().clearNativePendingAccept();
 			get().reset();
 			Navigation.back();
 		};
@@ -187,7 +216,6 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		set({ dialpadValue: newValue });
 	},
 
-	// TODO: do it here or in MediaSessionInstance?
 	endCall: () => {
 		const { call, callId } = get();
 
@@ -199,18 +227,19 @@ export const useCallStore = create<CallStore>((set, get) => ({
 			RNCallKeep.endCall(callId);
 		}
 
-		// Navigation.back(); // TODO: It could be collapsed, so going back woudln't make sense
+		get().clearNativePendingAccept();
 		get().reset();
 	},
 
 	reset: () => {
+		const { nativeAcceptedCallId } = get();
 		get()._cleanupCallListeners();
 		try {
 			InCallManager.stop();
 		} catch (error) {
 			console.error('[VoIP] InCallManager.stop failed:', error);
 		}
-		set(initialState);
+		set({ ...initialState, nativeAcceptedCallId });
 		hideActionSheetRef();
 	}
 }));
@@ -222,3 +251,5 @@ export const useCallState = () => {
 
 export const useCallContact = () => useCallStore(state => state.contact);
 export const useDialpadValue = () => useCallStore(state => state.dialpadValue);
+
+export { getEffectiveNativeAcceptedCallId } from './nativeAcceptHelpers';

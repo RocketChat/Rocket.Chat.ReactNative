@@ -99,6 +99,7 @@ const navigate = function* navigate({ params }) {
 const handleVoipAcceptFailed = function* handleVoipAcceptFailed(params) {
 	try {
 		const { callId, username } = params;
+		useCallStore.getState().clearNativePendingAccept();
 		useCallStore.getState().reset();
 		if (callId) {
 			RNCallKeep.endCall(callId);

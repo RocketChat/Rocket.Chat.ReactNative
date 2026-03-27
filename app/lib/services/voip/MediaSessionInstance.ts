@@ -12,6 +12,7 @@ import { getUniqueIdSync } from 'react-native-device-info';
 
 import { mediaSessionStore } from './MediaSessionStore';
 import { useCallStore } from './useCallStore';
+import { getEffectiveNativeAcceptedCallId } from './nativeAcceptHelpers';
 import { store } from '../../store/auxStore';
 import sdk from '../sdk';
 import Navigation from '../../navigation/appNavigation';
@@ -31,16 +32,9 @@ class MediaSessionInstance {
 	private storeIceServersUnsubscribe: (() => void) | null = null;
 
 	public init(userId: string): void {
-		// `getInitialMediaCallEvents` / VoipPushInitialEvents may set `callId` before login; `reset()` clears
-		// the Zustand store — restore native-accepted `callId` so `registered` / notification accepted can answer.
-		const { callId: preInitCallId, call: preInitCall } = useCallStore.getState();
-		const nativeAcceptedCallId = preInitCall == null && preInitCallId ? preInitCallId : null;
-
 		this.reset();
 
-		if (nativeAcceptedCallId) {
-			useCallStore.getState().setCallId(nativeAcceptedCallId);
-		}
+		useCallStore.getState().syncTransientCallIdFromNativePending();
 
 		registerGlobals();
 		this.configureIceServers();
@@ -74,54 +68,22 @@ class MediaSessionInstance {
 
 			console.log('🤙 [VoIP] Processed signal:', signal);
 
-			// Primary path when `registered` ran before native `setCallId` (warm Android): answer only if the user
-			// already accepted on this device (store `callId` from native) and the signal targets this contract.
-			// `registered` remains a secondary path when callId is already set and id ∈ activeCalls.
-			const { callId: storeNativeAcceptedCallId, call } = useCallStore.getState();
+			// Answer when native already accepted (sticky/transient id) and stream matches device contract + callId.
+			const storeSlice = useCallStore.getState();
+			const { call } = storeSlice;
+			const effectiveNativeCallId = getEffectiveNativeAcceptedCallId(storeSlice);
 
-			console.log('🤙🤙🤙 [VoIP] Native accepted callId:', storeNativeAcceptedCallId);
-			console.log('🤙🤙🤙 [VoIP] Native accepted call:', call);
-			console.log('🤙🤙🤙 [VoIP] Signal:', signal);
 			if (
 				signal.type === 'notification' &&
 				signal.notification === 'accepted' &&
 				signal.signedContractId === getUniqueIdSync() &&
-				storeNativeAcceptedCallId === signal.callId &&
+				effectiveNativeCallId === signal.callId &&
 				call == null
 			) {
 				this.answerCall(signal.callId).catch(error => {
 					console.error('[VoIP] Error answering call on notification/accepted:', error);
 				});
 			}
-		});
-
-		this.instance?.on('registered', ({ activeCalls }) => {
-			const { callId, call } = useCallStore.getState();
-			const mainCall = this.instance?.getMainCall();
-
-			console.log('[VoIP] Media session registered', {
-				activeCallsCount: activeCalls.length,
-				activeCalls,
-				sessionId: this.instance?.sessionId,
-				storeCallId: callId,
-				storeHasCallObject: call != null,
-				mainCallId: mainCall?.callId ?? null,
-				mainCallRole: mainCall?.role ?? null,
-				mainCallState: mainCall?.state ?? null,
-				nativeAcceptedCallIdInActiveCalls: callId != null ? activeCalls.includes(callId) : false,
-				mainCallIdInActiveCalls: mainCall != null ? activeCalls.includes(mainCall.callId) : false
-			});
-
-			if (!callId || call != null) {
-				return;
-			}
-			if (!activeCalls.includes(callId)) {
-				console.log('[VoIP] Native accepted callId not in activeCalls yet:', callId, 'activeCalls:', activeCalls);
-				return;
-			}
-			this.answerCall(callId).catch(error => {
-				console.error('[VoIP] Error answering call after registered:', error);
-			});
 		});
 
 		this.instance?.on('newCall', ({ call }: { call: IClientMediaCall }) => {
@@ -163,6 +125,10 @@ class MediaSessionInstance {
 			Navigation.navigate('CallView');
 		} else {
 			RNCallKeep.endCall(callId);
+			const st = useCallStore.getState();
+			if (st.nativeAcceptedCallId === callId) {
+				st.clearNativePendingAccept();
+			}
 			console.warn('[VoIP] Call not found:', callId); // TODO: Show error message?
 		}
 	};
@@ -192,7 +158,7 @@ class MediaSessionInstance {
 		RNCallKeep.endCall(callId);
 		RNCallKeep.setCurrentCallActive('');
 		RNCallKeep.setAvailable(true);
-		// Reset Zustand store
+		useCallStore.getState().clearNativePendingAccept();
 		useCallStore.getState().reset();
 	};
 
