@@ -40,7 +40,6 @@ import appNavigation from '../lib/navigation/appNavigation';
 import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
 import { mediaSessionInstance } from '../lib/services/voip/MediaSessionInstance';
-import { useCallStore } from '../lib/services/voip/useCallStore';
 import { hasPermission } from '../lib/methods/helpers/helpers';
 
 const getServer = state => state.server.server;
@@ -236,7 +235,6 @@ const startVoipFork = function* startVoipFork() {
 			const userId = yield select(state => state.login.user.id);
 			mediaSessionInstance.init(userId);
 		} else {
-			useCallStore.getState().clearNativePendingAccept();
 			mediaSessionInstance.reset();
 		}
 	} catch (e) {
@@ -415,11 +413,9 @@ const handleDeleteAccount = function* handleDeleteAccount() {
 				}
 			}
 			// if there's no servers, go outside
-			useCallStore.getState().clearNativePendingAccept();
 			disconnect();
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		} catch (e) {
-			useCallStore.getState().clearNativePendingAccept();
 			disconnect();
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 			log(e);

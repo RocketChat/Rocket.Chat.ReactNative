@@ -3,13 +3,11 @@ import { mediaSessionStore } from './MediaSessionStore';
 import { mediaSessionInstance } from './MediaSessionInstance';
 
 const mockCallStoreReset = jest.fn();
-const mockSyncTransientCallIdFromNativePending = jest.fn();
 const mockUseCallStoreGetState = jest.fn(() => ({
 	reset: mockCallStoreReset,
 	setCall: jest.fn(),
 	setCallId: jest.fn(),
-	clearNativePendingAccept: jest.fn(),
-	syncTransientCallIdFromNativePending: mockSyncTransientCallIdFromNativePending,
+	resetNativeCallId: jest.fn(),
 	call: null as unknown,
 	callId: null as string | null,
 	nativeAcceptedCallId: null as string | null
@@ -116,8 +114,7 @@ describe('MediaSessionInstance', () => {
 			reset: mockCallStoreReset,
 			setCall: jest.fn(),
 			setCallId: jest.fn(),
-			clearNativePendingAccept: jest.fn(),
-			syncTransientCallIdFromNativePending: mockSyncTransientCallIdFromNativePending,
+			resetNativeCallId: jest.fn(),
 			call: null,
 			callId: null,
 			nativeAcceptedCallId: null
@@ -155,35 +152,6 @@ describe('MediaSessionInstance', () => {
 			spy.mockRestore();
 		});
 
-		it('should sync transient callId from sticky native pending after reset inside init', () => {
-			mockUseCallStoreGetState.mockReturnValue({
-				reset: mockCallStoreReset,
-				setCall: jest.fn(),
-				setCallId: jest.fn(),
-				clearNativePendingAccept: jest.fn(),
-				syncTransientCallIdFromNativePending: mockSyncTransientCallIdFromNativePending,
-				call: null,
-				callId: null,
-				nativeAcceptedCallId: 'native-accepted-call-id'
-			});
-			mediaSessionInstance.init('user-1');
-			expect(mockSyncTransientCallIdFromNativePending).toHaveBeenCalledWith();
-		});
-
-		it('should still invoke sync when store already has call object', () => {
-			mockUseCallStoreGetState.mockReturnValue({
-				reset: mockCallStoreReset,
-				setCall: jest.fn(),
-				setCallId: jest.fn(),
-				clearNativePendingAccept: jest.fn(),
-				syncTransientCallIdFromNativePending: mockSyncTransientCallIdFromNativePending,
-				call: { callId: 'x' } as any,
-				callId: 'x',
-				nativeAcceptedCallId: 'native-accepted-call-id'
-			});
-			mediaSessionInstance.init('user-1');
-			expect(mockSyncTransientCallIdFromNativePending).toHaveBeenCalledWith();
-		});
 	});
 
 	describe('teardown and user switch', () => {
@@ -251,16 +219,47 @@ describe('MediaSessionInstance', () => {
 			answerSpy.mockRestore();
 		});
 
-		it('calls answerCall when native-accepted store callId matches signal and contract matches device', async () => {
+		it('does not call answerCall when transient callId matches signal but nativeAcceptedCallId does not', async () => {
 			const answerSpy = jest.spyOn(mediaSessionInstance, 'answerCall').mockResolvedValue(undefined);
 			mockUseCallStoreGetState.mockReturnValue({
 				reset: mockCallStoreReset,
 				setCall: jest.fn(),
 				setCallId: jest.fn(),
-				clearNativePendingAccept: jest.fn(),
-				syncTransientCallIdFromNativePending: mockSyncTransientCallIdFromNativePending,
+				resetNativeCallId: jest.fn(),
 				call: null,
 				callId: 'from-signal',
+				nativeAcceptedCallId: null
+			});
+			mediaSessionInstance.init('user-1');
+			const streamHandler = getStreamNotifyHandler();
+			streamHandler({
+				msg: 'changed',
+				fields: {
+					eventName: 'uid/media-signal',
+					args: [
+						{
+							type: 'notification',
+							notification: 'accepted',
+							signedContractId: 'test-device-id',
+							callId: 'from-signal'
+						}
+					]
+				}
+			});
+			await Promise.resolve();
+			expect(answerSpy).not.toHaveBeenCalled();
+			answerSpy.mockRestore();
+		});
+
+		it('calls answerCall when nativeAcceptedCallId matches signal and contract matches device', async () => {
+			const answerSpy = jest.spyOn(mediaSessionInstance, 'answerCall').mockResolvedValue(undefined);
+			mockUseCallStoreGetState.mockReturnValue({
+				reset: mockCallStoreReset,
+				setCall: jest.fn(),
+				setCallId: jest.fn(),
+				resetNativeCallId: jest.fn(),
+				call: null,
+				callId: null,
 				nativeAcceptedCallId: 'from-signal'
 			});
 			mediaSessionInstance.init('user-1');
@@ -284,14 +283,13 @@ describe('MediaSessionInstance', () => {
 			answerSpy.mockRestore();
 		});
 
-		it('calls answerCall when only sticky native id matches (transient callId null)', async () => {
+		it('calls answerCall when only nativeAcceptedCallId matches (transient callId null)', async () => {
 			const answerSpy = jest.spyOn(mediaSessionInstance, 'answerCall').mockResolvedValue(undefined);
 			mockUseCallStoreGetState.mockReturnValue({
 				reset: mockCallStoreReset,
 				setCall: jest.fn(),
 				setCallId: jest.fn(),
-				clearNativePendingAccept: jest.fn(),
-				syncTransientCallIdFromNativePending: mockSyncTransientCallIdFromNativePending,
+				resetNativeCallId: jest.fn(),
 				call: null,
 				callId: null,
 				nativeAcceptedCallId: 'sticky-only'
@@ -323,8 +321,7 @@ describe('MediaSessionInstance', () => {
 				reset: mockCallStoreReset,
 				setCall: jest.fn(),
 				setCallId: jest.fn(),
-				clearNativePendingAccept: jest.fn(),
-				syncTransientCallIdFromNativePending: mockSyncTransientCallIdFromNativePending,
+				resetNativeCallId: jest.fn(),
 				call: { callId: 'from-signal' } as any,
 				callId: 'from-signal',
 				nativeAcceptedCallId: 'from-signal'

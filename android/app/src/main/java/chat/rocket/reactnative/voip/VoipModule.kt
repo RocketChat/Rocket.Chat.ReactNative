@@ -16,7 +16,7 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
 
     companion object {
         private const val TAG = "RocketChat.VoipModule"
-        private const val EVENT_INITIAL_EVENTS = "VoipPushInitialEvents"
+        private const val EVENT_VOIP_ACCEPT_SUCCEEDED = "VoipAcceptSucceeded"
         private const val EVENT_VOIP_ACCEPT_FAILED = "VoipAcceptFailed"
 
         private var reactContextRef: WeakReference<ReactApplicationContext>? = null
@@ -40,7 +40,7 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
                     if (context.hasActiveReactInstance()) {
                         context
                             .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-                            .emit(EVENT_INITIAL_EVENTS, voipPayload.toWritableMap())
+                            .emit(EVENT_VOIP_ACCEPT_SUCCEEDED, voipPayload.toWritableMap())
                     }
                 }
             } catch (e: Exception) {

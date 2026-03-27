@@ -12,7 +12,6 @@ import { getUniqueIdSync } from 'react-native-device-info';
 
 import { mediaSessionStore } from './MediaSessionStore';
 import { useCallStore } from './useCallStore';
-import { getEffectiveNativeAcceptedCallId } from './nativeAcceptHelpers';
 import { store } from '../../store/auxStore';
 import sdk from '../sdk';
 import Navigation from '../../navigation/appNavigation';
@@ -33,8 +32,6 @@ class MediaSessionInstance {
 
 	public init(userId: string): void {
 		this.reset();
-
-		useCallStore.getState().syncTransientCallIdFromNativePending();
 
 		registerGlobals();
 		this.configureIceServers();
@@ -68,16 +65,15 @@ class MediaSessionInstance {
 
 			console.log('🤙 [VoIP] Processed signal:', signal);
 
-			// Answer when native already accepted (sticky/transient id) and stream matches device contract + callId.
+			// Answer when native already accepted and stream matches device contract + callId.
 			const storeSlice = useCallStore.getState();
-			const { call } = storeSlice;
-			const effectiveNativeCallId = getEffectiveNativeAcceptedCallId(storeSlice);
+			const { call, nativeAcceptedCallId } = storeSlice;
 
 			if (
 				signal.type === 'notification' &&
 				signal.notification === 'accepted' &&
 				signal.signedContractId === getUniqueIdSync() &&
-				effectiveNativeCallId === signal.callId &&
+				nativeAcceptedCallId === signal.callId &&
 				call == null
 			) {
 				this.answerCall(signal.callId).catch(error => {
@@ -127,7 +123,7 @@ class MediaSessionInstance {
 			RNCallKeep.endCall(callId);
 			const st = useCallStore.getState();
 			if (st.nativeAcceptedCallId === callId) {
-				st.clearNativePendingAccept();
+				st.resetNativeCallId();
 			}
 			console.warn('[VoIP] Call not found:', callId); // TODO: Show error message?
 		}
@@ -158,7 +154,7 @@ class MediaSessionInstance {
 		RNCallKeep.endCall(callId);
 		RNCallKeep.setCurrentCallActive('');
 		RNCallKeep.setAvailable(true);
-		useCallStore.getState().clearNativePendingAccept();
+		useCallStore.getState().resetNativeCallId();
 		useCallStore.getState().reset();
 	};
 

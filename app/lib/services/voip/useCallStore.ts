@@ -5,7 +5,51 @@ import InCallManager from 'react-native-incall-manager';
 
 import Navigation from '../../navigation/appNavigation';
 import { hideActionSheetRef } from '../../../containers/ActionSheet';
-import { getEffectiveNativeAcceptedCallId } from './nativeAcceptHelpers';
+
+const STALE_NATIVE_MS = 15_000;
+
+let callListenersCleanup: (() => void) | null = null;
+let staleNativeTimer: ReturnType<typeof setTimeout> | null = null;
+/** Id this timer may clear; must match `nativeAcceptedCallId` at fire time. */
+let staleNativeScheduledId: string | null = null;
+
+export function cleanupCallListeners(): void {
+	callListenersCleanup?.();
+	callListenersCleanup = null;
+}
+
+function cancelStaleNativeTimer(): void {
+	if (staleNativeTimer != null) {
+		clearTimeout(staleNativeTimer);
+		staleNativeTimer = null;
+	}
+	staleNativeScheduledId = null;
+}
+
+function armStaleNativeTimer(get: () => CallStore): void {
+	cancelStaleNativeTimer();
+	const scheduledId = get().nativeAcceptedCallId;
+	if (scheduledId == null || scheduledId === '') {
+		return;
+	}
+	staleNativeScheduledId = scheduledId;
+	staleNativeTimer = setTimeout(() => {
+		staleNativeTimer = null;
+		const scheduled = staleNativeScheduledId;
+		staleNativeScheduledId = null;
+		const st = get();
+		if (st.call != null) {
+			return;
+		}
+		if (st.nativeAcceptedCallId !== scheduled) {
+			return;
+		}
+		useCallStore.setState({
+			nativeAcceptedCallId: null,
+			callId: null
+		});
+	}, STALE_NATIVE_MS);
+}
 
 interface CallStoreState {
 	// Call reference
@@ -32,26 +76,22 @@ interface CallStoreState {
 
 interface CallStoreActions {
 	setCallId: (callId: string | null) => void;
-	/** Native-driven paths: sets sticky id + transient `callId` (overwrites previous sticky). */
-	setNativePendingAccept: (callId: string) => void;
-	clearNativePendingAccept: () => void;
-	/** After `reset()`, restores transient `callId` from sticky `nativeAcceptedCallId`. */
-	syncTransientCallIdFromNativePending: () => void;
+	/** Native accept paths: sets sticky id only; starts/restarts stale-native timer. */
+	setNativeAcceptedCallId: (callId: string) => void;
+	/** Clears sticky native id (+ transient `callId` when unbound); cancels stale timer. */
+	resetNativeCallId: () => void;
 	setCall: (call: IClientMediaCall) => void;
-	_cleanupCallListeners: () => void;
 	toggleMute: () => void;
 	toggleHold: () => void;
 	toggleSpeaker: () => void;
 	toggleFocus: () => void;
 	endCall: () => void;
-	/** Clears ring/UI/transient fields; preserves `nativeAcceptedCallId`. */
+	/** Clears ring/UI/transient fields; preserves `nativeAcceptedCallId`; restarts stale timer when id preserved. */
 	reset: () => void;
 	setDialpadValue: (value: string) => void;
 }
 
 export type CallStore = CallStoreState & CallStoreActions;
-
-let callListenersCleanup: (() => void) | null = null;
 
 const initialState: CallStoreState = {
 	call: null,
@@ -76,11 +116,14 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		set({ callId });
 	},
 
-	setNativePendingAccept: (callId: string) => {
-		set({ nativeAcceptedCallId: callId, callId });
+	setNativeAcceptedCallId: (callId: string) => {
+		cancelStaleNativeTimer();
+		set({ nativeAcceptedCallId: callId });
+		armStaleNativeTimer(get);
 	},
 
-	clearNativePendingAccept: () => {
+	resetNativeCallId: () => {
+		cancelStaleNativeTimer();
 		const { call, callId } = get();
 		set({
 			nativeAcceptedCallId: null,
@@ -88,18 +131,9 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		});
 	},
 
-	syncTransientCallIdFromNativePending: () => {
-		set({ callId: getEffectiveNativeAcceptedCallId(get()) });
-	},
-
-	_cleanupCallListeners: () => {
-		callListenersCleanup?.();
-		callListenersCleanup = null;
-	},
-
 	setCall: (call: IClientMediaCall) => {
-		get()._cleanupCallListeners();
-		get().clearNativePendingAccept();
+		cleanupCallListeners();
+		get().resetNativeCallId();
 		// Update state with call info
 		set({
 			call,
@@ -151,7 +185,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		};
 
 		const handleEnded = () => {
-			get().clearNativePendingAccept();
+			get().resetNativeCallId();
 			get().reset();
 			Navigation.back();
 		};
@@ -184,8 +218,8 @@ export const useCallStore = create<CallStore>((set, get) => ({
 	},
 
 	toggleSpeaker: async () => {
-		const { callId, isSpeakerOn } = get();
-		if (!callId) return;
+		const { call, isSpeakerOn } = get();
+		if (!call) return;
 
 		const newSpeakerOn = !isSpeakerOn;
 
@@ -217,23 +251,26 @@ export const useCallStore = create<CallStore>((set, get) => ({
 	},
 
 	endCall: () => {
-		const { call, callId } = get();
+		const { call, callId, nativeAcceptedCallId } = get();
+		// UUID for the native call UI layer (react-native-callkeep on iOS and Android).
+		const callUuid = callId ?? nativeAcceptedCallId;
 
 		if (call) {
 			call.hangup();
 		}
 
-		if (callId) {
-			RNCallKeep.endCall(callId);
+		if (callUuid) {
+			RNCallKeep.endCall(callUuid);
 		}
 
-		get().clearNativePendingAccept();
+		get().resetNativeCallId();
 		get().reset();
 	},
 
 	reset: () => {
 		const { nativeAcceptedCallId } = get();
-		get()._cleanupCallListeners();
+		cleanupCallListeners();
+		cancelStaleNativeTimer();
 		try {
 			InCallManager.stop();
 		} catch (error) {
@@ -241,6 +278,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		}
 		set({ ...initialState, nativeAcceptedCallId });
 		hideActionSheetRef();
+		armStaleNativeTimer(get);
 	}
 }));
 
@@ -251,5 +289,3 @@ export const useCallState = () => {
 
 export const useCallContact = () => useCallStore(state => state.contact);
 export const useDialpadValue = () => useCallStore(state => state.dialpadValue);
-
-export { getEffectiveNativeAcceptedCallId } from './nativeAcceptHelpers';

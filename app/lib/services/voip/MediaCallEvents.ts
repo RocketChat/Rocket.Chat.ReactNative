@@ -15,9 +15,12 @@ const platform = isIOS ? 'iOS' : 'Android';
 const TAG = `[MediaCallEvents][${platform}]`;
 
 const EVENT_VOIP_ACCEPT_FAILED = 'VoipAcceptFailed';
+const EVENT_VOIP_ACCEPT_SUCCEEDED = 'VoipAcceptSucceeded';
 
 /** Dedupe native emit + stash replay for the same failed accept. */
 let lastHandledVoipAcceptFailureCallId: string | null = null;
+/** Idempotent warm delivery of native accept success. */
+let lastHandledVoipAcceptSucceededCallId: string | null = null;
 
 function dispatchVoipAcceptFailureFromNative(raw: VoipPayload & { voipAcceptFailed?: boolean }) {
 	if (!raw.voipAcceptFailed) {
@@ -34,6 +37,29 @@ function dispatchVoipAcceptFailureFromNative(raw: VoipPayload & { voipAcceptFail
 			callId: raw.callId,
 			username: raw.username,
 			voipAcceptFailed: true
+		})
+	);
+}
+
+function handleVoipAcceptSucceededFromNative(data: VoipPayload) {
+	const { callId } = data;
+	if (callId && lastHandledVoipAcceptSucceededCallId === callId) {
+		return;
+	}
+	if (callId) {
+		lastHandledVoipAcceptSucceededCallId = callId;
+	}
+	if (data.type !== 'incoming_call') {
+		console.log(`${TAG} VoipAcceptSucceeded: not an incoming call`);
+		return;
+	}
+	console.log(`${TAG} VoipAcceptSucceeded:`, data);
+	NativeVoipModule.clearInitialEvents();
+	useCallStore.getState().setNativeAcceptedCallId(data.callId);
+	store.dispatch(
+		deepLinkingOpen({
+			callId: data.callId,
+			host: data.host
 		})
 	);
 }
@@ -66,38 +92,18 @@ export const setupMediaCallEvents = (): (() => void) => {
 		// Note: there is intentionally no 'answerCall' listener here.
 		// VoipService.swift handles accept natively: handleObservedCallChanged detects
 		// hasConnected = true and calls handleNativeAccept(), which sends the DDP accept
-		// signal before JS runs. JS only reads the stored initialEventsData payload after the fact.
-	} else {
-		// Android listens for media call events from VoipModule
-		subscriptions.push(
-			Emitter.addListener('VoipPushInitialEvents', async (data: VoipPayload & { voipAcceptFailed?: boolean }) => {
-				try {
-					if (data.voipAcceptFailed) {
-						console.log(`${TAG} Accept failed initial event`);
-						dispatchVoipAcceptFailureFromNative(data);
-						NativeVoipModule.clearInitialEvents();
-						return;
-					}
-					if (data.type !== 'incoming_call') {
-						console.log(`${TAG} Not an incoming call`);
-						return;
-					}
-					console.log(`${TAG} Initial events event:`, data);
-					NativeVoipModule.clearInitialEvents();
-					useCallStore.getState().setNativePendingAccept(data.callId);
-					store.dispatch(
-						deepLinkingOpen({
-							callId: data.callId,
-							host: data.host
-						})
-					);
-					// await mediaSessionInstance.answerCall(data.callId);
-				} catch (error) {
-					console.error(`${TAG} Error handling initial events event:`, error);
-				}
-			})
-		);
+		// signal before JS runs. JS receives VoipAcceptSucceeded after success.
 	}
+
+	subscriptions.push(
+		Emitter.addListener(EVENT_VOIP_ACCEPT_SUCCEEDED, (data: VoipPayload) => {
+			try {
+				handleVoipAcceptSucceededFromNative(data);
+			} catch (error) {
+				console.error(`${TAG} Error handling VoipAcceptSucceeded:`, error);
+			}
+		})
+	);
 
 	subscriptions.push(
 		Emitter.addListener(EVENT_VOIP_ACCEPT_FAILED, (data: VoipPayload & { voipAcceptFailed?: boolean }) => {
@@ -165,7 +171,7 @@ export const getInitialMediaCallEvents = async (): Promise<boolean> => {
 		}
 
 		if (wasAnswered) {
-			useCallStore.getState().setNativePendingAccept(initialEvents.callId);
+			useCallStore.getState().setNativeAcceptedCallId(initialEvents.callId);
 
 			store.dispatch(
 				deepLinkingOpen({
