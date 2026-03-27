@@ -31,7 +31,17 @@ class MediaSessionInstance {
 	private storeIceServersUnsubscribe: (() => void) | null = null;
 
 	public init(userId: string): void {
+		// `getInitialMediaCallEvents` / VoipPushInitialEvents may set `callId` before login; `reset()` clears
+		// the Zustand store — restore native-accepted `callId` so `registered` / notification accepted can answer.
+		const { callId: preInitCallId, call: preInitCall } = useCallStore.getState();
+		const nativeAcceptedCallId = preInitCall == null && preInitCallId ? preInitCallId : null;
+
 		this.reset();
+
+		if (nativeAcceptedCallId) {
+			useCallStore.getState().setCallId(nativeAcceptedCallId);
+		}
+
 		registerGlobals();
 		this.configureIceServers();
 
@@ -64,16 +74,54 @@ class MediaSessionInstance {
 
 			console.log('🤙 [VoIP] Processed signal:', signal);
 
-			// If the call was accepted from this device, answer it
-			if (signal.type === 'notification' && signal.notification === 'accepted' && signal.signedContractId === getUniqueIdSync()) {
+			// Primary path when `registered` ran before native `setCallId` (warm Android): answer only if the user
+			// already accepted on this device (store `callId` from native) and the signal targets this contract.
+			// `registered` remains a secondary path when callId is already set and id ∈ activeCalls.
+			const { callId: storeNativeAcceptedCallId, call } = useCallStore.getState();
+
+			console.log('🤙🤙🤙 [VoIP] Native accepted callId:', storeNativeAcceptedCallId);
+			console.log('🤙🤙🤙 [VoIP] Native accepted call:', call);
+			console.log('🤙🤙🤙 [VoIP] Signal:', signal);
+			if (
+				signal.type === 'notification' &&
+				signal.notification === 'accepted' &&
+				signal.signedContractId === getUniqueIdSync() &&
+				storeNativeAcceptedCallId === signal.callId &&
+				call == null
+			) {
 				this.answerCall(signal.callId).catch(error => {
-					console.error('[VoIP] Error answering call :', error);
+					console.error('[VoIP] Error answering call on notification/accepted:', error);
 				});
 			}
 		});
 
 		this.instance?.on('registered', ({ activeCalls }) => {
-			console.log('[VoIP] Media session registered, activeCalls:', activeCalls);
+			const { callId, call } = useCallStore.getState();
+			const mainCall = this.instance?.getMainCall();
+
+			console.log('[VoIP] Media session registered', {
+				activeCallsCount: activeCalls.length,
+				activeCalls,
+				sessionId: this.instance?.sessionId,
+				storeCallId: callId,
+				storeHasCallObject: call != null,
+				mainCallId: mainCall?.callId ?? null,
+				mainCallRole: mainCall?.role ?? null,
+				mainCallState: mainCall?.state ?? null,
+				nativeAcceptedCallIdInActiveCalls: callId != null ? activeCalls.includes(callId) : false,
+				mainCallIdInActiveCalls: mainCall != null ? activeCalls.includes(mainCall.callId) : false
+			});
+
+			if (!callId || call != null) {
+				return;
+			}
+			if (!activeCalls.includes(callId)) {
+				console.log('[VoIP] Native accepted callId not in activeCalls yet:', callId, 'activeCalls:', activeCalls);
+				return;
+			}
+			this.answerCall(callId).catch(error => {
+				console.error('[VoIP] Error answering call after registered:', error);
+			});
 		});
 
 		this.instance?.on('newCall', ({ call }: { call: IClientMediaCall }) => {
@@ -96,6 +144,12 @@ class MediaSessionInstance {
 	}
 
 	public answerCall = async (callId: string) => {
+		const { call: existingCall } = useCallStore.getState();
+		if (existingCall != null && existingCall.callId === callId) {
+			console.log('[VoIP] answerCall skipped — call already bound in store:', callId);
+			return;
+		}
+
 		console.log('[VoIP] Answering call:', callId);
 		const mainCall = this.instance?.getMainCall();
 		console.log('[VoIP] Main call:', mainCall);

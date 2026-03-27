@@ -91,7 +91,7 @@ export const setupMediaCallEvents = (): (() => void) => {
 							host: data.host
 						})
 					);
-					await mediaSessionInstance.answerCall(data.callId);
+					// await mediaSessionInstance.answerCall(data.callId);
 				} catch (error) {
 					console.error(`${TAG} Error handling initial events event:`, error);
 				}
