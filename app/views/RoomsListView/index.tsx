@@ -1,9 +1,10 @@
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute, type RouteProp } from '@react-navigation/native';
 import React, { memo, useContext, useEffect } from 'react';
 import { BackHandler, FlatList, RefreshControl } from 'react-native';
 import { useSafeAreaFrame } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
 
+import { type ChatsStackParamList } from '../../stacks/types';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import BackgroundContainer from '../../containers/BackgroundContainer';
 import { ChangePasswordRequired } from '../../containers/ChangePasswordRequired';
@@ -33,7 +34,10 @@ const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 const RoomsListView = memo(function RoomsListView() {
 	'use memo';
 
-	useHeader();
+	const route = useRoute<RouteProp<ChatsStackParamList, 'RoomsListView'>>();
+	const roomFilter = route.params?.roomFilter;
+
+	useHeader(roomFilter);
 	const { searching, searchEnabled, searchResults, stopSearch } = useContext(RoomsSearchContext);
 	const { colors } = useTheme();
 	const username = useAppSelector(state => getUserSelector(state).username);
@@ -45,7 +49,7 @@ const RoomsListView = memo(function RoomsListView() {
 	const navigation = useNavigation();
 	const { width } = useSafeAreaFrame();
 	const getItemLayout = useGetItemLayout();
-	const { subscriptions, loading } = useSubscriptions();
+	const { subscriptions, loading } = useSubscriptions(roomFilter);
 	const subscribedRoom = useAppSelector(state => state.room.subscribedRoom);
 	const changingServer = useAppSelector(state => state.server.changingServer);
 	const { refreshing, onRefresh } = useRefresh({ searching });

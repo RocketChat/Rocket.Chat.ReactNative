@@ -8,6 +8,7 @@ import { SortBy } from '../../../lib/constants/constantDisplayMode';
 import database from '../../../lib/database';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { getUserSelector } from '../../../selectors/login';
+import { type RoomFilterType } from '../../../stacks/types';
 
 const CHATS_HEADER = 'Chats';
 const UNREAD_HEADER = 'Unread';
@@ -35,7 +36,7 @@ const addRoomsGroup = (data: TSubscriptionModel[], header: string, allData: TSub
 	return allData;
 };
 
-export const useSubscriptions = () => {
+export const useSubscriptions = (roomFilter?: RoomFilterType) => {
 	'use memo';
 
 	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name);
@@ -68,7 +69,19 @@ export const useSubscriptions = () => {
 
 			subscriptionRef.current = observable.subscribe(data => {
 				let tempChats = [] as TSubscriptionModel[];
+
+				// Apply tab-level filter before grouping
 				let chats = data;
+				if (roomFilter === 'home') {
+					// Home: everything except DMs and discussions
+					chats = data.filter(s => s.t !== 'd' && !s.prid);
+				} else if (roomFilter === 'discussions') {
+					// Discussions only
+					chats = data.filter(s => !!s.prid);
+				} else if (roomFilter === 'dms') {
+					// DMs only
+					chats = data.filter(s => s.t === 'd' && !s.prid);
+				}
 
 				// let omnichannelsUpdate: string[] = [];
 				const isOmnichannelAgent = roles?.includes('livechat-agent');
@@ -124,7 +137,7 @@ export const useSubscriptions = () => {
 		return () => {
 			subscriptionRef.current?.unsubscribe();
 		};
-	}, [isGrouping, sortBy, useRealName, showUnread, showFavorites, groupByType, roles, server]);
+	}, [isGrouping, sortBy, useRealName, showUnread, showFavorites, groupByType, roles, server, roomFilter]);
 
 	return {
 		subscriptions,

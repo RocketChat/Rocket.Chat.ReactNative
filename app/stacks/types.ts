@@ -19,6 +19,8 @@ import {
 import { type ModalStackParamList } from './MasterDetailStack/types';
 import { type TNavigation } from './stackType';
 
+export type RoomFilterType = 'home' | 'discussions' | 'dms';
+
 export type ChatsStackParamList = {
 	ModalStackNavigator: NavigatorScreenParams<ModalStackParamList & TNavigation>;
 	E2ESaveYourPasswordStackNavigator: NavigatorScreenParams<E2ESaveYourPasswordStackParamList>;
@@ -26,7 +28,7 @@ export type ChatsStackParamList = {
 	SettingsView: any;
 	NewMessageStackNavigator: any;
 	NewMessageStack: undefined;
-	RoomsListView: undefined;
+	RoomsListView: { roomFilter?: RoomFilterType } | undefined;
 	RoomView:
 		| {
 				rid: string;
@@ -239,6 +241,25 @@ export type DrawerParamList = {
 	AccessibilityStackNavigator: NavigatorScreenParams<AccessibilityStackParamList>;
 };
 
+export type SearchStackParamList = {
+	SearchView: undefined;
+};
+
+export type MoreStackParamList = {
+	MoreView: undefined;
+} & ProfileStackParamList &
+	SettingsStackParamList &
+	AdminPanelStackParamList &
+	AccessibilityStackParamList;
+
+export type BottomTabParamList = {
+	HomeStack: NavigatorScreenParams<ChatsStackParamList>;
+	DiscussionsStack: NavigatorScreenParams<ChatsStackParamList>;
+	DMsStack: NavigatorScreenParams<ChatsStackParamList>;
+	SearchStack: NavigatorScreenParams<SearchStackParamList>;
+	MoreStack: NavigatorScreenParams<MoreStackParamList>;
+};
+
 export type NewMessageStackParamList = {
 	NewMessageView: undefined;
 	SelectedUsersView: {
@@ -277,6 +298,7 @@ export type E2EEnterYourPasswordStackParamList = {
 
 export type InsideStackParamList = {
 	DrawerNavigator: NavigatorScreenParams<DrawerParamList>;
+	BottomTabNavigator: NavigatorScreenParams<BottomTabParamList>;
 	NewMessageStackNavigator: NavigatorScreenParams<NewMessageStackParamList>;
 	E2ESaveYourPasswordStackNavigator: NavigatorScreenParams<E2ESaveYourPasswordStackParamList>;
 	E2EEnterYourPasswordStackNavigator: NavigatorScreenParams<E2EEnterYourPasswordStackParamList>;
