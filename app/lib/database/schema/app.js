@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export default appSchema({
-	version: 28,
+	version: 29,
 	tables: [
 		tableSchema({
 			name: 'subscriptions',
@@ -284,6 +284,14 @@ export default appSchema({
 				{ name: 'name', type: 'string', isOptional: true },
 				{ name: 'username', type: 'string', isIndexed: true },
 				{ name: 'avatar_etag', type: 'string', isOptional: true }
+			]
+		}),
+		tableSchema({
+			name: 'app_translations',
+			columns: [
+				{ name: 'key', type: 'string', isIndexed: true },
+				{ name: 'value', type: 'string' },
+				{ name: 'language', type: 'string', isIndexed: true }
 			]
 		})
 	]

@@ -25,6 +25,7 @@ import appSchema from './schema/app';
 import migrations from './model/migrations';
 import serversMigrations from './model/servers/migrations';
 import { type TAppDatabase, type TServerDatabase } from './interfaces';
+import AppTranslation from './model/AppTranslation';
 
 if (__DEV__) {
 	console.log(appGroupPath);
@@ -60,7 +61,8 @@ export const getDatabase = (database = ''): Database => {
 			Role,
 			Permission,
 			SlashCommand,
-			User
+			User,
+			AppTranslation
 		]
 	});
 };

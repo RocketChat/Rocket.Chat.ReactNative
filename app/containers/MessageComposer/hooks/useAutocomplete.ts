@@ -140,16 +140,41 @@ export const useAutocomplete = ({
 					const db = database.active;
 					const commandsCollection = db.get('slash_commands');
 					const likeString = sanitizeLikeString(text);
-					const commands = await (
-						await commandsCollection.query(Q.where('id', Q.like(`${likeString}%`))).fetch()
-					).map(command => ({
-						id: command.id,
-						title: command.id,
-						subtitle: command.description,
-						type
-					}));
-					setItems(commands);
 
+					const rawCommands = await commandsCollection.query(Q.where('id', Q.like(`${likeString}%`))).fetch();
+
+					const commands = await Promise.all(
+						rawCommands.map(async command => {
+							let subtitle = '';
+							const { description } = command;
+
+							if (!description) {
+								// no description at all — leave empty
+								subtitle = '';
+							} else if (command.appId) {
+								// app translation key — look up in WatermelonDB
+								const translationRecords = await db.get('app_translations').query(Q.where('key', description)).fetch();
+
+								if (translationRecords.length > 0) {
+									subtitle = (translationRecords[0] as any).value;
+								} else {
+									// not in DB yet — fallback to readable form
+									subtitle = description.split('.').pop()?.replace(/_/g, ' ') ?? description;
+								}
+							} else {
+								subtitle = description;
+							}
+
+							return {
+								id: command.id,
+								title: command.id,
+								subtitle,
+								type
+							};
+						})
+					);
+
+					setItems(commands);
 					if (commands.length > 0) {
 						updateAutocompleteVisible(true);
 						accessibilityFocusOnInput();

@@ -5,6 +5,8 @@ import log from './helpers/log';
 import protectedFunction from './helpers/protectedFunction';
 import { type ISlashCommandResult, type TSlashCommandModel } from '../../definitions';
 import sdk from '../services/sdk';
+import { getAppTranslations } from './getAppTranslations';
+import I18n from '../../i18n';
 
 export function getSlashCommands() {
 	const db = database.active;
@@ -17,6 +19,11 @@ export function getSlashCommands() {
 			if (!result.success) {
 				return resolve();
 			}
+
+			// fetch and save app translations if not already in DB
+			const appLang = I18n.currentLocale();
+			await getAppTranslations(appLang);
+
 			// @ts-ignore
 			const { commands } = result;
 			if (commands && commands.length) {
