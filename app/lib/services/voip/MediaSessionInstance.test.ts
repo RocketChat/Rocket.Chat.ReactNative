@@ -74,6 +74,11 @@ jest.mock('../../navigation/appNavigation', () => ({
 	default: { navigate: jest.fn() }
 }));
 
+const mockRequestPhoneStatePermission = jest.fn();
+jest.mock('../../methods/voipPhoneStatePermission', () => ({
+	requestPhoneStatePermission: () => mockRequestPhoneStatePermission()
+}));
+
 type MockMediaSignalingSession = {
 	userId: string;
 	sessionId: string;
@@ -437,6 +442,17 @@ describe('MediaSessionInstance', () => {
 			newCallHandler({ call: incoming });
 			expect(incoming.reject).not.toHaveBeenCalled();
 			expect(incoming.emitter.on).toHaveBeenCalledWith('stateChange', expect.any(Function));
+		});
+	});
+
+	describe('startCall', () => {
+		it('requests phone state permission fire-and-forget when starting a call', () => {
+			mediaSessionInstance.init('user-1');
+			mockRequestPhoneStatePermission.mockClear();
+			const session = createdSessions[0];
+			mediaSessionInstance.startCall('peer-1', 'user');
+			expect(mockRequestPhoneStatePermission).toHaveBeenCalledTimes(1);
+			expect(session.startCall).toHaveBeenCalledWith('user', 'peer-1');
 		});
 	});
 });
