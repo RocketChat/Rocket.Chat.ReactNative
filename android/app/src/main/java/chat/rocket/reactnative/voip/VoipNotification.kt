@@ -482,14 +482,20 @@ class VoipNotification(private val context: Context) {
         }
 
         /**
-         * True when the user is already in a call: this app's Telecom connections (active/hold),
-         * any system in-call state (API 26+ when READ_PHONE_STATE is granted), or audio in
-         * communication mode (fallback on all API levels when Telecom is unavailable or denied).
+         * True when the user is already in a call: this app's Telecom connections (ringing, dialing,
+         * active, hold — same idea as iOS CXCallObserver "any non-ended"), any system in-call state
+         * (API 26+ when READ_PHONE_STATE is granted), or audio in communication mode (fallback on all
+         * API levels when Telecom is unavailable or denied).
          */
         private fun hasActiveCall(context: Context): Boolean {
             val ownBusy = VoiceConnectionService.currentConnections.values.any { connection ->
-                connection.state == android.telecom.Connection.STATE_ACTIVE ||
-                    connection.state == android.telecom.Connection.STATE_HOLDING
+                when (connection.state) {
+                    android.telecom.Connection.STATE_RINGING,
+                    android.telecom.Connection.STATE_DIALING,
+                    android.telecom.Connection.STATE_ACTIVE,
+                    android.telecom.Connection.STATE_HOLDING -> true
+                    else -> false
+                }
             }
             if (ownBusy) {
                 return true
