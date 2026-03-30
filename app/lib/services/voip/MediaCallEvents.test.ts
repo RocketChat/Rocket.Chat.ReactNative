@@ -1,3 +1,5 @@
+import { DeviceEventEmitter } from 'react-native';
+
 import { DEEP_LINKING } from '../../../actions/actionsTypes';
 import type { VoipPayload } from '../../../definitions/Voip';
 
@@ -49,11 +51,7 @@ jest.mock('./MediaSessionInstance', () => ({
 import RNCallKeep from 'react-native-callkeep';
 
 import NativeVoipModule from '../../native/NativeVoip';
-import {
-	dispatchVoipAcceptFailureFromNative,
-	getInitialMediaCallEvents,
-	handleVoipAcceptSucceededFromNative
-} from './MediaCallEvents';
+import { getInitialMediaCallEvents, setupMediaCallEvents } from './MediaCallEvents';
 
 function buildIncomingPayload(overrides: Partial<VoipPayload> = {}): VoipPayload {
 	return {
@@ -69,10 +67,18 @@ function buildIncomingPayload(overrides: Partial<VoipPayload> = {}): VoipPayload
 }
 
 describe('MediaCallEvents cross-server accept (slice 3)', () => {
-	describe('handleVoipAcceptSucceededFromNative', () => {
+	describe('VoipAcceptSucceeded via setupMediaCallEvents', () => {
+		let teardown: (() => void) | undefined;
+
 		beforeEach(() => {
 			jest.clearAllMocks();
 			(NativeVoipModule.getInitialEvents as jest.Mock).mockReturnValue(null);
+			teardown = setupMediaCallEvents();
+		});
+
+		afterEach(() => {
+			teardown?.();
+			teardown = undefined;
 		});
 
 		it('sets nativeAcceptedCallId and dispatches deepLinkingOpen with host and callId for incoming_call', () => {
@@ -81,7 +87,7 @@ describe('MediaCallEvents cross-server accept (slice 3)', () => {
 				host: 'https://workspace-b.open.rocket.chat'
 			});
 
-			handleVoipAcceptSucceededFromNative(payload);
+			DeviceEventEmitter.emit('VoipAcceptSucceeded', payload);
 
 			expect(NativeVoipModule.clearInitialEvents).toHaveBeenCalledTimes(1);
 			expect(mockSetNativeAcceptedCallId).toHaveBeenCalledWith('workspace-b-call');
@@ -96,7 +102,8 @@ describe('MediaCallEvents cross-server accept (slice 3)', () => {
 		});
 
 		it('does not dispatch or set native id when type is not incoming_call', () => {
-			handleVoipAcceptSucceededFromNative(
+			DeviceEventEmitter.emit(
+				'VoipAcceptSucceeded',
 				buildIncomingPayload({
 					callId: 'outgoing-payload-id',
 					type: 'outgoing_call'
@@ -111,28 +118,36 @@ describe('MediaCallEvents cross-server accept (slice 3)', () => {
 		it('dedupes duplicate VoipAcceptSucceeded for the same callId (idempotent native delivery)', () => {
 			const payload = buildIncomingPayload({ callId: 'dedupe-id' });
 
-			handleVoipAcceptSucceededFromNative(payload);
-			handleVoipAcceptSucceededFromNative(payload);
+			DeviceEventEmitter.emit('VoipAcceptSucceeded', payload);
+			DeviceEventEmitter.emit('VoipAcceptSucceeded', payload);
 
 			expect(mockSetNativeAcceptedCallId).toHaveBeenCalledTimes(1);
 			expect(mockDispatch).toHaveBeenCalledTimes(1);
 		});
 	});
 
-	describe('dispatchVoipAcceptFailureFromNative (caller cancel / failed accept)', () => {
+	describe('VoipAcceptFailed via setupMediaCallEvents', () => {
+		let teardown: (() => void) | undefined;
+
 		beforeEach(() => {
 			jest.clearAllMocks();
+			teardown = setupMediaCallEvents();
 		});
 
-		it('dispatches deepLinkingOpen with voipAcceptFailed when flag is set', () => {
-			dispatchVoipAcceptFailureFromNative({
-				...buildIncomingPayload({
+		afterEach(() => {
+			teardown?.();
+			teardown = undefined;
+		});
+
+		it('dispatches deepLinkingOpen with voipAcceptFailed after native failure event', () => {
+			DeviceEventEmitter.emit(
+				'VoipAcceptFailed',
+				buildIncomingPayload({
 					callId: 'failed-b',
 					host: 'https://workspace-b.example.com',
 					username: 'remote-user'
-				}),
-				voipAcceptFailed: true
-			});
+				})
+			);
 
 			expect(mockDispatch).toHaveBeenCalledTimes(1);
 			expect(mockDispatch).toHaveBeenCalledWith({
@@ -144,26 +159,14 @@ describe('MediaCallEvents cross-server accept (slice 3)', () => {
 					voipAcceptFailed: true
 				}
 			});
+			expect(NativeVoipModule.clearInitialEvents).toHaveBeenCalled();
 		});
 
-		it('does not dispatch when voipAcceptFailed is not set', () => {
-			dispatchVoipAcceptFailureFromNative(
-				buildIncomingPayload({
-					callId: 'no-flag-id'
-				})
-			);
+		it('dedupes duplicate VoipAcceptFailed delivery for the same callId', () => {
+			const raw = buildIncomingPayload({ callId: 'fail-dedupe' });
 
-			expect(mockDispatch).not.toHaveBeenCalled();
-		});
-
-		it('dedupes duplicate failure delivery for the same callId', () => {
-			const raw = {
-				...buildIncomingPayload({ callId: 'fail-dedupe' }),
-				voipAcceptFailed: true as const
-			};
-
-			dispatchVoipAcceptFailureFromNative(raw);
-			dispatchVoipAcceptFailureFromNative(raw);
+			DeviceEventEmitter.emit('VoipAcceptFailed', raw);
+			DeviceEventEmitter.emit('VoipAcceptFailed', raw);
 
 			expect(mockDispatch).toHaveBeenCalledTimes(1);
 		});

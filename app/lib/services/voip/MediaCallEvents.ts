@@ -22,7 +22,7 @@ let lastHandledVoipAcceptFailureCallId: string | null = null;
 /** Idempotent warm delivery of native accept success. */
 let lastHandledVoipAcceptSucceededCallId: string | null = null;
 
-export function dispatchVoipAcceptFailureFromNative(raw: VoipPayload & { voipAcceptFailed?: boolean }) {
+function dispatchVoipAcceptFailureFromNative(raw: VoipPayload & { voipAcceptFailed?: boolean }) {
 	if (!raw.voipAcceptFailed) {
 		return;
 	}
@@ -41,7 +41,7 @@ export function dispatchVoipAcceptFailureFromNative(raw: VoipPayload & { voipAcc
 	);
 }
 
-export function handleVoipAcceptSucceededFromNative(data: VoipPayload) {
+function handleVoipAcceptSucceededFromNative(data: VoipPayload) {
 	const { callId } = data;
 	if (callId && lastHandledVoipAcceptSucceededCallId === callId) {
 		return;
