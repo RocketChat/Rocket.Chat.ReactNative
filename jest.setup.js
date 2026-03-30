@@ -84,7 +84,7 @@ jest.mock('expo-audio', () => {
 		duration: 0,
 		loaded: false,
 		progress: 0,
-	 buffering: false,
+		buffering: false,
 		keepAlive: false
 	};
 

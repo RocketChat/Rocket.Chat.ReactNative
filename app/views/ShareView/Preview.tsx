@@ -21,7 +21,7 @@ const VideoPreview = React.memo(({ uri, width, height }: { uri: string; width?: 
 		player.play();
 	});
 
-	return <VideoView player={player} style={{ width, height }} contentFit="contain" nativeControls allowsFullscreen />;
+	return <VideoView player={player} style={{ width, height }} contentFit='contain' nativeControls allowsFullscreen />;
 });
 
 const styles = StyleSheet.create({

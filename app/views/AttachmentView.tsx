@@ -79,7 +79,7 @@ const RenderContent = ({
 			<VideoView
 				player={player}
 				style={{ flex: 1 }}
-				contentFit="contain"
+				contentFit='contain'
 				nativeControls
 				allowsFullscreen
 				allowsPictureInPicture
