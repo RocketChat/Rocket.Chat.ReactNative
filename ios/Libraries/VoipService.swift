@@ -44,16 +44,18 @@ public final class VoipService: NSObject {
     private static var isDdpLoggedIn = false
     /// Deduplication guard: `CXCallObserver` can call `callChanged` with `hasConnected = true`
     /// multiple times for the same call (e.g. observer re-registration, system race). This set
-    /// ensures `handleNativeAccept` sends the DDP accept signal exactly once per callId.
+    /// ensures `handleNativeAccept` sends the DDP accept signal exactly once per `callId` (not a
+    /// single global slot — several distinct `callId`s may be present during call-waiting).
     ///
-    /// Lifecycle:
+    /// Lifecycle (per `callId`):
     ///   Added:   At the start of `handleNativeAccept()`, before any DDP call.
     ///   Removed: After native accept DDP succeeds or fails,
     ///            on call timeout (`handleIncomingCallTimeout`),
     ///            on DDP call-end signal from another device (ddp stream listener),
     ///            on CallKit call-ended observer event (only before connect — that call's entry is removed from `observedIncomingCalls` on answer).
     ///
-    /// Memory: One entry only while a native accept is in flight; cleared when the DDP accept finishes or other exit paths run.
+    /// Memory: Each `callId` is tracked independently while its native accept is in flight; entries are
+    /// cleared when that call's DDP accept finishes or another exit path runs for that `callId`.
     private static var nativeAcceptHandledCallIds = Set<String>()
 
     private enum VoipMediaCallAnswerKind {
