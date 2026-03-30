@@ -260,8 +260,8 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield fork(fetchPermissionsFork);
 		yield fork(fetchCustomEmojisFork);
 		yield fork(fetchRolesFork);
-		yield fork(fetchSlashCommandsFork);
 		yield fork(fetchAppTranslationsFork);
+		yield fork(fetchSlashCommandsFork);
 		yield fork(registerPushTokenFork);
 		yield fork(fetchUsersPresenceFork);
 		yield fork(fetchEnterpriseModulesFork, { user });
