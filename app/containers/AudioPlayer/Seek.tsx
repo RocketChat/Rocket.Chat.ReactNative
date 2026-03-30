@@ -84,7 +84,7 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 				translateX.value = contextX.value;
 				currentTime.value = (contextX.value * duration.value) / maxWidth.value || 0;
 			}
-			
+
 			isPanning.value = false;
 			scale.value = withTiming(1, { duration: 150 });
 		});
