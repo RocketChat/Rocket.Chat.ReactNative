@@ -139,6 +139,10 @@ public final class VoipService: NSObject {
 
     /// Returns `true` when CXCallObserver reports any non-ended call (ringing or connected),
     /// including phone, FaceTime, and third-party VoIP.
+    ///
+    /// **Call-waiting (current `AppDelegate+Voip` behavior):** This is **not** called from the PushKit
+    /// path; CallKit handles multiple simultaneous calls. Kept for parity with Android busy detection,
+    /// documentation of `prepareIncomingCall(_:storeEventsForJs:)`, and optional future or test use.
     public static func hasActiveCall() -> Bool {
         configureCallObserverIfNeeded()
         return callObserver.calls.contains { !$0.hasEnded }
@@ -533,6 +537,10 @@ public final class VoipService: NSObject {
 
     /// Rejects an incoming call because the user is already on another call.
     /// Must be called **after** `reportNewIncomingCall` (PushKit requirement).
+    ///
+    /// **Call-waiting:** `AppDelegate+Voip` does **not** invoke this; second rings are shown in CallKit
+    /// instead of auto-rejecting. Same rationale as `hasActiveCall()` — API remains for Android-aligned
+    /// flows, `storeEventsForJs: false` cleanup, and future wiring.
     public static func rejectBusyCall(_ payload: VoipPayload) {
         cancelIncomingCallTimeout(for: payload.callId)
         clearTrackedIncomingCall(for: payload.callUUID)

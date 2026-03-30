@@ -1,8 +1,15 @@
+import type { IClientMediaCall } from '@rocket.chat/media-signaling';
+
 import { voipBlocksIncomingVideoconf } from './voipBlocksIncomingVideoconf';
 
-const mockGetState = jest.fn(() => ({
-	call: null as unknown,
-	nativeAcceptedCallId: null as string | null
+type CallStoreSlice = {
+	call: IClientMediaCall | null;
+	nativeAcceptedCallId: string | null;
+};
+
+const mockGetState = jest.fn((): CallStoreSlice => ({
+	call: null,
+	nativeAcceptedCallId: null
 }));
 
 jest.mock('./useCallStore', () => ({
@@ -21,8 +28,9 @@ describe('voipBlocksIncomingVideoconf', () => {
 	});
 
 	it('returns true when VoIP store has an active call', () => {
+		const activeCall = { callId: 'voip-1' } as unknown as IClientMediaCall;
 		mockGetState.mockReturnValue({
-			call: { callId: 'voip-1' } as any,
+			call: activeCall,
 			nativeAcceptedCallId: null
 		});
 		expect(voipBlocksIncomingVideoconf()).toBe(true);
