@@ -20,7 +20,7 @@ import { showToast } from '../lib/methods/helpers/showToast';
 import { videoConfJoin } from '../lib/methods/videoConf';
 import { videoConferenceCancel, notifyUser, videoConferenceStart } from '../lib/services/restApi';
 import { type ICallInfo } from '../reducers/videoConf';
-import { useCallStore } from '../lib/services/voip/useCallStore';
+import { voipBlocksIncomingVideoconf } from '../lib/services/voip/voipBlocksIncomingVideoconf';
 
 interface IGenericAction extends Action {
 	type: string;
@@ -48,9 +48,7 @@ const CALL_INTERVAL = 3000;
 const CALL_ATTEMPT_LIMIT = 10;
 
 function* onDirectCall(payload: ICallInfo) {
-	// Reject if already on a VoIP call or native accept is still binding to JS
-	const { call: activeVoipCall, nativeAcceptedCallId } = useCallStore.getState();
-	if (activeVoipCall != null || nativeAcceptedCallId != null) return;
+	if (voipBlocksIncomingVideoconf()) return;
 
 	const calls = yield* appSelector(state => state.videoConf.calls);
 	const currentCall = calls.find(c => c.callId === payload.callId);

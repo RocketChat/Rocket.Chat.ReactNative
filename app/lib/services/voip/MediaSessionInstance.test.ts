@@ -417,6 +417,23 @@ describe('MediaSessionInstance', () => {
 			expect(incoming.emitter.on).toHaveBeenCalledWith('stateChange', expect.any(Function));
 		});
 
+		it('allows incoming newCall when store call object matches incoming callId', () => {
+			mockUseCallStoreGetState.mockReturnValue({
+				reset: mockCallStoreReset,
+				setCall: jest.fn(),
+				resetNativeCallId: jest.fn(),
+				call: { callId: 'same-bound' } as any,
+				callId: 'same-bound',
+				nativeAcceptedCallId: null
+			});
+			mediaSessionInstance.init('user-1');
+			const newCallHandler = getNewCallHandler();
+			const incoming = createMockIncomingCall('same-bound');
+			newCallHandler({ call: incoming });
+			expect(incoming.reject).not.toHaveBeenCalled();
+			expect(incoming.emitter.on).toHaveBeenCalledWith('stateChange', expect.any(Function));
+		});
+
 		it('does not reject outgoing newCall when store already has a call', () => {
 			const mockSetCall = jest.fn();
 			mockUseCallStoreGetState.mockReturnValue({
