@@ -1,7 +1,10 @@
 import { DeviceEventEmitter } from 'react-native';
+import RNCallKeep from 'react-native-callkeep';
 
 import { DEEP_LINKING } from '../../../actions/actionsTypes';
 import type { VoipPayload } from '../../../definitions/Voip';
+import NativeVoipModule from '../../native/NativeVoip';
+import { getInitialMediaCallEvents, setupMediaCallEvents } from './MediaCallEvents';
 
 const mockDispatch = jest.fn();
 const mockSetNativeAcceptedCallId = jest.fn();
@@ -47,11 +50,6 @@ jest.mock('./MediaSessionInstance', () => ({
 		endCall: jest.fn()
 	}
 }));
-
-import RNCallKeep from 'react-native-callkeep';
-
-import NativeVoipModule from '../../native/NativeVoip';
-import { getInitialMediaCallEvents, setupMediaCallEvents } from './MediaCallEvents';
 
 function buildIncomingPayload(overrides: Partial<VoipPayload> = {}): VoipPayload {
 	return {

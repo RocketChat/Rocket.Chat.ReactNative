@@ -8,7 +8,7 @@ describe('requestPhoneStatePermission', () => {
 	it('does not call PermissionsAndroid.request when not on Android', () => {
 		jest.resetModules();
 		jest.doMock('./helpers', () => ({
-			...jest.requireActual<typeof import('./helpers')>('./helpers'),
+			...jest.requireActual('./helpers'),
 			isAndroid: false
 		}));
 		const spy = jest.spyOn(PermissionsAndroid, 'request').mockResolvedValue('granted' as never);
@@ -26,7 +26,7 @@ describe('requestPhoneStatePermission', () => {
 			default: { t: (key: string) => key }
 		}));
 		jest.doMock('./helpers', () => ({
-			...jest.requireActual<typeof import('./helpers')>('./helpers'),
+			...jest.requireActual('./helpers'),
 			isAndroid: true
 		}));
 		const spy = jest.spyOn(PermissionsAndroid, 'request').mockResolvedValue('granted' as never);
@@ -48,7 +48,7 @@ describe('requestPhoneStatePermission', () => {
 			default: { t: (key: string) => key }
 		}));
 		jest.doMock('./helpers', () => ({
-			...jest.requireActual<typeof import('./helpers')>('./helpers'),
+			...jest.requireActual('./helpers'),
 			isAndroid: true
 		}));
 		const spy = jest.spyOn(PermissionsAndroid, 'request').mockResolvedValue('granted' as never);
