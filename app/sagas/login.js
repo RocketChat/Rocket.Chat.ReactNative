@@ -185,9 +185,9 @@ const fetchSlashCommandsFork = function* fetchSlashCommandsFork() {
 	}
 };
 
-const fetchAppTranslationsFork = function* fetchAppTranslationsFork() {
+const fetchAppTranslationsFork = function* fetchAppTranslationsFork(userLanguage) {
 	try {
-		const appLang = I18n.currentLocale().split('-')[0];
+		const appLang = (userLanguage || I18n.currentLocale()).split('-')[0];
 		yield getAppTranslations(appLang);
 	} catch (e) {
 		log(e);
@@ -260,7 +260,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield fork(fetchPermissionsFork);
 		yield fork(fetchCustomEmojisFork);
 		yield fork(fetchRolesFork);
-		yield fork(fetchAppTranslationsFork);
+		yield fork(fetchAppTranslationsFork, user.language);
 		yield fork(fetchSlashCommandsFork);
 		yield fork(registerPushTokenFork);
 		yield fork(fetchUsersPresenceFork);
