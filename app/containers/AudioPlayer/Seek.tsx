@@ -79,7 +79,12 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 		.onEnd(() => {
 			scheduleOnRN(onChangeTime, Math.round(currentTime.value * 1000));
 		})
-		.onFinalize(() => {
+		.onFinalize((_, didSucceed) => {
+			if (isPanning.value && !didSucceed) {
+				translateX.value = contextX.value;
+				currentTime.value = (contextX.value * duration.value) / maxWidth.value || 0;
+			}
+			
 			isPanning.value = false;
 			scale.value = withTiming(1, { duration: 150 });
 		});
