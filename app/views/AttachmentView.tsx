@@ -1,6 +1,7 @@
 import { CameraRoll } from '@react-native-camera-roll/camera-roll';
 import { useHeaderHeight } from '@react-navigation/elements';
-import { ResizeMode, Video } from 'expo-av';
+import { useVideoPlayer, VideoView } from 'expo-video';
+import { useEventListener } from 'expo';
 import React from 'react';
 import { PermissionsAndroid, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -16,7 +17,7 @@ import { type IAttachment } from '../definitions';
 import I18n from '../i18n';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { useAppNavigation, useAppRoute } from '../lib/hooks/navigation';
-import { formatAttachmentUrl, isAndroid, fileDownload, showErrorAlert } from '../lib/methods/helpers';
+import { formatAttachmentUrl, isAndroid, fileDownload } from '../lib/methods/helpers';
 import EventEmitter from '../lib/methods/helpers/events';
 import { getUserSelector } from '../selectors/login';
 import { type TNavigation } from '../stacks/stackType';
@@ -30,7 +31,6 @@ const RenderContent = ({
 	setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 	attachment: IAttachment;
 }) => {
-	const videoRef = React.useRef<Video>(null);
 	const insets = useSafeAreaInsets();
 	const { width, height } = useWindowDimensions();
 	const headerHeight = useHeaderHeight();
@@ -42,17 +42,6 @@ const RenderContent = ({
 		}),
 		shallowEqual
 	);
-
-	React.useLayoutEffect(() => {
-		const blurSub = navigation.addListener('blur', () => {
-			if (videoRef.current && videoRef.current.stopAsync) {
-				videoRef.current.stopAsync();
-			}
-		});
-		return () => {
-			blurSub();
-		};
-	}, [navigation]);
 
 	if (attachment.image_url) {
 		const url = formatAttachmentUrl(attachment.title_link || attachment.image_url, user.id, user.token, baseUrl);
@@ -69,23 +58,31 @@ const RenderContent = ({
 	if (attachment.video_url) {
 		const url = formatAttachmentUrl(attachment.title_link || attachment.video_url, user.id, user.token, baseUrl);
 		const uri = encodeURI(url);
+		const player = useVideoPlayer(uri, player => {
+			player.play();
+		});
+
+		useEventListener(player, 'statusChange', () => {
+			setLoading(false);
+		});
+
+		React.useEffect(() => {
+			const blurSub = navigation.addListener('blur', () => {
+				player.pause();
+			});
+			return () => {
+				blurSub();
+			};
+		}, [navigation, player]);
+
 		return (
-			<Video
-				source={{ uri }}
-				rate={1.0}
-				volume={1.0}
-				isMuted={false}
-				resizeMode={ResizeMode.CONTAIN}
-				shouldPlay
-				isLooping={false}
+			<VideoView
+				player={player}
 				style={{ flex: 1 }}
-				useNativeControls
-				onLoad={() => setLoading(false)}
-				onError={() => {
-					navigation.pop();
-					showErrorAlert(I18n.t('Error_play_video'));
-				}}
-				ref={videoRef}
+				contentFit="contain"
+				nativeControls
+				allowsFullscreen
+				allowsPictureInPicture
 			/>
 		);
 	}

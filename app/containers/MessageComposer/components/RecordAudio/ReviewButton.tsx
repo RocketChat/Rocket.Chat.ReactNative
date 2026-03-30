@@ -16,7 +16,7 @@ export const ReviewButton = ({ onPress }: { onPress: Function }): ReactElement =
 			style={[
 				styles.button,
 				{
-					backgroundColor: 'red'
+					backgroundColor: colors.buttonBackgroundPrimaryDefault
 				}
 			]}
 			onPress={() => onPress()}
