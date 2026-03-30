@@ -40,12 +40,7 @@ extension AppDelegate: PKPushRegistryDelegate {
       return
     }
 
-    // Check BEFORE reporting — if the user is already on a call, we still must
-    // report to CallKit (PushKit requirement) but will immediately reject it.
-    let isBusy = VoipService.hasActiveCall()
-
-    // Keep DDP + timeout for busy reject, but do not expose this call via getInitialEvents.
-    VoipService.prepareIncomingCall(voipPayload, storeEventsForJs: !isBusy)
+    VoipService.prepareIncomingCall(voipPayload, storeEventsForJs: true)
 
     RNCallKeep.reportNewIncomingCall(
       callId,
@@ -61,11 +56,6 @@ extension AppDelegate: PKPushRegistryDelegate {
       payload: payloadDict,
       withCompletionHandler: {}
     )
-
-    if isBusy {
-      VoipService.rejectBusyCall(voipPayload)
-    }
-
     completion()
   }
 }
