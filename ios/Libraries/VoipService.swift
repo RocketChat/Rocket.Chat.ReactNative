@@ -40,7 +40,7 @@ public final class VoipService: NSObject {
     private static let callObserver = CXCallObserver()
     private static let incomingCallObserver = IncomingCallObserver()
     private static var isCallObserverConfigured = false
-    private static var observedIncomingCall: ObservedIncomingCall?
+    private static var observedIncomingCalls: [UUID: ObservedIncomingCall] = [:]
     private static var isDdpLoggedIn = false
     /// Deduplication guard: `CXCallObserver` can call `callChanged` with `hasConnected = true`
     /// multiple times for the same call (e.g. observer re-registration, system race). This set
@@ -51,7 +51,7 @@ public final class VoipService: NSObject {
     ///   Removed: After native accept DDP succeeds or fails,
     ///            on call timeout (`handleIncomingCallTimeout`),
     ///            on DDP call-end signal from another device (ddp stream listener),
-    ///            on CallKit call-ended observer event (only before connect — `observedIncomingCall` is cleared on answer).
+    ///            on CallKit call-ended observer event (only before connect — that call's entry is removed from `observedIncomingCalls` on answer).
     ///
     /// Memory: One entry only while a native accept is in flight; cleared when the DDP accept finishes or other exit paths run.
     private static var nativeAcceptHandledCallIds = Set<String>()
@@ -398,7 +398,6 @@ public final class VoipService: NSObject {
 
     private static func stopDDPClientInternal() {
         isDdpLoggedIn = false
-        observedIncomingCall = nil
         ddpClient?.clearQueuedMethodCalls()
         ddpClient?.disconnect()
         ddpClient = nil
@@ -616,7 +615,7 @@ public final class VoipService: NSObject {
     private static func trackIncomingCall(_ payload: VoipPayload) {
         let trackCall = {
             configureCallObserverIfNeeded()
-            observedIncomingCall = ObservedIncomingCall(payload: payload)
+            observedIncomingCalls[payload.callUUID] = ObservedIncomingCall(payload: payload)
         }
 
         if Thread.isMainThread {
@@ -628,11 +627,7 @@ public final class VoipService: NSObject {
 
     private static func clearTrackedIncomingCall(for callUUID: UUID) {
         let clearCall = {
-            guard observedIncomingCall?.payload.callUUID == callUUID else {
-                return
-            }
-
-            observedIncomingCall = nil
+            observedIncomingCalls.removeValue(forKey: callUUID)
         }
 
         if Thread.isMainThread {
@@ -643,14 +638,13 @@ public final class VoipService: NSObject {
     }
 
     private static func handleObservedCallChanged(_ call: CXCall) {
-        guard let observedCall = observedIncomingCall, observedCall.payload.callUUID == call.uuid else {
+        guard let observedCall = observedIncomingCalls[call.uuid] else {
             return
         }
 
         if call.hasConnected {
-            let payload = observedCall.payload
-            observedIncomingCall = nil
-            handleNativeAccept(payload: payload)
+            observedIncomingCalls.removeValue(forKey: call.uuid)
+            handleNativeAccept(payload: observedCall.payload)
             return
         }
 
@@ -658,7 +652,7 @@ public final class VoipService: NSObject {
             return
         }
 
-        observedIncomingCall = nil
+        observedIncomingCalls.removeValue(forKey: call.uuid)
         cancelIncomingCallTimeout(for: observedCall.payload.callId)
         clearNativeAcceptDedupe(for: observedCall.payload.callId)
 

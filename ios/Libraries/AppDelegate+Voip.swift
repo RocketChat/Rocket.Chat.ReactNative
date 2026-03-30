@@ -53,7 +53,7 @@ extension AppDelegate: PKPushRegistryDelegate {
       handleType: "generic",
       hasVideo: false,
       localizedCallerName: caller,
-      supportsHolding: true,
+      supportsHolding: false,
       supportsDTMF: true,
       supportsGrouping: false,
       supportsUngrouping: false,
