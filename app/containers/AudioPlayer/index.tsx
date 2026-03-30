@@ -3,7 +3,7 @@ import { InteractionManager, View } from 'react-native';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import { useSharedValue } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
-import { AudioStatus } from 'expo-audio';
+import type { AudioStatus } from 'expo-audio';
 
 import { useTheme } from '../../theme';
 import styles from './styles';

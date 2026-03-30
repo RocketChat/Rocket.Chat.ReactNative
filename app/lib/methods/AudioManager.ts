@@ -1,4 +1,4 @@
-import { createAudioPlayer, AudioPlayer, AudioStatus } from 'expo-audio';
+import { createAudioPlayer, type AudioPlayer, type AudioStatus } from 'expo-audio';
 import { Q } from '@nozbe/watermelondb';
 
 import dayjs from '../dayjs';
@@ -9,9 +9,9 @@ import { type TMessageModel } from '../../definitions';
 import { emitter } from './helpers';
 
 function createAudioManager() {
-	let audioQueue: { [audioKey: string]: AudioPlayer } = {};
+	const audioQueue: { [audioKey: string]: AudioPlayer } = {};
 	let audioPlaying = '';
-	let audiosRendered = new Set<string>();
+	const audiosRendered = new Set<string>();
 
 	function getAudioKey({ msgId, rid, uri }: { msgId?: string; rid: string; uri: string }) {
 		return `${msgId}-${rid}-${uri}`;
@@ -25,7 +25,7 @@ function createAudioManager() {
 		audiosRendered.delete(audioKey);
 	}
 
-	async function loadAudio({ msgId, rid, uri }: { rid: string; msgId?: string; uri: string }): Promise<string> {
+	function loadAudio({ msgId, rid, uri }: { rid: string; msgId?: string; uri: string }): string {
 		const audioKey = getAudioKey({ msgId, rid, uri });
 		addAudioRendered(audioKey);
 		if (audioQueue[audioKey]) return audioKey;
@@ -35,28 +35,30 @@ function createAudioManager() {
 		return audioKey;
 	}
 
-	async function playAudio(audioKey: string) {
-		if (audioPlaying) await pauseAudio();
+	function playAudio(audioKey: string) {
+		if (audioPlaying) pauseAudio();
 		audioQueue[audioKey]?.play();
 		audioPlaying = audioKey;
 		emitter.emit('audioFocused', audioKey);
 	}
 
-	async function pauseAudio() {
+	function pauseAudio() {
 		if (audioPlaying) {
 			audioQueue[audioPlaying]?.pause();
 			audioPlaying = '';
 		}
 	}
 
-	async function setPositionAsync(audioKey: string, time: number) {
+	function setPositionAsync(audioKey: string, time: number) {
 		audioQueue[audioKey]?.seekTo(time);
 	}
 
-	async function setRateAsync(audioKey: string, value = 1.0) {
+	function setRateAsync(audioKey: string, value = 1.0) {
 		try {
 			audioQueue[audioKey]?.setPlaybackRate(value);
-		} catch {}
+		} catch {
+			// Ignore errors when setting playback rate
+		}
 	}
 
 	function onPlaybackStatusUpdate(audioKey: string, status: AudioStatus, callback: (status: AudioStatus) => void) {
@@ -79,7 +81,9 @@ function createAudioManager() {
 				audioPlaying = '';
 				emitter.emit('audioFocused', '');
 				await playNextAudioInSequence(audioKey);
-			} catch {}
+			} catch {
+				// Ignore errors during cleanup
+			}
 		}
 	}
 
@@ -117,7 +121,7 @@ function createAudioManager() {
 		if (nextMessage && nextMessage.attachments) {
 			const nextAudioInSeqKey = getNextAudioKey({ message: nextMessage, rid });
 			if (nextAudioInSeqKey && audioQueue[nextAudioInSeqKey] && audiosRendered.has(nextAudioInSeqKey)) {
-				await playAudio(nextAudioInSeqKey);
+				playAudio(nextAudioInSeqKey);
 			}
 		}
 	}
@@ -128,8 +132,10 @@ function createAudioManager() {
 		const roomAudioKeysLoaded = Object.keys(audioQueue).filter(audioKey => regExp.test(audioKey));
 		const roomAudiosLoaded = roomAudioKeysLoaded.map(key => audioQueue[key]);
 		try {
-			await Promise.all(roomAudiosLoaded.map(async audio => audio?.release()));
-		} catch {}
+			await Promise.all(roomAudiosLoaded.map(audio => audio?.release()));
+		} catch (error) {
+			console.log(error);
+		}
 		roomAudioKeysLoaded.forEach(key => delete audioQueue[key]);
 		audioPlaying = '';
 	}

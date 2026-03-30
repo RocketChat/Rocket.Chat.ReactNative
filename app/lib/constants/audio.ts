@@ -1,4 +1,3 @@
-import { Audio, AudioMode, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
 import { type RecordingOptions } from 'expo-audio';
 
 export const RECORDING_EXTENSION = '.aac';
@@ -20,14 +19,4 @@ export const RECORDING_SETTINGS: RecordingOptions = {
 	bitRate: 192000,
 	extension: RECORDING_EXTENSION,
 	sampleRate: 44100
-};
-
-export const AUDIO_MODE: AudioMode = {
-	allowsRecordingIOS: false,
-	playsInSilentModeIOS: true,
-	staysActiveInBackground: true,
-	shouldDuckAndroid: true,
-	playThroughEarpieceAndroid: false,
-	interruptionModeIOS: InterruptionModeIOS.DoNotMix,
-	interruptionModeAndroid: InterruptionModeAndroid.DoNotMix
 };

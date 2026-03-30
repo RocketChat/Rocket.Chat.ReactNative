@@ -1,4 +1,4 @@
-import { Audio } from 'expo-av';
+import { createAudioPlayer } from 'expo-audio';
 import React, { useEffect, useRef } from 'react';
 
 export enum ERingerSounds {
@@ -7,15 +7,15 @@ export enum ERingerSounds {
 }
 
 const Ringer = React.memo(({ ringer }: { ringer: ERingerSounds }) => {
-	const sound = useRef(new Audio.Sound());
+	const player = useRef(createAudioPlayer());
 
 	useEffect(() => {
-		const loadAndPlay = async () => {
+		const loadAndPlay = () => {
 			try {
 				const soundFile = ringer === ERingerSounds.DIALTONE ? require(`./dialtone.mp3`) : require(`./ringtone.mp3`);
-				await sound.current.loadAsync(soundFile);
-				await sound.current.playAsync();
-				await sound.current.setIsLoopingAsync(true);
+				player.current.replace(soundFile);
+				player.current.loop = true;
+				player.current.play();
 			} catch (error) {
 				console.error('Error loading sound:', error);
 			}
@@ -24,7 +24,7 @@ const Ringer = React.memo(({ ringer }: { ringer: ERingerSounds }) => {
 		loadAndPlay();
 
 		return () => {
-			sound.current?.unloadAsync();
+			player.current?.release();
 		};
 	}, []);
 

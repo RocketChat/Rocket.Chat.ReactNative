@@ -39,18 +39,18 @@ export const RecordAudio = (): ReactElement | null => {
 	const permissionToUpload = useCanUploadFile(rid);
 	useKeepAwake();
 
+	async function doRecording() {
+		// await setAudioModeAsync({
+		//     playsInSilentMode: true,
+		//     allowsRecording: true,
+		// });
+
+		await audioRecorder.prepareToRecordAsync();
+		await audioRecorder.record();
+	}
+
 	useEffect(() => {
 		try {
-			async function doRecording() {
-				// await setAudioModeAsync({
-				//     playsInSilentMode: true,
-				//     allowsRecording: true,
-				// });
-
-				await audioRecorder.prepareToRecordAsync();
-				await audioRecorder.record();
-			}
-
 			doRecording();
 		} catch (e) {
 			console.log(e);
@@ -71,7 +71,7 @@ export const RecordAudio = (): ReactElement | null => {
 		durationRef.current.onRecordingStatusUpdate(recorderState);
 	}, [recorderState]);
 
-	const cancelRecording = async () => {
+	const cancelRecording = () => {
 		try {
 			audioRecorder.stop();
 		} catch {
@@ -81,7 +81,7 @@ export const RecordAudio = (): ReactElement | null => {
 		}
 	};
 
-	const goReview = async () => {
+	const goReview = () => {
 		try {
 			audioRecorder.stop();
 			setStatus('reviewing');
