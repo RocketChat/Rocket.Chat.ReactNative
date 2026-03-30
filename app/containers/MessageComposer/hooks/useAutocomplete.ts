@@ -139,6 +139,7 @@ export const useAutocomplete = ({
 				if (type === '/') {
 					const db = database.active;
 					const commandsCollection = db.get('slash_commands');
+					const appTranslationsCollection = db.get('app_translations');
 					const likeString = sanitizeLikeString(text);
 
 					const rawCommands = await commandsCollection.query(Q.where('id', Q.like(`${likeString}%`))).fetch();
@@ -152,8 +153,12 @@ export const useAutocomplete = ({
 								// no description at all — leave empty
 								subtitle = '';
 							} else if (command.appId) {
+								const appLang = I18n.currentLocale().split('-')[0];
+
 								// app translation key — look up in WatermelonDB
-								const translationRecords = await db.get('app_translations').query(Q.where('key', description)).fetch();
+								const translationRecords = await appTranslationsCollection
+									.query(Q.where('key', description), Q.where('language', appLang))
+									.fetch();
 
 								if (translationRecords.length > 0) {
 									subtitle = (translationRecords[0] as any).value;

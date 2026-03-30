@@ -7,7 +7,6 @@ import protectedFunction from './helpers/protectedFunction';
 import sdk from '../services/sdk';
 
 async function fetchAndSaveTranslations(language: string, db: any): Promise<void> {
-	// @ts-ignore
 	const result = await sdk.get('apps.translations', { language });
 
 	if (!result?.success || !result.translations) {
@@ -23,7 +22,7 @@ async function fetchAndSaveTranslations(language: string, db: any): Promise<void
 		const toCreate = Object.entries(result.translations).map(([key, value]) =>
 			collection.prepareCreate(
 				protectedFunction((r: any) => {
-					r._raw = sanitizedRaw({ id: key }, collection.schema);
+					r._raw = sanitizedRaw({ id: `${result.language}_${key}` }, collection.schema);
 					r.key = key;
 					r.value = value as string;
 					r.language = result.language;
