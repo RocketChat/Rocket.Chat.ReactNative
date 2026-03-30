@@ -5,7 +5,7 @@ import React, { useEffect } from 'react';
 import { PermissionsAndroid, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 import { useEvent } from 'expo';
 
 import { isImageBase64 } from '../lib/methods/isImageBase64';
