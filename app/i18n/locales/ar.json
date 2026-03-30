@@ -425,6 +425,8 @@
   "Pause": "توقف مؤقت",
   "Permalink_copied_to_clipboard": "تم نسخ الرابط الثابت إلى الحافظة!",
   "Phone": "الهاتف",
+  "Phone_state_permission_message": "يتيح ذلك لـ Rocket.Chat معرفة ما إذا كنت في مكالمة هاتفية أو VoIP حاليًا كي تُعالج المكالمات الواردة بشكل صحيح.",
+  "Phone_state_permission_title": "السماح بالوصول إلى حالة الهاتف",
   "Pin": "ثبت",
   "Pinned": "مثبت",
   "Play": "لعب",

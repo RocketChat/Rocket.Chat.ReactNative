@@ -425,6 +425,8 @@
   "Pause": "暂停",
   "Permalink_copied_to_clipboard": "永久链接已复制到剪贴板！",
   "Phone": "电话",
+  "Phone_state_permission_message": "这样 Rocket.Chat 可以检测您是否已在通话或 VoIP 通话中，从而正确处理来电。",
+  "Phone_state_permission_title": "允许访问电话状态",
   "Pin": "钉选",
   "Pinned": "被钉选",
   "Play": "玩",

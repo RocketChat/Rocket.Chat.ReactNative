@@ -643,6 +643,8 @@
   "Permalink_copied_to_clipboard": "Link-permanente copiado para a área de transferência!",
   "Person_or_channel": "Pessoa ou canal",
   "Phone": "Telefone",
+  "Phone_state_permission_message": "Isso permite que o Rocket.Chat detecte quando você já está em uma chamada telefônica ou VoIP para que as chamadas recebidas sejam tratadas corretamente.",
+  "Phone_state_permission_title": "Permitir acesso ao estado do telefone",
   "Pin": "Fixar",
   "Pinned": "Mensagens Fixadas",
   "Pinned_a_message": "Fixou uma mensagem:",

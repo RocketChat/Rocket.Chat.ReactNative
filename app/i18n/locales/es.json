@@ -306,6 +306,8 @@
   "Passwords_do_not_match": "Las contraseñas no coinciden.",
   "Pause": "Pausa",
   "Permalink_copied_to_clipboard": "¡Enlace permanente copiado al portapapeles!",
+  "Phone_state_permission_message": "Permite que Rocket.Chat detecte si ya está en una llamada telefónica o VoIP para gestionar correctamente las llamadas entrantes.",
+  "Phone_state_permission_title": "Permitir acceso al estado del teléfono",
   "Pin": "Fijar",
   "Pinned": "Fijado",
   "Play": "Jugar",
