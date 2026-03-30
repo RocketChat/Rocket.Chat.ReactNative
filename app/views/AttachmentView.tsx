@@ -24,6 +24,44 @@ import { type TNavigation } from '../stacks/stackType';
 import { useTheme } from '../theme';
 import { LOCAL_DOCUMENT_DIRECTORY, getFilename } from '../lib/methods/handleMediaDownload';
 
+const VideoContent = ({
+	attachment,
+	user,
+	baseUrl,
+	setLoading
+}: {
+	attachment: IAttachment;
+	user: { id: string; token: string };
+	baseUrl: string;
+	setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
+	const navigation = useAppNavigation<TNavigation, 'AttachmentView'>();
+
+	const url = formatAttachmentUrl(attachment.title_link || attachment.video_url, user.id, user.token, baseUrl);
+	const uri = encodeURI(url);
+
+	const player = useVideoPlayer(uri, player => {
+		player.play();
+	});
+
+	useEventListener(player, 'statusChange', () => {
+		setLoading(false);
+	});
+
+	React.useEffect(() => {
+		const blurSub = navigation.addListener('blur', () => {
+			player.pause();
+		});
+		return () => {
+			blurSub();
+		};
+	}, [navigation, player]);
+
+	return (
+		<VideoView player={player} style={{ flex: 1 }} contentFit='contain' nativeControls allowsFullscreen allowsPictureInPicture />
+	);
+};
+
 const RenderContent = ({
 	setLoading,
 	attachment
@@ -34,7 +72,6 @@ const RenderContent = ({
 	const insets = useSafeAreaInsets();
 	const { width, height } = useWindowDimensions();
 	const headerHeight = useHeaderHeight();
-	const navigation = useAppNavigation<TNavigation, 'AttachmentView'>();
 	const { baseUrl, user } = useAppSelector(
 		state => ({
 			baseUrl: state.server.server,
@@ -56,35 +93,7 @@ const RenderContent = ({
 		);
 	}
 	if (attachment.video_url) {
-		const url = formatAttachmentUrl(attachment.title_link || attachment.video_url, user.id, user.token, baseUrl);
-		const uri = encodeURI(url);
-		const player = useVideoPlayer(uri, player => {
-			player.play();
-		});
-
-		useEventListener(player, 'statusChange', () => {
-			setLoading(false);
-		});
-
-		React.useEffect(() => {
-			const blurSub = navigation.addListener('blur', () => {
-				player.pause();
-			});
-			return () => {
-				blurSub();
-			};
-		}, [navigation, player]);
-
-		return (
-			<VideoView
-				player={player}
-				style={{ flex: 1 }}
-				contentFit='contain'
-				nativeControls
-				allowsFullscreen
-				allowsPictureInPicture
-			/>
-		);
+		return <VideoContent attachment={attachment} user={user} baseUrl={baseUrl} setLoading={setLoading} />;
 	}
 	return null;
 };
