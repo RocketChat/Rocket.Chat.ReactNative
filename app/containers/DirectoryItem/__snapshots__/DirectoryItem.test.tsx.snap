@@ -19,7 +19,7 @@ exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={1}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -110,7 +110,7 @@ exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -119,7 +119,7 @@ exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
                   }
                 }
                 height={30}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -277,7 +277,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={2}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -366,7 +366,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -375,7 +375,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                   }
                 }
                 height={30}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -533,7 +533,7 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={3}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -622,7 +622,7 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -631,7 +631,7 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
                   }
                 }
                 height={30}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -758,7 +758,7 @@ exports[`Story Snapshots: LongRoomName should match snapshot 1`] = `
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={4}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -847,7 +847,7 @@ exports[`Story Snapshots: LongRoomName should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -856,7 +856,7 @@ exports[`Story Snapshots: LongRoomName should match snapshot 1`] = `
                   }
                 }
                 height={30}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -1033,7 +1033,7 @@ exports[`Story Snapshots: OnlyTitle should match snapshot 1`] = `
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={5}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -1200,7 +1200,7 @@ exports[`Story Snapshots: TeamMain should match snapshot 1`] = `
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={6}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -1289,7 +1289,7 @@ exports[`Story Snapshots: TeamMain should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -1298,7 +1298,7 @@ exports[`Story Snapshots: TeamMain should match snapshot 1`] = `
                   }
                 }
                 height={30}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -1456,7 +1456,7 @@ exports[`Story Snapshots: WithRightLabel should match snapshot 1`] = `
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={7}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -1545,7 +1545,7 @@ exports[`Story Snapshots: WithRightLabel should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -1554,7 +1554,7 @@ exports[`Story Snapshots: WithRightLabel should match snapshot 1`] = `
                   }
                 }
                 height={30}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -1731,7 +1731,7 @@ exports[`Story Snapshots: WithoutDescription should match snapshot 1`] = `
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={8}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -1820,7 +1820,7 @@ exports[`Story Snapshots: WithoutDescription should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -1829,7 +1829,7 @@ exports[`Story Snapshots: WithoutDescription should match snapshot 1`] = `
                   }
                 }
                 height={30}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
