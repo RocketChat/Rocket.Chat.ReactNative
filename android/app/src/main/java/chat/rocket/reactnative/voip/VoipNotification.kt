@@ -1,5 +1,6 @@
 package chat.rocket.reactnative.voip
 
+import android.Manifest
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -7,6 +8,7 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.media.AudioAttributes
 import android.media.AudioManager
@@ -18,6 +20,7 @@ import android.os.Looper
 import android.provider.Settings
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import android.content.ComponentName
 import android.net.Uri
@@ -480,7 +483,8 @@ class VoipNotification(private val context: Context) {
 
         /**
          * True when the user is already in a call: this app's Telecom connections (active/hold),
-         * any system in-call state (API 26+), or audio in communication mode (fallback before API 26).
+         * any system in-call state (API 26+ when READ_PHONE_STATE is granted), or audio in
+         * communication mode (fallback on all API levels when Telecom is unavailable or denied).
          */
         private fun hasActiveCall(context: Context): Boolean {
             val ownBusy = VoiceConnectionService.currentConnections.values.any { connection ->
@@ -490,16 +494,31 @@ class VoipNotification(private val context: Context) {
             if (ownBusy) {
                 return true
             }
+            return hasSystemLevelActiveCallIndicators(context)
+        }
+
+        /**
+         * Telecom in-call check (API 26+) requires [READ_PHONE_STATE]; without it, [TelecomManager.isInCall]
+         * can throw [SecurityException]. Always falls back to [AudioManager.MODE_IN_COMMUNICATION] on all APIs.
+         */
+        private fun hasSystemLevelActiveCallIndicators(context: Context): Boolean {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val telecom = context.getSystemService(Context.TELECOM_SERVICE) as? TelecomManager
-                if (telecom?.isInCall == true) {
-                    return true
+                val granted = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) ==
+                    PackageManager.PERMISSION_GRANTED
+                if (granted) {
+                    val telecom = context.getSystemService(Context.TELECOM_SERVICE) as? TelecomManager
+                    try {
+                        if (telecom?.isInCall == true) {
+                            return true
+                        }
+                    } catch (e: SecurityException) {
+                        Log.w(TAG, "TelecomManager.isInCall not allowed", e)
+                    }
                 }
-            } else {
-                val audio = context.getSystemService(Context.AUDIO_SERVICE) as? AudioManager
-                if (audio?.mode == AudioManager.MODE_IN_COMMUNICATION) {
-                    return true
-                }
+            }
+            val audio = context.getSystemService(Context.AUDIO_SERVICE) as? AudioManager
+            if (audio?.mode == AudioManager.MODE_IN_COMMUNICATION) {
+                return true
             }
             return false
         }
