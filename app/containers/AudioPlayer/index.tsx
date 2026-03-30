@@ -3,6 +3,7 @@ import { InteractionManager, View } from 'react-native';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import { useSharedValue } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
+import { AudioStatus } from 'expo-audio';
 
 import { useTheme } from '../../theme';
 import styles from './styles';
@@ -15,7 +16,6 @@ import { type TDownloadState } from '../../lib/methods/handleMediaDownload';
 import { emitter } from '../../lib/methods/helpers/emitter';
 import { type TAudioState } from './types';
 import { useUserPreferences } from '../../lib/methods/userPreferences';
-import { AudioStatus } from 'expo-audio';
 
 interface IAudioPlayerProps {
 	fileUri: string;
