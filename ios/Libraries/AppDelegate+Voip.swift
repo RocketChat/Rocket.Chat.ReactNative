@@ -44,7 +44,8 @@ extension AppDelegate: PKPushRegistryDelegate {
     // report to CallKit (PushKit requirement) but will immediately reject it.
     let isBusy = VoipService.hasActiveCall()
 
-    VoipService.prepareIncomingCall(voipPayload)
+    // Keep DDP + timeout for busy reject, but do not expose this call via getInitialEvents.
+    VoipService.prepareIncomingCall(voipPayload, storeEventsForJs: !isBusy)
 
     RNCallKeep.reportNewIncomingCall(
       callId,

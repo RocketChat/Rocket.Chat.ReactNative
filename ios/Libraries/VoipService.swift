@@ -142,8 +142,13 @@ public final class VoipService: NSObject {
         return callObserver.calls.contains { !$0.hasEnded }
     }
 
-    public static func prepareIncomingCall(_ payload: VoipPayload) {
-        storeInitialEvents(payload)
+    /// Prepares DDP listener and timeout for an incoming VoIP push. When `storeEventsForJs` is false
+    /// (e.g. user is already on a call and we will `rejectBusyCall` immediately), skip stashing payload
+    /// for `getInitialEvents` so JS does not treat an auto-rejected call as a real incoming ring.
+    public static func prepareIncomingCall(_ payload: VoipPayload, storeEventsForJs: Bool = true) {
+        if storeEventsForJs {
+            storeInitialEvents(payload)
+        }
         scheduleIncomingCallTimeout(for: payload)
         startListeningForCallEnd(payload: payload)
     }
@@ -530,6 +535,10 @@ public final class VoipService: NSObject {
     public static func rejectBusyCall(_ payload: VoipPayload) {
         cancelIncomingCallTimeout(for: payload.callId)
         clearTrackedIncomingCall(for: payload.callUUID)
+
+        if initialEventsData?.callId == payload.callId {
+            clearInitialEventsInternal()
+        }
 
         // End the just-reported CallKit call immediately (reason 2 = unanswered / declined).
         RNCallKeep.endCall(withUUID: payload.callId, reason: 2)
