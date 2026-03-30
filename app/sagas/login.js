@@ -39,6 +39,7 @@ import appNavigation from '../lib/navigation/appNavigation';
 import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
 import { isIOS } from '../lib/methods/helpers';
+import { getAppTranslations } from '../lib/methods/getAppTranslations';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => loginWithPassword(args);
@@ -184,6 +185,15 @@ const fetchSlashCommandsFork = function* fetchSlashCommandsFork() {
 	}
 };
 
+const fetchAppTranslationsFork = function* fetchAppTranslationsFork() {
+	try {
+		const appLang = I18n.currentLocale().split('-')[0];
+		yield getAppTranslations(appLang);
+	} catch (e) {
+		log(e);
+	}
+};
+
 const registerPushTokenFork = function* registerPushTokenFork() {
 	try {
 		yield registerPushToken();
@@ -251,6 +261,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield fork(fetchCustomEmojisFork);
 		yield fork(fetchRolesFork);
 		yield fork(fetchSlashCommandsFork);
+		yield fork(fetchAppTranslationsFork);
 		yield fork(registerPushTokenFork);
 		yield fork(fetchUsersPresenceFork);
 		yield fork(fetchEnterpriseModulesFork, { user });
