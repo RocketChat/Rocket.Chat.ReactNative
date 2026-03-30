@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Pressable, type PressableProps } from 'react-native';
+import { Platform, Pressable, View, type PressableProps } from 'react-native';
 import { withKeyboardFocus } from 'react-native-external-keyboard';
 
 import MessageContext from './Context';
@@ -15,9 +15,9 @@ const RCTouchable: React.FC<IProps> = React.memo(({ children, ...props }) => {
 	'use memo';
 
 	const { onLongPress } = useContext(MessageContext);
-	const { onHoverIn, onHoverOut, ...rest } = props;
+	const { onHoverIn, onHoverOut, testID, nativeID, ...rest } = props;
 
-	return (
+	const pressable = (
 		<KeyboardPressable
 			focusable
 			onLongPress={onLongPress}
@@ -26,6 +26,16 @@ const RCTouchable: React.FC<IProps> = React.memo(({ children, ...props }) => {
 			{...rest}>
 			{children}
 		</KeyboardPressable>
+	);
+
+	if (testID == null && nativeID == null) {
+		return pressable;
+	}
+
+	return (
+		<View collapsable={Platform.OS === 'android' ? false : undefined} nativeID={nativeID} testID={testID}>
+			{pressable}
+		</View>
 	);
 });
 
