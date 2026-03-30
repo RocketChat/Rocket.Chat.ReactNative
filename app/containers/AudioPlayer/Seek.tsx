@@ -87,7 +87,7 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 
 			isPanning.value = false;
 			scale.value = withTiming(1, { duration: 150 });
-		});
+		})
 
 	useDerivedValue(() => {
 		if (isPanning.value) {
