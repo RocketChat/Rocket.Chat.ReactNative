@@ -12,7 +12,7 @@ import ActivityIndicator from '../containers/ActivityIndicator';
 import { textParser } from '../containers/UIKit/utils';
 import Navigation from '../lib/navigation/appNavigation';
 import { type MasterDetailInsideStackParamList } from '../stacks/MasterDetailStack/types';
-import { ContainerTypes, ModalActions } from '../containers/UIKit/interfaces';
+import { ContainerTypes, ModalActions, type TModalAction } from '../containers/UIKit/interfaces';
 import { triggerBlockAction, triggerCancel, triggerSubmitView } from '../lib/methods/triggerActions';
 import { type IApplicationState } from '../definitions';
 import KeyboardView from '../containers/KeyboardView';
@@ -164,8 +164,8 @@ class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockVi
 		});
 	};
 
-	handleUpdate = ({ type, ...data }: { type: ModalActions }) => {
-		if ([ModalActions.ERRORS].includes(type)) {
+	handleUpdate = ({ type, ...data }: { type: TModalAction }) => {
+		if (type === ModalActions.ERRORS) {
 			const { errors }: any = data;
 			this.setState({ errors });
 		} else {

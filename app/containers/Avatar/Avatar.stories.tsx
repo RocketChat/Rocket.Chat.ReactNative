@@ -64,7 +64,7 @@ export const CustomBorderRadius = () => <Avatar text='Avatar' server={server} bo
 
 export const Children = () => (
 	<Avatar text='Avatar' server={server} size={56}>
-		<Status size={24} style={[sharedStyles.status]} status='busy' />
+		<Status size={24} style={sharedStyles.status} status='busy' />
 	</Avatar>
 );
 
