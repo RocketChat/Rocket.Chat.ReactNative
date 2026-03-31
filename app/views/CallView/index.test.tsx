@@ -91,7 +91,7 @@ describe('CallView', () => {
 				<CallView />
 			</Wrapper>
 		);
-		expect(queryByTestId('caller-info')).toBeNull();
+		expect(queryByTestId('caller-info-toggle')).toBeNull();
 	});
 
 	it('should render when there is a call', () => {
@@ -102,7 +102,7 @@ describe('CallView', () => {
 			</Wrapper>
 		);
 
-		expect(getByTestId('caller-info')).toBeTruthy();
+		expect(getByTestId('caller-info-toggle')).toBeTruthy();
 		expect(getByTestId('call-view-speaker')).toBeTruthy();
 		expect(getByTestId('call-view-hold')).toBeTruthy();
 		expect(getByTestId('call-view-mute')).toBeTruthy();
@@ -132,9 +132,9 @@ describe('CallView', () => {
 		);
 
 		// CallStatusText should not be rendered when not active
-		// We can't easily test for the Text component directly, so we verify the caller-info is rendered
+		// We can't easily test for the Text component directly, so we verify the caller-info-toggle is rendered
 		// but CallStatusText won't be in the tree when callState is not 'active'
-		expect(queryByTestId('caller-info')).toBeTruthy();
+		expect(queryByTestId('caller-info-toggle')).toBeTruthy();
 	});
 
 	it('should disable hold and mute buttons when call is connecting', () => {
@@ -299,7 +299,7 @@ describe('CallView', () => {
 			</Wrapper>
 		);
 
-		expect(getByTestId('caller-info')).toBeTruthy();
+		expect(getByTestId('caller-info-toggle')).toBeTruthy();
 		expect(getByTestId('call-view-mute')).toBeTruthy();
 	});
 
@@ -311,7 +311,7 @@ describe('CallView', () => {
 			</Wrapper>
 		);
 
-		expect(getByTestId('caller-info')).toBeTruthy();
+		expect(getByTestId('caller-info-toggle')).toBeTruthy();
 	});
 
 	it('should show correct icon for speaker button when speaker is on', () => {
