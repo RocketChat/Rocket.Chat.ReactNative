@@ -1,12 +1,14 @@
 import { StyleSheet, View } from 'react-native';
+import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useShallow } from 'zustand/react/shallow';
 
 import { useTheme } from '../../theme';
 import Collapse from './components/Collapse';
 import EndCall from './components/EndCall';
-import { useCallStore } from '../../lib/services/voip/useCallStore';
+import { useCallStore, useControlsVisible } from '../../lib/services/voip/useCallStore';
 import { Content } from './components/Content';
+import { CONTROLS_ANIMATION_DURATION } from '../../views/CallView/styles';
 
 const styles = StyleSheet.create({
 	header: {
@@ -25,6 +27,15 @@ const MediaCallHeader = () => {
 	const { colors } = useTheme();
 	const insets = useSafeAreaInsets();
 	const call = useCallStore(useShallow(state => state.call));
+	const focused = useCallStore(state => state.focused);
+	const controlsVisible = useControlsVisible();
+
+	const shouldHide = focused && !controlsVisible;
+
+	const animatedStyle = useAnimatedStyle(() => ({
+		opacity: withTiming(shouldHide ? 0 : 1, { duration: CONTROLS_ANIMATION_DURATION }),
+		transform: [{ translateY: withTiming(shouldHide ? -100 : 0, { duration: CONTROLS_ANIMATION_DURATION }) }]
+	}));
 
 	const defaultHeaderStyle = {
 		backgroundColor: colors.surfaceNeutral,
@@ -36,13 +47,14 @@ const MediaCallHeader = () => {
 	}
 
 	return (
-		<View
-			style={[styles.header, { ...defaultHeaderStyle, borderBottomColor: colors.strokeLight, paddingTop: insets.top + 12 }]}
+		<Animated.View
+			style={[styles.header, { ...defaultHeaderStyle, borderBottomColor: colors.strokeLight, paddingTop: insets.top + 12 }, animatedStyle]}
+			pointerEvents={shouldHide ? 'none' : 'auto'}
 			testID='media-call-header'>
 			<Collapse />
 			<Content />
 			<EndCall />
-		</View>
+		</Animated.View>
 	);
 };
 
