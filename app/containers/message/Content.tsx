@@ -80,7 +80,7 @@ const Content = React.memo(
 		}
 
 		return content ? (
-			<View collapsable={false} style={props.isTemp && styles.temp} testID={`message-content-${props.msg || ''}`}>
+			<View style={props.isTemp && styles.temp} testID={`message-content-${props.msg || ''}`}>
 				{content}
 			</View>
 		) : null;
