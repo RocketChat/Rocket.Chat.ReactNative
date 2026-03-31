@@ -50,6 +50,38 @@ function createMockCall(callId: string): IClientMediaCall {
 	} as unknown as IClientMediaCall;
 }
 
+describe('useCallStore controlsVisible', () => {
+	beforeEach(() => {
+		useCallStore.getState().resetNativeCallId();
+		useCallStore.getState().reset();
+	});
+
+	it('defaults to true', () => {
+		expect(useCallStore.getState().controlsVisible).toBe(true);
+	});
+
+	it('toggleControlsVisible flips the value', () => {
+		useCallStore.getState().toggleControlsVisible();
+		expect(useCallStore.getState().controlsVisible).toBe(false);
+		useCallStore.getState().toggleControlsVisible();
+		expect(useCallStore.getState().controlsVisible).toBe(true);
+	});
+
+	it('showControls sets true when hidden', () => {
+		useCallStore.getState().toggleControlsVisible();
+		expect(useCallStore.getState().controlsVisible).toBe(false);
+		useCallStore.getState().showControls();
+		expect(useCallStore.getState().controlsVisible).toBe(true);
+	});
+
+	it('reset restores controlsVisible to true', () => {
+		useCallStore.getState().toggleControlsVisible();
+		expect(useCallStore.getState().controlsVisible).toBe(false);
+		useCallStore.getState().reset();
+		expect(useCallStore.getState().controlsVisible).toBe(true);
+	});
+});
+
 describe('useCallStore native accepted + stale timer', () => {
 	beforeEach(() => {
 		jest.useFakeTimers();

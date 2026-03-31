@@ -68,6 +68,7 @@ interface CallStoreState {
 	isSpeakerOn: boolean;
 	callStartTime: number | null;
 	focused: boolean;
+	controlsVisible: boolean;
 	dialpadValue: string;
 
 	// Contact info
@@ -83,6 +84,8 @@ interface CallStoreActions {
 	toggleMute: () => void;
 	toggleHold: () => void;
 	toggleSpeaker: () => void;
+	toggleControlsVisible: () => void;
+	showControls: () => void;
 	toggleFocus: () => void;
 	endCall: () => void;
 	/** Clears UI/call fields but keeps nativeAcceptedCallId. Restarts the 15s timer (media init calls reset and clears the old timer first). */
@@ -105,6 +108,7 @@ const initialState: CallStoreState = {
 	callStartTime: null,
 	contact: {},
 	focused: true,
+	controlsVisible: true,
 	dialpadValue: ''
 };
 
@@ -196,6 +200,14 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		};
 	},
 
+	toggleControlsVisible: () => {
+		set({ controlsVisible: !get().controlsVisible });
+	},
+
+	showControls: () => {
+		set({ controlsVisible: true });
+	},
+
 	toggleMute: () => {
 		const { call, isMuted } = get();
 		if (!call) return;
@@ -285,3 +297,4 @@ export const useCallState = () => {
 
 export const useCallContact = () => useCallStore(state => state.contact);
 export const useDialpadValue = () => useCallStore(state => state.dialpadValue);
+export const useControlsVisible = () => useCallStore(state => state.controlsVisible);
