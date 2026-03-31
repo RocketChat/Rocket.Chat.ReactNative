@@ -636,8 +636,8 @@ public final class VoipService: NSObject {
     }
 
     private static func clearTrackedIncomingCall(for callUUID: UUID) {
-        let clearCall = {
-            observedIncomingCalls.removeValue(forKey: callUUID)
+        let clearCall: () -> Void = {
+            _ = observedIncomingCalls.removeValue(forKey: callUUID)
         }
 
         if Thread.isMainThread {
