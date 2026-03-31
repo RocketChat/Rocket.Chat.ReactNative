@@ -163,7 +163,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 			if (!currentCall) return;
 
 			const newState = currentCall.state;
-			set({ callState: newState });
+			set({ callState: newState, controlsVisible: true });
 
 			// Set start time when call becomes active
 			if (newState === 'active' && !get().callStartTime) {
@@ -179,7 +179,8 @@ export const useCallStore = create<CallStore>((set, get) => ({
 				isMuted: currentCall.muted,
 				isOnHold: currentCall.held,
 				remoteMute: currentCall.remoteMute,
-				remoteHeld: currentCall.remoteHeld
+				remoteHeld: currentCall.remoteHeld,
+				controlsVisible: true
 			});
 		};
 
@@ -240,7 +241,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 
 	toggleFocus: () => {
 		const isFocused = get().focused;
-		set({ focused: !isFocused });
+		set({ focused: !isFocused, controlsVisible: true });
 		if (isFocused) {
 			Navigation.back();
 		} else {

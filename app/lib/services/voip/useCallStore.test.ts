@@ -19,7 +19,7 @@ jest.mock('react-native-incall-manager', () => ({
 	setForceSpeakerphoneOn: jest.fn()
 }));
 
-function createMockCall(callId: string): IClientMediaCall {
+function createMockCall(callId: string) {
 	const listeners: Record<string, Set<(...args: unknown[]) => void>> = {};
 	const emitter = {
 		on: (ev: string, fn: (...args: unknown[]) => void) => {
@@ -30,7 +30,10 @@ function createMockCall(callId: string): IClientMediaCall {
 			listeners[ev]?.delete(fn);
 		}
 	};
-	return {
+	const emit = (ev: string) => {
+		listeners[ev]?.forEach(fn => fn());
+	};
+	const call = {
 		callId,
 		state: 'active',
 		muted: false,
@@ -48,6 +51,7 @@ function createMockCall(callId: string): IClientMediaCall {
 		accept: jest.fn(),
 		reject: jest.fn()
 	} as unknown as IClientMediaCall;
+	return { call, emit };
 }
 
 describe('useCallStore controlsVisible', () => {
@@ -71,6 +75,37 @@ describe('useCallStore controlsVisible', () => {
 		useCallStore.getState().toggleControlsVisible();
 		expect(useCallStore.getState().controlsVisible).toBe(false);
 		useCallStore.getState().showControls();
+		expect(useCallStore.getState().controlsVisible).toBe(true);
+	});
+
+	it('auto-shows controls on stateChange event', () => {
+		const { call, emit } = createMockCall('c1');
+		useCallStore.getState().setCall(call);
+		useCallStore.getState().toggleControlsVisible();
+		expect(useCallStore.getState().controlsVisible).toBe(false);
+
+		emit('stateChange');
+
+		expect(useCallStore.getState().controlsVisible).toBe(true);
+	});
+
+	it('auto-shows controls on trackStateChange event', () => {
+		const { call, emit } = createMockCall('c2');
+		useCallStore.getState().setCall(call);
+		useCallStore.getState().toggleControlsVisible();
+		expect(useCallStore.getState().controlsVisible).toBe(false);
+
+		emit('trackStateChange');
+
+		expect(useCallStore.getState().controlsVisible).toBe(true);
+	});
+
+	it('toggleFocus always shows controls', () => {
+		useCallStore.getState().toggleControlsVisible();
+		expect(useCallStore.getState().controlsVisible).toBe(false);
+
+		useCallStore.getState().toggleFocus();
+
 		expect(useCallStore.getState().controlsVisible).toBe(true);
 	});
 
@@ -136,7 +171,7 @@ describe('useCallStore native accepted + stale timer', () => {
 
 	it('setCall clears native id and cancels stale timer so advance does not clear bound call context', () => {
 		useCallStore.getState().setNativeAcceptedCallId('x');
-		useCallStore.getState().setCall(createMockCall('x'));
+		useCallStore.getState().setCall(createMockCall('x').call);
 		jest.advanceTimersByTime(15_000);
 		expect(useCallStore.getState().call).not.toBeNull();
 		expect(useCallStore.getState().nativeAcceptedCallId).toBeNull();
