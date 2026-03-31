@@ -1,34 +1,28 @@
 import React from 'react';
-import { render } from '@testing-library/react-native';
+import { fireEvent, render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
-import { CallButtons } from './CallButtons';
-import { useCallStore } from '../../../lib/services/voip/useCallStore';
 import { mockedStore } from '../../../reducers/mockedStore';
+import { useCallStore } from '../../../lib/services/voip/useCallStore';
+import { navigateToCallRoom } from '../../../lib/services/voip/navigateToCallRoom';
+import { CallButtons } from './CallButtons';
 
-const mockShowActionSheetRef = jest.fn();
-jest.mock('../../../containers/ActionSheet', () => ({
-	...jest.requireActual('../../../containers/ActionSheet'),
-	showActionSheetRef: (options: any) => mockShowActionSheetRef(options)
+jest.mock('react-native-incall-manager', () => ({
+	start: jest.fn(),
+	stop: jest.fn(),
+	setForceSpeakerphoneOn: jest.fn()
 }));
 
-const setStoreState = (overrides: Partial<ReturnType<typeof useCallStore.getState>> = {}) => {
-	useCallStore.setState({
-		call: {} as any,
-		callId: 'test-id',
-		callState: 'active',
-		isMuted: false,
-		isOnHold: false,
-		isSpeakerOn: false,
-		callStartTime: Date.now(),
-		contact: {
-			displayName: 'Bob Burnquist',
-			username: 'bob.burnquist',
-			sipExtension: '2244'
-		},
-		...overrides
-	});
-};
+jest.mock('../../../lib/services/voip/navigateToCallRoom', () => ({
+	navigateToCallRoom: jest.fn().mockResolvedValue(undefined)
+}));
+
+jest.mock('../../../containers/ActionSheet', () => ({
+	...jest.requireActual('../../../containers/ActionSheet'),
+	showActionSheetRef: jest.fn()
+}));
+
+const mockNavigateToCallRoom = jest.mocked(navigateToCallRoom);
 
 const Wrapper = ({ children }: { children: React.ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
 
@@ -36,10 +30,24 @@ describe('CallButtons', () => {
 	beforeEach(() => {
 		useCallStore.getState().reset();
 		jest.clearAllMocks();
+		useCallStore.setState({
+			call: { state: 'active', contact: {} } as any,
+			callState: 'active',
+			callId: 'id',
+			isMuted: false,
+			isOnHold: false,
+			isSpeakerOn: false,
+			roomId: 'rid-1',
+			contact: { username: 'u', sipExtension: '', displayName: 'U' },
+			toggleMute: jest.fn(),
+			toggleHold: jest.fn(),
+			toggleSpeaker: jest.fn(),
+			endCall: jest.fn()
+		});
 	});
 
 	it('should set pointerEvents to none when controlsVisible is false', () => {
-		setStoreState({ controlsVisible: false });
+		useCallStore.setState({ controlsVisible: false });
 		const { getByTestId } = render(
 			<Wrapper>
 				<CallButtons />
@@ -51,7 +59,7 @@ describe('CallButtons', () => {
 	});
 
 	it('should set pointerEvents to auto when controlsVisible is true', () => {
-		setStoreState({ controlsVisible: true });
+		useCallStore.setState({ controlsVisible: true });
 		const { getByTestId } = render(
 			<Wrapper>
 				<CallButtons />
@@ -60,5 +68,39 @@ describe('CallButtons', () => {
 
 		const container = getByTestId('call-buttons');
 		expect(container.props.pointerEvents).toBe('auto');
+	});
+
+	it('message button calls navigateToCallRoom when enabled', () => {
+		const { getByTestId } = render(
+			<Wrapper>
+				<CallButtons />
+			</Wrapper>
+		);
+		fireEvent.press(getByTestId('call-view-message'));
+		expect(mockNavigateToCallRoom).toHaveBeenCalledTimes(1);
+	});
+
+	it('message button is disabled for SIP calls', () => {
+		useCallStore.setState({
+			contact: { username: 'u', sipExtension: '100', displayName: 'U' }
+		});
+		const { getByTestId } = render(
+			<Wrapper>
+				<CallButtons />
+			</Wrapper>
+		);
+		fireEvent.press(getByTestId('call-view-message'));
+		expect(mockNavigateToCallRoom).not.toHaveBeenCalled();
+	});
+
+	it('message button is disabled when roomId is null', () => {
+		useCallStore.setState({ roomId: null });
+		const { getByTestId } = render(
+			<Wrapper>
+				<CallButtons />
+			</Wrapper>
+		);
+		fireEvent.press(getByTestId('call-view-message'));
+		expect(mockNavigateToCallRoom).not.toHaveBeenCalled();
 	});
 });
