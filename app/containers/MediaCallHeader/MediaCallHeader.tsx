@@ -48,7 +48,11 @@ const MediaCallHeader = () => {
 
 	return (
 		<Animated.View
-			style={[styles.header, { ...defaultHeaderStyle, borderBottomColor: colors.strokeLight, paddingTop: insets.top + 12 }, animatedStyle]}
+			style={[
+				styles.header,
+				{ ...defaultHeaderStyle, borderBottomColor: colors.strokeLight, paddingTop: insets.top + 12 },
+				animatedStyle
+			]}
 			pointerEvents={shouldHide ? 'none' : 'auto'}
 			testID='media-call-header'>
 			<Collapse />
