@@ -130,6 +130,24 @@ describe('useCallStore controlsVisible', () => {
 	});
 });
 
+describe('useCallStore roomId', () => {
+	beforeEach(() => {
+		useCallStore.getState().resetNativeCallId();
+		useCallStore.getState().reset();
+	});
+
+	it('setRoomId sets the value', () => {
+		useCallStore.getState().setRoomId('room-rid-abc');
+		expect(useCallStore.getState().roomId).toBe('room-rid-abc');
+	});
+
+	it('reset clears roomId to null', () => {
+		useCallStore.getState().setRoomId('room-rid-abc');
+		useCallStore.getState().reset();
+		expect(useCallStore.getState().roomId).toBeNull();
+	});
+});
+
 describe('useCallStore native accepted + stale timer', () => {
 	beforeEach(() => {
 		jest.useFakeTimers();
