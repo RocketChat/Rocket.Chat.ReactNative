@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react-native';
+import { render, fireEvent } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
 import CallerInfo from './CallerInfo';
@@ -39,7 +39,7 @@ describe('CallerInfo', () => {
 			</Wrapper>
 		);
 
-		expect(getByTestId('caller-info')).toBeTruthy();
+		expect(getByTestId('caller-info-toggle')).toBeTruthy();
 		expect(getByText('Bob Burnquist')).toBeTruthy();
 	});
 
@@ -52,6 +52,21 @@ describe('CallerInfo', () => {
 		);
 
 		expect(getByText('john.doe')).toBeTruthy();
+	});
+
+	it('should toggle controlsVisible when pressing caller-info-toggle', () => {
+		setStoreState({ displayName: 'Bob Burnquist', username: 'bob.burnquist' });
+		const { getByTestId } = render(
+			<Wrapper>
+				<CallerInfo />
+			</Wrapper>
+		);
+
+		expect(useCallStore.getState().controlsVisible).toBe(true);
+		fireEvent.press(getByTestId('caller-info-toggle'));
+		expect(useCallStore.getState().controlsVisible).toBe(false);
+		fireEvent.press(getByTestId('caller-info-toggle'));
+		expect(useCallStore.getState().controlsVisible).toBe(true);
 	});
 });
 
