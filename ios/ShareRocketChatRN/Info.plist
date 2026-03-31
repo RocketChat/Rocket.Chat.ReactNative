@@ -2,8 +2,15 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>IS_OFFICIAL</key>
+	<false/>
 	<key>AppGroup</key>
 	<string>group.ios.chat.rocket</string>
+	<key>bugsnag</key>
+	<dict>
+		<key>apiKey</key>
+		<string>apiKeyValue</string>
+	</dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -22,8 +29,6 @@
 	<string>4.71.0</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
-	<key>IS_OFFICIAL</key>
-	<false/>
 	<key>KeychainGroup</key>
 	<string>$(AppIdentifierPrefix)chat.rocket.reactnative</string>
 	<key>NSAppTransportSecurity</key>
@@ -69,10 +74,5 @@
 		<string>custom.ttf</string>
 		<string>Inter.ttf</string>
 	</array>
-	<key>bugsnag</key>
-	<dict>
-		<key>apiKey</key>
-		<string>apiKeyValue</string>
-	</dict>
 </dict>
 </plist>
