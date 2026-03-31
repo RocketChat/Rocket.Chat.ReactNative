@@ -1,19 +1,36 @@
 import type { IClientMediaCall } from '@rocket.chat/media-signaling';
 import RNCallKeep from 'react-native-callkeep';
+import { waitFor } from '@testing-library/react-native';
 
 import type { IDDPMessage } from '../../../definitions/IDDPMessage';
 import Navigation from '../../navigation/appNavigation';
+import { getDMSubscriptionByUsername } from '../../database/services/Subscription';
+import { getUidDirectMessage } from '../../methods/helpers/helpers';
 import { mediaSessionStore } from './MediaSessionStore';
 import { mediaSessionInstance } from './MediaSessionInstance';
 
+jest.mock('../../database/services/Subscription', () => ({
+	getDMSubscriptionByUsername: jest.fn()
+}));
+
+jest.mock('../../methods/helpers/helpers', () => ({
+	getUidDirectMessage: jest.fn(() => 'other-user-id')
+}));
+
+const mockGetDMSubscriptionByUsername = jest.mocked(getDMSubscriptionByUsername);
+const mockGetUidDirectMessage = jest.mocked(getUidDirectMessage);
+
 const mockCallStoreReset = jest.fn();
+const mockSetRoomId = jest.fn();
 const mockUseCallStoreGetState = jest.fn(() => ({
 	reset: mockCallStoreReset,
 	setCall: jest.fn(),
+	setRoomId: mockSetRoomId,
 	resetNativeCallId: jest.fn(),
 	call: null as unknown,
 	callId: null as string | null,
-	nativeAcceptedCallId: null as string | null
+	nativeAcceptedCallId: null as string | null,
+	roomId: null as string | null
 }));
 
 jest.mock('./useCallStore', () => ({
@@ -59,6 +76,8 @@ jest.mock('react-native-callkeep', () => ({
 		setAvailable: jest.fn()
 	}
 }));
+
+
 jest.mock('react-native-device-info', () => ({
 	getUniqueId: jest.fn(() => 'test-device-id'),
 	getUniqueIdSync: jest.fn(() => 'test-device-id')
@@ -158,13 +177,17 @@ describe('MediaSessionInstance', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		createdSessions.length = 0;
+		mockGetUidDirectMessage.mockReturnValue('other-user-id');
+		mockGetDMSubscriptionByUsername.mockResolvedValue(null);
 		mockUseCallStoreGetState.mockReturnValue({
 			reset: mockCallStoreReset,
 			setCall: jest.fn(),
+			setRoomId: mockSetRoomId,
 			resetNativeCallId: jest.fn(),
 			call: null,
 			callId: null,
-			nativeAcceptedCallId: null
+			nativeAcceptedCallId: null,
+			roomId: null
 		});
 		mediaSessionInstance.reset();
 	});
@@ -339,10 +362,12 @@ describe('MediaSessionInstance', () => {
 			mockUseCallStoreGetState.mockReturnValue({
 				reset: mockCallStoreReset,
 				setCall: jest.fn(),
+				setRoomId: mockSetRoomId,
 				resetNativeCallId: jest.fn(),
 				call: null,
 				callId: null,
-				nativeAcceptedCallId: 'from-signal'
+				nativeAcceptedCallId: 'from-signal',
+				roomId: null
 			});
 			mediaSessionInstance.init('user-1');
 			const streamHandler = getStreamNotifyHandler();
@@ -370,10 +395,12 @@ describe('MediaSessionInstance', () => {
 			mockUseCallStoreGetState.mockReturnValue({
 				reset: mockCallStoreReset,
 				setCall: jest.fn(),
+				setRoomId: mockSetRoomId,
 				resetNativeCallId: jest.fn(),
 				call: null,
 				callId: null,
-				nativeAcceptedCallId: 'sticky-only'
+				nativeAcceptedCallId: 'sticky-only',
+				roomId: null
 			});
 			mediaSessionInstance.init('user-1');
 			const streamHandler = getStreamNotifyHandler();
@@ -401,10 +428,12 @@ describe('MediaSessionInstance', () => {
 			mockUseCallStoreGetState.mockReturnValue({
 				reset: mockCallStoreReset,
 				setCall: jest.fn(),
+				setRoomId: mockSetRoomId,
 				resetNativeCallId: jest.fn(),
 				call: { callId: 'from-signal' } as any,
 				callId: 'from-signal',
-				nativeAcceptedCallId: 'from-signal'
+				nativeAcceptedCallId: 'from-signal',
+				roomId: null
 			});
 			mediaSessionInstance.init('user-1');
 			const streamHandler = getStreamNotifyHandler();
@@ -436,6 +465,134 @@ describe('MediaSessionInstance', () => {
 			mediaSessionInstance.startCall('peer-1', 'user');
 			expect(mockRequestPhoneStatePermission).toHaveBeenCalledTimes(1);
 			expect(session.startCall).toHaveBeenCalledWith('user', 'peer-1');
+		});
+	});
+
+	describe('roomId population', () => {
+		it('startCallByRoom sets roomId before startCall', () => {
+			mediaSessionInstance.init('user-1');
+			const session = createdSessions[0];
+			const order: string[] = [];
+			mockSetRoomId.mockImplementationOnce(() => {
+				order.push('setRoomId');
+			});
+			session.startCall.mockImplementationOnce(() => {
+				order.push('startCall');
+			});
+
+			mediaSessionInstance.startCallByRoom({ rid: 'rid-dm', t: 'd', uids: ['a', 'b'] } as any);
+
+			expect(mockSetRoomId).toHaveBeenCalledWith('rid-dm');
+			expect(session.startCall).toHaveBeenCalledWith('user', 'other-user-id');
+			expect(order).toEqual(['setRoomId', 'startCall']);
+		});
+
+		it('newCall caller triggers DM lookup when roomId is still null', async () => {
+			mockGetDMSubscriptionByUsername.mockResolvedValue({ rid: 'from-db' } as any);
+			mediaSessionInstance.init('user-1');
+			const session = createdSessions[0];
+			const newCallHandler = session.on.mock.calls.find((c: string[]) => c[0] === 'newCall')?.[1] as (p: {
+				call: IClientMediaCall;
+			}) => void;
+
+			newCallHandler({
+				call: {
+					hidden: false,
+					role: 'caller',
+					callId: 'c1',
+					contact: { username: 'alice', sipExtension: '' },
+					emitter: { on: jest.fn(), off: jest.fn() }
+				} as unknown as IClientMediaCall
+			});
+
+			await waitFor(() => expect(mockGetDMSubscriptionByUsername).toHaveBeenCalledWith('alice'));
+			expect(mockSetRoomId).toHaveBeenCalledWith('from-db');
+		});
+
+		it('newCall caller skips DM lookup when roomId already set', async () => {
+			mediaSessionInstance.init('user-1');
+			mockUseCallStoreGetState.mockReturnValue({
+				reset: mockCallStoreReset,
+				setCall: jest.fn(),
+				setRoomId: mockSetRoomId,
+				resetNativeCallId: jest.fn(),
+				call: null,
+				callId: null,
+				nativeAcceptedCallId: null,
+				roomId: 'preset-rid'
+			});
+			const session = createdSessions[0];
+			const newCallHandler = session.on.mock.calls.find((c: string[]) => c[0] === 'newCall')?.[1] as (p: {
+				call: IClientMediaCall;
+			}) => void;
+
+			newCallHandler({
+				call: {
+					hidden: false,
+					role: 'caller',
+					callId: 'c1',
+					contact: { username: 'alice', sipExtension: '' },
+					emitter: { on: jest.fn(), off: jest.fn() }
+				} as unknown as IClientMediaCall
+			});
+
+			await Promise.resolve();
+			expect(mockGetDMSubscriptionByUsername).not.toHaveBeenCalled();
+		});
+
+		it('newCall caller skips DM lookup for SIP contact', async () => {
+			mediaSessionInstance.init('user-1');
+			const session = createdSessions[0];
+			const newCallHandler = session.on.mock.calls.find((c: string[]) => c[0] === 'newCall')?.[1] as (p: {
+				call: IClientMediaCall;
+			}) => void;
+
+			newCallHandler({
+				call: {
+					hidden: false,
+					role: 'caller',
+					callId: 'c1',
+					contact: { username: 'alice', sipExtension: '100' },
+					emitter: { on: jest.fn(), off: jest.fn() }
+				} as unknown as IClientMediaCall
+			});
+
+			await Promise.resolve();
+			expect(mockGetDMSubscriptionByUsername).not.toHaveBeenCalled();
+		});
+
+		it('answerCall resolves roomId from DM for non-SIP callee', async () => {
+			mockGetDMSubscriptionByUsername.mockResolvedValue({ rid: 'dm-rid' } as any);
+			mediaSessionInstance.init('user-1');
+			const session = createdSessions[0];
+			const mainCall = {
+				callId: 'call-ans',
+				accept: jest.fn().mockResolvedValue(undefined),
+				contact: { username: 'bob', sipExtension: '' }
+			};
+			session.getMainCall.mockReturnValue(mainCall);
+
+			await mediaSessionInstance.answerCall('call-ans');
+
+			await waitFor(() => expect(mockSetRoomId).toHaveBeenCalledWith('dm-rid'));
+			expect(mockGetDMSubscriptionByUsername).toHaveBeenCalledWith('bob');
+		});
+
+		it('answerCall skips DM lookup for SIP contact', async () => {
+			mediaSessionInstance.init('user-1');
+			const session = createdSessions[0];
+			const mainCall = {
+				callId: 'call-sip',
+				accept: jest.fn().mockResolvedValue(undefined),
+				contact: { username: 'bob', sipExtension: 'ext' }
+			};
+			session.getMainCall.mockReturnValue(mainCall);
+
+			await mediaSessionInstance.answerCall('call-sip');
+
+			await Promise.resolve();
+			expect(mockGetDMSubscriptionByUsername).not.toHaveBeenCalled();
+			expect(mockSetRoomId).not.toHaveBeenCalled();
 		});
 	});
 });
