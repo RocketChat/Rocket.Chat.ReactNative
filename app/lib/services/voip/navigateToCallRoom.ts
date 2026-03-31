@@ -1,5 +1,6 @@
 import { SubscriptionType } from '../../../definitions';
 import { goRoom } from '../../methods/helpers/goRoom';
+import Navigation from '../../navigation/appNavigation';
 import { store } from '../../store/auxStore';
 import { useCallStore } from './useCallStore';
 
@@ -14,7 +15,7 @@ export async function navigateToCallRoom(): Promise<void> {
 		return;
 	}
 
-	const username = contact.username;
+	const { username } = contact;
 	if (!username) {
 		return;
 	}
@@ -23,7 +24,14 @@ export async function navigateToCallRoom(): Promise<void> {
 		toggleFocus();
 	}
 
-	const isMasterDetail = store.getState().app.isMasterDetail;
+	const { app: { isMasterDetail } } = store.getState();
+
+	// If we're not in the chats navigator (e.g., in Profile/Settings/Accessibility screens),
+	// navigate to ChatsStackNavigator first to ensure goRoom works correctly
+	const currentRoute = Navigation.getCurrentRoute() as any;
+	if (currentRoute?.name !== 'RoomsListView' && currentRoute?.name !== 'RoomView') {
+		Navigation.navigate('ChatsStackNavigator');
+	}
 
 	await goRoom({
 		item: {

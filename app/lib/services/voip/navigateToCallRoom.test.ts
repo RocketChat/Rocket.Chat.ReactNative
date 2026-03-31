@@ -1,4 +1,5 @@
 import { goRoom } from '../../methods/helpers/goRoom';
+import Navigation from '../../navigation/appNavigation';
 import { store } from '../../store/auxStore';
 import { useCallStore } from './useCallStore';
 import { navigateToCallRoom } from './navigateToCallRoom';
@@ -20,9 +21,18 @@ jest.mock('../../store/auxStore', () => ({
 	}
 }));
 
+jest.mock('../../navigation/appNavigation', () => ({
+	__esModule: true,
+	default: {
+		getCurrentRoute: jest.fn(),
+		navigate: jest.fn()
+	}
+}));
+
 const mockGetState = jest.mocked(useCallStore.getState);
 const mockGoRoom = jest.mocked(goRoom);
 const mockStoreGetState = jest.mocked(store.getState);
+const mockNavigation = jest.mocked(Navigation);
 
 describe('navigateToCallRoom', () => {
 	const toggleFocus = jest.fn();
@@ -30,6 +40,7 @@ describe('navigateToCallRoom', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockStoreGetState.mockReturnValue({ app: { isMasterDetail: true } } as ReturnType<typeof store.getState>);
+		mockNavigation.getCurrentRoute.mockReturnValue({ name: 'RoomsListView' } as any);
 	});
 
 	it('does not navigate when roomId is null', async () => {
@@ -104,5 +115,68 @@ describe('navigateToCallRoom', () => {
 			item: { rid: 'rid-1', name: 'alice', t: SubscriptionType.DIRECT },
 			isMasterDetail: true
 		});
+	});
+
+	it('navigates to ChatsStackNavigator first when on ProfileView', async () => {
+		mockNavigation.getCurrentRoute.mockReturnValue({ name: 'ProfileView' } as any);
+		mockGetState.mockReturnValue({
+			roomId: 'rid-1',
+			contact: { username: 'alice', sipExtension: '' },
+			focused: false,
+			toggleFocus
+		} as ReturnType<typeof useCallStore.getState>);
+
+		await navigateToCallRoom();
+
+		expect(mockNavigation.navigate).toHaveBeenCalledWith('ChatsStackNavigator');
+		expect(mockGoRoom).toHaveBeenCalledWith({
+			item: { rid: 'rid-1', name: 'alice', t: SubscriptionType.DIRECT },
+			isMasterDetail: true
+		});
+	});
+
+	it('navigates to ChatsStackNavigator first when on AccessibilityAndAppearanceView', async () => {
+		mockNavigation.getCurrentRoute.mockReturnValue({ name: 'AccessibilityAndAppearanceView' } as any);
+		mockGetState.mockReturnValue({
+			roomId: 'rid-1',
+			contact: { username: 'alice', sipExtension: '' },
+			focused: false,
+			toggleFocus
+		} as ReturnType<typeof useCallStore.getState>);
+
+		await navigateToCallRoom();
+
+		expect(mockNavigation.navigate).toHaveBeenCalledWith('ChatsStackNavigator');
+		expect(mockGoRoom).toHaveBeenCalled();
+	});
+
+	it('navigates to ChatsStackNavigator first when on SettingsView', async () => {
+		mockNavigation.getCurrentRoute.mockReturnValue({ name: 'SettingsView' } as any);
+		mockGetState.mockReturnValue({
+			roomId: 'rid-1',
+			contact: { username: 'alice', sipExtension: '' },
+			focused: false,
+			toggleFocus
+		} as ReturnType<typeof useCallStore.getState>);
+
+		await navigateToCallRoom();
+
+		expect(mockNavigation.navigate).toHaveBeenCalledWith('ChatsStackNavigator');
+		expect(mockGoRoom).toHaveBeenCalled();
+	});
+
+	it('does not navigate to ChatsStackNavigator when already on RoomView', async () => {
+		mockNavigation.getCurrentRoute.mockReturnValue({ name: 'RoomView' } as any);
+		mockGetState.mockReturnValue({
+			roomId: 'rid-1',
+			contact: { username: 'alice', sipExtension: '' },
+			focused: false,
+			toggleFocus
+		} as ReturnType<typeof useCallStore.getState>);
+
+		await navigateToCallRoom();
+
+		expect(mockNavigation.navigate).not.toHaveBeenCalled();
+		expect(mockGoRoom).toHaveBeenCalled();
 	});
 });
