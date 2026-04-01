@@ -11,6 +11,7 @@ const mockDispatch = jest.fn();
 const mockSetNativeAcceptedCallId = jest.fn();
 const mockAddEventListener = jest.fn();
 const mockRNCallKeepClearInitialEvents = jest.fn();
+const mockSetCurrentCallActive = jest.fn();
 
 jest.mock('../../methods/helpers', () => ({
 	...jest.requireActual('../../methods/helpers'),
@@ -43,6 +44,7 @@ jest.mock('react-native-callkeep', () => ({
 	default: {
 		addEventListener: (...args: unknown[]) => mockAddEventListener(...args),
 		clearInitialEvents: (...args: unknown[]) => mockRNCallKeepClearInitialEvents(...args),
+		setCurrentCallActive: (...args: unknown[]) => mockSetCurrentCallActive(...args),
 		getInitialEvents: jest.fn(() => Promise.resolve([]))
 	}
 }));
@@ -264,10 +266,11 @@ describe('setupMediaCallEvents — didToggleHoldCallAction', () => {
 		expect(mockAddEventListener).toHaveBeenCalledWith('didToggleHoldCallAction', expect.any(Function));
 	});
 
-	it('hold: true when isOnHold is false calls toggleHold once', () => {
+	it('hold: true when isOnHold is false calls toggleHold once and does not setCurrentCallActive', () => {
 		setupMediaCallEvents();
 		getToggleHoldHandler()({ hold: true, callUUID: 'uuid-1' });
 		expect(toggleHold).toHaveBeenCalledTimes(1);
+		expect(mockSetCurrentCallActive).not.toHaveBeenCalled();
 	});
 
 	it('hold: true when isOnHold is true does not call toggleHold', () => {
@@ -277,19 +280,22 @@ describe('setupMediaCallEvents — didToggleHoldCallAction', () => {
 		expect(toggleHold).not.toHaveBeenCalled();
 	});
 
-	it('hold: false after OS-initiated hold calls toggleHold once (auto-resume)', () => {
+	it('hold: false after OS-initiated hold calls toggleHold once (auto-resume) and setCurrentCallActive', () => {
 		setupMediaCallEvents();
 		const handler = getToggleHoldHandler();
 		handler({ hold: true, callUUID: 'uuid-1' });
 		getState.mockReturnValue({ ...activeCallBase, isOnHold: true, toggleHold });
 		handler({ hold: false, callUUID: 'uuid-1' });
 		expect(toggleHold).toHaveBeenCalledTimes(2);
+		expect(mockSetCurrentCallActive).toHaveBeenCalledTimes(1);
+		expect(mockSetCurrentCallActive).toHaveBeenCalledWith('uuid-1');
 	});
 
-	it('hold: false without prior OS-initiated hold does not call toggleHold', () => {
+	it('hold: false without prior OS-initiated hold does not call toggleHold or setCurrentCallActive', () => {
 		setupMediaCallEvents();
 		getToggleHoldHandler()({ hold: false, callUUID: 'uuid-1' });
 		expect(toggleHold).not.toHaveBeenCalled();
+		expect(mockSetCurrentCallActive).not.toHaveBeenCalled();
 	});
 
 	it('consecutive hold: true events call toggleHold only once', () => {
@@ -315,8 +321,10 @@ describe('setupMediaCallEvents — didToggleHoldCallAction', () => {
 		});
 		handler({ hold: false, callUUID: 'uuid-1' });
 		expect(toggleHold).toHaveBeenCalledTimes(1);
+		expect(mockSetCurrentCallActive).not.toHaveBeenCalled();
 		handler({ hold: false, callUUID: 'uuid-2' });
 		expect(toggleHold).toHaveBeenCalledTimes(1);
+		expect(mockSetCurrentCallActive).not.toHaveBeenCalled();
 	});
 
 	it('does not toggle when there is no active call object even if ids match', () => {
