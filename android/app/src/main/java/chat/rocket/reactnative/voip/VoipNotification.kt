@@ -510,7 +510,8 @@ class VoipNotification(private val context: Context) {
 
         /**
          * Telecom in-call check (API 26+) requires [READ_PHONE_STATE]; without it, [TelecomManager.isInCall]
-         * can throw [SecurityException]. Always falls back to [AudioManager.MODE_IN_COMMUNICATION] on all APIs.
+         * can throw [SecurityException]. Always falls back to [AudioManager.MODE_IN_COMMUNICATION] or
+         * [AudioManager.MODE_IN_CALL] on all APIs to catch both VoIP and cellular calls.
          */
         private fun hasSystemLevelActiveCallIndicators(context: Context): Boolean {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -528,7 +529,7 @@ class VoipNotification(private val context: Context) {
                 }
             }
             val audio = context.getSystemService(Context.AUDIO_SERVICE) as? AudioManager
-            if (audio?.mode == AudioManager.MODE_IN_COMMUNICATION) {
+            if (audio?.mode == AudioManager.MODE_IN_COMMUNICATION || audio?.mode == AudioManager.MODE_IN_CALL) {
                 return true
             }
             return false
