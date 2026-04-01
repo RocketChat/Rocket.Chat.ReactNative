@@ -8,7 +8,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useTheme } from '../../theme';
 import { isAndroid, isIOS } from '../../lib/methods/helpers';
 import { Handle } from './Handle';
-import { type TActionSheetOptions } from './Provider';
+import { type TActionSheetOptions, type TActionSheetOptionsItem } from './Provider';
 import BottomSheetContent from './BottomSheetContent';
 import { HANDLE_HEIGHT, useActionSheetDetents } from './useActionSheetDetents';
 import styles from './styles';
@@ -24,6 +24,7 @@ const ActionSheet = React.memo(
 		const [isVisible, setIsVisible] = useState(false);
 		const [contentHeight, setContentHeight] = useState(0);
 		const onCloseSnapshotRef = useRef<TActionSheetOptions['onClose']>(undefined);
+		const itemOnCloseSnapshotRef = useRef<TActionSheetOptionsItem['onClose']>(undefined);
 
 		// TrueSheet detects the bottom inset for Android 16 and iOS
 		// To avoid content hiding behind navigation bar on older Android versions
@@ -35,7 +36,8 @@ const ActionSheet = React.memo(
 			setContentHeight(layout.height);
 		};
 
-		const hide = () => {
+		const hide = (itemOnClose?: TActionSheetOptionsItem['onClose']) => {
+			itemOnCloseSnapshotRef.current = itemOnClose;
 			sheetRef.current?.dismiss();
 			Keyboard.dismiss();
 			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -73,8 +75,11 @@ const ActionSheet = React.memo(
 			setIsVisible(false);
 			// Keep contentHeight to avoid flickering on next show
 			const snapshotOnClose = onCloseSnapshotRef.current;
+			const snapshotItemOnClose = itemOnCloseSnapshotRef.current;
 			onCloseSnapshotRef.current = undefined;
+			itemOnCloseSnapshotRef.current = undefined;
 			snapshotOnClose?.();
+			snapshotItemOnClose?.();
 		};
 
 		const isPortrait = windowHeight > windowWidth;

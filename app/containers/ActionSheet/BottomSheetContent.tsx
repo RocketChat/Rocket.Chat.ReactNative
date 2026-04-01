@@ -14,7 +14,7 @@ import Touch from '../Touch';
 interface IBottomSheetContentProps {
 	hasCancel?: boolean;
 	options?: TActionSheetOptionsItem[];
-	hide: () => void;
+	hide: (itemOnClose?: () => void) => void;
 	children?: React.ReactElement | null;
 	onLayout: ViewProps['onLayout'];
 	fullContainer?: boolean;
@@ -45,7 +45,7 @@ const BottomSheetContent = React.memo(
 		const renderFooter = () =>
 			hasCancel ? (
 				<Touch
-					onPress={hide}
+					onPress={() => hide()}
 					style={[styles.button, { backgroundColor: colors.surfaceHover, height }]}
 					accessibilityLabel={I18n.t('Cancel')}>
 					<Text style={[styles.text, { color: colors.fontDefault }]}>{I18n.t('Cancel')}</Text>

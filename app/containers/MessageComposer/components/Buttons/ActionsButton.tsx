@@ -51,31 +51,22 @@ export const ActionsButton = () => {
 				{
 					title: I18n.t('Take_a_photo'),
 					icon: 'camera-photo',
-					onPress: () => {
-						hideActionSheet();
-						showActionSheet({ options: [], onClose: takePhoto });
-					}
+					onClose: takePhoto
 				},
 				{
 					title: I18n.t('Take_a_video'),
 					icon: 'camera',
-					onPress: () => {
-						hideActionSheet();
-						showActionSheet({ options: [], onClose: takeVideo });
-					}
+					onClose: takeVideo
 				},
 				{
 					title: I18n.t('Choose_from_library'),
 					icon: 'image',
-					onPress: () => {
-						hideActionSheet();
-						showActionSheet({ options: [], onClose: chooseFromLibrary });
-					}
+					onClose: chooseFromLibrary
 				},
 				{
 					title: I18n.t('Choose_file'),
 					icon: 'attach',
-					onPress: () => chooseFile()
+					onClose: chooseFile
 				}
 			);
 		}
@@ -83,7 +74,7 @@ export const ActionsButton = () => {
 		options.push({
 			title: I18n.t('Create_Discussion'),
 			icon: 'discussions',
-			onPress: () => createDiscussion()
+			onClose: createDiscussion
 		});
 
 		closeEmojiKeyboardAndAction(showActionSheet, { options });
