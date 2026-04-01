@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import BottomSheet from '@discord/bottom-sheet';
+import BottomSheet from '@gorhom/bottom-sheet';
 
 import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';
 import { FilterHeader } from './FilterHeader';
