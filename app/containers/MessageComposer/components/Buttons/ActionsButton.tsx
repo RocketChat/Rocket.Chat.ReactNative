@@ -53,10 +53,7 @@ export const ActionsButton = () => {
 					icon: 'camera-photo',
 					onPress: () => {
 						hideActionSheet();
-						// This is necessary because the action sheet does not close properly on Android
-						setTimeout(() => {
-							takePhoto();
-						}, 250);
+						showActionSheet({ options: [], onClose: takePhoto });
 					}
 				},
 				{
@@ -64,10 +61,7 @@ export const ActionsButton = () => {
 					icon: 'camera',
 					onPress: () => {
 						hideActionSheet();
-						// This is necessary because the action sheet does not close properly on Android
-						setTimeout(() => {
-							takeVideo();
-						}, 250);
+						showActionSheet({ options: [], onClose: takeVideo });
 					}
 				},
 				{
@@ -75,10 +69,7 @@ export const ActionsButton = () => {
 					icon: 'image',
 					onPress: () => {
 						hideActionSheet();
-						// This is necessary because the action sheet does not close properly on Android
-						setTimeout(() => {
-							chooseFromLibrary();
-						}, 250);
+						showActionSheet({ options: [], onClose: chooseFromLibrary });
 					}
 				},
 				{
