@@ -5,9 +5,12 @@ import { DEEP_LINKING } from '../../../actions/actionsTypes';
 import type { VoipPayload } from '../../../definitions/Voip';
 import NativeVoipModule from '../../native/NativeVoip';
 import { getInitialMediaCallEvents, setupMediaCallEvents } from './MediaCallEvents';
+import { useCallStore } from './useCallStore';
 
 const mockDispatch = jest.fn();
 const mockSetNativeAcceptedCallId = jest.fn();
+const mockAddEventListener = jest.fn();
+const mockRNCallKeepClearInitialEvents = jest.fn();
 
 jest.mock('../../methods/helpers', () => ({
 	...jest.requireActual('../../methods/helpers'),
@@ -23,9 +26,7 @@ jest.mock('../../store', () => ({
 
 jest.mock('./useCallStore', () => ({
 	useCallStore: {
-		getState: () => ({
-			setNativeAcceptedCallId: mockSetNativeAcceptedCallId
-		})
+		getState: jest.fn()
 	}
 }));
 
@@ -37,18 +38,23 @@ jest.mock('../../native/NativeVoip', () => ({
 	}
 }));
 
-const mockRNCallKeepClearInitialEvents = jest.fn();
-
 jest.mock('react-native-callkeep', () => ({
-	addEventListener: jest.fn(),
-	clearInitialEvents: (...args: unknown[]) => mockRNCallKeepClearInitialEvents(...args),
-	getInitialEvents: jest.fn(() => Promise.resolve([]))
+	__esModule: true,
+	default: {
+		addEventListener: (...args: unknown[]) => mockAddEventListener(...args),
+		clearInitialEvents: (...args: unknown[]) => mockRNCallKeepClearInitialEvents(...args),
+		getInitialEvents: jest.fn(() => Promise.resolve([]))
+	}
 }));
 
 jest.mock('./MediaSessionInstance', () => ({
 	mediaSessionInstance: {
 		endCall: jest.fn()
 	}
+}));
+
+jest.mock('../restApi', () => ({
+	registerPushToken: jest.fn(() => Promise.resolve())
 }));
 
 function buildIncomingPayload(overrides: Partial<VoipPayload> = {}): VoipPayload {
@@ -64,13 +70,32 @@ function buildIncomingPayload(overrides: Partial<VoipPayload> = {}): VoipPayload
 	};
 }
 
+function getToggleHoldHandler(): (payload: { hold: boolean; callUUID: string }) => void {
+	const call = mockAddEventListener.mock.calls.find(([name]) => name === 'didToggleHoldCallAction');
+	if (!call) {
+		throw new Error('didToggleHoldCallAction listener not registered');
+	}
+	return call[1] as (payload: { hold: boolean; callUUID: string }) => void;
+}
+
+/** Minimal store slice: handler only runs hold logic when call + matching callId/native id exist. */
+const activeCallBase = {
+	call: {} as object,
+	callId: 'uuid-1',
+	nativeAcceptedCallId: null as string | null
+};
+
 describe('MediaCallEvents cross-server accept (slice 3)', () => {
+	const getState = useCallStore.getState as jest.Mock;
+
 	describe('VoipAccept via setupMediaCallEvents', () => {
 		let teardown: (() => void) | undefined;
 
 		beforeEach(() => {
 			jest.clearAllMocks();
+			mockAddEventListener.mockImplementation(() => ({ remove: jest.fn() }));
 			(NativeVoipModule.getInitialEvents as jest.Mock).mockReturnValue(null);
+			getState.mockReturnValue({ setNativeAcceptedCallId: mockSetNativeAcceptedCallId });
 			teardown = setupMediaCallEvents();
 		});
 
@@ -163,10 +188,12 @@ describe('MediaCallEvents cross-server accept (slice 3)', () => {
 	describe('getInitialMediaCallEvents', () => {
 		beforeEach(() => {
 			jest.clearAllMocks();
+			mockAddEventListener.mockImplementation(() => ({ remove: jest.fn() }));
 			mockRNCallKeepClearInitialEvents.mockClear();
 			(NativeVoipModule.getInitialEvents as jest.Mock).mockReset();
 			(NativeVoipModule.clearInitialEvents as jest.Mock).mockClear();
 			(RNCallKeep.getInitialEvents as jest.Mock).mockResolvedValue([]);
+			getState.mockReturnValue({ setNativeAcceptedCallId: mockSetNativeAcceptedCallId });
 		});
 
 		it('returns true and dispatches failure deep link when stash has voipAcceptFailed + host + callId', async () => {
@@ -218,5 +245,104 @@ describe('MediaCallEvents cross-server accept (slice 3)', () => {
 				}
 			});
 		});
+	});
+});
+
+describe('setupMediaCallEvents — didToggleHoldCallAction', () => {
+	const toggleHold = jest.fn();
+	const getState = useCallStore.getState as jest.Mock;
+
+	beforeEach(() => {
+		jest.clearAllMocks();
+		toggleHold.mockClear();
+		mockAddEventListener.mockImplementation(() => ({ remove: jest.fn() }));
+		getState.mockReturnValue({ ...activeCallBase, isOnHold: false, toggleHold });
+	});
+
+	it('registers didToggleHoldCallAction via RNCallKeep.addEventListener', () => {
+		setupMediaCallEvents();
+		expect(mockAddEventListener).toHaveBeenCalledWith('didToggleHoldCallAction', expect.any(Function));
+	});
+
+	it('hold: true when isOnHold is false calls toggleHold once', () => {
+		setupMediaCallEvents();
+		getToggleHoldHandler()({ hold: true, callUUID: 'uuid-1' });
+		expect(toggleHold).toHaveBeenCalledTimes(1);
+	});
+
+	it('hold: true when isOnHold is true does not call toggleHold', () => {
+		getState.mockReturnValue({ ...activeCallBase, isOnHold: true, toggleHold });
+		setupMediaCallEvents();
+		getToggleHoldHandler()({ hold: true, callUUID: 'uuid-1' });
+		expect(toggleHold).not.toHaveBeenCalled();
+	});
+
+	it('hold: false after OS-initiated hold calls toggleHold once (auto-resume)', () => {
+		setupMediaCallEvents();
+		const handler = getToggleHoldHandler();
+		handler({ hold: true, callUUID: 'uuid-1' });
+		getState.mockReturnValue({ ...activeCallBase, isOnHold: true, toggleHold });
+		handler({ hold: false, callUUID: 'uuid-1' });
+		expect(toggleHold).toHaveBeenCalledTimes(2);
+	});
+
+	it('hold: false without prior OS-initiated hold does not call toggleHold', () => {
+		setupMediaCallEvents();
+		getToggleHoldHandler()({ hold: false, callUUID: 'uuid-1' });
+		expect(toggleHold).not.toHaveBeenCalled();
+	});
+
+	it('consecutive hold: true events call toggleHold only once', () => {
+		setupMediaCallEvents();
+		const handler = getToggleHoldHandler();
+		handler({ hold: true, callUUID: 'uuid-1' });
+		getState.mockReturnValue({ ...activeCallBase, isOnHold: true, toggleHold });
+		handler({ hold: true, callUUID: 'uuid-1' });
+		expect(toggleHold).toHaveBeenCalledTimes(1);
+	});
+
+	it('clears stale auto-hold when callUUID does not match current call id (e.g. new workspace / call)', () => {
+		setupMediaCallEvents();
+		const handler = getToggleHoldHandler();
+		handler({ hold: true, callUUID: 'uuid-1' });
+		expect(toggleHold).toHaveBeenCalledTimes(1);
+		getState.mockReturnValue({
+			call: {},
+			callId: 'uuid-2',
+			nativeAcceptedCallId: null,
+			isOnHold: true,
+			toggleHold
+		});
+		handler({ hold: false, callUUID: 'uuid-1' });
+		expect(toggleHold).toHaveBeenCalledTimes(1);
+		handler({ hold: false, callUUID: 'uuid-2' });
+		expect(toggleHold).toHaveBeenCalledTimes(1);
+	});
+
+	it('does not toggle when there is no active call object even if ids match', () => {
+		setupMediaCallEvents();
+		const handler = getToggleHoldHandler();
+		getState.mockReturnValue({
+			call: null,
+			callId: 'uuid-1',
+			nativeAcceptedCallId: null,
+			isOnHold: false,
+			toggleHold
+		});
+		handler({ hold: true, callUUID: 'uuid-1' });
+		expect(toggleHold).not.toHaveBeenCalled();
+	});
+
+	it('cleanup removes didToggleHoldCallAction subscription', () => {
+		const remove = jest.fn();
+		mockAddEventListener.mockImplementation((event: string) => {
+			if (event === 'didToggleHoldCallAction') {
+				return { remove };
+			}
+			return { remove: jest.fn() };
+		});
+		const cleanup = setupMediaCallEvents();
+		cleanup();
+		expect(remove).toHaveBeenCalled();
 	});
 });
