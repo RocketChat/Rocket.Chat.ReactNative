@@ -682,10 +682,21 @@ class VoipNotification(private val context: Context) {
     fun onMessageReceived(voipPayload: VoipPayload) {
         when {
             voipPayload.isVoipIncomingCall() -> {
-                if (hasActiveCall(context)) {
-                    rejectBusyCall(context, voipPayload)
-                } else {
-                    showIncomingCall(voipPayload)
+                val isValidForIncoming =
+                    voipPayload.getRemainingLifetimeMs() != null && !voipPayload.isExpired()
+                when (decideIncomingVoipPushAction(isValidForIncoming, hasActiveCall(context))) {
+                    VoipIncomingPushAction.STALE -> {
+                        if (voipPayload.getRemainingLifetimeMs() == null) {
+                            Log.w(
+                                TAG,
+                                "Skipping incoming VoIP call without a valid createdAt timestamp - callId: ${voipPayload.callId}"
+                            )
+                        } else {
+                            Log.d(TAG, "Skipping expired incoming VoIP call - callId: ${voipPayload.callId}")
+                        }
+                    }
+                    VoipIncomingPushAction.REJECT_BUSY -> rejectBusyCall(context, voipPayload)
+                    VoipIncomingPushAction.SHOW_INCOMING -> showIncomingCall(voipPayload)
                 }
             }
             else -> Log.w(TAG, "Ignoring unsupported VoIP payload type: ${voipPayload.type}")

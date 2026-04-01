@@ -15,7 +15,7 @@ export const requestPhoneStatePermission = (): void => {
 	askedThisSession = true;
 
 	PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_PHONE_STATE, {
-		buttonPositive: 'Ok',
+		buttonPositive: i18n.t('Ok'),
 		message: i18n.t('Phone_state_permission_message'),
 		title: i18n.t('Phone_state_permission_title')
 	});

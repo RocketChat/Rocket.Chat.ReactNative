@@ -21,9 +21,10 @@ describe('requestPhoneStatePermission', () => {
 
 	it('requests READ_PHONE_STATE on Android with i18n rationale keys', () => {
 		jest.resetModules();
+		const mockT = jest.fn((key: string) => key);
 		jest.doMock('../../i18n', () => ({
 			__esModule: true,
-			default: { t: (key: string) => key }
+			default: { t: mockT }
 		}));
 		jest.doMock('./helpers', () => ({
 			...jest.requireActual('./helpers'),
@@ -34,6 +35,9 @@ describe('requestPhoneStatePermission', () => {
 
 		requestPhoneStatePermission();
 
+		expect(mockT).toHaveBeenCalledWith('Ok');
+		expect(mockT).toHaveBeenCalledWith('Phone_state_permission_message');
+		expect(mockT).toHaveBeenCalledWith('Phone_state_permission_title');
 		expect(spy).toHaveBeenCalledWith(PermissionsAndroid.PERMISSIONS.READ_PHONE_STATE, {
 			buttonPositive: 'Ok',
 			message: 'Phone_state_permission_message',
@@ -45,7 +49,7 @@ describe('requestPhoneStatePermission', () => {
 		jest.resetModules();
 		jest.doMock('../../i18n', () => ({
 			__esModule: true,
-			default: { t: (key: string) => key }
+			default: { t: jest.fn((key: string) => key) }
 		}));
 		jest.doMock('./helpers', () => ({
 			...jest.requireActual('./helpers'),
