@@ -23,7 +23,7 @@ export const ActionsButton = () => {
 		tmid,
 		permissionToUpload
 	});
-	const { showActionSheet } = useActionSheet();
+	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 
 	const createDiscussion = async () => {
@@ -51,26 +51,40 @@ export const ActionsButton = () => {
 				{
 					title: I18n.t('Take_a_photo'),
 					icon: 'camera-photo',
-					onPress: takePhoto,
-					runOnSheetClose: true
+					onPress: () => {
+						hideActionSheet();
+						// This is necessary because the action sheet does not close properly on Android
+						setTimeout(() => {
+							takePhoto();
+						}, 550);
+					}
 				},
 				{
 					title: I18n.t('Take_a_video'),
 					icon: 'camera',
-					onPress: takeVideo,
-					runOnSheetClose: true
+					onPress: () => {
+						hideActionSheet();
+						// This is necessary because the action sheet does not close properly on Android
+						setTimeout(() => {
+							takeVideo();
+						}, 550);
+					}
 				},
 				{
 					title: I18n.t('Choose_from_library'),
 					icon: 'image',
-					onPress: chooseFromLibrary,
-					runOnSheetClose: true
+					onPress: () => {
+						hideActionSheet();
+						// This is necessary because the action sheet does not close properly on Android
+						setTimeout(() => {
+							chooseFromLibrary();
+						}, 550);
+					}
 				},
 				{
 					title: I18n.t('Choose_file'),
 					icon: 'attach',
-					onPress: chooseFile,
-					runOnSheetClose: true
+					onPress: () => chooseFile()
 				}
 			);
 		}
@@ -78,7 +92,7 @@ export const ActionsButton = () => {
 		options.push({
 			title: I18n.t('Create_Discussion'),
 			icon: 'discussions',
-			onPress: createDiscussion
+			onPress: () => createDiscussion()
 		});
 
 		closeEmojiKeyboardAndAction(showActionSheet, { options });
