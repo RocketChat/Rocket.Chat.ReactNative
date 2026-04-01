@@ -369,6 +369,8 @@ export default class RoomSubscription {
 			await db.write(async () => {
 				await db.batch(...batch);
 			});
+
+			resolve();
 		});
 
 	handleMessageReceived = async (ddpMessage: IDDPMessage) => {
