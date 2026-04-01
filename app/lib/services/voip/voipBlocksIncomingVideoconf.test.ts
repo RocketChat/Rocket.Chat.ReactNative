@@ -7,10 +7,12 @@ type CallStoreSlice = {
 	nativeAcceptedCallId: string | null;
 };
 
-const mockGetState = jest.fn((): CallStoreSlice => ({
-	call: null,
-	nativeAcceptedCallId: null
-}));
+const mockGetState = jest.fn(
+	(): CallStoreSlice => ({
+		call: null,
+		nativeAcceptedCallId: null
+	})
+);
 
 jest.mock('./useCallStore', () => ({
 	useCallStore: {
