@@ -36,12 +36,14 @@ public final class VoipService: NSObject {
     private static var lastVoipToken: String = loadPersistedVoipToken()
     private static var voipRegistry: PKPushRegistry?
     private static var incomingCallTimeouts: [String: DispatchWorkItem] = [:]
-    private static var ddpClient: DDPClient?
+    private static let ddpRegistry = VoipPerCallDdpRegistry<DDPClient> { client in
+        client.clearQueuedMethodCalls()
+        client.disconnect()
+    }
     private static let callObserver = CXCallObserver()
     private static let incomingCallObserver = IncomingCallObserver()
     private static var isCallObserverConfigured = false
     private static var observedIncomingCalls: [UUID: ObservedIncomingCall] = [:]
-    private static var isDdpLoggedIn = false
     /// Deduplication guard: `CXCallObserver` can call `callChanged` with `hasConnected = true`
     /// multiple times for the same call (e.g. observer re-registration, system race). This set
     /// ensures `handleNativeAccept` sends the DDP accept signal exactly once per `callId` (not a
@@ -257,7 +259,7 @@ public final class VoipService: NSObject {
     private static func handleIncomingCallTimeout(for payload: VoipPayload) {
         incomingCallTimeouts.removeValue(forKey: payload.callId)
         clearTrackedIncomingCall(for: payload.callUUID)
-        stopDDPClientInternal()
+        stopDDPClientInternal(callId: payload.callId)
         clearNativeAcceptDedupe(for: payload.callId)
 
         let callId = payload.callId
@@ -277,10 +279,12 @@ public final class VoipService: NSObject {
 
     // MARK: - Native DDP Listener (Call End Detection)
 
+    private static func isLiveClient(callId: String, client: DDPClient) -> Bool {
+        ddpRegistry.clientFor(callId: callId) === client
+    }
+
     /// Opens a lightweight DDP WebSocket to detect call hangup before JS boots.
     private static func startListeningForCallEnd(payload: VoipPayload) {
-        stopDDPClientInternal()
-
         let credentialStorage = Storage()
         guard let credentials = credentialStorage.getCredentials(server: payload.host.removeTrailingSlash()) else {
             #if DEBUG
@@ -293,8 +297,7 @@ public final class VoipService: NSObject {
         let userId = credentials.userId
         let deviceId = DeviceUID.uid()
         let client = DDPClient()
-        ddpClient = client
-        isDdpLoggedIn = false
+        ddpRegistry.putClient(callId: callId, client: client)
         trackIncomingCall(payload)
 
         #if DEBUG
@@ -302,7 +305,7 @@ public final class VoipService: NSObject {
         #endif
 
         client.onCollectionMessage = { message in
-            guard ddpClient === client else {
+            guard isLiveClient(callId: callId, client: client) else {
                 return
             }
             guard let fields = message["fields"] as? [String: Any],
@@ -333,43 +336,43 @@ public final class VoipService: NSObject {
             #endif
 
             DispatchQueue.main.async {
-                guard ddpClient === client else {
+                guard isLiveClient(callId: callId, client: client) else {
                     return
                 }
                 clearTrackedIncomingCall(for: payload.callUUID)
                 clearNativeAcceptDedupe(for: callId)
                 RNCallKeep.endCall(withUUID: callId, reason: 3)
                 cancelIncomingCallTimeout(for: callId)
-                stopDDPClientInternal()
+                stopDDPClientInternal(callId: callId)
             }
         }
 
         client.connect(host: payload.host) { connected in
-            guard ddpClient === client else {
+            guard isLiveClient(callId: callId, client: client) else {
                 return
             }
             guard connected else {
                 #if DEBUG
                 print("[\(TAG)] DDP connection failed")
                 #endif
-                stopDDPClientInternal()
+                stopDDPClientInternal(callId: callId)
                 return
             }
 
             client.login(token: credentials.userToken) { loggedIn in
-                guard ddpClient === client else {
+                guard isLiveClient(callId: callId, client: client) else {
                     return
                 }
                 guard loggedIn else {
                     #if DEBUG
                     print("[\(TAG)] DDP login failed")
                     #endif
-                    stopDDPClientInternal()
+                    stopDDPClientInternal(callId: callId)
                     return
                 }
 
-                isDdpLoggedIn = true
-                if flushPendingQueuedSignalsIfNeeded() {
+                ddpRegistry.markLoggedIn(callId: callId)
+                if flushPendingQueuedSignalsIfNeeded(callId: callId) {
                     return
                 }
 
@@ -379,14 +382,14 @@ public final class VoipService: NSObject {
                 ]
 
                 client.subscribe(name: "stream-notify-user", params: params) { subscribed in
-                    guard ddpClient === client else {
+                    guard isLiveClient(callId: callId, client: client) else {
                         return
                     }
                     #if DEBUG
                     print("[\(TAG)] DDP subscribe result: \(subscribed)")
                     #endif
                     if !subscribed {
-                        stopDDPClientInternal()
+                        stopDDPClientInternal(callId: callId)
                     }
                 }
             }
@@ -402,11 +405,12 @@ public final class VoipService: NSObject {
         stopDDPClientInternal()
     }
 
+    private static func stopDDPClientInternal(callId: String) {
+        ddpRegistry.stopClient(callId: callId)
+    }
+
     private static func stopDDPClientInternal() {
-        isDdpLoggedIn = false
-        ddpClient?.clearQueuedMethodCalls()
-        ddpClient?.disconnect()
-        ddpClient = nil
+        ddpRegistry.stopAllClients()
     }
 
     // MARK: - Native DDP signaling (accept / reject)
@@ -418,7 +422,7 @@ public final class VoipService: NSObject {
             #if DEBUG
             print("[\(TAG)] Missing credentials, cannot build media-call answer params for \(payload.callId)")
             #endif
-            stopDDPClientInternal()
+            stopDDPClientInternal(callId: payload.callId)
             return nil
         }
 
@@ -436,7 +440,7 @@ public final class VoipService: NSObject {
             let signalData = try? JSONSerialization.data(withJSONObject: signal),
             let signalString = String(data: signalData, encoding: .utf8)
         else {
-            stopDDPClientInternal()
+            stopDDPClientInternal(callId: payload.callId)
             return nil
         }
 
@@ -453,7 +457,7 @@ public final class VoipService: NSObject {
         cancelIncomingCallTimeout(for: payload.callId)
 
         let finishAccept: (Bool) -> Void = { success in
-            stopDDPClientInternal()
+            stopDDPClientInternal(callId: payload.callId)
             if success {
                 storeInitialEvents(payload)
                 clearNativeAcceptDedupe(for: payload.callId)
@@ -502,7 +506,7 @@ public final class VoipService: NSObject {
             }
         }
 
-        guard let client = ddpClient else {
+        guard let client = ddpRegistry.clientFor(callId: payload.callId) else {
             #if DEBUG
             print("[\(TAG)] Native DDP client unavailable for accept \(payload.callId); relying on JS")
             #endif
@@ -515,7 +519,7 @@ public final class VoipService: NSObject {
             return
         }
 
-        if isDdpLoggedIn {
+        if ddpRegistry.isLoggedIn(callId: payload.callId) {
             client.callMethod("stream-notify-user", params: params) { success in
                 #if DEBUG
                 print("[\(TAG)] Native accept signal result for \(payload.callId): \(success)")
@@ -553,7 +557,7 @@ public final class VoipService: NSObject {
         RNCallKeep.endCall(withUUID: payload.callId, reason: 2)
 
         // Send reject signal via native DDP if available, otherwise queue it.
-        if isDdpLoggedIn {
+        if ddpRegistry.isLoggedIn(callId: payload.callId) {
             sendRejectSignal(payload: payload)
         } else {
             queueRejectSignal(payload: payload)
@@ -565,7 +569,7 @@ public final class VoipService: NSObject {
     }
 
     private static func sendRejectSignal(payload: VoipPayload) {
-        guard let client = ddpClient else {
+        guard let client = ddpRegistry.clientFor(callId: payload.callId) else {
             #if DEBUG
             print("[\(TAG)] Native DDP client unavailable, cannot send reject for \(payload.callId)")
             #endif
@@ -580,12 +584,12 @@ public final class VoipService: NSObject {
             #if DEBUG
             print("[\(TAG)] Native reject signal result for \(payload.callId): \(success)")
             #endif
-            stopDDPClientInternal()
+            stopDDPClientInternal(callId: payload.callId)
         }
     }
 
     private static func queueRejectSignal(payload: VoipPayload) {
-        guard let client = ddpClient else {
+        guard let client = ddpRegistry.clientFor(callId: payload.callId) else {
             #if DEBUG
             print("[\(TAG)] Native DDP client unavailable, cannot queue reject for \(payload.callId)")
             #endif
@@ -600,12 +604,12 @@ public final class VoipService: NSObject {
             #if DEBUG
             print("[\(TAG)] Queued native reject signal result for \(payload.callId): \(success)")
             #endif
-            stopDDPClientInternal()
+            stopDDPClientInternal(callId: payload.callId)
         }
     }
 
-    private static func flushPendingQueuedSignalsIfNeeded() -> Bool {
-        guard let client = ddpClient, client.hasQueuedMethodCalls() else {
+    private static func flushPendingQueuedSignalsIfNeeded(callId: String) -> Bool {
+        guard let client = ddpRegistry.clientFor(callId: callId), client.hasQueuedMethodCalls() else {
             return false
         }
 
@@ -666,7 +670,8 @@ public final class VoipService: NSObject {
         cancelIncomingCallTimeout(for: observedCall.payload.callId)
         clearNativeAcceptDedupe(for: observedCall.payload.callId)
 
-        if isDdpLoggedIn {
+        let endedCallId = observedCall.payload.callId
+        if ddpRegistry.isLoggedIn(callId: endedCallId) {
             sendRejectSignal(payload: observedCall.payload)
         } else {
             queueRejectSignal(payload: observedCall.payload)

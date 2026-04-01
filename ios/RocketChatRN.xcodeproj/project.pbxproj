@@ -305,6 +305,8 @@
 		7A1B58422F5F58FF002A6BDE /* VoipPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1B58402F5F58FF002A6BDE /* VoipPayload.swift */; };
 		7A1B58442F5F63DB002A6BDE /* AppDelegate+Voip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1B58432F5F63DB002A6BDE /* AppDelegate+Voip.swift */; };
 		7A1B58452F5F63DB002A6BDE /* AppDelegate+Voip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1B58432F5F63DB002A6BDE /* AppDelegate+Voip.swift */; };
+		7A3704562F7DB36E009085FC /* VoipPerCallDdpRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3704552F7DB36E009085FC /* VoipPerCallDdpRegistry.swift */; };
+		7A3704572F7DB36E009085FC /* VoipPerCallDdpRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3704552F7DB36E009085FC /* VoipPerCallDdpRegistry.swift */; };
 		7A610CD227ECE38100B8ABDD /* custom.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A610CD127ECE38100B8ABDD /* custom.ttf */; };
 		7A610CD427ECE38100B8ABDD /* custom.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A610CD127ECE38100B8ABDD /* custom.ttf */; };
 		7A610CD527ECE38100B8ABDD /* custom.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A610CD127ECE38100B8ABDD /* custom.ttf */; };
@@ -640,6 +642,7 @@
 		7A14FCF3257FEB59005BDCD4 /* Official.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Official.xcassets; sourceTree = "<group>"; };
 		7A1B58402F5F58FF002A6BDE /* VoipPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoipPayload.swift; sourceTree = "<group>"; };
 		7A1B58432F5F63DB002A6BDE /* AppDelegate+Voip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Voip.swift"; sourceTree = "<group>"; };
+		7A3704552F7DB36E009085FC /* VoipPerCallDdpRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoipPerCallDdpRegistry.swift; sourceTree = "<group>"; };
 		7A610CD127ECE38100B8ABDD /* custom.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = custom.ttf; sourceTree = "<group>"; };
 		7A8B30742BCD9D3F00146A40 /* SSLPinning.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSLPinning.h; sourceTree = "<group>"; };
 		7A8B30752BCD9D3F00146A40 /* SSLPinning.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SSLPinning.mm; sourceTree = "<group>"; };
@@ -1146,6 +1149,7 @@
 		7A76DEE42F1AA6EF00750653 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				7A3704552F7DB36E009085FC /* VoipPerCallDdpRegistry.swift */,
 				7A1B58432F5F63DB002A6BDE /* AppDelegate+Voip.swift */,
 				7A1B58402F5F58FF002A6BDE /* VoipPayload.swift */,
 				7A0000042F1BAFA700B6B4BD /* VoipModule.mm */,
@@ -1783,7 +1787,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"$TARGET_BUILD_DIR/$INFOPLIST_PATH",
+				$TARGET_BUILD_DIR/$INFOPLIST_PATH,
 			);
 			name = "Upload source maps to Bugsnag";
 			outputFileListPaths = (
@@ -1803,7 +1807,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"$TARGET_BUILD_DIR/$INFOPLIST_PATH",
+				$TARGET_BUILD_DIR/$INFOPLIST_PATH,
 			);
 			name = "Upload source maps to Bugsnag";
 			outputFileListPaths = (
@@ -2080,6 +2084,7 @@
 				1E76CBD125152C710067298C /* Date+Extensions.swift in Sources */,
 				1E76CBD425152C790067298C /* Database.swift in Sources */,
 				7ACFE7DA2DDE48760090D9BC /* AppDelegate.swift in Sources */,
+				7A3704562F7DB36E009085FC /* VoipPerCallDdpRegistry.swift in Sources */,
 				1E9A71742B59F36E00477BA2 /* ClientSSL.swift in Sources */,
 				A48B46D92D3FFBD200945489 /* A11yFlowModule.m in Sources */,
 				3F56D232A9EBA1C9C749F15F /* MMKVBridge.mm in Sources */,
@@ -2359,6 +2364,7 @@
 				7AAB3E24257E6A6E00707CF6 /* Date+Extensions.swift in Sources */,
 				7AAB3E25257E6A6E00707CF6 /* Database.swift in Sources */,
 				7ACFE7D92DDE48760090D9BC /* AppDelegate.swift in Sources */,
+				7A3704572F7DB36E009085FC /* VoipPerCallDdpRegistry.swift in Sources */,
 				1E9A71752B59F36E00477BA2 /* ClientSSL.swift in Sources */,
 				A48B46DA2D3FFBD200945489 /* A11yFlowModule.m in Sources */,
 				3F56D232A9EBA1C9C749F160 /* MMKVBridge.mm in Sources */,
@@ -2619,7 +2625,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/rn-extensions-share/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
-					"$PODS_CONFIGURATION_BUILD_DIR/Firebase",
+					$PODS_CONFIGURATION_BUILD_DIR/Firebase,
 				);
 				INFOPLIST_FILE = ShareRocketChatRN/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
@@ -2695,7 +2701,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/rn-extensions-share/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
-					"$PODS_CONFIGURATION_BUILD_DIR/Firebase",
+					$PODS_CONFIGURATION_BUILD_DIR/Firebase,
 				);
 				INFOPLIST_FILE = ShareRocketChatRN/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
@@ -3220,10 +3226,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = "$(inherited)";
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
@@ -3287,10 +3290,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = "$(inherited)";
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;

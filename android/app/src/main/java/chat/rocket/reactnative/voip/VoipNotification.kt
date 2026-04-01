@@ -76,8 +76,13 @@ class VoipNotification(private val context: Context) {
         private val SUPPORTED_VOIP_FEATURES = JSONArray().apply { put("audio") }
         private val timeoutHandler = Handler(Looper.getMainLooper())
         private val timeoutCallbacks = mutableMapOf<String, Runnable>()
-        private var ddpClient: DDPClient? = null
-        private var isDdpLoggedIn = false
+        private val ddpRegistry = VoipPerCallDdpRegistry<DDPClient> { client ->
+            client.clearQueuedMethodCalls()
+            client.disconnect()
+        }
+
+        /** False when [callId] was reassigned or torn down (stale DDP callback). */
+        private fun isLiveClient(callId: String, client: DDPClient) = ddpRegistry.clientFor(callId) === client
 
         /**
          * Cancels a VoIP notification by ID.
@@ -135,7 +140,7 @@ class VoipNotification(private val context: Context) {
                     putExtras(payload.toBundle())
                 }
             )
-            stopDDPClientInternal()
+            ddpRegistry.stopClient(payload.callId)
             Log.d(TAG, "Timed out incoming VoIP call: ${payload.callId}")
         }
 
@@ -147,7 +152,7 @@ class VoipNotification(private val context: Context) {
         fun handleDeclineAction(context: Context, payload: VoipPayload) {
             Log.d(TAG, "Decline action triggered for callId: ${payload.callId}")
             cancelTimeout(payload.callId)
-            if (isDdpLoggedIn) {
+            if (ddpRegistry.isLoggedIn(payload.callId)) {
                 sendRejectSignal(context, payload)
             } else {
                 queueRejectSignal(context, payload)
@@ -239,7 +244,7 @@ class VoipNotification(private val context: Context) {
             fun finish(ddpSuccess: Boolean) {
                 if (!finished.compareAndSet(false, true)) return
                 timeoutRunnable?.let { timeoutHandler.removeCallbacks(it) }
-                stopDDPClientInternal()
+                ddpRegistry.stopClient(payload.callId)
                 if (ddpSuccess) {
                     answerIncomingCall(payload.callId)
                     VoipModule.storeInitialEvents(payload)
@@ -266,14 +271,14 @@ class VoipNotification(private val context: Context) {
             timeoutRunnable = postedTimeout
             timeoutHandler.postDelayed(postedTimeout, 10_000L)
 
-            val client = ddpClient
+            val client = ddpRegistry.clientFor(payload.callId)
             if (client == null) {
                 Log.d(TAG, "Native DDP client unavailable for accept ${payload.callId}")
                 finish(false)
                 return
             }
 
-            if (isDdpLoggedIn) {
+            if (ddpRegistry.isLoggedIn(payload.callId)) {
                 sendAcceptSignal(context, payload) { success ->
                     finish(success)
                 }
@@ -342,7 +347,7 @@ class VoipNotification(private val context: Context) {
         }
 
         private fun sendRejectSignal(context: Context, payload: VoipPayload) {
-            val client = ddpClient
+            val client = ddpRegistry.clientFor(payload.callId)
             if (client == null) {
                 Log.d(TAG, "Native DDP client unavailable, cannot send reject for ${payload.callId}")
                 return
@@ -352,12 +357,12 @@ class VoipNotification(private val context: Context) {
 
             client.callMethod("stream-notify-user", params) { success ->
                 Log.d(TAG, "Native reject signal result for ${payload.callId}: $success")
-                stopDDPClientInternal()
+                ddpRegistry.stopClient(payload.callId)
             }
         }
 
         private fun queueRejectSignal(context: Context, payload: VoipPayload) {
-            val client = ddpClient
+            val client = ddpRegistry.clientFor(payload.callId)
             if (client == null) {
                 Log.d(TAG, "Native DDP client unavailable, cannot queue reject for ${payload.callId}")
                 return
@@ -367,13 +372,13 @@ class VoipNotification(private val context: Context) {
 
             client.queueMethodCall("stream-notify-user", params) { success ->
                 Log.d(TAG, "Queued native reject signal result for ${payload.callId}: $success")
-                stopDDPClientInternal()
+                ddpRegistry.stopClient(payload.callId)
             }
             Log.d(TAG, "Queued native reject signal for ${payload.callId}")
         }
 
-        private fun flushPendingQueuedSignalsIfNeeded(): Boolean {
-            val client = ddpClient ?: return false
+        private fun flushPendingQueuedSignalsIfNeeded(callId: String): Boolean {
+            val client = ddpRegistry.clientFor(callId) ?: return false
             if (!client.hasQueuedMethodCalls()) {
                 return false
             }
@@ -387,7 +392,7 @@ class VoipNotification(private val context: Context) {
             payload: VoipPayload,
             onComplete: (Boolean) -> Unit
         ) {
-            val client = ddpClient
+            val client = ddpRegistry.clientFor(payload.callId)
             if (client == null) {
                 Log.d(TAG, "Native DDP client unavailable, cannot send accept for ${payload.callId}")
                 onComplete(false)
@@ -410,7 +415,7 @@ class VoipNotification(private val context: Context) {
             payload: VoipPayload,
             onComplete: (Boolean) -> Unit
         ) {
-            val client = ddpClient
+            val client = ddpRegistry.clientFor(payload.callId)
             if (client == null) {
                 Log.d(TAG, "Native DDP client unavailable, cannot queue accept for ${payload.callId}")
                 onComplete(false)
@@ -440,13 +445,13 @@ class VoipNotification(private val context: Context) {
             val userId = ejson.userId()
             if (userId.isNullOrEmpty()) {
                 Log.d(TAG, "Missing userId, cannot build stream-notify-user params for ${payload.callId}")
-                stopDDPClientInternal()
+                ddpRegistry.stopClient(payload.callId)
                 return null
             }
             val deviceId = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
             if (deviceId.isNullOrEmpty()) {
                 Log.d(TAG, "Missing deviceId, cannot build stream-notify-user params for ${payload.callId}")
-                stopDDPClientInternal()
+                ddpRegistry.stopClient(payload.callId)
                 return null
             }
             return VoipMediaCallIdentity(userId, deviceId)
@@ -538,7 +543,7 @@ class VoipNotification(private val context: Context) {
             Log.d(TAG, "Rejected busy call ${payload.callId} — user already on a call")
             cancelTimeout(payload.callId)
             startListeningForCallEnd(context, payload)
-            if (isDdpLoggedIn) {
+            if (ddpRegistry.isLoggedIn(payload.callId)) {
                 sendRejectSignal(context, payload)
             } else {
                 queueRejectSignal(context, payload)
@@ -549,8 +554,6 @@ class VoipNotification(private val context: Context) {
 
         @JvmStatic
         fun startListeningForCallEnd(context: Context, payload: VoipPayload) {
-            stopDDPClientInternal()
-
             val ejson = Ejson()
             ejson.host = payload.host
             val userId = ejson.userId()
@@ -564,12 +567,14 @@ class VoipNotification(private val context: Context) {
             val deviceId = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
             val callId = payload.callId
             val client = DDPClient()
-            ddpClient = client
-            isDdpLoggedIn = false
+            ddpRegistry.putClient(callId, client)
 
             Log.d(TAG, "Starting DDP listener for call $callId")
 
-            client.onCollectionMessage = { message ->
+            client.onCollectionMessage = collector@{ message ->
+                if (!isLiveClient(callId, client)) {
+                    return@collector
+                }
                 Log.d(TAG, "DDP received message: $message")
                 val fields = message.optJSONObject("fields")
                 if (fields != null) {
@@ -593,6 +598,9 @@ class VoipNotification(private val context: Context) {
                                     )) {
                                     val appContext = context.applicationContext
                                     Handler(Looper.getMainLooper()).post {
+                                        if (!isLiveClient(callId, client)) {
+                                            return@post
+                                        }
                                         cancelTimeout(callId)
                                         disconnectIncomingCall(callId, false)
                                         cancelById(appContext, payload.notificationId)
@@ -601,7 +609,7 @@ class VoipNotification(private val context: Context) {
                                                 putExtras(payload.toBundle())
                                             }
                                         )
-                                        stopDDPClientInternal()
+                                        ddpRegistry.stopClient(callId)
                                     }
                                 }
                             }
@@ -611,21 +619,27 @@ class VoipNotification(private val context: Context) {
             }
 
             client.connect(payload.host) { connected ->
+                if (!isLiveClient(callId, client)) {
+                    return@connect
+                }
                 if (!connected) {
                     Log.d(TAG, "DDP connection failed")
-                    stopDDPClientInternal()
+                    ddpRegistry.stopClient(callId)
                     return@connect
                 }
 
                 client.login(token) { loggedIn ->
+                    if (!isLiveClient(callId, client)) {
+                        return@login
+                    }
                     if (!loggedIn) {
                         Log.d(TAG, "DDP login failed")
-                        stopDDPClientInternal()
+                        ddpRegistry.stopClient(callId)
                         return@login
                     }
 
-                    isDdpLoggedIn = true
-                    if (flushPendingQueuedSignalsIfNeeded()) {
+                    ddpRegistry.markLoggedIn(callId)
+                    if (flushPendingQueuedSignalsIfNeeded(callId)) {
                         return@login
                     }
 
@@ -638,9 +652,12 @@ class VoipNotification(private val context: Context) {
                     }
 
                     client.subscribe("stream-notify-user", params) { subscribed ->
+                        if (!isLiveClient(callId, client)) {
+                            return@subscribe
+                        }
                         Log.d(TAG, "DDP subscribe result: $subscribed")
                         if (!subscribed) {
-                            stopDDPClientInternal()
+                            ddpRegistry.stopClient(callId)
                         }
                     }
                 }
@@ -651,14 +668,7 @@ class VoipNotification(private val context: Context) {
         @JvmStatic
         fun stopDDPClient() {
             Log.d(TAG, "stopDDPClient called from JS")
-            stopDDPClientInternal()
-        }
-
-        private fun stopDDPClientInternal() {
-            isDdpLoggedIn = false
-            ddpClient?.clearQueuedMethodCalls()
-            ddpClient?.disconnect()
-            ddpClient = null
+            ddpRegistry.stopAllClients()
         }
     }
 
