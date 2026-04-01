@@ -7,6 +7,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { useTheme } from '../../theme';
 import { isAndroid, isIOS } from '../../lib/methods/helpers';
+import log from '../../lib/methods/helpers/log';
 import { Handle } from './Handle';
 import { type TActionSheetOptions, type TActionSheetOptionsItem } from './Provider';
 import BottomSheetContent from './BottomSheetContent';
@@ -78,8 +79,16 @@ const ActionSheet = React.memo(
 			const snapshotItemOnClose = itemOnCloseSnapshotRef.current;
 			onCloseSnapshotRef.current = undefined;
 			itemOnCloseSnapshotRef.current = undefined;
-			snapshotOnClose?.();
-			snapshotItemOnClose?.();
+			try {
+				snapshotOnClose?.();
+			} catch (e) {
+				log(e);
+			}
+			try {
+				snapshotItemOnClose?.();
+			} catch (e) {
+				log(e);
+			}
 		};
 
 		const isPortrait = windowHeight > windowWidth;
