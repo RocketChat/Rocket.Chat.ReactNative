@@ -48,7 +48,7 @@ extension AppDelegate: PKPushRegistryDelegate {
       handleType: "generic",
       hasVideo: false,
       localizedCallerName: caller,
-      supportsHolding: false,
+      supportsHolding: true,
       supportsDTMF: true,
       supportsGrouping: false,
       supportsUngrouping: false,
