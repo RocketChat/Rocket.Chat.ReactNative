@@ -23,7 +23,7 @@ export const ActionsButton = () => {
 		tmid,
 		permissionToUpload
 	});
-	const { showActionSheet, hideActionSheet } = useActionSheet();
+	const { showActionSheet } = useActionSheet();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 
 	const createDiscussion = async () => {

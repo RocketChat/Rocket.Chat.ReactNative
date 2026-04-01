@@ -24,8 +24,8 @@ export const Item = React.memo(({ item, hide }: IActionSheetItem) => {
 	const onPress = () => {
 		if (enabled) {
 			hide(item?.onClose);
-			
-			if(item?.onPress) {
+
+			if (item?.onPress) {
 				item.onPress();
 			}
 		} else {
