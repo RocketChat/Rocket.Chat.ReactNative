@@ -95,6 +95,35 @@ export const setupMediaCallEvents = (): (() => void) => {
 		// signal before JS runs. JS receives VoipAcceptSucceeded after success.
 	}
 
+	/** Tracks OS-driven hold (competing call) so we only auto-resume that path, not manual hold. */
+	let wasAutoHeld = false;
+	subscriptions.push(
+		RNCallKeep.addEventListener('didToggleHoldCallAction', ({ hold, callUUID }) => {
+			const { call, callId, nativeAcceptedCallId, isOnHold, toggleHold } = useCallStore.getState();
+			const eventUuid = callUUID.toLowerCase();
+			const activeUuid = (callId ?? nativeAcceptedCallId ?? '').toLowerCase();
+
+			// No active media call or event is for another CallKit/Telecom session — drop stale closure state
+			// (e.g. workspace/server switch, logout, or call ended while setupMediaCallEvents still lives on Root).
+			if (!call || !activeUuid || eventUuid !== activeUuid) {
+				wasAutoHeld = false;
+				return;
+			}
+
+			if (hold) {
+				if (!isOnHold) {
+					toggleHold();
+					wasAutoHeld = true;
+				}
+				return;
+			}
+			if (wasAutoHeld) {
+				toggleHold();
+				wasAutoHeld = false;
+			}
+		})
+	);
+
 	subscriptions.push(
 		Emitter.addListener(EVENT_VOIP_ACCEPT_SUCCEEDED, (data: VoipPayload) => {
 			try {
