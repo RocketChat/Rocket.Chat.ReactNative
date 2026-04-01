@@ -65,7 +65,7 @@ export const ActionsButton = () => {
 					icon: 'image',
 					onPress: chooseFromLibrary,
 					runOnSheetClose: true
-				}, 
+				},
 				{
 					title: I18n.t('Choose_file'),
 					icon: 'attach',
