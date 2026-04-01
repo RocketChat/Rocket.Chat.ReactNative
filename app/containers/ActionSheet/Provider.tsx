@@ -13,7 +13,7 @@ export type TActionSheetOptionsItem = {
 	danger?: boolean;
 	testID?: string;
 	onPress?: () => void;
-	onClose?: () => void;
+	runOnSheetClose?: boolean;
 	right?: () => React.ReactElement;
 	enabled?: boolean;
 	accessibilityRole?: AccessibilityRole;

@@ -25,7 +25,7 @@ const ActionSheet = React.memo(
 		const [isVisible, setIsVisible] = useState(false);
 		const [contentHeight, setContentHeight] = useState(0);
 		const onCloseSnapshotRef = useRef<TActionSheetOptions['onClose']>(undefined);
-		const itemOnCloseSnapshotRef = useRef<TActionSheetOptionsItem['onClose']>(undefined);
+		const deferredPressRef = useRef<TActionSheetOptionsItem['onPress']>(undefined);
 
 		// TrueSheet detects the bottom inset for Android 16 and iOS
 		// To avoid content hiding behind navigation bar on older Android versions
@@ -37,8 +37,8 @@ const ActionSheet = React.memo(
 			setContentHeight(layout.height);
 		};
 
-		const hide = (itemOnClose?: TActionSheetOptionsItem['onClose']) => {
-			itemOnCloseSnapshotRef.current = itemOnClose;
+		const hide = (deferredPress?: TActionSheetOptionsItem['onPress']) => {
+			deferredPressRef.current = deferredPress;
 			sheetRef.current?.dismiss();
 			Keyboard.dismiss();
 			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -76,16 +76,16 @@ const ActionSheet = React.memo(
 			setIsVisible(false);
 			// Keep contentHeight to avoid flickering on next show
 			const snapshotOnClose = onCloseSnapshotRef.current;
-			const snapshotItemOnClose = itemOnCloseSnapshotRef.current;
+			const deferredPress = deferredPressRef.current;
 			onCloseSnapshotRef.current = undefined;
-			itemOnCloseSnapshotRef.current = undefined;
+			deferredPressRef.current = undefined;
 			try {
 				snapshotOnClose?.();
 			} catch (e) {
 				log(e);
 			}
 			try {
-				snapshotItemOnClose?.();
+				deferredPress?.();
 			} catch (e) {
 				log(e);
 			}

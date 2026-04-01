@@ -14,7 +14,7 @@ import Touch from '../Touch';
 interface IBottomSheetContentProps {
 	hasCancel?: boolean;
 	options?: TActionSheetOptionsItem[];
-	hide: (itemOnClose?: () => void) => void;
+	hide: (deferredPress?: () => void) => void;
 	children?: React.ReactElement | null;
 	onLayout: ViewProps['onLayout'];
 	fullContainer?: boolean;

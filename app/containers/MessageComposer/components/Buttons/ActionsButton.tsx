@@ -51,22 +51,26 @@ export const ActionsButton = () => {
 				{
 					title: I18n.t('Take_a_photo'),
 					icon: 'camera-photo',
-					onClose: takePhoto
+					onPress: takePhoto,
+					runOnSheetClose: true
 				},
 				{
 					title: I18n.t('Take_a_video'),
 					icon: 'camera',
-					onClose: takeVideo
+					onPress: takeVideo,
+					runOnSheetClose: true
 				},
 				{
 					title: I18n.t('Choose_from_library'),
 					icon: 'image',
-					onClose: chooseFromLibrary
+					onPress: chooseFromLibrary,
+					runOnSheetClose: true
 				},
 				{
 					title: I18n.t('Choose_file'),
 					icon: 'attach',
-					onClose: chooseFile
+					onPress: chooseFile,
+					runOnSheetClose: true
 				}
 			);
 		}
@@ -74,7 +78,7 @@ export const ActionsButton = () => {
 		options.push({
 			title: I18n.t('Create_Discussion'),
 			icon: 'discussions',
-			onClose: createDiscussion
+			onPress: createDiscussion,
 		});
 
 		closeEmojiKeyboardAndAction(showActionSheet, { options });
