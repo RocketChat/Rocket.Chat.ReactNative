@@ -341,6 +341,23 @@ describe('setupMediaCallEvents — didToggleHoldCallAction', () => {
 		expect(toggleHold).not.toHaveBeenCalled();
 	});
 
+	it('hold: false does not call toggleHold when user already manually resumed before OS unhold arrives', () => {
+		setupMediaCallEvents();
+		const handler = getToggleHoldHandler();
+
+		// OS holds the call
+		handler({ hold: true, callUUID: 'uuid-1' });
+		expect(toggleHold).toHaveBeenCalledTimes(1);
+
+		// User manually resumes — isOnHold is now false
+		getState.mockReturnValue({ ...activeCallBase, isOnHold: false, toggleHold });
+
+		// OS sends hold: false — should be a no-op since call is already resumed
+		handler({ hold: false, callUUID: 'uuid-1' });
+		expect(toggleHold).toHaveBeenCalledTimes(1);
+		expect(mockSetCurrentCallActive).not.toHaveBeenCalled();
+	});
+
 	it('cleanup removes didToggleHoldCallAction subscription', () => {
 		const remove = jest.fn();
 		mockAddEventListener.mockImplementation((event: string) => {
