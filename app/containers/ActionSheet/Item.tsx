@@ -12,7 +12,7 @@ import Touch from '../Touch';
 
 export interface IActionSheetItem {
 	item: TActionSheetOptionsItem;
-	hide(deferredPress?: () => void): void;
+	hide(): void;
 }
 
 export const Item = React.memo(({ item, hide }: IActionSheetItem) => {
@@ -23,14 +23,8 @@ export const Item = React.memo(({ item, hide }: IActionSheetItem) => {
 	const { fontScale } = useWindowDimensions();
 	const onPress = () => {
 		if (enabled) {
-			if (item?.runOnSheetClose) {
-				hide(item?.onPress);
-			} else {
-				hide();
-				if (item?.onPress) {
-					item.onPress();
-				}
-			}
+			hide();
+			item?.onPress();
 		} else {
 			EventEmitter.emit(LISTENER, { message: item?.disabledReason || I18n.t('You_dont_have_permission_to_perform_this_action') });
 		}

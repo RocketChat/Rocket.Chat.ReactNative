@@ -12,8 +12,7 @@ export type TActionSheetOptionsItem = {
 	icon?: TIconsName;
 	danger?: boolean;
 	testID?: string;
-	onPress?: () => void;
-	runOnSheetClose?: boolean;
+	onPress: () => void;
 	right?: () => React.ReactElement;
 	enabled?: boolean;
 	accessibilityRole?: AccessibilityRole;
