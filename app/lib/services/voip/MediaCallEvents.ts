@@ -120,6 +120,7 @@ export const setupMediaCallEvents = (): (() => void) => {
 			if (wasAutoHeld) {
 				toggleHold();
 				wasAutoHeld = false;
+				RNCallKeep.setCurrentCallActive(callUUID);
 			}
 		})
 	);
