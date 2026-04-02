@@ -1,0 +1,20 @@
+diff --git a/node_modules/react-native-bottom-tabs/ios/TabViewImpl.swift b/node_modules/react-native-bottom-tabs/ios/TabViewImpl.swift
+index 72938be..9799e4b 100644
+--- a/node_modules/react-native-bottom-tabs/ios/TabViewImpl.swift
++++ b/node_modules/react-native-bottom-tabs/ios/TabViewImpl.swift
+@@ -117,6 +117,15 @@ struct TabViewImpl: View {
+ 
+     tabBar.isHidden = props.tabBarHidden
+ 
++    if #available(iOS 26.0, *) {
++      if props.barTintColor == nil && props.scrollEdgeAppearance != "opaque" {
++        if let inactiveTintColor = props.inactiveTintColor {
++          tabBar.unselectedItemTintColor = inactiveTintColor
++        }
++        return
++      }
++    }
++
+     if props.scrollEdgeAppearance == "transparent" {
+       configureTransparentAppearance(tabBar: tabBar, props: props)
+       return

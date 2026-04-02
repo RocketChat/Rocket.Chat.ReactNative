@@ -6,6 +6,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { ThemeContext } from '../theme';
 import { defaultHeader, themedHeader } from '../lib/methods/helpers/navigation';
 import Sidebar from '../views/SidebarView';
+import BottomTabNavigator from './BottomTabNavigator';
 // Chats Stack
 import RoomView from '../views/RoomView';
 import RoomsListView from '../views/RoomsListView';
@@ -235,9 +236,8 @@ const AccessibilityStackNavigator = () => {
 	);
 };
 
-// DrawerNavigator
 const Drawer = createDrawerNavigator<DrawerParamList>();
-const DrawerNavigator = () => {
+export const DrawerNavigator = () => {
 	'use memo';
 
 	const { colors } = React.useContext(ThemeContext);
@@ -321,7 +321,7 @@ const InsideStackNavigator = () => {
 
 	return (
 		<InsideStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), presentation: 'containedModal' }}>
-			<InsideStack.Screen name='DrawerNavigator' component={DrawerNavigator} options={{ headerShown: false }} />
+			<InsideStack.Screen name='BottomTabNavigator' component={BottomTabNavigator} options={{ headerShown: false }} />
 			<InsideStack.Screen name='NewMessageStackNavigator' component={NewMessageStackNavigator} options={{ headerShown: false }} />
 			<InsideStack.Screen
 				name='E2ESaveYourPasswordStackNavigator'

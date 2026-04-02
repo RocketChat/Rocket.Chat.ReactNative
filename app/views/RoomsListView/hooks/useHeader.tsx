@@ -11,10 +11,18 @@ import { getUserSelector } from '../../../selectors/login';
 import { useTheme } from '../../../theme';
 import RoomsListHeaderView from '../components/Header';
 import { RoomsSearchContext } from '../contexts/RoomsSearchProvider';
+import { type RoomFilterType } from '../../../stacks/types';
 
-export const useHeader = () => {
+const TAB_TITLES: Record<string, string> = {
+	home: 'Chats',
+	discussions: 'Discussions',
+	dms: 'Direct_Messages'
+};
+
+export const useHeader = (roomFilter?: RoomFilterType) => {
 	'use memo';
 
+	const isTabLayout = !!roomFilter;
 	const { searchEnabled, search, startSearch, stopSearch } = useContext(RoomsSearchContext);
 	const [options, setOptions] = useState<any>(null);
 	const supportedVersionsStatus = useAppSelector(state => state.supportedVersions.status);
@@ -80,7 +88,8 @@ export const useHeader = () => {
 	}, [isMasterDetail, navigation]);
 
 	useLayoutEffect(() => {
-		if (searchEnabled) {
+		// Search mode header (only for drawer layout - tabs use the Search tab instead)
+		if (!isTabLayout && searchEnabled) {
 			const searchOptions = {
 				headerLeft: () => (
 					<HeaderButton.Container style={{ marginLeft: 1 }} left>
@@ -97,6 +106,48 @@ export const useHeader = () => {
 			return;
 		}
 
+		// Tab layout header: no drawer toggle, no search button, tab-specific title
+		if (isTabLayout) {
+			const tabOptions = {
+				headerLeft: () => null,
+				title: i18n.t(TAB_TITLES[roomFilter] || 'Home'),
+				headerRight: () => (
+					<HeaderButton.Container>
+						{issuesWithNotifications ? (
+							<HeaderButton.Item
+								iconName='notification-disabled'
+								onPress={navigateToPushTroubleshootView}
+								testID='rooms-list-view-push-troubleshoot'
+								color={colors.fontDanger}
+							/>
+						) : null}
+						{canCreateRoom ? (
+							<HeaderButton.Item
+								iconName='create'
+								accessibilityLabel={i18n.t('Create_new_channel_team_dm_discussion')}
+								onPress={goToNewMessage}
+								testID='rooms-list-view-create-channel'
+								disabled={disabled}
+							/>
+						) : null}
+						<HeaderButton.Item
+							iconName='directory'
+							accessibilityLabel={i18n.t('Directory')}
+							onPress={goDirectory}
+							testID='rooms-list-view-directory'
+							disabled={disabled}
+						/>
+					</HeaderButton.Container>
+				)
+			};
+			navigation.setOptions(tabOptions);
+			if (isTablet) {
+				setOptions(tabOptions);
+			}
+			return;
+		}
+
+		// Default drawer layout header
 		const options = {
 			headerLeft: () => (
 				<HeaderButton.Drawer
@@ -167,7 +218,9 @@ export const useHeader = () => {
 		goToNewMessage,
 		startSearch,
 		stopSearch,
-		search
+		search,
+		isTabLayout,
+		roomFilter
 	]);
 
 	return { options };
