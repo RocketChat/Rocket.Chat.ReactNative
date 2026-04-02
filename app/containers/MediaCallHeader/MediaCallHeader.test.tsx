@@ -9,12 +9,6 @@ import { mockedStore } from '../../reducers/mockedStore';
 import * as stories from './MediaCallHeader.stories';
 import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
 
-jest.mock('react-native-incall-manager', () => ({
-	start: jest.fn(),
-	stop: jest.fn(),
-	setForceSpeakerphoneOn: jest.fn()
-}));
-
 const mockNavigateToCallRoom = jest.mocked(navigateToCallRoom);
 
 jest.mock('../../lib/services/voip/navigateToCallRoom', () => ({

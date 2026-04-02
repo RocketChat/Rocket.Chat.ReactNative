@@ -8,12 +8,6 @@ import { mockedStore } from '../../../../reducers/mockedStore';
 import * as stories from './Dialpad.stories';
 import { generateSnapshots } from '../../../../../.rnstorybook/generateSnapshots';
 
-jest.mock('react-native-incall-manager', () => ({
-	start: jest.fn(),
-	stop: jest.fn(),
-	setForceSpeakerphoneOn: jest.fn(() => Promise.resolve())
-}));
-
 const sendDTMFMock = jest.fn();
 
 // Helper to set store state for tests

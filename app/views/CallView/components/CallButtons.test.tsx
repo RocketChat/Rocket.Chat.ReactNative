@@ -7,12 +7,6 @@ import { useCallStore } from '../../../lib/services/voip/useCallStore';
 import { navigateToCallRoom } from '../../../lib/services/voip/navigateToCallRoom';
 import { CallButtons } from './CallButtons';
 
-jest.mock('react-native-incall-manager', () => ({
-	start: jest.fn(),
-	stop: jest.fn(),
-	setForceSpeakerphoneOn: jest.fn()
-}));
-
 jest.mock('../../../lib/services/voip/navigateToCallRoom', () => ({
 	navigateToCallRoom: jest.fn().mockResolvedValue(undefined)
 }));
