@@ -66,6 +66,7 @@ describe('navigateToCallRoom', () => {
 
 		expect(mockGoRoom).not.toHaveBeenCalled();
 		expect(toggleFocus).not.toHaveBeenCalled();
+		expect(mockNavigation.navigate).not.toHaveBeenCalled();
 	});
 
 	it('does not navigate for SIP contact', async () => {
@@ -81,6 +82,8 @@ describe('navigateToCallRoom', () => {
 		await navigateToCallRoom();
 
 		expect(mockGoRoom).not.toHaveBeenCalled();
+		expect(toggleFocus).not.toHaveBeenCalled();
+		expect(mockNavigation.navigate).not.toHaveBeenCalled();
 	});
 
 	it('does not navigate when username is missing', async () => {
@@ -96,6 +99,8 @@ describe('navigateToCallRoom', () => {
 		await navigateToCallRoom();
 
 		expect(mockGoRoom).not.toHaveBeenCalled();
+		expect(toggleFocus).not.toHaveBeenCalled();
+		expect(mockNavigation.navigate).not.toHaveBeenCalled();
 	});
 
 	it('minimizes first when CallView is focused then navigates', async () => {
@@ -115,6 +120,7 @@ describe('navigateToCallRoom', () => {
 			item: { rid: 'rid-1', name: 'alice', t: SubscriptionType.DIRECT },
 			isMasterDetail: true
 		});
+		expect(toggleFocus.mock.invocationCallOrder[0]).toBeLessThan(mockGoRoom.mock.invocationCallOrder[0]);
 	});
 
 	it('navigates without toggleFocus when already minimized', async () => {
@@ -154,6 +160,7 @@ describe('navigateToCallRoom', () => {
 			item: { rid: 'rid-1', name: 'alice', t: SubscriptionType.DIRECT },
 			isMasterDetail: true
 		});
+		expect(mockNavigation.navigate.mock.invocationCallOrder[0]).toBeLessThan(mockGoRoom.mock.invocationCallOrder[0]);
 	});
 
 	it('navigates to ChatsStackNavigator first when on AccessibilityAndAppearanceView', async () => {
@@ -171,6 +178,7 @@ describe('navigateToCallRoom', () => {
 
 		expect(mockNavigation.navigate).toHaveBeenCalledWith('ChatsStackNavigator');
 		expect(mockGoRoom).toHaveBeenCalled();
+		expect(mockNavigation.navigate.mock.invocationCallOrder[0]).toBeLessThan(mockGoRoom.mock.invocationCallOrder[0]);
 	});
 
 	it('navigates to ChatsStackNavigator first when on SettingsView', async () => {
@@ -188,6 +196,7 @@ describe('navigateToCallRoom', () => {
 
 		expect(mockNavigation.navigate).toHaveBeenCalledWith('ChatsStackNavigator');
 		expect(mockGoRoom).toHaveBeenCalled();
+		expect(mockNavigation.navigate.mock.invocationCallOrder[0]).toBeLessThan(mockGoRoom.mock.invocationCallOrder[0]);
 	});
 
 	it('does not navigate to ChatsStackNavigator when already on RoomView', async () => {
