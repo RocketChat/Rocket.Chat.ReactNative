@@ -34,6 +34,15 @@ const mockGoRoom = jest.mocked(goRoom);
 const mockStoreGetState = jest.mocked(store.getState);
 const mockNavigation = jest.mocked(Navigation);
 
+type CallStoreSnapshot = ReturnType<typeof useCallStore.getState>;
+
+/** Partial mock: tests only need fields read by `navigateToCallRoom`. */
+function mockCallStoreState(
+	snapshot: Pick<CallStoreSnapshot, 'roomId' | 'contact' | 'focused' | 'toggleFocus'>
+): CallStoreSnapshot {
+	return snapshot as unknown as CallStoreSnapshot;
+}
+
 describe('navigateToCallRoom', () => {
 	const toggleFocus = jest.fn();
 
@@ -44,12 +53,14 @@ describe('navigateToCallRoom', () => {
 	});
 
 	it('does not navigate when roomId is null', async () => {
-		mockGetState.mockReturnValue({
-			roomId: null,
-			contact: { username: 'u', sipExtension: '' },
-			focused: false,
-			toggleFocus
-		} as ReturnType<typeof useCallStore.getState>);
+		mockGetState.mockReturnValue(
+			mockCallStoreState({
+				roomId: null,
+				contact: { username: 'u', sipExtension: '' },
+				focused: false,
+				toggleFocus
+			})
+		);
 
 		await navigateToCallRoom();
 
@@ -58,12 +69,14 @@ describe('navigateToCallRoom', () => {
 	});
 
 	it('does not navigate for SIP contact', async () => {
-		mockGetState.mockReturnValue({
-			roomId: 'rid-1',
-			contact: { username: 'u', sipExtension: '100' },
-			focused: false,
-			toggleFocus
-		} as ReturnType<typeof useCallStore.getState>);
+		mockGetState.mockReturnValue(
+			mockCallStoreState({
+				roomId: 'rid-1',
+				contact: { username: 'u', sipExtension: '100' },
+				focused: false,
+				toggleFocus
+			})
+		);
 
 		await navigateToCallRoom();
 
@@ -71,12 +84,14 @@ describe('navigateToCallRoom', () => {
 	});
 
 	it('does not navigate when username is missing', async () => {
-		mockGetState.mockReturnValue({
-			roomId: 'rid-1',
-			contact: { username: undefined, sipExtension: '' },
-			focused: false,
-			toggleFocus
-		} as ReturnType<typeof useCallStore.getState>);
+		mockGetState.mockReturnValue(
+			mockCallStoreState({
+				roomId: 'rid-1',
+				contact: { username: undefined, sipExtension: '' },
+				focused: false,
+				toggleFocus
+			})
+		);
 
 		await navigateToCallRoom();
 
@@ -84,12 +99,14 @@ describe('navigateToCallRoom', () => {
 	});
 
 	it('minimizes first when CallView is focused then navigates', async () => {
-		mockGetState.mockReturnValue({
-			roomId: 'rid-1',
-			contact: { username: 'alice', sipExtension: '' },
-			focused: true,
-			toggleFocus
-		} as ReturnType<typeof useCallStore.getState>);
+		mockGetState.mockReturnValue(
+			mockCallStoreState({
+				roomId: 'rid-1',
+				contact: { username: 'alice', sipExtension: '' },
+				focused: true,
+				toggleFocus
+			})
+		);
 
 		await navigateToCallRoom();
 
@@ -101,12 +118,14 @@ describe('navigateToCallRoom', () => {
 	});
 
 	it('navigates without toggleFocus when already minimized', async () => {
-		mockGetState.mockReturnValue({
-			roomId: 'rid-1',
-			contact: { username: 'alice', sipExtension: '' },
-			focused: false,
-			toggleFocus
-		} as ReturnType<typeof useCallStore.getState>);
+		mockGetState.mockReturnValue(
+			mockCallStoreState({
+				roomId: 'rid-1',
+				contact: { username: 'alice', sipExtension: '' },
+				focused: false,
+				toggleFocus
+			})
+		);
 
 		await navigateToCallRoom();
 
@@ -119,12 +138,14 @@ describe('navigateToCallRoom', () => {
 
 	it('navigates to ChatsStackNavigator first when on ProfileView', async () => {
 		mockNavigation.getCurrentRoute.mockReturnValue({ name: 'ProfileView' } as any);
-		mockGetState.mockReturnValue({
-			roomId: 'rid-1',
-			contact: { username: 'alice', sipExtension: '' },
-			focused: false,
-			toggleFocus
-		} as ReturnType<typeof useCallStore.getState>);
+		mockGetState.mockReturnValue(
+			mockCallStoreState({
+				roomId: 'rid-1',
+				contact: { username: 'alice', sipExtension: '' },
+				focused: false,
+				toggleFocus
+			})
+		);
 
 		await navigateToCallRoom();
 
@@ -137,12 +158,14 @@ describe('navigateToCallRoom', () => {
 
 	it('navigates to ChatsStackNavigator first when on AccessibilityAndAppearanceView', async () => {
 		mockNavigation.getCurrentRoute.mockReturnValue({ name: 'AccessibilityAndAppearanceView' } as any);
-		mockGetState.mockReturnValue({
-			roomId: 'rid-1',
-			contact: { username: 'alice', sipExtension: '' },
-			focused: false,
-			toggleFocus
-		} as ReturnType<typeof useCallStore.getState>);
+		mockGetState.mockReturnValue(
+			mockCallStoreState({
+				roomId: 'rid-1',
+				contact: { username: 'alice', sipExtension: '' },
+				focused: false,
+				toggleFocus
+			})
+		);
 
 		await navigateToCallRoom();
 
@@ -152,12 +175,14 @@ describe('navigateToCallRoom', () => {
 
 	it('navigates to ChatsStackNavigator first when on SettingsView', async () => {
 		mockNavigation.getCurrentRoute.mockReturnValue({ name: 'SettingsView' } as any);
-		mockGetState.mockReturnValue({
-			roomId: 'rid-1',
-			contact: { username: 'alice', sipExtension: '' },
-			focused: false,
-			toggleFocus
-		} as ReturnType<typeof useCallStore.getState>);
+		mockGetState.mockReturnValue(
+			mockCallStoreState({
+				roomId: 'rid-1',
+				contact: { username: 'alice', sipExtension: '' },
+				focused: false,
+				toggleFocus
+			})
+		);
 
 		await navigateToCallRoom();
 
@@ -167,12 +192,14 @@ describe('navigateToCallRoom', () => {
 
 	it('does not navigate to ChatsStackNavigator when already on RoomView', async () => {
 		mockNavigation.getCurrentRoute.mockReturnValue({ name: 'RoomView' } as any);
-		mockGetState.mockReturnValue({
-			roomId: 'rid-1',
-			contact: { username: 'alice', sipExtension: '' },
-			focused: false,
-			toggleFocus
-		} as ReturnType<typeof useCallStore.getState>);
+		mockGetState.mockReturnValue(
+			mockCallStoreState({
+				roomId: 'rid-1',
+				contact: { username: 'alice', sipExtension: '' },
+				focused: false,
+				toggleFocus
+			})
+		);
 
 		await navigateToCallRoom();
 
