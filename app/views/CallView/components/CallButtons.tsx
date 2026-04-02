@@ -39,7 +39,7 @@ export const CallButtons = () => {
 	const messageDisabled = Boolean(contact.sipExtension) || roomId == null;
 
 	const handleMessage = () => {
-		void navigateToCallRoom();
+		navigateToCallRoom().catch(() => undefined);
 	};
 
 	const handleDialpad = () => {

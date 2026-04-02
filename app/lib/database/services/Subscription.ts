@@ -7,6 +7,10 @@ import { SUBSCRIPTIONS_TABLE } from '../model/Subscription';
 
 const getCollection = (db: TAppDatabase) => db.get(SUBSCRIPTIONS_TABLE);
 
+/**
+ * Returns the WatermelonDB direct-message subscription for a username (`name` + type `d`), or null.
+ * Skips the query when `username` is falsy.
+ */
 export const getDMSubscriptionByUsername = async (username: string): Promise<TSubscriptionModel | null> => {
 	if (!username) {
 		return null;

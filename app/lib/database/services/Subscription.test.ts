@@ -41,4 +41,13 @@ describe('getDMSubscriptionByUsername', () => {
 
 		expect(result).toBeNull();
 	});
+
+	it('returns null when username is empty and does not query the database', async () => {
+		mockGet.mockClear();
+
+		const result = await getDMSubscriptionByUsername('');
+
+		expect(result).toBeNull();
+		expect(mockGet).not.toHaveBeenCalled();
+	});
 });

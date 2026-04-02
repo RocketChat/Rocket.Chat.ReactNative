@@ -28,7 +28,9 @@ export const Content = () => {
 		<Pressable
 			testID='media-call-header-content'
 			disabled={contentDisabled}
-			onPress={() => void navigateToCallRoom()}
+			onPress={() => {
+				navigateToCallRoom().catch(() => undefined);
+			}}
 			style={pressableStyle}>
 			<View style={styles.container}>
 				<Title />
