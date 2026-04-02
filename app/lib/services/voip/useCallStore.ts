@@ -68,6 +68,7 @@ interface CallStoreState {
 	isSpeakerOn: boolean;
 	callStartTime: number | null;
 	focused: boolean;
+	/** Zustand-driven for Call UI animations (subscribers re-render → `useAnimatedStyle`); see `decisions/call-view-controls-coderabbit.md`. */
 	controlsVisible: boolean;
 	dialpadValue: string;
 
@@ -163,7 +164,8 @@ export const useCallStore = create<CallStore>((set, get) => ({
 			if (!currentCall) return;
 
 			const newState = currentCall.state;
-			set({ callState: newState, controlsVisible: true });
+			set({ callState: newState });
+			get().showControls();
 
 			// Set start time when call becomes active
 			if (newState === 'active' && !get().callStartTime) {
@@ -179,9 +181,9 @@ export const useCallStore = create<CallStore>((set, get) => ({
 				isMuted: currentCall.muted,
 				isOnHold: currentCall.held,
 				remoteMute: currentCall.remoteMute,
-				remoteHeld: currentCall.remoteHeld,
-				controlsVisible: true
+				remoteHeld: currentCall.remoteHeld
 			});
+			get().showControls();
 		};
 
 		const handleEnded = () => {
@@ -241,7 +243,8 @@ export const useCallStore = create<CallStore>((set, get) => ({
 
 	toggleFocus: () => {
 		const isFocused = get().focused;
-		set({ focused: !isFocused, controlsVisible: true });
+		set({ focused: !isFocused });
+		get().showControls();
 		if (isFocused) {
 			Navigation.back();
 		} else {

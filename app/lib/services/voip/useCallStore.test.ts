@@ -30,8 +30,8 @@ function createMockCall(callId: string) {
 			listeners[ev]?.delete(fn);
 		}
 	};
-	const emit = (ev: string) => {
-		listeners[ev]?.forEach(fn => fn());
+	const emit = (ev: string, ...args: unknown[]) => {
+		listeners[ev]?.forEach(fn => fn(...args));
 	};
 	const call = {
 		callId,
@@ -53,6 +53,19 @@ function createMockCall(callId: string) {
 	} as unknown as IClientMediaCall;
 	return { call, emit };
 }
+
+describe('createMockCall emitter', () => {
+	it('forwards variadic arguments to listeners', () => {
+		const { call, emit } = createMockCall('e1');
+		const listener = jest.fn();
+		call.emitter.on('stateChange', listener);
+
+		emit('stateChange', { kind: 'test' }, 2);
+
+		expect(listener).toHaveBeenCalledTimes(1);
+		expect(listener).toHaveBeenCalledWith({ kind: 'test' }, 2);
+	});
+});
 
 describe('useCallStore controlsVisible', () => {
 	beforeEach(() => {
