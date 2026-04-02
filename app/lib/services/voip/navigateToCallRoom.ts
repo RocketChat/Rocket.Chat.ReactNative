@@ -24,7 +24,9 @@ export async function navigateToCallRoom(): Promise<void> {
 		toggleFocus();
 	}
 
-	const { app: { isMasterDetail } } = store.getState();
+	const {
+		app: { isMasterDetail }
+	} = store.getState();
 
 	// If we're not in the chats navigator (e.g., in Profile/Settings/Accessibility screens),
 	// navigate to ChatsStackNavigator first to ensure goRoom works correctly
