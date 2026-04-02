@@ -59,7 +59,6 @@ jest.mock('react-native-callkeep', () => ({
 		setAvailable: jest.fn()
 	}
 }));
-
 jest.mock('react-native-device-info', () => ({
 	getUniqueId: jest.fn(() => 'test-device-id'),
 	getUniqueIdSync: jest.fn(() => 'test-device-id')

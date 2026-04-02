@@ -68,7 +68,6 @@ interface CallStoreState {
 	isSpeakerOn: boolean;
 	callStartTime: number | null;
 	focused: boolean;
-	/** Zustand-driven for Call UI animations (subscribers re-render → `useAnimatedStyle`); see `decisions/call-view-controls-coderabbit.md`. */
 	controlsVisible: boolean;
 	dialpadValue: string;
 

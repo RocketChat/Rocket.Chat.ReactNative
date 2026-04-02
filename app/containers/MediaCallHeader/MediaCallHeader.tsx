@@ -34,7 +34,13 @@ const MediaCallHeader = () => {
 
 	const animatedStyle = useAnimatedStyle(() => ({
 		opacity: withTiming(shouldHide ? 0 : 1, { duration: CONTROLS_ANIMATION_DURATION }),
-		transform: [{ translateY: withTiming(shouldHide ? -100 : 0, { duration: CONTROLS_ANIMATION_DURATION }) }]
+		transform: [
+			{
+				translateY: withTiming(shouldHide ? -100 : 0, {
+					duration: CONTROLS_ANIMATION_DURATION
+				})
+			}
+		]
 	}));
 
 	const defaultHeaderStyle = {
