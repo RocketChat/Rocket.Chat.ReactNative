@@ -1,6 +1,6 @@
 {
 	"name": "rocket-chat-reactnative",
-	"version": "4.71.0",
+	"version": "4.72.0",
 	"private": true,
 	"packageManager": "yarn@1.22.22",
 	"scripts": {
@@ -51,7 +51,7 @@
 		"@rocket.chat/mobile-crypto": "RocketChat/rocket.chat-mobile-crypto",
 		"@rocket.chat/sdk": "RocketChat/Rocket.Chat.js.SDK#mobile",
 		"@rocket.chat/ui-kit": "^0.39.0",
-		"axios": "~0.28.1",
+		"axios": "0.30.3",
 		"bytebuffer": "~5.0.1",
 		"color2k": "1.2.4",
 		"dayjs": "^1.11.18",
