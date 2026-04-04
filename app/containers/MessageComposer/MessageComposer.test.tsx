@@ -723,6 +723,38 @@ describe('MessageComposer', () => {
 			expect(onSendMessage).toHaveBeenCalledTimes(1);
 			expect(onSendMessage).toHaveBeenCalledWith('Be right back', undefined);
 		});
+		test('select @ user after send uses fresh selection state', async () => {
+			const onSendMessage = jest.fn();
+			(search as unknown as jest.Mock).mockImplementation(() => [{ _id: 'u1', username: 'john', name: 'John' }]);
+			render(<Render context={{ onSendMessage }} />);
+
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'hello @j');
+			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+				nativeEvent: { selection: { start: 8, end: 8 } }
+			});
+			jest.advanceTimersByTime(500);
+			await waitFor(() => expect(screen.getByTestId('autocomplete-item-John')).toBeOnTheScreen());
+
+			await user.press(screen.getByTestId('autocomplete-item-John'));
+			await waitFor(() => expect(screen.queryByTestId('autocomplete')).not.toBeOnTheScreen());
+
+			await user.press(screen.getByTestId('message-composer-send'));
+			expect(onSendMessage).toHaveBeenCalledTimes(1);
+			expect(onSendMessage).toHaveBeenCalledWith('hello @john', undefined);
+
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'second @j');
+			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+				nativeEvent: { selection: { start: 9, end: 9 } }
+			});
+			jest.advanceTimersByTime(500);
+			await waitFor(() => expect(screen.getByTestId('autocomplete-item-John')).toBeOnTheScreen());
+
+			await user.press(screen.getByTestId('autocomplete-item-John'));
+			await user.press(screen.getByTestId('message-composer-send'));
+			expect(onSendMessage).toHaveBeenCalledTimes(2);
+			expect(onSendMessage).toHaveBeenLastCalledWith('second @john', undefined);
+		});
 	});
 
 	describe('edit message', () => {
