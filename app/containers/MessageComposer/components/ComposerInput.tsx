@@ -45,10 +45,10 @@ import useIOSBackSwipeHandler from '../hooks/useIOSBackSwipeHandler';
 
 const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
-function calculateLength(startingText: string, markdown: string, isCodeBlock: boolean) {
+function calculateLength(startingText: string, markdown: string, isCodeBlock: boolean, separator: string) {
 	if (isCodeBlock) {
 		if (startingText.length > 0) {
-			return markdown.length + 2;
+			return markdown.length + separator.length + 1;
 		}
 
 		return markdown.length + 1;
@@ -164,12 +164,15 @@ export const ComposerInput = memo(
 
 						const separator = getSeparator(startingText, isCodeBlock);
 						const beforeMarkdownClose = isCodeBlock ? '\n' : '';
+						const endingText = text.substr(end);
+						const afterMarkdownClose =
+							isCodeBlock && endingText.length > 0 && !endingText.startsWith('\n') ? '\n' : '';
 
 						const newText = `${startingText}${separator}${markdown}${beforeMarkdownClose}${text.substr(
 							start,
 							end - start
-						)}${beforeMarkdownClose}${markdown}${text.substr(end)}`;
-						const length = calculateLength(startingText, markdown, isCodeBlock);
+						)}${beforeMarkdownClose}${markdown}${afterMarkdownClose}${endingText}`;
+						const length = calculateLength(startingText, markdown, isCodeBlock, separator);
 
 						setInput(newText, {
 							start: start + length,
@@ -328,9 +331,11 @@ export const ComposerInput = memo(
 				default:
 					mention = '';
 			}
-			const newText = `${result}${mention} ${text.slice(cursor)}`.trim();
+			const suffix = text.slice(cursor);
+			const separator = suffix.length === 0 || /^\s/.test(suffix) ? '' : ' ';
+			const newText = `${result}${mention}${separator}${suffix}`;
 
-			const newCursor = result.length + mention.length + 1;
+			const newCursor = result.length + mention.length + separator.length;
 			setInput(newText, { start: newCursor, end: newCursor });
 			focus();
 			requestAnimationFrame(() => {
