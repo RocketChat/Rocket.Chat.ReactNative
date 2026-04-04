@@ -252,6 +252,60 @@ describe('MessageComposer', () => {
 				expect(screen.toJSON()).toMatchSnapshot();
 			});
 
+			test('type bold in middle of word without selection inserts markers at cursor', async () => {
+				const onSendMessage = jest.fn();
+				render(<Render context={{ onSendMessage }} />);
+
+				await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'Hello');
+				await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+				await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+					nativeEvent: { selection: { start: 2, end: 2 } }
+				});
+				await waitFor(() => screen.getByTestId('message-composer-open-markdown'));
+				await user.press(screen.getByTestId('message-composer-open-markdown'));
+				await waitFor(() => screen.getByTestId('message-composer-bold'));
+				await user.press(screen.getByTestId('message-composer-bold'));
+				await user.press(screen.getByTestId('message-composer-send'));
+				expect(onSendMessage).toHaveBeenCalledTimes(1);
+				expect(onSendMessage).toHaveBeenCalledWith('He**llo', undefined);
+			});
+
+			test('type bold with selection adds space before markdown', async () => {
+				const onSendMessage = jest.fn();
+				render(<Render context={{ onSendMessage }} />);
+
+				await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'Hello');
+				await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+				await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+					nativeEvent: { selection: { start: 0, end: 5 } }
+				});
+				await waitFor(() => screen.getByTestId('message-composer-open-markdown'));
+				await user.press(screen.getByTestId('message-composer-open-markdown'));
+				await waitFor(() => screen.getByTestId('message-composer-bold'));
+				await user.press(screen.getByTestId('message-composer-bold'));
+				await user.press(screen.getByTestId('message-composer-send'));
+				expect(onSendMessage).toHaveBeenCalledTimes(1);
+				expect(onSendMessage).toHaveBeenCalledWith('*Hello*', undefined);
+			});
+
+			test('type bold after space with selection no extra space added', async () => {
+				const onSendMessage = jest.fn();
+				render(<Render context={{ onSendMessage }} />);
+
+				await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'Hello ');
+				await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+				await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+					nativeEvent: { selection: { start: 0, end: 6 } }
+				});
+				await waitFor(() => screen.getByTestId('message-composer-open-markdown'));
+				await user.press(screen.getByTestId('message-composer-open-markdown'));
+				await waitFor(() => screen.getByTestId('message-composer-bold'));
+				await user.press(screen.getByTestId('message-composer-bold'));
+				await user.press(screen.getByTestId('message-composer-send'));
+				expect(onSendMessage).toHaveBeenCalledTimes(1);
+				expect(onSendMessage).toHaveBeenCalledWith('*Hello *', undefined);
+			});
+
 			test('tap italic', async () => {
 				const onSendMessage = jest.fn();
 				render(<Render context={{ onSendMessage }} />);

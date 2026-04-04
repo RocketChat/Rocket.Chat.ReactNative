@@ -59,7 +59,7 @@ function calculateLength(startingText: string, markdown: string, isCodeBlock: bo
 	return markdown.length + (startingText.length > 0 ? 1 : 0) + (endWithSpace ? -1 : 0);
 }
 
-function getSeparator(startingText: string, isCodeBlock: boolean) {
+function getSeparator(startingText: string, isCodeBlock: boolean, hasSelection: boolean) {
 	if (startingText.length === 0) {
 		return '';
 	}
@@ -70,6 +70,10 @@ function getSeparator(startingText: string, isCodeBlock: boolean) {
 		}
 
 		return '\n';
+	}
+
+	if (!hasSelection) {
+		return '';
 	}
 
 	return startingText.endsWith(' ') ? '' : ' ';
@@ -162,7 +166,7 @@ export const ComposerInput = memo(
 						const isCodeBlock = style === 'code-block';
 						const startingText = text.substr(0, start);
 
-						const separator = getSeparator(startingText, isCodeBlock);
+						const separator = getSeparator(startingText, isCodeBlock, start !== end);
 						const beforeMarkdownClose = isCodeBlock ? '\n' : '';
 						const endingText = text.substr(end);
 						const afterMarkdownClose = isCodeBlock && endingText.length > 0 && !endingText.startsWith('\n') ? '\n' : '';
