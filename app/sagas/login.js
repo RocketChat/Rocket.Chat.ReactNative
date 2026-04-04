@@ -39,6 +39,7 @@ import appNavigation from '../lib/navigation/appNavigation';
 import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
 import { isIOS } from '../lib/methods/helpers';
+import syncWatchOSQuickRepliesWithServer from '../lib/methods/WatchOSQuickReplies/syncWatchOSRepliesWithServer';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => loginWithPassword(args);
@@ -223,6 +224,24 @@ const fetchUsersRoles = function* fetchRoomsFork() {
 	}
 };
 
+const fetchWatchReplies = function* fetchWatchRepliesFork() {
+	try {
+		// we are getting replies from server settings
+		const state = yield select(state => state);
+
+		if (!state.settings?.Apple_Watch_Quick_Actions) {
+			yield delay(1000);
+			const newState = yield select();
+			syncWatchOSQuickRepliesWithServer(newState);
+			return;
+		}
+
+		syncWatchOSQuickRepliesWithServer(state);
+	} catch (e) {
+		log(e);
+	}
+};
+
 const checkBackgroundAndSetAway = function* checkBackgroundAndSetAway() {
 	try {
 		const { background, root } = yield select(state => state.app);
@@ -296,6 +315,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		UserPreferences.setString(CURRENT_SERVER, server);
 		yield put(setUser(user));
 		EventEmitter.emit('connected');
+		yield fork(fetchWatchReplies);
 		const currentRoot = yield select(state => state.app.root);
 		if (currentRoot !== RootEnum.ROOT_SHARE_EXTENSION && currentRoot !== RootEnum.ROOT_LOADING_SHARE_EXTENSION) {
 			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
