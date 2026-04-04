@@ -165,8 +165,7 @@ export const ComposerInput = memo(
 						const separator = getSeparator(startingText, isCodeBlock);
 						const beforeMarkdownClose = isCodeBlock ? '\n' : '';
 						const endingText = text.substr(end);
-						const afterMarkdownClose =
-							isCodeBlock && endingText.length > 0 && !endingText.startsWith('\n') ? '\n' : '';
+						const afterMarkdownClose = isCodeBlock && endingText.length > 0 && !endingText.startsWith('\n') ? '\n' : '';
 
 						const newText = `${startingText}${separator}${markdown}${beforeMarkdownClose}${text.substr(
 							start,
