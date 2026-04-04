@@ -93,6 +93,20 @@ class NotificationIntentHandler {
             }
 
             try {
+                val notId = extras.getString("notId")
+                
+                // Clear the notification messages from the static map to prevent stacking
+                if (!notId.isNullOrEmpty()) {
+                    try {
+                        val notIdInt = notId.toIntOrNull()
+                        if (notIdInt != null) {
+                            CustomPushNotification.clearMessages(notIdInt)
+                        }
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Error clearing notification messages for ID $notId: ${e.message}", e)
+                    }
+                }
+
                 // Extract all notification data from Intent extras
                 // Only include serializable types to avoid JSON serialization errors
                 val notificationData = mutableMapOf<String, Any?>()

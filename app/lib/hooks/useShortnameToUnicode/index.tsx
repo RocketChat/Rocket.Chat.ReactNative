@@ -33,7 +33,7 @@ const useShortnameToUnicode = (isEmojiPicker?: boolean) => {
 	const convertAsciiEmoji = useAppSelector(state => getUserSelector(state)?.settings?.preferences?.convertAsciiEmoji);
 	const formatShortnameToUnicode = (str: string) => {
 		str = str.replace(shortnamePattern, replaceShortNameWithUnicode);
-		str = str.replace(regAscii, (entire, m1, m2, m3) => {
+		str = str.replace(regAscii, (entire, _m1, m2, m3) => {
 			if (!m3 || !(unescapeHTML(m3) in ascii)) {
 				// if the ascii doesnt exist just return the entire match
 				return entire;
