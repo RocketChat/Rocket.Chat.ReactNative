@@ -252,6 +252,60 @@ describe('MessageComposer', () => {
 				expect(screen.toJSON()).toMatchSnapshot();
 			});
 
+			test('type bold in middle of word without selection inserts markers at cursor', async () => {
+				const onSendMessage = jest.fn();
+				render(<Render context={{ onSendMessage }} />);
+
+				await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'Hello');
+				await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+				await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+					nativeEvent: { selection: { start: 2, end: 2 } }
+				});
+				await waitFor(() => screen.getByTestId('message-composer-open-markdown'));
+				await user.press(screen.getByTestId('message-composer-open-markdown'));
+				await waitFor(() => screen.getByTestId('message-composer-bold'));
+				await user.press(screen.getByTestId('message-composer-bold'));
+				await user.press(screen.getByTestId('message-composer-send'));
+				expect(onSendMessage).toHaveBeenCalledTimes(1);
+				expect(onSendMessage).toHaveBeenCalledWith('He**llo', undefined);
+			});
+
+			test('type bold with selection adds space before markdown', async () => {
+				const onSendMessage = jest.fn();
+				render(<Render context={{ onSendMessage }} />);
+
+				await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'Hello');
+				await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+				await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+					nativeEvent: { selection: { start: 0, end: 5 } }
+				});
+				await waitFor(() => screen.getByTestId('message-composer-open-markdown'));
+				await user.press(screen.getByTestId('message-composer-open-markdown'));
+				await waitFor(() => screen.getByTestId('message-composer-bold'));
+				await user.press(screen.getByTestId('message-composer-bold'));
+				await user.press(screen.getByTestId('message-composer-send'));
+				expect(onSendMessage).toHaveBeenCalledTimes(1);
+				expect(onSendMessage).toHaveBeenCalledWith('*Hello*', undefined);
+			});
+
+			test('type bold after space with selection no extra space added', async () => {
+				const onSendMessage = jest.fn();
+				render(<Render context={{ onSendMessage }} />);
+
+				await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'Hello ');
+				await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+				await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+					nativeEvent: { selection: { start: 0, end: 6 } }
+				});
+				await waitFor(() => screen.getByTestId('message-composer-open-markdown'));
+				await user.press(screen.getByTestId('message-composer-open-markdown'));
+				await waitFor(() => screen.getByTestId('message-composer-bold'));
+				await user.press(screen.getByTestId('message-composer-bold'));
+				await user.press(screen.getByTestId('message-composer-send'));
+				expect(onSendMessage).toHaveBeenCalledTimes(1);
+				expect(onSendMessage).toHaveBeenCalledWith('*Hello *', undefined);
+			});
+
 			test('tap italic', async () => {
 				const onSendMessage = jest.fn();
 				render(<Render context={{ onSendMessage }} />);
@@ -365,7 +419,7 @@ describe('MessageComposer', () => {
 				await user.press(screen.getByTestId('message-composer-code-block'));
 				await user.press(screen.getByTestId('message-composer-send'));
 				expect(onSendMessage).toHaveBeenCalledTimes(1);
-				expect(onSendMessage).toHaveBeenCalledWith('``````', undefined);
+				expect(onSendMessage).toHaveBeenCalledWith('```\n\n```', undefined);
 				expect(screen.toJSON()).toMatchSnapshot();
 			});
 
@@ -384,7 +438,26 @@ describe('MessageComposer', () => {
 				await user.press(screen.getByTestId('message-composer-code-block'));
 				await user.press(screen.getByTestId('message-composer-send'));
 				expect(onSendMessage).toHaveBeenCalledTimes(1);
-				expect(onSendMessage).toHaveBeenCalledWith('```test```', undefined);
+				expect(onSendMessage).toHaveBeenCalledWith('```\ntest\n```', undefined);
+				expect(screen.toJSON()).toMatchSnapshot();
+			});
+
+			test('wrap code-block with trailing text adds newline before trailing content', async () => {
+				const onSendMessage = jest.fn();
+				render(<Render context={{ onSendMessage }} />);
+
+				await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'Hello world, how are you?');
+				await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+				await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+					nativeEvent: { selection: { start: 6, end: 11 } }
+				});
+				await waitFor(() => screen.getByTestId('message-composer-open-markdown'));
+				await user.press(screen.getByTestId('message-composer-open-markdown'));
+				await waitFor(() => screen.getByTestId('message-composer-code-block'));
+				await user.press(screen.getByTestId('message-composer-code-block'));
+				await user.press(screen.getByTestId('message-composer-send'));
+				expect(onSendMessage).toHaveBeenCalledTimes(1);
+				expect(onSendMessage).toHaveBeenCalledWith('Hello \n```\nworld\n```\n, how are you?', undefined);
 				expect(screen.toJSON()).toMatchSnapshot();
 			});
 		});
@@ -437,6 +510,69 @@ describe('MessageComposer', () => {
 			await user.press(screen.getByTestId('message-composer-send'));
 			expect(onSendMessage).toHaveBeenCalledTimes(1);
 			expect(onSendMessage).toHaveBeenCalledWith('@john', undefined);
+		});
+
+		test('select @ user preserves leading whitespace in message', async () => {
+			const onSendMessage = jest.fn();
+			(search as unknown as jest.Mock).mockImplementationOnce(() => [{ _id: 'u1', username: 'john', name: 'John' }]);
+			render(<Render context={{ onSendMessage }} />);
+
+			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), '  hello @j');
+			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+				nativeEvent: { selection: { start: 10, end: 10 } }
+			});
+			jest.advanceTimersByTime(500);
+			await waitFor(() => expect(screen.getByTestId('autocomplete-item-John')).toBeOnTheScreen());
+
+			await user.press(screen.getByTestId('autocomplete-item-John'));
+			await waitFor(() => expect(screen.queryByTestId('autocomplete')).not.toBeOnTheScreen());
+
+			await user.press(screen.getByTestId('message-composer-send'));
+			expect(onSendMessage).toHaveBeenCalledTimes(1);
+			expect(onSendMessage).toHaveBeenCalledWith('  hello @john', undefined);
+		});
+
+		test('select @ user at EOF positions cursor correctly', async () => {
+			const onSendMessage = jest.fn();
+			(search as unknown as jest.Mock).mockImplementationOnce(() => [{ _id: 'u1', username: 'john', name: 'John' }]);
+			render(<Render context={{ onSendMessage }} />);
+
+			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'hello @j');
+			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+				nativeEvent: { selection: { start: 8, end: 8 } }
+			});
+			jest.advanceTimersByTime(500);
+			await waitFor(() => expect(screen.getByTestId('autocomplete-item-John')).toBeOnTheScreen());
+
+			await user.press(screen.getByTestId('autocomplete-item-John'));
+			await waitFor(() => expect(screen.queryByTestId('autocomplete')).not.toBeOnTheScreen());
+
+			await user.press(screen.getByTestId('message-composer-send'));
+			expect(onSendMessage).toHaveBeenCalledTimes(1);
+			expect(onSendMessage).toHaveBeenCalledWith('hello @john', undefined);
+		});
+
+		test('select @ user avoids double space when suffix has whitespace', async () => {
+			const onSendMessage = jest.fn();
+			(search as unknown as jest.Mock).mockImplementationOnce(() => [{ _id: 'u1', username: 'john', name: 'John' }]);
+			render(<Render context={{ onSendMessage }} />);
+
+			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'hello @j world');
+			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+				nativeEvent: { selection: { start: 8, end: 8 } }
+			});
+			jest.advanceTimersByTime(500);
+			await waitFor(() => expect(screen.getByTestId('autocomplete-item-John')).toBeOnTheScreen());
+
+			await user.press(screen.getByTestId('autocomplete-item-John'));
+			await waitFor(() => expect(screen.queryByTestId('autocomplete')).not.toBeOnTheScreen());
+
+			await user.press(screen.getByTestId('message-composer-send'));
+			expect(onSendMessage).toHaveBeenCalledTimes(1);
+			expect(onSendMessage).toHaveBeenCalledWith('hello @john world', undefined);
 		});
 
 		test('does not show @all or @here in autocomplete when user does not have permissions', async () => {
@@ -586,6 +722,38 @@ describe('MessageComposer', () => {
 			await user.press(screen.getByTestId('message-composer-send'));
 			expect(onSendMessage).toHaveBeenCalledTimes(1);
 			expect(onSendMessage).toHaveBeenCalledWith('Be right back', undefined);
+		});
+		test('select @ user after send uses fresh selection state', async () => {
+			const onSendMessage = jest.fn();
+			(search as unknown as jest.Mock).mockImplementation(() => [{ _id: 'u1', username: 'john', name: 'John' }]);
+			render(<Render context={{ onSendMessage }} />);
+
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'hello @j');
+			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+				nativeEvent: { selection: { start: 8, end: 8 } }
+			});
+			jest.advanceTimersByTime(500);
+			await waitFor(() => expect(screen.getByTestId('autocomplete-item-John')).toBeOnTheScreen());
+
+			await user.press(screen.getByTestId('autocomplete-item-John'));
+			await waitFor(() => expect(screen.queryByTestId('autocomplete')).not.toBeOnTheScreen());
+
+			await user.press(screen.getByTestId('message-composer-send'));
+			expect(onSendMessage).toHaveBeenCalledTimes(1);
+			expect(onSendMessage).toHaveBeenCalledWith('hello @john', undefined);
+
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'second @j');
+			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+				nativeEvent: { selection: { start: 9, end: 9 } }
+			});
+			jest.advanceTimersByTime(500);
+			await waitFor(() => expect(screen.getByTestId('autocomplete-item-John')).toBeOnTheScreen());
+
+			await user.press(screen.getByTestId('autocomplete-item-John'));
+			await user.press(screen.getByTestId('message-composer-send'));
+			expect(onSendMessage).toHaveBeenCalledTimes(2);
+			expect(onSendMessage).toHaveBeenLastCalledWith('second @john', undefined);
 		});
 	});
 

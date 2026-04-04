@@ -45,6 +45,40 @@ import useIOSBackSwipeHandler from '../hooks/useIOSBackSwipeHandler';
 
 const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
+function calculateLength(startingText: string, markdown: string, isCodeBlock: boolean, separator: string) {
+	if (isCodeBlock) {
+		if (startingText.length > 0) {
+			return markdown.length + separator.length + 1;
+		}
+
+		return markdown.length + 1;
+	}
+
+	const endWithSpace = startingText.endsWith(' ');
+
+	return markdown.length + (startingText.length > 0 ? 1 : 0) + (endWithSpace ? -1 : 0);
+}
+
+function getSeparator(startingText: string, isCodeBlock: boolean, hasSelection: boolean) {
+	if (startingText.length === 0) {
+		return '';
+	}
+
+	if (isCodeBlock) {
+		if (/```(\s*)$/.test(startingText)) {
+			return '';
+		}
+
+		return '\n';
+	}
+
+	if (!hasSelection) {
+		return '';
+	}
+
+	return startingText.endsWith(' ') ? '' : ' ';
+}
+
 export const ComposerInput = memo(
 	forwardRef<IComposerInput, IComposerInputProps>(({ inputRef }, ref) => {
 		const { colors, theme } = useTheme();
@@ -129,10 +163,23 @@ export const ComposerInput = memo(
 						const { start, end } = selectionRef.current;
 						const text = textRef.current;
 						const markdown = MARKDOWN_STYLES[style];
-						const newText = `${text.substr(0, start)}${markdown}${text.substr(start, end - start)}${markdown}${text.substr(end)}`;
+						const isCodeBlock = style === 'code-block';
+						const startingText = text.substr(0, start);
+
+						const separator = getSeparator(startingText, isCodeBlock, start !== end);
+						const beforeMarkdownClose = isCodeBlock ? '\n' : '';
+						const endingText = text.substr(end);
+						const afterMarkdownClose = isCodeBlock && endingText.length > 0 && !endingText.startsWith('\n') ? '\n' : '';
+
+						const newText = `${startingText}${separator}${markdown}${beforeMarkdownClose}${text.substr(
+							start,
+							end - start
+						)}${beforeMarkdownClose}${markdown}${afterMarkdownClose}${endingText}`;
+						const length = calculateLength(startingText, markdown, isCodeBlock, separator);
+
 						setInput(newText, {
-							start: start + markdown.length,
-							end: start === end ? start + markdown.length : end + markdown.length
+							start: start + length,
+							end: start === end ? start + length : end + length
 						});
 					});
 					emitter.on('toolbarMention', () => {
@@ -157,7 +204,7 @@ export const ComposerInput = memo(
 		useImperativeHandle(ref, () => ({
 			getTextAndClear: () => {
 				const text = textRef.current;
-				setInput('', undefined, true);
+				setInput('', { start: 0, end: 0 }, true);
 				return text;
 			},
 			getText: () => textRef.current,
@@ -168,7 +215,7 @@ export const ComposerInput = memo(
 		}));
 
 		const setInput: TSetInput = (text, selection, forceUpdateDraftMessage) => {
-			const message = text.trim();
+			const message = text;
 			textRef.current = message;
 
 			if (forceUpdateDraftMessage) {
@@ -178,10 +225,10 @@ export const ComposerInput = memo(
 			inputRef.current?.setNativeProps?.({ text });
 
 			if (selection) {
+				selectionRef.current = selection;
 				// setSelection won't trigger onSelectionChange, so we need it to be ran after new text is set
 				setTimeout(() => {
 					inputRef.current?.setSelection?.(selection.start, selection.end);
-					selectionRef.current = selection;
 				}, 50);
 			}
 			setMicOrSend(message.length === 0 ? 'mic' : 'send');
@@ -287,9 +334,11 @@ export const ComposerInput = memo(
 				default:
 					mention = '';
 			}
-			const newText = `${result}${mention} ${text.slice(cursor)}`;
+			const suffix = text.slice(cursor);
+			const separator = suffix.length === 0 || /^\s/.test(suffix) ? '' : ' ';
+			const newText = `${result}${mention}${separator}${suffix}`;
 
-			const newCursor = result.length + mention.length + 1;
+			const newCursor = result.length + mention.length + separator.length;
 			setInput(newText, { start: newCursor, end: newCursor });
 			focus();
 			requestAnimationFrame(() => {
