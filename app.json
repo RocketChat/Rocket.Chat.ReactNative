@@ -1,4 +1,3 @@
 {
-	"name": "RocketChatRN",
-	"plugins": ["expo-audio", "@react-native-community/datetimepicker", "expo-web-browser", "expo-video"]
+	"name": "RocketChatRN"
 }
