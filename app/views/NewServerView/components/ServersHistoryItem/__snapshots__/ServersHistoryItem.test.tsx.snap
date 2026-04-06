@@ -39,15 +39,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
             {
               "height": 68,
             },
-            {
-              "left": undefined,
-              "right": 0,
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -57,7 +49,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={1}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -130,21 +122,14 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={2}
+        enabled={true}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -221,7 +206,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
           >
             <ViewManagerAdapter_ExpoImage
               borderRadius={4}
-              containerViewRef={"[React.ref]"}
+              containerViewRef={{"current":"Object"}}
               contentFit="contain"
               contentPosition={
                 {
@@ -230,7 +215,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                 }
               }
               height={44}
-              nativeViewRef={"[React.ref]"}
+              nativeViewRef={{"current":"NativeComponent"}}
               onError={[Function]}
               onLoad={[Function]}
               onLoadStart={[Function]}
@@ -345,15 +330,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
             {
               "height": 68,
             },
-            {
-              "left": undefined,
-              "right": 0,
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -363,7 +340,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={3}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -436,21 +413,14 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={4}
+        enabled={true}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -527,7 +497,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
           >
             <ViewManagerAdapter_ExpoImage
               borderRadius={4}
-              containerViewRef={"[React.ref]"}
+              containerViewRef={{"current":"Object"}}
               contentFit="contain"
               contentPosition={
                 {
@@ -536,7 +506,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                 }
               }
               height={44}
-              nativeViewRef={"[React.ref]"}
+              nativeViewRef={{"current":"NativeComponent"}}
               onError={[Function]}
               onLoad={[Function]}
               onLoadStart={[Function]}
@@ -651,15 +621,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
             {
               "height": 68,
             },
-            {
-              "left": undefined,
-              "right": 0,
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -669,7 +631,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={5}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -742,21 +704,14 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={6}
+        enabled={true}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -833,7 +788,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
           >
             <ViewManagerAdapter_ExpoImage
               borderRadius={4}
-              containerViewRef={"[React.ref]"}
+              containerViewRef={{"current":"Object"}}
               contentFit="contain"
               contentPosition={
                 {
@@ -842,7 +797,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                 }
               }
               height={44}
-              nativeViewRef={"[React.ref]"}
+              nativeViewRef={{"current":"NativeComponent"}}
               onError={[Function]}
               onLoad={[Function]}
               onLoadStart={[Function]}
@@ -962,15 +917,7 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
             {
               "height": 68,
             },
-            {
-              "left": undefined,
-              "right": 0,
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -980,7 +927,7 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={10}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -1053,21 +1000,14 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={11}
+        enabled={true}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -1144,7 +1084,7 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
           >
             <ViewManagerAdapter_ExpoImage
               borderRadius={4}
-              containerViewRef={"[React.ref]"}
+              containerViewRef={{"current":"Object"}}
               contentFit="contain"
               contentPosition={
                 {
@@ -1153,7 +1093,7 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
                 }
               }
               height={44}
-              nativeViewRef={"[React.ref]"}
+              nativeViewRef={{"current":"NativeComponent"}}
               onError={[Function]}
               onLoad={[Function]}
               onLoadStart={[Function]}
@@ -1268,15 +1208,7 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
             {
               "height": 68,
             },
-            {
-              "left": undefined,
-              "right": 0,
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -1286,7 +1218,7 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={12}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -1359,21 +1291,14 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={13}
+        enabled={true}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -1450,7 +1375,7 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
           >
             <ViewManagerAdapter_ExpoImage
               borderRadius={4}
-              containerViewRef={"[React.ref]"}
+              containerViewRef={{"current":"Object"}}
               contentFit="contain"
               contentPosition={
                 {
@@ -1459,7 +1384,7 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
                 }
               }
               height={44}
-              nativeViewRef={"[React.ref]"}
+              nativeViewRef={{"current":"NativeComponent"}}
               onError={[Function]}
               onLoad={[Function]}
               onLoadStart={[Function]}
@@ -1579,15 +1504,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             {
               "height": 68,
             },
-            {
-              "left": undefined,
-              "right": 0,
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -1597,7 +1514,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={16}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -1670,21 +1587,14 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={17}
+        enabled={true}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -1761,7 +1671,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           >
             <ViewManagerAdapter_ExpoImage
               borderRadius={4}
-              containerViewRef={"[React.ref]"}
+              containerViewRef={{"current":"Object"}}
               contentFit="contain"
               contentPosition={
                 {
@@ -1770,7 +1680,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                 }
               }
               height={44}
-              nativeViewRef={"[React.ref]"}
+              nativeViewRef={{"current":"NativeComponent"}}
               onError={[Function]}
               onLoad={[Function]}
               onLoadStart={[Function]}
@@ -1885,15 +1795,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             {
               "height": 68,
             },
-            {
-              "left": undefined,
-              "right": 0,
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -1903,7 +1805,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={18}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -1976,21 +1878,14 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={19}
+        enabled={true}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -2067,7 +1962,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           >
             <ViewManagerAdapter_ExpoImage
               borderRadius={4}
-              containerViewRef={"[React.ref]"}
+              containerViewRef={{"current":"Object"}}
               contentFit="contain"
               contentPosition={
                 {
@@ -2076,7 +1971,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                 }
               }
               height={44}
-              nativeViewRef={"[React.ref]"}
+              nativeViewRef={{"current":"NativeComponent"}}
               onError={[Function]}
               onLoad={[Function]}
               onLoadStart={[Function]}
@@ -2191,15 +2086,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             {
               "height": 68,
             },
-            {
-              "left": undefined,
-              "right": 0,
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -2209,7 +2096,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={20}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -2282,21 +2169,14 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={21}
+        enabled={true}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -2373,7 +2253,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           >
             <ViewManagerAdapter_ExpoImage
               borderRadius={4}
-              containerViewRef={"[React.ref]"}
+              containerViewRef={{"current":"Object"}}
               contentFit="contain"
               contentPosition={
                 {
@@ -2382,7 +2262,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                 }
               }
               height={44}
-              nativeViewRef={"[React.ref]"}
+              nativeViewRef={{"current":"NativeComponent"}}
               onError={[Function]}
               onLoad={[Function]}
               onLoadStart={[Function]}

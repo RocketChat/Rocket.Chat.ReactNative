@@ -707,7 +707,7 @@ exports[`Story Snapshots: ListItemWithRightContainerStyle should match snapshot 
   collapsable={false}
   delayLongPress={600}
   enabled={true}
-  handlerTag={1}
+  handlerTag={-1}
   handlerType="NativeViewGestureHandler"
   innerRef={null}
   onActiveStateChange={[Function]}
@@ -974,7 +974,7 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-      handlerTag={2}
+      handlerTag={-1}
       handlerType="NativeViewGestureHandler"
       innerRef={null}
       onActiveStateChange={[Function]}
@@ -1105,8 +1105,8 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
       activeOpacity={1}
       collapsable={false}
       delayLongPress={600}
-      enabled={false}
-      handlerTag={3}
+      enabled={true}
+      handlerTag={-1}
       handlerType="NativeViewGestureHandler"
       innerRef={null}
       onActiveStateChange={[Function]}
@@ -1273,7 +1273,7 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-      handlerTag={4}
+      handlerTag={-1}
       handlerType="NativeViewGestureHandler"
       innerRef={null}
       onActiveStateChange={[Function]}
@@ -1454,7 +1454,7 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-      handlerTag={5}
+      handlerTag={-1}
       handlerType="NativeViewGestureHandler"
       innerRef={null}
       onActiveStateChange={[Function]}
@@ -1635,7 +1635,7 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-      handlerTag={6}
+      handlerTag={-1}
       handlerType="NativeViewGestureHandler"
       innerRef={null}
       onActiveStateChange={[Function]}
@@ -1816,7 +1816,7 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-      handlerTag={7}
+      handlerTag={-1}
       handlerType="NativeViewGestureHandler"
       innerRef={null}
       onActiveStateChange={[Function]}
@@ -3440,7 +3440,7 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
           collapsable={false}
           delayLongPress={600}
           enabled={true}
-          handlerTag={8}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -3685,8 +3685,8 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
           activeOpacity={1}
           collapsable={false}
           delayLongPress={600}
-          enabled={false}
-          handlerTag={9}
+          enabled={true}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -4011,7 +4011,7 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
           collapsable={false}
           delayLongPress={600}
           enabled={true}
-          handlerTag={10}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -4256,8 +4256,8 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
           activeOpacity={1}
           collapsable={false}
           delayLongPress={600}
-          enabled={false}
-          handlerTag={11}
+          enabled={true}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -4624,7 +4624,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
           collapsable={false}
           delayLongPress={600}
           enabled={true}
-          handlerTag={12}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -4869,8 +4869,8 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
           activeOpacity={1}
           collapsable={false}
           delayLongPress={600}
-          enabled={false}
-          handlerTag={13}
+          enabled={true}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -5195,7 +5195,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
           collapsable={false}
           delayLongPress={600}
           enabled={true}
-          handlerTag={14}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -5440,8 +5440,8 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
           activeOpacity={1}
           collapsable={false}
           delayLongPress={600}
-          enabled={false}
-          handlerTag={15}
+          enabled={true}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -5833,7 +5833,7 @@ exports[`Story Snapshots: WithCustomColors should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-      handlerTag={16}
+      handlerTag={-1}
       handlerType="NativeViewGestureHandler"
       innerRef={null}
       onActiveStateChange={[Function]}
@@ -6054,7 +6054,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
           collapsable={false}
           delayLongPress={600}
           enabled={true}
-          handlerTag={17}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -6150,7 +6150,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                     style={
                       [
                         {
-                          "color": "#C1C7D0",
+                          "color": "#E4E7EA",
                           "fontSize": 24,
                         },
                         [
@@ -6202,7 +6202,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                         },
                         undefined,
                         {
-                          "color": "#C1C7D0",
+                          "color": "#E4E7EA",
                         },
                       ]
                     }
@@ -6257,7 +6257,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                     style={
                       [
                         {
-                          "color": "#C1C7D0",
+                          "color": "#E4E7EA",
                           "fontSize": 24,
                         },
                         [
@@ -6299,8 +6299,8 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
           activeOpacity={1}
           collapsable={false}
           delayLongPress={600}
-          enabled={false}
-          handlerTag={18}
+          enabled={true}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -6398,7 +6398,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                     style={
                       [
                         {
-                          "color": "#C1C7D0",
+                          "color": "#E4E7EA",
                           "fontSize": 24,
                         },
                         [
@@ -6450,7 +6450,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                         },
                         undefined,
                         {
-                          "color": "#C1C7D0",
+                          "color": "#E4E7EA",
                         },
                       ]
                     }
@@ -6505,7 +6505,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                     style={
                       [
                         {
-                          "color": "#C1C7D0",
+                          "color": "#E4E7EA",
                           "fontSize": 24,
                         },
                         [
@@ -6625,7 +6625,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
           collapsable={false}
           delayLongPress={600}
           enabled={true}
-          handlerTag={19}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -6721,7 +6721,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                     style={
                       [
                         {
-                          "color": "#C1C7D0",
+                          "color": "#E4E7EA",
                           "fontSize": 24,
                         },
                         [
@@ -6773,7 +6773,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                         },
                         undefined,
                         {
-                          "color": "#C1C7D0",
+                          "color": "#E4E7EA",
                         },
                       ]
                     }
@@ -6828,7 +6828,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                     style={
                       [
                         {
-                          "color": "#C1C7D0",
+                          "color": "#E4E7EA",
                           "fontSize": 24,
                         },
                         [
@@ -6870,8 +6870,8 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
           activeOpacity={1}
           collapsable={false}
           delayLongPress={600}
-          enabled={false}
-          handlerTag={20}
+          enabled={true}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -6969,7 +6969,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                     style={
                       [
                         {
-                          "color": "#C1C7D0",
+                          "color": "#E4E7EA",
                           "fontSize": 24,
                         },
                         [
@@ -7021,7 +7021,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                         },
                         undefined,
                         {
-                          "color": "#C1C7D0",
+                          "color": "#E4E7EA",
                         },
                       ]
                     }
@@ -7076,7 +7076,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                     style={
                       [
                         {
-                          "color": "#C1C7D0",
+                          "color": "#E4E7EA",
                           "fontSize": 24,
                         },
                         [
@@ -8870,7 +8870,7 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
           collapsable={false}
           delayLongPress={600}
           enabled={true}
-          handlerTag={21}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -9115,8 +9115,8 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
           activeOpacity={1}
           collapsable={false}
           delayLongPress={600}
-          enabled={false}
-          handlerTag={22}
+          enabled={true}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -9441,7 +9441,7 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
           collapsable={false}
           delayLongPress={600}
           enabled={true}
-          handlerTag={23}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -9686,8 +9686,8 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
           activeOpacity={1}
           collapsable={false}
           delayLongPress={600}
-          enabled={false}
-          handlerTag={24}
+          enabled={true}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
