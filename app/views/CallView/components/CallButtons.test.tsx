@@ -45,7 +45,7 @@ describe('CallButtons', () => {
 		useCallStore.setState({ controlsVisible: false });
 		const { getByTestId } = render(
 			<Wrapper>
-				<CallButtons />
+				<CallButtons layoutMode='narrow' />
 			</Wrapper>
 		);
 
@@ -57,7 +57,7 @@ describe('CallButtons', () => {
 		useCallStore.setState({ controlsVisible: true });
 		const { getByTestId } = render(
 			<Wrapper>
-				<CallButtons />
+				<CallButtons layoutMode='narrow' />
 			</Wrapper>
 		);
 
@@ -68,7 +68,7 @@ describe('CallButtons', () => {
 	it('message button calls navigateToCallRoom when enabled', () => {
 		const { getByTestId } = render(
 			<Wrapper>
-				<CallButtons />
+				<CallButtons layoutMode='narrow' />
 			</Wrapper>
 		);
 		fireEvent.press(getByTestId('call-view-message'));
@@ -81,7 +81,7 @@ describe('CallButtons', () => {
 		});
 		const { getByTestId } = render(
 			<Wrapper>
-				<CallButtons />
+				<CallButtons layoutMode='narrow' />
 			</Wrapper>
 		);
 		fireEvent.press(getByTestId('call-view-message'));
@@ -92,7 +92,7 @@ describe('CallButtons', () => {
 		useCallStore.setState({ roomId: null });
 		const { getByTestId } = render(
 			<Wrapper>
-				<CallButtons />
+				<CallButtons layoutMode='narrow' />
 			</Wrapper>
 		);
 		fireEvent.press(getByTestId('call-view-message'));

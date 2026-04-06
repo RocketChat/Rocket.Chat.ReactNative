@@ -35,7 +35,6 @@ export const FilterHeader = (): React.ReactElement => {
 				<FormTextInput
 					containerStyle={styles.searchInputContainer}
 					iconRight='search'
-					bottomSheet
 					showErrorMessage={false}
 					testID='new-media-call-search-input'
 					onChangeText={handleChangeText}
