@@ -1,5 +1,6 @@
 import { renderHook, act } from '@testing-library/react-native';
 import { AccessibilityInfo } from 'react-native';
+
 import { useIsScreenReaderEnabled } from './useIsScreenReaderEnabled';
 
 describe('useIsScreenReaderEnabled', () => {
