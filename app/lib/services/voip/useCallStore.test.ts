@@ -13,12 +13,6 @@ jest.mock('../../../containers/ActionSheet', () => ({
 
 jest.mock('react-native-callkeep', () => ({}));
 
-jest.mock('react-native-incall-manager', () => ({
-	start: jest.fn(),
-	stop: jest.fn(),
-	setForceSpeakerphoneOn: jest.fn()
-}));
-
 function createMockCall(callId: string) {
 	const listeners: Record<string, Set<(...args: unknown[]) => void>> = {};
 	const emitter = {
@@ -127,6 +121,24 @@ describe('useCallStore controlsVisible', () => {
 		expect(useCallStore.getState().controlsVisible).toBe(false);
 		useCallStore.getState().reset();
 		expect(useCallStore.getState().controlsVisible).toBe(true);
+	});
+});
+
+describe('useCallStore roomId', () => {
+	beforeEach(() => {
+		useCallStore.getState().resetNativeCallId();
+		useCallStore.getState().reset();
+	});
+
+	it('setRoomId sets the value', () => {
+		useCallStore.getState().setRoomId('room-rid-abc');
+		expect(useCallStore.getState().roomId).toBe('room-rid-abc');
+	});
+
+	it('reset clears roomId to null', () => {
+		useCallStore.getState().setRoomId('room-rid-abc');
+		useCallStore.getState().reset();
+		expect(useCallStore.getState().roomId).toBeNull();
 	});
 });
 

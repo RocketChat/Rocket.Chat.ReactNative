@@ -3,6 +3,7 @@ import { fireEvent, render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
 import CallView from '.';
+import { navigateToCallRoom } from '../../lib/services/voip/navigateToCallRoom';
 import { useCallStore } from '../../lib/services/voip/useCallStore';
 import { mockedStore } from '../../reducers/mockedStore';
 import * as stories from './CallView.stories';
@@ -13,6 +14,12 @@ jest.mock('react-native/Libraries/Utilities/useWindowDimensions', () => ({
 	__esModule: true,
 	default: () => ({ width: mockWindowWidth, height: 800, scale: 1, fontScale: 1 })
 }));
+
+jest.mock('../../lib/services/voip/navigateToCallRoom', () => ({
+	navigateToCallRoom: jest.fn().mockResolvedValue(undefined)
+}));
+
+const mockNavigateToCallRoom = jest.mocked(navigateToCallRoom);
 
 // Mock ResponsiveLayoutContext for snapshots
 jest.mock('../../lib/hooks/useResponsiveLayout/useResponsiveLayout', () => {
@@ -32,9 +39,6 @@ jest.mock('../../lib/hooks/useResponsiveLayout/useResponsiveLayout', () => {
 	};
 });
 
-// Mock alert
-global.alert = jest.fn();
-
 const mockShowActionSheetRef = jest.fn();
 jest.mock('../../containers/ActionSheet', () => ({
 	showActionSheetRef: (options: any) => mockShowActionSheetRef(options),
@@ -49,7 +53,7 @@ const createMockCall = (overrides: any = {}) => ({
 	contact: {
 		displayName: 'Bob Burnquist',
 		username: 'bob.burnquist',
-		sipExtension: '2244'
+		sipExtension: ''
 	},
 	setMuted: jest.fn(),
 	setHeld: jest.fn(),
@@ -76,8 +80,9 @@ const setStoreState = (overrides: Partial<ReturnType<typeof useCallStore.getStat
 		contact: {
 			displayName: 'Bob Burnquist',
 			username: 'bob.burnquist',
-			sipExtension: '2244'
+			sipExtension: ''
 		},
+		roomId: 'test-room-rid',
 		...overrides
 	});
 };
@@ -248,7 +253,7 @@ describe('CallView', () => {
 		expect(endCall).toHaveBeenCalledTimes(1);
 	});
 
-	it('should show alert when message button is pressed', () => {
+	it('should call navigateToCallRoom when message button is pressed', () => {
 		setStoreState({ callState: 'active' });
 		const { getByTestId } = render(
 			<Wrapper>
@@ -257,7 +262,7 @@ describe('CallView', () => {
 		);
 
 		fireEvent.press(getByTestId('call-view-message'));
-		expect(global.alert).toHaveBeenCalledWith('Message');
+		expect(mockNavigateToCallRoom).toHaveBeenCalledTimes(1);
 	});
 
 	it('should show action sheet with dialpad when dialpad button is pressed', () => {
