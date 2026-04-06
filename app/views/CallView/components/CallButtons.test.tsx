@@ -11,9 +11,10 @@ jest.mock('../../../lib/services/voip/navigateToCallRoom', () => ({
 	navigateToCallRoom: jest.fn().mockResolvedValue(undefined)
 }));
 
+const mockShowActionSheetRef = jest.fn();
 jest.mock('../../../containers/ActionSheet', () => ({
-	...jest.requireActual('../../../containers/ActionSheet'),
-	showActionSheetRef: jest.fn()
+	showActionSheetRef: (options: any) => mockShowActionSheetRef(options),
+	hideActionSheetRef: jest.fn()
 }));
 
 const mockNavigateToCallRoom = jest.mocked(navigateToCallRoom);
