@@ -85,7 +85,13 @@ export const CallButtons = ({ layoutMode }: { layoutMode: LayoutMode }) => {
 	);
 
 	const messageButton = (
-		<CallActionButton icon='message' label={I18n.t('Message')} onPress={handleMessage} disabled={messageDisabled} testID='call-view-message' />
+		<CallActionButton
+			icon='message'
+			label={I18n.t('Message')}
+			onPress={handleMessage}
+			disabled={messageDisabled}
+			testID='call-view-message'
+		/>
 	);
 
 	const endButton = (
