@@ -4,13 +4,13 @@ import Animated, {
 	useAnimatedStyle,
 	interpolate,
 	withSpring,
-	runOnJS,
 	useAnimatedReaction,
 	useSharedValue,
 	type SharedValue
 } from 'react-native-reanimated';
 import { RectButton } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
+import { scheduleOnRN } from 'react-native-worklets';
 
 import { CustomIcon } from '../../CustomIcon';
 import { useTheme } from '../../../theme';
@@ -44,14 +44,14 @@ export const DeleteAction = React.memo(
 			(currentTransX, previousTransX) => {
 				if (I18n.isRTL) {
 					if (previousTransX && currentTransX > longSwipe && previousTransX <= longSwipe) {
-						runOnJS(triggerDeleteAnimation)(actionWidth);
+						scheduleOnRN(triggerDeleteAnimation, actionWidth);
 					} else if (previousTransX && currentTransX <= longSwipe && previousTransX > longSwipe) {
-						runOnJS(triggerDeleteAnimation)(0);
+						scheduleOnRN(triggerDeleteAnimation, 0);
 					}
 				} else if (previousTransX && currentTransX < -longSwipe && previousTransX >= -longSwipe) {
-					runOnJS(triggerDeleteAnimation)(-actionWidth);
+					scheduleOnRN(triggerDeleteAnimation, -actionWidth);
 				} else if (previousTransX && currentTransX >= -longSwipe && previousTransX < -longSwipe) {
-					runOnJS(triggerDeleteAnimation)(0);
+					scheduleOnRN(triggerDeleteAnimation, 0);
 				}
 			}
 		);
