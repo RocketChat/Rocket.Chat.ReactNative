@@ -40,7 +40,9 @@ const MediaCallHeader = () => {
 					duration: CONTROLS_ANIMATION_DURATION
 				})
 			}
-		]
+		],
+		backgroundColor: withTiming(shouldHide ? 'transparent' : colors.surfaceNeutral, { duration: CONTROLS_ANIMATION_DURATION }),
+		borderBottomColor: withTiming(shouldHide ? 'transparent' : colors.strokeLight, { duration: CONTROLS_ANIMATION_DURATION })
 	}));
 
 	const defaultHeaderStyle = {
