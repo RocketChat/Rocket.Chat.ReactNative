@@ -33,7 +33,7 @@ import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 import com.reactnativecommunity.webview.RNCWebViewManager;
-import expo.modules.filesystem.FileSystemModule;
+import expo.modules.filesystem.legacy.FileSystemLegacyModule;
 import chat.rocket.reactnative.networking.ExpoImageClient;
 
 public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyChainAliasCallback {
@@ -107,7 +107,7 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
         RNCWebViewManager.setCertificateAlias(name);
 
         // Expo File System network layer
-        FileSystemModule.setOkHttpClient(client);
+        FileSystemLegacyModule.setOkHttpClient(client);
         // Expo Image network layer
         ExpoImageClient.setOkHttpClient(client);
         ExpoImageClient.applyToGlide(this.reactContext);
