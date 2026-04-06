@@ -41,5 +41,17 @@ export const styles = StyleSheet.create({
 		lineHeight: 18,
 		textAlign: 'center',
 		letterSpacing: 0
+	},
+	landscapeContainer: {
+		flexDirection: 'row',
+		padding: 24
+	},
+	landscapeInputSection: {
+		flex: 1,
+		justifyContent: 'center',
+		paddingRight: 16
+	},
+	landscapeGridSection: {
+		flex: 1
 	}
 });

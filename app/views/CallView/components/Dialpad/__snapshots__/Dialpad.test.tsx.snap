@@ -24,13 +24,13 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
     }
   >
     <A11yOrderView
-      orderKey=":r6:"
+      orderKey=":r8:"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey=":r6:"
+        orderKey=":r8:"
       >
         <View
           style={
@@ -59,7 +59,9 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
               accessible={true}
               autoCapitalize="none"
               autoCorrect={false}
+              bottomSheet={true}
               editable={false}
+              keyboardAppearance="light"
               keyboardType="phone-pad"
               multiline={true}
               placeholder=""
@@ -67,25 +69,33 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
               style={
                 [
                   {
-                    "backgroundColor": "transparent",
-                    "borderRadius": 4,
-                    "borderWidth": 1,
-                    "fontFamily": "Inter",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "paddingHorizontal": 16,
-                    "paddingVertical": 14,
-                    "textAlign": "left",
-                  },
-                  undefined,
-                  {},
-                  {
-                    "backgroundColor": "#FFFFFF",
-                    "borderColor": "#9EA2A8",
                     "color": "#1F2329",
                   },
-                  {},
-                  undefined,
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "borderRadius": 4,
+                      "borderWidth": 1,
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "paddingHorizontal": 16,
+                      "paddingVertical": 14,
+                      "textAlign": "left",
+                    },
+                    undefined,
+                    {},
+                    {
+                      "backgroundColor": "#FFFFFF",
+                      "borderColor": "#9EA2A8",
+                      "color": "#1F2329",
+                    },
+                    {},
+                    undefined,
+                  ],
+                  {
+                    "textAlign": "auto",
+                  },
                 ]
               }
               testID="dialpad-input"
@@ -1283,13 +1293,13 @@ exports[`Story Snapshots: WithValue should match snapshot 1`] = `
     }
   >
     <A11yOrderView
-      orderKey=":r7:"
+      orderKey=":r9:"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey=":r7:"
+        orderKey=":r9:"
       >
         <View
           style={
@@ -1318,7 +1328,9 @@ exports[`Story Snapshots: WithValue should match snapshot 1`] = `
               accessible={true}
               autoCapitalize="none"
               autoCorrect={false}
+              bottomSheet={true}
               editable={false}
+              keyboardAppearance="light"
               keyboardType="phone-pad"
               multiline={true}
               placeholder=""
@@ -1326,25 +1338,33 @@ exports[`Story Snapshots: WithValue should match snapshot 1`] = `
               style={
                 [
                   {
-                    "backgroundColor": "transparent",
-                    "borderRadius": 4,
-                    "borderWidth": 1,
-                    "fontFamily": "Inter",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "paddingHorizontal": 16,
-                    "paddingVertical": 14,
-                    "textAlign": "left",
-                  },
-                  undefined,
-                  {},
-                  {
-                    "backgroundColor": "#FFFFFF",
-                    "borderColor": "#9EA2A8",
                     "color": "#1F2329",
                   },
-                  {},
-                  undefined,
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "borderRadius": 4,
+                      "borderWidth": 1,
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "paddingHorizontal": 16,
+                      "paddingVertical": 14,
+                      "textAlign": "left",
+                    },
+                    undefined,
+                    {},
+                    {
+                      "backgroundColor": "#FFFFFF",
+                      "borderColor": "#9EA2A8",
+                      "color": "#1F2329",
+                    },
+                    {},
+                    undefined,
+                  ],
+                  {
+                    "textAlign": "auto",
+                  },
                 ]
               }
               testID="dialpad-input"

@@ -8,6 +8,23 @@ import { mockedStore } from '../../../../reducers/mockedStore';
 import * as stories from './Dialpad.stories';
 import { generateSnapshots } from '../../../../../.rnstorybook/generateSnapshots';
 
+let mockWindowWidth = 350;
+let mockWindowHeight = 800;
+jest.mock('react-native/Libraries/Utilities/useWindowDimensions', () => ({
+	__esModule: true,
+	default: () => ({ width: mockWindowWidth, height: mockWindowHeight, scale: 1, fontScale: 1 })
+}));
+
+jest.mock('../../../../containers/ActionSheet', () => ({
+	hideActionSheetRef: jest.fn()
+}));
+
+jest.mock('react-native-incall-manager', () => ({
+	start: jest.fn(),
+	stop: jest.fn(),
+	setForceSpeakerphoneOn: jest.fn(() => Promise.resolve())
+}));
+
 const sendDTMFMock = jest.fn();
 
 // Helper to set store state for tests
@@ -34,6 +51,8 @@ const Wrapper = ({ children }: { children: React.ReactNode }) => <Provider store
 
 describe('Dialpad', () => {
 	beforeEach(() => {
+		mockWindowWidth = 350;
+		mockWindowHeight = 800;
 		useCallStore.getState().reset();
 		sendDTMFMock.mockClear();
 	});
@@ -109,6 +128,31 @@ describe('Dialpad', () => {
 			</Wrapper>
 		);
 		expect(getByTestId('custom-dialpad-input')).toBeTruthy();
+	});
+
+	it('should render in landscape layout when width > height', () => {
+		mockWindowWidth = 800;
+		mockWindowHeight = 400;
+		setStoreState();
+		const { getByTestId } = render(
+			<Wrapper>
+				<Dialpad testID='dialpad' />
+			</Wrapper>
+		);
+		expect(getByTestId('dialpad-landscape-container')).toBeTruthy();
+	});
+
+	it('should render in portrait layout when height > width', () => {
+		mockWindowWidth = 350;
+		mockWindowHeight = 800;
+		setStoreState();
+		const { getByTestId, queryByTestId } = render(
+			<Wrapper>
+				<Dialpad testID='dialpad' />
+			</Wrapper>
+		);
+		expect(getByTestId('dialpad-input')).toBeTruthy();
+		expect(queryByTestId('dialpad-landscape-container')).toBeNull();
 	});
 });
 
