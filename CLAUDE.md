@@ -28,6 +28,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Accessibility (a11y)
 
 ### Screen reader
+
 - All interactive elements need `accessibilityLabel` + `accessibilityRole`
 - Use `react-native-a11y-order` (`A11y.Order` / `A11y.Index`) when reading order differs from visual order
 - Use `AccessibilityInfo.setAccessibilityFocus()` to focus important elements on mount (e.g., incoming call)
@@ -36,12 +37,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `accessibilityElementsHidden={true}` on containers that are visually hidden but still mounted
 
 ### Font scaling
+
 - Text scales automatically — never set `allowFontScaling={false}` unless layout is provably broken
 - `useResponsiveLayout()` provides `fontScale`, `fontScaleLimited` (capped at `FONT_SCALE_LIMIT = 1.3`), `width`, `height`
 - Apply `fontScaleLimited` only where large font scales break fixed-size containers — not by default
 - Fixed-size touch targets (icon buttons, avatars) do not need to scale
 
 ### Landscape / responsive layout
+
 - Always use `useResponsiveLayout()` (not `useWindowDimensions()` directly) to get `width` / `height`
 - Derive `isLandscape = width > height` from those values
 - `useResponsiveLayout` is the single source of truth for dimensions — avoids conflicts with tablet (Master Detail) layout
+
+## graphify
+
+Before answering codebase architecture questions, read `graphify-out/graph.json` for structure. Use the graph to find relevant files and connections instead of exploring blindly.

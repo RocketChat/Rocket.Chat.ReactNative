@@ -35,13 +35,13 @@ Listens to `AccessibilityInfo.isScreenReaderEnabled()` and the `screenReaderChan
 
 ```ts
 export const useIsScreenReaderEnabled = (): boolean => {
-  const [enabled, setEnabled] = useState(false);
-  useEffect(() => {
-    AccessibilityInfo.isScreenReaderEnabled().then(setEnabled);
-    const sub = AccessibilityInfo.addEventListener('screenReaderChanged', setEnabled);
-    return () => sub.remove();
-  }, []);
-  return enabled;
+	const [enabled, setEnabled] = useState(false);
+	useEffect(() => {
+		AccessibilityInfo.isScreenReaderEnabled().then(setEnabled);
+		const sub = AccessibilityInfo.addEventListener('screenReaderChanged', setEnabled);
+		return () => sub.remove();
+	}, []);
+	return enabled;
 };
 ```
 
@@ -113,8 +113,8 @@ Apply `fontScaleLimited` only where testing reveals actual layout breakage, foll
 
 ## i18n keys needed
 
-| Key | Value (EN) |
-|-----|-----------|
+| Key                    | Value (EN)             |
+| ---------------------- | ---------------------- |
 | `Toggle_call_controls` | `Toggle call controls` |
 
 ---

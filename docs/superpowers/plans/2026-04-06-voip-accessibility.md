@@ -12,32 +12,34 @@
 
 ## File Map
 
-| Action | File | Responsibility |
-|--------|------|----------------|
-| Create | `app/lib/hooks/useIsScreenReaderEnabled.ts` | Reactive boolean: VoiceOver/TalkBack active |
-| Create | `app/lib/hooks/useIsScreenReaderEnabled.test.ts` | Tests for the hook |
-| Modify | `app/lib/services/voip/useCallStore.ts:301` | `useControlsVisible` — always true when screen reader on |
-| Modify | `app/i18n/locales/*.json` (25 files — all in `LANGUAGES` array) | Add `Toggle_call_controls` key |
-| Modify | `app/views/CallView/components/CallerInfo.tsx` | Screen reader bypass + a11y label + landscape avatar |
-| Modify | `app/views/CallView/components/CallButtons.tsx` | `accessibilityElementsHidden` + landscape styles |
-| Modify | `app/views/CallView/index.tsx` | Landscape container flex direction |
-| Modify | `app/views/CallView/styles.ts` | Landscape style variants |
-| Modify | `app/views/CallView/index.test.tsx` | Screen reader + landscape tests |
-| Modify | `app/views/CallView/CallView.stories.tsx` | Landscape story |
-| Modify | `app/views/CallView/components/Dialpad/DialpadButton.tsx` | a11y label + role |
-| Modify | `app/containers/NewMediaCall/PeerItem.tsx` | a11y label + role |
+| Action | File                                                            | Responsibility                                           |
+| ------ | --------------------------------------------------------------- | -------------------------------------------------------- |
+| Create | `app/lib/hooks/useIsScreenReaderEnabled.ts`                     | Reactive boolean: VoiceOver/TalkBack active              |
+| Create | `app/lib/hooks/useIsScreenReaderEnabled.test.ts`                | Tests for the hook                                       |
+| Modify | `app/lib/services/voip/useCallStore.ts:301`                     | `useControlsVisible` — always true when screen reader on |
+| Modify | `app/i18n/locales/*.json` (25 files — all in `LANGUAGES` array) | Add `Toggle_call_controls` key                           |
+| Modify | `app/views/CallView/components/CallerInfo.tsx`                  | Screen reader bypass + a11y label + landscape avatar     |
+| Modify | `app/views/CallView/components/CallButtons.tsx`                 | `accessibilityElementsHidden` + landscape styles         |
+| Modify | `app/views/CallView/index.tsx`                                  | Landscape container flex direction                       |
+| Modify | `app/views/CallView/styles.ts`                                  | Landscape style variants                                 |
+| Modify | `app/views/CallView/index.test.tsx`                             | Screen reader + landscape tests                          |
+| Modify | `app/views/CallView/CallView.stories.tsx`                       | Landscape story                                          |
+| Modify | `app/views/CallView/components/Dialpad/DialpadButton.tsx`       | a11y label + role                                        |
+| Modify | `app/containers/NewMediaCall/PeerItem.tsx`                      | a11y label + role                                        |
 
 ---
 
 ## Task 1: `useIsScreenReaderEnabled` hook
 
 **Files:**
+
 - Create: `app/lib/hooks/useIsScreenReaderEnabled.ts`
 - Create: `app/lib/hooks/useIsScreenReaderEnabled.test.ts`
 
 - [ ] **Step 1: Write the failing tests**
 
 `app/lib/hooks/useIsScreenReaderEnabled.test.ts`:
+
 ```ts
 import { renderHook, act } from '@testing-library/react-native';
 import { AccessibilityInfo } from 'react-native';
@@ -104,6 +106,7 @@ Expected: FAIL — `Cannot find module './useIsScreenReaderEnabled'`
 - [ ] **Step 3: Implement the hook**
 
 `app/lib/hooks/useIsScreenReaderEnabled.ts`:
+
 ```ts
 import { useEffect, useState } from 'react';
 import { AccessibilityInfo } from 'react-native';
@@ -151,6 +154,7 @@ Launch an agent with the following prompt:
 > You are adding a new i18n key to a React Native app. The key is `Toggle_call_controls` with the English value `"Toggle call controls"` — it labels a button that shows/hides the call controls on an ongoing phone call screen.
 >
 > Add this key to all 25 locale files listed below. For each file:
+>
 > 1. Translate "Toggle call controls" into the appropriate language naturally (don't just copy English)
 > 2. Find the insertion point alphabetically — it goes between `"To_download"` and `"Token_expired"` (search for `Token_expired` in each file to locate it; if that key is missing, insert alphabetically between the nearest surrounding keys)
 > 3. Insert: `"Toggle_call_controls": "<translated string>",`
@@ -183,10 +187,13 @@ Launch an agent with the following prompt:
 > `zh-TW.json` → Traditional Chinese
 >
 > After editing all files, run:
+>
 > ```bash
 > grep -rl "Toggle_call_controls" app/i18n/locales/ | wc -l
 > ```
+>
 > Expected: `25`. Then commit:
+>
 > ```bash
 > git add app/i18n/locales/
 > git commit -m "feat(a11y): add Toggle_call_controls i18n key to all locales"
@@ -205,6 +212,7 @@ Expected: `25`
 ## Task 3: `useControlsVisible` — always true when screen reader is active
 
 **Files:**
+
 - Modify: `app/lib/services/voip/useCallStore.ts:301`
 
 - [ ] **Step 1: Update `useControlsVisible`**
@@ -249,6 +257,7 @@ git commit -m "feat(a11y): keep call controls visible when screen reader is acti
 ## Task 4: `CallerInfo` — screen reader fix + accessibility label
 
 **Files:**
+
 - Modify: `app/views/CallView/components/CallerInfo.tsx`
 - Modify: `app/views/CallView/index.test.tsx`
 
@@ -370,6 +379,7 @@ git commit -m "feat(a11y): disable tap-to-hide controls when screen reader is ac
 ## Task 5: `CallButtons` — hide from screen reader when visually hidden
 
 **Files:**
+
 - Modify: `app/views/CallView/components/CallButtons.tsx`
 
 - [ ] **Step 1: Add `accessibilityElementsHidden` to the animated container**
@@ -404,6 +414,7 @@ git commit -m "feat(a11y): hide call buttons from screen reader when controls ar
 ## Task 6: `DialpadButton` — accessibility label and role
 
 **Files:**
+
 - Modify: `app/views/CallView/components/Dialpad/DialpadButton.tsx`
 
 - [ ] **Step 1: Add a11y props to the Pressable**
@@ -441,6 +452,7 @@ git commit -m "feat(a11y): add accessibility label and role to DialpadButton"
 ## Task 7: `PeerItem` — accessibility label and role
 
 **Files:**
+
 - Modify: `app/containers/NewMediaCall/PeerItem.tsx`
 
 - [ ] **Step 1: Add a11y props to the Pressable**
@@ -480,6 +492,7 @@ git commit -m "feat(a11y): add accessibility label and role to PeerItem"
 ## Task 8: `CallView` landscape layout
 
 **Files:**
+
 - Modify: `app/views/CallView/styles.ts`
 - Modify: `app/views/CallView/index.tsx`
 - Modify: `app/views/CallView/components/CallerInfo.tsx`
@@ -500,7 +513,15 @@ Then add a helper and test inside `describe('CallView', ...)`:
 ```ts
 const LandscapeWrapper = ({ children }: { children: React.ReactNode }) => (
 	<ResponsiveLayoutContext.Provider
-		value={{ fontScale: 1, width: 800, height: 400, isLargeFontScale: false, fontScaleLimited: 1, rowHeight: 75, rowHeightCondensed: 60 }}>
+		value={{
+			fontScale: 1,
+			width: 800,
+			height: 400,
+			isLargeFontScale: false,
+			fontScaleLimited: 1,
+			rowHeight: 75,
+			rowHeightCondensed: 60
+		}}>
 		<Provider store={mockedStore}>{children}</Provider>
 	</ResponsiveLayoutContext.Provider>
 );
@@ -514,9 +535,7 @@ it('should apply landscape styles when width > height', () => {
 	);
 
 	const container = getByTestId('call-view-container');
-	expect(container.props.style).toEqual(
-		expect.arrayContaining([expect.objectContaining({ flexDirection: 'row' })])
-	);
+	expect(container.props.style).toEqual(expect.arrayContaining([expect.objectContaining({ flexDirection: 'row' })]));
 });
 ```
 
@@ -579,7 +598,11 @@ const CallView = (): React.ReactElement | null => {
 	return (
 		<View
 			testID='call-view-container'
-			style={[styles.contentContainer, isLandscape && styles.contentContainerLandscape, { backgroundColor: colors.surfaceLight }]}>
+			style={[
+				styles.contentContainer,
+				isLandscape && styles.contentContainerLandscape,
+				{ backgroundColor: colors.surfaceLight }
+			]}>
 			<CallerInfo />
 			<CallButtons />
 		</View>
