@@ -269,10 +269,12 @@ describe('MediaSessionInstance', () => {
 			mockUseCallStoreGetState.mockReturnValue({
 				reset: mockCallStoreReset,
 				setCall: mockSetCall,
+				setRoomId: mockSetRoomId,
 				resetNativeCallId: jest.fn(),
 				call: { callId: 'active-a' } as IClientMediaCall,
 				callId: 'active-a',
-				nativeAcceptedCallId: null
+				nativeAcceptedCallId: null,
+				roomId: null
 			});
 			mediaSessionInstance.init('user-1');
 			const incoming = buildClientMediaCall({ callId: 'incoming-b', role: 'callee' });
@@ -285,10 +287,12 @@ describe('MediaSessionInstance', () => {
 			mockUseCallStoreGetState.mockReturnValue({
 				reset: mockCallStoreReset,
 				setCall: jest.fn(),
+				setRoomId: mockSetRoomId,
 				resetNativeCallId: jest.fn(),
 				call: { callId: 'active-a' } as IClientMediaCall,
 				callId: 'active-a',
-				nativeAcceptedCallId: 'native-other'
+				nativeAcceptedCallId: 'native-other',
+				roomId: null
 			});
 			mediaSessionInstance.init('user-1');
 			const incoming = buildClientMediaCall({ callId: 'incoming-b', role: 'callee' });
@@ -301,10 +305,12 @@ describe('MediaSessionInstance', () => {
 			mockUseCallStoreGetState.mockReturnValue({
 				reset: mockCallStoreReset,
 				setCall: jest.fn(),
+				setRoomId: mockSetRoomId,
 				resetNativeCallId: jest.fn(),
 				call: null,
 				callId: null,
-				nativeAcceptedCallId: 'same-id'
+				nativeAcceptedCallId: 'same-id',
+				roomId: null
 			});
 			mediaSessionInstance.init('user-1');
 			const incoming = buildClientMediaCall({ callId: 'same-id', role: 'callee' });
@@ -318,10 +324,12 @@ describe('MediaSessionInstance', () => {
 			mockUseCallStoreGetState.mockReturnValue({
 				reset: mockCallStoreReset,
 				setCall: mockSetCall,
+				setRoomId: mockSetRoomId,
 				resetNativeCallId: jest.fn(),
 				call: null,
 				callId: null,
-				nativeAcceptedCallId: null
+				nativeAcceptedCallId: null,
+				roomId: null
 			});
 			mediaSessionInstance.init('user-1');
 			const outgoing = buildClientMediaCall({ callId: 'out-c', role: 'caller' });
