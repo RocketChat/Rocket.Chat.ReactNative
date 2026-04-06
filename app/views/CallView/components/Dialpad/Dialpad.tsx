@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, useWindowDimensions } from 'react-native';
 
 import { useDialpadValue } from '../../../../lib/services/voip/useCallStore';
 import { FormTextInput } from '../../../../containers/TextInput';
@@ -34,9 +34,46 @@ interface IDialpad {
 	testID?: string;
 }
 
+const DialpadGrid = (): React.ReactElement => (
+	<View style={styles.grid}>
+		{DIALPAD_KEYS.map((row, rowIndex) => (
+			<View key={rowIndex} style={styles.row}>
+				{row.map(({ digit, letters }) => (
+					<DialpadButton key={digit} digit={digit} letters={letters} />
+				))}
+			</View>
+		))}
+	</View>
+);
+
 const Dialpad = ({ testID }: IDialpad): React.ReactElement => {
 	const { colors } = useTheme();
 	const dialpadValue = useDialpadValue();
+	const { width, height } = useWindowDimensions();
+	const isLandscape = width > height;
+
+	if (isLandscape) {
+		return (
+			<View testID='dialpad-landscape-container' style={[styles.landscapeContainer, { backgroundColor: colors.surfaceLight }]}>
+				<View style={styles.landscapeInputSection}>
+					<FormTextInput
+						value={dialpadValue}
+						placeholder=''
+						keyboardType='phone-pad'
+						containerStyle={styles.inputContainer}
+						showErrorMessage={false}
+						bottomSheet
+						testID={testID ? `${testID}-input` : 'dialpad-input'}
+						editable={false}
+						multiline
+					/>
+				</View>
+				<View style={styles.landscapeGridSection}>
+					<DialpadGrid />
+				</View>
+			</View>
+		);
+	}
 
 	return (
 		<View style={[styles.container, { backgroundColor: colors.surfaceLight }]}>
@@ -51,15 +88,7 @@ const Dialpad = ({ testID }: IDialpad): React.ReactElement => {
 				editable={false}
 				multiline
 			/>
-			<View style={styles.grid}>
-				{DIALPAD_KEYS.map((row, rowIndex) => (
-					<View key={rowIndex} style={styles.row}>
-						{row.map(({ digit, letters }) => (
-							<DialpadButton key={digit} digit={digit} letters={letters} />
-						))}
-					</View>
-				))}
-			</View>
+			<DialpadGrid />
 		</View>
 	);
 };
