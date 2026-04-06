@@ -8,8 +8,8 @@ import { mockedStore } from '../../../reducers/mockedStore';
 
 const mockShowActionSheetRef = jest.fn();
 jest.mock('../../../containers/ActionSheet', () => ({
-	...jest.requireActual('../../../containers/ActionSheet'),
-	showActionSheetRef: (options: any) => mockShowActionSheetRef(options)
+	showActionSheetRef: (options: any) => mockShowActionSheetRef(options),
+	hideActionSheetRef: jest.fn()
 }));
 
 const setStoreState = (overrides: Partial<ReturnType<typeof useCallStore.getState>> = {}) => {

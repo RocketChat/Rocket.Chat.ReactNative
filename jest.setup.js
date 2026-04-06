@@ -199,6 +199,13 @@ jest.mock('react-native-math-view', () => {
 
 jest.mock('react-native-keyboard-controller');
 
+jest.mock('@lodev09/react-native-true-sheet', () => {
+	const { View } = require('react-native');
+	return {
+		TrueSheet: View
+	};
+});
+
 jest.mock('react-native-webview', () => {
 	const React = require('react');
 	const { View } = require('react-native');
