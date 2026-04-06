@@ -21,7 +21,7 @@ const setStoreState = (overrides: Partial<ReturnType<typeof useCallStore.getStat
 		contact: {
 			displayName: 'Bob Burnquist',
 			username: 'bob.burnquist',
-			sipExtension: '2244'
+			sipExtension: ''
 		},
 		setMuted: () => {},
 		setHeld: () => {},
@@ -44,8 +44,9 @@ const setStoreState = (overrides: Partial<ReturnType<typeof useCallStore.getStat
 			id: 'user-1',
 			displayName: 'Bob Burnquist',
 			username: 'bob.burnquist',
-			sipExtension: '2244'
+			sipExtension: ''
 		},
+		roomId: 'story-room-rid',
 		focused: true,
 		remoteMute: false,
 		remoteHeld: false,

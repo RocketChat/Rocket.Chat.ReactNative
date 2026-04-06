@@ -19,6 +19,7 @@ import { parseStringToIceServers } from './parseStringToIceServers';
 import type { IceServer } from '../../../definitions/Voip';
 import type { IDDPMessage } from '../../../definitions/IDDPMessage';
 import type { ISubscription, TSubscriptionModel } from '../../../definitions';
+import { getDMSubscriptionByUsername } from '../../database/services/Subscription';
 import { getUidDirectMessage } from '../../methods/helpers/helpers';
 import { requestPhoneStatePermission } from '../../methods/voipPhoneStatePermission';
 
@@ -93,6 +94,11 @@ class MediaSessionInstance {
 				if (call.role === 'caller') {
 					useCallStore.getState().setCall(call);
 					Navigation.navigate('CallView');
+					if (useCallStore.getState().roomId == null) {
+						this.resolveRoomIdFromContact(call.contact).catch(error => {
+							console.error('[VoIP] Error resolving room id from contact (newCall):', error);
+						});
+					}
 				}
 
 				call.emitter.on('ended', () => {
@@ -120,6 +126,9 @@ class MediaSessionInstance {
 			RNCallKeep.setCurrentCallActive(callId);
 			useCallStore.getState().setCall(mainCall);
 			Navigation.navigate('CallView');
+			this.resolveRoomIdFromContact(mainCall.contact).catch(error => {
+				console.error('[VoIP] Error resolving room id from contact (answerCall):', error);
+			});
 		} else {
 			RNCallKeep.endCall(callId);
 			const st = useCallStore.getState();
@@ -131,6 +140,7 @@ class MediaSessionInstance {
 	};
 
 	public startCallByRoom = (room: TSubscriptionModel | ISubscription) => {
+		useCallStore.getState().setRoomId(room.rid ?? null);
 		const otherUserId = getUidDirectMessage(room);
 		if (otherUserId) {
 			this.startCall(otherUserId, 'user');
@@ -159,6 +169,20 @@ class MediaSessionInstance {
 		useCallStore.getState().resetNativeCallId();
 		useCallStore.getState().reset();
 	};
+
+	private async resolveRoomIdFromContact(contact: IClientMediaCall['contact']): Promise<void> {
+		if (contact.sipExtension) {
+			return;
+		}
+		const { username } = contact;
+		if (!username) {
+			return;
+		}
+		const sub = await getDMSubscriptionByUsername(username);
+		if (sub) {
+			useCallStore.getState().setRoomId(sub.rid);
+		}
+	}
 
 	private getIceServers() {
 		const iceServers = store.getState().settings.VoIP_TeamCollab_Ice_Servers as any;

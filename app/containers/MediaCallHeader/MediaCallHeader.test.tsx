@@ -3,13 +3,17 @@ import { fireEvent, render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
 import MediaCallHeader from './MediaCallHeader';
+import { navigateToCallRoom } from '../../lib/services/voip/navigateToCallRoom';
 import { useCallStore } from '../../lib/services/voip/useCallStore';
 import { mockedStore } from '../../reducers/mockedStore';
 import * as stories from './MediaCallHeader.stories';
 import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
 
-// Mock alert
-global.alert = jest.fn();
+const mockNavigateToCallRoom = jest.mocked(navigateToCallRoom);
+
+jest.mock('../../lib/services/voip/navigateToCallRoom', () => ({
+	navigateToCallRoom: jest.fn().mockResolvedValue(undefined)
+}));
 
 const mockCallStartTime = 1713340800000;
 
@@ -21,7 +25,7 @@ const createMockCall = (overrides: Record<string, unknown> = {}) => ({
 	contact: {
 		displayName: 'Bob Burnquist',
 		username: 'bob.burnquist',
-		sipExtension: '2244'
+		sipExtension: ''
 	},
 	setMuted: jest.fn(),
 	setHeld: jest.fn(),
@@ -48,8 +52,9 @@ const setStoreState = (overrides: Partial<ReturnType<typeof useCallStore.getStat
 			id: 'user-1',
 			displayName: 'Bob Burnquist',
 			username: 'bob.burnquist',
-			sipExtension: '2244'
+			sipExtension: ''
 		},
+		roomId: 'test-room-rid',
 		focused: true,
 		remoteMute: false,
 		remoteHeld: false,
@@ -209,7 +214,7 @@ describe('MediaCallHeader', () => {
 		expect(getByTestId('media-call-header')).toHaveProp('pointerEvents', 'auto');
 	});
 
-	it('should show alert when content is pressed', () => {
+	it('should call navigateToCallRoom when content is pressed and navigation is enabled', () => {
 		setStoreState();
 		const { getByTestId } = render(
 			<Wrapper>
@@ -218,7 +223,39 @@ describe('MediaCallHeader', () => {
 		);
 
 		fireEvent.press(getByTestId('media-call-header-content'));
-		expect(global.alert).toHaveBeenCalledWith('nav to call room');
+		expect(mockNavigateToCallRoom).toHaveBeenCalledTimes(1);
+	});
+
+	it('does not call navigateToCallRoom when content is pressed for SIP calls', () => {
+		setStoreState({
+			contact: {
+				id: 'user-1',
+				displayName: 'Bob Burnquist',
+				username: 'bob.burnquist',
+				sipExtension: '2244'
+			},
+			roomId: 'test-room-rid'
+		});
+		const { getByTestId } = render(
+			<Wrapper>
+				<MediaCallHeader />
+			</Wrapper>
+		);
+
+		fireEvent.press(getByTestId('media-call-header-content'));
+		expect(mockNavigateToCallRoom).not.toHaveBeenCalled();
+	});
+
+	it('does not call navigateToCallRoom when roomId is null', () => {
+		setStoreState({ roomId: null });
+		const { getByTestId } = render(
+			<Wrapper>
+				<MediaCallHeader />
+			</Wrapper>
+		);
+
+		fireEvent.press(getByTestId('media-call-header-content'));
+		expect(mockNavigateToCallRoom).not.toHaveBeenCalled();
 	});
 });
 
