@@ -14,6 +14,8 @@ export const PeerItem = ({ item, onSelectOption }: { item: TPeerItem; onSelectOp
 				{ backgroundColor: pressed && isIOS ? colors.surfaceSelected : colors.surfaceLight }
 			]}
 			onPress={() => onSelectOption(item)}
+			accessibilityLabel={item.label}
+			accessibilityRole='button'
 			testID={`new-media-call-option-${item.value}`}
 			android_ripple={{ color: colors.surfaceSelected }}>
 			<PeerItemInner item={item} />
