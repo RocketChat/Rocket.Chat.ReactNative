@@ -75,7 +75,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
       >
         <ViewManagerAdapter_ExpoImage
           borderRadius={2}
-          containerViewRef={"[React.ref]"}
+          containerViewRef={{"current":"Object"}}
           contentFit="cover"
           contentPosition={
             {
@@ -84,7 +84,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
             }
           }
           height={120}
-          nativeViewRef={"[React.ref]"}
+          nativeViewRef={{"current":"NativeComponent"}}
           onError={[Function]}
           onLoad={[Function]}
           onLoadStart={[Function]}
@@ -121,14 +121,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
             "flexDirection": "row",
             "justifyContent": "center",
           },
-          {
-            "opacity": 1,
-            "transform": [
-              {
-                "translateY": 0,
-              },
-            ],
-          },
+          [Function],
         ]
       }
     >
@@ -234,7 +227,7 @@ exports[`Story Snapshots: UsernameOnly should match snapshot 1`] = `
       >
         <ViewManagerAdapter_ExpoImage
           borderRadius={2}
-          containerViewRef={"[React.ref]"}
+          containerViewRef={{"current":"Object"}}
           contentFit="cover"
           contentPosition={
             {
@@ -243,7 +236,7 @@ exports[`Story Snapshots: UsernameOnly should match snapshot 1`] = `
             }
           }
           height={120}
-          nativeViewRef={"[React.ref]"}
+          nativeViewRef={{"current":"NativeComponent"}}
           onError={[Function]}
           onLoad={[Function]}
           onLoadStart={[Function]}
@@ -280,14 +273,7 @@ exports[`Story Snapshots: UsernameOnly should match snapshot 1`] = `
             "flexDirection": "row",
             "justifyContent": "center",
           },
-          {
-            "opacity": 1,
-            "transform": [
-              {
-                "translateY": 0,
-              },
-            ],
-          },
+          [Function],
         ]
       }
     >
