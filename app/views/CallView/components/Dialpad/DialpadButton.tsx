@@ -25,6 +25,8 @@ const DialpadButton = ({ digit, letters }: IDialpadButton): React.ReactElement =
 	return (
 		<Pressable
 			onPress={handleDigitPress}
+			accessibilityLabel={letters ? `${digit} ${letters}` : digit}
+			accessibilityRole='button'
 			style={({ pressed }) => [
 				styles.button,
 				{ backgroundColor: pressed ? colors.buttonBackgroundSecondaryPress : colors.buttonBackgroundSecondaryDefault }
