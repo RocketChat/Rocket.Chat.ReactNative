@@ -524,14 +524,14 @@ public final class VoipService: NSObject {
                 #if DEBUG
                 print("[\(TAG)] Native accept signal result for \(payload.callId): \(success)")
                 #endif
-                finishAccept(success)
+                DispatchQueue.main.async { finishAccept(success) }
             }
         } else {
             client.queueMethodCall("stream-notify-user", params: params) { success in
                 #if DEBUG
                 print("[\(TAG)] Queued native accept signal result for \(payload.callId): \(success)")
                 #endif
-                finishAccept(success)
+                DispatchQueue.main.async { finishAccept(success) }
             }
             #if DEBUG
             print("[\(TAG)] Queued native accept signal for \(payload.callId)")
