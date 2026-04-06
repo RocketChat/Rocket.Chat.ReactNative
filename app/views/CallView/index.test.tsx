@@ -3,16 +3,16 @@ import { fireEvent, render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
 import CallView from '.';
+import { useCallStore } from '../../lib/services/voip/useCallStore';
+import { mockedStore } from '../../reducers/mockedStore';
+import * as stories from './CallView.stories';
+import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
 
 let mockWindowWidth = 350;
 jest.mock('react-native/Libraries/Utilities/useWindowDimensions', () => ({
 	__esModule: true,
 	default: () => ({ width: mockWindowWidth, height: 800, scale: 1, fontScale: 1 })
 }));
-import { useCallStore } from '../../lib/services/voip/useCallStore';
-import { mockedStore } from '../../reducers/mockedStore';
-import * as stories from './CallView.stories';
-import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
 
 // Mock ResponsiveLayoutContext for snapshots
 jest.mock('../../lib/hooks/useResponsiveLayout/useResponsiveLayout', () => {

@@ -250,7 +250,6 @@ describe('MediaCallEvents cross-server accept (slice 3)', () => {
 	});
 });
 
-
 describe('setupMediaCallEvents — didToggleHoldCallAction', () => {
 	const toggleHold = jest.fn();
 	const getState = useCallStore.getState as jest.Mock;
@@ -358,7 +357,6 @@ describe('setupMediaCallEvents — didToggleHoldCallAction', () => {
 		expect(toggleHold).toHaveBeenCalledTimes(1);
 		expect(mockSetCurrentCallActive).not.toHaveBeenCalled();
 	});
-
 
 	it('cleanup removes didToggleHoldCallAction subscription', () => {
 		const remove = jest.fn();
