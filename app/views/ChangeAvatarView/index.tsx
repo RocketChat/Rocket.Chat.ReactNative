@@ -26,7 +26,7 @@ import AvatarSuggestion from './AvatarSuggestion';
 import log from '../../lib/methods/helpers/log';
 import { changeRoomsAvatar, changeUserAvatar, resetUserAvatar } from './submitServices';
 import ImagePicker, { type Image } from '../../lib/methods/helpers/ImagePicker/ImagePicker';
-import { isImageURL, useDebounce } from '../../lib/methods/helpers';
+import { compareServerVersion, isImageURL, useDebounce } from '../../lib/methods/helpers';
 import { ControlledFormTextInput } from '../../containers/TextInput';
 import { HeaderBackButton } from '../../containers/Header/components/HeaderBackButton';
 
@@ -79,14 +79,16 @@ const ChangeAvatarView = () => {
 	const [state, dispatch] = useReducer(reducer, initialState);
 	const [saving, setSaving] = useState(false);
 	const { colors } = useTheme();
-	const { userId, username, server } = useAppSelector(
+	const { userId, username, server, serverVersion } = useAppSelector(
 		state => ({
 			userId: getUserSelector(state).id,
 			username: getUserSelector(state).username,
-			server: state.server.server
+			server: state.server.server,
+			serverVersion: state.server.version
 		}),
 		shallowEqual
 	);
+	const includeBase64ForAvatar = compareServerVersion(serverVersion, 'lowerThan', '8.0.0');
 	const isDirty = useRef<boolean>(false);
 	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList, 'ChangeAvatarView'>>();
 	const { context, titleHeader, room, t } = useRoute<RouteProp<ChatsStackParamList, 'ChangeAvatarView'>>().params;
@@ -185,16 +187,17 @@ const ChangeAvatarView = () => {
 			cropperAvoidEmptySpaceAroundImage: false,
 			cropperChooseText: I18n.t('Choose'),
 			cropperCancelText: I18n.t('Cancel'),
-			includeBase64: true
+			includeBase64: includeBase64ForAvatar
 		};
 		try {
 			const response: Image =
 				isCam === true
 					? await ImagePicker.openCamera({ ...options, useFrontCamera: true })
 					: await ImagePicker.openPicker(options);
+			const dataUri = includeBase64ForAvatar && response.data ? `data:image/jpeg;base64,${response.data}` : '';
 			dispatchAvatar({
 				type: AvatarStateActions.CHANGE_AVATAR,
-				payload: { url: response.path, data: `data:image/jpeg;base64,${response.data}`, service: 'upload' }
+				payload: { url: response.path, data: dataUri, service: 'upload' }
 			});
 		} catch (error: any) {
 			if (error?.code !== 'E_PICKER_CANCELLED') {
