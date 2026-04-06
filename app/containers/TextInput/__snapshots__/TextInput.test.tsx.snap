@@ -9,13 +9,13 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
   }
 >
   <A11yOrderView
-    orderKey=":r0:"
+    orderKey="«r0»"
   >
     <A11yIndexView
       importantForAccessibility="yes"
       orderFocusType={0}
       orderIndex={1}
-      orderKey=":r0:"
+      orderKey="«r0»"
     >
       <View
         style={
@@ -142,13 +142,13 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
     </A11yIndexView>
   </A11yOrderView>
   <A11yOrderView
-    orderKey=":r1:"
+    orderKey="«r1»"
   >
     <A11yIndexView
       importantForAccessibility="yes"
       orderFocusType={0}
       orderIndex={1}
-      orderKey=":r1:"
+      orderKey="«r1»"
     >
       <View
         style={
@@ -274,13 +274,13 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
     </A11yIndexView>
   </A11yOrderView>
   <A11yOrderView
-    orderKey=":r2:"
+    orderKey="«r2»"
   >
     <A11yIndexView
       importantForAccessibility="yes"
       orderFocusType={0}
       orderIndex={1}
-      orderKey=":r2:"
+      orderKey="«r2»"
     >
       <View
         style={
@@ -442,13 +442,13 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
     </A11yIndexView>
   </A11yOrderView>
   <A11yOrderView
-    orderKey=":r3:"
+    orderKey="«r3»"
   >
     <A11yIndexView
       importantForAccessibility="yes"
       orderFocusType={0}
       orderIndex={1}
-      orderKey=":r3:"
+      orderKey="«r3»"
     >
       <View
         style={
@@ -541,7 +541,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={1}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -647,13 +647,13 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
   }
 >
   <A11yOrderView
-    orderKey=":r4:"
+    orderKey="«r4»"
   >
     <A11yIndexView
       importantForAccessibility="yes"
       orderFocusType={0}
       orderIndex={1}
-      orderKey=":r4:"
+      orderKey="«r4»"
     >
       <View
         style={
@@ -744,13 +744,13 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
     </A11yIndexView>
   </A11yOrderView>
   <A11yOrderView
-    orderKey=":r5:"
+    orderKey="«r5»"
   >
     <A11yIndexView
       importantForAccessibility="yes"
       orderFocusType={0}
       orderIndex={1}
-      orderKey=":r5:"
+      orderKey="«r5»"
     >
       <View
         style={
@@ -865,13 +865,13 @@ exports[`Story Snapshots: Multiline should match snapshot 1`] = `
   }
 >
   <A11yOrderView
-    orderKey=":r6:"
+    orderKey="«r6»"
   >
     <A11yIndexView
       importantForAccessibility="yes"
       orderFocusType={0}
       orderIndex={1}
-      orderKey=":r6:"
+      orderKey="«r6»"
     >
       <View
         style={
@@ -980,13 +980,13 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
   }
 >
   <A11yOrderView
-    orderKey=":r7:"
+    orderKey="«r7»"
   >
     <A11yIndexView
       importantForAccessibility="yes"
       orderFocusType={0}
       orderIndex={1}
-      orderKey=":r7:"
+      orderKey="«r7»"
     >
       <View
         style={
@@ -1077,13 +1077,13 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
     </A11yIndexView>
   </A11yOrderView>
   <A11yOrderView
-    orderKey=":r8:"
+    orderKey="«r8»"
   >
     <A11yIndexView
       importantForAccessibility="yes"
       orderFocusType={0}
       orderIndex={1}
-      orderKey=":r8:"
+      orderKey="«r8»"
     >
       <View
         style={
@@ -1176,7 +1176,7 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
             importantForAccessibility="yes"
             orderFocusType={0}
             orderIndex={2}
-            orderKey=":r8:"
+            orderKey="«r8»"
             style={
               [
                 {
@@ -1193,7 +1193,7 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
               collapsable={false}
               delayLongPress={600}
               enabled={true}
-              handlerTag={2}
+              handlerTag={-1}
               handlerType="NativeViewGestureHandler"
               innerRef={null}
               onActiveStateChange={[Function]}
@@ -1292,13 +1292,13 @@ exports[`Story Snapshots: ShortAndLong should match snapshot 1`] = `
   }
 >
   <A11yOrderView
-    orderKey=":r9:"
+    orderKey="«r9»"
   >
     <A11yIndexView
       importantForAccessibility="yes"
       orderFocusType={0}
       orderIndex={1}
-      orderKey=":r9:"
+      orderKey="«r9»"
     >
       <View
         style={
@@ -1389,13 +1389,13 @@ exports[`Story Snapshots: ShortAndLong should match snapshot 1`] = `
     </A11yIndexView>
   </A11yOrderView>
   <A11yOrderView
-    orderKey=":ra:"
+    orderKey="«ra»"
   >
     <A11yIndexView
       importantForAccessibility="yes"
       orderFocusType={0}
       orderIndex={1}
-      orderKey=":ra:"
+      orderKey="«ra»"
     >
       <View
         style={
