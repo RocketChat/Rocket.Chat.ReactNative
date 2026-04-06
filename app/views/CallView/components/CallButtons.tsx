@@ -119,6 +119,7 @@ export const CallButtons = () => {
 				containerStyle
 			]}
 			pointerEvents={controlsVisible ? 'auto' : 'none'}
+			accessibilityElementsHidden={!controlsVisible}
 			testID='call-buttons'>
 			{layoutMode === 'wide' ? (
 				<View style={styles.buttonsRow} testID='call-buttons-row-0'>
