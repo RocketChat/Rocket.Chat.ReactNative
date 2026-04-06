@@ -47,7 +47,7 @@ if (process.env.USE_STORYBOOK) {
 				console.log('RNCallKeep setup successful');
 				RNCallKeep.canMakeMultipleCalls(false);
 			})
-			.catch(error => {
+			.catch((error) => {
 				console.error('Error setting up RNCallKeep:', error);
 			});
 	}
