@@ -26,6 +26,8 @@ exports[`Story Snapshots: ActiveCall should match snapshot 1`] = `
           "paddingTop": 12,
         },
         {
+          "backgroundColor": "#E4E7EA",
+          "borderBottomColor": "#CBCED1",
           "opacity": 1,
           "transform": [
             {
@@ -382,6 +384,8 @@ exports[`Story Snapshots: Collapsed should match snapshot 1`] = `
           "paddingTop": 12,
         },
         {
+          "backgroundColor": "#E4E7EA",
+          "borderBottomColor": "#CBCED1",
           "opacity": 1,
           "transform": [
             {
@@ -738,6 +742,8 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
           "paddingTop": 12,
         },
         {
+          "backgroundColor": "#E4E7EA",
+          "borderBottomColor": "#CBCED1",
           "opacity": 1,
           "transform": [
             {
@@ -1090,6 +1096,8 @@ exports[`Story Snapshots: Focused should match snapshot 1`] = `
           "paddingTop": 12,
         },
         {
+          "backgroundColor": "#E4E7EA",
+          "borderBottomColor": "#CBCED1",
           "opacity": 1,
           "transform": [
             {
@@ -1466,6 +1474,8 @@ exports[`Story Snapshots: WithRemoteHeld should match snapshot 1`] = `
           "paddingTop": 12,
         },
         {
+          "backgroundColor": "#E4E7EA",
+          "borderBottomColor": "#CBCED1",
           "opacity": 1,
           "transform": [
             {
@@ -1822,6 +1832,8 @@ exports[`Story Snapshots: WithRemoteMuted should match snapshot 1`] = `
           "paddingTop": 12,
         },
         {
+          "backgroundColor": "#E4E7EA",
+          "borderBottomColor": "#CBCED1",
           "opacity": 1,
           "transform": [
             {
