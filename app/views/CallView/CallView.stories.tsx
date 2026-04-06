@@ -118,6 +118,7 @@ export const SpeakerOn = () => {
 	return <CallView />;
 };
 
+<<<<<<< HEAD
 // Tablet / wide layout stories — force layoutMode='wide' via ResponsiveLayoutContext width
 const TabletCallView = () => {
 	const { colors } = useTheme();

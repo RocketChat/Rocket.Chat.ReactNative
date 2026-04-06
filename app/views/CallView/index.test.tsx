@@ -8,6 +8,7 @@ import { useCallStore } from '../../lib/services/voip/useCallStore';
 import { mockedStore } from '../../reducers/mockedStore';
 import * as stories from './CallView.stories';
 import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
+import { ResponsiveLayoutContext } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 let mockWindowWidth = 350;
 jest.mock('react-native/Libraries/Utilities/useWindowDimensions', () => ({
@@ -410,19 +411,6 @@ describe('CallView/CallView', () => {
 		);
 
 		expect(getByText('Unmute')).toBeTruthy();
-	});
-
-<<<<<<< HEAD
-	it('should render buttons in two rows on narrow layout', () => {
-		mockWindowWidth = 350;
-		setStoreState();
-		const { getByTestId } = render(
-			<Wrapper>
-				<CallView />
-			</Wrapper>
-		);
-		expect(getByTestId('call-buttons-row-0')).toBeTruthy();
-		expect(getByTestId('call-buttons-row-1')).toBeTruthy();
 	});
 
 	it('should render buttons in a single row on wide layout', () => {

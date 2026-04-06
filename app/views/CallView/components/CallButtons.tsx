@@ -5,6 +5,7 @@ import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated'
 import I18n from '../../../i18n';
 import { navigateToCallRoom } from '../../../lib/services/voip/navigateToCallRoom';
 import { useCallStore, useControlsVisible } from '../../../lib/services/voip/useCallStore';
+import { useResponsiveLayout } from '../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import CallActionButton from './CallActionButton';
 import { CONTROLS_ANIMATION_DURATION, styles } from '../styles';
 import { useTheme } from '../../../theme';
