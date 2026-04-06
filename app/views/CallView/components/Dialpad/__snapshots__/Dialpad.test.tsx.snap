@@ -24,13 +24,13 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
     }
   >
     <A11yOrderView
-      orderKey=":r8:"
+      orderKey="«r8»"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey=":r8:"
+        orderKey="«r8»"
       >
         <View
           style={
@@ -1293,13 +1293,13 @@ exports[`Story Snapshots: WithValue should match snapshot 1`] = `
     }
   >
     <A11yOrderView
-      orderKey=":r9:"
+      orderKey="«r9»"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey=":r9:"
+        orderKey="«r9»"
       >
         <View
           style={
