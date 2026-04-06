@@ -10,8 +10,9 @@ import { CONTROLS_ANIMATION_DURATION, styles } from '../styles';
 import { useTheme } from '../../../theme';
 import { showActionSheetRef } from '../../../containers/ActionSheet';
 import Dialpad from './Dialpad/Dialpad';
+import { type LayoutMode } from '..';
 
-export const CallButtons = () => {
+export const CallButtons = ({ layoutMode }: { layoutMode: LayoutMode }) => {
 	'use memo';
 
 	const { colors } = useTheme();
@@ -50,61 +51,97 @@ export const CallButtons = () => {
 		endCall();
 	};
 
+	const speakerButton = (
+		<CallActionButton
+			icon={isSpeakerOn ? 'audio' : 'audio-disabled'}
+			label={I18n.t('Speaker')}
+			onPress={toggleSpeaker}
+			variant={isSpeakerOn ? 'active' : 'default'}
+			disabled={isConnecting}
+			testID='call-view-speaker'
+		/>
+	);
+
+	const holdButton = (
+		<CallActionButton
+			icon={'pause-shape-unfilled'}
+			label={isOnHold ? I18n.t('Unhold') : I18n.t('Hold')}
+			onPress={toggleHold}
+			variant={isOnHold ? 'active' : 'default'}
+			disabled={isConnecting}
+			testID='call-view-hold'
+		/>
+	);
+
+	const muteButton = (
+		<CallActionButton
+			icon={isMuted ? 'microphone-disabled' : 'microphone'}
+			label={isMuted ? I18n.t('Unmute') : I18n.t('Mute')}
+			onPress={toggleMute}
+			variant={isMuted ? 'active' : 'default'}
+			disabled={isConnecting}
+			testID='call-view-mute'
+		/>
+	);
+
+	const messageButton = (
+		<CallActionButton
+			icon='message'
+			label={I18n.t('Message')}
+			onPress={handleMessage}
+			disabled={messageDisabled}
+			testID='call-view-message'
+		/>
+	);
+
+	const endButton = (
+		<CallActionButton
+			icon='phone-off'
+			label={isConnecting ? I18n.t('Cancel') : I18n.t('End')}
+			onPress={handleEndCall}
+			variant='danger'
+			testID='call-view-end'
+		/>
+	);
+
+	const dialpadButton = (
+		<CallActionButton
+			icon='dialpad'
+			label={I18n.t('Dialpad')}
+			onPress={handleDialpad}
+			disabled={isConnecting}
+			testID='call-view-dialpad'
+		/>
+	);
+
 	return (
 		<Animated.View
 			style={[styles.buttonsContainer, { borderTopColor: colors.strokeExtraLight }, containerStyle]}
 			pointerEvents={controlsVisible ? 'auto' : 'none'}
 			testID='call-buttons'>
-			<View style={styles.buttonsRow}>
-				<CallActionButton
-					icon={isSpeakerOn ? 'audio' : 'audio-disabled'}
-					label={I18n.t('Speaker')}
-					onPress={toggleSpeaker}
-					variant={isSpeakerOn ? 'active' : 'default'}
-					disabled={isConnecting}
-					testID='call-view-speaker'
-				/>
-				<CallActionButton
-					icon={'pause-shape-unfilled'}
-					label={isOnHold ? I18n.t('Unhold') : I18n.t('Hold')}
-					onPress={toggleHold}
-					variant={isOnHold ? 'active' : 'default'}
-					disabled={isConnecting}
-					testID='call-view-hold'
-				/>
-				<CallActionButton
-					icon={isMuted ? 'microphone-disabled' : 'microphone'}
-					label={isMuted ? I18n.t('Unmute') : I18n.t('Mute')}
-					onPress={toggleMute}
-					variant={isMuted ? 'active' : 'default'}
-					disabled={isConnecting}
-					testID='call-view-mute'
-				/>
-			</View>
-
-			<View style={styles.buttonsRow}>
-				<CallActionButton
-					icon='message'
-					label={I18n.t('Message')}
-					onPress={handleMessage}
-					disabled={messageDisabled}
-					testID='call-view-message'
-				/>
-				<CallActionButton
-					icon='phone-off'
-					label={isConnecting ? I18n.t('Cancel') : I18n.t('End')}
-					onPress={handleEndCall}
-					variant='danger'
-					testID='call-view-end'
-				/>
-				<CallActionButton
-					icon='dialpad'
-					label={I18n.t('Dialpad')}
-					onPress={handleDialpad}
-					disabled={isConnecting}
-					testID='call-view-dialpad'
-				/>
-			</View>
+			{layoutMode === 'wide' ? (
+				<View style={styles.buttonsRowLast} testID='call-buttons-row-0'>
+					{speakerButton}
+					{holdButton}
+					{muteButton}
+					{messageButton}
+					{endButton}
+					{dialpadButton}
+				</View>
+			) : (
+				<>
+					<View style={styles.buttonsRow} testID='call-buttons-row-0'>
+						{speakerButton}
+						{holdButton}
+						{muteButton}
+					</View>
+					<View style={styles.buttonsRowLast} testID='call-buttons-row-1'>
+						{messageButton}
+						{endButton}
+						{dialpadButton}
+					</View>
+				</>
+			)}
 		</Animated.View>
 	);
 };
