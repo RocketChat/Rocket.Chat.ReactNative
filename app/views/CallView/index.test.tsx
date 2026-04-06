@@ -3,6 +3,12 @@ import { fireEvent, render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
 import CallView from '.';
+
+let mockWindowWidth = 350;
+jest.mock('react-native/Libraries/Utilities/useWindowDimensions', () => ({
+	__esModule: true,
+	default: () => ({ width: mockWindowWidth, height: 800, scale: 1, fontScale: 1 })
+}));
 import { useCallStore } from '../../lib/services/voip/useCallStore';
 import { mockedStore } from '../../reducers/mockedStore';
 import * as stories from './CallView.stories';
@@ -31,8 +37,8 @@ global.alert = jest.fn();
 
 const mockShowActionSheetRef = jest.fn();
 jest.mock('../../containers/ActionSheet', () => ({
-	...jest.requireActual('../../containers/ActionSheet'),
-	showActionSheetRef: (options: any) => mockShowActionSheetRef(options)
+	showActionSheetRef: (options: any) => mockShowActionSheetRef(options),
+	hideActionSheetRef: jest.fn()
 }));
 
 // Helper to create a mock call
@@ -80,6 +86,7 @@ const Wrapper = ({ children }: { children: React.ReactNode }) => <Provider store
 
 describe('CallView', () => {
 	beforeEach(() => {
+		mockWindowWidth = 350;
 		useCallStore.getState().reset();
 		jest.clearAllMocks();
 	});
@@ -386,6 +393,30 @@ describe('CallView', () => {
 		);
 
 		expect(getByText('Unmute')).toBeTruthy();
+	});
+
+	it('should render buttons in two rows on narrow layout', () => {
+		mockWindowWidth = 350;
+		setStoreState();
+		const { getByTestId } = render(
+			<Wrapper>
+				<CallView />
+			</Wrapper>
+		);
+		expect(getByTestId('call-buttons-row-0')).toBeTruthy();
+		expect(getByTestId('call-buttons-row-1')).toBeTruthy();
+	});
+
+	it('should render buttons in a single row on wide layout', () => {
+		mockWindowWidth = 800;
+		setStoreState();
+		const { getByTestId, queryByTestId } = render(
+			<Wrapper>
+				<CallView />
+			</Wrapper>
+		);
+		expect(getByTestId('call-buttons-row-0')).toBeTruthy();
+		expect(queryByTestId('call-buttons-row-1')).toBeNull();
 	});
 });
 

@@ -60,6 +60,10 @@ export const styles = StyleSheet.create({
 		justifyContent: 'space-around',
 		marginBottom: 24
 	},
+	buttonsRowLast: {
+		flexDirection: 'row',
+		justifyContent: 'space-around'
+	},
 	actionButton: {
 		alignItems: 'center',
 		justifyContent: 'center',

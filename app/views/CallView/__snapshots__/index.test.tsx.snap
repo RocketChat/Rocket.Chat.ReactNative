@@ -195,9 +195,9 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
           {
             "flexDirection": "row",
             "justifyContent": "space-around",
-            "marginBottom": 24,
           }
         }
+        testID="call-buttons-row-0"
       >
         <View>
           <View
@@ -372,7 +372,7 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
                 ]
               }
             >
-              
+              ?
             </Text>
           </View>
           <Text
@@ -493,16 +493,6 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
             Mute
           </Text>
         </View>
-      </View>
-      <View
-        style={
-          {
-            "flexDirection": "row",
-            "justifyContent": "space-around",
-            "marginBottom": 24,
-          }
-        }
-      >
         <View>
           <View
             accessibilityLabel="Message"
@@ -998,9 +988,9 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
           {
             "flexDirection": "row",
             "justifyContent": "space-around",
-            "marginBottom": 24,
           }
         }
+        testID="call-buttons-row-0"
       >
         <View>
           <View
@@ -1179,7 +1169,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
                 ]
               }
             >
-              
+              ?
             </Text>
           </View>
           <Text
@@ -1302,16 +1292,6 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
             Mute
           </Text>
         </View>
-      </View>
-      <View
-        style={
-          {
-            "flexDirection": "row",
-            "justifyContent": "space-around",
-            "marginBottom": 24,
-          }
-        }
-      >
         <View>
           <View
             accessibilityLabel="Message"
@@ -1809,9 +1789,9 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
           {
             "flexDirection": "row",
             "justifyContent": "space-around",
-            "marginBottom": 24,
           }
         }
+        testID="call-buttons-row-0"
       >
         <View>
           <View
@@ -1986,7 +1966,7 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
                 ]
               }
             >
-              
+              ?
             </Text>
           </View>
           <Text
@@ -2107,16 +2087,6 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
             Unmute
           </Text>
         </View>
-      </View>
-      <View
-        style={
-          {
-            "flexDirection": "row",
-            "justifyContent": "space-around",
-            "marginBottom": 24,
-          }
-        }
-      >
         <View>
           <View
             accessibilityLabel="Message"
@@ -2612,9 +2582,9 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
           {
             "flexDirection": "row",
             "justifyContent": "space-around",
-            "marginBottom": 24,
           }
         }
+        testID="call-buttons-row-0"
       >
         <View>
           <View
@@ -2789,7 +2759,7 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
                 ]
               }
             >
-              
+              ?
             </Text>
           </View>
           <Text
@@ -2910,16 +2880,6 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
             Unmute
           </Text>
         </View>
-      </View>
-      <View
-        style={
-          {
-            "flexDirection": "row",
-            "justifyContent": "space-around",
-            "marginBottom": 24,
-          }
-        }
-      >
         <View>
           <View
             accessibilityLabel="Message"
@@ -3415,9 +3375,9 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
           {
             "flexDirection": "row",
             "justifyContent": "space-around",
-            "marginBottom": 24,
           }
         }
+        testID="call-buttons-row-0"
       >
         <View>
           <View
@@ -3592,7 +3552,7 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
                 ]
               }
             >
-              
+              ?
             </Text>
           </View>
           <Text
@@ -3713,16 +3673,6 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
             Mute
           </Text>
         </View>
-      </View>
-      <View
-        style={
-          {
-            "flexDirection": "row",
-            "justifyContent": "space-around",
-            "marginBottom": 24,
-          }
-        }
-      >
         <View>
           <View
             accessibilityLabel="Message"
@@ -4218,9 +4168,9 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
           {
             "flexDirection": "row",
             "justifyContent": "space-around",
-            "marginBottom": 24,
           }
         }
+        testID="call-buttons-row-0"
       >
         <View>
           <View
@@ -4395,7 +4345,7 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
                 ]
               }
             >
-              
+              ?
             </Text>
           </View>
           <Text
@@ -4516,16 +4466,6 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
             Mute
           </Text>
         </View>
-      </View>
-      <View
-        style={
-          {
-            "flexDirection": "row",
-            "justifyContent": "space-around",
-            "marginBottom": 24,
-          }
-        }
-      >
         <View>
           <View
             accessibilityLabel="Message"
