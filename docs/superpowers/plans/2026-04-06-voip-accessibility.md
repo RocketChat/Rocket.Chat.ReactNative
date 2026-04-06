@@ -17,7 +17,7 @@
 | Create | `app/lib/hooks/useIsScreenReaderEnabled.ts` | Reactive boolean: VoiceOver/TalkBack active |
 | Create | `app/lib/hooks/useIsScreenReaderEnabled.test.ts` | Tests for the hook |
 | Modify | `app/lib/services/voip/useCallStore.ts:301` | `useControlsVisible` — always true when screen reader on |
-| Modify | `app/i18n/locales/en.json:911` | Add `Toggle_call_controls` key |
+| Modify | `app/i18n/locales/*.json` (25 files — all in `LANGUAGES` array) | Add `Toggle_call_controls` key |
 | Modify | `app/views/CallView/components/CallerInfo.tsx` | Screen reader bypass + a11y label + landscape avatar |
 | Modify | `app/views/CallView/components/CallButtons.tsx` | `accessibilityElementsHidden` + landscape styles |
 | Modify | `app/views/CallView/index.tsx` | Landscape container flex direction |
@@ -138,25 +138,67 @@ git commit -m "feat(a11y): add useIsScreenReaderEnabled hook"
 
 ---
 
-## Task 2: i18n key
+## Task 2: i18n key — dispatch translation agent
 
-**Files:**
-- Modify: `app/i18n/locales/en.json:911`
+**Files:** All 25 locale files registered in the `LANGUAGES` array in `app/i18n/index.ts`:
 
-- [ ] **Step 1: Add the key**
+`en.json`, `ar.json`, `bn-IN.json`, `cs.json`, `de.json`, `es.json`, `fi.json`, `fr.json`, `hi-IN.json`, `hu.json`, `it.json`, `ja.json`, `nl.json`, `no.json`, `nn.json`, `pt-BR.json`, `pt-PT.json`, `ru.json`, `sl-SI.json`, `sv.json`, `ta-IN.json`, `te-IN.json`, `tr.json`, `zh-CN.json`, `zh-TW.json`
 
-In `app/i18n/locales/en.json`, after line 911 (`"To_download": "To download",`), insert:
+- [ ] **Step 1: Dispatch a general-purpose agent to handle all translations**
 
-```json
-  "Toggle_call_controls": "Toggle call controls",
-```
+Launch an agent with the following prompt:
 
-- [ ] **Step 2: Commit**
+> You are adding a new i18n key to a React Native app. The key is `Toggle_call_controls` with the English value `"Toggle call controls"` — it labels a button that shows/hides the call controls on an ongoing phone call screen.
+>
+> Add this key to all 25 locale files listed below. For each file:
+> 1. Translate "Toggle call controls" into the appropriate language naturally (don't just copy English)
+> 2. Find the insertion point alphabetically — it goes between `"To_download"` and `"Token_expired"` (search for `Token_expired` in each file to locate it; if that key is missing, insert alphabetically between the nearest surrounding keys)
+> 3. Insert: `"Toggle_call_controls": "<translated string>",`
+>
+> Files (all under `app/i18n/locales/`):
+> `en.json` → "Toggle call controls"
+> `ar.json` → Arabic
+> `bn-IN.json` → Bengali
+> `cs.json` → Czech
+> `de.json` → German
+> `es.json` → Spanish
+> `fi.json` → Finnish
+> `fr.json` → French
+> `hi-IN.json` → Hindi
+> `hu.json` → Hungarian
+> `it.json` → Italian
+> `ja.json` → Japanese
+> `nl.json` → Dutch
+> `no.json` → Norwegian Bokmål
+> `nn.json` → Norwegian Nynorsk
+> `pt-BR.json` → Brazilian Portuguese
+> `pt-PT.json` → European Portuguese
+> `ru.json` → Russian
+> `sl-SI.json` → Slovenian
+> `sv.json` → Swedish
+> `ta-IN.json` → Tamil
+> `te-IN.json` → Telugu
+> `tr.json` → Turkish
+> `zh-CN.json` → Simplified Chinese
+> `zh-TW.json` → Traditional Chinese
+>
+> After editing all files, run:
+> ```bash
+> grep -rl "Toggle_call_controls" app/i18n/locales/ | wc -l
+> ```
+> Expected: `25`. Then commit:
+> ```bash
+> git add app/i18n/locales/
+> git commit -m "feat(a11y): add Toggle_call_controls i18n key to all locales"
+> ```
+
+- [ ] **Step 2: Verify**
 
 ```bash
-git add app/i18n/locales/en.json
-git commit -m "feat(a11y): add Toggle_call_controls i18n key"
+grep -rl "Toggle_call_controls" app/i18n/locales/ | wc -l
 ```
+
+Expected: `25`
 
 ---
 
