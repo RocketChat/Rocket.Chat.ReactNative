@@ -22,6 +22,35 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
     }
   >
     <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         {
           "alignItems": "center",
@@ -30,7 +59,7 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
           "paddingHorizontal": 24,
         }
       }
-      testID="caller-info"
+      testID="caller-info-toggle"
     >
       <View
         style={
@@ -97,11 +126,21 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
       </View>
       <View
         style={
-          {
-            "alignItems": "center",
-            "flexDirection": "row",
-            "justifyContent": "center",
-          }
+          [
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "center",
+            },
+            {
+              "opacity": 1,
+              "transform": [
+                {
+                  "translateY": 0,
+                },
+              ],
+            },
+          ]
         }
       >
         <Text
@@ -129,6 +168,7 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
       </View>
     </View>
     <View
+      pointerEvents="auto"
       style={
         [
           {
@@ -138,8 +178,17 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
           {
             "borderTopColor": "#EBECEF",
           },
+          {
+            "opacity": 1,
+            "transform": [
+              {
+                "translateY": 0,
+              },
+            ],
+          },
         ]
       }
+      testID="call-buttons"
     >
       <View
         style={
@@ -776,6 +825,35 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
     }
   >
     <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         {
           "alignItems": "center",
@@ -784,7 +862,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
           "paddingHorizontal": 24,
         }
       }
-      testID="caller-info"
+      testID="caller-info-toggle"
     >
       <View
         style={
@@ -851,11 +929,21 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
       </View>
       <View
         style={
-          {
-            "alignItems": "center",
-            "flexDirection": "row",
-            "justifyContent": "center",
-          }
+          [
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "center",
+            },
+            {
+              "opacity": 1,
+              "transform": [
+                {
+                  "translateY": 0,
+                },
+              ],
+            },
+          ]
         }
       >
         <Text
@@ -883,6 +971,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
       </View>
     </View>
     <View
+      pointerEvents="auto"
       style={
         [
           {
@@ -892,8 +981,17 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
           {
             "borderTopColor": "#EBECEF",
           },
+          {
+            "opacity": 1,
+            "transform": [
+              {
+                "translateY": 0,
+              },
+            ],
+          },
         ]
       }
+      testID="call-buttons"
     >
       <View
         style={
@@ -1538,6 +1636,35 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
     }
   >
     <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         {
           "alignItems": "center",
@@ -1546,7 +1673,7 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
           "paddingHorizontal": 24,
         }
       }
-      testID="caller-info"
+      testID="caller-info-toggle"
     >
       <View
         style={
@@ -1613,11 +1740,21 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
       </View>
       <View
         style={
-          {
-            "alignItems": "center",
-            "flexDirection": "row",
-            "justifyContent": "center",
-          }
+          [
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "center",
+            },
+            {
+              "opacity": 1,
+              "transform": [
+                {
+                  "translateY": 0,
+                },
+              ],
+            },
+          ]
         }
       >
         <Text
@@ -1645,6 +1782,7 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
       </View>
     </View>
     <View
+      pointerEvents="auto"
       style={
         [
           {
@@ -1654,8 +1792,17 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
           {
             "borderTopColor": "#EBECEF",
           },
+          {
+            "opacity": 1,
+            "transform": [
+              {
+                "translateY": 0,
+              },
+            ],
+          },
         ]
       }
+      testID="call-buttons"
     >
       <View
         style={
@@ -2292,6 +2439,35 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
     }
   >
     <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         {
           "alignItems": "center",
@@ -2300,7 +2476,7 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
           "paddingHorizontal": 24,
         }
       }
-      testID="caller-info"
+      testID="caller-info-toggle"
     >
       <View
         style={
@@ -2367,11 +2543,21 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
       </View>
       <View
         style={
-          {
-            "alignItems": "center",
-            "flexDirection": "row",
-            "justifyContent": "center",
-          }
+          [
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "center",
+            },
+            {
+              "opacity": 1,
+              "transform": [
+                {
+                  "translateY": 0,
+                },
+              ],
+            },
+          ]
         }
       >
         <Text
@@ -2399,6 +2585,7 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
       </View>
     </View>
     <View
+      pointerEvents="auto"
       style={
         [
           {
@@ -2408,8 +2595,17 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
           {
             "borderTopColor": "#EBECEF",
           },
+          {
+            "opacity": 1,
+            "transform": [
+              {
+                "translateY": 0,
+              },
+            ],
+          },
         ]
       }
+      testID="call-buttons"
     >
       <View
         style={
@@ -3046,6 +3242,35 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
     }
   >
     <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         {
           "alignItems": "center",
@@ -3054,7 +3279,7 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
           "paddingHorizontal": 24,
         }
       }
-      testID="caller-info"
+      testID="caller-info-toggle"
     >
       <View
         style={
@@ -3121,11 +3346,21 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
       </View>
       <View
         style={
-          {
-            "alignItems": "center",
-            "flexDirection": "row",
-            "justifyContent": "center",
-          }
+          [
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "center",
+            },
+            {
+              "opacity": 1,
+              "transform": [
+                {
+                  "translateY": 0,
+                },
+              ],
+            },
+          ]
         }
       >
         <Text
@@ -3153,6 +3388,7 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
       </View>
     </View>
     <View
+      pointerEvents="auto"
       style={
         [
           {
@@ -3162,8 +3398,17 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
           {
             "borderTopColor": "#EBECEF",
           },
+          {
+            "opacity": 1,
+            "transform": [
+              {
+                "translateY": 0,
+              },
+            ],
+          },
         ]
       }
+      testID="call-buttons"
     >
       <View
         style={
@@ -3800,6 +4045,35 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
     }
   >
     <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         {
           "alignItems": "center",
@@ -3808,7 +4082,7 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
           "paddingHorizontal": 24,
         }
       }
-      testID="caller-info"
+      testID="caller-info-toggle"
     >
       <View
         style={
@@ -3875,11 +4149,21 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
       </View>
       <View
         style={
-          {
-            "alignItems": "center",
-            "flexDirection": "row",
-            "justifyContent": "center",
-          }
+          [
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "center",
+            },
+            {
+              "opacity": 1,
+              "transform": [
+                {
+                  "translateY": 0,
+                },
+              ],
+            },
+          ]
         }
       >
         <Text
@@ -3907,6 +4191,7 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
       </View>
     </View>
     <View
+      pointerEvents="auto"
       style={
         [
           {
@@ -3916,8 +4201,17 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
           {
             "borderTopColor": "#EBECEF",
           },
+          {
+            "opacity": 1,
+            "transform": [
+              {
+                "translateY": 0,
+              },
+            ],
+          },
         ]
       }
+      testID="call-buttons"
     >
       <View
         style={

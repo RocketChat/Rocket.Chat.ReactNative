@@ -118,9 +118,11 @@ export const setupMediaCallEvents = (): (() => void) => {
 				return;
 			}
 			if (wasAutoHeld) {
-				toggleHold();
+				if (isOnHold) {
+					toggleHold();
+					RNCallKeep.setCurrentCallActive(callUUID);
+				}
 				wasAutoHeld = false;
-				RNCallKeep.setCurrentCallActive(callUUID);
 			}
 		})
 	);

@@ -559,6 +559,8 @@
   "Pause": "Paus",
   "Permalink_copied_to_clipboard": "Permalänken har kopierats till urklipp.",
   "Phone": "Telefonnummer",
+  "Phone_state_permission_message": "Detta låter Rocket.Chat upptäcka om du redan är i ett telefon- eller VoIP-samtal så att inkommande samtal kan hanteras korrekt.",
+  "Phone_state_permission_title": "Tillåt åtkomst till telefonstatus",
   "Pin": "Fäst",
   "Pinned": "Fästa",
   "Place_chat_on_hold": "Parkera chatten",

@@ -1,10 +1,11 @@
 import React from 'react';
 import { View } from 'react-native';
+import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
 import I18n from '../../../i18n';
-import { useCallStore } from '../../../lib/services/voip/useCallStore';
+import { useCallStore, useControlsVisible } from '../../../lib/services/voip/useCallStore';
 import CallActionButton from './CallActionButton';
-import { styles } from '../styles';
+import { CONTROLS_ANIMATION_DURATION, styles } from '../styles';
 import { useTheme } from '../../../theme';
 import { showActionSheetRef } from '../../../containers/ActionSheet';
 import Dialpad from './Dialpad/Dialpad';
@@ -24,6 +25,13 @@ export const CallButtons = () => {
 	const toggleSpeaker = useCallStore(state => state.toggleSpeaker);
 	const endCall = useCallStore(state => state.endCall);
 
+	const controlsVisible = useControlsVisible();
+
+	const containerStyle = useAnimatedStyle(() => ({
+		opacity: withTiming(controlsVisible ? 1 : 0, { duration: CONTROLS_ANIMATION_DURATION }),
+		transform: [{ translateY: withTiming(controlsVisible ? 0 : 100, { duration: CONTROLS_ANIMATION_DURATION }) }]
+	}));
+
 	const isConnecting = callState === 'none' || callState === 'ringing' || callState === 'accepted';
 
 	const handleMessage = () => {
@@ -41,7 +49,10 @@ export const CallButtons = () => {
 	};
 
 	return (
-		<View style={[styles.buttonsContainer, { borderTopColor: colors.strokeExtraLight }]}>
+		<Animated.View
+			style={[styles.buttonsContainer, { borderTopColor: colors.strokeExtraLight }, containerStyle]}
+			pointerEvents={controlsVisible ? 'auto' : 'none'}
+			testID='call-buttons'>
 			<View style={styles.buttonsRow}>
 				<CallActionButton
 					icon={isSpeakerOn ? 'audio' : 'audio-disabled'}
@@ -86,6 +97,6 @@ export const CallButtons = () => {
 					testID='call-view-dialpad'
 				/>
 			</View>
-		</View>
+		</Animated.View>
 	);
 };

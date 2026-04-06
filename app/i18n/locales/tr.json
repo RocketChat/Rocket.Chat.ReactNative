@@ -442,6 +442,8 @@
   "Pause": "Duraklat",
   "Permalink_copied_to_clipboard": "Kalıcı bağlantı panoya kopyalandı!",
   "Phone": "Telefon",
+  "Phone_state_permission_message": "Bununla Rocket.Chat, zaten bir telefon veya VoIP görüşmesinde olup olmadığınızı algılayabilir; böylece gelen aramalar doğru şekilde yönetilir.",
+  "Phone_state_permission_title": "Telefon durumuna erişime izin ver",
   "Pin": "Sabitle",
   "Pinned": "Sabitlendi",
   "Play": "Oyna",

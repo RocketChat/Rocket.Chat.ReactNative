@@ -68,6 +68,7 @@ interface CallStoreState {
 	isSpeakerOn: boolean;
 	callStartTime: number | null;
 	focused: boolean;
+	controlsVisible: boolean;
 	dialpadValue: string;
 
 	// Contact info
@@ -83,6 +84,8 @@ interface CallStoreActions {
 	toggleMute: () => void;
 	toggleHold: () => void;
 	toggleSpeaker: () => void;
+	toggleControlsVisible: () => void;
+	showControls: () => void;
 	toggleFocus: () => void;
 	endCall: () => void;
 	/** Clears UI/call fields but keeps nativeAcceptedCallId. Restarts the 15s timer (media init calls reset and clears the old timer first). */
@@ -105,6 +108,7 @@ const initialState: CallStoreState = {
 	callStartTime: null,
 	contact: {},
 	focused: true,
+	controlsVisible: true,
 	dialpadValue: ''
 };
 
@@ -159,7 +163,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 			if (!currentCall) return;
 
 			const newState = currentCall.state;
-			set({ callState: newState });
+			set({ callState: newState, controlsVisible: true });
 
 			// Set start time when call becomes active
 			if (newState === 'active' && !get().callStartTime) {
@@ -175,7 +179,8 @@ export const useCallStore = create<CallStore>((set, get) => ({
 				isMuted: currentCall.muted,
 				isOnHold: currentCall.held,
 				remoteMute: currentCall.remoteMute,
-				remoteHeld: currentCall.remoteHeld
+				remoteHeld: currentCall.remoteHeld,
+				controlsVisible: true
 			});
 		};
 
@@ -194,6 +199,14 @@ export const useCallStore = create<CallStore>((set, get) => ({
 			call.emitter.off('trackStateChange', handleTrackStateChange);
 			call.emitter.off('ended', handleEnded);
 		};
+	},
+
+	toggleControlsVisible: () => {
+		set({ controlsVisible: !get().controlsVisible });
+	},
+
+	showControls: () => {
+		set({ controlsVisible: true });
 	},
 
 	toggleMute: () => {
@@ -228,7 +241,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 
 	toggleFocus: () => {
 		const isFocused = get().focused;
-		set({ focused: !isFocused });
+		set({ focused: !isFocused, controlsVisible: true });
 		if (isFocused) {
 			Navigation.back();
 		} else {
@@ -285,3 +298,4 @@ export const useCallState = () => {
 
 export const useCallContact = () => useCallStore(state => state.contact);
 export const useDialpadValue = () => useCallStore(state => state.dialpadValue);
+export const useControlsVisible = () => useCallStore(state => state.controlsVisible);

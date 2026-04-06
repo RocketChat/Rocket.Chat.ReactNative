@@ -176,6 +176,39 @@ describe('MediaCallHeader', () => {
 		expect(endCall).toHaveBeenCalledTimes(1);
 	});
 
+	it('should have pointerEvents none when focused and controls hidden', () => {
+		setStoreState({ focused: true, controlsVisible: false });
+		const { getByTestId } = render(
+			<Wrapper>
+				<MediaCallHeader />
+			</Wrapper>
+		);
+
+		expect(getByTestId('media-call-header')).toHaveProp('pointerEvents', 'none');
+	});
+
+	it('should have pointerEvents auto when focused and controls visible', () => {
+		setStoreState({ focused: true, controlsVisible: true });
+		const { getByTestId } = render(
+			<Wrapper>
+				<MediaCallHeader />
+			</Wrapper>
+		);
+
+		expect(getByTestId('media-call-header')).toHaveProp('pointerEvents', 'auto');
+	});
+
+	it('should have pointerEvents auto when not focused even if controls hidden', () => {
+		setStoreState({ focused: false, controlsVisible: false });
+		const { getByTestId } = render(
+			<Wrapper>
+				<MediaCallHeader />
+			</Wrapper>
+		);
+
+		expect(getByTestId('media-call-header')).toHaveProp('pointerEvents', 'auto');
+	});
+
 	it('should show alert when content is pressed', () => {
 		setStoreState();
 		const { getByTestId } = render(

@@ -583,6 +583,8 @@
   "Pause": "Pause",
   "Permalink_copied_to_clipboard": "Permalink in die Zwischenablage kopiert!",
   "Phone": "Telefon",
+  "Phone_state_permission_message": "Damit kann Rocket.Chat erkennen, ob Sie bereits in einem Telefon- oder VoIP-Gespräch sind, damit eingehende Anrufe korrekt behandelt werden können.",
+  "Phone_state_permission_title": "Zugriff auf den Telefonstatus erlauben",
   "Pin": "Anheften",
   "Pinned": "Angeheftet",
   "Place_chat_on_hold": "Chat in die Warteschleife stellen",

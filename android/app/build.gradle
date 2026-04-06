@@ -156,6 +156,7 @@ dependencies {
 
     // For ProcessLifecycleOwner (app foreground detection)
     implementation 'androidx.lifecycle:lifecycle-process:2.8.7'
+    testImplementation 'junit:junit:4.13.2'
 }
 
 apply plugin: 'com.google.gms.google-services'

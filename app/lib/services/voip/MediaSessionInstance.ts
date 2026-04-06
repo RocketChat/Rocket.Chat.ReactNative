@@ -20,6 +20,7 @@ import type { IceServer } from '../../../definitions/Voip';
 import type { IDDPMessage } from '../../../definitions/IDDPMessage';
 import type { ISubscription, TSubscriptionModel } from '../../../definitions';
 import { getUidDirectMessage } from '../../methods/helpers/helpers';
+import { requestPhoneStatePermission } from '../../methods/voipPhoneStatePermission';
 
 class MediaSessionInstance {
 	private iceServers: IceServer[] = [];
@@ -137,6 +138,7 @@ class MediaSessionInstance {
 	};
 
 	public startCall = (userId: string, actor: CallActorType) => {
+		requestPhoneStatePermission();
 		console.log('[VoIP] Starting call:', userId);
 		this.instance?.startCall(actor, userId);
 	};

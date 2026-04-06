@@ -2,6 +2,8 @@ import { StyleSheet } from 'react-native';
 
 import sharedStyles from '../Styles';
 
+export const CONTROLS_ANIMATION_DURATION = 300;
+
 export const styles = StyleSheet.create({
 	container: {
 		flex: 1,

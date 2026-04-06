@@ -396,6 +396,8 @@
   "Pause": "Pausa",
   "Permalink_copied_to_clipboard": "Link permanente copiado para a área de transferência!",
   "Phone": "Telefone",
+  "Phone_state_permission_message": "Isto permite ao Rocket.Chat detetar se já está numa chamada telefónica ou VoIP, para que as chamadas recebidas sejam tratadas corretamente.",
+  "Phone_state_permission_title": "Permitir acesso ao estado do telefone",
   "Pin": "Afixar",
   "Pinned": "Afixada",
   "Pinned_a_message": "Fixou uma mensagem:",

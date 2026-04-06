@@ -290,6 +290,8 @@
   "Passwords_do_not_match": "Passorda stemmer ikkje overeins",
   "Pause": "Pause",
   "Phone": "Telefon",
+  "Phone_state_permission_message": "Dette lèt Rocket.Chat oppdage om du allereie er i ein telefon- eller VoIP-samtale, slik at innkomande samtalar kan handsamast korrekt.",
+  "Phone_state_permission_title": "Tillat tilgang til telefonstatus",
   "Pin": "Pin",
   "Pinned_a_message": "Pinned en melding:",
   "Please_add_a_comment": "Vennligst legg til en kommentar",

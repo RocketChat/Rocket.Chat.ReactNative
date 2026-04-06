@@ -442,6 +442,8 @@
   "Pause": "暫停",
   "Permalink_copied_to_clipboard": "永久連結已複製到剪貼簿！",
   "Phone": "電話",
+  "Phone_state_permission_message": "讓 Rocket.Chat 偵測您是否已在一般電話或 VoIP 通話中，以正確處理來電。",
+  "Phone_state_permission_title": "允許存取電話狀態",
   "Pin": "釘選",
   "Pinned": "被釘選",
   "Play": "遊戲",
