@@ -1,0 +1,165 @@
+appId: chat.rocket.reactnative
+name: Screen Lock - Passcode Change No Hang on iOS
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-14
+  - ios-only
+
+---
+- evalScript: ${output.user = output.utils.createUser()}
+
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+
+# Navigate to Screen Lock Config View
+- runFlow:
+    file: './utils/go-to-screen-lock.yaml'
+
+# --- should display the Screen Lock Config view with unlock toggle ---
+- assertVisible:
+    id: 'screen-lock-config-view'
+
+- assertVisible:
+    id: 'screen-lock-config-view-autolock'
+
+# The "Change passcode" option should NOT be visible before enabling auto-lock
+- assertNotVisible:
+    id: 'screen-lock-config-view-change-passcode'
+
+# --- should enable Auto-lock (Unlock with passcode toggle) ---
+- tapOn:
+    id: 'screen-lock-config-view-autolock'
+
+# Passcode setup prompt appears: "Choose your new passcode"
+- extendedWaitUntil:
+    visible:
+      text: 'Choose your new passcode'
+    timeout: 30000
+
+# Enter initial 6-digit passcode: 1-2-3-4-5-6
+# Each digit is a unique Text node on the numeric keypad — no ambiguity
+- tapOn:
+    id: 'passcode-button-1'
+- tapOn:
+    id: 'passcode-button-2'
+- tapOn:
+    id: 'passcode-button-3'
+- tapOn:
+    id: 'passcode-button-4'
+- tapOn:
+    id: 'passcode-button-5'
+- tapOn:
+    id: 'passcode-button-6'
+
+# Confirm passcode prompt: "Confirm your new passcode"
+- extendedWaitUntil:
+    visible:
+      text: 'Confirm your new passcode'
+    timeout: 30000
+- tapOn:
+    id: 'passcode-button-1'
+- tapOn:
+    id: 'passcode-button-2'
+- tapOn:
+    id: 'passcode-button-3'
+- tapOn:
+    id: 'passcode-button-4'
+- tapOn:
+    id: 'passcode-button-5'
+- tapOn:
+    id: 'passcode-button-6'
+
+# The passcode modal should close and we return to Screen Lock Config view
+- extendedWaitUntil:
+    visible:
+      id: 'screen-lock-config-view'
+    timeout: 30000
+
+# "Change passcode" should now be visible since auto-lock is enabled
+- assertVisible:
+    id: 'screen-lock-config-view-change-passcode'
+
+# --- should tap "Change passcode" without the app hanging (regression test) ---
+# Previously, tapping "Change passcode" when autoLock was enabled opened two modals
+# back-to-back on iOS: first handleLocalAuthentication(), then changePasscode().
+# Without the MODAL_TRANSITION_DELAY_MS gap, the UI thread would hang and the
+# second modal (choose passcode) would never appear.
+# If the bug is still present, the extendedWaitUntil for 'Choose your new passcode' below will time out.
+- tapOn:
+    id: 'screen-lock-config-view-change-passcode'
+
+# Modal 1: authenticate with the existing passcode ("Enter your passcode")
+- extendedWaitUntil:
+    visible:
+      text: 'Enter your passcode'
+    timeout: 30000
+- tapOn:
+    id: 'passcode-button-1'
+- tapOn:
+    id: 'passcode-button-2'
+- tapOn:
+    id: 'passcode-button-3'
+- tapOn:
+    id: 'passcode-button-4'
+- tapOn:
+    id: 'passcode-button-5'
+- tapOn:
+    id: 'passcode-button-6'
+
+# Modal 2: choose new passcode — this is the one that used to hang on iOS
+- extendedWaitUntil:
+    visible:
+      text: 'Choose your new passcode'
+    timeout: 30000
+
+# Enter a new passcode: 6-5-4-3-2-1
+- tapOn:
+    id: 'passcode-button-6'
+- tapOn:
+    id: 'passcode-button-5'
+- tapOn:
+    id: 'passcode-button-4'
+- tapOn:
+    id: 'passcode-button-3'
+- tapOn:
+    id: 'passcode-button-2'
+- tapOn:
+    id: 'passcode-button-1'
+
+# Confirm new passcode
+- extendedWaitUntil:
+    visible:
+      text: 'Confirm your new passcode'
+    timeout: 30000
+- tapOn:
+    id: 'passcode-button-6'
+- tapOn:
+    id: 'passcode-button-5'
+- tapOn:
+    id: 'passcode-button-4'
+- tapOn:
+    id: 'passcode-button-3'
+- tapOn:
+    id: 'passcode-button-2'
+- tapOn:
+    id: 'passcode-button-1'
+
+# App should return to Screen Lock Config view without hanging
+- extendedWaitUntil:
+    visible:
+      id: 'screen-lock-config-view'
+    timeout: 30000
+
+# --- should disable Auto-lock (cleanup) ---
+- tapOn:
+    id: 'screen-lock-config-view-autolock'
+
+# After disabling, "Change passcode" option should disappear
+- assertNotVisible:
+    id: 'screen-lock-config-view-change-passcode'
