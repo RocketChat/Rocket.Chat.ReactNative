@@ -532,6 +532,8 @@
   "Pause": "Premor",
   "Permalink_copied_to_clipboard": "Permalink, kopirano v odložišče!",
   "Phone": "Telefon",
+  "Phone_state_permission_message": "To omogoča Rocket.Chatu, da zazna, ali ste že v telefonskem ali VoIP klicu, da se dohodni klici pravilno obdelajo.",
+  "Phone_state_permission_title": "Dovoli dostop do stanja telefona",
   "Pin": "Zatič",
   "Pinned": "Pripet",
   "Place_chat_on_hold": "Postavite klepet na \"pridržan\"",

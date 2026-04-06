@@ -520,6 +520,8 @@
   "Pause": "Pauze",
   "Permalink_copied_to_clipboard": "Permalink gekopiëerd naar klembord!",
   "Phone": "Telefoon",
+  "Phone_state_permission_message": "Hiermee kan Rocket.Chat detecteren of u al in een telefoon- of VoIP-gesprek bent, zodat inkomende oproepen correct worden afgehandeld.",
+  "Phone_state_permission_title": "Toegang tot telefoonstatus toestaan",
   "Pin": "Vastzetten",
   "Pinned": "Vastgezet",
   "Place_chat_on_hold": "Chat in de wacht zetten",

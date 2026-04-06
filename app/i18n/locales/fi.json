@@ -560,6 +560,8 @@
   "Pause": "Tauko",
   "Permalink_copied_to_clipboard": "Pysyvä linkki kopioitu leikepöydälle!",
   "Phone": "Puhelin",
+  "Phone_state_permission_message": "Tämän avulla Rocket.Chat voi havaita, oletko jo puhelimessa tai VoIP-puhelussa, jotta saapuvat puhelut voidaan käsitellä oikein.",
+  "Phone_state_permission_title": "Salli puhelimen tilan käyttö",
   "Pin": "Kiinnitä",
   "Pinned": "Kiinnitetty",
   "Place_chat_on_hold": "Aseta keskustelu pitoon",

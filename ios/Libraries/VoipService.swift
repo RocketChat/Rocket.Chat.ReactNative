@@ -36,24 +36,28 @@ public final class VoipService: NSObject {
     private static var lastVoipToken: String = loadPersistedVoipToken()
     private static var voipRegistry: PKPushRegistry?
     private static var incomingCallTimeouts: [String: DispatchWorkItem] = [:]
-    private static var ddpClient: DDPClient?
+    private static let ddpRegistry = VoipPerCallDdpRegistry<DDPClient> { client in
+        client.clearQueuedMethodCalls()
+        client.disconnect()
+    }
     private static let callObserver = CXCallObserver()
     private static let incomingCallObserver = IncomingCallObserver()
     private static var isCallObserverConfigured = false
-    private static var observedIncomingCall: ObservedIncomingCall?
-    private static var isDdpLoggedIn = false
+    private static var observedIncomingCalls: [UUID: ObservedIncomingCall] = [:]
     /// Deduplication guard: `CXCallObserver` can call `callChanged` with `hasConnected = true`
     /// multiple times for the same call (e.g. observer re-registration, system race). This set
-    /// ensures `handleNativeAccept` sends the DDP accept signal exactly once per callId.
+    /// ensures `handleNativeAccept` sends the DDP accept signal exactly once per `callId` (not a
+    /// single global slot — several distinct `callId`s may be present during call-waiting).
     ///
-    /// Lifecycle:
+    /// Lifecycle (per `callId`):
     ///   Added:   At the start of `handleNativeAccept()`, before any DDP call.
     ///   Removed: After native accept DDP succeeds or fails,
     ///            on call timeout (`handleIncomingCallTimeout`),
     ///            on DDP call-end signal from another device (ddp stream listener),
-    ///            on CallKit call-ended observer event (only before connect — `observedIncomingCall` is cleared on answer).
+    ///            on CallKit call-ended observer event (only before connect — that call's entry is removed from `observedIncomingCalls` on answer).
     ///
-    /// Memory: One entry only while a native accept is in flight; cleared when the DDP accept finishes or other exit paths run.
+    /// Memory: Each `callId` is tracked independently while its native accept is in flight; entries are
+    /// cleared when that call's DDP accept finishes or another exit path runs for that `callId`.
     private static var nativeAcceptHandledCallIds = Set<String>()
 
     private enum VoipMediaCallAnswerKind {
@@ -135,8 +139,24 @@ public final class VoipService: NSObject {
         #endif
     }
 
-    public static func prepareIncomingCall(_ payload: VoipPayload) {
-        storeInitialEvents(payload)
+    /// Returns `true` when CXCallObserver reports any non-ended call (ringing or connected),
+    /// including phone, FaceTime, and third-party VoIP.
+    ///
+    /// **Call-waiting (current `AppDelegate+Voip` behavior):** This is **not** called from the PushKit
+    /// path; CallKit handles multiple simultaneous calls. Kept for parity with Android busy detection,
+    /// documentation of `prepareIncomingCall(_:storeEventsForJs:)`, and optional future or test use.
+    public static func hasActiveCall() -> Bool {
+        configureCallObserverIfNeeded()
+        return callObserver.calls.contains { !$0.hasEnded }
+    }
+
+    /// Prepares DDP listener and timeout for an incoming VoIP push. When `storeEventsForJs` is false
+    /// (e.g. user is already on a call and we will `rejectBusyCall` immediately), skip stashing payload
+    /// for `getInitialEvents` so JS does not treat an auto-rejected call as a real incoming ring.
+    public static func prepareIncomingCall(_ payload: VoipPayload, storeEventsForJs: Bool = true) {
+        if storeEventsForJs {
+            storeInitialEvents(payload)
+        }
         scheduleIncomingCallTimeout(for: payload)
         startListeningForCallEnd(payload: payload)
     }
@@ -239,7 +259,7 @@ public final class VoipService: NSObject {
     private static func handleIncomingCallTimeout(for payload: VoipPayload) {
         incomingCallTimeouts.removeValue(forKey: payload.callId)
         clearTrackedIncomingCall(for: payload.callUUID)
-        stopDDPClientInternal()
+        stopDDPClientInternal(callId: payload.callId)
         clearNativeAcceptDedupe(for: payload.callId)
 
         let callId = payload.callId
@@ -259,10 +279,12 @@ public final class VoipService: NSObject {
 
     // MARK: - Native DDP Listener (Call End Detection)
 
+    private static func isLiveClient(callId: String, client: DDPClient) -> Bool {
+        ddpRegistry.clientFor(callId: callId) === client
+    }
+
     /// Opens a lightweight DDP WebSocket to detect call hangup before JS boots.
     private static func startListeningForCallEnd(payload: VoipPayload) {
-        stopDDPClientInternal()
-
         let credentialStorage = Storage()
         guard let credentials = credentialStorage.getCredentials(server: payload.host.removeTrailingSlash()) else {
             #if DEBUG
@@ -275,8 +297,7 @@ public final class VoipService: NSObject {
         let userId = credentials.userId
         let deviceId = DeviceUID.uid()
         let client = DDPClient()
-        ddpClient = client
-        isDdpLoggedIn = false
+        ddpRegistry.putClient(callId: callId, client: client)
         trackIncomingCall(payload)
 
         #if DEBUG
@@ -284,7 +305,7 @@ public final class VoipService: NSObject {
         #endif
 
         client.onCollectionMessage = { message in
-            guard ddpClient === client else {
+            guard isLiveClient(callId: callId, client: client) else {
                 return
             }
             guard let fields = message["fields"] as? [String: Any],
@@ -315,43 +336,43 @@ public final class VoipService: NSObject {
             #endif
 
             DispatchQueue.main.async {
-                guard ddpClient === client else {
+                guard isLiveClient(callId: callId, client: client) else {
                     return
                 }
                 clearTrackedIncomingCall(for: payload.callUUID)
                 clearNativeAcceptDedupe(for: callId)
                 RNCallKeep.endCall(withUUID: callId, reason: 3)
                 cancelIncomingCallTimeout(for: callId)
-                stopDDPClientInternal()
+                stopDDPClientInternal(callId: callId)
             }
         }
 
         client.connect(host: payload.host) { connected in
-            guard ddpClient === client else {
+            guard isLiveClient(callId: callId, client: client) else {
                 return
             }
             guard connected else {
                 #if DEBUG
                 print("[\(TAG)] DDP connection failed")
                 #endif
-                stopDDPClientInternal()
+                stopDDPClientInternal(callId: callId)
                 return
             }
 
             client.login(token: credentials.userToken) { loggedIn in
-                guard ddpClient === client else {
+                guard isLiveClient(callId: callId, client: client) else {
                     return
                 }
                 guard loggedIn else {
                     #if DEBUG
                     print("[\(TAG)] DDP login failed")
                     #endif
-                    stopDDPClientInternal()
+                    stopDDPClientInternal(callId: callId)
                     return
                 }
 
-                isDdpLoggedIn = true
-                if flushPendingQueuedSignalsIfNeeded() {
+                ddpRegistry.markLoggedIn(callId: callId)
+                if flushPendingQueuedSignalsIfNeeded(callId: callId) {
                     return
                 }
 
@@ -361,14 +382,14 @@ public final class VoipService: NSObject {
                 ]
 
                 client.subscribe(name: "stream-notify-user", params: params) { subscribed in
-                    guard ddpClient === client else {
+                    guard isLiveClient(callId: callId, client: client) else {
                         return
                     }
                     #if DEBUG
                     print("[\(TAG)] DDP subscribe result: \(subscribed)")
                     #endif
                     if !subscribed {
-                        stopDDPClientInternal()
+                        stopDDPClientInternal(callId: callId)
                     }
                 }
             }
@@ -384,12 +405,12 @@ public final class VoipService: NSObject {
         stopDDPClientInternal()
     }
 
+    private static func stopDDPClientInternal(callId: String) {
+        ddpRegistry.stopClient(callId: callId)
+    }
+
     private static func stopDDPClientInternal() {
-        isDdpLoggedIn = false
-        observedIncomingCall = nil
-        ddpClient?.clearQueuedMethodCalls()
-        ddpClient?.disconnect()
-        ddpClient = nil
+        ddpRegistry.stopAllClients()
     }
 
     // MARK: - Native DDP signaling (accept / reject)
@@ -401,7 +422,7 @@ public final class VoipService: NSObject {
             #if DEBUG
             print("[\(TAG)] Missing credentials, cannot build media-call answer params for \(payload.callId)")
             #endif
-            stopDDPClientInternal()
+            stopDDPClientInternal(callId: payload.callId)
             return nil
         }
 
@@ -419,7 +440,7 @@ public final class VoipService: NSObject {
             let signalData = try? JSONSerialization.data(withJSONObject: signal),
             let signalString = String(data: signalData, encoding: .utf8)
         else {
-            stopDDPClientInternal()
+            stopDDPClientInternal(callId: payload.callId)
             return nil
         }
 
@@ -436,7 +457,7 @@ public final class VoipService: NSObject {
         cancelIncomingCallTimeout(for: payload.callId)
 
         let finishAccept: (Bool) -> Void = { success in
-            stopDDPClientInternal()
+            stopDDPClientInternal(callId: payload.callId)
             if success {
                 storeInitialEvents(payload)
                 clearNativeAcceptDedupe(for: payload.callId)
@@ -485,7 +506,7 @@ public final class VoipService: NSObject {
             }
         }
 
-        guard let client = ddpClient else {
+        guard let client = ddpRegistry.clientFor(callId: payload.callId) else {
             #if DEBUG
             print("[\(TAG)] Native DDP client unavailable for accept \(payload.callId); relying on JS")
             #endif
@@ -498,19 +519,19 @@ public final class VoipService: NSObject {
             return
         }
 
-        if isDdpLoggedIn {
+        if ddpRegistry.isLoggedIn(callId: payload.callId) {
             client.callMethod("stream-notify-user", params: params) { success in
                 #if DEBUG
                 print("[\(TAG)] Native accept signal result for \(payload.callId): \(success)")
                 #endif
-                finishAccept(success)
+                DispatchQueue.main.async { finishAccept(success) }
             }
         } else {
             client.queueMethodCall("stream-notify-user", params: params) { success in
                 #if DEBUG
                 print("[\(TAG)] Queued native accept signal result for \(payload.callId): \(success)")
                 #endif
-                finishAccept(success)
+                DispatchQueue.main.async { finishAccept(success) }
             }
             #if DEBUG
             print("[\(TAG)] Queued native accept signal for \(payload.callId)")
@@ -518,8 +539,37 @@ public final class VoipService: NSObject {
         }
     }
 
+    /// Rejects an incoming call because the user is already on another call.
+    /// Must be called **after** `reportNewIncomingCall` (PushKit requirement).
+    ///
+    /// **Call-waiting:** `AppDelegate+Voip` does **not** invoke this; second rings are shown in CallKit
+    /// instead of auto-rejecting. Same rationale as `hasActiveCall()` — API remains for Android-aligned
+    /// flows, `storeEventsForJs: false` cleanup, and future wiring.
+    public static func rejectBusyCall(_ payload: VoipPayload) {
+        cancelIncomingCallTimeout(for: payload.callId)
+        clearTrackedIncomingCall(for: payload.callUUID)
+
+        if initialEventsData?.callId == payload.callId {
+            clearInitialEventsInternal()
+        }
+
+        // End the just-reported CallKit call immediately (reason 2 = unanswered / declined).
+        RNCallKeep.endCall(withUUID: payload.callId, reason: 2)
+
+        // Send reject signal via native DDP if available, otherwise queue it.
+        if ddpRegistry.isLoggedIn(callId: payload.callId) {
+            sendRejectSignal(payload: payload)
+        } else {
+            queueRejectSignal(payload: payload)
+        }
+
+        #if DEBUG
+        print("[\(TAG)] Rejected busy call \(payload.callId) — user already on a call")
+        #endif
+    }
+
     private static func sendRejectSignal(payload: VoipPayload) {
-        guard let client = ddpClient else {
+        guard let client = ddpRegistry.clientFor(callId: payload.callId) else {
             #if DEBUG
             print("[\(TAG)] Native DDP client unavailable, cannot send reject for \(payload.callId)")
             #endif
@@ -534,12 +584,12 @@ public final class VoipService: NSObject {
             #if DEBUG
             print("[\(TAG)] Native reject signal result for \(payload.callId): \(success)")
             #endif
-            stopDDPClientInternal()
+            stopDDPClientInternal(callId: payload.callId)
         }
     }
 
     private static func queueRejectSignal(payload: VoipPayload) {
-        guard let client = ddpClient else {
+        guard let client = ddpRegistry.clientFor(callId: payload.callId) else {
             #if DEBUG
             print("[\(TAG)] Native DDP client unavailable, cannot queue reject for \(payload.callId)")
             #endif
@@ -554,12 +604,12 @@ public final class VoipService: NSObject {
             #if DEBUG
             print("[\(TAG)] Queued native reject signal result for \(payload.callId): \(success)")
             #endif
-            stopDDPClientInternal()
+            stopDDPClientInternal(callId: payload.callId)
         }
     }
 
-    private static func flushPendingQueuedSignalsIfNeeded() -> Bool {
-        guard let client = ddpClient, client.hasQueuedMethodCalls() else {
+    private static func flushPendingQueuedSignalsIfNeeded(callId: String) -> Bool {
+        guard let client = ddpRegistry.clientFor(callId: callId), client.hasQueuedMethodCalls() else {
             return false
         }
 
@@ -579,7 +629,7 @@ public final class VoipService: NSObject {
     private static func trackIncomingCall(_ payload: VoipPayload) {
         let trackCall = {
             configureCallObserverIfNeeded()
-            observedIncomingCall = ObservedIncomingCall(payload: payload)
+            observedIncomingCalls[payload.callUUID] = ObservedIncomingCall(payload: payload)
         }
 
         if Thread.isMainThread {
@@ -590,12 +640,8 @@ public final class VoipService: NSObject {
     }
 
     private static func clearTrackedIncomingCall(for callUUID: UUID) {
-        let clearCall = {
-            guard observedIncomingCall?.payload.callUUID == callUUID else {
-                return
-            }
-
-            observedIncomingCall = nil
+        let clearCall: () -> Void = {
+            _ = observedIncomingCalls.removeValue(forKey: callUUID)
         }
 
         if Thread.isMainThread {
@@ -606,14 +652,13 @@ public final class VoipService: NSObject {
     }
 
     private static func handleObservedCallChanged(_ call: CXCall) {
-        guard let observedCall = observedIncomingCall, observedCall.payload.callUUID == call.uuid else {
+        guard let observedCall = observedIncomingCalls[call.uuid] else {
             return
         }
 
         if call.hasConnected {
-            let payload = observedCall.payload
-            observedIncomingCall = nil
-            handleNativeAccept(payload: payload)
+            observedIncomingCalls.removeValue(forKey: call.uuid)
+            handleNativeAccept(payload: observedCall.payload)
             return
         }
 
@@ -621,11 +666,12 @@ public final class VoipService: NSObject {
             return
         }
 
-        observedIncomingCall = nil
+        observedIncomingCalls.removeValue(forKey: call.uuid)
         cancelIncomingCallTimeout(for: observedCall.payload.callId)
         clearNativeAcceptDedupe(for: observedCall.payload.callId)
 
-        if isDdpLoggedIn {
+        let endedCallId = observedCall.payload.callId
+        if ddpRegistry.isLoggedIn(callId: endedCallId) {
             sendRejectSignal(payload: observedCall.payload)
         } else {
             queueRejectSignal(payload: observedCall.payload)

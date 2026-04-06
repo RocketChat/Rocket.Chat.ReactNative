@@ -634,6 +634,8 @@
   "Permalink_copied_to_clipboard": "Trvalý odkaz zkopírován do schránky!",
   "Person_or_channel": "Osoba nebo kanál",
   "Phone": "Telefon",
+  "Phone_state_permission_message": "Rocket.Chat tak může zjistit, zda již probíhá telefonní nebo hlasový (VoIP) hovor, a správně zpracovat příchozí hovory.",
+  "Phone_state_permission_title": "Povolit přístup ke stavu telefonu",
   "Pin": "Kolík",
   "Pinned": "Připnuto",
   "Pinned_a_message": "Připnuta zpráva:",

@@ -383,6 +383,8 @@
   "Passwords_do_not_match": "パスワードが一致しません。",
   "Pause": "一時停止",
   "Permalink_copied_to_clipboard": "リンクをクリップボードにコピーしました！",
+  "Phone_state_permission_message": "電話またはVoIP通話中かどうかをRocket.Chatが検知し、着信を適切に処理できるようにします。",
+  "Phone_state_permission_title": "電話状態へのアクセスを許可",
   "Pin": "ピン留め",
   "Pinned": "ピン留めされました",
   "Play": "遊ぶ",

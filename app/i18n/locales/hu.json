@@ -596,6 +596,8 @@
   "Permalink_copied_to_clipboard": "Permalink a vágólapra másolva!",
   "Person_or_channel": "Személy vagy csatorna",
   "Phone": "Telefon",
+  "Phone_state_permission_message": "Így a Rocket.Chat észlelheti, ha már telefonos vagy VoIP-hívásban van, hogy a bejövő hívások helyesen kezelhetők legyenek.",
+  "Phone_state_permission_title": "Telefonállapot elérésének engedélyezése",
   "Pin": "Pin",
   "Pinned": "Kitűzve",
   "Pinned_a_message": "Kitűzött üzenet:",

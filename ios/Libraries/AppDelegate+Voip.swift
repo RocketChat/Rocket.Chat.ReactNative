@@ -40,7 +40,7 @@ extension AppDelegate: PKPushRegistryDelegate {
       return
     }
 
-    VoipService.prepareIncomingCall(voipPayload)
+    VoipService.prepareIncomingCall(voipPayload, storeEventsForJs: true)
 
     RNCallKeep.reportNewIncomingCall(
       callId,

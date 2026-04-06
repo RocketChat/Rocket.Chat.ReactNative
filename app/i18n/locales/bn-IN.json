@@ -595,6 +595,8 @@
   "Permalink_copied_to_clipboard": "পারমালিঙ্ক ক্লিপবোর্ডে কপি করা হয়েছে!",
   "Person_or_channel": "ব্যক্তি বা চ্যানেল",
   "Phone": "ফোন",
+  "Phone_state_permission_message": "এটি Rocket.Chat-কে আপনি ইতিমধ্যে কোনও ফোন বা VoIP কলে আছেন কিনা তা শনাক্ত করতে দেয়, যাতে ইনকামিং কলগুলি সঠিকভাবে পরিচালনা করা যায়।",
+  "Phone_state_permission_title": "ফোনের অবস্থা অ্যাক্সেসের অনুমতি দিন",
   "Pin": "পিন",
   "Pinned": "পিনকরা",
   "Pinned_a_message": "একটি বার্তা পিন করা হয়েছে:",

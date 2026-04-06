@@ -520,6 +520,8 @@
   "Pause": "Pause",
   "Permalink_copied_to_clipboard": "Lien permanent copié dans le presse-papiers !",
   "Phone": "Téléphone",
+  "Phone_state_permission_message": "Cela permet à Rocket.Chat de détecter si vous êtes déjà en appel téléphonique ou VoIP afin de traiter correctement les appels entrants.",
+  "Phone_state_permission_title": "Autoriser l’accès à l’état du téléphone",
   "Pin": "Épingler",
   "Pinned": "Épinglé",
   "Place_chat_on_hold": "Mettre le chat en attente",

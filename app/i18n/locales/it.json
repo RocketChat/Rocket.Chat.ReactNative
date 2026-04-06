@@ -459,6 +459,8 @@
   "Pause": "Pausa",
   "Permalink_copied_to_clipboard": "Permalink copiato negli appunti!",
   "Phone": "Telefono",
+  "Phone_state_permission_message": "Consente a Rocket.Chat di rilevare se sei già in una chiamata telefonica o VoIP, così da gestire correttamente le chiamate in arrivo.",
+  "Phone_state_permission_title": "Consenti l’accesso allo stato del telefono",
   "Pin": "Appunta",
   "Pinned": "Appuntati",
   "Play": "Giocare",
