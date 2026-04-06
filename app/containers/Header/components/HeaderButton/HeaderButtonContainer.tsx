@@ -14,7 +14,7 @@ const getMargin = () => {
 	if (isTablet) {
 		return 5;
 	}
-	if (isIOS && Number(Platform.Version) > 26) {
+	if (isIOS && Number(Platform.Version) >= 26) {
 		return 0;
 	}
 	return -5;
