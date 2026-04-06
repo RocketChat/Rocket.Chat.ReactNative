@@ -18,7 +18,7 @@ exports[`Story Snapshots: AvatarBase64 should match snapshot 1`] = `
 >
   <ViewManagerAdapter_ExpoImage
     borderRadius={4}
-    containerViewRef={"[React.ref]"}
+    containerViewRef={{"current":"Object"}}
     contentFit="cover"
     contentPosition={
       {
@@ -27,7 +27,7 @@ exports[`Story Snapshots: AvatarBase64 should match snapshot 1`] = `
       }
     }
     height={56}
-    nativeViewRef={"[React.ref]"}
+    nativeViewRef={{"current":"NativeComponent"}}
     onError={[Function]}
     onLoad={[Function]}
     onLoadStart={[Function]}
@@ -73,7 +73,7 @@ exports[`Story Snapshots: AvatarExternalProviderUrl should match snapshot 1`] = 
 >
   <ViewManagerAdapter_ExpoImage
     borderRadius={4}
-    containerViewRef={"[React.ref]"}
+    containerViewRef={{"current":"Object"}}
     contentFit="cover"
     contentPosition={
       {
@@ -82,7 +82,7 @@ exports[`Story Snapshots: AvatarExternalProviderUrl should match snapshot 1`] = 
       }
     }
     height={56}
-    nativeViewRef={"[React.ref]"}
+    nativeViewRef={{"current":"NativeComponent"}}
     onError={[Function]}
     onLoad={[Function]}
     onLoadStart={[Function]}
@@ -128,7 +128,7 @@ exports[`Story Snapshots: AvatarPath should match snapshot 1`] = `
 >
   <ViewManagerAdapter_ExpoImage
     borderRadius={4}
-    containerViewRef={"[React.ref]"}
+    containerViewRef={{"current":"Object"}}
     contentFit="cover"
     contentPosition={
       {
@@ -137,7 +137,7 @@ exports[`Story Snapshots: AvatarPath should match snapshot 1`] = `
       }
     }
     height={56}
-    nativeViewRef={"[React.ref]"}
+    nativeViewRef={{"current":"NativeComponent"}}
     onError={[Function]}
     onLoad={[Function]}
     onLoadStart={[Function]}
@@ -183,7 +183,7 @@ exports[`Story Snapshots: AvatarRoomId should match snapshot 1`] = `
 >
   <ViewManagerAdapter_ExpoImage
     borderRadius={4}
-    containerViewRef={"[React.ref]"}
+    containerViewRef={{"current":"Object"}}
     contentFit="cover"
     contentPosition={
       {
@@ -192,7 +192,7 @@ exports[`Story Snapshots: AvatarRoomId should match snapshot 1`] = `
       }
     }
     height={56}
-    nativeViewRef={"[React.ref]"}
+    nativeViewRef={{"current":"NativeComponent"}}
     onError={[Function]}
     onLoad={[Function]}
     onLoadStart={[Function]}
@@ -238,7 +238,7 @@ exports[`Story Snapshots: AvatarText should match snapshot 1`] = `
 >
   <ViewManagerAdapter_ExpoImage
     borderRadius={4}
-    containerViewRef={"[React.ref]"}
+    containerViewRef={{"current":"Object"}}
     contentFit="cover"
     contentPosition={
       {
@@ -247,7 +247,7 @@ exports[`Story Snapshots: AvatarText should match snapshot 1`] = `
       }
     }
     height={56}
-    nativeViewRef={"[React.ref]"}
+    nativeViewRef={{"current":"NativeComponent"}}
     onError={[Function]}
     onLoad={[Function]}
     onLoadStart={[Function]}
@@ -293,7 +293,7 @@ exports[`Story Snapshots: AvatarUrl should match snapshot 1`] = `
 >
   <ViewManagerAdapter_ExpoImage
     borderRadius={4}
-    containerViewRef={"[React.ref]"}
+    containerViewRef={{"current":"Object"}}
     contentFit="cover"
     contentPosition={
       {
@@ -302,7 +302,7 @@ exports[`Story Snapshots: AvatarUrl should match snapshot 1`] = `
       }
     }
     height={56}
-    nativeViewRef={"[React.ref]"}
+    nativeViewRef={{"current":"NativeComponent"}}
     onError={[Function]}
     onLoad={[Function]}
     onLoadStart={[Function]}
@@ -348,7 +348,7 @@ exports[`Story Snapshots: Channel should match snapshot 1`] = `
 >
   <ViewManagerAdapter_ExpoImage
     borderRadius={4}
-    containerViewRef={"[React.ref]"}
+    containerViewRef={{"current":"Object"}}
     contentFit="cover"
     contentPosition={
       {
@@ -357,7 +357,7 @@ exports[`Story Snapshots: Channel should match snapshot 1`] = `
       }
     }
     height={56}
-    nativeViewRef={"[React.ref]"}
+    nativeViewRef={{"current":"NativeComponent"}}
     onError={[Function]}
     onLoad={[Function]}
     onLoadStart={[Function]}
@@ -403,7 +403,7 @@ exports[`Story Snapshots: Children should match snapshot 1`] = `
 >
   <ViewManagerAdapter_ExpoImage
     borderRadius={4}
-    containerViewRef={"[React.ref]"}
+    containerViewRef={{"current":"Object"}}
     contentFit="cover"
     contentPosition={
       {
@@ -412,7 +412,7 @@ exports[`Story Snapshots: Children should match snapshot 1`] = `
       }
     }
     height={56}
-    nativeViewRef={"[React.ref]"}
+    nativeViewRef={{"current":"NativeComponent"}}
     onError={[Function]}
     onLoad={[Function]}
     onLoadStart={[Function]}
@@ -496,7 +496,7 @@ exports[`Story Snapshots: CustomBorderRadius should match snapshot 1`] = `
 >
   <ViewManagerAdapter_ExpoImage
     borderRadius={28}
-    containerViewRef={"[React.ref]"}
+    containerViewRef={{"current":"Object"}}
     contentFit="cover"
     contentPosition={
       {
@@ -505,7 +505,7 @@ exports[`Story Snapshots: CustomBorderRadius should match snapshot 1`] = `
       }
     }
     height={56}
-    nativeViewRef={"[React.ref]"}
+    nativeViewRef={{"current":"NativeComponent"}}
     onError={[Function]}
     onLoad={[Function]}
     onLoadStart={[Function]}
@@ -553,7 +553,7 @@ exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
 >
   <ViewManagerAdapter_ExpoImage
     borderRadius={4}
-    containerViewRef={"[React.ref]"}
+    containerViewRef={{"current":"Object"}}
     contentFit="cover"
     contentPosition={
       {
@@ -562,7 +562,7 @@ exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
       }
     }
     height={56}
-    nativeViewRef={"[React.ref]"}
+    nativeViewRef={{"current":"NativeComponent"}}
     onError={[Function]}
     onLoad={[Function]}
     onLoadStart={[Function]}
@@ -608,7 +608,7 @@ exports[`Story Snapshots: Direct should match snapshot 1`] = `
 >
   <ViewManagerAdapter_ExpoImage
     borderRadius={4}
-    containerViewRef={"[React.ref]"}
+    containerViewRef={{"current":"Object"}}
     contentFit="cover"
     contentPosition={
       {
@@ -617,7 +617,7 @@ exports[`Story Snapshots: Direct should match snapshot 1`] = `
       }
     }
     height={56}
-    nativeViewRef={"[React.ref]"}
+    nativeViewRef={{"current":"NativeComponent"}}
     onError={[Function]}
     onLoad={[Function]}
     onLoadStart={[Function]}
@@ -674,7 +674,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
   >
     <ViewManagerAdapter_ExpoImage
       borderRadius={4}
-      containerViewRef={"[React.ref]"}
+      containerViewRef={{"current":"Object"}}
       contentFit="contain"
       contentPosition={
         {
@@ -683,7 +683,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
         }
       }
       height={56}
-      nativeViewRef={"[React.ref]"}
+      nativeViewRef={{"current":"NativeComponent"}}
       onError={[Function]}
       onLoad={[Function]}
       onLoadStart={[Function]}
@@ -728,7 +728,7 @@ exports[`Story Snapshots: RoomAvatarExternalProviderUrl should match snapshot 1`
 >
   <ViewManagerAdapter_ExpoImage
     borderRadius={4}
-    containerViewRef={"[React.ref]"}
+    containerViewRef={{"current":"Object"}}
     contentFit="cover"
     contentPosition={
       {
@@ -737,7 +737,7 @@ exports[`Story Snapshots: RoomAvatarExternalProviderUrl should match snapshot 1`
       }
     }
     height={56}
-    nativeViewRef={"[React.ref]"}
+    nativeViewRef={{"current":"NativeComponent"}}
     onError={[Function]}
     onLoad={[Function]}
     onLoadStart={[Function]}
@@ -783,7 +783,7 @@ exports[`Story Snapshots: Static should match snapshot 1`] = `
 >
   <ViewManagerAdapter_ExpoImage
     borderRadius={4}
-    containerViewRef={"[React.ref]"}
+    containerViewRef={{"current":"Object"}}
     contentFit="cover"
     contentPosition={
       {
@@ -792,7 +792,7 @@ exports[`Story Snapshots: Static should match snapshot 1`] = `
       }
     }
     height={56}
-    nativeViewRef={"[React.ref]"}
+    nativeViewRef={{"current":"NativeComponent"}}
     onError={[Function]}
     onLoad={[Function]}
     onLoadStart={[Function]}
@@ -840,7 +840,7 @@ exports[`Story Snapshots: Touchable should match snapshot 1`] = `
     collapsable={false}
     delayLongPress={600}
     enabled={true}
-    handlerTag={1}
+    handlerTag={-1}
     handlerType="NativeViewGestureHandler"
     innerRef={null}
     onActiveStateChange={[Function]}
@@ -896,7 +896,7 @@ exports[`Story Snapshots: Touchable should match snapshot 1`] = `
     >
       <ViewManagerAdapter_ExpoImage
         borderRadius={4}
-        containerViewRef={"[React.ref]"}
+        containerViewRef={{"current":"Object"}}
         contentFit="cover"
         contentPosition={
           {
@@ -905,7 +905,7 @@ exports[`Story Snapshots: Touchable should match snapshot 1`] = `
           }
         }
         height={56}
-        nativeViewRef={"[React.ref]"}
+        nativeViewRef={{"current":"NativeComponent"}}
         onError={[Function]}
         onLoad={[Function]}
         onLoadStart={[Function]}
@@ -953,7 +953,7 @@ exports[`Story Snapshots: WithETag should match snapshot 1`] = `
 >
   <ViewManagerAdapter_ExpoImage
     borderRadius={4}
-    containerViewRef={"[React.ref]"}
+    containerViewRef={{"current":"Object"}}
     contentFit="cover"
     contentPosition={
       {
@@ -962,7 +962,7 @@ exports[`Story Snapshots: WithETag should match snapshot 1`] = `
       }
     }
     height={56}
-    nativeViewRef={"[React.ref]"}
+    nativeViewRef={{"current":"NativeComponent"}}
     onError={[Function]}
     onLoad={[Function]}
     onLoadStart={[Function]}
@@ -1008,7 +1008,7 @@ exports[`Story Snapshots: WithoutETag should match snapshot 1`] = `
 >
   <ViewManagerAdapter_ExpoImage
     borderRadius={4}
-    containerViewRef={"[React.ref]"}
+    containerViewRef={{"current":"Object"}}
     contentFit="cover"
     contentPosition={
       {
@@ -1017,7 +1017,7 @@ exports[`Story Snapshots: WithoutETag should match snapshot 1`] = `
       }
     }
     height={56}
-    nativeViewRef={"[React.ref]"}
+    nativeViewRef={{"current":"NativeComponent"}}
     onError={[Function]}
     onLoad={[Function]}
     onLoadStart={[Function]}
@@ -1063,7 +1063,7 @@ exports[`Story Snapshots: WrongServer should match snapshot 1`] = `
 >
   <ViewManagerAdapter_ExpoImage
     borderRadius={4}
-    containerViewRef={"[React.ref]"}
+    containerViewRef={{"current":"Object"}}
     contentFit="cover"
     contentPosition={
       {
@@ -1072,7 +1072,7 @@ exports[`Story Snapshots: WrongServer should match snapshot 1`] = `
       }
     }
     height={56}
-    nativeViewRef={"[React.ref]"}
+    nativeViewRef={{"current":"NativeComponent"}}
     onError={[Function]}
     onLoad={[Function]}
     onLoadStart={[Function]}
