@@ -85,8 +85,8 @@ const AudioPlayer = ({
 		}
 	};
 
-	const setPosition = async (time: number) => {
-		await AudioManager.setPositionAsync(audioUri.current, time);
+	const setPosition = (time: number) => {
+		AudioManager.setPositionAsync(audioUri.current, time);
 	};
 
 	const togglePlayPause = async () => {
@@ -117,8 +117,8 @@ const AudioPlayer = ({
 
 	useEffect(() => {
 		if (fileUri) {
-			InteractionManager.runAfterInteractions(async () => {
-				audioUri.current = await AudioManager.loadAudio({ msgId, rid, uri: fileUri });
+			InteractionManager.runAfterInteractions(() => {
+				audioUri.current = AudioManager.loadAudio({ msgId, rid, uri: fileUri });
 				AudioManager.setOnPlaybackStatusUpdate(audioUri.current, onPlaybackStatusUpdate);
 				AudioManager.setRateAsync(audioUri.current, playbackSpeed);
 			});

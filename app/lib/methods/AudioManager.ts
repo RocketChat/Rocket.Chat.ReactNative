@@ -10,6 +10,9 @@ import { emitter } from './helpers';
 
 function createAudioManager() {
 	const audioQueue: { [audioKey: string]: AudioPlayer } = {};
+	const audioUris: { [audioKey: string]: string } = {};
+	const audioPositions: { [audioKey: string]: number } = {};
+	const audioRates: { [audioKey: string]: number } = {};
 	let audioPlaying = '';
 	const audiosRendered = new Set<string>();
 
@@ -28,6 +31,7 @@ function createAudioManager() {
 	function loadAudio({ msgId, rid, uri }: { rid: string; msgId?: string; uri: string }): string {
 		const audioKey = getAudioKey({ msgId, rid, uri });
 		addAudioRendered(audioKey);
+		audioUris[audioKey] = uri;
 		if (audioQueue[audioKey]) return audioKey;
 
 		const sound = createAudioPlayer({ uri });
@@ -35,8 +39,25 @@ function createAudioManager() {
 		return audioKey;
 	}
 
-	function playAudio(audioKey: string) {
-		if (audioPlaying) pauseAudio();
+	async function playAudio(audioKey: string) {
+		if (audioPlaying && audioPlaying !== audioKey) {
+			pauseAudio();
+		}
+
+		// If player was released, recreate it
+		if (!audioQueue[audioKey] && audioUris[audioKey]) {
+			const sound = createAudioPlayer({ uri: audioUris[audioKey] });
+			audioQueue[audioKey] = sound;
+
+			if (audioRates[audioKey] !== undefined) {
+				sound.setPlaybackRate(audioRates[audioKey]);
+			}
+
+			if (audioPositions[audioKey] !== undefined) {
+				await sound.seekTo(audioPositions[audioKey]);
+			}
+		}
+
 		audioQueue[audioKey]?.play();
 		audioPlaying = audioKey;
 		emitter.emit('audioFocused', audioKey);
@@ -50,10 +71,16 @@ function createAudioManager() {
 	}
 
 	function setPositionAsync(audioKey: string, time: number) {
-		audioQueue[audioKey]?.seekTo(time);
+		audioPositions[audioKey] = time;
+		const player = audioQueue[audioKey];
+		if (!player) {
+			return;
+		}
+		player.seekTo(time);
 	}
 
 	function setRateAsync(audioKey: string, value = 1.0) {
+		audioRates[audioKey] = value;
 		try {
 			audioQueue[audioKey]?.setPlaybackRate(value);
 		} catch {
@@ -75,9 +102,15 @@ function createAudioManager() {
 	}
 
 	async function onEnd(audioKey: string, status: AudioStatus) {
+		if (!audioQueue[audioKey]) {
+			return;
+		}
+
 		if (status.isLoaded && status.didJustFinish) {
 			try {
 				audioQueue[audioKey].release();
+				delete audioQueue[audioKey];
+				delete audioPositions[audioKey];
 				audioPlaying = '';
 				emitter.emit('audioFocused', '');
 				await playNextAudioInSequence(audioKey);
@@ -121,7 +154,7 @@ function createAudioManager() {
 		if (nextMessage && nextMessage.attachments) {
 			const nextAudioInSeqKey = getNextAudioKey({ message: nextMessage, rid });
 			if (nextAudioInSeqKey && audioQueue[nextAudioInSeqKey] && audiosRendered.has(nextAudioInSeqKey)) {
-				playAudio(nextAudioInSeqKey);
+				await playAudio(nextAudioInSeqKey);
 			}
 		}
 	}
@@ -136,7 +169,12 @@ function createAudioManager() {
 		} catch (error) {
 			console.log(error);
 		}
-		roomAudioKeysLoaded.forEach(key => delete audioQueue[key]);
+		roomAudioKeysLoaded.forEach(key => {
+			delete audioQueue[key];
+			delete audioUris[key];
+			delete audioPositions[key];
+			delete audioRates[key];
+		});
 		audioPlaying = '';
 	}
 

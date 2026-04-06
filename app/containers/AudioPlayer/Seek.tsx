@@ -21,7 +21,7 @@ interface ISeek {
 	duration: SharedValue<number>;
 	currentTime: SharedValue<number>;
 	loaded: boolean;
-	onChangeTime: (time: number) => Promise<void>;
+	onChangeTime: (time: number) => void;
 }
 
 function clamp(value: number, min: number, max: number) {
@@ -77,7 +77,7 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 			translateX.value = clamp(newX, 0, maxWidth.value);
 		})
 		.onEnd(() => {
-			scheduleOnRN(onChangeTime, Math.round(currentTime.value * 1000));
+			scheduleOnRN(onChangeTime, Math.round(currentTime.value));
 		})
 		.onFinalize(() => {
 			isPanning.value = false;
