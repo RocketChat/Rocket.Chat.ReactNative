@@ -412,6 +412,7 @@ describe('CallView/CallView', () => {
 		expect(getByText('Unmute')).toBeTruthy();
 	});
 
+<<<<<<< HEAD
 	it('should render buttons in two rows on narrow layout', () => {
 		mockWindowWidth = 350;
 		setStoreState();
