@@ -1,7 +1,7 @@
 import { ERoomTypes } from '../../definitions';
 import database from '../database';
 import sdk from '../services/sdk';
-import { createDirectMessage } from '../services/restApi';
+import { createDirectMessage, getRoomByTypeAndName } from '../services/restApi';
 
 const restTypes = {
 	channel: 'channels',
@@ -29,9 +29,10 @@ async function open({ type, rid, name }: { type: ERoomTypes; rid: string; name: 
 		// if it's a group we need to check if you can open
 		if (type === ERoomTypes.GROUP) {
 			try {
+				const result = await getRoomByTypeAndName('p', name);
 				// RC 0.61.0
 				// @ts-ignore
-				await sdk.post(`${restTypes[type]}.open`, params);
+				await sdk.post(`${restTypes[type]}.open`, { roomId: result._id });
 			} catch (e: any) {
 				if (!(e.data && /is already open/.test(e.data.error))) {
 					return false;
