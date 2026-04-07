@@ -116,11 +116,15 @@ export const CallButtons = ({ layoutMode }: { layoutMode: LayoutMode }) => {
 
 	return (
 		<Animated.View
-			style={[styles.buttonsContainer, { borderTopColor: colors.strokeExtraLight }, containerStyle]}
+			style={[
+				styles.buttonsContainer,
+				{ borderTopColor: colors.strokeExtraLight, backgroundColor: colors.surfaceLight },
+				containerStyle
+			]}
 			pointerEvents={controlsVisible ? 'auto' : 'none'}
 			testID='call-buttons'>
 			{layoutMode === 'wide' ? (
-				<View style={styles.buttonsRowLast} testID='call-buttons-row-0'>
+				<View style={styles.buttonsRow} testID='call-buttons-row-0'>
 					{speakerButton}
 					{holdButton}
 					{muteButton}
@@ -135,7 +139,7 @@ export const CallButtons = ({ layoutMode }: { layoutMode: LayoutMode }) => {
 						{holdButton}
 						{muteButton}
 					</View>
-					<View style={styles.buttonsRowLast} testID='call-buttons-row-1'>
+					<View style={styles.buttonsRow} testID='call-buttons-row-1'>
 						{messageButton}
 						{endButton}
 						{dialpadButton}

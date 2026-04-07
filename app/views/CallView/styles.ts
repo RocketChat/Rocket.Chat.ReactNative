@@ -17,7 +17,9 @@ export const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'center',
-		paddingHorizontal: 24
+		paddingHorizontal: 24,
+		alignContent: 'flex-start',
+		marginBottom: 100
 	},
 	avatarContainer: {
 		marginBottom: 16,
@@ -53,16 +55,18 @@ export const styles = StyleSheet.create({
 	},
 	buttonsContainer: {
 		padding: 24,
-		borderTopWidth: StyleSheet.hairlineWidth
+		paddingBottom: 48,
+		gap: 24,
+		borderTopWidth: StyleSheet.hairlineWidth,
+		position: 'absolute',
+		bottom: 0,
+		left: 0,
+		right: 0
 	},
 	buttonsRow: {
 		flexDirection: 'row',
-		justifyContent: 'space-around',
-		marginBottom: 24
-	},
-	buttonsRowLast: {
-		flexDirection: 'row',
-		justifyContent: 'space-around'
+		justifyContent: 'center',
+		gap: 48
 	},
 	actionButton: {
 		alignItems: 'center',
