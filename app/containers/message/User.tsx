@@ -10,7 +10,6 @@ import MessageContext from './Context';
 import { messageHaveAuthorName } from './utils';
 import MessageTime from './Time';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
-import Touch from '../Touch';
 
 const styles = StyleSheet.create({
 	container: {
