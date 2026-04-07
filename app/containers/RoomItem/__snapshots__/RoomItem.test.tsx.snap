@@ -42,13 +42,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -73,7 +67,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={1}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -178,13 +172,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -194,7 +182,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={2}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -280,13 +268,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -296,7 +278,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={3}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -368,22 +350,14 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={4}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -472,7 +446,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -481,7 +455,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -686,13 +660,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -717,7 +685,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={5}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -822,13 +790,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -838,7 +800,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={6}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -924,13 +886,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -940,7 +896,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={7}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -1012,22 +968,14 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={8}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -1116,7 +1064,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -1125,7 +1073,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -1371,13 +1319,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -1402,7 +1344,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={9}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -1507,13 +1449,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -1523,7 +1459,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={10}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -1609,13 +1545,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -1625,7 +1555,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={11}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -1697,22 +1627,14 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={12}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -1801,7 +1723,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -1810,7 +1732,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -2056,13 +1978,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -2087,7 +2003,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={13}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -2192,13 +2108,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -2208,7 +2118,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={14}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -2294,13 +2204,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -2310,7 +2214,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={15}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -2382,22 +2286,14 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={16}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -2486,7 +2382,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -2495,7 +2391,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -2741,13 +2637,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -2772,7 +2662,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={17}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -2877,13 +2767,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -2893,7 +2777,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={18}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -2979,13 +2863,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -2995,7 +2873,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={19}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -3067,22 +2945,14 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={20}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -3171,7 +3041,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -3180,7 +3050,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -3426,13 +3296,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -3457,7 +3321,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={21}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -3562,13 +3426,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -3578,7 +3436,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={22}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -3664,13 +3522,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -3680,7 +3532,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={23}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -3752,22 +3604,14 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={24}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -3856,7 +3700,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -3865,7 +3709,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -4111,13 +3955,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -4142,7 +3980,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={25}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -4247,13 +4085,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -4263,7 +4095,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={26}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -4349,13 +4181,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -4365,7 +4191,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={27}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -4437,22 +4263,14 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={28}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -4541,7 +4359,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -4550,7 +4368,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -4796,13 +4614,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -4827,7 +4639,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={29}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -4932,13 +4744,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -4948,7 +4754,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={30}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -5034,13 +4840,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -5050,7 +4850,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={31}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -5122,22 +4922,14 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={32}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -5226,7 +5018,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -5235,7 +5027,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -5481,13 +5273,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -5512,7 +5298,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={33}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -5617,13 +5403,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -5633,7 +5413,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={34}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -5719,13 +5499,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -5735,7 +5509,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={35}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -5807,22 +5581,14 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={36}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -5911,7 +5677,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -5920,7 +5686,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -6166,13 +5932,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -6197,7 +5957,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={37}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -6302,13 +6062,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -6318,7 +6072,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={38}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -6404,13 +6158,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -6420,7 +6168,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={39}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -6492,22 +6240,14 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={40}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -6596,7 +6336,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -6605,7 +6345,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -6851,13 +6591,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -6882,7 +6616,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={41}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -6987,13 +6721,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -7003,7 +6731,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={42}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -7089,13 +6817,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -7105,7 +6827,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={43}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -7177,22 +6899,14 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={44}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -7281,7 +6995,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -7290,7 +7004,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -7540,13 +7254,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
           {
             "height": 75,
           },
-          {
-            "transform": [
-              {
-                "translateX": 0,
-              },
-            ],
-          },
+          [Function],
         ]
       }
     >
@@ -7571,7 +7279,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={67}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -7676,13 +7384,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
           {
             "height": 75,
           },
-          {
-            "transform": [
-              {
-                "translateX": 0,
-              },
-            ],
-          },
+          [Function],
         ]
       }
     >
@@ -7692,7 +7394,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
         activeOpacity={0.105}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={68}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -7778,13 +7480,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
           {
             "height": 75,
           },
-          {
-            "transform": [
-              {
-                "translateX": 80,
-              },
-            ],
-          },
+          [Function],
         ]
       }
     >
@@ -7794,7 +7490,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
         activeOpacity={0.105}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={69}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -7866,22 +7562,14 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
     </View>
   </View>
   <View
-    style={
-      {
-        "transform": [
-          {
-            "translateX": 0,
-          },
-        ],
-      }
-    }
+    style={[Function]}
   >
     <RNGestureHandlerButton
       activeOpacity={1}
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-      handlerTag={70}
+      handlerTag={-1}
       handlerType="NativeViewGestureHandler"
       innerRef={null}
       onActiveStateChange={[Function]}
@@ -7970,7 +7658,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
           >
             <ViewManagerAdapter_ExpoImage
               borderRadius={4}
-              containerViewRef={"[React.ref]"}
+              containerViewRef={{"current":"Object"}}
               contentFit="cover"
               contentPosition={
                 {
@@ -7979,7 +7667,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                 }
               }
               height={48}
-              nativeViewRef={"[React.ref]"}
+              nativeViewRef={{"current":"NativeComponent"}}
               onError={[Function]}
               onLoad={[Function]}
               onLoadStart={[Function]}
@@ -8173,13 +7861,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -8204,7 +7886,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={73}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -8309,13 +7991,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -8325,7 +8001,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={74}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -8411,13 +8087,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -8427,7 +8097,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={75}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -8499,22 +8169,14 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={76}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -8603,7 +8265,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -8612,7 +8274,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                   }
                 }
                 height={36}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -8858,13 +8520,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -8889,7 +8545,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={77}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -8994,13 +8650,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -9010,7 +8660,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={78}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -9096,13 +8746,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -9112,7 +8756,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={79}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -9184,22 +8828,14 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={80}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -9288,7 +8924,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -9297,7 +8933,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                   }
                 }
                 height={36}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -9543,13 +9179,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -9574,7 +9204,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={81}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -9679,13 +9309,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -9695,7 +9319,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={82}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -9781,13 +9405,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -9797,7 +9415,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={83}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -9869,22 +9487,14 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={84}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -9973,7 +9583,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -9982,7 +9592,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                   }
                 }
                 height={36}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -10213,13 +9823,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -10244,7 +9848,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={91}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -10349,13 +9953,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -10365,7 +9963,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={92}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -10451,13 +10049,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -10467,7 +10059,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={93}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -10539,22 +10131,14 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={94}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -10842,13 +10426,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -10873,7 +10451,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={95}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -10978,13 +10556,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -10994,7 +10566,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={96}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -11080,13 +10652,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -11096,7 +10662,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={97}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -11168,22 +10734,14 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={98}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -11415,13 +10973,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -11446,7 +10998,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={99}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -11551,13 +11103,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -11567,7 +11113,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={100}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -11653,13 +11199,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -11669,7 +11209,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={101}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -11741,22 +11281,14 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={102}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -12029,13 +11561,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -12060,7 +11586,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={109}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -12165,13 +11691,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -12181,7 +11701,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={110}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -12267,13 +11787,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -12283,7 +11797,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={111}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -12355,22 +11869,14 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={112}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -12704,13 +12210,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -12735,7 +12235,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={113}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -12840,13 +12340,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -12856,7 +12350,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={114}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -12942,13 +12436,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -12958,7 +12446,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={115}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -13030,22 +12518,14 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={116}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -13379,13 +12859,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -13410,7 +12884,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={117}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -13515,13 +12989,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -13531,7 +12999,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={118}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -13617,13 +13085,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -13633,7 +13095,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={119}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -13705,22 +13167,14 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={120}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -14018,13 +13472,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -14049,7 +13497,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={127}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -14154,13 +13602,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -14170,7 +13612,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={128}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -14256,13 +13698,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -14272,7 +13708,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={129}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -14344,22 +13780,14 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={130}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -14448,7 +13876,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -14457,7 +13885,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -14675,13 +14103,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -14706,7 +14128,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={131}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -14811,13 +14233,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -14827,7 +14243,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={132}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -14913,13 +14329,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -14929,7 +14339,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={133}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -15001,22 +14411,14 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={134}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -15105,7 +14507,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -15114,7 +14516,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
                   }
                 }
                 height={36}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -15337,13 +14739,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -15368,7 +14764,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={139}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -15473,13 +14869,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -15489,7 +14879,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={140}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -15575,13 +14965,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -15591,7 +14975,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={141}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -15663,22 +15047,14 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={142}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -15767,7 +15143,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -15776,7 +15152,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -15997,13 +15373,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -16028,7 +15398,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={143}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -16133,13 +15503,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -16149,7 +15513,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={144}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -16235,13 +15599,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -16251,7 +15609,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={145}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -16323,22 +15681,14 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={146}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -16427,7 +15777,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -16436,7 +15786,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -16657,13 +16007,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -16688,7 +16032,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={147}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -16793,13 +16137,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -16809,7 +16147,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={148}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -16895,13 +16233,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -16911,7 +16243,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={149}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -16983,22 +16315,14 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={150}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -17087,7 +16411,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -17096,7 +16420,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -17317,13 +16641,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -17348,7 +16666,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={151}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -17453,13 +16771,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -17469,7 +16781,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={152}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -17555,13 +16867,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -17571,7 +16877,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={153}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -17643,22 +16949,14 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={154}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -17747,7 +17045,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -17756,7 +17054,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -17977,13 +17275,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -18008,7 +17300,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={155}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -18113,13 +17405,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -18129,7 +17415,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={156}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -18215,13 +17501,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -18231,7 +17511,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={157}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -18303,22 +17583,14 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={158}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -18407,7 +17679,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -18416,7 +17688,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -18693,13 +17965,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -18724,7 +17990,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={159}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -18829,13 +18095,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -18845,7 +18105,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={160}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -18931,13 +18191,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -18947,7 +18201,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={161}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -19019,22 +18273,14 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={162}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -19123,7 +18369,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -19132,7 +18378,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -19409,13 +18655,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -19440,7 +18680,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={163}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -19545,13 +18785,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -19561,7 +18795,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={164}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -19647,13 +18881,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -19663,7 +18891,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={165}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -19735,22 +18963,14 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={166}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -19839,7 +19059,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -19848,7 +19068,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -20130,13 +19350,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -20161,7 +19375,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={181}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -20266,13 +19480,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -20282,7 +19490,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={182}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -20368,13 +19576,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -20384,7 +19586,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={183}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -20456,22 +19658,14 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={184}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -20560,7 +19754,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -20569,7 +19763,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -20759,13 +19953,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -20790,7 +19978,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={185}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -20895,13 +20083,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -20911,7 +20093,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={186}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -20997,13 +20179,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -21013,7 +20189,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={187}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -21085,22 +20261,14 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={188}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -21189,7 +20357,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -21198,7 +20366,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -21388,13 +20556,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -21419,7 +20581,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={189}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -21524,13 +20686,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -21540,7 +20696,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={190}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -21626,13 +20782,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -21642,7 +20792,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={191}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -21714,22 +20864,14 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={192}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -21818,7 +20960,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -21827,7 +20969,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -22017,13 +21159,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -22048,7 +21184,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={193}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -22153,13 +21289,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -22169,7 +21299,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={194}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -22255,13 +21385,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -22271,7 +21395,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={195}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -22343,22 +21467,14 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={196}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -22447,7 +21563,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -22456,7 +21572,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -22646,13 +21762,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -22677,7 +21787,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={197}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -22782,13 +21892,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -22798,7 +21902,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={198}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -22884,13 +21988,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -22900,7 +21998,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={199}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -22972,22 +22070,14 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={200}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -23076,7 +22166,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -23085,7 +22175,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -23275,13 +22365,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -23306,7 +22390,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={201}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -23411,13 +22495,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -23427,7 +22505,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={202}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -23513,13 +22591,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -23529,7 +22601,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={203}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -23601,22 +22673,14 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={204}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -23705,7 +22769,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -23714,7 +22778,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -23904,13 +22968,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -23935,7 +22993,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={205}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -24040,13 +23098,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -24056,7 +23108,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={206}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -24142,13 +23194,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -24158,7 +23204,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={207}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -24230,22 +23276,14 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={208}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -24334,7 +23372,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -24343,7 +23381,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -24533,13 +23571,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -24564,7 +23596,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={209}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -24669,13 +23701,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -24685,7 +23711,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={210}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -24771,13 +23797,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -24787,7 +23807,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={211}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -24859,22 +23879,14 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={212}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -24963,7 +23975,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -24972,7 +23984,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -25162,13 +24174,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -25193,7 +24199,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={213}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -25298,13 +24304,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -25314,7 +24314,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={214}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -25400,13 +24400,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -25416,7 +24410,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={215}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -25488,22 +24482,14 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={216}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -25592,7 +24578,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -25601,7 +24587,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -25791,13 +24777,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -25822,7 +24802,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={217}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -25927,13 +24907,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -25943,7 +24917,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={218}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -26029,13 +25003,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -26045,7 +25013,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={219}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -26117,22 +25085,14 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={220}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -26221,7 +25181,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -26230,7 +25190,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -26425,13 +25385,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -26456,7 +25410,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={241}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -26561,13 +25515,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -26577,7 +25525,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={242}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -26663,13 +25611,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -26679,7 +25621,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={243}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -26751,22 +25693,14 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={244}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -26855,7 +25789,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -26864,7 +25798,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -27090,13 +26024,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -27121,7 +26049,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={245}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -27226,13 +26154,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -27242,7 +26164,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={246}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -27328,13 +26250,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -27344,7 +26260,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={247}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -27416,22 +26332,14 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={248}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -27520,7 +26428,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -27529,7 +26437,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -27787,13 +26695,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -27818,7 +26720,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={249}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -27923,13 +26825,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -27939,7 +26835,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={250}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -28025,13 +26921,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -28041,7 +26931,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={251}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -28113,22 +27003,14 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={252}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -28217,7 +27099,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -28226,7 +27108,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -28452,13 +27334,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -28483,7 +27359,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={253}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -28588,13 +27464,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -28604,7 +27474,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={254}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -28690,13 +27560,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -28706,7 +27570,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={255}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -28778,22 +27642,14 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={256}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -28882,7 +27738,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -28891,7 +27747,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -29153,13 +28009,7 @@ exports[`Story Snapshots: Touch should match snapshot 1`] = `
           {
             "height": 75,
           },
-          {
-            "transform": [
-              {
-                "translateX": 0,
-              },
-            ],
-          },
+          [Function],
         ]
       }
     >
@@ -29184,7 +28034,7 @@ exports[`Story Snapshots: Touch should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={265}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -29289,13 +28139,7 @@ exports[`Story Snapshots: Touch should match snapshot 1`] = `
           {
             "height": 75,
           },
-          {
-            "transform": [
-              {
-                "translateX": 0,
-              },
-            ],
-          },
+          [Function],
         ]
       }
     >
@@ -29305,7 +28149,7 @@ exports[`Story Snapshots: Touch should match snapshot 1`] = `
         activeOpacity={0.105}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={266}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -29391,13 +28235,7 @@ exports[`Story Snapshots: Touch should match snapshot 1`] = `
           {
             "height": 75,
           },
-          {
-            "transform": [
-              {
-                "translateX": 80,
-              },
-            ],
-          },
+          [Function],
         ]
       }
     >
@@ -29407,7 +28245,7 @@ exports[`Story Snapshots: Touch should match snapshot 1`] = `
         activeOpacity={0.105}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={267}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -29479,22 +28317,14 @@ exports[`Story Snapshots: Touch should match snapshot 1`] = `
     </View>
   </View>
   <View
-    style={
-      {
-        "transform": [
-          {
-            "translateX": 0,
-          },
-        ],
-      }
-    }
+    style={[Function]}
   >
     <RNGestureHandlerButton
       activeOpacity={1}
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-      handlerTag={268}
+      handlerTag={-1}
       handlerType="NativeViewGestureHandler"
       innerRef={null}
       onActiveStateChange={[Function]}
@@ -29583,7 +28413,7 @@ exports[`Story Snapshots: Touch should match snapshot 1`] = `
           >
             <ViewManagerAdapter_ExpoImage
               borderRadius={4}
-              containerViewRef={"[React.ref]"}
+              containerViewRef={{"current":"Object"}}
               contentFit="cover"
               contentPosition={
                 {
@@ -29592,7 +28422,7 @@ exports[`Story Snapshots: Touch should match snapshot 1`] = `
                 }
               }
               height={48}
-              nativeViewRef={"[React.ref]"}
+              nativeViewRef={{"current":"NativeComponent"}}
               onError={[Function]}
               onLoad={[Function]}
               onLoadStart={[Function]}
@@ -29786,13 +28616,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -29817,7 +28641,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={271}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -29922,13 +28746,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -29938,7 +28756,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={272}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -30024,13 +28842,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -30040,7 +28852,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={273}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -30112,22 +28924,14 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={274}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -30216,7 +29020,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -30225,7 +29029,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -30422,13 +29226,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -30453,7 +29251,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={275}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -30558,13 +29356,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -30574,7 +29366,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={276}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -30660,13 +29452,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -30676,7 +29462,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={277}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -30748,22 +29534,14 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={278}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -30852,7 +29630,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -30861,7 +29639,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -31051,13 +29829,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -31082,7 +29854,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={279}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -31187,13 +29959,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -31203,7 +29969,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={280}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -31289,13 +30055,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -31305,7 +30065,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={281}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -31377,22 +30137,14 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={282}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -31481,7 +30233,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -31490,7 +30242,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -31680,13 +30432,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -31711,7 +30457,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={283}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -31816,13 +30562,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -31832,7 +30572,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={284}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -31918,13 +30658,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -31934,7 +30668,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={285}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -32006,22 +30740,14 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={286}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -32110,7 +30836,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -32119,7 +30845,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -32309,13 +31035,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -32340,7 +31060,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={287}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -32445,13 +31165,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -32461,7 +31175,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={288}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -32547,13 +31261,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -32563,7 +31271,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={289}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -32635,22 +31343,14 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={290}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -32739,7 +31439,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -32748,7 +31448,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -32938,13 +31638,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -32969,7 +31663,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={291}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -33074,13 +31768,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -33090,7 +31778,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={292}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -33176,13 +31864,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -33192,7 +31874,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={293}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -33264,22 +31946,14 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={294}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -33368,7 +32042,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -33377,7 +32051,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -33567,13 +32241,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -33598,7 +32266,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={295}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -33703,13 +32371,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -33719,7 +32381,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={296}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -33805,13 +32467,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -33821,7 +32477,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={297}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -33893,22 +32549,14 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={298}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -33997,7 +32645,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -34006,7 +32654,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -34196,13 +32844,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -34227,7 +32869,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={299}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -34332,13 +32974,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -34348,7 +32984,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={300}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -34434,13 +33070,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -34450,7 +33080,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={301}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -34522,22 +33152,14 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={302}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -34626,7 +33248,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -34635,7 +33257,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -34825,13 +33447,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -34856,7 +33472,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={303}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -34961,13 +33577,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -34977,7 +33587,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={304}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -35063,13 +33673,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -35079,7 +33683,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={305}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -35151,22 +33755,14 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={306}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -35255,7 +33851,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -35264,7 +33860,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -35459,13 +34055,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -35490,7 +34080,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={325}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -35595,13 +34185,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -35611,7 +34195,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={326}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -35697,13 +34281,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -35713,7 +34291,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={327}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -35785,22 +34363,14 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={328}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -35889,7 +34459,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -35898,7 +34468,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
@@ -36095,13 +34665,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -36126,7 +34690,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={329}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -36231,13 +34795,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -36247,7 +34805,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={330}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -36333,13 +34891,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -36349,7 +34901,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={331}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -36421,22 +34973,14 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={332}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -36525,7 +35069,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
             >
               <ViewManagerAdapter_ExpoImage
                 borderRadius={4}
-                containerViewRef={"[React.ref]"}
+                containerViewRef={{"current":"Object"}}
                 contentFit="cover"
                 contentPosition={
                   {
@@ -36534,7 +35078,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                   }
                 }
                 height={48}
-                nativeViewRef={"[React.ref]"}
+                nativeViewRef={{"current":"NativeComponent"}}
                 onError={[Function]}
                 onLoad={[Function]}
                 onLoadStart={[Function]}
