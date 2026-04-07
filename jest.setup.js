@@ -27,8 +27,10 @@ jest.mock('react-native-reanimated', () => {
 		...actual,
 		useSharedValue: jest.fn(init => ({ value: init })),
 		useAnimatedReaction: jest.fn(),
-		runOnJS: jest.fn(fn => fn),
-		withTiming: jest.fn(value => value)
+		withTiming: jest.fn(value => value),
+		useAnimatedGestureHandler: jest.fn(() => jest.fn()),
+		useAnimatedStyle: jest.fn(fn => fn),
+		useDerivedValue: jest.fn(fn => fn)
 	};
 });
 
@@ -46,26 +48,120 @@ jest.mock('expo-font', () => ({
 	__esModule: true
 }));
 
-jest.mock('expo-av', () => ({
-	...jest.requireActual('expo-av'),
-	Audio: {
-		...jest.requireActual('expo-av').Audio,
-		getPermissionsAsync: jest.fn(() => ({ status: 'granted', granted: true, canAskAgain: true })),
-		Recording: jest.fn(() => ({
-			prepareToRecordAsync: jest.fn(),
-			startAsync: jest.fn(),
-			stopAndUnloadAsync: jest.fn(),
-			setOnRecordingStatusUpdate: jest.fn()
-		})),
-		Sound: {
-			createAsync: jest.fn(() => ({
-				sound: {
-					setOnPlaybackStatusUpdate: jest.fn()
+jest.mock('expo-av', () => {
+	const InterruptionModeAndroid = {
+		DoNotMix: 1,
+		DuckOthers: 2
+	};
+	const InterruptionModeIOS = {
+		DoNotMix: 1,
+		DuckOthers: 2,
+		MixWithOthers: 3
+	};
+
+	return {
+		Audio: {
+			getPermissionsAsync: jest.fn(() => Promise.resolve({ status: 'granted', granted: true, canAskAgain: true })),
+			requestPermissionsAsync: jest.fn(() => Promise.resolve({ status: 'granted', granted: true, canAskAgain: true })),
+			setAudioModeAsync: jest.fn(() => Promise.resolve()),
+			Recording: jest.fn(() => ({
+				prepareToRecordAsync: jest.fn(() => Promise.resolve()),
+				startAsync: jest.fn(() => Promise.resolve()),
+				stopAndUnloadAsync: jest.fn(() => Promise.resolve()),
+				setOnRecordingStatusUpdate: jest.fn(),
+				getStatusAsync: jest.fn(() => Promise.resolve())
+			})),
+			Sound: {
+				createAsync: jest.fn(() =>
+					Promise.resolve({
+						sound: {
+							setOnPlaybackStatusUpdate: jest.fn(),
+							playAsync: jest.fn(() => Promise.resolve()),
+							pauseAsync: jest.fn(() => Promise.resolve()),
+							stopAsync: jest.fn(() => Promise.resolve()),
+							unloadAsync: jest.fn(() => Promise.resolve()),
+							getStatusAsync: jest.fn(() => Promise.resolve()),
+							setPositionAsync: jest.fn(() => Promise.resolve())
+						},
+						status: {}
+					})
+				),
+				create: jest.fn(() => ({
+					setOnPlaybackStatusUpdate: jest.fn(),
+					playAsync: jest.fn(() => Promise.resolve()),
+					pauseAsync: jest.fn(() => Promise.resolve()),
+					stopAsync: jest.fn(() => Promise.resolve()),
+					unloadAsync: jest.fn(() => Promise.resolve()),
+					getStatusAsync: jest.fn(() => Promise.resolve()),
+					setPositionAsync: jest.fn(() => Promise.resolve()),
+					loadAsync: jest.fn(() => Promise.resolve())
+				}))
+			},
+			RecordingStatus: {
+				StatusDict: {}
+			},
+			AudioStatus: {
+				StatusDict: {}
+			},
+			AndroidOutputFormat: {
+				AAC_ADTS: 0
+			},
+			AndroidAudioEncoder: {
+				AAC: 0
+			},
+			IOSAudioQuality: {
+				LOW: 0,
+				MEDIUM: 1,
+				HIGH: 2
+			},
+			IOSOutputFormat: {
+				MPEG4AAC: 0
+			},
+			RecordingOptionsPresets: {
+				LOW_QUALITY: {
+					android: {
+						extension: '.aac',
+						outputFormat: 0,
+						audioEncoder: 0,
+						sampleRate: 16000,
+						numberOfChannels: 1,
+						bitRate: 64000
+					},
+					ios: {
+						extension: '.aac',
+						audioQuality: 1,
+						outputFormat: 0,
+						sampleRate: 16000,
+						numberOfChannels: 1,
+						bitRate: 64000
+					},
+					web: {}
+				},
+				HIGH_QUALITY: {
+					android: {
+						extension: '.aac',
+						outputFormat: 0,
+						audioEncoder: 0,
+						sampleRate: 48000,
+						numberOfChannels: 2,
+						bitRate: 128000
+					},
+					ios: {
+						extension: '.aac',
+						audioQuality: 1,
+						outputFormat: 0,
+						sampleRate: 48000,
+						numberOfChannels: 2,
+						bitRate: 128000
+					},
+					web: {}
 				}
-			}))
-		}
-	}
-}));
+			}
+		},
+		InterruptionModeAndroid,
+		InterruptionModeIOS
+	};
+});
 
 jest.mock('./app/lib/methods/search', () => ({
 	search: () => []
@@ -161,12 +257,22 @@ jest.mock('expo-device', () => ({
 	isDevice: true
 }));
 
-jest.mock('@discord/bottom-sheet', () => {
-	const react = require('react-native');
+jest.mock('@lodev09/react-native-true-sheet', () => {
+	const React = require('react');
+	const { View } = require('react-native');
+	const TrueSheet = React.forwardRef((props, ref) => {
+		React.useImperativeHandle(ref, () => ({
+			present: () => Promise.resolve(),
+			dismiss: () => Promise.resolve(),
+			resize: () => Promise.resolve()
+		}));
+		return <View {...props} />;
+	});
+	TrueSheet.displayName = 'TrueSheet';
 	return {
 		__esModule: true,
-		default: react.View,
-		BottomSheetScrollView: react.ScrollView
+		TrueSheet,
+		TrueSheetProvider: ({ children }) => children
 	};
 });
 
@@ -188,3 +294,53 @@ jest.mock('react-native-webview', () => {
 	WebView.defaultProps = {};
 	return { WebView };
 });
+
+/**
+ * Custom serializer to address an issue where `ref` causes React internals
+ * to appear in snapshots or triggers "RangeError: Invalid string length", or
+ * "Maximum call stack size exceeded"
+ *
+ * If this issue is resolved in the future, these serializers can likely be removed,
+ * and snapshots updated accordingly.
+ *
+ * See: https://github.com/jestjs/jest/issues/15402
+ */
+
+/**
+ * This serializer is **shallow**:
+ * - It only cleans the top-level object passed to it.
+ * - Removes React internal properties that can cause huge or circular snapshots
+ * - Removes `ref` from `props` to avoid dumping the full React internal instance.
+ *
+ * Note: Nested refs inside `props.children` or deeper objects are not affected.
+ */
+expect.addSnapshotSerializer({
+	test: val => val && !!val.ref,
+	print: (value, serialize) => {
+		return serialize({
+			...value,
+			_debugOwner: undefined,
+			child: undefined,
+			return: undefined,
+			ref: undefined,
+			props: { ...value.props, ref: undefined }
+		});
+	}
+});
+
+const _isReactRefObject = val => {
+	return val && typeof val === 'object' && val.constructor === Object && Object.keys(val).length === 1 && 'current' in val;
+};
+
+/**
+ * Serializes a React ref object for snapshots.
+ * Instead of including the full component instance (which can be huge and circular),
+ * it replaces it with a simple JSON object containing the component's name.
+ */
+const _printRefObject = val => {
+	const { current } = val;
+	const name = current?.constructor?.name || current?.displayName || current?.name || 'Object';
+	return JSON.stringify({ current: name });
+};
+
+expect.addSnapshotSerializer({ test: _isReactRefObject, print: _printRefObject });

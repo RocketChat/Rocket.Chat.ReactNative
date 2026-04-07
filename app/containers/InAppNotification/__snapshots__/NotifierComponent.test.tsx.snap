@@ -28,7 +28,7 @@ exports[`Story Snapshots: ChannelMessage should match snapshot 1`] = `
     collapsable={false}
     delayLongPress={600}
     enabled={true}
-    handlerTag={1}
+    handlerTag={-1}
     handlerType="NativeViewGestureHandler"
     hitSlop={
       {
@@ -114,7 +114,7 @@ exports[`Story Snapshots: ChannelMessage should match snapshot 1`] = `
       >
         <ViewManagerAdapter_ExpoImage
           borderRadius={4}
-          containerViewRef={"[React.ref]"}
+          containerViewRef={{"current":"Object"}}
           contentFit="cover"
           contentPosition={
             {
@@ -123,7 +123,7 @@ exports[`Story Snapshots: ChannelMessage should match snapshot 1`] = `
             }
           }
           height={48}
-          nativeViewRef={"[React.ref]"}
+          nativeViewRef={{"current":"NativeComponent"}}
           onError={[Function]}
           onLoad={[Function]}
           onLoadStart={[Function]}
@@ -200,7 +200,7 @@ exports[`Story Snapshots: ChannelMessage should match snapshot 1`] = `
     collapsable={false}
     delayLongPress={600}
     enabled={true}
-    handlerTag={2}
+    handlerTag={-1}
     handlerType="NativeViewGestureHandler"
     hitSlop={
       {
@@ -321,7 +321,7 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
     collapsable={false}
     delayLongPress={600}
     enabled={true}
-    handlerTag={3}
+    handlerTag={-1}
     handlerType="NativeViewGestureHandler"
     hitSlop={
       {
@@ -407,7 +407,7 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
       >
         <ViewManagerAdapter_ExpoImage
           borderRadius={4}
-          containerViewRef={"[React.ref]"}
+          containerViewRef={{"current":"Object"}}
           contentFit="cover"
           contentPosition={
             {
@@ -416,7 +416,7 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
             }
           }
           height={48}
-          nativeViewRef={"[React.ref]"}
+          nativeViewRef={{"current":"NativeComponent"}}
           onError={[Function]}
           onLoad={[Function]}
           onLoadStart={[Function]}
@@ -493,7 +493,7 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
     collapsable={false}
     delayLongPress={600}
     enabled={true}
-    handlerTag={4}
+    handlerTag={-1}
     handlerType="NativeViewGestureHandler"
     hitSlop={
       {
@@ -614,7 +614,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
     collapsable={false}
     delayLongPress={600}
     enabled={true}
-    handlerTag={5}
+    handlerTag={-1}
     handlerType="NativeViewGestureHandler"
     hitSlop={
       {
@@ -700,7 +700,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
       >
         <ViewManagerAdapter_ExpoImage
           borderRadius={4}
-          containerViewRef={"[React.ref]"}
+          containerViewRef={{"current":"Object"}}
           contentFit="cover"
           contentPosition={
             {
@@ -709,7 +709,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
             }
           }
           height={48}
-          nativeViewRef={"[React.ref]"}
+          nativeViewRef={{"current":"NativeComponent"}}
           onError={[Function]}
           onLoad={[Function]}
           onLoadStart={[Function]}
@@ -786,7 +786,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
     collapsable={false}
     delayLongPress={600}
     enabled={true}
-    handlerTag={6}
+    handlerTag={-1}
     handlerType="NativeViewGestureHandler"
     hitSlop={
       {
@@ -907,7 +907,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
     collapsable={false}
     delayLongPress={600}
     enabled={true}
-    handlerTag={7}
+    handlerTag={-1}
     handlerType="NativeViewGestureHandler"
     hitSlop={
       {
@@ -993,7 +993,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
       >
         <ViewManagerAdapter_ExpoImage
           borderRadius={4}
-          containerViewRef={"[React.ref]"}
+          containerViewRef={{"current":"Object"}}
           contentFit="cover"
           contentPosition={
             {
@@ -1002,7 +1002,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
             }
           }
           height={48}
-          nativeViewRef={"[React.ref]"}
+          nativeViewRef={{"current":"NativeComponent"}}
           onError={[Function]}
           onLoad={[Function]}
           onLoadStart={[Function]}
@@ -1079,7 +1079,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
     collapsable={false}
     delayLongPress={600}
     enabled={true}
-    handlerTag={8}
+    handlerTag={-1}
     handlerType="NativeViewGestureHandler"
     hitSlop={
       {
