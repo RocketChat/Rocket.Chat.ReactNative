@@ -1,12 +1,11 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import { useDialpadValue } from '../../../../lib/services/voip/useCallStore';
 import { FormTextInput } from '../../../../containers/TextInput';
-import { useTheme } from '../../../../theme';
 import { styles } from './styles';
 import DialpadButton from './DialpadButton';
 import { useCallLayoutMode } from '../../useCallLayoutMode';
+import { useDialpadState } from './useDialpadState';
 
 const DIALPAD_KEYS: { digit: string; letters: string }[][] = [
 	[
@@ -47,53 +46,42 @@ export const DialpadGrid = (): React.ReactElement => (
 	</View>
 );
 
-export const DialpadPortrait = ({ testID }: IDialpad): React.ReactElement => {
-	const { colors } = useTheme();
-	const dialpadValue = useDialpadValue();
+const Dialpad = ({ testID }: IDialpad): React.ReactElement => {
+	const { layoutMode } = useCallLayoutMode();
+	const { colors, dialpadValue } = useDialpadState();
+
+	const input = (
+		<FormTextInput
+			value={dialpadValue}
+			placeholder=''
+			keyboardType='phone-pad'
+			containerStyle={styles.inputContainer}
+			showErrorMessage={false}
+			testID={testID ? `${testID}-input` : 'dialpad-input'}
+			editable={false}
+			multiline
+		/>
+	);
+
+	if (layoutMode === 'wide') {
+		return (
+			<View
+				testID='dialpad-landscape-container'
+				style={[styles.landscapeContainer, { backgroundColor: colors.surfaceLight }]}>
+				<View style={styles.landscapeInputSection}>{input}</View>
+				<View style={styles.landscapeGridSection}>
+					<DialpadGrid />
+				</View>
+			</View>
+		);
+	}
+
 	return (
 		<View style={[styles.container, { backgroundColor: colors.surfaceLight }]}>
-			<FormTextInput
-				value={dialpadValue}
-				placeholder=''
-				keyboardType='phone-pad'
-				containerStyle={styles.inputContainer}
-				showErrorMessage={false}
-				testID={testID ? `${testID}-input` : 'dialpad-input'}
-				editable={false}
-				multiline
-			/>
+			{input}
 			<DialpadGrid />
 		</View>
 	);
-};
-
-export const DialpadLandscape = ({ testID }: IDialpad): React.ReactElement => {
-	const { colors } = useTheme();
-	const dialpadValue = useDialpadValue();
-	return (
-		<View testID='dialpad-landscape-container' style={[styles.landscapeContainer, { backgroundColor: colors.surfaceLight }]}>
-			<View style={styles.landscapeInputSection}>
-				<FormTextInput
-					value={dialpadValue}
-					placeholder=''
-					keyboardType='phone-pad'
-					containerStyle={styles.inputContainer}
-					showErrorMessage={false}
-					testID={testID ? `${testID}-input` : 'dialpad-input'}
-					editable={false}
-					multiline
-				/>
-			</View>
-			<View style={styles.landscapeGridSection}>
-				<DialpadGrid />
-			</View>
-		</View>
-	);
-};
-
-const Dialpad = ({ testID }: IDialpad): React.ReactElement => {
-	const { layoutMode } = useCallLayoutMode();
-	return layoutMode === 'wide' ? <DialpadLandscape testID={testID} /> : <DialpadPortrait testID={testID} />;
 };
 
 export default Dialpad;
