@@ -4,6 +4,8 @@ import {
 	Platform,
 	StyleSheet,
 	TextInput,
+	codegenNativeCommands,
+	findNodeHandle,
 	type GestureResponderEvent,
 	type LayoutChangeEvent,
 	requireNativeComponent,
@@ -21,7 +23,6 @@ interface InvertedScrollViewNativeProps extends ScrollViewProps {
 
 interface Props extends Omit<ScrollViewProps, 'scrollViewRef'> {
 	exitFocusNativeId?: string;
-	scrollViewRef?: React.Ref<any>;
 }
 
 interface State {
@@ -30,6 +31,16 @@ interface State {
 
 const NativeInvertedScrollView = requireNativeComponent<InvertedScrollViewNativeProps>('InvertedScrollView');
 const NativeInvertedScrollContentView = requireNativeComponent<InvertedScrollContentViewProps>('InvertedScrollContentView');
+
+interface InvertedScrollViewCommands {
+	scrollTo: (viewRef: React.ElementRef<typeof NativeInvertedScrollView>, x: number, y: number, animated: boolean) => void;
+	scrollToEnd: (viewRef: React.ElementRef<typeof NativeInvertedScrollView>, animated: boolean) => void;
+	flashScrollIndicators: (viewRef: React.ElementRef<typeof NativeInvertedScrollView>) => void;
+}
+
+const Commands = codegenNativeCommands<InvertedScrollViewCommands>({
+	supportedCommands: ['scrollTo', 'scrollToEnd', 'flashScrollIndicators']
+});
 
 const IS_ANIMATING_TOUCH_START_THRESHOLD_MS = 16;
 
@@ -156,18 +167,43 @@ class RNLikeInvertedScrollView extends React.Component<Props, State> {
 		return keyboardNeverPersistTaps && this.keyboardIsDismissible() && e.target != null;
 	};
 
-	private setRefs = (instance: any) => {
-		this.scrollRef.current = instance;
-		const { scrollViewRef } = this.props;
-		if (!scrollViewRef) {
-			return;
-		}
-		if (typeof scrollViewRef === 'function') {
-			scrollViewRef(instance);
-			return;
-		}
-		(scrollViewRef as React.MutableRefObject<any>).current = instance;
+	private setNativeRef = (instance: any) => {
+		(this.scrollRef as React.MutableRefObject<any>).current = instance;
 	};
+
+	scrollTo = (options?: { x?: number; y?: number; animated?: boolean } | number) => {
+		let x = 0;
+		let y = 0;
+		let animated = true;
+		if (typeof options === 'number') {
+			y = options;
+		} else if (options) {
+			x = options.x ?? 0;
+			y = options.y ?? 0;
+			animated = options.animated !== false;
+		}
+		if (this.scrollRef.current) {
+			Commands.scrollTo(this.scrollRef.current, x, y, animated);
+		}
+	};
+
+	scrollToEnd = (options?: { animated?: boolean }) => {
+		if (this.scrollRef.current) {
+			Commands.scrollToEnd(this.scrollRef.current, options?.animated !== false);
+		}
+	};
+
+	flashScrollIndicators = () => {
+		if (this.scrollRef.current) {
+			Commands.flashScrollIndicators(this.scrollRef.current);
+		}
+	};
+
+	getScrollableNode = () => findNodeHandle(this.scrollRef.current);
+
+	getNativeScrollRef = () => this.scrollRef.current;
+
+	getScrollResponder = () => this;
 
 	render() {
 		const { horizontal, children, style, contentContainerStyle, onContentSizeChange, ...rest } = this.props;
@@ -177,7 +213,7 @@ class RNLikeInvertedScrollView extends React.Component<Props, State> {
 
 		return (
 			<ScrollContainer
-				ref={this.setRefs}
+				ref={this.setNativeRef}
 				{...rest}
 				style={StyleSheet.compose(baseStyle, style)}
 				onLayout={this.handleLayout}
@@ -221,7 +257,11 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Wrapper = React.forwardRef<any, Props>((props, ref) => <RNLikeInvertedScrollView {...props} scrollViewRef={ref} />);
+const Wrapper = React.forwardRef<RNLikeInvertedScrollView, Props>((props, ref) => {
+	const classRef = React.useRef<RNLikeInvertedScrollView>(null);
+	React.useImperativeHandle(ref, () => classRef.current!, []);
+	return <RNLikeInvertedScrollView {...props} ref={classRef} />;
+});
 
 Wrapper.displayName = 'RNLikeInvertedScrollView';
 
