@@ -34,14 +34,17 @@ const styles = StyleSheet.create({
 		...sharedStyles.textMedium
 	},
 	titleContainer: {
-		flexShrink: 1,
+		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
-		gap: 4
+		minWidth: 0
 	},
 	alias: {
 		fontSize: 14,
 		...sharedStyles.textRegular
+	},
+	time: {
+		marginLeft: 4
 	}
 });
 
@@ -117,12 +120,17 @@ const User = React.memo(
 
 			return (
 				<View style={styles.container}>
-					<Touch testID={`username-header-${username}`} style={styles.titleContainer} onPress={onUserPress}>
-						<Text style={[styles.username, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
+					<View style={styles.titleContainer}>
+						<Text
+							style={[styles.username, { color: colors.fontTitlesLabels }]}
+							numberOfLines={1}
+							ellipsizeMode='tail'
+							onPress={onUserPress}
+							testID={`username-header-${username}`}>
 							{textContent}
 						</Text>
-						{isLargeFontScale ? null : <MessageTime timeFormat={timeFormat} ts={ts} />}
-					</Touch>
+						{isLargeFontScale ? null : <MessageTime timeFormat={timeFormat} ts={ts} style={styles.time} />}
+					</View>
 					<RightIcons
 						type={type}
 						isEdited={isEdited}
