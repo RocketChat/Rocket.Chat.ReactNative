@@ -11,6 +11,16 @@ import { useTheme } from '../../../theme';
 import { showActionSheetRef } from '../../../containers/ActionSheet';
 import Dialpad from './Dialpad/Dialpad';
 import { type LayoutMode } from '../types';
+import { type TIconsName } from '../../../containers/CustomIcon';
+
+interface ICallButtonConfig {
+	testID: string;
+	icon: TIconsName;
+	label: string;
+	onPress: () => void;
+	variant?: 'default' | 'active' | 'danger';
+	disabled: boolean;
+}
 
 export const CallButtons = ({ layoutMode }: { layoutMode: LayoutMode }) => {
 	'use memo';
@@ -51,13 +61,13 @@ export const CallButtons = ({ layoutMode }: { layoutMode: LayoutMode }) => {
 		endCall();
 	};
 
-	const buttons = [
+	const buttons: ICallButtonConfig[] = [
 		{
 			testID: 'call-view-speaker',
 			icon: isSpeakerOn ? 'audio' : 'audio-disabled',
 			label: I18n.t('Speaker'),
 			onPress: toggleSpeaker,
-			variant: (isSpeakerOn ? 'active' : 'default') as const,
+			variant: isSpeakerOn ? 'active' : 'default',
 			disabled: isConnecting
 		},
 		{
@@ -65,7 +75,7 @@ export const CallButtons = ({ layoutMode }: { layoutMode: LayoutMode }) => {
 			icon: 'pause-shape-unfilled',
 			label: isOnHold ? I18n.t('Unhold') : I18n.t('Hold'),
 			onPress: toggleHold,
-			variant: (isOnHold ? 'active' : 'default') as const,
+			variant: isOnHold ? 'active' : 'default',
 			disabled: isConnecting
 		},
 		{
@@ -73,7 +83,7 @@ export const CallButtons = ({ layoutMode }: { layoutMode: LayoutMode }) => {
 			icon: isMuted ? 'microphone-disabled' : 'microphone',
 			label: isMuted ? I18n.t('Unmute') : I18n.t('Mute'),
 			onPress: toggleMute,
-			variant: (isMuted ? 'active' : 'default') as const,
+			variant: isMuted ? 'active' : 'default',
 			disabled: isConnecting
 		},
 		{
@@ -88,7 +98,7 @@ export const CallButtons = ({ layoutMode }: { layoutMode: LayoutMode }) => {
 			icon: 'phone-off',
 			label: isConnecting ? I18n.t('Cancel') : I18n.t('End'),
 			onPress: handleEndCall,
-			variant: 'danger' as const,
+			variant: 'danger',
 			disabled: false
 		},
 		{
