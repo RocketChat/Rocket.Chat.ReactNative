@@ -11268,6 +11268,11 @@ react-native-easy-toast@2.3.0:
     deprecated-react-native-prop-types "^2.3.0"
     prop-types "^15.6.0"
 
+react-native-external-keyboard@^0.8.4:
+  version "0.8.4"
+  resolved "https://registry.yarnpkg.com/react-native-external-keyboard/-/react-native-external-keyboard-0.8.4.tgz#dc2094e37cf5d010f37e1abeb1db818e835b4c48"
+  integrity sha512-Z3b7pTK+IjCjrsdbtGTOD+OiLAOWvc65bQU7JTZm8LxtsWdxwwU2K+k8URdL3WPicxLZBlECxj0QaH6AfRnr2w==
+
 react-native-file-viewer@2.1.4:
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/react-native-file-viewer/-/react-native-file-viewer-2.1.4.tgz#987b2902f0f0ac87b42f3ac3d3037c8ae98f17a6"
