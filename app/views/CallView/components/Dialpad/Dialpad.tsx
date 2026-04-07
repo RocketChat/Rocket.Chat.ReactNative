@@ -65,9 +65,7 @@ const Dialpad = ({ testID }: IDialpad): React.ReactElement => {
 
 	if (layoutMode === 'wide') {
 		return (
-			<View
-				testID='dialpad-landscape-container'
-				style={[styles.landscapeContainer, { backgroundColor: colors.surfaceLight }]}>
+			<View testID='dialpad-landscape-container' style={[styles.landscapeContainer, { backgroundColor: colors.surfaceLight }]}>
 				<View style={styles.landscapeInputSection}>{input}</View>
 				<View style={styles.landscapeGridSection}>
 					<DialpadGrid />

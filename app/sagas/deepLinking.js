@@ -115,7 +115,7 @@ const handleVoipAcceptFailed = function* handleVoipAcceptFailed(params) {
 
 		yield call(
 			() =>
-				new Promise(resolve => {
+				new Promise((resolve) => {
 					InteractionManager.runAfterInteractions(() => resolve());
 				})
 		);
