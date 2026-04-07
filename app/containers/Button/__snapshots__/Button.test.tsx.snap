@@ -4,18 +4,29 @@ exports[`Story Snapshots: CustomButton should match snapshot 1`] = `
 <RNGestureHandlerButton
   accessibilityLabel="Press me!"
   accessibilityRole="button"
+<<<<<<< HEAD
   activeOpacity={0.2}
   collapsable={false}
   delayLongPress={600}
   enabled={true}
   handlerTag={7}
+=======
+  activeOpacity={0.105}
+  collapsable={false}
+  delayLongPress={600}
+  enabled={true}
+  handlerTag={-1}
+>>>>>>> develop
   handlerType="NativeViewGestureHandler"
   innerRef={null}
   onActiveStateChange={[Function]}
   onGestureHandlerEvent={[Function]}
   onGestureHandlerStateChange={[Function]}
   onPress={[Function]}
+<<<<<<< HEAD
   rippleColor="transparent"
+=======
+>>>>>>> develop
   style={
     [
       {
@@ -33,13 +44,21 @@ exports[`Story Snapshots: CustomButton should match snapshot 1`] = `
     ]
   }
   testID="testButton"
+<<<<<<< HEAD
   underlayColor="transparent"
+=======
+  underlayColor="black"
+>>>>>>> develop
 >
   <View
     collapsable={false}
     style={
       {
+<<<<<<< HEAD
         "backgroundColor": "transparent",
+=======
+        "backgroundColor": "black",
+>>>>>>> develop
         "borderBottomLeftRadius": undefined,
         "borderBottomRightRadius": undefined,
         "borderRadius": 4,
@@ -84,18 +103,29 @@ exports[`Story Snapshots: DisabledButton should match snapshot 1`] = `
 <RNGestureHandlerButton
   accessibilityLabel="Press me!"
   accessibilityRole="button"
+<<<<<<< HEAD
   activeOpacity={0.2}
   collapsable={false}
   delayLongPress={600}
   enabled={false}
   handlerTag={8}
+=======
+  activeOpacity={0.105}
+  collapsable={false}
+  delayLongPress={600}
+  enabled={false}
+  handlerTag={-1}
+>>>>>>> develop
   handlerType="NativeViewGestureHandler"
   innerRef={null}
   onActiveStateChange={[Function]}
   onGestureHandlerEvent={[Function]}
   onGestureHandlerStateChange={[Function]}
   onPress={[Function]}
+<<<<<<< HEAD
   rippleColor="transparent"
+=======
+>>>>>>> develop
   style={
     [
       {
@@ -112,13 +142,21 @@ exports[`Story Snapshots: DisabledButton should match snapshot 1`] = `
     ]
   }
   testID="testButton"
+<<<<<<< HEAD
   underlayColor="transparent"
+=======
+  underlayColor="black"
+>>>>>>> develop
 >
   <View
     collapsable={false}
     style={
       {
+<<<<<<< HEAD
         "backgroundColor": "transparent",
+=======
+        "backgroundColor": "black",
+>>>>>>> develop
         "borderBottomLeftRadius": undefined,
         "borderBottomRightRadius": undefined,
         "borderRadius": 4,
@@ -159,18 +197,29 @@ exports[`Story Snapshots: DisabledLoadingButton should match snapshot 1`] = `
 <RNGestureHandlerButton
   accessibilityLabel="Press me!"
   accessibilityRole="button"
+<<<<<<< HEAD
   activeOpacity={0.2}
   collapsable={false}
   delayLongPress={600}
   enabled={false}
   handlerTag={9}
+=======
+  activeOpacity={0.105}
+  collapsable={false}
+  delayLongPress={600}
+  enabled={false}
+  handlerTag={-1}
+>>>>>>> develop
   handlerType="NativeViewGestureHandler"
   innerRef={null}
   onActiveStateChange={[Function]}
   onGestureHandlerEvent={[Function]}
   onGestureHandlerStateChange={[Function]}
   onPress={[Function]}
+<<<<<<< HEAD
   rippleColor="transparent"
+=======
+>>>>>>> develop
   style={
     [
       {
@@ -187,13 +236,21 @@ exports[`Story Snapshots: DisabledLoadingButton should match snapshot 1`] = `
     ]
   }
   testID="testButton"
+<<<<<<< HEAD
   underlayColor="transparent"
+=======
+  underlayColor="black"
+>>>>>>> develop
 >
   <View
     collapsable={false}
     style={
       {
+<<<<<<< HEAD
         "backgroundColor": "transparent",
+=======
+        "backgroundColor": "black",
+>>>>>>> develop
         "borderBottomLeftRadius": undefined,
         "borderBottomRightRadius": undefined,
         "borderRadius": 4,
@@ -223,18 +280,29 @@ exports[`Story Snapshots: LoadingButton should match snapshot 1`] = `
 <RNGestureHandlerButton
   accessibilityLabel="Press me!"
   accessibilityRole="button"
+<<<<<<< HEAD
   activeOpacity={0.2}
   collapsable={false}
   delayLongPress={600}
   enabled={false}
   handlerTag={10}
+=======
+  activeOpacity={0.105}
+  collapsable={false}
+  delayLongPress={600}
+  enabled={false}
+  handlerTag={-1}
+>>>>>>> develop
   handlerType="NativeViewGestureHandler"
   innerRef={null}
   onActiveStateChange={[Function]}
   onGestureHandlerEvent={[Function]}
   onGestureHandlerStateChange={[Function]}
   onPress={[Function]}
+<<<<<<< HEAD
   rippleColor="transparent"
+=======
+>>>>>>> develop
   style={
     [
       {
@@ -251,13 +319,21 @@ exports[`Story Snapshots: LoadingButton should match snapshot 1`] = `
     ]
   }
   testID="testButton"
+<<<<<<< HEAD
   underlayColor="transparent"
+=======
+  underlayColor="black"
+>>>>>>> develop
 >
   <View
     collapsable={false}
     style={
       {
+<<<<<<< HEAD
         "backgroundColor": "transparent",
+=======
+        "backgroundColor": "black",
+>>>>>>> develop
         "borderBottomLeftRadius": undefined,
         "borderBottomRightRadius": undefined,
         "borderRadius": 4,
@@ -287,18 +363,29 @@ exports[`Story Snapshots: PrimaryButton should match snapshot 1`] = `
 <RNGestureHandlerButton
   accessibilityLabel="Press me!"
   accessibilityRole="button"
+<<<<<<< HEAD
   activeOpacity={0.2}
   collapsable={false}
   delayLongPress={600}
   enabled={true}
   handlerTag={11}
+=======
+  activeOpacity={0.105}
+  collapsable={false}
+  delayLongPress={600}
+  enabled={true}
+  handlerTag={-1}
+>>>>>>> develop
   handlerType="NativeViewGestureHandler"
   innerRef={null}
   onActiveStateChange={[Function]}
   onGestureHandlerEvent={[Function]}
   onGestureHandlerStateChange={[Function]}
   onPress={[Function]}
+<<<<<<< HEAD
   rippleColor="transparent"
+=======
+>>>>>>> develop
   style={
     [
       {
@@ -315,13 +402,21 @@ exports[`Story Snapshots: PrimaryButton should match snapshot 1`] = `
     ]
   }
   testID="testButton"
+<<<<<<< HEAD
   underlayColor="transparent"
+=======
+  underlayColor="black"
+>>>>>>> develop
 >
   <View
     collapsable={false}
     style={
       {
+<<<<<<< HEAD
         "backgroundColor": "transparent",
+=======
+        "backgroundColor": "black",
+>>>>>>> develop
         "borderBottomLeftRadius": undefined,
         "borderBottomRightRadius": undefined,
         "borderRadius": 4,
@@ -362,18 +457,29 @@ exports[`Story Snapshots: SecondaryButton should match snapshot 1`] = `
 <RNGestureHandlerButton
   accessibilityLabel="Press me!"
   accessibilityRole="button"
+<<<<<<< HEAD
   activeOpacity={0.2}
   collapsable={false}
   delayLongPress={600}
   enabled={true}
   handlerTag={12}
+=======
+  activeOpacity={0.105}
+  collapsable={false}
+  delayLongPress={600}
+  enabled={true}
+  handlerTag={-1}
+>>>>>>> develop
   handlerType="NativeViewGestureHandler"
   innerRef={null}
   onActiveStateChange={[Function]}
   onGestureHandlerEvent={[Function]}
   onGestureHandlerStateChange={[Function]}
   onPress={[Function]}
+<<<<<<< HEAD
   rippleColor="transparent"
+=======
+>>>>>>> develop
   style={
     [
       {
@@ -390,13 +496,21 @@ exports[`Story Snapshots: SecondaryButton should match snapshot 1`] = `
     ]
   }
   testID="testButton"
+<<<<<<< HEAD
   underlayColor="transparent"
+=======
+  underlayColor="black"
+>>>>>>> develop
 >
   <View
     collapsable={false}
     style={
       {
+<<<<<<< HEAD
         "backgroundColor": "transparent",
+=======
+        "backgroundColor": "black",
+>>>>>>> develop
         "borderBottomLeftRadius": undefined,
         "borderBottomRightRadius": undefined,
         "borderRadius": 4,
@@ -437,18 +551,29 @@ exports[`Story Snapshots: SmallButton should match snapshot 1`] = `
 <RNGestureHandlerButton
   accessibilityLabel="Press me!"
   accessibilityRole="button"
+<<<<<<< HEAD
   activeOpacity={0.2}
   collapsable={false}
   delayLongPress={600}
   enabled={true}
   handlerTag={13}
+=======
+  activeOpacity={0.105}
+  collapsable={false}
+  delayLongPress={600}
+  enabled={true}
+  handlerTag={-1}
+>>>>>>> develop
   handlerType="NativeViewGestureHandler"
   innerRef={null}
   onActiveStateChange={[Function]}
   onGestureHandlerEvent={[Function]}
   onGestureHandlerStateChange={[Function]}
   onPress={[Function]}
+<<<<<<< HEAD
   rippleColor="transparent"
+=======
+>>>>>>> develop
   style={
     [
       {
@@ -465,13 +590,21 @@ exports[`Story Snapshots: SmallButton should match snapshot 1`] = `
     ]
   }
   testID="testButton"
+<<<<<<< HEAD
   underlayColor="transparent"
+=======
+  underlayColor="black"
+>>>>>>> develop
 >
   <View
     collapsable={false}
     style={
       {
+<<<<<<< HEAD
         "backgroundColor": "transparent",
+=======
+        "backgroundColor": "black",
+>>>>>>> develop
         "borderBottomLeftRadius": undefined,
         "borderBottomRightRadius": undefined,
         "borderRadius": 4,

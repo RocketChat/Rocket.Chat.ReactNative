@@ -91,10 +91,6 @@ const Button: React.FC<IButtonProps> = ({
 		<RectButton
 			onPress={onPress}
 			enabled={!isDisabled}
-			activeOpacity={0.2}
-			underlayColor='transparent'
-			// No Android ink ripple; matches Pressable with `android_ripple` disabled.
-			rippleColor='transparent'
 			style={containerStyle}
 			accessibilityLabel={title}
 			accessibilityRole='button'
