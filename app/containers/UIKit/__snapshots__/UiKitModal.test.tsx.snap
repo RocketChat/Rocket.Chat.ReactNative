@@ -1014,29 +1014,17 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Primary Action"
       accessibilityRole="button"
-<<<<<<< HEAD
-      activeOpacity={0.2}
-      collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={1}
-=======
       activeOpacity={0.105}
       collapsable={false}
       delayLongPress={600}
       enabled={true}
       handlerTag={-1}
->>>>>>> develop
       handlerType="NativeViewGestureHandler"
       innerRef={null}
       onActiveStateChange={[Function]}
       onGestureHandlerEvent={[Function]}
       onGestureHandlerStateChange={[Function]}
       onPress={[Function]}
-<<<<<<< HEAD
-      rippleColor="transparent"
-=======
->>>>>>> develop
       style={
         [
           {
@@ -1052,21 +1040,13 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
           },
         ]
       }
-<<<<<<< HEAD
-      underlayColor="transparent"
-=======
       underlayColor="black"
->>>>>>> develop
     >
       <View
         collapsable={false}
         style={
           {
-<<<<<<< HEAD
-            "backgroundColor": "transparent",
-=======
             "backgroundColor": "black",
->>>>>>> develop
             "borderBottomLeftRadius": undefined,
             "borderBottomRightRadius": undefined,
             "borderRadius": 4,
@@ -1106,29 +1086,17 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Secondary"
       accessibilityRole="button"
-<<<<<<< HEAD
-      activeOpacity={0.2}
-      collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={2}
-=======
       activeOpacity={0.105}
       collapsable={false}
       delayLongPress={600}
       enabled={true}
       handlerTag={-1}
->>>>>>> develop
       handlerType="NativeViewGestureHandler"
       innerRef={null}
       onActiveStateChange={[Function]}
       onGestureHandlerEvent={[Function]}
       onGestureHandlerStateChange={[Function]}
       onPress={[Function]}
-<<<<<<< HEAD
-      rippleColor="transparent"
-=======
->>>>>>> develop
       style={
         [
           {
@@ -1144,21 +1112,13 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
           },
         ]
       }
-<<<<<<< HEAD
-      underlayColor="transparent"
-=======
       underlayColor="black"
->>>>>>> develop
     >
       <View
         collapsable={false}
         style={
           {
-<<<<<<< HEAD
-            "backgroundColor": "transparent",
-=======
             "backgroundColor": "black",
->>>>>>> develop
             "borderBottomLeftRadius": undefined,
             "borderBottomRightRadius": undefined,
             "borderRadius": 4,
@@ -1198,29 +1158,17 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Danger Action"
       accessibilityRole="button"
-<<<<<<< HEAD
-      activeOpacity={0.2}
-      collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={3}
-=======
       activeOpacity={0.105}
       collapsable={false}
       delayLongPress={600}
       enabled={true}
       handlerTag={-1}
->>>>>>> develop
       handlerType="NativeViewGestureHandler"
       innerRef={null}
       onActiveStateChange={[Function]}
       onGestureHandlerEvent={[Function]}
       onGestureHandlerStateChange={[Function]}
       onPress={[Function]}
-<<<<<<< HEAD
-      rippleColor="transparent"
-=======
->>>>>>> develop
       style={
         [
           {
@@ -1236,21 +1184,13 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
           },
         ]
       }
-<<<<<<< HEAD
-      underlayColor="transparent"
-=======
       underlayColor="black"
->>>>>>> develop
     >
       <View
         collapsable={false}
         style={
           {
-<<<<<<< HEAD
-            "backgroundColor": "transparent",
-=======
             "backgroundColor": "black",
->>>>>>> develop
             "borderBottomLeftRadius": undefined,
             "borderBottomRightRadius": undefined,
             "borderRadius": 4,
@@ -1290,29 +1230,17 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Button 4"
       accessibilityRole="button"
-<<<<<<< HEAD
-      activeOpacity={0.2}
-      collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={4}
-=======
       activeOpacity={0.105}
       collapsable={false}
       delayLongPress={600}
       enabled={true}
       handlerTag={-1}
->>>>>>> develop
       handlerType="NativeViewGestureHandler"
       innerRef={null}
       onActiveStateChange={[Function]}
       onGestureHandlerEvent={[Function]}
       onGestureHandlerStateChange={[Function]}
       onPress={[Function]}
-<<<<<<< HEAD
-      rippleColor="transparent"
-=======
->>>>>>> develop
       style={
         [
           {
@@ -1328,21 +1256,13 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
           },
         ]
       }
-<<<<<<< HEAD
-      underlayColor="transparent"
-=======
       underlayColor="black"
->>>>>>> develop
     >
       <View
         collapsable={false}
         style={
           {
-<<<<<<< HEAD
-            "backgroundColor": "transparent",
-=======
             "backgroundColor": "black",
->>>>>>> develop
             "borderBottomLeftRadius": undefined,
             "borderBottomRightRadius": undefined,
             "borderRadius": 4,
@@ -1382,29 +1302,17 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Button 5"
       accessibilityRole="button"
-<<<<<<< HEAD
-      activeOpacity={0.2}
-      collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={5}
-=======
       activeOpacity={0.105}
       collapsable={false}
       delayLongPress={600}
       enabled={true}
       handlerTag={-1}
->>>>>>> develop
       handlerType="NativeViewGestureHandler"
       innerRef={null}
       onActiveStateChange={[Function]}
       onGestureHandlerEvent={[Function]}
       onGestureHandlerStateChange={[Function]}
       onPress={[Function]}
-<<<<<<< HEAD
-      rippleColor="transparent"
-=======
->>>>>>> develop
       style={
         [
           {
@@ -1420,21 +1328,13 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
           },
         ]
       }
-<<<<<<< HEAD
-      underlayColor="transparent"
-=======
       underlayColor="black"
->>>>>>> develop
     >
       <View
         collapsable={false}
         style={
           {
-<<<<<<< HEAD
-            "backgroundColor": "transparent",
-=======
             "backgroundColor": "black",
->>>>>>> develop
             "borderBottomLeftRadius": undefined,
             "borderBottomRightRadius": undefined,
             "borderRadius": 4,
@@ -1481,29 +1381,17 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Button 6 - Hidden"
       accessibilityRole="button"
-<<<<<<< HEAD
-      activeOpacity={0.2}
-      collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={6}
-=======
       activeOpacity={0.105}
       collapsable={false}
       delayLongPress={600}
       enabled={true}
       handlerTag={-1}
->>>>>>> develop
       handlerType="NativeViewGestureHandler"
       innerRef={null}
       onActiveStateChange={[Function]}
       onGestureHandlerEvent={[Function]}
       onGestureHandlerStateChange={[Function]}
       onPress={[Function]}
-<<<<<<< HEAD
-      rippleColor="transparent"
-=======
->>>>>>> develop
       style={
         [
           {
@@ -1519,21 +1407,13 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
           },
         ]
       }
-<<<<<<< HEAD
-      underlayColor="transparent"
-=======
       underlayColor="black"
->>>>>>> develop
     >
       <View
         collapsable={false}
         style={
           {
-<<<<<<< HEAD
-            "backgroundColor": "transparent",
-=======
             "backgroundColor": "black",
->>>>>>> develop
             "borderBottomLeftRadius": undefined,
             "borderBottomRightRadius": undefined,
             "borderRadius": 4,
@@ -1580,29 +1460,17 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Button 7 - Hidden"
       accessibilityRole="button"
-<<<<<<< HEAD
-      activeOpacity={0.2}
-      collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={7}
-=======
       activeOpacity={0.105}
       collapsable={false}
       delayLongPress={600}
       enabled={true}
       handlerTag={-1}
->>>>>>> develop
       handlerType="NativeViewGestureHandler"
       innerRef={null}
       onActiveStateChange={[Function]}
       onGestureHandlerEvent={[Function]}
       onGestureHandlerStateChange={[Function]}
       onPress={[Function]}
-<<<<<<< HEAD
-      rippleColor="transparent"
-=======
->>>>>>> develop
       style={
         [
           {
@@ -1618,21 +1486,13 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
           },
         ]
       }
-<<<<<<< HEAD
-      underlayColor="transparent"
-=======
       underlayColor="black"
->>>>>>> develop
     >
       <View
         collapsable={false}
         style={
           {
-<<<<<<< HEAD
-            "backgroundColor": "transparent",
-=======
             "backgroundColor": "black",
->>>>>>> develop
             "borderBottomLeftRadius": undefined,
             "borderBottomRightRadius": undefined,
             "borderRadius": 4,
@@ -1679,29 +1539,17 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Button 8 - Hidden"
       accessibilityRole="button"
-<<<<<<< HEAD
-      activeOpacity={0.2}
-      collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={8}
-=======
       activeOpacity={0.105}
       collapsable={false}
       delayLongPress={600}
       enabled={true}
       handlerTag={-1}
->>>>>>> develop
       handlerType="NativeViewGestureHandler"
       innerRef={null}
       onActiveStateChange={[Function]}
       onGestureHandlerEvent={[Function]}
       onGestureHandlerStateChange={[Function]}
       onPress={[Function]}
-<<<<<<< HEAD
-      rippleColor="transparent"
-=======
->>>>>>> develop
       style={
         [
           {
@@ -1717,21 +1565,13 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
           },
         ]
       }
-<<<<<<< HEAD
-      underlayColor="transparent"
-=======
       underlayColor="black"
->>>>>>> develop
     >
       <View
         collapsable={false}
         style={
           {
-<<<<<<< HEAD
-            "backgroundColor": "transparent",
-=======
             "backgroundColor": "black",
->>>>>>> develop
             "borderBottomLeftRadius": undefined,
             "borderBottomRightRadius": undefined,
             "borderRadius": 4,
@@ -1770,29 +1610,17 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
   <RNGestureHandlerButton
     accessibilityLabel="Show more"
     accessibilityRole="button"
-<<<<<<< HEAD
-    activeOpacity={0.2}
-    collapsable={false}
-    delayLongPress={600}
-    enabled={true}
-    handlerTag={9}
-=======
     activeOpacity={0.105}
     collapsable={false}
     delayLongPress={600}
     enabled={true}
     handlerTag={-1}
->>>>>>> develop
     handlerType="NativeViewGestureHandler"
     innerRef={null}
     onActiveStateChange={[Function]}
     onGestureHandlerEvent={[Function]}
     onGestureHandlerStateChange={[Function]}
     onPress={[Function]}
-<<<<<<< HEAD
-    rippleColor="transparent"
-=======
->>>>>>> develop
     style={
       [
         {
@@ -1808,21 +1636,13 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
         },
       ]
     }
-<<<<<<< HEAD
-    underlayColor="transparent"
-=======
     underlayColor="black"
->>>>>>> develop
   >
     <View
       collapsable={false}
       style={
         {
-<<<<<<< HEAD
-          "backgroundColor": "transparent",
-=======
           "backgroundColor": "black",
->>>>>>> develop
           "borderBottomLeftRadius": undefined,
           "borderBottomRightRadius": undefined,
           "borderRadius": 4,
@@ -2178,11 +1998,7 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-<<<<<<< HEAD
-      handlerTag={10}
-=======
       handlerTag={-1}
->>>>>>> develop
       handlerType="NativeViewGestureHandler"
       hitSlop={
         {
@@ -2359,11 +2175,7 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-<<<<<<< HEAD
-      handlerTag={11}
-=======
       handlerTag={-1}
->>>>>>> develop
       handlerType="NativeViewGestureHandler"
       hitSlop={
         {
@@ -2540,11 +2352,7 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-<<<<<<< HEAD
-      handlerTag={12}
-=======
       handlerTag={-1}
->>>>>>> develop
       handlerType="NativeViewGestureHandler"
       hitSlop={
         {
@@ -2672,11 +2480,7 @@ exports[`Story Snapshots: ModalDatePickerWithError should match snapshot 1`] = `
     collapsable={false}
     delayLongPress={600}
     enabled={true}
-<<<<<<< HEAD
-    handlerTag={13}
-=======
     handlerTag={-1}
->>>>>>> develop
     handlerType="NativeViewGestureHandler"
     innerRef={null}
     onActiveStateChange={[Function]}
@@ -3057,11 +2861,7 @@ exports[`Story Snapshots: ModalFormInput should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-<<<<<<< HEAD
-      handlerTag={14}
-=======
       handlerTag={-1}
->>>>>>> develop
       handlerType="NativeViewGestureHandler"
       innerRef={null}
       onActiveStateChange={[Function]}
@@ -3301,29 +3101,17 @@ exports[`Story Snapshots: ModalFormTextArea should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Change"
       accessibilityRole="button"
-<<<<<<< HEAD
-      activeOpacity={0.2}
-      collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={15}
-=======
       activeOpacity={0.105}
       collapsable={false}
       delayLongPress={600}
       enabled={true}
       handlerTag={-1}
->>>>>>> develop
       handlerType="NativeViewGestureHandler"
       innerRef={null}
       onActiveStateChange={[Function]}
       onGestureHandlerEvent={[Function]}
       onGestureHandlerStateChange={[Function]}
       onPress={[Function]}
-<<<<<<< HEAD
-      rippleColor="transparent"
-=======
->>>>>>> develop
       style={
         [
           {
@@ -3339,21 +3127,13 @@ exports[`Story Snapshots: ModalFormTextArea should match snapshot 1`] = `
           },
         ]
       }
-<<<<<<< HEAD
-      underlayColor="transparent"
-=======
       underlayColor="black"
->>>>>>> develop
     >
       <View
         collapsable={false}
         style={
           {
-<<<<<<< HEAD
-            "backgroundColor": "transparent",
-=======
             "backgroundColor": "black",
->>>>>>> develop
             "borderBottomLeftRadius": undefined,
             "borderBottomRightRadius": undefined,
             "borderRadius": 4,
@@ -3983,11 +3763,7 @@ exports[`Story Snapshots: ModalMultiSelect should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-<<<<<<< HEAD
-      handlerTag={16}
-=======
       handlerTag={-1}
->>>>>>> develop
       handlerType="NativeViewGestureHandler"
       innerRef={null}
       onActiveStateChange={[Function]}
@@ -4161,11 +3937,7 @@ exports[`Story Snapshots: ModalMultiSelect should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-<<<<<<< HEAD
-      handlerTag={17}
-=======
       handlerTag={-1}
->>>>>>> develop
       handlerType="NativeViewGestureHandler"
       innerRef={null}
       onActiveStateChange={[Function]}
@@ -4253,11 +4025,7 @@ exports[`Story Snapshots: ModalMultiSelect should match snapshot 1`] = `
               collapsable={false}
               delayLongPress={600}
               enabled={true}
-<<<<<<< HEAD
-              handlerTag={18}
-=======
               handlerTag={-1}
->>>>>>> develop
               handlerType="NativeViewGestureHandler"
               innerRef={null}
               onActiveStateChange={[Function]}
