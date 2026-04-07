@@ -10,7 +10,7 @@ import { CONTROLS_ANIMATION_DURATION, styles } from '../styles';
 import { useTheme } from '../../../theme';
 import { showActionSheetRef } from '../../../containers/ActionSheet';
 import Dialpad from './Dialpad/Dialpad';
-import { type LayoutMode } from '..';
+import { type LayoutMode } from '../types';
 
 export const CallButtons = ({ layoutMode }: { layoutMode: LayoutMode }) => {
 	'use memo';

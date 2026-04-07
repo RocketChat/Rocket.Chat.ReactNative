@@ -118,10 +118,7 @@ export const SpeakerOn = () => {
 	return <CallView />;
 };
 
-// Tablet / wide layout stories.
-// CallView computes layoutMode from useWindowDimensions, which in Storybook
-// reflects the real device width. To preview the tablet layout regardless of
-// device size, render the same composition but force CallButtons to 'wide'.
+// Tablet / wide layout stories — force layoutMode='wide' regardless of device width
 const TabletCallView = () => {
 	const { colors } = useTheme();
 	const call = useCallStore(state => state.call);

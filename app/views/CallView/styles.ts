@@ -18,7 +18,6 @@ export const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 		paddingHorizontal: 24,
-		alignContent: 'flex-start',
 		marginBottom: 100
 	},
 	avatarContainer: {
