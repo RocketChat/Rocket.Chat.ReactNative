@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import Modal from 'react-native-modal';
 import useDeepCompareEffect from 'use-deep-compare-effect';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { PasscodeEnter } from '../containers/Passcode';
 import { LOCAL_AUTHENTICATE_EMITTER } from '../lib/constants/localAuthentication';
@@ -19,6 +20,11 @@ interface IData {
 }
 
 const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
 	close: {
 		position: 'absolute',
 		top: hasNotch ? 50 : 30,
@@ -73,12 +79,14 @@ const ScreenLockedView = (): JSX.Element => {
 			style={{ margin: 0 }}
 			animationIn='fadeIn'
 			animationOut='fadeOut'>
-			<PasscodeEnter hasBiometry={!!data?.hasBiometry} finishProcess={onSubmit} />
-			{data?.force ? (
-				<Touch onPress={onCancel} style={styles.close}>
-					<CustomIcon name='close' size={30} />
-				</Touch>
-			) : null}
+			<GestureHandlerRootView style={styles.container}>
+				<PasscodeEnter hasBiometry={!!data?.hasBiometry} finishProcess={onSubmit} />
+				{data?.force ? (
+					<Touch onPress={onCancel} style={styles.close}>
+						<CustomIcon name='close' size={30} />
+					</Touch>
+				) : null}
+			</GestureHandlerRootView>
 		</Modal>
 	);
 };
