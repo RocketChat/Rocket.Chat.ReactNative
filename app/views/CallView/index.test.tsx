@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react-native';
+import { fireEvent, render, within } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
 import CallView from '.';
@@ -472,17 +472,7 @@ describe('CallView (tablet/wide layout)', () => {
 			'call-view-dialpad'
 		];
 		ids.forEach(id => {
-			const button = getByTestId(id);
-			let parent = button.parent;
-			let found = false;
-			while (parent) {
-				if (parent === row0) {
-					found = true;
-					break;
-				}
-				parent = parent.parent;
-			}
-			expect(found).toBe(true);
+			expect(within(row0).getByTestId(id)).toBeTruthy();
 		});
 	});
 

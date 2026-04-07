@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react-native';
+import { fireEvent, render, within } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
 import { mockedStore } from '../../../reducers/mockedStore';
@@ -156,17 +156,7 @@ describe('CallButtons', () => {
 				'call-view-dialpad'
 			];
 			ids.forEach(id => {
-				const button = getByTestId(id);
-				let parent = button.parent;
-				let found = false;
-				while (parent) {
-					if (parent === row0) {
-						found = true;
-						break;
-					}
-					parent = parent.parent;
-				}
-				expect(found).toBe(true);
+				expect(within(row0).getByTestId(id)).toBeTruthy();
 			});
 		});
 
@@ -179,21 +169,12 @@ describe('CallButtons', () => {
 			const row0 = getByTestId('call-buttons-row-0');
 			const row1 = getByTestId('call-buttons-row-1');
 
-			const isInside = (node: any, ancestor: any) => {
-				let p = node.parent;
-				while (p) {
-					if (p === ancestor) return true;
-					p = p.parent;
-				}
-				return false;
-			};
-
-			expect(isInside(getByTestId('call-view-speaker'), row0)).toBe(true);
-			expect(isInside(getByTestId('call-view-hold'), row0)).toBe(true);
-			expect(isInside(getByTestId('call-view-mute'), row0)).toBe(true);
-			expect(isInside(getByTestId('call-view-message'), row1)).toBe(true);
-			expect(isInside(getByTestId('call-view-end'), row1)).toBe(true);
-			expect(isInside(getByTestId('call-view-dialpad'), row1)).toBe(true);
+			expect(within(row0).getByTestId('call-view-speaker')).toBeTruthy();
+			expect(within(row0).getByTestId('call-view-hold')).toBeTruthy();
+			expect(within(row0).getByTestId('call-view-mute')).toBeTruthy();
+			expect(within(row1).getByTestId('call-view-message')).toBeTruthy();
+			expect(within(row1).getByTestId('call-view-end')).toBeTruthy();
+			expect(within(row1).getByTestId('call-view-dialpad')).toBeTruthy();
 		});
 	});
 });
