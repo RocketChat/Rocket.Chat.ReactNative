@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { type MessageType, type MessageTypesValues, SubscriptionType } from '../../definitions';
 import { useTheme } from '../../theme';
@@ -33,17 +33,14 @@ const styles = StyleSheet.create({
 		...sharedStyles.textMedium
 	},
 	titleContainer: {
-		flex: 1,
+		flexShrink: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
-		minWidth: 0
+		gap: 4
 	},
 	alias: {
 		fontSize: 14,
 		...sharedStyles.textRegular
-	},
-	time: {
-		marginLeft: 4
 	}
 });
 
@@ -119,17 +116,12 @@ const User = React.memo(
 
 			return (
 				<View style={styles.container}>
-					<View style={styles.titleContainer}>
-						<Text
-							style={[styles.username, { color: colors.fontTitlesLabels }]}
-							numberOfLines={1}
-							ellipsizeMode='tail'
-							onPress={onUserPress}
-							testID={`username-header-${username}`}>
+					<Pressable testID={`username-header-${username}`} style={styles.titleContainer} onPress={onUserPress}>
+						<Text style={[styles.username, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
 							{textContent}
 						</Text>
-						{isLargeFontScale ? null : <MessageTime timeFormat={timeFormat} ts={ts} style={styles.time} />}
-					</View>
+						{isLargeFontScale ? null : <MessageTime timeFormat={timeFormat} ts={ts} />}
+					</Pressable>
 					<RightIcons
 						type={type}
 						isEdited={isEdited}

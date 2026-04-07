@@ -652,19 +652,47 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                         }
                       >
                         <View
+                          accessibilityState={
+                            {
+                              "busy": undefined,
+                              "checked": undefined,
+                              "disabled": undefined,
+                              "expanded": undefined,
+                              "selected": undefined,
+                            }
+                          }
+                          accessibilityValue={
+                            {
+                              "max": undefined,
+                              "min": undefined,
+                              "now": undefined,
+                              "text": undefined,
+                            }
+                          }
+                          accessible={true}
+                          collapsable={false}
+                          focusable={true}
+                          onBlur={[Function]}
+                          onClick={[Function]}
+                          onFocus={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
                           style={
                             {
                               "alignItems": "center",
-                              "flex": 1,
                               "flexDirection": "row",
-                              "minWidth": 0,
+                              "flexShrink": 1,
+                              "gap": 4,
                             }
                           }
+                          testID="username-header-diego.mello"
                         >
                           <Text
-                            ellipsizeMode="tail"
                             numberOfLines={1}
-                            onPress={[Function]}
                             style={
                               [
                                 {
@@ -681,7 +709,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                 },
                               ]
                             }
-                            testID="username-header-diego.mello"
                           >
                             diego.mello
                           </Text>
@@ -699,9 +726,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                 {
                                   "color": "#9EA2A8",
                                 },
-                                {
-                                  "marginLeft": 4,
-                                },
+                                undefined,
                               ]
                             }
                           >
@@ -1582,19 +1607,47 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                         }
                       >
                         <View
+                          accessibilityState={
+                            {
+                              "busy": undefined,
+                              "checked": undefined,
+                              "disabled": undefined,
+                              "expanded": undefined,
+                              "selected": undefined,
+                            }
+                          }
+                          accessibilityValue={
+                            {
+                              "max": undefined,
+                              "min": undefined,
+                              "now": undefined,
+                              "text": undefined,
+                            }
+                          }
+                          accessible={true}
+                          collapsable={false}
+                          focusable={true}
+                          onBlur={[Function]}
+                          onClick={[Function]}
+                          onFocus={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
                           style={
                             {
                               "alignItems": "center",
-                              "flex": 1,
                               "flexDirection": "row",
-                              "minWidth": 0,
+                              "flexShrink": 1,
+                              "gap": 4,
                             }
                           }
+                          testID="username-header-diego.mello"
                         >
                           <Text
-                            ellipsizeMode="tail"
                             numberOfLines={1}
-                            onPress={[Function]}
                             style={
                               [
                                 {
@@ -1611,7 +1664,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                 },
                               ]
                             }
-                            testID="username-header-diego.mello"
                           >
                             diego.mello
                           </Text>
@@ -1629,9 +1681,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                 {
                                   "color": "#9EA2A8",
                                 },
-                                {
-                                  "marginLeft": 4,
-                                },
+                                undefined,
                               ]
                             }
                           >
@@ -2346,19 +2396,47 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                         }
                       >
                         <View
+                          accessibilityState={
+                            {
+                              "busy": undefined,
+                              "checked": undefined,
+                              "disabled": undefined,
+                              "expanded": undefined,
+                              "selected": undefined,
+                            }
+                          }
+                          accessibilityValue={
+                            {
+                              "max": undefined,
+                              "min": undefined,
+                              "now": undefined,
+                              "text": undefined,
+                            }
+                          }
+                          accessible={true}
+                          collapsable={false}
+                          focusable={true}
+                          onBlur={[Function]}
+                          onClick={[Function]}
+                          onFocus={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
                           style={
                             {
                               "alignItems": "center",
-                              "flex": 1,
                               "flexDirection": "row",
-                              "minWidth": 0,
+                              "flexShrink": 1,
+                              "gap": 4,
                             }
                           }
+                          testID="username-header-diego.mello"
                         >
                           <Text
-                            ellipsizeMode="tail"
                             numberOfLines={1}
-                            onPress={[Function]}
                             style={
                               [
                                 {
@@ -2375,7 +2453,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                 },
                               ]
                             }
-                            testID="username-header-diego.mello"
                           >
                             diego.mello
                           </Text>
@@ -2393,9 +2470,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                 {
                                   "color": "#9EA2A8",
                                 },
-                                {
-                                  "marginLeft": 4,
-                                },
+                                undefined,
                               ]
                             }
                           >
@@ -2820,19 +2895,47 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                         }
                       >
                         <View
+                          accessibilityState={
+                            {
+                              "busy": undefined,
+                              "checked": undefined,
+                              "disabled": undefined,
+                              "expanded": undefined,
+                              "selected": undefined,
+                            }
+                          }
+                          accessibilityValue={
+                            {
+                              "max": undefined,
+                              "min": undefined,
+                              "now": undefined,
+                              "text": undefined,
+                            }
+                          }
+                          accessible={true}
+                          collapsable={false}
+                          focusable={true}
+                          onBlur={[Function]}
+                          onClick={[Function]}
+                          onFocus={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
                           style={
                             {
                               "alignItems": "center",
-                              "flex": 1,
                               "flexDirection": "row",
-                              "minWidth": 0,
+                              "flexShrink": 1,
+                              "gap": 4,
                             }
                           }
+                          testID="username-header-diego.mello"
                         >
                           <Text
-                            ellipsizeMode="tail"
                             numberOfLines={1}
-                            onPress={[Function]}
                             style={
                               [
                                 {
@@ -2849,7 +2952,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                 },
                               ]
                             }
-                            testID="username-header-diego.mello"
                           >
                             diego.mello
                           </Text>
@@ -2867,9 +2969,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                 {
                                   "color": "#9EA2A8",
                                 },
-                                {
-                                  "marginLeft": 4,
-                                },
+                                undefined,
                               ]
                             }
                           >
@@ -3750,19 +3850,47 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                         }
                       >
                         <View
+                          accessibilityState={
+                            {
+                              "busy": undefined,
+                              "checked": undefined,
+                              "disabled": undefined,
+                              "expanded": undefined,
+                              "selected": undefined,
+                            }
+                          }
+                          accessibilityValue={
+                            {
+                              "max": undefined,
+                              "min": undefined,
+                              "now": undefined,
+                              "text": undefined,
+                            }
+                          }
+                          accessible={true}
+                          collapsable={false}
+                          focusable={true}
+                          onBlur={[Function]}
+                          onClick={[Function]}
+                          onFocus={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
                           style={
                             {
                               "alignItems": "center",
-                              "flex": 1,
                               "flexDirection": "row",
-                              "minWidth": 0,
+                              "flexShrink": 1,
+                              "gap": 4,
                             }
                           }
+                          testID="username-header-diego.mello"
                         >
                           <Text
-                            ellipsizeMode="tail"
                             numberOfLines={1}
-                            onPress={[Function]}
                             style={
                               [
                                 {
@@ -3779,7 +3907,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                 },
                               ]
                             }
-                            testID="username-header-diego.mello"
                           >
                             diego.mello
                           </Text>
@@ -3797,9 +3924,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                 {
                                   "color": "#9EA2A8",
                                 },
-                                {
-                                  "marginLeft": 4,
-                                },
+                                undefined,
                               ]
                             }
                           >
@@ -4514,19 +4639,47 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                         }
                       >
                         <View
+                          accessibilityState={
+                            {
+                              "busy": undefined,
+                              "checked": undefined,
+                              "disabled": undefined,
+                              "expanded": undefined,
+                              "selected": undefined,
+                            }
+                          }
+                          accessibilityValue={
+                            {
+                              "max": undefined,
+                              "min": undefined,
+                              "now": undefined,
+                              "text": undefined,
+                            }
+                          }
+                          accessible={true}
+                          collapsable={false}
+                          focusable={true}
+                          onBlur={[Function]}
+                          onClick={[Function]}
+                          onFocus={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
                           style={
                             {
                               "alignItems": "center",
-                              "flex": 1,
                               "flexDirection": "row",
-                              "minWidth": 0,
+                              "flexShrink": 1,
+                              "gap": 4,
                             }
                           }
+                          testID="username-header-diego.mello"
                         >
                           <Text
-                            ellipsizeMode="tail"
                             numberOfLines={1}
-                            onPress={[Function]}
                             style={
                               [
                                 {
@@ -4543,7 +4696,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                 },
                               ]
                             }
-                            testID="username-header-diego.mello"
                           >
                             diego.mello
                           </Text>
@@ -4561,9 +4713,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                 {
                                   "color": "#9EA2A8",
                                 },
-                                {
-                                  "marginLeft": 4,
-                                },
+                                undefined,
                               ]
                             }
                           >
@@ -4988,19 +5138,47 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                         }
                       >
                         <View
+                          accessibilityState={
+                            {
+                              "busy": undefined,
+                              "checked": undefined,
+                              "disabled": undefined,
+                              "expanded": undefined,
+                              "selected": undefined,
+                            }
+                          }
+                          accessibilityValue={
+                            {
+                              "max": undefined,
+                              "min": undefined,
+                              "now": undefined,
+                              "text": undefined,
+                            }
+                          }
+                          accessible={true}
+                          collapsable={false}
+                          focusable={true}
+                          onBlur={[Function]}
+                          onClick={[Function]}
+                          onFocus={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
                           style={
                             {
                               "alignItems": "center",
-                              "flex": 1,
                               "flexDirection": "row",
-                              "minWidth": 0,
+                              "flexShrink": 1,
+                              "gap": 4,
                             }
                           }
+                          testID="username-header-diego.mello"
                         >
                           <Text
-                            ellipsizeMode="tail"
                             numberOfLines={1}
-                            onPress={[Function]}
                             style={
                               [
                                 {
@@ -5017,7 +5195,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                 },
                               ]
                             }
-                            testID="username-header-diego.mello"
                           >
                             diego.mello
                           </Text>
@@ -5035,9 +5212,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                 {
                                   "color": "#6C727A",
                                 },
-                                {
-                                  "marginLeft": 4,
-                                },
+                                undefined,
                               ]
                             }
                           >
@@ -5918,19 +6093,47 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                         }
                       >
                         <View
+                          accessibilityState={
+                            {
+                              "busy": undefined,
+                              "checked": undefined,
+                              "disabled": undefined,
+                              "expanded": undefined,
+                              "selected": undefined,
+                            }
+                          }
+                          accessibilityValue={
+                            {
+                              "max": undefined,
+                              "min": undefined,
+                              "now": undefined,
+                              "text": undefined,
+                            }
+                          }
+                          accessible={true}
+                          collapsable={false}
+                          focusable={true}
+                          onBlur={[Function]}
+                          onClick={[Function]}
+                          onFocus={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
                           style={
                             {
                               "alignItems": "center",
-                              "flex": 1,
                               "flexDirection": "row",
-                              "minWidth": 0,
+                              "flexShrink": 1,
+                              "gap": 4,
                             }
                           }
+                          testID="username-header-diego.mello"
                         >
                           <Text
-                            ellipsizeMode="tail"
                             numberOfLines={1}
-                            onPress={[Function]}
                             style={
                               [
                                 {
@@ -5947,7 +6150,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                 },
                               ]
                             }
-                            testID="username-header-diego.mello"
                           >
                             diego.mello
                           </Text>
@@ -5965,9 +6167,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                 {
                                   "color": "#6C727A",
                                 },
-                                {
-                                  "marginLeft": 4,
-                                },
+                                undefined,
                               ]
                             }
                           >
@@ -6682,19 +6882,47 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                         }
                       >
                         <View
+                          accessibilityState={
+                            {
+                              "busy": undefined,
+                              "checked": undefined,
+                              "disabled": undefined,
+                              "expanded": undefined,
+                              "selected": undefined,
+                            }
+                          }
+                          accessibilityValue={
+                            {
+                              "max": undefined,
+                              "min": undefined,
+                              "now": undefined,
+                              "text": undefined,
+                            }
+                          }
+                          accessible={true}
+                          collapsable={false}
+                          focusable={true}
+                          onBlur={[Function]}
+                          onClick={[Function]}
+                          onFocus={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
                           style={
                             {
                               "alignItems": "center",
-                              "flex": 1,
                               "flexDirection": "row",
-                              "minWidth": 0,
+                              "flexShrink": 1,
+                              "gap": 4,
                             }
                           }
+                          testID="username-header-diego.mello"
                         >
                           <Text
-                            ellipsizeMode="tail"
                             numberOfLines={1}
-                            onPress={[Function]}
                             style={
                               [
                                 {
@@ -6711,7 +6939,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                 },
                               ]
                             }
-                            testID="username-header-diego.mello"
                           >
                             diego.mello
                           </Text>
@@ -6729,9 +6956,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                 {
                                   "color": "#6C727A",
                                 },
-                                {
-                                  "marginLeft": 4,
-                                },
+                                undefined,
                               ]
                             }
                           >
