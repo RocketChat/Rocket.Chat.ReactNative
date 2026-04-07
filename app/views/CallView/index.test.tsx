@@ -89,7 +89,7 @@ const setStoreState = (overrides: Partial<ReturnType<typeof useCallStore.getStat
 
 const Wrapper = ({ children }: { children: React.ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
 
-describe('CallView', () => {
+describe('CallView/CallView', () => {
 	beforeEach(() => {
 		mockWindowWidth = 350;
 		useCallStore.getState().reset();
@@ -422,6 +422,118 @@ describe('CallView', () => {
 		);
 		expect(getByTestId('call-buttons-row-0')).toBeTruthy();
 		expect(queryByTestId('call-buttons-row-1')).toBeNull();
+	});
+});
+
+describe('CallView (tablet/wide layout)', () => {
+	beforeEach(() => {
+		mockWindowWidth = 800;
+		useCallStore.getState().reset();
+		jest.clearAllMocks();
+	});
+
+	afterAll(() => {
+		mockWindowWidth = 350;
+	});
+
+	it('renders all six action buttons in a single row', () => {
+		setStoreState();
+		const { getByTestId, queryByTestId } = render(
+			<Wrapper>
+				<CallView />
+			</Wrapper>
+		);
+
+		expect(getByTestId('call-buttons-row-0')).toBeTruthy();
+		expect(queryByTestId('call-buttons-row-1')).toBeNull();
+		expect(getByTestId('call-view-speaker')).toBeTruthy();
+		expect(getByTestId('call-view-hold')).toBeTruthy();
+		expect(getByTestId('call-view-mute')).toBeTruthy();
+		expect(getByTestId('call-view-message')).toBeTruthy();
+		expect(getByTestId('call-view-end')).toBeTruthy();
+		expect(getByTestId('call-view-dialpad')).toBeTruthy();
+	});
+
+	it('places every action button inside row 0', () => {
+		setStoreState();
+		const { getByTestId } = render(
+			<Wrapper>
+				<CallView />
+			</Wrapper>
+		);
+
+		const row0 = getByTestId('call-buttons-row-0');
+		const ids = [
+			'call-view-speaker',
+			'call-view-hold',
+			'call-view-mute',
+			'call-view-message',
+			'call-view-end',
+			'call-view-dialpad'
+		];
+		ids.forEach(id => {
+			const button = getByTestId(id);
+			let parent = button.parent;
+			let found = false;
+			while (parent) {
+				if (parent === row0) {
+					found = true;
+					break;
+				}
+				parent = parent.parent;
+			}
+			expect(found).toBe(true);
+		});
+	});
+
+	it('switches back to two rows when width drops below tablet threshold', () => {
+		setStoreState();
+		const { getByTestId, queryByTestId, rerender } = render(
+			<Wrapper>
+				<CallView />
+			</Wrapper>
+		);
+		expect(queryByTestId('call-buttons-row-1')).toBeNull();
+
+		mockWindowWidth = 350;
+		rerender(
+			<Wrapper>
+				<CallView />
+			</Wrapper>
+		);
+		expect(getByTestId('call-buttons-row-0')).toBeTruthy();
+		expect(getByTestId('call-buttons-row-1')).toBeTruthy();
+	});
+
+	it('returns null when there is no call on wide layout', () => {
+		useCallStore.setState({ call: null });
+		const { queryByTestId } = render(
+			<Wrapper>
+				<CallView />
+			</Wrapper>
+		);
+		expect(queryByTestId('call-buttons-row-0')).toBeNull();
+	});
+
+	it('disables action buttons while connecting on wide layout', () => {
+		const toggleHold = jest.fn();
+		const toggleMute = jest.fn();
+		const toggleSpeaker = jest.fn();
+		setStoreState({ callState: 'ringing' });
+		useCallStore.setState({ toggleHold, toggleMute, toggleSpeaker });
+
+		const { getByTestId } = render(
+			<Wrapper>
+				<CallView />
+			</Wrapper>
+		);
+
+		fireEvent.press(getByTestId('call-view-hold'));
+		fireEvent.press(getByTestId('call-view-mute'));
+		fireEvent.press(getByTestId('call-view-speaker'));
+		expect(toggleHold).not.toHaveBeenCalled();
+		expect(toggleMute).not.toHaveBeenCalled();
+		expect(toggleSpeaker).not.toHaveBeenCalled();
 	});
 });
 

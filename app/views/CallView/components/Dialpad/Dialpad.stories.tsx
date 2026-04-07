@@ -1,14 +1,16 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 
-import Dialpad from './Dialpad';
+import Dialpad, { DialpadLandscape } from './Dialpad';
 import { useCallStore } from '../../../../lib/services/voip/useCallStore';
 
 const styles = StyleSheet.create({
 	container: {
 		padding: 24,
-		alignItems: 'center',
-		minHeight: 500
+		width: 500
+	},
+	landscapeContainer: {
+		width: 700
 	}
 });
 
@@ -35,7 +37,7 @@ const setStoreState = (overrides: Partial<ReturnType<typeof useCallStore.getStat
 };
 
 export default {
-	title: 'Dialpad',
+	title: 'CallView/Dialpad',
 	component: Dialpad,
 	decorators: [
 		(Story: React.ComponentType) => {
@@ -54,4 +56,26 @@ export const Default = () => <Dialpad testID='dialpad' />;
 export const WithValue = () => {
 	setStoreState({ dialpadValue: '123' });
 	return <Dialpad testID='dialpad' />;
+};
+
+const LandscapeWrapper = ({ children }: { children: React.ReactNode }) => (
+	<View style={styles.landscapeContainer}>{children}</View>
+);
+
+export const TabletLandscape = () => {
+	setStoreState();
+	return (
+		<LandscapeWrapper>
+			<DialpadLandscape testID='dialpad' />
+		</LandscapeWrapper>
+	);
+};
+
+export const TabletLandscapeWithValue = () => {
+	setStoreState({ dialpadValue: '1234' });
+	return (
+		<LandscapeWrapper>
+			<DialpadLandscape testID='dialpad' />
+		</LandscapeWrapper>
+	);
 };

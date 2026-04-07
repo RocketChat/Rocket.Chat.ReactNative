@@ -28,7 +28,7 @@ const setStoreState = (contact: { displayName?: string; username?: string; sipEx
 };
 
 export default {
-	title: 'CallerInfo',
+	title: 'CallView/CallerInfo',
 	component: CallerInfo,
 	decorators: [
 		(Story: React.ComponentType) => {

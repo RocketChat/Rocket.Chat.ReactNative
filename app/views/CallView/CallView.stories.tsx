@@ -3,6 +3,10 @@ import { View, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
 import CallView from '.';
+import CallerInfo from './components/CallerInfo';
+import { CallButtons } from './components/CallButtons';
+import { styles as callViewStyles } from './styles';
+import { useTheme } from '../../theme';
 import { useCallStore } from '../../lib/services/voip/useCallStore';
 import {
 	BASE_ROW_HEIGHT,
@@ -112,4 +116,50 @@ export const MutedAndOnHold = () => {
 export const SpeakerOn = () => {
 	setStoreState({ callState: 'active', isSpeakerOn: true });
 	return <CallView />;
+};
+
+// Tablet / wide layout stories.
+// CallView computes layoutMode from useWindowDimensions, which in Storybook
+// reflects the real device width. To preview the tablet layout regardless of
+// device size, render the same composition but force CallButtons to 'wide'.
+const TabletCallView = () => {
+	const { colors } = useTheme();
+	const call = useCallStore(state => state.call);
+	if (!call) return null;
+	return (
+		<View style={[callViewStyles.contentContainer, { backgroundColor: colors.surfaceLight }]}>
+			<CallerInfo />
+			<CallButtons layoutMode='wide' />
+		</View>
+	);
+};
+
+export const TabletConnectedCall = () => {
+	setStoreState({ callState: 'active', callStartTime: mockCallStartTime - 61000 });
+	return <TabletCallView />;
+};
+
+export const TabletConnectingCall = () => {
+	setStoreState({ callState: 'accepted', callStartTime: null });
+	return <TabletCallView />;
+};
+
+export const TabletMutedCall = () => {
+	setStoreState({ callState: 'active', isMuted: true });
+	return <TabletCallView />;
+};
+
+export const TabletOnHoldCall = () => {
+	setStoreState({ callState: 'active', isOnHold: true });
+	return <TabletCallView />;
+};
+
+export const TabletMutedAndOnHold = () => {
+	setStoreState({ callState: 'active', isMuted: true, isOnHold: true });
+	return <TabletCallView />;
+};
+
+export const TabletSpeakerOn = () => {
+	setStoreState({ callState: 'active', isSpeakerOn: true });
+	return <TabletCallView />;
 };

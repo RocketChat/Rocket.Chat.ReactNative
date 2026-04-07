@@ -84,3 +84,7 @@ e2e/e2e_account.ts
 **/e2e_account.ts
 
 *.p8
+.worktrees/
+.omc/
+.claude/
+CLAUDE.local.md

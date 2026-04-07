@@ -98,4 +98,102 @@ describe('CallButtons', () => {
 		fireEvent.press(getByTestId('call-view-message'));
 		expect(mockNavigateToCallRoom).not.toHaveBeenCalled();
 	});
+
+	describe('layoutMode prop', () => {
+		it('renders two button rows on narrow layout', () => {
+			const { getByTestId } = render(
+				<Wrapper>
+					<CallButtons layoutMode='narrow' />
+				</Wrapper>
+			);
+			expect(getByTestId('call-buttons-row-0')).toBeTruthy();
+			expect(getByTestId('call-buttons-row-1')).toBeTruthy();
+		});
+
+		it('renders a single button row on wide layout', () => {
+			const { getByTestId, queryByTestId } = render(
+				<Wrapper>
+					<CallButtons layoutMode='wide' />
+				</Wrapper>
+			);
+			expect(getByTestId('call-buttons-row-0')).toBeTruthy();
+			expect(queryByTestId('call-buttons-row-1')).toBeNull();
+		});
+
+		it('renders all six action buttons regardless of layoutMode', () => {
+			const ids = [
+				'call-view-speaker',
+				'call-view-hold',
+				'call-view-mute',
+				'call-view-message',
+				'call-view-end',
+				'call-view-dialpad'
+			];
+			(['narrow', 'wide'] as const).forEach(layoutMode => {
+				const { getByTestId, unmount } = render(
+					<Wrapper>
+						<CallButtons layoutMode={layoutMode} />
+					</Wrapper>
+				);
+				ids.forEach(id => expect(getByTestId(id)).toBeTruthy());
+				unmount();
+			});
+		});
+
+		it('places every action button inside row 0 on wide layout', () => {
+			const { getByTestId } = render(
+				<Wrapper>
+					<CallButtons layoutMode='wide' />
+				</Wrapper>
+			);
+			const row0 = getByTestId('call-buttons-row-0');
+			const ids = [
+				'call-view-speaker',
+				'call-view-hold',
+				'call-view-mute',
+				'call-view-message',
+				'call-view-end',
+				'call-view-dialpad'
+			];
+			ids.forEach(id => {
+				const button = getByTestId(id);
+				let parent = button.parent;
+				let found = false;
+				while (parent) {
+					if (parent === row0) {
+						found = true;
+						break;
+					}
+					parent = parent.parent;
+				}
+				expect(found).toBe(true);
+			});
+		});
+
+		it('splits buttons across row 0 and row 1 on narrow layout', () => {
+			const { getByTestId } = render(
+				<Wrapper>
+					<CallButtons layoutMode='narrow' />
+				</Wrapper>
+			);
+			const row0 = getByTestId('call-buttons-row-0');
+			const row1 = getByTestId('call-buttons-row-1');
+
+			const isInside = (node: any, ancestor: any) => {
+				let p = node.parent;
+				while (p) {
+					if (p === ancestor) return true;
+					p = p.parent;
+				}
+				return false;
+			};
+
+			expect(isInside(getByTestId('call-view-speaker'), row0)).toBe(true);
+			expect(isInside(getByTestId('call-view-hold'), row0)).toBe(true);
+			expect(isInside(getByTestId('call-view-mute'), row0)).toBe(true);
+			expect(isInside(getByTestId('call-view-message'), row1)).toBe(true);
+			expect(isInside(getByTestId('call-view-end'), row1)).toBe(true);
+			expect(isInside(getByTestId('call-view-dialpad'), row1)).toBe(true);
+		});
+	});
 });

@@ -34,7 +34,7 @@ interface IDialpad {
 	testID?: string;
 }
 
-const DialpadGrid = (): React.ReactElement => (
+export const DialpadGrid = (): React.ReactElement => (
 	<View style={styles.grid}>
 		{DIALPAD_KEYS.map((row, rowIndex) => (
 			<View key={rowIndex} style={styles.row}>
@@ -46,34 +46,9 @@ const DialpadGrid = (): React.ReactElement => (
 	</View>
 );
 
-const Dialpad = ({ testID }: IDialpad): React.ReactElement => {
+export const DialpadPortrait = ({ testID }: IDialpad): React.ReactElement => {
 	const { colors } = useTheme();
 	const dialpadValue = useDialpadValue();
-	const { width, height } = useWindowDimensions();
-	const isLandscape = width > height;
-
-	if (isLandscape) {
-		return (
-			<View testID='dialpad-landscape-container' style={[styles.landscapeContainer, { backgroundColor: colors.surfaceLight }]}>
-				<View style={styles.landscapeInputSection}>
-					<FormTextInput
-						value={dialpadValue}
-						placeholder=''
-						keyboardType='phone-pad'
-						containerStyle={styles.inputContainer}
-						showErrorMessage={false}
-						testID={testID ? `${testID}-input` : 'dialpad-input'}
-						editable={false}
-						multiline
-					/>
-				</View>
-				<View style={styles.landscapeGridSection}>
-					<DialpadGrid />
-				</View>
-			</View>
-		);
-	}
-
 	return (
 		<View style={[styles.container, { backgroundColor: colors.surfaceLight }]}>
 			<FormTextInput
@@ -89,6 +64,36 @@ const Dialpad = ({ testID }: IDialpad): React.ReactElement => {
 			<DialpadGrid />
 		</View>
 	);
+};
+
+export const DialpadLandscape = ({ testID }: IDialpad): React.ReactElement => {
+	const { colors } = useTheme();
+	const dialpadValue = useDialpadValue();
+	return (
+		<View testID='dialpad-landscape-container' style={[styles.landscapeContainer, { backgroundColor: colors.surfaceLight }]}>
+			<View style={styles.landscapeInputSection}>
+				<FormTextInput
+					value={dialpadValue}
+					placeholder=''
+					keyboardType='phone-pad'
+					containerStyle={styles.inputContainer}
+					showErrorMessage={false}
+					testID={testID ? `${testID}-input` : 'dialpad-input'}
+					editable={false}
+					multiline
+				/>
+			</View>
+			<View style={styles.landscapeGridSection}>
+				<DialpadGrid />
+			</View>
+		</View>
+	);
+};
+
+const Dialpad = ({ testID }: IDialpad): React.ReactElement => {
+	const { width, height } = useWindowDimensions();
+	const isLandscape = width > height;
+	return isLandscape ? <DialpadLandscape testID={testID} /> : <DialpadPortrait testID={testID} />;
 };
 
 export default Dialpad;

@@ -25,7 +25,16 @@ exports[`Story Snapshots: ActiveCall should match snapshot 1`] = `
           "borderBottomColor": "#CBCED1",
           "paddingTop": 12,
         },
-        [Function],
+        {
+          "backgroundColor": "#E4E7EA",
+          "borderBottomColor": "#CBCED1",
+          "opacity": 1,
+          "transform": [
+            {
+              "translateY": 0,
+            },
+          ],
+        },
       ]
     }
     testID="media-call-header"
@@ -52,7 +61,7 @@ exports[`Story Snapshots: ActiveCall should match snapshot 1`] = `
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={-1}
+        handlerTag={23}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -258,7 +267,7 @@ exports[`Story Snapshots: ActiveCall should match snapshot 1`] = `
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={-1}
+        handlerTag={24}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -353,7 +362,16 @@ exports[`Story Snapshots: Collapsed should match snapshot 1`] = `
           "borderBottomColor": "#CBCED1",
           "paddingTop": 12,
         },
-        [Function],
+        {
+          "backgroundColor": "#E4E7EA",
+          "borderBottomColor": "#CBCED1",
+          "opacity": 1,
+          "transform": [
+            {
+              "translateY": 0,
+            },
+          ],
+        },
       ]
     }
     testID="media-call-header"
@@ -380,7 +398,7 @@ exports[`Story Snapshots: Collapsed should match snapshot 1`] = `
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={-1}
+        handlerTag={25}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -586,7 +604,7 @@ exports[`Story Snapshots: Collapsed should match snapshot 1`] = `
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={-1}
+        handlerTag={26}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -681,7 +699,16 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
           "borderBottomColor": "#CBCED1",
           "paddingTop": 12,
         },
-        [Function],
+        {
+          "backgroundColor": "#E4E7EA",
+          "borderBottomColor": "#CBCED1",
+          "opacity": 1,
+          "transform": [
+            {
+              "translateY": 0,
+            },
+          ],
+        },
       ]
     }
     testID="media-call-header"
@@ -708,7 +735,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={-1}
+        handlerTag={27}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -931,7 +958,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={-1}
+        handlerTag={28}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -1026,7 +1053,16 @@ exports[`Story Snapshots: Focused should match snapshot 1`] = `
           "borderBottomColor": "#CBCED1",
           "paddingTop": 12,
         },
-        [Function],
+        {
+          "backgroundColor": "#E4E7EA",
+          "borderBottomColor": "#CBCED1",
+          "opacity": 1,
+          "transform": [
+            {
+              "translateY": 0,
+            },
+          ],
+        },
       ]
     }
     testID="media-call-header"
@@ -1053,7 +1089,7 @@ exports[`Story Snapshots: Focused should match snapshot 1`] = `
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={-1}
+        handlerTag={29}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -1259,7 +1295,7 @@ exports[`Story Snapshots: Focused should match snapshot 1`] = `
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={-1}
+        handlerTag={30}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -1374,7 +1410,16 @@ exports[`Story Snapshots: WithRemoteHeld should match snapshot 1`] = `
           "borderBottomColor": "#CBCED1",
           "paddingTop": 12,
         },
-        [Function],
+        {
+          "backgroundColor": "#E4E7EA",
+          "borderBottomColor": "#CBCED1",
+          "opacity": 1,
+          "transform": [
+            {
+              "translateY": 0,
+            },
+          ],
+        },
       ]
     }
     testID="media-call-header"
@@ -1401,7 +1446,7 @@ exports[`Story Snapshots: WithRemoteHeld should match snapshot 1`] = `
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={-1}
+        handlerTag={31}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -1628,7 +1673,7 @@ exports[`Story Snapshots: WithRemoteHeld should match snapshot 1`] = `
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={-1}
+        handlerTag={32}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -1723,7 +1768,16 @@ exports[`Story Snapshots: WithRemoteMuted should match snapshot 1`] = `
           "borderBottomColor": "#CBCED1",
           "paddingTop": 12,
         },
-        [Function],
+        {
+          "backgroundColor": "#E4E7EA",
+          "borderBottomColor": "#CBCED1",
+          "opacity": 1,
+          "transform": [
+            {
+              "translateY": 0,
+            },
+          ],
+        },
       ]
     }
     testID="media-call-header"
@@ -1750,7 +1804,7 @@ exports[`Story Snapshots: WithRemoteMuted should match snapshot 1`] = `
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={-1}
+        handlerTag={33}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -1977,7 +2031,7 @@ exports[`Story Snapshots: WithRemoteMuted should match snapshot 1`] = `
         collapsable={false}
         delayLongPress={600}
         enabled={true}
-        handlerTag={-1}
+        handlerTag={34}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
