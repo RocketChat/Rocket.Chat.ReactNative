@@ -661,44 +661,54 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                           ]
                         }
                       >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
-                          collapsable={false}
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={-1}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#16181a"
-                          style={
-                            [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
-                            ]
+                        <View
+                          accessibilityState={
+                            {
+                              "busy": undefined,
+                              "checked": undefined,
+                              "disabled": undefined,
+                              "expanded": undefined,
+                              "selected": undefined,
+                            }
                           }
+                          accessibilityValue={
+                            {
+                              "max": undefined,
+                              "min": undefined,
+                              "now": undefined,
+                              "text": undefined,
+                            }
+                          }
+                          accessible={true}
+                          collapsable={false}
+                          focusable={true}
+                          onBlur={[Function]}
+                          onClick={[Function]}
+                          onFocus={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
+                          style={
+                            {
+                              "alignItems": "center",
+                              "flexDirection": "row",
+                              "flexShrink": 1,
+                              "gap": 4,
+                            }
+                          }
+<<<<<<< HEAD
                           underlayColor="#16181a"
+=======
+                          testID="username-header-diego.mello"
+>>>>>>> develop
                         >
-                          <View
-                            collapsable={false}
+                          <Text
+                            numberOfLines={1}
                             style={
+<<<<<<< HEAD
                               {
                                 "backgroundColor": "#16181a",
                                 "borderBottomLeftRadius": undefined,
@@ -919,6 +929,47 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                             </View>
                           </RNGestureHandlerButton>
                         </ExternalKeyboardView>
+=======
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "flexShrink": 1,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "600",
+                                  "lineHeight": 22,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#F2F3F5",
+                                },
+                              ]
+                            }
+                          >
+                            diego.mello
+                          </Text>
+                          <Text
+                            style={
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "400",
+                                  "lineHeight": 18,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#9EA2A8",
+                                },
+                                undefined,
+                              ]
+                            }
+                          >
+                            10:00 AM
+                          </Text>
+                        </View>
+>>>>>>> develop
                         <View
                           style={
                             {
@@ -1733,44 +1784,54 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                           ]
                         }
                       >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
-                          collapsable={false}
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={-1}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#16181a"
-                          style={
-                            [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
-                            ]
+                        <View
+                          accessibilityState={
+                            {
+                              "busy": undefined,
+                              "checked": undefined,
+                              "disabled": undefined,
+                              "expanded": undefined,
+                              "selected": undefined,
+                            }
                           }
+                          accessibilityValue={
+                            {
+                              "max": undefined,
+                              "min": undefined,
+                              "now": undefined,
+                              "text": undefined,
+                            }
+                          }
+                          accessible={true}
+                          collapsable={false}
+                          focusable={true}
+                          onBlur={[Function]}
+                          onClick={[Function]}
+                          onFocus={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
+                          style={
+                            {
+                              "alignItems": "center",
+                              "flexDirection": "row",
+                              "flexShrink": 1,
+                              "gap": 4,
+                            }
+                          }
+<<<<<<< HEAD
                           underlayColor="#16181a"
+=======
+                          testID="username-header-diego.mello"
+>>>>>>> develop
                         >
-                          <View
-                            collapsable={false}
+                          <Text
+                            numberOfLines={1}
                             style={
+<<<<<<< HEAD
                               {
                                 "backgroundColor": "#16181a",
                                 "borderBottomLeftRadius": undefined,
@@ -1991,6 +2052,47 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                             </View>
                           </RNGestureHandlerButton>
                         </ExternalKeyboardView>
+=======
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "flexShrink": 1,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "600",
+                                  "lineHeight": 22,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#F2F3F5",
+                                },
+                              ]
+                            }
+                          >
+                            diego.mello
+                          </Text>
+                          <Text
+                            style={
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "400",
+                                  "lineHeight": 18,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#9EA2A8",
+                                },
+                                undefined,
+                              ]
+                            }
+                          >
+                            10:00 AM
+                          </Text>
+                        </View>
+>>>>>>> develop
                         <View
                           style={
                             {
@@ -2593,44 +2695,54 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                           ]
                         }
                       >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
-                          collapsable={false}
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={-1}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#16181a"
-                          style={
-                            [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
-                            ]
+                        <View
+                          accessibilityState={
+                            {
+                              "busy": undefined,
+                              "checked": undefined,
+                              "disabled": undefined,
+                              "expanded": undefined,
+                              "selected": undefined,
+                            }
                           }
+                          accessibilityValue={
+                            {
+                              "max": undefined,
+                              "min": undefined,
+                              "now": undefined,
+                              "text": undefined,
+                            }
+                          }
+                          accessible={true}
+                          collapsable={false}
+                          focusable={true}
+                          onBlur={[Function]}
+                          onClick={[Function]}
+                          onFocus={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
+                          style={
+                            {
+                              "alignItems": "center",
+                              "flexDirection": "row",
+                              "flexShrink": 1,
+                              "gap": 4,
+                            }
+                          }
+<<<<<<< HEAD
                           underlayColor="#16181a"
+=======
+                          testID="username-header-diego.mello"
+>>>>>>> develop
                         >
-                          <View
-                            collapsable={false}
+                          <Text
+                            numberOfLines={1}
                             style={
+<<<<<<< HEAD
                               {
                                 "backgroundColor": "#16181a",
                                 "borderBottomLeftRadius": undefined,
@@ -2851,6 +2963,47 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                             </View>
                           </RNGestureHandlerButton>
                         </ExternalKeyboardView>
+=======
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "flexShrink": 1,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "600",
+                                  "lineHeight": 22,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#F2F3F5",
+                                },
+                              ]
+                            }
+                          >
+                            diego.mello
+                          </Text>
+                          <Text
+                            style={
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "400",
+                                  "lineHeight": 18,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#9EA2A8",
+                                },
+                                undefined,
+                              ]
+                            }
+                          >
+                            10:00 AM
+                          </Text>
+                        </View>
+>>>>>>> develop
                         <View
                           style={
                             {
@@ -3186,44 +3339,54 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                           ]
                         }
                       >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
-                          collapsable={false}
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={-1}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#2D3039"
-                          style={
-                            [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
-                            ]
+                        <View
+                          accessibilityState={
+                            {
+                              "busy": undefined,
+                              "checked": undefined,
+                              "disabled": undefined,
+                              "expanded": undefined,
+                              "selected": undefined,
+                            }
                           }
+                          accessibilityValue={
+                            {
+                              "max": undefined,
+                              "min": undefined,
+                              "now": undefined,
+                              "text": undefined,
+                            }
+                          }
+                          accessible={true}
+                          collapsable={false}
+                          focusable={true}
+                          onBlur={[Function]}
+                          onClick={[Function]}
+                          onFocus={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
+                          style={
+                            {
+                              "alignItems": "center",
+                              "flexDirection": "row",
+                              "flexShrink": 1,
+                              "gap": 4,
+                            }
+                          }
+<<<<<<< HEAD
                           underlayColor="#2D3039"
+=======
+                          testID="username-header-diego.mello"
+>>>>>>> develop
                         >
-                          <View
-                            collapsable={false}
+                          <Text
+                            numberOfLines={1}
                             style={
+<<<<<<< HEAD
                               {
                                 "backgroundColor": "#2D3039",
                                 "borderBottomLeftRadius": undefined,
@@ -3444,6 +3607,47 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                             </View>
                           </RNGestureHandlerButton>
                         </ExternalKeyboardView>
+=======
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "flexShrink": 1,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "600",
+                                  "lineHeight": 22,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#F2F3F5",
+                                },
+                              ]
+                            }
+                          >
+                            diego.mello
+                          </Text>
+                          <Text
+                            style={
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "400",
+                                  "lineHeight": 18,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#9EA2A8",
+                                },
+                                undefined,
+                              ]
+                            }
+                          >
+                            10:00 AM
+                          </Text>
+                        </View>
+>>>>>>> develop
                         <View
                           style={
                             {
@@ -4258,44 +4462,54 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                           ]
                         }
                       >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
-                          collapsable={false}
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={-1}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#2D3039"
-                          style={
-                            [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
-                            ]
+                        <View
+                          accessibilityState={
+                            {
+                              "busy": undefined,
+                              "checked": undefined,
+                              "disabled": undefined,
+                              "expanded": undefined,
+                              "selected": undefined,
+                            }
                           }
+                          accessibilityValue={
+                            {
+                              "max": undefined,
+                              "min": undefined,
+                              "now": undefined,
+                              "text": undefined,
+                            }
+                          }
+                          accessible={true}
+                          collapsable={false}
+                          focusable={true}
+                          onBlur={[Function]}
+                          onClick={[Function]}
+                          onFocus={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
+                          style={
+                            {
+                              "alignItems": "center",
+                              "flexDirection": "row",
+                              "flexShrink": 1,
+                              "gap": 4,
+                            }
+                          }
+<<<<<<< HEAD
                           underlayColor="#2D3039"
+=======
+                          testID="username-header-diego.mello"
+>>>>>>> develop
                         >
-                          <View
-                            collapsable={false}
+                          <Text
+                            numberOfLines={1}
                             style={
+<<<<<<< HEAD
                               {
                                 "backgroundColor": "#2D3039",
                                 "borderBottomLeftRadius": undefined,
@@ -4516,6 +4730,47 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                             </View>
                           </RNGestureHandlerButton>
                         </ExternalKeyboardView>
+=======
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "flexShrink": 1,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "600",
+                                  "lineHeight": 22,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#F2F3F5",
+                                },
+                              ]
+                            }
+                          >
+                            diego.mello
+                          </Text>
+                          <Text
+                            style={
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "400",
+                                  "lineHeight": 18,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#9EA2A8",
+                                },
+                                undefined,
+                              ]
+                            }
+                          >
+                            10:00 AM
+                          </Text>
+                        </View>
+>>>>>>> develop
                         <View
                           style={
                             {
@@ -5118,44 +5373,54 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                           ]
                         }
                       >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
-                          collapsable={false}
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={-1}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#2D3039"
-                          style={
-                            [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
-                            ]
+                        <View
+                          accessibilityState={
+                            {
+                              "busy": undefined,
+                              "checked": undefined,
+                              "disabled": undefined,
+                              "expanded": undefined,
+                              "selected": undefined,
+                            }
                           }
+                          accessibilityValue={
+                            {
+                              "max": undefined,
+                              "min": undefined,
+                              "now": undefined,
+                              "text": undefined,
+                            }
+                          }
+                          accessible={true}
+                          collapsable={false}
+                          focusable={true}
+                          onBlur={[Function]}
+                          onClick={[Function]}
+                          onFocus={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
+                          style={
+                            {
+                              "alignItems": "center",
+                              "flexDirection": "row",
+                              "flexShrink": 1,
+                              "gap": 4,
+                            }
+                          }
+<<<<<<< HEAD
                           underlayColor="#2D3039"
+=======
+                          testID="username-header-diego.mello"
+>>>>>>> develop
                         >
-                          <View
-                            collapsable={false}
+                          <Text
+                            numberOfLines={1}
                             style={
+<<<<<<< HEAD
                               {
                                 "backgroundColor": "#2D3039",
                                 "borderBottomLeftRadius": undefined,
@@ -5376,6 +5641,47 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                             </View>
                           </RNGestureHandlerButton>
                         </ExternalKeyboardView>
+=======
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "flexShrink": 1,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "600",
+                                  "lineHeight": 22,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#F2F3F5",
+                                },
+                              ]
+                            }
+                          >
+                            diego.mello
+                          </Text>
+                          <Text
+                            style={
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "400",
+                                  "lineHeight": 18,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#9EA2A8",
+                                },
+                                undefined,
+                              ]
+                            }
+                          >
+                            10:00 AM
+                          </Text>
+                        </View>
+>>>>>>> develop
                         <View
                           style={
                             {
@@ -5711,44 +6017,54 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                           ]
                         }
                       >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
-                          collapsable={false}
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={-1}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#E4E7EA"
-                          style={
-                            [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
-                            ]
+                        <View
+                          accessibilityState={
+                            {
+                              "busy": undefined,
+                              "checked": undefined,
+                              "disabled": undefined,
+                              "expanded": undefined,
+                              "selected": undefined,
+                            }
                           }
+                          accessibilityValue={
+                            {
+                              "max": undefined,
+                              "min": undefined,
+                              "now": undefined,
+                              "text": undefined,
+                            }
+                          }
+                          accessible={true}
+                          collapsable={false}
+                          focusable={true}
+                          onBlur={[Function]}
+                          onClick={[Function]}
+                          onFocus={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
+                          style={
+                            {
+                              "alignItems": "center",
+                              "flexDirection": "row",
+                              "flexShrink": 1,
+                              "gap": 4,
+                            }
+                          }
+<<<<<<< HEAD
                           underlayColor="#E4E7EA"
+=======
+                          testID="username-header-diego.mello"
+>>>>>>> develop
                         >
-                          <View
-                            collapsable={false}
+                          <Text
+                            numberOfLines={1}
                             style={
+<<<<<<< HEAD
                               {
                                 "backgroundColor": "#E4E7EA",
                                 "borderBottomLeftRadius": undefined,
@@ -5969,6 +6285,47 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                             </View>
                           </RNGestureHandlerButton>
                         </ExternalKeyboardView>
+=======
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "flexShrink": 1,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "600",
+                                  "lineHeight": 22,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#1F2329",
+                                },
+                              ]
+                            }
+                          >
+                            diego.mello
+                          </Text>
+                          <Text
+                            style={
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "400",
+                                  "lineHeight": 18,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#6C727A",
+                                },
+                                undefined,
+                              ]
+                            }
+                          >
+                            10:00 AM
+                          </Text>
+                        </View>
+>>>>>>> develop
                         <View
                           style={
                             {
@@ -6783,44 +7140,54 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                           ]
                         }
                       >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
-                          collapsable={false}
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={-1}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#E4E7EA"
-                          style={
-                            [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
-                            ]
+                        <View
+                          accessibilityState={
+                            {
+                              "busy": undefined,
+                              "checked": undefined,
+                              "disabled": undefined,
+                              "expanded": undefined,
+                              "selected": undefined,
+                            }
                           }
+                          accessibilityValue={
+                            {
+                              "max": undefined,
+                              "min": undefined,
+                              "now": undefined,
+                              "text": undefined,
+                            }
+                          }
+                          accessible={true}
+                          collapsable={false}
+                          focusable={true}
+                          onBlur={[Function]}
+                          onClick={[Function]}
+                          onFocus={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
+                          style={
+                            {
+                              "alignItems": "center",
+                              "flexDirection": "row",
+                              "flexShrink": 1,
+                              "gap": 4,
+                            }
+                          }
+<<<<<<< HEAD
                           underlayColor="#E4E7EA"
+=======
+                          testID="username-header-diego.mello"
+>>>>>>> develop
                         >
-                          <View
-                            collapsable={false}
+                          <Text
+                            numberOfLines={1}
                             style={
+<<<<<<< HEAD
                               {
                                 "backgroundColor": "#E4E7EA",
                                 "borderBottomLeftRadius": undefined,
@@ -7041,6 +7408,47 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                             </View>
                           </RNGestureHandlerButton>
                         </ExternalKeyboardView>
+=======
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "flexShrink": 1,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "600",
+                                  "lineHeight": 22,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#1F2329",
+                                },
+                              ]
+                            }
+                          >
+                            diego.mello
+                          </Text>
+                          <Text
+                            style={
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "400",
+                                  "lineHeight": 18,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#6C727A",
+                                },
+                                undefined,
+                              ]
+                            }
+                          >
+                            10:00 AM
+                          </Text>
+                        </View>
+>>>>>>> develop
                         <View
                           style={
                             {
@@ -7643,44 +8051,54 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                           ]
                         }
                       >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
-                          collapsable={false}
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={-1}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#E4E7EA"
-                          style={
-                            [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
-                            ]
+                        <View
+                          accessibilityState={
+                            {
+                              "busy": undefined,
+                              "checked": undefined,
+                              "disabled": undefined,
+                              "expanded": undefined,
+                              "selected": undefined,
+                            }
                           }
+                          accessibilityValue={
+                            {
+                              "max": undefined,
+                              "min": undefined,
+                              "now": undefined,
+                              "text": undefined,
+                            }
+                          }
+                          accessible={true}
+                          collapsable={false}
+                          focusable={true}
+                          onBlur={[Function]}
+                          onClick={[Function]}
+                          onFocus={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
+                          style={
+                            {
+                              "alignItems": "center",
+                              "flexDirection": "row",
+                              "flexShrink": 1,
+                              "gap": 4,
+                            }
+                          }
+<<<<<<< HEAD
                           underlayColor="#E4E7EA"
+=======
+                          testID="username-header-diego.mello"
+>>>>>>> develop
                         >
-                          <View
-                            collapsable={false}
+                          <Text
+                            numberOfLines={1}
                             style={
+<<<<<<< HEAD
                               {
                                 "backgroundColor": "#E4E7EA",
                                 "borderBottomLeftRadius": undefined,
@@ -7901,6 +8319,47 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                             </View>
                           </RNGestureHandlerButton>
                         </ExternalKeyboardView>
+=======
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "flexShrink": 1,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "600",
+                                  "lineHeight": 22,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#1F2329",
+                                },
+                              ]
+                            }
+                          >
+                            diego.mello
+                          </Text>
+                          <Text
+                            style={
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "400",
+                                  "lineHeight": 18,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#6C727A",
+                                },
+                                undefined,
+                              ]
+                            }
+                          >
+                            10:00 AM
+                          </Text>
+                        </View>
+>>>>>>> develop
                         <View
                           style={
                             {
