@@ -11268,11 +11268,6 @@ react-native-easy-toast@2.3.0:
     deprecated-react-native-prop-types "^2.3.0"
     prop-types "^15.6.0"
 
-react-native-edge-to-edge@1.6.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/react-native-edge-to-edge/-/react-native-edge-to-edge-1.6.0.tgz#2ba63b941704a7f713e298185c26cde4d9e4b973"
-  integrity sha512-2WCNdE3Qd6Fwg9+4BpbATUxCLcouF6YRY7K+J36KJ4l3y+tWN6XCqAC4DuoGblAAbb2sLkhEDp4FOlbOIot2Og==
-
 react-native-external-keyboard@^0.8.2:
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/react-native-external-keyboard/-/react-native-external-keyboard-0.8.2.tgz#2929460223f1ed3a1153e631ee28b062c66dac75"
