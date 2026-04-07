@@ -73,6 +73,8 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         style={null}
       >
         <View
+          accessibilityLabel="+55 11 98888-7777"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -214,6 +216,8 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         style={null}
       >
         <View
+          accessibilityLabel="Alice Johnson"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -417,6 +421,8 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         style={null}
       >
         <View
+          accessibilityLabel="Long display name to validate text truncation behavior for PeerItem in narrow widths"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -620,6 +626,8 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         style={null}
       >
         <View
+          accessibilityLabel="Bob Smith"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,

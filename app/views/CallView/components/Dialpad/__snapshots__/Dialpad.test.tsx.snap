@@ -122,6 +122,8 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
         }
       >
         <View
+          accessibilityLabel="1"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -213,6 +215,8 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
           </View>
         </View>
         <View
+          accessibilityLabel="2 ABC"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -306,6 +310,8 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
           </View>
         </View>
         <View
+          accessibilityLabel="3 DEF"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -409,6 +415,8 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
         }
       >
         <View
+          accessibilityLabel="4 GHI"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -502,6 +510,8 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
           </View>
         </View>
         <View
+          accessibilityLabel="5 JKL"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -595,6 +605,8 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
           </View>
         </View>
         <View
+          accessibilityLabel="6 MNO"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -698,6 +710,8 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
         }
       >
         <View
+          accessibilityLabel="7 PQRS"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -791,6 +805,8 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
           </View>
         </View>
         <View
+          accessibilityLabel="8 TUV"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -884,6 +900,8 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
           </View>
         </View>
         <View
+          accessibilityLabel="9 WXYZ"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -987,6 +1005,8 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
         }
       >
         <View
+          accessibilityLabel="*"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -1078,6 +1098,8 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
           </View>
         </View>
         <View
+          accessibilityLabel="0 +"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -1171,6 +1193,8 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
           </View>
         </View>
         <View
+          accessibilityLabel="#"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -3939,6 +3963,8 @@ exports[`Story Snapshots: WithValue should match snapshot 1`] = `
         }
       >
         <View
+          accessibilityLabel="1"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -4030,6 +4056,8 @@ exports[`Story Snapshots: WithValue should match snapshot 1`] = `
           </View>
         </View>
         <View
+          accessibilityLabel="2 ABC"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -4123,6 +4151,8 @@ exports[`Story Snapshots: WithValue should match snapshot 1`] = `
           </View>
         </View>
         <View
+          accessibilityLabel="3 DEF"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -4226,6 +4256,8 @@ exports[`Story Snapshots: WithValue should match snapshot 1`] = `
         }
       >
         <View
+          accessibilityLabel="4 GHI"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -4319,6 +4351,8 @@ exports[`Story Snapshots: WithValue should match snapshot 1`] = `
           </View>
         </View>
         <View
+          accessibilityLabel="5 JKL"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -4412,6 +4446,8 @@ exports[`Story Snapshots: WithValue should match snapshot 1`] = `
           </View>
         </View>
         <View
+          accessibilityLabel="6 MNO"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -4515,6 +4551,8 @@ exports[`Story Snapshots: WithValue should match snapshot 1`] = `
         }
       >
         <View
+          accessibilityLabel="7 PQRS"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -4608,6 +4646,8 @@ exports[`Story Snapshots: WithValue should match snapshot 1`] = `
           </View>
         </View>
         <View
+          accessibilityLabel="8 TUV"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -4701,6 +4741,8 @@ exports[`Story Snapshots: WithValue should match snapshot 1`] = `
           </View>
         </View>
         <View
+          accessibilityLabel="9 WXYZ"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -4804,6 +4846,8 @@ exports[`Story Snapshots: WithValue should match snapshot 1`] = `
         }
       >
         <View
+          accessibilityLabel="*"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -4895,6 +4939,8 @@ exports[`Story Snapshots: WithValue should match snapshot 1`] = `
           </View>
         </View>
         <View
+          accessibilityLabel="0 +"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -4988,6 +5034,8 @@ exports[`Story Snapshots: WithValue should match snapshot 1`] = `
           </View>
         </View>
         <View
+          accessibilityLabel="#"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
