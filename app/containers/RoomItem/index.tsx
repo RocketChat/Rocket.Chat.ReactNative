@@ -10,6 +10,7 @@ import { type IRoomItemContainerProps } from './interfaces';
 import RoomItem from './RoomItem';
 import { getRoomActionsOptions } from './getRoomActionsOptions';
 import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
+import { isExternalKeyboardConnected } from '../../lib/methods/helpers/externalInput';
 
 const attrs = ['width', 'isFocused', 'showLastMessage', 'autoJoin', 'showAvatar', 'displayMode'];
 
@@ -67,7 +68,9 @@ const RoomItemContainer = React.memo(
 				return;
 			}
 			const isScreenReaderEnabled = await AccessibilityInfo.isScreenReaderEnabled();
-			if (item.separator || !isScreenReaderEnabled) {
+			const hasExternalKeyboard = isExternalKeyboardConnected();
+			console.log('isScreenReaderEnabled', isScreenReaderEnabled);
+			if (item.separator || (!isScreenReaderEnabled && !hasExternalKeyboard)) {
 				return;
 			}
 			showActionSheet({

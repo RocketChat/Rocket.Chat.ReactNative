@@ -190,6 +190,10 @@ jest.mock('react-native-math-view', () => {
 
 jest.mock('react-native-keyboard-controller');
 
+jest.mock('./app/lib/methods/helpers/externalInput', () => ({
+	isExternalKeyboardConnected: jest.fn(() => false)
+}));
+
 jest.mock('react-native-webview', () => {
 	const React = require('react');
 	const { View } = require('react-native');
