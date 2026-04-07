@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, useWindowDimensions } from 'react-native';
+import { View } from 'react-native';
 
 import { useDialpadValue } from '../../../../lib/services/voip/useCallStore';
 import { FormTextInput } from '../../../../containers/TextInput';
 import { useTheme } from '../../../../theme';
 import { styles } from './styles';
 import DialpadButton from './DialpadButton';
+import { useCallLayoutMode } from '../../useCallLayoutMode';
 
 const DIALPAD_KEYS: { digit: string; letters: string }[][] = [
 	[
@@ -91,9 +92,8 @@ export const DialpadLandscape = ({ testID }: IDialpad): React.ReactElement => {
 };
 
 const Dialpad = ({ testID }: IDialpad): React.ReactElement => {
-	const { width, height } = useWindowDimensions();
-	const isLandscape = width > height;
-	return isLandscape ? <DialpadLandscape testID={testID} /> : <DialpadPortrait testID={testID} />;
+	const { layoutMode } = useCallLayoutMode();
+	return layoutMode === 'wide' ? <DialpadLandscape testID={testID} /> : <DialpadPortrait testID={testID} />;
 };
 
 export default Dialpad;

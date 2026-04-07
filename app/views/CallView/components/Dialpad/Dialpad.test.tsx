@@ -7,12 +7,10 @@ import { useCallStore } from '../../../../lib/services/voip/useCallStore';
 import { mockedStore } from '../../../../reducers/mockedStore';
 import * as stories from './Dialpad.stories';
 import { generateSnapshots } from '../../../../../.rnstorybook/generateSnapshots';
+import { useCallLayoutMode } from '../../useCallLayoutMode';
 
-let mockWindowWidth = 350;
-let mockWindowHeight = 800;
-jest.mock('react-native/Libraries/Utilities/useWindowDimensions', () => ({
-	__esModule: true,
-	default: () => ({ width: mockWindowWidth, height: mockWindowHeight, scale: 1, fontScale: 1 })
+jest.mock('../../useCallLayoutMode', () => ({
+	useCallLayoutMode: jest.fn(() => ({ layoutMode: 'narrow' }))
 }));
 
 jest.mock('../../../../containers/ActionSheet', () => ({
@@ -51,8 +49,7 @@ const Wrapper = ({ children }: { children: React.ReactNode }) => <Provider store
 
 describe('Dialpad', () => {
 	beforeEach(() => {
-		mockWindowWidth = 350;
-		mockWindowHeight = 800;
+		(useCallLayoutMode as jest.Mock).mockReturnValue({ layoutMode: 'narrow' });
 		useCallStore.getState().reset();
 		sendDTMFMock.mockClear();
 	});
@@ -130,9 +127,8 @@ describe('Dialpad', () => {
 		expect(getByTestId('custom-dialpad-input')).toBeTruthy();
 	});
 
-	it('should render in landscape layout when width > height', () => {
-		mockWindowWidth = 800;
-		mockWindowHeight = 400;
+	it('should render in landscape layout when layoutMode is wide', () => {
+		(useCallLayoutMode as jest.Mock).mockReturnValue({ layoutMode: 'wide' });
 		setStoreState();
 		const { getByTestId } = render(
 			<Wrapper>
@@ -142,9 +138,8 @@ describe('Dialpad', () => {
 		expect(getByTestId('dialpad-landscape-container')).toBeTruthy();
 	});
 
-	it('should render in portrait layout when height > width', () => {
-		mockWindowWidth = 350;
-		mockWindowHeight = 800;
+	it('should render in portrait layout when layoutMode is narrow', () => {
+		(useCallLayoutMode as jest.Mock).mockReturnValue({ layoutMode: 'narrow' });
 		setStoreState();
 		const { getByTestId, queryByTestId } = render(
 			<Wrapper>
