@@ -51,68 +51,54 @@ export const CallButtons = ({ layoutMode }: { layoutMode: LayoutMode }) => {
 		endCall();
 	};
 
-	const speakerButton = (
-		<CallActionButton
-			icon={isSpeakerOn ? 'audio' : 'audio-disabled'}
-			label={I18n.t('Speaker')}
-			onPress={toggleSpeaker}
-			variant={isSpeakerOn ? 'active' : 'default'}
-			disabled={isConnecting}
-			testID='call-view-speaker'
-		/>
-	);
-
-	const holdButton = (
-		<CallActionButton
-			icon={'pause-shape-unfilled'}
-			label={isOnHold ? I18n.t('Unhold') : I18n.t('Hold')}
-			onPress={toggleHold}
-			variant={isOnHold ? 'active' : 'default'}
-			disabled={isConnecting}
-			testID='call-view-hold'
-		/>
-	);
-
-	const muteButton = (
-		<CallActionButton
-			icon={isMuted ? 'microphone-disabled' : 'microphone'}
-			label={isMuted ? I18n.t('Unmute') : I18n.t('Mute')}
-			onPress={toggleMute}
-			variant={isMuted ? 'active' : 'default'}
-			disabled={isConnecting}
-			testID='call-view-mute'
-		/>
-	);
-
-	const messageButton = (
-		<CallActionButton
-			icon='message'
-			label={I18n.t('Message')}
-			onPress={handleMessage}
-			disabled={messageDisabled}
-			testID='call-view-message'
-		/>
-	);
-
-	const endButton = (
-		<CallActionButton
-			icon='phone-off'
-			label={isConnecting ? I18n.t('Cancel') : I18n.t('End')}
-			onPress={handleEndCall}
-			variant='danger'
-			testID='call-view-end'
-		/>
-	);
-
-	const dialpadButton = (
-		<CallActionButton
-			icon='dialpad'
-			label={I18n.t('Dialpad')}
-			onPress={handleDialpad}
-			disabled={isConnecting}
-			testID='call-view-dialpad'
-		/>
-	);
+	const buttons = [
+		{
+			testID: 'call-view-speaker',
+			icon: isSpeakerOn ? 'audio' : 'audio-disabled',
+			label: I18n.t('Speaker'),
+			onPress: toggleSpeaker,
+			variant: (isSpeakerOn ? 'active' : 'default') as const,
+			disabled: isConnecting
+		},
+		{
+			testID: 'call-view-hold',
+			icon: 'pause-shape-unfilled',
+			label: isOnHold ? I18n.t('Unhold') : I18n.t('Hold'),
+			onPress: toggleHold,
+			variant: (isOnHold ? 'active' : 'default') as const,
+			disabled: isConnecting
+		},
+		{
+			testID: 'call-view-mute',
+			icon: isMuted ? 'microphone-disabled' : 'microphone',
+			label: isMuted ? I18n.t('Unmute') : I18n.t('Mute'),
+			onPress: toggleMute,
+			variant: (isMuted ? 'active' : 'default') as const,
+			disabled: isConnecting
+		},
+		{
+			testID: 'call-view-message',
+			icon: 'message',
+			label: I18n.t('Message'),
+			onPress: handleMessage,
+			disabled: messageDisabled
+		},
+		{
+			testID: 'call-view-end',
+			icon: 'phone-off',
+			label: isConnecting ? I18n.t('Cancel') : I18n.t('End'),
+			onPress: handleEndCall,
+			variant: 'danger' as const,
+			disabled: false
+		},
+		{
+			testID: 'call-view-dialpad',
+			icon: 'dialpad',
+			label: I18n.t('Dialpad'),
+			onPress: handleDialpad,
+			disabled: isConnecting
+		}
+	];
 
 	return (
 		<Animated.View
@@ -125,24 +111,45 @@ export const CallButtons = ({ layoutMode }: { layoutMode: LayoutMode }) => {
 			testID='call-buttons'>
 			{layoutMode === 'wide' ? (
 				<View style={styles.buttonsRow} testID='call-buttons-row-0'>
-					{speakerButton}
-					{holdButton}
-					{muteButton}
-					{messageButton}
-					{endButton}
-					{dialpadButton}
+					{buttons.map(btn => (
+						<CallActionButton
+							key={btn.testID}
+							icon={btn.icon}
+							label={btn.label}
+							onPress={btn.onPress}
+							variant={btn.variant}
+							disabled={btn.disabled}
+							testID={btn.testID}
+						/>
+					))}
 				</View>
 			) : (
 				<>
 					<View style={styles.buttonsRow} testID='call-buttons-row-0'>
-						{speakerButton}
-						{holdButton}
-						{muteButton}
+						{buttons.slice(0, 3).map(btn => (
+							<CallActionButton
+								key={btn.testID}
+								icon={btn.icon}
+								label={btn.label}
+								onPress={btn.onPress}
+								variant={btn.variant}
+								disabled={btn.disabled}
+								testID={btn.testID}
+							/>
+						))}
 					</View>
 					<View style={styles.buttonsRow} testID='call-buttons-row-1'>
-						{messageButton}
-						{endButton}
-						{dialpadButton}
+						{buttons.slice(3, 6).map(btn => (
+							<CallActionButton
+								key={btn.testID}
+								icon={btn.icon}
+								label={btn.label}
+								onPress={btn.onPress}
+								variant={btn.variant}
+								disabled={btn.disabled}
+								testID={btn.testID}
+							/>
+						))}
 					</View>
 				</>
 			)}
