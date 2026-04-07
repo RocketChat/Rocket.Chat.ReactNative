@@ -53,7 +53,6 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
       onStartShouldSetResponder={[Function]}
       style={
         {
-          "alignContent": "flex-start",
           "alignItems": "center",
           "flex": 1,
           "justifyContent": "center",
@@ -869,7 +868,6 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
       onStartShouldSetResponder={[Function]}
       style={
         {
-          "alignContent": "flex-start",
           "alignItems": "center",
           "flex": 1,
           "justifyContent": "center",
@@ -1693,7 +1691,6 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
       onStartShouldSetResponder={[Function]}
       style={
         {
-          "alignContent": "flex-start",
           "alignItems": "center",
           "flex": 1,
           "justifyContent": "center",
@@ -2509,7 +2506,6 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
       onStartShouldSetResponder={[Function]}
       style={
         {
-          "alignContent": "flex-start",
           "alignItems": "center",
           "flex": 1,
           "justifyContent": "center",
@@ -3325,7 +3321,6 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
       onStartShouldSetResponder={[Function]}
       style={
         {
-          "alignContent": "flex-start",
           "alignItems": "center",
           "flex": 1,
           "justifyContent": "center",
@@ -4141,7 +4136,6 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
       onStartShouldSetResponder={[Function]}
       style={
         {
-          "alignContent": "flex-start",
           "alignItems": "center",
           "flex": 1,
           "justifyContent": "center",
@@ -4957,7 +4951,6 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
       onStartShouldSetResponder={[Function]}
       style={
         {
-          "alignContent": "flex-start",
           "alignItems": "center",
           "flex": 1,
           "justifyContent": "center",
@@ -5762,7 +5755,6 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
       onStartShouldSetResponder={[Function]}
       style={
         {
-          "alignContent": "flex-start",
           "alignItems": "center",
           "flex": 1,
           "justifyContent": "center",
@@ -6575,7 +6567,6 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
       onStartShouldSetResponder={[Function]}
       style={
         {
-          "alignContent": "flex-start",
           "alignItems": "center",
           "flex": 1,
           "justifyContent": "center",
@@ -7380,7 +7371,6 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
       onStartShouldSetResponder={[Function]}
       style={
         {
-          "alignContent": "flex-start",
           "alignItems": "center",
           "flex": 1,
           "justifyContent": "center",
@@ -8185,7 +8175,6 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
       onStartShouldSetResponder={[Function]}
       style={
         {
-          "alignContent": "flex-start",
           "alignItems": "center",
           "flex": 1,
           "justifyContent": "center",
@@ -8990,7 +8979,6 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
       onStartShouldSetResponder={[Function]}
       style={
         {
-          "alignContent": "flex-start",
           "alignItems": "center",
           "flex": 1,
           "justifyContent": "center",
