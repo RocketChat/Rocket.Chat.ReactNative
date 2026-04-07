@@ -69,21 +69,21 @@ const RoomItemContainer = React.memo(
 			}
 			const isScreenReaderEnabled = await AccessibilityInfo.isScreenReaderEnabled();
 			const hasExternalKeyboard = isExternalKeyboardConnected();
-const isScreenReaderEnabled = await AccessibilityInfo.isScreenReaderEnabled();
-const hasExternalKeyboard = isExternalKeyboardConnected();
-if (item.separator || (!isScreenReaderEnabled && !hasExternalKeyboard)) {
+
 			if (item.separator || (!isScreenReaderEnabled && !hasExternalKeyboard)) {
-				return;
+				if (item.separator || (!isScreenReaderEnabled && !hasExternalKeyboard)) {
+					return;
+				}
+				showActionSheet({
+					options: getRoomActionsOptions({
+						rid: item.rid,
+						type: item.t,
+						isRead,
+						favorite: !!item.f,
+						serverVersion
+					})
+				});
 			}
-			showActionSheet({
-				options: getRoomActionsOptions({
-					rid: item.rid,
-					type: item.t,
-					isRead,
-					favorite: !!item.f,
-					serverVersion
-				})
-			});
 		};
 
 		return (
