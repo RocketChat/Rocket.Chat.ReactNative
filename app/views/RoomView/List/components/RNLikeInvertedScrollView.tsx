@@ -19,7 +19,7 @@ interface InvertedScrollViewNativeProps extends ScrollViewProps {
 	exitFocusNativeId?: string;
 }
 
-interface Props extends ScrollViewProps {
+interface Props extends Omit<ScrollViewProps, 'scrollViewRef'> {
 	exitFocusNativeId?: string;
 	scrollViewRef?: React.Ref<any>;
 }
