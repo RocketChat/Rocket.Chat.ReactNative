@@ -230,3 +230,14 @@ VoIP branch's `callerName` → `caller` rename survived the merge in the videoco
 - [x] `MediaCallEvents` emissions still fire on same paths (indirectly via `VoipNotification`, unchanged call site)
 - [x] No VoIP-specific branch dropped (three-branch dispatch intact)
 
+## Slice 9 — Native install gates (`yarn install` + `pod install`)
+
+- **Started:** 2026-04-08
+- `yarn install` (post-merge sanity) → exit 0 (0.93s, "Already up-to-date"), 14/14 patches applied clean. **`yarn.lock` byte-stable** (no diff against the merge commit).
+- `rm -rf ios/Pods ios/Podfile.lock ios/build` → clean (user executed from shell due to sandbox rm restriction).
+- `bundle install` (first run on this machine/ruby — required to fetch `rake-13.2.1` and 124 other gems into `vendor/bundle`).
+- `yarn pod-install` → **first attempt failed** downloading `JitsiWebRTC v124.0.2` xcframework from `release-assets.githubusercontent.com` (curl exit 7, connect refused in 20ms — transient network/DNS blip). **Retry succeeded** in 83.22s: "Pod installation complete! 132 dependencies from the Podfile and 156 total pods installed." Codegen ran cleanly for all 39 RN modules (including `RNCallKeep`, `ReactNativeIncallManager`, `react-native-webrtc`). No errors mentioning `iOS deployment target`, `media-signaling`, or `callkeep`.
+- `ios/Podfile.lock` regenerated: +30/-8 lines (expected from RN 81 + Expo 54 + Jitsi WebRTC refresh after the iOS 26 deployment target bump).
+- Pre-existing CocoaPods warnings (not introduced by this merge): `ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES` and `CLANG_CXX_LANGUAGE_STANDARD` overrides on RocketChatRN/Rocket.Chat/NotificationService targets; hermes-engine script phase notice.
+- Committed as an `adapt:` commit that bundles the regenerated `Podfile.lock` with this Slice 9 log entry.
+
