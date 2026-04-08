@@ -75,20 +75,14 @@ export const AutocompleteItem = ({ item, onPress }: IAutocompleteItemProps) => {
 
 	const [styles, colors] = useStyle();
 	const autocompleteAccessibilityLabel = getAutocompleteAccessibilityLabel(item);
-	const testID = `autocomplete-item-${getTestIDSuffix(item)}`;
 	return (
 		<RectButton
 			onPress={() => onPress(item)}
 			underlayColor={colors.buttonBackgroundPrimaryPress}
 			style={{ backgroundColor: colors.surfaceLight }}
-			rippleColor={colors.buttonBackgroundPrimaryPress}>
-			<View
-				accessible
-				accessibilityRole='button'
-				accessibilityLabel={autocompleteAccessibilityLabel}
-				collapsable={false}
-				style={styles.item}
-				testID={testID}>
+			rippleColor={colors.buttonBackgroundPrimaryPress}
+			testID={`autocomplete-item-${getTestIDSuffix(item)}`}>
+			<View accessible accessibilityLabel={autocompleteAccessibilityLabel} style={styles.item}>
 				{item.type === '@' || item.type === '#' ? <AutocompleteUserRoom item={item} /> : null}
 				{item.type === ':' ? <AutocompleteEmoji item={item} /> : null}
 				{item.type === '/' ? <AutocompleteSlashCommand item={item} /> : null}
