@@ -4038,7 +4038,7 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: fd44f4b03e007e642e98df6726737bc66e9ba609
   RNCClipboard: e560338bf6cc4656a09ff90610b62ddc0dbdad65
   RNCMaskedView: d707a83784c67099b54b37d056ababb2767ce15e
-  RNConfigReader: 151efbfb6f2dddd04dd3c0b00fb292d8c7939215
+  RNConfigReader: 27bab37cca5e6b87766ffd73b8b8818ee46e3416
   RNCPicker: 70fd0622147f0ca1b9c5e1be2069a4fb2e8ec461
   RNDateTimePicker: ca1dc7e24d0b4839877f0ab619e7bca5db715289
   RNDeviceInfo: 900bd20e1fd3bfd894e7384cc4a83880c0341bd3
