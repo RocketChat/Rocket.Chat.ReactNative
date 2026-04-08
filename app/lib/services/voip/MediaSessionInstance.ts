@@ -17,13 +17,22 @@ import { getUidDirectMessage } from '../../methods/helpers/helpers';
 import { requestPhoneStatePermission } from '../../methods/voipPhoneStatePermission';
 import { MediaSessionController } from './MediaSessionController';
 
+export type CallOrchestratorConfig = {
+	onCallStarted?: () => void;
+	onCallEnded?: () => void;
+};
+
 class CallOrchestrator {
 	private controller: MediaSessionController;
 	private mediaSignalListener: { stop: () => void } | null = null;
 	private mediaSessionStoreChangeUnsubscribe: (() => void) | null = null;
+	private onCallStarted: () => void;
+	private onCallEnded: () => void;
 
-	constructor() {
+	constructor(config?: CallOrchestratorConfig) {
 		this.controller = new MediaSessionController('');
+		this.onCallStarted = config?.onCallStarted ?? (() => Navigation.navigate('CallView'));
+		this.onCallEnded = config?.onCallEnded ?? (() => {});
 	}
 
 	public init(userId: string): void {
@@ -56,7 +65,7 @@ class CallOrchestrator {
 
 						if (call.role === 'caller') {
 							useCallStore.getState().setCall(call);
-							Navigation.navigate('CallView');
+							this.onCallStarted();
 							if (useCallStore.getState().roomId == null) {
 								this.resolveRoomIdFromContact(call.contact).catch(error => {
 									console.error('[VoIP] Error resolving room id from contact (newCall):', error);
@@ -66,6 +75,7 @@ class CallOrchestrator {
 
 						call.emitter.on('ended', () => {
 							RNCallKeep.endCall(call.callId);
+							this.onCallEnded();
 						});
 					}
 				});
@@ -115,7 +125,7 @@ class CallOrchestrator {
 
 				if (call.role === 'caller') {
 					useCallStore.getState().setCall(call);
-					Navigation.navigate('CallView');
+					this.onCallStarted();
 					if (useCallStore.getState().roomId == null) {
 						this.resolveRoomIdFromContact(call.contact).catch(error => {
 							console.error('[VoIP] Error resolving room id from contact (newCall):', error);
@@ -125,6 +135,7 @@ class CallOrchestrator {
 
 				call.emitter.on('ended', () => {
 					RNCallKeep.endCall(call.callId);
+					this.onCallEnded();
 				});
 			}
 		});
@@ -147,7 +158,7 @@ class CallOrchestrator {
 			console.log('[VoIP] Setting current call active:', callId);
 			RNCallKeep.setCurrentCallActive(callId);
 			useCallStore.getState().setCall(mainCall);
-			Navigation.navigate('CallView');
+			this.onCallStarted();
 			this.resolveRoomIdFromContact(mainCall.contact).catch(error => {
 				console.error('[VoIP] Error resolving room id from contact (answerCall):', error);
 			});
@@ -220,4 +231,5 @@ class CallOrchestrator {
 	}
 }
 
+export { CallOrchestrator, type CallOrchestratorConfig };
 export const mediaSessionInstance = new CallOrchestrator();

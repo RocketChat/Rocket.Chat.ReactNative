@@ -205,6 +205,23 @@ jest.mock('react-native-math-view', () => {
 
 jest.mock('react-native-keyboard-controller');
 
+jest.mock('react-native-webrtc', () => ({
+	registerGlobals: jest.fn(),
+	mediaDevices: { getUserMedia: jest.fn() }
+}));
+
+jest.mock('./app/lib/services/voip/MediaSessionStore', () => ({
+	mediaSessionStore: {
+		setWebRTCProcessorFactory: jest.fn(),
+		setSendSignalFn: jest.fn(),
+		getInstance: jest.fn(() => {
+			throw new Error('WebRTC processor factory and send signal function must be set');
+		}),
+		dispose: jest.fn(),
+		onChange: jest.fn(() => jest.fn())
+	}
+}));
+
 jest.mock('react-native-webview', () => {
 	const React = require('react');
 	const { View } = require('react-native');
