@@ -308,6 +308,132 @@ describe('CallOrchestrator', () => {
 		});
 	});
 
+	describe('endCall', () => {
+		const RNCallKeep = jest.requireMock('react-native-callkeep').default;
+
+		function makeSession(mainCall: unknown) {
+			return {
+				on: jest.fn(),
+				processSignal: jest.fn(),
+				startCall: jest.fn(),
+				getMainCall: jest.fn(() => mainCall)
+			};
+		}
+
+		it('should not invoke onCallEnded when hangup() transitions state to hangup (library fires it via ended event)', () => {
+			const onCallEnded = jest.fn();
+			const { mediaSessionStore } = jest.requireMock('./MediaSessionStore');
+			const mainCall = { callId: 'call-1', role: 'caller', state: 'active', hangup: jest.fn(), reject: jest.fn() };
+			mainCall.hangup.mockImplementation(() => { mainCall.state = 'hangup'; });
+			(mediaSessionStore.getInstance as jest.Mock).mockReturnValue(makeSession(mainCall));
+
+			const orchestrator = new CallOrchestrator({ onCallEnded });
+			orchestrator.init('user-1');
+			orchestrator.endCall('call-1');
+
+			expect(mainCall.hangup).toHaveBeenCalled();
+			expect(onCallEnded).not.toHaveBeenCalled();
+		});
+
+		it('should use reject() for callee in ringing state', () => {
+			const { mediaSessionStore } = jest.requireMock('./MediaSessionStore');
+			const mainCall = { callId: 'call-1', role: 'callee', state: 'ringing', hangup: jest.fn(), reject: jest.fn() };
+			mainCall.reject.mockImplementation(() => { mainCall.state = 'hangup'; });
+			(mediaSessionStore.getInstance as jest.Mock).mockReturnValue(makeSession(mainCall));
+
+			const orchestrator = new CallOrchestrator();
+			orchestrator.init('user-1');
+			orchestrator.endCall('call-1');
+
+			expect(mainCall.reject).toHaveBeenCalled();
+			expect(mainCall.hangup).not.toHaveBeenCalled();
+		});
+
+		it('should use hangup() instead of reject() for caller in ringing state', () => {
+			const { mediaSessionStore } = jest.requireMock('./MediaSessionStore');
+			const mainCall = { callId: 'call-1', role: 'caller', state: 'ringing', hangup: jest.fn(), reject: jest.fn() };
+			mainCall.hangup.mockImplementation(() => { mainCall.state = 'hangup'; });
+			(mediaSessionStore.getInstance as jest.Mock).mockReturnValue(makeSession(mainCall));
+
+			const orchestrator = new CallOrchestrator();
+			orchestrator.init('user-1');
+			orchestrator.endCall('call-1');
+
+			expect(mainCall.hangup).toHaveBeenCalled();
+			expect(mainCall.reject).not.toHaveBeenCalled();
+		});
+
+		it('should invoke onCallEnded when no matching mainCall exists', () => {
+			const onCallEnded = jest.fn();
+			const { mediaSessionStore } = jest.requireMock('./MediaSessionStore');
+			(mediaSessionStore.getInstance as jest.Mock).mockReturnValue(makeSession(null));
+
+			const orchestrator = new CallOrchestrator({ onCallEnded });
+			orchestrator.init('user-1');
+			orchestrator.endCall('call-1');
+
+			expect(onCallEnded).toHaveBeenCalled();
+		});
+
+		it('should invoke onCallEnded when callId does not match mainCall', () => {
+			const onCallEnded = jest.fn();
+			const { mediaSessionStore } = jest.requireMock('./MediaSessionStore');
+			const mainCall = { callId: 'other-call', role: 'caller', state: 'active', hangup: jest.fn(), reject: jest.fn() };
+			(mediaSessionStore.getInstance as jest.Mock).mockReturnValue(makeSession(mainCall));
+
+			const orchestrator = new CallOrchestrator({ onCallEnded });
+			orchestrator.init('user-1');
+			orchestrator.endCall('call-1');
+
+			expect(mainCall.hangup).not.toHaveBeenCalled();
+			expect(onCallEnded).toHaveBeenCalled();
+		});
+
+		it('should invoke onCallEnded and not throw when hangup() throws', () => {
+			const onCallEnded = jest.fn();
+			const { mediaSessionStore } = jest.requireMock('./MediaSessionStore');
+			const mainCall = { callId: 'call-1', role: 'caller', state: 'active', hangup: jest.fn(), reject: jest.fn() };
+			mainCall.hangup.mockImplementation(() => { throw new Error('service-error'); });
+			(mediaSessionStore.getInstance as jest.Mock).mockReturnValue(makeSession(mainCall));
+
+			const orchestrator = new CallOrchestrator({ onCallEnded });
+			orchestrator.init('user-1');
+
+			expect(() => orchestrator.endCall('call-1')).not.toThrow();
+			expect(onCallEnded).toHaveBeenCalled();
+		});
+
+		it('should invoke onCallEnded when hangup() early-returns without transitioning state', () => {
+			const onCallEnded = jest.fn();
+			const { mediaSessionStore } = jest.requireMock('./MediaSessionStore');
+			// hangup() returns without setting state to 'hangup' (e.g. contractState === 'ignored')
+			const mainCall = { callId: 'call-1', role: 'caller', state: 'active', hangup: jest.fn(), reject: jest.fn() };
+			(mediaSessionStore.getInstance as jest.Mock).mockReturnValue(makeSession(mainCall));
+
+			const orchestrator = new CallOrchestrator({ onCallEnded });
+			orchestrator.init('user-1');
+			orchestrator.endCall('call-1');
+
+			expect(onCallEnded).toHaveBeenCalled();
+		});
+
+		it('should always run CallKeep teardown even when hangup() throws', () => {
+			const { mediaSessionStore } = jest.requireMock('./MediaSessionStore');
+			const mainCall = { callId: 'call-1', role: 'caller', state: 'active', hangup: jest.fn(), reject: jest.fn() };
+			mainCall.hangup.mockImplementation(() => { throw new Error('boom'); });
+			(mediaSessionStore.getInstance as jest.Mock).mockReturnValue(makeSession(mainCall));
+
+			const orchestrator = new CallOrchestrator();
+			orchestrator.init('user-1');
+			orchestrator.endCall('call-1');
+
+			expect(RNCallKeep.endCall).toHaveBeenCalledWith('call-1');
+			expect(RNCallKeep.setCurrentCallActive).toHaveBeenCalledWith('');
+			expect(RNCallKeep.setAvailable).toHaveBeenCalledWith(true);
+			expect(mockCallStoreReset).toHaveBeenCalled();
+		});
+	});
+
 	describe('teardown', () => {
 		it('should reset controller on reset()', () => {
 			const { mediaSessionStore } = jest.requireMock('./MediaSessionStore');

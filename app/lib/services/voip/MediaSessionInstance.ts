@@ -185,14 +185,25 @@ class CallOrchestrator {
 
 	public endCall = (callId: string) => {
 		const mainCall = this.controller.getSession()?.getMainCall();
+		let endedSynchronously = false;
 
 		if (mainCall && mainCall.callId === callId) {
-			if (mainCall.state === 'ringing') {
-				mainCall.reject();
-			} else {
-				mainCall.hangup();
+			try {
+				if (mainCall.role === 'callee' && mainCall.state === 'ringing') {
+					mainCall.reject();
+				} else {
+					mainCall.hangup();
+				}
+				endedSynchronously = mainCall.state === 'hangup';
+			} catch (error) {
+				console.error('[VoIP] Error ending call:', error);
 			}
 		}
+
+		if (!endedSynchronously) {
+			this.onCallEnded();
+		}
+
 		RNCallKeep.endCall(callId);
 		RNCallKeep.setCurrentCallActive('');
 		RNCallKeep.setAvailable(true);
