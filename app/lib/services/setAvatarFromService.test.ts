@@ -82,6 +82,20 @@ describe('setAvatarFromService', () => {
 		expect(sdk.methodCallWrapper).not.toHaveBeenCalled();
 	});
 
+	it('does not multipart-upload when service is upload but url is http(s)', async () => {
+		await setAvatarFromService({
+			data: '',
+			contentType: 'image/jpeg',
+			service: 'upload',
+			url: 'https://example.com/remote.jpg'
+		});
+		expect(sdk.post).toHaveBeenCalledWith('users.setAvatar', {
+			avatarUrl: 'https://example.com/remote.jpg'
+		});
+		expect(uploadUserAvatarMultipart).not.toHaveBeenCalled();
+		expect(uploadUserAvatarBase64).not.toHaveBeenCalled();
+	});
+
 	it('posts avatarUrl for OAuth suggestion when url is http(s)', async () => {
 		await setAvatarFromService({
 			data: 'base64blob',

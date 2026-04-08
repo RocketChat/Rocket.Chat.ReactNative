@@ -92,6 +92,7 @@ const ChangeAvatarView = () => {
 	const isDirty = useRef<boolean>(false);
 	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList, 'ChangeAvatarView'>>();
 	const { context, titleHeader, room, t } = useRoute<RouteProp<ChatsStackParamList, 'ChangeAvatarView'>>().params;
+	const includeBase64InImagePicker = context === 'room' || includeBase64ForAvatar;
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -187,14 +188,14 @@ const ChangeAvatarView = () => {
 			cropperAvoidEmptySpaceAroundImage: false,
 			cropperChooseText: I18n.t('Choose'),
 			cropperCancelText: I18n.t('Cancel'),
-			includeBase64: includeBase64ForAvatar
+			includeBase64: includeBase64InImagePicker
 		};
 		try {
 			const response: Image =
 				isCam === true
 					? await ImagePicker.openCamera({ ...options, useFrontCamera: true })
 					: await ImagePicker.openPicker(options);
-			const dataUri = includeBase64ForAvatar && response.data ? `data:image/jpeg;base64,${response.data}` : '';
+			const dataUri = includeBase64InImagePicker && response.data ? `data:image/jpeg;base64,${response.data}` : '';
 			dispatchAvatar({
 				type: AvatarStateActions.CHANGE_AVATAR,
 				payload: { url: response.path, data: dataUri, service: 'upload' }

@@ -737,7 +737,7 @@ export const setAvatarFromService = async ({
 	url?: string;
 }): Promise<void> => {
 	const serverVersion = reduxStore.getState().server.version;
-
+	const isHttpUrl = isHttpAvatarUrl(url);
 	// RC 0.51.0 — keep DDP + payload shape unchanged below 8.0.0
 	if (compareServerVersion(serverVersion, 'lowerThan', '8.0.0')) {
 		return sdk.methodCallWrapper('setAvatarFromService', data, contentType, service);
@@ -749,12 +749,12 @@ export const setAvatarFromService = async ({
 		return;
 	}
 
-	if (service === 'upload' && url) {
+	if (service === 'upload' && url && !isHttpUrl) {
 		await uploadUserAvatarMultipart(url, contentType || 'image/jpeg', 'avatar.jpg');
 		return;
 	}
 
-	if (isHttpAvatarUrl(url)) {
+	if (isHttpUrl) {
 		await sdk.post('users.setAvatar', { avatarUrl: url });
 		return;
 	}
