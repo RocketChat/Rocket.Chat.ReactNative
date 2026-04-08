@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react-native';
+import { fireEvent, render, within } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
 import CallView from '.';
@@ -9,34 +9,52 @@ import { mockedStore } from '../../reducers/mockedStore';
 import * as stories from './CallView.stories';
 import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
 
+let mockWindowWidth = 350;
+jest.mock('react-native/Libraries/Utilities/useWindowDimensions', () => ({
+	__esModule: true,
+	default: () => ({ width: mockWindowWidth, height: 800, scale: 1, fontScale: 1 })
+}));
+
 const mockNavigateToCallRoom = jest.mocked(navigateToCallRoom);
 
 jest.mock('../../lib/services/voip/navigateToCallRoom', () => ({
 	navigateToCallRoom: jest.fn().mockResolvedValue(undefined)
 }));
 
-// Mock ResponsiveLayoutContext for snapshots
+// Mock useResponsiveLayout so its width tracks mockWindowWidth dynamically.
+// Honors an explicit ResponsiveLayoutContext.Provider (e.g. TabletCallView story
+// forcing width=800) so stories can drive layoutMode without a prop.
 jest.mock('../../lib/hooks/useResponsiveLayout/useResponsiveLayout', () => {
-	const React = require('react');
 	const actual = jest.requireActual('../../lib/hooks/useResponsiveLayout/useResponsiveLayout');
+	const React = require('react');
+	const { useWindowDimensions } = require('react-native');
 	return {
 		...actual,
-		ResponsiveLayoutContext: React.createContext({
-			fontScale: 1,
-			width: 350,
-			height: 800,
-			isLargeFontScale: false,
-			fontScaleLimited: 1,
-			rowHeight: 75,
-			rowHeightCondensed: 60
-		})
+		useResponsiveLayout: () => {
+			const ctx = React.useContext(actual.ResponsiveLayoutContext);
+			const { width: winWidth, height: winHeight, fontScale: winFontScale } = useWindowDimensions();
+			const width = ctx && ctx.width ? ctx.width : winWidth;
+			const height = ctx && ctx.height ? ctx.height : winHeight;
+			const fontScale = ctx && ctx.fontScale ? ctx.fontScale : winFontScale;
+			const isLargeFontScale = fontScale > actual.FONT_SCALE_LIMIT;
+			const fontScaleLimited = isLargeFontScale ? actual.FONT_SCALE_LIMIT : fontScale;
+			return {
+				fontScale,
+				width,
+				height,
+				isLargeFontScale,
+				fontScaleLimited,
+				rowHeight: actual.BASE_ROW_HEIGHT * fontScale,
+				rowHeightCondensed: actual.BASE_ROW_HEIGHT_CONDENSED * fontScale
+			};
+		}
 	};
 });
 
 const mockShowActionSheetRef = jest.fn();
 jest.mock('../../containers/ActionSheet', () => ({
-	...jest.requireActual('../../containers/ActionSheet'),
-	showActionSheetRef: (options: any) => mockShowActionSheetRef(options)
+	showActionSheetRef: (options: any) => mockShowActionSheetRef(options),
+	hideActionSheetRef: jest.fn()
 }));
 
 // Helper to create a mock call
@@ -83,8 +101,9 @@ const setStoreState = (overrides: Partial<ReturnType<typeof useCallStore.getStat
 
 const Wrapper = ({ children }: { children: React.ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
 
-describe('CallView', () => {
+describe('CallView/CallView', () => {
 	beforeEach(() => {
+		mockWindowWidth = 350;
 		useCallStore.getState().reset();
 		jest.clearAllMocks();
 	});
@@ -391,6 +410,113 @@ describe('CallView', () => {
 		);
 
 		expect(getByText('Unmute')).toBeTruthy();
+	});
+
+	it('should render buttons in two rows on narrow layout', () => {
+		mockWindowWidth = 350;
+		setStoreState();
+		const { getByTestId } = render(
+			<Wrapper>
+				<CallView />
+			</Wrapper>
+		);
+		expect(getByTestId('call-buttons-row-0')).toBeTruthy();
+		expect(getByTestId('call-buttons-row-1')).toBeTruthy();
+	});
+
+	it('should render buttons in a single row on wide layout', () => {
+		mockWindowWidth = 800;
+		setStoreState();
+		const { getByTestId, queryByTestId } = render(
+			<Wrapper>
+				<CallView />
+			</Wrapper>
+		);
+		expect(getByTestId('call-buttons-row-0')).toBeTruthy();
+		expect(queryByTestId('call-buttons-row-1')).toBeNull();
+	});
+});
+
+describe('CallView (tablet/wide layout)', () => {
+	beforeEach(() => {
+		mockWindowWidth = 800;
+		useCallStore.getState().reset();
+		jest.clearAllMocks();
+	});
+
+	afterAll(() => {
+		mockWindowWidth = 350;
+	});
+
+	it('renders all six action buttons in a single row', () => {
+		setStoreState();
+		const { getByTestId, queryByTestId } = render(
+			<Wrapper>
+				<CallView />
+			</Wrapper>
+		);
+
+		expect(getByTestId('call-buttons-row-0')).toBeTruthy();
+		expect(queryByTestId('call-buttons-row-1')).toBeNull();
+		expect(getByTestId('call-view-speaker')).toBeTruthy();
+		expect(getByTestId('call-view-hold')).toBeTruthy();
+		expect(getByTestId('call-view-mute')).toBeTruthy();
+		expect(getByTestId('call-view-message')).toBeTruthy();
+		expect(getByTestId('call-view-end')).toBeTruthy();
+		expect(getByTestId('call-view-dialpad')).toBeTruthy();
+	});
+
+	it('places every action button inside row 0', () => {
+		setStoreState();
+		const { getByTestId } = render(
+			<Wrapper>
+				<CallView />
+			</Wrapper>
+		);
+
+		const row0 = getByTestId('call-buttons-row-0');
+		const ids = [
+			'call-view-speaker',
+			'call-view-hold',
+			'call-view-mute',
+			'call-view-message',
+			'call-view-end',
+			'call-view-dialpad'
+		];
+		ids.forEach(id => {
+			expect(within(row0).getByTestId(id)).toBeTruthy();
+		});
+	});
+
+	it('returns null when there is no call on wide layout', () => {
+		useCallStore.setState({ call: null });
+		const { queryByTestId } = render(
+			<Wrapper>
+				<CallView />
+			</Wrapper>
+		);
+		expect(queryByTestId('call-buttons-row-0')).toBeNull();
+	});
+
+	it('disables action buttons while connecting on wide layout', () => {
+		const toggleHold = jest.fn();
+		const toggleMute = jest.fn();
+		const toggleSpeaker = jest.fn();
+		setStoreState({ callState: 'ringing' });
+		useCallStore.setState({ toggleHold, toggleMute, toggleSpeaker });
+
+		const { getByTestId } = render(
+			<Wrapper>
+				<CallView />
+			</Wrapper>
+		);
+
+		fireEvent.press(getByTestId('call-view-hold'));
+		fireEvent.press(getByTestId('call-view-mute'));
+		fireEvent.press(getByTestId('call-view-speaker'));
+		expect(toggleHold).not.toHaveBeenCalled();
+		expect(toggleMute).not.toHaveBeenCalled();
+		expect(toggleSpeaker).not.toHaveBeenCalled();
 	});
 });
 

@@ -7,6 +7,21 @@ import { useCallStore } from '../../../../lib/services/voip/useCallStore';
 import { mockedStore } from '../../../../reducers/mockedStore';
 import * as stories from './Dialpad.stories';
 import { generateSnapshots } from '../../../../../.rnstorybook/generateSnapshots';
+import { useCallLayoutMode } from '../../useCallLayoutMode';
+
+jest.mock('../../useCallLayoutMode', () => ({
+	useCallLayoutMode: jest.fn(() => ({ layoutMode: 'narrow' }))
+}));
+
+jest.mock('../../../../containers/ActionSheet', () => ({
+	hideActionSheetRef: jest.fn()
+}));
+
+jest.mock('react-native-incall-manager', () => ({
+	start: jest.fn(),
+	stop: jest.fn(),
+	setForceSpeakerphoneOn: jest.fn(() => Promise.resolve())
+}));
 
 const sendDTMFMock = jest.fn();
 
@@ -34,6 +49,7 @@ const Wrapper = ({ children }: { children: React.ReactNode }) => <Provider store
 
 describe('Dialpad', () => {
 	beforeEach(() => {
+		(useCallLayoutMode as jest.Mock).mockReturnValue({ layoutMode: 'narrow' });
 		useCallStore.getState().reset();
 		sendDTMFMock.mockClear();
 	});
@@ -109,6 +125,29 @@ describe('Dialpad', () => {
 			</Wrapper>
 		);
 		expect(getByTestId('custom-dialpad-input')).toBeTruthy();
+	});
+
+	it('should render in landscape layout when layoutMode is wide', () => {
+		(useCallLayoutMode as jest.Mock).mockReturnValue({ layoutMode: 'wide' });
+		setStoreState();
+		const { getByTestId } = render(
+			<Wrapper>
+				<Dialpad testID='dialpad' />
+			</Wrapper>
+		);
+		expect(getByTestId('dialpad-landscape-container')).toBeTruthy();
+	});
+
+	it('should render in portrait layout when layoutMode is narrow', () => {
+		(useCallLayoutMode as jest.Mock).mockReturnValue({ layoutMode: 'narrow' });
+		setStoreState();
+		const { getByTestId, queryByTestId } = render(
+			<Wrapper>
+				<Dialpad testID='dialpad' />
+			</Wrapper>
+		);
+		expect(getByTestId('dialpad-input')).toBeTruthy();
+		expect(queryByTestId('dialpad-landscape-container')).toBeNull();
 	});
 });
 

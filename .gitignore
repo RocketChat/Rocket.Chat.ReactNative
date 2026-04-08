@@ -84,3 +84,11 @@ e2e/e2e_account.ts
 **/e2e_account.ts
 
 *.p8
+.worktrees/
+.omc/
+.claude/
+.agents/
+skills-lock.json
+CLAUDE.local.md
+AGENTS.md
+.superset/

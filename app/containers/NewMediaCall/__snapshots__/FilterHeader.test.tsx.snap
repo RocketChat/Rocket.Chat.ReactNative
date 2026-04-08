@@ -8,171 +8,195 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
     }
   }
 >
-  <Text
-    style={
-      [
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 20,
-          "fontWeight": "700",
-          "lineHeight": 28,
-          "marginTop": 4,
-          "textAlign": "left",
-        },
-        {
-          "color": "#1F2329",
-        },
-      ]
-    }
-  >
-    New call
-  </Text>
   <View
-    style={
+    backgroundStyle={
       {
-        "marginBottom": 8,
-        "marginTop": 28,
+        "backgroundColor": "transparent",
       }
     }
-  >
-    <A11yOrderView
-      orderKey="«r2»"
-    >
-      <A11yIndexView
-        importantForAccessibility="yes"
-        orderFocusType={0}
-        orderIndex={1}
-        orderKey="«r2»"
-      >
-        <View
-          style={
-            [
-              {
-                "gap": 4,
-                "marginBottom": 10,
-              },
-              {
-                "marginBottom": 0,
-              },
-            ]
-          }
-        >
-          <View
-            accessible={false}
-            style={
-              {
-                "justifyContent": "center",
-                "position": "relative",
-              }
-            }
-          >
-            <TextInput
-              accessibilityLabel=""
-              accessible={true}
-              autoCapitalize="none"
-              autoCorrect={false}
-              keyboardAppearance="light"
-              onChangeText={[Function]}
-              placeholderTextColor="#9EA2A8"
-              style={
-                [
-                  {
-                    "color": "#1F2329",
-                  },
-                  [
-                    {
-                      "backgroundColor": "transparent",
-                      "borderRadius": 4,
-                      "borderWidth": 1,
-                      "fontFamily": "Inter",
-                      "fontSize": 16,
-                      "fontWeight": "400",
-                      "paddingHorizontal": 16,
-                      "paddingVertical": 14,
-                      "textAlign": "left",
-                    },
-                    undefined,
-                    {
-                      "paddingRight": 45,
-                    },
-                    {
-                      "backgroundColor": "#FFFFFF",
-                      "borderColor": "#9EA2A8",
-                      "color": "#1F2329",
-                    },
-                    {},
-                    undefined,
-                  ],
-                  {
-                    "textAlign": "auto",
-                  },
-                ]
-              }
-              testID="new-media-call-search-input"
-              underlineColorAndroid="transparent"
-              value=""
-            />
-            <Text
-              accessible={false}
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#2F343D",
-                    "fontSize": 20,
-                  },
-                  [
-                    {
-                      "lineHeight": 20,
-                    },
-                    [
-                      {
-                        "position": "absolute",
-                      },
-                      {
-                        "right": 12,
-                      },
-                    ],
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-              testID="new-media-call-search-input-icon-right"
-            >
-              
-            </Text>
-          </View>
-        </View>
-      </A11yIndexView>
-    </A11yOrderView>
-  </View>
-  <Text
-    style={
+    enablePanDownToClose={false}
+    handleComponent={null}
+    index={0}
+    snapPoints={
       [
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 16,
-          "fontWeight": "400",
-          "lineHeight": 24,
-          "marginBottom": 16,
-          "textAlign": "left",
-        },
-        {
-          "color": "#2F343D",
-        },
+        "95%",
       ]
     }
   >
-    Enter username or number
-  </Text>
+    <View
+      style={
+        {
+          "flex": 1,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 20,
+              "fontWeight": "700",
+              "lineHeight": 28,
+              "marginTop": 4,
+              "textAlign": "left",
+            },
+            {
+              "color": "#1F2329",
+            },
+          ]
+        }
+      >
+        New call
+      </Text>
+      <View
+        style={
+          {
+            "marginBottom": 8,
+            "marginTop": 28,
+          }
+        }
+      >
+        <A11yOrderView
+          orderKey=":r2:"
+        >
+          <A11yIndexView
+            importantForAccessibility="yes"
+            orderFocusType={0}
+            orderIndex={1}
+            orderKey=":r2:"
+          >
+            <View
+              style={
+                [
+                  {
+                    "gap": 4,
+                    "marginBottom": 10,
+                  },
+                  {
+                    "marginBottom": 0,
+                  },
+                ]
+              }
+            >
+              <View
+                accessible={false}
+                style={
+                  {
+                    "justifyContent": "center",
+                    "position": "relative",
+                  }
+                }
+              >
+                <TextInput
+                  accessibilityLabel=""
+                  accessible={true}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  keyboardAppearance="light"
+                  onChangeText={[Function]}
+                  placeholderTextColor="#9EA2A8"
+                  style={
+                    [
+                      {
+                        "color": "#1F2329",
+                      },
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "borderRadius": 4,
+                          "borderWidth": 1,
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "400",
+                          "paddingHorizontal": 16,
+                          "paddingVertical": 14,
+                          "textAlign": "left",
+                        },
+                        undefined,
+                        {
+                          "paddingRight": 45,
+                        },
+                        {
+                          "backgroundColor": "#FFFFFF",
+                          "borderColor": "#9EA2A8",
+                          "color": "#1F2329",
+                        },
+                        {},
+                        undefined,
+                      ],
+                      {
+                        "textAlign": "auto",
+                      },
+                    ]
+                  }
+                  testID="new-media-call-search-input"
+                  underlineColorAndroid="transparent"
+                  value=""
+                />
+                <Text
+                  accessible={false}
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#2F343D",
+                        "fontSize": 20,
+                      },
+                      [
+                        {
+                          "lineHeight": 20,
+                        },
+                        [
+                          {
+                            "position": "absolute",
+                          },
+                          {
+                            "right": 12,
+                          },
+                        ],
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                  testID="new-media-call-search-input-icon-right"
+                >
+                  
+                </Text>
+              </View>
+            </View>
+          </A11yIndexView>
+        </A11yOrderView>
+      </View>
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 24,
+              "marginBottom": 16,
+              "textAlign": "left",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        Enter username or number
+      </Text>
+    </View>
+  </View>
 </View>
 `;
 
@@ -184,170 +208,194 @@ exports[`Story Snapshots: WithFilter should match snapshot 1`] = `
     }
   }
 >
-  <Text
-    style={
-      [
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 20,
-          "fontWeight": "700",
-          "lineHeight": 28,
-          "marginTop": 4,
-          "textAlign": "left",
-        },
-        {
-          "color": "#1F2329",
-        },
-      ]
-    }
-  >
-    New call
-  </Text>
   <View
-    style={
+    backgroundStyle={
       {
-        "marginBottom": 8,
-        "marginTop": 28,
+        "backgroundColor": "transparent",
       }
     }
-  >
-    <A11yOrderView
-      orderKey="«r3»"
-    >
-      <A11yIndexView
-        importantForAccessibility="yes"
-        orderFocusType={0}
-        orderIndex={1}
-        orderKey="«r3»"
-      >
-        <View
-          style={
-            [
-              {
-                "gap": 4,
-                "marginBottom": 10,
-              },
-              {
-                "marginBottom": 0,
-              },
-            ]
-          }
-        >
-          <View
-            accessible={false}
-            style={
-              {
-                "justifyContent": "center",
-                "position": "relative",
-              }
-            }
-          >
-            <TextInput
-              accessibilityLabel="alice."
-              accessible={true}
-              autoCapitalize="none"
-              autoCorrect={false}
-              keyboardAppearance="light"
-              onChangeText={[Function]}
-              placeholderTextColor="#9EA2A8"
-              style={
-                [
-                  {
-                    "color": "#1F2329",
-                  },
-                  [
-                    {
-                      "backgroundColor": "transparent",
-                      "borderRadius": 4,
-                      "borderWidth": 1,
-                      "fontFamily": "Inter",
-                      "fontSize": 16,
-                      "fontWeight": "400",
-                      "paddingHorizontal": 16,
-                      "paddingVertical": 14,
-                      "textAlign": "left",
-                    },
-                    undefined,
-                    {
-                      "paddingRight": 45,
-                    },
-                    {
-                      "backgroundColor": "#FFFFFF",
-                      "borderColor": "#9EA2A8",
-                      "color": "#1F2329",
-                    },
-                    {},
-                    undefined,
-                  ],
-                  {
-                    "textAlign": "auto",
-                  },
-                ]
-              }
-              testID="new-media-call-search-input"
-              underlineColorAndroid="transparent"
-              value="alice"
-            />
-            <Text
-              accessible={false}
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#2F343D",
-                    "fontSize": 20,
-                  },
-                  [
-                    {
-                      "lineHeight": 20,
-                    },
-                    [
-                      {
-                        "position": "absolute",
-                      },
-                      {
-                        "right": 12,
-                      },
-                    ],
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-              testID="new-media-call-search-input-icon-right"
-            >
-              
-            </Text>
-          </View>
-        </View>
-      </A11yIndexView>
-    </A11yOrderView>
-  </View>
-  <Text
-    style={
+    enablePanDownToClose={false}
+    handleComponent={null}
+    index={0}
+    snapPoints={
       [
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 16,
-          "fontWeight": "400",
-          "lineHeight": 24,
-          "marginBottom": 16,
-          "textAlign": "left",
-        },
-        {
-          "color": "#2F343D",
-        },
+        "95%",
       ]
     }
   >
-    Enter username or number
-  </Text>
+    <View
+      style={
+        {
+          "flex": 1,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 20,
+              "fontWeight": "700",
+              "lineHeight": 28,
+              "marginTop": 4,
+              "textAlign": "left",
+            },
+            {
+              "color": "#1F2329",
+            },
+          ]
+        }
+      >
+        New call
+      </Text>
+      <View
+        style={
+          {
+            "marginBottom": 8,
+            "marginTop": 28,
+          }
+        }
+      >
+        <A11yOrderView
+          orderKey=":r3:"
+        >
+          <A11yIndexView
+            importantForAccessibility="yes"
+            orderFocusType={0}
+            orderIndex={1}
+            orderKey=":r3:"
+          >
+            <View
+              style={
+                [
+                  {
+                    "gap": 4,
+                    "marginBottom": 10,
+                  },
+                  {
+                    "marginBottom": 0,
+                  },
+                ]
+              }
+            >
+              <View
+                accessible={false}
+                style={
+                  {
+                    "justifyContent": "center",
+                    "position": "relative",
+                  }
+                }
+              >
+                <TextInput
+                  accessibilityLabel="alice."
+                  accessible={true}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  keyboardAppearance="light"
+                  onChangeText={[Function]}
+                  placeholderTextColor="#9EA2A8"
+                  style={
+                    [
+                      {
+                        "color": "#1F2329",
+                      },
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "borderRadius": 4,
+                          "borderWidth": 1,
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "400",
+                          "paddingHorizontal": 16,
+                          "paddingVertical": 14,
+                          "textAlign": "left",
+                        },
+                        undefined,
+                        {
+                          "paddingRight": 45,
+                        },
+                        {
+                          "backgroundColor": "#FFFFFF",
+                          "borderColor": "#9EA2A8",
+                          "color": "#1F2329",
+                        },
+                        {},
+                        undefined,
+                      ],
+                      {
+                        "textAlign": "auto",
+                      },
+                    ]
+                  }
+                  testID="new-media-call-search-input"
+                  underlineColorAndroid="transparent"
+                  value="alice"
+                />
+                <Text
+                  accessible={false}
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#2F343D",
+                        "fontSize": 20,
+                      },
+                      [
+                        {
+                          "lineHeight": 20,
+                        },
+                        [
+                          {
+                            "position": "absolute",
+                          },
+                          {
+                            "right": 12,
+                          },
+                        ],
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                  testID="new-media-call-search-input-icon-right"
+                >
+                  
+                </Text>
+              </View>
+            </View>
+          </A11yIndexView>
+        </A11yOrderView>
+      </View>
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 24,
+              "marginBottom": 16,
+              "textAlign": "left",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        Enter username or number
+      </Text>
+    </View>
+  </View>
 </View>
 `;

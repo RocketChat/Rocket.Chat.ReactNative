@@ -7,6 +7,7 @@ import { E2E_BANNER_TYPE } from '../../../lib/constants/keys';
 import { themes } from '../../../lib/constants/colors';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { events, logEvent } from '../../../lib/methods/helpers/log';
+import { launchMockCallView } from '../../../lib/services/voip/mockCall';
 import { useTheme } from '../../../theme';
 import { RoomsSearchContext } from '../contexts/RoomsSearchProvider';
 
@@ -39,6 +40,18 @@ const ListHeader = () => {
 
 	return (
 		<>
+			{__DEV__ ? (
+				<>
+					<List.Item
+						title={'Mock Call (dev)'}
+						left={() => <List.Icon name='phone' />}
+						onPress={() => launchMockCallView()}
+						testID='listheader-mock-call'
+						translateTitle={false}
+					/>
+					<List.Separator />
+				</>
+			) : null}
 			{encryptionBanner ? (
 				<>
 					<List.Item
