@@ -22,6 +22,10 @@ export type CallOrchestratorConfig = {
 	onCallEnded?: () => void;
 };
 
+export type CallResult = 
+	| { success: true; callId: string }
+	| { success: false; error: string };
+
 class CallOrchestrator {
 	private controller: MediaSessionController;
 	private mediaSignalListener: { stop: () => void } | null = null;
@@ -141,11 +145,11 @@ class CallOrchestrator {
 		});
 	}
 
-	public answerCall = async (callId: string) => {
+	public answerCall = async (callId: string): Promise<CallResult> => {
 		const { call: existingCall } = useCallStore.getState();
 		if (existingCall != null && existingCall.callId === callId) {
 			console.log('[VoIP] answerCall skipped — call already bound in store:', callId);
-			return;
+			return { success: true, callId };
 		}
 
 		console.log('[VoIP] Answering call:', callId);
@@ -162,6 +166,7 @@ class CallOrchestrator {
 			this.resolveRoomIdFromContact(mainCall.contact).catch(error => {
 				console.error('[VoIP] Error resolving room id from contact (answerCall):', error);
 			});
+			return { success: true, callId };
 		} else {
 			RNCallKeep.endCall(callId);
 			const st = useCallStore.getState();
@@ -169,6 +174,7 @@ class CallOrchestrator {
 				st.resetNativeCallId();
 			}
 			console.warn('[VoIP] Call not found:', callId);
+			return { success: false, error: 'Call not found' };
 		}
 	};
 
@@ -180,10 +186,15 @@ class CallOrchestrator {
 		}
 	};
 
-	public startCall = (userId: string, actor: CallActorType) => {
+	public startCall = (userId: string, actor: CallActorType): CallResult => {
 		requestPhoneStatePermission();
 		console.log('[VoIP] Starting call:', userId);
-		this.controller.getSession()?.startCall(actor, userId);
+		const session = this.controller.getSession();
+		if (!session) {
+			return { success: false, error: 'Session not initialized' };
+		}
+		session.startCall(actor, userId);
+		return { success: true, callId: '' };
 	};
 
 	public endCall = (callId: string) => {
@@ -231,5 +242,5 @@ class CallOrchestrator {
 	}
 }
 
-export { CallOrchestrator, type CallOrchestratorConfig };
+export { CallOrchestrator, type CallOrchestratorConfig, type CallResult };
 export const mediaSessionInstance = new CallOrchestrator();
