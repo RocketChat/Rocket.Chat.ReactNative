@@ -210,15 +210,23 @@ jest.mock('react-native-webrtc', () => ({
 	mediaDevices: { getUserMedia: jest.fn() }
 }));
 
-jest.mock('./app/lib/services/voip/MediaSessionStore', () => ({
-	mediaSessionStore: {
-		setWebRTCProcessorFactory: jest.fn(),
-		setSendSignalFn: jest.fn(),
-		getInstance: jest.fn(),
-		dispose: jest.fn(),
-		onChange: jest.fn(() => jest.fn())
-	}
-}));
+jest.mock('./app/lib/services/voip/MediaSessionStore', () => {
+	const mockSession = {
+		on: jest.fn(),
+		processSignal: jest.fn(),
+		startCall: jest.fn(),
+		getMainCall: jest.fn()
+	};
+	return {
+		mediaSessionStore: {
+			setWebRTCProcessorFactory: jest.fn(),
+			setSendSignalFn: jest.fn(),
+			getInstance: jest.fn(() => mockSession),
+			dispose: jest.fn(),
+			onChange: jest.fn(() => jest.fn())
+		}
+	};
+});
 
 jest.mock('react-native-webview', () => {
 	const React = require('react');
