@@ -110,8 +110,14 @@ export const forgotPassword = (email: string) =>
 	// RC 0.64.0
 	sdk.post('users.forgotPassword', { email });
 
-export const sendConfirmationEmail = (email: string): Promise<{ message: string; success: boolean }> =>
-	sdk.methodCallWrapper('sendConfirmationEmail', email);
+export const sendConfirmationEmail = (email: string): Promise<{ success: boolean }> => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.0.0')) {
+		return sdk.post('users.sendConfirmationEmail', { email });
+	}
+
+	return sdk.methodCallWrapper('sendConfirmationEmail', email);
+};
 
 export const spotlight = (
 	search: string,
@@ -415,10 +421,14 @@ export const getTeamListRoom = ({
 };
 
 export const closeLivechat = (rid: string, comment?: string, tags?: string[]) => {
+	const serverVersion = reduxStore.getState().server.version;
 	// RC 3.2.0
 	let params;
 	if (tags && tags?.length) {
 		params = { tags };
+	}
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.0.0')) {
+		return sdk.post('livechat/room.closeByUser', { rid, comment, ...params });
 	}
 	// RC 0.29.0
 	return sdk.methodCallWrapper('livechat:closeRoom', rid, comment, { clientAction: true, ...params });
@@ -447,9 +457,14 @@ export const returnLivechat = (rid: string, departmentId?: string): Promise<any>
 
 export const onHoldLivechat = (roomId: string) => sdk.post('livechat/room.onHold', { roomId });
 
-export const forwardLivechat = (transferData: any) =>
+export const forwardLivechat = (transferData: any) => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.0.0')) {
+		return sdk.post('livechat/room.forward', transferData);
+	}
 	// RC 0.36.0
-	sdk.methodCallWrapper('livechat:transfer', transferData);
+	return sdk.methodCallWrapper('livechat:transfer', transferData);
+};
 
 export const getDepartmentInfo = (departmentId: string) =>
 	// RC 2.2.0
@@ -493,9 +508,18 @@ export const getRoutingConfig = async (): Promise<{
 	return sdk.methodCallWrapper('livechat:getRoutingConfig');
 };
 
-export const getTagsList = (): Promise<ILivechatTag[]> =>
+export const getTagsList = async (): Promise<ILivechatTag[]> => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.0.0')) {
+		const result = await sdk.get('livechat/tags');
+		if (result.success) {
+			return result.tags || [];
+		}
+		return [];
+	}
 	// RC 2.0.0
-	sdk.methodCallWrapper('livechat:getTagsList');
+	return sdk.methodCallWrapper('livechat:getTagsList');
+};
 
 export const getAgentDepartments = (uid: string) =>
 	// RC 2.4.0
@@ -681,9 +705,21 @@ export const getRoomRoles = (
 	// RC 0.65.0
 	sdk.get(`${roomTypeToApiType(type)}.roles`, { roomId });
 
-export const getAvatarSuggestion = (): Promise<{ [service: string]: IAvatarSuggestion }> =>
+export const getAvatarSuggestion = async (): Promise<{ [service: string]: IAvatarSuggestion }> => {
+	const serverVersion = reduxStore.getState().server.version;
+
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.4.0')) {
+		// RC 5.4.0
+		const result = await sdk.get('users.getAvatarSuggestion');
+		if (result.success && 'suggestions' in result) {
+			return result.suggestions;
+		}
+		return {};
+	}
+
 	// RC 0.51.0
-	sdk.methodCallWrapper('getAvatarSuggestion');
+	return sdk.methodCallWrapper('getAvatarSuggestion');
+};
 
 export const resetAvatar = (userId: string) =>
 	// RC 0.55.0
@@ -954,14 +990,14 @@ export const addUsersToRoom = (rid: string): Promise<boolean> => {
 	return sdk.methodCallWrapper('addUsersToRoom', { rid, users });
 };
 
-export const emitTyping = (room: IRoom, typing = true) => {
+export const emitTyping = (room: IRoom, typing = true, args: { tmid?: string } = {}) => {
 	const { login, settings, server } = reduxStore.getState();
 	const { UI_Use_Real_Name } = settings;
 	const { version: serverVersion } = server;
 	const { user } = login;
 	const name = UI_Use_Real_Name ? user.name : user.username;
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '4.0.0')) {
-		return sdk.methodCall('stream-notify-room', `${room}/user-activity`, name, typing ? ['user-typing'] : []);
+		return sdk.methodCall('stream-notify-room', `${room}/user-activity`, name, typing ? ['user-typing'] : [], args);
 	}
 	return sdk.methodCall('stream-notify-room', `${room}/typing`, name, typing);
 };

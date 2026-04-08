@@ -69,6 +69,7 @@ exports[`Story Snapshots: ChipFullWidth should match snapshot 1`] = `
         style={
           [
             {
+              "flexShrink": 1,
               "marginRight": 8,
               "maxWidth": 110,
             },
@@ -227,6 +228,7 @@ exports[`Story Snapshots: ChipText should match snapshot 1`] = `
         style={
           [
             {
+              "flexShrink": 1,
               "marginRight": 8,
               "maxWidth": 110,
             },
@@ -409,6 +411,7 @@ exports[`Story Snapshots: ChipWithShortText should match snapshot 1`] = `
         style={
           [
             {
+              "flexShrink": 1,
               "marginRight": 8,
               "maxWidth": 110,
             },
@@ -536,6 +539,7 @@ exports[`Story Snapshots: ChipWithoutAvatar should match snapshot 1`] = `
         style={
           [
             {
+              "flexShrink": 1,
               "marginRight": 8,
               "maxWidth": 110,
             },
@@ -663,6 +667,7 @@ exports[`Story Snapshots: ChipWithoutAvatarAndIcon should match snapshot 1`] = `
         style={
           [
             {
+              "flexShrink": 1,
               "marginRight": 8,
               "maxWidth": 110,
             },
@@ -819,6 +824,7 @@ exports[`Story Snapshots: ChipWithoutIcon should match snapshot 1`] = `
         style={
           [
             {
+              "flexShrink": 1,
               "marginRight": 8,
               "maxWidth": 110,
             },

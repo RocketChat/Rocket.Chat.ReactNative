@@ -2,7 +2,7 @@
 import { themes } from '../../lib/constants/colors';
 import { getUnreadStyle } from './getUnreadStyle';
 
-const testsForTheme = (theme) => {
+const testsForTheme = theme => {
 	const getUnreadStyleUtil = ({ ...props }) => getUnreadStyle({ theme, ...props });
 
 	test('render empty', () => {

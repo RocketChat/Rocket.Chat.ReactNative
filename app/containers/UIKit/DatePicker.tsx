@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, unstable_batchedUpdates, View } from 'react-native';
 import DateTimePicker, { type BaseProps } from '@react-native-community/datetimepicker';
-import Touchable from 'react-native-platform-touchable';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
 import dayjs from '../../lib/dayjs';
@@ -14,6 +13,7 @@ import { isAndroid } from '../../lib/methods/helpers';
 import { useTheme } from '../../theme';
 import ActivityIndicator from '../ActivityIndicator';
 import { type IDatePicker } from './interfaces';
+import Touch from '../Touch';
 
 const styles = StyleSheet.create({
 	input: {
@@ -62,10 +62,7 @@ export const DatePicker = ({ element, language, action, context, loading, value,
 
 	if (context === BlockContext.FORM) {
 		button = (
-			<Touchable
-				onPress={() => onShow(!show)}
-				style={{ backgroundColor: themes[theme].surfaceRoom }}
-				background={Touchable.Ripple(themes[theme].surfaceNeutral)}>
+			<Touch onPress={() => onShow(!show)} style={{ backgroundColor: themes[theme].surfaceRoom }}>
 				<View
 					style={[
 						styles.input,
@@ -85,7 +82,7 @@ export const DatePicker = ({ element, language, action, context, loading, value,
 						/>
 					)}
 				</View>
-			</Touchable>
+			</Touch>
 		);
 	}
 

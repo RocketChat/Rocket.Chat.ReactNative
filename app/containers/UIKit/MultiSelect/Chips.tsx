@@ -1,6 +1,5 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
 import { Image } from 'expo-image';
 
 import { textParser } from '../utils';
@@ -8,6 +7,7 @@ import { CustomIcon } from '../../CustomIcon';
 import styles from './styles';
 import { type IItemData } from '.';
 import { useTheme } from '../../../theme';
+import Touch from '../../Touch';
 
 interface IChip {
 	item: IItemData;
@@ -26,11 +26,10 @@ const keyExtractor = (item: IItemData) => item.value.toString();
 const Chip = ({ item, onSelect, style }: IChip) => {
 	const { colors } = useTheme();
 	return (
-		<Touchable
+		<Touch
 			key={item.value}
 			onPress={() => onSelect(item)}
 			style={[styles.chip, { backgroundColor: colors.surfaceHover }, style]}
-			background={Touchable.Ripple(colors.surfaceNeutral)}
 			testID={`multi-select-chip-${item.value}`}>
 			<>
 				{item.imageUrl ? <Image style={styles.chipImage} source={{ uri: item.imageUrl }} /> : null}
@@ -39,7 +38,7 @@ const Chip = ({ item, onSelect, style }: IChip) => {
 				</Text>
 				<CustomIcon name='close' size={16} color={colors.fontSecondaryInfo} />
 			</>
-		</Touchable>
+		</Touch>
 	);
 };
 Chip.propTypes = {};
