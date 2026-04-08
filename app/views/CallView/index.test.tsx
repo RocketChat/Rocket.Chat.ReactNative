@@ -21,21 +21,26 @@ jest.mock('../../lib/services/voip/navigateToCallRoom', () => ({
 	navigateToCallRoom: jest.fn().mockResolvedValue(undefined)
 }));
 
-// Mock ResponsiveLayoutContext for snapshots
+// Mock useResponsiveLayout so its width tracks mockWindowWidth dynamically
 jest.mock('../../lib/hooks/useResponsiveLayout/useResponsiveLayout', () => {
-	const React = require('react');
 	const actual = jest.requireActual('../../lib/hooks/useResponsiveLayout/useResponsiveLayout');
+	const { useWindowDimensions } = require('react-native');
 	return {
 		...actual,
-		ResponsiveLayoutContext: React.createContext({
-			fontScale: 1,
-			width: 350,
-			height: 800,
-			isLargeFontScale: false,
-			fontScaleLimited: 1,
-			rowHeight: 75,
-			rowHeightCondensed: 60
-		})
+		useResponsiveLayout: () => {
+			const { width, height, fontScale } = useWindowDimensions();
+			const isLargeFontScale = fontScale > actual.FONT_SCALE_LIMIT;
+			const fontScaleLimited = isLargeFontScale ? actual.FONT_SCALE_LIMIT : fontScale;
+			return {
+				fontScale,
+				width,
+				height,
+				isLargeFontScale,
+				fontScaleLimited,
+				rowHeight: actual.BASE_ROW_HEIGHT * fontScale,
+				rowHeightCondensed: actual.BASE_ROW_HEIGHT_CONDENSED * fontScale
+			};
+		}
 	};
 });
 
