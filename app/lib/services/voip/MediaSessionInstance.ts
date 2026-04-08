@@ -1,61 +1,80 @@
 import {
-	MediaCallWebRTCProcessor,
 	type ClientMediaSignal,
 	type IClientMediaCall,
-	type CallActorType,
-	type MediaSignalingSession,
-	type WebRTCProcessorConfig
+	type CallActorType
 } from '@rocket.chat/media-signaling';
 import RNCallKeep from 'react-native-callkeep';
-import { registerGlobals } from 'react-native-webrtc';
 import { getUniqueIdSync } from 'react-native-device-info';
 
 import { mediaSessionStore } from './MediaSessionStore';
 import { useCallStore } from './useCallStore';
-import { store } from '../../store/auxStore';
 import sdk from '../sdk';
 import Navigation from '../../navigation/appNavigation';
-import { parseStringToIceServers } from './parseStringToIceServers';
-import type { IceServer } from '../../../definitions/Voip';
 import type { IDDPMessage } from '../../../definitions/IDDPMessage';
 import type { ISubscription, TSubscriptionModel } from '../../../definitions';
 import { getDMSubscriptionByUsername } from '../../database/services/Subscription';
 import { getUidDirectMessage } from '../../methods/helpers/helpers';
 import { requestPhoneStatePermission } from '../../methods/voipPhoneStatePermission';
+import { MediaSessionController } from './MediaSessionController';
 
-class MediaSessionInstance {
-	private iceServers: IceServer[] = [];
-	private iceGatheringTimeout: number = 5000;
+class CallOrchestrator {
+	private controller: MediaSessionController;
 	private mediaSignalListener: { stop: () => void } | null = null;
-	private instance: MediaSignalingSession | null = null;
 	private mediaSessionStoreChangeUnsubscribe: (() => void) | null = null;
-	private storeTimeoutUnsubscribe: (() => void) | null = null;
-	private storeIceServersUnsubscribe: (() => void) | null = null;
+
+	constructor() {
+		this.controller = new MediaSessionController('');
+	}
 
 	public init(userId: string): void {
-		this.reset();
+		this.controller = new MediaSessionController(userId);
 
-		registerGlobals();
-		this.configureIceServers();
-
-		mediaSessionStore.setWebRTCProcessorFactory(
-			(config: WebRTCProcessorConfig) =>
-				new MediaCallWebRTCProcessor({
-					...config,
-					rtc: { ...config.rtc, iceServers: this.iceServers },
-					iceGatheringTimeout: this.iceGatheringTimeout
-				})
-		);
 		mediaSessionStore.setSendSignalFn((signal: ClientMediaSignal) => {
 			sdk.methodCall('stream-notify-user', `${userId}/media-calls`, JSON.stringify(signal));
 		});
-		this.instance = mediaSessionStore.getInstance(userId);
+		this.controller.configure();
+
+		this.setupMediaSignalListener();
+		this.setupNewCallHandler();
+	}
+
+	private setupSendSignal(userId: string): void {
+		// Already set in init before configure
+	}
+
+	private setupMediaSignalListener(): void {
+		const controller = this.controller;
 		this.mediaSessionStoreChangeUnsubscribe = mediaSessionStore.onChange(() => {
-			this.instance = mediaSessionStore.getInstance(userId);
+			const session = controller.getSession();
+			if (session) {
+				session.on('newCall', ({ call }: { call: IClientMediaCall }) => {
+					if (call && !call.hidden) {
+						call.emitter.on('stateChange', oldState => {
+							console.log(`📊 ${oldState} → ${call.state}`);
+							console.log('🤙 [VoIP] New call data:', call);
+						});
+
+						if (call.role === 'caller') {
+							useCallStore.getState().setCall(call);
+							Navigation.navigate('CallView');
+							if (useCallStore.getState().roomId == null) {
+								this.resolveRoomIdFromContact(call.contact).catch(error => {
+									console.error('[VoIP] Error resolving room id from contact (newCall):', error);
+								});
+							}
+						}
+
+						call.emitter.on('ended', () => {
+							RNCallKeep.endCall(call.callId);
+						});
+					}
+				});
+			}
 		});
 
 		this.mediaSignalListener = sdk.onStreamData('stream-notify-user', (ddpMessage: IDDPMessage) => {
-			if (!this.instance) {
+			const instance = controller.getSession();
+			if (!instance) {
 				return;
 			}
 			const [, ev] = ddpMessage.fields.eventName.split('/');
@@ -63,11 +82,10 @@ class MediaSessionInstance {
 				return;
 			}
 			const signal = ddpMessage.fields.args[0];
-			this.instance.processSignal(signal);
+			instance.processSignal(signal);
 
 			console.log('🤙 [VoIP] Processed signal:', signal);
 
-			// Answer when native already accepted and stream matches device contract + callId.
 			const storeSlice = useCallStore.getState();
 			const { call, nativeAcceptedCallId } = storeSlice;
 
@@ -83,8 +101,12 @@ class MediaSessionInstance {
 				});
 			}
 		});
+	}
 
-		this.instance?.on('newCall', ({ call }: { call: IClientMediaCall }) => {
+	private setupNewCallHandler(): void {
+		const controller = this.controller;
+		const session = controller.getSession();
+		session?.on('newCall', ({ call }: { call: IClientMediaCall }) => {
 			if (call && !call.hidden) {
 				call.emitter.on('stateChange', oldState => {
 					console.log(`📊 ${oldState} → ${call.state}`);
@@ -116,7 +138,7 @@ class MediaSessionInstance {
 		}
 
 		console.log('[VoIP] Answering call:', callId);
-		const mainCall = this.instance?.getMainCall();
+		const mainCall = this.controller.getSession()?.getMainCall();
 		console.log('[VoIP] Main call:', mainCall);
 
 		if (mainCall && mainCall.callId === callId) {
@@ -135,7 +157,7 @@ class MediaSessionInstance {
 			if (st.nativeAcceptedCallId === callId) {
 				st.resetNativeCallId();
 			}
-			console.warn('[VoIP] Call not found:', callId); // TODO: Show error message?
+			console.warn('[VoIP] Call not found:', callId);
 		}
 	};
 
@@ -150,11 +172,11 @@ class MediaSessionInstance {
 	public startCall = (userId: string, actor: CallActorType) => {
 		requestPhoneStatePermission();
 		console.log('[VoIP] Starting call:', userId);
-		this.instance?.startCall(actor, userId);
+		this.controller.getSession()?.startCall(actor, userId);
 	};
 
 	public endCall = (callId: string) => {
-		const mainCall = this.instance?.getMainCall();
+		const mainCall = this.controller.getSession()?.getMainCall();
 
 		if (mainCall && mainCall.callId === callId) {
 			if (mainCall.state === 'ringing') {
@@ -184,32 +206,6 @@ class MediaSessionInstance {
 		}
 	}
 
-	private getIceServers() {
-		const iceServers = store.getState().settings.VoIP_TeamCollab_Ice_Servers as any;
-		return parseStringToIceServers(iceServers);
-	}
-
-	private configureIceServers() {
-		this.iceServers = this.getIceServers();
-		this.iceGatheringTimeout = store.getState().settings.VoIP_TeamCollab_Ice_Gathering_Timeout as number;
-
-		this.storeTimeoutUnsubscribe = store.subscribe(() => {
-			const currentTimeout = store.getState().settings.VoIP_TeamCollab_Ice_Gathering_Timeout as number;
-			if (currentTimeout !== this.iceGatheringTimeout) {
-				this.iceGatheringTimeout = currentTimeout;
-				this.instance?.setIceGatheringTimeout(this.iceGatheringTimeout);
-			}
-		});
-
-		this.storeIceServersUnsubscribe = store.subscribe(() => {
-			const currentIceServers = this.getIceServers();
-			if (currentIceServers !== this.iceServers) {
-				this.iceServers = currentIceServers;
-				// this.instance?.setIceServers(this.iceServers);
-			}
-		});
-	}
-
 	public reset() {
 		if (this.mediaSessionStoreChangeUnsubscribe) {
 			this.mediaSessionStoreChangeUnsubscribe();
@@ -219,18 +215,9 @@ class MediaSessionInstance {
 			this.mediaSignalListener.stop();
 		}
 		this.mediaSignalListener = null;
-		if (this.storeTimeoutUnsubscribe) {
-			this.storeTimeoutUnsubscribe();
-			this.storeTimeoutUnsubscribe = null;
-		}
-		if (this.storeIceServersUnsubscribe) {
-			this.storeIceServersUnsubscribe();
-			this.storeIceServersUnsubscribe = null;
-		}
-		mediaSessionStore.dispose();
-		this.instance = null;
+		this.controller.reset();
 		useCallStore.getState().reset();
 	}
 }
 
-export const mediaSessionInstance = new MediaSessionInstance();
+export const mediaSessionInstance = new CallOrchestrator();
