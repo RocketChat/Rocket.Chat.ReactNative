@@ -1,7 +1,8 @@
 import {
 	type ClientMediaSignal,
 	type IClientMediaCall,
-	type CallActorType
+	type CallActorType,
+	type MediaSignalingSession
 } from '@rocket.chat/media-signaling';
 import RNCallKeep from 'react-native-callkeep';
 import { getUniqueIdSync } from 'react-native-device-info';
@@ -30,6 +31,7 @@ class CallOrchestrator {
 	private controller: MediaSessionController;
 	private mediaSignalListener: { stop: () => void } | null = null;
 	private storeChangeUnsubscribe: (() => void) | null = null;
+	private attachedSession: MediaSignalingSession | null = null;
 	private onCallStarted: () => void;
 	private onCallEnded: () => void;
 
@@ -40,6 +42,15 @@ class CallOrchestrator {
 	}
 
 	public init(userId: string): void {
+		if (this.storeChangeUnsubscribe) {
+			this.storeChangeUnsubscribe();
+			this.storeChangeUnsubscribe = null;
+		}
+		if (this.mediaSignalListener?.stop) {
+			this.mediaSignalListener.stop();
+		}
+		this.mediaSignalListener = null;
+		this.attachedSession = null;
 		this.controller.reset();
 		this.controller = new MediaSessionController(userId);
 
@@ -53,7 +64,11 @@ class CallOrchestrator {
 
 	private attachNewCallListener(): void {
 		const session = this.controller.getSession();
-		session?.on('newCall', ({ call }: { call: IClientMediaCall }) => {
+		if (!session || session === this.attachedSession) {
+			return;
+		}
+		this.attachedSession = session;
+		session.on('newCall', ({ call }: { call: IClientMediaCall }) => {
 			if (call && !call.hidden) {
 				call.emitter.on('stateChange', oldState => {
 					console.log(`📊 ${oldState} → ${call.state}`);
@@ -208,6 +223,7 @@ class CallOrchestrator {
 			this.mediaSignalListener.stop();
 		}
 		this.mediaSignalListener = null;
+		this.attachedSession = null;
 		this.controller.reset();
 		useCallStore.getState().reset();
 	}

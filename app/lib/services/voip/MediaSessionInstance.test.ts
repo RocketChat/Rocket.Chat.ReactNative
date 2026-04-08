@@ -184,6 +184,50 @@ describe('CallOrchestrator', () => {
 			expect(firstSetSend).toBeLessThan(firstGetInstance);
 		});
 
+		it('should stop previous stream-notify-user listener on re-init', () => {
+			const firstStop = jest.fn();
+			const secondStop = jest.fn();
+			mockOnStreamData.mockReturnValueOnce({ stop: firstStop }).mockReturnValueOnce({ stop: secondStop });
+			mediaSessionInstance.init('user-1');
+			mediaSessionInstance.init('user-2');
+			expect(firstStop).toHaveBeenCalledTimes(1);
+			expect(secondStop).not.toHaveBeenCalled();
+		});
+
+		it('should not re-attach newCall listener when onChange fires with the same session', () => {
+			const { mediaSessionStore } = jest.requireMock('./MediaSessionStore');
+			let changeCallback: (() => void) | null = null;
+			(mediaSessionStore.onChange as jest.Mock).mockImplementation((cb: () => void) => {
+				changeCallback = cb;
+				return jest.fn();
+			});
+			const sameSession = {
+				on: jest.fn(),
+				processSignal: jest.fn(),
+				startCall: jest.fn(),
+				getMainCall: jest.fn()
+			};
+			(mediaSessionStore.getInstance as jest.Mock).mockReturnValue(sameSession);
+
+			mediaSessionInstance.init('user-1');
+			changeCallback?.();
+			changeCallback?.();
+
+			const newCallAttaches = sameSession.on.mock.calls.filter(([name]) => name === 'newCall').length;
+			expect(newCallAttaches).toBe(1);
+		});
+
+		it('should unsubscribe previous mediaSessionStore.onChange on re-init', () => {
+			const { mediaSessionStore } = jest.requireMock('./MediaSessionStore');
+			const firstUnsub = jest.fn();
+			const secondUnsub = jest.fn();
+			(mediaSessionStore.onChange as jest.Mock).mockReturnValueOnce(firstUnsub).mockReturnValueOnce(secondUnsub);
+			mediaSessionInstance.init('user-1');
+			mediaSessionInstance.init('user-2');
+			expect(firstUnsub).toHaveBeenCalledTimes(1);
+			expect(secondUnsub).not.toHaveBeenCalled();
+		});
+
 		it('should route sendSignal through sdk.methodCall with user media-calls channel', () => {
 			const { mediaSessionStore } = jest.requireMock('./MediaSessionStore');
 			const spy = jest.spyOn(mediaSessionStore, 'setSendSignalFn');
