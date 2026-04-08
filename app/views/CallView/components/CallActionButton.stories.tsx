@@ -5,6 +5,7 @@ import CallActionButton from './CallActionButton';
 import {
 	BASE_ROW_HEIGHT,
 	BASE_ROW_HEIGHT_CONDENSED,
+	FONT_SCALE_LIMIT,
 	ResponsiveLayoutContext
 } from '../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
@@ -24,15 +25,20 @@ const styles = StyleSheet.create({
 	}
 });
 
-const responsiveLayoutProviderLargeFontValue = (fontScale: number) => ({
-	fontScale,
-	fontScaleLimited: fontScale,
-	isLargeFontScale: fontScale > 1,
-	rowHeight: BASE_ROW_HEIGHT * fontScale,
-	rowHeightCondensed: BASE_ROW_HEIGHT_CONDENSED * fontScale,
-	width: 350,
-	height: 800
-});
+const responsiveLayoutProviderLargeFontValue = (fontScale: number) => {
+	const isLargeFontScale = fontScale > FONT_SCALE_LIMIT;
+	const fontScaleLimited = isLargeFontScale ? FONT_SCALE_LIMIT : fontScale;
+
+	return {
+		fontScale,
+		fontScaleLimited,
+		isLargeFontScale,
+		rowHeight: BASE_ROW_HEIGHT * fontScale,
+		rowHeightCondensed: BASE_ROW_HEIGHT_CONDENSED * fontScale,
+		width: 350,
+		height: 800
+	};
+};
 
 const Wrapper = ({ children }: { children: React.ReactNode }) => <View style={styles.container}>{children}</View>;
 
