@@ -94,6 +94,10 @@
             android:exported="true" >
         </receiver>
         <receiver
+            android:name="chat.rocket.reactnative.notification.MarkAsReadBroadcast"
+            android:enabled="true"
+            android:exported="false" />
+        <receiver
             android:name="chat.rocket.reactnative.notification.VideoConfBroadcast"
             android:enabled="true"
             android:exported="false" >
