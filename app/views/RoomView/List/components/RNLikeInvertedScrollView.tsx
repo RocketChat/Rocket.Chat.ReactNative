@@ -32,6 +32,12 @@ interface State {
 const NativeInvertedScrollView = requireNativeComponent<InvertedScrollViewNativeProps>('InvertedScrollView');
 const NativeInvertedScrollContentView = requireNativeComponent<InvertedScrollContentViewProps>('InvertedScrollContentView');
 
+// Imperative scroll API for FlatList / VirtualizedList:
+// `requireNativeComponent` refs do not get JS `scrollTo` / `scrollToEnd` like `ScrollView` does.
+// Our Android `InvertedScrollViewManager` extends `ReactScrollViewManager`, so the native view
+// accepts the same commands as RCTScrollView. We mirror RN's ScrollViewCommands pattern
+// (`react-native/Libraries/Components/ScrollView/ScrollViewCommands.js`) via `codegenNativeCommands`,
+// which dispatches commands correctly on both bridge and Fabric.
 interface InvertedScrollViewCommands {
 	scrollTo: (viewRef: React.ElementRef<typeof NativeInvertedScrollView>, x: number, y: number, animated: boolean) => void;
 	scrollToEnd: (viewRef: React.ElementRef<typeof NativeInvertedScrollView>, animated: boolean) => void;
@@ -171,6 +177,9 @@ class RNLikeInvertedScrollView extends React.Component<Props, State> {
 		(this.scrollRef as React.MutableRefObject<any>).current = instance;
 	};
 
+	// Exposed on the class instance so VirtualizedList's `_scrollRef` has `scrollTo` (used by
+	// `scrollToOffset`, `scrollToIndex`, `scrollToEnd`). `findNodeHandle` supports layout helpers
+	// that call `getScrollableNode` when present.
 	scrollTo = (options?: { x?: number; y?: number; animated?: boolean } | number) => {
 		let x = 0;
 		let y = 0;
@@ -257,6 +266,8 @@ const styles = StyleSheet.create({
 	}
 });
 
+// Forward ref to the class instance (not the raw native host), so list consumers receive
+// `scrollTo` / `getScrollableNode` / `getScrollResponder` as VirtualizedList expects.
 const Wrapper = React.forwardRef<RNLikeInvertedScrollView, Props>((props, ref) => {
 	const classRef = React.useRef<RNLikeInvertedScrollView>(null);
 	React.useImperativeHandle(ref, () => classRef.current!, []);
