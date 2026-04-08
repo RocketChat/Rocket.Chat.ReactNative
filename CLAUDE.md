@@ -27,20 +27,24 @@ E2E tests live in `/e2e` and are excluded from Jest (`testPathIgnorePatterns: ['
 ## Architecture
 
 ### Entry points
+
 - `index.js` — registers the root component with `AppRegistry`. Branches on `USE_STORYBOOK`: when set, mounts `.rnstorybook`; otherwise mounts `app/index.tsx`. On Android, sets up `react-native-callkeep` for VoIP foreground service.
 - `app/index.tsx` — `Root` class component. Wires together Redux `Provider`, `ThemeContext`, `ResponsiveLayoutProvider`, gesture handler, keyboard provider, action sheet, and renders `AppContainer`. Owns app-level dimensions/master-detail (tablet) state, theme, deep-linking, push-notification bootstrap, and VoIP/video-conf initial-event handling.
 - `app/AppContainer.tsx` — top-level navigation container.
 
 ### State management
+
 - **Redux** (`react-redux` v8) is the primary store. Reducers in `app/reducers/`, sagas in `app/sagas/` (`redux-saga` + `typed-redux-saga`), actions in `app/actions/`. Selectors in `app/selectors/`.
 - `app/lib/store/` holds the configured store, middlewares (`appStateMiddleware`, `internetStateMiddleware`, `reduxLogger`), and `auxStore.ts` which exposes the store instance to non-React modules via `initStore(store)`.
 - **Zustand** is also a dependency and used for some newer slices alongside Redux.
 - **WatermelonDB** (`@nozbe/watermelondb`) is the local database for messages/rooms. Database code lives in `app/lib/database/`.
 
 ### Navigation
+
 - `@react-navigation/*` v7 (native-stack + drawer). Stacks live in `app/stacks/` (e.g., `InsideStack.tsx`, outside stack, masterDetail stacks). Tablet uses a master-detail layout gated by `MIN_WIDTH_MASTER_DETAIL_LAYOUT` and `isTablet`.
 
 ### Feature code layout
+
 - `app/views/` — screen components, one folder/file per screen (e.g., `CallView/`, `RoomView/`, `RoomsListView/`).
 - `app/containers/` — reusable cross-screen components (ActionSheet, Toast, Loading, message renderers, etc.).
 - `app/lib/` — non-UI app code:
@@ -56,10 +60,12 @@ E2E tests live in `/e2e` and are excluded from Jest (`testPathIgnorePatterns: ['
 - `app/theme.tsx` + `app/lib/constants/colors` — theming (light/dark/black)
 
 ### Native / platform
+
 - `ios/` and `android/` are checked-in native projects (bare workflow). Codegen config in `package.json` → `codegenConfig` generates `RocketChatSpecs` from TS in `app/lib/native`.
 - VoIP uses `react-native-webrtc`, `@rocket.chat/media-signaling` (vendored tarball under `packages/`), `react-native-callkeep`, and `react-native-incall-manager`.
 
 ### Tests
+
 - Jest with `jest-expo` preset (`./jest.preset.js`). Setup: `jest.setup.js` + `react-native-gesture-handler/jestSetup.js`. `transformIgnorePatterns` whitelists RN/Expo/react-navigation/`@rocket.chat/ui-kit` for transformation.
 - Reducers have colocated `*.test.ts` files in `app/reducers/`. Snapshot tests come from Storybook stories (`*.stories.tsx`) generated via `sb-rn-get-stories` into `.rnstorybook`.
 
