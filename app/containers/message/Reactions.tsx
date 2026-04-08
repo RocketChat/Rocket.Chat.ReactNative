@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Text, useWindowDimensions, View } from 'react-native';
 
+import I18n from '../../i18n';
 import Touchable from './Touchable';
 import { CustomIcon } from '../CustomIcon';
 import styles from './styles';
@@ -40,7 +41,7 @@ const AddReaction = React.memo(({ theme }: { theme: TSupportedThemes }) => {
 			key='message-add-reaction'
 			testID='message-add-reaction'
 			accessibilityRole='button'
-			accessibilityLabel='Add reaction'
+			accessibilityLabel={I18n.t('Add_reaction')}
 			style={[styles.reactionButton, { backgroundColor: themes[theme].surfaceRoom }]}
 			hitSlop={BUTTON_HIT_SLOP}>
 			<View style={[styles.reactionContainer, { borderColor: themes[theme].strokeLight, height }]}>
