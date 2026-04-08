@@ -81,7 +81,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
           >
             <ViewManagerAdapter_ExpoImage
               borderRadius={4}
-              containerViewRef={"[React.ref]"}
+              containerViewRef={{"current":"Object"}}
               contentFit="cover"
               contentPosition={
                 {
@@ -90,7 +90,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                 }
               }
               height={28}
-              nativeViewRef={"[React.ref]"}
+              nativeViewRef={{"current":"NativeComponent"}}
               onError={[Function]}
               onLoad={[Function]}
               onLoadStart={[Function]}
@@ -194,7 +194,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         collapsable={false}
         delayLongPress={600}
         foreground={true}
-        handlerTag={4}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={10}
         innerRef={null}
@@ -379,7 +379,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         collapsable={false}
         delayLongPress={600}
         foreground={true}
-        handlerTag={5}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={10}
         innerRef={null}
@@ -513,7 +513,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
           >
             <ViewManagerAdapter_ExpoImage
               borderRadius={4}
-              containerViewRef={"[React.ref]"}
+              containerViewRef={{"current":"Object"}}
               contentFit="cover"
               contentPosition={
                 {
@@ -522,7 +522,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                 }
               }
               height={28}
-              nativeViewRef={"[React.ref]"}
+              nativeViewRef={{"current":"NativeComponent"}}
               onError={[Function]}
               onLoad={[Function]}
               onLoadStart={[Function]}
@@ -626,7 +626,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         collapsable={false}
         delayLongPress={600}
         foreground={true}
-        handlerTag={6}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={10}
         innerRef={null}
@@ -773,7 +773,7 @@ exports[`Story Snapshots: LongUsername should match snapshot 1`] = `
           >
             <ViewManagerAdapter_ExpoImage
               borderRadius={4}
-              containerViewRef={"[React.ref]"}
+              containerViewRef={{"current":"Object"}}
               contentFit="cover"
               contentPosition={
                 {
@@ -782,7 +782,7 @@ exports[`Story Snapshots: LongUsername should match snapshot 1`] = `
                 }
               }
               height={28}
-              nativeViewRef={"[React.ref]"}
+              nativeViewRef={{"current":"NativeComponent"}}
               onError={[Function]}
               onLoad={[Function]}
               onLoadStart={[Function]}
@@ -886,7 +886,7 @@ exports[`Story Snapshots: LongUsername should match snapshot 1`] = `
         collapsable={false}
         delayLongPress={600}
         foreground={true}
-        handlerTag={7}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={10}
         innerRef={null}
@@ -1084,7 +1084,7 @@ exports[`Story Snapshots: Sip should match snapshot 1`] = `
         collapsable={false}
         delayLongPress={600}
         foreground={true}
-        handlerTag={8}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={10}
         innerRef={null}
@@ -1231,7 +1231,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
           >
             <ViewManagerAdapter_ExpoImage
               borderRadius={4}
-              containerViewRef={"[React.ref]"}
+              containerViewRef={{"current":"Object"}}
               contentFit="cover"
               contentPosition={
                 {
@@ -1240,7 +1240,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                 }
               }
               height={28}
-              nativeViewRef={"[React.ref]"}
+              nativeViewRef={{"current":"NativeComponent"}}
               onError={[Function]}
               onLoad={[Function]}
               onLoadStart={[Function]}
@@ -1344,7 +1344,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
         collapsable={false}
         delayLongPress={600}
         foreground={true}
-        handlerTag={9}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={10}
         innerRef={null}

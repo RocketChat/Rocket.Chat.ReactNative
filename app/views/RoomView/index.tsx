@@ -577,6 +577,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const { room, member, joined, canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold } = this.state;
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
+			// @ts-ignore — navigation types expect a literal screen name
 			navigation.navigate('ModalStackNavigator', {
 				screen: screen ?? 'RoomActionsView',
 				params: {

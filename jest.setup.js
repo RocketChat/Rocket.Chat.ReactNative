@@ -329,28 +329,24 @@ jest.mock('react-native-webview', () => {
  */
 expect.addSnapshotSerializer({
 	test: val => val && !!val.ref,
-	print: (value, serialize) => {
-		return serialize({
+	print: (value, serialize) => serialize({
 			...value,
 			_debugOwner: undefined,
 			child: undefined,
 			return: undefined,
 			ref: undefined,
 			props: { ...value.props, ref: undefined }
-		});
-	}
+		})
 });
 
-const _isReactRefObject = val => {
-	return val && typeof val === 'object' && val.constructor === Object && Object.keys(val).length === 1 && 'current' in val;
-};
+const _isReactRefObject = val => val && typeof val === 'object' && val.constructor === Object && Object.keys(val).length === 1 && 'current' in val;
 
 /**
  * Serializes a React ref object for snapshots.
  * Instead of including the full component instance (which can be huge and circular),
  * it replaces it with a simple JSON object containing the component's name.
  */
-const _printRefObject = val => {
+const _printRefObject = (val) => {
 	const { current } = val;
 	const name = current?.constructor?.name || current?.displayName || current?.name || 'Object';
 	return JSON.stringify({ current: name });

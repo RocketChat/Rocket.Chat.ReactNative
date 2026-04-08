@@ -540,7 +540,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             activeOpacity={1}
             collapsable={false}
             delayLongPress={600}
-            enabled={true}
             handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
@@ -594,7 +593,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
               }
             />
             <View
-              accessibilityLabel="Clear input"
+              accessibilityLabel="[missing "en.Clear_input" translation]"
               accessible={true}
               style={
                 {
@@ -1192,7 +1191,6 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
               activeOpacity={1}
               collapsable={false}
               delayLongPress={600}
-              enabled={true}
               handlerTag={-1}
               handlerType="NativeViewGestureHandler"
               innerRef={null}
