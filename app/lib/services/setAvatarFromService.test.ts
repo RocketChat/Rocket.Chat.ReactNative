@@ -17,7 +17,7 @@ jest.mock('./sdk', () => ({
 	}
 }));
 
-jest.mock('../methods/setAvatarFromService/uploadAvatar', () => ({
+jest.mock('../methods/uploadAvatar/uploadAvatar', () => ({
 	uploadUserAvatarMultipart: jest.fn().mockResolvedValue(undefined),
 	uploadUserAvatarBase64: jest.fn().mockResolvedValue(undefined)
 }));
