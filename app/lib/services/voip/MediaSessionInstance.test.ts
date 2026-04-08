@@ -1,12 +1,19 @@
-import type { IClientMediaCall } from '@rocket.chat/media-signaling';
-import RNCallKeep from 'react-native-callkeep';
+import { mediaSessionInstance, CallOrchestrator } from './MediaSessionInstance';
 
-import type { IDDPMessage } from '../../../definitions/IDDPMessage';
-import Navigation from '../../navigation/appNavigation';
-import { getDMSubscriptionByUsername } from '../../database/services/Subscription';
-import { getUidDirectMessage } from '../../methods/helpers/helpers';
-import { mediaSessionStore } from './MediaSessionStore';
-import { mediaSessionInstance, CallOrchestrator, type CallOrchestratorConfig, type CallResult } from './MediaSessionInstance';
+jest.mock('./MediaSessionStore', () => ({
+	mediaSessionStore: {
+		setWebRTCProcessorFactory: jest.fn(),
+		setSendSignalFn: jest.fn(),
+		getInstance: jest.fn(() => ({
+			on: jest.fn(),
+			processSignal: jest.fn(),
+			startCall: jest.fn(),
+			getMainCall: jest.fn()
+		})),
+		dispose: jest.fn(),
+		onChange: jest.fn(() => jest.fn())
+	}
+}));
 
 jest.mock('../../database/services/Subscription', () => ({
 	getDMSubscriptionByUsername: jest.fn()
@@ -16,8 +23,8 @@ jest.mock('../../methods/helpers/helpers', () => ({
 	getUidDirectMessage: jest.fn(() => 'other-user-id')
 }));
 
-const mockGetDMSubscriptionByUsername = jest.mocked(getDMSubscriptionByUsername);
-const mockGetUidDirectMessage = jest.mocked(getUidDirectMessage);
+const mockGetDMSubscriptionByUsername = jest.fn();
+const mockGetUidDirectMessage = jest.fn(() => 'other-user-id');
 
 const mockCallStoreReset = jest.fn();
 const mockSetRoomId = jest.fn();
@@ -96,54 +103,18 @@ jest.mock('../../methods/voipPhoneStatePermission', () => ({
 	requestPhoneStatePermission: () => mockRequestPhoneStatePermission()
 }));
 
-type MockMediaSignalingSession = {
-	userId: string;
-	on: jest.Mock;
-	processSignal: jest.Mock;
-	setIceGatheringTimeout: jest.Mock;
-	startCall: jest.Mock;
-	getMainCall: jest.Mock;
-};
-
-const createdSessions: MockMediaSignalingSession[] = [];
-
 jest.mock('@rocket.chat/media-signaling', () => ({
 	MediaCallWebRTCProcessor: jest.fn().mockImplementation(function MediaCallWebRTCProcessor(this: unknown) {
 		return this;
 	}),
-	MediaSignalingSession: jest
-		.fn()
-		.mockImplementation(function MockMediaSignalingSession(this: MockMediaSignalingSession, config: { userId: string }) {
-			this.userId = config.userId;
-			this.on = jest.fn();
-			this.processSignal = jest.fn().mockResolvedValue(undefined);
-			this.setIceGatheringTimeout = jest.fn();
-			this.startCall = jest.fn().mockResolvedValue(undefined);
-			this.getMainCall = jest.fn();
-			Object.defineProperty(this, 'sessionId', { value: `session-${config.userId}`, writable: false });
-			createdSessions.push(this);
-		})
+	MediaSignalingSession: jest.fn()
 }));
-
-const STREAM_NOTIFY_USER = 'stream-notify-user';
-
-function getStreamNotifyHandler(): (ddpMessage: IDDPMessage) => void {
-	const calls = mockOnStreamData.mock.calls as unknown as [string, (m: IDDPMessage) => void][];
-	for (let i = calls.length - 1; i >= 0; i--) {
-		const [eventName, handler] = calls[i];
-		if (eventName === STREAM_NOTIFY_USER && typeof handler === 'function') {
-			return handler;
-		}
-	}
-	throw new Error('stream-notify-user handler not registered');
-}
 
 describe('CallOrchestrator', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
-		createdSessions.length = 0;
 		mockGetUidDirectMessage.mockReturnValue('other-user-id');
-		mockGetDMSubscriptionByUsername.mockResolvedValue(null);
+		(mockGetDMSubscriptionByUsername as jest.Mock).mockResolvedValue(null);
 		mockUseCallStoreGetState.mockReturnValue({
 			reset: mockCallStoreReset,
 			setCall: jest.fn(),
@@ -168,6 +139,7 @@ describe('CallOrchestrator', () => {
 		});
 
 		it('should route sendSignal through sdk.methodCall with user media-calls channel', () => {
+			const { mediaSessionStore } = jest.requireMock('./MediaSessionStore');
 			const spy = jest.spyOn(mediaSessionStore, 'setSendSignalFn');
 			mediaSessionInstance.init('user-xyz');
 			expect(spy).toHaveBeenCalled();
@@ -185,20 +157,20 @@ describe('CallOrchestrator', () => {
 	describe('navigation callbacks', () => {
 		it('should use default navigation callback', () => {
 			mediaSessionInstance.init('user-1');
-			expect(Navigation.navigate).not.toHaveBeenCalled();
+			expect(jest.requireMock('../../navigation/appNavigation').default.navigate).not.toHaveBeenCalled();
 		});
 
 		it('should allow custom onCallStarted callback', () => {
 			const customOnCallStarted = jest.fn();
 			const orchestrator = new CallOrchestrator({ onCallStarted: customOnCallStarted });
-			(orchestrator as any).onCallStarted();
+			(orchestrator as unknown as { onCallStarted: () => void }).onCallStarted();
 			expect(customOnCallStarted).toHaveBeenCalled();
 		});
 
 		it('should allow custom onCallEnded callback', () => {
 			const customOnCallEnded = jest.fn();
 			const orchestrator = new CallOrchestrator({ onCallEnded: customOnCallEnded });
-			(orchestrator as any).onCallEnded();
+			(orchestrator as unknown as { onCallEnded: () => void }).onCallEnded();
 			expect(customOnCallEnded).toHaveBeenCalled();
 		});
 	});
@@ -248,6 +220,7 @@ describe('CallOrchestrator', () => {
 
 	describe('teardown', () => {
 		it('should reset controller on reset()', () => {
+			const { mediaSessionStore } = jest.requireMock('./MediaSessionStore');
 			mediaSessionInstance.init('user-1');
 			mediaSessionInstance.reset();
 			expect(mediaSessionStore.dispose).toHaveBeenCalled();

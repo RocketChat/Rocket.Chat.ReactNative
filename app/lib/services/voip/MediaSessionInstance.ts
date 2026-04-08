@@ -51,12 +51,8 @@ class CallOrchestrator {
 		this.setupNewCallHandler();
 	}
 
-	private setupSendSignal(userId: string): void {
-		// Already set in init before configure
-	}
-
 	private setupMediaSignalListener(): void {
-		const controller = this.controller;
+		const {controller} = this;
 		this.mediaSessionStoreChangeUnsubscribe = mediaSessionStore.onChange(() => {
 			const session = controller.getSession();
 			if (session) {
@@ -118,7 +114,7 @@ class CallOrchestrator {
 	}
 
 	private setupNewCallHandler(): void {
-		const controller = this.controller;
+		const {controller} = this;
 		const session = controller.getSession();
 		session?.on('newCall', ({ call }: { call: IClientMediaCall }) => {
 			if (call && !call.hidden) {
@@ -167,7 +163,7 @@ class CallOrchestrator {
 				console.error('[VoIP] Error resolving room id from contact (answerCall):', error);
 			});
 			return { success: true, callId };
-		} else {
+		} 
 			RNCallKeep.endCall(callId);
 			const st = useCallStore.getState();
 			if (st.nativeAcceptedCallId === callId) {
@@ -175,7 +171,7 @@ class CallOrchestrator {
 			}
 			console.warn('[VoIP] Call not found:', callId);
 			return { success: false, error: 'Call not found' };
-		}
+		
 	};
 
 	public startCallByRoom = (room: TSubscriptionModel | ISubscription) => {
