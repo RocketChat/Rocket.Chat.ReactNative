@@ -214,9 +214,7 @@ jest.mock('./app/lib/services/voip/MediaSessionStore', () => ({
 	mediaSessionStore: {
 		setWebRTCProcessorFactory: jest.fn(),
 		setSendSignalFn: jest.fn(),
-		getInstance: jest.fn(() => {
-			throw new Error('WebRTC processor factory and send signal function must be set');
-		}),
+		getInstance: jest.fn(),
 		dispose: jest.fn(),
 		onChange: jest.fn(() => jest.fn())
 	}
