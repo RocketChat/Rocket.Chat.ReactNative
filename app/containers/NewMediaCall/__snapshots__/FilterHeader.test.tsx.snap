@@ -94,32 +94,41 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                   accessible={true}
                   autoCapitalize="none"
                   autoCorrect={false}
+                  keyboardAppearance="light"
                   onChangeText={[Function]}
                   placeholderTextColor="#9EA2A8"
                   style={
                     [
                       {
-                        "backgroundColor": "transparent",
-                        "borderRadius": 4,
-                        "borderWidth": 1,
-                        "fontFamily": "Inter",
-                        "fontSize": 16,
-                        "fontWeight": "400",
-                        "paddingHorizontal": 16,
-                        "paddingVertical": 14,
-                        "textAlign": "left",
-                      },
-                      undefined,
-                      {
-                        "paddingRight": 45,
-                      },
-                      {
-                        "backgroundColor": "#FFFFFF",
-                        "borderColor": "#9EA2A8",
                         "color": "#1F2329",
                       },
-                      {},
-                      undefined,
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "borderRadius": 4,
+                          "borderWidth": 1,
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "400",
+                          "paddingHorizontal": 16,
+                          "paddingVertical": 14,
+                          "textAlign": "left",
+                        },
+                        undefined,
+                        {
+                          "paddingRight": 45,
+                        },
+                        {
+                          "backgroundColor": "#FFFFFF",
+                          "borderColor": "#9EA2A8",
+                          "color": "#1F2329",
+                        },
+                        {},
+                        undefined,
+                      ],
+                      {
+                        "textAlign": "auto",
+                      },
                     ]
                   }
                   testID="new-media-call-search-input"
@@ -285,32 +294,41 @@ exports[`Story Snapshots: WithFilter should match snapshot 1`] = `
                   accessible={true}
                   autoCapitalize="none"
                   autoCorrect={false}
+                  keyboardAppearance="light"
                   onChangeText={[Function]}
                   placeholderTextColor="#9EA2A8"
                   style={
                     [
                       {
-                        "backgroundColor": "transparent",
-                        "borderRadius": 4,
-                        "borderWidth": 1,
-                        "fontFamily": "Inter",
-                        "fontSize": 16,
-                        "fontWeight": "400",
-                        "paddingHorizontal": 16,
-                        "paddingVertical": 14,
-                        "textAlign": "left",
-                      },
-                      undefined,
-                      {
-                        "paddingRight": 45,
-                      },
-                      {
-                        "backgroundColor": "#FFFFFF",
-                        "borderColor": "#9EA2A8",
                         "color": "#1F2329",
                       },
-                      {},
-                      undefined,
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "borderRadius": 4,
+                          "borderWidth": 1,
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "400",
+                          "paddingHorizontal": 16,
+                          "paddingVertical": 14,
+                          "textAlign": "left",
+                        },
+                        undefined,
+                        {
+                          "paddingRight": 45,
+                        },
+                        {
+                          "backgroundColor": "#FFFFFF",
+                          "borderColor": "#9EA2A8",
+                          "color": "#1F2329",
+                        },
+                        {},
+                        undefined,
+                      ],
+                      {
+                        "textAlign": "auto",
+                      },
                     ]
                   }
                   testID="new-media-call-search-input"

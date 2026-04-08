@@ -3,6 +3,10 @@ import { View, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
 import CallView from '.';
+import CallerInfo from './components/CallerInfo';
+import { CallButtons } from './components/CallButtons';
+import { styles as callViewStyles } from './styles';
+import { useTheme } from '../../theme';
 import { useCallStore } from '../../lib/services/voip/useCallStore';
 import {
 	BASE_ROW_HEIGHT,
@@ -112,4 +116,49 @@ export const MutedAndOnHold = () => {
 export const SpeakerOn = () => {
 	setStoreState({ callState: 'active', isSpeakerOn: true });
 	return <CallView />;
+};
+
+// Tablet / wide layout stories — force layoutMode='wide' via ResponsiveLayoutContext width
+const TabletCallView = () => {
+	const { colors } = useTheme();
+	const call = useCallStore(state => state.call);
+	if (!call) return null;
+	return (
+		<ResponsiveLayoutContext.Provider value={{ ...responsiveLayoutProviderLargeFontValue(1), width: 800 }}>
+			<View style={[callViewStyles.contentContainer, { backgroundColor: colors.surfaceLight }]}>
+				<CallerInfo />
+				<CallButtons />
+			</View>
+		</ResponsiveLayoutContext.Provider>
+	);
+};
+
+export const TabletConnectedCall = () => {
+	setStoreState({ callState: 'active', callStartTime: mockCallStartTime - 61000 });
+	return <TabletCallView />;
+};
+
+export const TabletConnectingCall = () => {
+	setStoreState({ callState: 'accepted', callStartTime: null });
+	return <TabletCallView />;
+};
+
+export const TabletMutedCall = () => {
+	setStoreState({ callState: 'active', isMuted: true });
+	return <TabletCallView />;
+};
+
+export const TabletOnHoldCall = () => {
+	setStoreState({ callState: 'active', isOnHold: true });
+	return <TabletCallView />;
+};
+
+export const TabletMutedAndOnHold = () => {
+	setStoreState({ callState: 'active', isMuted: true, isOnHold: true });
+	return <TabletCallView />;
+};
+
+export const TabletSpeakerOn = () => {
+	setStoreState({ callState: 'active', isSpeakerOn: true });
+	return <TabletCallView />;
 };
