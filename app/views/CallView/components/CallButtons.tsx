@@ -10,7 +10,7 @@ import { CONTROLS_ANIMATION_DURATION, styles } from '../styles';
 import { useTheme } from '../../../theme';
 import { showActionSheetRef } from '../../../containers/ActionSheet';
 import Dialpad from './Dialpad/Dialpad';
-import { type LayoutMode } from '../types';
+import { useCallLayoutMode } from '../useCallLayoutMode';
 import { type TIconsName } from '../../../containers/CustomIcon';
 
 interface ICallButtonConfig {
@@ -22,10 +22,11 @@ interface ICallButtonConfig {
 	disabled: boolean;
 }
 
-export const CallButtons = ({ layoutMode }: { layoutMode: LayoutMode }) => {
+export const CallButtons = () => {
 	'use memo';
 
 	const { colors } = useTheme();
+	const { layoutMode } = useCallLayoutMode();
 
 	const callState = useCallStore(state => state.callState);
 	const isMuted = useCallStore(state => state.isMuted);

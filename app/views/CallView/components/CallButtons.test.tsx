@@ -6,10 +6,17 @@ import { mockedStore } from '../../../reducers/mockedStore';
 import { useCallStore } from '../../../lib/services/voip/useCallStore';
 import { navigateToCallRoom } from '../../../lib/services/voip/navigateToCallRoom';
 import { CallButtons } from './CallButtons';
+import { useCallLayoutMode } from '../useCallLayoutMode';
 
 jest.mock('../../../lib/services/voip/navigateToCallRoom', () => ({
 	navigateToCallRoom: jest.fn().mockResolvedValue(undefined)
 }));
+
+jest.mock('../useCallLayoutMode', () => ({
+	useCallLayoutMode: jest.fn(() => ({ layoutMode: 'narrow' }))
+}));
+
+const mockUseCallLayoutMode = jest.mocked(useCallLayoutMode);
 
 const mockShowActionSheetRef = jest.fn();
 jest.mock('../../../containers/ActionSheet', () => ({
@@ -25,6 +32,7 @@ describe('CallButtons', () => {
 	beforeEach(() => {
 		useCallStore.getState().reset();
 		jest.clearAllMocks();
+		mockUseCallLayoutMode.mockReturnValue({ layoutMode: 'narrow' });
 		useCallStore.setState({
 			call: { state: 'active', contact: {} } as any,
 			callState: 'active',
@@ -45,7 +53,7 @@ describe('CallButtons', () => {
 		useCallStore.setState({ controlsVisible: false });
 		const { getByTestId } = render(
 			<Wrapper>
-				<CallButtons layoutMode='narrow' />
+				<CallButtons />
 			</Wrapper>
 		);
 
@@ -57,7 +65,7 @@ describe('CallButtons', () => {
 		useCallStore.setState({ controlsVisible: true });
 		const { getByTestId } = render(
 			<Wrapper>
-				<CallButtons layoutMode='narrow' />
+				<CallButtons />
 			</Wrapper>
 		);
 
@@ -68,7 +76,7 @@ describe('CallButtons', () => {
 	it('message button calls navigateToCallRoom when enabled', () => {
 		const { getByTestId } = render(
 			<Wrapper>
-				<CallButtons layoutMode='narrow' />
+				<CallButtons />
 			</Wrapper>
 		);
 		fireEvent.press(getByTestId('call-view-message'));
@@ -81,7 +89,7 @@ describe('CallButtons', () => {
 		});
 		const { getByTestId } = render(
 			<Wrapper>
-				<CallButtons layoutMode='narrow' />
+				<CallButtons />
 			</Wrapper>
 		);
 		fireEvent.press(getByTestId('call-view-message'));
@@ -92,7 +100,7 @@ describe('CallButtons', () => {
 		useCallStore.setState({ roomId: null });
 		const { getByTestId } = render(
 			<Wrapper>
-				<CallButtons layoutMode='narrow' />
+				<CallButtons />
 			</Wrapper>
 		);
 		fireEvent.press(getByTestId('call-view-message'));
@@ -103,7 +111,7 @@ describe('CallButtons', () => {
 		it('renders two button rows on narrow layout', () => {
 			const { getByTestId } = render(
 				<Wrapper>
-					<CallButtons layoutMode='narrow' />
+					<CallButtons />
 				</Wrapper>
 			);
 			expect(getByTestId('call-buttons-row-0')).toBeTruthy();
@@ -111,9 +119,10 @@ describe('CallButtons', () => {
 		});
 
 		it('renders a single button row on wide layout', () => {
+			mockUseCallLayoutMode.mockReturnValue({ layoutMode: 'wide' });
 			const { getByTestId, queryByTestId } = render(
 				<Wrapper>
-					<CallButtons layoutMode='wide' />
+					<CallButtons />
 				</Wrapper>
 			);
 			expect(getByTestId('call-buttons-row-0')).toBeTruthy();
@@ -130,9 +139,10 @@ describe('CallButtons', () => {
 				'call-view-dialpad'
 			];
 			(['narrow', 'wide'] as const).forEach(layoutMode => {
+				mockUseCallLayoutMode.mockReturnValue({ layoutMode });
 				const { getByTestId, unmount } = render(
 					<Wrapper>
-						<CallButtons layoutMode={layoutMode} />
+						<CallButtons />
 					</Wrapper>
 				);
 				ids.forEach(id => expect(getByTestId(id)).toBeTruthy());
@@ -141,9 +151,10 @@ describe('CallButtons', () => {
 		});
 
 		it('places every action button inside row 0 on wide layout', () => {
+			mockUseCallLayoutMode.mockReturnValue({ layoutMode: 'wide' });
 			const { getByTestId } = render(
 				<Wrapper>
-					<CallButtons layoutMode='wide' />
+					<CallButtons />
 				</Wrapper>
 			);
 			const row0 = getByTestId('call-buttons-row-0');
@@ -163,7 +174,7 @@ describe('CallButtons', () => {
 		it('splits buttons across row 0 and row 1 on narrow layout', () => {
 			const { getByTestId } = render(
 				<Wrapper>
-					<CallButtons layoutMode='narrow' />
+					<CallButtons />
 				</Wrapper>
 			);
 			const row0 = getByTestId('call-buttons-row-0');

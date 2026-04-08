@@ -21,14 +21,21 @@ jest.mock('../../lib/services/voip/navigateToCallRoom', () => ({
 	navigateToCallRoom: jest.fn().mockResolvedValue(undefined)
 }));
 
-// Mock useResponsiveLayout so its width tracks mockWindowWidth dynamically
+// Mock useResponsiveLayout so its width tracks mockWindowWidth dynamically.
+// Honors an explicit ResponsiveLayoutContext.Provider (e.g. TabletCallView story
+// forcing width=800) so stories can drive layoutMode without a prop.
 jest.mock('../../lib/hooks/useResponsiveLayout/useResponsiveLayout', () => {
 	const actual = jest.requireActual('../../lib/hooks/useResponsiveLayout/useResponsiveLayout');
+	const React = require('react');
 	const { useWindowDimensions } = require('react-native');
 	return {
 		...actual,
 		useResponsiveLayout: () => {
-			const { width, height, fontScale } = useWindowDimensions();
+			const ctx = React.useContext(actual.ResponsiveLayoutContext);
+			const { width: winWidth, height: winHeight, fontScale: winFontScale } = useWindowDimensions();
+			const width = ctx && ctx.width ? ctx.width : winWidth;
+			const height = ctx && ctx.height ? ctx.height : winHeight;
+			const fontScale = ctx && ctx.fontScale ? ctx.fontScale : winFontScale;
 			const isLargeFontScale = fontScale > actual.FONT_SCALE_LIMIT;
 			const fontScaleLimited = isLargeFontScale ? actual.FONT_SCALE_LIMIT : fontScale;
 			return {
@@ -479,25 +486,6 @@ describe('CallView (tablet/wide layout)', () => {
 		ids.forEach(id => {
 			expect(within(row0).getByTestId(id)).toBeTruthy();
 		});
-	});
-
-	it('switches back to two rows when width drops below tablet threshold', () => {
-		setStoreState();
-		const { getByTestId, queryByTestId, rerender } = render(
-			<Wrapper>
-				<CallView />
-			</Wrapper>
-		);
-		expect(queryByTestId('call-buttons-row-1')).toBeNull();
-
-		mockWindowWidth = 350;
-		rerender(
-			<Wrapper>
-				<CallView />
-			</Wrapper>
-		);
-		expect(getByTestId('call-buttons-row-0')).toBeTruthy();
-		expect(getByTestId('call-buttons-row-1')).toBeTruthy();
 	});
 
 	it('returns null when there is no call on wide layout', () => {

@@ -118,16 +118,18 @@ export const SpeakerOn = () => {
 	return <CallView />;
 };
 
-// Tablet / wide layout stories — force layoutMode='wide' regardless of device width
+// Tablet / wide layout stories — force layoutMode='wide' via ResponsiveLayoutContext width
 const TabletCallView = () => {
 	const { colors } = useTheme();
 	const call = useCallStore(state => state.call);
 	if (!call) return null;
 	return (
-		<View style={[callViewStyles.contentContainer, { backgroundColor: colors.surfaceLight }]}>
-			<CallerInfo />
-			<CallButtons layoutMode='wide' />
-		</View>
+		<ResponsiveLayoutContext.Provider value={{ ...responsiveLayoutProviderLargeFontValue(1), width: 800 }}>
+			<View style={[callViewStyles.contentContainer, { backgroundColor: colors.surfaceLight }]}>
+				<CallerInfo />
+				<CallButtons />
+			</View>
+		</ResponsiveLayoutContext.Provider>
 	);
 };
 

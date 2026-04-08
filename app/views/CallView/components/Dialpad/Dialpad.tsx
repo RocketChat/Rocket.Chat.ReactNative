@@ -5,7 +5,8 @@ import { FormTextInput } from '../../../../containers/TextInput';
 import { styles } from './styles';
 import DialpadButton from './DialpadButton';
 import { useCallLayoutMode } from '../../useCallLayoutMode';
-import { useDialpadState } from './useDialpadState';
+import { useDialpadValue } from '../../../../lib/services/voip/useCallStore';
+import { useTheme } from '../../../../theme';
 
 const DIALPAD_KEYS: { digit: string; letters: string }[][] = [
 	[
@@ -48,7 +49,8 @@ export const DialpadGrid = (): React.ReactElement => (
 
 const Dialpad = ({ testID }: IDialpad): React.ReactElement => {
 	const { layoutMode } = useCallLayoutMode();
-	const { colors, dialpadValue } = useDialpadState();
+	const { colors } = useTheme();
+	const dialpadValue = useDialpadValue();
 
 	const input = (
 		<FormTextInput
