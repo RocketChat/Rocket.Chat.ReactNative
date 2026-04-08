@@ -42,7 +42,6 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
     onStartShouldSetResponder={[Function]}
     style={
       {
-        "alignContent": "flex-start",
         "alignItems": "center",
         "flex": 1,
         "justifyContent": "center",
@@ -203,7 +202,6 @@ exports[`Story Snapshots: UsernameOnly should match snapshot 1`] = `
     onStartShouldSetResponder={[Function]}
     style={
       {
-        "alignContent": "flex-start",
         "alignItems": "center",
         "flex": 1,
         "justifyContent": "center",
