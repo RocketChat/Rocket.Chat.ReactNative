@@ -9,6 +9,7 @@ export interface MockCallOverrides {
 	isOnHold?: boolean;
 	isSpeakerOn?: boolean;
 	callStartTime?: number | null;
+	roomId?: string | null;
 	contact?: {
 		id?: string;
 		displayName?: string;
@@ -21,7 +22,7 @@ const DEFAULT_CONTACT = {
 	id: 'mock-contact-id',
 	displayName: 'Bob Burnquist',
 	username: 'bob.burnquist',
-	sipExtension: '2244'
+	sipExtension: ''
 };
 
 /**
@@ -71,6 +72,7 @@ export function seedMockCall(overrides: MockCallOverrides = {}): void {
 		isSpeakerOn: overrides.isSpeakerOn ?? false,
 		callStartTime: overrides.callStartTime ?? (callState === 'active' ? Date.now() : null),
 		contact: { ...DEFAULT_CONTACT, ...overrides.contact },
+		roomId: overrides.roomId ?? 'mock-room-id',
 		focused: true,
 		controlsVisible: true
 	});
