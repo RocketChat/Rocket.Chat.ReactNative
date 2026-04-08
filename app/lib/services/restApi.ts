@@ -1,6 +1,3 @@
-import { settings as RocketChatSettings } from '@rocket.chat/sdk';
-import * as FileSystem from 'expo-file-system/legacy';
-
 import {
 	type IAvatarSuggestion,
 	type IMessage,
@@ -22,9 +19,8 @@ import { TEAM_TYPE } from '../../definitions/ITeam';
 import { type OperationParams, type ResultFor } from '../../definitions/rest/helpers';
 import { type SubscriptionsEndpoints } from '../../definitions/rest/v1/subscriptions';
 import { Encryption } from '../encryption';
-import FileUpload from '../methods/helpers/fileUpload';
 import { type RoomTypes, roomTypeToApiType } from '../methods/roomTypeToApiType';
-import { copyFileToCacheDirectoryIfNeeded } from '../methods/sendFileMessage/utils';
+import { uploadUserAvatarBase64, uploadUserAvatarMultipart } from '../methods/uploadAvatar/uploadAvatar';
 import { unsubscribeRooms } from '../methods/subscribeRooms';
 import { compareServerVersion, getBundleId, isIOS } from '../methods/helpers';
 import { getDeviceToken } from '../notifications';
@@ -729,21 +725,6 @@ export const resetAvatar = (userId: string) =>
 const isHttpAvatarUrl = (value: string | undefined): value is string =>
 	typeof value === 'string' && (value.startsWith('http://') || value.startsWith('https://'));
 
-async function uploadUserAvatarMultipart(localUri: string, mimeType: string, filename: string): Promise<void> {
-	const { server } = reduxStore.getState().server;
-	const { id, token } = reduxStore.getState().login.user;
-	const filePath = await copyFileToCacheDirectoryIfNeeded(localUri, filename);
-	const formData = [{ name: 'image', uri: filePath, type: mimeType, filename }];
-	const headers = {
-		...RocketChatSettings.customHeaders,
-		'Content-Type': 'multipart/form-data',
-		'X-Auth-Token': token,
-		'X-User-Id': id
-	};
-	const upload = new FileUpload(`${server}/api/v1/users.setAvatar`, headers, formData);
-	await upload.send();
-}
-
 export const setAvatarFromService = async ({
 	data,
 	contentType = '',
@@ -759,8 +740,7 @@ export const setAvatarFromService = async ({
 
 	// RC 0.51.0 — keep DDP + payload shape unchanged below 8.0.0
 	if (compareServerVersion(serverVersion, 'lowerThan', '8.0.0')) {
-		await sdk.methodCallWrapper('setAvatarFromService', data, contentType, service);
-		return;
+		return sdk.methodCallWrapper('setAvatarFromService', data, contentType, service);
 	}
 
 	// RC 8.0.0 — REST users.setAvatar (multipart image or JSON avatarUrl)
@@ -780,14 +760,7 @@ export const setAvatarFromService = async ({
 	}
 
 	if (typeof data === 'string' && data.length > 0) {
-		const ext = contentType?.includes('png') ? 'png' : 'jpeg';
-		const cacheDir = FileSystem.cacheDirectory;
-		if (!cacheDir) {
-			throw new Error('No cache directory');
-		}
-		const cacheFile = `${cacheDir}avatar-suggestion-${Date.now()}.${ext}`;
-		await FileSystem.writeAsStringAsync(cacheFile, data, { encoding: FileSystem.EncodingType.Base64 });
-		await uploadUserAvatarMultipart(cacheFile, contentType || `image/${ext}`, `avatar.${ext}`);
+		await uploadUserAvatarBase64(data, contentType);
 		return;
 	}
 

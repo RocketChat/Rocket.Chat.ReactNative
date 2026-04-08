@@ -1,8 +1,5 @@
-import * as FileSystem from 'expo-file-system/legacy';
-
-import FileUpload from '../methods/helpers/fileUpload';
-import { copyFileToCacheDirectoryIfNeeded } from '../methods/sendFileMessage/utils';
 import { store as reduxStore } from '../store/auxStore';
+import { uploadUserAvatarBase64, uploadUserAvatarMultipart } from '../methods/uploadAvatar/uploadAvatar';
 import sdk from './sdk';
 import { setAvatarFromService } from './restApi';
 
@@ -20,25 +17,9 @@ jest.mock('./sdk', () => ({
 	}
 }));
 
-jest.mock('../methods/helpers/fileUpload', () => ({
-	__esModule: true,
-	default: jest.fn().mockImplementation(() => ({
-		send: jest.fn().mockResolvedValue({ success: true })
-	}))
-}));
-
-jest.mock('../methods/sendFileMessage/utils', () => ({
-	copyFileToCacheDirectoryIfNeeded: jest.fn((p: string) => Promise.resolve(`cached:${p}`))
-}));
-
-jest.mock('@rocket.chat/sdk', () => ({
-	settings: { customHeaders: {} }
-}));
-
-jest.mock('expo-file-system/legacy', () => ({
-	cacheDirectory: 'file:///cache/',
-	EncodingType: { Base64: 'base64' },
-	writeAsStringAsync: jest.fn(() => Promise.resolve())
+jest.mock('../methods/setAvatarFromService/uploadAvatar', () => ({
+	uploadUserAvatarMultipart: jest.fn().mockResolvedValue(undefined),
+	uploadUserAvatarBase64: jest.fn().mockResolvedValue(undefined)
 }));
 
 const baseState = {
@@ -71,7 +52,8 @@ describe('setAvatarFromService', () => {
 			payload.service
 		);
 		expect(sdk.post).not.toHaveBeenCalled();
-		expect(FileUpload).not.toHaveBeenCalled();
+		expect(uploadUserAvatarMultipart).not.toHaveBeenCalled();
+		expect(uploadUserAvatarBase64).not.toHaveBeenCalled();
 	});
 
 	it('posts avatarUrl for service url on 8.0.0+', async () => {
@@ -84,7 +66,8 @@ describe('setAvatarFromService', () => {
 			avatarUrl: 'https://example.com/a.png'
 		});
 		expect(sdk.methodCallWrapper).not.toHaveBeenCalled();
-		expect(FileUpload).not.toHaveBeenCalled();
+		expect(uploadUserAvatarMultipart).not.toHaveBeenCalled();
+		expect(uploadUserAvatarBase64).not.toHaveBeenCalled();
 	});
 
 	it('multipart upload for camera/gallery (service upload) on 8.0.0+', async () => {
@@ -94,19 +77,8 @@ describe('setAvatarFromService', () => {
 			service: 'upload',
 			url: 'file:///tmp/avatar.jpg'
 		});
-		expect(FileUpload).toHaveBeenCalledTimes(1);
-		const [uploadUrl, headers, formData] = (FileUpload as jest.Mock).mock.calls[0];
-		expect(uploadUrl).toBe('https://open.rocket.chat/api/v1/users.setAvatar');
-		expect(headers['X-Auth-Token']).toBe('tok1');
-		expect(headers['X-User-Id']).toBe('uid1');
-		expect(formData).toEqual([
-			{
-				name: 'image',
-				uri: 'cached:file:///tmp/avatar.jpg',
-				type: 'image/jpeg',
-				filename: 'avatar.jpg'
-			}
-		]);
+		expect(uploadUserAvatarMultipart).toHaveBeenCalledWith('file:///tmp/avatar.jpg', 'image/jpeg', 'avatar.jpg');
+		expect(uploadUserAvatarBase64).not.toHaveBeenCalled();
 		expect(sdk.methodCallWrapper).not.toHaveBeenCalled();
 	});
 
@@ -120,20 +92,18 @@ describe('setAvatarFromService', () => {
 		expect(sdk.post).toHaveBeenCalledWith('users.setAvatar', {
 			avatarUrl: 'https://lh3.googleusercontent.com/a/abc'
 		});
-		expect(FileSystem.writeAsStringAsync).not.toHaveBeenCalled();
+		expect(uploadUserAvatarMultipart).not.toHaveBeenCalled();
+		expect(uploadUserAvatarBase64).not.toHaveBeenCalled();
 	});
 
-	it('writes blob to cache and multipart upload when no http url on 8.0.0+', async () => {
+	it('delegates to base64 uploader when no http url on 8.0.0+', async () => {
 		await setAvatarFromService({
 			data: 'dGVzdA==',
 			contentType: 'image/png',
 			service: 'github',
 			url: 'relative/path'
 		});
-		expect(FileSystem.writeAsStringAsync).toHaveBeenCalled();
-		expect(copyFileToCacheDirectoryIfNeeded).toHaveBeenCalled();
-		expect(FileUpload).toHaveBeenCalled();
-		const [, , formData] = (FileUpload as jest.Mock).mock.calls[0];
-		expect(formData[0].name).toBe('image');
+		expect(uploadUserAvatarBase64).toHaveBeenCalledWith('dGVzdA==', 'image/png');
+		expect(uploadUserAvatarMultipart).not.toHaveBeenCalled();
 	});
 });
