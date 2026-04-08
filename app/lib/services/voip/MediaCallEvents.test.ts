@@ -51,6 +51,7 @@ jest.mock('react-native-callkeep', () => ({
 
 jest.mock('./MediaSessionInstance', () => ({
 	mediaSessionInstance: {
+		startCall: (...args: unknown[]) => ({ success: true, callId: '' }),
 		endCall: jest.fn()
 	}
 }));

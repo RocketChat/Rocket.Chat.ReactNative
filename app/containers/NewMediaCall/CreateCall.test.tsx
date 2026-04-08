@@ -8,24 +8,16 @@ import { mockedStore } from '../../reducers/mockedStore';
 import type { TPeerItem } from '../../lib/services/voip/getPeerAutocompleteOptions';
 import * as stories from './CreateCall.stories';
 import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
+import { mediaSessionInstance } from '../../lib/services/voip/MediaSessionInstance';
 
-const mockStartCall = jest.fn();
 const mockHideActionSheet = jest.fn();
-
-jest.mock('../../lib/services/voip/MediaSessionInstance', () => {
-	const instance = {};
-	Object.defineProperty(instance, 'startCall', {
-		value: (...args: unknown[]) => mockStartCall(...args),
-		writable: false,
-		configurable: false
-	});
-	return { mediaSessionInstance: instance };
-});
 
 jest.mock('../ActionSheet', () => ({
 	...jest.requireActual('../ActionSheet'),
 	hideActionSheetRef: () => mockHideActionSheet()
 }));
+
+jest.spyOn(mediaSessionInstance, 'startCall').mockReturnValue({ success: true, callId: '' });
 
 const setStoreState = (selectedPeer: TPeerItem | null) => {
 	usePeerAutocompleteStore.setState({ selectedPeer });
@@ -50,6 +42,7 @@ describe('CreateCall', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		usePeerAutocompleteStore.setState({ selectedPeer: null });
+		jest.spyOn(mediaSessionInstance, 'startCall').mockReturnValue({ success: true, callId: '' });
 	});
 
 	it('should render the call button', () => {
@@ -83,7 +76,7 @@ describe('CreateCall', () => {
 		);
 
 		fireEvent.press(getByTestId('new-media-call-button'));
-		expect(mockStartCall).not.toHaveBeenCalled();
+		expect(mediaSessionInstance.startCall).not.toHaveBeenCalled();
 		expect(mockHideActionSheet).not.toHaveBeenCalled();
 	});
 
@@ -108,8 +101,8 @@ describe('CreateCall', () => {
 		);
 
 		fireEvent.press(getByTestId('new-media-call-button'));
-		expect(mockStartCall).toHaveBeenCalledTimes(1);
-		expect(mockStartCall).toHaveBeenCalledWith('user-1', 'user');
+		expect(mediaSessionInstance.startCall).toHaveBeenCalledTimes(1);
+		expect(mediaSessionInstance.startCall).toHaveBeenCalledWith('user-1', 'user');
 		expect(mockHideActionSheet).toHaveBeenCalledTimes(1);
 	});
 
@@ -122,8 +115,8 @@ describe('CreateCall', () => {
 		);
 
 		fireEvent.press(getByTestId('new-media-call-button'));
-		expect(mockStartCall).toHaveBeenCalledTimes(1);
-		expect(mockStartCall).toHaveBeenCalledWith('+5511999999999', 'sip');
+		expect(mediaSessionInstance.startCall).toHaveBeenCalledTimes(1);
+		expect(mediaSessionInstance.startCall).toHaveBeenCalledWith('+5511999999999', 'sip');
 		expect(mockHideActionSheet).toHaveBeenCalledTimes(1);
 	});
 });
