@@ -22,14 +22,13 @@ export type CallOrchestratorConfig = {
 	onCallEnded?: () => void;
 };
 
-export type CallResult = 
-	| { success: true; callId: string }
+export type CallResult =
+	| { success: true; callId?: string }
 	| { success: false; error: string };
 
 class CallOrchestrator {
 	private controller: MediaSessionController;
 	private mediaSignalListener: { stop: () => void } | null = null;
-	private mediaSessionStoreChangeUnsubscribe: (() => void) | null = null;
 	private onCallStarted: () => void;
 	private onCallEnded: () => void;
 
@@ -48,36 +47,31 @@ class CallOrchestrator {
 		this.controller.configure();
 
 		this.setupMediaSignalListener();
-		this.setupNewCallHandler();
 	}
 
 	private setupMediaSignalListener(): void {
-		const {controller} = this;
-		this.mediaSessionStoreChangeUnsubscribe = mediaSessionStore.onChange(() => {
-			const session = controller.getSession();
-			if (session) {
-				session.on('newCall', ({ call }: { call: IClientMediaCall }) => {
-					if (call && !call.hidden) {
-						call.emitter.on('stateChange', oldState => {
-							console.log(`📊 ${oldState} → ${call.state}`);
-							console.log('🤙 [VoIP] New call data:', call);
-						});
+		const { controller } = this;
+		const session = controller.getSession();
+		session?.on('newCall', ({ call }: { call: IClientMediaCall }) => {
+			if (call && !call.hidden) {
+				call.emitter.on('stateChange', oldState => {
+					console.log(`📊 ${oldState} → ${call.state}`);
+					console.log('🤙 [VoIP] New call data:', call);
+				});
 
-						if (call.role === 'caller') {
-							useCallStore.getState().setCall(call);
-							this.onCallStarted();
-							if (useCallStore.getState().roomId == null) {
-								this.resolveRoomIdFromContact(call.contact).catch(error => {
-									console.error('[VoIP] Error resolving room id from contact (newCall):', error);
-								});
-							}
-						}
-
-						call.emitter.on('ended', () => {
-							RNCallKeep.endCall(call.callId);
-							this.onCallEnded();
+				if (call.role === 'caller') {
+					useCallStore.getState().setCall(call);
+					this.onCallStarted();
+					if (useCallStore.getState().roomId == null) {
+						this.resolveRoomIdFromContact(call.contact).catch(error => {
+							console.error('[VoIP] Error resolving room id from contact (newCall):', error);
 						});
 					}
+				}
+
+				call.emitter.on('ended', () => {
+					RNCallKeep.endCall(call.callId);
+					this.onCallEnded();
 				});
 			}
 		});
@@ -113,34 +107,6 @@ class CallOrchestrator {
 		});
 	}
 
-	private setupNewCallHandler(): void {
-		const {controller} = this;
-		const session = controller.getSession();
-		session?.on('newCall', ({ call }: { call: IClientMediaCall }) => {
-			if (call && !call.hidden) {
-				call.emitter.on('stateChange', oldState => {
-					console.log(`📊 ${oldState} → ${call.state}`);
-					console.log('🤙 [VoIP] New call data:', call);
-				});
-
-				if (call.role === 'caller') {
-					useCallStore.getState().setCall(call);
-					this.onCallStarted();
-					if (useCallStore.getState().roomId == null) {
-						this.resolveRoomIdFromContact(call.contact).catch(error => {
-							console.error('[VoIP] Error resolving room id from contact (newCall):', error);
-						});
-					}
-				}
-
-				call.emitter.on('ended', () => {
-					RNCallKeep.endCall(call.callId);
-					this.onCallEnded();
-				});
-			}
-		});
-	}
-
 	public answerCall = async (callId: string): Promise<CallResult> => {
 		const { call: existingCall } = useCallStore.getState();
 		if (existingCall != null && existingCall.callId === callId) {
@@ -163,15 +129,14 @@ class CallOrchestrator {
 				console.error('[VoIP] Error resolving room id from contact (answerCall):', error);
 			});
 			return { success: true, callId };
-		} 
-			RNCallKeep.endCall(callId);
-			const st = useCallStore.getState();
-			if (st.nativeAcceptedCallId === callId) {
-				st.resetNativeCallId();
-			}
-			console.warn('[VoIP] Call not found:', callId);
-			return { success: false, error: 'Call not found' };
-		
+		}
+		RNCallKeep.endCall(callId);
+		const st = useCallStore.getState();
+		if (st.nativeAcceptedCallId === callId) {
+			st.resetNativeCallId();
+		}
+		console.warn('[VoIP] Call not found:', callId);
+		return { success: false, error: 'Call not found' };
 	};
 
 	public startCallByRoom = (room: TSubscriptionModel | ISubscription) => {
@@ -190,7 +155,7 @@ class CallOrchestrator {
 			return { success: false, error: 'Session not initialized' };
 		}
 		session.startCall(actor, userId);
-		return { success: true, callId: '' };
+		return { success: true };
 	};
 
 	public endCall = (callId: string) => {
@@ -225,10 +190,6 @@ class CallOrchestrator {
 	}
 
 	public reset() {
-		if (this.mediaSessionStoreChangeUnsubscribe) {
-			this.mediaSessionStoreChangeUnsubscribe();
-			this.mediaSessionStoreChangeUnsubscribe = null;
-		}
 		if (this.mediaSignalListener?.stop) {
 			this.mediaSignalListener.stop();
 		}
