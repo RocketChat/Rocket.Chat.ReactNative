@@ -60,6 +60,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
               autoCapitalize="none"
               autoCorrect={false}
               editable={false}
+              keyboardAppearance="light"
               keyboardType="phone-pad"
               multiline={true}
               placeholder=""
@@ -67,25 +68,33 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
               style={
                 [
                   {
-                    "backgroundColor": "transparent",
-                    "borderRadius": 4,
-                    "borderWidth": 1,
-                    "fontFamily": "Inter",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "paddingHorizontal": 16,
-                    "paddingVertical": 14,
-                    "textAlign": "left",
-                  },
-                  undefined,
-                  {},
-                  {
-                    "backgroundColor": "#FFFFFF",
-                    "borderColor": "#9EA2A8",
                     "color": "#1F2329",
                   },
-                  {},
-                  undefined,
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "borderRadius": 4,
+                      "borderWidth": 1,
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "paddingHorizontal": 16,
+                      "paddingVertical": 14,
+                      "textAlign": "left",
+                    },
+                    undefined,
+                    {},
+                    {
+                      "backgroundColor": "#FFFFFF",
+                      "borderColor": "#9EA2A8",
+                      "color": "#1F2329",
+                    },
+                    {},
+                    undefined,
+                  ],
+                  {
+                    "textAlign": "auto",
+                  },
                 ]
               }
               testID="dialpad-input"
@@ -1319,6 +1328,7 @@ exports[`Story Snapshots: WithValue should match snapshot 1`] = `
               autoCapitalize="none"
               autoCorrect={false}
               editable={false}
+              keyboardAppearance="light"
               keyboardType="phone-pad"
               multiline={true}
               placeholder=""
@@ -1326,25 +1336,33 @@ exports[`Story Snapshots: WithValue should match snapshot 1`] = `
               style={
                 [
                   {
-                    "backgroundColor": "transparent",
-                    "borderRadius": 4,
-                    "borderWidth": 1,
-                    "fontFamily": "Inter",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "paddingHorizontal": 16,
-                    "paddingVertical": 14,
-                    "textAlign": "left",
-                  },
-                  undefined,
-                  {},
-                  {
-                    "backgroundColor": "#FFFFFF",
-                    "borderColor": "#9EA2A8",
                     "color": "#1F2329",
                   },
-                  {},
-                  undefined,
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "borderRadius": 4,
+                      "borderWidth": 1,
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "paddingHorizontal": 16,
+                      "paddingVertical": 14,
+                      "textAlign": "left",
+                    },
+                    undefined,
+                    {},
+                    {
+                      "backgroundColor": "#FFFFFF",
+                      "borderColor": "#9EA2A8",
+                      "color": "#1F2329",
+                    },
+                    {},
+                    undefined,
+                  ],
+                  {
+                    "textAlign": "auto",
+                  },
                 ]
               }
               testID="dialpad-input"

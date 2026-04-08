@@ -38,7 +38,20 @@ jest.mock('react-native-file-viewer', () => ({
 	open: jest.fn(() => null)
 }));
 
-jest.mock('expo-haptics', () => jest.fn(() => null));
+jest.mock('react-native-incall-manager', () => ({
+	start: jest.fn(),
+	stop: jest.fn(),
+	setForceSpeakerphoneOn: jest.fn(() => Promise.resolve())
+}));
+
+jest.mock('expo-haptics', () => ({
+	impactAsync: jest.fn(),
+	ImpactFeedbackStyle: {
+		Light: 'light',
+		Medium: 'medium',
+		Heavy: 'heavy'
+	}
+}));
 
 jest.mock('expo-font', () => ({
 	isLoaded: jest.fn(() => true),

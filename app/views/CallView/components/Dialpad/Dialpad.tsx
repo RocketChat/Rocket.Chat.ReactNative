@@ -46,7 +46,6 @@ const Dialpad = ({ testID }: IDialpad): React.ReactElement => {
 				keyboardType='phone-pad'
 				containerStyle={styles.inputContainer}
 				showErrorMessage={false}
-				bottomSheet
 				testID={testID ? `${testID}-input` : 'dialpad-input'}
 				editable={false}
 				multiline

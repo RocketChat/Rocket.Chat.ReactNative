@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import BottomSheet from '@discord/bottom-sheet';
 
 import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';
 import { NewMediaCall } from './NewMediaCall';
@@ -71,27 +70,14 @@ const setStoreByVariant = (variant: 'empty' | 'searching' | 'userSelected' | 'si
 	});
 };
 
-const BottomSheetWrapper = ({ children }: { children: React.ReactNode }) => (
-	<View style={styles.root}>
-		<BottomSheet
-			index={0}
-			snapPoints={['50%']}
-			handleComponent={null}
-			enablePanDownToClose={false}
-			backgroundStyle={{ backgroundColor: 'transparent' }}>
-			<View style={styles.root}>{children}</View>
-		</BottomSheet>
-	</View>
-);
-
 export default {
 	title: 'NewMediaCall/NewMediaCall',
 	component: NewMediaCall,
 	decorators: [
 		(Story: React.ComponentType) => (
-			<BottomSheetWrapper>
+			<View style={styles.root}>
 				<Story />
-			</BottomSheetWrapper>
+			</View>
 		)
 	]
 };
