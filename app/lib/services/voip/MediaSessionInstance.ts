@@ -29,6 +29,7 @@ export type CallResult =
 class CallOrchestrator {
 	private controller: MediaSessionController;
 	private mediaSignalListener: { stop: () => void } | null = null;
+	private storeChangeUnsubscribe: (() => void) | null = null;
 	private onCallStarted: () => void;
 	private onCallEnded: () => void;
 
@@ -39,6 +40,7 @@ class CallOrchestrator {
 	}
 
 	public init(userId: string): void {
+		this.controller.reset();
 		this.controller = new MediaSessionController(userId);
 
 		mediaSessionStore.setSendSignalFn((signal: ClientMediaSignal) => {
@@ -49,9 +51,8 @@ class CallOrchestrator {
 		this.setupMediaSignalListener();
 	}
 
-	private setupMediaSignalListener(): void {
-		const { controller } = this;
-		const session = controller.getSession();
+	private attachNewCallListener(): void {
+		const session = this.controller.getSession();
 		session?.on('newCall', ({ call }: { call: IClientMediaCall }) => {
 			if (call && !call.hidden) {
 				call.emitter.on('stateChange', oldState => {
@@ -74,6 +75,15 @@ class CallOrchestrator {
 					this.onCallEnded();
 				});
 			}
+		});
+	}
+
+	private setupMediaSignalListener(): void {
+		const { controller } = this;
+		this.attachNewCallListener();
+		this.storeChangeUnsubscribe = mediaSessionStore.onChange(() => {
+			controller.refreshSession();
+			this.attachNewCallListener();
 		});
 
 		this.mediaSignalListener = sdk.onStreamData('stream-notify-user', (ddpMessage: IDDPMessage) => {
@@ -190,6 +200,10 @@ class CallOrchestrator {
 	}
 
 	public reset() {
+		if (this.storeChangeUnsubscribe) {
+			this.storeChangeUnsubscribe();
+			this.storeChangeUnsubscribe = null;
+		}
 		if (this.mediaSignalListener?.stop) {
 			this.mediaSignalListener.stop();
 		}

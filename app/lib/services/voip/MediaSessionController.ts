@@ -23,7 +23,6 @@ export class MediaSessionController {
 	}
 
 	public configure(): void {
-		this.reset();
 		registerGlobals();
 		this.configureIceServers();
 
@@ -40,6 +39,11 @@ export class MediaSessionController {
 	}
 
 	public getSession(): MediaSignalingSession | null {
+		return this.session;
+	}
+
+	public refreshSession(): MediaSignalingSession | null {
+		this.session = mediaSessionStore.getInstance(this.userId);
 		return this.session;
 	}
 

@@ -138,6 +138,52 @@ describe('CallOrchestrator', () => {
 			expect(mockOnStreamData).toHaveBeenCalledWith('stream-notify-user', expect.any(Function));
 		});
 
+		it('should re-attach newCall listener when mediaSessionStore session changes', () => {
+			const { mediaSessionStore } = jest.requireMock('./MediaSessionStore');
+			let changeCallback: (() => void) | null = null;
+			(mediaSessionStore.onChange as jest.Mock).mockImplementation((cb: () => void) => {
+				changeCallback = cb;
+				return jest.fn();
+			});
+			const session1 = {
+				on: jest.fn(),
+				processSignal: jest.fn(),
+				startCall: jest.fn(),
+				getMainCall: jest.fn()
+			};
+			const session2 = {
+				on: jest.fn(),
+				processSignal: jest.fn(),
+				startCall: jest.fn(),
+				getMainCall: jest.fn()
+			};
+			(mediaSessionStore.getInstance as jest.Mock).mockReturnValueOnce(session1).mockReturnValueOnce(session2);
+
+			mediaSessionInstance.init('user-1');
+			expect(session1.on).toHaveBeenCalledWith('newCall', expect.any(Function));
+
+			changeCallback?.();
+			expect(session2.on).toHaveBeenCalledWith('newCall', expect.any(Function));
+		});
+
+		it('should set sendSignal fn after mediaSessionStore.dispose so getInstance sees it', () => {
+			const { mediaSessionStore } = jest.requireMock('./MediaSessionStore');
+			mediaSessionInstance.init('user-1');
+			const disposeCalls = (mediaSessionStore.dispose as jest.Mock).mock.invocationCallOrder;
+			const setSendCalls = (mediaSessionStore.setSendSignalFn as jest.Mock).mock.invocationCallOrder;
+			const getInstanceCalls = (mediaSessionStore.getInstance as jest.Mock).mock.invocationCallOrder;
+			expect(disposeCalls.length).toBeGreaterThan(0);
+			expect(setSendCalls.length).toBeGreaterThan(0);
+			expect(getInstanceCalls.length).toBeGreaterThan(0);
+			// setSendSignalFn must happen AFTER the last dispose and BEFORE getInstance,
+			// otherwise makeInstance throws "send signal function must be set".
+			const lastDispose = Math.max(...disposeCalls);
+			const firstSetSend = Math.min(...setSendCalls);
+			const firstGetInstance = Math.min(...getInstanceCalls);
+			expect(firstSetSend).toBeGreaterThan(lastDispose);
+			expect(firstSetSend).toBeLessThan(firstGetInstance);
+		});
+
 		it('should route sendSignal through sdk.methodCall with user media-calls channel', () => {
 			const { mediaSessionStore } = jest.requireMock('./MediaSessionStore');
 			const spy = jest.spyOn(mediaSessionStore, 'setSendSignalFn');
