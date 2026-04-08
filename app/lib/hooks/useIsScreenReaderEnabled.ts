@@ -5,9 +5,21 @@ export const useIsScreenReaderEnabled = (): boolean => {
 	const [enabled, setEnabled] = useState(false);
 
 	useEffect(() => {
-		AccessibilityInfo.isScreenReaderEnabled().then(setEnabled);
-		const subscription = AccessibilityInfo.addEventListener('screenReaderChanged', setEnabled);
-		return () => subscription.remove();
+		let ignore = false;
+		AccessibilityInfo.isScreenReaderEnabled().then(result => {
+			if (!ignore) {
+				setEnabled(result);
+			}
+		});
+		const subscription = AccessibilityInfo.addEventListener('screenReaderChanged', result => {
+			if (!ignore) {
+				setEnabled(result);
+			}
+		});
+		return () => {
+			ignore = true;
+			subscription.remove();
+		};
 	}, []);
 
 	return enabled;

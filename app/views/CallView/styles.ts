@@ -5,10 +5,6 @@ import sharedStyles from '../Styles';
 export const CONTROLS_ANIMATION_DURATION = 300;
 
 export const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: 'red'
-	},
 	contentContainer: {
 		flex: 1,
 		justifyContent: 'space-between'
