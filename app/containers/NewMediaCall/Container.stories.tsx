@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import BottomSheet from '@discord/bottom-sheet';
 
 import { Container } from './Container';
 
@@ -22,27 +21,14 @@ const PlaceholderChildren = () => (
 	</View>
 );
 
-const BottomSheetWrapper = ({ children }: { children: React.ReactNode }) => (
-	<View style={styles.root}>
-		<BottomSheet
-			index={0}
-			snapPoints={['95%']}
-			handleComponent={null}
-			enablePanDownToClose={false}
-			backgroundStyle={{ backgroundColor: 'transparent' }}>
-			<View style={styles.root}>{children}</View>
-		</BottomSheet>
-	</View>
-);
-
 export default {
 	title: 'NewMediaCall/Container',
 	component: Container,
 	decorators: [
 		(Story: React.ComponentType) => (
-			<BottomSheetWrapper>
+			<View style={styles.root}>
 				<Story />
-			</BottomSheetWrapper>
+			</View>
 		)
 	]
 };

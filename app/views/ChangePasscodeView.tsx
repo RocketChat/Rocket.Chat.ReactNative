@@ -3,15 +3,21 @@ import { StyleSheet } from 'react-native';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import isEmpty from 'lodash/isEmpty';
 import Modal from 'react-native-modal';
-import Touchable from 'react-native-platform-touchable';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { hasNotch } from '../lib/methods/helpers';
 import { PasscodeChoose } from '../containers/Passcode';
 import EventEmitter from '../lib/methods/helpers/events';
 import { CustomIcon } from '../containers/CustomIcon';
 import { CHANGE_PASSCODE_EMITTER } from '../lib/constants/localAuthentication';
+import Touch from '../containers/Touch';
 
 const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
 	modal: {
 		margin: 0
 	},
@@ -69,12 +75,14 @@ const ChangePasscodeView = React.memo(() => {
 
 	return (
 		<Modal useNativeDriver isVisible={visible} hideModalContentWhileAnimating style={styles.modal}>
-			<PasscodeChoose finishProcess={onSubmit} force={data?.force} />
-			{!data?.force ? (
-				<Touchable onPress={onCancel} style={styles.close}>
-					<CustomIcon name='close' size={30} />
-				</Touchable>
-			) : null}
+			<GestureHandlerRootView style={styles.container}>
+				<PasscodeChoose finishProcess={onSubmit} force={data?.force} />
+				{!data?.force ? (
+					<Touch onPress={onCancel} style={styles.close}>
+						<CustomIcon name='close' size={30} />
+					</Touch>
+				) : null}
+			</GestureHandlerRootView>
 		</Modal>
 	);
 });

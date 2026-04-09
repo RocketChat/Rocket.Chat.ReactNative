@@ -10,13 +10,13 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
   testID="searchbox"
 >
   <A11yOrderView
-    orderKey=":r4:"
+    orderKey="«r4»"
   >
     <A11yIndexView
       importantForAccessibility="yes"
       orderFocusType={0}
       orderIndex={1}
-      orderKey=":r4:"
+      orderKey="«r4»"
     >
       <View
         style={

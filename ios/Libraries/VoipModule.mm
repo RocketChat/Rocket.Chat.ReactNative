@@ -2,7 +2,7 @@
 #import <React/RCTEventEmitter.h>
 #import <PushKit/PushKit.h>
 
-#import <RocketChatSpecs/RocketChatSpecs.h>
+#import <SSLPinning/SSLPinning.h>
 
 @interface VoipModule : RCTEventEmitter <NativeVoipSpec>
 @end

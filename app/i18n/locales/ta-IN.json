@@ -72,7 +72,7 @@
   "At_Least_1_Number": "குறைந்தது 1 எண்",
   "At_Least_1_Symbol": "குறைந்தது 1 சின்னம்",
   "At_Least_1_Uppercase_Letter": "குறைந்தது 1 பெரிய எழுத்து இருப்பதாக இருக்கும்",
-  "At_Least_Characters": "کم از کم {{quantity}} حروف",
+  "At_Least_Characters": "குறைந்தது {{quantity}} எழுத்துக்கள்",
   "At_Most_24_Characters": "அதிகபட்சம் 24 எழுத்துக்கள்",
   "At_Most_Characters": "அதிகபட்சம் {{quantity}} எழுத்துகள்",
   "Attention": "கவனம்",
