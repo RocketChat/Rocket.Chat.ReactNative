@@ -33,6 +33,13 @@ import android.app.Activity
 import android.app.KeyguardManager
 import chat.rocket.reactnative.MainActivity
 import chat.rocket.reactnative.notification.Ejson
+import chat.rocket.reactnative.voip.credentials.MMKVVoipCredentialsProvider
+import chat.rocket.reactnative.voip.credentials.VoipCredentialsProvider
+import chat.rocket.reactnative.voip.ddp.DdpClient
+import chat.rocket.reactnative.voip.ddp.DdpClientFactory
+import chat.rocket.reactnative.voip.ddp.DefaultDdpClientFactory
+import chat.rocket.reactnative.voip.signaling.CallSignalSender
+import chat.rocket.reactnative.voip.signaling.DefaultCallSignalSender
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.concurrent.atomic.AtomicBoolean
@@ -70,19 +77,22 @@ class VoipNotification(private val context: Context) {
         private const val CALLKEEP_CONNECTION_SERVICE_CLASS = "io.wazo.callkeep.VoiceConnectionService"
         private const val DISCONNECT_REASON_MISSED = 6
 
-        private data class VoipMediaCallIdentity(val userId: String, val deviceId: String)
-
-        /** Keep in sync with MediaSessionStore features (audio-only today). */
         private val SUPPORTED_VOIP_FEATURES = JSONArray().apply { put("audio") }
+
         private val timeoutHandler = Handler(Looper.getMainLooper())
         private val timeoutCallbacks = mutableMapOf<String, Runnable>()
-        private val ddpRegistry = VoipPerCallDdpRegistry<DDPClient> { client ->
+        private val ddpRegistry = VoipPerCallDdpRegistry<DdpClient> { client ->
             client.clearQueuedMethodCalls()
             client.disconnect()
         }
 
+        private val ddpClientFactory: DdpClientFactory = DefaultDdpClientFactory(ddpRegistry)
+
+        private val credentialsProvider: VoipCredentialsProvider = MMKVVoipCredentialsProvider()
+        private val callSignalSender: CallSignalSender = DefaultCallSignalSender(ddpRegistry, credentialsProvider)
+
         /** False when [callId] was reassigned or torn down (stale DDP callback). */
-        private fun isLiveClient(callId: String, client: DDPClient) = ddpRegistry.clientFor(callId) === client
+        private fun isLiveClient(callId: String, client: DdpClient) = ddpRegistry.clientFor(callId) === client
 
         /**
          * Cancels a VoIP notification by ID.
@@ -347,44 +357,15 @@ class VoipNotification(private val context: Context) {
         }
 
         private fun sendRejectSignal(context: Context, payload: VoipPayload) {
-            val client = ddpRegistry.clientFor(payload.callId)
-            if (client == null) {
-                Log.d(TAG, "Native DDP client unavailable, cannot send reject for ${payload.callId}")
-                return
-            }
-
-            val params = buildRejectSignalParams(context, payload) ?: return
-
-            client.callMethod("stream-notify-user", params) { success ->
-                Log.d(TAG, "Native reject signal result for ${payload.callId}: $success")
-                ddpRegistry.stopClient(payload.callId)
-            }
+            callSignalSender.sendReject(context, payload)
         }
 
         private fun queueRejectSignal(context: Context, payload: VoipPayload) {
-            val client = ddpRegistry.clientFor(payload.callId)
-            if (client == null) {
-                Log.d(TAG, "Native DDP client unavailable, cannot queue reject for ${payload.callId}")
-                return
-            }
-
-            val params = buildRejectSignalParams(context, payload) ?: return
-
-            client.queueMethodCall("stream-notify-user", params) { success ->
-                Log.d(TAG, "Queued native reject signal result for ${payload.callId}: $success")
-                ddpRegistry.stopClient(payload.callId)
-            }
-            Log.d(TAG, "Queued native reject signal for ${payload.callId}")
+            callSignalSender.queueReject(context, payload)
         }
 
         private fun flushPendingQueuedSignalsIfNeeded(callId: String): Boolean {
-            val client = ddpRegistry.clientFor(callId) ?: return false
-            if (!client.hasQueuedMethodCalls()) {
-                return false
-            }
-
-            client.flushQueuedMethodCalls()
-            return true
+            return callSignalSender.flushPendingQueuedSignalsIfNeeded(callId)
         }
 
         private fun sendAcceptSignal(
@@ -392,22 +373,7 @@ class VoipNotification(private val context: Context) {
             payload: VoipPayload,
             onComplete: (Boolean) -> Unit
         ) {
-            val client = ddpRegistry.clientFor(payload.callId)
-            if (client == null) {
-                Log.d(TAG, "Native DDP client unavailable, cannot send accept for ${payload.callId}")
-                onComplete(false)
-                return
-            }
-
-            val params = buildAcceptSignalParams(context, payload) ?: run {
-                onComplete(false)
-                return
-            }
-
-            client.callMethod("stream-notify-user", params) { success ->
-                Log.d(TAG, "Native accept signal result for ${payload.callId}: $success")
-                onComplete(success)
-            }
+            callSignalSender.sendAccept(context, payload, onComplete)
         }
 
         private fun queueAcceptSignal(
@@ -415,75 +381,7 @@ class VoipNotification(private val context: Context) {
             payload: VoipPayload,
             onComplete: (Boolean) -> Unit
         ) {
-            val client = ddpRegistry.clientFor(payload.callId)
-            if (client == null) {
-                Log.d(TAG, "Native DDP client unavailable, cannot queue accept for ${payload.callId}")
-                onComplete(false)
-                return
-            }
-
-            val params = buildAcceptSignalParams(context, payload) ?: run {
-                onComplete(false)
-                return
-            }
-
-            client.queueMethodCall("stream-notify-user", params) { success ->
-                Log.d(TAG, "Queued native accept signal result for ${payload.callId}: $success")
-                onComplete(success)
-            }
-            Log.d(TAG, "Queued native accept signal for ${payload.callId}")
-        }
-
-        /**
-         * Resolves user id for this host and Android [Settings.Secure.ANDROID_ID] as media-signaling contractId.
-         * Must match JS `getUniqueIdSync()` from react-native-device-info (iOS native code uses `DeviceUID`).
-         */
-        private fun resolveVoipMediaCallIdentity(context: Context, payload: VoipPayload): VoipMediaCallIdentity? {
-            val ejson = Ejson().apply {
-                host = payload.host
-            }
-            val userId = ejson.userId()
-            if (userId.isNullOrEmpty()) {
-                Log.d(TAG, "Missing userId, cannot build stream-notify-user params for ${payload.callId}")
-                ddpRegistry.stopClient(payload.callId)
-                return null
-            }
-            val deviceId = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
-            if (deviceId.isNullOrEmpty()) {
-                Log.d(TAG, "Missing deviceId, cannot build stream-notify-user params for ${payload.callId}")
-                ddpRegistry.stopClient(payload.callId)
-                return null
-            }
-            return VoipMediaCallIdentity(userId, deviceId)
-        }
-
-        private fun buildAcceptSignalParams(context: Context, payload: VoipPayload): JSONArray? {
-            val ids = resolveVoipMediaCallIdentity(context, payload) ?: return null
-            val signal = JSONObject().apply {
-                put("callId", payload.callId)
-                put("contractId", ids.deviceId)
-                put("type", "answer")
-                put("answer", "accept")
-                put("supportedFeatures", SUPPORTED_VOIP_FEATURES)
-            }
-            return JSONArray().apply {
-                put("${ids.userId}/media-calls")
-                put(signal.toString())
-            }
-        }
-
-        private fun buildRejectSignalParams(context: Context, payload: VoipPayload): JSONArray? {
-            val ids = resolveVoipMediaCallIdentity(context, payload) ?: return null
-            val signal = JSONObject().apply {
-                put("callId", payload.callId)
-                put("contractId", ids.deviceId)
-                put("type", "answer")
-                put("answer", "reject")
-            }
-            return JSONArray().apply {
-                put("${ids.userId}/media-calls")
-                put(signal.toString())
-            }
+            callSignalSender.queueAccept(context, payload, onComplete)
         }
 
         /**
@@ -572,8 +470,7 @@ class VoipNotification(private val context: Context) {
             }
 
             val callId = payload.callId
-            val client = DDPClient()
-            ddpRegistry.putClient(callId, client)
+            val client = ddpClientFactory.createClient(callId)
 
             Log.d(TAG, "Connecting DDP to send busy-reject for call $callId")
 
@@ -619,8 +516,7 @@ class VoipNotification(private val context: Context) {
 
             val deviceId = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
             val callId = payload.callId
-            val client = DDPClient()
-            ddpRegistry.putClient(callId, client)
+            val client = ddpClientFactory.createClient(callId)
 
             Log.d(TAG, "Starting DDP listener for call $callId")
 

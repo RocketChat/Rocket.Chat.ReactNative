@@ -1,4 +1,4 @@
-package chat.rocket.reactnative.voip
+package chat.rocket.reactnative.voip.ddp
 
 import android.os.Handler
 import android.os.Looper
@@ -12,7 +12,12 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.util.concurrent.TimeUnit
 
-class DDPClient {
+class DdpClientImpl(
+    private val httpClient: OkHttpClient = OkHttpClient.Builder()
+        .pingInterval(30, TimeUnit.SECONDS)
+        .build()
+) : DdpClient {
+
     private data class QueuedMethodCall(
         val method: String,
         val params: JSONArray,
@@ -20,11 +25,10 @@ class DDPClient {
     )
 
     companion object {
-        private const val TAG = "RocketChat.DDPClient"
+        private const val TAG = "RocketChat.DdpClient"
     }
 
     private var webSocket: WebSocket? = null
-    private var client: OkHttpClient? = null
     private var sendCounter = 0
     private var isConnected = false
     private val mainHandler = Handler(Looper.getMainLooper())
@@ -33,17 +37,12 @@ class DDPClient {
     private val queuedMethodCalls = mutableListOf<QueuedMethodCall>()
     private var connectedCallback: ((Boolean) -> Unit)? = null
 
-    var onCollectionMessage: ((JSONObject) -> Unit)? = null
+    override var onCollectionMessage: ((JSONObject) -> Unit)? = null
 
-    fun connect(host: String, callback: (Boolean) -> Unit) {
+    override fun connect(host: String, callback: (Boolean) -> Unit) {
         val wsUrl = buildWebSocketURL(host)
 
         Log.d(TAG, "Connecting to $wsUrl")
-
-        val httpClient = OkHttpClient.Builder()
-            .pingInterval(30, TimeUnit.SECONDS)
-            .build()
-        client = httpClient
 
         val request = Request.Builder().url(wsUrl).build()
 
@@ -78,7 +77,7 @@ class DDPClient {
         })
     }
 
-    fun login(token: String, callback: (Boolean) -> Unit) {
+    override fun login(token: String, callback: (Boolean) -> Unit) {
         val msg = nextMessage("method").apply {
             put("method", "login")
             put("params", JSONArray().apply {
@@ -106,7 +105,7 @@ class DDPClient {
         }
     }
 
-    fun subscribe(name: String, params: JSONArray, callback: (Boolean) -> Unit) {
+    override fun subscribe(name: String, params: JSONArray, callback: (Boolean) -> Unit) {
         val msg = nextMessage("sub").apply {
             put("name", name)
             put("params", params)
@@ -133,7 +132,7 @@ class DDPClient {
         }
     }
 
-    fun disconnect() {
+    override fun disconnect() {
         Log.d(TAG, "Disconnecting")
         isConnected = false
         synchronized(pendingCallbacks) { pendingCallbacks.clear() }
@@ -142,8 +141,7 @@ class DDPClient {
         onCollectionMessage = null
         webSocket?.close(1000, null)
         webSocket = null
-        client?.dispatcher?.executorService?.shutdown()
-        client = null
+        httpClient.dispatcher.executorService.shutdown()
     }
 
     private fun nextMessage(msg: String): JSONObject {
@@ -159,7 +157,7 @@ class DDPClient {
         return ws.send(json.toString())
     }
 
-    fun callMethod(method: String, params: JSONArray, callback: (Boolean) -> Unit) {
+    override fun callMethod(method: String, params: JSONArray, callback: (Boolean) -> Unit) {
         val msg = nextMessage("method").apply {
             put("method", method)
             put("params", params)
@@ -184,7 +182,7 @@ class DDPClient {
         }
     }
 
-    fun queueMethodCall(method: String, params: JSONArray, callback: (Boolean) -> Unit = {}) {
+    override fun queueMethodCall(method: String, params: JSONArray, callback: (Boolean) -> Unit) {
         synchronized(queuedMethodCalls) {
             queuedMethodCalls.add(
                 QueuedMethodCall(
@@ -196,10 +194,10 @@ class DDPClient {
         }
     }
 
-    fun hasQueuedMethodCalls(): Boolean =
+    override fun hasQueuedMethodCalls(): Boolean =
         synchronized(queuedMethodCalls) { queuedMethodCalls.isNotEmpty() }
 
-    fun flushQueuedMethodCalls() {
+    override fun flushQueuedMethodCalls() {
         val queuedCalls = synchronized(queuedMethodCalls) {
             queuedMethodCalls.toList().also { queuedMethodCalls.clear() }
         }
@@ -209,7 +207,7 @@ class DDPClient {
         }
     }
 
-    fun clearQueuedMethodCalls() {
+    override fun clearQueuedMethodCalls() {
         synchronized(queuedMethodCalls) {
             queuedMethodCalls.clear()
         }
