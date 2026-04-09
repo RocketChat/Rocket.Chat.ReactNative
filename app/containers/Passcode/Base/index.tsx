@@ -93,7 +93,7 @@ const Base = forwardRef<IBase, IPasscodeBase>(
 				return '';
 			});
 
-		useImperativeHandle(ref, () => ({
+		useImperativeHandle(ref, () => ({ 
 			wrongPasscode,
 			animate,
 			clearPasscode
