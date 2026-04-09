@@ -116,7 +116,7 @@
 		"react-native-skeleton-placeholder": "5.2.4",
 		"react-native-svg": "^15.12.1",
 		"react-native-url-polyfill": "2.0.0",
-		"react-native-webview": "^13.16.1",
+		"react-native-webview": "13.16.1",
 		"react-native-worklets": "^0.6.1",
 		"react-redux": "8.0.5",
 		"reanimated-tab-view": "^0.3.0",
