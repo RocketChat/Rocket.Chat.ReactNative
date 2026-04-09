@@ -10,15 +10,7 @@ export default {
 
 const PasscodeBase = ({ ...props }) => {
 	const ref = useRef<IBase>(null);
-	return (
-		<Base
-			ref={ref}
-			type={TYPE.CHOOSE}
-			title='Create Passcode'
-			onEndProcess={() => {}}
-			{...props}
-		/>
-	);
+	return <Base ref={ref} type={TYPE.CHOOSE} title='Create Passcode' onEndProcess={() => {}} {...props} />;
 };
 
 export const ChooseType = () => (
@@ -29,12 +21,7 @@ export const ChooseType = () => (
 
 export const ConfirmType = () => (
 	<View style={{ flex: 1 }}>
-		<PasscodeBase
-			type={TYPE.CONFIRM}
-			title='Confirm Passcode'
-			previousPasscode='123456'
-			onError={() => {}}
-		/>
+		<PasscodeBase type={TYPE.CONFIRM} title='Confirm Passcode' previousPasscode='123456' onError={() => {}} />
 	</View>
 );
 

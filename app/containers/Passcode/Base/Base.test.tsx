@@ -10,15 +10,7 @@ const onEndProcessMock = jest.fn();
 
 const TestBase = ({ ...props }) => {
 	const ref = createRef<IBase>();
-	return (
-		<Base
-			ref={ref}
-			type={TYPE.ENTER}
-			title='Test Title'
-			onEndProcess={onEndProcessMock}
-			{...props}
-		/>
-	);
+	return <Base ref={ref} type={TYPE.ENTER} title='Test Title' onEndProcess={onEndProcessMock} {...props} />;
 };
 
 describe('Base Passcode Component', () => {
