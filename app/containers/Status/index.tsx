@@ -21,11 +21,10 @@ const StatusContainer = ({ id, style, status, size = 32, ...props }: IStatus): R
 	});
 
 	useEffect(() => {
-		if (connected && !status) {
-			// Always fetch fresh presence when connected (especially after reconnection)
+		if (connected && statusState === 'loading' && !status) {
 			getUserPresence(id);
 		}
-	}, [connected, id, status]);
+	}, [connected, statusState]);
 
 	return <Status size={size} style={style} status={status ?? statusState} {...props} />;
 };
