@@ -6,9 +6,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Rocket.Chat React Native mobile client. Single-package React Native app (not a monorepo) using Yarn 1.22.22 (npm won't work). Supports iOS 13.4+ and Android 6.0+.
 
-- React 19, React Native 0.79, Expo 53
+- React 19.1, React Native 0.81, Expo 54
 - TypeScript with strict mode, baseUrl set to `app/` (imports resolve from there)
-- Min Node: 22.14.0
+- Node: engines `>=18`, volta pins 24.13.1
 
 ## Commands
 
