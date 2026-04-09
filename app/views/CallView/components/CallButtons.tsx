@@ -11,6 +11,7 @@ import { useTheme } from '../../../theme';
 import { showActionSheetRef } from '../../../containers/ActionSheet';
 import Dialpad from './Dialpad/Dialpad';
 import { useCallLayoutMode } from '../useCallLayoutMode';
+import { useResponsiveLayout } from '../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { type TIconsName } from '../../../containers/CustomIcon';
 
 interface ICallButtonConfig {
@@ -27,6 +28,8 @@ export const CallButtons = () => {
 
 	const { colors } = useTheme();
 	const { layoutMode } = useCallLayoutMode();
+	const { width, height } = useResponsiveLayout();
+	const isLandscape = width > height;
 
 	const callState = useCallStore(state => state.callState);
 	const isMuted = useCallStore(state => state.isMuted);
@@ -114,8 +117,10 @@ export const CallButtons = () => {
 	return (
 		<Animated.View
 			style={[
-				styles.buttonsContainer,
-				{ borderTopColor: colors.strokeExtraLight, backgroundColor: colors.surfaceLight },
+				isLandscape ? styles.buttonsContainerLandscape : styles.buttonsContainer,
+				isLandscape
+					? { borderLeftColor: colors.strokeExtraLight, backgroundColor: colors.surfaceLight }
+					: { borderTopColor: colors.strokeExtraLight, backgroundColor: colors.surfaceLight },
 				containerStyle
 			]}
 			pointerEvents={controlsVisible ? 'auto' : 'none'}
@@ -123,7 +128,7 @@ export const CallButtons = () => {
 			importantForAccessibility={controlsVisible ? 'auto' : 'no-hide-descendants'}
 			testID='call-buttons'>
 			{layoutMode === 'wide' ? (
-				<View style={styles.buttonsRow} testID='call-buttons-row-0'>
+				<View style={[styles.buttonsRow, isLandscape && styles.buttonsRowLandscape]} testID='call-buttons-row-0'>
 					{buttons.map(btn => (
 						<CallActionButton
 							key={btn.testID}
@@ -138,7 +143,7 @@ export const CallButtons = () => {
 				</View>
 			) : (
 				<>
-					<View style={styles.buttonsRow} testID='call-buttons-row-0'>
+					<View style={[styles.buttonsRow, isLandscape && styles.buttonsRowLandscape]} testID='call-buttons-row-0'>
 						{buttons.slice(0, 3).map(btn => (
 							<CallActionButton
 								key={btn.testID}
@@ -151,7 +156,7 @@ export const CallButtons = () => {
 							/>
 						))}
 					</View>
-					<View style={styles.buttonsRow} testID='call-buttons-row-1'>
+					<View style={[styles.buttonsRow, isLandscape && styles.buttonsRowLandscape]} testID='call-buttons-row-1'>
 						{buttons.slice(3, 6).map(btn => (
 							<CallActionButton
 								key={btn.testID}

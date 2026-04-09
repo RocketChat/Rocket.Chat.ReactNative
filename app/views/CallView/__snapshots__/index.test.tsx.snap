@@ -195,11 +195,14 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
     >
       <View
         style={
-          {
-            "flexDirection": "row",
-            "gap": 48,
-            "justifyContent": "center",
-          }
+          [
+            {
+              "flexDirection": "row",
+              "gap": 48,
+              "justifyContent": "center",
+            },
+            false,
+          ]
         }
         testID="call-buttons-row-0"
       >
@@ -500,11 +503,14 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
       </View>
       <View
         style={
-          {
-            "flexDirection": "row",
-            "gap": 48,
-            "justifyContent": "center",
-          }
+          [
+            {
+              "flexDirection": "row",
+              "gap": 48,
+              "justifyContent": "center",
+            },
+            false,
+          ]
         }
         testID="call-buttons-row-1"
       >
@@ -1005,11 +1011,14 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
     >
       <View
         style={
-          {
-            "flexDirection": "row",
-            "gap": 48,
-            "justifyContent": "center",
-          }
+          [
+            {
+              "flexDirection": "row",
+              "gap": 48,
+              "justifyContent": "center",
+            },
+            false,
+          ]
         }
         testID="call-buttons-row-0"
       >
@@ -1316,11 +1325,14 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
       </View>
       <View
         style={
-          {
-            "flexDirection": "row",
-            "gap": 48,
-            "justifyContent": "center",
-          }
+          [
+            {
+              "flexDirection": "row",
+              "gap": 48,
+              "justifyContent": "center",
+            },
+            false,
+          ]
         }
         testID="call-buttons-row-1"
       >
@@ -1823,11 +1835,14 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
     >
       <View
         style={
-          {
-            "flexDirection": "row",
-            "gap": 48,
-            "justifyContent": "center",
-          }
+          [
+            {
+              "flexDirection": "row",
+              "gap": 48,
+              "justifyContent": "center",
+            },
+            false,
+          ]
         }
         testID="call-buttons-row-0"
       >
@@ -2128,11 +2143,14 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
       </View>
       <View
         style={
-          {
-            "flexDirection": "row",
-            "gap": 48,
-            "justifyContent": "center",
-          }
+          [
+            {
+              "flexDirection": "row",
+              "gap": 48,
+              "justifyContent": "center",
+            },
+            false,
+          ]
         }
         testID="call-buttons-row-1"
       >
@@ -2633,11 +2651,14 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
     >
       <View
         style={
-          {
-            "flexDirection": "row",
-            "gap": 48,
-            "justifyContent": "center",
-          }
+          [
+            {
+              "flexDirection": "row",
+              "gap": 48,
+              "justifyContent": "center",
+            },
+            false,
+          ]
         }
         testID="call-buttons-row-0"
       >
@@ -2938,11 +2959,14 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
       </View>
       <View
         style={
-          {
-            "flexDirection": "row",
-            "gap": 48,
-            "justifyContent": "center",
-          }
+          [
+            {
+              "flexDirection": "row",
+              "gap": 48,
+              "justifyContent": "center",
+            },
+            false,
+          ]
         }
         testID="call-buttons-row-1"
       >
@@ -3443,11 +3467,14 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
     >
       <View
         style={
-          {
-            "flexDirection": "row",
-            "gap": 48,
-            "justifyContent": "center",
-          }
+          [
+            {
+              "flexDirection": "row",
+              "gap": 48,
+              "justifyContent": "center",
+            },
+            false,
+          ]
         }
         testID="call-buttons-row-0"
       >
@@ -3748,11 +3775,14 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
       </View>
       <View
         style={
-          {
-            "flexDirection": "row",
-            "gap": 48,
-            "justifyContent": "center",
-          }
+          [
+            {
+              "flexDirection": "row",
+              "gap": 48,
+              "justifyContent": "center",
+            },
+            false,
+          ]
         }
         testID="call-buttons-row-1"
       >
@@ -4253,11 +4283,14 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
     >
       <View
         style={
-          {
-            "flexDirection": "row",
-            "gap": 48,
-            "justifyContent": "center",
-          }
+          [
+            {
+              "flexDirection": "row",
+              "gap": 48,
+              "justifyContent": "center",
+            },
+            false,
+          ]
         }
         testID="call-buttons-row-0"
       >
@@ -4558,11 +4591,14 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
       </View>
       <View
         style={
-          {
-            "flexDirection": "row",
-            "gap": 48,
-            "justifyContent": "center",
-          }
+          [
+            {
+              "flexDirection": "row",
+              "gap": 48,
+              "justifyContent": "center",
+            },
+            false,
+          ]
         }
         testID="call-buttons-row-1"
       >
@@ -5061,11 +5097,14 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
     >
       <View
         style={
-          {
-            "flexDirection": "row",
-            "gap": 48,
-            "justifyContent": "center",
-          }
+          [
+            {
+              "flexDirection": "row",
+              "gap": 48,
+              "justifyContent": "center",
+            },
+            false,
+          ]
         }
         testID="call-buttons-row-0"
       >
@@ -5858,11 +5897,14 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
     >
       <View
         style={
-          {
-            "flexDirection": "row",
-            "gap": 48,
-            "justifyContent": "center",
-          }
+          [
+            {
+              "flexDirection": "row",
+              "gap": 48,
+              "justifyContent": "center",
+            },
+            false,
+          ]
         }
         testID="call-buttons-row-0"
       >
@@ -6663,11 +6705,14 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
     >
       <View
         style={
-          {
-            "flexDirection": "row",
-            "gap": 48,
-            "justifyContent": "center",
-          }
+          [
+            {
+              "flexDirection": "row",
+              "gap": 48,
+              "justifyContent": "center",
+            },
+            false,
+          ]
         }
         testID="call-buttons-row-0"
       >
@@ -7460,11 +7505,14 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
     >
       <View
         style={
-          {
-            "flexDirection": "row",
-            "gap": 48,
-            "justifyContent": "center",
-          }
+          [
+            {
+              "flexDirection": "row",
+              "gap": 48,
+              "justifyContent": "center",
+            },
+            false,
+          ]
         }
         testID="call-buttons-row-0"
       >
@@ -8257,11 +8305,14 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
     >
       <View
         style={
-          {
-            "flexDirection": "row",
-            "gap": 48,
-            "justifyContent": "center",
-          }
+          [
+            {
+              "flexDirection": "row",
+              "gap": 48,
+              "justifyContent": "center",
+            },
+            false,
+          ]
         }
         testID="call-buttons-row-0"
       >
@@ -9054,11 +9105,14 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
     >
       <View
         style={
-          {
-            "flexDirection": "row",
-            "gap": 48,
-            "justifyContent": "center",
-          }
+          [
+            {
+              "flexDirection": "row",
+              "gap": 48,
+              "justifyContent": "center",
+            },
+            false,
+          ]
         }
         testID="call-buttons-row-0"
       >

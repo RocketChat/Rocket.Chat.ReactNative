@@ -33,7 +33,7 @@ const CallerInfo = (): React.ReactElement => {
 			testID='caller-info-toggle'
 			onPress={isScreenReaderEnabled ? undefined : toggleControlsVisible}
 			accessibilityLabel={I18n.t('Toggle_call_controls')}
-			accessibilityRole='button'>
+			accessibilityRole={isScreenReaderEnabled ? 'none' : 'button'}>
 			<View style={styles.avatarContainer}>
 				<AvatarContainer text={avatarText} size={isLandscape ? 80 : 120} borderRadius={2} />
 			</View>
