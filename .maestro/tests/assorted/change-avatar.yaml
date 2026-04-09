@@ -92,8 +92,14 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'change-avatar-view-submit'
-      enabled: false
     timeout: 60000
+# Before selecting/changing avatar, Save should not proceed
+- tapOn:
+    id: 'change-avatar-view-submit'
+- extendedWaitUntil:
+    visible:
+      id: 'change-avatar-view-submit'
+    timeout: 3000
 - extendedWaitUntil:
     visible:
       text: 'Upload image'
@@ -103,7 +109,6 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'change-avatar-view-submit'
-      enabled: true
     timeout: 60000
 - tapOn:
     id: 'change-avatar-view-submit'
