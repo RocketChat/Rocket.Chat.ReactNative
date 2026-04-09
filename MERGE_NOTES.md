@@ -122,12 +122,12 @@ Executed from `.worktrees/merge-develop` on branch `merge/develop-into-voip-lib-
 
 ## SHA mapping table (cherry-picks 2a–2d)
 
-| # | Source (origin/develop) | Applied (merge branch) | PR | Purpose |
-|---|---|---|---|---|
-| 2a | `09ec94dac` | `79a987603` | #6974 | iOS 26 deployment target |
-| 2b | `ec27a7c4c` | `4eba633eb` | #6970 | Migrate to react-native-true-sheet |
-| 2c | `75d866b88` | `d8a2c8f06` | #6720 | Upgrade reanimated to v4 |
-| 2d | `91b223410` | `d8b48adba` | #6875 | Upgrade to RN 81 + Expo 54 |
+| #   | Source (origin/develop) | Applied (merge branch) | PR    | Purpose                            |
+| --- | ----------------------- | ---------------------- | ----- | ---------------------------------- |
+| 2a  | `09ec94dac`             | `79a987603`            | #6974 | iOS 26 deployment target           |
+| 2b  | `ec27a7c4c`             | `4eba633eb`            | #6970 | Migrate to react-native-true-sheet |
+| 2c  | `75d866b88`             | `d8a2c8f06`            | #6720 | Upgrade reanimated to v4           |
+| 2d  | `91b223410`             | `d8b48adba`            | #6875 | Upgrade to RN 81 + Expo 54         |
 
 ## Slice 7 — Bulk merge + per-file recipes + Kotlin compile gate
 
@@ -138,19 +138,19 @@ Executed from `.worktrees/merge-develop` on branch `merge/develop-into-voip-lib-
 
 ### Per-file resolutions
 
-| File | Strategy | Notes |
-|---|---|---|
-| `package.json` | manual union — take theirs, splice VoIP-only deps | Re-added `react-native-platform-touchable`, `react-native-slowlog`, `@types/react-native-platform-touchable`, `react-native-incall-manager`, `react-native-prompt-android`, `react-native-webrtc`, `@rocket.chat/media-signaling` (already present), `zustand` (already present). devDeps: `eslint-plugin-jsx-a11y`, `lint-staged`. |
-| `yarn.lock` | `git checkout MERGE_HEAD -- yarn.lock` + `yarn install` reconcile | Recipe from slice 5/6. Develop lock became base; yarn install added VoIP-only entries. 14/14 patches applied clean. Develop bumped patch targets: `@rocket.chat/message-parser+0.31.32`, `expo-file-system+19.0.21`, `react-native-webview+13.16.1`. |
-| `jest.setup.js` | manual — take theirs style on 3 formatting conflicts, preserve VoIP mocks | Conflicts were pure prettier body-style (arrow concise vs braced + parens). VoIP mocks `react-native-incall-manager` + `expo-haptics` (object form with `ImpactFeedbackStyle`) preserved from slice 4 adapt. |
-| `android/app/src/main/java/chat/rocket/reactnative/MainApplication.kt` | union — keep both imports + both `add()` calls | VoIP's `VoipTurboPackage` + develop's `InvertedScrollPackage`. Class body auto-merged cleanly (only the import block needed manual resolution). |
-| `android/app/build.gradle` | union — keep both deps | `testImplementation 'junit:junit:4.13.2'` (VoIP) + `implementation 'androidx.lifecycle:lifecycle-process:2.8.7'` (develop). |
-| `app/sagas/login.js` | manual — base ours (VoIP), layer develop's new logic | Kept VoIP's `disconnect` import (develop's unused `connect` import dropped). Added develop's `setUserPresenceAway` restApi import, `checkBackgroundAndSetAway` function, and `yield fork(checkBackgroundAndSetAway)` call. VoIP's `startVoipFork`, `getUserPresence(user.id)`, and removal of `fetchEnterpriseModulesFork` preserved. |
-| `app/containers/message/Touch.tsx` | re-deleted (`git rm -f`) | VoIP intentionally removed this file; merge re-added it from develop. Re-deleted since VoIP code no longer references it (0 importers). |
-| `app/containers/InAppNotification/NotifierComponent.{test.tsx,stories.tsx}` + snapshot | re-deleted (`git rm -f`) | VoIP removed the component; merge re-added test/stories from develop. Test file has no component to target. |
-| `app/containers/CustomIcon/selection.json`, `ios/custom.ttf`, `android/app/src/main/assets/fonts/custom.ttf` | `--theirs` | VoIP didn't touch icon font assets (empty log); take develop's bump. |
-| 15 non-VoIP snapshots (Avatar, DirectoryItem, List, LoginServices, RoomItem, ServerItem, TextInput, UIKitMessage, UIKitModal, Message, DiscussionsView/Item, ServersHistoryItem, LoadMore, ThreadMessagesView/Item) | `--theirs` then regenerate per-file | All 15 failures were pure theme color diffs (`#E4E7EA` → `#C1C7D0`). No logic changes. |
-| 9 regenerated snaps after install (Avatar, List, InAppNotification/NotifierComponent, CallView/index, DiscussionsView/Item, ThreadMessagesView/Item, RoomItem, UIKit/UiKitMessage, LoadMore) | `yarn jest -u <explicit paths>` | 15 snapshots updated across 9 suites. CallView/index is VoIP-touched — its snapshot matches VoIP's current component output. No blanket `-u`. |
+| File                                                                                                                                                                                                                | Strategy                                                                  | Notes                                                                                                                                                                                                                                                                                                                                 |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `package.json`                                                                                                                                                                                                      | manual union — take theirs, splice VoIP-only deps                         | Re-added `react-native-platform-touchable`, `react-native-slowlog`, `@types/react-native-platform-touchable`, `react-native-incall-manager`, `react-native-prompt-android`, `react-native-webrtc`, `@rocket.chat/media-signaling` (already present), `zustand` (already present). devDeps: `eslint-plugin-jsx-a11y`, `lint-staged`.   |
+| `yarn.lock`                                                                                                                                                                                                         | `git checkout MERGE_HEAD -- yarn.lock` + `yarn install` reconcile         | Recipe from slice 5/6. Develop lock became base; yarn install added VoIP-only entries. 14/14 patches applied clean. Develop bumped patch targets: `@rocket.chat/message-parser+0.31.32`, `expo-file-system+19.0.21`, `react-native-webview+13.16.1`.                                                                                  |
+| `jest.setup.js`                                                                                                                                                                                                     | manual — take theirs style on 3 formatting conflicts, preserve VoIP mocks | Conflicts were pure prettier body-style (arrow concise vs braced + parens). VoIP mocks `react-native-incall-manager` + `expo-haptics` (object form with `ImpactFeedbackStyle`) preserved from slice 4 adapt.                                                                                                                          |
+| `android/app/src/main/java/chat/rocket/reactnative/MainApplication.kt`                                                                                                                                              | union — keep both imports + both `add()` calls                            | VoIP's `VoipTurboPackage` + develop's `InvertedScrollPackage`. Class body auto-merged cleanly (only the import block needed manual resolution).                                                                                                                                                                                       |
+| `android/app/build.gradle`                                                                                                                                                                                          | union — keep both deps                                                    | `testImplementation 'junit:junit:4.13.2'` (VoIP) + `implementation 'androidx.lifecycle:lifecycle-process:2.8.7'` (develop).                                                                                                                                                                                                           |
+| `app/sagas/login.js`                                                                                                                                                                                                | manual — base ours (VoIP), layer develop's new logic                      | Kept VoIP's `disconnect` import (develop's unused `connect` import dropped). Added develop's `setUserPresenceAway` restApi import, `checkBackgroundAndSetAway` function, and `yield fork(checkBackgroundAndSetAway)` call. VoIP's `startVoipFork`, `getUserPresence(user.id)`, and removal of `fetchEnterpriseModulesFork` preserved. |
+| `app/containers/message/Touch.tsx`                                                                                                                                                                                  | re-deleted (`git rm -f`)                                                  | VoIP intentionally removed this file; merge re-added it from develop. Re-deleted since VoIP code no longer references it (0 importers).                                                                                                                                                                                               |
+| `app/containers/InAppNotification/NotifierComponent.{test.tsx,stories.tsx}` + snapshot                                                                                                                              | re-deleted (`git rm -f`)                                                  | VoIP removed the component; merge re-added test/stories from develop. Test file has no component to target.                                                                                                                                                                                                                           |
+| `app/containers/CustomIcon/selection.json`, `ios/custom.ttf`, `android/app/src/main/assets/fonts/custom.ttf`                                                                                                        | `--theirs`                                                                | VoIP didn't touch icon font assets (empty log); take develop's bump.                                                                                                                                                                                                                                                                  |
+| 15 non-VoIP snapshots (Avatar, DirectoryItem, List, LoginServices, RoomItem, ServerItem, TextInput, UIKitMessage, UIKitModal, Message, DiscussionsView/Item, ServersHistoryItem, LoadMore, ThreadMessagesView/Item) | `--theirs` then regenerate per-file                                       | All 15 failures were pure theme color diffs (`#E4E7EA` → `#C1C7D0`). No logic changes.                                                                                                                                                                                                                                                |
+| 9 regenerated snaps after install (Avatar, List, InAppNotification/NotifierComponent, CallView/index, DiscussionsView/Item, ThreadMessagesView/Item, RoomItem, UIKit/UiKitMessage, LoadMore)                        | `yarn jest -u <explicit paths>`                                           | 15 snapshots updated across 9 suites. CallView/index is VoIP-touched — its snapshot matches VoIP's current component output. No blanket `-u`.                                                                                                                                                                                         |
 
 ### Post-merge eslint --fix
 
@@ -179,10 +179,10 @@ Executed from `.worktrees/merge-develop` on branch `merge/develop-into-voip-lib-
 ```diff
 @@ -98,6 +98,20 @@ class NotificationIntentHandler {
              }
- 
+
              try {
 +                val notId = extras.getString("notId")
-+                
++
 +                // Clear the notification messages from the static map to prevent stacking
 +                if (!notId.isNullOrEmpty()) {
 +                    try {
@@ -205,11 +205,13 @@ Executed from `.worktrees/merge-develop` on branch `merge/develop-into-voip-lib-
 **Verdict: PASS**
 
 **Invariant 1 — VoIP early-return intact (line 25-27)**
+
 ```kotlin
 if (VoipNotification.handleMainActivityVoipIntent(context, intent)) {
     return
 }
 ```
+
 First statement in `handleIntent()`. If the intent is a VoIP payload, it is parsed into `VoipPayload`, handled, and control returns immediately. VoipPayload parsing path preserved.
 
 **Invariant 2 — `clearMessages` block positioned on non-VoIP path only**
@@ -240,4 +242,3 @@ VoIP branch's `callerName` → `caller` rename survived the merge in the videoco
 - `ios/Podfile.lock` regenerated: +30/-8 lines (expected from RN 81 + Expo 54 + Jitsi WebRTC refresh after the iOS 26 deployment target bump).
 - Pre-existing CocoaPods warnings (not introduced by this merge): `ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES` and `CLANG_CXX_LANGUAGE_STANDARD` overrides on RocketChatRN/Rocket.Chat/NotificationService targets; hermes-engine script phase notice.
 - Committed as an `adapt:` commit that bundles the regenerated `Podfile.lock` with this Slice 9 log entry.
-
