@@ -175,7 +175,6 @@ tags:
     timeout: 60000
 - tapOn:
     text: 'Fetch image from URL'
-- runFlow: '../../helpers/hide-keyboard.yaml'
 - extendedWaitUntil:
     visible:
       id: 'change-avatar-view-submit'
