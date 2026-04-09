@@ -1,11 +1,11 @@
 package chat.rocket.reactnative.voip.credentials
 
-import android.content.Context
+import android.content.ContentResolver
 import android.provider.Settings
 import chat.rocket.reactnative.notification.Ejson
 
 open class MMKVVoipCredentialsProvider(
-    private val context: Context,
+    private val contentResolver: ContentResolver,
     private val host: String
 ) : VoipCredentialsProvider {
 
@@ -25,5 +25,5 @@ open class MMKVVoipCredentialsProvider(
     }
 
     override fun deviceId(): String =
-        Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+        Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
 }

@@ -11,9 +11,11 @@ import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
 import io.mockk.mockkStatic
+import android.util.Log
 import io.mockk.slot
 import io.mockk.verify
 import org.json.JSONArray
+import org.json.JSONObject
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -58,6 +60,8 @@ class CallSignalSenderTest {
         MockKAnnotations.init(this)
 
         mockkStatic(Settings.Secure::class)
+        mockkStatic("android.util.Log")
+        every { Log.d(any(), any()) } returns 0
         every { mockContext.contentResolver } returns mockContentResolver
         every {
             Settings.Secure.getString(mockContentResolver, Settings.Secure.ANDROID_ID)

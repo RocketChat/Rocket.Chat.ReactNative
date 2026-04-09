@@ -51,10 +51,92 @@ import java.util.concurrent.atomic.AtomicBoolean
  * When CallKeep is available (app running), it uses the native telecom call UI.
  * When CallKeep is not available (app killed), it shows a high-priority notification
  * similar to VideoConfNotification.
+ *
+ * ## Architecture Overview
+ *
+ * VoipNotification is the Android-side entry point for incoming VoIP calls. All DDP
+ * communication is delegated through injectable interfaces, enabling unit testing without
+ * Robolectric.
+ *
+ * ### Component Map
+ *
+ * ```
+ * VoipNotification
+ * ├── Telecom actions (TelecomManager / VoiceConnectionService) — Phone app integration
+ * ├── DDP setup via DdpClientFactory
+ * │   └── DdpClient (interface) → DdpClientImpl (OkHttp WebSocket)
+ * │       └── DdpClientFactory creates shared OkHttpClient, registers in VoipPerCallDdpRegistry
+ * ├── Signal delegation → CallSignalSender
+ * │   ├── sendAccept / queueAccept / sendReject / queueReject
+ * │   ├── flushPendingQueuedSignalsIfNeeded (after DDP login)
+ * │   └── buildAcceptSignalParams / buildRejectSignalParams
+ * │       └── resolveMediaCallIdentity → VoipCredentialsProvider
+ * └── Credentials → VoipCredentialsProvider → MMKVVoipCredentialsProvider
+ *     └── userId (from Ejson), token (from Ejson), deviceId (from Settings.Secure.ANDROID_ID)
+ * ```
+ *
+ * ### Call Signal Flow (accept / busy-reject)
+ *
+ * 1. **Accept** (user taps Accept in notification or IncomingCallActivity):
+ *    - VoipNotification.handleAcceptAction() is called
+ *    - DdpClient retrieved from VoipPerCallDdpRegistry via callId
+ *    - If DDP not yet logged in → CallSignalSender.queueAccept() stores the signal
+ *    - If DDP already logged in → CallSignalSender.sendAccept() calls stream-notify-user immediately
+ *    - After login completes, flushPendingQueuedSignalsIfNeeded() drains any queued signals
+ *    - Telecom.answerIncomingCall() fires to tell the OS call is answered
+ *    - ACTION_DISMISS broadcast closes the incoming-call UI
+ *
+ * 2. **Busy Reject** (incoming call while user already on a call):
+ *    - connectAndRejectBusy() creates a short-lived DdpClient
+ *    - Connects → logs in → sends reject signal → disconnects (no subscription, no listener)
+ *    - CallSignalSender owns the send-vs-queue decision internally
+ *
+ * 3. **Call End Detection** (caller hangs up / another device accepts):
+ *    - startListeningForCallEnd() creates a long-lived DdpClient for the call
+ *    - Subscribes to stream-notify-user for the user's media-signal events
+ *    - onCollectionMessage handler detects: accepted-from-other-device or hangup
+ *    - Cleans up: cancel timeout, disconnect Telecom, dismiss notification, stop DDP client
+ *
+ * 4. **Decline** (user taps Decline):
+ *    - If DDP logged in → sendRejectSignal() fires immediately
+ *    - If not logged in → queueRejectSignal() stores it for flush after login
+ *    - Telecom.rejectIncomingCall() tears down the ringing connection
+ *
+ * ### VoipPerCallDdpRegistry
+ *
+ * A per-call registry that maps callId → DdpClient. Each call gets its own DdpClient
+ * instance so signals and subscriptions are isolated. The registry:
+ * - Stores clients with a cleanup callback (clearQueuedMethodCalls + disconnect)
+ * - Tracks login state per callId (markLoggedIn / isLoggedIn)
+ * - stopClient() runs the cleanup callback and removes the client
+ * - stopAllClients() tears down every active client (called from JS on unmount)
+ *
+ * ### Why CallSignalSender owns the send-vs-queue decision
+ *
+ * Rather than having callers check ddpRegistry.isLoggedIn() before deciding whether to
+ * send or queue, that logic lives inside CallSignalSender. This means:
+ * - VoipNotification.call sites are simpler (just call sendX / queueX)
+ * - The decision is centralized and independently testable (13 cases in CallSignalSenderTest)
+ * - Future flows (e.g., retry on transient failure) can be added without touching callers
+ *
+ * ### Phase 2 will replace direct Ejson reads
+ *
+ * connectAndRejectBusy() and startListeningForCallEnd() still read Ejson directly.
+ * Phase 2 will wire VoipCredentialsProvider throughout so DdpClientFactory receives
+ * credentials as constructor parameters rather than reading Ejson inline.
  */
 class VoipNotification(private val context: Context) {
 
+    init {
+        // Capture context from the first instance so companion object can use it.
+        // This is safe: there is only ever one VoipNotification instance (per service).
+        if (Companion.context == null) {
+            Companion.context = context.applicationContext
+        }
+    }
+
     companion object {
+        private var context: Context? = null
         private const val TAG = "RocketChat.VoIP"
 
         const val CHANNEL_ID = "voip-call"
@@ -88,8 +170,14 @@ class VoipNotification(private val context: Context) {
 
         private val ddpClientFactory: DdpClientFactory = DefaultDdpClientFactory(ddpRegistry)
 
-        private val credentialsProvider: VoipCredentialsProvider = MMKVVoipCredentialsProvider()
-        private val callSignalSender: CallSignalSender = DefaultCallSignalSender(ddpRegistry, credentialsProvider)
+        // context is captured from the first VoipNotification instance.
+        // host="" since credentials are stored under server-keyed MMKV keys independent of host.
+        private val credentialsProvider: VoipCredentialsProvider by lazy {
+            MMKVVoipCredentialsProvider(context!!.contentResolver, "")
+        }
+        private val callSignalSender: CallSignalSender by lazy {
+            DefaultCallSignalSender(ddpRegistry, credentialsProvider)
+        }
 
         /** False when [callId] was reassigned or torn down (stale DDP callback). */
         private fun isLiveClient(callId: String, client: DdpClient) = ddpRegistry.clientFor(callId) === client

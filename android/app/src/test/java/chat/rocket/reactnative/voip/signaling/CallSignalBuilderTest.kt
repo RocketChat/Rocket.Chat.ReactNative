@@ -8,6 +8,7 @@ import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockkStatic
+import android.util.Log
 import org.json.JSONArray
 import org.json.JSONObject
 import org.junit.Assert.assertEquals
@@ -49,6 +50,7 @@ class CallSignalBuilderTest {
         MockKAnnotations.init(this)
 
         mockkStatic(Settings.Secure::class)
+        mockkStatic(Log::class)
         every { mockContext.contentResolver } returns mockContentResolver
         every {
             Settings.Secure.getString(mockContentResolver, Settings.Secure.ANDROID_ID)

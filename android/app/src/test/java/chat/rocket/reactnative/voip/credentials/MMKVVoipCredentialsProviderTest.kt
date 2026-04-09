@@ -44,7 +44,7 @@ class MMKVVoipCredentialsProviderTest {
         val mockEjson = mockk<Ejson>()
         every { mockEjson.userId() } returns testUserId
 
-        val provider = object : MMKVVoipCredentialsProvider(mockContext, testHost) {
+        val provider = object : MMKVVoipCredentialsProvider(mockContentResolver, testHost) {
             override fun createEjson(): Ejson = mockEjson
         }
 
@@ -56,7 +56,7 @@ class MMKVVoipCredentialsProviderTest {
         val mockEjson = mockk<Ejson>()
         every { mockEjson.userId() } returns ""
 
-        val provider = object : MMKVVoipCredentialsProvider(mockContext, testHost) {
+        val provider = object : MMKVVoipCredentialsProvider(mockContentResolver, testHost) {
             override fun createEjson(): Ejson = mockEjson
         }
 
@@ -68,7 +68,7 @@ class MMKVVoipCredentialsProviderTest {
         val mockEjson = mockk<Ejson>()
         every { mockEjson.token() } returns testToken
 
-        val provider = object : MMKVVoipCredentialsProvider(mockContext, testHost) {
+        val provider = object : MMKVVoipCredentialsProvider(mockContentResolver, testHost) {
             override fun createEjson(): Ejson = mockEjson
         }
 
@@ -80,7 +80,7 @@ class MMKVVoipCredentialsProviderTest {
         val mockEjson = mockk<Ejson>()
         every { mockEjson.token() } returns ""
 
-        val provider = object : MMKVVoipCredentialsProvider(mockContext, testHost) {
+        val provider = object : MMKVVoipCredentialsProvider(mockContentResolver, testHost) {
             override fun createEjson(): Ejson = mockEjson
         }
 
@@ -93,7 +93,7 @@ class MMKVVoipCredentialsProviderTest {
         every { mockEjson.userId() } returns ""
         every { mockEjson.token() } returns ""
 
-        val provider = object : MMKVVoipCredentialsProvider(mockContext, testHost) {
+        val provider = object : MMKVVoipCredentialsProvider(mockContentResolver, testHost) {
             override fun createEjson(): Ejson = mockEjson
         }
 
@@ -106,7 +106,7 @@ class MMKVVoipCredentialsProviderTest {
         every { mockEjson.userId() } returns testUserId
         every { mockEjson.token() } returns testToken
 
-        val provider = object : MMKVVoipCredentialsProvider(mockContext, testHost) {
+        val provider = object : MMKVVoipCredentialsProvider(mockContentResolver, testHost) {
             override fun createEjson(): Ejson = mockEjson
         }
 
