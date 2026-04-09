@@ -1,5 +1,5 @@
 import { Q } from '@nozbe/watermelondb';
-import { select, takeLatest } from 'redux-saga/effects';
+import { delay, select, takeLatest } from 'redux-saga/effects';
 
 import log from '../lib/methods/helpers/log';
 import { localAuthenticate, saveLastLocalAuthenticationSession } from '../lib/methods/helpers/localAuthentication';
@@ -10,6 +10,9 @@ import { setUserPresenceOnline, setUserPresenceAway } from '../lib/services/rest
 import { checkPendingNotification } from '../lib/notifications';
 import database from '../lib/database';
 import { getUsersPresence } from '../lib/methods/getUsersPresence';
+
+const CONNECTION_RETRY_LIMIT = 5;
+const CONNECTION_RETRY_DELAY_MS = 500;
 
 const isAuthAndConnected = function* isAuthAndConnected() {
 	const login = yield select(state => state.login);
@@ -37,29 +40,45 @@ const getDirectMessageUserIds = async () => {
 	}
 };
 
+const waitForConnection = function* waitForConnection() {
+	let retries = 0;
+	let isReady = yield isAuthAndConnected();
+	while (!isReady && retries < CONNECTION_RETRY_LIMIT) {
+		yield delay(CONNECTION_RETRY_DELAY_MS);
+		isReady = yield isAuthAndConnected();
+		retries++;
+	}
+	return isReady;
+};
+
 const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 	const appRoot = yield select(state => state.app.root);
 	if (appRoot !== RootEnum.ROOT_INSIDE) {
-		return;
-	}
-	const isReady = yield isAuthAndConnected();
-	if (!isReady) {
 		return;
 	}
 	try {
 		const server = yield select(state => state.server.server);
 		yield localAuthenticate(server);
 		checkAndReopen();
-		// Check for pending notification when app comes to foreground (Android - notification tap while in background)
-		checkPendingNotification().catch(e => {
-			log('[state.js] Error checking pending notification:', e);
-		});
+
+		const isReady = yield waitForConnection();
+		if (!isReady) {
+			log('[state.js] Connection not ready after retries, aborting foreground tasks');
+			return;
+		}
+
 		// Refresh presence for DM users to ensure status is up-to-date after background
+		yield setUserPresenceOnline();
+
 		const dmUserIds = yield getDirectMessageUserIds();
 		if (dmUserIds.length > 0) {
 			yield getUsersPresence(dmUserIds);
 		}
-		return yield setUserPresenceOnline();
+
+		// Check for pending notification when app comes to foreground (Android - notification tap while in background)
+		checkPendingNotification().catch(e => {
+			log('[state.js] Error checking pending notification:', e);
+		});
 	} catch (e) {
 		log(e);
 	}
