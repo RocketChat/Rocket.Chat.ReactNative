@@ -10,6 +10,7 @@ import database from '../database';
 import { type IUser } from '../../definitions';
 import sdk from '../services/sdk';
 import { compareServerVersion } from './helpers';
+import log from './helpers/log';
 import userPreferences from './userPreferences';
 import { NOTIFICATION_PRESENCE_CAP } from '../constants/notifications';
 import { setNotificationPresenceCap } from '../../actions/app';
@@ -166,6 +167,6 @@ export const refreshDmUsersPresence = async (): Promise<void> => {
 			await getUsersPresence(dmUserIds);
 		}
 	} catch (e) {
-		// Silently fail
+		log(e);
 	}
 };
