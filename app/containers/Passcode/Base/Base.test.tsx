@@ -50,12 +50,11 @@ describe('Base Passcode Component', () => {
 
 	test('should render all passcode buttons with testIDs', () => {
 		const { getByTestId } = render(<TestBase type={TYPE.ENTER} title='Enter Passcode' />);
-		// Number buttons 1-9
-		for (let i = 1; i <= 9; i++) {
+		// Number buttons 0-9
+		for (let i = 0; i <= 9; i++) {
 			expect(getByTestId(`passcode-button-${i}`)).toBeTruthy();
 		}
-		// Button 0 and backspace
-		expect(getByTestId('passcode-button-0')).toBeTruthy();
+		// backspace button
 		expect(getByTestId('passcode-button-backspace')).toBeTruthy();
 	});
 });
