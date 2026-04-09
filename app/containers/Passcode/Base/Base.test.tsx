@@ -42,9 +42,7 @@ describe('Base Passcode Component', () => {
 	});
 
 	test('should render biometry button when showBiometry is true', () => {
-		const { getByTestId } = render(
-			<TestBase type={TYPE.ENTER} title='Enter Passcode' showBiometry onBiometryPress={() => {}} />
-		);
+		const { getByTestId } = render(<TestBase type={TYPE.ENTER} title='Enter Passcode' showBiometry onBiometryPress={() => {}} />);
 		expect(getByTestId('biometry-button')).toBeTruthy();
 	});
 
