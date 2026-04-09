@@ -20,7 +20,7 @@ import { type OperationParams, type ResultFor } from '../../definitions/rest/hel
 import { type SubscriptionsEndpoints } from '../../definitions/rest/v1/subscriptions';
 import { Encryption } from '../encryption';
 import { type RoomTypes, roomTypeToApiType } from '../methods/roomTypeToApiType';
-import { uploadUserAvatarBase64, uploadUserAvatarMultipart } from '../methods/uploadAvatar/uploadAvatar';
+import { uploadUserAvatarMultipart } from '../methods/uploadAvatar/uploadAvatar';
 import { unsubscribeRooms } from '../methods/subscribeRooms';
 import { compareServerVersion, getBundleId, isIOS } from '../methods/helpers';
 import { getDeviceToken } from '../notifications';
@@ -756,11 +756,6 @@ export const setAvatarFromService = async ({
 
 	if (isHttpUrl) {
 		await sdk.post('users.setAvatar', { avatarUrl: url });
-		return;
-	}
-
-	if (typeof data === 'string' && data.length > 0) {
-		await uploadUserAvatarBase64(data, contentType);
 		return;
 	}
 

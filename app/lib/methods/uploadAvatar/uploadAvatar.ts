@@ -1,5 +1,4 @@
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
-import * as FileSystem from 'expo-file-system/legacy';
 
 import FileUpload from '../helpers/fileUpload';
 import { type IFormData } from '../helpers/fileUpload/definitions';
@@ -19,15 +18,4 @@ export const uploadUserAvatarMultipart = async (localUri: string, mimeType: stri
 	};
 	const upload = new FileUpload(`${server}/api/v1/users.setAvatar`, headers, formData);
 	await upload.send();
-};
-
-export const uploadUserAvatarBase64 = async (data: string, contentType = ''): Promise<void> => {
-	const ext = contentType?.includes('png') ? 'png' : 'jpeg';
-	const cacheDir = FileSystem.cacheDirectory;
-	if (!cacheDir) {
-		throw new Error('No cache directory');
-	}
-	const cacheFile = `${cacheDir}avatar-suggestion-${Date.now()}.${ext}`;
-	await FileSystem.writeAsStringAsync(cacheFile, data, { encoding: FileSystem.EncodingType.Base64 });
-	await uploadUserAvatarMultipart(cacheFile, contentType || `image/${ext}`, `avatar.${ext}`);
 };
