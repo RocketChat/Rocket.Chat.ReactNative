@@ -2,53 +2,93 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Project Overview
+
+Rocket.Chat React Native mobile client. Single-package React Native app (not a monorepo) using Yarn 1.22.22 (npm won't work). Supports iOS 13.4+ and Android 6.0+.
+
+- React 19, React Native 0.79, Expo 53
+- TypeScript with strict mode, baseUrl set to `app/` (imports resolve from there)
+- Min Node: 22.14.0
+- UBIQUITOUS_LANGUAGE has domains
+
 ## Commands
 
-- **Install:** `yarn` (postinstall runs patch-package), `yarn pod-install` for iOS
-- **Run:** `yarn android`, `yarn ios`
-- **Lint:** `yarn lint` — runs ESLint + `tsc` together
-- **Test:** `yarn test` — single test: `yarn test --testPathPattern=<path>`
-- **Format:** `yarn prettier-lint` — always run before considering code done
+```bash
+# Install & setup
+yarn                       # Install dependencies (postinstall runs patch-package)
+yarn pod-install           # Install iOS CocoaPods (required before iOS builds)
 
-## Conventions
+# Run
+yarn start                 # Start Metro bundler
+yarn ios                   # Build and run on iOS
+yarn android               # Build and run on Android
 
-- **Branches:** dot-separated — `feat.call-waiting`, `fix.crash-on-login`, `chore.bump-deps`
-- **Commits:** conventional with scope — `feat(voip): add call waiting`
-- **PRs:** target `develop`
-- **TS imports:** use `import type { X }` or `import { type X }`
-- **Imports:** `tsconfig.baseUrl` is `app/` — e.g., `import X from 'lib/foo'` resolves to `app/lib/foo`
+# Test
+TZ=UTC yarn test           # Run Jest unit tests (TZ=UTC is set in script)
+yarn test -- --testPathPattern='path/to/test'  # Run a single test file
+yarn test-update           # Update snapshots
+
+# Lint & format
+yarn lint                  # ESLint + TypeScript compiler check
+yarn prettier-lint         # Prettier auto-fix + lint
+
+# Storybook
+yarn storybook:start       # Start Metro with Storybook UI
+yarn storybook-generate    # Generate story snapshots
+```
+
+## Code Style
+
+- **Prettier**: tabs, single quotes, 130 char width, no trailing commas, arrow parens avoid, bracket same line
+- **ESLint**: `@rocket.chat/eslint-config` base with React, React Native, TypeScript, Jest plugins
+- **Before committing**: Run `yarn prettier-lint` and `TZ=UTC yarn test` for modified files
+- Pre-commit hooks enforce these checks
 
 ## Architecture
 
-- Two app targets: **RocketChatRN** (experimental) and **Rocket.Chat** (official)
-- Redux + Redux-Saga for state, WatermelonDB for local database
-- React Compiler in annotation mode — opt-in per component
-- E2E tests: `.mock.ts` files auto-prioritized by Metro (`RUNNING_E2E_TESTS=true`)
+### State Management: Redux + Redux-Saga
 
-## Accessibility (a11y)
+- **Actions** (`app/actions/`) — plain action creators
+- **Reducers** (`app/reducers/`) — state shape (app, login, connect, rooms, encryption, etc.)
+- **Sagas** (`app/sagas/`) — side effects (init, login, rooms, messages, encryption, deepLinking, videoConf)
+- **Selectors** (`app/selectors/`) — memoized with reselect
+- **Store** (`app/lib/store/`) — configures middleware (saga, app state, internet state)
 
-### Screen reader
+### Navigation: React Navigation 7
 
-- All interactive elements need `accessibilityLabel` + `accessibilityRole`
-- Use `react-native-a11y-order` (`A11y.Order` / `A11y.Index`) when reading order differs from visual order
-- Use `AccessibilityInfo.setAccessibilityFocus()` to focus important elements on mount (e.g., incoming call)
-- Use `AccessibilityInfo.announceForAccessibility()` for dynamic state changes (errors, call cancelled)
-- Use `useIsScreenReaderEnabled` (`app/lib/hooks/useIsScreenReaderEnabled.ts`) to adapt behavior when a screen reader is active — e.g., disabling tap-to-hide gestures
-- `accessibilityElementsHidden={true}` on containers that are visually hidden but still mounted
+- **Stacks** (`app/stacks/`) — InsideStack (authenticated), OutsideStack (login/register), MasterDetailStack (tablets), ShareExtensionStack
+- **Root** (`app/AppContainer.tsx`) — switches between auth states
+- **Responsive layout** (`app/lib/hooks/useResponsiveLayout/`) — master-detail on tablets vs single stack on phones
 
-### Font scaling
+### Database: WatermelonDB (offline-first SQLite)
 
-- Text scales automatically — never set `allowFontScaling={false}` unless layout is provably broken
-- `useResponsiveLayout()` provides `fontScale`, `fontScaleLimited` (capped at `FONT_SCALE_LIMIT = 1.3`), `width`, `height`
-- Apply `fontScaleLimited` only where large font scales break fixed-size containers — not by default
-- Fixed-size touch targets (icon buttons, avatars) do not need to scale
+- **Models** (`app/lib/database/model/`) — Message, Room, Subscription, User, Thread, Upload, Server, CustomEmoji, Permission, Role, etc.
+- **Schema** (`app/lib/database/schema/`)
+- Local-first: UI reads from DB, sagas sync with server
 
-### Landscape / responsive layout
+### API Layer
 
-- Always use `useResponsiveLayout()` (not `useWindowDimensions()` directly) to get `width` / `height`
-- Derive `isLandscape = width > height` from those values
-- `useResponsiveLayout` is the single source of truth for dimensions — avoids conflicts with tablet (Master Detail) layout
+- **SDK** (`app/lib/services/sdk.ts`) — Rocket.Chat JS SDK for WebSocket real-time subscriptions
+- **REST** (`app/lib/services/restApi.ts`) — HTTP via fetch
+- **Connect** (`app/lib/services/connect.ts`) — server connection management
 
-## graphify
+### Views & Components
 
-Before answering codebase architecture questions, read `graphify-out/graph.json` for structure. Use the graph to find relevant files and connections instead of exploring blindly.
+- **Views** (`app/views/`) — 70+ screen components
+- **Containers** (`app/containers/`) — reusable UI components
+- **Theme** (`app/theme.tsx`) — theming context
+
+### Other Key Systems
+
+- **i18n** (`app/i18n/`) — i18n-js with 40+ locales, RTL support
+- **Encryption** (`app/lib/encryption/`) — E2E encryption via @rocket.chat/mobile-crypto
+- **Enterprise** (`app/ee/`) — Omnichannel/livechat features
+- **Definitions** (`app/definitions/`) — shared TypeScript types
+- **VideoConf** (`app/sagas/videoConf.ts`, `app/lib/methods/videoConf.ts`) — server-managed video conferencing (Jitsi); uses Redux actions/reducers/sagas. May be replaced or removed in the future.
+- **VoIP** (`app/lib/services/voip/`) — new WebRTC peer-to-peer audio calls with native CallKit (iOS) and Telecom (Android) integration; uses Zustand stores, not Redux. VoIP and VideoConf are entirely separate features — do not conflate them.
+
+### Entry Points
+
+- `index.js` — registers app, conditionally loads Storybook
+- `app/index.tsx` — Redux provider, theme, navigation, notifications setup
+- `app/AppContainer.tsx` — root navigation container
