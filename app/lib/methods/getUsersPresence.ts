@@ -145,11 +145,14 @@ export const setPresenceCap = async (enabled: boolean) => {
 export const getDirectMessageUserIds = async (): Promise<string[]> => {
 	try {
 		const db = database.active;
+		const loggedUserId = reduxStore.getState().login.user?.id;
 		const subscriptionsCollection = db.get('subscriptions');
 		const subscriptions = await subscriptionsCollection
 			.query(Q.where('t', 'd'), Q.where('open', true), Q.where('archived', false))
 			.fetch();
-		const userIds = subscriptions.map((sub: any) => sub.uids?.[0]).filter(Boolean);
+		const userIds = subscriptions
+			.map((sub: { uids?: string[] }) => sub.uids?.find(uid => uid && uid !== loggedUserId))
+			.filter((uid): uid is string => Boolean(uid));
 		return [...new Set(userIds)];
 	} catch (e) {
 		return [];
