@@ -8,7 +8,6 @@ import { useCallStore } from '../../lib/services/voip/useCallStore';
 import { mockedStore } from '../../reducers/mockedStore';
 import * as stories from './CallView.stories';
 import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
-import { ResponsiveLayoutContext } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 let mockWindowWidth = 350;
 jest.mock('react-native/Libraries/Utilities/useWindowDimensions', () => ({

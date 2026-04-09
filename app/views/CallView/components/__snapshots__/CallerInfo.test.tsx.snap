@@ -11,6 +11,8 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
   }
 >
   <View
+    accessibilityLabel="Toggle call controls"
+    accessibilityRole="button"
     accessibilityState={
       {
         "busy": undefined,
@@ -41,13 +43,16 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
     style={
-      {
-        "alignItems": "center",
-        "flex": 1,
-        "justifyContent": "center",
-        "marginBottom": 100,
-        "paddingHorizontal": 24,
-      }
+      [
+        {
+          "alignItems": "center",
+          "flex": 1,
+          "justifyContent": "center",
+          "marginBottom": 100,
+          "paddingHorizontal": 24,
+        },
+        false,
+      ]
     }
     testID="caller-info-toggle"
   >
@@ -164,6 +169,8 @@ exports[`Story Snapshots: UsernameOnly should match snapshot 1`] = `
   }
 >
   <View
+    accessibilityLabel="Toggle call controls"
+    accessibilityRole="button"
     accessibilityState={
       {
         "busy": undefined,
@@ -194,13 +201,16 @@ exports[`Story Snapshots: UsernameOnly should match snapshot 1`] = `
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
     style={
-      {
-        "alignItems": "center",
-        "flex": 1,
-        "justifyContent": "center",
-        "marginBottom": 100,
-        "paddingHorizontal": 24,
-      }
+      [
+        {
+          "alignItems": "center",
+          "flex": 1,
+          "justifyContent": "center",
+          "marginBottom": 100,
+          "paddingHorizontal": 24,
+        },
+        false,
+      ]
     }
     testID="caller-info-toggle"
   >
