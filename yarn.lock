@@ -5042,10 +5042,10 @@
     "@rocket.chat/emitter" "^0.32.0"
     ajv "^8.17.1"
 
-"@rocket.chat/message-parser@^0.31.31":
-  version "0.31.31"
-  resolved "https://registry.yarnpkg.com/@rocket.chat/message-parser/-/message-parser-0.31.31.tgz#9a3eea7602ac37387c6384577623865c8d536003"
-  integrity sha512-YWHdin2ejndwgQJXlHIzAmQB+xvZLeEOqOkPq8RxdyTjAaGo1DbBCrc0aU7u0LOUnGN+jm3H4grnYdI9SPwitA==
+"@rocket.chat/message-parser@0.31.32":
+  version "0.31.32"
+  resolved "https://registry.yarnpkg.com/@rocket.chat/message-parser/-/message-parser-0.31.32.tgz#100ba61165e960303695e50a51ba0427058ea95a"
+  integrity sha512-n13B5NnZxoTIMUn9n5fEhXFAsze9EKWmI0szIv1ALoGEb5RXs9wCiFuOMajCwm+gw597hQL5ZTDoQFyrns/s2w==
   dependencies:
     tldts "~5.7.112"
 
@@ -13575,11 +13575,6 @@ react-native-is-edge-to-edge@^1.2.1:
   resolved "https://registry.yarnpkg.com/react-native-is-edge-to-edge/-/react-native-is-edge-to-edge-1.2.1.tgz#64e10851abd9d176cbf2b40562f751622bde3358"
   integrity sha512-FLbPWl/MyYQWz+KwqOZsSyj2JmLKglHatd3xLZWskXOpRaio4LfEDEz8E/A6uD8QoTHW6Aobw1jbEwK7KMgR7Q==
 
-react-native-is-edge-to-edge@^1.3.1:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/react-native-is-edge-to-edge/-/react-native-is-edge-to-edge-1.3.1.tgz#feb9a6a8faf0874298947edd556e5af22044e139"
-  integrity sha512-NIXU/iT5+ORyCc7p0z2nnlkouYKX425vuU1OEm6bMMtWWR9yvb+Xg5AZmImTKoF9abxCPqrKC3rOZsKzUYgYZA==
-
 "react-native-katex@git+https://github.com/RocketChat/react-native-katex.git":
   version "1.3.0"
   resolved "git+https://github.com/RocketChat/react-native-katex.git#37e579804fe238732d8a4b06dec073610ab062b1"
@@ -13661,13 +13656,13 @@ react-native-prompt-android@1.1.0:
   resolved "https://registry.yarnpkg.com/react-native-prompt-android/-/react-native-prompt-android-1.1.0.tgz#3c5168029075cb9f72549fd5f92403372fb234e9"
   integrity sha512-4JoyEaT2ZnK9IH+tDFpbTiQBgva8UIFGQf4/Uw/tnEVWBERlVlzcs5B82T9BkeEhEqXhp89JaiSBnLWj30lciw==
 
-react-native-reanimated@^4.1.3:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-4.3.0.tgz#e5284cebb85bed12d672134b39d0a1370460ae50"
-  integrity sha512-HOTTPdKtddXTOsmQxDASXEwLS3lqEHrKERD3XOgzSqWJ7L3x81Pnx7mTcKx1FKdkgomMug/XSmm1C6Z7GIowxA==
+react-native-reanimated@4.1.3:
+  version "4.1.3"
+  resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-4.1.3.tgz#de29587b8ff7febada32497793803215faeac636"
+  integrity sha512-GP8wsi1u3nqvC1fMab/m8gfFwFyldawElCcUSBJQgfrXeLmsPPUOpDw44lbLeCpcwUuLa05WTVePdTEwCLTUZg==
   dependencies:
-    react-native-is-edge-to-edge "^1.3.1"
-    semver "^7.7.3"
+    react-native-is-edge-to-edge "^1.2.1"
+    semver "7.7.2"
 
 react-native-restart@0.0.22:
   version "0.0.22"
@@ -13723,10 +13718,10 @@ react-native-webrtc@^124.0.7:
     debug "4.3.4"
     event-target-shim "6.0.2"
 
-react-native-webview@^13.15.0:
-  version "13.15.0"
-  resolved "https://registry.yarnpkg.com/react-native-webview/-/react-native-webview-13.15.0.tgz#b6d2f8d8dd65897db76659ddd8198d2c74ec5a79"
-  integrity sha512-Vzjgy8mmxa/JO6l5KZrsTC7YemSdq+qB01diA0FqjUTaWGAGwuykpJ73MDj3+mzBSlaDxAEugHzTtkUQkQEQeQ==
+react-native-webview@^13.16.1:
+  version "13.16.1"
+  resolved "https://registry.yarnpkg.com/react-native-webview/-/react-native-webview-13.16.1.tgz#d5a6483fcb823eac704bd2a3d82c263771c6ede3"
+  integrity sha512-If0eHhoEdOYDcHsX+xBFwHMbWBGK1BvGDQDQdVkwtSIXiq1uiqjkpWVP2uQ1as94J0CzvFE9PUNDuhiX0Z6ubw==
   dependencies:
     escape-string-regexp "^4.0.0"
     invariant "2.2.4"

@@ -4901,7 +4901,7 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
         >
           <ViewManagerAdapter_ExpoImage
             borderRadius={2}
-            containerViewRef={"[React.ref]"}
+            containerViewRef={{"current":"Object"}}
             contentFit="cover"
             contentPosition={
               {
@@ -4910,7 +4910,7 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
               }
             }
             height={120}
-            nativeViewRef={"[React.ref]"}
+            nativeViewRef={{"current":"NativeComponent"}}
             onError={[Function]}
             onLoad={[Function]}
             onLoadStart={[Function]}
@@ -4947,14 +4947,7 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
               "flexDirection": "row",
               "justifyContent": "center",
             },
-            {
-              "opacity": 1,
-              "transform": [
-                {
-                  "translateY": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -5000,14 +4993,7 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
             "backgroundColor": "#FFFFFF",
             "borderTopColor": "#EBECEF",
           },
-          {
-            "opacity": 1,
-            "transform": [
-              {
-                "translateY": 0,
-              },
-            ],
-          },
+          [Function],
         ]
       }
       testID="call-buttons"
@@ -5195,7 +5181,7 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
                 ]
               }
             >
-              
+              ?
             </Text>
           </View>
           <Text
@@ -5705,7 +5691,7 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
         >
           <ViewManagerAdapter_ExpoImage
             borderRadius={2}
-            containerViewRef={"[React.ref]"}
+            containerViewRef={{"current":"Object"}}
             contentFit="cover"
             contentPosition={
               {
@@ -5714,7 +5700,7 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
               }
             }
             height={120}
-            nativeViewRef={"[React.ref]"}
+            nativeViewRef={{"current":"NativeComponent"}}
             onError={[Function]}
             onLoad={[Function]}
             onLoadStart={[Function]}
@@ -5751,14 +5737,7 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
               "flexDirection": "row",
               "justifyContent": "center",
             },
-            {
-              "opacity": 1,
-              "transform": [
-                {
-                  "translateY": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -5804,14 +5783,7 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
             "backgroundColor": "#FFFFFF",
             "borderTopColor": "#EBECEF",
           },
-          {
-            "opacity": 1,
-            "transform": [
-              {
-                "translateY": 0,
-              },
-            ],
-          },
+          [Function],
         ]
       }
       testID="call-buttons"
@@ -6003,7 +5975,7 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
                 ]
               }
             >
-              
+              ?
             </Text>
           </View>
           <Text
@@ -6517,7 +6489,7 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
         >
           <ViewManagerAdapter_ExpoImage
             borderRadius={2}
-            containerViewRef={"[React.ref]"}
+            containerViewRef={{"current":"Object"}}
             contentFit="cover"
             contentPosition={
               {
@@ -6526,7 +6498,7 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
               }
             }
             height={120}
-            nativeViewRef={"[React.ref]"}
+            nativeViewRef={{"current":"NativeComponent"}}
             onError={[Function]}
             onLoad={[Function]}
             onLoadStart={[Function]}
@@ -6563,14 +6535,7 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
               "flexDirection": "row",
               "justifyContent": "center",
             },
-            {
-              "opacity": 1,
-              "transform": [
-                {
-                  "translateY": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -6616,14 +6581,7 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
             "backgroundColor": "#FFFFFF",
             "borderTopColor": "#EBECEF",
           },
-          {
-            "opacity": 1,
-            "transform": [
-              {
-                "translateY": 0,
-              },
-            ],
-          },
+          [Function],
         ]
       }
       testID="call-buttons"
@@ -6811,7 +6769,7 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
                 ]
               }
             >
-              
+              ?
             </Text>
           </View>
           <Text
@@ -7321,7 +7279,7 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
         >
           <ViewManagerAdapter_ExpoImage
             borderRadius={2}
-            containerViewRef={"[React.ref]"}
+            containerViewRef={{"current":"Object"}}
             contentFit="cover"
             contentPosition={
               {
@@ -7330,7 +7288,7 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
               }
             }
             height={120}
-            nativeViewRef={"[React.ref]"}
+            nativeViewRef={{"current":"NativeComponent"}}
             onError={[Function]}
             onLoad={[Function]}
             onLoadStart={[Function]}
@@ -7367,14 +7325,7 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
               "flexDirection": "row",
               "justifyContent": "center",
             },
-            {
-              "opacity": 1,
-              "transform": [
-                {
-                  "translateY": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -7420,14 +7371,7 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
             "backgroundColor": "#FFFFFF",
             "borderTopColor": "#EBECEF",
           },
-          {
-            "opacity": 1,
-            "transform": [
-              {
-                "translateY": 0,
-              },
-            ],
-          },
+          [Function],
         ]
       }
       testID="call-buttons"
@@ -7615,7 +7559,7 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
                 ]
               }
             >
-              
+              ?
             </Text>
           </View>
           <Text
@@ -8125,7 +8069,7 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
         >
           <ViewManagerAdapter_ExpoImage
             borderRadius={2}
-            containerViewRef={"[React.ref]"}
+            containerViewRef={{"current":"Object"}}
             contentFit="cover"
             contentPosition={
               {
@@ -8134,7 +8078,7 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
               }
             }
             height={120}
-            nativeViewRef={"[React.ref]"}
+            nativeViewRef={{"current":"NativeComponent"}}
             onError={[Function]}
             onLoad={[Function]}
             onLoadStart={[Function]}
@@ -8171,14 +8115,7 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
               "flexDirection": "row",
               "justifyContent": "center",
             },
-            {
-              "opacity": 1,
-              "transform": [
-                {
-                  "translateY": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -8224,14 +8161,7 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
             "backgroundColor": "#FFFFFF",
             "borderTopColor": "#EBECEF",
           },
-          {
-            "opacity": 1,
-            "transform": [
-              {
-                "translateY": 0,
-              },
-            ],
-          },
+          [Function],
         ]
       }
       testID="call-buttons"
@@ -8419,7 +8349,7 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
                 ]
               }
             >
-              
+              ?
             </Text>
           </View>
           <Text
@@ -8929,7 +8859,7 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
         >
           <ViewManagerAdapter_ExpoImage
             borderRadius={2}
-            containerViewRef={"[React.ref]"}
+            containerViewRef={{"current":"Object"}}
             contentFit="cover"
             contentPosition={
               {
@@ -8938,7 +8868,7 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
               }
             }
             height={120}
-            nativeViewRef={"[React.ref]"}
+            nativeViewRef={{"current":"NativeComponent"}}
             onError={[Function]}
             onLoad={[Function]}
             onLoadStart={[Function]}
@@ -8975,14 +8905,7 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
               "flexDirection": "row",
               "justifyContent": "center",
             },
-            {
-              "opacity": 1,
-              "transform": [
-                {
-                  "translateY": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -9028,14 +8951,7 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
             "backgroundColor": "#FFFFFF",
             "borderTopColor": "#EBECEF",
           },
-          {
-            "opacity": 1,
-            "transform": [
-              {
-                "translateY": 0,
-              },
-            ],
-          },
+          [Function],
         ]
       }
       testID="call-buttons"
@@ -9223,7 +9139,7 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
                 ]
               }
             >
-              
+              ?
             </Text>
           </View>
           <Text
