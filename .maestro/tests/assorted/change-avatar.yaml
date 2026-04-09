@@ -130,7 +130,6 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'change-avatar-view-submit'
-      enabled: false
     timeout: 60000
 - extendedWaitUntil:
     visible:
@@ -141,7 +140,6 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'change-avatar-view-submit'
-      enabled: true
     timeout: 60000
 - tapOn:
     id: 'change-avatar-view-submit'
@@ -163,7 +161,6 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'change-avatar-view-submit'
-      enabled: false
     timeout: 60000
 - extendedWaitUntil:
     visible:
@@ -182,7 +179,6 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'change-avatar-view-submit'
-      enabled: true
     timeout: 60000
 - tapOn:
     id: 'change-avatar-view-submit'

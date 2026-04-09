@@ -738,6 +738,10 @@ export const setAvatarFromService = async ({
 }): Promise<void> => {
 	const serverVersion = reduxStore.getState().server.version;
 	const isHttpUrl = isHttpAvatarUrl(url);
+	// In ChangeAvatarView, `url` can be:
+	// - a remote http(s) URL from "Fetch image from URL"
+	// - a local filesystem URI/path from camera/gallery upload (`response.path`)
+	// Only remote URLs should be sent as `avatarUrl`; local paths must go through multipart upload.
 	// RC 0.51.0 — keep DDP + payload shape unchanged below 8.0.0
 	if (compareServerVersion(serverVersion, 'lowerThan', '8.0.0')) {
 		return sdk.methodCallWrapper('setAvatarFromService', data, contentType, service);
