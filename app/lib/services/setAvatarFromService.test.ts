@@ -1,5 +1,5 @@
 import { store as reduxStore } from '../store/auxStore';
-import { uploadUserAvatarBase64, uploadUserAvatarMultipart } from '../methods/uploadAvatar/uploadAvatar';
+import { uploadUserAvatarMultipart } from '../methods/uploadAvatar/uploadAvatar';
 import sdk from './sdk';
 import { setAvatarFromService } from './restApi';
 
@@ -18,8 +18,7 @@ jest.mock('./sdk', () => ({
 }));
 
 jest.mock('../methods/uploadAvatar/uploadAvatar', () => ({
-	uploadUserAvatarMultipart: jest.fn().mockResolvedValue(undefined),
-	uploadUserAvatarBase64: jest.fn().mockResolvedValue(undefined)
+	uploadUserAvatarMultipart: jest.fn().mockResolvedValue(undefined)
 }));
 
 const baseState = {
@@ -53,7 +52,6 @@ describe('setAvatarFromService', () => {
 		);
 		expect(sdk.post).not.toHaveBeenCalled();
 		expect(uploadUserAvatarMultipart).not.toHaveBeenCalled();
-		expect(uploadUserAvatarBase64).not.toHaveBeenCalled();
 	});
 
 	it('posts avatarUrl for service url on 8.0.0+', async () => {
@@ -67,7 +65,6 @@ describe('setAvatarFromService', () => {
 		});
 		expect(sdk.methodCallWrapper).not.toHaveBeenCalled();
 		expect(uploadUserAvatarMultipart).not.toHaveBeenCalled();
-		expect(uploadUserAvatarBase64).not.toHaveBeenCalled();
 	});
 
 	it('multipart upload for camera/gallery (service upload) on 8.0.0+', async () => {
@@ -78,7 +75,6 @@ describe('setAvatarFromService', () => {
 			url: 'file:///tmp/avatar.jpg'
 		});
 		expect(uploadUserAvatarMultipart).toHaveBeenCalledWith('file:///tmp/avatar.jpg', 'image/jpeg', 'avatar.jpg');
-		expect(uploadUserAvatarBase64).not.toHaveBeenCalled();
 		expect(sdk.methodCallWrapper).not.toHaveBeenCalled();
 	});
 
@@ -93,7 +89,6 @@ describe('setAvatarFromService', () => {
 			avatarUrl: 'https://example.com/remote.jpg'
 		});
 		expect(uploadUserAvatarMultipart).not.toHaveBeenCalled();
-		expect(uploadUserAvatarBase64).not.toHaveBeenCalled();
 	});
 
 	it('posts avatarUrl for OAuth suggestion when url is http(s)', async () => {
@@ -107,17 +102,17 @@ describe('setAvatarFromService', () => {
 			avatarUrl: 'https://lh3.googleusercontent.com/a/abc'
 		});
 		expect(uploadUserAvatarMultipart).not.toHaveBeenCalled();
-		expect(uploadUserAvatarBase64).not.toHaveBeenCalled();
 	});
 
-	it('delegates to base64 uploader when no http url on 8.0.0+', async () => {
-		await setAvatarFromService({
-			data: 'dGVzdA==',
-			contentType: 'image/png',
-			service: 'github',
-			url: 'relative/path'
-		});
-		expect(uploadUserAvatarBase64).toHaveBeenCalledWith('dGVzdA==', 'image/png');
+	it('throws when payload is not a supported 8.0.0+ avatar source', async () => {
+		await expect(
+			setAvatarFromService({
+				data: 'dGVzdA==',
+				contentType: 'image/png',
+				service: 'github',
+				url: 'relative/path'
+			})
+		).rejects.toThrow('Invalid avatar payload');
 		expect(uploadUserAvatarMultipart).not.toHaveBeenCalled();
 	});
 });
