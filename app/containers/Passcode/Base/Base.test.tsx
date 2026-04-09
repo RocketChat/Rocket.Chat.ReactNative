@@ -42,11 +42,21 @@ describe('Base Passcode Component', () => {
 	});
 
 	test('should render biometry button when showBiometry is true', () => {
-		const { UNSAFE_getByType } = render(
+		const { getByTestId } = render(
 			<TestBase type={TYPE.ENTER} title='Enter Passcode' showBiometry onBiometryPress={() => {}} />
 		);
-		// The biometry button uses fingerprint icon
-		expect(UNSAFE_getByType).toBeDefined();
+		expect(getByTestId('biometry-button')).toBeTruthy();
+	});
+
+	test('should render all passcode buttons with testIDs', () => {
+		const { getByTestId } = render(<TestBase type={TYPE.ENTER} title='Enter Passcode' />);
+		// Number buttons 1-9
+		for (let i = 1; i <= 9; i++) {
+			expect(getByTestId(`passcode-button-${i}`)).toBeTruthy();
+		}
+		// Button 0 and backspace
+		expect(getByTestId('passcode-button-0')).toBeTruthy();
+		expect(getByTestId('passcode-button-backspace')).toBeTruthy();
 	});
 });
 
