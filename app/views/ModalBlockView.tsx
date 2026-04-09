@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { type TSupportedThemes } from '../theme';
 import EventEmitter from '../lib/methods/helpers/events';
 import * as HeaderButton from '../containers/Header/components/HeaderButton';
-import { modalBlockWithContext } from '../containers/UIKit/MessageBlock';
+import { ModalBlockWithContext } from '../containers/UIKit/MessageBlock';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import { textParser } from '../containers/UIKit/utils';
 import Navigation from '../lib/navigation/appNavigation';
@@ -247,6 +247,7 @@ class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockVi
 			blockId,
 			value
 		};
+		this.setState({});
 	};
 
 	render() {
@@ -255,23 +256,25 @@ class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockVi
 		const { values } = this;
 		const { view } = data;
 		const { blocks } = view;
-
+		// Key must change when block structure changes so the tree remounts and hook count matches.
+		// Kept stable when only form values change (typing) so the input keeps focus.
+		const modalKey = `${data.viewId}-${blocks.length}-${blocks
+			.map((b: any, index: number) => `${b.blockId || b.type}-${index}`)
+			.join('-')}`;
 		return (
 			<KeyboardView>
 				<ScrollView style={styles.content}>
-					{React.createElement(
-						modalBlockWithContext({
-							action: this.action,
-							state: this.changeState,
-							...data
-						}),
-						{
-							blocks,
-							errors,
-							language,
-							values
-						}
-					)}
+					<React.Fragment key={modalKey}>
+						<ModalBlockWithContext
+							action={this.action}
+							state={this.changeState}
+							{...data}
+							blocks={blocks}
+							errors={errors}
+							language={language}
+							values={values}
+						/>
+					</React.Fragment>
 				</ScrollView>
 				<LoadingIndicator loading={loading} />
 			</KeyboardView>

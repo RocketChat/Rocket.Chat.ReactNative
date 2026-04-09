@@ -33,7 +33,7 @@ import { getUserPresence, subscribeUsersPresence } from '../lib/methods/getUsers
 import { logout, removeServerData, removeServerDatabase } from '../lib/methods/logout';
 import { subscribeSettings } from '../lib/methods/getSettings';
 import { disconnect, loginWithPassword, login } from '../lib/services/connect';
-import { saveUserProfile, registerPushToken, getUsersRoles } from '../lib/services/restApi';
+import { saveUserProfile, registerPushToken, getUsersRoles, setUserPresenceAway } from '../lib/services/restApi';
 import { setUsersRoles } from '../actions/usersRoles';
 import { getServerById } from '../lib/database/services/Server';
 import appNavigation from '../lib/navigation/appNavigation';
@@ -60,7 +60,7 @@ const showSupportedVersionsWarning = function* showSupportedVersionsWarning(serv
 
 	const serversDB = database.servers;
 	yield serversDB.write(async () => {
-		await serverRecord.update((r) => {
+		await serverRecord.update(r => {
 			r.supportedVersionsWarningAt = new Date();
 		});
 	});
@@ -107,7 +107,7 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 						}
 						// this is updating on every login just to save `updated_at`
 						// keeping this server as the most recent on autocomplete order
-						await serverHistoryRecord.update((s) => {
+						await serverHistoryRecord.update(s => {
 							s.username = result.username;
 							if (iconURL) {
 								s.iconURL = iconURL;
@@ -225,6 +225,23 @@ const fetchUsersRoles = function* fetchRoomsFork() {
 	}
 };
 
+const checkBackgroundAndSetAway = function* checkBackgroundAndSetAway() {
+	try {
+		const { background, root } = yield select(state => state.app);
+		if (root !== RootEnum.ROOT_INSIDE || !background) {
+			return;
+		}
+		const isAuthenticated = yield select(state => state.login.isAuthenticated);
+		const isConnected = yield select(state => state.meteor.connected);
+		if (!isAuthenticated || !isConnected) {
+			return;
+		}
+		yield setUserPresenceAway();
+	} catch (e) {
+		log(e);
+	}
+};
+
 const startVoipFork = function* startVoipFork() {
 	try {
 		const allowInternalVoiceCallRoles = yield select(state => state.permissions['allow-internal-voice-calls']);
@@ -260,6 +277,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield fork(fetchUsersPresenceFork);
 		yield fork(subscribeSettingsFork);
 		yield fork(fetchUsersRoles);
+		yield fork(checkBackgroundAndSetAway);
 		yield getUserPresence(user.id);
 
 		const serversDB = database.servers;
@@ -281,12 +299,12 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield serversDB.write(async () => {
 			try {
 				const userRecord = await usersCollection.find(user.id);
-				await userRecord.update((record) => {
+				await userRecord.update(record => {
 					record._raw = sanitizedRaw({ id: user.id, ...record._raw }, usersCollection.schema);
 					Object.assign(record, u);
 				});
 			} catch (e) {
-				await usersCollection.create((record) => {
+				await usersCollection.create(record => {
 					record._raw = sanitizedRaw({ id: user.id }, usersCollection.schema);
 					Object.assign(record, u);
 				});
@@ -363,7 +381,7 @@ const handleSetUser = function* handleSetUser({ user }) {
 		yield serversDB.write(async () => {
 			try {
 				const record = await userCollections.find(userId);
-				await record.update((userRecord) => {
+				await record.update(userRecord => {
 					if ('avatarETag' in user) {
 						userRecord.avatarETag = user.avatarETag;
 					}

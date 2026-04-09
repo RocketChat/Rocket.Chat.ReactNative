@@ -5,7 +5,7 @@ import com.facebook.react.bridge.NativeModule
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.module.model.ReactModuleInfo
 import com.facebook.react.module.model.ReactModuleInfoProvider
-import chat.rocket.reactnative.NativeVoipSpec
+import chat.rocket.reactnative.networking.NativeVoipSpec
 import chat.rocket.reactnative.voip.VoipModule
 
 class VoipTurboPackage : BaseReactPackage() {

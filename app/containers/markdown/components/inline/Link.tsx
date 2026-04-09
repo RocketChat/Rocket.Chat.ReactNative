@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Text } from 'react-native';
+import { Alert, Text } from 'react-native';
 import { type Link as LinkProps } from '@rocket.chat/message-parser';
 import Clipboard from '@react-native-clipboard/clipboard';
 
@@ -25,6 +25,10 @@ const Link = ({ value }: ILinkProps) => {
 		if (!src.value) {
 			return;
 		}
+		if (process.env.RUNNING_E2E_TESTS === 'true') {
+			Alert.alert('Link Pressed', src.value);
+			return;
+		}
 		if (onLinkPress) {
 			return onLinkPress(src.value);
 		}
@@ -32,6 +36,13 @@ const Link = ({ value }: ILinkProps) => {
 	};
 
 	const onLongPress = () => {
+		if (!src.value) {
+			return;
+		}
+		if (process.env.RUNNING_E2E_TESTS === 'true') {
+			Alert.alert('Link Long Pressed', src.value);
+			return;
+		}
 		Clipboard.setString(src.value);
 		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
 	};

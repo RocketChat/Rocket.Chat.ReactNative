@@ -711,19 +711,17 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
         </Text>
         <View
           style={
-            [
-              {
-                "transform": [
-                  {
-                    "translateY": 3,
-                  },
-                ],
-              },
-            ]
+            {
+              "transform": [
+                {
+                  "translateY": 3,
+                },
+              ],
+            }
           }
         >
           <ViewManagerAdapter_ExpoImage
-            containerViewRef={"[React.ref]"}
+            containerViewRef={{"current":"Object"}}
             contentFit="contain"
             contentPosition={
               {
@@ -732,7 +730,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
               }
             }
             height={15}
-            nativeViewRef={"[React.ref]"}
+            nativeViewRef={{"current":"NativeComponent"}}
             onError={[Function]}
             onLoad={[Function]}
             onLoadStart={[Function]}
@@ -774,19 +772,17 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
         </Text>
         <View
           style={
-            [
-              {
-                "transform": [
-                  {
-                    "translateY": 3,
-                  },
-                ],
-              },
-            ]
+            {
+              "transform": [
+                {
+                  "translateY": 3,
+                },
+              ],
+            }
           }
         >
           <ViewManagerAdapter_ExpoImage
-            containerViewRef={"[React.ref]"}
+            containerViewRef={{"current":"Object"}}
             contentFit="contain"
             contentPosition={
               {
@@ -795,7 +791,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
               }
             }
             height={15}
-            nativeViewRef={"[React.ref]"}
+            nativeViewRef={{"current":"NativeComponent"}}
             onError={[Function]}
             onLoad={[Function]}
             onLoadStart={[Function]}
@@ -837,19 +833,17 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
         </Text>
         <View
           style={
-            [
-              {
-                "transform": [
-                  {
-                    "translateY": 3,
-                  },
-                ],
-              },
-            ]
+            {
+              "transform": [
+                {
+                  "translateY": 3,
+                },
+              ],
+            }
           }
         >
           <ViewManagerAdapter_ExpoImage
-            containerViewRef={"[React.ref]"}
+            containerViewRef={{"current":"Object"}}
             contentFit="contain"
             contentPosition={
               {
@@ -858,7 +852,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
               }
             }
             height={15}
-            nativeViewRef={"[React.ref]"}
+            nativeViewRef={{"current":"NativeComponent"}}
             onError={[Function]}
             onLoad={[Function]}
             onLoadStart={[Function]}
@@ -940,19 +934,17 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
       </Text>
       <View
         style={
-          [
-            {
-              "transform": [
-                {
-                  "translateY": 0,
-                },
-              ],
-            },
-          ]
+          {
+            "transform": [
+              {
+                "translateY": 0,
+              },
+            ],
+          }
         }
       >
         <ViewManagerAdapter_ExpoImage
-          containerViewRef={"[React.ref]"}
+          containerViewRef={{"current":"Object"}}
           contentFit="contain"
           contentPosition={
             {
@@ -961,7 +953,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
             }
           }
           height={30}
-          nativeViewRef={"[React.ref]"}
+          nativeViewRef={{"current":"NativeComponent"}}
           onError={[Function]}
           onLoad={[Function]}
           onLoadStart={[Function]}
@@ -1259,7 +1251,7 @@ exports[`Story Snapshots: Image should match snapshot 1`] = `
       >
         <ViewManagerAdapter_ExpoImage
           borderColor={4291546833}
-          containerViewRef={"[React.ref]"}
+          containerViewRef={{"current":"Object"}}
           contentFit="contain"
           contentPosition={
             {
@@ -1268,7 +1260,7 @@ exports[`Story Snapshots: Image should match snapshot 1`] = `
             }
           }
           height={300}
-          nativeViewRef={"[React.ref]"}
+          nativeViewRef={{"current":"NativeComponent"}}
           onError={[Function]}
           onLoad={[Function]}
           onLoadStart={[Function]}

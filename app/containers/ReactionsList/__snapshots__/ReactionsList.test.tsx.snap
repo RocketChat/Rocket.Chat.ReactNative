@@ -140,7 +140,7 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
             }
           >
             <ViewManagerAdapter_ExpoImage
-              containerViewRef={"[React.ref]"}
+              containerViewRef={{"current":"Object"}}
               contentFit="contain"
               contentPosition={
                 {
@@ -149,7 +149,7 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                 }
               }
               height={24}
-              nativeViewRef={"[React.ref]"}
+              nativeViewRef={{"current":"NativeComponent"}}
               onError={[Function]}
               onLoad={[Function]}
               onLoadStart={[Function]}
@@ -238,7 +238,7 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
             }
           >
             <ViewManagerAdapter_ExpoImage
-              containerViewRef={"[React.ref]"}
+              containerViewRef={{"current":"Object"}}
               contentFit="contain"
               contentPosition={
                 {
@@ -247,7 +247,7 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                 }
               }
               height={24}
-              nativeViewRef={"[React.ref]"}
+              nativeViewRef={{"current":"NativeComponent"}}
               onError={[Function]}
               onLoad={[Function]}
               onLoadStart={[Function]}
@@ -336,7 +336,7 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
             }
           >
             <ViewManagerAdapter_ExpoImage
-              containerViewRef={"[React.ref]"}
+              containerViewRef={{"current":"Object"}}
               contentFit="contain"
               contentPosition={
                 {
@@ -345,7 +345,7 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                 }
               }
               height={24}
-              nativeViewRef={"[React.ref]"}
+              nativeViewRef={{"current":"NativeComponent"}}
               onError={[Function]}
               onLoad={[Function]}
               onLoadStart={[Function]}
@@ -652,7 +652,7 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                 }
               >
                 <ViewManagerAdapter_ExpoImage
-                  containerViewRef={"[React.ref]"}
+                  containerViewRef={{"current":"Object"}}
                   contentFit="contain"
                   contentPosition={
                     {
@@ -661,7 +661,7 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                     }
                   }
                   height={36}
-                  nativeViewRef={"[React.ref]"}
+                  nativeViewRef={{"current":"NativeComponent"}}
                   onError={[Function]}
                   onLoad={[Function]}
                   onLoadStart={[Function]}
@@ -746,7 +746,7 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                 }
               >
                 <ViewManagerAdapter_ExpoImage
-                  containerViewRef={"[React.ref]"}
+                  containerViewRef={{"current":"Object"}}
                   contentFit="contain"
                   contentPosition={
                     {
@@ -755,7 +755,7 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                     }
                   }
                   height={36}
-                  nativeViewRef={"[React.ref]"}
+                  nativeViewRef={{"current":"NativeComponent"}}
                   onError={[Function]}
                   onLoad={[Function]}
                   onLoadStart={[Function]}
@@ -840,7 +840,7 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                 }
               >
                 <ViewManagerAdapter_ExpoImage
-                  containerViewRef={"[React.ref]"}
+                  containerViewRef={{"current":"Object"}}
                   contentFit="contain"
                   contentPosition={
                     {
@@ -849,7 +849,7 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
                     }
                   }
                   height={36}
-                  nativeViewRef={"[React.ref]"}
+                  nativeViewRef={{"current":"NativeComponent"}}
                   onError={[Function]}
                   onLoad={[Function]}
                   onLoadStart={[Function]}
@@ -1215,7 +1215,7 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
             }
           >
             <ViewManagerAdapter_ExpoImage
-              containerViewRef={"[React.ref]"}
+              containerViewRef={{"current":"Object"}}
               contentFit="contain"
               contentPosition={
                 {
@@ -1224,7 +1224,7 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                 }
               }
               height={24}
-              nativeViewRef={"[React.ref]"}
+              nativeViewRef={{"current":"NativeComponent"}}
               onError={[Function]}
               onLoad={[Function]}
               onLoadStart={[Function]}
@@ -1313,7 +1313,7 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
             }
           >
             <ViewManagerAdapter_ExpoImage
-              containerViewRef={"[React.ref]"}
+              containerViewRef={{"current":"Object"}}
               contentFit="contain"
               contentPosition={
                 {
@@ -1322,7 +1322,7 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                 }
               }
               height={24}
-              nativeViewRef={"[React.ref]"}
+              nativeViewRef={{"current":"NativeComponent"}}
               onError={[Function]}
               onLoad={[Function]}
               onLoadStart={[Function]}
@@ -1411,7 +1411,7 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
             }
           >
             <ViewManagerAdapter_ExpoImage
-              containerViewRef={"[React.ref]"}
+              containerViewRef={{"current":"Object"}}
               contentFit="contain"
               contentPosition={
                 {
@@ -1420,7 +1420,7 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                 }
               }
               height={24}
-              nativeViewRef={"[React.ref]"}
+              nativeViewRef={{"current":"NativeComponent"}}
               onError={[Function]}
               onLoad={[Function]}
               onLoadStart={[Function]}
@@ -1727,7 +1727,7 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                 }
               >
                 <ViewManagerAdapter_ExpoImage
-                  containerViewRef={"[React.ref]"}
+                  containerViewRef={{"current":"Object"}}
                   contentFit="contain"
                   contentPosition={
                     {
@@ -1736,7 +1736,7 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                     }
                   }
                   height={36}
-                  nativeViewRef={"[React.ref]"}
+                  nativeViewRef={{"current":"NativeComponent"}}
                   onError={[Function]}
                   onLoad={[Function]}
                   onLoadStart={[Function]}
@@ -1821,7 +1821,7 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                 }
               >
                 <ViewManagerAdapter_ExpoImage
-                  containerViewRef={"[React.ref]"}
+                  containerViewRef={{"current":"Object"}}
                   contentFit="contain"
                   contentPosition={
                     {
@@ -1830,7 +1830,7 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                     }
                   }
                   height={36}
-                  nativeViewRef={"[React.ref]"}
+                  nativeViewRef={{"current":"NativeComponent"}}
                   onError={[Function]}
                   onLoad={[Function]}
                   onLoadStart={[Function]}
@@ -1915,7 +1915,7 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                 }
               >
                 <ViewManagerAdapter_ExpoImage
-                  containerViewRef={"[React.ref]"}
+                  containerViewRef={{"current":"Object"}}
                   contentFit="contain"
                   contentPosition={
                     {
@@ -1924,7 +1924,7 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
                     }
                   }
                   height={36}
-                  nativeViewRef={"[React.ref]"}
+                  nativeViewRef={{"current":"NativeComponent"}}
                   onError={[Function]}
                   onLoad={[Function]}
                   onLoadStart={[Function]}
