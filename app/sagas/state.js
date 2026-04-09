@@ -26,9 +26,7 @@ const getDirectMessageUserIds = async () => {
 			.query(Q.where('t', 'd'), Q.where('open', true), Q.where('archived', false))
 			.fetch();
 		// Extract user IDs from uids field (direct messages store the other user's ID in uids)
-		const userIds = subscriptions
-			.map(sub => sub.uids?.[0])
-			.filter(Boolean);
+		const userIds = subscriptions.map(sub => sub.uids?.[0]).filter(Boolean);
 		// Remove duplicates
 		return [...new Set(userIds)];
 	} catch (e) {
