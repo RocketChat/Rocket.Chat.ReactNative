@@ -144,7 +144,7 @@ const Base = forwardRef<IBase, IPasscodeBase>(
 						</Col>
 						<Col style={[styles.colButton, heightButtonRow]}>
 							<Button testID='passcode-button-backspace' style={heightButtonRow} icon='backspace' onPress={onPressDelete} />
-						</Col>
+						</Col> 
 					</Row>
 				</Grid>
 			</Animatable.View>
