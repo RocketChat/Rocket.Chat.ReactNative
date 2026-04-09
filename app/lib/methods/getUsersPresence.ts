@@ -1,5 +1,6 @@
 import { InteractionManager } from 'react-native';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import { Q } from '@nozbe/watermelondb';
 
 import { type IActiveUsers } from '../../reducers/activeUsers';
 import { store as reduxStore } from '../store/auxStore';
@@ -55,8 +56,8 @@ export async function getUsersPresence(usersParams: string[]) {
 			if (!usersParams.length) {
 				return;
 			}
-			// Request userPresence on demand
-			params = { ids: usersParams.join(',') };
+			// Request userPresence on demand with cache-busting timestamp
+			params = { ids: usersParams.join(','), _t: Date.now() };
 		}
 
 		try {
@@ -138,5 +139,30 @@ export const setPresenceCap = async (enabled: boolean) => {
 	} else {
 		userPreferences.removeItem(NOTIFICATION_PRESENCE_CAP);
 		reduxStore.dispatch(setNotificationPresenceCap(false));
+	}
+};
+
+export const getDirectMessageUserIds = async (): Promise<string[]> => {
+	try {
+		const db = database.active;
+		const subscriptionsCollection = db.get('subscriptions');
+		const subscriptions = await subscriptionsCollection
+			.query(Q.where('t', 'd'), Q.where('open', true), Q.where('archived', false))
+			.fetch();
+		const userIds = subscriptions.map((sub: any) => sub.uids?.[0]).filter(Boolean);
+		return [...new Set(userIds)];
+	} catch (e) {
+		return [];
+	}
+};
+
+export const refreshDmUsersPresence = async (): Promise<void> => {
+	try {
+		const dmUserIds = await getDirectMessageUserIds();
+		if (dmUserIds.length > 0) {
+			await getUsersPresence(dmUserIds);
+		}
+	} catch (e) {
+		// Silently fail
 	}
 };
