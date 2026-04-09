@@ -648,7 +648,6 @@
   "Push_gateway_not_connected_description": "Vi kan ikke koble til push-gatewayen. Hvis dette problemet vedvarer, sjekk med serveradministratoren din.",
   "Push_Notifications": "Push-varsler",
   "Push_Notifications_Alert_Info": "Disse varslene leveres til deg når appen ikke er åpen",
-  "Push_Troubleshooting": "Push feilsøking",
   "Queued_chats": "Chatter i kø",
   "Quote": "Sitere",
   "Reactions_are_disabled": "Reaksjoner er deaktivert",
