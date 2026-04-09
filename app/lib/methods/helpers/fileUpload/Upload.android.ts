@@ -9,7 +9,7 @@ export class Upload {
 		uri: string;
 		type: string | undefined;
 		name: string | undefined;
-		fieldName: string;
+		fieldName?: string;
 	} | null;
 	private headers: { [key: string]: string };
 	private formData: any;
@@ -57,7 +57,7 @@ export class Upload {
 						headers: this.headers,
 						httpMethod: 'POST',
 						uploadType: FileSystem.FileSystemUploadType.MULTIPART,
-						fieldName: this.file.fieldName,
+						fieldName: this.file.fieldName || 'file',
 						mimeType: this.file.type,
 						parameters: this.formData
 					},
