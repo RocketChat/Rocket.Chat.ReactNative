@@ -9,6 +9,7 @@ import { getThreadById } from '../../../../lib/database/services/Thread';
 import { compareServerVersion, useDebounce } from '../../../../lib/methods/helpers';
 import { readThreads } from '../../../../lib/services/restApi';
 import { QUERY_SIZE } from '../constants';
+import { buildVisibleSystemTypesClause } from './buildVisibleSystemTypesClause';
 
 export const useMessages = ({
 	rid,
@@ -38,6 +39,7 @@ export const useMessages = ({
 		}
 
 		const db = database.active;
+		const visibleSystemClause = buildVisibleSystemTypesClause(hideSystemMessages);
 		let observable;
 		if (tmid) {
 			// If the thread doesn't exist yet, we fetch it from messages, but trying to get it from threads when possible.
