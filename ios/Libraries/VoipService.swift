@@ -61,11 +61,6 @@ public final class VoipService: NSObject {
     /// cleared when that call's DDP accept finishes or another exit path runs for that `callId`.
     private static var nativeAcceptHandledCallIds = Set<String>()
 
-    private enum VoipMediaCallAnswerKind {
-        case accept
-        case reject
-    }
-
     // MARK: - Static Methods (Called from VoipModule.mm and AppDelegate)
     
     /// Registers for VoIP push notifications via PushKit
@@ -412,40 +407,6 @@ public final class VoipService: NSObject {
 
     private static func stopDDPClientInternal() {
         ddpRegistry.stopAllClients()
-    }
-
-    // MARK: - Native DDP signaling (accept / reject)
-
-    /// `contractId` must match JS `getUniqueIdSync()` from react-native-device-info (`DeviceUID` on iOS; Android uses `Settings.Secure.ANDROID_ID` in VoipNotification).
-    private static func buildMediaCallAnswerParams(payload: VoipPayload, kind: VoipMediaCallAnswerKind) -> [Any]? {
-        let credentialStorage = Storage()
-        guard let credentials = credentialStorage.getCredentials(server: payload.host.removeTrailingSlash()) else {
-            #if DEBUG
-            print("[\(TAG)] Missing credentials, cannot build media-call answer params for \(payload.callId)")
-            #endif
-            stopDDPClientInternal(callId: payload.callId)
-            return nil
-        }
-
-        var signal: [String: Any] = [
-            "callId": payload.callId,
-            "contractId": DeviceUID.uid(),
-            "type": "answer",
-            "answer": kind == .accept ? "accept" : "reject"
-        ]
-        if kind == .accept {
-            signal["supportedFeatures"] = ["audio"]
-        }
-
-        guard
-            let signalData = try? JSONSerialization.data(withJSONObject: signal),
-            let signalString = String(data: signalData, encoding: .utf8)
-        else {
-            stopDDPClientInternal(callId: payload.callId)
-            return nil
-        }
-
-        return ["\(credentials.userId)/media-calls", signalString]
     }
 
     /// Native DDP accept when the user answers via CallKit (parity with Android `VoipNotification.handleAcceptAction`).
