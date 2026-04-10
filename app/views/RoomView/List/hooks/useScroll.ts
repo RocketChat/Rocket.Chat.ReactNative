@@ -1,15 +1,20 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { type ViewToken, type ViewabilityConfigCallbackPairs } from 'react-native';
 
-import { type IListContainerRef, type IListProps, type TListRef, type TMessagesIdsRef } from '../definitions';
+import { type IListContainerRef, type IListProps, type TListRef } from '../definitions';
 import { VIEWABILITY_CONFIG } from '../constants';
 
-export const useScroll = ({ listRef, messagesIds }: { listRef: TListRef; messagesIds: TMessagesIdsRef }) => {
+export const useScroll = ({ listRef, messagesIds }: { listRef: TListRef; messagesIds: string[] }) => {
 	const [highlightedMessageId, setHighlightedMessageId] = useState<string | null>(null);
 	const cancelJump = useRef(false);
 	const jumping = useRef(false);
 	const viewableItems = useRef<ViewToken[] | null>(null);
 	const highlightTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+	const messagesIdsRef = useRef(messagesIds);
+
+	useEffect(() => {
+		messagesIdsRef.current = messagesIds;
+	}, [messagesIds]);
 
 	useEffect(
 		() => () => {
@@ -55,7 +60,7 @@ export const useScroll = ({ listRef, messagesIds }: { listRef: TListRef; message
 			jumping.current = true;
 
 			// look for the message on the state
-			const index = messagesIds.current?.findIndex(item => item === messageId) ?? -1;
+			const index = messagesIdsRef.current.findIndex(item => item === messageId);
 
 			// if found message, scroll to it
 			if (index !== -1) {

@@ -3,12 +3,13 @@ import { Q } from '@nozbe/watermelondb';
 import { type Subscription } from 'rxjs';
 import { useDispatch } from 'react-redux';
 
-import { type TAnyMessageModel } from '../../../../definitions';
+import { type RoomType, type TAnyMessageModel } from '../../../../definitions';
 import database from '../../../../lib/database';
 import { getMessageById } from '../../../../lib/database/services/Message';
 import { getThreadById } from '../../../../lib/database/services/Thread';
-import { useDebounce } from '../../../../lib/methods/helpers';
+import { compareServerVersion, useDebounce } from '../../../../lib/methods/helpers';
 import { readThreads } from '../../../../lib/services/restApi';
+import { MESSAGE_TYPE_ANY_LOAD, type MessageTypeLoad } from '../../../../lib/constants/messageTypeLoad';
 import { QUERY_SIZE } from '../constants';
 import { buildVisibleSystemTypesClause } from './buildVisibleSystemTypesClause';
 import { roomHistoryRequest } from '../../../../actions/room';
@@ -17,13 +18,16 @@ export const useMessages = ({
 	rid,
 	tmid,
 	showMessageInMainThread,
-	hideSystemMessages
+	hideSystemMessages,
+	serverVersion,
+	t
 }: {
 	rid: string;
 	tmid?: string;
 	showMessageInMainThread: boolean;
 	serverVersion: string | null;
 	hideSystemMessages: string[];
+	t: RoomType;
 }) => {
 	// 1. Store RAW messages directly from the database
 	const [rawMessages, setRawMessages] = useState<TAnyMessageModel[]>([]);
@@ -117,19 +121,28 @@ export const useMessages = ({
 		subscription.current?.unsubscribe();
 	};
 
-	useEffect(() => {
-		if (!hideSystemMessages) {
-			dispatch(roomHistoryRequest({ rid, t, loaderId: loader.id }));
-		}
-	}, [hideSystemMessages]);
-	// 2. Reactively filter in-memory. This mimics the Web's Zustand behavior
-	// and updates the UI instantly before the DB query even finishes rebuilding.
 	const visibleMessages = useMemo(() => {
 		if (!hideSystemMessages || hideSystemMessages.length === 0) {
 			return rawMessages;
 		}
 		return rawMessages.filter(m => !m.t || !hideSystemMessages.includes(m.t));
 	}, [rawMessages, hideSystemMessages]);
+
+	//
+	// * When the server version is greater than or equal to 3.16.0, we need to dispatch a roomHistoryRequest to load the next chunk of messages.
+	// * This is because the server will not return the next chunk of messages if the user has hidden system messages.
+	// * @see https://github.com/RocketChat/Rocket.Chat/pull/28406
+	// */
+	useEffect(() => {
+		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.16.0')) {
+			const loaderId = visibleMessages.find(m => m.t && MESSAGE_TYPE_ANY_LOAD.includes(m.t as MessageTypeLoad))?.id;
+			if (hideSystemMessages && loaderId) {
+				dispatch(roomHistoryRequest({ rid, t, loaderId }));
+			}
+		}
+	}, [hideSystemMessages, visibleMessages]);
+	// 2. Reactively filter in-memory. This mimics the Web's Zustand behavior
+	// and updates the UI instantly before the DB query even finishes rebuilding.
 
 	// 3. Reactively compute IDs based on the currently visible messages
 	const visibleMessagesIds = useMemo(() => visibleMessages.map(m => m.id), [visibleMessages]);
