@@ -1,6 +1,7 @@
 import CallKit
 import Foundation
 import PushKit
+import RocketChat
 
 /**
  * VoipModuleSwift - Swift implementation for VoIP push notifications and initial events data.
@@ -506,36 +507,20 @@ public final class VoipService: NSObject {
             }
         }
 
-        guard let client = ddpRegistry.clientFor(callId: payload.callId) else {
-            #if DEBUG
-            print("[\(TAG)] Native DDP client unavailable for accept \(payload.callId); relying on JS")
-            #endif
-            finishAccept(false)
-            return
-        }
-
-        guard let params = buildMediaCallAnswerParams(payload: payload, kind: .accept) else {
-            finishAccept(false)
-            return
-        }
-
-        if ddpRegistry.isLoggedIn(callId: payload.callId) {
-            client.callMethod("stream-notify-user", params: params) { success in
-                #if DEBUG
-                print("[\(TAG)] Native accept signal result for \(payload.callId): \(success)")
-                #endif
-                DispatchQueue.main.async { finishAccept(success) }
+        API(server: payload.host)?.fetch(request: MediaCallsAnswerRequest(
+            callId: payload.callId,
+            contractId: DeviceUID.uid(),
+            answer: "accept",
+            supportedFeatures: ["audio"]
+        )) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .resource(let response) where response.success:
+                    finishAccept(true)
+                default:
+                    finishAccept(false)
+                }
             }
-        } else {
-            client.queueMethodCall("stream-notify-user", params: params) { success in
-                #if DEBUG
-                print("[\(TAG)] Queued native accept signal result for \(payload.callId): \(success)")
-                #endif
-                DispatchQueue.main.async { finishAccept(success) }
-            }
-            #if DEBUG
-            print("[\(TAG)] Queued native accept signal for \(payload.callId)")
-            #endif
         }
     }
 
@@ -556,55 +541,22 @@ public final class VoipService: NSObject {
         // End the just-reported CallKit call immediately (reason 2 = unanswered / declined).
         RNCallKeep.endCall(withUUID: payload.callId, reason: 2)
 
-        // Send reject signal via native DDP if available, otherwise queue it.
-        if ddpRegistry.isLoggedIn(callId: payload.callId) {
-            sendRejectSignal(payload: payload)
-        } else {
-            queueRejectSignal(payload: payload)
-        }
+        // Send reject signal via REST
+        reject(payload: payload)
 
         #if DEBUG
         print("[\(TAG)] Rejected busy call \(payload.callId) — user already on a call")
         #endif
     }
 
-    private static func sendRejectSignal(payload: VoipPayload) {
-        guard let client = ddpRegistry.clientFor(callId: payload.callId) else {
-            #if DEBUG
-            print("[\(TAG)] Native DDP client unavailable, cannot send reject for \(payload.callId)")
-            #endif
-            return
-        }
-
-        guard let params = buildMediaCallAnswerParams(payload: payload, kind: .reject) else {
-            return
-        }
-
-        client.callMethod("stream-notify-user", params: params) { success in
-            #if DEBUG
-            print("[\(TAG)] Native reject signal result for \(payload.callId): \(success)")
-            #endif
-            stopDDPClientInternal(callId: payload.callId)
-        }
-    }
-
-    private static func queueRejectSignal(payload: VoipPayload) {
-        guard let client = ddpRegistry.clientFor(callId: payload.callId) else {
-            #if DEBUG
-            print("[\(TAG)] Native DDP client unavailable, cannot queue reject for \(payload.callId)")
-            #endif
-            return
-        }
-
-        guard let params = buildMediaCallAnswerParams(payload: payload, kind: .reject) else {
-            return
-        }
-
-        client.queueMethodCall("stream-notify-user", params: params) { success in
-            #if DEBUG
-            print("[\(TAG)] Queued native reject signal result for \(payload.callId): \(success)")
-            #endif
-            stopDDPClientInternal(callId: payload.callId)
+    private static func reject(payload: VoipPayload) {
+        API(server: payload.host)?.fetch(request: MediaCallsAnswerRequest(
+            callId: payload.callId,
+            contractId: DeviceUID.uid(),
+            answer: "reject",
+            supportedFeatures: nil
+        )) { _ in
+            self.stopDDPClientInternal(callId: payload.callId)
         }
     }
 
@@ -671,10 +623,6 @@ public final class VoipService: NSObject {
         clearNativeAcceptDedupe(for: observedCall.payload.callId)
 
         let endedCallId = observedCall.payload.callId
-        if ddpRegistry.isLoggedIn(callId: endedCallId) {
-            sendRejectSignal(payload: observedCall.payload)
-        } else {
-            queueRejectSignal(payload: observedCall.payload)
-        }
+        reject(payload: observedCall.payload)
     }
 }
