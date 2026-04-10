@@ -21,6 +21,8 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
     User
   </Text>
   <View
+    accessibilityLabel="Alice Johnson"
+    accessibilityRole="button"
     accessibilityState={
       {
         "busy": undefined,
@@ -215,6 +217,8 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
     SIP
   </Text>
   <View
+    accessibilityLabel="+55 11 99999-9999"
+    accessibilityRole="button"
     accessibilityState={
       {
         "busy": undefined,
@@ -347,6 +351,8 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
     Long label
   </Text>
   <View
+    accessibilityLabel="Long display name to validate text truncation behavior for PeerItem in narrow widths"
+    accessibilityRole="button"
     accessibilityState={
       {
         "busy": undefined,

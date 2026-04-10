@@ -15,13 +15,17 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
           "flex": 1,
           "justifyContent": "space-between",
         },
+        false,
         {
           "backgroundColor": "#FFFFFF",
         },
       ]
     }
+    testID="call-view-container"
   >
     <View
+      accessibilityLabel="Toggle call controls"
+      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
@@ -52,13 +56,16 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        {
-          "alignItems": "center",
-          "flex": 1,
-          "justifyContent": "center",
-          "marginBottom": 100,
-          "paddingHorizontal": 24,
-        }
+        [
+          {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+            "marginBottom": 100,
+            "paddingHorizontal": 24,
+          },
+          false,
+        ]
       }
       testID="caller-info-toggle"
     >
@@ -162,6 +169,8 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
       </View>
     </View>
     <View
+      accessibilityElementsHidden={false}
+      importantForAccessibility="auto"
       pointerEvents="auto"
       style={
         [
@@ -186,11 +195,14 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
     >
       <View
         style={
-          {
-            "flexDirection": "row",
-            "gap": 48,
-            "justifyContent": "center",
-          }
+          [
+            {
+              "flexDirection": "row",
+              "gap": 48,
+              "justifyContent": "center",
+            },
+            false,
+          ]
         }
         testID="call-buttons-row-0"
       >
@@ -491,11 +503,14 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
       </View>
       <View
         style={
-          {
-            "flexDirection": "row",
-            "gap": 48,
-            "justifyContent": "center",
-          }
+          [
+            {
+              "flexDirection": "row",
+              "gap": 48,
+              "justifyContent": "center",
+            },
+            false,
+          ]
         }
         testID="call-buttons-row-1"
       >
@@ -816,13 +831,17 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
           "flex": 1,
           "justifyContent": "space-between",
         },
+        false,
         {
           "backgroundColor": "#FFFFFF",
         },
       ]
     }
+    testID="call-view-container"
   >
     <View
+      accessibilityLabel="Toggle call controls"
+      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
@@ -853,13 +872,16 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        {
-          "alignItems": "center",
-          "flex": 1,
-          "justifyContent": "center",
-          "marginBottom": 100,
-          "paddingHorizontal": 24,
-        }
+        [
+          {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+            "marginBottom": 100,
+            "paddingHorizontal": 24,
+          },
+          false,
+        ]
       }
       testID="caller-info-toggle"
     >
@@ -963,6 +985,8 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
       </View>
     </View>
     <View
+      accessibilityElementsHidden={false}
+      importantForAccessibility="auto"
       pointerEvents="auto"
       style={
         [
@@ -987,11 +1011,14 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
     >
       <View
         style={
-          {
-            "flexDirection": "row",
-            "gap": 48,
-            "justifyContent": "center",
-          }
+          [
+            {
+              "flexDirection": "row",
+              "gap": 48,
+              "justifyContent": "center",
+            },
+            false,
+          ]
         }
         testID="call-buttons-row-0"
       >
@@ -1298,11 +1325,14 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
       </View>
       <View
         style={
-          {
-            "flexDirection": "row",
-            "gap": 48,
-            "justifyContent": "center",
-          }
+          [
+            {
+              "flexDirection": "row",
+              "gap": 48,
+              "justifyContent": "center",
+            },
+            false,
+          ]
         }
         testID="call-buttons-row-1"
       >
@@ -1625,13 +1655,17 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
           "flex": 1,
           "justifyContent": "space-between",
         },
+        false,
         {
           "backgroundColor": "#FFFFFF",
         },
       ]
     }
+    testID="call-view-container"
   >
     <View
+      accessibilityLabel="Toggle call controls"
+      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
@@ -1662,13 +1696,16 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        {
-          "alignItems": "center",
-          "flex": 1,
-          "justifyContent": "center",
-          "marginBottom": 100,
-          "paddingHorizontal": 24,
-        }
+        [
+          {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+            "marginBottom": 100,
+            "paddingHorizontal": 24,
+          },
+          false,
+        ]
       }
       testID="caller-info-toggle"
     >
@@ -1772,6 +1809,8 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
       </View>
     </View>
     <View
+      accessibilityElementsHidden={false}
+      importantForAccessibility="auto"
       pointerEvents="auto"
       style={
         [
@@ -1796,11 +1835,14 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
     >
       <View
         style={
-          {
-            "flexDirection": "row",
-            "gap": 48,
-            "justifyContent": "center",
-          }
+          [
+            {
+              "flexDirection": "row",
+              "gap": 48,
+              "justifyContent": "center",
+            },
+            false,
+          ]
         }
         testID="call-buttons-row-0"
       >
@@ -2101,11 +2143,14 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
       </View>
       <View
         style={
-          {
-            "flexDirection": "row",
-            "gap": 48,
-            "justifyContent": "center",
-          }
+          [
+            {
+              "flexDirection": "row",
+              "gap": 48,
+              "justifyContent": "center",
+            },
+            false,
+          ]
         }
         testID="call-buttons-row-1"
       >
@@ -2426,13 +2471,17 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
           "flex": 1,
           "justifyContent": "space-between",
         },
+        false,
         {
           "backgroundColor": "#FFFFFF",
         },
       ]
     }
+    testID="call-view-container"
   >
     <View
+      accessibilityLabel="Toggle call controls"
+      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
@@ -2463,13 +2512,16 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        {
-          "alignItems": "center",
-          "flex": 1,
-          "justifyContent": "center",
-          "marginBottom": 100,
-          "paddingHorizontal": 24,
-        }
+        [
+          {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+            "marginBottom": 100,
+            "paddingHorizontal": 24,
+          },
+          false,
+        ]
       }
       testID="caller-info-toggle"
     >
@@ -2573,6 +2625,8 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
       </View>
     </View>
     <View
+      accessibilityElementsHidden={false}
+      importantForAccessibility="auto"
       pointerEvents="auto"
       style={
         [
@@ -2597,11 +2651,14 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
     >
       <View
         style={
-          {
-            "flexDirection": "row",
-            "gap": 48,
-            "justifyContent": "center",
-          }
+          [
+            {
+              "flexDirection": "row",
+              "gap": 48,
+              "justifyContent": "center",
+            },
+            false,
+          ]
         }
         testID="call-buttons-row-0"
       >
@@ -2902,11 +2959,14 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
       </View>
       <View
         style={
-          {
-            "flexDirection": "row",
-            "gap": 48,
-            "justifyContent": "center",
-          }
+          [
+            {
+              "flexDirection": "row",
+              "gap": 48,
+              "justifyContent": "center",
+            },
+            false,
+          ]
         }
         testID="call-buttons-row-1"
       >
@@ -3227,13 +3287,17 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
           "flex": 1,
           "justifyContent": "space-between",
         },
+        false,
         {
           "backgroundColor": "#FFFFFF",
         },
       ]
     }
+    testID="call-view-container"
   >
     <View
+      accessibilityLabel="Toggle call controls"
+      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
@@ -3264,13 +3328,16 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        {
-          "alignItems": "center",
-          "flex": 1,
-          "justifyContent": "center",
-          "marginBottom": 100,
-          "paddingHorizontal": 24,
-        }
+        [
+          {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+            "marginBottom": 100,
+            "paddingHorizontal": 24,
+          },
+          false,
+        ]
       }
       testID="caller-info-toggle"
     >
@@ -3374,6 +3441,8 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
       </View>
     </View>
     <View
+      accessibilityElementsHidden={false}
+      importantForAccessibility="auto"
       pointerEvents="auto"
       style={
         [
@@ -3398,11 +3467,14 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
     >
       <View
         style={
-          {
-            "flexDirection": "row",
-            "gap": 48,
-            "justifyContent": "center",
-          }
+          [
+            {
+              "flexDirection": "row",
+              "gap": 48,
+              "justifyContent": "center",
+            },
+            false,
+          ]
         }
         testID="call-buttons-row-0"
       >
@@ -3703,11 +3775,14 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
       </View>
       <View
         style={
-          {
-            "flexDirection": "row",
-            "gap": 48,
-            "justifyContent": "center",
-          }
+          [
+            {
+              "flexDirection": "row",
+              "gap": 48,
+              "justifyContent": "center",
+            },
+            false,
+          ]
         }
         testID="call-buttons-row-1"
       >
@@ -4028,13 +4103,17 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
           "flex": 1,
           "justifyContent": "space-between",
         },
+        false,
         {
           "backgroundColor": "#FFFFFF",
         },
       ]
     }
+    testID="call-view-container"
   >
     <View
+      accessibilityLabel="Toggle call controls"
+      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
@@ -4065,13 +4144,16 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        {
-          "alignItems": "center",
-          "flex": 1,
-          "justifyContent": "center",
-          "marginBottom": 100,
-          "paddingHorizontal": 24,
-        }
+        [
+          {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+            "marginBottom": 100,
+            "paddingHorizontal": 24,
+          },
+          false,
+        ]
       }
       testID="caller-info-toggle"
     >
@@ -4175,6 +4257,8 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
       </View>
     </View>
     <View
+      accessibilityElementsHidden={false}
+      importantForAccessibility="auto"
       pointerEvents="auto"
       style={
         [
@@ -4199,11 +4283,14 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
     >
       <View
         style={
-          {
-            "flexDirection": "row",
-            "gap": 48,
-            "justifyContent": "center",
-          }
+          [
+            {
+              "flexDirection": "row",
+              "gap": 48,
+              "justifyContent": "center",
+            },
+            false,
+          ]
         }
         testID="call-buttons-row-0"
       >
@@ -4504,11 +4591,14 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
       </View>
       <View
         style={
-          {
-            "flexDirection": "row",
-            "gap": 48,
-            "justifyContent": "center",
-          }
+          [
+            {
+              "flexDirection": "row",
+              "gap": 48,
+              "justifyContent": "center",
+            },
+            false,
+          ]
         }
         testID="call-buttons-row-1"
       >
@@ -4836,6 +4926,8 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
     }
   >
     <View
+      accessibilityLabel="Toggle call controls"
+      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
@@ -4866,13 +4958,16 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        {
-          "alignItems": "center",
-          "flex": 1,
-          "justifyContent": "center",
-          "marginBottom": 100,
-          "paddingHorizontal": 24,
-        }
+        [
+          {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+            "marginBottom": 100,
+            "paddingHorizontal": 24,
+          },
+          false,
+        ]
       }
       testID="caller-info-toggle"
     >
@@ -4976,6 +5071,8 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
       </View>
     </View>
     <View
+      accessibilityElementsHidden={false}
+      importantForAccessibility="auto"
       pointerEvents="auto"
       style={
         [
@@ -5000,11 +5097,14 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
     >
       <View
         style={
-          {
-            "flexDirection": "row",
-            "gap": 48,
-            "justifyContent": "center",
-          }
+          [
+            {
+              "flexDirection": "row",
+              "gap": 48,
+              "justifyContent": "center",
+            },
+            false,
+          ]
         }
         testID="call-buttons-row-0"
       >
@@ -5626,6 +5726,8 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
     }
   >
     <View
+      accessibilityLabel="Toggle call controls"
+      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
@@ -5656,13 +5758,16 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        {
-          "alignItems": "center",
-          "flex": 1,
-          "justifyContent": "center",
-          "marginBottom": 100,
-          "paddingHorizontal": 24,
-        }
+        [
+          {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+            "marginBottom": 100,
+            "paddingHorizontal": 24,
+          },
+          false,
+        ]
       }
       testID="caller-info-toggle"
     >
@@ -5766,6 +5871,8 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
       </View>
     </View>
     <View
+      accessibilityElementsHidden={false}
+      importantForAccessibility="auto"
       pointerEvents="auto"
       style={
         [
@@ -5790,11 +5897,14 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
     >
       <View
         style={
-          {
-            "flexDirection": "row",
-            "gap": 48,
-            "justifyContent": "center",
-          }
+          [
+            {
+              "flexDirection": "row",
+              "gap": 48,
+              "justifyContent": "center",
+            },
+            false,
+          ]
         }
         testID="call-buttons-row-0"
       >
@@ -6424,6 +6534,8 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
     }
   >
     <View
+      accessibilityLabel="Toggle call controls"
+      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
@@ -6454,13 +6566,16 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        {
-          "alignItems": "center",
-          "flex": 1,
-          "justifyContent": "center",
-          "marginBottom": 100,
-          "paddingHorizontal": 24,
-        }
+        [
+          {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+            "marginBottom": 100,
+            "paddingHorizontal": 24,
+          },
+          false,
+        ]
       }
       testID="caller-info-toggle"
     >
@@ -6564,6 +6679,8 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
       </View>
     </View>
     <View
+      accessibilityElementsHidden={false}
+      importantForAccessibility="auto"
       pointerEvents="auto"
       style={
         [
@@ -6588,11 +6705,14 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
     >
       <View
         style={
-          {
-            "flexDirection": "row",
-            "gap": 48,
-            "justifyContent": "center",
-          }
+          [
+            {
+              "flexDirection": "row",
+              "gap": 48,
+              "justifyContent": "center",
+            },
+            false,
+          ]
         }
         testID="call-buttons-row-0"
       >
@@ -7214,6 +7334,8 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
     }
   >
     <View
+      accessibilityLabel="Toggle call controls"
+      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
@@ -7244,13 +7366,16 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        {
-          "alignItems": "center",
-          "flex": 1,
-          "justifyContent": "center",
-          "marginBottom": 100,
-          "paddingHorizontal": 24,
-        }
+        [
+          {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+            "marginBottom": 100,
+            "paddingHorizontal": 24,
+          },
+          false,
+        ]
       }
       testID="caller-info-toggle"
     >
@@ -7354,6 +7479,8 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
       </View>
     </View>
     <View
+      accessibilityElementsHidden={false}
+      importantForAccessibility="auto"
       pointerEvents="auto"
       style={
         [
@@ -7378,11 +7505,14 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
     >
       <View
         style={
-          {
-            "flexDirection": "row",
-            "gap": 48,
-            "justifyContent": "center",
-          }
+          [
+            {
+              "flexDirection": "row",
+              "gap": 48,
+              "justifyContent": "center",
+            },
+            false,
+          ]
         }
         testID="call-buttons-row-0"
       >
@@ -8004,6 +8134,8 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
     }
   >
     <View
+      accessibilityLabel="Toggle call controls"
+      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
@@ -8034,13 +8166,16 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        {
-          "alignItems": "center",
-          "flex": 1,
-          "justifyContent": "center",
-          "marginBottom": 100,
-          "paddingHorizontal": 24,
-        }
+        [
+          {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+            "marginBottom": 100,
+            "paddingHorizontal": 24,
+          },
+          false,
+        ]
       }
       testID="caller-info-toggle"
     >
@@ -8144,6 +8279,8 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
       </View>
     </View>
     <View
+      accessibilityElementsHidden={false}
+      importantForAccessibility="auto"
       pointerEvents="auto"
       style={
         [
@@ -8168,11 +8305,14 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
     >
       <View
         style={
-          {
-            "flexDirection": "row",
-            "gap": 48,
-            "justifyContent": "center",
-          }
+          [
+            {
+              "flexDirection": "row",
+              "gap": 48,
+              "justifyContent": "center",
+            },
+            false,
+          ]
         }
         testID="call-buttons-row-0"
       >
@@ -8794,6 +8934,8 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
     }
   >
     <View
+      accessibilityLabel="Toggle call controls"
+      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
@@ -8824,13 +8966,16 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        {
-          "alignItems": "center",
-          "flex": 1,
-          "justifyContent": "center",
-          "marginBottom": 100,
-          "paddingHorizontal": 24,
-        }
+        [
+          {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+            "marginBottom": 100,
+            "paddingHorizontal": 24,
+          },
+          false,
+        ]
       }
       testID="caller-info-toggle"
     >
@@ -8934,6 +9079,8 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
       </View>
     </View>
     <View
+      accessibilityElementsHidden={false}
+      importantForAccessibility="auto"
       pointerEvents="auto"
       style={
         [
@@ -8958,11 +9105,14 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
     >
       <View
         style={
-          {
-            "flexDirection": "row",
-            "gap": 48,
-            "justifyContent": "center",
-          }
+          [
+            {
+              "flexDirection": "row",
+              "gap": 48,
+              "justifyContent": "center",
+            },
+            false,
+          ]
         }
         testID="call-buttons-row-0"
       >
