@@ -90,7 +90,7 @@ export const setupMediaCallEvents = (): (() => void) => {
 		);
 
 		subscriptions.push(
-			RNCallKeep.addEventListener('performSetMutedCallAction', ({ muted, callUUID }) => {
+			RNCallKeep.addEventListener('didPerformSetMutedCallAction', ({ muted, callUUID }) => {
 				const { call, callId, nativeAcceptedCallId, toggleMute, isMuted } = useCallStore.getState();
 				const eventUuid = callUUID.toLowerCase();
 				const activeUuid = (callId ?? nativeAcceptedCallId ?? '').toLowerCase();

@@ -1,33 +1,16 @@
 /**
  * @jest-environment node
  *
- * iOS-only mute tests: requires isIOS = true so performSetMutedCallAction listener is registered.
+ * iOS-only mute tests: requires isIOS = true so didPerformSetMutedCallAction listener is registered.
  */
-import { DeviceEventEmitter } from 'react-native';
-import RNCallKeep from 'react-native-callkeep';
-
-import { DEEP_LINKING } from '../../../actions/actionsTypes';
-import type { VoipPayload } from '../../../definitions/Voip';
-import NativeVoipModule from '../../native/NativeVoip';
-import { getInitialMediaCallEvents, setupMediaCallEvents } from './MediaCallEvents';
+import { setupMediaCallEvents } from './MediaCallEvents';
 import { useCallStore } from './useCallStore';
 
-const mockDispatch = jest.fn();
-const mockSetNativeAcceptedCallId = jest.fn();
 const mockAddEventListener = jest.fn();
-const mockRNCallKeepClearInitialEvents = jest.fn();
-const mockSetCurrentCallActive = jest.fn();
 
 jest.mock('../../methods/helpers', () => ({
 	...jest.requireActual('../../methods/helpers'),
 	isIOS: true
-}));
-
-jest.mock('../../store', () => ({
-	__esModule: true,
-	default: {
-		dispatch: (...args: unknown[]) => mockDispatch(...args)
-	}
 }));
 
 jest.mock('./useCallStore', () => ({
@@ -36,32 +19,14 @@ jest.mock('./useCallStore', () => ({
 	}
 }));
 
-jest.mock('../../native/NativeVoip', () => ({
-	__esModule: true,
-	default: {
-		clearInitialEvents: jest.fn(),
-		getInitialEvents: jest.fn(() => null)
-	}
-}));
-
 jest.mock('react-native-callkeep', () => ({
 	__esModule: true,
 	default: {
 		addEventListener: (...args: unknown[]) => mockAddEventListener(...args),
-		clearInitialEvents: (...args: unknown[]) => mockRNCallKeepClearInitialEvents(...args),
-		setCurrentCallActive: (...args: unknown[]) => mockSetCurrentCallActive(...args),
+		clearInitialEvents: jest.fn(),
+		setCurrentCallActive: jest.fn(),
 		getInitialEvents: jest.fn(() => Promise.resolve([]))
 	}
-}));
-
-jest.mock('./MediaSessionInstance', () => ({
-	mediaSessionInstance: {
-		endCall: jest.fn()
-	}
-}));
-
-jest.mock('../restApi', () => ({
-	registerPushToken: jest.fn(() => Promise.resolve())
 }));
 
 const activeCallBase = {
@@ -71,14 +36,14 @@ const activeCallBase = {
 };
 
 function getMuteHandler(): (payload: { muted: boolean; callUUID: string }) => void {
-	const call = mockAddEventListener.mock.calls.find(([name]) => name === 'performSetMutedCallAction');
+	const call = mockAddEventListener.mock.calls.find(([name]) => name === 'didPerformSetMutedCallAction');
 	if (!call) {
-		throw new Error('performSetMutedCallAction listener not registered');
+		throw new Error('didPerformSetMutedCallAction listener not registered');
 	}
 	return call[1] as (payload: { muted: boolean; callUUID: string }) => void;
 }
 
-describe('setupMediaCallEvents — performSetMutedCallAction (iOS)', () => {
+describe('setupMediaCallEvents — didPerformSetMutedCallAction (iOS)', () => {
 	const toggleMute = jest.fn();
 	const getState = useCallStore.getState as jest.Mock;
 
@@ -89,9 +54,9 @@ describe('setupMediaCallEvents — performSetMutedCallAction (iOS)', () => {
 		getState.mockReturnValue({ ...activeCallBase, isMuted: false, toggleMute });
 	});
 
-	it('registers performSetMutedCallAction via RNCallKeep.addEventListener', () => {
+	it('registers didPerformSetMutedCallAction via RNCallKeep.addEventListener', () => {
 		setupMediaCallEvents();
-		expect(mockAddEventListener).toHaveBeenCalledWith('performSetMutedCallAction', expect.any(Function));
+		expect(mockAddEventListener).toHaveBeenCalledWith('didPerformSetMutedCallAction', expect.any(Function));
 	});
 
 	it('calls toggleMute when muted state differs from OS and UUIDs match', () => {
