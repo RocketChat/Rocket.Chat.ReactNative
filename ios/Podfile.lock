@@ -227,6 +227,7 @@ PODS:
   - hermes-engine (0.81.5):
     - hermes-engine/Pre-built (= 0.81.5)
   - hermes-engine/Pre-built (0.81.5)
+  - JitsiWebRTC (124.0.2)
   - libavif/core (0.11.1)
   - libavif/libdav1d (0.11.1):
     - libavif/core
@@ -2313,6 +2314,9 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
+  - react-native-webrtc (124.0.7):
+    - JitsiWebRTC (~> 124.0.0)
+    - React-Core
   - react-native-webview (13.16.1):
     - boost
     - DoubleConversion
@@ -2846,6 +2850,8 @@ PODS:
     - React-perflogger (= 0.81.5)
     - React-utils (= 0.81.5)
     - SocketRocket
+  - ReactNativeIncallManager (4.2.1):
+    - React-Core
   - RNBootSplash (6.3.11):
     - boost
     - DoubleConversion
@@ -2874,6 +2880,8 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
+  - RNCallKeep (4.3.16):
+    - React
   - RNCAsyncStorage (2.2.0):
     - boost
     - DoubleConversion
@@ -3548,6 +3556,7 @@ DEPENDENCIES:
   - react-native-restart (from `../node_modules/react-native-restart`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
+  - react-native-webrtc (from `../node_modules/react-native-webrtc`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
   - React-oscompat (from `../node_modules/react-native/ReactCommon/oscompat`)
@@ -3579,7 +3588,9 @@ DEPENDENCIES:
   - ReactAppDependencyProvider (from `build/generated/ios`)
   - ReactCodegen (from `build/generated/ios`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - ReactNativeIncallManager (from `../node_modules/react-native-incall-manager`)
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
+  - RNCallKeep (from `../node_modules/react-native-callkeep`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
   - "RNCMaskedView (from `../node_modules/@react-native-masked-view/masked-view`)"
@@ -3618,6 +3629,7 @@ SPEC REPOS:
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleUtilities
+    - JitsiWebRTC
     - libavif
     - libdav1d
     - libwebp
@@ -3780,6 +3792,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-slider:
     :path: "../node_modules/@react-native-community/slider"
+  react-native-webrtc:
+    :path: "../node_modules/react-native-webrtc"
   react-native-webview:
     :path: "../node_modules/react-native-webview"
   React-NativeModulesApple:
@@ -3842,8 +3856,12 @@ EXTERNAL SOURCES:
     :path: build/generated/ios
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  ReactNativeIncallManager:
+    :path: "../node_modules/react-native-incall-manager"
   RNBootSplash:
     :path: "../node_modules/react-native-bootsplash"
+  RNCallKeep:
+    :path: "../node_modules/react-native-callkeep"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNCClipboard:
@@ -3931,6 +3949,7 @@ SPEC CHECKSUMS:
   GoogleDataTransport: aae35b7ea0c09004c3797d53c8c41f66f219d6a7
   GoogleUtilities: 00c88b9a86066ef77f0da2fab05f65d7768ed8e1
   hermes-engine: 9f4dfe93326146a1c99eb535b1cb0b857a3cd172
+  JitsiWebRTC: b47805ab5668be38e7ee60e2258f49badfe8e1d0
   libavif: 84bbb62fb232c3018d6f1bab79beea87e35de7b7
   libdav1d: 23581a4d8ec811ff171ed5e2e05cd27bad64c39f
   libwebp: 02b23773aedb6ff1fd38cec7a77b81414c6842a8
@@ -3981,6 +4000,7 @@ SPEC CHECKSUMS:
   react-native-restart: f6f591aeb40194c41b9b5013901f00e6cf7d0f29
   react-native-safe-area-context: 0a3b034bb63a5b684dd2f5fffd3c90ef6ed41ee8
   react-native-slider: 6201419b3e3f7c6b7cf2068e0c01274fa86a1da5
+  react-native-webrtc: e8f0ce746353adc2744a2b933645e1aeb41eaa74
   react-native-webview: 83c663c5bdf1357d3e7c00986260cb888ea0e328
   React-NativeModulesApple: cbceb3c4cb726838c461b13802a76cefa6f3476f
   React-oscompat: eb0626e8ba1a2c61673c991bf9dc21834898475d
@@ -4010,13 +4030,15 @@ SPEC CHECKSUMS:
   React-timing: c39eeb992274aeaeb9f4666dc97a36a31d33fe94
   React-utils: 2f9ba0088251788ad66aa1855ff99ed2424024d2
   ReactAppDependencyProvider: 1bcd3527ac0390a1c898c114f81ff954be35ed79
-  ReactCodegen: 70ef19c9bb0884fc1b78731ec2200d48479c908c
+  ReactCodegen: 7fadc30654a54b3a0d62df08f55e2211e25486ee
   ReactCommon: 6d0fa86a4510730da7c72560e0ced14258292ab9
+  ReactNativeIncallManager: dccd3e7499caa3bb73d3acfedf4fb0360f1a87d5
   RNBootSplash: 7fcc9a58ae343aeb1a1dd49f9030832fe432c544
+  RNCallKeep: 1930a01d8caf48f018be4f2db0c9f03405c2f977
   RNCAsyncStorage: fd44f4b03e007e642e98df6726737bc66e9ba609
   RNCClipboard: e560338bf6cc4656a09ff90610b62ddc0dbdad65
   RNCMaskedView: d707a83784c67099b54b37d056ababb2767ce15e
-  RNConfigReader: 151efbfb6f2dddd04dd3c0b00fb292d8c7939215
+  RNConfigReader: 27bab37cca5e6b87766ffd73b8b8818ee46e3416
   RNCPicker: 70fd0622147f0ca1b9c5e1be2069a4fb2e8ec461
   RNDateTimePicker: ca1dc7e24d0b4839877f0ab619e7bca5db715289
   RNDeviceInfo: 900bd20e1fd3bfd894e7384cc4a83880c0341bd3
