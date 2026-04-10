@@ -40,7 +40,7 @@ jest.mock('../../../../lib/methods/helpers', () => {
 	};
 });
 
-const mockDbGet = jest.mocked(database.active.get);
+const mockDbGet = database.active.get as unknown as jest.Mock;
 const mockGetThreadById = jest.mocked(getThreadById);
 const mockGetMessageById = jest.mocked(getMessageById);
 
@@ -54,7 +54,6 @@ const baseArgs = {
 
 const msg = (overrides: Partial<TAnyMessageModel> & { id: string }): TAnyMessageModel =>
 	({
-		id: overrides.id,
 		ts: new Date('2024-01-01'),
 		...overrides
 	} as TAnyMessageModel);
