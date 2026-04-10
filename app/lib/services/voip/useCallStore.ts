@@ -175,6 +175,12 @@ export const useCallStore = create<CallStore>((set, get) => ({
 			if (newState === 'active' && !get().callStartTime) {
 				set({ callStartTime: Date.now() });
 			}
+
+			// Tell CallKit the call is active so iOS shows it in the system UI (lock screen, Control Center, Dynamic Island)
+			if (newState === 'active') {
+				const { callId, nativeAcceptedCallId } = get();
+				RNCallKeep.setCurrentCallActive(callId ?? nativeAcceptedCallId ?? '');
+			}
 		};
 
 		const handleTrackStateChange = () => {
