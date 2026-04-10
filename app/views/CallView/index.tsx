@@ -1,5 +1,4 @@
 import React from 'react';
-import { View } from 'react-native';
 
 import { useCallStore } from '../../lib/services/voip/useCallStore';
 import CallerInfo from './components/CallerInfo';
@@ -7,6 +6,7 @@ import { styles } from './styles';
 import { useTheme } from '../../theme';
 import { CallButtons } from './components/CallButtons';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import SafeAreaView from '../../containers/SafeAreaView';
 
 const CallView = (): React.ReactElement | null => {
 	'use memo';
@@ -21,7 +21,7 @@ const CallView = (): React.ReactElement | null => {
 	}
 
 	return (
-		<View
+		<SafeAreaView
 			testID='call-view-container'
 			style={[
 				styles.contentContainer,
@@ -30,7 +30,7 @@ const CallView = (): React.ReactElement | null => {
 			]}>
 			<CallerInfo />
 			<CallButtons />
-		</View>
+		</SafeAreaView>
 	);
 };
 

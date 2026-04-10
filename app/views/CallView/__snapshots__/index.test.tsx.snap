@@ -8,17 +8,33 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
     }
   }
 >
-  <View
+  <RNCSafeAreaView
+    edges={
+      {
+        "bottom": "off",
+        "left": "additive",
+        "right": "additive",
+        "top": "off",
+      }
+    }
     style={
       [
         {
           "flex": 1,
-          "justifyContent": "space-between",
         },
-        false,
         {
-          "backgroundColor": "#FFFFFF",
+          "backgroundColor": "#F2F3F5",
         },
+        [
+          {
+            "flex": 1,
+            "justifyContent": "space-between",
+          },
+          false,
+          {
+            "backgroundColor": "#FFFFFF",
+          },
+        ],
       ]
     }
     testID="call-view-container"
@@ -812,7 +828,7 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
         </View>
       </View>
     </View>
-  </View>
+  </RNCSafeAreaView>
 </View>
 `;
 
@@ -824,17 +840,33 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
     }
   }
 >
-  <View
+  <RNCSafeAreaView
+    edges={
+      {
+        "bottom": "off",
+        "left": "additive",
+        "right": "additive",
+        "top": "off",
+      }
+    }
     style={
       [
         {
           "flex": 1,
-          "justifyContent": "space-between",
         },
-        false,
         {
-          "backgroundColor": "#FFFFFF",
+          "backgroundColor": "#F2F3F5",
         },
+        [
+          {
+            "flex": 1,
+            "justifyContent": "space-between",
+          },
+          false,
+          {
+            "backgroundColor": "#FFFFFF",
+          },
+        ],
       ]
     }
     testID="call-view-container"
@@ -1636,7 +1668,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
         </View>
       </View>
     </View>
-  </View>
+  </RNCSafeAreaView>
 </View>
 `;
 
@@ -1648,17 +1680,33 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
     }
   }
 >
-  <View
+  <RNCSafeAreaView
+    edges={
+      {
+        "bottom": "off",
+        "left": "additive",
+        "right": "additive",
+        "top": "off",
+      }
+    }
     style={
       [
         {
           "flex": 1,
-          "justifyContent": "space-between",
         },
-        false,
         {
-          "backgroundColor": "#FFFFFF",
+          "backgroundColor": "#F2F3F5",
         },
+        [
+          {
+            "flex": 1,
+            "justifyContent": "space-between",
+          },
+          false,
+          {
+            "backgroundColor": "#FFFFFF",
+          },
+        ],
       ]
     }
     testID="call-view-container"
@@ -2452,7 +2500,7 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
         </View>
       </View>
     </View>
-  </View>
+  </RNCSafeAreaView>
 </View>
 `;
 
@@ -2464,17 +2512,33 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
     }
   }
 >
-  <View
+  <RNCSafeAreaView
+    edges={
+      {
+        "bottom": "off",
+        "left": "additive",
+        "right": "additive",
+        "top": "off",
+      }
+    }
     style={
       [
         {
           "flex": 1,
-          "justifyContent": "space-between",
         },
-        false,
         {
-          "backgroundColor": "#FFFFFF",
+          "backgroundColor": "#F2F3F5",
         },
+        [
+          {
+            "flex": 1,
+            "justifyContent": "space-between",
+          },
+          false,
+          {
+            "backgroundColor": "#FFFFFF",
+          },
+        ],
       ]
     }
     testID="call-view-container"
@@ -3268,7 +3332,7 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
         </View>
       </View>
     </View>
-  </View>
+  </RNCSafeAreaView>
 </View>
 `;
 
@@ -3280,17 +3344,33 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
     }
   }
 >
-  <View
+  <RNCSafeAreaView
+    edges={
+      {
+        "bottom": "off",
+        "left": "additive",
+        "right": "additive",
+        "top": "off",
+      }
+    }
     style={
       [
         {
           "flex": 1,
-          "justifyContent": "space-between",
         },
-        false,
         {
-          "backgroundColor": "#FFFFFF",
+          "backgroundColor": "#F2F3F5",
         },
+        [
+          {
+            "flex": 1,
+            "justifyContent": "space-between",
+          },
+          false,
+          {
+            "backgroundColor": "#FFFFFF",
+          },
+        ],
       ]
     }
     testID="call-view-container"
@@ -4084,7 +4164,7 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
         </View>
       </View>
     </View>
-  </View>
+  </RNCSafeAreaView>
 </View>
 `;
 
@@ -4096,17 +4176,33 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
     }
   }
 >
-  <View
+  <RNCSafeAreaView
+    edges={
+      {
+        "bottom": "off",
+        "left": "additive",
+        "right": "additive",
+        "top": "off",
+      }
+    }
     style={
       [
         {
           "flex": 1,
-          "justifyContent": "space-between",
         },
-        false,
         {
-          "backgroundColor": "#FFFFFF",
+          "backgroundColor": "#F2F3F5",
         },
+        [
+          {
+            "flex": 1,
+            "justifyContent": "space-between",
+          },
+          false,
+          {
+            "backgroundColor": "#FFFFFF",
+          },
+        ],
       ]
     }
     testID="call-view-container"
@@ -4900,7 +4996,7 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
         </View>
       </View>
     </View>
-  </View>
+  </RNCSafeAreaView>
 </View>
 `;
 
