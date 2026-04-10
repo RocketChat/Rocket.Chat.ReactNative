@@ -6,7 +6,7 @@ import { type TAnyMessageModel } from '../../../../definitions';
 import database from '../../../../lib/database';
 import { getMessageById } from '../../../../lib/database/services/Message';
 import { getThreadById } from '../../../../lib/database/services/Thread';
-import { compareServerVersion, useDebounce } from '../../../../lib/methods/helpers';
+import { useDebounce } from '../../../../lib/methods/helpers';
 import { readThreads } from '../../../../lib/services/restApi';
 import { QUERY_SIZE } from '../constants';
 import { buildVisibleSystemTypesClause } from './buildVisibleSystemTypesClause';
@@ -39,7 +39,15 @@ export const useMessages = ({
 		}
 
 		const db = database.active;
-		const visibleSystemClause = buildVisibleSystemTypesClause(hideSystemMessages);
+		/**
+		 * Since 3.16.0 server version, the backend don't response with messages if
+		 * hide system message is enabled
+		 *
+		 * When hideSystemMessages is non-empty, `buildVisibleSystemTypesClause` already applied
+		 * the same rule in the DB query so `take` limits visible rows — skip redundant filtering.
+		 */
+		const visibleSystemClause = hideSystemMessages.length ? buildVisibleSystemTypesClause(hideSystemMessages) : null;
+
 		let observable;
 		if (tmid) {
 			// If the thread doesn't exist yet, we fetch it from messages, but trying to get it from threads when possible.
@@ -52,13 +60,22 @@ export const useMessages = ({
 			}
 			observable = db
 				.get('thread_messages')
-				.query(Q.where('rid', tmid), Q.sortBy('ts', Q.desc), Q.skip(0), Q.take(count.current))
+				.query(
+					Q.where('rid', tmid),
+					...(visibleSystemClause ? [visibleSystemClause] : []),
+					Q.sortBy('ts', Q.desc),
+					Q.skip(0),
+					Q.take(count.current)
+				)
 				.observe();
 		} else {
-			const whereClause = [Q.where('rid', rid), Q.sortBy('ts', Q.desc), Q.skip(0), Q.take(count.current)] as (
-				| Q.WhereDescription
-				| Q.Or
-			)[];
+			const whereClause: Q.Clause[] = [
+				Q.where('rid', rid),
+				...(visibleSystemClause ? [visibleSystemClause] : []),
+				Q.sortBy('ts', Q.desc),
+				Q.skip(0),
+				Q.take(count.current)
+			];
 			if (!showMessageInMainThread) {
 				whereClause.push(Q.or(Q.where('tmid', null), Q.where('tshow', Q.eq(true))));
 			}
@@ -69,17 +86,9 @@ export const useMessages = ({
 		}
 
 		subscription.current = observable.subscribe(result => {
-			let newMessages: TAnyMessageModel[] = result;
+			const newMessages: TAnyMessageModel[] = [...result];
 			if (tmid && thread.current) {
 				newMessages.push(thread.current);
-			}
-
-			/**
-			 * Since 3.16.0 server version, the backend don't response with messages if
-			 * hide system message is enabled
-			 */
-			if (compareServerVersion(serverVersion, 'lowerThan', '3.16.0') || hideSystemMessages.length) {
-				newMessages = newMessages.filter(m => !m.t || !hideSystemMessages?.includes(m.t));
 			}
 
 			readThread();
