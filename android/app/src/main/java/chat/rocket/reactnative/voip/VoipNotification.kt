@@ -152,11 +152,15 @@ class VoipNotification(private val context: Context) {
         fun handleDeclineAction(context: Context, payload: VoipPayload) {
             Log.d(TAG, "Decline action triggered for callId: ${payload.callId}")
             cancelTimeout(payload.callId)
-            if (ddpRegistry.isLoggedIn(payload.callId)) {
-                sendRejectSignal(context, payload)
-            } else {
-                queueRejectSignal(context, payload)
-            }
+            val deviceId = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+            MediaCallsAnswerRequest.fetch(
+                context = context,
+                host = payload.host,
+                callId = payload.callId,
+                contractId = deviceId,
+                answer = "reject",
+                supportedFeatures = null
+            ) { _ -> }
             rejectIncomingCall(payload.callId)
             cancelById(context, payload.notificationId)
             LocalBroadcastManager.getInstance(context).sendBroadcast(
