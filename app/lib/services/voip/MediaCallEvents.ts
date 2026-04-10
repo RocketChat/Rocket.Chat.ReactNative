@@ -90,8 +90,16 @@ export const setupMediaCallEvents = (): (() => void) => {
 		);
 
 		subscriptions.push(
-			RNCallKeep.addEventListener('performSetMutedCallAction', ({ muted, callUUID: _callUUID }) => {
-				const { toggleMute, isMuted } = useCallStore.getState();
+			RNCallKeep.addEventListener('performSetMutedCallAction', ({ muted, callUUID }) => {
+				const { call, callId, nativeAcceptedCallId, toggleMute, isMuted } = useCallStore.getState();
+				const eventUuid = callUUID.toLowerCase();
+				const activeUuid = (callId ?? nativeAcceptedCallId ?? '').toLowerCase();
+
+				// No active media call or event is for another CallKit/Telecom session — drop stale closure state
+				if (!call || !activeUuid || eventUuid !== activeUuid) {
+					return;
+				}
+
 				// Sync mute state if it doesn't match what the OS is reporting
 				if (muted !== isMuted) {
 					toggleMute();

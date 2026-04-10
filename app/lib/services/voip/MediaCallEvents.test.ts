@@ -87,6 +87,14 @@ const activeCallBase = {
 	nativeAcceptedCallId: null as string | null
 };
 
+function getMuteHandler(): (payload: { muted: boolean; callUUID: string }) => void {
+	const call = mockAddEventListener.mock.calls.find(([name]) => name === 'performSetMutedCallAction');
+	if (!call) {
+		throw new Error('performSetMutedCallAction listener not registered');
+	}
+	return call[1] as (payload: { muted: boolean; callUUID: string }) => void;
+}
+
 describe('MediaCallEvents cross-server accept (slice 3)', () => {
 	const getState = useCallStore.getState as jest.Mock;
 
