@@ -38,6 +38,4 @@ struct MediaCallsAnswerRequest: Request {
     }
 }
 
-struct MediaCallsAnswerResponse: Response {
-    let success: Bool
-}
+typealias MediaCallsAnswerResponse = MessageResponse

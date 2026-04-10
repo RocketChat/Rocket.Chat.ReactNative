@@ -595,11 +595,12 @@ public final class VoipService: NSObject {
             return
         }
 
-        observedIncomingCalls.removeValue(forKey: call.uuid)
-        cancelIncomingCallTimeout(for: observedCall.payload.callId)
-        clearNativeAcceptDedupe(for: observedCall.payload.callId)
-
         let endedCallId = observedCall.payload.callId
+        observedIncomingCalls.removeValue(forKey: call.uuid)
+        cancelIncomingCallTimeout(for: endedCallId)
+        clearNativeAcceptDedupe(for: endedCallId)
+
+        RNCallKeep.endCall(withUUID: endedCallId, reason: 3)
         reject(payload: observedCall.payload)
     }
 }
