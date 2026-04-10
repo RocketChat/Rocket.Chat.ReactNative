@@ -1,6 +1,7 @@
-import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Q } from '@nozbe/watermelondb';
 import { type Subscription } from 'rxjs';
+import { useDispatch } from 'react-redux';
 
 import { type TAnyMessageModel } from '../../../../definitions';
 import database from '../../../../lib/database';
@@ -10,6 +11,7 @@ import { useDebounce } from '../../../../lib/methods/helpers';
 import { readThreads } from '../../../../lib/services/restApi';
 import { QUERY_SIZE } from '../constants';
 import { buildVisibleSystemTypesClause } from './buildVisibleSystemTypesClause';
+import { roomHistoryRequest } from '../../../../actions/room';
 
 export const useMessages = ({
 	rid,
@@ -28,6 +30,7 @@ export const useMessages = ({
 	const thread = useRef<TAnyMessageModel | null>(null);
 	const count = useRef(0);
 	const subscription = useRef<Subscription | null>(null);
+	const dispatch = useDispatch();
 
 	const fetchMessages = useCallback(async () => {
 		unsubscribe();
@@ -114,6 +117,11 @@ export const useMessages = ({
 		subscription.current?.unsubscribe();
 	};
 
+	useEffect(() => {
+		if (!hideSystemMessages) {
+			dispatch(roomHistoryRequest({ rid, t, loaderId: loader.id }));
+		}
+	}, [hideSystemMessages]);
 	// 2. Reactively filter in-memory. This mimics the Web's Zustand behavior
 	// and updates the UI instantly before the DB query even finishes rebuilding.
 	const visibleMessages = useMemo(() => {
