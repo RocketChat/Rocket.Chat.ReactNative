@@ -1,4 +1,4 @@
-import { useCallback, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Q } from '@nozbe/watermelondb';
 import { type Subscription } from 'rxjs';
 
@@ -15,7 +15,6 @@ export const useMessages = ({
 	rid,
 	tmid,
 	showMessageInMainThread,
-	serverVersion,
 	hideSystemMessages
 }: {
 	rid: string;
@@ -24,11 +23,11 @@ export const useMessages = ({
 	serverVersion: string | null;
 	hideSystemMessages: string[];
 }) => {
-	const [messages, setMessages] = useState<TAnyMessageModel[]>([]);
+	// 1. Store RAW messages directly from the database
+	const [rawMessages, setRawMessages] = useState<TAnyMessageModel[]>([]);
 	const thread = useRef<TAnyMessageModel | null>(null);
 	const count = useRef(0);
 	const subscription = useRef<Subscription | null>(null);
-	const messagesIds = useRef<string[]>([]);
 
 	const fetchMessages = useCallback(async () => {
 		unsubscribe();
@@ -39,19 +38,13 @@ export const useMessages = ({
 		}
 
 		const db = database.active;
-		/**
-		 * Since 3.16.0 server version, the backend don't response with messages if
-		 * hide system message is enabled
-		 *
-		 * When hideSystemMessages is non-empty, `buildVisibleSystemTypesClause` already applied
-		 * the same rule in the DB query so `take` limits visible rows — skip redundant filtering.
-		 */
+
+		// Apply the filter to the DB query. This guarantees Q.take() grabs
+		// exactly enough messages to keep pagination from breaking.
 		const visibleSystemClause = hideSystemMessages.length ? buildVisibleSystemTypesClause(hideSystemMessages) : null;
 
 		let observable;
 		if (tmid) {
-			// If the thread doesn't exist yet, we fetch it from messages, but trying to get it from threads when possible.
-			// As soon as we have it from threads table, we use it from cache only and never query again.
 			if (!thread.current || thread.current.collection.table !== 'threads') {
 				thread.current = await getThreadById(tmid);
 				if (!thread.current) {
@@ -87,15 +80,17 @@ export const useMessages = ({
 
 		subscription.current = observable.subscribe(result => {
 			const newMessages: TAnyMessageModel[] = [...result];
+
+			// Push the thread parent. If it happens to be a hidden system message,
+			// our useMemo down below will safely catch it and hide it from the UI.
 			if (tmid && thread.current) {
 				newMessages.push(thread.current);
 			}
 
 			readThread();
-			setMessages(newMessages);
-			messagesIds.current = newMessages.map(m => m.id);
+			setRawMessages(newMessages); // Set state with raw DB results
 		});
-	}, [rid, tmid, showMessageInMainThread, serverVersion, hideSystemMessages]);
+	}, [rid, tmid, showMessageInMainThread, hideSystemMessages]); // hideSystemMessages must be here so the DB re-queries for proper pagination
 
 	const readThread = useDebounce(async () => {
 		if (tmid) {
@@ -113,11 +108,23 @@ export const useMessages = ({
 		return () => {
 			unsubscribe();
 		};
-	}, [rid, tmid, showMessageInMainThread, serverVersion, hideSystemMessages, fetchMessages]);
+	}, [fetchMessages]);
 
 	const unsubscribe = () => {
 		subscription.current?.unsubscribe();
 	};
 
-	return [messages, messagesIds, fetchMessages] as const;
+	// 2. Reactively filter in-memory. This mimics the Web's Zustand behavior
+	// and updates the UI instantly before the DB query even finishes rebuilding.
+	const visibleMessages = useMemo(() => {
+		if (!hideSystemMessages || hideSystemMessages.length === 0) {
+			return rawMessages;
+		}
+		return rawMessages.filter(m => !m.t || !hideSystemMessages.includes(m.t));
+	}, [rawMessages, hideSystemMessages]);
+
+	// 3. Reactively compute IDs based on the currently visible messages
+	const visibleMessagesIds = useMemo(() => visibleMessages.map(m => m.id), [visibleMessages]);
+
+	return [visibleMessages, visibleMessagesIds, fetchMessages] as const;
 };
