@@ -19,6 +19,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginEnd="8dp"
+            android:importantForAccessibility="no"
             android:src="@drawable/ic_notification"
             android:tint="@color/incoming_call_header_icon" />
 
@@ -63,6 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
+            android:accessibilityLiveRegion="polite"
             android:textColor="@color/incoming_call_name"
             android:textSize="22sp"
             android:textStyle="bold"
@@ -95,6 +97,7 @@
             android:layout_marginStart="44dp"
             android:background="?attr/selectableItemBackground"
             android:clickable="true"
+            android:contentDescription="@string/incoming_call_reject"
             android:focusable="true"
             android:gravity="center"
             android:orientation="vertical"
@@ -112,6 +115,7 @@
                     android:layout_height="36dp"
                     android:layout_gravity="center"
                     android:contentDescription="@string/incoming_call_reject"
+                    android:importantForAccessibility="no"
                     android:src="@drawable/ic_call_end" />
 
             </FrameLayout>
@@ -121,6 +125,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:importantForAccessibility="no"
                 android:text="@string/incoming_call_reject"
                 android:textColor="@color/incoming_call_button_label"
                 android:textSize="14sp" />
@@ -141,6 +146,7 @@
             android:layout_marginEnd="44dp"
             android:background="?attr/selectableItemBackground"
             android:clickable="true"
+            android:contentDescription="@string/incoming_call_accept"
             android:focusable="true"
             android:gravity="center"
             android:orientation="vertical"
@@ -158,6 +164,7 @@
                     android:layout_height="36dp"
                     android:layout_gravity="center"
                     android:contentDescription="@string/incoming_call_accept"
+                    android:importantForAccessibility="no"
                     android:src="@drawable/ic_call" />
 
             </FrameLayout>
@@ -167,6 +174,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:importantForAccessibility="no"
                 android:text="@string/incoming_call_accept"
                 android:textColor="@color/incoming_call_button_label"
                 android:textSize="14sp" />

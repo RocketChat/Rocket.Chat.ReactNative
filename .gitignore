@@ -88,6 +88,7 @@ e2e/e2e_account.ts
 .omc/
 .claude/
 .agents/
+.cursor/
 skills-lock.json
 CLAUDE.local.md
 AGENTS.md
