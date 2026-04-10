@@ -36,6 +36,7 @@ class MediaCallsAnswerRequest(
     companion object {
         private const val TAG = "RocketChat.MediaCallsAnswerRequest"
         private val JSON_MEDIA_TYPE = "application/json; charset=utf-8".toMediaType()
+        private val httpClient = OkHttpClient()
 
         @JvmStatic
         fun fetch(
@@ -107,18 +108,19 @@ class MediaCallsAnswerRequest(
             .post(requestBody)
             .build()
 
-        val client = OkHttpClient()
-        client.newCall(request).enqueue(object : Callback {
+        httpClient.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 Log.e(TAG, "MediaCallsAnswerRequest failed for callId=$callId: ${e.message}")
                 onResult(false)
             }
 
             override fun onResponse(call: Call, response: okhttp3.Response) {
-                val code = response.code
-                val success = code in 200..299
-                Log.d(TAG, "MediaCallsAnswerRequest response for callId=$callId: code=$code success=$success")
-                onResult(success)
+                response.use {
+                    val code = it.code
+                    val success = code in 200..299
+                    Log.d(TAG, "MediaCallsAnswerRequest response for callId=$callId: code=$code success=$success")
+                    onResult(success)
+                }
             }
         })
     }
