@@ -468,7 +468,15 @@ public final class VoipService: NSObject {
             }
         }
 
-        API(server: payload.host)?.fetch(request: MediaCallsAnswerRequest(
+        guard let api = API(server: payload.host) else {
+            #if DEBUG
+            print("[\(TAG)] Failed to create API for host: \(payload.host)")
+            #endif
+            finishAccept(false)
+            return
+        }
+
+        api.fetch(request: MediaCallsAnswerRequest(
             callId: payload.callId,
             contractId: DeviceUID.uid(),
             answer: "accept",
@@ -511,7 +519,15 @@ public final class VoipService: NSObject {
     }
 
     private static func reject(payload: VoipPayload) {
-        API(server: payload.host)?.fetch(request: MediaCallsAnswerRequest(
+        guard let api = API(server: payload.host) else {
+            #if DEBUG
+            print("[\(TAG)] Failed to create API for reject: \(payload.host)")
+            #endif
+            stopDDPClientInternal(callId: payload.callId)
+            return
+        }
+
+        api.fetch(request: MediaCallsAnswerRequest(
             callId: payload.callId,
             contractId: DeviceUID.uid(),
             answer: "reject",
