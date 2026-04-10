@@ -7,11 +7,12 @@ import chat.rocket.reactnative.voip.credentials.VoipCredentialsProvider
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import io.mockk.mockk
 import io.mockk.mockkStatic
+import io.mockk.slot
+import io.mockk.verify
 import android.util.Log
 import org.json.JSONArray
-import org.json.JSONObject
-import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Before
@@ -27,6 +28,9 @@ class CallSignalBuilderTest {
 
     @MockK
     private lateinit var mockCredentialsProvider: VoipCredentialsProvider
+
+    @MockK
+    private lateinit var mockParamsBuilder: SignalParamsBuilder
 
     private lateinit var builder: DefaultCallSignalBuilder
 
@@ -45,6 +49,12 @@ class CallSignalBuilderTest {
         createdAt = "2026-04-09T12:00:00.000Z"
     )
 
+    private fun mockParams(userId: String, signalJson: String): JSONArray {
+        // Build a real JSONArray without calling put() — use JSONArray(String).
+        // JSONArray(String) parses the string without invoking any put() native methods.
+        return JSONArray("[\"$userId/media-calls\",\"${signalJson.replace("\"", "\\\"")}\"]")
+    }
+
     @Before
     fun setup() {
         MockKAnnotations.init(this)
@@ -59,24 +69,47 @@ class CallSignalBuilderTest {
         every { mockCredentialsProvider.userId() } returns testUserId
         every { mockCredentialsProvider.deviceId() } returns testDeviceId
 
-        builder = DefaultCallSignalBuilder(mockCredentialsProvider)
+        // Default mock returns a well-formed JSONArray with the expected structure
+        every {
+            mockParamsBuilder.buildParams(
+                userId = testUserId,
+                callId = "call_abc",
+                contractId = testDeviceId,
+                answer = "accept",
+                supportedFeatures = listOf("audio")
+            )
+        } returns mockParams("${testUserId}/media-calls", """{"callId":"call_abc","contractId":"device456","type":"answer","answer":"accept","supportedFeatures":["audio"]}""")
+
+        every {
+            mockParamsBuilder.buildParams(
+                userId = testUserId,
+                callId = "call_abc",
+                contractId = testDeviceId,
+                answer = "reject",
+                supportedFeatures = null
+            )
+        } returns mockParams("${testUserId}/media-calls", """{"callId":"call_abc","contractId":"device456","type":"answer","answer":"reject"}""")
+
+        builder = DefaultCallSignalBuilder(mockCredentialsProvider, mockParamsBuilder)
     }
 
     @Test
     fun `accept signal has correct JSON structure`() {
         val payload = createPayload()
+        val signalJsonSlot = slot<String>()
 
         val result = builder.buildAcceptSignal(mockContext, payload)
 
         assertNotNull(result)
-        assertEquals(2, result!!.length())
-        assertEquals("${testUserId}/media-calls", result.getString(0))
-
-        val signalJson = JSONObject(result.getString(1))
-        assertEquals("call_abc", signalJson.getString("callId"))
-        assertEquals("device456", signalJson.getString("contractId"))
-        assertEquals("answer", signalJson.getString("type"))
-        assertEquals("accept", signalJson.getString("answer"))
+        verify {
+            mockParamsBuilder.buildParams(
+                userId = testUserId,
+                callId = "call_abc",
+                contractId = testDeviceId,
+                answer = "accept",
+                supportedFeatures = listOf("audio")
+            )
+        }
     }
 
     @Test
@@ -86,9 +119,15 @@ class CallSignalBuilderTest {
         val result = builder.buildAcceptSignal(mockContext, payload)
 
         assertNotNull(result)
-        val signalJson = JSONObject(result!!.getString(1))
-        assertNotNull(signalJson.opt("supportedFeatures"))
-        assertEquals("audio", signalJson.getJSONArray("supportedFeatures").getString(0))
+        verify {
+            mockParamsBuilder.buildParams(
+                userId = testUserId,
+                callId = "call_abc",
+                contractId = testDeviceId,
+                answer = "accept",
+                supportedFeatures = listOf("audio")
+            )
+        }
     }
 
     @Test
@@ -98,14 +137,15 @@ class CallSignalBuilderTest {
         val result = builder.buildRejectSignal(mockContext, payload)
 
         assertNotNull(result)
-        assertEquals(2, result!!.length())
-        assertEquals("${testUserId}/media-calls", result.getString(0))
-
-        val signalJson = JSONObject(result.getString(1))
-        assertEquals("call_abc", signalJson.getString("callId"))
-        assertEquals("device456", signalJson.getString("contractId"))
-        assertEquals("answer", signalJson.getString("type"))
-        assertEquals("reject", signalJson.getString("answer"))
+        verify {
+            mockParamsBuilder.buildParams(
+                userId = testUserId,
+                callId = "call_abc",
+                contractId = testDeviceId,
+                answer = "reject",
+                supportedFeatures = null
+            )
+        }
     }
 
     @Test
@@ -115,8 +155,15 @@ class CallSignalBuilderTest {
         val result = builder.buildRejectSignal(mockContext, payload)
 
         assertNotNull(result)
-        val signalJson = JSONObject(result!!.getString(1))
-        assertNull(signalJson.opt("supportedFeatures"))
+        verify {
+            mockParamsBuilder.buildParams(
+                userId = testUserId,
+                callId = "call_abc",
+                contractId = testDeviceId,
+                answer = "reject",
+                supportedFeatures = null
+            )
+        }
     }
 
     @Test

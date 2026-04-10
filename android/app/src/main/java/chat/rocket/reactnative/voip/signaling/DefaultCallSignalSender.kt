@@ -7,11 +7,11 @@ import chat.rocket.reactnative.voip.VoipPayload
 import chat.rocket.reactnative.voip.VoipPerCallDdpRegistry
 import chat.rocket.reactnative.voip.credentials.VoipCredentialsProvider
 import org.json.JSONArray
-import org.json.JSONObject
 
 internal class DefaultCallSignalSender(
     private val ddpRegistry: VoipPerCallDdpRegistry<DdpClient>,
-    private val credentialsProvider: VoipCredentialsProvider
+    private val credentialsProvider: VoipCredentialsProvider,
+    private val paramsBuilder: SignalParamsBuilder = DefaultSignalParamsBuilder()
 ) : CallSignalSender {
 
     companion object {
@@ -101,25 +101,24 @@ internal class DefaultCallSignalSender(
 
     private fun buildAcceptSignalParams(context: Context, payload: VoipPayload): JSONArray? {
         val ids = resolveMediaCallIdentity(context, payload) ?: return null
-        val signal = CallSignal(
+        return paramsBuilder.buildParams(
+            userId = ids.userId,
             callId = payload.callId,
             contractId = ids.deviceId,
-            type = "answer",
             answer = "accept",
             supportedFeatures = listOf(SUPPORTED_VOIP_FEATURES)
         )
-        return signal.toDdpParams(ids.userId)
     }
 
     private fun buildRejectSignalParams(context: Context, payload: VoipPayload): JSONArray? {
         val ids = resolveMediaCallIdentity(context, payload) ?: return null
-        val signal = CallSignal(
+        return paramsBuilder.buildParams(
+            userId = ids.userId,
             callId = payload.callId,
             contractId = ids.deviceId,
-            type = "answer",
-            answer = "reject"
+            answer = "reject",
+            supportedFeatures = null
         )
-        return signal.toDdpParams(ids.userId)
     }
 
     private fun resolveMediaCallIdentity(context: Context, payload: VoipPayload): VoipMediaCallIdentity? {

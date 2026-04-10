@@ -15,7 +15,6 @@ import android.util.Log
 import io.mockk.slot
 import io.mockk.verify
 import org.json.JSONArray
-import org.json.JSONObject
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -37,6 +36,7 @@ class CallSignalSenderTest {
 
     private lateinit var mockRegistry: VoipPerCallDdpRegistry<DdpClient>
     private lateinit var mockClient: DdpClient
+    private lateinit var mockParamsBuilder: SignalParamsBuilder
 
     private val testHost = "https://open.rocket.chat"
     private val testUserId = "user123"
@@ -54,6 +54,12 @@ class CallSignalSenderTest {
         avatarUrl = null,
         createdAt = "2026-04-09T12:00:00.000Z"
     )
+
+    private fun mockParams(userId: String, signalJson: String): JSONArray {
+        // The JSONArray content is only passed to mocked DdpClient methods and never read
+        // by the test, so use a relaxed mock to avoid any native method calls.
+        return mockk(relaxed = true)
+    }
 
     @Before
     fun setup() {
@@ -73,11 +79,33 @@ class CallSignalSenderTest {
 
         mockClient = mockk(relaxed = true)
         mockRegistry = mockk(relaxed = true)
+        mockParamsBuilder = mockk(relaxed = true)
 
         every { mockRegistry.clientFor(testCallId) } returns mockClient
         every { mockRegistry.isLoggedIn(testCallId) } returns true
 
-        sender = DefaultCallSignalSender(mockRegistry, mockCredentialsProvider)
+        // Default mock params builder returns a well-formed JSONArray
+        every {
+            mockParamsBuilder.buildParams(
+                userId = testUserId,
+                callId = testCallId,
+                contractId = testDeviceId,
+                answer = "accept",
+                supportedFeatures = listOf("audio")
+            )
+        } returns mockParams("${testUserId}/media-calls", """{"callId":"$testCallId","contractId":"$testDeviceId","type":"answer","answer":"accept","supportedFeatures":["audio"]}""")
+
+        every {
+            mockParamsBuilder.buildParams(
+                userId = testUserId,
+                callId = testCallId,
+                contractId = testDeviceId,
+                answer = "reject",
+                supportedFeatures = null
+            )
+        } returns mockParams("${testUserId}/media-calls", """{"callId":"$testCallId","contractId":"$testDeviceId","type":"answer","answer":"reject"}""")
+
+        sender = DefaultCallSignalSender(mockRegistry, mockCredentialsProvider, mockParamsBuilder)
     }
 
     @Test
