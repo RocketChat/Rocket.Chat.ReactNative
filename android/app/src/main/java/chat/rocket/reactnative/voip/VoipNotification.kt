@@ -275,21 +275,16 @@ class VoipNotification(private val context: Context) {
             timeoutRunnable = postedTimeout
             timeoutHandler.postDelayed(postedTimeout, 10_000L)
 
-            val client = ddpRegistry.clientFor(payload.callId)
-            if (client == null) {
-                Log.d(TAG, "Native DDP client unavailable for accept ${payload.callId}")
-                finish(false)
-                return
-            }
-
-            if (ddpRegistry.isLoggedIn(payload.callId)) {
-                sendAcceptSignal(context, payload) { success ->
-                    finish(success)
-                }
-            } else {
-                queueAcceptSignal(context, payload) { success ->
-                    finish(success)
-                }
+            val deviceId = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+            MediaCallsAnswerRequest.fetch(
+                context = context,
+                host = payload.host,
+                callId = payload.callId,
+                contractId = deviceId,
+                answer = "accept",
+                supportedFeatures = listOf("audio")
+            ) { success ->
+                finish(success)
             }
         }
 
