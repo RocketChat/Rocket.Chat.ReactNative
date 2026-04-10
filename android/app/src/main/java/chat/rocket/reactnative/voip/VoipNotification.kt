@@ -537,9 +537,8 @@ class VoipNotification(private val context: Context) {
         /**
          * Rejects an incoming call because the user is already on another call.
          *
-         * Uses [connectAndRejectBusy] — a lightweight DDP flow that only connects,
-         * logs in, sends the reject signal, and tears down the client. Unlike
-         * [startListeningForCallEnd] (used by the normal incoming-call path), this
+         * Uses [MediaCallsAnswerRequest] over REST to send the reject signal.
+         * Unlike [startListeningForCallEnd] (used by the normal incoming-call path), this
          * does NOT subscribe to `stream-notify-user` or install a collection-message
          * handler, because no incoming-call UI was ever shown and there is nothing
          * to dismiss if the caller hangs up or another device answers.
@@ -548,58 +547,15 @@ class VoipNotification(private val context: Context) {
         fun rejectBusyCall(context: Context, payload: VoipPayload) {
             Log.d(TAG, "Rejected busy call ${payload.callId} — user already on a call")
             cancelTimeout(payload.callId)
-            connectAndRejectBusy(context, payload)
-        }
-
-        /**
-         * Minimal DDP flow for busy-reject: connect → login → send reject → stop.
-         *
-         * Intentionally omits the `stream-notify-user` subscription and the
-         * `onCollectionMessage` handler that [startListeningForCallEnd] sets up,
-         * since the busy path never shows UI — there are no notifications to
-         * dismiss and no call-end events to observe.
-         */
-        private fun connectAndRejectBusy(context: Context, payload: VoipPayload) {
-            val ejson = Ejson()
-            ejson.host = payload.host
-            val userId = ejson.userId()
-            val token = ejson.token()
-
-            if (userId.isNullOrEmpty() || token.isNullOrEmpty()) {
-                Log.d(TAG, "No credentials for ${payload.host}, skipping busy-reject DDP")
-                return
-            }
-
-            val callId = payload.callId
-            val client = DDPClient()
-            ddpRegistry.putClient(callId, client)
-
-            Log.d(TAG, "Connecting DDP to send busy-reject for call $callId")
-
-            client.connect(payload.host) { connected ->
-                if (!isLiveClient(callId, client)) {
-                    return@connect
-                }
-                if (!connected) {
-                    Log.d(TAG, "DDP connection failed for busy-reject $callId")
-                    ddpRegistry.stopClient(callId)
-                    return@connect
-                }
-
-                client.login(token) { loggedIn ->
-                    if (!isLiveClient(callId, client)) {
-                        return@login
-                    }
-                    if (!loggedIn) {
-                        Log.d(TAG, "DDP login failed for busy-reject $callId")
-                        ddpRegistry.stopClient(callId)
-                        return@login
-                    }
-
-                    ddpRegistry.markLoggedIn(callId)
-                    sendRejectSignal(context, payload)
-                }
-            }
+            val deviceId = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+            MediaCallsAnswerRequest.fetch(
+                context = context,
+                host = payload.host,
+                callId = payload.callId,
+                contractId = deviceId,
+                answer = "reject",
+                supportedFeatures = null
+            ) { _ -> }
         }
 
         // -- Native DDP Listener (Call End Detection) --
