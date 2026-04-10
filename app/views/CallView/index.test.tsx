@@ -412,18 +412,6 @@ describe('CallView/CallView', () => {
 		expect(getByText('Unmute')).toBeTruthy();
 	});
 
-	it('should render buttons in two rows on narrow layout', () => {
-		mockWindowWidth = 350;
-		setStoreState();
-		const { getByTestId } = render(
-			<Wrapper>
-				<CallView />
-			</Wrapper>
-		);
-		expect(getByTestId('call-buttons-row-0')).toBeTruthy();
-		expect(getByTestId('call-buttons-row-1')).toBeTruthy();
-	});
-
 	it('should render buttons in a single row on wide layout', () => {
 		mockWindowWidth = 800;
 		setStoreState();

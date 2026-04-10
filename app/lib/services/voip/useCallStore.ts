@@ -5,6 +5,7 @@ import InCallManager from 'react-native-incall-manager';
 
 import Navigation from '../../navigation/appNavigation';
 import { hideActionSheetRef } from '../../../containers/ActionSheet';
+import { useIsScreenReaderEnabled } from '../../hooks/useIsScreenReaderEnabled';
 
 const STALE_NATIVE_MS = 15_000;
 
@@ -307,4 +308,8 @@ export const useCallState = () => {
 
 export const useCallContact = () => useCallStore(state => state.contact);
 export const useDialpadValue = () => useCallStore(state => state.dialpadValue);
-export const useControlsVisible = () => useCallStore(state => state.controlsVisible);
+export const useControlsVisible = () => {
+	const controlsVisible = useCallStore(state => state.controlsVisible);
+	const isScreenReaderEnabled = useIsScreenReaderEnabled();
+	return controlsVisible || isScreenReaderEnabled;
+};
