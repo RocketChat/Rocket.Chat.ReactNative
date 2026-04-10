@@ -2385,7 +2385,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                       "textAlign": "left",
                     },
                     {
-                      "color": "#C1C7D0",
+                      "color": "#E4E7EA",
                       "lineHeight": undefined,
                     },
                     {
