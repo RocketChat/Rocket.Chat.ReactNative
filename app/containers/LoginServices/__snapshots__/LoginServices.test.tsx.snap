@@ -5,42 +5,53 @@ exports[`Story Snapshots: Separators should match snapshot 1`] = `
   <RNGestureHandlerButton
     accessibilityLabel="More options"
     accessibilityRole="button"
+    activeOpacity={0.105}
     collapsable={false}
+    delayLongPress={600}
     enabled={true}
-    hitSlop={
-      {
-        "bottom": 0,
-        "left": 0,
-        "right": 0,
-        "top": 0,
-      }
-    }
-    rippleColor="transparent"
+    handlerTag={1}
+    handlerType="NativeViewGestureHandler"
+    innerRef={null}
+    onActiveStateChange={[Function]}
+    onGestureHandlerEvent={[Function]}
+    onGestureHandlerStateChange={[Function]}
+    onPress={[Function]}
     style={
       [
-        {},
-        [
-          {
-            "justifyContent": "center",
-            "paddingHorizontal": 16,
-            "paddingVertical": 14,
-          },
-          {
-            "borderRadius": 4,
-            "marginBottom": 12,
-          },
-          {
-            "backgroundColor": "#E4E7EA",
-          },
-          {},
-          {
-            "marginBottom": 0,
-          },
-        ],
+        {
+          "backgroundColor": "#E4E7EA",
+          "borderRadius": 4,
+          "justifyContent": "center",
+          "marginBottom": 0,
+          "paddingHorizontal": 16,
+          "paddingVertical": 14,
+        },
+        {
+          "cursor": undefined,
+        },
       ]
     }
-    testOnly_onPress={[Function]}
+    underlayColor="black"
   >
+    <View
+      collapsable={false}
+      style={
+        {
+          "backgroundColor": "black",
+          "borderBottomLeftRadius": undefined,
+          "borderBottomRightRadius": undefined,
+          "borderRadius": 4,
+          "borderTopLeftRadius": undefined,
+          "borderTopRightRadius": undefined,
+          "bottom": 0,
+          "left": 0,
+          "opacity": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
+      }
+    />
     <Text
       style={
         [
@@ -120,42 +131,53 @@ exports[`Story Snapshots: Separators should match snapshot 1`] = `
   <RNGestureHandlerButton
     accessibilityLabel="Less options"
     accessibilityRole="button"
+    activeOpacity={0.105}
     collapsable={false}
+    delayLongPress={600}
     enabled={true}
-    hitSlop={
-      {
-        "bottom": 0,
-        "left": 0,
-        "right": 0,
-        "top": 0,
-      }
-    }
-    rippleColor="transparent"
+    handlerTag={2}
+    handlerType="NativeViewGestureHandler"
+    innerRef={null}
+    onActiveStateChange={[Function]}
+    onGestureHandlerEvent={[Function]}
+    onGestureHandlerStateChange={[Function]}
+    onPress={[Function]}
     style={
       [
-        {},
-        [
-          {
-            "justifyContent": "center",
-            "paddingHorizontal": 16,
-            "paddingVertical": 14,
-          },
-          {
-            "borderRadius": 4,
-            "marginBottom": 12,
-          },
-          {
-            "backgroundColor": "#E4E7EA",
-          },
-          {},
-          {
-            "marginBottom": 0,
-          },
-        ],
+        {
+          "backgroundColor": "#E4E7EA",
+          "borderRadius": 4,
+          "justifyContent": "center",
+          "marginBottom": 0,
+          "paddingHorizontal": 16,
+          "paddingVertical": 14,
+        },
+        {
+          "cursor": undefined,
+        },
       ]
     }
-    testOnly_onPress={[Function]}
+    underlayColor="black"
   >
+    <View
+      collapsable={false}
+      style={
+        {
+          "backgroundColor": "black",
+          "borderBottomLeftRadius": undefined,
+          "borderBottomRightRadius": undefined,
+          "borderRadius": 4,
+          "borderTopLeftRadius": undefined,
+          "borderTopRightRadius": undefined,
+          "bottom": 0,
+          "left": 0,
+          "opacity": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
+      }
+    />
     <Text
       style={
         [
@@ -242,7 +264,7 @@ exports[`Story Snapshots: ServiceList should match snapshot 1`] = `
     collapsable={false}
     delayLongPress={600}
     enabled={true}
-    handlerTag={7}
+    handlerTag={3}
     handlerType="NativeViewGestureHandler"
     innerRef={null}
     onActiveStateChange={[Function]}
@@ -378,7 +400,7 @@ exports[`Story Snapshots: ServiceList should match snapshot 1`] = `
     collapsable={false}
     delayLongPress={600}
     enabled={true}
-    handlerTag={8}
+    handlerTag={4}
     handlerType="NativeViewGestureHandler"
     innerRef={null}
     onActiveStateChange={[Function]}
@@ -514,7 +536,7 @@ exports[`Story Snapshots: ServiceList should match snapshot 1`] = `
     collapsable={false}
     delayLongPress={600}
     enabled={true}
-    handlerTag={9}
+    handlerTag={5}
     handlerType="NativeViewGestureHandler"
     innerRef={null}
     onActiveStateChange={[Function]}
@@ -650,7 +672,7 @@ exports[`Story Snapshots: ServiceList should match snapshot 1`] = `
     collapsable={false}
     delayLongPress={600}
     enabled={true}
-    handlerTag={10}
+    handlerTag={6}
     handlerType="NativeViewGestureHandler"
     innerRef={null}
     onActiveStateChange={[Function]}

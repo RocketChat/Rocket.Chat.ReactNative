@@ -4,43 +4,55 @@ exports[`Story Snapshots: CustomButton should match snapshot 1`] = `
 <RNGestureHandlerButton
   accessibilityLabel="Press me!"
   accessibilityRole="button"
+  activeOpacity={0.105}
   collapsable={false}
+  delayLongPress={600}
   enabled={true}
-  hitSlop={
-    {
-      "bottom": 0,
-      "left": 0,
-      "right": 0,
-      "top": 0,
-    }
-  }
-  rippleColor="transparent"
+  handlerTag={7}
+  handlerType="NativeViewGestureHandler"
+  innerRef={null}
+  onActiveStateChange={[Function]}
+  onGestureHandlerEvent={[Function]}
+  onGestureHandlerStateChange={[Function]}
+  onPress={[Function]}
   style={
     [
-      {},
-      [
-        {
-          "justifyContent": "center",
-          "paddingHorizontal": 16,
-          "paddingVertical": 14,
-        },
-        {
-          "borderRadius": 4,
-          "marginBottom": 12,
-        },
-        {
-          "backgroundColor": "purple",
-        },
-        {},
-        {
-          "padding": 10,
-        },
-      ],
+      {
+        "backgroundColor": "purple",
+        "borderRadius": 4,
+        "justifyContent": "center",
+        "marginBottom": 12,
+        "padding": 10,
+        "paddingHorizontal": 16,
+        "paddingVertical": 14,
+      },
+      {
+        "cursor": undefined,
+      },
     ]
   }
   testID="testButton"
-  testOnly_onPress={[Function]}
+  underlayColor="black"
 >
+  <View
+    collapsable={false}
+    style={
+      {
+        "backgroundColor": "black",
+        "borderBottomLeftRadius": undefined,
+        "borderBottomRightRadius": undefined,
+        "borderRadius": 4,
+        "borderTopLeftRadius": undefined,
+        "borderTopRightRadius": undefined,
+        "bottom": 0,
+        "left": 0,
+        "opacity": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+      }
+    }
+  />
   <Text
     style={
       [
@@ -71,41 +83,54 @@ exports[`Story Snapshots: DisabledButton should match snapshot 1`] = `
 <RNGestureHandlerButton
   accessibilityLabel="Press me!"
   accessibilityRole="button"
+  activeOpacity={0.105}
   collapsable={false}
+  delayLongPress={600}
   enabled={false}
-  hitSlop={
-    {
-      "bottom": 0,
-      "left": 0,
-      "right": 0,
-      "top": 0,
-    }
-  }
-  rippleColor="transparent"
+  handlerTag={8}
+  handlerType="NativeViewGestureHandler"
+  innerRef={null}
+  onActiveStateChange={[Function]}
+  onGestureHandlerEvent={[Function]}
+  onGestureHandlerStateChange={[Function]}
+  onPress={[Function]}
   style={
     [
-      {},
-      [
-        {
-          "justifyContent": "center",
-          "paddingHorizontal": 16,
-          "paddingVertical": 14,
-        },
-        {
-          "borderRadius": 4,
-          "marginBottom": 12,
-        },
-        {
-          "backgroundColor": "#D1EBFE",
-        },
-        {},
-        undefined,
-      ],
+      {
+        "backgroundColor": "#D1EBFE",
+        "borderRadius": 4,
+        "justifyContent": "center",
+        "marginBottom": 12,
+        "paddingHorizontal": 16,
+        "paddingVertical": 14,
+      },
+      {
+        "cursor": undefined,
+      },
     ]
   }
   testID="testButton"
-  testOnly_onPress={[Function]}
+  underlayColor="black"
 >
+  <View
+    collapsable={false}
+    style={
+      {
+        "backgroundColor": "black",
+        "borderBottomLeftRadius": undefined,
+        "borderBottomRightRadius": undefined,
+        "borderRadius": 4,
+        "borderTopLeftRadius": undefined,
+        "borderTopRightRadius": undefined,
+        "bottom": 0,
+        "left": 0,
+        "opacity": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+      }
+    }
+  />
   <Text
     style={
       [
@@ -132,41 +157,54 @@ exports[`Story Snapshots: DisabledLoadingButton should match snapshot 1`] = `
 <RNGestureHandlerButton
   accessibilityLabel="Press me!"
   accessibilityRole="button"
+  activeOpacity={0.105}
   collapsable={false}
+  delayLongPress={600}
   enabled={false}
-  hitSlop={
-    {
-      "bottom": 0,
-      "left": 0,
-      "right": 0,
-      "top": 0,
-    }
-  }
-  rippleColor="transparent"
+  handlerTag={9}
+  handlerType="NativeViewGestureHandler"
+  innerRef={null}
+  onActiveStateChange={[Function]}
+  onGestureHandlerEvent={[Function]}
+  onGestureHandlerStateChange={[Function]}
+  onPress={[Function]}
   style={
     [
-      {},
-      [
-        {
-          "justifyContent": "center",
-          "paddingHorizontal": 16,
-          "paddingVertical": 14,
-        },
-        {
-          "borderRadius": 4,
-          "marginBottom": 12,
-        },
-        {
-          "backgroundColor": "#D1EBFE",
-        },
-        {},
-        undefined,
-      ],
+      {
+        "backgroundColor": "#D1EBFE",
+        "borderRadius": 4,
+        "justifyContent": "center",
+        "marginBottom": 12,
+        "paddingHorizontal": 16,
+        "paddingVertical": 14,
+      },
+      {
+        "cursor": undefined,
+      },
     ]
   }
   testID="testButton"
-  testOnly_onPress={[Function]}
+  underlayColor="black"
 >
+  <View
+    collapsable={false}
+    style={
+      {
+        "backgroundColor": "black",
+        "borderBottomLeftRadius": undefined,
+        "borderBottomRightRadius": undefined,
+        "borderRadius": 4,
+        "borderTopLeftRadius": undefined,
+        "borderTopRightRadius": undefined,
+        "bottom": 0,
+        "left": 0,
+        "opacity": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+      }
+    }
+  />
   <ActivityIndicator
     color="#FFFFFF"
     style={
@@ -182,41 +220,54 @@ exports[`Story Snapshots: LoadingButton should match snapshot 1`] = `
 <RNGestureHandlerButton
   accessibilityLabel="Press me!"
   accessibilityRole="button"
+  activeOpacity={0.105}
   collapsable={false}
+  delayLongPress={600}
   enabled={false}
-  hitSlop={
-    {
-      "bottom": 0,
-      "left": 0,
-      "right": 0,
-      "top": 0,
-    }
-  }
-  rippleColor="transparent"
+  handlerTag={10}
+  handlerType="NativeViewGestureHandler"
+  innerRef={null}
+  onActiveStateChange={[Function]}
+  onGestureHandlerEvent={[Function]}
+  onGestureHandlerStateChange={[Function]}
+  onPress={[Function]}
   style={
     [
-      {},
-      [
-        {
-          "justifyContent": "center",
-          "paddingHorizontal": 16,
-          "paddingVertical": 14,
-        },
-        {
-          "borderRadius": 4,
-          "marginBottom": 12,
-        },
-        {
-          "backgroundColor": "#D1EBFE",
-        },
-        {},
-        undefined,
-      ],
+      {
+        "backgroundColor": "#D1EBFE",
+        "borderRadius": 4,
+        "justifyContent": "center",
+        "marginBottom": 12,
+        "paddingHorizontal": 16,
+        "paddingVertical": 14,
+      },
+      {
+        "cursor": undefined,
+      },
     ]
   }
   testID="testButton"
-  testOnly_onPress={[Function]}
+  underlayColor="black"
 >
+  <View
+    collapsable={false}
+    style={
+      {
+        "backgroundColor": "black",
+        "borderBottomLeftRadius": undefined,
+        "borderBottomRightRadius": undefined,
+        "borderRadius": 4,
+        "borderTopLeftRadius": undefined,
+        "borderTopRightRadius": undefined,
+        "bottom": 0,
+        "left": 0,
+        "opacity": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+      }
+    }
+  />
   <ActivityIndicator
     color="#FFFFFF"
     style={
@@ -232,41 +283,54 @@ exports[`Story Snapshots: PrimaryButton should match snapshot 1`] = `
 <RNGestureHandlerButton
   accessibilityLabel="Press me!"
   accessibilityRole="button"
+  activeOpacity={0.105}
   collapsable={false}
+  delayLongPress={600}
   enabled={true}
-  hitSlop={
-    {
-      "bottom": 0,
-      "left": 0,
-      "right": 0,
-      "top": 0,
-    }
-  }
-  rippleColor="transparent"
+  handlerTag={11}
+  handlerType="NativeViewGestureHandler"
+  innerRef={null}
+  onActiveStateChange={[Function]}
+  onGestureHandlerEvent={[Function]}
+  onGestureHandlerStateChange={[Function]}
+  onPress={[Function]}
   style={
     [
-      {},
-      [
-        {
-          "justifyContent": "center",
-          "paddingHorizontal": 16,
-          "paddingVertical": 14,
-        },
-        {
-          "borderRadius": 4,
-          "marginBottom": 12,
-        },
-        {
-          "backgroundColor": "#156FF5",
-        },
-        {},
-        undefined,
-      ],
+      {
+        "backgroundColor": "#156FF5",
+        "borderRadius": 4,
+        "justifyContent": "center",
+        "marginBottom": 12,
+        "paddingHorizontal": 16,
+        "paddingVertical": 14,
+      },
+      {
+        "cursor": undefined,
+      },
     ]
   }
   testID="testButton"
-  testOnly_onPress={[Function]}
+  underlayColor="black"
 >
+  <View
+    collapsable={false}
+    style={
+      {
+        "backgroundColor": "black",
+        "borderBottomLeftRadius": undefined,
+        "borderBottomRightRadius": undefined,
+        "borderRadius": 4,
+        "borderTopLeftRadius": undefined,
+        "borderTopRightRadius": undefined,
+        "bottom": 0,
+        "left": 0,
+        "opacity": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+      }
+    }
+  />
   <Text
     style={
       [
@@ -293,41 +357,54 @@ exports[`Story Snapshots: SecondaryButton should match snapshot 1`] = `
 <RNGestureHandlerButton
   accessibilityLabel="Press me!"
   accessibilityRole="button"
+  activeOpacity={0.105}
   collapsable={false}
+  delayLongPress={600}
   enabled={true}
-  hitSlop={
-    {
-      "bottom": 0,
-      "left": 0,
-      "right": 0,
-      "top": 0,
-    }
-  }
-  rippleColor="transparent"
+  handlerTag={12}
+  handlerType="NativeViewGestureHandler"
+  innerRef={null}
+  onActiveStateChange={[Function]}
+  onGestureHandlerEvent={[Function]}
+  onGestureHandlerStateChange={[Function]}
+  onPress={[Function]}
   style={
     [
-      {},
-      [
-        {
-          "justifyContent": "center",
-          "paddingHorizontal": 16,
-          "paddingVertical": 14,
-        },
-        {
-          "borderRadius": 4,
-          "marginBottom": 12,
-        },
-        {
-          "backgroundColor": "#E4E7EA",
-        },
-        {},
-        undefined,
-      ],
+      {
+        "backgroundColor": "#E4E7EA",
+        "borderRadius": 4,
+        "justifyContent": "center",
+        "marginBottom": 12,
+        "paddingHorizontal": 16,
+        "paddingVertical": 14,
+      },
+      {
+        "cursor": undefined,
+      },
     ]
   }
   testID="testButton"
-  testOnly_onPress={[Function]}
+  underlayColor="black"
 >
+  <View
+    collapsable={false}
+    style={
+      {
+        "backgroundColor": "black",
+        "borderBottomLeftRadius": undefined,
+        "borderBottomRightRadius": undefined,
+        "borderRadius": 4,
+        "borderTopLeftRadius": undefined,
+        "borderTopRightRadius": undefined,
+        "bottom": 0,
+        "left": 0,
+        "opacity": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+      }
+    }
+  />
   <Text
     style={
       [
@@ -354,41 +431,54 @@ exports[`Story Snapshots: SmallButton should match snapshot 1`] = `
 <RNGestureHandlerButton
   accessibilityLabel="Press me!"
   accessibilityRole="button"
+  activeOpacity={0.105}
   collapsable={false}
+  delayLongPress={600}
   enabled={true}
-  hitSlop={
-    {
-      "bottom": 0,
-      "left": 0,
-      "right": 0,
-      "top": 0,
-    }
-  }
-  rippleColor="transparent"
+  handlerTag={13}
+  handlerType="NativeViewGestureHandler"
+  innerRef={null}
+  onActiveStateChange={[Function]}
+  onGestureHandlerEvent={[Function]}
+  onGestureHandlerStateChange={[Function]}
+  onPress={[Function]}
   style={
     [
-      {},
-      [
-        {
-          "alignSelf": "center",
-          "paddingHorizontal": 12,
-          "paddingVertical": 8,
-        },
-        {
-          "borderRadius": 4,
-          "marginBottom": 12,
-        },
-        {
-          "backgroundColor": "#156FF5",
-        },
-        {},
-        undefined,
-      ],
+      {
+        "alignSelf": "center",
+        "backgroundColor": "#156FF5",
+        "borderRadius": 4,
+        "marginBottom": 12,
+        "paddingHorizontal": 12,
+        "paddingVertical": 8,
+      },
+      {
+        "cursor": undefined,
+      },
     ]
   }
   testID="testButton"
-  testOnly_onPress={[Function]}
+  underlayColor="black"
 >
+  <View
+    collapsable={false}
+    style={
+      {
+        "backgroundColor": "black",
+        "borderBottomLeftRadius": undefined,
+        "borderBottomRightRadius": undefined,
+        "borderRadius": 4,
+        "borderTopLeftRadius": undefined,
+        "borderTopRightRadius": undefined,
+        "bottom": 0,
+        "left": 0,
+        "opacity": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+      }
+    }
+  />
   <Text
     style={
       [

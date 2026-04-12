@@ -3,18 +3,18 @@ import { type LayoutChangeEvent, View, TextInput, type TextInputProps, Touchable
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
 	type SharedValue,
-	runOnJS,
 	useAnimatedProps,
 	useAnimatedStyle,
 	useDerivedValue,
-	useSharedValue
+	useSharedValue,
+	withTiming
 } from 'react-native-reanimated';
+import { scheduleOnRN } from 'react-native-worklets';
 
 import styles from './styles';
 import { useTheme } from '../../theme';
 import { SEEK_HIT_SLOP, THUMB_SEEK_SIZE, ACTIVE_OFFSET_X, DEFAULT_TIME_LABEL } from './constants';
 
-Animated.addWhitelistedNativeProps({ text: true });
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 
 interface ISeek {
@@ -49,6 +49,7 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 	const timeLabel = useSharedValue(DEFAULT_TIME_LABEL);
 	const scale = useSharedValue(1);
 	const isPanning = useSharedValue(false);
+	const contextX = useSharedValue(0);
 
 	const styleLine = useAnimatedStyle(() => ({
 		width: translateX.value
@@ -68,15 +69,24 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 		.activeOffsetX([-ACTIVE_OFFSET_X, ACTIVE_OFFSET_X])
 		.onStart(() => {
 			isPanning.value = true;
+			contextX.value = translateX.value;
+			scale.value = withTiming(1.3, { duration: 150 });
 		})
 		.onUpdate(event => {
-			translateX.value = clamp(translateX.value + event.translationX, 0, maxWidth.value);
-			scale.value = 1.3;
+			const newX = contextX.value + event.translationX;
+			translateX.value = clamp(newX, 0, maxWidth.value);
 		})
 		.onEnd(() => {
-			scale.value = 1;
+			scheduleOnRN(onChangeTime, Math.round(currentTime.value * 1000));
+		})
+		.onFinalize((_, didSucceed) => {
+			if (isPanning.value && !didSucceed) {
+				translateX.value = contextX.value;
+				currentTime.value = (contextX.value * duration.value) / maxWidth.value || 0;
+			}
+
 			isPanning.value = false;
-			runOnJS(onChangeTime)(Math.round(currentTime.value * 1000));
+			scale.value = withTiming(1, { duration: 150 });
 		});
 
 	useDerivedValue(() => {

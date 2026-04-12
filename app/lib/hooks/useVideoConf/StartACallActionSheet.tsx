@@ -1,6 +1,6 @@
 import { CameraView } from 'expo-camera';
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
 
@@ -28,13 +28,15 @@ export default function StartACallActionSheet({
 	const [cam, setCam] = useState(false);
 	const [containerWidth, setContainerWidth] = useState(0);
 	const { bottom } = useSafeAreaInsets();
+	const { height, width } = useWindowDimensions();
 
 	const username = useAppSelector(state => getUserSelector(state).username);
 	const calling = useAppSelector(state => state.videoConf.calling);
 	const dispatch = useDispatch();
 
 	const user = useUserData(rid);
-
+	const isPortrait = height > width;
+	const actionSheetContainerHeight = isPortrait ? '90%' : '75%';
 	React.useEffect(
 		() => () => {
 			if (calling) {
@@ -46,7 +48,7 @@ export default function StartACallActionSheet({
 
 	return (
 		<View
-			style={[style.actionSheetContainer, { paddingBottom: bottom }]}
+			style={[style.actionSheetContainer, { paddingBottom: bottom, height: actionSheetContainerHeight }]}
 			onLayout={e => setContainerWidth(e.nativeEvent.layout.width / 2)}>
 			{calling && roomType === SubscriptionType.DIRECT ? <Ringer ringer={ERingerSounds.DIALTONE} /> : null}
 			<CallHeader
@@ -89,8 +91,7 @@ export default function StartACallActionSheet({
 
 const style = StyleSheet.create({
 	actionSheetContainer: {
-		paddingHorizontal: 24,
-		flex: 1
+		paddingHorizontal: 24
 	},
 	actionSheetPhotoContainer: {
 		justifyContent: 'center',
