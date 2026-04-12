@@ -863,98 +863,98 @@ describe('MessageComposer', () => {
 });
 
 describe('calculateLength', () => {
-    describe('non-code-block (inline markdown)', () => {
-        test('empty text - no separator needed', () => {
-            const result = calculateLength('', '*', false, '');
-            expect(result).toBe(1);
-        });
+	describe('non-code-block (inline markdown)', () => {
+		test('empty text - no separator needed', () => {
+			const result = calculateLength('', '*', false, '');
+			expect(result).toBe(1);
+		});
 
-        test('text without trailing space, no selection - separator is empty, cursor between delimiters', () => {
-            const separator = getSeparator('hello', false, false);
-            expect(separator).toBe('');
-            const result = calculateLength('hello', '*', false, separator);
-            expect(result).toBe(1);
-        });
+		test('text without trailing space, no selection - separator is empty, cursor between delimiters', () => {
+			const separator = getSeparator('hello', false, false);
+			expect(separator).toBe('');
+			const result = calculateLength('hello', '*', false, separator);
+			expect(result).toBe(1);
+		});
 
-        test('text with trailing space, no selection - separator is empty', () => {
-            const separator = getSeparator('hello ', false, false);
-            expect(separator).toBe('');
-            const result = calculateLength('hello ', '*', false, separator);
-            expect(result).toBe(1);
-        });
+		test('text with trailing space, no selection - separator is empty', () => {
+			const separator = getSeparator('hello ', false, false);
+			expect(separator).toBe('');
+			const result = calculateLength('hello ', '*', false, separator);
+			expect(result).toBe(1);
+		});
 
-        test('text without trailing space, with selection - separator is space', () => {
-            const separator = getSeparator('hello', false, true);
-            expect(separator).toBe(' ');
-            const result = calculateLength('hello', '*', false, separator);
-            expect(result).toBe(2);
-        });
+		test('text without trailing space, with selection - separator is space', () => {
+			const separator = getSeparator('hello', false, true);
+			expect(separator).toBe(' ');
+			const result = calculateLength('hello', '*', false, separator);
+			expect(result).toBe(2);
+		});
 
-        test('text with trailing space, with selection - separator is empty', () => {
-            const separator = getSeparator('hello ', false, true);
-            expect(separator).toBe('');
-            const result = calculateLength('hello ', '*', false, separator);
-            expect(result).toBe(1);
-        });
-    });
+		test('text with trailing space, with selection - separator is empty', () => {
+			const separator = getSeparator('hello ', false, true);
+			expect(separator).toBe('');
+			const result = calculateLength('hello ', '*', false, separator);
+			expect(result).toBe(1);
+		});
+	});
 
-    describe('code-block', () => {
-        test('empty text - no separator needed', () => {
-            const result = calculateLength('', '```', true, '');
-            expect(result).toBe(4);
-        });
+	describe('code-block', () => {
+		test('empty text - no separator needed', () => {
+			const result = calculateLength('', '```', true, '');
+			expect(result).toBe(4);
+		});
 
-        test('text without trailing backticks - separator is newline', () => {
-            const separator = getSeparator('some code', true, false);
-            expect(separator).toBe('\n');
-            const result = calculateLength('some code', '```', true, separator);
-            expect(result).toBe(5);
-        });
+		test('text without trailing backticks - separator is newline', () => {
+			const separator = getSeparator('some code', true, false);
+			expect(separator).toBe('\n');
+			const result = calculateLength('some code', '```', true, separator);
+			expect(result).toBe(5);
+		});
 
-        test('text ending with backticks - separator is empty', () => {
-            const separator = getSeparator('code ```', true, false);
-            expect(separator).toBe('');
-            const result = calculateLength('code ```', '```', true, separator);
-            expect(result).toBe(4);
-        });
-    });
+		test('text ending with backticks - separator is empty', () => {
+			const separator = getSeparator('code ```', true, false);
+			expect(separator).toBe('');
+			const result = calculateLength('code ```', '```', true, separator);
+			expect(result).toBe(4);
+		});
+	});
 });
 
 describe('getSeparator', () => {
-    describe('non-code-block', () => {
-        test('empty text returns empty string', () => {
-            expect(getSeparator('', false, false)).toBe('');
-            expect(getSeparator('', false, true)).toBe('');
-        });
+	describe('non-code-block', () => {
+		test('empty text returns empty string', () => {
+			expect(getSeparator('', false, false)).toBe('');
+			expect(getSeparator('', false, true)).toBe('');
+		});
 
-        test('no selection returns empty string', () => {
-            expect(getSeparator('hello', false, false)).toBe('');
-        });
+		test('no selection returns empty string', () => {
+			expect(getSeparator('hello', false, false)).toBe('');
+		});
 
-        test('with selection, no trailing space returns space', () => {
-            expect(getSeparator('hello', false, true)).toBe(' ');
-        });
+		test('with selection, no trailing space returns space', () => {
+			expect(getSeparator('hello', false, true)).toBe(' ');
+		});
 
-        test('with selection, trailing space returns empty string', () => {
-            expect(getSeparator('hello ', false, true)).toBe('');
-        });
-    });
+		test('with selection, trailing space returns empty string', () => {
+			expect(getSeparator('hello ', false, true)).toBe('');
+		});
+	});
 
-    describe('code-block', () => {
-        test('empty text returns empty string', () => {
-            expect(getSeparator('', true, false)).toBe('');
-        });
+	describe('code-block', () => {
+		test('empty text returns empty string', () => {
+			expect(getSeparator('', true, false)).toBe('');
+		});
 
-        test('text not ending with backticks returns newline', () => {
-            expect(getSeparator('some code', true, false)).toBe('\n');
-        });
+		test('text not ending with backticks returns newline', () => {
+			expect(getSeparator('some code', true, false)).toBe('\n');
+		});
 
-        test('text ending with ``` returns empty string', () => {
-            expect(getSeparator('code ```', true, false)).toBe('');
-        });
+		test('text ending with ``` returns empty string', () => {
+			expect(getSeparator('code ```', true, false)).toBe('');
+		});
 
-        test('text ending with ``` and spaces returns empty string', () => {
-            expect(getSeparator('code ```   ', true, false)).toBe('');
-        });
-    });
+		test('text ending with ``` and spaces returns empty string', () => {
+			expect(getSeparator('code ```   ', true, false)).toBe('');
+		});
+	});
 });
