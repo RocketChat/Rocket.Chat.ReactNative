@@ -45,7 +45,7 @@ import useIOSBackSwipeHandler from '../hooks/useIOSBackSwipeHandler';
 
 const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
-function calculateLength(startingText: string, markdown: string, isCodeBlock: boolean, separator: string) {
+export function calculateLength(startingText: string, markdown: string, isCodeBlock: boolean, separator: string) {
 	if (isCodeBlock) {
 		if (startingText.length > 0) {
 			return markdown.length + separator.length + 1;
@@ -54,12 +54,10 @@ function calculateLength(startingText: string, markdown: string, isCodeBlock: bo
 		return markdown.length + 1;
 	}
 
-	const endWithSpace = startingText.endsWith(' ');
-
-	return markdown.length + (startingText.length > 0 ? 1 : 0) + (endWithSpace ? -1 : 0);
+	return separator.length + markdown.length;
 }
 
-function getSeparator(startingText: string, isCodeBlock: boolean, hasSelection: boolean) {
+export function getSeparator(startingText: string, isCodeBlock: boolean, hasSelection: boolean) {
 	if (startingText.length === 0) {
 		return '';
 	}
