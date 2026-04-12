@@ -48,15 +48,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         }
         accessible={true}
         collapsable={false}
-<<<<<<< HEAD
         focusable={true}
-=======
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
->>>>>>> develop
         hitSlop={
           {
             "bottom": 5,
@@ -76,9 +68,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         onStartShouldSetResponder={[Function]}
         style={
           [
-            {
-              "opacity": 1,
-            },
+            [Function],
             undefined,
           ]
         }
@@ -194,15 +184,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         }
         accessible={true}
         collapsable={false}
-<<<<<<< HEAD
         focusable={true}
-=======
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
->>>>>>> develop
         hitSlop={
           {
             "bottom": 5,
@@ -222,9 +204,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         onStartShouldSetResponder={[Function]}
         style={
           [
-            {
-              "opacity": 1,
-            },
+            [Function],
             undefined,
           ]
         }
@@ -340,15 +320,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         }
         accessible={true}
         collapsable={false}
-<<<<<<< HEAD
         focusable={true}
-=======
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
->>>>>>> develop
         hitSlop={
           {
             "bottom": 5,
@@ -368,9 +340,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         onStartShouldSetResponder={[Function]}
         style={
           [
-            {
-              "opacity": 1,
-            },
+            [Function],
             undefined,
           ]
         }
@@ -499,15 +469,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         }
         accessible={true}
         collapsable={false}
-<<<<<<< HEAD
         focusable={true}
-=======
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
->>>>>>> develop
         hitSlop={
           {
             "bottom": 5,
@@ -527,9 +489,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         onStartShouldSetResponder={[Function]}
         style={
           [
-            {
-              "opacity": 1,
-            },
+            [Function],
             undefined,
           ]
         }
@@ -645,15 +605,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         }
         accessible={true}
         collapsable={false}
-<<<<<<< HEAD
         focusable={true}
-=======
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
->>>>>>> develop
         hitSlop={
           {
             "bottom": 5,
@@ -673,9 +625,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         onStartShouldSetResponder={[Function]}
         style={
           [
-            {
-              "opacity": 1,
-            },
+            [Function],
             undefined,
           ]
         }
@@ -791,15 +741,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         }
         accessible={true}
         collapsable={false}
-<<<<<<< HEAD
         focusable={true}
-=======
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
->>>>>>> develop
         hitSlop={
           {
             "bottom": 5,
@@ -819,9 +761,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         onStartShouldSetResponder={[Function]}
         style={
           [
-            {
-              "opacity": 1,
-            },
+            [Function],
             undefined,
           ]
         }
@@ -937,15 +877,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         }
         accessible={true}
         collapsable={false}
-<<<<<<< HEAD
         focusable={true}
-=======
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
->>>>>>> develop
         hitSlop={
           {
             "bottom": 5,
@@ -965,9 +897,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         onStartShouldSetResponder={[Function]}
         style={
           [
-            {
-              "opacity": 1,
-            },
+            [Function],
             undefined,
           ]
         }
@@ -1083,15 +1013,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         }
         accessible={true}
         collapsable={false}
-<<<<<<< HEAD
         focusable={true}
-=======
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
->>>>>>> develop
         hitSlop={
           {
             "bottom": 5,
@@ -1111,9 +1033,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         onStartShouldSetResponder={[Function]}
         style={
           [
-            {
-              "opacity": 1,
-            },
+            [Function],
             undefined,
           ]
         }
@@ -1229,15 +1149,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         }
         accessible={true}
         collapsable={false}
-<<<<<<< HEAD
         focusable={true}
-=======
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
->>>>>>> develop
         hitSlop={
           {
             "bottom": 5,
@@ -1257,9 +1169,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         onStartShouldSetResponder={[Function]}
         style={
           [
-            {
-              "opacity": 1,
-            },
+            [Function],
             undefined,
           ]
         }
@@ -1375,15 +1285,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         }
         accessible={true}
         collapsable={false}
-<<<<<<< HEAD
         focusable={true}
-=======
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
->>>>>>> develop
         hitSlop={
           {
             "bottom": 5,
@@ -1403,9 +1305,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         onStartShouldSetResponder={[Function]}
         style={
           [
-            {
-              "opacity": 1,
-            },
+            [Function],
             undefined,
           ]
         }
@@ -1521,15 +1421,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         }
         accessible={true}
         collapsable={false}
-<<<<<<< HEAD
         focusable={true}
-=======
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
->>>>>>> develop
         hitSlop={
           {
             "bottom": 5,
@@ -1549,9 +1441,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         onStartShouldSetResponder={[Function]}
         style={
           [
-            {
-              "opacity": 1,
-            },
+            [Function],
             undefined,
           ]
         }
@@ -1667,15 +1557,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         }
         accessible={true}
         collapsable={false}
-<<<<<<< HEAD
         focusable={true}
-=======
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
->>>>>>> develop
         hitSlop={
           {
             "bottom": 5,
@@ -1695,9 +1577,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         onStartShouldSetResponder={[Function]}
         style={
           [
-            {
-              "opacity": 1,
-            },
+            [Function],
             undefined,
           ]
         }
@@ -1813,15 +1693,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         }
         accessible={true}
         collapsable={false}
-<<<<<<< HEAD
         focusable={true}
-=======
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
->>>>>>> develop
         hitSlop={
           {
             "bottom": 5,
@@ -1841,9 +1713,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         onStartShouldSetResponder={[Function]}
         style={
           [
-            {
-              "opacity": 1,
-            },
+            [Function],
             undefined,
           ]
         }
@@ -1959,15 +1829,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         }
         accessible={true}
         collapsable={false}
-<<<<<<< HEAD
         focusable={true}
-=======
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
->>>>>>> develop
         hitSlop={
           {
             "bottom": 5,
@@ -1987,9 +1849,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         onStartShouldSetResponder={[Function]}
         style={
           [
-            {
-              "opacity": 1,
-            },
+            [Function],
             undefined,
           ]
         }
@@ -2110,15 +1970,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
         }
         accessible={true}
         collapsable={false}
-<<<<<<< HEAD
         focusable={true}
-=======
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
->>>>>>> develop
         hitSlop={
           {
             "bottom": 5,
@@ -2138,9 +1990,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
         onStartShouldSetResponder={[Function]}
         style={
           [
-            {
-              "opacity": 1,
-            },
+            [Function],
             undefined,
           ]
         }
@@ -2289,15 +2139,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
         }
         accessible={true}
         collapsable={false}
-<<<<<<< HEAD
         focusable={true}
-=======
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
->>>>>>> develop
         hitSlop={
           {
             "bottom": 5,
@@ -2317,9 +2159,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
         onStartShouldSetResponder={[Function]}
         style={
           [
-            {
-              "opacity": 1,
-            },
+            [Function],
             undefined,
           ]
         }
@@ -2468,15 +2308,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
         }
         accessible={true}
         collapsable={false}
-<<<<<<< HEAD
         focusable={true}
-=======
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
->>>>>>> develop
         hitSlop={
           {
             "bottom": 5,
@@ -2496,9 +2328,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
         onStartShouldSetResponder={[Function]}
         style={
           [
-            {
-              "opacity": 1,
-            },
+            [Function],
             undefined,
           ]
         }
@@ -2652,15 +2482,7 @@ exports[`Story Snapshots: Thread should match snapshot 1`] = `
         }
         accessible={true}
         collapsable={false}
-<<<<<<< HEAD
         focusable={true}
-=======
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
->>>>>>> develop
         hitSlop={
           {
             "bottom": 5,
@@ -2680,9 +2502,7 @@ exports[`Story Snapshots: Thread should match snapshot 1`] = `
         onStartShouldSetResponder={[Function]}
         style={
           [
-            {
-              "opacity": 1,
-            },
+            [Function],
             undefined,
           ]
         }
@@ -2843,15 +2663,7 @@ preview
         }
         accessible={true}
         collapsable={false}
-<<<<<<< HEAD
         focusable={true}
-=======
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
->>>>>>> develop
         hitSlop={
           {
             "bottom": 5,
@@ -2871,9 +2683,7 @@ preview
         onStartShouldSetResponder={[Function]}
         style={
           [
-            {
-              "opacity": 1,
-            },
+            [Function],
             undefined,
           ]
         }
@@ -3039,15 +2849,7 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
         }
         accessible={true}
         collapsable={false}
-<<<<<<< HEAD
         focusable={true}
-=======
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
->>>>>>> develop
         hitSlop={
           {
             "bottom": 5,
@@ -3067,9 +2869,7 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
         onStartShouldSetResponder={[Function]}
         style={
           [
-            {
-              "opacity": 1,
-            },
+            [Function],
             undefined,
           ]
         }
@@ -3185,15 +2985,7 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
         }
         accessible={true}
         collapsable={false}
-<<<<<<< HEAD
         focusable={true}
-=======
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
->>>>>>> develop
         hitSlop={
           {
             "bottom": 5,
@@ -3213,9 +3005,7 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
         onStartShouldSetResponder={[Function]}
         style={
           [
-            {
-              "opacity": 1,
-            },
+            [Function],
             undefined,
           ]
         }
@@ -3331,15 +3121,7 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
         }
         accessible={true}
         collapsable={false}
-<<<<<<< HEAD
         focusable={true}
-=======
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
->>>>>>> develop
         hitSlop={
           {
             "bottom": 5,
@@ -3359,9 +3141,7 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
         onStartShouldSetResponder={[Function]}
         style={
           [
-            {
-              "opacity": 1,
-            },
+            [Function],
             undefined,
           ]
         }
@@ -3510,15 +3290,7 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
         }
         accessible={true}
         collapsable={false}
-<<<<<<< HEAD
         focusable={true}
-=======
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
->>>>>>> develop
         hitSlop={
           {
             "bottom": 5,
@@ -3538,9 +3310,7 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
         onStartShouldSetResponder={[Function]}
         style={
           [
-            {
-              "opacity": 1,
-            },
+            [Function],
             undefined,
           ]
         }
@@ -3689,15 +3459,7 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
         }
         accessible={true}
         collapsable={false}
-<<<<<<< HEAD
         focusable={true}
-=======
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
->>>>>>> develop
         hitSlop={
           {
             "bottom": 5,
@@ -3717,9 +3479,7 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
         onStartShouldSetResponder={[Function]}
         style={
           [
-            {
-              "opacity": 1,
-            },
+            [Function],
             undefined,
           ]
         }
@@ -3874,15 +3634,7 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
         }
         accessible={true}
         collapsable={false}
-<<<<<<< HEAD
         focusable={true}
-=======
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
->>>>>>> develop
         hitSlop={
           {
             "bottom": 5,
@@ -3902,9 +3654,7 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
         onStartShouldSetResponder={[Function]}
         style={
           [
-            {
-              "opacity": 1,
-            },
+            [Function],
             undefined,
           ]
         }
@@ -4053,15 +3803,7 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
         }
         accessible={true}
         collapsable={false}
-<<<<<<< HEAD
         focusable={true}
-=======
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
->>>>>>> develop
         hitSlop={
           {
             "bottom": 5,
@@ -4081,9 +3823,7 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
         onStartShouldSetResponder={[Function]}
         style={
           [
-            {
-              "opacity": 1,
-            },
+            [Function],
             undefined,
           ]
         }
@@ -4232,15 +3972,7 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
         }
         accessible={true}
         collapsable={false}
-<<<<<<< HEAD
         focusable={true}
-=======
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
->>>>>>> develop
         hitSlop={
           {
             "bottom": 5,
@@ -4260,9 +3992,7 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
         onStartShouldSetResponder={[Function]}
         style={
           [
-            {
-              "opacity": 1,
-            },
+            [Function],
             undefined,
           ]
         }

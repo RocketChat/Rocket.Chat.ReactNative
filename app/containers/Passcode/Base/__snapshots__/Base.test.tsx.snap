@@ -11,13 +11,9 @@ exports[`Story Snapshots: ChooseType should match snapshot 1`] = `
   <View
     collapsable={false}
     style={
-      [
-        {
-          "flex": 1,
-        },
-        {},
-        {},
-      ]
+      {
+        "flex": 1,
+      }
     }
   >
     <View
@@ -124,13 +120,7 @@ exports[`Story Snapshots: ChooseType should match snapshot 1`] = `
       >
         <View
           collapsable={false}
-          style={
-            [
-              undefined,
-              {},
-              {},
-            ]
-          }
+          style={{}}
         >
           <View
             style={
@@ -307,7 +297,7 @@ exports[`Story Snapshots: ChooseType should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={68}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -406,7 +396,7 @@ exports[`Story Snapshots: ChooseType should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={69}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -505,7 +495,7 @@ exports[`Story Snapshots: ChooseType should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={70}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -616,7 +606,7 @@ exports[`Story Snapshots: ChooseType should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={71}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -715,7 +705,7 @@ exports[`Story Snapshots: ChooseType should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={72}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -814,7 +804,7 @@ exports[`Story Snapshots: ChooseType should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={73}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -925,7 +915,7 @@ exports[`Story Snapshots: ChooseType should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={74}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -1024,7 +1014,7 @@ exports[`Story Snapshots: ChooseType should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={75}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -1123,7 +1113,7 @@ exports[`Story Snapshots: ChooseType should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={76}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -1247,7 +1237,7 @@ exports[`Story Snapshots: ChooseType should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={77}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -1346,7 +1336,7 @@ exports[`Story Snapshots: ChooseType should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={78}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -1452,13 +1442,9 @@ exports[`Story Snapshots: ConfirmType should match snapshot 1`] = `
   <View
     collapsable={false}
     style={
-      [
-        {
-          "flex": 1,
-        },
-        {},
-        {},
-      ]
+      {
+        "flex": 1,
+      }
     }
   >
     <View
@@ -1565,13 +1551,7 @@ exports[`Story Snapshots: ConfirmType should match snapshot 1`] = `
       >
         <View
           collapsable={false}
-          style={
-            [
-              undefined,
-              {},
-              {},
-            ]
-          }
+          style={{}}
         >
           <View
             style={
@@ -1748,7 +1728,7 @@ exports[`Story Snapshots: ConfirmType should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={79}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -1847,7 +1827,7 @@ exports[`Story Snapshots: ConfirmType should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={80}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -1946,7 +1926,7 @@ exports[`Story Snapshots: ConfirmType should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={81}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -2057,7 +2037,7 @@ exports[`Story Snapshots: ConfirmType should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={82}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -2156,7 +2136,7 @@ exports[`Story Snapshots: ConfirmType should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={83}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -2255,7 +2235,7 @@ exports[`Story Snapshots: ConfirmType should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={84}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -2366,7 +2346,7 @@ exports[`Story Snapshots: ConfirmType should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={85}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -2465,7 +2445,7 @@ exports[`Story Snapshots: ConfirmType should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={86}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -2564,7 +2544,7 @@ exports[`Story Snapshots: ConfirmType should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={87}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -2688,7 +2668,7 @@ exports[`Story Snapshots: ConfirmType should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={88}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -2787,7 +2767,7 @@ exports[`Story Snapshots: ConfirmType should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={89}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -2893,13 +2873,9 @@ exports[`Story Snapshots: EnterType should match snapshot 1`] = `
   <View
     collapsable={false}
     style={
-      [
-        {
-          "flex": 1,
-        },
-        {},
-        {},
-      ]
+      {
+        "flex": 1,
+      }
     }
   >
     <View
@@ -3006,13 +2982,7 @@ exports[`Story Snapshots: EnterType should match snapshot 1`] = `
       >
         <View
           collapsable={false}
-          style={
-            [
-              undefined,
-              {},
-              {},
-            ]
-          }
+          style={{}}
         >
           <View
             style={
@@ -3189,7 +3159,7 @@ exports[`Story Snapshots: EnterType should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={90}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -3288,7 +3258,7 @@ exports[`Story Snapshots: EnterType should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={91}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -3387,7 +3357,7 @@ exports[`Story Snapshots: EnterType should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={92}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -3498,7 +3468,7 @@ exports[`Story Snapshots: EnterType should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={93}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -3597,7 +3567,7 @@ exports[`Story Snapshots: EnterType should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={94}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -3696,7 +3666,7 @@ exports[`Story Snapshots: EnterType should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={95}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -3807,7 +3777,7 @@ exports[`Story Snapshots: EnterType should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={96}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -3906,7 +3876,7 @@ exports[`Story Snapshots: EnterType should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={97}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -4005,7 +3975,7 @@ exports[`Story Snapshots: EnterType should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={98}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -4129,7 +4099,7 @@ exports[`Story Snapshots: EnterType should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={99}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -4228,7 +4198,7 @@ exports[`Story Snapshots: EnterType should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={100}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -4334,13 +4304,9 @@ exports[`Story Snapshots: EnterWithSubtitleAndBiometry should match snapshot 1`]
   <View
     collapsable={false}
     style={
-      [
-        {
-          "flex": 1,
-        },
-        {},
-        {},
-      ]
+      {
+        "flex": 1,
+      }
     }
   >
     <View
@@ -4485,13 +4451,7 @@ exports[`Story Snapshots: EnterWithSubtitleAndBiometry should match snapshot 1`]
       >
         <View
           collapsable={false}
-          style={
-            [
-              undefined,
-              {},
-              {},
-            ]
-          }
+          style={{}}
         >
           <View
             style={
@@ -4668,7 +4628,7 @@ exports[`Story Snapshots: EnterWithSubtitleAndBiometry should match snapshot 1`]
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={101}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -4767,7 +4727,7 @@ exports[`Story Snapshots: EnterWithSubtitleAndBiometry should match snapshot 1`]
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={102}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -4866,7 +4826,7 @@ exports[`Story Snapshots: EnterWithSubtitleAndBiometry should match snapshot 1`]
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={103}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -4977,7 +4937,7 @@ exports[`Story Snapshots: EnterWithSubtitleAndBiometry should match snapshot 1`]
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={104}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -5076,7 +5036,7 @@ exports[`Story Snapshots: EnterWithSubtitleAndBiometry should match snapshot 1`]
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={105}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -5175,7 +5135,7 @@ exports[`Story Snapshots: EnterWithSubtitleAndBiometry should match snapshot 1`]
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={106}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -5286,7 +5246,7 @@ exports[`Story Snapshots: EnterWithSubtitleAndBiometry should match snapshot 1`]
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={107}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -5385,7 +5345,7 @@ exports[`Story Snapshots: EnterWithSubtitleAndBiometry should match snapshot 1`]
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={108}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -5484,7 +5444,7 @@ exports[`Story Snapshots: EnterWithSubtitleAndBiometry should match snapshot 1`]
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={109}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -5595,7 +5555,7 @@ exports[`Story Snapshots: EnterWithSubtitleAndBiometry should match snapshot 1`]
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={110}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -5702,7 +5662,7 @@ exports[`Story Snapshots: EnterWithSubtitleAndBiometry should match snapshot 1`]
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={111}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -5801,7 +5761,7 @@ exports[`Story Snapshots: EnterWithSubtitleAndBiometry should match snapshot 1`]
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={112}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -5907,13 +5867,9 @@ exports[`Story Snapshots: WithBiometry should match snapshot 1`] = `
   <View
     collapsable={false}
     style={
-      [
-        {
-          "flex": 1,
-        },
-        {},
-        {},
-      ]
+      {
+        "flex": 1,
+      }
     }
   >
     <View
@@ -6020,13 +5976,7 @@ exports[`Story Snapshots: WithBiometry should match snapshot 1`] = `
       >
         <View
           collapsable={false}
-          style={
-            [
-              undefined,
-              {},
-              {},
-            ]
-          }
+          style={{}}
         >
           <View
             style={
@@ -6203,7 +6153,7 @@ exports[`Story Snapshots: WithBiometry should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={113}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -6302,7 +6252,7 @@ exports[`Story Snapshots: WithBiometry should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={114}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -6401,7 +6351,7 @@ exports[`Story Snapshots: WithBiometry should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={115}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -6512,7 +6462,7 @@ exports[`Story Snapshots: WithBiometry should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={116}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -6611,7 +6561,7 @@ exports[`Story Snapshots: WithBiometry should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={117}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -6710,7 +6660,7 @@ exports[`Story Snapshots: WithBiometry should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={118}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -6821,7 +6771,7 @@ exports[`Story Snapshots: WithBiometry should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={119}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -6920,7 +6870,7 @@ exports[`Story Snapshots: WithBiometry should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={120}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -7019,7 +6969,7 @@ exports[`Story Snapshots: WithBiometry should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={121}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -7130,7 +7080,7 @@ exports[`Story Snapshots: WithBiometry should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={122}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -7237,7 +7187,7 @@ exports[`Story Snapshots: WithBiometry should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={123}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -7336,7 +7286,7 @@ exports[`Story Snapshots: WithBiometry should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={124}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -7442,13 +7392,9 @@ exports[`Story Snapshots: WithSubtitle should match snapshot 1`] = `
   <View
     collapsable={false}
     style={
-      [
-        {
-          "flex": 1,
-        },
-        {},
-        {},
-      ]
+      {
+        "flex": 1,
+      }
     }
   >
     <View
@@ -7593,13 +7539,7 @@ exports[`Story Snapshots: WithSubtitle should match snapshot 1`] = `
       >
         <View
           collapsable={false}
-          style={
-            [
-              undefined,
-              {},
-              {},
-            ]
-          }
+          style={{}}
         >
           <View
             style={
@@ -7776,7 +7716,7 @@ exports[`Story Snapshots: WithSubtitle should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={125}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -7875,7 +7815,7 @@ exports[`Story Snapshots: WithSubtitle should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={126}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -7974,7 +7914,7 @@ exports[`Story Snapshots: WithSubtitle should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={127}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -8085,7 +8025,7 @@ exports[`Story Snapshots: WithSubtitle should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={128}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -8184,7 +8124,7 @@ exports[`Story Snapshots: WithSubtitle should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={129}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -8283,7 +8223,7 @@ exports[`Story Snapshots: WithSubtitle should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={130}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -8394,7 +8334,7 @@ exports[`Story Snapshots: WithSubtitle should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={131}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -8493,7 +8433,7 @@ exports[`Story Snapshots: WithSubtitle should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={132}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -8592,7 +8532,7 @@ exports[`Story Snapshots: WithSubtitle should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={133}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -8716,7 +8656,7 @@ exports[`Story Snapshots: WithSubtitle should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={134}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -8815,7 +8755,7 @@ exports[`Story Snapshots: WithSubtitle should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={135}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
