@@ -1,5 +1,7 @@
 package chat.rocket.reactnative.voip
 
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import chat.rocket.reactnative.notification.Ejson
 import okhttp3.Call
@@ -37,6 +39,7 @@ class MediaCallsAnswerRequest(
         private const val TAG = "RocketChat.MediaCallsAnswerRequest"
         private val JSON_MEDIA_TYPE = "application/json; charset=utf-8".toMediaType()
         private val httpClient = OkHttpClient()
+        private val mainHandler = Handler(Looper.getMainLooper())
 
         @JvmStatic
         fun fetch(
@@ -111,7 +114,7 @@ class MediaCallsAnswerRequest(
         httpClient.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 Log.e(TAG, "MediaCallsAnswerRequest failed for callId=$callId: ${e.message}")
-                onResult(false)
+                mainHandler.post { onResult(false) }
             }
 
             override fun onResponse(call: Call, response: okhttp3.Response) {
@@ -119,7 +122,7 @@ class MediaCallsAnswerRequest(
                     val code = it.code
                     val success = code in 200..299
                     Log.d(TAG, "MediaCallsAnswerRequest response for callId=$callId: code=$code success=$success")
-                    onResult(success)
+                    mainHandler.post { onResult(success) }
                 }
             }
         })
