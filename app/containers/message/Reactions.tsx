@@ -43,7 +43,8 @@ const AddReaction = React.memo(({ theme }: { theme: TSupportedThemes }) => {
 			accessibilityRole='button'
 			accessibilityLabel={I18n.t('Add_reaction')}
 			style={[styles.reactionButton, { backgroundColor: themes[theme].surfaceRoom }]}
-			hitSlop={BUTTON_HIT_SLOP}>
+			hitSlop={BUTTON_HIT_SLOP}
+			android_ripple={{ color: themes[theme].strokeLight }}>
 			<View style={[styles.reactionContainer, { borderColor: themes[theme].strokeLight, height }]}>
 				<CustomIcon name='reaction-add' size={20} color={themes[theme].badgeBackgroundLevel2} />
 			</View>
@@ -68,7 +69,8 @@ const Reaction = React.memo(({ reaction, getCustomEmoji, theme }: IMessageReacti
 			accessibilityLabel={`${reaction.emoji}, ${reaction.usernames.length}`}
 			accessibilityState={{ selected: reacted }}
 			style={[styles.reactionButton, { backgroundColor: reacted ? themes[theme].surfaceNeutral : themes[theme].surfaceRoom }]}
-			hitSlop={BUTTON_HIT_SLOP}>
+			hitSlop={BUTTON_HIT_SLOP}
+			android_ripple={{ color: themes[theme].strokeLight }}>
 			<View
 				style={[
 					styles.reactionContainer,

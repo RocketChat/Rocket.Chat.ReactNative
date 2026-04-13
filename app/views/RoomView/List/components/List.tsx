@@ -5,6 +5,7 @@ import { scheduleOnRN } from 'react-native-worklets';
 
 import { isIOS } from '../../../../lib/methods/helpers';
 import scrollPersistTaps from '../../../../lib/methods/helpers/scrollPersistTaps';
+import { MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID } from '../../../../lib/constants/accessibility';
 import InvertedScrollView from './InvertedScrollView';
 import NavBottomFAB from './NavBottomFAB';
 import { type IListProps } from '../definitions';
@@ -46,7 +47,7 @@ const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 				style={styles.list}
 				inverted
 				renderScrollComponent={
-					isIOS ? undefined : props => <InvertedScrollView {...props} exitFocusNativeId='message-composer-exit-focus' />
+					isIOS ? undefined : props => <InvertedScrollView {...props} exitFocusNativeId={MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID} />
 				}
 				removeClippedSubviews={isIOS}
 				initialNumToRender={7}

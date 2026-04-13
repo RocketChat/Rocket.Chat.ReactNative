@@ -9,6 +9,8 @@ import android.view.ViewParent;
 import androidx.annotation.Nullable;
 import com.facebook.react.uimanager.util.ReactFindViewUtil;
 import com.facebook.react.views.scroll.ReactScrollView;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Custom ScrollView for inverted FlatLists that corrects keyboard navigation so it follows
@@ -20,8 +22,8 @@ import com.facebook.react.views.scroll.ReactScrollView;
  */
 public class InvertedScrollView extends ReactScrollView {
 
-  private boolean mKeyConsumed = false;
-  private @Nullable String mExitFocusNativeId;
+  private final Map<Integer, Boolean> mKeyConsumedMap = new HashMap<>();
+  private volatile @Nullable String mExitFocusNativeId;
 
   public InvertedScrollView(Context context) {
     super(context);
@@ -35,22 +37,21 @@ public class InvertedScrollView extends ReactScrollView {
   public boolean dispatchKeyEvent(KeyEvent event) {
     int keyCode = event.getKeyCode();
 
-    if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN || keyCode == KeyEvent.KEYCODE_DPAD_UP) {
+    if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN
+        || keyCode == KeyEvent.KEYCODE_DPAD_UP
+        || keyCode == KeyEvent.KEYCODE_TAB) {
       if (event.getAction() == KeyEvent.ACTION_DOWN) {
-        boolean isForward = (keyCode == KeyEvent.KEYCODE_DPAD_DOWN);
-        mKeyConsumed = handleCellNavigation(isForward);
-        return mKeyConsumed;
+        boolean isForward = keyCode == KeyEvent.KEYCODE_TAB
+            ? !event.isShiftPressed()
+            : (keyCode == KeyEvent.KEYCODE_DPAD_DOWN);
+        boolean consumed = handleCellNavigation(isForward);
+        mKeyConsumedMap.put(keyCode, consumed);
+        return consumed;
       }
-      return mKeyConsumed;
-    }
-
-    if (keyCode == KeyEvent.KEYCODE_TAB) {
-      if (event.getAction() == KeyEvent.ACTION_DOWN) {
-        boolean isForward = !event.isShiftPressed();
-        mKeyConsumed = handleCellNavigation(isForward);
-        return mKeyConsumed;
+      if (event.getAction() == KeyEvent.ACTION_UP) {
+        Boolean consumed = mKeyConsumedMap.remove(keyCode);
+        return consumed != null && consumed;
       }
-      return mKeyConsumed;
     }
 
     return super.dispatchKeyEvent(event);
@@ -66,7 +67,11 @@ public class InvertedScrollView extends ReactScrollView {
       return false;
     }
 
-    ViewGroup contentView = (ViewGroup) getChildAt(0);
+    View firstChild = getChildAt(0);
+    if (!(firstChild instanceof ViewGroup)) {
+      return false;
+    }
+    ViewGroup contentView = (ViewGroup) firstChild;
     int cellIndex = findContainingCellIndex(contentView, focused);
     if (cellIndex < 0) {
       return false;
@@ -89,7 +94,7 @@ public class InvertedScrollView extends ReactScrollView {
       return true;
     }
 
-    return true;
+    return false;
   }
 
   private int findContainingCellIndex(ViewGroup contentView, View focused) {
@@ -116,8 +121,12 @@ public class InvertedScrollView extends ReactScrollView {
     if (!(rootView instanceof ViewGroup)) {
       return null;
     }
+    View focused = findFocus();
+    if (focused == null) {
+      return null;
+    }
     View target = FocusFinder.getInstance()
-        .findNextFocus((ViewGroup) rootView, this, direction);
+        .findNextFocus((ViewGroup) rootView, focused, direction);
     if (target != null && !isDescendantOf(target, this)) {
       return target;
     }

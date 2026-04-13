@@ -19,6 +19,7 @@ interface InvertedScrollContentViewProps extends ViewProps {
 
 interface InvertedScrollViewNativeProps extends ScrollViewProps {
 	exitFocusNativeId?: string;
+	onScrollShouldSetResponder?: (event: GestureResponderEvent) => boolean;
 }
 
 interface Props extends Omit<ScrollViewProps, 'scrollViewRef'> {
@@ -218,7 +219,7 @@ export default class InvertedScrollViewAdapter extends React.Component<Props, St
 		const { horizontal, children, style, contentContainerStyle, onContentSizeChange, ...rest } = this.props;
 		const contentStyle = [horizontal ? styles.contentContainerHorizontal : null, contentContainerStyle];
 		const baseStyle = horizontal ? styles.baseHorizontal : styles.baseVertical;
-		const ScrollContainer = NativeInvertedScrollView as any;
+		const ScrollContainer = NativeInvertedScrollView as React.ComponentClass<InvertedScrollViewNativeProps & ViewProps>;
 
 		return (
 			<ScrollContainer
