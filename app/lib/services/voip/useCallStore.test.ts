@@ -11,7 +11,15 @@ jest.mock('../../../containers/ActionSheet', () => ({
 	hideActionSheetRef: jest.fn()
 }));
 
-jest.mock('react-native-callkeep', () => ({}));
+jest.mock('react-native-callkeep', () => ({
+	setCurrentCallActive: jest.fn(),
+	addEventListener: jest.fn(() => ({ remove: jest.fn() })),
+	endCall: jest.fn(),
+	start: jest.fn(),
+	stop: jest.fn(),
+	setForceSpeakerphoneOn: jest.fn(),
+	setAvailable: jest.fn()
+}));
 
 function createMockCall(callId: string) {
 	const listeners: Record<string, Set<(...args: unknown[]) => void>> = {};
