@@ -28,6 +28,7 @@ const DEFAULT_CONTACT = {
 /**
  * Build a fake `IClientMediaCall` good enough to render `CallView` without a real SIP/WebRTC stack.
  * No-op `setMuted/setHeld/hangup/sendDTMF` and a no-op event emitter so store subscriptions are safe.
+ * Uses the 0.2.0-rc.0 participant model (localParticipant + remoteParticipants).
  */
 export function createMockCall(overrides: MockCallOverrides = {}): IClientMediaCall {
 	const contact = { ...DEFAULT_CONTACT, ...overrides.contact };
@@ -36,13 +37,17 @@ export function createMockCall(overrides: MockCallOverrides = {}): IClientMediaC
 	const mock = {
 		callId: 'mock-call-id',
 		state: callState,
-		muted: overrides.isMuted ?? false,
-		held: overrides.isOnHold ?? false,
-		remoteMute: false,
-		remoteHeld: false,
-		contact,
-		setMuted: () => {},
-		setHeld: () => {},
+		localParticipant: {
+			role: 'caller' as const,
+			contact,
+			muted: overrides.isMuted ?? false,
+			held: overrides.isOnHold ?? false,
+			setMuted: () => {},
+			setHeld: () => {}
+		},
+		remoteParticipants: [],
+		participants: [],
+		accept: () => {},
 		hangup: () => {},
 		reject: () => {},
 		sendDTMF: () => {},
