@@ -121,6 +121,9 @@ function* onDirectCallJoined(payload: ICallInfo) {
 		yield put(removeVideoConfCall(currentCall));
 		yield call(hideActionSheetRef);
 		videoConfJoin(payload.callId, false, true);
+	} else if (currentCall && currentCall.action === 'call') {
+		yield put(removeVideoConfCall(currentCall));
+		hideNotification();
 	}
 }
 
