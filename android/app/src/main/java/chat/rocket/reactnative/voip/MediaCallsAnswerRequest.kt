@@ -62,7 +62,6 @@ class MediaCallsAnswerRequest(
      * {
      *   "callId": "<callId>",
      *   "contractId": "<contractId>",
-     *   "type": "answer",
      *   "answer": "<accept|reject>",
      *   "supportedFeatures": ["audio"]  // only when non-null for accept
      * }
@@ -72,7 +71,6 @@ class MediaCallsAnswerRequest(
         val json = JSONObject().apply {
             put("callId", callId)
             put("contractId", contractId)
-            put("type", "answer")
             put("answer", answer)
         }
         supportedFeatures?.let { features ->
