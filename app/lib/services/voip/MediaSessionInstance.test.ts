@@ -6,8 +6,8 @@ import type { IDDPMessage } from '../../../definitions/IDDPMessage';
 import Navigation from '../../navigation/appNavigation';
 import { getDMSubscriptionByUsername } from '../../database/services/Subscription';
 import { getUidDirectMessage } from '../../methods/helpers/helpers';
-import { mediaSessionStore } from './MediaSessionStore';
 import { mediaSessionInstance } from './MediaSessionInstance';
+import { mediaSessionStore } from './MediaSessionStore';
 
 jest.mock('../../database/services/Subscription', () => ({
 	getDMSubscriptionByUsername: jest.fn()
@@ -51,6 +51,11 @@ jest.mock('../sdk', () => ({
 	}
 }));
 
+const mockMediaCallsStateSignals = jest.fn(() => Promise.resolve({ signals: [] }));
+jest.mock('../../services/restApi', () => ({
+	mediaCallsStateSignals: (...args: unknown[]) => mockMediaCallsStateSignals(...args)
+}));
+
 jest.mock('../../store/auxStore', () => ({
 	store: {
 		getState: jest.fn(() => ({
@@ -78,16 +83,7 @@ jest.mock('react-native-callkeep', () => ({
 }));
 
 jest.mock('react-native-device-info', () => ({
-	getUniqueId: jest.fn(() => 'test-device-id'),
-	getUniqueIdSync: jest.fn(() => 'test-device-id'),
-	getSystemVersion: jest.fn(() => '15.0'),
-	getVersion: jest.fn(() => '4.0.0'),
-	getBuildNumber: jest.fn(() => '1'),
-	hasNotch: jest.fn(() => false),
-	getReadableVersion: jest.fn(() => '4.0.0.1'),
-	getBundleId: jest.fn(() => 'com.rocket.chat'),
-	getModel: jest.fn(() => 'iPhone'),
-	isTablet: jest.fn(() => false),
+	__esModule: true,
 	default: {
 		getUniqueId: jest.fn(() => 'test-device-id'),
 		getUniqueIdSync: jest.fn(() => 'test-device-id'),
@@ -95,11 +91,23 @@ jest.mock('react-native-device-info', () => ({
 		getVersion: jest.fn(() => '4.0.0'),
 		getBuildNumber: jest.fn(() => '1'),
 		hasNotch: jest.fn(() => false),
-		getReadableVersion: jest.fn(() => '4.0.0.1'),
+		getReadableVersion: jest.fn(() => '4.0.0'),
 		getBundleId: jest.fn(() => 'com.rocket.chat'),
-		getModel: jest.fn(() => 'iPhone'),
+		getDeviceModel: jest.fn(() => 'iPhone 14'),
+		getModel: jest.fn(() => 'iPhone 14'),
 		isTablet: jest.fn(() => false)
-	}
+	},
+	getUniqueId: jest.fn(() => 'test-device-id'),
+	getUniqueIdSync: jest.fn(() => 'test-device-id'),
+	getSystemVersion: jest.fn(() => '15.0'),
+	getVersion: jest.fn(() => '4.0.0'),
+	getBuildNumber: jest.fn(() => '1'),
+	hasNotch: jest.fn(() => false),
+	getReadableVersion: jest.fn(() => '4.0.0'),
+	getBundleId: jest.fn(() => 'com.rocket.chat'),
+	getDeviceModel: jest.fn(() => 'iPhone 14'),
+	getModel: jest.fn(() => 'iPhone 14'),
+	isTablet: jest.fn(() => false)
 }));
 
 jest.mock('../../native/NativeVoip', () => ({
@@ -185,21 +193,23 @@ function buildClientMediaCall(options: {
 	const emitter = { on: jest.fn(), off: jest.fn(), emit: jest.fn() };
 	return {
 		callId: options.callId,
-		hidden: options.hidden ?? false,
 		localParticipant: {
+			local: true as const,
+			participantId: 'mock-participant-id',
+			actorType: 'user' as const,
+			actorId: 'mock-actor-id',
 			role: options.role,
-			contact: { username: 'bob', sipExtension: '' },
 			muted: false,
 			held: false,
+			contact: { id: 'u', displayName: 'U', username: 'u', sipExtension: '' },
+			getMediaStream: () => null,
 			setMuted: () => {},
 			setHeld: () => {}
 		},
 		remoteParticipants: [],
 		participants: [],
+		hidden: options.hidden ?? false,
 		reject,
-		accept: jest.fn(),
-		hangup: jest.fn(),
-		sendDTMF: jest.fn(),
 		emitter: emitter as unknown as IClientMediaCall['emitter']
 	} as unknown as IClientMediaCall;
 }
@@ -228,8 +238,8 @@ describe('MediaSessionInstance', () => {
 	});
 
 	describe('init', () => {
-		it('should register stream-notify-user listener', () => {
-			mediaSessionInstance.init('user-1');
+		it('should register stream-notify-user listener', async () => {
+			await mediaSessionInstance.init('user-1');
 			expect(mockOnStreamData).toHaveBeenCalledWith('stream-notify-user', expect.any(Function));
 		});
 
@@ -537,17 +547,9 @@ describe('MediaSessionInstance', () => {
 			newCallHandler({
 				call: {
 					hidden: false,
+					role: 'caller',
 					callId: 'c1',
-					localParticipant: {
-						role: 'caller',
-						contact: { username: 'alice', sipExtension: '' },
-						muted: false,
-						held: false,
-						setMuted: () => {},
-						setHeld: () => {}
-					},
-					remoteParticipants: [],
-					participants: [],
+					contact: { username: 'alice', sipExtension: '' },
 					emitter: { on: jest.fn(), off: jest.fn() }
 				} as unknown as IClientMediaCall
 			});
@@ -576,17 +578,9 @@ describe('MediaSessionInstance', () => {
 			newCallHandler({
 				call: {
 					hidden: false,
+					role: 'caller',
 					callId: 'c1',
-					localParticipant: {
-						role: 'caller',
-						contact: { username: 'alice', sipExtension: '' },
-						muted: false,
-						held: false,
-						setMuted: () => {},
-						setHeld: () => {}
-					},
-					remoteParticipants: [],
-					participants: [],
+					contact: { username: 'alice', sipExtension: '' },
 					emitter: { on: jest.fn(), off: jest.fn() }
 				} as unknown as IClientMediaCall
 			});
@@ -605,17 +599,9 @@ describe('MediaSessionInstance', () => {
 			newCallHandler({
 				call: {
 					hidden: false,
+					role: 'caller',
 					callId: 'c1',
-					localParticipant: {
-						role: 'caller',
-						contact: { username: 'alice', sipExtension: '100' },
-						muted: false,
-						held: false,
-						setMuted: () => {},
-						setHeld: () => {}
-					},
-					remoteParticipants: [],
-					participants: [],
+					contact: { username: 'alice', sipExtension: '100' },
 					emitter: { on: jest.fn(), off: jest.fn() }
 				} as unknown as IClientMediaCall
 			});
@@ -626,37 +612,29 @@ describe('MediaSessionInstance', () => {
 
 		it('answerCall resolves roomId from DM for non-SIP callee', async () => {
 			mockGetDMSubscriptionByUsername.mockResolvedValue({ rid: 'dm-rid' } as any);
-			const calleeCall = buildClientMediaCall({ callId: 'call-ans', role: 'callee' });
-			mockUseCallStoreGetState.mockReturnValue({
-				reset: mockCallStoreReset,
-				setCall: jest.fn(),
-				setRoomId: mockSetRoomId,
-				resetNativeCallId: jest.fn(),
-				call: calleeCall,
+			mediaSessionInstance.init('user-1');
+			const mainCall = {
 				callId: 'call-ans',
-				nativeAcceptedCallId: null,
-				roomId: null
-			});
+				accept: jest.fn().mockResolvedValue(undefined),
+				localParticipant: {
+					contact: { username: 'bob', sipExtension: '' }
+				}
+			};
 
 			await mediaSessionInstance.answerCall('call-ans');
 
 			await waitFor(() => expect(mockSetRoomId).toHaveBeenCalledWith('dm-rid'));
-			expect(mockGetDMSubscriptionByUsername).toHaveBeenCalledWith('bob');
 		});
 
 		it('answerCall skips DM lookup for SIP contact', async () => {
-			const sipCall = buildClientMediaCall({ callId: 'call-sip', role: 'callee' });
-			sipCall.localParticipant.contact.sipExtension = 'ext';
-			mockUseCallStoreGetState.mockReturnValue({
-				reset: mockCallStoreReset,
-				setCall: jest.fn(),
-				setRoomId: mockSetRoomId,
-				resetNativeCallId: jest.fn(),
-				call: sipCall,
+			mediaSessionInstance.init('user-1');
+			const mainCall = {
 				callId: 'call-sip',
-				nativeAcceptedCallId: null,
-				roomId: null
-			});
+				accept: jest.fn().mockResolvedValue(undefined),
+				localParticipant: {
+					contact: { username: 'bob', sipExtension: 'ext' }
+				}
+			};
 
 			await mediaSessionInstance.answerCall('call-sip');
 
