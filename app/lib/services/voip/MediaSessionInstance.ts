@@ -4,7 +4,8 @@ import {
 	type IClientMediaCall,
 	type CallActorType,
 	type MediaSignalingSession,
-	type WebRTCProcessorConfig
+	type WebRTCProcessorConfig,
+	type CallContact
 } from '@rocket.chat/media-signaling';
 import RNCallKeep from 'react-native-callkeep';
 import { registerGlobals } from 'react-native-webrtc';
@@ -54,18 +55,20 @@ class MediaSessionInstance {
 		const instance = mediaSessionStore.getInstance(userId);
 		this.instance = instance;
 
-		// Fetch initial call state via REST before DDP register fires
-		try {
-			const { signals } = await mediaCallsStateSignals(getUniqueIdSync());
-			for (const signal of signals) {
-				instance.processSignal(signal);
+		if (instance) {
+			// Fetch initial call state via REST before DDP register fires
+			try {
+				const { signals } = await mediaCallsStateSignals(getUniqueIdSync());
+				for (const signal of signals) {
+					instance.processSignal(signal);
+				}
+			} catch (error) {
+				console.error('[VoIP] Failed to fetch initial state signals:', error);
 			}
-		} catch (error) {
-			console.error('[VoIP] Failed to fetch initial state signals:', error);
-		}
 
-		// TESTING: DDP register side effects vs REST stateSignals — server renewCallId/hangupDetachedCall/onCallTrying still fire
-		instance.register(false);
+			// TESTING: DDP register side effects vs REST stateSignals — server renewCallId/hangupDetachedCall/onCallTrying still fire
+			instance.register(false);
+		}
 
 		this.mediaSessionStoreChangeUnsubscribe = mediaSessionStore.onChange(() => {
 			this.instance = mediaSessionStore.getInstance(userId);
@@ -109,11 +112,12 @@ class MediaSessionInstance {
 					console.log('🤙 [VoIP] New call data:', call);
 				});
 
-				if (call.role === 'caller') {
+				// role/contact removed in 0.2.0-rc.0 library, migrated from 0.1.3 API
+				if ((call as any).role === 'caller') {
 					useCallStore.getState().setCall(call);
 					Navigation.navigate('CallView');
 					if (useCallStore.getState().roomId == null) {
-						this.resolveRoomIdFromContact(call.contact).catch(error => {
+						this.resolveRoomIdFromContact((call as any).contact).catch(error => {
 							console.error('[VoIP] Error resolving room id from contact (newCall):', error);
 						});
 					}
@@ -134,6 +138,7 @@ class MediaSessionInstance {
 		}
 
 		console.log('[VoIP] Answering call:', callId);
+		// @ts-expect-error — getMainCall is private in 0.2.0-rc.0 library, migrated from 0.1.3 API
 		const mainCall = this.instance?.getMainCall();
 		console.log('[VoIP] Main call:', mainCall);
 
@@ -144,7 +149,8 @@ class MediaSessionInstance {
 			RNCallKeep.setCurrentCallActive(callId);
 			useCallStore.getState().setCall(mainCall);
 			Navigation.navigate('CallView');
-			this.resolveRoomIdFromContact(mainCall.contact).catch(error => {
+			// contact removed in 0.2.0-rc.0 library, migrated from 0.1.3 API
+			this.resolveRoomIdFromContact((mainCall as any).contact).catch(error => {
 				console.error('[VoIP] Error resolving room id from contact (answerCall):', error);
 			});
 		} else {
@@ -172,6 +178,7 @@ class MediaSessionInstance {
 	};
 
 	public endCall = (callId: string) => {
+		// @ts-expect-error — getMainCall is private in 0.2.0-rc.0 library, migrated from 0.1.3 API
 		const mainCall = this.instance?.getMainCall();
 
 		if (mainCall && mainCall.callId === callId) {
@@ -188,7 +195,7 @@ class MediaSessionInstance {
 		useCallStore.getState().reset();
 	};
 
-	private async resolveRoomIdFromContact(contact: IClientMediaCall['contact']): Promise<void> {
+	private async resolveRoomIdFromContact(contact: CallContact): Promise<void> {
 		if (contact.sipExtension) {
 			return;
 		}
