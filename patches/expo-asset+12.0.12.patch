@@ -1,0 +1,26 @@
+diff --git a/node_modules/expo-asset/android/src/main/java/expo/modules/asset/AssetModule.kt b/node_modules/expo-asset/android/src/main/java/expo/modules/asset/AssetModule.kt
+index 9f1e2c6..fea95a8 100644
+--- a/node_modules/expo-asset/android/src/main/java/expo/modules/asset/AssetModule.kt
++++ b/node_modules/expo-asset/android/src/main/java/expo/modules/asset/AssetModule.kt
+@@ -18,7 +18,7 @@ import java.security.DigestInputStream
+ import java.security.MessageDigest
+ 
+ internal class UnableToDownloadAssetException(url: String) :
+-  CodedException("Unable to download asset from url: $url")
++  CodedException("Unable to download asset from url: $url")
+ 
+ class AssetModule : Module() {
+   private val context: Context
+@@ -80,6 +80,12 @@ class AssetModule : Module() {
+     Name("ExpoAsset")
+ 
+     AsyncFunction("downloadAsync") Coroutine { uri: URI, md5Hash: String?, type: String ->
++      // If the scheme is null, it's a raw asset (e.g., "custom.ttf").
++      // Returning early prevents Expo from trying to "cache" a local native file.
++      if (uri.scheme == null) {
++          return@Coroutine uri
++      }
++
+       if (uri.scheme == "file" && !uri.toString().startsWith(ANDROID_EMBEDDED_URL_BASE_RESOURCE)) {
+         return@Coroutine uri
+       }
