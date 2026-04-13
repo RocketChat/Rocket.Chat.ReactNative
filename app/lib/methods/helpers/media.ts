@@ -25,12 +25,12 @@ export const canUploadFile = ({
 		return { success: true };
 	}
 	const allowedMime = allowList.replaceAll(' ', '').split(',');
-	if (allowedMime.includes(file.mime!)) {
+	if (allowedMime.includes(file.mime!.toLowerCase())) {
 		return { success: true };
 	}
 	const wildCardGlob = '/*';
 	const wildCards = allowedMime.filter((item: string) => item.indexOf(wildCardGlob) > 0);
-	if (file.mime && wildCards.includes(file.mime.replace(/(\/.*)$/, wildCardGlob))) {
+	if (file.mime && wildCards.includes(file.mime.toLowerCase().replace(/(\/.*)$/, wildCardGlob))) {
 		return { success: true };
 	}
 	return { success: false, error: 'error-invalid-file-type' };
