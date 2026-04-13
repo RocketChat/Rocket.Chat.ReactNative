@@ -72,6 +72,8 @@ class MediaSessionInstance {
 		registerGlobals();
 		this.configureIceServers();
 
+		// TESTING: DDP register side effects vs REST stateSignals — server renewCallId/hangupDetachedCall/onCallTrying still fire
+		// TODO (Slice 4): call this.instance.register(false) after REST stateSignals completes
 		mediaSessionStore.setWebRTCProcessorFactory(
 			(config: WebRTCProcessorConfig) =>
 				new MediaCallWebRTCProcessor({
@@ -80,6 +82,7 @@ class MediaSessionInstance {
 					iceGatheringTimeout: this.iceGatheringTimeout
 				})
 		);
+		// TESTING: DDP signal transport — offer/answer/ICE stay on DDP
 		mediaSessionStore.setSendSignalFn((signal: ClientMediaSignal) => {
 			sdk.methodCall('stream-notify-user', `${userId}/media-calls`, JSON.stringify(signal));
 		});
@@ -95,6 +98,7 @@ class MediaSessionInstance {
 			this.instance = mediaSessionStore.getInstance(userId);
 		});
 
+		// TESTING: DDP real-time signal subscription — stays for offer/answer/ICE/notifications
 		this.mediaSignalListener = sdk.onStreamData('stream-notify-user', (ddpMessage: IDDPMessage) => {
 			if (!this.instance) {
 				return;
