@@ -104,7 +104,10 @@ describe('setAvatarFromService', () => {
 		expect(uploadUserAvatarMultipart).not.toHaveBeenCalled();
 	});
 
-	it('throws when payload is not a supported 8.0.0+ avatar source', async () => {
+	// On 8.0.0+ only these shapes are handled: `service === 'url'` + string data, `service === 'upload'`
+	// + non-http local url (multipart), or any `url` that is http(s) (JSON avatarUrl). OAuth suggestions
+	// with base64 `data` and a non-http `url` (e.g. relative path) match none of those — invalid payload.
+	it('throws on 8.0.0+ for OAuth-style payload with base64 data and non-http url', async () => {
 		await expect(
 			setAvatarFromService({
 				data: 'dGVzdA==',
