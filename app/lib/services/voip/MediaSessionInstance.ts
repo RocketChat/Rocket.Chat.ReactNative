@@ -48,7 +48,6 @@ class MediaSessionInstance {
 					iceGatheringTimeout: this.iceGatheringTimeout
 				})
 		);
-		// TESTING: DDP signal transport — offer/answer/ICE stay on DDP
 		mediaSessionStore.setSendSignalFn((signal: ClientMediaSignal) => {
 			sdk.methodCall('stream-notify-user', `${userId}/media-calls`, JSON.stringify(signal));
 		});
@@ -66,7 +65,6 @@ class MediaSessionInstance {
 				console.error('[VoIP] Failed to fetch initial state signals:', error);
 			}
 
-			// TESTING: DDP register side effects vs REST stateSignals — server renewCallId/hangupDetachedCall/onCallTrying still fire
 			instance.register(false);
 		}
 
@@ -74,7 +72,6 @@ class MediaSessionInstance {
 			this.instance = mediaSessionStore.getInstance(userId);
 		});
 
-		// TESTING: DDP real-time signal subscription — stays for offer/answer/ICE/notifications
 		this.mediaSignalListener = sdk.onStreamData('stream-notify-user', (ddpMessage: IDDPMessage) => {
 			if (!this.instance) {
 				return;
@@ -85,8 +82,6 @@ class MediaSessionInstance {
 			}
 			const signal = ddpMessage.fields.args[0];
 			this.instance.processSignal(signal);
-
-			console.log('🤙 [VoIP] Processed signal:', signal);
 
 			// Answer when native already accepted and stream matches device contract + callId.
 			const storeSlice = useCallStore.getState();
@@ -107,17 +102,13 @@ class MediaSessionInstance {
 
 		this.instance?.on('newCall', ({ call }: { call: IClientMediaCall }) => {
 			if (call && !call.hidden) {
-				call.emitter.on('stateChange', oldState => {
-					console.log(`📊 ${oldState} → ${call.state}`);
-					console.log('🤙 [VoIP] New call data:', call);
-				});
+				call.emitter.on('stateChange', () => {});
 
-				// role/contact removed in 0.2.0-rc.0 library, migrated from 0.1.3 API
-				if ((call as any).role === 'caller') {
+				if (call.localParticipant.role === 'caller') {
 					useCallStore.getState().setCall(call);
 					Navigation.navigate('CallView');
 					if (useCallStore.getState().roomId == null) {
-						this.resolveRoomIdFromContact((call as any).contact).catch(error => {
+						this.resolveRoomIdFromContact(call.localParticipant.contact).catch(error => {
 							console.error('[VoIP] Error resolving room id from contact (newCall):', error);
 						});
 					}
@@ -133,24 +124,17 @@ class MediaSessionInstance {
 	public answerCall = async (callId: string) => {
 		const { call: existingCall } = useCallStore.getState();
 		if (existingCall != null && existingCall.callId === callId) {
-			console.log('[VoIP] answerCall skipped — call already bound in store:', callId);
 			return;
 		}
 
-		console.log('[VoIP] Answering call:', callId);
-		// @ts-expect-error — getMainCall is private in 0.2.0-rc.0 library, migrated from 0.1.3 API
-		const mainCall = this.instance?.getMainCall();
-		console.log('[VoIP] Main call:', mainCall);
+		const call = useCallStore.getState().call;
 
-		if (mainCall && mainCall.callId === callId) {
-			console.log('[VoIP] Accepting call:', callId);
-			await mainCall.accept();
-			console.log('[VoIP] Setting current call active:', callId);
+		if (call && call.callId === callId) {
+			await call.accept();
 			RNCallKeep.setCurrentCallActive(callId);
-			useCallStore.getState().setCall(mainCall);
+			useCallStore.getState().setCall(call);
 			Navigation.navigate('CallView');
-			// contact removed in 0.2.0-rc.0 library, migrated from 0.1.3 API
-			this.resolveRoomIdFromContact((mainCall as any).contact).catch(error => {
+			this.resolveRoomIdFromContact(call.localParticipant.contact).catch(error => {
 				console.error('[VoIP] Error resolving room id from contact (answerCall):', error);
 			});
 		} else {
@@ -159,7 +143,6 @@ class MediaSessionInstance {
 			if (st.nativeAcceptedCallId === callId) {
 				st.resetNativeCallId();
 			}
-			console.warn('[VoIP] Call not found:', callId); // TODO: Show error message?
 		}
 	};
 
@@ -173,19 +156,17 @@ class MediaSessionInstance {
 
 	public startCall = (userId: string, actor: CallActorType) => {
 		requestPhoneStatePermission();
-		console.log('[VoIP] Starting call:', userId);
 		this.instance?.startCall(actor, userId);
 	};
 
 	public endCall = (callId: string) => {
-		// @ts-expect-error — getMainCall is private in 0.2.0-rc.0 library, migrated from 0.1.3 API
-		const mainCall = this.instance?.getMainCall();
+		const call = useCallStore.getState().call;
 
-		if (mainCall && mainCall.callId === callId) {
-			if (mainCall.state === 'ringing') {
-				mainCall.reject();
+		if (call && call.callId === callId) {
+			if (call.state === 'ringing') {
+				call.reject();
 			} else {
-				mainCall.hangup();
+				call.hangup();
 			}
 		}
 		RNCallKeep.endCall(callId);
@@ -230,7 +211,6 @@ class MediaSessionInstance {
 			const currentIceServers = this.getIceServers();
 			if (currentIceServers !== this.iceServers) {
 				this.iceServers = currentIceServers;
-				// this.instance?.setIceServers(this.iceServers);
 			}
 		});
 	}
