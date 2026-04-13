@@ -14,6 +14,7 @@ import { mediaSessionStore } from './MediaSessionStore';
 import { useCallStore } from './useCallStore';
 import { store } from '../../store/auxStore';
 import sdk from '../sdk';
+import { mediaCallsStateSignals } from '../../services/restApi';
 import Navigation from '../../navigation/appNavigation';
 import { parseStringToIceServers } from './parseStringToIceServers';
 import type { IceServer } from '../../../definitions/Voip';
@@ -32,14 +33,12 @@ class MediaSessionInstance {
 	private storeTimeoutUnsubscribe: (() => void) | null = null;
 	private storeIceServersUnsubscribe: (() => void) | null = null;
 
-	public init(userId: string): void {
+	public async init(userId: string): Promise<void> {
 		this.reset();
 
 		registerGlobals();
 		this.configureIceServers();
 
-		// TESTING: DDP register side effects vs REST stateSignals — server renewCallId/hangupDetachedCall/onCallTrying still fire
-		// TODO (Slice 4): call this.instance.register(false) after REST stateSignals completes
 		mediaSessionStore.setWebRTCProcessorFactory(
 			(config: WebRTCProcessorConfig) =>
 				new MediaCallWebRTCProcessor({
@@ -52,7 +51,22 @@ class MediaSessionInstance {
 		mediaSessionStore.setSendSignalFn((signal: ClientMediaSignal) => {
 			sdk.methodCall('stream-notify-user', `${userId}/media-calls`, JSON.stringify(signal));
 		});
-		this.instance = mediaSessionStore.getInstance(userId);
+		const instance = mediaSessionStore.getInstance(userId);
+		this.instance = instance;
+
+		// Fetch initial call state via REST before DDP register fires
+		try {
+			const { signals } = await mediaCallsStateSignals(getUniqueIdSync());
+			for (const signal of signals) {
+				instance.processSignal(signal);
+			}
+		} catch (error) {
+			console.error('[VoIP] Failed to fetch initial state signals:', error);
+		}
+
+		// TESTING: DDP register side effects vs REST stateSignals — server renewCallId/hangupDetachedCall/onCallTrying still fire
+		instance.register(false);
+
 		this.mediaSessionStoreChangeUnsubscribe = mediaSessionStore.onChange(() => {
 			this.instance = mediaSessionStore.getInstance(userId);
 		});
