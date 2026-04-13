@@ -1,7 +1,7 @@
 import type { TurboModule } from 'react-native';
 import { TurboModuleRegistry } from 'react-native';
 
-export interface KeyboardInversionState {
+export interface KeyboardA11yState {
 	enabled: boolean;
 	scope: 'room-view' | null;
 }
@@ -9,7 +9,7 @@ export interface KeyboardInversionState {
 interface Spec extends TurboModule {
 	enable(scope: 'room-view'): void;
 	disable(): void;
-	getState(): Promise<KeyboardInversionState>;
+	getState(): Promise<KeyboardA11yState>;
 }
 
 const NativeModule = TurboModuleRegistry.getEnforcing<Spec>('KeyboardA11y');
