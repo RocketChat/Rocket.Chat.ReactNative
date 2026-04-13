@@ -50,7 +50,7 @@ const Commands = codegenNativeCommands<InvertedScrollViewCommands>({
 
 const IS_ANIMATING_TOUCH_START_THRESHOLD_MS = 16;
 
-class RNLikeInvertedScrollView extends React.Component<Props, State> {
+export default class RNLikeInvertedScrollView extends React.Component<Props, State> {
 	private scrollRef = React.createRef<any>();
 	private _keyboardMetrics: { height: number } | null = null;
 	private _isTouching = false;
@@ -265,15 +265,3 @@ const styles = StyleSheet.create({
 		flexDirection: 'row'
 	}
 });
-
-// Forward ref to the class instance (not the raw native host), so list consumers receive
-// `scrollTo` / `getScrollableNode` / `getScrollResponder` as VirtualizedList expects.
-const Wrapper = React.forwardRef<RNLikeInvertedScrollView, Props>((props, ref) => {
-	const classRef = React.useRef<RNLikeInvertedScrollView>(null);
-	React.useImperativeHandle(ref, () => classRef.current!, []);
-	return <RNLikeInvertedScrollView {...props} ref={classRef} />;
-});
-
-Wrapper.displayName = 'RNLikeInvertedScrollView';
-
-export default Wrapper;

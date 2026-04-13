@@ -42,8 +42,7 @@ const navigate = ({
 		room: item,
 		visitor: item.visitor,
 		roomUserId: getUidDirectMessage(item),
-		...props,
-		...(isMasterDetail && props.focusHeaderOnOpen ? { focusHeaderOnOpen: true } : {})
+		...props
 	};
 
 	const currentRoute = Navigation.getCurrentRoute() as any;
