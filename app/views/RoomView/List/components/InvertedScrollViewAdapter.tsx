@@ -50,7 +50,7 @@ const Commands = codegenNativeCommands<InvertedScrollViewCommands>({
 
 const IS_ANIMATING_TOUCH_START_THRESHOLD_MS = 16;
 
-export default class RNLikeInvertedScrollView extends React.Component<Props, State> {
+export default class InvertedScrollViewAdapter extends React.Component<Props, State> {
 	private scrollRef = React.createRef<any>();
 	private _keyboardMetrics: { height: number } | null = null;
 	private _isTouching = false;
