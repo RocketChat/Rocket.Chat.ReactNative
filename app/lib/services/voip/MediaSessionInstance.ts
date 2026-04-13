@@ -25,7 +25,6 @@ import type { ISubscription, TSubscriptionModel } from '../../../definitions';
 import { getDMSubscriptionByUsername } from '../../database/services/Subscription';
 import { getUidDirectMessage } from '../../methods/helpers/helpers';
 import { requestPhoneStatePermission } from '../../methods/voipPhoneStatePermission';
-import { mediaCallsStateSignals } from '../restApi';
 
 class MediaSessionInstance {
 	private iceServers: IceServer[] = [];
