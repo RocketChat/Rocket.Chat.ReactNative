@@ -1,7 +1,25 @@
 import type { CallState, IClientMediaCall } from '@rocket.chat/media-signaling';
 
-import Navigation from '../../navigation/appNavigation';
 import { useCallStore } from './useCallStore';
+
+jest.mock('../../navigation/appNavigation', () => ({
+	__esModule: true,
+	default: { navigate: jest.fn(), back: jest.fn() }
+}));
+
+jest.mock('../../../containers/ActionSheet', () => ({
+	hideActionSheetRef: jest.fn()
+}));
+
+jest.mock('react-native-callkeep', () => ({
+	setCurrentCallActive: jest.fn(),
+	addEventListener: jest.fn(() => ({ remove: jest.fn() })),
+	endCall: jest.fn(),
+	start: jest.fn(),
+	stop: jest.fn(),
+	setForceSpeakerphoneOn: jest.fn(),
+	setAvailable: jest.fn()
+}));
 
 export interface MockCallOverrides {
 	callState?: CallState;
@@ -28,7 +46,6 @@ const DEFAULT_CONTACT = {
 /**
  * Build a fake `IClientMediaCall` good enough to render `CallView` without a real SIP/WebRTC stack.
  * No-op `setMuted/setHeld/hangup/sendDTMF` and a no-op event emitter so store subscriptions are safe.
- * Uses the 0.2.0-rc.0 participant model (localParticipant + remoteParticipants).
  */
 export function createMockCall(overrides: MockCallOverrides = {}): IClientMediaCall {
 	const contact = { ...DEFAULT_CONTACT, ...overrides.contact };
@@ -38,23 +55,28 @@ export function createMockCall(overrides: MockCallOverrides = {}): IClientMediaC
 		callId: 'mock-call-id',
 		state: callState,
 		localParticipant: {
-			role: 'caller' as const,
-			contact,
+			local: true as const,
+			participantId: 'mock-participant-id',
+			actorType: 'user' as const,
+			actorId: 'mock-actor-id',
+			role: overrides.role ?? 'callee' as const,
 			muted: overrides.isMuted ?? false,
 			held: overrides.isOnHold ?? false,
+			contact,
+			getMediaStream: () => null,
 			setMuted: () => {},
 			setHeld: () => {}
 		},
 		remoteParticipants: [],
 		participants: [],
-		accept: () => {},
-		hangup: () => {},
-		reject: () => {},
-		sendDTMF: () => {},
 		emitter: {
 			on: () => {},
 			off: () => {}
-		}
+		},
+		accept: () => {},
+		hangup: () => {},
+		reject: () => {},
+		sendDTMF: () => {}
 	};
 
 	return mock as unknown as IClientMediaCall;
