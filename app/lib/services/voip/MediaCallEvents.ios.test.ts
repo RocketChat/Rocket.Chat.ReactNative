@@ -19,6 +19,31 @@ jest.mock('./useCallStore', () => ({
 	}
 }));
 
+jest.mock('../../store', () => ({
+	__esModule: true,
+	default: {
+		dispatch: jest.fn()
+	}
+}));
+
+jest.mock('../../native/NativeVoip', () => ({
+	__esModule: true,
+	default: {
+		clearInitialEvents: jest.fn(),
+		getInitialEvents: jest.fn(() => null)
+	}
+}));
+
+jest.mock('./MediaSessionInstance', () => ({
+	mediaSessionInstance: {
+		endCall: jest.fn()
+	}
+}));
+
+jest.mock('../restApi', () => ({
+	registerPushToken: jest.fn(() => Promise.resolve())
+}));
+
 jest.mock('react-native-callkeep', () => ({
 	__esModule: true,
 	default: {
