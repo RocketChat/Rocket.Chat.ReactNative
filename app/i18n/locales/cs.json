@@ -660,7 +660,6 @@
   "Push_gateway_not_connected_description": "Nemůžeme se připojit k bráně push. Pokud problém přetrvává, obraťte se na správce pracovního prostoru.",
   "Push_Notifications": "Oznámení push",
   "Push_Notifications_Alert_Info": "Tato oznámení se vám doručují, když aplikace není otevřená",
-  "Push_Troubleshooting": "Odstraňování problémů push",
   "Queued_chats": "Chaty ve frontě",
   "Quote": "Citát",
   "React_with_emojjname": "Reagujte pomocí {{emojiName}}",
