@@ -1,16 +1,7 @@
 diff --git a/node_modules/expo-asset/android/src/main/java/expo/modules/asset/AssetModule.kt b/node_modules/expo-asset/android/src/main/java/expo/modules/asset/AssetModule.kt
-index 9f1e2c6..fea95a8 100644
+index 9f1e2c6..61a1032 100644
 --- a/node_modules/expo-asset/android/src/main/java/expo/modules/asset/AssetModule.kt
 +++ b/node_modules/expo-asset/android/src/main/java/expo/modules/asset/AssetModule.kt
-@@ -18,7 +18,7 @@ import java.security.DigestInputStream
- import java.security.MessageDigest
- 
- internal class UnableToDownloadAssetException(url: String) :
--  CodedException("Unable to download asset from url: $url")
-+  CodedException("Unable to download asset from url: $url")
- 
- class AssetModule : Module() {
-   private val context: Context
 @@ -80,6 +80,12 @@ class AssetModule : Module() {
      Name("ExpoAsset")
  
