@@ -83,6 +83,10 @@ interface IRoomHeader {
 	abacAttributes?: ISubscription['abacAttributes'];
 }
 
+type IRoomHeaderProps = IRoomHeader & {
+	ref?: React.Ref<IRoomHeaderRef>;
+};
+
 export interface IRoomHeaderRef {
 	focus: () => void;
 }
@@ -135,114 +139,110 @@ const HeaderTitle = React.memo(({ title, tmid, prid, scale, testID }: TRoomHeade
 	return <MarkdownPreview msg={title} style={[styles.title, titleStyle]} testID={testID} />;
 });
 
-const Header = React.forwardRef<IRoomHeaderRef, IRoomHeader>(
-	(
-		{
-			title,
-			subtitle,
-			parentTitle,
-			type,
-			status,
-			width,
-			height,
-			roomUserId,
-			prid,
-			tmid,
-			onPress,
-			isGroupChat,
-			teamMain,
-			testID,
-			usersTyping = [],
-			sourceType,
-			disabled,
-			abacAttributes
-		}: IRoomHeader,
-		ref
-	) => {
-		const headerRef = React.useRef<View | null>(null);
-		React.useImperativeHandle(
-			ref,
-			() => ({
-				focus: () => {
-					const nodeHandle = headerRef.current ? findNodeHandle(headerRef.current) : null;
-					if (nodeHandle) {
-						AccessibilityInfo.setAccessibilityFocus(nodeHandle);
-					}
+const Header = ({
+	title,
+	subtitle,
+	parentTitle,
+	type,
+	status,
+	width,
+	height,
+	roomUserId,
+	prid,
+	tmid,
+	onPress,
+	isGroupChat,
+	teamMain,
+	testID,
+	usersTyping = [],
+	sourceType,
+	disabled,
+	abacAttributes,
+	ref
+}: IRoomHeaderProps) => {
+	const headerRef = React.useRef<View | null>(null);
+	React.useImperativeHandle(
+		ref,
+		() => ({
+			focus: () => {
+				const nodeHandle = headerRef.current ? findNodeHandle(headerRef.current) : null;
+				if (nodeHandle) {
+					AccessibilityInfo.setAccessibilityFocus(nodeHandle);
 				}
-			}),
-			[]
-		);
-
-		const statusAccessibilityLabel = useStatusAccessibilityLabel({
-			isGroupChat,
-			prid,
-			roomUserId,
-			status,
-			teamMain,
-			type
-		});
-		const { colors } = useTheme();
-		const { fontScale } = useWindowDimensions();
-		const portrait = height > width;
-		let scale = 1;
-		const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
-		const subtitleAccessibilityLabel = tmid ? parentTitle : subtitle;
-		const accessibilityLabel = `${statusAccessibilityLabel} ${title} ${subtitleAccessibilityLabel || ''}.`;
-
-		if (!portrait && !tmid && !isMasterDetail) {
-			if (usersTyping.length > 0 || subtitle) {
-				scale = 0.8;
 			}
+		}),
+		[]
+	);
+
+	const statusAccessibilityLabel = useStatusAccessibilityLabel({
+		isGroupChat,
+		prid,
+		roomUserId,
+		status,
+		teamMain,
+		type
+	});
+	const { colors } = useTheme();
+	const { fontScale } = useWindowDimensions();
+	const portrait = height > width;
+	let scale = 1;
+	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+	const subtitleAccessibilityLabel = tmid ? parentTitle : subtitle;
+	const accessibilityLabel = `${statusAccessibilityLabel} ${title} ${subtitleAccessibilityLabel || ''}.`;
+
+	if (!portrait && !tmid && !isMasterDetail) {
+		if (usersTyping.length > 0 || subtitle) {
+			scale = 0.8;
 		}
+	}
 
-		let renderFunc;
-		if (tmid) {
-			renderFunc = () => (
-				<View style={styles.titleContainer}>
-					<RoomTypeIcon
-						userId={roomUserId}
-						type={prid ? 'discussion' : type}
-						isGroupChat={isGroupChat}
-						status={status}
-						teamMain={teamMain}
-						abacAttributes={abacAttributes}
-					/>
-					<Text style={[styles.subtitle, { color: colors.fontSecondaryInfo }]} numberOfLines={1}>
-						{parentTitle}
-					</Text>
-				</View>
-			);
-		}
-
-		const handleOnPress = () => onPress();
-
-		return (
-			<View
-				ref={headerRef}
-				style={[styles.container, { opacity: disabled ? 0.5 : 1, height: 36.9 * fontScale }]}
-				accessible
-				accessibilityLabel={accessibilityLabel}
-				accessibilityRole='header'>
-				<TouchableOpacity testID='room-header' onPress={handleOnPress} disabled={disabled} hitSlop={HIT_SLOP}>
-					<View style={styles.titleContainer}>
-						{tmid ? null : (
-							<RoomTypeIcon
-								userId={roomUserId}
-								type={prid ? 'discussion' : type}
-								isGroupChat={isGroupChat}
-								status={status}
-								teamMain={teamMain}
-								sourceType={sourceType}
-								abacAttributes={abacAttributes}
-							/>
-						)}
-						<HeaderTitle title={title} tmid={tmid} prid={prid} scale={scale} testID={testID} />
-					</View>
-					<SubTitle usersTyping={tmid ? [] : usersTyping} subtitle={subtitle} renderFunc={renderFunc} scale={scale} />
-				</TouchableOpacity>
+	let renderFunc;
+	if (tmid) {
+		renderFunc = () => (
+			<View style={styles.titleContainer}>
+				<RoomTypeIcon
+					userId={roomUserId}
+					type={prid ? 'discussion' : type}
+					isGroupChat={isGroupChat}
+					status={status}
+					teamMain={teamMain}
+					abacAttributes={abacAttributes}
+				/>
+				<Text style={[styles.subtitle, { color: colors.fontSecondaryInfo }]} numberOfLines={1}>
+					{parentTitle}
+				</Text>
 			</View>
 		);
 	}
-);
+
+	const handleOnPress = () => onPress();
+
+	return (
+		<View
+			ref={headerRef}
+			style={[styles.container, { opacity: disabled ? 0.5 : 1, height: 36.9 * fontScale }]}
+			accessible
+			accessibilityLabel={accessibilityLabel}
+			accessibilityRole='header'>
+			<TouchableOpacity testID='room-header' onPress={handleOnPress} disabled={disabled} hitSlop={HIT_SLOP}>
+				<View style={styles.titleContainer}>
+					{tmid ? null : (
+						<RoomTypeIcon
+							userId={roomUserId}
+							type={prid ? 'discussion' : type}
+							isGroupChat={isGroupChat}
+							status={status}
+							teamMain={teamMain}
+							sourceType={sourceType}
+							abacAttributes={abacAttributes}
+						/>
+					)}
+					<HeaderTitle title={title} tmid={tmid} prid={prid} scale={scale} testID={testID} />
+				</View>
+				<SubTitle usersTyping={tmid ? [] : usersTyping} subtitle={subtitle} renderFunc={renderFunc} scale={scale} />
+			</TouchableOpacity>
+		</View>
+	);
+};
 
 export default Header;
