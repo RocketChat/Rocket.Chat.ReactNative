@@ -7,7 +7,7 @@ import { RootEnum } from '../definitions';
 import { checkAndReopen } from '../lib/services/connect';
 import { setUserPresenceOnline, setUserPresenceAway } from '../lib/services/restApi';
 import { checkPendingNotification } from '../lib/notifications';
-import { refreshDmUsersPresence, subscribeUsersPresence } from '../lib/methods/getUsersPresence';
+import { refreshDmUsersPresence } from '../lib/methods/getUsersPresence';
 
 const CONNECTION_RETRY_LIMIT = 10;
 const CONNECTION_RETRY_DELAY_MS = 1000;
@@ -78,8 +78,6 @@ const handleMeteorConnect = function* handleMeteorConnect() {
 		return;
 	}
 	try {
-		// Re-subscribe to presence stream and fetch current presence
-		subscribeUsersPresence();
 		yield call(refreshDmUsersPresence);
 	} catch (e) {
 		log('[state.js] Error refreshing DM users presence on connect:', e);

@@ -57,8 +57,8 @@ export async function getUsersPresence(usersParams: string[]) {
 			if (!usersParams.length) {
 				return;
 			}
-			// Request userPresence on demand with cache-busting timestamp
-			params = { ids: usersParams.join(','), _t: Date.now() };
+			// Request userPresence on demand
+			params = { ids: usersParams.join(',') };
 		}
 
 		try {
