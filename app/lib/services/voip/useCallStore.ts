@@ -139,20 +139,19 @@ export const useCallStore = create<CallStore>((set, get) => ({
 	setCall: (call: IClientMediaCall) => {
 		cleanupCallListeners();
 		get().resetNativeCallId();
-		// Update state with call info — muted/held/remoteMute/remoteHeld/contact removed in 0.2.0-rc.0 library, migrated from 0.1.3 API
 		set({
 			call,
 			callId: call.callId,
 			callState: call.state,
-			isMuted: (call as any).muted,
-			isOnHold: (call as any).held,
-			remoteMute: (call as any).remoteMute,
-			remoteHeld: (call as any).remoteHeld,
+			isMuted: call.localParticipant.muted,
+			isOnHold: call.localParticipant.held,
+			remoteMute: call.remoteParticipants[0]?.muted ?? false,
+			remoteHeld: call.remoteParticipants[0]?.held ?? false,
 			contact: {
-				id: (call as any).contact.id,
-				displayName: (call as any).contact.displayName,
-				username: (call as any).contact.username,
-				sipExtension: (call as any).contact.sipExtension
+				id: call.localParticipant.contact.id,
+				displayName: call.localParticipant.contact.displayName,
+				username: call.localParticipant.contact.username,
+				sipExtension: call.localParticipant.contact.sipExtension
 			},
 			callStartTime: call.state === 'active' ? Date.now() : null
 		});
@@ -187,12 +186,11 @@ export const useCallStore = create<CallStore>((set, get) => ({
 			const currentCall = get().call;
 			if (!currentCall) return;
 
-			// muted/held/remoteMute/remoteHeld removed in 0.2.0-rc.0 library, migrated from 0.1.3 API
 			set({
-				isMuted: (currentCall as any).muted,
-				isOnHold: (currentCall as any).held,
-				remoteMute: (currentCall as any).remoteMute,
-				remoteHeld: (currentCall as any).remoteHeld,
+				isMuted: currentCall.localParticipant.muted,
+				isOnHold: currentCall.localParticipant.held,
+				remoteMute: currentCall.remoteParticipants[0]?.muted ?? false,
+				remoteHeld: currentCall.remoteParticipants[0]?.held ?? false,
 				controlsVisible: true
 			});
 		};
@@ -226,8 +224,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		const { call, isMuted } = get();
 		if (!call) return;
 
-		// setMuted removed in 0.2.0-rc.0 library, migrated from 0.1.3 API
-		(call as any).setMuted(!isMuted);
+		call.localParticipant.setMuted(!isMuted);
 		set({ isMuted: !isMuted });
 	},
 
@@ -235,8 +232,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		const { call, isOnHold } = get();
 		if (!call) return;
 
-		// setHeld removed in 0.2.0-rc.0 library, migrated from 0.1.3 API
-		(call as any).setHeld(!isOnHold);
+		call.localParticipant.setHeld(!isOnHold);
 		set({ isOnHold: !isOnHold });
 	},
 
