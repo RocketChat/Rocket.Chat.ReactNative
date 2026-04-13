@@ -16,6 +16,7 @@ import { mediaSessionStore } from './MediaSessionStore';
 import { useCallStore } from './useCallStore';
 import { store } from '../../store/auxStore';
 import sdk from '../sdk';
+import { mediaCallsStateSignals } from '../../services/restApi';
 import Navigation from '../../navigation/appNavigation';
 import { parseStringToIceServers } from './parseStringToIceServers';
 import type { IceServer } from '../../../definitions/Voip';
@@ -66,14 +67,13 @@ class MediaSessionInstance {
 		}
 	}
 
+
 	public async init(userId: string): Promise<void> {
 		this.reset();
 
 		registerGlobals();
 		this.configureIceServers();
 
-		// TESTING: DDP register side effects vs REST stateSignals — server renewCallId/hangupDetachedCall/onCallTrying still fire
-		// TODO (Slice 4): call this.instance.register(false) after REST stateSignals completes
 		mediaSessionStore.setWebRTCProcessorFactory(
 			(config: WebRTCProcessorConfig) =>
 				new MediaCallWebRTCProcessor({
