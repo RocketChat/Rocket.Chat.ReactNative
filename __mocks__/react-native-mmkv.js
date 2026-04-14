@@ -218,7 +218,7 @@ export function useMMKVKeys(instance) {
 			setKeys(() => mmkv.getAllKeys());
 			return;
 		}
-		
+
 		const currentlyHasKey = allKeys.includes(key);
 		const hasKey = mmkv.contains(key);
 		if (hasKey !== currentlyHasKey) {
