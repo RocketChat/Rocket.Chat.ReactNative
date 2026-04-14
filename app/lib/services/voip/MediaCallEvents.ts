@@ -89,6 +89,24 @@ export const setupMediaCallEvents = (): (() => void) => {
 			})
 		);
 
+		subscriptions.push(
+			RNCallKeep.addEventListener('didPerformSetMutedCallAction', ({ muted, callUUID }) => {
+				const { call, callId, nativeAcceptedCallId, toggleMute, isMuted } = useCallStore.getState();
+				const eventUuid = callUUID.toLowerCase();
+				const activeUuid = (callId ?? nativeAcceptedCallId ?? '').toLowerCase();
+
+				// No active media call or event is for another CallKit/Telecom session — drop stale closure state
+				if (!call || !activeUuid || eventUuid !== activeUuid) {
+					return;
+				}
+
+				// Sync mute state if it doesn't match what the OS is reporting
+				if (muted !== isMuted) {
+					toggleMute();
+				}
+			})
+		);
+
 		// Note: there is intentionally no 'answerCall' listener here.
 		// VoipService.swift handles accept natively: handleObservedCallChanged detects
 		// hasConnected = true and calls handleNativeAccept(), which sends the DDP accept

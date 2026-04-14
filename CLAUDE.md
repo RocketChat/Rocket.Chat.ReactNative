@@ -9,6 +9,7 @@ Rocket.Chat React Native mobile client. Single-package React Native app (not a m
 - React 19.1, React Native 0.81, Expo 54
 - TypeScript with strict mode, baseUrl set to `app/` (imports resolve from there)
 - Node: engines `>=18`, volta pins 24.13.1
+- Read UBIQUITOUS_LANGUAGE.md
 
 ## Commands
 

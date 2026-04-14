@@ -5,10 +5,6 @@ import sharedStyles from '../Styles';
 export const CONTROLS_ANIMATION_DURATION = 300;
 
 export const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: 'red'
-	},
 	contentContainer: {
 		flex: 1,
 		justifyContent: 'space-between'
@@ -80,5 +76,21 @@ export const styles = StyleSheet.create({
 		fontSize: 14,
 		lineHeight: 20,
 		textAlign: 'center'
+	},
+	contentContainerLandscape: {
+		flexDirection: 'row',
+		alignItems: 'stretch'
+	},
+	callerInfoContainerLandscape: {
+		flex: 2
+	},
+	buttonsContainerLandscape: {
+		flex: 3,
+		borderTopWidth: 0,
+		borderLeftWidth: StyleSheet.hairlineWidth,
+		justifyContent: 'center'
+	},
+	buttonsRowLandscape: {
+		marginBottom: 16
 	}
 });
