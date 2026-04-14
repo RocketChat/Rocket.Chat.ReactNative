@@ -157,7 +157,11 @@ export function existsMMKV(id) {
 }
 
 export function deleteMMKV(id) {
-	return storageInstances.delete(id);
+	const deleted = storageInstances.delete(id);
+	if (defaultInstance?.id === id) {
+		defaultInstance = null;
+	}
+	return deleted;
 }
 
 // Helper function for configuration comparison
@@ -210,6 +214,11 @@ export function useMMKVKeys(instance) {
 	const [allKeys, setKeys] = useState(() => mmkv.getAllKeys());
 
 	useMMKVListener(key => {
+		if (key === undefined) {
+			setKeys(() => mmkv.getAllKeys());
+			return;
+		}
+		
 		const currentlyHasKey = allKeys.includes(key);
 		const hasKey = mmkv.contains(key);
 		if (hasKey !== currentlyHasKey) {
@@ -223,7 +232,7 @@ export function useMMKVKeys(instance) {
 /**
  * Create a custom MMKV hook for a specific type
  */
-function createMMKVHook(getter) {
+function createMMKVHook(getter, onSet) {
 	return (key, instance) => {
 		const mmkv = instance ?? getDefaultMMKVInstance();
 
@@ -236,6 +245,10 @@ function createMMKVHook(getter) {
 		const set = useCallback(
 			v => {
 				const newValue = typeof v === 'function' ? v(getter(mmkv, key)) : v;
+				if (onSet) {
+					onSet(mmkv, key, newValue);
+					return;
+				}
 				switch (typeof newValue) {
 					case 'number':
 					case 'string':
@@ -256,7 +269,7 @@ function createMMKVHook(getter) {
 						throw new Error(`MMKV: Type ${typeof newValue} is not supported!`);
 				}
 			},
-			[key, mmkv]
+			[key, mmkv, onSet]
 		);
 
 		useEffect(() => {
@@ -290,10 +303,19 @@ export const useMMKVBoolean = createMMKVHook((instance, key) => instance.getBool
 /**
  * Use the object value (JSON stringified) of the given key from the given MMKV storage instance
  */
-export const useMMKVObject = createMMKVHook((instance, key) => {
-	const stored = instance.getString(key);
-	return stored ? JSON.parse(stored) : undefined;
-});
+export const useMMKVObject = createMMKVHook(
+	(instance, key) => {
+		const stored = instance.getString(key);
+		return stored ? JSON.parse(stored) : undefined;
+	},
+	(mmkv, key, value) => {
+		if (value === undefined) {
+			mmkv.remove(key);
+			return;
+		}
+		mmkv.set(key, JSON.stringify(value));
+	}
+);
 
 /**
  * Use the buffer value of the given key from the given MMKV storage instance

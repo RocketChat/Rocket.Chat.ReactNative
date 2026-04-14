@@ -19,7 +19,7 @@
     if (self) {
         // 1. Initialize MMKV path globally if provided (e.g., for App Groups)
         if (rootPath) {
-            [MMKV initializeMMKV:rootPath logLevel:MMKVLogInfo];
+            [MMKV initializeMMKV:nil groupDir:rootPath logLevel:MMKVLogInfo];
         }
         
         // 2. Open instance with MMKVMultiProcess mode
