@@ -42,7 +42,7 @@ import { SupportedVersionsWarning } from '../containers/SupportedVersions';
 import { mediaSessionInstance } from '../lib/services/voip/MediaSessionInstance';
 import { hasPermission } from '../lib/methods/helpers/helpers';
 import { mediaSessionStore } from '../lib/services/voip/MediaSessionStore';
-import store as reduxStore from '../lib/store/auxStore';
+import { store as reduxStore } from '../lib/store/auxStore';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => loginWithPassword(args);
@@ -268,10 +268,20 @@ const checkVoipPermission = async () => {
 	}
 };
 
+let voipPermissionListener;
+
+const stopVoipPermissionListener = () => {
+	if (voipPermissionListener) {
+		voipPermissionListener.then(listener => listener.stop()).catch(() => {});
+		voipPermissionListener = null;
+	}
+};
+
 const startVoipFork = function* startVoipFork() {
 	yield call(checkVoipPermission);
 
-	sdk.current.onStreamData('stream-notify-logged', async (ddpMessage) => {
+	stopVoipPermissionListener();
+	voipPermissionListener = sdk.current.onStreamData('stream-notify-logged', async ddpMessage => {
 		const { eventName } = ddpMessage.fields || {};
 		if (/permissions-changed/.test(eventName)) {
 			await checkVoipPermission();
@@ -351,6 +361,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 };
 
 const handleLogout = function* handleLogout({ forcedByServer, message }) {
+	stopVoipPermissionListener();
 	yield put(encryptionStop());
 	yield put(appStart({ root: RootEnum.ROOT_LOADING, text: I18n.t('Logging_out') }));
 	const server = yield select(getServer);
