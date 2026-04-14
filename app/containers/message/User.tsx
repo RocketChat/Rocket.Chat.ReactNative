@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { type MessageType, type MessageTypesValues, SubscriptionType } from '../../definitions';
 import { useTheme } from '../../theme';
@@ -10,7 +10,6 @@ import MessageContext from './Context';
 import { messageHaveAuthorName } from './utils';
 import MessageTime from './Time';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
-import Touch from '../Touch';
 
 const styles = StyleSheet.create({
 	container: {
@@ -117,12 +116,12 @@ const User = React.memo(
 
 			return (
 				<View style={styles.container}>
-					<Touch testID={`username-header-${username}`} style={styles.titleContainer} onPress={onUserPress}>
+					<Pressable testID={`username-header-${username}`} style={styles.titleContainer} onPress={onUserPress}>
 						<Text style={[styles.username, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
 							{textContent}
 						</Text>
 						{isLargeFontScale ? null : <MessageTime timeFormat={timeFormat} ts={ts} />}
-					</Touch>
+					</Pressable>
 					<RightIcons
 						type={type}
 						isEdited={isEdited}

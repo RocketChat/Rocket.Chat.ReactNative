@@ -1,12 +1,20 @@
 import sdk from '../../../lib/services/sdk';
 import { compareServerVersion } from '../../../lib/methods/helpers';
 import EventEmitter from '../../../lib/methods/helpers/events';
+import { store as reduxStore } from '../../../lib/store/auxStore';
 import subscribeInquiry from './subscriptions/inquiry';
 
 export const isOmnichannelStatusAvailable = (statusLivechat: string | undefined): boolean => statusLivechat === 'available';
 
 // RC 0.26.0
-export const changeLivechatStatus = () => sdk.methodCallWrapper('livechat:changeLivechatStatus');
+export const changeLivechatStatus = () => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.0.0')) {
+		return sdk.post('livechat/agent.status');
+	}
+	// Method removed in 8.0.0
+	return sdk.methodCallWrapper('livechat:changeLivechatStatus');
+};
 
 // RC 2.4.0
 // @ts-ignore
@@ -30,7 +38,14 @@ export const takeInquiry = (inquiryId: string, serverVersion: string) => {
 };
 
 // RC 4.26
-export const takeResume = (roomId: string) => sdk.methodCallWrapper('livechat:resumeOnHold', roomId);
+export const takeResume = (roomId: string) => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.0.0')) {
+		return sdk.post('livechat/room.resumeOnHold', { roomId });
+	}
+	// Method removed in 8.0.0
+	return sdk.methodCallWrapper('livechat:resumeOnHold', roomId);
+};
 
 class Omnichannel {
 	private inquirySub: { stop: () => void } | null;
@@ -54,5 +69,4 @@ class Omnichannel {
 	};
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const omnichannel = new Omnichannel();
+new Omnichannel();

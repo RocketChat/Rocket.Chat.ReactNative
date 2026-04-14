@@ -10,7 +10,7 @@ interface IListRadio extends IListItem {
 	isSelected: boolean;
 }
 
-const ListRadio = ({ value, isSelected, ...rest }: IListRadio) => {
+const ListRadio = ({ value: _, isSelected, ...rest }: IListRadio) => {
 	const { colors } = useTheme();
 
 	const iconName = isSelected ? 'radio-checked' : 'radio-unchecked';
