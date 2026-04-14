@@ -41,6 +41,8 @@ import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
 import { mediaSessionInstance } from '../lib/services/voip/MediaSessionInstance';
 import { hasPermission } from '../lib/methods/helpers/helpers';
+import { mediaSessionStore } from '../lib/services/voip/MediaSessionStore';
+import store as reduxStore from '../lib/store/auxStore';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => loginWithPassword(args);
@@ -242,14 +244,21 @@ const checkBackgroundAndSetAway = function* checkBackgroundAndSetAway() {
 	}
 };
 
-const startVoipFork = function* startVoipFork() {
+const checkVoipPermission = async () => {
 	try {
-		const allowInternalVoiceCallRoles = yield select(state => state.permissions['allow-internal-voice-calls']);
-		const allowExternalVoiceCallRoles = yield select(state => state.permissions['allow-external-voice-calls']);
+		const state = reduxStore.getState();
+		const userId = state.login.user?.id;
+		if (!userId) {
+			return;
+		}
+		const allowInternalVoiceCallRoles = state.permissions['allow-internal-voice-calls'];
+		const allowExternalVoiceCallRoles = state.permissions['allow-external-voice-calls'];
 
-		const hasPermissions = yield hasPermission([allowInternalVoiceCallRoles, allowExternalVoiceCallRoles]);
+		const hasPermissions = await hasPermission([allowInternalVoiceCallRoles, allowExternalVoiceCallRoles]);
 		if (isVoipModuleAvailable() && (hasPermissions[0] || hasPermissions[1])) {
-			const userId = yield select(state => state.login.user.id);
+			if (mediaSessionStore.getCurrentInstance()) {
+				return;
+			}
 			mediaSessionInstance.init(userId);
 		} else {
 			mediaSessionInstance.reset();
@@ -257,6 +266,17 @@ const startVoipFork = function* startVoipFork() {
 	} catch (e) {
 		log(e);
 	}
+};
+
+const startVoipFork = function* startVoipFork() {
+	yield call(checkVoipPermission);
+
+	sdk.current.onStreamData('stream-notify-logged', async (ddpMessage) => {
+		const { eventName } = ddpMessage.fields || {};
+		if (/permissions-changed/.test(eventName)) {
+			await checkVoipPermission();
+		}
+	});
 };
 
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
