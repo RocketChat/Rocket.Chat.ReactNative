@@ -307,6 +307,8 @@
 		7A1B58422F5F58FF002A6BDE /* VoipPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1B58402F5F58FF002A6BDE /* VoipPayload.swift */; };
 		7A1B58442F5F63DB002A6BDE /* AppDelegate+Voip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1B58432F5F63DB002A6BDE /* AppDelegate+Voip.swift */; };
 		7A1B58452F5F63DB002A6BDE /* AppDelegate+Voip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1B58432F5F63DB002A6BDE /* AppDelegate+Voip.swift */; };
+		7AVR00012F5F5900002A6BDE /* VoipRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AVR00002F5F5900002A6BDE /* VoipRegion.swift */; };
+		7AVR00022F5F5900002A6BDE /* VoipRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AVR00002F5F5900002A6BDE /* VoipRegion.swift */; };
 		7A3704562F7DB36E009085FC /* VoipPerCallDdpRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3704552F7DB36E009085FC /* VoipPerCallDdpRegistry.swift */; };
 		7A3704572F7DB36E009085FC /* VoipPerCallDdpRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3704552F7DB36E009085FC /* VoipPerCallDdpRegistry.swift */; };
 		7A37D6FF2F896C360095EBA1 /* MediaCallsAnswerRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F98EE33D91A93DF8E69F34 /* MediaCallsAnswerRequest.swift */; };
@@ -647,6 +649,7 @@
 		7A14FCF3257FEB59005BDCD4 /* Official.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Official.xcassets; sourceTree = "<group>"; };
 		7A1B58402F5F58FF002A6BDE /* VoipPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoipPayload.swift; sourceTree = "<group>"; };
 		7A1B58432F5F63DB002A6BDE /* AppDelegate+Voip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Voip.swift"; sourceTree = "<group>"; };
+		7AVR00002F5F5900002A6BDE /* VoipRegion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoipRegion.swift; sourceTree = "<group>"; };
 		7A3704552F7DB36E009085FC /* VoipPerCallDdpRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoipPerCallDdpRegistry.swift; sourceTree = "<group>"; };
 		7A610CD127ECE38100B8ABDD /* custom.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = custom.ttf; sourceTree = "<group>"; };
 		7A8B30742BCD9D3F00146A40 /* SSLPinning.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSLPinning.h; sourceTree = "<group>"; };
@@ -1161,6 +1164,7 @@
 			children = (
 				7A3704552F7DB36E009085FC /* VoipPerCallDdpRegistry.swift */,
 				7A1B58432F5F63DB002A6BDE /* AppDelegate+Voip.swift */,
+				7AVR00002F5F5900002A6BDE /* VoipRegion.swift */,
 				7A1B58402F5F58FF002A6BDE /* VoipPayload.swift */,
 				7A0000042F1BAFA700B6B4BD /* VoipModule.mm */,
 				7A0000032F1BAFA700B6B4BD /* VoipService.swift */,
@@ -2136,6 +2140,7 @@
 				1ED038C42B50A1F500C007D4 /* WatchMessage.swift in Sources */,
 				1E76CBD025152C6E0067298C /* URL+Extensions.swift in Sources */,
 				7A1B58442F5F63DB002A6BDE /* AppDelegate+Voip.swift in Sources */,
+				7AVR00012F5F5900002A6BDE /* VoipRegion.swift in Sources */,
 				1E068CFE24FD2DC700A0FFC1 /* AppGroup.swift in Sources */,
 				1E76CBCE25152C2F0067298C /* RoomKey.swift in Sources */,
 				1E76CBCC25152C290067298C /* Message.swift in Sources */,
@@ -2420,6 +2425,7 @@
 				1ED038C52B50A1F500C007D4 /* WatchMessage.swift in Sources */,
 				7AAB3E2C257E6A6E00707CF6 /* URL+Extensions.swift in Sources */,
 				7A1B58452F5F63DB002A6BDE /* AppDelegate+Voip.swift in Sources */,
+				7AVR00022F5F5900002A6BDE /* VoipRegion.swift in Sources */,
 				7AAB3E2D257E6A6E00707CF6 /* AppGroup.swift in Sources */,
 				7AAB3E2E257E6A6E00707CF6 /* RoomKey.swift in Sources */,
 				7AAB3E2F257E6A6E00707CF6 /* Message.swift in Sources */,

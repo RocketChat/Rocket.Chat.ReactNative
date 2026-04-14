@@ -27,7 +27,15 @@ public class AppDelegate: ExpoAppDelegate {
     Bugsnag.start()
     ReplyNotification.configure()
     VoipService.voipRegistration()
-    RNCallKeep.setup(["appName": "Rocket.Chat"])
+    if !VoipRegion.isChina() {
+      RNCallKeep.setup([
+        "appName": "Rocket.Chat",
+        "supportsVideo": false,
+        "maximumCallGroups": 1,
+        "maximumCallsPerCallGroup": 1,
+        "includesCallsInRecents": true
+      ])
+    }
       
     let delegate = ReactNativeDelegate()
     let factory = RCTReactNativeFactory(delegate: delegate)

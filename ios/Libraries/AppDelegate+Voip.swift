@@ -79,14 +79,18 @@ extension AppDelegate: PKPushRegistryDelegate {
       return
     }
 
-    VoipService.prepareIncomingCall(voipPayload, storeEventsForJs: true)
+    if !VoipRegion.isChina() {
+      VoipService.prepareIncomingCall(voipPayload, storeEventsForJs: true)
 
-    reportVoipIncomingCallToCallKit(
-      callUUID: callId,
-      handle: caller,
-      localizedCallerName: caller,
-      payload: payloadDict,
-      onReportComplete: { completion() }
-    )
+      reportVoipIncomingCallToCallKit(
+        callUUID: callId,
+        handle: caller,
+        localizedCallerName: caller,
+        payload: payloadDict,
+        onReportComplete: { completion() }
+      )
+    } else {
+      completion()
+    }
   }
 }
