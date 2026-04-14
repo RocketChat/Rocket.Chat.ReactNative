@@ -4348,9 +4348,9 @@
   dependencies:
     eslint-plugin-import "^2.17.2"
 
-"@rocket.chat/media-signaling@file:./packages/rocket.chat-media-signaling-0.2.0-rc.0.tgz":
-  version "0.2.0-rc.0"
-  resolved "file:./packages/rocket.chat-media-signaling-0.2.0-rc.0.tgz#d39dcc0b5370b4474ee20f93ff24265c870db840"
+"@rocket.chat/media-signaling@file:./packages/rocket.chat-media-signaling-0.2.0.tgz":
+  version "0.2.0"
+  resolved "file:./packages/rocket.chat-media-signaling-0.2.0.tgz#6fec3d25b95d62e69cd999c0cd649c2b5465acc6"
   dependencies:
     "@rocket.chat/emitter" "^0.32.0"
     ajv "^8.17.1"
