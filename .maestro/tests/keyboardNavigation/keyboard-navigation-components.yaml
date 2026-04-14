@@ -1,0 +1,124 @@
+appId: chat.rocket.reactnative
+name: Keyboard Navigation Components
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-14
+  - android-only
+
+---
+- evalScript: ${output.user = output.utils.createUser()}
+
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+
+# open Accessibility & appearance
+- tapOn:
+    id: 'rooms-list-view-sidebar'
+- extendedWaitUntil:
+    visible:
+      id: 'sidebar-accessibility'
+    timeout: 60000
+- tapOn:
+    id: 'sidebar-accessibility'
+- extendedWaitUntil:
+    visible:
+      id: 'accessibility-view-list'
+    timeout: 60000
+
+# switches
+- pressKey: Remote Dpad Down
+- waitForAnimationToEnd:
+    timeout: 1000
+- pressKey: Remote Dpad Down
+- waitForAnimationToEnd:
+    timeout: 1000
+- pressKey: Remote Dpad Down
+- waitForAnimationToEnd:
+    timeout: 1000
+- pressKey: enter
+- pressKey: Remote Dpad Down
+- waitForAnimationToEnd:
+    timeout: 1000
+- pressKey: enter
+- pressKey: Remote Dpad Down
+- waitForAnimationToEnd:
+    timeout: 1000
+- pressKey: enter
+
+# open Theme and navigate radio buttons
+- pressKey: Remote Dpad Up
+- waitForAnimationToEnd:
+    timeout: 1000
+- pressKey: Remote Dpad Up
+- waitForAnimationToEnd:
+    timeout: 1000
+- pressKey: Remote Dpad Up
+- waitForAnimationToEnd:
+    timeout: 1000
+- pressKey: Remote Dpad Up
+- waitForAnimationToEnd:
+    timeout: 1000
+- pressKey: enter
+- extendedWaitUntil:
+    visible:
+      id: 'theme-view'
+    timeout: 60000
+- pressKey: Remote Dpad Down
+- waitForAnimationToEnd:
+    timeout: 1000
+- pressKey: enter
+- pressKey: Remote Dpad Down
+- waitForAnimationToEnd:
+    timeout: 1000
+- pressKey: enter
+
+# open Toasts and Dialogs action sheet and navigate through options
+- tapOn:
+    id: 'custom-header-back'
+- extendedWaitUntil:
+    visible:
+      id: 'accessibility-view-list'
+    timeout: 60000
+- assertVisible: Show alerts as
+- pressKey: Remote Dpad Down
+- pressKey: Remote Dpad Down
+- pressKey: Remote Dpad Down
+- pressKey: Remote Dpad Down
+- pressKey: Remote Dpad Down
+- pressKey: Remote Dpad Down
+- pressKey: enter
+- waitForAnimationToEnd:
+    timeout: 1000
+- assertVisible: 'Toasts. Dismissed automatically. Checked'
+- assertVisible: 'Dialogs. Require manual dismissal. Unchecked'
+- pressKey: Remote Dpad Down
+- pressKey: Remote Dpad Down
+- pressKey: Remote Dpad Down
+- pressKey: enter
+- waitForAnimationToEnd:
+    timeout: 1000
+- assertVisible: Dialogs
+- assertVisible: Show alerts as
+- pressKey: Remote Dpad Down
+- pressKey: Remote Dpad Down
+- pressKey: Remote Dpad Down
+- pressKey: Remote Dpad Down
+- pressKey: Remote Dpad Down
+- pressKey: enter
+- waitForAnimationToEnd:
+    timeout: 1000
+- assertVisible: 'Toasts. Dismissed automatically. Unchecked'
+- assertVisible: 'Dialogs. Require manual dismissal. Checked'
+- pressKey: Remote Dpad Down
+- pressKey: Remote Dpad Down
+- pressKey: enter
+- waitForAnimationToEnd:
+    timeout: 1000
+- assertVisible: Toasts
+- assertVisible: Show alerts as

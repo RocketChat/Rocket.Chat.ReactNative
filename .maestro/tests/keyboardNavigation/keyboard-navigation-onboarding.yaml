@@ -1,11 +1,11 @@
 appId: chat.rocket.reactnative
-name: Accessibility and Appearance
+name: Keyboard Navigation Onboarding
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
 onFlowComplete:
   - evalScript: ${output.utils.deleteCreatedUsers()}
 tags:
-  - test-5
+  - test-14
   - android-only
 
 ---
@@ -19,16 +19,14 @@ tags:
     visible:
       id: 'new-server-view'
     timeout: 60000
-- tapOn:
-    id: 'new-server-view-input'
 - inputText: ${output.data.server}
-- runFlow: '../../helpers/hide-keyboard.yaml'
 - pressKey: tab
 - pressKey: enter
 - extendedWaitUntil:
     visible: 'Login'
     timeout: 60000
-- tapOn: 'Login'
+- pressKey: tab
+- pressKey: enter
 
 - extendedWaitUntil:
     visible:
@@ -56,7 +54,6 @@ tags:
 - waitForAnimationToEnd:
     timeout: 1000
 - inputText: ${output.user.password}
-- runFlow: '../../helpers/hide-keyboard.yaml'
 - waitForAnimationToEnd:
     timeout: 1000
 - pressKey: enter
