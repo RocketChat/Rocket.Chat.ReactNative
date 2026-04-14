@@ -65,7 +65,7 @@
 
 - (NSUInteger)count {
     if (!_mmkv) return 0;
-    return [[_mmkv allKeys] count];
+    return _mmkv.count;
 }
 
 @end
