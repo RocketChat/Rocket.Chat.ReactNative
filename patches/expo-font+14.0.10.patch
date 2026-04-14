@@ -1,5 +1,5 @@
 diff --git a/node_modules/expo-font/android/src/main/java/expo/modules/font/FontLoaderModule.kt b/node_modules/expo-font/android/src/main/java/expo/modules/font/FontLoaderModule.kt
-index 2cd51dc..51c160c 100644
+index 2cd51dc..fab6cc1 100644
 --- a/node_modules/expo-font/android/src/main/java/expo/modules/font/FontLoaderModule.kt
 +++ b/node_modules/expo-font/android/src/main/java/expo/modules/font/FontLoaderModule.kt
 @@ -19,7 +19,7 @@ private class FileNotFoundException(uri: String) :
@@ -11,7 +11,7 @@ index 2cd51dc..51c160c 100644
  
    override fun definition() = ModuleDefinition {
      // could be a Set, but to be able to pass to JS we keep it as an array
-@@ -32,25 +32,49 @@ open class FontLoaderModule : Module() {
+@@ -32,25 +32,51 @@ open class FontLoaderModule : Module() {
      }
  
      AsyncFunction("loadAsync") { fontFamilyName: String, localUri: String ->
@@ -30,7 +30,6 @@ index 2cd51dc..51c160c 100644
 -        if (file.length() == 0L) {
 -          throw CodedException(
 -            "Font file for $fontFamilyName is empty. Make sure the local file path is correctly populated."
--          )
 +      val context = appContext.reactContext ?: throw Exceptions.AppContextLost()
 +
 +      val typeface: Typeface = when {
@@ -43,21 +42,23 @@ index 2cd51dc..51c160c 100644
 +
 +        // Case 2: Android 8 Fix - Raw Filename (e.g., "custom.ttf")
 +        // If the string has no slashes and no protocol, it's a native asset reference.
-+        !localUri.contains("/") && !localUri.contains(":") -> {
-+          try {
-+            // Standard React Native CLI projects place fonts in the "fonts/" subfolder of assets
-+            Typeface.createFromAsset(context.assets, "fonts/$localUri")
-+          } catch (e: Exception) {
-+            // Fallback to the root assets directory if not found in fonts/
-+            try {
-+              Typeface.createFromAsset(context.assets, localUri)
-+            } catch (fallbackException: Exception) {
-+              // Re-throw with context about both attempted locations
-+              throw CodedException(
-+                "Font $fontFamilyName not found. Tried: fonts/$localUri and $localUri"
-+              )
-+            }
++        !localUri.contains(":") && !localUri.startsWith("/") -> {
++          val assetCandidates = listOf(
++            if (localUri.startsWith("fonts/")) localUri else "fonts/$localUri",
++            localUri.removePrefix("fonts/")
++          ).distinct()
++
++          var resolvedTypeface: Typeface? = null
++          for (candidate in assetCandidates) {
++            resolvedTypeface = runCatching {
++              Typeface.createFromAsset(context.assets, candidate)
++            }.getOrNull()
++            if (resolvedTypeface != null) break
 +          }
++
++          resolvedTypeface ?: throw CodedException(
++            "Font $fontFamilyName not found. Tried: ${assetCandidates.joinToString()}"
+           )
          }
  
 -        Typeface.createFromFile(file)
