@@ -25,7 +25,6 @@ tags:
 - extendedWaitUntil:
     visible: 'Login'
     timeout: 60000
-- pressKey: tab
 - pressKey: enter
 
 - extendedWaitUntil:
@@ -33,19 +32,12 @@ tags:
       id: 'login-view'
     timeout: 60000
 - pressKey: Remote Dpad Down
-
 - waitForAnimationToEnd:
     timeout: 1000
 - pressKey: Remote Dpad Down
-
 - waitForAnimationToEnd:
     timeout: 1000
 - pressKey: Remote Dpad Down
-
-- waitForAnimationToEnd:
-    timeout: 1000
-- pressKey: Remote Dpad Down
-
 - waitForAnimationToEnd:
     timeout: 1000
 - pressKey: Remote Dpad Down
@@ -54,9 +46,6 @@ tags:
 - waitForAnimationToEnd:
     timeout: 1000
 - inputText: ${output.user.password}
-- waitForAnimationToEnd:
-    timeout: 1000
-- pressKey: Remote Dpad Down
 - pressKey: enter
 - extendedWaitUntil:
     visible:
