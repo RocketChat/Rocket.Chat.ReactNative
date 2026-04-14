@@ -58,13 +58,13 @@ export default {
 
 export const DefaultButton = () => (
 	<Wrapper>
-		<CallActionButton icon='microphone' label='Mute' onPress={() => {}} testID='call-action-button' />
+		<CallActionButton icon='mic' label='Mute' onPress={() => {}} testID='call-action-button' />
 	</Wrapper>
 );
 
 export const ActiveButton = () => (
 	<Wrapper>
-		<CallActionButton icon='microphone-disabled' label='Unmute' onPress={() => {}} variant='active' testID='call-action-button' />
+		<CallActionButton icon='mic-off' label='Unmute' onPress={() => {}} variant='active' testID='call-action-button' />
 	</Wrapper>
 );
 
@@ -83,9 +83,9 @@ export const DisabledButton = () => (
 export const AllVariants = () => (
 	<Wrapper>
 		<View style={styles.row}>
-			<CallActionButton icon='audio' label='Speaker' onPress={() => {}} testID='speaker' />
+			<CallActionButton icon='volume' label='Speaker' onPress={() => {}} testID='speaker' />
 			<CallActionButton icon='pause' label='Hold' onPress={() => {}} testID='hold' />
-			<CallActionButton icon='microphone' label='Mute' onPress={() => {}} testID='mute' />
+			<CallActionButton icon='mic' label='Mute' onPress={() => {}} testID='mute' />
 		</View>
 		<View style={[styles.row, { marginTop: 24 }]}>
 			<CallActionButton icon='message' label='Message' onPress={() => {}} testID='message' />
@@ -100,9 +100,9 @@ export const AllVariants = () => (
 export const TabletAllVariants = () => (
 	<Wrapper>
 		<View style={styles.tabletRow}>
-			<CallActionButton icon='audio' label='Speaker' onPress={() => {}} testID='speaker' />
+			<CallActionButton icon='volume' label='Speaker' onPress={() => {}} testID='speaker' />
 			<CallActionButton icon='pause-shape-unfilled' label='Hold' onPress={() => {}} testID='hold' />
-			<CallActionButton icon='microphone' label='Mute' onPress={() => {}} testID='mute' />
+			<CallActionButton icon='mic' label='Mute' onPress={() => {}} testID='mute' />
 			<CallActionButton icon='message' label='Message' onPress={() => {}} testID='message' />
 			<CallActionButton icon='phone-off' label='End' onPress={() => {}} variant='danger' testID='end' />
 			<CallActionButton icon='dialpad' label='Dialpad' onPress={() => {}} testID='dialpad' />
