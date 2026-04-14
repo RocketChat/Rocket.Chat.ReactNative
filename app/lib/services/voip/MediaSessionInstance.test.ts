@@ -51,7 +51,7 @@ jest.mock('../sdk', () => ({
 	}
 }));
 
-const mockMediaCallsStateSignals = jest.fn(() => Promise.resolve({ signals: [] }));
+const mockMediaCallsStateSignals = jest.fn((..._args: unknown[]) => Promise.resolve({ signals: [] }));
 jest.mock('../../services/restApi', () => ({
 	mediaCallsStateSignals: (...args: unknown[]) => mockMediaCallsStateSignals(...args)
 }));
@@ -613,13 +613,6 @@ describe('MediaSessionInstance', () => {
 		it('answerCall resolves roomId from DM for non-SIP callee', async () => {
 			mockGetDMSubscriptionByUsername.mockResolvedValue({ rid: 'dm-rid' } as any);
 			mediaSessionInstance.init('user-1');
-			const mainCall = {
-				callId: 'call-ans',
-				accept: jest.fn().mockResolvedValue(undefined),
-				localParticipant: {
-					contact: { username: 'bob', sipExtension: '' }
-				}
-			};
 
 			await mediaSessionInstance.answerCall('call-ans');
 
@@ -628,13 +621,6 @@ describe('MediaSessionInstance', () => {
 
 		it('answerCall skips DM lookup for SIP contact', async () => {
 			mediaSessionInstance.init('user-1');
-			const mainCall = {
-				callId: 'call-sip',
-				accept: jest.fn().mockResolvedValue(undefined),
-				localParticipant: {
-					contact: { username: 'bob', sipExtension: 'ext' }
-				}
-			};
 
 			await mediaSessionInstance.answerCall('call-sip');
 

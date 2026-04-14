@@ -15,7 +15,7 @@ import { mediaSessionStore } from './MediaSessionStore';
 import { useCallStore } from './useCallStore';
 import { store } from '../../store/auxStore';
 import sdk from '../sdk';
-import { mediaCallsStateSignals } from '../../services/restApi';
+import { mediaCallsStateSignals } from '../restApi';
 import Navigation from '../../navigation/appNavigation';
 import { parseStringToIceServers } from './parseStringToIceServers';
 import type { IceServer } from '../../../definitions/Voip';
@@ -65,7 +65,7 @@ class MediaSessionInstance {
 				console.error('[VoIP] Failed to fetch initial state signals:', error);
 			}
 
-			instance.register(false);
+			// instance.register(false);
 		}
 
 		this.mediaSessionStoreChangeUnsubscribe = mediaSessionStore.onChange(() => {
@@ -127,7 +127,7 @@ class MediaSessionInstance {
 			return;
 		}
 
-		const call = useCallStore.getState().call;
+		const { call } = useCallStore.getState();
 
 		if (call && call.callId === callId) {
 			await call.accept();
@@ -160,7 +160,7 @@ class MediaSessionInstance {
 	};
 
 	public endCall = (callId: string) => {
-		const call = useCallStore.getState().call;
+		const { call } = useCallStore.getState();
 
 		if (call && call.callId === callId) {
 			if (call.state === 'ringing') {

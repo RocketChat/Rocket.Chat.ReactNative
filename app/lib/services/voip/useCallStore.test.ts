@@ -45,10 +45,12 @@ function createMockCall(callId: string) {
 			setMuted: jest.fn(),
 			setHeld: jest.fn()
 		},
-		remoteParticipants: [{
-			muted: false,
-			held: false
-		}],
+		remoteParticipants: [
+			{
+				muted: false,
+				held: false
+			}
+		],
 		hidden: false,
 		role: 'callee',
 		emitter,
