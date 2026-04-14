@@ -105,7 +105,7 @@ type MockMediaSignalingSession = {
 	processSignal: jest.Mock;
 	setIceGatheringTimeout: jest.Mock;
 	startCall: jest.Mock;
-	getMainCall: jest.Mock;
+	getCallData: jest.Mock;
 };
 
 const createdSessions: MockMediaSignalingSession[] = [];
@@ -124,7 +124,7 @@ jest.mock('@rocket.chat/media-signaling', () => ({
 			this.processSignal = jest.fn().mockResolvedValue(undefined);
 			this.setIceGatheringTimeout = jest.fn();
 			this.startCall = jest.fn().mockResolvedValue(undefined);
-			this.getMainCall = jest.fn();
+			this.getCallData = jest.fn();
 			Object.defineProperty(this, 'sessionId', { value: `session-${config.userId}`, writable: false });
 			createdSessions.push(this);
 		})
@@ -160,13 +160,23 @@ function buildClientMediaCall(options: {
 	role: 'caller' | 'callee';
 	hidden?: boolean;
 	reject?: jest.Mock;
+	contact?: { username?: string; sipExtension?: string };
 }): IClientMediaCall {
 	const reject = options.reject ?? jest.fn();
 	const emitter = { on: jest.fn(), off: jest.fn(), emit: jest.fn() };
 	return {
 		callId: options.callId,
-		role: options.role,
 		hidden: options.hidden ?? false,
+		localParticipant: { local: true, role: options.role, muted: false, held: false, contact: {} },
+		remoteParticipants: [
+			{
+				local: false,
+				role: options.role === 'caller' ? 'callee' : 'caller',
+				muted: false,
+				held: false,
+				contact: options.contact ?? {}
+			}
+		],
 		reject,
 		emitter: emitter as unknown as IClientMediaCall['emitter']
 	} as unknown as IClientMediaCall;
@@ -505,9 +515,9 @@ describe('MediaSessionInstance', () => {
 			newCallHandler({
 				call: {
 					hidden: false,
-					role: 'caller',
+					localParticipant: { role: 'caller' },
+					remoteParticipants: [{ contact: { username: 'alice', sipExtension: '' } }],
 					callId: 'c1',
-					contact: { username: 'alice', sipExtension: '' },
 					emitter: { on: jest.fn(), off: jest.fn() }
 				} as unknown as IClientMediaCall
 			});
@@ -536,9 +546,9 @@ describe('MediaSessionInstance', () => {
 			newCallHandler({
 				call: {
 					hidden: false,
-					role: 'caller',
+					localParticipant: { role: 'caller' },
+					remoteParticipants: [{ contact: { username: 'alice', sipExtension: '' } }],
 					callId: 'c1',
-					contact: { username: 'alice', sipExtension: '' },
 					emitter: { on: jest.fn(), off: jest.fn() }
 				} as unknown as IClientMediaCall
 			});
@@ -557,9 +567,9 @@ describe('MediaSessionInstance', () => {
 			newCallHandler({
 				call: {
 					hidden: false,
-					role: 'caller',
+					localParticipant: { role: 'caller' },
+					remoteParticipants: [{ contact: { username: 'alice', sipExtension: '100' } }],
 					callId: 'c1',
-					contact: { username: 'alice', sipExtension: '100' },
 					emitter: { on: jest.fn(), off: jest.fn() }
 				} as unknown as IClientMediaCall
 			});
@@ -575,9 +585,9 @@ describe('MediaSessionInstance', () => {
 			const mainCall = {
 				callId: 'call-ans',
 				accept: jest.fn().mockResolvedValue(undefined),
-				contact: { username: 'bob', sipExtension: '' }
+				remoteParticipants: [{ contact: { username: 'bob', sipExtension: '' } }]
 			};
-			session.getMainCall.mockReturnValue(mainCall);
+			session.getCallData.mockReturnValue(mainCall);
 
 			await mediaSessionInstance.answerCall('call-ans');
 
@@ -591,9 +601,9 @@ describe('MediaSessionInstance', () => {
 			const mainCall = {
 				callId: 'call-sip',
 				accept: jest.fn().mockResolvedValue(undefined),
-				contact: { username: 'bob', sipExtension: 'ext' }
+				remoteParticipants: [{ contact: { username: 'bob', sipExtension: 'ext' } }]
 			};
-			session.getMainCall.mockReturnValue(mainCall);
+			session.getCallData.mockReturnValue(mainCall);
 
 			await mediaSessionInstance.answerCall('call-sip');
 

@@ -140,19 +140,21 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		cleanupCallListeners();
 		get().resetNativeCallId();
 		// Update state with call info
+		const remote = call.remoteParticipants[0];
+		const remoteContact = remote?.contact;
 		set({
 			call,
 			callId: call.callId,
 			callState: call.state,
-			isMuted: call.muted,
-			isOnHold: call.held,
-			remoteMute: call.remoteMute,
-			remoteHeld: call.remoteHeld,
+			isMuted: call.localParticipant.muted,
+			isOnHold: call.localParticipant.held,
+			remoteMute: remote?.muted ?? false,
+			remoteHeld: remote?.held ?? false,
 			contact: {
-				id: call.contact.id,
-				displayName: call.contact.displayName,
-				username: call.contact.username,
-				sipExtension: call.contact.sipExtension
+				id: remoteContact?.id,
+				displayName: remoteContact?.displayName,
+				username: remoteContact?.username,
+				sipExtension: remoteContact?.sipExtension
 			},
 			callStartTime: call.state === 'active' ? Date.now() : null
 		});
@@ -175,17 +177,24 @@ export const useCallStore = create<CallStore>((set, get) => ({
 			if (newState === 'active' && !get().callStartTime) {
 				set({ callStartTime: Date.now() });
 			}
+
+			// Tell CallKit the call is active so iOS shows it in the system UI (lock screen, Control Center, Dynamic Island)
+			if (newState === 'active') {
+				const { callId, nativeAcceptedCallId } = get();
+				RNCallKeep.setCurrentCallActive(callId ?? nativeAcceptedCallId ?? '');
+			}
 		};
 
 		const handleTrackStateChange = () => {
 			const currentCall = get().call;
 			if (!currentCall) return;
 
+			const currentRemote = currentCall.remoteParticipants[0];
 			set({
-				isMuted: currentCall.muted,
-				isOnHold: currentCall.held,
-				remoteMute: currentCall.remoteMute,
-				remoteHeld: currentCall.remoteHeld,
+				isMuted: currentCall.localParticipant.muted,
+				isOnHold: currentCall.localParticipant.held,
+				remoteMute: currentRemote?.muted ?? false,
+				remoteHeld: currentRemote?.held ?? false,
 				controlsVisible: true
 			});
 		};
@@ -219,7 +228,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		const { call, isMuted } = get();
 		if (!call) return;
 
-		call.setMuted(!isMuted);
+		call.localParticipant.setMuted(!isMuted);
 		set({ isMuted: !isMuted });
 	},
 
@@ -227,7 +236,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		const { call, isOnHold } = get();
 		if (!call) return;
 
-		call.setHeld(!isOnHold);
+		call.localParticipant.setHeld(!isOnHold);
 		set({ isOnHold: !isOnHold });
 	},
 
