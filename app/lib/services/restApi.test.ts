@@ -54,4 +54,13 @@ describe('mediaCallsStateSignals', () => {
 		expect(result.signals).toEqual([]);
 		expect(result.success).toBe(false);
 	});
+
+	it('returns empty signals and success false when signals is not an array', async () => {
+		mockSdkGet.mockResolvedValueOnce({ signals: null, success: true });
+
+		const result = await mediaCallsStateSignals('device-id');
+
+		expect(result.signals).toEqual([]);
+		expect(result.success).toBe(false);
+	});
 });

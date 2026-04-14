@@ -1,25 +1,7 @@
 import type { CallState, IClientMediaCall } from '@rocket.chat/media-signaling';
 
+import Navigation from '../../navigation/appNavigation';
 import { useCallStore } from './useCallStore';
-
-jest.mock('../../navigation/appNavigation', () => ({
-	__esModule: true,
-	default: { navigate: jest.fn(), back: jest.fn() }
-}));
-
-jest.mock('../../../containers/ActionSheet', () => ({
-	hideActionSheetRef: jest.fn()
-}));
-
-jest.mock('react-native-callkeep', () => ({
-	setCurrentCallActive: jest.fn(),
-	addEventListener: jest.fn(() => ({ remove: jest.fn() })),
-	endCall: jest.fn(),
-	start: jest.fn(),
-	stop: jest.fn(),
-	setForceSpeakerphoneOn: jest.fn(),
-	setAvailable: jest.fn()
-}));
 
 export interface MockCallOverrides {
 	callState?: CallState;
@@ -28,6 +10,7 @@ export interface MockCallOverrides {
 	isSpeakerOn?: boolean;
 	callStartTime?: number | null;
 	roomId?: string | null;
+	role?: 'caller' | 'callee';
 	contact?: {
 		id?: string;
 		displayName?: string;

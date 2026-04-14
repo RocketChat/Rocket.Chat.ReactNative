@@ -15,7 +15,7 @@ import { mediaSessionStore } from './MediaSessionStore';
 import { useCallStore } from './useCallStore';
 import { store } from '../../store/auxStore';
 import sdk from '../sdk';
-import { mediaCallsStateSignals } from '../../services/restApi';
+import { mediaCallsStateSignals } from '../restApi';
 import Navigation from '../../navigation/appNavigation';
 import { parseStringToIceServers } from './parseStringToIceServers';
 import type { IceServer } from '../../../definitions/Voip';
@@ -33,6 +33,7 @@ class MediaSessionInstance {
 	private mediaSessionStoreChangeUnsubscribe: (() => void) | null = null;
 	private storeTimeoutUnsubscribe: (() => void) | null = null;
 	private storeIceServersUnsubscribe: (() => void) | null = null;
+	private pendingCalls: Map<string, IClientMediaCall> = new Map();
 
 	public async init(userId: string): Promise<void> {
 		this.reset();
@@ -54,22 +55,12 @@ class MediaSessionInstance {
 		const instance = mediaSessionStore.getInstance(userId);
 		this.instance = instance;
 
-		if (instance) {
-			// Fetch initial call state via REST before DDP register fires
-			try {
-				const { signals } = await mediaCallsStateSignals(getUniqueIdSync());
-				for (const signal of signals) {
-					instance.processSignal(signal);
-				}
-			} catch (error) {
-				console.error('[VoIP] Failed to fetch initial state signals:', error);
-			}
-
-			instance.register(false);
-		}
-
 		this.mediaSessionStoreChangeUnsubscribe = mediaSessionStore.onChange(() => {
-			this.instance = mediaSessionStore.getInstance(userId);
+			try {
+				this.instance = mediaSessionStore.getInstance(userId);
+			} catch {
+				// factory cleared during dispose; instance is already null
+			}
 		});
 
 		this.mediaSignalListener = sdk.onStreamData('stream-notify-user', (ddpMessage: IDDPMessage) => {
@@ -100,25 +91,46 @@ class MediaSessionInstance {
 			}
 		});
 
-		this.instance?.on('newCall', ({ call }: { call: IClientMediaCall }) => {
-			if (call && !call.hidden) {
-				call.emitter.on('stateChange', () => {});
+		if (instance) {
+			// Attach newCall handler BEFORE REST replay so replayed calls are captured
+			instance.on('newCall', ({ call }: { call: IClientMediaCall }) => {
+				if (call && !call.hidden) {
+					call.emitter.on('stateChange', () => {});
 
-				if (call.localParticipant.role === 'caller') {
-					useCallStore.getState().setCall(call);
-					Navigation.navigate('CallView');
-					if (useCallStore.getState().roomId == null) {
-						this.resolveRoomIdFromContact(call.localParticipant.contact).catch(error => {
-							console.error('[VoIP] Error resolving room id from contact (newCall):', error);
-						});
+					// Store call for lookup by answerCall/endCall regardless of role
+					this.pendingCalls.set(call.callId, call);
+
+					if (call.localParticipant.role === 'caller') {
+						useCallStore.getState().setCall(call);
+						Navigation.navigate('CallView');
+						if (useCallStore.getState().roomId == null) {
+							this.resolveRoomIdFromContact(call.localParticipant.contact).catch(error => {
+								console.error('[VoIP] Error resolving room id from contact (newCall):', error);
+							});
+						}
 					}
-				}
 
-				call.emitter.on('ended', () => {
-					RNCallKeep.endCall(call.callId);
-				});
+					call.emitter.on('ended', () => {
+						RNCallKeep.endCall(call.callId);
+						this.pendingCalls.delete(call.callId);
+					});
+				}
+			});
+
+			// Fetch initial call state via REST before DDP register fires
+			let bootstrappedFromRest = false;
+			try {
+				const { signals } = await mediaCallsStateSignals(getUniqueIdSync());
+				for (const signal of signals) {
+					instance.processSignal(signal);
+				}
+				bootstrappedFromRest = true;
+			} catch (error) {
+				console.error('[VoIP] Failed to fetch initial state signals:', error);
 			}
-		});
+
+			instance.register(!bootstrappedFromRest);
+		}
 	}
 
 	public answerCall = async (callId: string) => {
@@ -127,9 +139,9 @@ class MediaSessionInstance {
 			return;
 		}
 
-		const call = useCallStore.getState().call;
+		const call = this.pendingCalls.get(callId);
 
-		if (call && call.callId === callId) {
+		if (call) {
 			await call.accept();
 			RNCallKeep.setCurrentCallActive(callId);
 			useCallStore.getState().setCall(call);
@@ -160,7 +172,7 @@ class MediaSessionInstance {
 	};
 
 	public endCall = (callId: string) => {
-		const call = useCallStore.getState().call;
+		const call = this.pendingCalls.get(callId) ?? useCallStore.getState().call;
 
 		if (call && call.callId === callId) {
 			if (call.state === 'ringing') {
@@ -234,6 +246,7 @@ class MediaSessionInstance {
 		}
 		mediaSessionStore.dispose();
 		this.instance = null;
+		this.pendingCalls.clear();
 		useCallStore.getState().reset();
 	}
 }

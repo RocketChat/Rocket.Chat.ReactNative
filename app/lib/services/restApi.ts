@@ -1,4 +1,5 @@
 import { getUniqueId } from 'react-native-device-info';
+import type { ServerMediaSignal } from '@rocket.chat/media-signaling';
 
 import {
 	type IAvatarSuggestion,
@@ -14,7 +15,6 @@ import {
 	type RoomType,
 	type SubscriptionType
 } from '../../definitions';
-import type { ServerMediaSignal } from '@rocket.chat/media-signaling';
 import { type TParams } from '../../definitions/ILivechatEditView';
 import { type ILivechatTag } from '../../definitions/ILivechatTag';
 import { type ISpotlight } from '../../definitions/ISpotlight';
@@ -1217,15 +1217,15 @@ export const getUsersRoles = async (): Promise<boolean | IRoleUser[]> => {
 export const getSupportedVersionsCloud = (uniqueId?: string, domain?: string) =>
 	fetch(`https://releases.rocket.chat/v2/server/supportedVersions?uniqueId=${uniqueId}&domain=${domain}&source=mobile`);
 
-export const mediaCallsStateSignals = async (
-	contractId: string
-): Promise<{ signals: ServerMediaSignal[]; success: boolean }> => {
+export const mediaCallsStateSignals = async (contractId: string): Promise<{ signals: ServerMediaSignal[]; success: boolean }> => {
 	try {
-		const result = await (sdk.get as unknown as (path: string, params?: object) => Promise<{ signals: ServerMediaSignal[]; success: boolean }>)(
-			'media-calls.stateSignals',
-			{ contractId }
-		);
-		return result;
+		const result = await (
+			sdk.get as unknown as (path: string, params?: object) => Promise<{ signals: ServerMediaSignal[]; success: boolean }>
+		)('media-calls.stateSignals', { contractId });
+		if (!result?.success || !Array.isArray(result.signals)) {
+			return { signals: [], success: false };
+		}
+		return { signals: result.signals, success: true };
 	} catch {
 		return { signals: [], success: false };
 	}

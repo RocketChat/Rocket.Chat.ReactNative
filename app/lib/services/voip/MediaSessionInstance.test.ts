@@ -51,7 +51,7 @@ jest.mock('../sdk', () => ({
 	}
 }));
 
-const mockMediaCallsStateSignals = jest.fn(() => Promise.resolve({ signals: [] }));
+const mockMediaCallsStateSignals = jest.fn(() => Promise.resolve({ signals: [], success: true }));
 jest.mock('../../services/restApi', () => ({
 	mediaCallsStateSignals: (...args: unknown[]) => mockMediaCallsStateSignals(...args)
 }));
@@ -188,8 +188,12 @@ function buildClientMediaCall(options: {
 	role: 'caller' | 'callee';
 	hidden?: boolean;
 	reject?: jest.Mock;
+	accept?: jest.Mock;
+	contact?: { username: string; sipExtension: string };
 }): IClientMediaCall {
 	const reject = options.reject ?? jest.fn();
+	const accept = options.accept ?? jest.fn().mockResolvedValue(undefined);
+	const contact = options.contact ?? { id: 'u', displayName: 'U', username: 'u', sipExtension: '' };
 	const emitter = { on: jest.fn(), off: jest.fn(), emit: jest.fn() };
 	return {
 		callId: options.callId,
@@ -201,7 +205,7 @@ function buildClientMediaCall(options: {
 			role: options.role,
 			muted: false,
 			held: false,
-			contact: { id: 'u', displayName: 'U', username: 'u', sipExtension: '' },
+			contact,
 			getMediaStream: () => null,
 			setMuted: () => {},
 			setHeld: () => {}
@@ -210,6 +214,7 @@ function buildClientMediaCall(options: {
 		participants: [],
 		hidden: options.hidden ?? false,
 		reject,
+		accept,
 		emitter: emitter as unknown as IClientMediaCall['emitter']
 	} as unknown as IClientMediaCall;
 }
@@ -385,7 +390,7 @@ describe('MediaSessionInstance', () => {
 	describe('stream-notify-user (notification/accepted gated)', () => {
 		it('does not call answerCall when nativeAcceptedCallId is null', async () => {
 			const answerSpy = jest.spyOn(mediaSessionInstance, 'answerCall').mockResolvedValue(undefined);
-			mediaSessionInstance.init('user-1');
+			await mediaSessionInstance.init('user-1');
 			const streamHandler = getStreamNotifyHandler();
 			streamHandler({
 				msg: 'changed',
@@ -418,7 +423,7 @@ describe('MediaSessionInstance', () => {
 				nativeAcceptedCallId: 'from-signal',
 				roomId: null
 			});
-			mediaSessionInstance.init('user-1');
+			await mediaSessionInstance.init('user-1');
 			const streamHandler = getStreamNotifyHandler();
 			streamHandler({
 				msg: 'changed',
@@ -451,7 +456,7 @@ describe('MediaSessionInstance', () => {
 				nativeAcceptedCallId: 'sticky-only',
 				roomId: null
 			});
-			mediaSessionInstance.init('user-1');
+			await mediaSessionInstance.init('user-1');
 			const streamHandler = getStreamNotifyHandler();
 			streamHandler({
 				msg: 'changed',
@@ -484,7 +489,7 @@ describe('MediaSessionInstance', () => {
 				nativeAcceptedCallId: 'from-signal',
 				roomId: null
 			});
-			mediaSessionInstance.init('user-1');
+			await mediaSessionInstance.init('user-1');
 			const streamHandler = getStreamNotifyHandler();
 			streamHandler({
 				msg: 'changed',
@@ -547,9 +552,8 @@ describe('MediaSessionInstance', () => {
 			newCallHandler({
 				call: {
 					hidden: false,
-					role: 'caller',
 					callId: 'c1',
-					contact: { username: 'alice', sipExtension: '' },
+					localParticipant: { role: 'caller', contact: { username: 'alice', sipExtension: '' } },
 					emitter: { on: jest.fn(), off: jest.fn() }
 				} as unknown as IClientMediaCall
 			});
@@ -578,9 +582,8 @@ describe('MediaSessionInstance', () => {
 			newCallHandler({
 				call: {
 					hidden: false,
-					role: 'caller',
 					callId: 'c1',
-					contact: { username: 'alice', sipExtension: '' },
+					localParticipant: { role: 'caller', contact: { username: 'alice', sipExtension: '' } },
 					emitter: { on: jest.fn(), off: jest.fn() }
 				} as unknown as IClientMediaCall
 			});
@@ -599,9 +602,8 @@ describe('MediaSessionInstance', () => {
 			newCallHandler({
 				call: {
 					hidden: false,
-					role: 'caller',
 					callId: 'c1',
-					contact: { username: 'alice', sipExtension: '100' },
+					localParticipant: { role: 'caller', contact: { username: 'alice', sipExtension: '100' } },
 					emitter: { on: jest.fn(), off: jest.fn() }
 				} as unknown as IClientMediaCall
 			});
@@ -612,29 +614,24 @@ describe('MediaSessionInstance', () => {
 
 		it('answerCall resolves roomId from DM for non-SIP callee', async () => {
 			mockGetDMSubscriptionByUsername.mockResolvedValue({ rid: 'dm-rid' } as any);
-			mediaSessionInstance.init('user-1');
-			const mainCall = {
-				callId: 'call-ans',
-				accept: jest.fn().mockResolvedValue(undefined),
-				localParticipant: {
-					contact: { username: 'bob', sipExtension: '' }
-				}
-			};
+			await mediaSessionInstance.init('user-1');
+			const incomingCall = buildClientMediaCall({ callId: 'call-ans', role: 'callee' });
+			(incomingCall.localParticipant.contact as any).username = 'bob';
+			(incomingCall.localParticipant.contact as any).sipExtension = '';
+			getNewCallHandler()({ call: incomingCall });
 
 			await mediaSessionInstance.answerCall('call-ans');
 
+			await waitFor(() => expect(mockGetDMSubscriptionByUsername).toHaveBeenCalledWith('bob'));
 			await waitFor(() => expect(mockSetRoomId).toHaveBeenCalledWith('dm-rid'));
 		});
 
 		it('answerCall skips DM lookup for SIP contact', async () => {
-			mediaSessionInstance.init('user-1');
-			const mainCall = {
-				callId: 'call-sip',
-				accept: jest.fn().mockResolvedValue(undefined),
-				localParticipant: {
-					contact: { username: 'bob', sipExtension: 'ext' }
-				}
-			};
+			await mediaSessionInstance.init('user-1');
+			const incomingCall = buildClientMediaCall({ callId: 'call-sip', role: 'callee' });
+			(incomingCall.localParticipant.contact as any).username = 'bob';
+			(incomingCall.localParticipant.contact as any).sipExtension = 'ext';
+			getNewCallHandler()({ call: incomingCall });
 
 			await mediaSessionInstance.answerCall('call-sip');
 
