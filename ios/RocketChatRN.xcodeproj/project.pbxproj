@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AABBCC0012345678900A75B9 /* VoipPayloadTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABBCC0112345678900A75B9 /* VoipPayloadTests.swift */; };
+		AABBCC0022345678900A75B9 /* CallCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABBCC0122345678900A75B9 /* CallCoordinatorTests.swift */; };
+		AABBCC0032345678900A75B9 /* ActiveCallRegistryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABBCC0132345678900A75B9 /* ActiveCallRegistryTests.swift */; };
+		AABBCC0042345678900A75B9 /* CallEndListenerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABBCC0142345678900A75B9 /* CallEndListenerTests.swift */; };
+		AABBCC0052345678900A75B9 /* VoipRESTClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABBCC0152345678900A75B9 /* VoipRESTClientTests.swift */; };
+		AABBCC0212345678900A75B9 /* Rocket.ChatTests.xctest in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AABBCC0312345678900A75B9 /* Rocket.ChatTests.xctest */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		0C6E2DE448364EA896869ADF /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = B37C79D9BD0742CE936B6982 /* libc++.tbd */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		1E01C81C2511208400FEF824 /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E01C81B2511208400FEF824 /* URL+Extensions.swift */; };
@@ -270,6 +276,12 @@
 		1EED2D332BC1E09500832666 /* RoomInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EED2D322BC1E09500832666 /* RoomInfoView.swift */; };
 		1EED2D342BC1E09500832666 /* RoomInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EED2D322BC1E09500832666 /* RoomInfoView.swift */; };
 		1EF5FBD1250C109E00614FEA /* Encryption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF5FBD0250C109E00614FEA /* Encryption.swift */; };
+		AABBCC0112345678900A75B9 /* VoipPayloadTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rocket.ChatTests/VoipPayloadTests.swift"; sourceTree = "<group>"; };
+		AABBCC0122345678900A75B9 /* CallCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rocket.ChatTests/CallCoordinatorTests.swift"; sourceTree = "<group>"; };
+		AABBCC0132345678900A75B9 /* ActiveCallRegistryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rocket.ChatTests/ActiveCallRegistryTests.swift"; sourceTree = "<group>"; };
+		AABBCC0142345678900A75B9 /* CallEndListenerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rocket.ChatTests/CallEndListenerTests.swift"; sourceTree = "<group>"; };
+		AABBCC0152345678900A75B9 /* VoipRESTClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rocket.ChatTests/VoipRESTClientTests.swift"; sourceTree = "<group>"; };
+		AABBCC0312345678900A75B9 /* Rocket.ChatTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Rocket.ChatTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1EFEB5982493B6640072EDC0 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EFEB5972493B6640072EDC0 /* NotificationService.swift */; };
 		1EFEB59C2493B6640072EDC0 /* NotificationService.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 1EFEB5952493B6640072EDC0 /* NotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		24A2AEF2383D44B586D31C01 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 06BB44DD4855498082A744AD /* libz.tbd */; };
@@ -303,6 +315,8 @@
 		7A14FCF4257FEB59005BDCD4 /* Official.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A14FCF3257FEB59005BDCD4 /* Official.xcassets */; };
 		7A1B58412F5F58FF002A6BDE /* VoipPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1B58402F5F58FF002A6BDE /* VoipPayload.swift */; };
 		7A1B58422F5F58FF002A6BDE /* VoipPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1B58402F5F58FF002A6BDE /* VoipPayload.swift */; };
+		7A1B58502F5F58FF002A6BDE /* VoipRESTClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1B58522F5F58FF002A6BDE /* VoipRESTClient.swift */; };
+		7A1B58512F5F58FF002A6BDE /* VoipRESTClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1B58522F5F58FF002A6BDE /* VoipRESTClient.swift */; };
 		7A1B58442F5F63DB002A6BDE /* AppDelegate+Voip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1B58432F5F63DB002A6BDE /* AppDelegate+Voip.swift */; };
 		7A1B58452F5F63DB002A6BDE /* AppDelegate+Voip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1B58432F5F63DB002A6BDE /* AppDelegate+Voip.swift */; };
 		7A3704562F7DB36E009085FC /* VoipPerCallDdpRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3704552F7DB36E009085FC /* VoipPerCallDdpRegistry.swift */; };
@@ -642,6 +656,7 @@
 		7A14FCEC257FEB3A005BDCD4 /* Experimental.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Experimental.xcassets; sourceTree = "<group>"; };
 		7A14FCF3257FEB59005BDCD4 /* Official.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Official.xcassets; sourceTree = "<group>"; };
 		7A1B58402F5F58FF002A6BDE /* VoipPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoipPayload.swift; sourceTree = "<group>"; };
+		7A1B58522F5F58FF002A6BDE /* VoipRESTClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoipRESTClient.swift; sourceTree = "<group>"; };
 		7A1B58432F5F63DB002A6BDE /* AppDelegate+Voip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Voip.swift"; sourceTree = "<group>"; };
 		7A3704552F7DB36E009085FC /* VoipPerCallDdpRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoipPerCallDdpRegistry.swift; sourceTree = "<group>"; };
 		7A610CD127ECE38100B8ABDD /* custom.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = custom.ttf; sourceTree = "<group>"; };
@@ -1362,6 +1377,23 @@
 			productReference = 1ED1ECDD2B86997F00F6620C /* Rocket.Chat Experimental Watch.app */;
 			productType = "com.apple.product-type.application";
 		};
+		AABBCC0412345678900A75B9 /* Rocket.ChatTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AABBCC0A12345678900A75B9 /* Build configuration list for PBXNativeTarget "Rocket.ChatTests" */;
+			buildPhases = (
+				AABBCC0512345678900A75B9 /* Sources */,
+				AABBCC0612345678900A75B9 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AABBCC0912345678900A75B9 /* PBXTargetDependency */,
+			);
+			name = "Rocket.ChatTests";
+			productName = "Rocket.ChatTests";
+			productReference = AABBCC0312345678900A75B9 /* Rocket.ChatTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		1EFEB5942493B6640072EDC0 /* NotificationService */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1EFEB5A02493B6640072EDC0 /* Build configuration list for PBXNativeTarget "NotificationService" */;
@@ -1474,6 +1506,7 @@
 				13B07F861A680F5B00A75B9A /* RocketChatRN */,
 				1EC6ACAF22CB9FC300A41C61 /* ShareRocketChatRN */,
 				1EFEB5942493B6640072EDC0 /* NotificationService */,
+				AABBCC0412345678900A75B9 /* Rocket.ChatTests */,
 				7AAB3E0D257E6A6E00707CF6 /* Rocket.Chat */,
 				1ED0388D2B507B4B00C007D4 /* Rocket.Chat.Watch */,
 				1ED1EC8E2B86997F00F6620C /* RocketChatRN Watch */,
@@ -2089,6 +2122,7 @@
 				1E51411C2B85683C007BE94A /* SSLPinning.m in Sources */,
 				66C2701B2EBBCB570062725F /* MMKVKeyManager.mm in Sources */,
 				7A1B58422F5F58FF002A6BDE /* VoipPayload.swift in Sources */,
+				7A1B58502F5F58FF002A6BDE /* VoipRESTClient.swift in Sources */,
 				7A0000012F1BAFA700B6B4BD /* VoipService.swift in Sources */,
 				7A0000022F1BAFA700B6B4BD /* VoipModule.mm in Sources */,
 				1ED00BB12513E04400A1331F /* ReplyNotification.swift in Sources */,
@@ -2315,6 +2349,17 @@
 				1ED1ECD22B86997F00F6620C /* Data+Extensions.swift in Sources */,
 				1ED1ECD32B86997F00F6620C /* ReadResponse.swift in Sources */,
 				1ED1ECD42B86997F00F6620C /* RocketChat.xcdatamodeld in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AABBCC0512345678900A75B9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AABBCC0012345678900A75B9 /* VoipPayloadTests.swift in Sources */,
+				AABBCC0022345678900A75B9 /* CallCoordinatorTests.swift in Sources */,
+				AABBCC0032345678900A75B9 /* ActiveCallRegistryTests.swift in Sources */,
+				AABBCC0042345678900A75B9 /* CallEndListenerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3371,6 +3416,91 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		AABBCC0A12345678900A75B9 /* Build configuration list for PBXNativeTarget "Rocket.ChatTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AABBCC0712345678900A75B9 /* Debug */,
+				AABBCC0812345678900A75B9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AABBCC0712345678900A75B9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				EXCLUDED_ARCHS = "";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+				);
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		AABBCC0812345678900A75B9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_BITCODE = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				EXCLUDED_ARCHS = "";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+				);
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		AABBCC0912345678900A75B9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 13B07F861A680F5B00A75B9 /* RocketChatRN */;
+			targetProxy = AABBCC0C12345678900A75B9 /* PBXContainerItemProxy */;
+		};
+		AABBCC0C12345678900A75B9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 13B07F861A680F5B00A75B9;
+			remoteInfo = RocketChatRN;
 		};
 		7AAB3E4F257E6A6E00707CF6 /* Build configuration list for PBXNativeTarget "Rocket.Chat" */ = {
 			isa = XCConfigurationList;

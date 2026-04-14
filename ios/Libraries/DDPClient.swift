@@ -2,35 +2,35 @@ import Foundation
 
 /// Minimal DDP WebSocket client for listening to Rocket.Chat media-signal events from native iOS.
 /// Only implements the subset needed to detect call hangup: connect, login, subscribe, and ping/pong.
-final class DDPClient {
+final class DDPClient: DDPClientProtocol {
     private struct QueuedMethodCall {
         let method: String
         let params: [Any]
         let completion: (Bool) -> Void
     }
-    
+
     private static let TAG = "RocketChat.DDPClient"
     private let stateQueueKey = DispatchSpecificKey<Void>()
     private let stateQueue = DispatchQueue(label: "chat.rocket.reactnative.ddp-client")
-    
+
     private var webSocketTask: URLSessionWebSocketTask?
     private var urlSession: URLSession?
     private var sendCounter = 0
     private var isConnected = false
-    
+
     /// Called for every incoming DDP collection message (e.g. stream-notify-user).
     var onCollectionMessage: (([String: Any]) -> Void)?
 
     init() {
         stateQueue.setSpecific(key: stateQueueKey, value: ())
     }
-    
+
     // MARK: - Connect
-    
+
     func connect(host: String, completion: @escaping (Bool) -> Void) {
         stateQueue.async {
             let wsUrl = Self.buildWebSocketURL(host: host)
-            
+
             guard let url = URL(string: wsUrl) else {
                 #if DEBUG
                 print("[\(Self.TAG)] Invalid WebSocket URL: \(wsUrl)")
@@ -38,27 +38,27 @@ final class DDPClient {
                 completion(false)
                 return
             }
-            
+
             #if DEBUG
             print("[\(Self.TAG)] Connecting to \(wsUrl)")
             #endif
-            
+
             let session = URLSession(configuration: .default)
             let task = session.webSocketTask(with: url)
-            
+
             self.urlSession = session
             self.webSocketTask = task
             self.isConnected = false
             task.resume()
-            
+
             self.listenForMessages(task: task)
-            
+
             let connectMsg: [String: Any] = [
                 "msg": "connect",
                 "version": "1",
                 "support": ["1", "pre2", "pre1"]
             ]
-            
+
             self.send(connectMsg) { [weak self] success in
                 guard let self else { return }
                 if success {
@@ -69,18 +69,18 @@ final class DDPClient {
             }
         }
     }
-    
+
     // MARK: - Login
-    
+
     func login(token: String, completion: @escaping (Bool) -> Void) {
         stateQueue.async {
             let msg = self.nextMessage(msg: "method", extra: [
                 "method": "login",
                 "params": [["resume": token]]
             ])
-            
+
             let msgId = msg["id"] as? String
-            
+
             self.pendingCallbacks[msgId ?? ""] = { [weak self] data in
                 self?.pendingCallbacks.removeValue(forKey: msgId ?? "")
                 let hasError = data["error"] != nil
@@ -93,7 +93,7 @@ final class DDPClient {
                 #endif
                 completion(!hasError)
             }
-            
+
             self.send(msg) { [weak self] success in
                 guard let self else { return }
                 if !success {
@@ -105,18 +105,18 @@ final class DDPClient {
             }
         }
     }
-    
+
     // MARK: - Subscribe
-    
+
     func subscribe(name: String, params: [Any], completion: @escaping (Bool) -> Void) {
         stateQueue.async {
             let msg = self.nextMessage(msg: "sub", extra: [
                 "name": name,
                 "params": params
             ])
-            
+
             let msgId = msg["id"] as? String
-            
+
             self.pendingCallbacks[msgId ?? ""] = { [weak self] data in
                 self?.pendingCallbacks.removeValue(forKey: msgId ?? "")
                 let didSubscribe = (data["msg"] as? String) == "ready" && data["error"] == nil
@@ -129,7 +129,7 @@ final class DDPClient {
                 #endif
                 completion(didSubscribe)
             }
-            
+
             self.send(msg) { [weak self] success in
                 guard let self else { return }
                 if !success {
@@ -141,9 +141,9 @@ final class DDPClient {
             }
         }
     }
-    
+
     // MARK: - Disconnect
-    
+
     func disconnect() {
         stateQueue.async {
             #if DEBUG
@@ -160,13 +160,13 @@ final class DDPClient {
             self.urlSession = nil
         }
     }
-    
+
     // MARK: - Private
-    
+
     private var pendingCallbacks: [String: ([String: Any]) -> Void] = [:]
     private var queuedMethodCalls: [QueuedMethodCall] = []
     private var connectedCallback: ((Bool) -> Void)?
-    
+
     private func nextMessage(msg: String, extra: [String: Any] = [:]) -> [String: Any] {
         sendCounter += 1
         var dict: [String: Any] = ["msg": msg, "id": "ddp-\(sendCounter)"]
@@ -175,7 +175,7 @@ final class DDPClient {
         }
         return dict
     }
-    
+
     private func send(_ dict: [String: Any], completion: @escaping (Bool) -> Void) {
         guard let data = try? JSONSerialization.data(withJSONObject: dict),
               let string = String(data: data, encoding: .utf8) else {
@@ -187,7 +187,7 @@ final class DDPClient {
             completion(false)
             return
         }
-        
+
         webSocketTask.send(.string(string)) { error in
             if let error = error {
                 #if DEBUG
@@ -275,7 +275,7 @@ final class DDPClient {
             self.queuedMethodCalls.removeAll()
         }
     }
-    
+
     private func waitForConnected(timeout: TimeInterval, completion: @escaping (Bool) -> Void) {
         connectedCallback = completion
         DispatchQueue.main.asyncAfter(deadline: .now() + timeout) { [weak self] in
@@ -289,12 +289,12 @@ final class DDPClient {
             }
         }
     }
-    
+
     private func listenForMessages(task: URLSessionWebSocketTask) {
         task.receive { [weak self] result in
             self?.stateQueue.async {
                 guard let self = self, let currentTask = self.webSocketTask, task === currentTask else { return }
-                
+
                 switch result {
                 case .success(let message):
                     switch message {
@@ -304,7 +304,7 @@ final class DDPClient {
                         break
                     }
                     self.listenForMessages(task: task)
-                    
+
                 case .failure(let error):
                     #if DEBUG
                     print("[\(Self.TAG)] Receive error: \(error.localizedDescription)")
@@ -313,15 +313,15 @@ final class DDPClient {
             }
         }
     }
-    
+
     private func handleMessage(_ text: String) {
         guard let data = text.data(using: .utf8),
               let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
             return
         }
-        
+
         let msg = json["msg"] as? String
-        
+
         switch msg {
         case "connected":
             isConnected = true
@@ -329,34 +329,34 @@ final class DDPClient {
                 connectedCallback = nil
                 cb(true)
             }
-            
+
         case "ping":
             send(["msg": "pong"]) { _ in }
-            
+
         case "result":
             if let id = json["id"] as? String, let cb = pendingCallbacks[id] {
                 cb(json)
             }
-            
+
         case "ready":
             if let subs = json["subs"] as? [String] {
                 subs.forEach { subId in
                     pendingCallbacks[subId]?(json)
                 }
             }
-            
+
         case "changed", "added", "removed":
             if let collection = json["collection"] as? String {
                 var message = json
                 message["collection"] = collection
                 onCollectionMessage?(message)
             }
-            
+
         case "nosub":
             if let id = json["id"] as? String, let cb = pendingCallbacks[id] {
                 cb(json)
             }
-            
+
         default:
             if let collection = json["collection"] as? String {
                 onCollectionMessage?(json)
@@ -364,16 +364,16 @@ final class DDPClient {
             }
         }
     }
-    
+
     // MARK: - URL Helpers
-    
+
     private static func buildWebSocketURL(host: String) -> String {
         var cleaned = host
-        
+
         if cleaned.hasSuffix("/") {
             cleaned = String(cleaned.dropLast())
         }
-        
+
         let useSsl: Bool
         if cleaned.hasPrefix("https://") {
             useSsl = true
@@ -384,7 +384,7 @@ final class DDPClient {
         } else {
             useSsl = true
         }
-        
+
         let scheme = useSsl ? "wss" : "ws"
         return "\(scheme)://\(cleaned)/websocket"
     }

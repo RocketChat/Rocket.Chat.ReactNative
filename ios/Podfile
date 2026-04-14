@@ -32,6 +32,9 @@ abstract_target 'defaults' do
   target 'RocketChatRN' # Experimental app
   target 'Rocket.Chat' # Official app
   target 'NotificationService'
+  target 'Rocket.ChatTests' do
+    inherit! :search_paths
+  end
 end
 
 $static_framework = [ 
@@ -83,7 +86,7 @@ post_install do |installer|
   # Add FORCE_POSIX to main project targets that use MMKV C++ API
   installer.aggregate_targets.each do |aggregate_target|
     aggregate_target.user_project.targets.each do |target|
-      if ['NotificationService', 'RocketChatRN', 'Rocket.Chat'].include?(target.name)
+      if ['NotificationService', 'RocketChatRN', 'Rocket.Chat', 'Rocket.ChatTests'].include?(target.name)
         target.build_configurations.each do |config|
           config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
           config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FORCE_POSIX=1' unless config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'].include?('FORCE_POSIX=1')

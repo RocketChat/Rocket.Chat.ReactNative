@@ -3,34 +3,33 @@ import Foundation
 import PushKit
 
 /**
- * VoipModuleSwift - Swift implementation for VoIP push notifications and initial events data.
- * This class provides static methods called by VoipModule.mm (the TurboModule bridge).
+ * VoipService - Swift adapter for VoIP push notifications and call orchestration.
  *
- * This module:
+ * This class:
  * - Manages PushKit VoIP registration
  * - Tracks VoIP push tokens
  * - Stores initial events data for retrieval by JavaScript
+ * - Acts as a thin adapter between OS events (CallKit, PushKit) and CallCoordinator
+ *
+ * All orchestration/state logic is delegated to CallCoordinator.
+ * No state machine logic remains in this class.
  */
 @objc(VoipService)
 public final class VoipService: NSObject {
-    private struct ObservedIncomingCall {
-        let payload: VoipPayload
-    }
 
-    private final class IncomingCallObserver: NSObject, CXCallObserverDelegate {
-        func callObserver(_ callObserver: CXCallObserver, callChanged call: CXCall) {
-            VoipService.handleObservedCallChanged(call)
-        }
-    }
-    
-    // MARK: - Constants
-    
+    // MARK: - CallCoordinator Instance
+
+    private static let coordinator = CallCoordinator()
+    private static var currentState: CallState = .idle
+
+    // MARK: - Private Constants
+
     private static let TAG = "RocketChat.VoipService"
     private static let voipTokenStorageKey = "RCVoipPushToken"
     private static let storage = MMKVBridge.build()
-    
+
     // MARK: - Static Properties
-    
+
     private static var initialEventsData: VoipPayload?
     private static var isVoipRegistered = false
     private static var lastVoipToken: String = loadPersistedVoipToken()
@@ -40,28 +39,29 @@ public final class VoipService: NSObject {
         client.clearQueuedMethodCalls()
         client.disconnect()
     }
-    private static let callObserver = CXCallObserver()
-    private static let incomingCallObserver = IncomingCallObserver()
+
+    // MARK: - CallKit
+
+    private static var callObserver: CXCallObserver?
+    private static var callObserverDelegate: CallObserverDelegate?
     private static var isCallObserverConfigured = false
-    private static var observedIncomingCalls: [UUID: ObservedIncomingCall] = [:]
-    /// Deduplication guard: `CXCallObserver` can call `callChanged` with `hasConnected = true`
-    /// multiple times for the same call (e.g. observer re-registration, system race). This set
-    /// ensures `handleNativeAccept` sends the DDP accept signal exactly once per `callId` (not a
-    /// single global slot — several distinct `callId`s may be present during call-waiting).
-    ///
-    /// Lifecycle (per `callId`):
-    ///   Added:   At the start of `handleNativeAccept()`, before any DDP call.
-    ///   Removed: After native accept DDP succeeds or fails,
-    ///            on call timeout (`handleIncomingCallTimeout`),
-    ///            on DDP call-end signal from another device (ddp stream listener),
-    ///            on CallKit call-ended observer event (only before connect — that call's entry is removed from `observedIncomingCalls` on answer).
-    ///
-    /// Memory: Each `callId` is tracked independently while its native accept is in flight; entries are
-    /// cleared when that call's DDP accept finishes or another exit path runs for that `callId`.
+    private static let activeCallRegistry = ActiveCallRegistry()
     private static var nativeAcceptHandledCallIds = Set<String>()
 
+    // MARK: - REST Client
+
+    private static let restClient: VoipRESTClientProtocol = VoipRESTClient()
+
+    // MARK: - CallObserverDelegate
+
+    private static final class CallObserverDelegate: NSObject, CXCallObserverDelegate {
+        func callObserver(_ callObserver: CXCallObserver, callChanged call: CXCall) {
+            VoipService.handleObservedCallChanged(call)
+        }
+    }
+
     // MARK: - Static Methods (Called from VoipModule.mm and AppDelegate)
-    
+
     /// Registers for VoIP push notifications via PushKit
     @objc
     public static func voipRegistration() {
@@ -71,12 +71,12 @@ public final class VoipService: NSObject {
             #endif
             return
         }
-        
+
         isVoipRegistered = true
         #if DEBUG
         print("[\(TAG)] voipRegistration starting")
         #endif
-        
+
         DispatchQueue.main.async {
             let registry = PKPushRegistry(queue: .main)
             registry.delegate = UIApplication.shared.delegate as? PKPushRegistryDelegate
@@ -84,20 +84,19 @@ public final class VoipService: NSObject {
             voipRegistry = registry
         }
     }
-    
+
     /// Called from AppDelegate when push credentials are updated
     @objc
     public static func didUpdatePushCredentials(_ credentials: PKPushCredentials, forType type: String) {
         #if DEBUG
         print("[\(TAG)] didUpdatePushCredentials type: \(type)")
         #endif
-        
+
         let tokenLength = credentials.token.count
         if tokenLength == 0 {
             return
         }
-        
-        // Convert token data to hex string
+
         let token = credentials.token.map { String(format: "%02x", $0) }.joined()
 
         if lastVoipToken == token {
@@ -109,12 +108,11 @@ public final class VoipService: NSObject {
 
         lastVoipToken = token
         persistVoipToken(token)
-        
+
         #if DEBUG
         print("[\(TAG)] VoIP token: \(token)")
         #endif
-        
-        // Token will be emitted to JS via the ObjC++ bridge's event emitter
+
         NotificationCenter.default.post(
             name: NSNotification.Name("VoipPushTokenRegistered"),
             object: nil,
@@ -123,7 +121,6 @@ public final class VoipService: NSObject {
     }
 
     /// Called from AppDelegate when a previously registered token is invalidated
-    // TODO: remove voip token from all logged in workspaces, since they share the same token
     @objc
     public static func invalidatePushToken() {
         lastVoipToken = ""
@@ -134,35 +131,116 @@ public final class VoipService: NSObject {
         #endif
     }
 
-    /// Returns `true` when CXCallObserver reports any non-ended call (ringing or connected),
-    /// including phone, FaceTime, and third-party VoIP.
-    ///
-    /// **Call-waiting (current `AppDelegate+Voip` behavior):** This is **not** called from the PushKit
-    /// path; CallKit handles multiple simultaneous calls. Kept for parity with Android busy detection,
-    /// documentation of `prepareIncomingCall(_:storeEventsForJs:)`, and optional future or test use.
-    public static func hasActiveCall() -> Bool {
-        configureCallObserverIfNeeded()
-        return callObserver.calls.contains { !$0.hasEnded }
+    /// Reports a new incoming CallKit call to the system.
+    /// Called by AppDelegate+Voip when PushKit delivers a VoIP push.
+    @objc
+    public static func reportIncomingCall(_ payload: VoipPayload) {
+        // Transition state machine
+        let (newState, outputs) = coordinator.transition(state: currentState, input: .incomingPush)
+        currentState = newState
+
+        // Handle outputs
+        for output in outputs {
+            if output.ringOS {
+                ringOS(payload: payload)
+            }
+        }
     }
 
-    /// Prepares DDP listener and timeout for an incoming VoIP push. When `storeEventsForJs` is false
-    /// (e.g. user is already on a call and we will `rejectBusyCall` immediately), skip stashing payload
-    /// for `getInitialEvents` so JS does not treat an auto-rejected call as a real incoming ring.
-    public static func prepareIncomingCall(_ payload: VoipPayload, storeEventsForJs: Bool = true) {
-        if storeEventsForJs {
-            storeInitialEvents(payload)
+    /// Called when the user answers a CallKit call via RNCallKeep.
+    @objc
+    public static func handleUserAnswer(callId: String) {
+        let (newState, outputs) = coordinator.transition(state: currentState, input: .userAnswer)
+        currentState = newState
+
+        for output in outputs {
+            if output.startAudio {
+                startAudio()
+            }
         }
-        scheduleIncomingCallTimeout(for: payload)
-        startListeningForCallEnd(payload: payload)
+    }
+
+    /// Called when the user declines a CallKit call via RNCallKeep.
+    @objc
+    public static func handleUserDecline(callId: String) {
+        let (newState, outputs) = coordinator.transition(state: currentState, input: .userDecline)
+        currentState = newState
+
+        for output in outputs {
+            if output.endOS {
+                endOS(callId: callId)
+            }
+        }
+    }
+
+    /// Called when DDP signals the call has ended (remote hangup or accepted on another device).
+    @objc
+    public static func handleRemoteHangup(callId: String) {
+        let (newState, outputs) = coordinator.transition(state: currentState, input: .remoteHangup)
+        currentState = newState
+
+        for output in outputs {
+            if output.endOS {
+                endOS(callId: callId)
+            }
+        }
+    }
+
+    /// Called when JS confirms the REST accept succeeded.
+    @objc
+    public static func handleRestAck() {
+        let (newState, _) = coordinator.transition(state: currentState, input: .restAck)
+        currentState = newState
+    }
+
+    /// Called when DDP signals the call has fully ended.
+    @objc
+    public static func handleDdpCallEnded(callId: String) {
+        let (newState, outputs) = coordinator.transition(state: currentState, input: .ddpCallEnded)
+        currentState = newState
+
+        for output in outputs {
+            if output.endOS {
+                endOS(callId: callId)
+            }
+        }
+    }
+
+    // MARK: - Output Handlers (OS Adaptation)
+
+    private static func ringOS(payload: VoipPayload) {
+        RNCallKeep.reportNewIncomingCall(
+            payload.callId,
+            handle: payload.caller,
+            handleType: "generic",
+            hasVideo: false,
+            localizedCallerName: payload.caller,
+            supportsHolding: true,
+            supportsDTMF: true,
+            supportsGrouping: false,
+            supportsUngrouping: false,
+            fromPushKit: true,
+            payload: payload.toDictionary(),
+            withCompletionHandler: {}
+        )
+    }
+
+    private static func startAudio() {
+        // AVAudioSession activation is handled by RNCallKeep or native modules
+        // This is a placeholder for audio session setup if needed
+    }
+
+    private static func endOS(callId: String) {
+        RNCallKeep.endCall(withUUID: callId, reason: 3)
     }
 
     // MARK: - Initial Events
-    
+
     /// Stores initial events for JS to retrieve.
     @objc
     public static func storeInitialEvents(_ payload: VoipPayload) {
         initialEventsData = payload
-        
+
         #if DEBUG
         print("[\(TAG)] Stored initial events: \(payload.callId)")
         #endif
@@ -174,25 +252,24 @@ public final class VoipService: NSObject {
         guard let data = initialEventsData else {
             return nil
         }
-        
+
         if data.isExpired() {
             clearInitialEventsInternal()
             return nil
         }
-        
+
         let result = data.toDictionary()
         clearInitialEventsInternal()
-        
+
         return result
     }
-    
+
     /// Clears any initial events
     @objc
     public static func clearInitialEvents() {
         clearInitialEventsInternal()
     }
-    
-    /// Clears initial events (internal)
+
     private static func clearInitialEventsInternal() {
         initialEventsData = nil
         #if DEBUG
@@ -253,7 +330,7 @@ public final class VoipService: NSObject {
 
     private static func handleIncomingCallTimeout(for payload: VoipPayload) {
         incomingCallTimeouts.removeValue(forKey: payload.callId)
-        clearTrackedIncomingCall(for: payload.callUUID)
+        activeCallRegistry.removeCall(callId: payload.callUUID.uuidString)
         stopDDPClientInternal(callId: payload.callId)
         clearNativeAcceptDedupe(for: payload.callId)
 
@@ -261,7 +338,7 @@ public final class VoipService: NSObject {
         let callUUID = payload.callUUID
 
         configureCallObserverIfNeeded()
-        guard let call = callObserver.calls.first(where: { $0.uuid == callUUID }) else {
+        guard let call = callObserver?.calls.first(where: { $0.uuid == callUUID }) else {
             return
         }
 
@@ -269,17 +346,67 @@ public final class VoipService: NSObject {
             return
         }
 
-        RNCallKeep.endCall(withUUID: callId, reason: 3)
+        // Notify state machine of timeout (treated as remote hangup)
+        handleRemoteHangup(callId: callId)
+    }
+
+    // MARK: - CallKit Call Observer
+
+    private static func configureCallObserverIfNeeded() {
+        guard !isCallObserverConfigured else {
+            return
+        }
+
+        callObserverDelegate = CallObserverDelegate()
+        callObserver = CXCallObserver()
+        callObserver?.setDelegate(callObserverDelegate, queue: .main)
+        isCallObserverConfigured = true
+    }
+
+    private static func trackIncomingCall(_ payload: VoipPayload) {
+        let trackCall = {
+            configureCallObserverIfNeeded()
+            activeCallRegistry.addCall(callId: payload.callUUID.uuidString, payload: payload)
+        }
+
+        if Thread.isMainThread {
+            trackCall()
+        } else {
+            DispatchQueue.main.async(execute: trackCall)
+        }
+    }
+
+    private static func handleObservedCallChanged(_ call: CXCall) {
+        guard let payload = activeCallRegistry.getCall(callId: call.uuid.uuidString) else {
+            return
+        }
+
+        if call.hasConnected {
+            activeCallRegistry.removeCall(callId: call.uuid.uuidString)
+            handleNativeAccept(payload: payload)
+            return
+        }
+
+        guard call.hasEnded else {
+            return
+        }
+
+        activeCallRegistry.removeCall(callId: call.uuid.uuidString)
+        cancelIncomingCallTimeout(for: payload.callId)
+        clearNativeAcceptDedupe(for: payload.callId)
+
+        let endedCallId = payload.callId
+        reject(payload: payload)
     }
 
     // MARK: - Native DDP Listener (Call End Detection)
 
-    private static func isLiveClient(callId: String, client: DDPClient) -> Bool {
+    private static func isLiveClient(callId: String, client: DDPClientProtocol) -> Bool {
         ddpRegistry.clientFor(callId: callId) === client
     }
 
     /// Opens a lightweight DDP WebSocket to detect call hangup before JS boots.
-    private static func startListeningForCallEnd(payload: VoipPayload) {
+    public static func startListeningForCallEnd(payload: VoipPayload) {
         let credentialStorage = Storage()
         guard let credentials = credentialStorage.getCredentials(server: payload.host.removeTrailingSlash()) else {
             #if DEBUG
@@ -291,7 +418,7 @@ public final class VoipService: NSObject {
         let callId = payload.callId
         let userId = credentials.userId
         let deviceId = DeviceUID.uid()
-        let client = DDPClient()
+        let client: DDPClientProtocol = DDPClient()
         ddpRegistry.putClient(callId: callId, client: client)
         trackIncomingCall(payload)
 
@@ -334,9 +461,9 @@ public final class VoipService: NSObject {
                 guard isLiveClient(callId: callId, client: client) else {
                     return
                 }
-                clearTrackedIncomingCall(for: payload.callUUID)
+                activeCallRegistry.removeCall(callId: payload.callUUID.uuidString)
                 clearNativeAcceptDedupe(for: callId)
-                RNCallKeep.endCall(withUUID: callId, reason: 3)
+                handleRemoteHangup(callId: callId)
                 cancelIncomingCallTimeout(for: callId)
                 stopDDPClientInternal(callId: callId)
             }
@@ -408,7 +535,7 @@ public final class VoipService: NSObject {
         ddpRegistry.stopAllClients()
     }
 
-    /// Native DDP accept when the user answers via CallKit (parity with Android `VoipNotification.handleAcceptAction`).
+    /// Native accept when the user answers via CallKit (parity with Android `VoipNotification.handleAcceptAction`).
     private static func handleNativeAccept(payload: VoipPayload) {
         if nativeAcceptHandledCallIds.contains(payload.callId) {
             return
@@ -467,46 +594,22 @@ public final class VoipService: NSObject {
             }
         }
 
-        guard let api = API(server: payload.host) else {
-            #if DEBUG
-            print("[\(TAG)] Failed to create API for host: \(payload.host)")
-            #endif
-            finishAccept(false)
-            return
-        }
-
-        api.fetch(request: MediaCallsAnswerRequest(
-            callId: payload.callId,
-            contractId: DeviceUID.uid(),
-            answer: "accept",
-            supportedFeatures: ["audio"]
-        )) { result in
+        restClient.accept(payload: payload) { success in
             DispatchQueue.main.async {
-                switch result {
-                case .resource(let response) where response.success:
-                    finishAccept(true)
-                default:
-                    finishAccept(false)
-                }
+                finishAccept(success)
             }
         }
     }
 
     /// Rejects an incoming call because the user is already on another call.
-    /// Must be called **after** `reportNewIncomingCall` (PushKit requirement).
-    ///
-    /// **Call-waiting:** `AppDelegate+Voip` does **not** invoke this; second rings are shown in CallKit
-    /// instead of auto-rejecting. Same rationale as `hasActiveCall()` — API remains for Android-aligned
-    /// flows, `storeEventsForJs: false` cleanup, and future wiring.
     public static func rejectBusyCall(_ payload: VoipPayload) {
         cancelIncomingCallTimeout(for: payload.callId)
-        clearTrackedIncomingCall(for: payload.callUUID)
+        activeCallRegistry.removeCall(callId: payload.callUUID.uuidString)
 
         if initialEventsData?.callId == payload.callId {
             clearInitialEventsInternal()
         }
 
-        // End the just-reported CallKit call immediately (reason 2 = unanswered / declined).
         RNCallKeep.endCall(withUUID: payload.callId, reason: 2)
 
         // Send reject signal via REST
@@ -518,20 +621,7 @@ public final class VoipService: NSObject {
     }
 
     private static func reject(payload: VoipPayload) {
-        guard let api = API(server: payload.host) else {
-            #if DEBUG
-            print("[\(TAG)] Failed to create API for reject: \(payload.host)")
-            #endif
-            stopDDPClientInternal(callId: payload.callId)
-            return
-        }
-
-        api.fetch(request: MediaCallsAnswerRequest(
-            callId: payload.callId,
-            contractId: DeviceUID.uid(),
-            answer: "reject",
-            supportedFeatures: nil
-        )) { _ in
+        restClient.reject(payload: payload) { _ in
             self.stopDDPClientInternal(callId: payload.callId)
         }
     }
@@ -545,61 +635,11 @@ public final class VoipService: NSObject {
         return true
     }
 
-    private static func configureCallObserverIfNeeded() {
-        guard !isCallObserverConfigured else {
-            return
-        }
+    // MARK: - hasActiveCall
 
-        callObserver.setDelegate(incomingCallObserver, queue: .main)
-        isCallObserverConfigured = true
-    }
-
-    private static func trackIncomingCall(_ payload: VoipPayload) {
-        let trackCall = {
-            configureCallObserverIfNeeded()
-            observedIncomingCalls[payload.callUUID] = ObservedIncomingCall(payload: payload)
-        }
-
-        if Thread.isMainThread {
-            trackCall()
-        } else {
-            DispatchQueue.main.async(execute: trackCall)
-        }
-    }
-
-    private static func clearTrackedIncomingCall(for callUUID: UUID) {
-        let clearCall: () -> Void = {
-            _ = observedIncomingCalls.removeValue(forKey: callUUID)
-        }
-
-        if Thread.isMainThread {
-            clearCall()
-        } else {
-            DispatchQueue.main.async(execute: clearCall)
-        }
-    }
-
-    private static func handleObservedCallChanged(_ call: CXCall) {
-        guard let observedCall = observedIncomingCalls[call.uuid] else {
-            return
-        }
-
-        if call.hasConnected {
-            observedIncomingCalls.removeValue(forKey: call.uuid)
-            handleNativeAccept(payload: observedCall.payload)
-            return
-        }
-
-        guard call.hasEnded else {
-            return
-        }
-
-        let endedCallId = observedCall.payload.callId
-        observedIncomingCalls.removeValue(forKey: call.uuid)
-        cancelIncomingCallTimeout(for: endedCallId)
-        clearNativeAcceptDedupe(for: endedCallId)
-
-        RNCallKeep.endCall(withUUID: endedCallId, reason: 3)
-        reject(payload: observedCall.payload)
+    /// Returns `true` when CXCallObserver reports any non-ended call (ringing or connected).
+    public static func hasActiveCall() -> Bool {
+        configureCallObserverIfNeeded()
+        return callObserver?.calls.contains { !$0.hasEnded } ?? false
     }
 }

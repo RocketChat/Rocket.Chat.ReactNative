@@ -7,6 +7,7 @@ final class VoipPerCallDdpRegistry<T: AnyObject> {
     private var clients: [String: T] = [:]
     private var loggedInCallIds = Set<String>()
     private let releaseClient: (T) -> Void
+    private let callRegistry = ActiveCallRegistry()
 
     init(releaseClient: @escaping (T) -> Void) {
         self.releaseClient = releaseClient
@@ -67,5 +68,31 @@ final class VoipPerCallDdpRegistry<T: AnyObject> {
         lock.lock()
         defer { lock.unlock() }
         return Set(clients.keys)
+    }
+
+    // MARK: - ActiveCallRegistry delegation
+
+    func addCall(callId: String, payload: VoipPayload) {
+        callRegistry.addCall(callId: callId, payload: payload)
+    }
+
+    func removeCall(callId: String) {
+        callRegistry.removeCall(callId: callId)
+    }
+
+    func getCall(callId: String) -> VoipPayload? {
+        return callRegistry.getCall(callId: callId)
+    }
+
+    func hasCall(callId: String) -> Bool {
+        return callRegistry.hasCall(callId: callId)
+    }
+
+    func activeCallCount() -> Int {
+        return callRegistry.activeCallCount()
+    }
+
+    func getAllCalls() -> [VoipPayload] {
+        return callRegistry.getAllCalls()
     }
 }

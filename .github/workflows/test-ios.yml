@@ -1,0 +1,54 @@
+name: iOS Unit Tests
+
+on:
+  pull_request:
+    paths:
+      - 'ios/**'
+      - 'app/lib/services/voip/**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  test-ios:
+    name: Test
+    runs-on: macos-26
+    timeout-minutes: 10
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: ./.github/actions/setup-node
+
+      - name: Cache Pods
+        uses: actions/cache@v4
+        with:
+          path: ios/Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('ios/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
+
+      - name: Cache DerivedData
+        uses: actions/cache@v4
+        with:
+          path: ios/DerivedData/RocketChatTests
+          key: ${{ runner.os }}-derived-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-derived-
+
+      - name: Pod Install
+        run: |
+          cd ios && pod install
+
+      - name: Run Tests
+        run: |
+          cd ios && xcodebuild test \
+            -scheme Rocket.ChatTests \
+            -destination 'platform=iOS Simulator,name=iPhone 16' \
+            COMPILER_INDEX_STORE_DATA_PATH=${{ github.workspace }}/idx \
+            2>&1
