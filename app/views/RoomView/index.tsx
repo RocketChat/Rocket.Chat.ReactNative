@@ -219,7 +219,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	}
 
 	componentDidMount() {
-		const { navigation, dispatch, isMasterDetail } = this.props;
+		const { navigation, dispatch } = this.props;
 		const { selectedMessages } = this.state;
 		dispatch(clearInAppFeedback());
 		this.mounted = true;
@@ -257,7 +257,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		});
 		this.unsubscribeFocus = navigation.addListener('focus', () => {
 			InteractionManager.runAfterInteractions(() => {
-				if (isMasterDetail) {
+				if (this.props.isMasterDetail) {
 					this.roomHeaderRef.current?.focus();
 					return;
 				}

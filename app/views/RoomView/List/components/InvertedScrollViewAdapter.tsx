@@ -1,13 +1,13 @@
 import React from 'react';
 import {
 	StyleSheet,
-	codegenNativeCommands,
 	findNodeHandle,
 	type LayoutChangeEvent,
 	requireNativeComponent,
 	type ScrollViewProps,
 	type ViewProps
 } from 'react-native';
+import codegenNativeCommands from 'react-native/Libraries/Utilities/codegenNativeCommands';
 
 interface InvertedScrollContentViewProps extends ViewProps {
 	isInvertedContent?: boolean;
