@@ -1,7 +1,7 @@
 import type { CallState, IClientMediaCall } from '@rocket.chat/media-signaling';
 
-import { useCallStore } from './useCallStore';
 import Navigation from '../../navigation/appNavigation';
+import { useCallStore } from './useCallStore';
 
 export interface MockCallOverrides {
 	callState?: CallState;
@@ -33,32 +33,28 @@ export function createMockCall(overrides: MockCallOverrides = {}): IClientMediaC
 	const contact = { ...DEFAULT_CONTACT, ...overrides.contact };
 	const callState: CallState = overrides.callState ?? 'active';
 
+	const localParticipant = {
+		local: true,
+		role: 'caller',
+		muted: overrides.isMuted ?? false,
+		held: overrides.isOnHold ?? false,
+		contact: {},
+		setMuted: () => {},
+		setHeld: () => {}
+	};
+	const remoteParticipants = [{ local: false, role: 'callee', muted: false, held: false, contact }];
 	const mock = {
 		callId: 'mock-call-id',
 		state: callState,
-		localParticipant: {
-			local: true as const,
-			participantId: 'mock-participant-id',
-			actorType: 'user' as const,
-			actorId: 'mock-actor-id',
-			role: 'callee' as const,
-			muted: overrides.isMuted ?? false,
-			held: overrides.isOnHold ?? false,
-			contact,
-			getMediaStream: () => null,
-			setMuted: () => {},
-			setHeld: () => {}
-		},
-		remoteParticipants: [],
-		participants: [],
+		localParticipant,
+		remoteParticipants,
+		hangup: () => {},
+		reject: () => {},
+		sendDTMF: () => {},
 		emitter: {
 			on: () => {},
 			off: () => {}
-		},
-		accept: () => {},
-		hangup: () => {},
-		reject: () => {},
-		sendDTMF: () => {}
+		}
 	};
 
 	return mock as unknown as IClientMediaCall;

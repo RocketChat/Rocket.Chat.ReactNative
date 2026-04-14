@@ -35,24 +35,30 @@ function createMockCall(callId: string) {
 	const emit = (ev: string, ...args: unknown[]) => {
 		listeners[ev]?.forEach(fn => fn(...args));
 	};
+	const localParticipant = {
+		local: true,
+		role: 'callee',
+		muted: false,
+		held: false,
+		contact: {},
+		setMuted: jest.fn(),
+		setHeld: jest.fn()
+	};
+	const remoteParticipants = [
+		{
+			local: false,
+			role: 'caller',
+			muted: false,
+			held: false,
+			contact: { id: 'u', displayName: 'U', username: 'u', sipExtension: '' }
+		}
+	];
 	const call = {
 		callId,
 		state: 'active',
-		localParticipant: {
-			muted: false,
-			held: false,
-			contact: { id: 'u', displayName: 'U', username: 'u', sipExtension: '' },
-			setMuted: jest.fn(),
-			setHeld: jest.fn()
-		},
-		remoteParticipants: [
-			{
-				muted: false,
-				held: false
-			}
-		],
 		hidden: false,
-		role: 'callee',
+		localParticipant,
+		remoteParticipants,
 		emitter,
 		sendDTMF: jest.fn(),
 		hangup: jest.fn(),

@@ -1,11 +1,11 @@
 import {
 	MediaCallWebRTCProcessor,
+	type CallContact,
 	type ClientMediaSignal,
 	type IClientMediaCall,
 	type CallActorType,
 	type MediaSignalingSession,
-	type WebRTCProcessorConfig,
-	type CallContact
+	type WebRTCProcessorConfig
 } from '@rocket.chat/media-signaling';
 import RNCallKeep from 'react-native-callkeep';
 import { registerGlobals } from 'react-native-webrtc';
@@ -15,7 +15,6 @@ import { mediaSessionStore } from './MediaSessionStore';
 import { useCallStore } from './useCallStore';
 import { store } from '../../store/auxStore';
 import sdk from '../sdk';
-import { mediaCallsStateSignals } from '../restApi';
 import Navigation from '../../navigation/appNavigation';
 import { parseStringToIceServers } from './parseStringToIceServers';
 import type { IceServer } from '../../../definitions/Voip';
@@ -34,7 +33,7 @@ class MediaSessionInstance {
 	private storeTimeoutUnsubscribe: (() => void) | null = null;
 	private storeIceServersUnsubscribe: (() => void) | null = null;
 
-	public async init(userId: string): Promise<void> {
+	public init(userId: string): void {
 		this.reset();
 
 		registerGlobals();
@@ -51,23 +50,7 @@ class MediaSessionInstance {
 		mediaSessionStore.setSendSignalFn((signal: ClientMediaSignal) => {
 			sdk.methodCall('stream-notify-user', `${userId}/media-calls`, JSON.stringify(signal));
 		});
-		const instance = mediaSessionStore.getInstance(userId);
-		this.instance = instance;
-
-		if (instance) {
-			// Fetch initial call state via REST before DDP register fires
-			try {
-				const { signals } = await mediaCallsStateSignals(getUniqueIdSync());
-				for (const signal of signals) {
-					instance.processSignal(signal);
-				}
-			} catch (error) {
-				console.error('[VoIP] Failed to fetch initial state signals:', error);
-			}
-
-			// instance.register(false);
-		}
-
+		this.instance = mediaSessionStore.getInstance(userId);
 		this.mediaSessionStoreChangeUnsubscribe = mediaSessionStore.onChange(() => {
 			this.instance = mediaSessionStore.getInstance(userId);
 		});
@@ -82,6 +65,8 @@ class MediaSessionInstance {
 			}
 			const signal = ddpMessage.fields.args[0];
 			this.instance.processSignal(signal);
+
+			console.log('🤙 [VoIP] Processed signal:', signal);
 
 			// Answer when native already accepted and stream matches device contract + callId.
 			const storeSlice = useCallStore.getState();
@@ -102,13 +87,16 @@ class MediaSessionInstance {
 
 		this.instance?.on('newCall', ({ call }: { call: IClientMediaCall }) => {
 			if (call && !call.hidden) {
-				call.emitter.on('stateChange', () => {});
+				call.emitter.on('stateChange', oldState => {
+					console.log(`📊 ${oldState} → ${call.state}`);
+					console.log('🤙 [VoIP] New call data:', call);
+				});
 
 				if (call.localParticipant.role === 'caller') {
 					useCallStore.getState().setCall(call);
 					Navigation.navigate('CallView');
 					if (useCallStore.getState().roomId == null) {
-						this.resolveRoomIdFromContact(call.localParticipant.contact).catch(error => {
+						this.resolveRoomIdFromContact(call.remoteParticipants[0]?.contact).catch(error => {
 							console.error('[VoIP] Error resolving room id from contact (newCall):', error);
 						});
 					}
@@ -124,17 +112,22 @@ class MediaSessionInstance {
 	public answerCall = async (callId: string) => {
 		const { call: existingCall } = useCallStore.getState();
 		if (existingCall != null && existingCall.callId === callId) {
+			console.log('[VoIP] answerCall skipped — call already bound in store:', callId);
 			return;
 		}
 
-		const { call } = useCallStore.getState();
+		console.log('[VoIP] Answering call:', callId);
+		const mainCall = this.instance?.getCallData(callId);
+		console.log('[VoIP] Main call:', mainCall);
 
-		if (call && call.callId === callId) {
-			await call.accept();
+		if (mainCall && mainCall.callId === callId) {
+			console.log('[VoIP] Accepting call:', callId);
+			await mainCall.accept();
+			console.log('[VoIP] Setting current call active:', callId);
 			RNCallKeep.setCurrentCallActive(callId);
-			useCallStore.getState().setCall(call);
+			useCallStore.getState().setCall(mainCall);
 			Navigation.navigate('CallView');
-			this.resolveRoomIdFromContact(call.localParticipant.contact).catch(error => {
+			this.resolveRoomIdFromContact(mainCall.remoteParticipants[0]?.contact).catch(error => {
 				console.error('[VoIP] Error resolving room id from contact (answerCall):', error);
 			});
 		} else {
@@ -143,6 +136,7 @@ class MediaSessionInstance {
 			if (st.nativeAcceptedCallId === callId) {
 				st.resetNativeCallId();
 			}
+			console.warn('[VoIP] Call not found:', callId); // TODO: Show error message?
 		}
 	};
 
@@ -156,17 +150,18 @@ class MediaSessionInstance {
 
 	public startCall = (userId: string, actor: CallActorType) => {
 		requestPhoneStatePermission();
+		console.log('[VoIP] Starting call:', userId);
 		this.instance?.startCall(actor, userId);
 	};
 
 	public endCall = (callId: string) => {
-		const { call } = useCallStore.getState();
+		const mainCall = this.instance?.getCallData(callId);
 
-		if (call && call.callId === callId) {
-			if (call.state === 'ringing') {
-				call.reject();
+		if (mainCall && mainCall.callId === callId) {
+			if (mainCall.state === 'ringing') {
+				mainCall.reject();
 			} else {
-				call.hangup();
+				mainCall.hangup();
 			}
 		}
 		RNCallKeep.endCall(callId);
@@ -176,8 +171,8 @@ class MediaSessionInstance {
 		useCallStore.getState().reset();
 	};
 
-	private async resolveRoomIdFromContact(contact: CallContact): Promise<void> {
-		if (contact.sipExtension) {
+	private async resolveRoomIdFromContact(contact: CallContact | undefined): Promise<void> {
+		if (!contact || contact.sipExtension) {
 			return;
 		}
 		const { username } = contact;
@@ -211,6 +206,7 @@ class MediaSessionInstance {
 			const currentIceServers = this.getIceServers();
 			if (currentIceServers !== this.iceServers) {
 				this.iceServers = currentIceServers;
+				// this.instance?.setIceServers(this.iceServers);
 			}
 		});
 	}

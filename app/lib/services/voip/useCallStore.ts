@@ -139,19 +139,22 @@ export const useCallStore = create<CallStore>((set, get) => ({
 	setCall: (call: IClientMediaCall) => {
 		cleanupCallListeners();
 		get().resetNativeCallId();
+		// Update state with call info
+		const remote = call.remoteParticipants[0];
+		const remoteContact = remote?.contact;
 		set({
 			call,
 			callId: call.callId,
 			callState: call.state,
 			isMuted: call.localParticipant.muted,
 			isOnHold: call.localParticipant.held,
-			remoteMute: call.remoteParticipants[0]?.muted ?? false,
-			remoteHeld: call.remoteParticipants[0]?.held ?? false,
+			remoteMute: remote?.muted ?? false,
+			remoteHeld: remote?.held ?? false,
 			contact: {
-				id: call.localParticipant.contact.id,
-				displayName: call.localParticipant.contact.displayName,
-				username: call.localParticipant.contact.username,
-				sipExtension: call.localParticipant.contact.sipExtension
+				id: remoteContact?.id,
+				displayName: remoteContact?.displayName,
+				username: remoteContact?.username,
+				sipExtension: remoteContact?.sipExtension
 			},
 			callStartTime: call.state === 'active' ? Date.now() : null
 		});
@@ -186,11 +189,12 @@ export const useCallStore = create<CallStore>((set, get) => ({
 			const currentCall = get().call;
 			if (!currentCall) return;
 
+			const currentRemote = currentCall.remoteParticipants[0];
 			set({
 				isMuted: currentCall.localParticipant.muted,
 				isOnHold: currentCall.localParticipant.held,
-				remoteMute: currentCall.remoteParticipants[0]?.muted ?? false,
-				remoteHeld: currentCall.remoteParticipants[0]?.held ?? false,
+				remoteMute: currentRemote?.muted ?? false,
+				remoteHeld: currentRemote?.held ?? false,
 				controlsVisible: true
 			});
 		};
