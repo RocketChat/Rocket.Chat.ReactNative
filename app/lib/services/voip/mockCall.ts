@@ -33,16 +33,21 @@ export function createMockCall(overrides: MockCallOverrides = {}): IClientMediaC
 	const contact = { ...DEFAULT_CONTACT, ...overrides.contact };
 	const callState: CallState = overrides.callState ?? 'active';
 
+	const localParticipant = {
+		local: true,
+		role: 'caller',
+		muted: overrides.isMuted ?? false,
+		held: overrides.isOnHold ?? false,
+		contact: {},
+		setMuted: () => {},
+		setHeld: () => {}
+	};
+	const remoteParticipants = [{ local: false, role: 'callee', muted: false, held: false, contact }];
 	const mock = {
 		callId: 'mock-call-id',
 		state: callState,
-		muted: overrides.isMuted ?? false,
-		held: overrides.isOnHold ?? false,
-		remoteMute: false,
-		remoteHeld: false,
-		contact,
-		setMuted: () => {},
-		setHeld: () => {},
+		localParticipant,
+		remoteParticipants,
 		hangup: () => {},
 		reject: () => {},
 		sendDTMF: () => {},

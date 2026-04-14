@@ -1,5 +1,6 @@
 import {
 	MediaCallWebRTCProcessor,
+	type CallContact,
 	type ClientMediaSignal,
 	type IClientMediaCall,
 	type CallActorType,
@@ -91,11 +92,11 @@ class MediaSessionInstance {
 					console.log('🤙 [VoIP] New call data:', call);
 				});
 
-				if (call.role === 'caller') {
+				if (call.localParticipant.role === 'caller') {
 					useCallStore.getState().setCall(call);
 					Navigation.navigate('CallView');
 					if (useCallStore.getState().roomId == null) {
-						this.resolveRoomIdFromContact(call.contact).catch(error => {
+						this.resolveRoomIdFromContact(call.remoteParticipants[0]?.contact).catch(error => {
 							console.error('[VoIP] Error resolving room id from contact (newCall):', error);
 						});
 					}
@@ -116,7 +117,7 @@ class MediaSessionInstance {
 		}
 
 		console.log('[VoIP] Answering call:', callId);
-		const mainCall = this.instance?.getMainCall();
+		const mainCall = this.instance?.getCallData(callId);
 		console.log('[VoIP] Main call:', mainCall);
 
 		if (mainCall && mainCall.callId === callId) {
@@ -126,7 +127,7 @@ class MediaSessionInstance {
 			RNCallKeep.setCurrentCallActive(callId);
 			useCallStore.getState().setCall(mainCall);
 			Navigation.navigate('CallView');
-			this.resolveRoomIdFromContact(mainCall.contact).catch(error => {
+			this.resolveRoomIdFromContact(mainCall.remoteParticipants[0]?.contact).catch(error => {
 				console.error('[VoIP] Error resolving room id from contact (answerCall):', error);
 			});
 		} else {
@@ -154,7 +155,7 @@ class MediaSessionInstance {
 	};
 
 	public endCall = (callId: string) => {
-		const mainCall = this.instance?.getMainCall();
+		const mainCall = this.instance?.getCallData(callId);
 
 		if (mainCall && mainCall.callId === callId) {
 			if (mainCall.state === 'ringing') {
@@ -170,8 +171,8 @@ class MediaSessionInstance {
 		useCallStore.getState().reset();
 	};
 
-	private async resolveRoomIdFromContact(contact: IClientMediaCall['contact']): Promise<void> {
-		if (contact.sipExtension) {
+	private async resolveRoomIdFromContact(contact: CallContact | undefined): Promise<void> {
+		if (!contact || contact.sipExtension) {
 			return;
 		}
 		const { username } = contact;
