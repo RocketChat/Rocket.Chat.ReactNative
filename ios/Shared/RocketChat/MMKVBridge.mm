@@ -2,16 +2,12 @@
 //  MMKVBridge.mm
 //  RocketChatRN
 //
-//  Bridge to access react-native-mmkv from Swift
-//  Requires FORCE_POSIX=1 preprocessor definition
-//
 
 #import "MMKVBridge.h"
-#import "MMKV.h"
-#import <string>
+#import <MMKV/MMKV.h>
 
-@interface MMKVBridge()
-@property (nonatomic, assign) MMKV *mmkvInstance;
+@interface MMKVBridge ()
+@property (nonatomic, strong) MMKV *mmkv;
 @end
 
 @implementation MMKVBridge
@@ -21,92 +17,55 @@
                  rootPath:(nullable NSString *)rootPath {
     self = [super init];
     if (self) {
-        // Initialize MMKV if needed
+        // 1. Initialize MMKV path globally if provided (e.g., for App Groups)
         if (rootPath) {
-            std::string rootPathStr = [rootPath UTF8String];
-            MMKV::initializeMMKV(rootPathStr);
+            [MMKV initializeMMKV:rootPath logLevel:MMKVLogInfo];
         }
         
-        std::string mmapIDStr = [mmapID UTF8String];
-        
-        if (cryptKey && [cryptKey length] > 0) {
-            std::string cryptKeyStr((const char *)[cryptKey bytes], [cryptKey length]);
-            _mmkvInstance = MMKV::mmkvWithID(mmapIDStr, MMKV_MULTI_PROCESS, &cryptKeyStr);
+        // 2. Open instance with MMKVMultiProcess mode
+        // This allows the Main App and Notification Service to share data safely.
+        if (cryptKey && cryptKey.length > 0) {
+            _mmkv = [MMKV mmkvWithID:mmapID cryptKey:cryptKey mode:MMKVMultiProcess];
         } else {
-            _mmkvInstance = MMKV::mmkvWithID(mmapIDStr, MMKV_MULTI_PROCESS);
+            _mmkv = [MMKV mmkvWithID:mmapID mode:MMKVMultiProcess];
         }
     }
     return self;
 }
 
 - (nullable NSString *)stringForKey:(NSString *)key {
-    if (!_mmkvInstance) return nil;
-    
-    std::string keyStr = [key UTF8String];
-    std::string valueStr;
-    bool hasValue = _mmkvInstance->getString(keyStr, valueStr);
-    
-    if (hasValue && !valueStr.empty()) {
-        return [NSString stringWithUTF8String:valueStr.c_str()];
-    }
-    
-    return nil;
+    if (!_mmkv) return nil;
+    return [_mmkv getStringForKey:key];
 }
 
 - (BOOL)setString:(NSString *)value forKey:(NSString *)key {
-    if (!_mmkvInstance) return NO;
-    
-    std::string keyStr = [key UTF8String];
-    std::string valueStr = [value UTF8String];
-    
-    return _mmkvInstance->set(valueStr, keyStr);
+    if (!_mmkv) return NO;
+    return [_mmkv setString:value forKey:key];
 }
 
 - (nullable NSData *)dataForKey:(NSString *)key {
-    if (!_mmkvInstance) return nil;
-    
-    std::string keyStr = [key UTF8String];
-    auto buffer = _mmkvInstance->getBytes(keyStr);
-    
-    if (buffer.length() > 0) {
-        return [NSData dataWithBytes:buffer.getPtr() length:buffer.length()];
-    }
-    
-    return nil;
+    if (!_mmkv) return nil;
+    return [_mmkv getDataForKey:key];
 }
 
 - (BOOL)setData:(NSData *)value forKey:(NSString *)key {
-    if (!_mmkvInstance) return NO;
-    
-    std::string keyStr = [key UTF8String];
-    mmkv::MMBuffer buffer((void *)[value bytes], (size_t)[value length], mmkv::MMBufferNoCopy);
-    
-    return _mmkvInstance->set(buffer, keyStr);
+    if (!_mmkv) return NO;
+    return [_mmkv setData:value forKey:key];
 }
 
 - (void)removeValueForKey:(NSString *)key {
-    if (!_mmkvInstance) return;
-    
-    std::string keyStr = [key UTF8String];
-    _mmkvInstance->removeValueForKey(keyStr);
+    if (!_mmkv) return;
+    [_mmkv removeValueForKey:key];
 }
 
 - (NSArray<NSString *> *)allKeys {
-    if (!_mmkvInstance) return @[];
-    
-    auto cppKeys = _mmkvInstance->allKeys();
-    NSMutableArray<NSString *> *keys = [NSMutableArray arrayWithCapacity:cppKeys.size()];
-    
-    for (const auto& key : cppKeys) {
-        [keys addObject:[NSString stringWithUTF8String:key.c_str()]];
-    }
-    
-    return keys;
+    if (!_mmkv) return @[];
+    return [_mmkv allKeys];
 }
 
 - (NSUInteger)count {
-    if (!_mmkvInstance) return 0;
-    return _mmkvInstance->count();
+    if (!_mmkv) return 0;
+    return [[_mmkv allKeys] count];
 }
 
 @end

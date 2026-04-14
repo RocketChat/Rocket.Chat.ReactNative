@@ -9,7 +9,7 @@
 
 #import "MMKVKeyManager.h"
 #import "SecureStorage.h"
-#import "Shared/RocketChat/MMKVBridge.h"
+#import <MMKV/MMKV.h>
 
 static NSString *toHex(NSString *str) {
     if (!str) return @"";
@@ -35,45 +35,48 @@ static void Logger(NSString *format, ...) {
 @implementation MMKVKeyManager
 
 + (void)initialize {
+    if (self != [MMKVKeyManager class]) return;
+
     @try {
         NSString *mmkvPath = [self initializeMMKV];
         if (!mmkvPath) {
-            Logger(@"Failed to initialize MMKV path");
+            Logger(@"Failed to initialize MMKV path - check AppGroupIdentifier in Info.plist");
             return;
         }
+
+        // --- CRITICAL CHANGE ---
+        // In v4, for App Groups, you must set the 2nd parameter (groupDir).
+        // Signature: initializeMMKV:(NSString*)rootDir groupDir:(NSString*)groupDir logLevel:(MMKVLogLevel)logLevel
+        [MMKV initializeMMKV:nil groupDir:mmkvPath logLevel:MMKVLogInfo];
 
         SecureStorage *secureStorage = [[SecureStorage alloc] init];
         NSString *alias = toHex(@"com.MMKV.default");
         NSString *password = [secureStorage getSecureKey:alias];
 
         if (!password || password.length == 0) {
-            // Fresh install - generate a new key
             password = [[NSUUID UUID] UUIDString];
             [secureStorage setSecureKey:alias value:password options:nil];
             Logger(@"Generated new MMKV encryption key");
-        } else {
-            Logger(@"Existing MMKV encryption key found");
         }
 
         // Verify MMKV can be opened with this key
         NSData *cryptKey = [password dataUsingEncoding:NSUTF8StringEncoding];
-        MMKVBridge *mmkv = [[MMKVBridge alloc] initWithID:@"default"
-                                                cryptKey:cryptKey
-                                                rootPath:mmkvPath];
+
+        // Ensure we use MMKVMultiProcess to match the JS side
+        MMKV *mmkv = [MMKV mmkvWithID:@"default" cryptKey:cryptKey mode:MMKVMultiProcess];
 
         if (mmkv) {
-            NSUInteger keyCount = [mmkv count];
-            Logger(@"MMKV initialized with encryption, %lu keys found", (unsigned long)keyCount);
-        } else {
-            Logger(@"MMKV instance is nil after initialization");
+            Logger(@"MMKV initialized successfully. Keys: %lu", (unsigned long)[[mmkv allKeys] count]);
         }
     } @catch (NSException *exception) {
-        Logger(@"MMKV initialization error: %@ - %@", exception.name, exception.reason);
+        Logger(@"MMKV initialization error: %@", exception.reason);
     }
 }
 
 + (NSString *)initializeMMKV {
-    NSString *appGroup = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"];
+    NSString *appGroup = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroupIdentifier"] 
+                         ?: [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"];
+    
     if (!appGroup) return nil;
 
     NSURL *groupURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:appGroup];

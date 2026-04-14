@@ -244,6 +244,8 @@ PODS:
   - libwebp/sharpyuv (1.5.0)
   - libwebp/webp (1.5.0):
     - libwebp/sharpyuv
+  - MMKV (2.2.4):
+    - MMKVCore (~> 2.2.4)
   - MMKVCore (2.2.4)
   - MobileCrypto (0.2.2):
     - boost
@@ -3536,6 +3538,7 @@ DEPENDENCIES:
   - fmt (from `../node_modules/react-native/third-party-podspecs/fmt.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
+  - MMKV
   - MMKVCore
   - "MobileCrypto (from `../node_modules/@rocket.chat/mobile-crypto`)"
   - NitroMmkv (from `../node_modules/react-native-mmkv`)
@@ -3656,6 +3659,7 @@ SPEC REPOS:
     - libavif
     - libdav1d
     - libwebp
+    - MMKV
     - MMKVCore
     - nanopb
     - PromisesObjC
@@ -3972,6 +3976,7 @@ SPEC CHECKSUMS:
   libavif: 84bbb62fb232c3018d6f1bab79beea87e35de7b7
   libdav1d: 23581a4d8ec811ff171ed5e2e05cd27bad64c39f
   libwebp: 02b23773aedb6ff1fd38cec7a77b81414c6842a8
+  MMKV: 1a8e7dbce7f9cad02c52e1b1091d07bd843aefaf
   MMKVCore: f2dd4c9befea04277a55e84e7812f930537993df
   MobileCrypto: 41cd66d5588e979cf95d1ff6ae2eec88eb284ef1
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
@@ -4083,6 +4088,6 @@ SPEC CHECKSUMS:
   Yoga: 1e91d83a5286cfd3b725eade59274c92270540d4
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
-PODFILE CHECKSUM: 412ae70eb3129cbf7a7884ff29d42de4e7e19073
+PODFILE CHECKSUM: c45a8f910f77486998cd4dbdb417db6c263833ee
 
 COCOAPODS: 1.15.2

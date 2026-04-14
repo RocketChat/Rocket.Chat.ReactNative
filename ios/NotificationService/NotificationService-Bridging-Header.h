@@ -1,9 +1,9 @@
 //
-//  Use this file to import your target's public headers that you would like to expose to Swift.
+//  NotificationService-Bridging-Header.h
 //
 
 #import "SecureStorage.h"
-#import "../Shared/RocketChat/MMKVBridge.h"
+#import "MMKVBridge.h"
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import <React/RCTViewManager.h>

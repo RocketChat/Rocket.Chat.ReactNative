@@ -8,6 +8,7 @@ prepare_react_native_project!
 
 def all_pods
   pod 'simdjson', path: '../node_modules/@nozbe/simdjson', modular_headers: true
+  pod 'MMKV', :modular_headers => true
   pod 'MMKVCore', :modular_headers => true
   $RNFirebaseAnalyticsWithoutAdIdSupport = true
 
@@ -44,6 +45,11 @@ pre_install do |installer|
       if $static_framework.include?(pod.name)
         def pod.build_type;
         Pod::BuildType.static_library # >= 1.9
+      end
+      if ['MMKV', 'MMKVCore', 'react-native-mmkv', 'react-native-nitro-modules'].include?(pod.name)
+        def pod.build_type;
+          Pod::BuildType.dynamic_framework
+        end
       end
     end
   end
