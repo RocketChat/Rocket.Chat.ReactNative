@@ -1,7 +1,6 @@
 package chat.rocket.reactnative.scroll;
 
 import android.content.Context;
-import android.view.FocusFinder;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,8 +86,7 @@ public class InvertedScrollView extends ReactScrollView {
       }
     }
 
-    int exitDir = isForward ? View.FOCUS_DOWN : View.FOCUS_UP;
-    View exitTarget = findExitTarget(exitDir);
+    View exitTarget = findExitTarget();
     if (exitTarget != null) {
       exitTarget.requestFocus();
       return true;
@@ -110,37 +108,10 @@ public class InvertedScrollView extends ReactScrollView {
     return current != null ? contentView.indexOfChild(current) : -1;
   }
 
-  private View findExitTarget(int direction) {
+  private View findExitTarget() {
     if (mExitFocusNativeId != null) {
-      View target = ReactFindViewUtil.findView(getRootView(), mExitFocusNativeId);
-      if (target != null) {
-        return target;
-      }
-    }
-    View rootView = getRootView();
-    if (!(rootView instanceof ViewGroup)) {
-      return null;
-    }
-    View focused = findFocus();
-    if (focused == null) {
-      return null;
-    }
-    View target = FocusFinder.getInstance()
-        .findNextFocus((ViewGroup) rootView, focused, direction);
-    if (target != null && !isDescendantOf(target, this)) {
-      return target;
+      return ReactFindViewUtil.findView(getRootView(), mExitFocusNativeId);
     }
     return null;
-  }
-
-  private static boolean isDescendantOf(View view, ViewGroup ancestor) {
-    ViewParent parent = view.getParent();
-    while (parent != null) {
-      if (parent == ancestor) {
-        return true;
-      }
-      parent = parent.getParent();
-    }
-    return false;
   }
 }

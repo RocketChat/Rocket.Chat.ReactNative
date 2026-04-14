@@ -5,7 +5,6 @@ import android.view.View;
 import com.facebook.react.views.view.ReactViewGroup;
 import java.util.ArrayList;
 import java.util.Collections;
-import chat.rocket.reactnative.R;
 
 /**
  * Content view for inverted FlatLists. Reports its children to accessibility in reversed order so
@@ -21,11 +20,6 @@ public class InvertedScrollContentView extends ReactViewGroup {
 
   public void setIsInvertedContent(boolean isInverted) {
     mIsInvertedContent = isInverted;
-    if (isInverted) {
-      setTag(R.id.tag_inverted_list, true);
-    } else {
-      setTag(R.id.tag_inverted_list, null);
-    }
   }
 
   @Override
@@ -76,4 +70,3 @@ public class InvertedScrollContentView extends ReactViewGroup {
     }
   }
 }
-
