@@ -17,6 +17,36 @@ const TAG = `[MediaCallEvents][${platform}]`;
 const EVENT_VOIP_ACCEPT_FAILED = 'VoipAcceptFailed';
 const EVENT_VOIP_ACCEPT_SUCCEEDED = 'VoipAcceptSucceeded';
 
+/** Align with `handleOpen` host normalization in `app/sagas/deepLinking.js` for stable compare. */
+function normalizeVoipDeepLinkHost(rawHost: string): string {
+	let host = rawHost;
+	if (!host) {
+		return '';
+	}
+	if (!/^(http|https)/.test(host)) {
+		if (/^localhost(:\d+)?/.test(host)) {
+			host = `http://${host}`;
+		} else {
+			host = `https://${host}`;
+		}
+	} else {
+		host = host.replace('http://', 'https://');
+	}
+	if (host.slice(-1) === '/') {
+		host = host.slice(0, host.length - 1);
+	}
+	return host;
+}
+
+/** True when normalized incoming host matches the active Redux workspace (no server switch needed). */
+function isVoipIncomingHostCurrentWorkspace(incomingHost: string): boolean {
+	const active = store.getState().server.server;
+	if (!active || !incomingHost) {
+		return false;
+	}
+	return normalizeVoipDeepLinkHost(incomingHost) === normalizeVoipDeepLinkHost(active);
+}
+
 /** Dedupe native emit + stash replay for the same failed accept. */
 let lastHandledVoipAcceptFailureCallId: string | null = null;
 /** Idempotent warm delivery of native accept success. */
@@ -56,6 +86,12 @@ function handleVoipAcceptSucceededFromNative(data: VoipPayload) {
 	console.log(`${TAG} VoipAcceptSucceeded:`, data);
 	NativeVoipModule.clearInitialEvents();
 	useCallStore.getState().setNativeAcceptedCallId(data.callId);
+	if (data.host && isVoipIncomingHostCurrentWorkspace(data.host)) {
+		void mediaSessionInstance.syncStateSignalsAfterNativeVoipAccept().catch(error => {
+			console.error(`${TAG} syncStateSignalsAfterNativeVoipAccept failed:`, error);
+		});
+		return;
+	}
 	store.dispatch(
 		deepLinkingOpen({
 			callId: data.callId,
@@ -222,6 +258,14 @@ export const getInitialMediaCallEvents = async (): Promise<boolean> => {
 
 		if (wasAnswered) {
 			useCallStore.getState().setNativeAcceptedCallId(initialEvents.callId);
+
+			if (initialEvents.host && isVoipIncomingHostCurrentWorkspace(initialEvents.host)) {
+				void mediaSessionInstance.syncStateSignalsAfterNativeVoipAccept().catch(error => {
+					console.error(`${TAG} syncStateSignalsAfterNativeVoipAccept (initial) failed:`, error);
+				});
+				console.log(`${TAG} Same workspace as VoIP host; skipped deepLinkingOpen`);
+				return Promise.resolve(true);
+			}
 
 			store.dispatch(
 				deepLinkingOpen({

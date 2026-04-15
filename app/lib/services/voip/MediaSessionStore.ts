@@ -67,8 +67,7 @@ class MediaSessionStore extends Emitter<{ change: void }> {
 			randomStringFactory,
 			logger: new MediaCallLogger(),
 			features: ['audio'],
-			mobileDeviceId,
-			autoSync: true
+			mobileDeviceId
 		});
 
 		this.change();
