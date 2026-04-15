@@ -67,7 +67,53 @@ jobs:
       - name: Make Maestro script executable
         run: chmod +x .github/scripts/run-maestro.sh
 
-      - name: Start Android Emulator and Run Maestro Tests
+      - name: Create Keyboard-enabled AVD (shard 14)
+        if: ${{ inputs.shard == '14' }}
+        run: |
+          set -eux
+
+          ANDROID_SDK="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}}"
+          SDKMANAGER="$ANDROID_SDK/cmdline-tools/latest/bin/sdkmanager"
+          AVDMANAGER="$ANDROID_SDK/cmdline-tools/latest/bin/avdmanager"
+          AVD_NAME="Pixel_API_34_Keyboard"
+          IMAGE="system-images;android-34;google_apis;x86_64"
+          AVD_CONFIG="$HOME/.android/avd/${AVD_NAME}.avd/config.ini"
+
+          "$SDKMANAGER" --install emulator "$IMAGE"
+          yes | "$SDKMANAGER" --licenses > /dev/null || true
+
+          echo "no" | "$AVDMANAGER" create avd -n "$AVD_NAME" -d pixel_7_pro --package "$IMAGE" --force
+
+          {
+            echo "hw.keyboard=yes"
+            echo "hw.keyboard.lid=no"
+            echo "hw.lcd.density=440"
+            echo "hw.lcd.height=2280"
+            echo "hw.lcd.width=1080"
+          } >> "$AVD_CONFIG"
+
+          echo "$AVD_NAME created with physical keyboard support"
+
+      - name: Start Android Emulator and Run Maestro Tests (keyboard AVD)
+        if: ${{ inputs.shard == '14' }}
+        uses: reactivecircus/android-emulator-runner@v2
+        timeout-minutes: 60
+        with:
+          api-level: 34
+          disk-size: 4096M
+          arch: x86_64
+          target: google_apis
+          avd-name: Pixel_API_34_Keyboard
+          cores: 4
+          ram-size: 4096M
+          force-avd-creation: false
+          disable-animations: true
+          emulator-boot-timeout: 900
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -accel on
+          script: ./.github/scripts/run-maestro.sh android ${{ inputs.shard }}
+
+      - name: Start Android Emulator and Run Maestro Tests (default)
+        if: ${{ inputs.shard != '14' }}
         uses: reactivecircus/android-emulator-runner@v2
         timeout-minutes: 60
         with:

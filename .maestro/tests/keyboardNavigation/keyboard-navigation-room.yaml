@@ -32,3 +32,18 @@ tags:
 - pressKey: Remote Dpad Up
 - pressKey: Remote Dpad Down
 - pressKey: enter
+
+# Send a message using TV remote / hardware keys only (no tapOn).
+# Move focus toward the composer; tune `times` if focus order on the device changes.
+- extendedWaitUntil:
+    visible:
+      id: message-composer-input
+    timeout: 60000
+- pressKey: Remote Dpad Down
+- inputText: ${output.keyboardMessage}
+# Submit: ComposerInput wires onSubmitEditing -> send when soft keyboard is hidden (TV / physical keyboard)
+- pressKey: enter
+- extendedWaitUntil:
+    visible:
+      id: 'message-content-${output.keyboardMessage}'
+    timeout: 60000
