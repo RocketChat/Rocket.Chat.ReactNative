@@ -262,10 +262,7 @@ function createMMKVHook(getter, onSet) {
 		const mmkv = instance ?? getDefaultMMKVInstance();
 
 		const [bump, setBump] = useState(0);
-		const value = useMemo(() => {
-			bump;
-			return getter(mmkv, key);
-		}, [mmkv, key, bump]);
+		const value = useMemo(() => getter(mmkv, key), [mmkv, key, bump]);
 
 		const set = useCallback(
 			v => {
