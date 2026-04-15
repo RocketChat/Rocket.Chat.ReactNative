@@ -28,7 +28,7 @@ index 2cd51dc..ca6a417 100644
 +        }
 +
 +        // Case 2: Android 8 Fix - Raw Filename (e.g., "custom.ttf")
-+        // If the string has no slashes and no protocol, it's a native asset reference.
++        // No protocol (colon) and not an absolute path - allows relative paths like "fonts/custom.ttf".
 +        !localUri.contains(":") && !localUri.startsWith("/") -> {
 +          val assetCandidates = listOf(
 +            if (localUri.startsWith("fonts/")) localUri else "fonts/$localUri",
