@@ -106,12 +106,18 @@ class MMKVInstance {
 	}
 
 	importAllFrom(other) {
+		if (this.isReadOnly) {
+			throw new Error('Cannot import values into read-only instance');
+		}
 		let count = 0;
 		for (const [key, value] of other.storage.entries()) {
 			this.storage.set(key, value);
 			count++;
 		}
 		this._size = this.storage.size;
+		if (count > 0) {
+			this.notifyListeners(undefined);
+		}
 		return count;
 	}
 
@@ -175,7 +181,11 @@ function isConfigurationEqual(left, right) {
 	}
 
 	return (
-		left.encryptionKey === right.encryptionKey && left.id === right.id && left.path === right.path && left.mode === right.mode
+		left.encryptionKey === right.encryptionKey &&
+		left.id === right.id &&
+		left.path === right.path &&
+		left.mode === right.mode &&
+		left.readOnly === right.readOnly
 	);
 }
 
@@ -183,12 +193,19 @@ function isConfigurationEqual(left, right) {
  * Use the default, shared MMKV instance or a custom instance with configuration
  */
 export function useMMKV(configuration) {
-	return useMemo(() => {
-		if (configuration == null) {
-			return getDefaultMMKVInstance();
-		}
-		return createMMKV(configuration);
-	}, [configuration]);
+	const configurationRef = useRef();
+	const instanceRef = useRef();
+
+	if (configuration == null) {
+		return getDefaultMMKVInstance();
+	}
+
+	if (!instanceRef.current || !isConfigurationEqual(configurationRef.current, configuration)) {
+		configurationRef.current = configuration;
+		instanceRef.current = createMMKV(configuration);
+	}
+
+	return instanceRef.current;
 }
 
 /**
