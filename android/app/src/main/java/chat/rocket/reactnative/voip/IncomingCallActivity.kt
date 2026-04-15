@@ -7,8 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.drawable.GradientDrawable
-import android.media.Ringtone
-import android.media.RingtoneManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -31,6 +29,9 @@ import chat.rocket.reactnative.notification.Ejson
 /**
  * Full-screen Activity displayed when an incoming VoIP call arrives.
  * Shows on lock screen and handles user actions (Accept/Decline).
+ *
+ * Ring audio is owned by [VoipNotification]'s NotificationChannel — do not
+ * play a ringtone here; a second source would double-ring on most Android versions.
  */
 class IncomingCallActivity : Activity() {
 
@@ -38,7 +39,6 @@ class IncomingCallActivity : Activity() {
         private const val TAG = "RocketChat.IncomingCall"
     }
 
-    private var ringtone: Ringtone? = null
     private var voipPayload: VoipPayload? = null
     private var isCallStateReceiverRegistered = false
     private val timeoutHandler = Handler(Looper.getMainLooper())
@@ -51,7 +51,6 @@ class IncomingCallActivity : Activity() {
             }
 
             clearTimeout()
-            stopRingtone()
             finish()
         }
     }
@@ -97,7 +96,6 @@ class IncomingCallActivity : Activity() {
         Log.d(TAG, "IncomingCallActivity created - callId: ${voipPayload.callId}, caller: ${voipPayload.caller}")
 
         updateUI(voipPayload)
-        startRingtone()
         setupButtons(voipPayload)
         scheduleTimeout(voipPayload)
         val intentFilter = IntentFilter().apply {
@@ -225,27 +223,6 @@ class IncomingCallActivity : Activity() {
         }
     }
 
-    private fun startRingtone() {
-        try {
-            val ringtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
-            ringtone = RingtoneManager.getRingtone(applicationContext, ringtoneUri)
-            ringtone?.play()
-            Log.d(TAG, "Ringtone started")
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed to start ringtone", e)
-        }
-    }
-
-    private fun stopRingtone() {
-        try {
-            ringtone?.stop()
-            ringtone = null
-            Log.d(TAG, "Ringtone stopped")
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed to stop ringtone", e)
-        }
-    }
-
     private fun setupButtons(payload: VoipPayload) {
         findViewById<LinearLayout>(R.id.btn_accept)?.setOnClickListener {
             handleAccept(payload)
@@ -259,14 +236,12 @@ class IncomingCallActivity : Activity() {
     private fun scheduleTimeout(payload: VoipPayload) {
         val remainingLifetimeMs = payload.getRemainingLifetimeMs()
         if (remainingLifetimeMs == null || remainingLifetimeMs <= 0L) {
-            stopRingtone()
             finish()
             return
         }
 
         clearTimeout()
         timeoutRunnable = Runnable {
-            stopRingtone()
             VoipNotification.handleTimeout(this, payload)
             finish()
         }.also { timeoutHandler.postDelayed(it, remainingLifetimeMs) }
@@ -281,7 +256,6 @@ class IncomingCallActivity : Activity() {
         Log.d(TAG, "Call accepted - callId: ${payload.callId}")
         clearTimeout()
         VoipNotification.cancelTimeout(payload.callId)
-        stopRingtone()
         VoipNotification.handleAcceptAction(this, payload)
         // Activity finishes when ACTION_DISMISS is broadcast from handleAcceptAction (async DDP).
     }
@@ -290,7 +264,6 @@ class IncomingCallActivity : Activity() {
         Log.d(TAG, "Call declined - callId: ${payload.callId}")
         clearTimeout()
         VoipNotification.cancelTimeout(payload.callId)
-        stopRingtone()
         VoipNotification.handleDeclineAction(this, payload)
 
         finish()
@@ -303,7 +276,6 @@ class IncomingCallActivity : Activity() {
             LocalBroadcastManager.getInstance(this).unregisterReceiver(callStateReceiver)
             isCallStateReceiverRegistered = false
         }
-        stopRingtone()
     }
 
     override fun onBackPressed() {
