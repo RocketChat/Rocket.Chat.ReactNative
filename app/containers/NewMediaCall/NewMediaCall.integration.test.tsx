@@ -28,7 +28,7 @@ import type { InsideStackParamList } from '../../stacks/types';
 
 // Compile-time guard — fails tsc if 'CallView' is removed from InsideStackParamList.
 // Function-call form avoids both no-void and no-unused-expressions lint rules.
-const assertType = <_T extends true>() => undefined;
+const assertType = <_T extends true>(_?: _T): void => {};
 assertType<InsideStackParamList extends { CallView: unknown } ? true : false>();
 
 // ─── Mocks ────────────────────────────────────────────────────────────────────
