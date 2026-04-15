@@ -11,6 +11,7 @@ export interface IAttachment {
 	title?: string;
 	type?: string;
 	size?: number;
+	// For server >= 8.4 this field is also used as the image alt text
 	description?: string;
 	title_link?: string;
 	image_url?: string;
@@ -78,6 +79,7 @@ export interface IServerAttachment {
 export interface IShareAttachment {
 	filename: string;
 	description?: string;
+	altText?: string;
 	size: number;
 	mime?: string;
 	path: string;

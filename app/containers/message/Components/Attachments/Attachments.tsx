@@ -8,9 +8,11 @@ import Video from './Video';
 import CollapsibleQuote from './CollapsibleQuote';
 import AttachedActions from './AttachedActions';
 import Reply from './Reply';
+import ImageGallery from './ImageGallery';
 import MessageContext from '../../Context';
 import { type IMessageAttachments } from '../../interfaces';
 import { type IAttachment } from '../../../../definitions';
+import { useAltTextSupported } from '../../../../lib/hooks/useAltTextSupported';
 import { getMessageFromAttachment } from '../../utils';
 
 const removeQuote = (file?: IAttachment) =>
@@ -26,6 +28,7 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 		'use memo';
 
 		const { translateLanguage } = useContext(MessageContext);
+		const altTextSupported = useAltTextSupported();
 
 		const nonQuoteAttachments = attachments?.filter(removeQuote);
 
@@ -33,24 +36,63 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 			return null;
 		}
 
-		const attachmentsElements = nonQuoteAttachments.map((file: IAttachment, index: number) => {
-			const msg = getMessageFromAttachment(file, translateLanguage);
-			if (file && file.image_url) {
-				return (
-					<Image
-						key={file.image_url}
-						file={file}
-						showAttachment={showAttachment}
-						getCustomEmoji={getCustomEmoji}
-						author={author}
-						msg={msg}
-						imagePreview={file.image_preview}
-						imageType={file.image_type}
-					/>
-				);
+		// Group consecutive image attachments into runs for gallery rendering
+		type TGroup = { type: 'images'; files: IAttachment[] } | { type: 'other'; file: IAttachment; index: number };
+		const groups: TGroup[] = [];
+		let imageRun: IAttachment[] = [];
+
+		nonQuoteAttachments.forEach((file, index) => {
+			if (file.image_url) {
+				imageRun.push(file);
+			} else {
+				if (imageRun.length > 0) {
+					groups.push({ type: 'images', files: [...imageRun] });
+					imageRun = [];
+				}
+				groups.push({ type: 'other', file, index });
+			}
+		});
+		if (imageRun.length > 0) {
+			groups.push({ type: 'images', files: [...imageRun] });
+		}
+
+		const attachmentsElements = groups.map((group, groupIndex) => {
+			if (group.type === 'images') {
+				// Multiple images on supported servers → gallery; single image or old server → individual renders
+				if (altTextSupported && group.files.length >= 2) {
+					return (
+						<ImageGallery
+							key={`gallery-${groupIndex}`}
+							files={group.files}
+							showAttachment={showAttachment}
+							author={author}
+							getCustomEmoji={getCustomEmoji}
+						/>
+					);
+				}
+
+				return group.files.map(file => {
+					const msg = getMessageFromAttachment(file, translateLanguage);
+					return (
+						<Image
+							key={file.image_url}
+							file={file}
+							showAttachment={showAttachment}
+							getCustomEmoji={getCustomEmoji}
+							author={author}
+							msg={msg}
+							imagePreview={file.image_preview}
+							imageType={file.image_type}
+							isAltTextSupported={altTextSupported}
+						/>
+					);
+				});
 			}
 
-			if (file && file.audio_url) {
+			const { file, index } = group;
+			const msg = getMessageFromAttachment(file, translateLanguage);
+
+			if (file.audio_url) {
 				return <Audio key={file.audio_url} file={file} getCustomEmoji={getCustomEmoji} author={author} msg={msg} />;
 			}
 
@@ -67,8 +109,8 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 				);
 			}
 
-			if (file && file.actions && file.actions.length > 0) {
-				return <AttachedActions attachment={file} getCustomEmoji={getCustomEmoji} />;
+			if (file.actions && file.actions.length > 0) {
+				return <AttachedActions key={index} attachment={file} getCustomEmoji={getCustomEmoji} />;
 			}
 			if (typeof file.collapsed === 'boolean') {
 				return <CollapsibleQuote key={index} attachment={file} timeFormat={timeFormat} getCustomEmoji={getCustomEmoji} />;
@@ -89,6 +131,7 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 
 			return null;
 		});
+
 		return <View style={{ gap: 4 }}>{attachmentsElements}</View>;
 	},
 	(prevProps, nextProps) => dequal(prevProps.attachments, nextProps.attachments)

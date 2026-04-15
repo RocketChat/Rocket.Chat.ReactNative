@@ -10,6 +10,7 @@ export interface IImageContainer {
 	msg?: string;
 	imagePreview?: string;
 	imageType?: string;
+	isAltTextSupported?: boolean;
 }
 
 export interface IMessageImage {
@@ -18,4 +19,5 @@ export interface IMessageImage {
 	encrypted: boolean;
 	imagePreview?: string;
 	imageType?: string;
+	altText?: string;
 }
