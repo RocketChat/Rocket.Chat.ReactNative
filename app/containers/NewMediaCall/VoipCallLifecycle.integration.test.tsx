@@ -1,20 +1,21 @@
-// app/containers/NewMediaCall/NewMediaCall.integration.test.tsx
+// app/containers/NewMediaCall/VoipCallLifecycle.integration.test.tsx
 //
-// Integration test: CreateCall button press → MediaSessionInstance → CallView.
+// Integration tests covering the VoIP call lifecycle across real handlers in
+// MediaSessionInstance and useCallStore:
+//   - Outgoing (press Call → startCall → newCall → setCall + navigate)
+//   - Incoming (DDP accepted signal → answerCall → setCall + navigate)
+//   - Hang up (UI endCall and MediaSessionInstance.endCall ringing/active branches)
+//   - In-call controls (mute, hold, trackStateChange sync)
 //
-// Seam: @rocket.chat/media-signaling is mocked at the SDK boundary.
-// The mock MediaSignalingSession simulates the real SDK's async behaviour:
-//   session.startCall(actor, userId) → fires 'newCall' with a synthetic call.
-// This closes the causal chain — fireEvent.press alone causes Navigation.navigate.
-//
-// Real code running: MediaSessionInstance, useCallStore, NewMediaCall, CallView.
-// Mocked at boundary: MediaSignalingSession (SDK), Navigation, RNCallKeep,
-//   DDP SDK, WebRTC, native device modules (not available in Jest).
+// Seam: @rocket.chat/media-signaling is mocked at the SDK boundary. Everything
+// between the SDK and the UI — MediaSessionInstance, useCallStore, NewMediaCall,
+// CallView — runs as real code.
 
 import React from 'react';
 import { act, fireEvent, render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import RNCallKeep from 'react-native-callkeep';
+import InCallManager from 'react-native-incall-manager';
 import type { IClientMediaCall } from '@rocket.chat/media-signaling';
 
 import { NewMediaCall } from './NewMediaCall';
@@ -26,6 +27,7 @@ import { mediaSessionInstance } from '../../lib/services/voip/MediaSessionInstan
 import { mockedStore } from '../../reducers/mockedStore';
 import type { TPeerItem } from '../../lib/services/voip/getPeerAutocompleteOptions';
 import type { InsideStackParamList } from '../../stacks/types';
+import type { IDDPMessage } from '../../definitions/IDDPMessage';
 
 // Compile-time guard — fails tsc if 'CallView' is removed from InsideStackParamList.
 const assertType = <_T extends true>(_?: _T): void => {};
@@ -33,7 +35,12 @@ assertType<InsideStackParamList extends { CallView: unknown } ? true : false>();
 
 // ─── Mocks ────────────────────────────────────────────────────────────────────
 
-let consoleErrorSpy: ReturnType<typeof jest.spyOn> | undefined;
+// Mock-prefixed holder for the captured sdk.onStreamData handler.
+// Jest hoists jest.mock() to the top of the module; factories can only close
+// over variables whose names start with "mock". Wrapping in an object lets us
+// reassign across the beforeEach without recreating the module mock.
+const mockSdkState: { streamHandler: ((msg: IDDPMessage) => void) | null } = { streamHandler: null };
+
 jest.mock('../../lib/database', () => ({
 	db: { get: jest.fn() },
 	active: { get: jest.fn() }
@@ -51,7 +58,12 @@ jest.mock('../../lib/navigation/appNavigation', () => ({
 jest.mock('../../lib/services/sdk', () => ({
 	__esModule: true,
 	default: {
-		onStreamData: jest.fn(() => ({ stop: jest.fn() })),
+		// Capture the stream handler so tests can drive DDP signals directly —
+		// the real path is sdk.onStreamData → handler → this.instance.processSignal.
+		onStreamData: jest.fn((_name: string, handler: (msg: IDDPMessage) => void) => {
+			mockSdkState.streamHandler = handler;
+			return { stop: jest.fn() };
+		}),
 		methodCall: jest.fn()
 	}
 }));
@@ -76,6 +88,17 @@ jest.mock('react-native-callkeep', () => ({
 		endCall: jest.fn(),
 		setCurrentCallActive: jest.fn(),
 		setAvailable: jest.fn()
+	}
+}));
+// useCallStore.setCall/reset call InCallManager.start/stop; without this mock
+// those calls throw and the real error path goes through console.error, which
+// the narrow spy below would flag as unknown noise.
+jest.mock('react-native-incall-manager', () => ({
+	__esModule: true,
+	default: {
+		start: jest.fn(),
+		stop: jest.fn(),
+		setForceSpeakerphoneOn: jest.fn().mockResolvedValue(undefined)
 	}
 }));
 jest.mock('../../lib/methods/helpers/fileDownload', () => ({
@@ -157,11 +180,6 @@ function mockCallEmitter() {
 }
 
 // ─── Media-signaling mock ─────────────────────────────────────────────────────
-//
-// Key design: on() maintains a real handler registry so that session.emit()
-// dispatches to registered handlers. startCall(actor, userId) fires 'newCall'
-// synchronously, simulating the SDK's response after WebRTC negotiation.
-// session.emit() lets tests drive incoming-call and branch scenarios directly.
 
 type MockMediaSignalingSession = {
 	userId: string;
@@ -194,7 +212,6 @@ jest.mock('@rocket.chat/media-signaling', () => ({
 				handlers[event].push(handler);
 			});
 
-			// Allows tests to simulate incoming-call and branch scenarios.
 			this.emit = (event: string, payload: unknown) => {
 				handlers[event]?.forEach(h => h(payload));
 			};
@@ -202,18 +219,27 @@ jest.mock('@rocket.chat/media-signaling', () => ({
 			this.processSignal = jest.fn().mockResolvedValue(undefined);
 			this.setIceGatheringTimeout = jest.fn();
 
-			// Integration seam: startCall fires 'newCall' with a synthetic outgoing call,
-			// connecting fireEvent.press → startCall → newCall → setCall + navigate.
+			// Integration seam: startCall fires 'newCall' with a synthetic outgoing call.
+			// eslint-disable-next-line @typescript-eslint/no-this-alias
 			const self = this;
 			this.startCall = jest.fn().mockImplementation((_actor: string, userId: string) => {
 				const call: IClientMediaCall = {
 					callId: `call-${userId}`,
 					hidden: false,
 					state: 'ringing',
-					localParticipant: { local: true, role: 'caller', muted: false, held: false, contact: {} },
+					localParticipant: {
+						local: true,
+						role: 'caller',
+						muted: false,
+						held: false,
+						contact: {},
+						setMuted: jest.fn(),
+						setHeld: jest.fn()
+					},
 					remoteParticipants: [{ local: false, role: 'callee', muted: false, held: false, contact: {} }],
 					reject: jest.fn(),
 					hangup: jest.fn(),
+					sendDTMF: jest.fn(),
 					emitter: mockCallEmitter() as unknown as IClientMediaCall['emitter']
 				} as unknown as IClientMediaCall;
 				self.emit('newCall', { call });
@@ -228,21 +254,79 @@ jest.mock('@rocket.chat/media-signaling', () => ({
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-function makeIncomingCall(options: {
-	callId?: string;
-	role?: 'caller' | 'callee';
-	hidden?: boolean;
-}): IClientMediaCall {
+function makeIncomingCall(options: { callId?: string; role?: 'caller' | 'callee'; hidden?: boolean }): IClientMediaCall {
 	return {
 		callId: options.callId ?? 'incoming-call',
 		hidden: options.hidden ?? false,
 		state: 'ringing',
-		localParticipant: { local: true, role: options.role ?? 'callee', muted: false, held: false, contact: {} },
-		remoteParticipants: [{ local: false, role: options.role === 'caller' ? 'callee' : 'caller', muted: false, held: false, contact: {} }],
+		localParticipant: {
+			local: true,
+			role: options.role ?? 'callee',
+			muted: false,
+			held: false,
+			contact: {},
+			setMuted: jest.fn(),
+			setHeld: jest.fn()
+		},
+		remoteParticipants: [
+			{ local: false, role: options.role === 'caller' ? 'callee' : 'caller', muted: false, held: false, contact: {} }
+		],
 		reject: jest.fn(),
 		hangup: jest.fn(),
+		sendDTMF: jest.fn(),
 		emitter: mockCallEmitter() as unknown as IClientMediaCall['emitter']
 	} as unknown as IClientMediaCall;
+}
+
+// Extended synthetic call with all methods the real handlers exercise:
+// accept (answerCall), setMuted/setHeld (toggleMute/toggleHold), hangup/reject (endCall).
+function makeSyntheticCall(overrides: {
+	callId?: string;
+	state?: 'ringing' | 'active' | 'accepted' | 'ended' | 'none';
+	role?: 'caller' | 'callee';
+	remoteMuted?: boolean;
+	remoteHeld?: boolean;
+}): IClientMediaCall {
+	const callId = overrides.callId ?? 'synthetic-call';
+	return {
+		callId,
+		hidden: false,
+		state: overrides.state ?? 'ringing',
+		localParticipant: {
+			local: true,
+			role: overrides.role ?? 'callee',
+			muted: false,
+			held: false,
+			contact: {},
+			setMuted: jest.fn(),
+			setHeld: jest.fn()
+		},
+		remoteParticipants: [
+			{
+				local: false,
+				role: overrides.role === 'caller' ? 'callee' : 'caller',
+				muted: overrides.remoteMuted ?? false,
+				held: overrides.remoteHeld ?? false,
+				contact: { displayName: 'Remote', username: 'remote', sipExtension: '' }
+			}
+		],
+		accept: jest.fn().mockResolvedValue(undefined),
+		reject: jest.fn(),
+		hangup: jest.fn(),
+		sendDTMF: jest.fn(),
+		emitter: mockCallEmitter() as unknown as IClientMediaCall['emitter']
+	} as unknown as IClientMediaCall;
+}
+
+// Drive the same payload shape the production DDP listener expects.
+// Wraps the signal in an IDDPMessage and invokes the captured handler.
+function emitDDPMediaSignal(signal: Record<string, unknown>): void {
+	if (!mockSdkState.streamHandler) {
+		throw new Error('emitDDPMediaSignal called before sdk.onStreamData registered a handler');
+	}
+	mockSdkState.streamHandler({
+		fields: { eventName: 'test-device-id/media-signal', args: [signal] }
+	} as unknown as IDDPMessage);
 }
 
 function setSelectedPeer(peer: TPeerItem): void {
@@ -251,16 +335,74 @@ function setSelectedPeer(peer: TPeerItem): void {
 
 const Wrapper = ({ children }: { children: React.ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
 
+// ─── Console-error handling ───────────────────────────────────────────────────
+//
+// Replaces the previous blanket `jest.spyOn(console, 'error').mockImplementation(() => {})`
+// with a narrow allowlist. Known noise substrings are documented below; any
+// other console.error/warn causes the test to fail. This surfaces real act()
+// warnings and new bugs instead of hiding them.
+//
+// Known-noise allowlist:
+//   - '@expo/vector-icons' Icon warn: fires on CallView render because the
+//     icon font has not been loaded in the Jest environment. 3rd-party.
+//   - 'not wrapped in act(...)' warnings tied to the Icon class component's
+//     render inside <CallView /> — same root cause as above.
+//   - 'is not a valid icon name' — CallView's CustomIcon reports missing
+//     glyph entries (e.g. 'pause-shape-unfilled') in the Jest env; glyph map
+//     is not loaded. Rendering succeeds, warning is cosmetic for tests.
+//   - '[VoIP] Call not found:' — deterministic expected branch output of
+//     answerCall when getCallData returns undefined (exercised by test A2).
+//     Production code warns intentionally; tests should not hide it, but it
+//     is not an unexpected error for the asserting test.
+const CONSOLE_ERROR_ALLOWLIST: string[] = [];
+const CONSOLE_WARN_ALLOWLIST: string[] = [
+	'@expo/vector-icons',
+	'not wrapped in act',
+	'is not a valid icon name',
+	'[VoIP] Call not found:'
+];
+
+let consoleErrorSpy: jest.SpyInstance | undefined;
+let consoleWarnSpy: jest.SpyInstance | undefined;
+let unexpectedConsoleErrors: string[] = [];
+
+function formatConsoleArgs(args: unknown[]): string {
+	return args
+		.map(a => {
+			if (a instanceof Error) return a.message;
+			if (typeof a === 'string') return a;
+			try {
+				return JSON.stringify(a);
+			} catch {
+				return String(a);
+			}
+		})
+		.join(' ');
+}
+
 // ─── Tests ────────────────────────────────────────────────────────────────────
 
-describe('NewMediaCall → CallView (integration)', () => {
+describe('VoIP call lifecycle (integration)', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		createdSessions.length = 0;
+		mockSdkState.streamHandler = null;
+		unexpectedConsoleErrors = [];
 		usePeerAutocompleteStore.getState().reset();
 		useCallStore.getState().reset();
 		mediaSessionInstance.reset();
-		consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+		consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation((...args: unknown[]) => {
+			const message = formatConsoleArgs(args);
+			if (CONSOLE_ERROR_ALLOWLIST.some(allowed => message.includes(allowed))) return;
+			unexpectedConsoleErrors.push(`[error] ${message}`);
+		});
+		consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation((...args: unknown[]) => {
+			const message = formatConsoleArgs(args);
+			if (CONSOLE_WARN_ALLOWLIST.some(allowed => message.includes(allowed))) return;
+			unexpectedConsoleErrors.push(`[warn] ${message}`);
+		});
+
 		mediaSessionInstance.init('me');
 		if (createdSessions.length !== 1) {
 			throw new Error(`Expected exactly one media session after init, got ${createdSessions.length}`);
@@ -270,8 +412,14 @@ describe('NewMediaCall → CallView (integration)', () => {
 
 	afterEach(() => {
 		consoleErrorSpy?.mockRestore();
+		consoleWarnSpy?.mockRestore();
 		consoleErrorSpy = undefined;
+		consoleWarnSpy = undefined;
 		mediaSessionInstance.reset();
+		if (unexpectedConsoleErrors.length > 0) {
+			const joined = unexpectedConsoleErrors.join('\n  - ');
+			throw new Error(`Unexpected console.error/warn in test:\n  - ${joined}`);
+		}
 	});
 
 	// ── Outgoing calls (button press path) ───────────────────────────────────
@@ -293,18 +441,18 @@ describe('NewMediaCall → CallView (integration)', () => {
 		//   → useCallStore.setCall + Navigation.navigate('CallView')
 		fireEvent.press(getByTestId('new-media-call-button'));
 
-		// SDK-boundary: args are (actor, userId) — reversed from the public API
 		expect(session.startCall).toHaveBeenCalledWith('user', 'user-1');
 		expect(Navigation.navigate).toHaveBeenCalledWith('CallView');
 		expect(mockHideActionSheet).toHaveBeenCalledTimes(1);
 
-		const call = useCallStore.getState().call;
+		const { call } = useCallStore.getState();
 		expect(call?.callId).toBe('call-user-1');
 
-		// Behavioral: firing 'ended' triggers RNCallKeep cleanup and navigation back.
-		// Real emitter dispatches to both handlers wired by MediaSessionInstance and useCallStore.
-		(call!.emitter as unknown as ReturnType<typeof mockCallEmitter>).emit('ended');
-		expect((RNCallKeep.endCall as jest.Mock)).toHaveBeenCalledWith('call-user-1');
+		// Firing 'ended' triggers RNCallKeep cleanup and navigation back via real handlers.
+		act(() => {
+			(call!.emitter as unknown as ReturnType<typeof mockCallEmitter>).emit('ended');
+		});
+		expect(RNCallKeep.endCall as jest.Mock).toHaveBeenCalledWith('call-user-1');
 		expect(Navigation.back).toHaveBeenCalled();
 	});
 
@@ -344,15 +492,14 @@ describe('NewMediaCall → CallView (integration)', () => {
 	});
 
 	// ── newCall handler branches (incoming / SDK-driven path) ─────────────────
-	// These scenarios are triggered by the DDP listener in MediaSessionInstance,
-	// not by button press. We drive them via session.emit('newCall', ...) which
-	// exercises the same registered handler as the real DDP path.
 
 	it('hidden call: newCall with hidden=true does not navigate or populate store', () => {
 		const session = createdSessions[createdSessions.length - 1];
 		const hiddenCall = makeIncomingCall({ callId: 'hidden-1', hidden: true, role: 'caller' });
 
-		session.emit('newCall', { call: hiddenCall });
+		act(() => {
+			session.emit('newCall', { call: hiddenCall });
+		});
 
 		expect(Navigation.navigate).not.toHaveBeenCalled();
 		expect(useCallStore.getState().call).toBeNull();
@@ -362,16 +509,15 @@ describe('NewMediaCall → CallView (integration)', () => {
 		const session = createdSessions[createdSessions.length - 1];
 		const incomingCall = makeIncomingCall({ callId: 'incoming-1', role: 'callee' });
 
-		session.emit('newCall', { call: incomingCall });
+		act(() => {
+			session.emit('newCall', { call: incomingCall });
+		});
 
 		expect(Navigation.navigate).not.toHaveBeenCalled();
 		expect(useCallStore.getState().call).toBeNull();
 	});
 
 	// ── CallView render contract ──────────────────────────────────────────────
-	// Verifies useCallStore.setCall produces state that CallView renders.
-	// Kept here because it proves the store → UI contract that the outgoing-call
-	// path relies on (MediaSessionInstance calls setCall before navigating).
 
 	it('setCall populates store and CallView renders; clearing store unmounts it', () => {
 		const emitter = mockCallEmitter();
@@ -394,7 +540,9 @@ describe('NewMediaCall → CallView (integration)', () => {
 			emitter: emitter as unknown as IClientMediaCall['emitter']
 		} as unknown as IClientMediaCall;
 
-		useCallStore.getState().setCall(call);
+		act(() => {
+			useCallStore.getState().setCall(call);
+		});
 
 		const { getByTestId, queryByTestId } = render(
 			<Wrapper>
@@ -409,4 +557,206 @@ describe('NewMediaCall → CallView (integration)', () => {
 		});
 		expect(queryByTestId('call-view-container')).toBeNull();
 	});
+
+	// ── MediaSessionInstance contract: answerCall ────────────────────────────
+
+	describe('MediaSessionInstance contract: answerCall', () => {
+		it('A1: DDP accepted signal with native pre-accept → answerCall navigates to CallView', async () => {
+			const session = createdSessions[createdSessions.length - 1];
+			const mainCall = makeSyntheticCall({ callId: 'incoming-1', role: 'callee' });
+			session.getCallData.mockReturnValue(mainCall);
+
+			act(() => {
+				useCallStore.getState().setNativeAcceptedCallId('incoming-1');
+			});
+
+			await act(async () => {
+				emitDDPMediaSignal({
+					type: 'notification',
+					notification: 'accepted',
+					signedContractId: 'test-device-id',
+					callId: 'incoming-1'
+				});
+				// Flush the answerCall() microtask queue.
+				await Promise.resolve();
+				await Promise.resolve();
+			});
+
+			expect(RNCallKeep.setCurrentCallActive as jest.Mock).toHaveBeenCalledWith('incoming-1');
+			expect(Navigation.navigate).toHaveBeenCalledWith('CallView');
+			expect(useCallStore.getState().call?.callId).toBe('incoming-1');
+		});
+
+		it('A2: accepted signal but call not found → RNCallKeep.endCall, no navigate', async () => {
+			const session = createdSessions[createdSessions.length - 1];
+			session.getCallData.mockReturnValue(undefined);
+
+			act(() => {
+				useCallStore.getState().setNativeAcceptedCallId('missing-1');
+			});
+
+			await act(async () => {
+				emitDDPMediaSignal({
+					type: 'notification',
+					notification: 'accepted',
+					signedContractId: 'test-device-id',
+					callId: 'missing-1'
+				});
+				await Promise.resolve();
+				await Promise.resolve();
+			});
+
+			expect(RNCallKeep.endCall as jest.Mock).toHaveBeenCalledWith('missing-1');
+			expect(useCallStore.getState().nativeAcceptedCallId).toBeNull();
+			expect(Navigation.navigate).not.toHaveBeenCalled();
+			expect(useCallStore.getState().call).toBeNull();
+		});
+
+		it('A3: idempotency — existing call matches callId, answerCall early-returns', async () => {
+			// Test-pollution guard: confirms the outer reset() actually cleared state.
+			expect(useCallStore.getState().nativeAcceptedCallId).toBeNull();
+
+			const session = createdSessions[createdSessions.length - 1];
+			const existingCall = makeSyntheticCall({ callId: 'incoming-1', role: 'callee' });
+			act(() => {
+				useCallStore.getState().setCall(existingCall);
+			});
+			(Navigation.navigate as jest.Mock).mockClear();
+			(RNCallKeep.setCurrentCallActive as jest.Mock).mockClear();
+
+			await act(async () => {
+				await mediaSessionInstance.answerCall('incoming-1');
+			});
+
+			// getCallData is the SDK boundary — confirming it was never hit proves
+			// the early-return branch ran before any SDK interaction.
+			expect(session.getCallData).not.toHaveBeenCalled();
+			expect(Navigation.navigate).not.toHaveBeenCalled();
+			expect(RNCallKeep.setCurrentCallActive as jest.Mock).not.toHaveBeenCalled();
+		});
+	});
+
+	// ── UI store contract: Hang up ────────────────────────────────────────────
+	// The CallView end button wires to useCallStore.endCall (see
+	// app/views/CallView/components/CallButtons.tsx), NOT MediaSessionInstance.endCall.
+	// The latter is invoked from native CallKit "end" events. Both need coverage.
+
+	describe('UI store contract: Hang up', () => {
+		it('B1: useCallStore.endCall clears store and triggers RNCallKeep.endCall', () => {
+			setSelectedPeer({ type: 'user', value: 'user-1', label: 'Alice', username: 'alice' });
+			const { getByTestId } = render(
+				<Wrapper>
+					<NewMediaCall />
+				</Wrapper>
+			);
+			// Real press path wires listeners via setCall.
+			fireEvent.press(getByTestId('new-media-call-button'));
+			expect(useCallStore.getState().call?.callId).toBe('call-user-1');
+
+			act(() => {
+				useCallStore.getState().endCall();
+			});
+
+			expect(RNCallKeep.endCall as jest.Mock).toHaveBeenCalledWith('call-user-1');
+			expect(InCallManager.stop as jest.Mock).toHaveBeenCalled();
+			expect(useCallStore.getState().call).toBeNull();
+			expect(useCallStore.getState().callId).toBeNull();
+		});
+
+		it('B2: MediaSessionInstance.endCall during active state → RNCallKeep cleanup, store reset', () => {
+			const session = createdSessions[createdSessions.length - 1];
+			const activeCall = makeSyntheticCall({ callId: 'active-1', state: 'active' });
+			session.getCallData.mockReturnValue(activeCall);
+
+			act(() => {
+				mediaSessionInstance.endCall('active-1');
+			});
+
+			expect(RNCallKeep.endCall as jest.Mock).toHaveBeenCalledWith('active-1');
+			expect(RNCallKeep.setCurrentCallActive as jest.Mock).toHaveBeenCalledWith('');
+			expect(RNCallKeep.setAvailable as jest.Mock).toHaveBeenCalledWith(true);
+			expect(useCallStore.getState().call).toBeNull();
+		});
+
+		it('B3: MediaSessionInstance.endCall during ringing → same cleanup (reject branch)', () => {
+			const session = createdSessions[createdSessions.length - 1];
+			const ringingCall = makeSyntheticCall({ callId: 'ringing-1', state: 'ringing' });
+			session.getCallData.mockReturnValue(ringingCall);
+
+			act(() => {
+				mediaSessionInstance.endCall('ringing-1');
+			});
+
+			expect(RNCallKeep.endCall as jest.Mock).toHaveBeenCalledWith('ringing-1');
+			expect(useCallStore.getState().call).toBeNull();
+		});
+	});
+
+	// ── UI store contract: In-call controls (mute / hold) ────────────────────
+
+	describe('UI store contract: In-call controls (mute/hold)', () => {
+		it('C1: toggleMute flips store isMuted; second toggle restores it', () => {
+			const call = makeSyntheticCall({ callId: 'ctrl-mute', role: 'caller', state: 'active' });
+			act(() => {
+				useCallStore.getState().setCall(call);
+			});
+			expect(useCallStore.getState().isMuted).toBe(false);
+
+			act(() => {
+				useCallStore.getState().toggleMute();
+			});
+			expect(useCallStore.getState().isMuted).toBe(true);
+
+			act(() => {
+				useCallStore.getState().toggleMute();
+			});
+			expect(useCallStore.getState().isMuted).toBe(false);
+		});
+
+		it('C2: toggleHold flips store isOnHold; second toggle restores it', () => {
+			const call = makeSyntheticCall({ callId: 'ctrl-hold', role: 'caller', state: 'active' });
+			act(() => {
+				useCallStore.getState().setCall(call);
+			});
+			expect(useCallStore.getState().isOnHold).toBe(false);
+
+			act(() => {
+				useCallStore.getState().toggleHold();
+			});
+			expect(useCallStore.getState().isOnHold).toBe(true);
+
+			act(() => {
+				useCallStore.getState().toggleHold();
+			});
+			expect(useCallStore.getState().isOnHold).toBe(false);
+		});
+
+		it('C3: trackStateChange emission syncs store from call participant state', () => {
+			const call = makeSyntheticCall({ callId: 'ctrl-track', role: 'caller', state: 'active' });
+			act(() => {
+				useCallStore.getState().setCall(call);
+			});
+			expect(useCallStore.getState().isMuted).toBe(false);
+			expect(useCallStore.getState().remoteHeld).toBe(false);
+
+			// Mutate the call's state the way the SDK would before dispatching the event.
+			// The SDK types flag these fields as readonly; tests cast through
+			// Record<string, unknown> because we're standing in for the SDK here.
+			(call.localParticipant as unknown as Record<string, unknown>).muted = true;
+			(call.remoteParticipants[0] as unknown as Record<string, unknown>).held = true;
+
+			act(() => {
+				(call.emitter as unknown as ReturnType<typeof mockCallEmitter>).emit('trackStateChange');
+			});
+
+			expect(useCallStore.getState().isMuted).toBe(true);
+			expect(useCallStore.getState().remoteHeld).toBe(true);
+			expect(useCallStore.getState().controlsVisible).toBe(true);
+		});
+	});
+
+	// startCall rejection path — deferred to Phase 3.
+	// MediaSessionInstance.ts:151-155 does not `await` or `.catch` the SDK's
+	// startCall promise, so a rejection leaks as an unhandled rejection. Phase 3
+	// will land the `.catch` first, then add the rejection-path integration test.
 });
