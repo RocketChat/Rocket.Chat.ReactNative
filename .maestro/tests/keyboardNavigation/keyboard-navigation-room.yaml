@@ -41,9 +41,37 @@ tags:
     timeout: 60000
 - pressKey: Remote Dpad Down
 - inputText: ${output.keyboardMessage}
+- pressKey: Remote Dpad Down
+- pressKey: Remote Dpad Right
+
 # Submit: ComposerInput wires onSubmitEditing -> send when soft keyboard is hidden (TV / physical keyboard)
 - pressKey: enter
 - extendedWaitUntil:
     visible:
       id: 'message-content-${output.keyboardMessage}'
     timeout: 60000
+# Open Emoji Keyboard
+- pressKey: Remote Dpad Up
+- pressKey: Remote Dpad Down
+- pressKey: Remote Dpad Right
+- pressKey: enter
+
+# Open category emoji
+- pressKey: Remote Dpad Down
+- pressKey: Remote Dpad Down
+- pressKey: Remote Dpad Down
+- pressKey: Remote Dpad Right
+- pressKey: enter
+
+# Select emoji
+- pressKey: Remote Dpad Down
+- pressKey: Remote Dpad Right
+- pressKey: Remote Dpad Up
+- pressKey: enter
+
+# Send emoji
+- pressKey: Remote Dpad Up
+- pressKey: Remote Dpad Up
+- pressKey: enter
+- assertVisible:
+    id: 'message-content-😀'
