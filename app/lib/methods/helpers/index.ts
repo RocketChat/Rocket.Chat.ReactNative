@@ -8,6 +8,7 @@ export * from './getAvatarUrl';
 export * from './info';
 export * from './isReadOnly';
 export * from './media';
+export * from './normalizeDeepLinkingServerHost';
 export * from './room';
 export * from './server';
 export * from './isSsl';
