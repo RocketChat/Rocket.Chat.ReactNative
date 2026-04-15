@@ -40,7 +40,7 @@ static void Logger(NSString *format, ...) {
     @try {
         NSString *mmkvPath = [self initializeMMKV];
         if (!mmkvPath) {
-            Logger(@"Failed to initialize MMKV path - check AppGroupIdentifier in Info.plist");
+            Logger(@"Failed to initialize MMKV path");
             return;
         }
 
@@ -69,7 +69,7 @@ static void Logger(NSString *format, ...) {
             Logger(@"MMKV initialized successfully. Keys: %lu", (unsigned long)[[mmkv allKeys] count]);
         }
     } @catch (NSException *exception) {
-        Logger(@"MMKV initialization error: %@", exception.reason);
+        Logger(@"MMKV initialization error: %@ - %@", exception.name, exception.reason);
     }
 }
 

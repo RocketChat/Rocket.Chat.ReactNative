@@ -1,4 +1,4 @@
-// Mock for react-native-mmkv v4
+// Mock for react-native-mmkv
 const { useState, useEffect, useRef, useMemo, useCallback } = require('react');
 
 // Shared storage between instances with the same id
