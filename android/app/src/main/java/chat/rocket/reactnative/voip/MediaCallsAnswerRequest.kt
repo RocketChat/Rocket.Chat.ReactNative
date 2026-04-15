@@ -24,6 +24,8 @@ import java.io.IOException
  * Auth headers (`x-user-id` / `x-auth-token`) are resolved from [Ejson] at call time,
  * matching the pattern used by [chat.rocket.reactnative.notification.ReplyBroadcast].
  *
+ * [fetch]'s `onResult` is always invoked on the main thread.
+ *
  * @param callId       The call identifier from the VoIP payload.
  * @param contractId   The device-unique contract identifier (`Settings.Secure.ANDROID_ID`).
  * @param answer       Either `"accept"` or `"reject"`.
@@ -92,7 +94,7 @@ class MediaCallsAnswerRequest(
 
         if (userId.isNullOrEmpty() || token.isNullOrEmpty()) {
             Log.w(TAG, "Missing credentials for $host — cannot send media-call answer")
-            onResult(false)
+            mainHandler.post { onResult(false) }
             return
         }
 
@@ -119,7 +121,11 @@ class MediaCallsAnswerRequest(
                 response.use {
                     val code = it.code
                     val success = code in 200..299
-                    Log.d(TAG, "MediaCallsAnswerRequest response for callId=$callId: code=$code success=$success")
+                    if (success) {
+                        Log.d(TAG, "MediaCallsAnswerRequest response for callId=$callId: code=$code success=true")
+                    } else {
+                        Log.w(TAG, "MediaCallsAnswerRequest failed callId=$callId code=$code answer=$answer")
+                    }
                     mainHandler.post { onResult(success) }
                 }
             }

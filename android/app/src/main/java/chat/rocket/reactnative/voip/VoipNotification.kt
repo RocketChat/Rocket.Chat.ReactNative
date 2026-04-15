@@ -224,13 +224,14 @@ class VoipNotification(private val context: Context) {
         }
 
         /**
-         * Accept from notification or IncomingCallActivity: send accept over native DDP, sync Telecom,
-         * dismiss UI, then open MainActivity (unless [skipLaunchMainActivity] — already in MainActivity
-         * from heads-up Accept [PendingIntent.getActivity]). JS still runs answerCall afterward.
+         * Accept from notification or IncomingCallActivity: send accept via
+         * [MediaCallsAnswerRequest] (`POST /api/v1/media-calls.answer`), then sync Telecom, dismiss UI,
+         * and open MainActivity (unless [skipLaunchMainActivity] — already in MainActivity from heads-up
+         * Accept [PendingIntent.getActivity]). JS still runs answerCall afterward.
          *
-         * The DDP call is asynchronous; [VoipModule.storeInitialEvents], notification cancel, Telecom
-         * answer, and [ACTION_DISMISS] run from an internal completion callback. [IncomingCallActivity]
-         * stays open until that broadcast is received.
+         * The REST result is delivered on the main thread; [VoipModule.storeInitialEvents], notification
+         * cancel, Telecom answer, and [ACTION_DISMISS] run from the completion callback (or timeout).
+         * [IncomingCallActivity] stays open until that broadcast is received.
          */
         @JvmStatic
         @JvmOverloads
@@ -239,20 +240,20 @@ class VoipNotification(private val context: Context) {
             cancelTimeout(payload.callId)
 
             val appCtx = context.applicationContext
-            // Guard so finish() is called at most once, whether by the DDP callback or the timeout.
+            // Guard so finish() is called at most once, whether by the REST callback or the timeout.
             val finished = AtomicBoolean(false)
             val timeoutHandler = Handler(Looper.getMainLooper())
             var timeoutRunnable: Runnable? = null
 
-            fun finish(ddpSuccess: Boolean) {
+            fun finish(answerRequestSucceeded: Boolean) {
                 if (!finished.compareAndSet(false, true)) return
                 timeoutRunnable?.let { timeoutHandler.removeCallbacks(it) }
                 ddpRegistry.stopClient(payload.callId)
-                if (ddpSuccess) {
+                if (answerRequestSucceeded) {
                     answerIncomingCall(payload.callId)
                     VoipModule.storeInitialEvents(payload)
                 } else {
-                    Log.d(TAG, "Native accept did not succeed for ${payload.callId}; opening app for JS recovery")
+                    Log.d(TAG, "media-calls.answer failed for ${payload.callId}; opening app for JS recovery")
                     disconnectIncomingCall(payload.callId, false)
                     VoipModule.storeAcceptFailureForJs(payload)
                 }
@@ -268,7 +269,7 @@ class VoipNotification(private val context: Context) {
             }
 
             val postedTimeout = Runnable {
-                Log.w(TAG, "Native accept timed out for ${payload.callId}; falling back to JS recovery")
+                Log.w(TAG, "media-calls.answer timed out for ${payload.callId}; falling back to JS recovery")
                 finish(false)
             }
             timeoutRunnable = postedTimeout
