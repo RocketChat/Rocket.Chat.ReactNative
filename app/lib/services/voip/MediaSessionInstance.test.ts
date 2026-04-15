@@ -266,7 +266,7 @@ describe('MediaSessionInstance', () => {
 		it('should throw existing makeInstance error when getInstance after reset without init', async () => {
 			await mediaSessionInstance.init('user-1');
 			mediaSessionInstance.reset();
-			expect(() => mediaSessionStore.getInstance('any')).toThrow('WebRTC processor factory and send signal function must be set');
+			expect(() => mediaSessionStore.getInstance('any')).toThrow(/must be set/);
 		});
 
 		it('should allow init after reset', async () => {
@@ -516,17 +516,17 @@ describe('MediaSessionInstance', () => {
 			answerSpy.mockRestore();
 		});
 
-		it('syncStateSignalsAfterNativeVoipAccept skips REST when no instance', async () => {
+		it('applyRestStateSignals skips REST when no instance', async () => {
 			mediaSessionInstance.reset();
 			mockMediaCallsStateSignals.mockClear();
-			await mediaSessionInstance.syncStateSignalsAfterNativeVoipAccept();
+			await mediaSessionInstance.applyRestStateSignals();
 			expect(mockMediaCallsStateSignals).not.toHaveBeenCalled();
 		});
 
-		it('syncStateSignalsAfterNativeVoipAccept refetches REST after init', async () => {
+		it('applyRestStateSignals refetches REST after init', async () => {
 			await mediaSessionInstance.init('user-1');
 			mockMediaCallsStateSignals.mockClear();
-			await mediaSessionInstance.syncStateSignalsAfterNativeVoipAccept();
+			await mediaSessionInstance.applyRestStateSignals();
 			expect(mockMediaCallsStateSignals).toHaveBeenCalledWith('test-device-id');
 		});
 	});

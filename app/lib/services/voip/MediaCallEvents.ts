@@ -66,8 +66,8 @@ function handleVoipAcceptSucceededFromNative(data: VoipPayload) {
 	NativeVoipModule.clearInitialEvents();
 	useCallStore.getState().setNativeAcceptedCallId(data.callId);
 	if (data.host && isVoipIncomingHostCurrentWorkspace(data.host)) {
-		void mediaSessionInstance.syncStateSignalsAfterNativeVoipAccept().catch(error => {
-			console.error(`${TAG} syncStateSignalsAfterNativeVoipAccept failed:`, error);
+		mediaSessionInstance.applyRestStateSignals().catch(error => {
+			console.error(`${TAG} applyRestStateSignals failed:`, error);
 		});
 		return;
 	}
@@ -124,8 +124,8 @@ export const setupMediaCallEvents = (): (() => void) => {
 
 		// Note: there is intentionally no 'answerCall' listener here.
 		// VoipService.swift handles accept natively: handleObservedCallChanged detects
-		// hasConnected = true and calls handleNativeAccept(), which sends the DDP accept
-		// signal before JS runs. JS receives VoipAcceptSucceeded after success.
+		// hasConnected = true and calls handleNativeAccept(), which sends the REST accept
+		// (POST /api/v1/media-calls.answer) before JS runs. JS receives VoipAcceptSucceeded after success.
 	}
 
 	/** Tracks OS-driven hold (competing call) so we only auto-resume that path, not manual hold. */
@@ -239,11 +239,11 @@ export const getInitialMediaCallEvents = async (): Promise<boolean> => {
 			useCallStore.getState().setNativeAcceptedCallId(initialEvents.callId);
 
 			if (initialEvents.host && isVoipIncomingHostCurrentWorkspace(initialEvents.host)) {
-				void mediaSessionInstance.syncStateSignalsAfterNativeVoipAccept().catch(error => {
-					console.error(`${TAG} syncStateSignalsAfterNativeVoipAccept (initial) failed:`, error);
+				mediaSessionInstance.applyRestStateSignals().catch(error => {
+					console.error(`${TAG} applyRestStateSignals (initial) failed:`, error);
 				});
 				console.log(`${TAG} Same workspace as VoIP host; skipped deepLinkingOpen`);
-				return Promise.resolve(true);
+				return true;
 			}
 
 			store.dispatch(

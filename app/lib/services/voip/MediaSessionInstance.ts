@@ -50,13 +50,13 @@ class MediaSessionInstance {
 		}
 	}
 
-	private async applyRestStateSignals(): Promise<void> {
+	/** Replays `media-calls.stateSignals`. Used on init and when native accept raced ahead of `nativeAcceptedCallId`. Caller must ensure SDK/session host matches the call (see MediaCallEvents host gate). `tryAnswerIfNativeAcceptedNotification` may also fire from the stream-notify-user path; `answerCall` is idempotent. */
+	public async applyRestStateSignals(): Promise<void> {
 		if (!this.instance) {
 			return;
 		}
 		try {
 			const { signals } = await mediaCallsStateSignals(getUniqueIdSync());
-			console.log('[VoIP] REST state signals:', signals);
 			for (const signal of signals) {
 				this.instance.processSignal(signal);
 				this.tryAnswerIfNativeAcceptedNotification(signal);
@@ -64,11 +64,6 @@ class MediaSessionInstance {
 		} catch (error) {
 			console.error('[VoIP] Failed to fetch or apply REST state signals:', error);
 		}
-	}
-
-	/** Replays `media-calls.stateSignals` when native accept raced ahead of `nativeAcceptedCallId`. Caller must ensure SDK/session host matches the call (see MediaCallEvents host gate). */
-	public async syncStateSignalsAfterNativeVoipAccept(): Promise<void> {
-		await this.applyRestStateSignals();
 	}
 
 	public async init(userId: string): Promise<void> {
