@@ -26,12 +26,10 @@ import { mockedStore } from '../../reducers/mockedStore';
 import type { TPeerItem } from '../../lib/services/voip/getPeerAutocompleteOptions';
 import type { InsideStackParamList } from '../../stacks/types';
 
-// Compile-time route-name guard — renaming 'CallView' in the stacks breaks tsc.
-// (CallView: undefined is defined at app/stacks/types.ts:299)
-// `void` prevents the noUnusedLocals error; the type annotation is the actual guard.
+// Compile-time guard — fails tsc if 'CallView' is removed from InsideStackParamList.
+// `satisfies` creates no binding so there is no unused-variable warning.
 type AssertCallViewRoute = InsideStackParamList extends { CallView: unknown } ? true : never;
-const _routeCheck: AssertCallViewRoute = true;
-void _routeCheck;
+(true satisfies AssertCallViewRoute);
 
 // ─── Mocks ────────────────────────────────────────────────────────────────────
 
@@ -278,6 +276,7 @@ describe('NewMediaCall → CallView (integration)', () => {
 		mediaSessionInstance.reset();
 		consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 		mediaSessionInstance.init('me');
+		// eslint-disable-next-line jest/no-standalone-expect
 		expect(createdSessions).toHaveLength(1); // singleton-bleed guard
 		// Clear calls made during setup (reset() calls hideActionSheetRef internally)
 		mockHideActionSheet.mockClear();
