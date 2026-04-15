@@ -1,5 +1,5 @@
 diff --git a/node_modules/expo-asset/android/src/main/java/expo/modules/asset/AssetModule.kt b/node_modules/expo-asset/android/src/main/java/expo/modules/asset/AssetModule.kt
-index 9f1e2c6..ab5db92 100644
+index 9f1e2c6..d4c49cd 100644
 --- a/node_modules/expo-asset/android/src/main/java/expo/modules/asset/AssetModule.kt
 +++ b/node_modules/expo-asset/android/src/main/java/expo/modules/asset/AssetModule.kt
 @@ -3,6 +3,7 @@ package expo.modules.asset
@@ -17,7 +17,7 @@ index 9f1e2c6..ab5db92 100644
 +      // If the scheme is null, it's a raw asset (e.g., "custom.ttf").
 +      // Returning early prevents Expo from trying to "cache" a local native file.
 +      // Only for Android 8 and early
-+      if (uri.scheme == null && Build.VERSION.SDK_INT.SDK_INT <= Build.VERSION_CODES.O) {
++      if (uri.scheme == null && Build.VERSION.SDK_INT <= Build.VERSION_CODES.O) {
 +          return@Coroutine uri
 +      }
 +
