@@ -27,9 +27,9 @@ import type { TPeerItem } from '../../lib/services/voip/getPeerAutocompleteOptio
 import type { InsideStackParamList } from '../../stacks/types';
 
 // Compile-time guard — fails tsc if 'CallView' is removed from InsideStackParamList.
-// `satisfies` creates no binding so there is no unused-variable warning.
-type AssertCallViewRoute = InsideStackParamList extends { CallView: unknown } ? true : never;
-(true satisfies AssertCallViewRoute);
+// Function-call form avoids both no-void and no-unused-expressions lint rules.
+const assertType = <_T extends true>() => undefined;
+assertType<InsideStackParamList extends { CallView: unknown } ? true : false>();
 
 // ─── Mocks ────────────────────────────────────────────────────────────────────
 
@@ -276,8 +276,9 @@ describe('NewMediaCall → CallView (integration)', () => {
 		mediaSessionInstance.reset();
 		consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 		mediaSessionInstance.init('me');
-		// eslint-disable-next-line jest/no-standalone-expect
-		expect(createdSessions).toHaveLength(1); // singleton-bleed guard
+		if (createdSessions.length !== 1) {
+			throw new Error(`Expected exactly one media session after init, got ${createdSessions.length}`);
+		}
 		// Clear calls made during setup (reset() calls hideActionSheetRef internally)
 		mockHideActionSheet.mockClear();
 	});
