@@ -157,6 +157,10 @@ export function existsMMKV(id) {
 }
 
 export function deleteMMKV(id) {
+	const instance = storageInstances.get(id);
+	instance?.storage.clear();
+	instance?.listeners.splice(0);
+
 	const deleted = storageInstances.delete(id);
 	if (defaultInstance?.id === id) {
 		defaultInstance = null;
@@ -213,6 +217,10 @@ export function useMMKVKeys(instance) {
 	const mmkv = instance ?? getDefaultMMKVInstance();
 	const [allKeys, setKeys] = useState(() => mmkv.getAllKeys());
 
+	useEffect(() => {
+		setKeys(mmkv.getAllKeys());
+	}, [mmkv]);
+	
 	useMMKVListener(key => {
 		if (key === undefined) {
 			setKeys(() => mmkv.getAllKeys());
