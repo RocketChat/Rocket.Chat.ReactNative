@@ -4,6 +4,7 @@ import { View, StyleSheet, useWindowDimensions } from 'react-native';
 
 import I18n from '../../../../i18n';
 import { CustomIcon, type TIconsName } from '../../../CustomIcon';
+import { useMessageComposerApi } from '../../context';
 
 export interface IBaseButton {
 	testID: string;
@@ -23,6 +24,7 @@ export const hitSlop = {
 export const BaseButton = ({ accessibilityLabel, icon, color, testID, onPress }: IBaseButton) => {
 	'use memo';
 
+	const { setFocused } = useMessageComposerApi();
 	const { fontScale } = useWindowDimensions();
 	const size = 24 * fontScale;
 
@@ -33,7 +35,8 @@ export const BaseButton = ({ accessibilityLabel, icon, color, testID, onPress }:
 				accessibilityLabel={I18n.t(accessibilityLabel)}
 				accessibilityRole='button'
 				collapsable={false}
-				testID={testID}>
+				testID={testID}
+				onFocus={() => setFocused(true)}>
 				<CustomIcon name={icon} size={24} color={color} />
 			</View>
 		</BorderlessButton>

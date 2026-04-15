@@ -1,10 +1,11 @@
-import React, { createContext, type ReactElement, useContext, useMemo, useReducer } from 'react';
+import React, { createContext, type ReactElement, useContext, useMemo, useReducer, useRef } from 'react';
 
 import { type IEmoji } from '../../definitions';
 import { type IAutocompleteBase, type TMicOrSend } from './interfaces';
 
 type TMessageComposerContextApi = {
 	setFocused(focused: boolean): void;
+	cancelBlur(): void;
 	setMicOrSend(micOrSend: TMicOrSend): void;
 	setMarkdownToolbar(showMarkdownToolbar: boolean): void;
 	setAlsoSendThreadToChannel(alsoSendThreadToChannel: boolean): void;
@@ -86,8 +87,26 @@ export const MessageComposerProvider = ({ children }: { children: ReactElement }
 		autocompleteParams: { text: '', type: null }
 	} as State);
 
+	const blurTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
 	const api = useMemo(() => {
-		const setFocused = (focused: boolean) => dispatch({ type: 'updateFocused', focused });
+		const cancelBlur = () => {
+			if (blurTimeoutRef.current) {
+				clearTimeout(blurTimeoutRef.current);
+				blurTimeoutRef.current = null;
+			}
+		};
+
+		const setFocused = (focused: boolean) => {
+			if (focused) {
+				cancelBlur();
+				dispatch({ type: 'updateFocused', focused: true });
+			} else {
+				blurTimeoutRef.current = setTimeout(() => {
+					dispatch({ type: 'updateFocused', focused: false });
+				}, 150);
+			}
+		};
 
 		const setMicOrSend = (micOrSend: TMicOrSend) => dispatch({ type: 'setMicOrSend', micOrSend });
 
@@ -102,6 +121,7 @@ export const MessageComposerProvider = ({ children }: { children: ReactElement }
 
 		return {
 			setFocused,
+			cancelBlur,
 			setMicOrSend,
 			setMarkdownToolbar,
 			setAlsoSendThreadToChannel,
