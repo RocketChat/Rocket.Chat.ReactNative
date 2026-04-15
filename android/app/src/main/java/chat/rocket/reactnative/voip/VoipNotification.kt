@@ -150,6 +150,7 @@ class VoipNotification(private val context: Context) {
         fun handleDeclineAction(context: Context, payload: VoipPayload) {
             Log.d(TAG, "Decline action triggered for callId: ${payload.callId}")
             cancelTimeout(payload.callId)
+            ddpRegistry.stopClient(payload.callId)
             val deviceId = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
             MediaCallsAnswerRequest.fetch(
                 context = context,
