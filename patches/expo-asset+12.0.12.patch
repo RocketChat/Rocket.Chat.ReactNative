@@ -1,14 +1,23 @@
 diff --git a/node_modules/expo-asset/android/src/main/java/expo/modules/asset/AssetModule.kt b/node_modules/expo-asset/android/src/main/java/expo/modules/asset/AssetModule.kt
-index 9f1e2c6..61a1032 100644
+index 9f1e2c6..ab5db92 100644
 --- a/node_modules/expo-asset/android/src/main/java/expo/modules/asset/AssetModule.kt
 +++ b/node_modules/expo-asset/android/src/main/java/expo/modules/asset/AssetModule.kt
-@@ -80,6 +80,12 @@ class AssetModule : Module() {
+@@ -3,6 +3,7 @@ package expo.modules.asset
+ import android.content.Context
+ import android.net.Uri
+ import android.util.Log
++import android.os.Build
+ import expo.modules.interfaces.filesystem.Permission
+ import expo.modules.kotlin.AppContext
+ import expo.modules.kotlin.exception.CodedException
+@@ -80,6 +81,13 @@ class AssetModule : Module() {
      Name("ExpoAsset")
  
      AsyncFunction("downloadAsync") Coroutine { uri: URI, md5Hash: String?, type: String ->
 +      // If the scheme is null, it's a raw asset (e.g., "custom.ttf").
 +      // Returning early prevents Expo from trying to "cache" a local native file.
-+      if (uri.scheme == null) {
++      // Only for Android 8 and early
++      if (uri.scheme == null && Build.VERSION.SDK_INT.SDK_INT <= Build.VERSION_CODES.O) {
 +          return@Coroutine uri
 +      }
 +

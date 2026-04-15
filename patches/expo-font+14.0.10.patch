@@ -1,68 +1,38 @@
 diff --git a/node_modules/expo-font/android/src/main/java/expo/modules/font/FontLoaderModule.kt b/node_modules/expo-font/android/src/main/java/expo/modules/font/FontLoaderModule.kt
-index 2cd51dc..ca6a417 100644
+index 2cd51dc..db368ff 100644
 --- a/node_modules/expo-font/android/src/main/java/expo/modules/font/FontLoaderModule.kt
 +++ b/node_modules/expo-font/android/src/main/java/expo/modules/font/FontLoaderModule.kt
-@@ -34,23 +34,49 @@ open class FontLoaderModule : Module() {
+@@ -5,6 +5,7 @@ package expo.modules.font
+ import android.content.Context
+ import android.graphics.Typeface
+ import android.net.Uri
++import android.os.Build
+ import com.facebook.react.common.assets.ReactFontManager
+ import expo.modules.kotlin.exception.CodedException
+ import expo.modules.kotlin.exception.Exceptions
+@@ -34,6 +35,25 @@ open class FontLoaderModule : Module() {
      AsyncFunction("loadAsync") { fontFamilyName: String, localUri: String ->
        val context = appContext.reactContext ?: throw Exceptions.ReactContextLost()
  
--      // TODO(nikki): make sure path is in experience's scope
--      val typeface: Typeface = if (localUri.startsWith(ASSET_SCHEME)) {
--        Typeface.createFromAsset(
--          context.assets, // Also remove the leading slash.
--          localUri.substring(ASSET_SCHEME.length + 1)
--        )
--      } else {
--        val file = Uri.parse(localUri).path?.let { File(it) }
--          ?: throw FileNotFoundException(localUri)
--
--        if (file.length() == 0L) {
--          throw CodedException(
--            "Font file for $fontFamilyName is empty. Make sure the local file path is correctly populated."
-+      val typeface: Typeface = when {
-+        // Case 1: Standard Expo Asset URI (asset://)
-+        localUri.startsWith(ASSET_SCHEME) -> {
-+          // Remove "asset://" and any leading slashes to get the clean asset path
-+          val assetPath = localUri.substring(ASSET_SCHEME.length).trimStart('/')
-+          Typeface.createFromAsset(context.assets, assetPath)
++      if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O) {
++        // Only run this if it's a raw asset name (no protocol, not absolute)
++        if (!localUri.contains(":") && !localUri.startsWith("/")) {
++            val assetCandidates = listOf(
++                if (localUri.startsWith("fonts/")) localUri else "fonts/$localUri",
++                localUri.removePrefix("fonts/")
++            ).distinct()
++
++            for (candidate in assetCandidates) {
++                val typeface = runCatching { Typeface.createFromAsset(context.assets, candidate) }.getOrNull()
++                if (typeface != null) {
++                    ReactFontManager.getInstance().setTypeface(fontFamilyName, Typeface.NORMAL, typeface)
++                    loadedFonts = loadedFonts.toMutableSet().apply { add(fontFamilyName) }.toList()
++                    return@AsyncFunction // Exit early if we successfully loaded the font
++                }
++            }
 +        }
-+
-+        // Case 2: Android 8 Fix - Raw Filename (e.g., "custom.ttf")
-+        // No protocol (colon) and not an absolute path - allows relative paths like "fonts/custom.ttf".
-+        !localUri.contains(":") && !localUri.startsWith("/") -> {
-+          val assetCandidates = listOf(
-+            if (localUri.startsWith("fonts/")) localUri else "fonts/$localUri",
-+            localUri.removePrefix("fonts/")
-+          ).distinct()
-+
-+          var resolvedTypeface: Typeface? = null
-+          for (candidate in assetCandidates) {
-+            resolvedTypeface = runCatching {
-+              Typeface.createFromAsset(context.assets, candidate)
-+            }.getOrNull()
-+            if (resolvedTypeface != null) break
-+          }
-+
-+          resolvedTypeface ?: throw CodedException(
-+            "Font $fontFamilyName not found. Tried: ${assetCandidates.joinToString()}"
-           )
-         }
- 
--        Typeface.createFromFile(file)
-+        // Case 3: Absolute File Path
-+        else -> {
-+          val file = Uri.parse(localUri).path?.let { File(it) }
-+            ?: throw FileNotFoundException(localUri)
-+
-+          if (!file.exists() || file.length() == 0L) {
-+            throw CodedException(
-+              "Font file for $fontFamilyName is empty or missing at $localUri. " +
-+              "Make sure the local file path is correctly populated."
-+            )
-+          }
-+
-+          Typeface.createFromFile(file)
-+        }
-       }
- 
-       ReactFontManager.getInstance().setTypeface(fontFamilyName, Typeface.NORMAL, typeface)
++      }
++    
+       // TODO(nikki): make sure path is in experience's scope
+       val typeface: Typeface = if (localUri.startsWith(ASSET_SCHEME)) {
+         Typeface.createFromAsset(
