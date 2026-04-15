@@ -96,7 +96,7 @@ jobs:
 
       - name: Start Android Emulator and Run Maestro Tests (keyboard AVD)
         if: ${{ inputs.shard == '14' }}
-        uses: reactivecircus/android-emulator-runner@v2
+        uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a # v2.37.0
         timeout-minutes: 60
         with:
           api-level: 34
@@ -114,7 +114,7 @@ jobs:
 
       - name: Start Android Emulator and Run Maestro Tests (default)
         if: ${{ inputs.shard != '14' }}
-        uses: reactivecircus/android-emulator-runner@v2
+        uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a # v2.37.0
         timeout-minutes: 60
         with:
           api-level: 34
