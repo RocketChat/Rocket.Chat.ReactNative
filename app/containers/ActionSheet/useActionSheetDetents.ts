@@ -53,10 +53,7 @@ export function useActionSheetDetents({
 		const hasOptions = optionsLength > 0;
 
 		const maxSnap = hasOptions
-			? Math.min(
-					(itemHeight + 0.5) * optionsLength + HANDLE_HEIGHT + headerHeight + (hasCancel ? CANCEL_HEIGHT : 0),
-					maxHeight
-			  )
+			? Math.min((itemHeight + 0.5) * optionsLength + HANDLE_HEIGHT + headerHeight + (hasCancel ? CANCEL_HEIGHT : 0), maxHeight)
 			: 0;
 
 		let detents: SheetDetent[];
@@ -69,8 +66,7 @@ export function useActionSheetDetents({
 				detents = [0.5, ACTION_SHEET_MAX_HEIGHT_FRACTION];
 				scrollEnabled = true;
 			} else {
-				const measuredHeight =
-					optionsLength * itemHeight + HANDLE_HEIGHT + headerHeight + (hasCancel ? CANCEL_HEIGHT : 0);
+				const measuredHeight = optionsLength * itemHeight + HANDLE_HEIGHT + headerHeight + (hasCancel ? CANCEL_HEIGHT : 0);
 
 				scrollEnabled = false;
 				detents = [heightToDetent(Math.round(measuredHeight), windowHeight)];
