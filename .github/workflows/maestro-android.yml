@@ -77,12 +77,37 @@ jobs:
           AVDMANAGER="$ANDROID_SDK/cmdline-tools/latest/bin/avdmanager"
           AVD_NAME="Pixel_API_34_Keyboard"
           IMAGE="system-images;android-34;google_apis;x86_64"
-          AVD_CONFIG="$HOME/.android/avd/${AVD_NAME}.avd/config.ini"
+          AVD_BASE="${ANDROID_AVD_HOME:-${ANDROID_USER_HOME:-$HOME/.android}/avd}"
+          AVD_INI="$AVD_BASE/${AVD_NAME}.ini"
+
+          mkdir -p "$AVD_BASE"
+          rm -rf "$AVD_BASE/${AVD_NAME}.avd" "$AVD_INI"
 
           "$SDKMANAGER" --install emulator "$IMAGE"
           yes | "$SDKMANAGER" --licenses > /dev/null || true
 
           echo "no" | "$AVDMANAGER" create avd -n "$AVD_NAME" -d pixel_7_pro --package "$IMAGE" --force
+
+          if [ ! -f "$AVD_INI" ]; then
+            echo "Expected AVD ini not found: $AVD_INI"
+            ls -la "$AVD_BASE" || true
+            exit 1
+          fi
+
+          AVD_PATH="$(sed -n 's/^path=//p' "$AVD_INI")"
+          if [ -z "$AVD_PATH" ]; then
+            echo "Could not resolve AVD path from: $AVD_INI"
+            cat "$AVD_INI"
+            exit 1
+          fi
+
+          AVD_CONFIG="$AVD_PATH/config.ini"
+          if [ ! -f "$AVD_CONFIG" ]; then
+            echo "Expected AVD config not found: $AVD_CONFIG"
+            ls -la "$AVD_BASE" || true
+            ls -la "$AVD_PATH" || true
+            exit 1
+          fi
 
           {
             echo "hw.keyboard=yes"
