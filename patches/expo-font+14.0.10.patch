@@ -19,7 +19,7 @@ index 2cd51dc..ca6a417 100644
 -        if (file.length() == 0L) {
 -          throw CodedException(
 -            "Font file for $fontFamilyName is empty. Make sure the local file path is correctly populated."
-+      val typeface: Typeface = when {
++      val typeface: Typeface = when { 
 +        // Case 1: Standard Expo Asset URI (asset://)
 +        localUri.startsWith(ASSET_SCHEME) -> {
 +          // Remove "asset://" and any leading slashes to get the clean asset path
