@@ -29,17 +29,83 @@ tags:
       id: 'preferences-view-enable-message-parser'
     timeout: 60000
 
-# should have also send to channel select
-- extendedWaitUntil:
-    visible:
-      id: 'preferences-view-enable-message-parser'
-    timeout: 60000
-
 # should have convert ascii to emoji switch
 - extendedWaitUntil:
     visible:
       id: 'preferences-view-convert-ascii-to-emoji'
     timeout: 60000
+
+# Test Notification Preference
+- tapOn:
+    id: preferences-view-notifications
+
+# should have alert for In-App notification
+- assertVisible:
+    id: user-notification-preference-view-alert
+- tapOn:
+    id: user-notification-preference-view-alert
+
+# check options in in-app-notification alert
+- assertVisible:
+    id: notification-preferences-desktopNotifications-Default
+- assertVisible:
+    id: notification-preferences-desktopNotifications-All_Messages
+- assertVisible:
+    id: notification-preferences-desktopNotifications-Mentions
+- assertVisible:
+    id: notification-preferences-desktopNotifications-Nothing
+- tapOn:
+    id: action-sheet-handle
+# should have "Vibrate for new messages"
+- assertVisible: Vibrate for new messages
+
+# should have alert for push notification
+- assertVisible:
+    id: user-notification-preference-view-push-notification
+- tapOn:
+    id: user-notification-preference-view-push-notification
+
+# check options in push-notification alert
+- assertVisible:
+    id: notification-preferences-pushNotifications-Default
+- assertVisible:
+    id: notification-preferences-pushNotifications-All_Messages
+- assertVisible:
+    id: notification-preferences-pushNotifications-Mentions
+- assertVisible:
+    id: notification-preferences-pushNotifications-Nothing
+- tapOn:
+    id: action-sheet-handle
+
+# should have troubleshooting
+- assertVisible:
+    id: user-notification-preference-view-troubleshooting
+- tapOn:
+    id: user-notification-preference-view-troubleshooting
+- assertVisible:
+    id: push-troubleshoot-view-allow-push-notifications
+- assertVisible:
+    id: push-troubleshoot-view-push-gateway-connection
+- assertVisible:
+    id: push-troubleshoot-view-notification-delay
+- tapOn:
+    id: custom-header-back
+
+# should have alert in Email
+- assertVisible:
+    id: user-notification-preference-view-email-alert
+- tapOn:
+    id: user-notification-preference-view-email-alert
+
+# check options in email alert
+- assertVisible:
+    id: notification-preferences-emailNotificationMode-Email_Notification_Mode_All
+- assertVisible:
+    id: notification-preferences-emailNotificationMode-Email_Notification_Mode_Disabled
+- tapOn:
+    id: action-sheet-handle
+- tapOn:
+    id: custom-header-back
 
 # ASCII should not be converted to emoji (Android only)
 - runFlow:
