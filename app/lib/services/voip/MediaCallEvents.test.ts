@@ -130,7 +130,7 @@ describe('MediaCallEvents cross-server accept (slice 3)', () => {
 				});
 			});
 
-			it('skips deepLinkingOpen and replays REST state signals when host matches active workspace', async () => {
+			it('skips deepLinkingOpen and replays REST state signals when host matches active workspace', () => {
 				const { mediaSessionInstance } = jest.requireMock('./MediaSessionInstance');
 				mockServerSelector.mockReturnValueOnce('https://workspace-a.example.com');
 				const payload = buildIncomingPayload({
