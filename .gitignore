@@ -87,3 +87,4 @@ e2e/e2e_account.ts
 .claude/
 .worktrees/
 .omc/
+.jest-cache/
