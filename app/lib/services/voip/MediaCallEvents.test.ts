@@ -18,10 +18,12 @@ jest.mock('../../methods/helpers', () => ({
 	isIOS: false
 }));
 
+const mockServerSelector = jest.fn(() => 'https://workspace-a.example.com');
 jest.mock('../../store', () => ({
 	__esModule: true,
 	default: {
-		dispatch: (...args: unknown[]) => mockDispatch(...args)
+		dispatch: (...args: unknown[]) => mockDispatch(...args),
+		getState: () => ({ server: { server: mockServerSelector() } })
 	}
 }));
 
@@ -51,7 +53,8 @@ jest.mock('react-native-callkeep', () => ({
 
 jest.mock('./MediaSessionInstance', () => ({
 	mediaSessionInstance: {
-		endCall: jest.fn()
+		endCall: jest.fn(),
+		applyRestStateSignals: jest.fn(() => Promise.resolve())
 	}
 }));
 
@@ -125,6 +128,21 @@ describe('MediaCallEvents cross-server accept (slice 3)', () => {
 						host: 'https://workspace-b.open.rocket.chat'
 					}
 				});
+			});
+
+			it('skips deepLinkingOpen and replays REST state signals when host matches active workspace', () => {
+				const { mediaSessionInstance } = jest.requireMock('./MediaSessionInstance');
+				mockServerSelector.mockReturnValueOnce('https://workspace-a.example.com');
+				const payload = buildIncomingPayload({
+					callId: 'same-ws-call',
+					host: 'https://workspace-a.example.com'
+				});
+
+				DeviceEventEmitter.emit('VoipAcceptSucceeded', payload);
+
+				expect(mockSetNativeAcceptedCallId).toHaveBeenCalledWith('same-ws-call');
+				expect(mediaSessionInstance.applyRestStateSignals).toHaveBeenCalledTimes(1);
+				expect(mockDispatch).not.toHaveBeenCalled();
 			});
 
 			it('does not dispatch or set native id when type is not incoming_call', () => {

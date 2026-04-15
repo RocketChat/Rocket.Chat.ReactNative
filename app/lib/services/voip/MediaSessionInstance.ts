@@ -5,6 +5,7 @@ import {
 	type IClientMediaCall,
 	type CallActorType,
 	type MediaSignalingSession,
+	type ServerMediaSignal,
 	type WebRTCProcessorConfig
 } from '@rocket.chat/media-signaling';
 import RNCallKeep from 'react-native-callkeep';
@@ -23,6 +24,7 @@ import type { ISubscription, TSubscriptionModel } from '../../../definitions';
 import { getDMSubscriptionByUsername } from '../../database/services/Subscription';
 import { getUidDirectMessage } from '../../methods/helpers/helpers';
 import { requestPhoneStatePermission } from '../../methods/voipPhoneStatePermission';
+import { mediaCallsStateSignals } from '../restApi';
 
 class MediaSessionInstance {
 	private iceServers: IceServer[] = [];
@@ -33,7 +35,38 @@ class MediaSessionInstance {
 	private storeTimeoutUnsubscribe: (() => void) | null = null;
 	private storeIceServersUnsubscribe: (() => void) | null = null;
 
-	public init(userId: string): void {
+	private tryAnswerIfNativeAcceptedNotification(signal: ServerMediaSignal): void {
+		const { call, nativeAcceptedCallId } = useCallStore.getState();
+		if (
+			signal.type === 'notification' &&
+			signal.notification === 'accepted' &&
+			signal.signedContractId === getUniqueIdSync() &&
+			nativeAcceptedCallId === signal.callId &&
+			call == null
+		) {
+			this.answerCall(signal.callId).catch(error => {
+				console.error('[VoIP] Error answering call on notification/accepted:', error);
+			});
+		}
+	}
+
+	/** Replays `media-calls.stateSignals`. Used on init and when native accept raced ahead of `nativeAcceptedCallId`. Caller must ensure SDK/session host matches the call (see MediaCallEvents host gate). `tryAnswerIfNativeAcceptedNotification` may also fire from the stream-notify-user path; `answerCall` is idempotent. */
+	public async applyRestStateSignals(): Promise<void> {
+		if (!this.instance) {
+			return;
+		}
+		try {
+			const { signals } = await mediaCallsStateSignals(getUniqueIdSync());
+			for (const signal of signals) {
+				this.instance.processSignal(signal);
+				this.tryAnswerIfNativeAcceptedNotification(signal);
+			}
+		} catch (error) {
+			console.error('[VoIP] Failed to fetch or apply REST state signals:', error);
+		}
+	}
+
+	public async init(userId: string): Promise<void> {
 		this.reset();
 
 		registerGlobals();
@@ -51,6 +84,13 @@ class MediaSessionInstance {
 			sdk.methodCall('stream-notify-user', `${userId}/media-calls`, JSON.stringify(signal));
 		});
 		this.instance = mediaSessionStore.getInstance(userId);
+
+		if (!this.instance) {
+			throw new Error('Failed to create media session instance');
+		}
+
+		await this.applyRestStateSignals();
+
 		this.mediaSessionStoreChangeUnsubscribe = mediaSessionStore.onChange(() => {
 			this.instance = mediaSessionStore.getInstance(userId);
 		});
@@ -68,21 +108,7 @@ class MediaSessionInstance {
 
 			console.log('🤙 [VoIP] Processed signal:', signal);
 
-			// Answer when native already accepted and stream matches device contract + callId.
-			const storeSlice = useCallStore.getState();
-			const { call, nativeAcceptedCallId } = storeSlice;
-
-			if (
-				signal.type === 'notification' &&
-				signal.notification === 'accepted' &&
-				signal.signedContractId === getUniqueIdSync() &&
-				nativeAcceptedCallId === signal.callId &&
-				call == null
-			) {
-				this.answerCall(signal.callId).catch(error => {
-					console.error('[VoIP] Error answering call on notification/accepted:', error);
-				});
-			}
+			this.tryAnswerIfNativeAcceptedNotification(signal as ServerMediaSignal);
 		});
 
 		this.instance?.on('newCall', ({ call }: { call: IClientMediaCall }) => {

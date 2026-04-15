@@ -1,7 +1,7 @@
 import RNCallKeep from 'react-native-callkeep';
 import { DeviceEventEmitter, NativeEventEmitter } from 'react-native';
 
-import { isIOS } from '../../methods/helpers';
+import { isIOS, normalizeDeepLinkingServerHost } from '../../methods/helpers';
 import store from '../../store';
 import { deepLinkingOpen } from '../../../actions/deepLinking';
 import { useCallStore } from './useCallStore';
@@ -16,6 +16,15 @@ const TAG = `[MediaCallEvents][${platform}]`;
 
 const EVENT_VOIP_ACCEPT_FAILED = 'VoipAcceptFailed';
 const EVENT_VOIP_ACCEPT_SUCCEEDED = 'VoipAcceptSucceeded';
+
+/** True when normalized incoming host matches the active Redux workspace (no server switch needed). */
+function isVoipIncomingHostCurrentWorkspace(incomingHost: string): boolean {
+	const active = store.getState().server.server;
+	if (!active || !incomingHost) {
+		return false;
+	}
+	return normalizeDeepLinkingServerHost(incomingHost) === normalizeDeepLinkingServerHost(active);
+}
 
 /** Dedupe native emit + stash replay for the same failed accept. */
 let lastHandledVoipAcceptFailureCallId: string | null = null;
@@ -56,6 +65,12 @@ function handleVoipAcceptSucceededFromNative(data: VoipPayload) {
 	console.log(`${TAG} VoipAcceptSucceeded:`, data);
 	NativeVoipModule.clearInitialEvents();
 	useCallStore.getState().setNativeAcceptedCallId(data.callId);
+	if (data.host && isVoipIncomingHostCurrentWorkspace(data.host)) {
+		mediaSessionInstance.applyRestStateSignals().catch(error => {
+			console.error(`${TAG} applyRestStateSignals failed:`, error);
+		});
+		return;
+	}
 	store.dispatch(
 		deepLinkingOpen({
 			callId: data.callId,
@@ -109,8 +124,8 @@ export const setupMediaCallEvents = (): (() => void) => {
 
 		// Note: there is intentionally no 'answerCall' listener here.
 		// VoipService.swift handles accept natively: handleObservedCallChanged detects
-		// hasConnected = true and calls handleNativeAccept(), which sends the DDP accept
-		// signal before JS runs. JS receives VoipAcceptSucceeded after success.
+		// hasConnected = true and calls handleNativeAccept(), which sends the REST accept
+		// (POST /api/v1/media-calls.answer) before JS runs. JS receives VoipAcceptSucceeded after success.
 	}
 
 	/** Tracks OS-driven hold (competing call) so we only auto-resume that path, not manual hold. */
@@ -222,6 +237,14 @@ export const getInitialMediaCallEvents = async (): Promise<boolean> => {
 
 		if (wasAnswered) {
 			useCallStore.getState().setNativeAcceptedCallId(initialEvents.callId);
+
+			if (initialEvents.host && isVoipIncomingHostCurrentWorkspace(initialEvents.host)) {
+				mediaSessionInstance.applyRestStateSignals().catch(error => {
+					console.error(`${TAG} applyRestStateSignals (initial) failed:`, error);
+				});
+				console.log(`${TAG} Same workspace as VoIP host; skipped deepLinkingOpen`);
+				return true;
+			}
 
 			store.dispatch(
 				deepLinkingOpen({

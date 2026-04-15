@@ -15,7 +15,7 @@ import database from '../lib/database';
 import { getServerById } from '../lib/database/services/Server';
 import { canOpenRoom } from '../lib/methods/canOpenRoom';
 import { getServerInfo } from '../lib/methods/getServerInfo';
-import { emitter, getUidDirectMessage } from '../lib/methods/helpers';
+import { emitter, getUidDirectMessage, normalizeDeepLinkingServerHost } from '../lib/methods/helpers';
 import EventEmitter from '../lib/methods/helpers/events';
 import { goRoom, navigateToRoom } from '../lib/methods/helpers/goRoom';
 import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
@@ -196,20 +196,8 @@ const handleOpen = function* handleOpen({ params }) {
 	}
 
 	// If there's host, continue
-	if (!/^(http|https)/.test(host)) {
-		if (/^localhost(:\d+)?/.test(host)) {
-			host = `http://${host}`;
-		} else {
-			host = `https://${host}`;
-		}
-	} else {
-		// Notification should always come from https
-		host = host.replace('http://', 'https://');
-	}
-	// remove last "/" from host
-	if (host.slice(-1) === '/') {
-		host = host.slice(0, host.length - 1);
-	}
+	host = normalizeDeepLinkingServerHost(host);
+	params.host = host;
 
 	const [server, user] = yield all([
 		UserPreferences.getString(CURRENT_SERVER),
@@ -305,9 +293,11 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 		return;
 	}
 
-	if (host.slice(-1) === '/') {
-		host = host.slice(0, host.length - 1);
+	host = normalizeDeepLinkingServerHost(host);
+	if (!host) {
+		return;
 	}
+	params.host = host;
 
 	const [server, user] = yield all([
 		UserPreferences.getString(CURRENT_SERVER),
