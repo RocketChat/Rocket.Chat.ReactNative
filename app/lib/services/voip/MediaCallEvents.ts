@@ -1,7 +1,7 @@
 import RNCallKeep from 'react-native-callkeep';
 import { DeviceEventEmitter, NativeEventEmitter } from 'react-native';
 
-import { isIOS } from '../../methods/helpers';
+import { isIOS, normalizeDeepLinkingServerHost } from '../../methods/helpers';
 import store from '../../store';
 import { deepLinkingOpen } from '../../../actions/deepLinking';
 import { useCallStore } from './useCallStore';
@@ -17,34 +17,13 @@ const TAG = `[MediaCallEvents][${platform}]`;
 const EVENT_VOIP_ACCEPT_FAILED = 'VoipAcceptFailed';
 const EVENT_VOIP_ACCEPT_SUCCEEDED = 'VoipAcceptSucceeded';
 
-/** Align with `handleOpen` host normalization in `app/sagas/deepLinking.js` for stable compare. */
-function normalizeVoipDeepLinkHost(rawHost: string): string {
-	let host = rawHost;
-	if (!host) {
-		return '';
-	}
-	if (!/^(http|https)/.test(host)) {
-		if (/^localhost(:\d+)?/.test(host)) {
-			host = `http://${host}`;
-		} else {
-			host = `https://${host}`;
-		}
-	} else {
-		host = host.replace('http://', 'https://');
-	}
-	if (host.slice(-1) === '/') {
-		host = host.slice(0, host.length - 1);
-	}
-	return host;
-}
-
 /** True when normalized incoming host matches the active Redux workspace (no server switch needed). */
 function isVoipIncomingHostCurrentWorkspace(incomingHost: string): boolean {
 	const active = store.getState().server.server;
 	if (!active || !incomingHost) {
 		return false;
 	}
-	return normalizeVoipDeepLinkHost(incomingHost) === normalizeVoipDeepLinkHost(active);
+	return normalizeDeepLinkingServerHost(incomingHost) === normalizeDeepLinkingServerHost(active);
 }
 
 /** Dedupe native emit + stash replay for the same failed accept. */
