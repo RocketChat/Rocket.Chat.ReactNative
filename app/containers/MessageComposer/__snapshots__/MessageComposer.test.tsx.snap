@@ -117,6 +117,7 @@ exports[`MessageComposer Audio tap record 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-delete-audio"
         >
           <Text
@@ -334,6 +335,7 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
             accessibilityRole="button"
             accessible={true}
             collapsable={false}
+            onFocus={[Function]}
             testID="message-composer-actions"
           >
             <Text
@@ -451,6 +453,7 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
             accessibilityRole="button"
             accessible={true}
             collapsable={false}
+            onFocus={[Function]}
             testID="message-composer-send-audio"
           >
             <Text
@@ -624,6 +627,7 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
                   accessibilityRole="button"
                   accessible={true}
                   collapsable={false}
+                  onFocus={[Function]}
                   testID="composer-quote-remove-abc"
                 >
                   <Text
@@ -781,6 +785,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
             accessibilityRole="button"
             accessible={true}
             collapsable={false}
+            onFocus={[Function]}
             testID="message-composer-actions"
           >
             <Text
@@ -898,6 +903,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
             accessibilityRole="button"
             accessible={true}
             collapsable={false}
+            onFocus={[Function]}
             testID="message-composer-send-audio"
           >
             <Text
@@ -1072,6 +1078,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                   accessibilityRole="button"
                   accessible={true}
                   collapsable={false}
+                  onFocus={[Function]}
                   testID="composer-quote-remove-abc"
                 >
                   <Text
@@ -1254,6 +1261,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                   accessibilityRole="button"
                   accessible={true}
                   collapsable={false}
+                  onFocus={[Function]}
                   testID="composer-quote-remove-def"
                 >
                   <Text
@@ -1411,6 +1419,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
             accessibilityRole="button"
             accessible={true}
             collapsable={false}
+            onFocus={[Function]}
             testID="message-composer-actions"
           >
             <Text
@@ -1528,6 +1537,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
             accessibilityRole="button"
             accessible={true}
             collapsable={false}
+            onFocus={[Function]}
             testID="message-composer-send-audio"
           >
             <Text
@@ -1702,6 +1712,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                   accessibilityRole="button"
                   accessible={true}
                   collapsable={false}
+                  onFocus={[Function]}
                   testID="composer-quote-remove-abc"
                 >
                   <Text
@@ -1884,6 +1895,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                   accessibilityRole="button"
                   accessible={true}
                   collapsable={false}
+                  onFocus={[Function]}
                   testID="composer-quote-remove-def"
                 >
                   <Text
@@ -2077,6 +2089,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-close-markdown"
         >
           <Text
@@ -2154,6 +2167,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-bold"
         >
           <Text
@@ -2231,6 +2245,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-italic"
         >
           <Text
@@ -2308,6 +2323,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-strike"
         >
           <Text
@@ -2385,6 +2401,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-code"
         >
           <Text
@@ -2462,6 +2479,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-code-block"
         >
           <Text
@@ -2539,6 +2557,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-send-audio"
         >
           <Text
@@ -2696,6 +2715,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-close-markdown"
         >
           <Text
@@ -2773,6 +2793,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-bold"
         >
           <Text
@@ -2850,6 +2871,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-italic"
         >
           <Text
@@ -2927,6 +2949,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-strike"
         >
           <Text
@@ -3004,6 +3027,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-code"
         >
           <Text
@@ -3081,6 +3105,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-code-block"
         >
           <Text
@@ -3158,6 +3183,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-send-audio"
         >
           <Text
@@ -3315,6 +3341,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-close-markdown"
         >
           <Text
@@ -3392,6 +3419,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-bold"
         >
           <Text
@@ -3469,6 +3497,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-italic"
         >
           <Text
@@ -3546,6 +3575,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-strike"
         >
           <Text
@@ -3623,6 +3653,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-code"
         >
           <Text
@@ -3700,6 +3731,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-code-block"
         >
           <Text
@@ -3777,6 +3809,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-send-audio"
         >
           <Text
@@ -3934,6 +3967,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-close-markdown"
         >
           <Text
@@ -4011,6 +4045,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-bold"
         >
           <Text
@@ -4088,6 +4123,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-italic"
         >
           <Text
@@ -4165,6 +4201,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-strike"
         >
           <Text
@@ -4242,6 +4279,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-code"
         >
           <Text
@@ -4319,6 +4357,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-code-block"
         >
           <Text
@@ -4396,6 +4435,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-send-audio"
         >
           <Text
@@ -4553,6 +4593,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-close-markdown"
         >
           <Text
@@ -4630,6 +4671,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-bold"
         >
           <Text
@@ -4707,6 +4749,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-italic"
         >
           <Text
@@ -4784,6 +4827,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-strike"
         >
           <Text
@@ -4861,6 +4905,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-code"
         >
           <Text
@@ -4938,6 +4983,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-code-block"
         >
           <Text
@@ -5015,6 +5061,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-send-audio"
         >
           <Text
@@ -5172,6 +5219,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-close-markdown"
         >
           <Text
@@ -5249,6 +5297,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-bold"
         >
           <Text
@@ -5326,6 +5375,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-italic"
         >
           <Text
@@ -5403,6 +5453,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-strike"
         >
           <Text
@@ -5480,6 +5531,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-code"
         >
           <Text
@@ -5557,6 +5609,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-code-block"
         >
           <Text
@@ -5634,6 +5687,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-send-audio"
         >
           <Text
@@ -5791,6 +5845,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-close-markdown"
         >
           <Text
@@ -5868,6 +5923,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-bold"
         >
           <Text
@@ -5945,6 +6001,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-italic"
         >
           <Text
@@ -6022,6 +6079,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-strike"
         >
           <Text
@@ -6099,6 +6157,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-code"
         >
           <Text
@@ -6176,6 +6235,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-code-block"
         >
           <Text
@@ -6253,6 +6313,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-send-audio"
         >
           <Text
@@ -6410,6 +6471,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-close-markdown"
         >
           <Text
@@ -6487,6 +6549,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-bold"
         >
           <Text
@@ -6564,6 +6627,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-italic"
         >
           <Text
@@ -6641,6 +6705,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-strike"
         >
           <Text
@@ -6718,6 +6783,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-code"
         >
           <Text
@@ -6795,6 +6861,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-code-block"
         >
           <Text
@@ -6872,6 +6939,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-send-audio"
         >
           <Text
@@ -7029,6 +7097,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-close-markdown"
         >
           <Text
@@ -7106,6 +7175,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-bold"
         >
           <Text
@@ -7183,6 +7253,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-italic"
         >
           <Text
@@ -7260,6 +7331,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-strike"
         >
           <Text
@@ -7337,6 +7409,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-code"
         >
           <Text
@@ -7414,6 +7487,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-code-block"
         >
           <Text
@@ -7491,6 +7565,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-send-audio"
         >
           <Text
@@ -7648,6 +7723,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-close-markdown"
         >
           <Text
@@ -7725,6 +7801,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-bold"
         >
           <Text
@@ -7802,6 +7879,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-italic"
         >
           <Text
@@ -7879,6 +7957,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-strike"
         >
           <Text
@@ -7956,6 +8035,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-code"
         >
           <Text
@@ -8033,6 +8113,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-code-block"
         >
           <Text
@@ -8110,6 +8191,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-send-audio"
         >
           <Text
@@ -8267,6 +8349,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-close-markdown"
         >
           <Text
@@ -8344,6 +8427,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-bold"
         >
           <Text
@@ -8421,6 +8505,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-italic"
         >
           <Text
@@ -8498,6 +8583,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-strike"
         >
           <Text
@@ -8575,6 +8661,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-code"
         >
           <Text
@@ -8652,6 +8739,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-code-block"
         >
           <Text
@@ -8729,6 +8817,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-send-audio"
         >
           <Text
@@ -8886,6 +8975,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-actions"
         >
           <Text
@@ -8963,6 +9053,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-open-emoji"
         >
           <Text
@@ -9040,6 +9131,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-open-markdown"
         >
           <Text
@@ -9117,6 +9209,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-mention"
         >
           <Text
@@ -9194,6 +9287,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-send-audio"
         >
           <Text
@@ -9351,6 +9445,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-actions"
         >
           <Text
@@ -9428,6 +9523,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-open-emoji"
         >
           <Text
@@ -9505,6 +9601,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-open-markdown"
         >
           <Text
@@ -9582,6 +9679,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-mention"
         >
           <Text
@@ -9659,6 +9757,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-send-audio"
         >
           <Text
@@ -11261,6 +11360,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-actions"
         >
           <Text
@@ -11338,6 +11438,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-open-emoji"
         >
           <Text
@@ -11415,6 +11516,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-open-markdown"
         >
           <Text
@@ -11492,6 +11594,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-mention"
         >
           <Text
@@ -11569,6 +11672,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
           accessibilityRole="button"
           accessible={true}
           collapsable={false}
+          onFocus={[Function]}
           testID="message-composer-send-audio"
         >
           <Text
