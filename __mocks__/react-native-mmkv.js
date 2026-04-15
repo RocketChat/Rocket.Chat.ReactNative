@@ -237,7 +237,7 @@ export function useMMKVKeys(instance) {
 	useEffect(() => {
 		setKeys(mmkv.getAllKeys());
 	}, [mmkv]);
-	
+
 	useMMKVListener(key => {
 		if (key === undefined) {
 			setKeys(() => mmkv.getAllKeys());
