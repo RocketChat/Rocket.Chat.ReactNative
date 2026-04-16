@@ -19,7 +19,11 @@ export const useNewMediaCall = (rid?: string) => {
 			}
 		}
 		showActionSheetRef({
-			children: <NewMediaCall />
+			children: <NewMediaCall />,
+			portraitSnaps: ['60%'],
+			landscapeSnaps: ['90%'],
+			enableContentPanningGesture: false,
+			fullContainer: true
 		});
 	};
 
