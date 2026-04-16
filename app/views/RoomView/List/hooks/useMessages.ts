@@ -29,11 +29,11 @@ export const useMessages = ({
 	hideSystemMessages: string[];
 	t: RoomType;
 }) => {
-	// 1. Store RAW messages directly from the database
 	const [rawMessages, setRawMessages] = useState<TAnyMessageModel[]>([]);
 	const thread = useRef<TAnyMessageModel | null>(null);
 	const count = useRef(0);
 	const subscription = useRef<Subscription | null>(null);
+	const messagesIds = useRef<string[]>([]);
 	const dispatch = useDispatch();
 
 	const fetchMessages = useCallback(async () => {
@@ -52,6 +52,8 @@ export const useMessages = ({
 
 		let observable;
 		if (tmid) {
+			// If the thread doesn't exist yet, we fetch it from messages, but trying to get it from threads when possible.
+			// As soon as we have it from threads table, we use it from cache only and never query again.
 			if (!thread.current || thread.current.collection.table !== 'threads') {
 				thread.current = await getThreadById(tmid);
 				if (!thread.current) {
@@ -88,14 +90,12 @@ export const useMessages = ({
 		subscription.current = observable.subscribe(result => {
 			const newMessages: TAnyMessageModel[] = [...result];
 
-			// Push the thread parent. If it happens to be a hidden system message,
-			// our useMemo down below will safely catch it and hide it from the UI.
 			if (tmid && thread.current) {
 				newMessages.push(thread.current);
 			}
 
 			readThread();
-			setRawMessages(newMessages); // Set state with raw DB results
+			setRawMessages(newMessages);
 		});
 	}, [rid, tmid, showMessageInMainThread, hideSystemMessages]); // hideSystemMessages must be here so the DB re-queries for proper pagination
 
@@ -128,24 +128,20 @@ export const useMessages = ({
 		return rawMessages.filter(m => !m.t || !hideSystemMessages.includes(m.t));
 	}, [rawMessages, hideSystemMessages]);
 
-	//
-	// * When the server version is greater than or equal to 3.16.0, we need to dispatch a roomHistoryRequest to load the next chunk of messages.
-	// * This is because the server will not return the next chunk of messages if the user has hidden system messages.
-	// * @see https://github.com/RocketChat/Rocket.Chat/pull/28406
-	// */
+	messagesIds.current = visibleMessages.map(m => m.id);
+
+	/**
+	 * Since 3.16.0 server version, the backend don't response with messages if
+	 * hide system message is enabled
+	 */
 	useEffect(() => {
 		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.16.0')) {
 			const loaderId = visibleMessages.find(m => m.t && MESSAGE_TYPE_ANY_LOAD.includes(m.t as MessageTypeLoad))?.id;
-			if (hideSystemMessages && loaderId) {
+			if (hideSystemMessages.length && loaderId) {
 				dispatch(roomHistoryRequest({ rid, t, loaderId }));
 			}
 		}
-	}, [hideSystemMessages, visibleMessages]);
-	// 2. Reactively filter in-memory. This mimics the Web's Zustand behavior
-	// and updates the UI instantly before the DB query even finishes rebuilding.
+	}, [serverVersion, rid, t, hideSystemMessages, visibleMessages, dispatch]);
 
-	// 3. Reactively compute IDs based on the currently visible messages
-	const visibleMessagesIds = useMemo(() => visibleMessages.map(m => m.id), [visibleMessages]);
-
-	return [visibleMessages, visibleMessagesIds, fetchMessages] as const;
+	return [visibleMessages, messagesIds, fetchMessages] as const;
 };
