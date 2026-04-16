@@ -1,4 +1,4 @@
-import { call, delay, select, takeLatest } from 'redux-saga/effects';
+import { call, select, takeLatest } from 'redux-saga/effects';
 
 import log from '../lib/methods/helpers/log';
 import { localAuthenticate, saveLastLocalAuthenticationSession } from '../lib/methods/helpers/localAuthentication';
@@ -36,7 +36,6 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 		checkPendingNotification().catch(e => {
 			log('[state.js] Error checking pending notification:', e);
 		});
-
 		return yield setUserPresenceOnline();
 	} catch (e) {
 		log(e);
