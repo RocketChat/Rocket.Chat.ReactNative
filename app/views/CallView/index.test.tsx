@@ -10,9 +10,10 @@ import * as stories from './CallView.stories';
 import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
 
 let mockWindowWidth = 350;
+let mockWindowHeight = 800;
 jest.mock('react-native/Libraries/Utilities/useWindowDimensions', () => ({
 	__esModule: true,
-	default: () => ({ width: mockWindowWidth, height: 800, scale: 1, fontScale: 1 })
+	default: () => ({ width: mockWindowWidth, height: mockWindowHeight, scale: 1, fontScale: 1 })
 }));
 
 const mockNavigateToCallRoom = jest.mocked(navigateToCallRoom);
@@ -104,6 +105,7 @@ const Wrapper = ({ children }: { children: React.ReactNode }) => <Provider store
 describe('CallView/CallView', () => {
 	beforeEach(() => {
 		mockWindowWidth = 350;
+		mockWindowHeight = 800;
 		useCallStore.getState().reset();
 		jest.clearAllMocks();
 	});
@@ -414,6 +416,20 @@ describe('CallView/CallView', () => {
 
 	it('should render buttons in a single row on wide layout', () => {
 		mockWindowWidth = 800;
+		mockWindowHeight = 800;
+		setStoreState();
+		const { getByTestId, queryByTestId } = render(
+			<Wrapper>
+				<CallView />
+			</Wrapper>
+		);
+		expect(getByTestId('call-buttons-row-0')).toBeTruthy();
+		expect(queryByTestId('call-buttons-row-1')).toBeNull();
+	});
+
+	it('should render buttons in a single row in phone landscape (narrow, width > height)', () => {
+		mockWindowWidth = 600;
+		mockWindowHeight = 400;
 		setStoreState();
 		const { getByTestId, queryByTestId } = render(
 			<Wrapper>
@@ -428,12 +444,14 @@ describe('CallView/CallView', () => {
 describe('CallView (tablet/wide layout)', () => {
 	beforeEach(() => {
 		mockWindowWidth = 800;
+		mockWindowHeight = 800;
 		useCallStore.getState().reset();
 		jest.clearAllMocks();
 	});
 
 	afterAll(() => {
 		mockWindowWidth = 350;
+		mockWindowHeight = 800;
 	});
 
 	it('renders all six action buttons in a single row', () => {

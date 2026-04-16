@@ -7,6 +7,7 @@ import DialpadButton from './DialpadButton';
 import { useCallLayoutMode } from '../../useCallLayoutMode';
 import { useDialpadValue } from '../../../../lib/services/voip/useCallStore';
 import { useTheme } from '../../../../theme';
+import { useResponsiveLayout } from '../../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const DIALPAD_KEYS: { digit: string; letters: string }[][] = [
 	[
@@ -49,8 +50,11 @@ export const DialpadGrid = (): React.ReactElement => (
 
 const Dialpad = ({ testID }: IDialpad): React.ReactElement => {
 	const { layoutMode } = useCallLayoutMode();
+	const { width, height } = useResponsiveLayout();
 	const { colors } = useTheme();
 	const dialpadValue = useDialpadValue();
+
+	const isPhoneLandscape = width > height && layoutMode === 'narrow';
 
 	const input = (
 		<FormTextInput
@@ -65,7 +69,7 @@ const Dialpad = ({ testID }: IDialpad): React.ReactElement => {
 		/>
 	);
 
-	if (layoutMode === 'wide') {
+	if (isPhoneLandscape) {
 		return (
 			<View testID='dialpad-landscape-container' style={[styles.landscapeContainer, { backgroundColor: colors.surfaceLight }]}>
 				<View style={styles.landscapeInputSection}>{input}</View>

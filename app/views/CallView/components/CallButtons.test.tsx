@@ -6,6 +6,7 @@ import { mockedStore } from '../../../reducers/mockedStore';
 import { useCallStore } from '../../../lib/services/voip/useCallStore';
 import { CallButtons } from './CallButtons';
 import { useCallLayoutMode } from '../useCallLayoutMode';
+import { useResponsiveLayout } from '../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 jest.mock('../useCallLayoutMode', () => ({
 	useCallLayoutMode: jest.fn(() => ({ layoutMode: 'narrow' }))
@@ -59,6 +60,7 @@ const Wrapper = ({ children }: { children: React.ReactNode }) => <Provider store
 describe('CallButtons', () => {
 	beforeEach(() => {
 		(useCallLayoutMode as jest.Mock).mockReturnValue({ layoutMode: 'narrow' });
+		(useResponsiveLayout as jest.Mock).mockReturnValue({ width: 375, height: 812 });
 		useCallStore.getState().reset();
 	});
 
@@ -91,6 +93,19 @@ describe('CallButtons', () => {
 
 	it('wide layout renders 1 row', () => {
 		(useCallLayoutMode as jest.Mock).mockReturnValue({ layoutMode: 'wide' });
+		setStoreState();
+		const { getByTestId, queryByTestId } = render(
+			<Wrapper>
+				<CallButtons />
+			</Wrapper>
+		);
+		expect(getByTestId('call-buttons-row-0')).toBeTruthy();
+		expect(queryByTestId('call-buttons-row-1')).toBeNull();
+	});
+
+	it('narrow phone landscape renders 1 row', () => {
+		(useCallLayoutMode as jest.Mock).mockReturnValue({ layoutMode: 'narrow' });
+		(useResponsiveLayout as jest.Mock).mockReturnValue({ width: 600, height: 400 });
 		setStoreState();
 		const { getByTestId, queryByTestId } = render(
 			<Wrapper>

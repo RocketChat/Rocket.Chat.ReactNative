@@ -8,10 +8,24 @@ import { mockedStore } from '../../../../reducers/mockedStore';
 import * as stories from './Dialpad.stories';
 import { generateSnapshots } from '../../../../../.rnstorybook/generateSnapshots';
 import { useCallLayoutMode } from '../../useCallLayoutMode';
+import {
+	BASE_ROW_HEIGHT,
+	BASE_ROW_HEIGHT_CONDENSED,
+	useResponsiveLayout
+} from '../../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 jest.mock('../../useCallLayoutMode', () => ({
 	useCallLayoutMode: jest.fn(() => ({ layoutMode: 'narrow' }))
 }));
+
+jest.mock('../../../../lib/hooks/useResponsiveLayout/useResponsiveLayout', () => {
+	const actual = jest.requireActual('../../../../lib/hooks/useResponsiveLayout/useResponsiveLayout');
+	return {
+		...actual,
+		// Delegate to real hook so Storybook snapshots keep ResponsiveLayoutContext.Provider working.
+		useResponsiveLayout: jest.fn(() => actual.useResponsiveLayout())
+	};
+});
 
 jest.mock('../../../../containers/ActionSheet', () => ({
 	hideActionSheetRef: jest.fn()
@@ -47,9 +61,22 @@ const setStoreState = (overrides: Partial<ReturnType<typeof useCallStore.getStat
 
 const Wrapper = ({ children }: { children: React.ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
 
+const mockResponsiveLayout = (width: number, height: number) =>
+	(useResponsiveLayout as jest.Mock).mockReturnValue({
+		width,
+		height,
+		fontScale: 1,
+		fontScaleLimited: 1,
+		isLargeFontScale: false,
+		rowHeight: BASE_ROW_HEIGHT,
+		rowHeightCondensed: BASE_ROW_HEIGHT_CONDENSED
+	});
+
 describe('Dialpad', () => {
 	beforeEach(() => {
 		(useCallLayoutMode as jest.Mock).mockReturnValue({ layoutMode: 'narrow' });
+		const actual = jest.requireActual('../../../../lib/hooks/useResponsiveLayout/useResponsiveLayout');
+		(useResponsiveLayout as jest.Mock).mockImplementation(() => actual.useResponsiveLayout());
 		useCallStore.getState().reset();
 		sendDTMFMock.mockClear();
 	});
@@ -127,8 +154,9 @@ describe('Dialpad', () => {
 		expect(getByTestId('custom-dialpad-input')).toBeTruthy();
 	});
 
-	it('should render in landscape layout when layoutMode is wide', () => {
-		(useCallLayoutMode as jest.Mock).mockReturnValue({ layoutMode: 'wide' });
+	it('should render split layout only for narrow phone landscape', () => {
+		(useCallLayoutMode as jest.Mock).mockReturnValue({ layoutMode: 'narrow' });
+		mockResponsiveLayout(600, 400);
 		setStoreState();
 		const { getByTestId } = render(
 			<Wrapper>
@@ -138,8 +166,35 @@ describe('Dialpad', () => {
 		expect(getByTestId('dialpad-landscape-container')).toBeTruthy();
 	});
 
-	it('should render in portrait layout when layoutMode is narrow', () => {
+	it('should not use split layout for wide layout in portrait', () => {
+		(useCallLayoutMode as jest.Mock).mockReturnValue({ layoutMode: 'wide' });
+		mockResponsiveLayout(800, 1000);
+		setStoreState();
+		const { getByTestId, queryByTestId } = render(
+			<Wrapper>
+				<Dialpad testID='dialpad' />
+			</Wrapper>
+		);
+		expect(getByTestId('dialpad-input')).toBeTruthy();
+		expect(queryByTestId('dialpad-landscape-container')).toBeNull();
+	});
+
+	it('should not use split layout for wide layout in landscape', () => {
+		(useCallLayoutMode as jest.Mock).mockReturnValue({ layoutMode: 'wide' });
+		mockResponsiveLayout(1000, 600);
+		setStoreState();
+		const { getByTestId, queryByTestId } = render(
+			<Wrapper>
+				<Dialpad testID='dialpad' />
+			</Wrapper>
+		);
+		expect(getByTestId('dialpad-input')).toBeTruthy();
+		expect(queryByTestId('dialpad-landscape-container')).toBeNull();
+	});
+
+	it('should render in portrait layout when layoutMode is narrow and portrait', () => {
 		(useCallLayoutMode as jest.Mock).mockReturnValue({ layoutMode: 'narrow' });
+		mockResponsiveLayout(375, 812);
 		setStoreState();
 		const { getByTestId, queryByTestId } = render(
 			<Wrapper>
