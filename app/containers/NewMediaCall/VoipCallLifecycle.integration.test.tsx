@@ -727,13 +727,13 @@ describe('VoIP call lifecycle (integration)', () => {
 			expect(useCallStore.getState().isSpeakerOn).toBe(false);
 
 			await act(async () => {
-				useCallStore.getState().toggleSpeaker();
+				await useCallStore.getState().toggleSpeaker();
 			});
 			expect(InCallManager.setForceSpeakerphoneOn as jest.Mock).toHaveBeenCalledWith(true);
 			expect(useCallStore.getState().isSpeakerOn).toBe(true);
 
 			await act(async () => {
-				useCallStore.getState().toggleSpeaker();
+				await useCallStore.getState().toggleSpeaker();
 			});
 			expect(InCallManager.setForceSpeakerphoneOn as jest.Mock).toHaveBeenCalledWith(false);
 			expect(useCallStore.getState().isSpeakerOn).toBe(false);
