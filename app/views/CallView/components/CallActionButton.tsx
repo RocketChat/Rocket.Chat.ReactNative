@@ -58,7 +58,7 @@ const CallActionButton = ({
 	};
 
 	return (
-		<View>
+		<View style={styles.actionButtonCell}>
 			<Pressable
 				onPress={handlePress}
 				disabled={disabled}
@@ -72,7 +72,9 @@ const CallActionButton = ({
 				testID={testID}>
 				<CustomIcon name={icon} size={32} color={getIconColor()} />
 			</Pressable>
-			<Text numberOfLines={1} style={[styles.actionButtonLabel, { color: colors.fontDefault }]}>{label}</Text>
+			<Text numberOfLines={1} style={[styles.actionButtonLabel, { color: colors.fontDefault }]}>
+				{label}
+			</Text>
 		</View>
 	);
 };

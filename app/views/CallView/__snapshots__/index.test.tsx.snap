@@ -214,7 +214,7 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
           [
             {
               "flexDirection": "row",
-              "gap": 48,
+              "gap": 24,
               "justifyContent": "center",
             },
             false,
@@ -222,7 +222,14 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
         }
         testID="call-buttons-row-0"
       >
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Speaker"
             accessibilityRole="button"
@@ -301,6 +308,7 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -320,7 +328,14 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
             Speaker
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Hold"
             accessibilityRole="button"
@@ -399,6 +414,7 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -418,7 +434,14 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
             Hold
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Mute"
             accessibilityRole="button"
@@ -497,6 +520,7 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -522,7 +546,7 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
           [
             {
               "flexDirection": "row",
-              "gap": 48,
+              "gap": 24,
               "justifyContent": "center",
             },
             false,
@@ -530,7 +554,14 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
         }
         testID="call-buttons-row-1"
       >
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Message"
             accessibilityRole="button"
@@ -611,6 +642,7 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -630,7 +662,14 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
             Message
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="End"
             accessibilityRole="button"
@@ -709,6 +748,7 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -728,7 +768,14 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
             End
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Dialpad"
             accessibilityRole="button"
@@ -807,6 +854,7 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -1046,7 +1094,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
           [
             {
               "flexDirection": "row",
-              "gap": 48,
+              "gap": 24,
               "justifyContent": "center",
             },
             false,
@@ -1054,7 +1102,14 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
         }
         testID="call-buttons-row-0"
       >
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Speaker"
             accessibilityRole="button"
@@ -1135,6 +1190,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -1154,7 +1210,14 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
             Speaker
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Hold"
             accessibilityRole="button"
@@ -1235,6 +1298,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -1254,7 +1318,14 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
             Hold
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Mute"
             accessibilityRole="button"
@@ -1335,6 +1406,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -1360,7 +1432,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
           [
             {
               "flexDirection": "row",
-              "gap": 48,
+              "gap": 24,
               "justifyContent": "center",
             },
             false,
@@ -1368,7 +1440,14 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
         }
         testID="call-buttons-row-1"
       >
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Message"
             accessibilityRole="button"
@@ -1449,6 +1528,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -1468,7 +1548,14 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
             Message
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Cancel"
             accessibilityRole="button"
@@ -1547,6 +1634,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -1566,7 +1654,14 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
             Cancel
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Dialpad"
             accessibilityRole="button"
@@ -1647,6 +1742,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -1886,7 +1982,7 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
           [
             {
               "flexDirection": "row",
-              "gap": 48,
+              "gap": 24,
               "justifyContent": "center",
             },
             false,
@@ -1894,7 +1990,14 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
         }
         testID="call-buttons-row-0"
       >
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Speaker"
             accessibilityRole="button"
@@ -1973,6 +2076,7 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -1992,7 +2096,14 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
             Speaker
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Unhold"
             accessibilityRole="button"
@@ -2071,6 +2182,7 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -2090,7 +2202,14 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
             Unhold
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Unmute"
             accessibilityRole="button"
@@ -2169,6 +2288,7 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -2194,7 +2314,7 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
           [
             {
               "flexDirection": "row",
-              "gap": 48,
+              "gap": 24,
               "justifyContent": "center",
             },
             false,
@@ -2202,7 +2322,14 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
         }
         testID="call-buttons-row-1"
       >
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Message"
             accessibilityRole="button"
@@ -2283,6 +2410,7 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -2302,7 +2430,14 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
             Message
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="End"
             accessibilityRole="button"
@@ -2381,6 +2516,7 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -2400,7 +2536,14 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
             End
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Dialpad"
             accessibilityRole="button"
@@ -2479,6 +2622,7 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -2718,7 +2862,7 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
           [
             {
               "flexDirection": "row",
-              "gap": 48,
+              "gap": 24,
               "justifyContent": "center",
             },
             false,
@@ -2726,7 +2870,14 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
         }
         testID="call-buttons-row-0"
       >
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Speaker"
             accessibilityRole="button"
@@ -2805,6 +2956,7 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -2824,7 +2976,14 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
             Speaker
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Hold"
             accessibilityRole="button"
@@ -2903,6 +3062,7 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -2922,7 +3082,14 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
             Hold
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Unmute"
             accessibilityRole="button"
@@ -3001,6 +3168,7 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -3026,7 +3194,7 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
           [
             {
               "flexDirection": "row",
-              "gap": 48,
+              "gap": 24,
               "justifyContent": "center",
             },
             false,
@@ -3034,7 +3202,14 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
         }
         testID="call-buttons-row-1"
       >
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Message"
             accessibilityRole="button"
@@ -3115,6 +3290,7 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -3134,7 +3310,14 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
             Message
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="End"
             accessibilityRole="button"
@@ -3213,6 +3396,7 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -3232,7 +3416,14 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
             End
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Dialpad"
             accessibilityRole="button"
@@ -3311,6 +3502,7 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -3550,7 +3742,7 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
           [
             {
               "flexDirection": "row",
-              "gap": 48,
+              "gap": 24,
               "justifyContent": "center",
             },
             false,
@@ -3558,7 +3750,14 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
         }
         testID="call-buttons-row-0"
       >
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Speaker"
             accessibilityRole="button"
@@ -3637,6 +3836,7 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -3656,7 +3856,14 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
             Speaker
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Unhold"
             accessibilityRole="button"
@@ -3735,6 +3942,7 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -3754,7 +3962,14 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
             Unhold
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Mute"
             accessibilityRole="button"
@@ -3833,6 +4048,7 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -3858,7 +4074,7 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
           [
             {
               "flexDirection": "row",
-              "gap": 48,
+              "gap": 24,
               "justifyContent": "center",
             },
             false,
@@ -3866,7 +4082,14 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
         }
         testID="call-buttons-row-1"
       >
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Message"
             accessibilityRole="button"
@@ -3947,6 +4170,7 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -3966,7 +4190,14 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
             Message
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="End"
             accessibilityRole="button"
@@ -4045,6 +4276,7 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -4064,7 +4296,14 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
             End
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Dialpad"
             accessibilityRole="button"
@@ -4143,6 +4382,7 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -4382,7 +4622,7 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
           [
             {
               "flexDirection": "row",
-              "gap": 48,
+              "gap": 24,
               "justifyContent": "center",
             },
             false,
@@ -4390,7 +4630,14 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
         }
         testID="call-buttons-row-0"
       >
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Speaker"
             accessibilityRole="button"
@@ -4469,6 +4716,7 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -4488,7 +4736,14 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
             Speaker
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Hold"
             accessibilityRole="button"
@@ -4567,6 +4822,7 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -4586,7 +4842,14 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
             Hold
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Mute"
             accessibilityRole="button"
@@ -4665,6 +4928,7 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -4690,7 +4954,7 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
           [
             {
               "flexDirection": "row",
-              "gap": 48,
+              "gap": 24,
               "justifyContent": "center",
             },
             false,
@@ -4698,7 +4962,14 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
         }
         testID="call-buttons-row-1"
       >
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Message"
             accessibilityRole="button"
@@ -4779,6 +5050,7 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -4798,7 +5070,14 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
             Message
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="End"
             accessibilityRole="button"
@@ -4877,6 +5156,7 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -4896,7 +5176,14 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
             End
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Dialpad"
             accessibilityRole="button"
@@ -4975,6 +5262,7 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -5196,7 +5484,7 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
           [
             {
               "flexDirection": "row",
-              "gap": 48,
+              "gap": 24,
               "justifyContent": "center",
             },
             false,
@@ -5204,7 +5492,14 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
         }
         testID="call-buttons-row-0"
       >
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Speaker"
             accessibilityRole="button"
@@ -5283,6 +5578,7 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -5302,7 +5598,14 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
             Speaker
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Hold"
             accessibilityRole="button"
@@ -5381,6 +5684,7 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -5400,7 +5704,14 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
             Hold
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Mute"
             accessibilityRole="button"
@@ -5479,6 +5790,7 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -5498,7 +5810,14 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
             Mute
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Message"
             accessibilityRole="button"
@@ -5579,6 +5898,7 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -5598,7 +5918,14 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
             Message
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="End"
             accessibilityRole="button"
@@ -5677,6 +6004,7 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -5696,7 +6024,14 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
             End
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Dialpad"
             accessibilityRole="button"
@@ -5775,6 +6110,7 @@ exports[`Story Snapshots: TabletConnectedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -5996,7 +6332,7 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
           [
             {
               "flexDirection": "row",
-              "gap": 48,
+              "gap": 24,
               "justifyContent": "center",
             },
             false,
@@ -6004,7 +6340,14 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
         }
         testID="call-buttons-row-0"
       >
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Speaker"
             accessibilityRole="button"
@@ -6085,6 +6428,7 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -6104,7 +6448,14 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
             Speaker
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Hold"
             accessibilityRole="button"
@@ -6185,6 +6536,7 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -6204,7 +6556,14 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
             Hold
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Mute"
             accessibilityRole="button"
@@ -6285,6 +6644,7 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -6304,7 +6664,14 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
             Mute
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Message"
             accessibilityRole="button"
@@ -6385,6 +6752,7 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -6404,7 +6772,14 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
             Message
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Cancel"
             accessibilityRole="button"
@@ -6483,6 +6858,7 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -6502,7 +6878,14 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
             Cancel
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Dialpad"
             accessibilityRole="button"
@@ -6583,6 +6966,7 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -6804,7 +7188,7 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
           [
             {
               "flexDirection": "row",
-              "gap": 48,
+              "gap": 24,
               "justifyContent": "center",
             },
             false,
@@ -6812,7 +7196,14 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
         }
         testID="call-buttons-row-0"
       >
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Speaker"
             accessibilityRole="button"
@@ -6891,6 +7282,7 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -6910,7 +7302,14 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
             Speaker
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Unhold"
             accessibilityRole="button"
@@ -6989,6 +7388,7 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -7008,7 +7408,14 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
             Unhold
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Unmute"
             accessibilityRole="button"
@@ -7087,6 +7494,7 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -7106,7 +7514,14 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
             Unmute
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Message"
             accessibilityRole="button"
@@ -7187,6 +7602,7 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -7206,7 +7622,14 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
             Message
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="End"
             accessibilityRole="button"
@@ -7285,6 +7708,7 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -7304,7 +7728,14 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
             End
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Dialpad"
             accessibilityRole="button"
@@ -7383,6 +7814,7 @@ exports[`Story Snapshots: TabletMutedAndOnHold should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -7604,7 +8036,7 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
           [
             {
               "flexDirection": "row",
-              "gap": 48,
+              "gap": 24,
               "justifyContent": "center",
             },
             false,
@@ -7612,7 +8044,14 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
         }
         testID="call-buttons-row-0"
       >
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Speaker"
             accessibilityRole="button"
@@ -7691,6 +8130,7 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -7710,7 +8150,14 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
             Speaker
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Hold"
             accessibilityRole="button"
@@ -7789,6 +8236,7 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -7808,7 +8256,14 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
             Hold
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Unmute"
             accessibilityRole="button"
@@ -7887,6 +8342,7 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -7906,7 +8362,14 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
             Unmute
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Message"
             accessibilityRole="button"
@@ -7987,6 +8450,7 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -8006,7 +8470,14 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
             Message
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="End"
             accessibilityRole="button"
@@ -8085,6 +8556,7 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -8104,7 +8576,14 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
             End
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Dialpad"
             accessibilityRole="button"
@@ -8183,6 +8662,7 @@ exports[`Story Snapshots: TabletMutedCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -8404,7 +8884,7 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
           [
             {
               "flexDirection": "row",
-              "gap": 48,
+              "gap": 24,
               "justifyContent": "center",
             },
             false,
@@ -8412,7 +8892,14 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
         }
         testID="call-buttons-row-0"
       >
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Speaker"
             accessibilityRole="button"
@@ -8491,6 +8978,7 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -8510,7 +8998,14 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
             Speaker
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Unhold"
             accessibilityRole="button"
@@ -8589,6 +9084,7 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -8608,7 +9104,14 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
             Unhold
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Mute"
             accessibilityRole="button"
@@ -8687,6 +9190,7 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -8706,7 +9210,14 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
             Mute
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Message"
             accessibilityRole="button"
@@ -8787,6 +9298,7 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -8806,7 +9318,14 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
             Message
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="End"
             accessibilityRole="button"
@@ -8885,6 +9404,7 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -8904,7 +9424,14 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
             End
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Dialpad"
             accessibilityRole="button"
@@ -8983,6 +9510,7 @@ exports[`Story Snapshots: TabletOnHoldCall should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -9204,7 +9732,7 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
           [
             {
               "flexDirection": "row",
-              "gap": 48,
+              "gap": 24,
               "justifyContent": "center",
             },
             false,
@@ -9212,7 +9740,14 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
         }
         testID="call-buttons-row-0"
       >
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Speaker"
             accessibilityRole="button"
@@ -9291,6 +9826,7 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -9310,7 +9846,14 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
             Speaker
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Hold"
             accessibilityRole="button"
@@ -9389,6 +9932,7 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -9408,7 +9952,14 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
             Hold
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Mute"
             accessibilityRole="button"
@@ -9487,6 +10038,7 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -9506,7 +10058,14 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
             Mute
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Message"
             accessibilityRole="button"
@@ -9587,6 +10146,7 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -9606,7 +10166,14 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
             Message
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="End"
             accessibilityRole="button"
@@ -9685,6 +10252,7 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
@@ -9704,7 +10272,14 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
             End
           </Text>
         </View>
-        <View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": 1,
+            }
+          }
+        >
           <View
             accessibilityLabel="Dialpad"
             accessibilityRole="button"
@@ -9783,6 +10358,7 @@ exports[`Story Snapshots: TabletSpeakerOn should match snapshot 1`] = `
             </Text>
           </View>
           <Text
+            numberOfLines={1}
             style={
               [
                 {
