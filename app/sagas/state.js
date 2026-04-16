@@ -1,4 +1,4 @@
-import { call, select, takeLatest } from 'redux-saga/effects';
+import { select, takeLatest } from 'redux-saga/effects';
 
 import log from '../lib/methods/helpers/log';
 import { localAuthenticate, saveLastLocalAuthenticationSession } from '../lib/methods/helpers/localAuthentication';
@@ -7,7 +7,6 @@ import { RootEnum } from '../definitions';
 import { checkAndReopen } from '../lib/services/connect';
 import { setUserPresenceOnline, setUserPresenceAway } from '../lib/services/restApi';
 import { checkPendingNotification } from '../lib/notifications';
-import { refreshDmUsersPresence } from '../lib/methods/getUsersPresence';
 
 const isAuthAndConnected = function* isAuthAndConnected() {
 	const login = yield select(state => state.login);
@@ -28,9 +27,6 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 		const server = yield select(state => state.server.server);
 		yield localAuthenticate(server);
 		checkAndReopen();
-
-		// Refresh presence for DM users to ensure status is up-to-date after background
-		yield call(refreshDmUsersPresence);
 
 		// Check for pending notification when app comes to foreground (Android - notification tap while in background)
 		checkPendingNotification().catch(e => {
