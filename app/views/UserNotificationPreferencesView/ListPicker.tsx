@@ -56,7 +56,7 @@ const ListPicker = ({
 							onChangeValue({ [preference]: i.value.toString() });
 						}}
 						style={styles.pickerItem}
-						testID={`notification-preferences-${preference}-${i.label}`}
+						testID={`notification-preferences-${preference}-${i.value}`}
 					/>
 					<List.Separator />
 				</React.Fragment>
