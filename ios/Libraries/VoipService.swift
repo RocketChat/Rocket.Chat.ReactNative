@@ -6,6 +6,12 @@ import PushKit
  * VoipModuleSwift - Swift implementation for VoIP push notifications and initial events data.
  * This class provides static methods called by VoipModule.mm (the TurboModule bridge).
  *
+ * Threading:
+ * - `lastVoipToken` and `initialEventsData` are synchronized on `bridgeStateQueue` because they are
+ *   written on the main thread (PushKit, native call flows) and read from the React Native bridge thread.
+ * - **All other static state is main-thread-only** (PushKit registry on `.main`, `CXCallObserver` on
+ *   `.main`, and `trackIncomingCall` / `clearTrackedIncomingCall` already bounce work to main where needed).
+ *
  * This module:
  * - Manages PushKit VoIP registration
  * - Tracks VoIP push tokens
@@ -28,7 +34,9 @@ public final class VoipService: NSObject {
     private static let TAG = "RocketChat.VoipService"
     private static let voipTokenStorageKey = "RCVoipPushToken"
     private static let storage = MMKVBridge.build()
-    
+    /// Serializes access to `lastVoipToken` and `initialEventsData` (main-thread writers vs RN bridge readers).
+    private static let bridgeStateQueue = DispatchQueue(label: "chat.rocket.ios.voipService.bridgeState")
+
     // MARK: - Static Properties
     
     private static var initialEventsData: VoipPayload?
@@ -67,7 +75,8 @@ public final class VoipService: NSObject {
     public static func voipRegistration() {
         if isVoipRegistered {
             #if DEBUG
-            print("[\(TAG)] voipRegistration already registered. Returning lastVoipToken: \(lastVoipToken)")
+            let tokenSnapshot = bridgeStateQueue.sync { lastVoipToken }
+            print("[\(TAG)] voipRegistration already registered. Returning lastVoipToken: \(tokenSnapshot)")
             #endif
             return
         }
@@ -100,14 +109,21 @@ public final class VoipService: NSObject {
         // Convert token data to hex string
         let token = credentials.token.map { String(format: "%02x", $0) }.joined()
 
-        if lastVoipToken == token {
+        let tokenUnchanged = bridgeStateQueue.sync { () -> Bool in
+            if lastVoipToken == token {
+                return true
+            }
+            lastVoipToken = token
+            return false
+        }
+
+        if tokenUnchanged {
             #if DEBUG
             print("[\(TAG)] VoIP token unchanged")
             #endif
             return
         }
 
-        lastVoipToken = token
         persistVoipToken(token)
         
         #if DEBUG
@@ -126,7 +142,9 @@ public final class VoipService: NSObject {
     // TODO: remove voip token from all logged in workspaces, since they share the same token
     @objc
     public static func invalidatePushToken() {
-        lastVoipToken = ""
+        bridgeStateQueue.sync {
+            lastVoipToken = ""
+        }
         storage.removeValue(forKey: voipTokenStorageKey)
 
         #if DEBUG
@@ -161,39 +179,45 @@ public final class VoipService: NSObject {
     /// Stores initial events for JS to retrieve.
     @objc
     public static func storeInitialEvents(_ payload: VoipPayload) {
-        initialEventsData = payload
-        
-        #if DEBUG
-        print("[\(TAG)] Stored initial events: \(payload.callId)")
-        #endif
+        bridgeStateQueue.sync {
+            initialEventsData = payload
+
+            #if DEBUG
+            print("[\(TAG)] Stored initial events: \(payload.callId)")
+            #endif
+        }
     }
 
     /// Gets any initial events. Returns nil if no initial events.
     @objc
     public static func getInitialEvents() -> [String: Any]? {
-        guard let data = initialEventsData else {
-            return nil
+        bridgeStateQueue.sync {
+            guard let data = initialEventsData else {
+                return nil
+            }
+
+            if data.isExpired() {
+                clearInitialEventsUnlocked()
+                return nil
+            }
+
+            let result = data.toDictionary()
+            clearInitialEventsUnlocked()
+
+            return result
         }
-        
-        if data.isExpired() {
-            clearInitialEventsInternal()
-            return nil
-        }
-        
-        let result = data.toDictionary()
-        clearInitialEventsInternal()
-        
-        return result
     }
-    
+
     /// Clears any initial events
     @objc
     public static func clearInitialEvents() {
-        clearInitialEventsInternal()
+        bridgeStateQueue.sync {
+            clearInitialEventsUnlocked()
+        }
     }
-    
-    /// Clears initial events (internal)
-    private static func clearInitialEventsInternal() {
+
+    /// Clears initial events. Caller must already be running on `bridgeStateQueue`.
+    private static func clearInitialEventsUnlocked() {
         initialEventsData = nil
         #if DEBUG
         print("[\(TAG)] Cleared initial events")
@@ -205,10 +229,12 @@ public final class VoipService: NSObject {
     /// Returns the last registered VoIP token
     @objc
     public static func getLastVoipToken() -> String {
-        if lastVoipToken.isEmpty {
-            lastVoipToken = loadPersistedVoipToken()
+        bridgeStateQueue.sync {
+            if lastVoipToken.isEmpty {
+                lastVoipToken = loadPersistedVoipToken()
+            }
+            return lastVoipToken
         }
-        return lastVoipToken
     }
 
     private static func loadPersistedVoipToken() -> String {
@@ -502,8 +528,10 @@ public final class VoipService: NSObject {
         cancelIncomingCallTimeout(for: payload.callId)
         clearTrackedIncomingCall(for: payload.callUUID)
 
-        if initialEventsData?.callId == payload.callId {
-            clearInitialEventsInternal()
+        bridgeStateQueue.sync {
+            if initialEventsData?.callId == payload.callId {
+                clearInitialEventsUnlocked()
+            }
         }
 
         // End the just-reported CallKit call immediately (reason 2 = unanswered / declined).
