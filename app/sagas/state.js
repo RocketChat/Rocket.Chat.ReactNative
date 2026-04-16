@@ -30,13 +30,14 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 		checkAndReopen();
 
 		// Refresh presence for DM users to ensure status is up-to-date after background
-		yield setUserPresenceOnline();
 		yield call(refreshDmUsersPresence);
 
 		// Check for pending notification when app comes to foreground (Android - notification tap while in background)
 		checkPendingNotification().catch(e => {
 			log('[state.js] Error checking pending notification:', e);
 		});
+
+		return yield setUserPresenceOnline();
 	} catch (e) {
 		log(e);
 	}
