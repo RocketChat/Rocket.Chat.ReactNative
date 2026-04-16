@@ -119,7 +119,7 @@ describe('useMessages', () => {
 		emittedRows = [msg({ id: 'p' }), msg({ id: 'q' })];
 		const { result } = renderUseMessages();
 		await waitFor(() => {
-			expect(result.current[1]).toEqual(['p', 'q']);
+			expect(result.current[1].current).toEqual(['p', 'q']);
 		});
 	});
 
