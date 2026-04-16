@@ -149,7 +149,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                   ]
                 }
               >
-                
+                
               </Text>
             </View>
           </View>
@@ -640,7 +640,7 @@ exports[`Story Snapshots: Disabled should match snapshot 1`] = `
                   ]
                 }
               >
-                
+                
               </Text>
             </View>
           </View>
@@ -1131,7 +1131,7 @@ exports[`Story Snapshots: NoVoiceCall should match snapshot 1`] = `
                   ]
                 }
               >
-                
+                
               </Text>
             </View>
           </View>
