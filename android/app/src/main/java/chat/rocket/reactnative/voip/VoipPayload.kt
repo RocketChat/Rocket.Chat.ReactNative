@@ -72,6 +72,7 @@ data class VoipPayload(
             putString("avatarUrl", avatarUrl)
             putString("createdAt", createdAt)
             putInt("notificationId", notificationId)
+            putBoolean("voipAcceptFailed", voipAcceptFailed)
             // Useful flag for MainActivity to know it's handling a VoIP action
             putBoolean("voipAction", true)
         }

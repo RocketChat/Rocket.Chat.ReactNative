@@ -20,6 +20,8 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
         private const val EVENT_VOIP_ACCEPT_FAILED = "VoipAcceptFailed"
 
         private var reactContextRef: WeakReference<ReactApplicationContext>? = null
+
+        @Volatile
         private var initialEventsData: VoipPayload? = null
 
         /**
