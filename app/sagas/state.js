@@ -31,6 +31,11 @@ const waitForConnection = function* waitForConnection() {
 
 const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 	try {
+		const appRoot = yield select(state => state.app.root);
+		if (appRoot !== RootEnum.ROOT_INSIDE) {
+			return;
+		}
+
 		const server = yield select(state => state.server.server);
 		yield localAuthenticate(server);
 		checkAndReopen();
@@ -47,7 +52,7 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 
 		// Check for pending notification when app comes to foreground (Android - notification tap while in background)
 		checkPendingNotification().catch(e => {
-			log('[state.js] Error checking pending notification:', e);
+			log(`[state.js] Error checking pending notification: ${e}`);
 		});
 	} catch (e) {
 		log(e);
@@ -80,7 +85,7 @@ const handleMeteorConnect = function* handleMeteorConnect() {
 	try {
 		yield call(refreshDmUsersPresence);
 	} catch (e) {
-		log('[state.js] Error refreshing DM users presence on connect:', e);
+		log(`[state.js] Error refreshing DM users presence on connect: ${e}`);
 	}
 };
 
