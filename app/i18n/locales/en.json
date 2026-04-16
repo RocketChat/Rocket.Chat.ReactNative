@@ -693,7 +693,6 @@
   "Push_gateway_not_connected_description": "We're not able to connect to the push gateway. If this issue persists please check with your workspace administrator.",
   "Push_Notifications": "Push notifications",
   "Push_Notifications_Alert_Info": "These notifications are delivered to you when the app is not open",
-  "Push_Troubleshooting": "Push Troubleshooting",
   "Queued_chats": "Queued chats",
   "Quote": "Quote",
   "React_with_emojjname": "React with {{emojiName}}",

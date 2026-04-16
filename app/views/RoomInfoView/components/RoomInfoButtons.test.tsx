@@ -131,7 +131,7 @@ describe('RoomInfoButtons', () => {
 				<RoomInfoButtons {...defaultProps} />
 			</Wrapper>
 		);
-		fireEvent.press(getByTestId('room-info-view-camera'));
+		fireEvent.press(getByTestId('room-info-view-video'));
 		expect(mockShowInitCallActionSheet).toHaveBeenCalledTimes(1);
 	});
 
@@ -159,7 +159,7 @@ describe('RoomInfoButtons', () => {
 				<RoomInfoButtons {...defaultProps} />
 			</Wrapper>
 		);
-		expect(queryByTestId('room-info-view-camera')).toBeNull();
+		expect(queryByTestId('room-info-view-video')).toBeNull();
 	});
 
 	it('should render More button when more than 4 items are visible', () => {

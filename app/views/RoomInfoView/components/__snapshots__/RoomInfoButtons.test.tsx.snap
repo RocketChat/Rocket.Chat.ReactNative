@@ -141,7 +141,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
           ]
         }
       >
-        
+        
       </Text>
       <Text
         numberOfLines={1}
@@ -186,7 +186,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
           },
         ]
       }
-      testID="room-info-view-camera"
+      testID="room-info-view-video"
     >
       <Text
         allowFontScaling={false}
@@ -446,7 +446,7 @@ exports[`Story Snapshots: ItsMe should match snapshot 1`] = `
           ]
         }
       >
-        
+        
       </Text>
       <Text
         numberOfLines={1}
@@ -491,7 +491,7 @@ exports[`Story Snapshots: ItsMe should match snapshot 1`] = `
           },
         ]
       }
-      testID="room-info-view-camera"
+      testID="room-info-view-video"
     >
       <Text
         allowFontScaling={false}
@@ -680,7 +680,7 @@ exports[`Story Snapshots: NoVoiceCall should match snapshot 1`] = `
           ]
         }
       >
-        
+        
       </Text>
       <Text
         numberOfLines={1}
@@ -725,7 +725,7 @@ exports[`Story Snapshots: NoVoiceCall should match snapshot 1`] = `
           },
         ]
       }
-      testID="room-info-view-camera"
+      testID="room-info-view-video"
     >
       <Text
         allowFontScaling={false}
@@ -985,7 +985,7 @@ exports[`Story Snapshots: OlderServer should match snapshot 1`] = `
           ]
         }
       >
-        
+        
       </Text>
       <Text
         numberOfLines={1}
@@ -1030,7 +1030,7 @@ exports[`Story Snapshots: OlderServer should match snapshot 1`] = `
           },
         ]
       }
-      testID="room-info-view-camera"
+      testID="room-info-view-video"
     >
       <Text
         allowFontScaling={false}
@@ -1290,7 +1290,7 @@ exports[`Story Snapshots: WithBlockedUser should match snapshot 1`] = `
           ]
         }
       >
-        
+        
       </Text>
       <Text
         numberOfLines={1}
@@ -1335,7 +1335,7 @@ exports[`Story Snapshots: WithBlockedUser should match snapshot 1`] = `
           },
         ]
       }
-      testID="room-info-view-camera"
+      testID="room-info-view-video"
     >
       <Text
         allowFontScaling={false}
@@ -1595,7 +1595,7 @@ exports[`Story Snapshots: WithRoomFromRid should match snapshot 1`] = `
           ]
         }
       >
-        
+        
       </Text>
       <Text
         numberOfLines={1}

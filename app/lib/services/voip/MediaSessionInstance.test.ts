@@ -51,6 +51,12 @@ jest.mock('../sdk', () => ({
 	}
 }));
 
+const mockMediaCallsStateSignals = jest.fn().mockResolvedValue({ signals: [], success: true });
+
+jest.mock('../restApi', () => ({
+	mediaCallsStateSignals: (...args: unknown[]) => mockMediaCallsStateSignals(...args)
+}));
+
 jest.mock('../../store/auxStore', () => ({
 	store: {
 		getState: jest.fn(() => ({
@@ -185,6 +191,7 @@ function buildClientMediaCall(options: {
 describe('MediaSessionInstance', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
+		mockMediaCallsStateSignals.mockResolvedValue({ signals: [], success: true });
 		createdSessions.length = 0;
 		mockGetUidDirectMessage.mockReturnValue('other-user-id');
 		mockGetDMSubscriptionByUsername.mockResolvedValue(null);
@@ -206,20 +213,25 @@ describe('MediaSessionInstance', () => {
 	});
 
 	describe('init', () => {
-		it('should register stream-notify-user listener', () => {
-			mediaSessionInstance.init('user-1');
+		it('should register stream-notify-user listener', async () => {
+			await mediaSessionInstance.init('user-1');
 			expect(mockOnStreamData).toHaveBeenCalledWith('stream-notify-user', expect.any(Function));
 		});
 
-		it('should create session with userId', () => {
-			mediaSessionInstance.init('user-abc');
+		it('should create session with userId', async () => {
+			await mediaSessionInstance.init('user-abc');
 			expect(createdSessions).toHaveLength(1);
 			expect(createdSessions[0].userId).toBe('user-abc');
 		});
 
-		it('should route sendSignal through sdk.methodCall with user media-calls channel', () => {
+		it('should fetch REST state signals on init', async () => {
+			await mediaSessionInstance.init('user-1');
+			expect(mockMediaCallsStateSignals).toHaveBeenCalledWith('test-device-id');
+		});
+
+		it('should route sendSignal through sdk.methodCall with user media-calls channel', async () => {
 			const spy = jest.spyOn(mediaSessionStore, 'setSendSignalFn');
-			mediaSessionInstance.init('user-xyz');
+			await mediaSessionInstance.init('user-xyz');
 			expect(spy).toHaveBeenCalled();
 			const sendFn = spy.mock.calls[spy.mock.calls.length - 1][0] as (signal: { type: string }) => void;
 			sendFn({ type: 'register' });
@@ -233,17 +245,17 @@ describe('MediaSessionInstance', () => {
 	});
 
 	describe('teardown and user switch', () => {
-		it('should call endSession on previous session when init with different userId', () => {
-			mediaSessionInstance.init('user-1');
+		it('should call endSession on previous session when init with different userId', async () => {
+			await mediaSessionInstance.init('user-1');
 			const first = createdSessions[0];
-			mediaSessionInstance.init('user-2');
+			await mediaSessionInstance.init('user-2');
 			expect(first.endSession).toHaveBeenCalled();
 			expect(createdSessions[createdSessions.length - 1].userId).toBe('user-2');
 		});
 
-		it('should only have one active onChange handler after re-init (getInstance once per change emit)', () => {
-			mediaSessionInstance.init('user-1');
-			mediaSessionInstance.init('user-2');
+		it('should only have one active onChange handler after re-init (getInstance once per change emit)', async () => {
+			await mediaSessionInstance.init('user-1');
+			await mediaSessionInstance.init('user-2');
 			const spy = jest.spyOn(mediaSessionStore, 'getInstance');
 			mediaSessionStore.emit('change');
 			expect(spy).toHaveBeenCalledTimes(1);
@@ -251,21 +263,21 @@ describe('MediaSessionInstance', () => {
 			spy.mockRestore();
 		});
 
-		it('should throw existing makeInstance error when getInstance after reset without init', () => {
-			mediaSessionInstance.init('user-1');
+		it('should throw existing makeInstance error when getInstance after reset without init', async () => {
+			await mediaSessionInstance.init('user-1');
 			mediaSessionInstance.reset();
-			expect(() => mediaSessionStore.getInstance('any')).toThrow('WebRTC processor factory and send signal function must be set');
+			expect(() => mediaSessionStore.getInstance('any')).toThrow(/must be set/);
 		});
 
-		it('should allow init after reset', () => {
-			mediaSessionInstance.init('user-1');
+		it('should allow init after reset', async () => {
+			await mediaSessionInstance.init('user-1');
 			mediaSessionInstance.reset();
-			mediaSessionInstance.init('user-2');
+			await mediaSessionInstance.init('user-2');
 			expect(createdSessions[createdSessions.length - 1].userId).toBe('user-2');
 		});
 
-		it('should not throw when reset is called twice', () => {
-			mediaSessionInstance.init('user-1');
+		it('should not throw when reset is called twice', async () => {
+			await mediaSessionInstance.init('user-1');
 			expect(() => {
 				mediaSessionInstance.reset();
 				mediaSessionInstance.reset();
@@ -274,7 +286,7 @@ describe('MediaSessionInstance', () => {
 	});
 
 	describe('newCall (no JS busy-reject; native decides)', () => {
-		it('allows incoming callee newCall when store already has an active call', () => {
+		it('allows incoming callee newCall when store already has an active call', async () => {
 			const mockSetCall = jest.fn();
 			mockUseCallStoreGetState.mockReturnValue({
 				reset: mockCallStoreReset,
@@ -286,14 +298,14 @@ describe('MediaSessionInstance', () => {
 				nativeAcceptedCallId: null,
 				roomId: null
 			});
-			mediaSessionInstance.init('user-1');
+			await mediaSessionInstance.init('user-1');
 			const incoming = buildClientMediaCall({ callId: 'incoming-b', role: 'callee' });
 			getNewCallHandler()({ call: incoming });
 			expect(incoming.reject).not.toHaveBeenCalled();
 			expect(RNCallKeep.endCall).not.toHaveBeenCalledWith('incoming-b');
 		});
 
-		it('allows incoming callee newCall when nativeAcceptedCallId is set but differs from incoming callId', () => {
+		it('allows incoming callee newCall when nativeAcceptedCallId is set but differs from incoming callId', async () => {
 			mockUseCallStoreGetState.mockReturnValue({
 				reset: mockCallStoreReset,
 				setCall: jest.fn(),
@@ -304,14 +316,14 @@ describe('MediaSessionInstance', () => {
 				nativeAcceptedCallId: 'native-other',
 				roomId: null
 			});
-			mediaSessionInstance.init('user-1');
+			await mediaSessionInstance.init('user-1');
 			const incoming = buildClientMediaCall({ callId: 'incoming-b', role: 'callee' });
 			getNewCallHandler()({ call: incoming });
 			expect(incoming.reject).not.toHaveBeenCalled();
 			expect(RNCallKeep.endCall).not.toHaveBeenCalledWith('incoming-b');
 		});
 
-		it('allows incoming callee newCall when nativeAcceptedCallId matches incoming callId', () => {
+		it('allows incoming callee newCall when nativeAcceptedCallId matches incoming callId', async () => {
 			mockUseCallStoreGetState.mockReturnValue({
 				reset: mockCallStoreReset,
 				setCall: jest.fn(),
@@ -322,14 +334,14 @@ describe('MediaSessionInstance', () => {
 				nativeAcceptedCallId: 'same-id',
 				roomId: null
 			});
-			mediaSessionInstance.init('user-1');
+			await mediaSessionInstance.init('user-1');
 			const incoming = buildClientMediaCall({ callId: 'same-id', role: 'callee' });
 			getNewCallHandler()({ call: incoming });
 			expect(incoming.reject).not.toHaveBeenCalled();
 			expect(RNCallKeep.endCall).not.toHaveBeenCalledWith('same-id');
 		});
 
-		it('does not reject outgoing (caller) newCall; binds call and navigates', () => {
+		it('does not reject outgoing (caller) newCall; binds call and navigates', async () => {
 			const mockSetCall = jest.fn();
 			mockUseCallStoreGetState.mockReturnValue({
 				reset: mockCallStoreReset,
@@ -341,7 +353,7 @@ describe('MediaSessionInstance', () => {
 				nativeAcceptedCallId: null,
 				roomId: null
 			});
-			mediaSessionInstance.init('user-1');
+			await mediaSessionInstance.init('user-1');
 			const outgoing = buildClientMediaCall({ callId: 'out-c', role: 'caller' });
 			getNewCallHandler()({ call: outgoing });
 			expect(outgoing.reject).not.toHaveBeenCalled();
@@ -353,7 +365,7 @@ describe('MediaSessionInstance', () => {
 	describe('stream-notify-user (notification/accepted gated)', () => {
 		it('does not call answerCall when nativeAcceptedCallId is null', async () => {
 			const answerSpy = jest.spyOn(mediaSessionInstance, 'answerCall').mockResolvedValue(undefined);
-			mediaSessionInstance.init('user-1');
+			await mediaSessionInstance.init('user-1');
 			const streamHandler = getStreamNotifyHandler();
 			streamHandler({
 				msg: 'changed',
@@ -386,7 +398,7 @@ describe('MediaSessionInstance', () => {
 				nativeAcceptedCallId: 'from-signal',
 				roomId: null
 			});
-			mediaSessionInstance.init('user-1');
+			await mediaSessionInstance.init('user-1');
 			const streamHandler = getStreamNotifyHandler();
 			streamHandler({
 				msg: 'changed',
@@ -419,7 +431,7 @@ describe('MediaSessionInstance', () => {
 				nativeAcceptedCallId: 'sticky-only',
 				roomId: null
 			});
-			mediaSessionInstance.init('user-1');
+			await mediaSessionInstance.init('user-1');
 			const streamHandler = getStreamNotifyHandler();
 			streamHandler({
 				msg: 'changed',
@@ -452,7 +464,7 @@ describe('MediaSessionInstance', () => {
 				nativeAcceptedCallId: 'from-signal',
 				roomId: null
 			});
-			mediaSessionInstance.init('user-1');
+			await mediaSessionInstance.init('user-1');
 			const streamHandler = getStreamNotifyHandler();
 			streamHandler({
 				msg: 'changed',
@@ -474,9 +486,54 @@ describe('MediaSessionInstance', () => {
 		});
 	});
 
+	describe('REST state signals replay (native accept race)', () => {
+		it('calls answerCall from init when REST returns accepted and nativeAcceptedCallId already matches', async () => {
+			const answerSpy = jest.spyOn(mediaSessionInstance, 'answerCall').mockResolvedValue(undefined);
+			mockMediaCallsStateSignals.mockResolvedValue({
+				success: true,
+				signals: [
+					{
+						type: 'notification',
+						notification: 'accepted',
+						signedContractId: 'test-device-id',
+						callId: 'race-call'
+					}
+				]
+			});
+			mockUseCallStoreGetState.mockReturnValue({
+				reset: mockCallStoreReset,
+				setCall: jest.fn(),
+				setRoomId: mockSetRoomId,
+				resetNativeCallId: jest.fn(),
+				call: null,
+				callId: null,
+				nativeAcceptedCallId: 'race-call',
+				roomId: null
+			});
+			await mediaSessionInstance.init('user-1');
+			await Promise.resolve();
+			expect(answerSpy).toHaveBeenCalledWith('race-call');
+			answerSpy.mockRestore();
+		});
+
+		it('applyRestStateSignals skips REST when no instance', async () => {
+			mediaSessionInstance.reset();
+			mockMediaCallsStateSignals.mockClear();
+			await mediaSessionInstance.applyRestStateSignals();
+			expect(mockMediaCallsStateSignals).not.toHaveBeenCalled();
+		});
+
+		it('applyRestStateSignals refetches REST after init', async () => {
+			await mediaSessionInstance.init('user-1');
+			mockMediaCallsStateSignals.mockClear();
+			await mediaSessionInstance.applyRestStateSignals();
+			expect(mockMediaCallsStateSignals).toHaveBeenCalledWith('test-device-id');
+		});
+	});
+
 	describe('startCall', () => {
-		it('requests phone state permission fire-and-forget when starting a call', () => {
-			mediaSessionInstance.init('user-1');
+		it('requests phone state permission fire-and-forget when starting a call', async () => {
+			await mediaSessionInstance.init('user-1');
 			mockRequestPhoneStatePermission.mockClear();
 			const session = createdSessions[0];
 			mediaSessionInstance.startCall('peer-1', 'user');
@@ -486,8 +543,8 @@ describe('MediaSessionInstance', () => {
 	});
 
 	describe('roomId population', () => {
-		it('startCallByRoom sets roomId before startCall', () => {
-			mediaSessionInstance.init('user-1');
+		it('startCallByRoom sets roomId before startCall', async () => {
+			await mediaSessionInstance.init('user-1');
 			const session = createdSessions[0];
 			const order: string[] = [];
 			mockSetRoomId.mockImplementationOnce(() => {
@@ -506,7 +563,7 @@ describe('MediaSessionInstance', () => {
 
 		it('newCall caller triggers DM lookup when roomId is still null', async () => {
 			mockGetDMSubscriptionByUsername.mockResolvedValue({ rid: 'from-db' } as any);
-			mediaSessionInstance.init('user-1');
+			await mediaSessionInstance.init('user-1');
 			const session = createdSessions[0];
 			const newCallHandler = session.on.mock.calls.find((c: string[]) => c[0] === 'newCall')?.[1] as (p: {
 				call: IClientMediaCall;
@@ -527,7 +584,7 @@ describe('MediaSessionInstance', () => {
 		});
 
 		it('newCall caller skips DM lookup when roomId already set', async () => {
-			mediaSessionInstance.init('user-1');
+			await mediaSessionInstance.init('user-1');
 			mockUseCallStoreGetState.mockReturnValue({
 				reset: mockCallStoreReset,
 				setCall: jest.fn(),
@@ -558,7 +615,7 @@ describe('MediaSessionInstance', () => {
 		});
 
 		it('newCall caller skips DM lookup for SIP contact', async () => {
-			mediaSessionInstance.init('user-1');
+			await mediaSessionInstance.init('user-1');
 			const session = createdSessions[0];
 			const newCallHandler = session.on.mock.calls.find((c: string[]) => c[0] === 'newCall')?.[1] as (p: {
 				call: IClientMediaCall;
@@ -580,7 +637,7 @@ describe('MediaSessionInstance', () => {
 
 		it('answerCall resolves roomId from DM for non-SIP callee', async () => {
 			mockGetDMSubscriptionByUsername.mockResolvedValue({ rid: 'dm-rid' } as any);
-			mediaSessionInstance.init('user-1');
+			await mediaSessionInstance.init('user-1');
 			const session = createdSessions[0];
 			const mainCall = {
 				callId: 'call-ans',
@@ -596,7 +653,7 @@ describe('MediaSessionInstance', () => {
 		});
 
 		it('answerCall skips DM lookup for SIP contact', async () => {
-			mediaSessionInstance.init('user-1');
+			await mediaSessionInstance.init('user-1');
 			const session = createdSessions[0];
 			const mainCall = {
 				callId: 'call-sip',

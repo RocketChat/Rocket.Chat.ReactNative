@@ -228,8 +228,8 @@ PODS:
     - hermes-engine/Pre-built (= 0.81.5)
   - hermes-engine/Pre-built (0.81.5)
   - JitsiWebRTC (124.0.2)
-  - libavif/core (0.11.1)
-  - libavif/libdav1d (0.11.1):
+  - libavif/core (1.0.0)
+  - libavif/libdav1d (1.0.0):
     - libavif/core
     - libdav1d (>= 0.6.0)
   - libdav1d (1.2.0)
@@ -3457,9 +3457,9 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - SDWebImage (5.21.5):
-    - SDWebImage/Core (= 5.21.5)
-  - SDWebImage/Core (5.21.5)
+  - SDWebImage (5.21.7):
+    - SDWebImage/Core (= 5.21.7)
+  - SDWebImage/Core (5.21.7)
   - SDWebImageAVIFCoder (0.11.1):
     - libavif/core (>= 0.11.0)
     - SDWebImage (~> 5.10)
@@ -3950,7 +3950,7 @@ SPEC CHECKSUMS:
   GoogleUtilities: 00c88b9a86066ef77f0da2fab05f65d7768ed8e1
   hermes-engine: 9f4dfe93326146a1c99eb535b1cb0b857a3cd172
   JitsiWebRTC: b47805ab5668be38e7ee60e2258f49badfe8e1d0
-  libavif: 84bbb62fb232c3018d6f1bab79beea87e35de7b7
+  libavif: 5f8e715bea24debec477006f21ef9e95432e254d
   libdav1d: 23581a4d8ec811ff171ed5e2e05cd27bad64c39f
   libwebp: 02b23773aedb6ff1fd38cec7a77b81414c6842a8
   MobileCrypto: 41cd66d5588e979cf95d1ff6ae2eec88eb284ef1
@@ -4030,7 +4030,7 @@ SPEC CHECKSUMS:
   React-timing: c39eeb992274aeaeb9f4666dc97a36a31d33fe94
   React-utils: 2f9ba0088251788ad66aa1855ff99ed2424024d2
   ReactAppDependencyProvider: 1bcd3527ac0390a1c898c114f81ff954be35ed79
-  ReactCodegen: 7fadc30654a54b3a0d62df08f55e2211e25486ee
+  ReactCodegen: be4935b78afa3d1bf577b6abf9a522d21734a4a0
   ReactCommon: 6d0fa86a4510730da7c72560e0ced14258292ab9
   ReactNativeIncallManager: dccd3e7499caa3bb73d3acfedf4fb0360f1a87d5
   RNBootSplash: 7fcc9a58ae343aeb1a1dd49f9030832fe432c544
@@ -4054,7 +4054,7 @@ SPEC CHECKSUMS:
   RNSVG: 94a1be05fab4043354bcf7104f0f9b0e2231ef05
   RNTrueSheet: 53f29088da313dabff8b81d7c4d52afd8e609cfa
   RNWorklets: ab618bf7d1c7fd2cb793b9f0f39c3e29274b3ebf
-  SDWebImage: e9c98383c7572d713c1a0d7dd2783b10599b9838
+  SDWebImage: e9fc87c1aab89a8ab1bbd74eba378c6f53be8abf
   SDWebImageAVIFCoder: afe194a084e851f70228e4be35ef651df0fc5c57
   SDWebImageSVGCoder: 15a300a97ec1c8ac958f009c02220ac0402e936c
   SDWebImageWebPCoder: e38c0a70396191361d60c092933e22c20d5b1380

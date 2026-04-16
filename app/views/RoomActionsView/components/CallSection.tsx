@@ -53,7 +53,7 @@ export default function CallSection({
 						translateSubtitle={false}
 						onPress={showInitCallActionSheet}
 						testID='room-actions-call'
-						left={() => <List.Icon name='camera' />}
+						left={() => <List.Icon name='video' />}
 						showActionIndicator
 						disabled={disabledTooltip || disabled}
 					/>

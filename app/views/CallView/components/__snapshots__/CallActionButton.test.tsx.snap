@@ -92,7 +92,7 @@ exports[`Story Snapshots: ActiveButton should match snapshot 1`] = `
             ]
           }
         >
-          
+          
         </Text>
       </View>
       <Text
@@ -219,7 +219,7 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
               ]
             }
           >
-            
+            
           </Text>
         </View>
         <Text
@@ -415,7 +415,7 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
               ]
             }
           >
-            
+            
           </Text>
         </View>
         <Text
@@ -962,7 +962,7 @@ exports[`Story Snapshots: DefaultButton should match snapshot 1`] = `
             ]
           }
         >
-          
+          
         </Text>
       </View>
       <Text
@@ -1211,7 +1211,7 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
               ]
             }
           >
-            
+            
           </Text>
         </View>
         <Text
@@ -1309,7 +1309,7 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
               ]
             }
           >
-            ?
+            
           </Text>
         </View>
         <Text
@@ -1407,7 +1407,7 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
               ]
             }
           >
-            
+            
           </Text>
         </View>
         <Text

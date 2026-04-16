@@ -89,7 +89,7 @@ export const RoomInfoButtons = ({
 		},
 		{
 			label: i18n.t('Video_call'),
-			iconName: 'camera',
+			iconName: 'video',
 			onPress: showInitCallActionSheet,
 			enabled: !disabledTooltip,
 			show: renderVideoCall
