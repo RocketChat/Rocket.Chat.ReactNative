@@ -4030,7 +4030,7 @@ SPEC CHECKSUMS:
   React-timing: c39eeb992274aeaeb9f4666dc97a36a31d33fe94
   React-utils: 2f9ba0088251788ad66aa1855ff99ed2424024d2
   ReactAppDependencyProvider: 1bcd3527ac0390a1c898c114f81ff954be35ed79
-  ReactCodegen: 7fadc30654a54b3a0d62df08f55e2211e25486ee
+  ReactCodegen: be4935b78afa3d1bf577b6abf9a522d21734a4a0
   ReactCommon: 6d0fa86a4510730da7c72560e0ced14258292ab9
   ReactNativeIncallManager: dccd3e7499caa3bb73d3acfedf4fb0360f1a87d5
   RNBootSplash: 7fcc9a58ae343aeb1a1dd49f9030832fe432c544
