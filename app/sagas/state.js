@@ -35,7 +35,7 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 
 		// Check for pending notification when app comes to foreground (Android - notification tap while in background)
 		checkPendingNotification().catch(e => {
-			log(`[state.js] Error checking pending notification: ${e}`);
+			log('[state.js] Error checking pending notification:', e);
 		});
 	} catch (e) {
 		log(e);
