@@ -2,15 +2,12 @@ import { call, delay, select, takeLatest } from 'redux-saga/effects';
 
 import log from '../lib/methods/helpers/log';
 import { localAuthenticate, saveLastLocalAuthenticationSession } from '../lib/methods/helpers/localAuthentication';
-import { APP_STATE, METEOR } from '../actions/actionsTypes';
+import { APP_STATE } from '../actions/actionsTypes';
 import { RootEnum } from '../definitions';
 import { checkAndReopen } from '../lib/services/connect';
 import { setUserPresenceOnline, setUserPresenceAway } from '../lib/services/restApi';
 import { checkPendingNotification } from '../lib/notifications';
 import { refreshDmUsersPresence } from '../lib/methods/getUsersPresence';
-
-const CONNECTION_RETRY_LIMIT = 10;
-const CONNECTION_RETRY_DELAY_MS = 1000;
 
 const isAuthAndConnected = function* isAuthAndConnected() {
 	const login = yield select(state => state.login);
@@ -19,16 +16,15 @@ const isAuthAndConnected = function* isAuthAndConnected() {
 };
 
 const appHasComeBackToForeground = function* appHasComeBackToForeground() {
+	const appRoot = yield select(state => state.app.root);
+	if (appRoot !== RootEnum.ROOT_INSIDE) {
+		return;
+	}
+	const isReady = yield isAuthAndConnected();
+	if (!isReady) {
+		return;
+	}
 	try {
-		const appRoot = yield select(state => state.app.root);
-		if (appRoot !== RootEnum.ROOT_INSIDE) {
-			return;
-		}
-		const isReady = yield isAuthAndConnected();
-		if (!isReady) {
-			return;
-		}
-
 		const server = yield select(state => state.server.server);
 		yield localAuthenticate(server);
 		checkAndReopen();
