@@ -57,7 +57,8 @@ tags:
 - tapOn:
     id: action-sheet-handle
 # should have "Vibrate for new messages"
-- assertVisible: Vibrate for new messages
+- assertVisible:
+    id: user-notification-preference-view-in-app-vibration
 
 # should have alert for push notification
 - assertVisible:
