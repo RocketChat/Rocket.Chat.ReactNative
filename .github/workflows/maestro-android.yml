@@ -13,6 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       MAESTRO_VERSION: 2.2.0
+      ANDROID_AVD_HOME: /home/runner/.android/avd
 
     steps:
       - name: Checkout Repository
@@ -77,7 +78,7 @@ jobs:
           AVDMANAGER="$ANDROID_SDK/cmdline-tools/latest/bin/avdmanager"
           AVD_NAME="Pixel_API_34_Keyboard"
           IMAGE="system-images;android-34;google_apis;x86_64"
-          AVD_BASE="${ANDROID_AVD_HOME:-${ANDROID_USER_HOME:-$HOME/.android}/avd}"
+          AVD_BASE="$ANDROID_AVD_HOME"
           AVD_INI="$AVD_BASE/${AVD_NAME}.ini"
 
           mkdir -p "$AVD_BASE"
@@ -90,6 +91,9 @@ jobs:
 
           if [ ! -f "$AVD_INI" ]; then
             echo "Expected AVD ini not found: $AVD_INI"
+            echo "--- avdmanager list avd ---"
+            "$AVDMANAGER" list avd || true
+            echo "--- ls AVD_BASE ---"
             ls -la "$AVD_BASE" || true
             exit 1
           fi
