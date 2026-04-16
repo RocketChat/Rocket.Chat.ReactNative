@@ -10,6 +10,7 @@ import mergeSubscriptionsRooms from '../lib/methods/helpers/mergeSubscriptionsRo
 import buildMessage from '../lib/methods/helpers/buildMessage';
 import { getRooms } from '../lib/methods/getRooms';
 import { subscribeRooms } from '../lib/methods/subscribeRooms';
+import { refreshDmUsersPresence } from '../lib/methods/getUsersPresence';
 
 const updateRooms = function* updateRooms({ server, newRoomsUpdatedAt }) {
 	const serversDB = database.servers;
@@ -134,6 +135,7 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 
 		yield updateRooms({ server, newRoomsUpdatedAt });
 		yield put(roomsSuccess());
+		yield call(refreshDmUsersPresence);
 	} catch (e) {
 		yield put(roomsFailure(e));
 		log(e);
