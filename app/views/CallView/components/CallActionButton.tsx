@@ -72,7 +72,7 @@ const CallActionButton = ({
 				testID={testID}>
 				<CustomIcon name={icon} size={32} color={getIconColor()} />
 			</Pressable>
-			<Text style={[styles.actionButtonLabel, { color: colors.fontDefault }]}>{label}</Text>
+			<Text numberOfLines={1} style={[styles.actionButtonLabel, { color: colors.fontDefault }]}>{label}</Text>
 		</View>
 	);
 };

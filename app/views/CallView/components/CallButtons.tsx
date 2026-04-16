@@ -130,43 +130,46 @@ export const CallButtons = () => {
 			{layoutMode === 'wide' ? (
 				<View style={[styles.buttonsRow, isLandscape && styles.buttonsRowLandscape]} testID='call-buttons-row-0'>
 					{buttons.map(btn => (
-						<CallActionButton
-							key={btn.testID}
-							icon={btn.icon}
-							label={btn.label}
-							onPress={btn.onPress}
-							variant={btn.variant}
-							disabled={btn.disabled}
-							testID={btn.testID}
-						/>
+						<View key={btn.testID} style={styles.actionButtonCell}>
+							<CallActionButton
+								icon={btn.icon}
+								label={btn.label}
+								onPress={btn.onPress}
+								variant={btn.variant}
+								disabled={btn.disabled}
+								testID={btn.testID}
+							/>
+						</View>
 					))}
 				</View>
 			) : (
 				<>
 					<View style={[styles.buttonsRow, isLandscape && styles.buttonsRowLandscape]} testID='call-buttons-row-0'>
 						{buttons.slice(0, 3).map(btn => (
-							<CallActionButton
-								key={btn.testID}
-								icon={btn.icon}
-								label={btn.label}
-								onPress={btn.onPress}
-								variant={btn.variant}
-								disabled={btn.disabled}
-								testID={btn.testID}
-							/>
+							<View key={btn.testID} style={styles.actionButtonCell}>
+								<CallActionButton
+									icon={btn.icon}
+									label={btn.label}
+									onPress={btn.onPress}
+									variant={btn.variant}
+									disabled={btn.disabled}
+									testID={btn.testID}
+								/>
+							</View>
 						))}
 					</View>
 					<View style={[styles.buttonsRow, isLandscape && styles.buttonsRowLandscape]} testID='call-buttons-row-1'>
 						{buttons.slice(3, 6).map(btn => (
-							<CallActionButton
-								key={btn.testID}
-								icon={btn.icon}
-								label={btn.label}
-								onPress={btn.onPress}
-								variant={btn.variant}
-								disabled={btn.disabled}
-								testID={btn.testID}
-							/>
+							<View key={btn.testID} style={styles.actionButtonCell}>
+								<CallActionButton
+									icon={btn.icon}
+									label={btn.label}
+									onPress={btn.onPress}
+									variant={btn.variant}
+									disabled={btn.disabled}
+									testID={btn.testID}
+								/>
+							</View>
 						))}
 					</View>
 				</>

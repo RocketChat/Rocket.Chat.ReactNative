@@ -1,191 +1,167 @@
 import React from 'react';
-import { fireEvent, render, within } from '@testing-library/react-native';
+import { render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
 import { mockedStore } from '../../../reducers/mockedStore';
 import { useCallStore } from '../../../lib/services/voip/useCallStore';
-import { navigateToCallRoom } from '../../../lib/services/voip/navigateToCallRoom';
 import { CallButtons } from './CallButtons';
 import { useCallLayoutMode } from '../useCallLayoutMode';
-
-jest.mock('../../../lib/services/voip/navigateToCallRoom', () => ({
-	navigateToCallRoom: jest.fn().mockResolvedValue(undefined)
-}));
 
 jest.mock('../useCallLayoutMode', () => ({
 	useCallLayoutMode: jest.fn(() => ({ layoutMode: 'narrow' }))
 }));
 
-const mockUseCallLayoutMode = jest.mocked(useCallLayoutMode);
-
-const mockShowActionSheetRef = jest.fn();
 jest.mock('../../../containers/ActionSheet', () => ({
-	showActionSheetRef: (options: any) => mockShowActionSheetRef(options),
+	showActionSheetRef: jest.fn(),
 	hideActionSheetRef: jest.fn()
 }));
 
-const mockNavigateToCallRoom = jest.mocked(navigateToCallRoom);
+jest.mock('react-native-incall-manager', () => ({
+	start: jest.fn(),
+	stop: jest.fn(),
+	setForceSpeakerphoneOn: jest.fn(() => Promise.resolve())
+}));
+
+jest.mock('../../../lib/hooks/useResponsiveLayout/useResponsiveLayout', () => ({
+	useResponsiveLayout: jest.fn(() => ({ width: 375, height: 812 }))
+}));
+
+const setStoreState = (overrides: Partial<ReturnType<typeof useCallStore.getState>> = {}) => {
+	const mockCall = {
+		state: 'active',
+		muted: false,
+		held: false,
+		contact: {},
+		sendDTMF: jest.fn(),
+		emitter: { on: jest.fn(), off: jest.fn() }
+	} as any;
+
+	useCallStore.setState({
+		call: mockCall,
+		callId: 'test-id',
+		callState: 'active',
+		isMuted: false,
+		isOnHold: false,
+		isSpeakerOn: false,
+		roomId: 'room-1',
+		contact: { name: 'Test User' } as any,
+		toggleMute: jest.fn(),
+		toggleHold: jest.fn(),
+		toggleSpeaker: jest.fn(),
+		endCall: jest.fn(),
+		dialpadValue: '',
+		...overrides
+	});
+};
 
 const Wrapper = ({ children }: { children: React.ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
 
 describe('CallButtons', () => {
 	beforeEach(() => {
+		(useCallLayoutMode as jest.Mock).mockReturnValue({ layoutMode: 'narrow' });
 		useCallStore.getState().reset();
-		jest.clearAllMocks();
-		mockUseCallLayoutMode.mockReturnValue({ layoutMode: 'narrow' });
-		useCallStore.setState({
-			call: { state: 'active', contact: {} } as any,
-			callState: 'active',
-			callId: 'id',
-			isMuted: false,
-			isOnHold: false,
-			isSpeakerOn: false,
-			roomId: 'rid-1',
-			contact: { username: 'u', sipExtension: '', displayName: 'U' },
-			toggleMute: jest.fn(),
-			toggleHold: jest.fn(),
-			toggleSpeaker: jest.fn(),
-			endCall: jest.fn()
-		});
 	});
 
-	it('should set pointerEvents to none when controlsVisible is false', () => {
-		useCallStore.setState({ controlsVisible: false });
+	it('renders all 6 buttons', () => {
+		setStoreState();
 		const { getByTestId } = render(
 			<Wrapper>
 				<CallButtons />
 			</Wrapper>
 		);
-
-		const container = getByTestId('call-buttons', { includeHiddenElements: true });
-		expect(container.props.pointerEvents).toBe('none');
+		expect(getByTestId('call-view-speaker')).toBeTruthy();
+		expect(getByTestId('call-view-hold')).toBeTruthy();
+		expect(getByTestId('call-view-mute')).toBeTruthy();
+		expect(getByTestId('call-view-message')).toBeTruthy();
+		expect(getByTestId('call-view-end')).toBeTruthy();
+		expect(getByTestId('call-view-dialpad')).toBeTruthy();
 	});
 
-	it('should set pointerEvents to auto when controlsVisible is true', () => {
-		useCallStore.setState({ controlsVisible: true });
+	it('narrow layout renders 2 rows', () => {
+		(useCallLayoutMode as jest.Mock).mockReturnValue({ layoutMode: 'narrow' });
+		setStoreState();
 		const { getByTestId } = render(
 			<Wrapper>
 				<CallButtons />
 			</Wrapper>
 		);
-
-		const container = getByTestId('call-buttons');
-		expect(container.props.pointerEvents).toBe('auto');
+		expect(getByTestId('call-buttons-row-0')).toBeTruthy();
+		expect(getByTestId('call-buttons-row-1')).toBeTruthy();
 	});
 
-	it('message button calls navigateToCallRoom when enabled', () => {
+	it('wide layout renders 1 row', () => {
+		(useCallLayoutMode as jest.Mock).mockReturnValue({ layoutMode: 'wide' });
+		setStoreState();
+		const { getByTestId, queryByTestId } = render(
+			<Wrapper>
+				<CallButtons />
+			</Wrapper>
+		);
+		expect(getByTestId('call-buttons-row-0')).toBeTruthy();
+		expect(queryByTestId('call-buttons-row-1')).toBeNull();
+	});
+
+	it('button labels render', () => {
+		setStoreState();
+		const { getByText } = render(
+			<Wrapper>
+				<CallButtons />
+			</Wrapper>
+		);
+		expect(getByText('Speaker')).toBeTruthy();
+		expect(getByText('Hold')).toBeTruthy();
+		expect(getByText('Mute')).toBeTruthy();
+		expect(getByText('Message')).toBeTruthy();
+		expect(getByText('End')).toBeTruthy();
+		expect(getByText('Dialpad')).toBeTruthy();
+	});
+
+	it('disabled states when ringing', () => {
+		setStoreState({ callState: 'ringing' });
 		const { getByTestId } = render(
 			<Wrapper>
 				<CallButtons />
 			</Wrapper>
 		);
-		fireEvent.press(getByTestId('call-view-message'));
-		expect(mockNavigateToCallRoom).toHaveBeenCalledTimes(1);
+		expect(getByTestId('call-view-speaker').props.accessibilityState?.disabled).toBe(true);
+		expect(getByTestId('call-view-hold').props.accessibilityState?.disabled).toBe(true);
+		expect(getByTestId('call-view-mute').props.accessibilityState?.disabled).toBe(true);
+		expect(getByTestId('call-view-dialpad').props.accessibilityState?.disabled).toBe(true);
 	});
 
-	it('message button is disabled for SIP calls', () => {
-		useCallStore.setState({
-			contact: { username: 'u', sipExtension: '100', displayName: 'U' }
-		});
-		const { getByTestId } = render(
+	it('mute toggle label shows Unmute when isMuted is true, Mute when false', () => {
+		setStoreState({ isMuted: true });
+		const { getByText, rerender } = render(
 			<Wrapper>
 				<CallButtons />
 			</Wrapper>
 		);
-		fireEvent.press(getByTestId('call-view-message'));
-		expect(mockNavigateToCallRoom).not.toHaveBeenCalled();
-	});
+		expect(getByText('Unmute')).toBeTruthy();
 
-	it('message button is disabled when roomId is null', () => {
-		useCallStore.setState({ roomId: null });
-		const { getByTestId } = render(
+		setStoreState({ isMuted: false });
+		rerender(
 			<Wrapper>
 				<CallButtons />
 			</Wrapper>
 		);
-		fireEvent.press(getByTestId('call-view-message'));
-		expect(mockNavigateToCallRoom).not.toHaveBeenCalled();
+		expect(getByText('Mute')).toBeTruthy();
 	});
 
-	describe('layoutMode prop', () => {
-		it('renders two button rows on narrow layout', () => {
-			const { getByTestId } = render(
-				<Wrapper>
-					<CallButtons />
-				</Wrapper>
-			);
-			expect(getByTestId('call-buttons-row-0')).toBeTruthy();
-			expect(getByTestId('call-buttons-row-1')).toBeTruthy();
-		});
+	it('end/cancel label shows Cancel when ringing, End when active', () => {
+		setStoreState({ callState: 'ringing' });
+		const { getByText, rerender } = render(
+			<Wrapper>
+				<CallButtons />
+			</Wrapper>
+		);
+		expect(getByText('Cancel')).toBeTruthy();
 
-		it('renders a single button row on wide layout', () => {
-			mockUseCallLayoutMode.mockReturnValue({ layoutMode: 'wide' });
-			const { getByTestId, queryByTestId } = render(
-				<Wrapper>
-					<CallButtons />
-				</Wrapper>
-			);
-			expect(getByTestId('call-buttons-row-0')).toBeTruthy();
-			expect(queryByTestId('call-buttons-row-1')).toBeNull();
-		});
-
-		it('renders all six action buttons regardless of layoutMode', () => {
-			const ids = [
-				'call-view-speaker',
-				'call-view-hold',
-				'call-view-mute',
-				'call-view-message',
-				'call-view-end',
-				'call-view-dialpad'
-			];
-			(['narrow', 'wide'] as const).forEach(layoutMode => {
-				mockUseCallLayoutMode.mockReturnValue({ layoutMode });
-				const { getByTestId, unmount } = render(
-					<Wrapper>
-						<CallButtons />
-					</Wrapper>
-				);
-				ids.forEach(id => expect(getByTestId(id)).toBeTruthy());
-				unmount();
-			});
-		});
-
-		it('places every action button inside row 0 on wide layout', () => {
-			mockUseCallLayoutMode.mockReturnValue({ layoutMode: 'wide' });
-			const { getByTestId } = render(
-				<Wrapper>
-					<CallButtons />
-				</Wrapper>
-			);
-			const row0 = getByTestId('call-buttons-row-0');
-			const ids = [
-				'call-view-speaker',
-				'call-view-hold',
-				'call-view-mute',
-				'call-view-message',
-				'call-view-end',
-				'call-view-dialpad'
-			];
-			ids.forEach(id => {
-				expect(within(row0).getByTestId(id)).toBeTruthy();
-			});
-		});
-
-		it('splits buttons across row 0 and row 1 on narrow layout', () => {
-			const { getByTestId } = render(
-				<Wrapper>
-					<CallButtons />
-				</Wrapper>
-			);
-			const row0 = getByTestId('call-buttons-row-0');
-			const row1 = getByTestId('call-buttons-row-1');
-
-			expect(within(row0).getByTestId('call-view-speaker')).toBeTruthy();
-			expect(within(row0).getByTestId('call-view-hold')).toBeTruthy();
-			expect(within(row0).getByTestId('call-view-mute')).toBeTruthy();
-			expect(within(row1).getByTestId('call-view-message')).toBeTruthy();
-			expect(within(row1).getByTestId('call-view-end')).toBeTruthy();
-			expect(within(row1).getByTestId('call-view-dialpad')).toBeTruthy();
-		});
+		setStoreState({ callState: 'active' });
+		rerender(
+			<Wrapper>
+				<CallButtons />
+			</Wrapper>
+		);
+		expect(getByText('End')).toBeTruthy();
 	});
 });

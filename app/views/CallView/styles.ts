@@ -61,7 +61,11 @@ export const styles = StyleSheet.create({
 	buttonsRow: {
 		flexDirection: 'row',
 		justifyContent: 'center',
-		gap: 48
+		gap: 24
+	},
+	actionButtonCell: {
+		flex: 1,
+		alignItems: 'center'
 	},
 	actionButton: {
 		alignItems: 'center',
