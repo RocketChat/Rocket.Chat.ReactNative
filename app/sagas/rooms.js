@@ -1,4 +1,4 @@
-import { cancel, delay, fork, put, race, select, take, call } from 'redux-saga/effects';
+import { cancel, delay, fork, put, race, select, take } from 'redux-saga/effects';
 import { Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
@@ -10,7 +10,6 @@ import mergeSubscriptionsRooms from '../lib/methods/helpers/mergeSubscriptionsRo
 import buildMessage from '../lib/methods/helpers/buildMessage';
 import { getRooms } from '../lib/methods/getRooms';
 import { subscribeRooms } from '../lib/methods/subscribeRooms';
-import { refreshDmUsersPresence } from '../lib/methods/getUsersPresence';
 
 const updateRooms = function* updateRooms({ server, newRoomsUpdatedAt }) {
 	const serversDB = database.servers;
@@ -135,7 +134,6 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 
 		yield updateRooms({ server, newRoomsUpdatedAt });
 		yield put(roomsSuccess());
-		yield call(refreshDmUsersPresence);
 	} catch (e) {
 		yield put(roomsFailure(e));
 		log(e);
