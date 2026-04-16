@@ -30,6 +30,7 @@ export const CallButtons = () => {
 	const { layoutMode } = useCallLayoutMode();
 	const { width, height } = useResponsiveLayout();
 	const isLandscape = width > height;
+	const singleRow = layoutMode === 'wide' || isLandscape;
 
 	const callState = useCallStore(state => state.callState);
 	const isMuted = useCallStore(state => state.isMuted);
@@ -117,18 +118,16 @@ export const CallButtons = () => {
 	return (
 		<Animated.View
 			style={[
-				isLandscape ? styles.buttonsContainerLandscape : styles.buttonsContainer,
-				isLandscape
-					? { borderLeftColor: colors.strokeExtraLight, backgroundColor: colors.surfaceLight }
-					: { borderTopColor: colors.strokeExtraLight, backgroundColor: colors.surfaceLight },
+				styles.buttonsContainer,
+				{ borderTopColor: colors.strokeExtraLight, backgroundColor: colors.surfaceLight },
 				containerStyle
 			]}
 			pointerEvents={controlsVisible ? 'auto' : 'none'}
 			accessibilityElementsHidden={!controlsVisible}
 			importantForAccessibility={controlsVisible ? 'auto' : 'no-hide-descendants'}
 			testID='call-buttons'>
-			{layoutMode === 'wide' ? (
-				<View style={[styles.buttonsRow, isLandscape && styles.buttonsRowLandscape]} testID='call-buttons-row-0'>
+			{singleRow ? (
+				<View style={styles.buttonsRow} testID='call-buttons-row-0'>
 					{buttons.map(btn => (
 						<CallActionButton
 							key={btn.testID}
@@ -143,7 +142,7 @@ export const CallButtons = () => {
 				</View>
 			) : (
 				<>
-					<View style={[styles.buttonsRow, isLandscape && styles.buttonsRowLandscape]} testID='call-buttons-row-0'>
+					<View style={styles.buttonsRow} testID='call-buttons-row-0'>
 						{buttons.slice(0, 3).map(btn => (
 							<CallActionButton
 								key={btn.testID}
@@ -156,7 +155,7 @@ export const CallButtons = () => {
 							/>
 						))}
 					</View>
-					<View style={[styles.buttonsRow, isLandscape && styles.buttonsRowLandscape]} testID='call-buttons-row-1'>
+					<View style={styles.buttonsRow} testID='call-buttons-row-1'>
 						{buttons.slice(3, 6).map(btn => (
 							<CallActionButton
 								key={btn.testID}

@@ -17,7 +17,14 @@ exports[`Story Snapshots: ActiveButton should match snapshot 1`] = `
       }
     }
   >
-    <View>
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "flex": 1,
+        }
+      }
+    >
       <View
         accessibilityLabel="Unmute"
         accessibilityRole="button"
@@ -96,6 +103,7 @@ exports[`Story Snapshots: ActiveButton should match snapshot 1`] = `
         </Text>
       </View>
       <Text
+        numberOfLines={1}
         style={
           [
             {
@@ -144,7 +152,14 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
         }
       }
     >
-      <View>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flex": 1,
+          }
+        }
+      >
         <View
           accessibilityLabel="Speaker"
           accessibilityRole="button"
@@ -223,6 +238,7 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
           </Text>
         </View>
         <Text
+          numberOfLines={1}
           style={
             [
               {
@@ -242,7 +258,14 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
           Speaker
         </Text>
       </View>
-      <View>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flex": 1,
+          }
+        }
+      >
         <View
           accessibilityLabel="Hold"
           accessibilityRole="button"
@@ -321,6 +344,7 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
           </Text>
         </View>
         <Text
+          numberOfLines={1}
           style={
             [
               {
@@ -340,7 +364,14 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
           Hold
         </Text>
       </View>
-      <View>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flex": 1,
+          }
+        }
+      >
         <View
           accessibilityLabel="Mute"
           accessibilityRole="button"
@@ -419,6 +450,7 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
           </Text>
         </View>
         <Text
+          numberOfLines={1}
           style={
             [
               {
@@ -452,7 +484,14 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
         ]
       }
     >
-      <View>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flex": 1,
+          }
+        }
+      >
         <View
           accessibilityLabel="Message"
           accessibilityRole="button"
@@ -531,6 +570,7 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
           </Text>
         </View>
         <Text
+          numberOfLines={1}
           style={
             [
               {
@@ -550,7 +590,14 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
           Message
         </Text>
       </View>
-      <View>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flex": 1,
+          }
+        }
+      >
         <View
           accessibilityLabel="End"
           accessibilityRole="button"
@@ -629,6 +676,7 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
           </Text>
         </View>
         <Text
+          numberOfLines={1}
           style={
             [
               {
@@ -648,7 +696,14 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
           End
         </Text>
       </View>
-      <View>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flex": 1,
+          }
+        }
+      >
         <View
           accessibilityLabel="More"
           accessibilityRole="button"
@@ -727,6 +782,7 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
           </Text>
         </View>
         <Text
+          numberOfLines={1}
           style={
             [
               {
@@ -768,7 +824,14 @@ exports[`Story Snapshots: DangerButton should match snapshot 1`] = `
       }
     }
   >
-    <View>
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "flex": 1,
+        }
+      }
+    >
       <View
         accessibilityLabel="End"
         accessibilityRole="button"
@@ -847,6 +910,7 @@ exports[`Story Snapshots: DangerButton should match snapshot 1`] = `
         </Text>
       </View>
       <Text
+        numberOfLines={1}
         style={
           [
             {
@@ -887,7 +951,14 @@ exports[`Story Snapshots: DefaultButton should match snapshot 1`] = `
       }
     }
   >
-    <View>
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "flex": 1,
+        }
+      }
+    >
       <View
         accessibilityLabel="Mute"
         accessibilityRole="button"
@@ -966,6 +1037,7 @@ exports[`Story Snapshots: DefaultButton should match snapshot 1`] = `
         </Text>
       </View>
       <Text
+        numberOfLines={1}
         style={
           [
             {
@@ -1006,7 +1078,14 @@ exports[`Story Snapshots: DisabledButton should match snapshot 1`] = `
       }
     }
   >
-    <View>
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "flex": 1,
+        }
+      }
+    >
       <View
         accessibilityLabel="Hold"
         accessibilityRole="button"
@@ -1087,6 +1166,7 @@ exports[`Story Snapshots: DisabledButton should match snapshot 1`] = `
         </Text>
       </View>
       <Text
+        numberOfLines={1}
         style={
           [
             {
@@ -1136,7 +1216,14 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
         }
       }
     >
-      <View>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flex": 1,
+          }
+        }
+      >
         <View
           accessibilityLabel="Speaker"
           accessibilityRole="button"
@@ -1215,6 +1302,7 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
           </Text>
         </View>
         <Text
+          numberOfLines={1}
           style={
             [
               {
@@ -1234,7 +1322,14 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
           Speaker
         </Text>
       </View>
-      <View>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flex": 1,
+          }
+        }
+      >
         <View
           accessibilityLabel="Hold"
           accessibilityRole="button"
@@ -1313,6 +1408,7 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
           </Text>
         </View>
         <Text
+          numberOfLines={1}
           style={
             [
               {
@@ -1332,7 +1428,14 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
           Hold
         </Text>
       </View>
-      <View>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flex": 1,
+          }
+        }
+      >
         <View
           accessibilityLabel="Mute"
           accessibilityRole="button"
@@ -1411,6 +1514,7 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
           </Text>
         </View>
         <Text
+          numberOfLines={1}
           style={
             [
               {
@@ -1430,7 +1534,14 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
           Mute
         </Text>
       </View>
-      <View>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flex": 1,
+          }
+        }
+      >
         <View
           accessibilityLabel="Message"
           accessibilityRole="button"
@@ -1509,6 +1620,7 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
           </Text>
         </View>
         <Text
+          numberOfLines={1}
           style={
             [
               {
@@ -1528,7 +1640,14 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
           Message
         </Text>
       </View>
-      <View>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flex": 1,
+          }
+        }
+      >
         <View
           accessibilityLabel="End"
           accessibilityRole="button"
@@ -1607,6 +1726,7 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
           </Text>
         </View>
         <Text
+          numberOfLines={1}
           style={
             [
               {
@@ -1626,7 +1746,14 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
           End
         </Text>
       </View>
-      <View>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flex": 1,
+          }
+        }
+      >
         <View
           accessibilityLabel="Dialpad"
           accessibilityRole="button"
@@ -1705,6 +1832,7 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
           </Text>
         </View>
         <Text
+          numberOfLines={1}
           style={
             [
               {

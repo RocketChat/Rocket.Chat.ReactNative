@@ -43,16 +43,13 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
     style={
-      [
-        {
-          "alignItems": "center",
-          "flex": 1,
-          "justifyContent": "center",
-          "marginBottom": 100,
-          "paddingHorizontal": 24,
-        },
-        false,
-      ]
+      {
+        "alignItems": "center",
+        "flex": 1,
+        "justifyContent": "center",
+        "marginBottom": 100,
+        "paddingHorizontal": 24,
+      }
     }
     testID="caller-info-toggle"
   >
@@ -201,16 +198,13 @@ exports[`Story Snapshots: UsernameOnly should match snapshot 1`] = `
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
     style={
-      [
-        {
-          "alignItems": "center",
-          "flex": 1,
-          "justifyContent": "center",
-          "marginBottom": 100,
-          "paddingHorizontal": 24,
-        },
-        false,
-      ]
+      {
+        "alignItems": "center",
+        "flex": 1,
+        "justifyContent": "center",
+        "marginBottom": 100,
+        "paddingHorizontal": 24,
+      }
     }
     testID="caller-info-toggle"
   >

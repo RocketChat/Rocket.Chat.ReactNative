@@ -5,7 +5,6 @@ import CallerInfo from './components/CallerInfo';
 import { styles } from './styles';
 import { useTheme } from '../../theme';
 import { CallButtons } from './components/CallButtons';
-import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import SafeAreaView from '../../containers/SafeAreaView';
 
 const CallView = (): React.ReactElement | null => {
@@ -13,21 +12,13 @@ const CallView = (): React.ReactElement | null => {
 
 	const { colors } = useTheme();
 	const call = useCallStore(state => state.call);
-	const { width, height } = useResponsiveLayout();
-	const isLandscape = width > height;
 
 	if (!call) {
 		return null;
 	}
 
 	return (
-		<SafeAreaView
-			testID='call-view-container'
-			style={[
-				styles.contentContainer,
-				isLandscape && styles.contentContainerLandscape,
-				{ backgroundColor: colors.surfaceLight }
-			]}>
+		<SafeAreaView testID='call-view-container' style={[styles.contentContainer, { backgroundColor: colors.surfaceLight }]}>
 			<CallerInfo />
 			<CallButtons />
 		</SafeAreaView>

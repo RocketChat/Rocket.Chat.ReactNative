@@ -61,7 +61,11 @@ export const styles = StyleSheet.create({
 	buttonsRow: {
 		flexDirection: 'row',
 		justifyContent: 'center',
-		gap: 48
+		gap: 24
+	},
+	actionButtonCell: {
+		flex: 1,
+		alignItems: 'center'
 	},
 	actionButton: {
 		alignItems: 'center',
@@ -76,21 +80,5 @@ export const styles = StyleSheet.create({
 		fontSize: 14,
 		lineHeight: 20,
 		textAlign: 'center'
-	},
-	contentContainerLandscape: {
-		flexDirection: 'row',
-		alignItems: 'stretch'
-	},
-	callerInfoContainerLandscape: {
-		flex: 2
-	},
-	buttonsContainerLandscape: {
-		flex: 3,
-		borderTopWidth: 0,
-		borderLeftWidth: StyleSheet.hairlineWidth,
-		justifyContent: 'center'
-	},
-	buttonsRowLandscape: {
-		marginBottom: 16
 	}
 });
