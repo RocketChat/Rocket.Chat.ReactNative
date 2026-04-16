@@ -1,6 +1,7 @@
 import React from 'react';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { type StyleProp, type ViewStyle } from 'react-native';
+import { withKeyboardFocus } from 'react-native-external-keyboard';
 
 import I18n from '../../../../i18n';
 import { isIOS } from '../../../../lib/methods/helpers/deviceInfo';
@@ -22,16 +23,22 @@ export const Drawer = ({
 	...props
 }: IHeaderButtonCommon) => {
 	const { colors } = useTheme();
+	const ItemChildren = withKeyboardFocus(Item);
+
+	const item = (
+		<ItemChildren
+			accessibilityLabel={I18n.t('Menu')}
+			iconName='hamburguer'
+			onPress={onPress}
+			testID={testID}
+			color={colors.fontDefault}
+			{...props}
+		/>
+	);
+
 	return (
 		<Container style={style} left>
-			<Item
-				accessibilityLabel={I18n.t('Menu')}
-				iconName='hamburguer'
-				onPress={onPress}
-				testID={testID}
-				color={colors.fontDefault}
-				{...props}
-			/>
+			{item}
 		</Container>
 	);
 };

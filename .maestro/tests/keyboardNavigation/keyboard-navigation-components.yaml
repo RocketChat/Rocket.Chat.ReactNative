@@ -18,18 +18,19 @@ tags:
       PASSWORD: ${output.user.password}
 
 # open Accessibility & appearance
-- tapOn:
-    id: 'rooms-list-view-sidebar'
 - extendedWaitUntil:
     visible:
-      id: 'sidebar-accessibility'
+      text: 'Save your encryption password'
     timeout: 60000
-- tapOn:
-    id: 'sidebar-accessibility'
+- pressKey: enter
 - extendedWaitUntil:
     visible:
-      id: 'accessibility-view-list'
+      text: 'Accessibility & Appearance'
     timeout: 60000
+- pressKey: Remote Dpad Left
+- pressKey: Remote Dpad Down
+- pressKey: Remote Dpad Down
+- pressKey: enter
 
 # switches
 - pressKey: Remote Dpad Down
