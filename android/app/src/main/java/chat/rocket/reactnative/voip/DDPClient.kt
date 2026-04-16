@@ -21,10 +21,13 @@ class DDPClient {
 
     companion object {
         private const val TAG = "RocketChat.DDPClient"
+        private val sharedClient = OkHttpClient.Builder()
+            .pingInterval(30, TimeUnit.SECONDS)
+            .build()
     }
 
     private var webSocket: WebSocket? = null
-    private var client: OkHttpClient? = null
+    private val client: OkHttpClient = sharedClient
     private var sendCounter = 0
     private var isConnected = false
     private val mainHandler = Handler(Looper.getMainLooper())
@@ -40,14 +43,9 @@ class DDPClient {
 
         Log.d(TAG, "Connecting to $wsUrl")
 
-        val httpClient = OkHttpClient.Builder()
-            .pingInterval(30, TimeUnit.SECONDS)
-            .build()
-        client = httpClient
-
         val request = Request.Builder().url(wsUrl).build()
 
-        webSocket = httpClient.newWebSocket(request, object : WebSocketListener() {
+        webSocket = client.newWebSocket(request, object : WebSocketListener() {
             override fun onOpen(webSocket: WebSocket, response: Response) {
                 Log.d(TAG, "WebSocket opened")
                 val connectMsg = JSONObject().apply {
@@ -142,8 +140,6 @@ class DDPClient {
         onCollectionMessage = null
         webSocket?.close(1000, null)
         webSocket = null
-        client?.dispatcher?.executorService?.shutdown()
-        client = null
     }
 
     private fun nextMessage(msg: String): JSONObject {

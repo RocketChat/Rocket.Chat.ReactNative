@@ -14,21 +14,19 @@ describe('CallActionButton', () => {
 
 	it('should render correctly', () => {
 		const { getByTestId } = render(
-			<CallActionButton icon='microphone' label='Mute' onPress={onPressMock} testID='call-action-button' />
+			<CallActionButton icon='mic' label='Mute' onPress={onPressMock} testID='call-action-button' />
 		);
 		expect(getByTestId('call-action-button')).toBeTruthy();
 	});
 
 	it('should display the correct label', () => {
-		const { getByText } = render(
-			<CallActionButton icon='microphone' label='Mute' onPress={onPressMock} testID='call-action-button' />
-		);
+		const { getByText } = render(<CallActionButton icon='mic' label='Mute' onPress={onPressMock} testID='call-action-button' />);
 		expect(getByText('Mute')).toBeTruthy();
 	});
 
 	it('should call onPress when pressed', () => {
 		const { getByTestId } = render(
-			<CallActionButton icon='microphone' label='Mute' onPress={onPressMock} testID='call-action-button' />
+			<CallActionButton icon='mic' label='Mute' onPress={onPressMock} testID='call-action-button' />
 		);
 		fireEvent.press(getByTestId('call-action-button'));
 		expect(onPressMock).toHaveBeenCalledTimes(1);
@@ -36,7 +34,7 @@ describe('CallActionButton', () => {
 
 	it('should not call onPress when disabled', () => {
 		const { getByTestId } = render(
-			<CallActionButton icon='microphone' label='Mute' onPress={onPressMock} disabled testID='call-action-button' />
+			<CallActionButton icon='mic' label='Mute' onPress={onPressMock} disabled testID='call-action-button' />
 		);
 		fireEvent.press(getByTestId('call-action-button'));
 		expect(onPressMock).not.toHaveBeenCalled();
@@ -44,13 +42,7 @@ describe('CallActionButton', () => {
 
 	it('should render with active variant', () => {
 		const { getByTestId } = render(
-			<CallActionButton
-				icon='microphone-disabled'
-				label='Unmute'
-				onPress={onPressMock}
-				variant='active'
-				testID='call-action-button'
-			/>
+			<CallActionButton icon='mic-off' label='Unmute' onPress={onPressMock} variant='active' testID='call-action-button' />
 		);
 		expect(getByTestId('call-action-button')).toBeTruthy();
 	});

@@ -93,3 +93,4 @@ skills-lock.json
 CLAUDE.local.md
 AGENTS.md
 .superset/
+.jest-cache/

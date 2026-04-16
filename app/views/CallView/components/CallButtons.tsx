@@ -68,7 +68,7 @@ export const CallButtons = () => {
 	const buttons: ICallButtonConfig[] = [
 		{
 			testID: 'call-view-speaker',
-			icon: isSpeakerOn ? 'audio' : 'audio-disabled',
+			icon: isSpeakerOn ? 'volume' : 'volume-off',
 			label: I18n.t('Speaker'),
 			onPress: toggleSpeaker,
 			variant: isSpeakerOn ? 'active' : 'default',
@@ -84,7 +84,7 @@ export const CallButtons = () => {
 		},
 		{
 			testID: 'call-view-mute',
-			icon: isMuted ? 'microphone-disabled' : 'microphone',
+			icon: isMuted ? 'mic-off' : 'mic',
 			label: isMuted ? I18n.t('Unmute') : I18n.t('Mute'),
 			onPress: toggleMute,
 			variant: isMuted ? 'active' : 'default',
