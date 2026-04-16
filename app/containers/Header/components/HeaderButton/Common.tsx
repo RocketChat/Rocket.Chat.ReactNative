@@ -9,6 +9,8 @@ import Container from './HeaderButtonContainer';
 import Item, { type IHeaderButtonItem } from './HeaderButtonItem';
 import { useTheme } from '../../../../theme';
 
+const ItemChildren = withKeyboardFocus(Item);
+
 interface IHeaderButtonCommon extends IHeaderButtonItem {
 	navigation?: any; // TODO: Evaluate proper type
 	style?: StyleProp<ViewStyle>;
@@ -23,10 +25,10 @@ export const Drawer = ({
 	...props
 }: IHeaderButtonCommon) => {
 	const { colors } = useTheme();
-	const ItemChildren = withKeyboardFocus(Item);
 
 	const item = (
 		<ItemChildren
+			autoFocus
 			accessibilityLabel={I18n.t('Menu')}
 			iconName='hamburguer'
 			onPress={onPress}

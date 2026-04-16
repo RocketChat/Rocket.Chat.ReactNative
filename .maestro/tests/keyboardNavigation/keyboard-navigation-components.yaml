@@ -33,38 +33,30 @@ tags:
 - pressKey: enter
 
 # switches
+- extendedWaitUntil:
+    visible:
+      text: 'Theme'
+    timeout: 60000
 - pressKey: Remote Dpad Down
-- waitForAnimationToEnd:
-    timeout: 1000
 - pressKey: Remote Dpad Down
-- waitForAnimationToEnd:
-    timeout: 1000
 - pressKey: Remote Dpad Down
-- waitForAnimationToEnd:
-    timeout: 1000
+- pressKey: Remote Dpad Down
+- pressKey: Remote Dpad Down
+- pressKey: Remote Dpad Down
+- pressKey: Remote Dpad Down
+- pressKey: Remote Dpad Up
+- assertVisible:
+    text: 'Mentions with @ symbol unchecked'
 - pressKey: enter
+- assertVisible:
+    text: 'Mentions with @ symbol checked'
 - pressKey: Remote Dpad Down
-- waitForAnimationToEnd:
-    timeout: 1000
-- pressKey: enter
-- pressKey: Remote Dpad Down
-- waitForAnimationToEnd:
-    timeout: 1000
-- pressKey: enter
 
 # open Theme and navigate radio buttons
 - pressKey: Remote Dpad Up
-- waitForAnimationToEnd:
-    timeout: 1000
 - pressKey: Remote Dpad Up
-- waitForAnimationToEnd:
-    timeout: 1000
 - pressKey: Remote Dpad Up
-- waitForAnimationToEnd:
-    timeout: 1000
 - pressKey: Remote Dpad Up
-- waitForAnimationToEnd:
-    timeout: 1000
 - pressKey: enter
 - extendedWaitUntil:
     visible:
