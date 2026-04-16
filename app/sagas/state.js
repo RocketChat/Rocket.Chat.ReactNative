@@ -18,33 +18,20 @@ const isAuthAndConnected = function* isAuthAndConnected() {
 	return login.isAuthenticated && meteor.connected;
 };
 
-const waitForConnection = function* waitForConnection() {
-	let retries = 0;
-	let isReady = yield isAuthAndConnected();
-	while (!isReady && retries < CONNECTION_RETRY_LIMIT) {
-		yield delay(CONNECTION_RETRY_DELAY_MS);
-		isReady = yield isAuthAndConnected();
-		retries++;
-	}
-	return isReady;
-};
-
 const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 	try {
 		const appRoot = yield select(state => state.app.root);
 		if (appRoot !== RootEnum.ROOT_INSIDE) {
 			return;
 		}
+		const isReady = yield isAuthAndConnected();
+		if (!isReady) {
+			return;
+		}
 
 		const server = yield select(state => state.server.server);
 		yield localAuthenticate(server);
 		checkAndReopen();
-
-		const isReady = yield waitForConnection();
-		if (!isReady) {
-			log('[state.js] Connection not ready after retries, aborting foreground tasks');
-			return;
-		}
 
 		// Refresh presence for DM users to ensure status is up-to-date after background
 		yield setUserPresenceOnline();
