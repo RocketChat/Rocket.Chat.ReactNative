@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import * as List from '../../../containers/List';
 import { useVideoConf } from '../../../lib/hooks/useVideoConf';
 import type { TSubscriptionModel } from '../../../definitions';
 import { useNewMediaCall } from '../../../lib/hooks/useNewMediaCall';
+import { videoConferenceGetCapabilities } from '../../../lib/services/restApi';
 
 export default function CallSection({
 	room,
@@ -14,6 +15,15 @@ export default function CallSection({
 }): React.ReactElement | null {
 	const { callEnabled, showInitCallActionSheet, disabledTooltip } = useVideoConf(room.rid);
 	const { openNewMediaCall, hasMediaCallPermission } = useNewMediaCall(room.rid);
+	const [providerName, setProviderName] = useState<string>();
+
+	useEffect(() => {
+		if (callEnabled) {
+			videoConferenceGetCapabilities()
+				.then((res: any) => setProviderName(res.providerName))
+				.catch(() => {});
+		}
+	}, [callEnabled]);
 
 	if (!hasMediaCallPermission && !callEnabled) {
 		return null;
@@ -39,6 +49,8 @@ export default function CallSection({
 				<>
 					<List.Item
 						title={'Video_call'}
+						subtitle={providerName ? `(${providerName})` : undefined}
+						translateSubtitle={false}
 						onPress={showInitCallActionSheet}
 						testID='room-actions-call'
 						left={() => <List.Icon name='video' />}
