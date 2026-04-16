@@ -49,7 +49,8 @@ export default function CallSection({
 				<>
 					<List.Item
 						title={'Video_call'}
-						subtitle={providerName}
+						subtitle={providerName ? `(${providerName})` : undefined}
+						translateSubtitle={false}
 						onPress={showInitCallActionSheet}
 						testID='room-actions-call'
 						left={() => <List.Icon name='camera' />}
