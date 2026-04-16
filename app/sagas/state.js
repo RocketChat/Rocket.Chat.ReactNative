@@ -77,22 +77,9 @@ const appHasComeBackToBackground = function* appHasComeBackToBackground() {
 	}
 };
 
-const handleMeteorConnect = function* handleMeteorConnect() {
-	const appRoot = yield select(state => state.app.root);
-	if (appRoot !== RootEnum.ROOT_INSIDE) {
-		return;
-	}
-	try {
-		yield call(refreshDmUsersPresence);
-	} catch (e) {
-		log(`[state.js] Error refreshing DM users presence on connect: ${e}`);
-	}
-};
-
 const root = function* root() {
 	yield takeLatest(APP_STATE.FOREGROUND, appHasComeBackToForeground);
 	yield takeLatest(APP_STATE.BACKGROUND, appHasComeBackToBackground);
-	yield takeLatest(METEOR.SUCCESS, handleMeteorConnect);
 };
 
 export default root;

@@ -28,7 +28,7 @@ import { getEnterpriseModules, isOmnichannelModuleAvailable } from '../lib/metho
 import { getPermissions } from '../lib/methods/getPermissions';
 import { getRoles } from '../lib/methods/getRoles';
 import { getSlashCommands } from '../lib/methods/getSlashCommands';
-import { getUserPresence, subscribeUsersPresence, refreshDmUsersPresence } from '../lib/methods/getUsersPresence';
+import { getUserPresence, subscribeUsersPresence } from '../lib/methods/getUsersPresence';
 import { logout, removeServerData, removeServerDatabase } from '../lib/methods/logout';
 import { subscribeSettings } from '../lib/methods/getSettings';
 import { connect, loginWithPassword, login } from '../lib/services/connect';
@@ -200,14 +200,6 @@ const fetchUsersPresenceFork = function* fetchUsersPresenceFork() {
 	}
 };
 
-const fetchDmUsersPresenceFork = function* fetchDmUsersPresenceFork() {
-	try {
-		yield call(refreshDmUsersPresence);
-	} catch (e) {
-		log('[login.js] Error fetching DM users presence:', e);
-	}
-};
-
 const fetchEnterpriseModulesFork = function* fetchEnterpriseModulesFork({ user }) {
 	try {
 		yield getEnterpriseModules();
@@ -261,7 +253,6 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield fork(fetchSlashCommandsFork);
 		yield fork(registerPushTokenFork);
 		yield fork(fetchUsersPresenceFork);
-		yield fork(fetchDmUsersPresenceFork);
 		yield fork(fetchEnterpriseModulesFork, { user });
 		yield fork(subscribeSettingsFork);
 		yield fork(fetchUsersRoles);
