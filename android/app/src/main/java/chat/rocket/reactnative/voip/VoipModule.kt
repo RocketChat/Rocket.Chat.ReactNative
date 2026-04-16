@@ -141,6 +141,11 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
         VoipNotification.stopDDPClient()
     }
 
+    override fun requestContactsAccess(promise: com.facebook.react.bridge.Promise) {
+        // No-op on Android — caller photos are handled via notification bitmap
+        promise.resolve("unavailable")
+    }
+
     /**
      * Required for NativeEventEmitter in TurboModules.
      * Called when JS starts listening to events.

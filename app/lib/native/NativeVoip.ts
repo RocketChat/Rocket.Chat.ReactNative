@@ -36,6 +36,13 @@ export interface Spec extends TurboModule {
 	stopNativeDDPClient(): void;
 
 	/**
+	 * Requests access to the Contacts framework for displaying caller photos on CallKit.
+	 * iOS: Triggers CNContactStore.requestAccess(for: .contacts).
+	 * Android: Returns 'unavailable'.
+	 */
+	requestContactsAccess(): Promise<string>;
+
+	/**
 	 * Required for NativeEventEmitter in TurboModules.
 	 * Called when JS starts listening to events.
 	 * @platform android
@@ -58,6 +65,7 @@ const NativeVoipModule =
 		clearInitialEvents: () => undefined,
 		getLastVoipToken: () => '',
 		stopNativeDDPClient: () => undefined,
+		requestContactsAccess: () => Promise.resolve('unavailable'),
 		addListener: () => undefined,
 		removeListeners: () => undefined
 	} as Spec);
