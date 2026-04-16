@@ -195,6 +195,7 @@ const registerPushTokenFork = function* registerPushTokenFork() {
 const fetchUsersPresenceFork = function* fetchUsersPresenceFork() {
 	try {
 		yield subscribeUsersPresence();
+		yield refreshDmUsersPresence();
 	} catch (e) {
 		log(e);
 	}
@@ -427,7 +428,6 @@ const root = function* root() {
 	yield takeLatest(types.LOGOUT, handleLogout);
 	yield takeLatest(types.USER.SET, handleSetUser);
 	yield takeLatest(types.DELETE_ACCOUNT, handleDeleteAccount);
-	yield takeLatest(types.METEOR.SUCCESS, refreshDmUsersPresence);
 
 	while (true) {
 		const params = yield take(types.LOGIN.SUCCESS);
