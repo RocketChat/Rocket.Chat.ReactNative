@@ -110,21 +110,21 @@ jest.mock('react-native-device-info', () => ({
 	default: {
 		getUniqueId: jest.fn(() => 'test-device-id'),
 		getUniqueIdSync: jest.fn(() => 'test-device-id'),
-		hasNotch: jest.fn(() => false),
-		getReadableVersion: jest.fn(() => '1.0.0'),
-		getBundleId: jest.fn(() => 'com.rocket.chat'),
-		getModel: jest.fn(() => 'iPhone'),
-		getSystemVersion: jest.fn(() => '14.0'),
-		isTablet: jest.fn(() => false)
+		hasNotch: () => false,
+		getReadableVersion: () => '1.0.0',
+		getBundleId: () => 'com.rocket.chat',
+		getModel: () => 'iPhone',
+		getSystemVersion: () => '14.0',
+		isTablet: () => false
 	},
 	getUniqueId: jest.fn(() => 'test-device-id'),
 	getUniqueIdSync: jest.fn(() => 'test-device-id'),
-	hasNotch: jest.fn(() => false),
-	getReadableVersion: jest.fn(() => '1.0.0'),
-	getBundleId: jest.fn(() => 'com.rocket.chat'),
-	getModel: jest.fn(() => 'iPhone'),
-	getSystemVersion: jest.fn(() => '14.0'),
-	isTablet: jest.fn(() => false)
+	hasNotch: () => false,
+	getReadableVersion: () => '1.0.0',
+	getBundleId: () => 'com.rocket.chat',
+	getModel: () => 'iPhone',
+	getSystemVersion: () => '14.0',
+	isTablet: () => false
 }));
 jest.mock('../../lib/native/NativeVoip', () => ({
 	__esModule: true,
@@ -254,43 +254,20 @@ jest.mock('@rocket.chat/media-signaling', () => ({
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-function makeIncomingCall(options: { callId?: string; role?: 'caller' | 'callee'; hidden?: boolean }): IClientMediaCall {
-	return {
-		callId: options.callId ?? 'incoming-call',
-		hidden: options.hidden ?? false,
-		state: 'ringing',
-		localParticipant: {
-			local: true,
-			role: options.role ?? 'callee',
-			muted: false,
-			held: false,
-			contact: {},
-			setMuted: jest.fn(),
-			setHeld: jest.fn()
-		},
-		remoteParticipants: [
-			{ local: false, role: options.role === 'caller' ? 'callee' : 'caller', muted: false, held: false, contact: {} }
-		],
-		reject: jest.fn(),
-		hangup: jest.fn(),
-		sendDTMF: jest.fn(),
-		emitter: mockCallEmitter() as unknown as IClientMediaCall['emitter']
-	} as unknown as IClientMediaCall;
-}
-
-// Extended synthetic call with all methods the real handlers exercise:
-// accept (answerCall), setMuted/setHeld (toggleMute/toggleHold), hangup/reject (endCall).
-function makeSyntheticCall(overrides: {
+// Unified call factory — covers all test call creation needs.
+// setMuted/setHeld for controls tests; accept for answerCall; hangup/reject for endCall.
+function makeCall(overrides: {
 	callId?: string;
 	state?: 'ringing' | 'active' | 'accepted' | 'ended' | 'none';
 	role?: 'caller' | 'callee';
+	hidden?: boolean;
 	remoteMuted?: boolean;
 	remoteHeld?: boolean;
 }): IClientMediaCall {
-	const callId = overrides.callId ?? 'synthetic-call';
+	const callId = overrides.callId ?? 'default-call';
 	return {
 		callId,
-		hidden: false,
+		hidden: overrides.hidden ?? false,
 		state: overrides.state ?? 'ringing',
 		localParticipant: {
 			local: true,
@@ -334,6 +311,12 @@ function setSelectedPeer(peer: TPeerItem): void {
 }
 
 const Wrapper = ({ children }: { children: React.ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
+
+// Flushes the microtask queue (answerCall uses async handlers).
+const flushMicrotasks = async () => {
+	await Promise.resolve();
+	await Promise.resolve();
+};
 
 // ─── Console-error handling ───────────────────────────────────────────────────
 //
@@ -415,7 +398,9 @@ describe('VoIP call lifecycle (integration)', () => {
 		consoleWarnSpy?.mockRestore();
 		consoleErrorSpy = undefined;
 		consoleWarnSpy = undefined;
-		mediaSessionInstance.reset();
+		act(() => {
+			mediaSessionInstance.reset();
+		});
 		if (unexpectedConsoleErrors.length > 0) {
 			const joined = unexpectedConsoleErrors.join('\n  - ');
 			throw new Error(`Unexpected console.error/warn in test:\n  - ${joined}`);
@@ -495,7 +480,7 @@ describe('VoIP call lifecycle (integration)', () => {
 
 	it('hidden call: newCall with hidden=true does not navigate or populate store', () => {
 		const session = createdSessions[createdSessions.length - 1];
-		const hiddenCall = makeIncomingCall({ callId: 'hidden-1', hidden: true, role: 'caller' });
+		const hiddenCall = makeCall({ callId: 'hidden-1', hidden: true, role: 'caller' });
 
 		act(() => {
 			session.emit('newCall', { call: hiddenCall });
@@ -507,7 +492,7 @@ describe('VoIP call lifecycle (integration)', () => {
 
 	it('callee role: newCall does not navigate (incoming calls route via answerCall)', () => {
 		const session = createdSessions[createdSessions.length - 1];
-		const incomingCall = makeIncomingCall({ callId: 'incoming-1', role: 'callee' });
+		const incomingCall = makeCall({ callId: 'incoming-1', role: 'callee' });
 
 		act(() => {
 			session.emit('newCall', { call: incomingCall });
@@ -520,25 +505,7 @@ describe('VoIP call lifecycle (integration)', () => {
 	// ── CallView render contract ──────────────────────────────────────────────
 
 	it('setCall populates store and CallView renders; clearing store unmounts it', () => {
-		const emitter = mockCallEmitter();
-		const call = {
-			callId: 'c-render',
-			state: 'active',
-			hidden: false,
-			localParticipant: { local: true, role: 'caller', muted: false, held: false, contact: {} },
-			remoteParticipants: [
-				{
-					local: false,
-					role: 'callee',
-					muted: false,
-					held: false,
-					contact: { displayName: 'Bob', username: 'bob', sipExtension: '' }
-				}
-			],
-			reject: jest.fn(),
-			hangup: jest.fn(),
-			emitter: emitter as unknown as IClientMediaCall['emitter']
-		} as unknown as IClientMediaCall;
+		const call = makeCall({ callId: 'c-render', state: 'active', role: 'caller' });
 
 		act(() => {
 			useCallStore.getState().setCall(call);
@@ -563,7 +530,7 @@ describe('VoIP call lifecycle (integration)', () => {
 	describe('MediaSessionInstance contract: answerCall', () => {
 		it('A1: DDP accepted signal with native pre-accept → answerCall navigates to CallView', async () => {
 			const session = createdSessions[createdSessions.length - 1];
-			const mainCall = makeSyntheticCall({ callId: 'incoming-1', role: 'callee' });
+			const mainCall = makeCall({ callId: 'incoming-1', role: 'callee' });
 			session.getCallData.mockReturnValue(mainCall);
 
 			act(() => {
@@ -578,8 +545,7 @@ describe('VoIP call lifecycle (integration)', () => {
 					callId: 'incoming-1'
 				});
 				// Flush the answerCall() microtask queue.
-				await Promise.resolve();
-				await Promise.resolve();
+				await flushMicrotasks();
 			});
 
 			expect(RNCallKeep.setCurrentCallActive as jest.Mock).toHaveBeenCalledWith('incoming-1');
@@ -602,14 +568,15 @@ describe('VoIP call lifecycle (integration)', () => {
 					signedContractId: 'test-device-id',
 					callId: 'missing-1'
 				});
-				await Promise.resolve();
-				await Promise.resolve();
+				await flushMicrotasks();
 			});
 
 			expect(RNCallKeep.endCall as jest.Mock).toHaveBeenCalledWith('missing-1');
 			expect(useCallStore.getState().nativeAcceptedCallId).toBeNull();
 			expect(Navigation.navigate).not.toHaveBeenCalled();
 			expect(useCallStore.getState().call).toBeNull();
+			// Tighten: confirm the known-noise allowlist entry was actually triggered.
+			expect(consoleWarnSpy).toHaveBeenCalledWith('[VoIP] Call not found:', 'missing-1');
 		});
 
 		it('A3: idempotency — existing call matches callId, answerCall early-returns', async () => {
@@ -617,7 +584,7 @@ describe('VoIP call lifecycle (integration)', () => {
 			expect(useCallStore.getState().nativeAcceptedCallId).toBeNull();
 
 			const session = createdSessions[createdSessions.length - 1];
-			const existingCall = makeSyntheticCall({ callId: 'incoming-1', role: 'callee' });
+			const existingCall = makeCall({ callId: 'incoming-1', role: 'callee' });
 			act(() => {
 				useCallStore.getState().setCall(existingCall);
 			});
@@ -636,11 +603,9 @@ describe('VoIP call lifecycle (integration)', () => {
 		});
 	});
 
-	// ── UI store contract: Hang up ────────────────────────────────────────────
 	// The CallView end button wires to useCallStore.endCall (see
 	// app/views/CallView/components/CallButtons.tsx), NOT MediaSessionInstance.endCall.
 	// The latter is invoked from native CallKit "end" events. Both need coverage.
-
 	describe('UI store contract: Hang up', () => {
 		it('B1: useCallStore.endCall clears store and triggers RNCallKeep.endCall', () => {
 			setSelectedPeer({ type: 'user', value: 'user-1', label: 'Alice', username: 'alice' });
@@ -665,7 +630,7 @@ describe('VoIP call lifecycle (integration)', () => {
 
 		it('B2: MediaSessionInstance.endCall during active state → RNCallKeep cleanup, store reset', () => {
 			const session = createdSessions[createdSessions.length - 1];
-			const activeCall = makeSyntheticCall({ callId: 'active-1', state: 'active' });
+			const activeCall = makeCall({ callId: 'active-1', state: 'active' });
 			session.getCallData.mockReturnValue(activeCall);
 
 			act(() => {
@@ -680,7 +645,7 @@ describe('VoIP call lifecycle (integration)', () => {
 
 		it('B3: MediaSessionInstance.endCall during ringing → same cleanup (reject branch)', () => {
 			const session = createdSessions[createdSessions.length - 1];
-			const ringingCall = makeSyntheticCall({ callId: 'ringing-1', state: 'ringing' });
+			const ringingCall = makeCall({ callId: 'ringing-1', state: 'ringing' });
 			session.getCallData.mockReturnValue(ringingCall);
 
 			act(() => {
@@ -696,7 +661,7 @@ describe('VoIP call lifecycle (integration)', () => {
 
 	describe('UI store contract: In-call controls (mute/hold)', () => {
 		it('C1: toggleMute flips store isMuted; second toggle restores it', () => {
-			const call = makeSyntheticCall({ callId: 'ctrl-mute', role: 'caller', state: 'active' });
+			const call = makeCall({ callId: 'ctrl-mute', role: 'caller', state: 'active' });
 			act(() => {
 				useCallStore.getState().setCall(call);
 			});
@@ -714,7 +679,7 @@ describe('VoIP call lifecycle (integration)', () => {
 		});
 
 		it('C2: toggleHold flips store isOnHold; second toggle restores it', () => {
-			const call = makeSyntheticCall({ callId: 'ctrl-hold', role: 'caller', state: 'active' });
+			const call = makeCall({ callId: 'ctrl-hold', role: 'caller', state: 'active' });
 			act(() => {
 				useCallStore.getState().setCall(call);
 			});
@@ -732,7 +697,7 @@ describe('VoIP call lifecycle (integration)', () => {
 		});
 
 		it('C3: trackStateChange emission syncs store from call participant state', () => {
-			const call = makeSyntheticCall({ callId: 'ctrl-track', role: 'caller', state: 'active' });
+			const call = makeCall({ callId: 'ctrl-track', role: 'caller', state: 'active' });
 			act(() => {
 				useCallStore.getState().setCall(call);
 			});
@@ -753,10 +718,128 @@ describe('VoIP call lifecycle (integration)', () => {
 			expect(useCallStore.getState().remoteHeld).toBe(true);
 			expect(useCallStore.getState().controlsVisible).toBe(true);
 		});
+
+		it('C4: toggleSpeaker flips store isSpeakerOn via InCallManager', async () => {
+			const call = makeCall({ callId: 'ctrl-speaker', role: 'caller', state: 'active' });
+			act(() => {
+				useCallStore.getState().setCall(call);
+			});
+			expect(useCallStore.getState().isSpeakerOn).toBe(false);
+
+			await act(async () => {
+				useCallStore.getState().toggleSpeaker();
+			});
+			expect(InCallManager.setForceSpeakerphoneOn as jest.Mock).toHaveBeenCalledWith(true);
+			expect(useCallStore.getState().isSpeakerOn).toBe(true);
+
+			await act(async () => {
+				useCallStore.getState().toggleSpeaker();
+			});
+			expect(InCallManager.setForceSpeakerphoneOn as jest.Mock).toHaveBeenCalledWith(false);
+			expect(useCallStore.getState().isSpeakerOn).toBe(false);
+		});
+	});
+
+	// Closes the loop: render real CallView, press actual buttons, assert store flip + SDK call.
+	describe('CallView button wiring (UI → store → SDK)', () => {
+		it('D1: press mute button → participant.setMuted invoked, store flips', () => {
+			const call = makeCall({ callId: 'btn-mute', role: 'caller', state: 'active' });
+			act(() => {
+				useCallStore.getState().setCall(call);
+			});
+
+			const { getByTestId } = render(
+				<Wrapper>
+					<CallView />
+				</Wrapper>
+			);
+
+			act(() => {
+				fireEvent.press(getByTestId('call-view-mute'));
+			});
+
+			expect(call.localParticipant.setMuted).toHaveBeenCalledWith(true);
+			expect(useCallStore.getState().isMuted).toBe(true);
+		});
+
+		it('D2: press hold button → participant.setHeld invoked, store flips', () => {
+			const call = makeCall({ callId: 'btn-hold', role: 'caller', state: 'active' });
+			act(() => {
+				useCallStore.getState().setCall(call);
+			});
+
+			const { getByTestId } = render(
+				<Wrapper>
+					<CallView />
+				</Wrapper>
+			);
+
+			act(() => {
+				fireEvent.press(getByTestId('call-view-hold'));
+			});
+
+			expect(call.localParticipant.setHeld).toHaveBeenCalledWith(true);
+			expect(useCallStore.getState().isOnHold).toBe(true);
+		});
+
+		it('D3: press end button → call.hangup, RNCallKeep.endCall, store cleared', () => {
+			const call = makeCall({ callId: 'btn-end', role: 'caller', state: 'active' });
+			act(() => {
+				useCallStore.getState().setCall(call);
+			});
+
+			const { getByTestId } = render(
+				<Wrapper>
+					<CallView />
+				</Wrapper>
+			);
+
+			act(() => {
+				fireEvent.press(getByTestId('call-view-end'));
+			});
+
+			expect(call.hangup).toHaveBeenCalled();
+			expect(RNCallKeep.endCall as jest.Mock).toHaveBeenCalledWith('btn-end');
+			expect(useCallStore.getState().call).toBeNull();
+		});
+	});
+
+	// Covers the handleStateChange listener wired by setCall in useCallStore.ts:169.
+	// Specifically the ringing → active transition that records callStartTime and
+	// tells iOS CallKit to surface the call. Pure unit tests miss this cross-module handoff.
+	describe('Call state transitions', () => {
+		it('E1: stateChange ringing → active sets callStartTime + RNCallKeep.setCurrentCallActive', () => {
+			const call = makeCall({ callId: 'state-1', role: 'caller', state: 'ringing' });
+			act(() => {
+				useCallStore.getState().setCall(call);
+			});
+			expect(useCallStore.getState().callState).toBe('ringing');
+			expect(useCallStore.getState().callStartTime).toBeNull();
+			(RNCallKeep.setCurrentCallActive as jest.Mock).mockClear();
+
+			// SDK mutates the underlying call before emitting (state is readonly in types,
+			// but the SDK owns this object — tests cast through Record to stand in).
+			(call as unknown as Record<string, unknown>).state = 'active';
+			act(() => {
+				(call.emitter as unknown as ReturnType<typeof mockCallEmitter>).emit('stateChange', 'ringing');
+			});
+
+			expect(useCallStore.getState().callState).toBe('active');
+			expect(useCallStore.getState().callStartTime).not.toBeNull();
+			expect(RNCallKeep.setCurrentCallActive as jest.Mock).toHaveBeenCalledWith('state-1');
+		});
 	});
 
 	// startCall rejection path — deferred to Phase 3.
 	// MediaSessionInstance.ts:151-155 does not `await` or `.catch` the SDK's
 	// startCall promise, so a rejection leaks as an unhandled rejection. Phase 3
 	// will land the `.catch` first, then add the rejection-path integration test.
+	//
+	// Native CallKit event tests (RNCallKeep.addEventListener('endCall' / 'didPerform...')
+	// from MediaCallEvents.ts) — also deferred. They require:
+	//   - Platform mock to force isIOS branch (listener registration is platform-gated)
+	//   - Isolation of the deepLinkingOpen saga dispatch (real Redux store import in
+	//     MediaCallEvents.ts vs mockedStore in this Provider)
+	//   - Capture seam for RNCallKeep.addEventListener handlers
+	// Worth a small helper module before adding the tests.
 });
