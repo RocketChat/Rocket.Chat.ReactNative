@@ -174,10 +174,10 @@ class MediaSessionInstance {
 		}
 	};
 
-	public startCall = (userId: string, actor: CallActorType) => {
+	public startCall = async (userId: string, actor: CallActorType): Promise<void> => {
 		requestPhoneStatePermission();
 		console.log('[VoIP] Starting call:', userId);
-		this.instance?.startCall(actor, userId);
+		await Promise.resolve(this.instance?.startCall(actor, userId));
 	};
 
 	public endCall = (callId: string) => {

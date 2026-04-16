@@ -7,6 +7,7 @@ import { CustomIcon } from '../CustomIcon';
 import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';
 import { mediaSessionInstance } from '../../lib/services/voip/MediaSessionInstance';
 import { hideActionSheetRef } from '../ActionSheet';
+import { showErrorAlert } from '../../lib/methods/helpers/info';
 import sharedStyles from '../../views/Styles';
 
 export const CreateCall = () => {
@@ -14,13 +15,18 @@ export const CreateCall = () => {
 
 	const selectedPeer = usePeerAutocompleteStore(state => state.selectedPeer);
 
-	const handleCall = () => {
+	const handleCall = async () => {
 		if (!selectedPeer) {
 			return;
 		}
 
-		mediaSessionInstance.startCall(selectedPeer.value, selectedPeer.type);
-		hideActionSheetRef();
+		try {
+			await mediaSessionInstance.startCall(selectedPeer.value, selectedPeer.type);
+			hideActionSheetRef();
+		} catch (e) {
+			const message = e instanceof Error && e.message ? e.message : I18n.t('VoIP_Call_Issue');
+			showErrorAlert(message, I18n.t('Oops'));
+		}
 	};
 
 	const isCallDisabled = !selectedPeer;
