@@ -162,9 +162,9 @@ export const getDirectMessageUserIds = async (): Promise<string[]> => {
 
 export const refreshDmUsersPresence = async (): Promise<void> => {
 	try {
-		const dmUserIds = await getDirectMessageUserIds();
-		if (dmUserIds.length > 0) {
-			await getUsersPresence(dmUserIds);
+		const userIds = await getDirectMessageUserIds();
+		if (userIds.length > 0) {
+			await getUsersPresence(userIds);
 		}
 	} catch (e) {
 		log(e);
