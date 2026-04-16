@@ -18,8 +18,8 @@ export const useMessages = ({
 	rid,
 	tmid,
 	showMessageInMainThread,
-	hideSystemMessages,
 	serverVersion,
+	hideSystemMessages,
 	t
 }: {
 	rid: string;
