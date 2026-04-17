@@ -143,6 +143,32 @@ describe('useMessages', () => {
 		dispatchSpy.mockRestore();
 	});
 
+	it('does not dispatch roomHistoryRequest again when loaderId has not changed', async () => {
+		const dispatchSpy = jest.spyOn(mockedStore, 'dispatch');
+		emittedRows = [msg({ id: 'load-more-x', t: MessageTypeLoad.MORE })];
+
+		const { rerender } = renderUseMessages({
+			serverVersion: '6.0.0',
+			hideSystemMessages: ['uj']
+		});
+
+		await waitFor(() => {
+			const historyDispatches = dispatchSpy.mock.calls.filter(([a]: any) => a?.type === ROOM.HISTORY_REQUEST);
+			expect(historyDispatches.length).toBe(1);
+		});
+
+		// Simulate a new message arriving — visibleMessages changes but loaderId stays the same
+		emittedRows = [msg({ id: 'new-msg' }), msg({ id: 'load-more-x', t: MessageTypeLoad.MORE })];
+		rerender({});
+
+		await waitFor(() => {
+			const historyDispatches = dispatchSpy.mock.calls.filter(([a]: any) => a?.type === ROOM.HISTORY_REQUEST);
+			expect(historyDispatches.length).toBe(1); // still only once
+		});
+
+		dispatchSpy.mockRestore();
+	});
+
 	it('does not dispatch room history request when server is below 3.16', async () => {
 		const dispatchSpy = jest.spyOn(mockedStore, 'dispatch');
 		emittedRows = [msg({ id: 'load-more-x', t: MessageTypeLoad.MORE })];

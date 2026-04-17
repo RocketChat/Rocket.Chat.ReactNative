@@ -34,6 +34,7 @@ export const useMessages = ({
 	const count = useRef(0);
 	const subscription = useRef<Subscription | null>(null);
 	const messagesIds = useRef<string[]>([]);
+	const lastDispatchedLoaderId = useRef<string | null>(null);
 	const dispatch = useDispatch();
 
 	const fetchMessages = useCallback(async () => {
@@ -139,13 +140,26 @@ export const useMessages = ({
 	 * hide system message is enabled
 	 */
 	useEffect(() => {
-		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.16.0')) {
-			const loaderId = visibleMessages.find(m => m.t && MESSAGE_TYPE_ANY_LOAD.includes(m.t as MessageTypeLoad))?.id;
-			if (hideSystemMessages.length && loaderId) {
-				dispatch(roomHistoryRequest({ rid, t, loaderId }));
-			}
+		if (!compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.16.0')) {
+			return;
+		}
+		if (!hideSystemMessages.length) {
+			return;
+		}
+
+		const loaderId = visibleMessages.find(m => m.t && MESSAGE_TYPE_ANY_LOAD.includes(m.t as MessageTypeLoad))?.id;
+
+		// Only dispatch if a loader exists AND it's a different one
+		// from the last dispatch — prevents hammering on every message update.
+		if (loaderId && loaderId !== lastDispatchedLoaderId.current) {
+			lastDispatchedLoaderId.current = loaderId;
+			dispatch(roomHistoryRequest({ rid, t, loaderId }));
 		}
 	}, [serverVersion, rid, t, hideSystemMessages, visibleMessages, dispatch]);
+
+	useEffect(() => {
+		lastDispatchedLoaderId.current = null;
+	}, [rid]);
 
 	return [visibleMessages, messagesIds, fetchMessages] as const;
 };
