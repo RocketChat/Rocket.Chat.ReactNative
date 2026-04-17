@@ -139,7 +139,10 @@ export default class Root extends React.Component<{}, IState> {
 			if ('configured' in notification) {
 				return;
 			}
-			onNotification(notification);
+			const result = onNotification(notification);
+			if (result?.catch) {
+				result.catch(e => console.warn('app/index.tsx: onNotification error', e));
+			}
 			return;
 		}
 

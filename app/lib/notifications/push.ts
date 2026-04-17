@@ -159,7 +159,9 @@ const registerForPushNotifications = async (): Promise<string | null> => {
 	}
 };
 
-export const pushNotificationConfigure = (onNotification: (notification: INotification) => void): Promise<any> => {
+export const pushNotificationConfigure = (
+	onNotification: (notification: INotification) => Promise<void> | void
+): Promise<any> => {
 	if (configured) {
 		return Promise.resolve({ configured: true });
 	}
@@ -207,10 +209,16 @@ export const pushNotificationConfigure = (onNotification: (notification: INotifi
 		if (isIOS) {
 			const { background } = reduxStore.getState().app;
 			if (background) {
-				onNotification(notification);
+				const result = onNotification(notification);
+				if (result?.catch) {
+					result.catch((e: any) => console.warn('[push.ts] Notification handler error:', e));
+				}
 			}
 		} else {
-			onNotification(notification);
+			const result = onNotification(notification);
+			if (result?.catch) {
+				result.catch((e: any) => console.warn('[push.ts] Notification handler error:', e));
+			}
 		}
 	});
 

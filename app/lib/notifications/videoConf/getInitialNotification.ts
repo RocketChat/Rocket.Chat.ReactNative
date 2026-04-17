@@ -2,6 +2,7 @@ import * as Notifications from 'expo-notifications';
 import EJSON from 'ejson';
 import { DeviceEventEmitter, Platform } from 'react-native';
 
+import { isPushVideoConfAlreadyProcessed } from './deduplication';
 import { deepLinkingClickCallPush } from '../../../actions/deepLinking';
 import { store } from '../../store/auxStore';
 import NativeVideoConfModule from '../../native/NativeVideoConfAndroid';
@@ -66,6 +67,10 @@ export const getInitialNotification = async (): Promise<boolean> => {
 				if (payload.ejson) {
 					const ejsonData = EJSON.parse(payload.ejson);
 					if (ejsonData?.notificationType === 'videoconf') {
+						const notificationId = notification.request.identifier;
+						if (await isPushVideoConfAlreadyProcessed(notificationId)) {
+							return false;
+						}
 						// Accept/Decline actions or default tap (treat as accept)
 						let event = 'accept';
 						if (actionIdentifier === 'DECLINE_ACTION') {
