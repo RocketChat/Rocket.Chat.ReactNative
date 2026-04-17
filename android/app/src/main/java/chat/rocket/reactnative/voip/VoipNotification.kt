@@ -674,17 +674,16 @@ class VoipNotification(private val context: Context) {
                     return
                 }
 
-            // Get react-native-callkeep's PhoneAccountHandle
+            // Build the PhoneAccountHandle using the same (ComponentName, appName) pair that
+            // react-native-callkeep uses so JS-side and native-side accounts collide.
             val componentName = ComponentName(context.packageName, CALLKEEP_CONNECTION_SERVICE_CLASS)
-            // react-native-callkeep typically uses the app package name as the account ID
-            val phoneAccountHandle = PhoneAccountHandle(componentName, context.packageName)
+            val appName = getApplicationLabel()
+            val phoneAccountHandle = PhoneAccountHandle(componentName, appName)
 
-            // Check if PhoneAccount is registered
-            val phoneAccount = telecomManager.getPhoneAccount(phoneAccountHandle)
-            if (phoneAccount == null) {
-                Log.w(TAG, "PhoneAccount not registered by react-native-callkeep yet. Call may not have full OS integration.")
-                return
-            }
+            // Ensure the self-managed PhoneAccount is registered. FCM pushes can arrive before
+            // JS boots and calls RNCallKeep.setup, so we must register from native too.
+            // registerPhoneAccount is idempotent for the same handle.
+            ensureSelfManagedPhoneAccountRegistered(telecomManager, phoneAccountHandle, appName)
 
             // Create extras for the incoming call
             val extras = Bundle().apply {
@@ -702,9 +701,34 @@ class VoipNotification(private val context: Context) {
             telecomManager.addNewIncomingCall(phoneAccountHandle, extras)
             Log.d(TAG, "Successfully registered incoming call with TelecomManager: $callId")
         } catch (e: SecurityException) {
-            Log.e(TAG, "SecurityException registering call with TelecomManager. MANAGE_OWN_CALLS permission may be missing.", e)
+            Log.e(TAG, "SecurityException registering call with TelecomManager. Check MANAGE_OWN_CALLS/READ_PHONE_STATE grants and PhoneAccount registration.", e)
         } catch (e: Exception) {
             Log.e(TAG, "Failed to register call with TelecomManager", e)
+        }
+    }
+
+    private fun getApplicationLabel(): String {
+        val applicationInfo = context.applicationInfo
+        val stringId = applicationInfo.labelRes
+        return if (stringId == 0) applicationInfo.nonLocalizedLabel?.toString() ?: context.packageName
+        else context.getString(stringId)
+    }
+
+    private fun ensureSelfManagedPhoneAccountRegistered(
+        telecomManager: TelecomManager,
+        handle: PhoneAccountHandle,
+        label: String
+    ) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
+        try {
+            val account = PhoneAccount.builder(handle, label)
+                .setCapabilities(PhoneAccount.CAPABILITY_SELF_MANAGED)
+                .build()
+            telecomManager.registerPhoneAccount(account)
+        } catch (e: SecurityException) {
+            Log.e(TAG, "SecurityException registering PhoneAccount. MANAGE_OWN_CALLS may be denied.", e)
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to register self-managed PhoneAccount", e)
         }
     }
 
