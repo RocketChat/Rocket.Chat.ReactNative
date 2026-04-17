@@ -64,15 +64,9 @@ public class Ejson {
             return null;
         }
         
-        String userToken = token();
-        String uid = userId();
-        
-        String finalUri = server + avatarPath + "?format=png&size=" + sizePx;
-        if (!userToken.isEmpty() && !uid.isEmpty()) {
-            finalUri += "&rc_token=" + userToken + "&rc_uid=" + uid;
-        }
-        
-        return finalUri;
+        // Auth is supplied via HTTP headers on fetch (GlideUrl + LazyHeaders), not query params,
+        // so tokens are not logged in URLs or proxy access logs.
+        return server + avatarPath + "?format=png&size=" + sizePx;
     }
 
     public String getAvatarUri() {

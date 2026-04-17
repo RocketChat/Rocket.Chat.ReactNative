@@ -7,6 +7,8 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.load.model.LazyHeaders;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 
@@ -51,26 +53,55 @@ public class NotificationHelper {
     }
     
     /**
+     * Build a Glide load model for an avatar URL. When credentials are present, uses
+     * {@link GlideUrl} with {@link LazyHeaders} so rc_token/rc_uid are sent as HTTP headers
+     * instead of query parameters (avoids leaking credentials in logs and proxies).
+     */
+    public static Object avatarLoadModel(String uri, @Nullable String rcToken, @Nullable String rcUid) {
+        if (uri == null || uri.isEmpty()) {
+            return uri;
+        }
+        boolean hasAuth = rcToken != null && !rcToken.isEmpty() && rcUid != null && !rcUid.isEmpty();
+        if (!hasAuth) {
+            return uri;
+        }
+        LazyHeaders headers = new LazyHeaders.Builder()
+                .addHeader("rc_token", rcToken)
+                .addHeader("rc_uid", rcUid)
+                .build();
+        return new GlideUrl(uri, headers);
+    }
+
+    /**
      * Fetches avatar bitmap from URI using Glide.
      * Uses a 3-second timeout to avoid blocking the FCM service for too long.
-     * 
+     *
      * @param context The application context
-     * @param uri The avatar URI to fetch
+     * @param uri The avatar URI to fetch (without rc_token/rc_uid query params)
+     * @param rcToken User auth token for protected avatars (optional)
+     * @param rcUid User id for protected avatars (optional)
      * @param fallbackIcon Optional fallback bitmap (null if no fallback desired)
      * @return Avatar bitmap, or fallbackIcon if fetch fails, or null if no fallback provided
      */
-    public static Bitmap fetchAvatarBitmap(Context context, String uri, @Nullable Bitmap fallbackIcon) {
+    public static Bitmap fetchAvatarBitmap(
+            Context context,
+            String uri,
+            @Nullable String rcToken,
+            @Nullable String rcUid,
+            @Nullable Bitmap fallbackIcon) {
         if (uri == null || uri.isEmpty()) {
             return fallbackIcon;
         }
-        
+
+        Object loadModel = avatarLoadModel(uri, rcToken, rcUid);
+
         try {
             // Use a 3-second timeout to avoid blocking the FCM service for too long
             // FCM has a 10-second limit, so we need to fail fast and use fallback icon
             Bitmap avatar = Glide.with(context)
                     .asBitmap()
                     .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
-                    .load(uri)
+                    .load(loadModel)
                     .submit(100, 100)
                     .get(3, TimeUnit.SECONDS);
             

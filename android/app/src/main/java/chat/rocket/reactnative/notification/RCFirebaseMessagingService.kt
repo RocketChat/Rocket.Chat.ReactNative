@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import chat.rocket.reactnative.BuildConfig
 import chat.rocket.reactnative.voip.VoipNotification
 import chat.rocket.reactnative.voip.VoipPayload
 
@@ -21,8 +22,11 @@ class RCFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        // TODO: remove data
-        Log.d(TAG, "FCM message received from: ${remoteMessage.from} data: ${remoteMessage.data}")
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "FCM message received from: ${remoteMessage.from} data: ${remoteMessage.data}")
+        } else {
+            Log.d(TAG, "FCM message received from: ${remoteMessage.from}")
+        }
 
         val data = remoteMessage.data
         if (data.isEmpty()) {

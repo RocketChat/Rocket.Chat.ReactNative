@@ -159,7 +159,7 @@ class VideoConfNotification(private val context: Context) {
         // Fetch caller avatar
         val avatarUri = ejson.getCallerAvatarUri()
         val avatarBitmap = if (avatarUri != null) {
-            getAvatar(avatarUri)
+            getAvatar(avatarUri, ejson)
         } else {
             null
         }
@@ -212,8 +212,8 @@ class VideoConfNotification(private val context: Context) {
      * Fetches avatar bitmap from URI using Glide.
      * Returns null if fetch fails or times out, in which case notification will display without avatar.
      */
-    private fun getAvatar(uri: String): Bitmap? {
-        return NotificationHelper.fetchAvatarBitmap(context, uri, null)
+    private fun getAvatar(uri: String, ejson: Ejson): Bitmap? {
+        return NotificationHelper.fetchAvatarBitmap(context, uri, ejson.token(), ejson.userId(), null)
     }
 
     /**
