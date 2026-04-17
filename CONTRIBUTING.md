@@ -22,6 +22,7 @@ yarn
 
 Run the app:
 ```sh
+bundle install
 yarn pod-install
 yarn ios
 ```
