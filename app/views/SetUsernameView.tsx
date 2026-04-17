@@ -63,7 +63,7 @@ const SetUsernameView = () => {
 	useEffect(() => {
 		const init = async () => {
 			const suggestion = await getUsernameSuggestion();
-			if (suggestion) {
+			if (suggestion && suggestion.success) {
 				setValue('username', suggestion.result, { shouldValidate: true });
 			}
 		};

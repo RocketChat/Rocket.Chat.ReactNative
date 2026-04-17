@@ -143,6 +143,7 @@ class Sdk {
 				 * responses have a different object structure
 				 */
 				if (isMethodCall) {
+					// @ts-ignore
 					const response = JSON.parse(result.message);
 					if (response?.error) {
 						throw response.error;
@@ -201,6 +202,10 @@ class Sdk {
 	async login(credentials: any): Promise<any> {
 		try {
 			const loginResult = await this.post('/v1/login', credentials);
+			if (!loginResult?.success) {
+				return Promise.reject(new Error('Invalid response from server'));
+			}
+
 			// TODO: get/set headers from SDK instead?
 			this.setHeaders({ 'X-Auth-Token': loginResult.data.authToken, 'X-User-Id': loginResult.data.userId });
 			await this.current?.account.loginWithToken(loginResult.data.authToken);
@@ -238,7 +243,9 @@ class Sdk {
 		const { user } = reduxStore.getState().login;
 		if (API_Use_REST_For_DDP_Calls) {
 			const url = isEmpty(user) ? 'method.callAnon' : 'method.call';
-			const result = (await this.post(`/v1/${url}/${method}`, {
+			// TODO: fix this type
+			// @ts-ignore
+			const result = (await this.post(`/v1/${url}/${method}` as any, {
 				message: EJSON.stringify({ msg: 'method', id: random(10), method, params })
 			})) as any;
 			const response = JSON.parse(result.message) as any;
