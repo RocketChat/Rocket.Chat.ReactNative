@@ -266,9 +266,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			msg = await prepareQuoteMessage('', selectedMessages);
 		}
 
-		const { serverVersion } = this.props;
-		const effectiveVersion = serverVersion || (this.serverInfo as any)?.version;
-		const useAltText = compareServerVersion(effectiveVersion, 'greaterThanOrEqualTo', '8.4.0');
+		const useAltText = compareServerVersion(this.effectiveServerVersion, 'greaterThanOrEqualTo', '8.4.0');
 
 		try {
 			// Send attachment
@@ -283,8 +281,9 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 							[width, height] = [height, width];
 						}
 
-						// On server >= 8.4, send altText as description; otherwise use the caption
+						// On server >= 8.4, description = alt text; caption moves to msg
 						const fileDescription = useAltText ? altText : description;
+						const fileMsg = useAltText ? description || msg : msg;
 
 						return sendFileMessage(
 							room.rid,
@@ -295,7 +294,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 								size,
 								type,
 								path,
-								msg,
+								msg: fileMsg,
 								height,
 								width
 							},
@@ -375,6 +374,14 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		this.setState({ altText });
 	};
 
+	private get effectiveServerVersion(): string | undefined {
+		const { serverVersion } = this.props;
+		// Share extension targets a specific workspace; prefer its version over the Redux-connected server
+		return this.isShareExtension
+			? (this.serverInfo as any)?.version || serverVersion
+			: serverVersion || (this.serverInfo as any)?.version;
+	}
+
 	onRemoveQuoteMessage = (messageId: string) => {
 		const { selectedMessages } = this.state;
 		const newSelectedMessages = selectedMessages.filter(item => item !== messageId);
@@ -383,11 +390,10 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 	renderContent = () => {
 		const { attachments, selected, altText, text, room, thread, selectedMessages } = this.state;
-		const { theme, route, serverVersion } = this.props;
+		const { theme, route } = this.props;
 
-		const effectiveVersion = serverVersion || (this.serverInfo as any)?.version;
 		const showAltTextInput =
-			compareServerVersion(effectiveVersion, 'greaterThanOrEqualTo', '8.4.0') && selected?.mime?.startsWith('image/');
+			compareServerVersion(this.effectiveServerVersion, 'greaterThanOrEqualTo', '8.4.0') && selected?.mime?.startsWith('image/');
 
 		if (attachments.length) {
 			return (

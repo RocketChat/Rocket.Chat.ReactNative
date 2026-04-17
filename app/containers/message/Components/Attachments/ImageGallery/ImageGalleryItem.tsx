@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Text, View } from 'react-native';
 
 import { type IAttachment, type IUserMessage } from '../../../../../definitions';
@@ -8,6 +8,8 @@ import { useMediaAutoDownload } from '../../../hooks/useMediaAutoDownload';
 import { WidthAwareContext } from '../../WidthAwareView';
 import Touchable from '../../../Touchable';
 import { MessageImage } from '../Image/Image';
+import MessageContext from '../../../Context';
+import { getMessageFromAttachment } from '../../../utils';
 import styles from './styles';
 
 interface IImageGalleryItem {
@@ -22,11 +24,13 @@ interface IImageGalleryItem {
 
 const ImageGalleryItem = ({ file, author, showAttachment, width, height, overflowCount = 0 }: IImageGalleryItem) => {
 	const { colors } = useTheme();
+	const { translateLanguage } = useContext(MessageContext);
 	const { status, onPress, url, isEncrypted } = useMediaAutoDownload({ file, author, showAttachment });
+	const accessibilityLabel = getMessageFromAttachment(file, translateLanguage);
 
 	return (
 		<Touchable
-			accessibilityLabel={file.description}
+			accessibilityLabel={accessibilityLabel}
 			accessibilityRole='imagebutton'
 			onPress={onPress}
 			style={[styles.cell, { width, height }]}>

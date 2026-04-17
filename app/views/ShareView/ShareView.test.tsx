@@ -25,7 +25,17 @@ jest.mock('../../containers/MessageComposer', () => {
 jest.mock('./Preview', () => () => null);
 jest.mock('./Thumbs', () => () => null);
 
-const makeInstance = ({ mime, serverVersion }: { mime: string; serverVersion?: string }) => {
+const makeInstance = ({
+	mime,
+	serverVersion,
+	serverInfoVersion,
+	isShareExtension = false
+}: {
+	mime: string;
+	serverVersion?: string;
+	serverInfoVersion?: string;
+	isShareExtension?: boolean;
+}) => {
 	const shareView = new ShareView({
 		navigation: {
 			setOptions: jest.fn(),
@@ -35,7 +45,8 @@ const makeInstance = ({ mime, serverVersion }: { mime: string; serverVersion?: s
 			key: 'ShareView',
 			name: 'ShareView',
 			params: {
-				action: null
+				action: null,
+				isShareExtension
 			}
 		} as any,
 		theme: 'light',
@@ -76,6 +87,11 @@ const makeInstance = ({ mime, serverVersion }: { mime: string; serverVersion?: s
 		altText: ''
 	};
 
+	if (serverInfoVersion) {
+		(shareView as any).serverInfo = { version: serverInfoVersion };
+		(shareView as any).isShareExtension = isShareExtension;
+	}
+
 	return shareView;
 };
 
@@ -106,5 +122,55 @@ describe('ShareView', () => {
 		const { queryByTestId } = render(shareView.renderContent());
 
 		expect(queryByTestId('share-view-alt-text')).toBeNull();
+	});
+
+	it('share extension uses serverInfo version, not Redux serverVersion', () => {
+		// Redux reports an old server, but the target workspace is >= 8.4.0
+		const shareView = makeInstance({
+			mime: 'image/jpeg',
+			serverVersion: '8.3.0',
+			serverInfoVersion: '8.5.0',
+			isShareExtension: true
+		});
+		const { queryByTestId } = render(shareView.renderContent());
+
+		expect(queryByTestId('share-view-alt-text')).toBeTruthy();
+	});
+
+	it('share extension hides alt text field when serverInfo version is below 8.4.0', () => {
+		// Redux reports a new server, but the target workspace is old
+		const shareView = makeInstance({
+			mime: 'image/jpeg',
+			serverVersion: '8.5.0',
+			serverInfoVersion: '8.3.0',
+			isShareExtension: true
+		});
+		const { queryByTestId } = render(shareView.renderContent());
+
+		expect(queryByTestId('share-view-alt-text')).toBeNull();
+	});
+
+	it('send() passes caption as msg and altText as description on server >= 8.4.0', async () => {
+		const shareView = makeInstance({ mime: 'image/jpeg', serverVersion: '8.5.0' });
+		shareView.state.attachments[0].description = 'my caption';
+		shareView.state.attachments[0].altText = 'a cat on a mat';
+		shareView.state.attachments[0].canUpload = true;
+		shareView.state.selected = shareView.state.attachments[0];
+
+		// Wire up share-extension path so send() can complete without navigation
+		(shareView as any).isShareExtension = true;
+		(shareView as any).finishShareView = jest.fn();
+		shareView.selectFile = jest.fn().mockResolvedValue(undefined) as any;
+
+		const sendFileMessageMod = require('../../lib/methods/sendFileMessage');
+		const spy = jest.spyOn(sendFileMessageMod, 'sendFileMessage').mockResolvedValue(undefined);
+
+		await shareView.send();
+
+		const fileArg = spy.mock.calls[0]?.[1];
+		expect(fileArg?.description).toBe('a cat on a mat');
+		expect(fileArg?.msg).toBe('my caption');
+
+		spy.mockRestore();
 	});
 });
