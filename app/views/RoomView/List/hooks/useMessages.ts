@@ -122,13 +122,17 @@ export const useMessages = ({
 	};
 
 	const visibleMessages = useMemo(() => {
-		if (!hideSystemMessages || hideSystemMessages.length === 0) {
-			return rawMessages;
-		}
-		return rawMessages.filter(m => !m.t || !hideSystemMessages.includes(m.t));
-	}, [rawMessages, hideSystemMessages]);
+		const filtered =
+			!hideSystemMessages || hideSystemMessages.length === 0
+				? rawMessages
+				: rawMessages.filter(m => !m.t || !hideSystemMessages.includes(m.t));
 
-	messagesIds.current = visibleMessages.map(m => m.id);
+		// Derive IDs in the same memo so the ref is never out of sync
+		// with the visible list, even under concurrent rendering.
+		messagesIds.current = filtered.map(m => m.id);
+
+		return filtered;
+	}, [rawMessages, hideSystemMessages]);
 
 	/**
 	 * Since 3.16.0 server version, the backend don't response with messages if
