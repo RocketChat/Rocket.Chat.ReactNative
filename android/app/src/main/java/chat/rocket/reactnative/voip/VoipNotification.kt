@@ -663,8 +663,8 @@ class VoipNotification(private val context: Context) {
     private fun registerCallWithTelecomManager(callId: String, caller: String) {
         try {
             // Validate inputs
-            if (callId.isEmpty() || caller.isEmpty()) {
-                Log.e(TAG, "Cannot register call with TelecomManager: callId='$callId' caller='$caller' — empty values rejected")
+            if (callId.isNullOrEmpty() || caller.isNullOrEmpty()) {
+                Log.e(TAG, "Cannot register call with TelecomManager: callId is null or empty")
                 return
             }
 
@@ -674,17 +674,16 @@ class VoipNotification(private val context: Context) {
                     return
                 }
 
-            // Build the PhoneAccountHandle using the same (ComponentName, packageName) pair
-            // that react-native-callkeep uses (see patches/react-native-callkeep+4.3.16.patch)
-            // so the JS-side and native-side PhoneAccount registrations share one handle.
-            // The ID must be locale-stable; the localized label is only used for display below.
+            // Build the PhoneAccountHandle using the same (ComponentName, appName) pair that
+            // react-native-callkeep uses so JS-side and native-side accounts collide.
             val componentName = ComponentName(context.packageName, CALLKEEP_CONNECTION_SERVICE_CLASS)
-            val phoneAccountHandle = PhoneAccountHandle(componentName, context.packageName)
+            val appName = getApplicationLabel()
+            val phoneAccountHandle = PhoneAccountHandle(componentName, appName)
 
             // Ensure the self-managed PhoneAccount is registered. FCM pushes can arrive before
             // JS boots and calls RNCallKeep.setup, so we must register from native too.
             // registerPhoneAccount is idempotent for the same handle.
-            ensureSelfManagedPhoneAccountRegistered(telecomManager, phoneAccountHandle, getApplicationLabel())
+            ensureSelfManagedPhoneAccountRegistered(telecomManager, phoneAccountHandle, appName)
 
             // Create extras for the incoming call
             val extras = Bundle().apply {
@@ -827,7 +826,6 @@ class VoipNotification(private val context: Context) {
             setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             setAutoCancel(false)
             setOngoing(true)
-            setOnlyAlertOnce(true)
             setTimeoutAfter(remainingLifetimeMs)
             addAction(0, "Decline", declinePendingIntent)
             addAction(0, "Accept", acceptPendingIntent)
