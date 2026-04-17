@@ -99,7 +99,7 @@ const ImageGallery = ({ files, showAttachment, author, getCustomEmoji }: IImageG
 			onLayout={ev => setContainerWidth(Math.floor(ev.nativeEvent.layout.width))}>
 			{visibleFiles.map((file, index) => (
 				<ImageGalleryItem
-					key={file.image_url ?? index}
+					key={`${index}-${file.image_url}`}
 					file={file}
 					author={author}
 					showAttachment={showAttachment}

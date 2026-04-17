@@ -25,7 +25,11 @@ const ImageGalleryItem = ({ file, author, showAttachment, width, height, overflo
 	const { status, onPress, url, isEncrypted } = useMediaAutoDownload({ file, author, showAttachment });
 
 	return (
-		<Touchable onPress={onPress} style={[styles.cell, { width, height }]}>
+		<Touchable
+			accessibilityLabel={file.description}
+			accessibilityRole='imagebutton'
+			onPress={onPress}
+			style={[styles.cell, { width, height }]}>
 			<WidthAwareContext.Provider value={width}>
 				<MessageImage
 					uri={url}
