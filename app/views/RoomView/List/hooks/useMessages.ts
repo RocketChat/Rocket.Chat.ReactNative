@@ -140,10 +140,7 @@ export const useMessages = ({
 	 * hide system message is enabled
 	 */
 	useEffect(() => {
-		if (!compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.16.0')) {
-			return;
-		}
-		if (!hideSystemMessages.length) {
+		if (!compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.16.0') || !hideSystemMessages.length) {
 			return;
 		}
 
