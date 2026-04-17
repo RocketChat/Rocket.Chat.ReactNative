@@ -28,13 +28,12 @@ tags:
     visible:
       text: 'Save your encryption password'
     timeout: 60000
-- pressKey: Remote Dpad Up
-- pressKey: Remote Dpad Up
+- pressKey: Remote Dpad Right
+- pressKey: Remote Dpad Right
+- pressKey: Remote Dpad Down
 - pressKey: Remote Dpad Down
 - pressKey: enter
-
-# Send a message using TV remote / hardware keys only (no tapOn).
-# Move focus toward the composer; tune `times` if focus order on the device changes.
+# Submit: ComposerInput wires onSubmitEditing -> send when soft keyboard is hidden (TV / physical keyboard)
 - extendedWaitUntil:
     visible:
       id: message-composer-input
@@ -43,8 +42,6 @@ tags:
 - inputText: ${output.keyboardMessage}
 - pressKey: Remote Dpad Down
 - pressKey: Remote Dpad Right
-
-# Submit: ComposerInput wires onSubmitEditing -> send when soft keyboard is hidden (TV / physical keyboard)
 - pressKey: enter
 - extendedWaitUntil:
     visible:
@@ -66,7 +63,6 @@ tags:
 # Select emoji
 - pressKey: Remote Dpad Down
 - pressKey: Remote Dpad Right
-- pressKey: Remote Dpad Up
 - pressKey: Remote Dpad Up
 - pressKey: enter
 
