@@ -13,7 +13,7 @@ import { AUTOPLAY_GIFS_PREFERENCES_KEY } from '../../../../../lib/constants/keys
 import ImageBadge from './ImageBadge';
 import log from '../../../../../lib/methods/helpers/log';
 
-export const MessageImage = React.memo(({ uri, status, encrypted = false, imagePreview, imageType, altText }: IMessageImage) => {
+export const MessageImage = React.memo(({ uri, status, encrypted = false, imagePreview, imageType }: IMessageImage) => {
 	'use memo';
 
 	const { colors } = useTheme();
@@ -71,14 +71,7 @@ export const MessageImage = React.memo(({ uri, status, encrypted = false, imageP
 		<>
 			{showImage ? (
 				<View style={[containerStyle, borderStyle]}>
-					<Image
-						autoplay={autoplayGifs}
-						style={imageStyle}
-						source={{ uri: encodeURI(uri) }}
-						contentFit='cover'
-						accessibilityLabel={altText}
-						accessible={!!altText}
-					/>
+					<Image autoplay={autoplayGifs} style={imageStyle} source={{ uri: encodeURI(uri) }} contentFit='cover' />
 				</View>
 			) : null}
 			{['loading', 'to-download'].includes(status) || (status === 'downloaded' && !showImage) ? (

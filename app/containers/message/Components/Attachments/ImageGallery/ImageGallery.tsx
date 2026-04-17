@@ -18,10 +18,7 @@ const ImageGallery = ({ files, showAttachment, author, getCustomEmoji }: IImageG
 
 	if (containerWidth === 0) {
 		return (
-			<View
-				style={{ height: GALLERY_HEIGHT }}
-				onLayout={ev => setContainerWidth(Math.floor(ev.nativeEvent.layout.width))}
-			/>
+			<View style={{ height: GALLERY_HEIGHT }} onLayout={ev => setContainerWidth(Math.floor(ev.nativeEvent.layout.width))} />
 		);
 	}
 
@@ -34,8 +31,22 @@ const ImageGallery = ({ files, showAttachment, author, getCustomEmoji }: IImageG
 			<View
 				style={[styles.galleryContainer, { width: containerWidth, height: GALLERY_HEIGHT, gap: GAP }]}
 				onLayout={ev => setContainerWidth(Math.floor(ev.nativeEvent.layout.width))}>
-				<ImageGalleryItem file={files[0]} author={author} showAttachment={showAttachment} getCustomEmoji={getCustomEmoji} width={cellWidth} height={GALLERY_HEIGHT} />
-				<ImageGalleryItem file={files[1]} author={author} showAttachment={showAttachment} getCustomEmoji={getCustomEmoji} width={cellWidth} height={GALLERY_HEIGHT} />
+				<ImageGalleryItem
+					file={files[0]}
+					author={author}
+					showAttachment={showAttachment}
+					getCustomEmoji={getCustomEmoji}
+					width={cellWidth}
+					height={GALLERY_HEIGHT}
+				/>
+				<ImageGalleryItem
+					file={files[1]}
+					author={author}
+					showAttachment={showAttachment}
+					getCustomEmoji={getCustomEmoji}
+					width={cellWidth}
+					height={GALLERY_HEIGHT}
+				/>
 			</View>
 		);
 	}
@@ -47,11 +58,32 @@ const ImageGallery = ({ files, showAttachment, author, getCustomEmoji }: IImageG
 				style={[styles.galleryContainer, { width: containerWidth, height: GALLERY_HEIGHT, gap: GAP }]}
 				onLayout={ev => setContainerWidth(Math.floor(ev.nativeEvent.layout.width))}>
 				<View style={styles.leftColumn}>
-					<ImageGalleryItem file={files[0]} author={author} showAttachment={showAttachment} getCustomEmoji={getCustomEmoji} width={cellWidth} height={GALLERY_HEIGHT} />
+					<ImageGalleryItem
+						file={files[0]}
+						author={author}
+						showAttachment={showAttachment}
+						getCustomEmoji={getCustomEmoji}
+						width={cellWidth}
+						height={GALLERY_HEIGHT}
+					/>
 				</View>
 				<View style={[styles.rightColumn, { gap: GAP }]}>
-					<ImageGalleryItem file={files[1]} author={author} showAttachment={showAttachment} getCustomEmoji={getCustomEmoji} width={cellWidth} height={CELL_HEIGHT_HALF} />
-					<ImageGalleryItem file={files[2]} author={author} showAttachment={showAttachment} getCustomEmoji={getCustomEmoji} width={cellWidth} height={CELL_HEIGHT_HALF} />
+					<ImageGalleryItem
+						file={files[1]}
+						author={author}
+						showAttachment={showAttachment}
+						getCustomEmoji={getCustomEmoji}
+						width={cellWidth}
+						height={CELL_HEIGHT_HALF}
+					/>
+					<ImageGalleryItem
+						file={files[2]}
+						author={author}
+						showAttachment={showAttachment}
+						getCustomEmoji={getCustomEmoji}
+						width={cellWidth}
+						height={CELL_HEIGHT_HALF}
+					/>
 				</View>
 			</View>
 		);
@@ -63,7 +95,7 @@ const ImageGallery = ({ files, showAttachment, author, getCustomEmoji }: IImageG
 
 	return (
 		<View
-			style={[styles.galleryContainer, { width: containerWidth, height: GALLERY_HEIGHT * 2 + GAP, flexWrap: 'wrap', gap: GAP }]}
+			style={[styles.galleryContainer, { width: containerWidth, height: GALLERY_HEIGHT, flexWrap: 'wrap', gap: GAP }]}
 			onLayout={ev => setContainerWidth(Math.floor(ev.nativeEvent.layout.width))}>
 			{visibleFiles.map((file, index) => (
 				<ImageGalleryItem

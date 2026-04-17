@@ -24,18 +24,12 @@ const ImageContainer = ({
 
 	const { user } = useContext(MessageContext);
 	const { status, onPress, url, isEncrypted } = useMediaAutoDownload({ file, author, showAttachment });
+	const altText = isAltTextSupported ? msg : undefined;
 
 	const image = (
-		<Button onPress={onPress}>
+		<Button accessibilityLabel={altText} onPress={onPress}>
 			<WidthAwareView>
-				<MessageImage
-					uri={url}
-					status={status}
-					encrypted={isEncrypted}
-					imagePreview={imagePreview}
-					imageType={imageType}
-					altText={isAltTextSupported ? msg : undefined}
-				/>
+				<MessageImage uri={url} status={status} encrypted={isEncrypted} imagePreview={imagePreview} imageType={imageType} />
 			</WidthAwareView>
 		</Button>
 	);

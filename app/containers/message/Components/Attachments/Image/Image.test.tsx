@@ -8,33 +8,22 @@ jest.mock('../../../../../lib/methods/userPreferences', () => ({
 	useUserPreferences: jest.fn(() => [true, jest.fn()])
 }));
 
-const renderMessageImage = (altText?: string) =>
+const renderMessageImage = () =>
 	render(
 		<WidthAwareContext.Provider value={200}>
-			<MessageImage uri='https://open.rocket.chat/image.png' status='downloaded' encrypted={false} altText={altText} />
+			<MessageImage uri='https://open.rocket.chat/image.png' status='downloaded' encrypted={false} />
 		</WidthAwareContext.Provider>
 	);
 
 describe('MessageImage', () => {
-	it('sets the accessibility label when altText is provided', async () => {
-		const { UNSAFE_getByType } = renderMessageImage('A wavy orange and black pattern');
-
-		await waitFor(() => {
-			const image = UNSAFE_getByType(ExpoImage);
-
-			expect(image.props.accessibilityLabel).toBe('A wavy orange and black pattern');
-			expect(image.props.accessible).toBe(true);
-		});
-	});
-
-	it('does not set the accessibility label when altText is undefined', async () => {
+	it('does not set accessibility props on the nested image', async () => {
 		const { UNSAFE_getByType } = renderMessageImage();
 
 		await waitFor(() => {
 			const image = UNSAFE_getByType(ExpoImage);
 
 			expect(image.props.accessibilityLabel).toBeUndefined();
-			expect(image.props.accessible).toBe(false);
+			expect(image.props.accessible).toBeUndefined();
 		});
 	});
 });

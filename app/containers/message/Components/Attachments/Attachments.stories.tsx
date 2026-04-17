@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { Provider } from 'react-redux';
 
-import { mockedStore } from '../../../../reducers/mockedStore';
+import { createMockedStore } from '../../../../reducers/mockedStore';
 import { selectServerSuccess } from '../../../../actions/server';
 import MessageContext from '../../Context';
 import Attachments from './Attachments';
@@ -37,15 +37,14 @@ const MOCK_IMAGES_GALLERY = [
 ];
 
 // Set server version in the store for server-aware stories
-const oldServerStore = (() => {
-	mockedStore.dispatch(selectServerSuccess({ server: 'https://open.rocket.chat', version: '8.3.0', name: 'Test' }));
-	return mockedStore;
-})();
+const createServerStore = (version: string) => {
+	const store = createMockedStore();
+	store.dispatch(selectServerSuccess({ server: 'https://open.rocket.chat', version, name: 'Test' }));
+	return store;
+};
 
-const newServerStore = (() => {
-	mockedStore.dispatch(selectServerSuccess({ server: 'https://open.rocket.chat', version: '8.5.0', name: 'Test' }));
-	return mockedStore;
-})();
+const oldServerStore = createServerStore('8.3.0');
+const newServerStore = createServerStore('8.5.0');
 
 export default {
 	title: 'Attachments/Attachments'
