@@ -311,7 +311,7 @@ function emitDDPMediaSignal(signal: Record<string, unknown>): void {
 		throw new Error('emitDDPMediaSignal called before sdk.onStreamData registered a handler');
 	}
 	mockSdkState.streamHandler({
-		fields: { eventName: 'test-device-id/media-signal', args: [signal] }
+		fields: { eventName: 'me/media-signal', args: [signal] }
 	} as unknown as IDDPMessage);
 }
 

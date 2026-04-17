@@ -6,7 +6,8 @@ import type { IDDPMessage } from '../../../definitions/IDDPMessage';
 import Navigation from '../../navigation/appNavigation';
 import { getDMSubscriptionByUsername } from '../../database/services/Subscription';
 import { getUidDirectMessage } from '../../methods/helpers/helpers';
-import { mediaSessionStore } from './MediaSessionStore';
+import { store } from '../../store/auxStore';
+import { mediaCallLogger } from './MediaCallLogger';
 import { mediaSessionInstance } from './MediaSessionInstance';
 
 jest.mock('../../database/services/Subscription', () => ({
@@ -116,13 +117,19 @@ type MockMediaSignalingSession = {
 
 const createdSessions: MockMediaSignalingSession[] = [];
 
+let lastSignalingSessionConfig: { userId: string; transport: (signal: unknown) => void } | null = null;
+
 jest.mock('@rocket.chat/media-signaling', () => ({
 	MediaCallWebRTCProcessor: jest.fn().mockImplementation(function MediaCallWebRTCProcessor(this: unknown) {
 		return this;
 	}),
 	MediaSignalingSession: jest
 		.fn()
-		.mockImplementation(function MockMediaSignalingSession(this: MockMediaSignalingSession, config: { userId: string }) {
+		.mockImplementation(function MockMediaSignalingSession(
+			this: MockMediaSignalingSession,
+			config: { userId: string; transport: (signal: unknown) => void }
+		) {
+			lastSignalingSessionConfig = config;
 			const endSession = jest.fn();
 			this.userId = config.userId;
 			this.endSession = endSession;
@@ -191,6 +198,9 @@ function buildClientMediaCall(options: {
 describe('MediaSessionInstance', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
+		lastSignalingSessionConfig = null;
+		(store.subscribe as jest.Mock).mockReset();
+		(store.subscribe as jest.Mock).mockImplementation(() => jest.fn());
 		mockMediaCallsStateSignals.mockResolvedValue({ signals: [], success: true });
 		createdSessions.length = 0;
 		mockGetUidDirectMessage.mockReturnValue('other-user-id');
@@ -230,17 +240,14 @@ describe('MediaSessionInstance', () => {
 		});
 
 		it('should route sendSignal through sdk.methodCall with user media-calls channel', async () => {
-			const spy = jest.spyOn(mediaSessionStore, 'setSendSignalFn');
 			await mediaSessionInstance.init('user-xyz');
-			expect(spy).toHaveBeenCalled();
-			const sendFn = spy.mock.calls[spy.mock.calls.length - 1][0] as (signal: { type: string }) => void;
-			sendFn({ type: 'register' });
+			expect(lastSignalingSessionConfig?.transport).toBeDefined();
+			lastSignalingSessionConfig!.transport({ type: 'register' });
 			expect(mockMethodCall).toHaveBeenCalledWith(
 				'stream-notify-user',
 				'user-xyz/media-calls',
 				expect.stringContaining('register')
 			);
-			spy.mockRestore();
 		});
 	});
 
@@ -253,20 +260,23 @@ describe('MediaSessionInstance', () => {
 			expect(createdSessions[createdSessions.length - 1].userId).toBe('user-2');
 		});
 
-		it('should only have one active onChange handler after re-init (getInstance once per change emit)', async () => {
+		it('should only have one active onChange handler after re-init (getOrCreateSignalingSession once per change emit)', async () => {
 			await mediaSessionInstance.init('user-1');
 			await mediaSessionInstance.init('user-2');
-			const spy = jest.spyOn(mediaSessionStore, 'getInstance');
-			mediaSessionStore.emit('change');
+			const spy = jest.spyOn(mediaSessionInstance as any, 'getOrCreateSignalingSession');
+			(mediaSessionInstance as any).signalingEmitter.emit('change');
 			expect(spy).toHaveBeenCalledTimes(1);
 			expect(spy).toHaveBeenCalledWith('user-2');
 			spy.mockRestore();
 		});
 
-		it('should throw existing makeInstance error when getInstance after reset without init', async () => {
+		it('unsubscribes the ice-settings Redux subscription when init runs again for another user', async () => {
+			const unsub1 = jest.fn();
+			const unsub2 = jest.fn();
+			(store.subscribe as jest.Mock).mockReturnValueOnce(unsub1).mockReturnValue(unsub2);
 			await mediaSessionInstance.init('user-1');
-			mediaSessionInstance.reset();
-			expect(() => mediaSessionStore.getInstance('any')).toThrow(/must be set/);
+			await mediaSessionInstance.init('user-2');
+			expect(unsub1).toHaveBeenCalled();
 		});
 
 		it('should allow init after reset', async () => {
@@ -370,7 +380,7 @@ describe('MediaSessionInstance', () => {
 			streamHandler({
 				msg: 'changed',
 				fields: {
-					eventName: 'uid/media-signal',
+					eventName: 'user-1/media-signal',
 					args: [
 						{
 							type: 'notification',
@@ -403,7 +413,7 @@ describe('MediaSessionInstance', () => {
 			streamHandler({
 				msg: 'changed',
 				fields: {
-					eventName: 'uid/media-signal',
+					eventName: 'user-1/media-signal',
 					args: [
 						{
 							type: 'notification',
@@ -436,7 +446,7 @@ describe('MediaSessionInstance', () => {
 			streamHandler({
 				msg: 'changed',
 				fields: {
-					eventName: 'uid/media-signal',
+					eventName: 'user-1/media-signal',
 					args: [
 						{
 							type: 'notification',
@@ -450,6 +460,36 @@ describe('MediaSessionInstance', () => {
 			await Promise.resolve();
 			expect(answerSpy).toHaveBeenCalledWith('sticky-only');
 			answerSpy.mockRestore();
+		});
+
+		it('ignores stream-notify-user when eventName user id does not match init user', async () => {
+			await mediaSessionInstance.init('user-1');
+			const session = createdSessions[0];
+			session.processSignal.mockClear();
+			const streamHandler = getStreamNotifyHandler();
+			streamHandler({
+				msg: 'changed',
+				fields: {
+					eventName: 'other-user/media-signal',
+					args: [{ type: 'noop' }]
+				}
+			} as unknown as IDDPMessage);
+			expect(session.processSignal).not.toHaveBeenCalled();
+		});
+
+		it('ignores stream-notify-user when event segment is not media-signal', async () => {
+			await mediaSessionInstance.init('user-1');
+			const session = createdSessions[0];
+			session.processSignal.mockClear();
+			const streamHandler = getStreamNotifyHandler();
+			streamHandler({
+				msg: 'changed',
+				fields: {
+					eventName: 'user-1/other-event',
+					args: [{}]
+				}
+			} as unknown as IDDPMessage);
+			expect(session.processSignal).not.toHaveBeenCalled();
 		});
 
 		it('does not call answerCall when store call object is already set', async () => {
@@ -469,7 +509,7 @@ describe('MediaSessionInstance', () => {
 			streamHandler({
 				msg: 'changed',
 				fields: {
-					eventName: 'uid/media-signal',
+					eventName: 'user-1/media-signal',
 					args: [
 						{
 							type: 'notification',
@@ -528,6 +568,15 @@ describe('MediaSessionInstance', () => {
 			mockMediaCallsStateSignals.mockClear();
 			await mediaSessionInstance.applyRestStateSignals();
 			expect(mockMediaCallsStateSignals).toHaveBeenCalledWith('test-device-id');
+		});
+
+		it('logs via mediaCallLogger when applyRestStateSignals cannot fetch REST signals', async () => {
+			const errSpy = jest.spyOn(mediaCallLogger, 'error').mockImplementation(() => {});
+			await mediaSessionInstance.init('user-1');
+			mockMediaCallsStateSignals.mockRejectedValueOnce(new Error('network'));
+			await mediaSessionInstance.applyRestStateSignals();
+			expect(errSpy).toHaveBeenCalledWith('[VoIP] Failed to fetch or apply REST state signals:', expect.any(Error));
+			errSpy.mockRestore();
 		});
 	});
 
