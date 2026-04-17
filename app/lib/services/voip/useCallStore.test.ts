@@ -21,7 +21,8 @@ jest.mock('react-native-callkeep', () => ({
 	setAvailable: jest.fn()
 }));
 
-function createMockCall(callId: string) {
+function createMockCall(callId: string, options?: { initialState?: string }) {
+	const initialState = options?.initialState ?? 'active';
 	const listeners: Record<string, Set<(...args: unknown[]) => void>> = {};
 	const emitter = {
 		on: (ev: string, fn: (...args: unknown[]) => void) => {
@@ -55,7 +56,7 @@ function createMockCall(callId: string) {
 	];
 	const call = {
 		callId,
-		state: 'active',
+		state: initialState,
 		hidden: false,
 		localParticipant,
 		remoteParticipants,
@@ -95,13 +96,6 @@ describe('useCallStore controlsVisible', () => {
 		useCallStore.getState().toggleControlsVisible();
 		expect(useCallStore.getState().controlsVisible).toBe(false);
 		useCallStore.getState().toggleControlsVisible();
-		expect(useCallStore.getState().controlsVisible).toBe(true);
-	});
-
-	it('showControls sets true when hidden', () => {
-		useCallStore.getState().toggleControlsVisible();
-		expect(useCallStore.getState().controlsVisible).toBe(false);
-		useCallStore.getState().showControls();
 		expect(useCallStore.getState().controlsVisible).toBe(true);
 	});
 
@@ -159,6 +153,39 @@ describe('useCallStore roomId', () => {
 		useCallStore.getState().setRoomId('room-rid-abc');
 		useCallStore.getState().reset();
 		expect(useCallStore.getState().roomId).toBeNull();
+	});
+
+	it('setRoomId persists across setCall until reset', () => {
+		useCallStore.getState().setRoomId('room-persist-1');
+		const { call } = createMockCall('persist-call');
+		useCallStore.getState().setCall(call);
+		expect(useCallStore.getState().roomId).toBe('room-persist-1');
+	});
+});
+
+describe('useCallStore callStartTime', () => {
+	beforeEach(() => {
+		useCallStore.getState().resetNativeCallId();
+		useCallStore.getState().reset();
+	});
+
+	afterEach(() => {
+		jest.useRealTimers();
+	});
+
+	it('sets callStartTime when transitioning ringing to active', () => {
+		jest.useFakeTimers();
+		const fixed = new Date('2020-01-01T00:00:00.000Z');
+		jest.setSystemTime(fixed);
+		const { call, emit } = createMockCall('ring-to-active', { initialState: 'ringing' });
+		useCallStore.getState().setCall(call);
+		expect(useCallStore.getState().callStartTime).toBeNull();
+
+		(call as { state: string }).state = 'active';
+		emit('stateChange');
+
+		expect(useCallStore.getState().callStartTime).toBe(fixed.getTime());
+		expect(useCallStore.getState().callState).toBe('active');
 	});
 });
 

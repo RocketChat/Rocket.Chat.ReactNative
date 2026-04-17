@@ -1,6 +1,6 @@
 import type { IceServer } from '../../../definitions/Voip';
 
-export const parseStringToIceServer = (server: string): IceServer => {
+function parseStringToIceServer(server: string): IceServer {
 	const credentials = server.trim().split('@');
 	const urls = credentials.pop() as string;
 	const [username, credential] = credentials.length === 1 ? credentials[0].split(':') : [];
@@ -13,7 +13,7 @@ export const parseStringToIceServer = (server: string): IceServer => {
 				credential: decodeURIComponent(credential)
 			})
 	};
-};
+}
 
 export const parseStringToIceServers = (string: string): IceServer[] => {
 	if (!string) {
