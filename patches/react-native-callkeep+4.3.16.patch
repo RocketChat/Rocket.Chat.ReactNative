@@ -1,7 +1,16 @@
 diff --git a/node_modules/react-native-callkeep/android/src/main/java/io/wazo/callkeep/RNCallKeepModule.java b/node_modules/react-native-callkeep/android/src/main/java/io/wazo/callkeep/RNCallKeepModule.java
-index 025480a..70a1305 100644
+index 025480a..6a66858 100644
 --- a/node_modules/react-native-callkeep/android/src/main/java/io/wazo/callkeep/RNCallKeepModule.java
 +++ b/node_modules/react-native-callkeep/android/src/main/java/io/wazo/callkeep/RNCallKeepModule.java
+@@ -221,7 +221,7 @@ public class RNCallKeepModule extends ReactContextBaseJavaModule implements Life
+         ComponentName cName = new ComponentName(context, VoiceConnectionService.class);
+         String appName = this.getApplicationName(context);
+ 
+-        handle = new PhoneAccountHandle(cName, appName);
++        handle = new PhoneAccountHandle(cName, context.getPackageName());
+         telecomManager = (TelecomManager) context.getSystemService(Context.TELECOM_SERVICE);
+     }
+ 
 @@ -434,11 +434,6 @@ public class RNCallKeepModule extends ReactContextBaseJavaModule implements Life
          this.hasListeners = false;
      }
@@ -26,6 +35,24 @@ index 025480a..70a1305 100644
      @ReactMethod
      public void startCall(String uuid, String number, String callerName, boolean hasVideo) {
          this.startCall(uuid, number, callerName, hasVideo, null);
+@@ -1196,9 +1186,14 @@ public class RNCallKeepModule extends ReactContextBaseJavaModule implements Life
+             return true;
+         }
+ 
+-        return isConnectionServiceAvailable() && telecomManager != null &&
+-            hasPermissions() && telecomManager.getPhoneAccount(handle) != null &&
+-            telecomManager.getPhoneAccount(handle).isEnabled();
++        try {
++            return isConnectionServiceAvailable() && telecomManager != null &&
++                hasPermissions() && telecomManager.getPhoneAccount(handle) != null &&
++                telecomManager.getPhoneAccount(handle).isEnabled();
++        } catch (SecurityException e) {
++            Log.w(TAG, "[RNCallKeepModule] hasPhoneAccount: SecurityException querying phone account", e);
++            return false;
++        }
+     }
+ 
+     protected void registerReceiver() {
 diff --git a/node_modules/react-native-callkeep/android/src/main/java/io/wazo/callkeep/VoiceConnectionService.java b/node_modules/react-native-callkeep/android/src/main/java/io/wazo/callkeep/VoiceConnectionService.java
 index 5d58692..f4e4b1b 100644
 --- a/node_modules/react-native-callkeep/android/src/main/java/io/wazo/callkeep/VoiceConnectionService.java

@@ -663,8 +663,8 @@ class VoipNotification(private val context: Context) {
     private fun registerCallWithTelecomManager(callId: String, caller: String) {
         try {
             // Validate inputs
-            if (callId.isNullOrEmpty() || caller.isNullOrEmpty()) {
-                Log.e(TAG, "Cannot register call with TelecomManager: callId is null or empty")
+            if (callId.isEmpty() || caller.isEmpty()) {
+                Log.e(TAG, "Cannot register call with TelecomManager: callId='$callId' caller='$caller' — empty values rejected")
                 return
             }
 
@@ -677,13 +677,12 @@ class VoipNotification(private val context: Context) {
             // Build the PhoneAccountHandle using the same (ComponentName, appName) pair that
             // react-native-callkeep uses so JS-side and native-side accounts collide.
             val componentName = ComponentName(context.packageName, CALLKEEP_CONNECTION_SERVICE_CLASS)
-            val appName = getApplicationLabel()
-            val phoneAccountHandle = PhoneAccountHandle(componentName, appName)
+            val phoneAccountHandle = PhoneAccountHandle(componentName, context.packageName)
 
             // Ensure the self-managed PhoneAccount is registered. FCM pushes can arrive before
             // JS boots and calls RNCallKeep.setup, so we must register from native too.
             // registerPhoneAccount is idempotent for the same handle.
-            ensureSelfManagedPhoneAccountRegistered(telecomManager, phoneAccountHandle, appName)
+            ensureSelfManagedPhoneAccountRegistered(telecomManager, phoneAccountHandle, getApplicationLabel())
 
             // Create extras for the incoming call
             val extras = Bundle().apply {
