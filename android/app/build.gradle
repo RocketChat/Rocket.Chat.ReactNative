@@ -156,6 +156,7 @@ dependencies {
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.robolectric:robolectric:4.14.1'
+    // Align with react-native okhttp version (see node_modules/react-native/gradle/libs.versions.toml okhttp = 4.9.2)
     testImplementation 'com.squareup.okhttp3:mockwebserver:4.9.2'
     testImplementation 'org.mockito:mockito-core:5.14.2'
 

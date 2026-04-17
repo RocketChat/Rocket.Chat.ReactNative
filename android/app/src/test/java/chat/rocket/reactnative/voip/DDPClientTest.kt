@@ -57,7 +57,11 @@ class DDPClientTest {
         return latch.await(0, TimeUnit.MILLISECONDS)
     }
 
-    private fun enqueueWebSocketEchoServer() {
+    /**
+     * Single DDP-over-WebSocket fake: answers `connect`, `method` (including login), and `sub` (ready).
+     * @param methodResultError when true, DDP `method` replies include an `error` field (e.g. failed login).
+     */
+    private fun enqueueDdpWebSocketMock(methodResultError: Boolean = false) {
         mockWebServer.enqueue(
             MockResponse().withWebSocketUpgrade(
                 object : WebSocketListener() {
@@ -67,9 +71,10 @@ class DDPClientTest {
                             "connect" -> webSocket.send("""{"msg":"connected","session":"test-session"}""")
                             "method" -> {
                                 val id = json.getString("id")
-                                val method = json.optString("method")
-                                if (method == "login") {
-                                    webSocket.send("""{"msg":"result","id":"$id","result":{}}""")
+                                if (methodResultError) {
+                                    webSocket.send(
+                                        """{"msg":"result","id":"$id","error":{"reason":"nope"}}"""
+                                    )
                                 } else {
                                     webSocket.send("""{"msg":"result","id":"$id","result":{}}""")
                                 }
@@ -78,7 +83,6 @@ class DDPClientTest {
                                 val id = json.getString("id")
                                 webSocket.send("""{"msg":"ready","subs":["$id"]}""")
                             }
-                            "pong" -> Unit
                         }
                     }
                 }
@@ -88,7 +92,7 @@ class DDPClientTest {
 
     @Test
     fun `connect completes after server sends connected`() {
-        enqueueWebSocketEchoServer()
+        enqueueDdpWebSocketMock()
         val client = DDPClient()
         val latch = CountDownLatch(1)
         var ok: Boolean? = null
@@ -104,7 +108,7 @@ class DDPClientTest {
 
     @Test
     fun `login succeeds after connect`() {
-        enqueueWebSocketEchoServer()
+        enqueueDdpWebSocketMock()
         val client = DDPClient()
         val connectLatch = CountDownLatch(1)
         client.connect(httpHost()) { connectLatch.countDown() }
@@ -123,7 +127,7 @@ class DDPClientTest {
 
     @Test
     fun `disconnect prevents further login`() {
-        enqueueWebSocketEchoServer()
+        enqueueDdpWebSocketMock()
         val client = DDPClient()
         val connectLatch = CountDownLatch(1)
         client.connect(httpHost()) { connectLatch.countDown() }
@@ -143,24 +147,7 @@ class DDPClientTest {
 
     @Test
     fun `login with error result posts false`() {
-        mockWebServer.enqueue(
-            MockResponse().withWebSocketUpgrade(
-                object : WebSocketListener() {
-                    override fun onMessage(webSocket: WebSocket, text: String) {
-                        val json = JSONObject(text)
-                        when (json.optString("msg")) {
-                            "connect" -> webSocket.send("""{"msg":"connected","session":"s"}""")
-                            "method" -> {
-                                val id = json.getString("id")
-                                webSocket.send(
-                                    """{"msg":"result","id":"$id","error":{"reason":"nope"}}"""
-                                )
-                            }
-                        }
-                    }
-                }
-            )
-        )
+        enqueueDdpWebSocketMock(methodResultError = true)
         val client = DDPClient()
         val connectLatch = CountDownLatch(1)
         client.connect(httpHost()) { connectLatch.countDown() }
@@ -179,7 +166,7 @@ class DDPClientTest {
 
     @Test
     fun `subscribe receives ready`() {
-        enqueueWebSocketEchoServer()
+        enqueueDdpWebSocketMock()
         val client = DDPClient()
         val connectLatch = CountDownLatch(1)
         client.connect(httpHost()) { connectLatch.countDown() }

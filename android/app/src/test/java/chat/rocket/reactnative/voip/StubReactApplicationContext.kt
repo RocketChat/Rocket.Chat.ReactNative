@@ -14,7 +14,7 @@ import org.mockito.Mockito
 /**
  * Minimal [ReactApplicationContext] for JVM unit tests (RN 0.81 [com.facebook.react.bridge.ReactContext] is abstract).
  */
-open class StubReactApplicationContext(
+class StubReactApplicationContext(
     application: Application,
     private val activeReactInstance: Boolean = false
 ) : ReactApplicationContext(application) {
@@ -35,15 +35,18 @@ open class StubReactApplicationContext(
 
     override fun getNativeModule(moduleName: String): NativeModule? = null
 
-    override fun getCatalystInstance(): CatalystInstance = catalyst
+    override fun getCatalystInstance(): CatalystInstance {
+        check(activeReactInstance) { "No catalyst when React instance is inactive" }
+        return catalyst
+    }
 
     override fun hasActiveCatalystInstance(): Boolean = activeReactInstance
 
     override fun hasActiveReactInstance(): Boolean = activeReactInstance
 
-    override fun hasCatalystInstance(): Boolean = false
+    override fun hasCatalystInstance(): Boolean = activeReactInstance
 
-    override fun hasReactInstance(): Boolean = false
+    override fun hasReactInstance(): Boolean = activeReactInstance
 
     override fun destroy() {}
 
