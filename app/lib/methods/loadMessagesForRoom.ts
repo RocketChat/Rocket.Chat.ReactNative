@@ -7,7 +7,7 @@ import { type RoomTypes, roomTypeToApiType } from './roomTypeToApiType';
 import sdk from '../services/sdk';
 import updateMessages from './updateMessages';
 import { generateLoadMoreId } from './helpers/generateLoadMoreId';
-import { type ChatGetMessage } from '@rocket.chat/rest-typings';
+import { type ChannelsHistoryParams, type GroupsHistoryParams, type ImHistoryParams } from '@rocket.chat/api-typings';
 
 const COUNT = 50;
 
@@ -25,18 +25,31 @@ async function load({ rid: roomId, latest, t }: { rid: string; latest?: Date; t:
 			return;
 		}
 
-		const params: ChatGetMessage = { roomId, showThreadMessages: false, count: COUNT, ...(lastTs && { latest: lastTs }) };
+		let params;
+		switch (apiType) {
+			case 'channels':
+				params = { roomId, showThreadMessages: false, count: COUNT, ...(lastTs && { latest: lastTs }) } as ChannelsHistoryParams;
+				break;
+			case 'groups':
+				params = { roomId, showThreadMessages: false, count: COUNT, ...(lastTs && { latest: lastTs }) } as GroupsHistoryParams;
+				break;
+			case 'im':
+				params = { roomId, showThreadMessages: false, count: COUNT, ...(lastTs && { latest: lastTs }) } as ImHistoryParams;
+				break;
+			default:
+				return;
+		}
 
 		let data;
 		switch (apiType) {
 			case 'channels':
-				data = await sdk.get('/v1/chat.getMessage', params);
+				data = await sdk.get('/v1/channels.history', params);
 				break;
 			case 'groups':
-				data = await sdk.get('groups.history', params);
+				data = await sdk.get('/v1/groups.history', params);
 				break;
 			case 'im':
-				data = await sdk.get('im.history', params);
+				data = await sdk.get('/v1/im.history', params);
 				break;
 			default:
 				return;

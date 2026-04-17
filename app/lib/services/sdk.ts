@@ -9,14 +9,20 @@ import { store as reduxStore } from '../store/auxStore';
 import { random } from '../methods/helpers';
 import UserPreferences from '../methods/userPreferences';
 import { BASIC_AUTH_KEY } from '../methods/helpers/fetch';
+import {
+	type Serialized,
+	type MatchPathPattern,
+	type OperationParams,
+	type PathFor,
+	type ResultFor
+} from '../../definitions/rest/helpers';
 
 class Sdk {
 	private sdk: DDPSDK | undefined;
 	private code: any = null;
 	private headers: Record<string, string> = {
-		'User-Agent': `RC Mobile; ${
-			Platform.OS
-		} ${DeviceInfo.getSystemVersion()}; v${DeviceInfo.getVersion()} (${DeviceInfo.getBuildNumber()})`
+		'User-Agent': `RC Mobile; ${Platform.OS
+			} ${DeviceInfo.getSystemVersion()}; v${DeviceInfo.getVersion()} (${DeviceInfo.getBuildNumber()})`
 	};
 
 	async initialize(server: string): Promise<DDPSDK> {
@@ -60,6 +66,7 @@ class Sdk {
 		return this.headers;
 	}
 
+	/*
 	get: DDPSDK['rest']['get'] = (...args: Parameters<DDPSDK['rest']['get']>) => {
 		const [endpoint, params, options] = args;
 		const sdk = this.ensureInitialized();
@@ -95,6 +102,89 @@ class Sdk {
 			}
 		});
 	};
+	*/
+
+	get<TPath extends PathFor<'GET'>>(
+		endpoint: TPath,
+		params: void extends OperationParams<'GET', MatchPathPattern<TPath>>
+			? void
+			: Serialized<OperationParams<'GET', MatchPathPattern<TPath>>> = undefined as void extends OperationParams<
+				'GET',
+				MatchPathPattern<TPath>
+			>
+			? void
+			: Serialized<OperationParams<'GET', MatchPathPattern<TPath>>>
+	): Promise<Serialized<ResultFor<'GET', MatchPathPattern<TPath>>>> {
+		const sdk = this.ensureInitialized();
+		// @ts-ignore
+		return sdk.rest.get(endpoint, params);
+	}
+
+	post<TPath extends PathFor<'POST'>>(
+		endpoint: TPath,
+		params: void extends OperationParams<'POST', MatchPathPattern<TPath>>
+			? void
+			: Serialized<OperationParams<'POST', MatchPathPattern<TPath>>> = undefined as void extends OperationParams<
+				'POST',
+				MatchPathPattern<TPath>
+			>
+			? void
+			: Serialized<OperationParams<'POST', MatchPathPattern<TPath>>>
+	): Promise<ResultFor<'POST', MatchPathPattern<TPath>>> {
+		return new Promise(async (resolve, reject) => {
+			const isMethodCall = endpoint?.startsWith('method.call/');
+			try {
+				const sdk = this.ensureInitialized();
+				// @ts-ignore
+				const result = await sdk.rest.post(endpoint, params);
+
+				/**
+				 * if API_Use_REST_For_DDP_Calls is enabled and it's a method call,
+				 * responses have a different object structure
+				 */
+				if (isMethodCall) {
+					const response = JSON.parse(result.message);
+					if (response?.error) {
+						throw response.error;
+					}
+					return resolve(response.result);
+				}
+				return resolve(result);
+			} catch (e: any) {
+				const errorType = isMethodCall ? e?.error : e?.data?.errorType;
+				const totpInvalid = 'totp-invalid';
+				const totpRequired = 'totp-required';
+				if ([totpInvalid, totpRequired].includes(errorType)) {
+					const { details } = isMethodCall ? e : e?.data;
+					try {
+						await twoFactor({ method: details?.method, invalid: errorType === totpInvalid });
+						return resolve(this.post(endpoint, params));
+					} catch {
+						// twoFactor was canceled
+						return resolve({} as any);
+					}
+				} else {
+					reject(e);
+				}
+			}
+		});
+	}
+
+	delete<TPath extends PathFor<'DELETE'>>(
+		endpoint: TPath,
+		params: void extends OperationParams<'DELETE', MatchPathPattern<TPath>>
+			? void
+			: Serialized<OperationParams<'DELETE', MatchPathPattern<TPath>>> = undefined as void extends OperationParams<
+				'DELETE',
+				MatchPathPattern<TPath>
+			>
+			? void
+			: Serialized<OperationParams<'DELETE', MatchPathPattern<TPath>>>
+	): Promise<Serialized<ResultFor<'DELETE', MatchPathPattern<TPath>>>> {
+		const sdk = this.ensureInitialized();
+		// @ts-ignore
+		return sdk.rest.delete(endpoint, params);
+	}
 
 	async twoFactorHandler({
 		method,
@@ -192,7 +282,7 @@ class Sdk {
 	onStreamData(name: string, callback: (...data: any) => void): Promise<{ stop: () => void }> {
 		return new Promise((resolve) => {
 			if (!this.current) {
-				resolve({ stop: () => {} });
+				resolve({ stop: () => { } });
 				return;
 			}
 			const listener = this.current.client.onCollection(name, (ddpMessage: any) => {
@@ -238,7 +328,7 @@ class Sdk {
 		const [key, args] = Array.isArray(data) ? data : [data];
 
 		if (!this.current) {
-			return { stop: () => {} };
+			return { stop: () => { } };
 		}
 
 		const subscription = this.current.client.subscribe(`stream-${name}`, key, { useCollection: false, args: [args] });

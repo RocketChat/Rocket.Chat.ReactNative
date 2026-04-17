@@ -109,7 +109,7 @@ export const forgotPassword = (email: string) =>
 export const sendConfirmationEmail = (email: string): Promise<{ success: boolean }> => {
 	const serverVersion = reduxStore.getState().server.version;
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.0.0')) {
-		return sdk.post('users.sendConfirmationEmail', { email });
+		return sdk.post('/v1/users.sendConfirmationEmail', { email });
 	}
 
 	return sdk.methodCallWrapper('sendConfirmationEmail', email);
@@ -411,7 +411,7 @@ export const closeLivechat = (rid: string, comment?: string, tags?: string[]) =>
 		params = { tags };
 	}
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.0.0')) {
-		return sdk.post('livechat/room.closeByUser', { rid, comment, ...params });
+		return sdk.post('/v1/livechat/room.closeByUser', { rid, comment, ...params });
 	}
 	// RC 0.29.0
 	return sdk.methodCallWrapper('livechat:closeRoom', rid, comment, { clientAction: true, ...params });
@@ -443,7 +443,7 @@ export const onHoldLivechat = (roomId: string) => sdk.post('/v1/livechat/room.on
 export const forwardLivechat = (transferData: any) => {
 	const serverVersion = reduxStore.getState().server.version;
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.0.0')) {
-		return sdk.post('livechat/room.forward', transferData);
+		return sdk.post('/v1/livechat/room.forward', transferData);
 	}
 	// RC 0.36.0
 	return sdk.methodCallWrapper('livechat:transfer', transferData);
@@ -482,7 +482,7 @@ export const getRoutingConfig = async (): Promise<{
 }> => {
 	const serverVersion = reduxStore.getState().server.version;
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.11.0')) {
-		const result = await sdk.get('livechat/config/routing');
+		const result = await sdk.get('/v1/livechat/config/routing');
 		if (result.success) {
 			return result.config;
 		}
@@ -495,7 +495,7 @@ export const getRoutingConfig = async (): Promise<{
 export const getTagsList = async (): Promise<ILivechatTag[]> => {
 	const serverVersion = reduxStore.getState().server.version;
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.0.0')) {
-		const result = await sdk.get('livechat/tags');
+		const result = await sdk.get('/v1/livechat/tags');
 		if (result.success) {
 			return result.tags || [];
 		}
@@ -698,7 +698,7 @@ export const getAvatarSuggestion = async (): Promise<{ [service: string]: IAvata
 
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.4.0')) {
 		// RC 5.4.0
-		const result = await sdk.get('users.getAvatarSuggestion');
+		const result = await sdk.get('/v1/users.getAvatarSuggestion');
 		if (result.success && 'suggestions' in result) {
 			return result.suggestions;
 		}
@@ -984,17 +984,17 @@ export const emitTyping = (room: IRoom, typing = true, args: { tmid?: string } =
 	return sdk.methodCall('stream-notify-room', `${room}/typing`, name, typing);
 };
 
-export function e2eResetOwnKey(userId: string): Promise<{ success?: boolean }> {
+export function e2eResetOwnKey(): Promise<{ success?: boolean }> {
 	// {} when TOTP is enabled
 	unsubscribeRooms();
 
 	// RC 3.6.0
-	sdk.post('/v1/users.resetE2EKey', { userId });
+	sdk.post('/v1/users.resetE2EKey');
 
-    return Promise.resolve({ success: true });
+	return Promise.resolve({ success: true });
 }
 
-export function e2eResetRoomKey(rid: string, e2eKey: string, e2eKeyId: string): Promise<null> {
+export function e2eResetRoomKey(rid: string, e2eKey: string, e2eKeyId: string) {
 	return sdk.post('/v1/e2e.resetRoomKey', { rid, e2eKey, e2eKeyId });
 }
 
