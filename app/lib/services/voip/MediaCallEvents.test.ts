@@ -7,11 +7,18 @@ import {
 	getInitialMediaCallEvents,
 	resetMediaCallEventsStateForTesting,
 	setupMediaCallEvents,
-	type MediaCallEventsAdapters
+	type MediaCallEventsRuntime
 } from './MediaCallEvents';
 import { useCallStore } from './useCallStore';
 
 const mockOnOpenDeepLink = jest.fn();
+const mockGetActiveWorkspaceServerUrl = jest.fn(() => 'https://workspace-a.example.com');
+
+const testRuntime: MediaCallEventsRuntime = {
+	onOpenDeepLink: mockOnOpenDeepLink,
+	getActiveWorkspaceServerUrl: mockGetActiveWorkspaceServerUrl
+};
+
 const mockSetNativeAcceptedCallId = jest.fn();
 const mockAddEventListener = jest.fn();
 const mockRNCallKeepClearInitialEvents = jest.fn();
@@ -21,15 +28,6 @@ jest.mock('../../methods/helpers', () => ({
 	...jest.requireActual('../../methods/helpers'),
 	isIOS: false
 }));
-
-const mockServerSelector = jest.fn(() => 'https://workspace-a.example.com');
-
-function makeTestAdapters(): MediaCallEventsAdapters {
-	return {
-		getActiveServerUrl: () => mockServerSelector(),
-		onOpenDeepLink: mockOnOpenDeepLink
-	};
-}
 
 jest.mock('./useCallStore', () => ({
 	useCallStore: {
@@ -115,7 +113,7 @@ describe('MediaCallEvents cross-server accept (slice 3)', () => {
 			mockAddEventListener.mockImplementation(() => ({ remove: jest.fn() }));
 			(NativeVoipModule.getInitialEvents as jest.Mock).mockReturnValue(null);
 			getState.mockReturnValue({ setNativeAcceptedCallId: mockSetNativeAcceptedCallId });
-			teardown = setupMediaCallEvents(makeTestAdapters());
+			teardown = setupMediaCallEvents(testRuntime);
 		});
 
 		afterEach(() => {
@@ -124,7 +122,7 @@ describe('MediaCallEvents cross-server accept (slice 3)', () => {
 		});
 
 		describe('VoipAcceptSucceeded', () => {
-			it('sets nativeAcceptedCallId and opens deep link with host and callId for incoming_call', () => {
+			it('sets nativeAcceptedCallId and invokes onOpenDeepLink with host and callId for incoming_call', () => {
 				const payload = buildIncomingPayload({
 					callId: 'workspace-b-call',
 					host: 'https://workspace-b.open.rocket.chat'
@@ -141,9 +139,9 @@ describe('MediaCallEvents cross-server accept (slice 3)', () => {
 				});
 			});
 
-			it('skips deep link open and replays REST state signals when host matches active workspace', () => {
+			it('skips onOpenDeepLink and replays REST state signals when host matches active workspace', () => {
 				const { mediaSessionInstance } = jest.requireMock('./MediaSessionInstance');
-				mockServerSelector.mockReturnValueOnce('https://workspace-a.example.com');
+				mockGetActiveWorkspaceServerUrl.mockReturnValueOnce('https://workspace-a.example.com');
 				const payload = buildIncomingPayload({
 					callId: 'same-ws-call',
 					host: 'https://workspace-a.example.com'
@@ -182,7 +180,7 @@ describe('MediaCallEvents cross-server accept (slice 3)', () => {
 		});
 
 		describe('VoipAcceptFailed', () => {
-			it('opens deep link with voipAcceptFailed after native failure event', () => {
+			it('invokes onOpenDeepLink with voipAcceptFailed after native failure event', () => {
 				DeviceEventEmitter.emit(
 					'VoipAcceptFailed',
 					buildIncomingPayload({
@@ -234,7 +232,7 @@ describe('MediaCallEvents cross-server accept (slice 3)', () => {
 			getState.mockReturnValue({ setNativeAcceptedCallId: mockSetNativeAcceptedCallId });
 		});
 
-		it('returns true and opens failure deep link when stash has voipAcceptFailed + host + callId', async () => {
+		it('returns true and invokes failure deep link when stash has voipAcceptFailed + host + callId', async () => {
 			(NativeVoipModule.getInitialEvents as jest.Mock).mockReturnValue({
 				voipAcceptFailed: true,
 				callId: 'cold-fail-call',
@@ -246,7 +244,7 @@ describe('MediaCallEvents cross-server accept (slice 3)', () => {
 				notificationId: 1
 			});
 
-			const result = await getInitialMediaCallEvents(makeTestAdapters());
+			const result = await getInitialMediaCallEvents(testRuntime);
 
 			expect(result).toBe(true);
 			expect(mockOnOpenDeepLink).toHaveBeenCalledWith({
@@ -260,7 +258,7 @@ describe('MediaCallEvents cross-server accept (slice 3)', () => {
 			expect(mockSetNativeAcceptedCallId).not.toHaveBeenCalled();
 		});
 
-		it('on Android cold start, opens success deep link when incoming payload is present (answered path)', async () => {
+		it('on Android cold start, invokes success deep link when incoming payload is present (answered path)', async () => {
 			(NativeVoipModule.getInitialEvents as jest.Mock).mockReturnValue(
 				buildIncomingPayload({
 					callId: 'android-cold-accept',
@@ -268,7 +266,7 @@ describe('MediaCallEvents cross-server accept (slice 3)', () => {
 				})
 			);
 
-			const result = await getInitialMediaCallEvents(makeTestAdapters());
+			const result = await getInitialMediaCallEvents(testRuntime);
 
 			expect(result).toBe(true);
 			expect(mockSetNativeAcceptedCallId).toHaveBeenCalledWith('android-cold-accept');
@@ -291,7 +289,7 @@ describe('VoipAcceptSucceeded sentinel-correctness (Android)', () => {
 	});
 
 	it('B1: outgoing_call with same callId does not poison sentinel for subsequent incoming_call', () => {
-		setupMediaCallEvents(makeTestAdapters());
+		setupMediaCallEvents(testRuntime);
 
 		// First emit: outgoing_call — type guard should bail before setting sentinel
 		DeviceEventEmitter.emit('VoipAcceptSucceeded', buildIncomingPayload({ callId: 'shared-id', type: 'outgoing_call' }));
@@ -307,7 +305,7 @@ describe('VoipAcceptSucceeded sentinel-correctness (Android)', () => {
 	});
 
 	it('B2: different callIds are both processed (not suppressed)', () => {
-		setupMediaCallEvents(makeTestAdapters());
+		setupMediaCallEvents(testRuntime);
 
 		DeviceEventEmitter.emit(
 			'VoipAcceptSucceeded',
@@ -323,19 +321,15 @@ describe('VoipAcceptSucceeded sentinel-correctness (Android)', () => {
 		expect(mockSetNativeAcceptedCallId).toHaveBeenCalledWith('call-B');
 	});
 
-	it('B3: getActiveServerUrl returning undefined falls through to deep-link path', () => {
-		const adapters: MediaCallEventsAdapters = {
-			getActiveServerUrl: () => undefined,
-			onOpenDeepLink: mockOnOpenDeepLink
-		};
-		setupMediaCallEvents(adapters);
+	it('B3: getActiveWorkspaceServerUrl returning undefined falls through to deep-link path', () => {
+		mockGetActiveWorkspaceServerUrl.mockReturnValueOnce(undefined);
+		setupMediaCallEvents(testRuntime);
 
 		DeviceEventEmitter.emit(
 			'VoipAcceptSucceeded',
 			buildIncomingPayload({ callId: 'any-call', host: 'https://server-b.example.com' })
 		);
 
-		// isVoipIncomingHostCurrentWorkspace returns false when active URL is falsy
 		expect(mockOnOpenDeepLink).toHaveBeenCalledTimes(1);
 		expect(mockOnOpenDeepLink).toHaveBeenCalledWith({
 			callId: 'any-call',
@@ -357,12 +351,12 @@ describe('setupMediaCallEvents — didToggleHoldCallAction', () => {
 	});
 
 	it('registers didToggleHoldCallAction via RNCallKeep.addEventListener', () => {
-		setupMediaCallEvents(makeTestAdapters());
+		setupMediaCallEvents(testRuntime);
 		expect(mockAddEventListener).toHaveBeenCalledWith('didToggleHoldCallAction', expect.any(Function));
 	});
 
 	it('hold: true when isOnHold is false calls toggleHold once and does not setCurrentCallActive', () => {
-		setupMediaCallEvents(makeTestAdapters());
+		setupMediaCallEvents(testRuntime);
 		getToggleHoldHandler()({ hold: true, callUUID: 'uuid-1' });
 		expect(toggleHold).toHaveBeenCalledTimes(1);
 		expect(mockSetCurrentCallActive).not.toHaveBeenCalled();
@@ -370,13 +364,13 @@ describe('setupMediaCallEvents — didToggleHoldCallAction', () => {
 
 	it('hold: true when isOnHold is true does not call toggleHold', () => {
 		getState.mockReturnValue({ ...activeCallBase, isOnHold: true, toggleHold });
-		setupMediaCallEvents(makeTestAdapters());
+		setupMediaCallEvents(testRuntime);
 		getToggleHoldHandler()({ hold: true, callUUID: 'uuid-1' });
 		expect(toggleHold).not.toHaveBeenCalled();
 	});
 
 	it('hold: false after OS-initiated hold calls toggleHold once (auto-resume) and setCurrentCallActive', () => {
-		setupMediaCallEvents(makeTestAdapters());
+		setupMediaCallEvents(testRuntime);
 		const handler = getToggleHoldHandler();
 		handler({ hold: true, callUUID: 'uuid-1' });
 		getState.mockReturnValue({ ...activeCallBase, isOnHold: true, toggleHold });
@@ -387,14 +381,14 @@ describe('setupMediaCallEvents — didToggleHoldCallAction', () => {
 	});
 
 	it('hold: false without prior OS-initiated hold does not call toggleHold or setCurrentCallActive', () => {
-		setupMediaCallEvents(makeTestAdapters());
+		setupMediaCallEvents(testRuntime);
 		getToggleHoldHandler()({ hold: false, callUUID: 'uuid-1' });
 		expect(toggleHold).not.toHaveBeenCalled();
 		expect(mockSetCurrentCallActive).not.toHaveBeenCalled();
 	});
 
 	it('consecutive hold: true events call toggleHold only once', () => {
-		setupMediaCallEvents(makeTestAdapters());
+		setupMediaCallEvents(testRuntime);
 		const handler = getToggleHoldHandler();
 		handler({ hold: true, callUUID: 'uuid-1' });
 		getState.mockReturnValue({ ...activeCallBase, isOnHold: true, toggleHold });
@@ -403,7 +397,7 @@ describe('setupMediaCallEvents — didToggleHoldCallAction', () => {
 	});
 
 	it('clears stale auto-hold when callUUID does not match current call id (e.g. new workspace / call)', () => {
-		setupMediaCallEvents(makeTestAdapters());
+		setupMediaCallEvents(testRuntime);
 		const handler = getToggleHoldHandler();
 		handler({ hold: true, callUUID: 'uuid-1' });
 		expect(toggleHold).toHaveBeenCalledTimes(1);
@@ -423,7 +417,7 @@ describe('setupMediaCallEvents — didToggleHoldCallAction', () => {
 	});
 
 	it('does not toggle when there is no active call object even if ids match', () => {
-		setupMediaCallEvents(makeTestAdapters());
+		setupMediaCallEvents(testRuntime);
 		const handler = getToggleHoldHandler();
 		getState.mockReturnValue({
 			call: null,
@@ -437,7 +431,7 @@ describe('setupMediaCallEvents — didToggleHoldCallAction', () => {
 	});
 
 	it('hold: false does not call toggleHold when user already manually resumed before OS unhold arrives', () => {
-		setupMediaCallEvents(makeTestAdapters());
+		setupMediaCallEvents(testRuntime);
 		const handler = getToggleHoldHandler();
 
 		// OS holds the call
@@ -461,8 +455,42 @@ describe('setupMediaCallEvents — didToggleHoldCallAction', () => {
 			}
 			return { remove: jest.fn() };
 		});
-		const cleanup = setupMediaCallEvents(makeTestAdapters());
+		const cleanup = setupMediaCallEvents(testRuntime);
 		cleanup();
 		expect(remove).toHaveBeenCalled();
+	});
+});
+
+describe('setupMediaCallEvents — endCall clears accept dedupe (Android)', () => {
+	const getState = useCallStore.getState as jest.Mock;
+
+	function getEndCallHandler(): (payload: { callUUID: string }) => void {
+		const call = mockAddEventListener.mock.calls.find(([name]) => name === 'endCall');
+		if (!call) {
+			throw new Error('endCall listener not registered');
+		}
+		return call[1] as (payload: { callUUID: string }) => void;
+	}
+
+	beforeEach(() => {
+		jest.clearAllMocks();
+		resetMediaCallEventsStateForTesting();
+		mockAddEventListener.mockImplementation(() => ({ remove: jest.fn() }));
+		getState.mockReturnValue({ setNativeAcceptedCallId: mockSetNativeAcceptedCallId });
+	});
+
+	it('registers endCall on Android and resets VoipAcceptSucceeded dedupe after endCall', () => {
+		setupMediaCallEvents(testRuntime);
+		expect(mockAddEventListener).toHaveBeenCalledWith('endCall', expect.any(Function));
+
+		const payload = buildIncomingPayload({ callId: 'dedupe-android' });
+		DeviceEventEmitter.emit('VoipAcceptSucceeded', payload);
+		DeviceEventEmitter.emit('VoipAcceptSucceeded', payload);
+		expect(mockOnOpenDeepLink).toHaveBeenCalledTimes(1);
+
+		mockOnOpenDeepLink.mockClear();
+		getEndCallHandler()({ callUUID: 'uuid-any' });
+		DeviceEventEmitter.emit('VoipAcceptSucceeded', payload);
+		expect(mockOnOpenDeepLink).toHaveBeenCalledTimes(1);
 	});
 });

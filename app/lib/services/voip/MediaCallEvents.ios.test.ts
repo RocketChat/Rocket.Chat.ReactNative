@@ -3,6 +3,7 @@
  *
  * iOS-only paths: isIOS = true, NativeEventEmitter for VoIP events, CallKit listeners.
  */
+import { NativeEventEmitter } from 'react-native';
 import RNCallKeep from 'react-native-callkeep';
 
 import type { VoipPayload } from '../../../definitions/Voip';
@@ -12,7 +13,7 @@ import {
 	getInitialMediaCallEvents,
 	resetMediaCallEventsStateForTesting,
 	setupMediaCallEvents,
-	type MediaCallEventsAdapters
+	type MediaCallEventsRuntime
 } from './MediaCallEvents';
 import { useCallStore } from './useCallStore';
 
@@ -57,6 +58,16 @@ jest.mock('react-native', () => ({
 	}
 }));
 
+const mockOnOpenDeepLink = jest.fn();
+const mockGetActiveWorkspaceServerUrl = jest.fn(() => 'https://active-ws.example.com');
+
+const testRuntime: MediaCallEventsRuntime = {
+	onOpenDeepLink: mockOnOpenDeepLink,
+	getActiveWorkspaceServerUrl: mockGetActiveWorkspaceServerUrl
+};
+
+const mockAddEventListener = jest.fn();
+
 jest.mock('../../methods/helpers', () => ({
 	isIOS: true,
 	normalizeDeepLinkingServerHost: jest.requireActual('../../methods/helpers/normalizeDeepLinkingServerHost')
@@ -73,7 +84,9 @@ jest.mock('../../native/NativeVoip', () => ({
 	__esModule: true,
 	default: {
 		clearInitialEvents: jest.fn(),
-		getInitialEvents: jest.fn(() => null)
+		getInitialEvents: jest.fn(() => null),
+		addListener: jest.fn(),
+		removeListeners: jest.fn()
 	}
 }));
 
@@ -97,8 +110,6 @@ jest.mock('./MediaCallLogger', () => ({
 	}
 }));
 
-const mockAddEventListener = jest.fn();
-
 jest.mock('react-native-callkeep', () => ({
 	__esModule: true,
 	default: {
@@ -108,16 +119,6 @@ jest.mock('react-native-callkeep', () => ({
 		getInitialEvents: jest.fn(() => Promise.resolve([]))
 	}
 }));
-
-const mockOnOpenDeepLink = jest.fn();
-const mockServerSelector = jest.fn(() => 'https://workspace-ios.example.com');
-
-function makeTestAdapters(): MediaCallEventsAdapters {
-	return {
-		getActiveServerUrl: () => mockServerSelector(),
-		onOpenDeepLink: mockOnOpenDeepLink
-	};
-}
 
 function emitNativeVoipEvent(eventType: string, payload: unknown): void {
 	mockNativeVoipListeners[eventType]?.forEach(fn => {
@@ -141,12 +142,20 @@ function getMuteHandler(): (p: { muted: boolean; callUUID: string }) => void {
 	return call[1] as (p: { muted: boolean; callUUID: string }) => void;
 }
 
+function getNativeEmitterHandler(event: string, addListenerSpy: jest.SpyInstance): (payload: unknown) => void {
+	const call = addListenerSpy.mock.calls.find(([name]) => name === event);
+	if (!call) {
+		throw new Error(`NativeEventEmitter listener for ${event} not registered`);
+	}
+	return call[1] as (payload: unknown) => void;
+}
+
 function buildIncomingPayload(overrides: Partial<VoipPayload> = {}): VoipPayload {
 	return {
-		callId: 'ios-call-uuid',
+		callId: 'ios-cold-call',
 		caller: 'caller-id',
 		username: 'caller',
-		host: 'https://other-server.example.com',
+		host: 'https://other-ws.example.com',
 		hostName: 'Other',
 		type: 'incoming_call',
 		notificationId: 1,
@@ -174,25 +183,25 @@ describe('setupMediaCallEvents — didPerformSetMutedCallAction (iOS)', () => {
 	});
 
 	it('registers didPerformSetMutedCallAction via RNCallKeep.addEventListener', () => {
-		setupMediaCallEvents(makeTestAdapters());
+		setupMediaCallEvents(testRuntime);
 		expect(mockAddEventListener).toHaveBeenCalledWith('didPerformSetMutedCallAction', expect.any(Function));
 	});
 
 	it('calls toggleMute when muted state differs from OS and UUIDs match', () => {
-		setupMediaCallEvents(makeTestAdapters());
+		setupMediaCallEvents(testRuntime);
 		getMuteHandler()({ muted: true, callUUID: 'uuid-1' });
 		expect(toggleMute).toHaveBeenCalledTimes(1);
 	});
 
 	it('does not call toggleMute when muted state already matches OS even if UUIDs match', () => {
 		getState.mockReturnValue({ ...activeCallBase, isMuted: true, toggleMute });
-		setupMediaCallEvents(makeTestAdapters());
+		setupMediaCallEvents(testRuntime);
 		getMuteHandler()({ muted: true, callUUID: 'uuid-1' });
 		expect(toggleMute).not.toHaveBeenCalled();
 	});
 
 	it('drops event when callUUID does not match active call id', () => {
-		setupMediaCallEvents(makeTestAdapters());
+		setupMediaCallEvents(testRuntime);
 		getMuteHandler()({ muted: true, callUUID: 'uuid-2' });
 		expect(toggleMute).not.toHaveBeenCalled();
 	});
@@ -205,7 +214,7 @@ describe('setupMediaCallEvents — didPerformSetMutedCallAction (iOS)', () => {
 			isMuted: false,
 			toggleMute
 		});
-		setupMediaCallEvents(makeTestAdapters());
+		setupMediaCallEvents(testRuntime);
 		getMuteHandler()({ muted: true, callUUID: 'uuid-1' });
 		expect(toggleMute).not.toHaveBeenCalled();
 	});
@@ -213,26 +222,33 @@ describe('setupMediaCallEvents — didPerformSetMutedCallAction (iOS)', () => {
 
 describe('setupMediaCallEvents — VoipPushTokenRegistered (iOS)', () => {
 	const getState = useCallStore.getState as jest.Mock;
+	let addListenerSpy: jest.SpyInstance;
 
 	beforeEach(() => {
 		jest.clearAllMocks();
 		resetMediaCallEventsStateForTesting();
 		Object.keys(mockNativeVoipListeners).forEach(k => delete mockNativeVoipListeners[k]);
 		mockAddEventListener.mockImplementation(() => ({ remove: jest.fn() }));
-		getState.mockReturnValue({});
+		getState.mockReturnValue({ ...activeCallBase, isMuted: false, toggleMute: jest.fn() });
+		addListenerSpy = jest.spyOn(NativeEventEmitter.prototype, 'addListener');
 	});
 
-	it('registers push token with no arguments when native emits VoipPushTokenRegistered', async () => {
-		setupMediaCallEvents(makeTestAdapters());
-		emitNativeVoipEvent('VoipPushTokenRegistered', { token: 'voip-token-xyz' });
+	afterEach(() => {
+		addListenerSpy.mockRestore();
+	});
+
+	it('registers VoIP token listener and calls registerPushToken when native emits token', async () => {
+		setupMediaCallEvents(testRuntime);
+		const handler = getNativeEmitterHandler('VoipPushTokenRegistered', addListenerSpy);
+		handler({ token: 'voip-device-token' });
 		await Promise.resolve();
-		expect(registerPushToken).toHaveBeenCalledWith();
+		expect(registerPushToken).toHaveBeenCalledTimes(1);
 	});
 });
 
 describe('getInitialMediaCallEvents — iOS cold start', () => {
-	const getState = useCallStore.getState as jest.Mock;
 	const mockSetNativeAcceptedCallId = jest.fn();
+	const getState = useCallStore.getState as jest.Mock;
 
 	beforeEach(() => {
 		jest.clearAllMocks();
@@ -242,91 +258,107 @@ describe('getInitialMediaCallEvents — iOS cold start', () => {
 		(NativeVoipModule.getInitialEvents as jest.Mock).mockReset();
 		(RNCallKeep.getInitialEvents as jest.Mock).mockReset();
 		getState.mockReturnValue({ setNativeAcceptedCallId: mockSetNativeAcceptedCallId });
+		mockGetActiveWorkspaceServerUrl.mockReturnValue('https://active-ws.example.com');
 	});
 
-	it('returns true and applies REST signals when CallKit shows answered and host matches workspace', async () => {
-		const { mediaSessionInstance } = jest.requireMock('./MediaSessionInstance');
-		const callId = 'answered-ios-uuid';
-		mockServerSelector.mockReturnValue('https://same.example.com');
+	it('returns true and invokes onOpenDeepLink when CallKit shows answered action for same call UUID (different workspace)', async () => {
+		const callId = 'matching-uuid';
 		(NativeVoipModule.getInitialEvents as jest.Mock).mockReturnValue(
 			buildIncomingPayload({
 				callId,
-				host: 'https://same.example.com'
+				host: 'https://other-ws.example.com'
 			})
 		);
 		(RNCallKeep.getInitialEvents as jest.Mock).mockResolvedValue([
-			{ name: 'RNCallKeepPerformAnswerCallAction', data: { callUUID: callId } }
+			{
+				name: 'RNCallKeepPerformAnswerCallAction',
+				data: { callUUID: callId }
+			}
 		]);
 
-		const result = await getInitialMediaCallEvents(makeTestAdapters());
-
-		expect(result).toBe(true);
-		expect(mockSetNativeAcceptedCallId).toHaveBeenCalledWith(callId);
-		expect(mediaSessionInstance.applyRestStateSignals).toHaveBeenCalled();
-		expect(mockOnOpenDeepLink).not.toHaveBeenCalled();
-	});
-
-	it('returns true and opens deep link when answered on cold start but host differs from workspace', async () => {
-		const { mediaSessionInstance } = jest.requireMock('./MediaSessionInstance');
-		const callId = 'answered-cross-ws';
-		mockServerSelector.mockReturnValue('https://workspace-ios.example.com');
-		(NativeVoipModule.getInitialEvents as jest.Mock).mockReturnValue(
-			buildIncomingPayload({
-				callId,
-				host: 'https://foreign.example.com'
-			})
-		);
-		(RNCallKeep.getInitialEvents as jest.Mock).mockResolvedValue([
-			{ name: 'RNCallKeepPerformAnswerCallAction', data: { callUUID: callId } }
-		]);
-
-		const result = await getInitialMediaCallEvents(makeTestAdapters());
+		const result = await getInitialMediaCallEvents(testRuntime);
 
 		expect(result).toBe(true);
 		expect(mockSetNativeAcceptedCallId).toHaveBeenCalledWith(callId);
 		expect(mockOnOpenDeepLink).toHaveBeenCalledWith({
 			callId,
-			host: 'https://foreign.example.com'
+			host: 'https://other-ws.example.com'
 		});
-		expect(mediaSessionInstance.applyRestStateSignals).not.toHaveBeenCalled();
 	});
 
-	it('returns false when CallKit initial events have no RNCallKeepPerformAnswerCallAction', async () => {
-		const callId = 'unanswered-ios-uuid';
+	it('clears native VoIP stash when CallKit shows the call was not answered (avoid sticky replay)', async () => {
+		const callId = 'unanswered-uuid';
 		(NativeVoipModule.getInitialEvents as jest.Mock).mockReturnValue(
-			buildIncomingPayload({ callId, host: 'https://workspace-ios.example.com' })
+			buildIncomingPayload({
+				callId,
+				host: 'https://other-ws.example.com'
+			})
 		);
-		(RNCallKeep.getInitialEvents as jest.Mock).mockResolvedValue([
-			{ name: 'RNCallKeepDidDisplayIncomingCall', data: { callUUID: callId } }
-		]);
+		(RNCallKeep.getInitialEvents as jest.Mock).mockResolvedValue([]);
 
-		const result = await getInitialMediaCallEvents(makeTestAdapters());
+		const result = await getInitialMediaCallEvents(testRuntime);
 
 		expect(result).toBe(false);
-		expect(mockSetNativeAcceptedCallId).not.toHaveBeenCalled();
+		expect(NativeVoipModule.clearInitialEvents).toHaveBeenCalled();
+		expect(mockOnOpenDeepLink).not.toHaveBeenCalled();
+	});
+
+	it('returns true without onOpenDeepLink when host matches active workspace (same-workspace cold accept)', async () => {
+		const callId = 'same-ws-uuid';
+		(NativeVoipModule.getInitialEvents as jest.Mock).mockReturnValue(
+			buildIncomingPayload({
+				callId,
+				host: 'https://active-ws.example.com'
+			})
+		);
+		(RNCallKeep.getInitialEvents as jest.Mock).mockResolvedValue([
+			{
+				name: 'RNCallKeepPerformAnswerCallAction',
+				data: { callUUID: callId }
+			}
+		]);
+		const { mediaSessionInstance } = jest.requireMock('./MediaSessionInstance');
+
+		const result = await getInitialMediaCallEvents(testRuntime);
+
+		expect(result).toBe(true);
+		expect(mediaSessionInstance.applyRestStateSignals).toHaveBeenCalled();
 		expect(mockOnOpenDeepLink).not.toHaveBeenCalled();
 	});
 });
 
 describe('setupMediaCallEvents — endCall clears accept dedupe (iOS)', () => {
 	const getState = useCallStore.getState as jest.Mock;
-	const mockSetNativeAcceptedCallId = jest.fn();
+	let addListenerSpy: jest.SpyInstance;
 
 	beforeEach(() => {
 		jest.clearAllMocks();
 		resetMediaCallEventsStateForTesting();
 		Object.keys(mockNativeVoipListeners).forEach(k => delete mockNativeVoipListeners[k]);
 		mockAddEventListener.mockImplementation(() => ({ remove: jest.fn() }));
-		getState.mockReturnValue({ setNativeAcceptedCallId: mockSetNativeAcceptedCallId });
+		getState.mockReturnValue({ setNativeAcceptedCallId: jest.fn() });
+		addListenerSpy = jest.spyOn(NativeEventEmitter.prototype, 'addListener');
 	});
 
-	it('allows a second VoipAcceptSucceeded with the same callId after endCall', () => {
-		setupMediaCallEvents(makeTestAdapters());
-		const payload = buildIncomingPayload({ callId: 'reuse-id', host: 'https://foreign.example.com' });
-		emitNativeVoipEvent('VoipAcceptSucceeded', payload);
+	afterEach(() => {
+		addListenerSpy.mockRestore();
+	});
+
+	it('allows a second VoipAcceptSucceeded after endCall for the same callId (dedupe reset)', () => {
+		const { mediaSessionInstance } = jest.requireMock('./MediaSessionInstance');
+		setupMediaCallEvents(testRuntime);
+		const payload = buildIncomingPayload({ callId: 'dedupe-after-end' });
+		const handler = getNativeEmitterHandler('VoipAcceptSucceeded', addListenerSpy);
+
+		handler(payload);
+		handler(payload);
 		expect(mockOnOpenDeepLink).toHaveBeenCalledTimes(1);
+
 		getEndCallHandler()({ callUUID: 'any' });
-		emitNativeVoipEvent('VoipAcceptSucceeded', payload);
-		expect(mockOnOpenDeepLink).toHaveBeenCalledTimes(2);
+		(mediaSessionInstance.endCall as jest.Mock).mockClear();
+		mockOnOpenDeepLink.mockClear();
+
+		handler(payload);
+		expect(mockOnOpenDeepLink).toHaveBeenCalledTimes(1);
 	});
 });

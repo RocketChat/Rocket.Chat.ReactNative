@@ -36,7 +36,7 @@ import { getInitialNotification, setupVideoConfActionListener } from './lib/noti
 import {
 	getInitialMediaCallEvents,
 	setupMediaCallEvents,
-	type MediaCallEventsAdapters
+	type MediaCallEventsRuntime
 } from './lib/services/voip/MediaCallEvents';
 import store from './lib/store';
 import { initStore } from './lib/store/auxStore';
@@ -47,6 +47,13 @@ import StatusBar from './containers/StatusBar';
 
 enableScreens();
 initStore(store);
+
+const mediaCallEventsRuntime: MediaCallEventsRuntime = {
+	getActiveWorkspaceServerUrl: () => store.getState().server.server,
+	onOpenDeepLink: params => {
+		store.dispatch(deepLinkingOpen(params));
+	}
+};
 
 interface IDimensions {
 	width: number;
@@ -113,13 +120,6 @@ export default class Root extends React.Component<{}, IState> {
 		setNativeTheme(theme);
 	}
 
-	private getMediaCallEventsAdapters(): MediaCallEventsAdapters {
-		return {
-			getActiveServerUrl: () => store.getState().server.server,
-			onOpenDeepLink: params => store.dispatch(deepLinkingOpen(params))
-		};
-	}
-
 	componentDidMount() {
 		this.listenerTimeout = setTimeout(() => {
 			Linking.addEventListener('url', ({ url }) => {
@@ -134,7 +134,7 @@ export default class Root extends React.Component<{}, IState> {
 		// Set up video conf action listener for background accept/decline
 		this.videoConfActionCleanup = setupVideoConfActionListener();
 		// Set up media call event listeners for incoming calls
-		this.mediaCallEventCleanup = setupMediaCallEvents(this.getMediaCallEventsAdapters());
+		this.mediaCallEventCleanup = setupMediaCallEvents(mediaCallEventsRuntime);
 	}
 
 	componentWillUnmount() {
@@ -164,7 +164,7 @@ export default class Root extends React.Component<{}, IState> {
 			return;
 		}
 
-		const voipInitialHandled = await getInitialMediaCallEvents(this.getMediaCallEventsAdapters());
+		const voipInitialHandled = await getInitialMediaCallEvents(mediaCallEventsRuntime);
 		if (voipInitialHandled) {
 			// VoIP path already dispatched navigation (or will via deep linking); do not call appInit() in parallel
 			return;
