@@ -27,7 +27,13 @@ const ImageGalleryItem = ({ file, author, showAttachment, width, height, overflo
 	return (
 		<Touchable onPress={onPress} style={[styles.cell, { width, height }]}>
 			<WidthAwareContext.Provider value={width}>
-				<MessageImage uri={url} status={status} encrypted={isEncrypted} imagePreview={file.image_preview} imageType={file.image_type} />
+				<MessageImage
+					uri={url}
+					status={status}
+					encrypted={isEncrypted}
+					imagePreview={file.image_preview}
+					imageType={file.image_type}
+				/>
 			</WidthAwareContext.Provider>
 			{overflowCount > 0 ? (
 				<View style={[styles.overflayWrapper, { backgroundColor: colors.backdropColor }]}>
