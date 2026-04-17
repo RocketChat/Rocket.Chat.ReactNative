@@ -539,7 +539,7 @@ class Encryption {
 
 			const roomE2E = await this.getRoomInstance(rid);
 			if (!roomE2E || !roomE2E?.hasSessionKey()) {
-				return;
+				return message;
 			}
 			return roomE2E.encrypt(message);
 		} catch {
