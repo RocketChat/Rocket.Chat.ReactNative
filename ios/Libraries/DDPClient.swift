@@ -15,6 +15,8 @@ final class DDPClient {
     
     private var webSocketTask: URLSessionWebSocketTask?
     private var urlSession: URLSession?
+    /// Retains the delegate passed to `URLSession` so TLS challenges reuse `Challenge` from `SSLPinning.mm`.
+    private var urlSessionChallengeDelegate: DDPClientURLSessionChallengeDelegate?
     private var sendCounter = 0
     private var isConnected = false
     
@@ -43,9 +45,11 @@ final class DDPClient {
             print("[\(Self.TAG)] Connecting to \(wsUrl)")
             #endif
             
-            let session = URLSession(configuration: .default)
+            let challengeDelegate = DDPClientURLSessionChallengeDelegate()
+            let session = URLSession(configuration: .default, delegate: challengeDelegate, delegateQueue: nil)
             let task = session.webSocketTask(with: url)
             
+            self.urlSessionChallengeDelegate = challengeDelegate
             self.urlSession = session
             self.webSocketTask = task
             self.isConnected = false
@@ -145,20 +149,29 @@ final class DDPClient {
     // MARK: - Disconnect
     
     func disconnect() {
-        stateQueue.async {
-            #if DEBUG
-            print("[\(Self.TAG)] Disconnecting")
-            #endif
-            self.isConnected = false
-            self.pendingCallbacks.removeAll()
-            self.clearQueuedMethodCalls()
-            self.connectedCallback = nil
-            self.onCollectionMessage = nil
-            self.webSocketTask?.cancel(with: .normalClosure, reason: nil)
-            self.webSocketTask = nil
-            self.urlSession?.invalidateAndCancel()
-            self.urlSession = nil
+        if DispatchQueue.getSpecific(key: stateQueueKey) != nil {
+            disconnectOnStateQueue()
+        } else {
+            stateQueue.async { [weak self] in
+                self?.disconnectOnStateQueue()
+            }
         }
+    }
+
+    private func disconnectOnStateQueue() {
+        #if DEBUG
+        print("[\(Self.TAG)] Disconnecting")
+        #endif
+        isConnected = false
+        pendingCallbacks.removeAll()
+        clearQueuedMethodCalls()
+        connectedCallback = nil
+        onCollectionMessage = nil
+        webSocketTask?.cancel(with: .normalClosure, reason: nil)
+        webSocketTask = nil
+        urlSession?.invalidateAndCancel()
+        urlSession = nil
+        urlSessionChallengeDelegate = nil
     }
     
     // MARK: - Private
@@ -292,25 +305,31 @@ final class DDPClient {
     
     private func listenForMessages(task: URLSessionWebSocketTask) {
         task.receive { [weak self] result in
-            self?.stateQueue.async {
-                guard let self = self, let currentTask = self.webSocketTask, task === currentTask else { return }
-                
-                switch result {
-                case .success(let message):
-                    switch message {
-                    case .string(let text):
-                        self.handleMessage(text)
-                    default:
-                        break
-                    }
-                    self.listenForMessages(task: task)
-                    
-                case .failure(let error):
-                    #if DEBUG
-                    print("[\(Self.TAG)] Receive error: \(error.localizedDescription)")
-                    #endif
-                }
+            self?.stateQueue.async { [weak self] in
+                guard let self else { return }
+                self.handleWebSocketReceiveResult(result, for: task)
             }
+        }
+    }
+
+    private func handleWebSocketReceiveResult(_ result: Result<URLSessionWebSocketTask.Message, Error>, for task: URLSessionWebSocketTask) {
+        guard task === webSocketTask else { return }
+
+        switch result {
+        case .success(let message):
+            switch message {
+            case .string(let text):
+                handleMessage(text)
+            default:
+                break
+            }
+            listenForMessages(task: task)
+
+        case .failure(let error):
+            #if DEBUG
+            print("[\(Self.TAG)] Receive error: \(error.localizedDescription)")
+            #endif
+            disconnect()
         }
     }
     
@@ -358,9 +377,8 @@ final class DDPClient {
             }
             
         default:
-            if let collection = json["collection"] as? String {
+            if (json["collection"] as? String) != nil {
                 onCollectionMessage?(json)
-                _ = collection
             }
         }
     }
@@ -389,3 +407,51 @@ final class DDPClient {
         return "\(scheme)://\(cleaned)/websocket"
     }
 }
+
+/// Forwards URL authentication challenges to the existing `Challenge` implementation in `SSLPinning.mm`
+/// (same path as `RCTHTTPRequestHandler` swizzling) so WebSocket TLS uses the same client-certificate flow.
+private final class DDPClientURLSessionChallengeDelegate: NSObject, URLSessionDelegate, URLSessionTaskDelegate {
+    func urlSession(
+        _ session: URLSession,
+        didReceive challenge: URLAuthenticationChallenge,
+        completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
+    ) {
+        Challenge.runChallenge(session, didReceiveChallenge: challenge, completionHandler: completionHandler)
+    }
+
+    func urlSession(
+        _ session: URLSession,
+        task: URLSessionTask,
+        didReceive challenge: URLAuthenticationChallenge,
+        completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
+    ) {
+        Challenge.runChallenge(session, didReceiveChallenge: challenge, completionHandler: completionHandler)
+    }
+}
+
+#if DEBUG
+extension DDPClient {
+    /// Installs a WebSocket task so receive-failure handling can be exercised without a live server.
+    func testing_installWebSocketSync(urlSession: URLSession, task: URLSessionWebSocketTask) {
+        stateQueue.sync {
+            self.urlSession?.invalidateAndCancel()
+            self.urlSession = urlSession
+            self.webSocketTask = task
+            self.isConnected = true
+        }
+    }
+
+    func testing_applyReceiveResult(_ result: Result<URLSessionWebSocketTask.Message, Error>, for task: URLSessionWebSocketTask) {
+        stateQueue.async { [weak self] in
+            guard let self else { return }
+            self.handleWebSocketReceiveResult(result, for: task)
+        }
+    }
+
+    func testing_readConnectionState(_ completion: @escaping (_ isConnected: Bool, _ webSocketTaskIsNil: Bool, _ urlSessionIsNil: Bool) -> Void) {
+        stateQueue.async {
+            completion(self.isConnected, self.webSocketTask == nil, self.urlSession == nil)
+        }
+    }
+}
+#endif

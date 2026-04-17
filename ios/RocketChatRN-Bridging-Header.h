@@ -12,3 +12,4 @@
 #import <MobileCrypto/AESCrypto.h>
 #import <MobileCrypto/RandomUtils.h>
 #import <MobileCrypto/CryptoUtils.h>
+#import "SSLPinning.h"
