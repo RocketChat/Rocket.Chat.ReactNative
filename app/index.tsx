@@ -33,7 +33,11 @@ import {
 } from './lib/methods/helpers/theme';
 import { initializePushNotifications, onNotification } from './lib/notifications';
 import { getInitialNotification, setupVideoConfActionListener } from './lib/notifications/videoConf/getInitialNotification';
-import { getInitialMediaCallEvents, setupMediaCallEvents } from './lib/services/voip/MediaCallEvents';
+import {
+	getInitialMediaCallEvents,
+	setupMediaCallEvents,
+	type MediaCallEventsAdapters
+} from './lib/services/voip/MediaCallEvents';
 import store from './lib/store';
 import { initStore } from './lib/store/auxStore';
 import { type TSupportedThemes, ThemeContext } from './theme';
@@ -109,6 +113,13 @@ export default class Root extends React.Component<{}, IState> {
 		setNativeTheme(theme);
 	}
 
+	private getMediaCallEventsAdapters(): MediaCallEventsAdapters {
+		return {
+			getActiveServerUrl: () => store.getState().server.server,
+			onOpenDeepLink: params => store.dispatch(deepLinkingOpen(params))
+		};
+	}
+
 	componentDidMount() {
 		this.listenerTimeout = setTimeout(() => {
 			Linking.addEventListener('url', ({ url }) => {
@@ -123,7 +134,7 @@ export default class Root extends React.Component<{}, IState> {
 		// Set up video conf action listener for background accept/decline
 		this.videoConfActionCleanup = setupVideoConfActionListener();
 		// Set up media call event listeners for incoming calls
-		this.mediaCallEventCleanup = setupMediaCallEvents();
+		this.mediaCallEventCleanup = setupMediaCallEvents(this.getMediaCallEventsAdapters());
 	}
 
 	componentWillUnmount() {
@@ -153,7 +164,7 @@ export default class Root extends React.Component<{}, IState> {
 			return;
 		}
 
-		const voipInitialHandled = await getInitialMediaCallEvents();
+		const voipInitialHandled = await getInitialMediaCallEvents(this.getMediaCallEventsAdapters());
 		if (voipInitialHandled) {
 			// VoIP path already dispatched navigation (or will via deep linking); do not call appInit() in parallel
 			return;
