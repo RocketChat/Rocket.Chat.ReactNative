@@ -282,9 +282,19 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 
 	useFocusEffect(
 		useCallback(() => {
-			reset();
-		}, [])
+			reset({
+				name: user?.name as string,
+				username: user?.username,
+				email: user?.emails?.[0]?.address || null,
+				currentPassword: null,
+				bio: user?.bio,
+				nickname: user?.nickname,
+				saving: false
+			});
+		}, [user?.name, user?.username, user?.emails, user?.bio, user?.nickname, reset])
 	);
+
+
 
 	return (
 		<KeyboardView>
