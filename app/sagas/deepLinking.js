@@ -1,4 +1,4 @@
-import { all, call, delay, put, select, take, takeLatest } from 'redux-saga/effects';
+import { all, call, delay, put, race, select, take, takeLatest } from 'redux-saga/effects';
 
 import { shareSetParams } from '../actions/share';
 import * as types from '../actions/actionsTypes';
@@ -96,9 +96,72 @@ const fallbackNavigation = function* fallbackNavigation() {
 };
 
 const handleOAuth = function* handleOAuth({ params }) {
-	const { credentialToken, credentialSecret } = params;
+	const { credentialToken, credentialSecret, host } = params;
 	try {
-		yield loginOAuthOrSso({ oauth: { credentialToken, credentialSecret } }, false);
+		// When OAuth completes via external browser redirect, the SDK connection
+		// may not be ready yet. We need to ensure the server is connected before
+		// attempting to complete the login.
+		let server = host;
+		if (server && server.endsWith('/')) {
+			server = server.slice(0, -1);
+		}
+		if (!server) {
+			server = UserPreferences.getString(CURRENT_SERVER);
+		}
+
+		if (!server) {
+			yield put(appInit());
+			return;
+		}
+
+		// Check if SDK is connected to this server and the WebSocket is ready
+		const sdkHost = sdk.current?.client?.host;
+		const meteorConnected = yield select(state => state.meteor.connected);
+
+		if (!meteorConnected || !sdkHost || sdkHost !== server) {
+			const previousServer = UserPreferences.getString(CURRENT_SERVER) || '';
+			const serverRecord = yield getServerById(server);
+			if (!serverRecord) {
+				// Server not in database yet, need to add it first
+				const result = yield getServerInfo(server);
+				if (!result.success) {
+					yield put(appInit());
+					return;
+				}
+				yield put(serverInitAdd(previousServer));
+				yield put(selectServerRequest(server, result.version));
+			} else {
+				yield put(selectServerRequest(server, serverRecord.version));
+			}
+			// Wait for the WebSocket connection to be fully ready (with timeout)
+			const { timeout } = yield race({
+				success: take(types.METEOR.SUCCESS),
+				timeout: delay(15000)
+			});
+			if (timeout) {
+				log(new Error('Timeout waiting for Meteor connection during OAuth'));
+				yield put(appInit());
+				return;
+			}
+		}
+
+		// Retry logic for OAuth login - the external browser flow can have timing
+		// issues where the SDK is not fully ready even after METEOR.SUCCESS
+		const maxRetries = 3;
+		for (let attempt = 1; attempt <= maxRetries; attempt++) {
+			try {
+				const delayMs = 500 * Math.pow(2, attempt - 1);
+				yield delay(delayMs);
+				yield loginOAuthOrSso({ oauth: { credentialToken, credentialSecret } });
+				return;
+			} catch (e) {
+				const isNetworkError = e?.message === 'Network request failed' || e?.message?.toLowerCase?.()?.includes?.('network');
+				if (attempt < maxRetries && isNetworkError) {
+					continue;
+				}
+				throw e;
+			}
+		}
 	} catch (e) {
 		log(e);
 	}

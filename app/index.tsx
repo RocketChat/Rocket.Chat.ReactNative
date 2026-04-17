@@ -61,6 +61,30 @@ interface IState {
 
 const parseDeepLinking = (url: string) => {
 	if (url) {
+		// Handle OAuth redirect from external browser (rocketchat://auth?...)
+		// The Rocket.Chat server redirects to 'rocketchat://auth' after OAuth login
+		// when using the external browser flow (required for WebAuthn/passkeys)
+		if (url.startsWith('rocketchat://auth')) {
+			const authUrl = url.replace(/rocketchat:\/\//, '');
+			const authMatch = authUrl.match(/^auth\?(.+)/);
+			if (authMatch) {
+				const query = authMatch[1];
+				const parsedQuery = parseQuery(query);
+				if (parsedQuery?.credentialToken) {
+					return {
+						...parsedQuery,
+						type: 'oauth'
+					};
+				}
+				// If this looks like an OAuth redirect (has credentialSecret) but
+				// is missing credentialToken, treat as invalid — don't fall through
+				if (parsedQuery?.credentialSecret) {
+					return null;
+				}
+			}
+		}
+
+		// Handle standard deep links (rocketchat:// and https://go.rocket.chat/)
 		url = url.replace(/rocketchat:\/\/|https:\/\/go.rocket.chat\//, '');
 		const regex = /^(room|auth|invite|shareextension)\?/;
 		const match = url.match(regex);
@@ -83,7 +107,7 @@ const parseDeepLinking = (url: string) => {
 };
 
 export default class Root extends React.Component<{}, IState> {
-	private listenerTimeout!: any;
+	private linkingSubscription?: ReturnType<typeof Linking.addEventListener>;
 	private dimensionsListener?: EmitterSubscription;
 	private videoConfActionCleanup?: () => void;
 
@@ -108,14 +132,15 @@ export default class Root extends React.Component<{}, IState> {
 	}
 
 	componentDidMount() {
-		this.listenerTimeout = setTimeout(() => {
-			Linking.addEventListener('url', ({ url }) => {
-				const parsedDeepLinkingURL = parseDeepLinking(url);
-				if (parsedDeepLinkingURL) {
-					store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
-				}
-			});
-		}, 5000);
+		// Set up deep link listener immediately (no delay) so OAuth redirects
+		// from external browser are handled promptly
+		this.linkingSubscription = Linking.addEventListener('url', ({ url }) => {
+			const parsedDeepLinkingURL = parseDeepLinking(url);
+			if (parsedDeepLinkingURL) {
+				store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
+			}
+		});
+
 		this.dimensionsListener = Dimensions.addEventListener('change', this.onDimensionsChange);
 
 		// Set up video conf action listener for background accept/decline
@@ -123,7 +148,7 @@ export default class Root extends React.Component<{}, IState> {
 	}
 
 	componentWillUnmount() {
-		clearTimeout(this.listenerTimeout);
+		this.linkingSubscription?.remove?.();
 		this.dimensionsListener?.remove?.();
 		this.videoConfActionCleanup?.();
 
