@@ -7,9 +7,9 @@
 //   - Hang up (UI endCall and MediaSessionInstance.endCall ringing/active branches)
 //   - In-call controls (mute, hold, trackStateChange sync)
 //
-// Seam: @rocket.chat/media-signaling is mocked at the SDK boundary. Everything
-// between the SDK and the UI — MediaSessionInstance, useCallStore, NewMediaCall,
-// CallView — runs as real code.
+// Seam: @rocket.chat/media-signaling is mocked at the SDK boundary (see block
+// comment on the jest.mock below). Everything between that mock and the UI —
+// MediaSessionInstance, useCallStore, NewMediaCall, CallView — runs as real code.
 
 import React from 'react';
 import { act, fireEvent, render } from '@testing-library/react-native';
@@ -184,6 +184,11 @@ function mockCallEmitter() {
 }
 
 // ─── Media-signaling mock ─────────────────────────────────────────────────────
+//
+// @rocket.chat/media-signaling (WebRTC stack) is fully mocked here. These tests
+// exercise signaling orchestration, Zustand, and navigation — not real peer
+// connections, ICE, or media tracks. Catching regressions in WebRTC-specific
+// behavior still requires device or E2E coverage outside Jest.
 
 type MockMediaSignalingSession = {
 	userId: string;
@@ -647,15 +652,17 @@ describe('VoIP call lifecycle (integration)', () => {
 			expect(useCallStore.getState().call).toBeNull();
 		});
 
-		it('B3: MediaSessionInstance.endCall during ringing → same cleanup (reject branch)', () => {
+		it('B3: MediaSessionInstance.endCall during ringing → reject (not hangup) + RNCallKeep cleanup', () => {
 			const session = createdSessions[createdSessions.length - 1];
-			const ringingCall = makeCall({ callId: 'ringing-1', state: 'ringing' });
+			const ringingCall = makeCall({ callId: 'ringing-1' });
 			session.getCallData.mockReturnValue(ringingCall);
 
 			act(() => {
 				mediaSessionInstance.endCall('ringing-1');
 			});
 
+			expect(ringingCall.reject).toHaveBeenCalled();
+			expect(ringingCall.hangup).not.toHaveBeenCalled();
 			expect(RNCallKeep.endCall as jest.Mock).toHaveBeenCalledWith('ringing-1');
 			expect(useCallStore.getState().call).toBeNull();
 		});
