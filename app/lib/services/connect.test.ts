@@ -1,7 +1,8 @@
-import { determineAuthType } from './connect';
+import { determineAuthType, disconnect } from './connect';
+import { mediaSessionInstance } from './voip/MediaSessionInstance';
 
 jest.mock('./voip/MediaSessionInstance', () => ({
-	mediaSessionInstance: { reset: jest.fn(), init: jest.fn() }
+	mediaSessionInstance: { reset: jest.fn() }
 }));
 
 // Mock the isIOS helper
@@ -302,6 +303,13 @@ describe('determineAuthType', () => {
 			const result = determineAuthType(services);
 			expect(result).toBe('cas'); // Should return cas before checking for oauth
 		});
+	});
+});
+
+describe('VoIP media session lifecycle (disconnect)', () => {
+	it('calls mediaSessionInstance.reset when disconnect runs', () => {
+		disconnect();
+		expect(mediaSessionInstance.reset).toHaveBeenCalledTimes(1);
 	});
 });
 

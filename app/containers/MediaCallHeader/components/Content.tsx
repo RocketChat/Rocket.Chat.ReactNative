@@ -1,5 +1,6 @@
 import { Pressable, StyleSheet, View } from 'react-native';
 
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { navigateToCallRoom } from '../../../lib/services/voip/navigateToCallRoom';
 import { useCallStore } from '../../../lib/services/voip/useCallStore';
 import Title from './Title';
@@ -19,6 +20,7 @@ const styles = StyleSheet.create({
 });
 
 export const Content = () => {
+	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 	const roomId = useCallStore(state => state.roomId);
 	const contact = useCallStore(state => state.contact);
 	const contentDisabled = Boolean(contact.sipExtension) || roomId == null;
@@ -29,7 +31,7 @@ export const Content = () => {
 			testID='media-call-header-content'
 			disabled={contentDisabled}
 			onPress={() => {
-				navigateToCallRoom().catch(() => undefined);
+				navigateToCallRoom({ isMasterDetail }).catch(() => undefined);
 			}}
 			style={pressableStyle}>
 			<View style={styles.container}>
