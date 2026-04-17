@@ -87,7 +87,14 @@ describe('ShareView', () => {
 		expect(queryByTestId('share-view-alt-text')).toBeTruthy();
 	});
 
-	it('does not render the alt text field on servers at or below 8.4.0', () => {
+	it('renders the alt text field on exactly 8.4.0', () => {
+		const shareView = makeInstance({ mime: 'image/jpeg', serverVersion: '8.4.0' });
+		const { queryByTestId } = render(shareView.renderContent());
+
+		expect(queryByTestId('share-view-alt-text')).toBeTruthy();
+	});
+
+	it('does not render the alt text field on servers below 8.4.0', () => {
 		const shareView = makeInstance({ mime: 'image/jpeg', serverVersion: '8.3.0' });
 		const { queryByTestId } = render(shareView.renderContent());
 

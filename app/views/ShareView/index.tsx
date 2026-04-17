@@ -355,8 +355,15 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			} else {
 				newSelected = attachments[selectedIndex - 1] || {};
 			}
+			this.setState({
+				attachments: attachments.filter(att => att.path !== item.path),
+				selected: newSelected,
+				altText: newSelected.altText || ''
+			});
+			this.messageComposerRef.current?.setInput(newSelected.description || '');
+			return;
 		}
-		this.setState({ attachments: attachments.filter(att => att.path !== item.path), selected: newSelected ?? selected });
+		this.setState({ attachments: attachments.filter(att => att.path !== item.path), selected: newSelected });
 		this.messageComposerRef.current?.setInput(newSelected.description || '');
 	};
 

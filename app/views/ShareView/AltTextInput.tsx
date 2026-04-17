@@ -44,6 +44,7 @@ const AltTextInput = ({ value, onChangeText, theme }: IAltTextInput) => (
 		<Text style={[styles.label, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('Alt_text')}</Text>
 		<Text style={[styles.helper, { color: themes[theme].fontSecondaryInfo }]}>{I18n.t('Alt_text_description')}</Text>
 		<TextInput
+			accessibilityLabel={I18n.t('Alt_text')}
 			value={value}
 			onChangeText={onChangeText}
 			placeholder={I18n.t('Alt_text_placeholder')}
