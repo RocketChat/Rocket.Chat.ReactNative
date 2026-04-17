@@ -37,49 +37,49 @@ runs:
   using: "composite"
   steps:
     - name: Download iOS build
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
       if: ${{ inputs.type == 'experimental' }}
       with:
         name: ios-build-experimental
         path: ios/
 
     - name: Download iOS build
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
       if: ${{ inputs.type == 'official' }}
       with:
         name: ios-build-official
         path: ios/
 
     - name: Download dSYM
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
       if: ${{ inputs.type == 'experimental' }}
       with:
         name: ios-build-experimental-dSYM
         path: ios/
 
     - name: Download dSYM
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
       if: ${{ inputs.type == 'official' }}
       with:
         name: ios-build-official-dSYM
         path: ios/
 
     - name: Download Info.plist
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
       if: ${{ inputs.type == 'experimental' }}
       with:
         name: ios-build-experimental-info-plist
         path: ios/RocketChatRN/
 
     - name: Download Info.plist
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
       if: ${{ inputs.type == 'official' }}
       with:
         name: ios-build-official-info-plist
         path: ios/RocketChatRN/
 
     - name: Pod Cache
-      uses: actions/cache@v4
+      uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
       with:
         path: |
           ~/.pods
@@ -89,12 +89,12 @@ runs:
           pods-v1-
 
     - name: Set up Xcode
-      uses: maxim-lobanov/setup-xcode@v1
+      uses: maxim-lobanov/setup-xcode@ed7a3b1fda3918c0306d1b724322adc0b8cc0a90 # v1.7.0
       with:
         xcode-version: '26.2.0'
 
     - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
+      uses: ruby/setup-ruby@7372622e62b60b3cb750dcd2b9e32c247ffec26a # v1.302.0
       with:
         ruby-version: 2.7.7
         bundler-cache: true
@@ -109,7 +109,7 @@ runs:
         yarn pod-install
       shell: bash
 
-    - uses: actions/download-artifact@v4
+    - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
       if: ${{ inputs.type == 'official' && inputs.trigger == 'develop' }}
       with:
         name: release-changelog

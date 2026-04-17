@@ -45,7 +45,7 @@ runs:
   using: "composite"
   steps:
     - name: Set up Ruby and Bundler
-      uses: ruby/setup-ruby@v1
+      uses: ruby/setup-ruby@7372622e62b60b3cb750dcd2b9e32c247ffec26a # v1.302.0
       with:
         ruby-version: 2.7.7
         bundler-cache: true
@@ -57,10 +57,10 @@ runs:
       shell: bash
 
     - name: Set up Gradle
-      uses: gradle/actions/setup-gradle@v4
+      uses: gradle/actions/setup-gradle@ed408507eac070d1f99cc633dbcf757c94c7933a # v4.4.3
 
     - name: Cache Gradle
-      uses: actions/cache@v4
+      uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
       with:
         path: |
           ~/.gradle
@@ -144,14 +144,14 @@ runs:
 
     - name: Upload Experimental AAB
       if: ${{ inputs.type == 'experimental' }}
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
       with:
         name: android-aab-experimental
         path: android/app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab
 
     - name: Upload Official AAB
       if: ${{ inputs.type == 'official' }}
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
       with:
         name: android-aab-official
         path: android/app/build/outputs/bundle/officialRelease/app-official-release.aab
