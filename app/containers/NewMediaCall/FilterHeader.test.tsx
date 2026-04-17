@@ -37,15 +37,11 @@ describe('FilterHeader', () => {
 	});
 
 	it('should update filter, clear selection and fetch options after debounce', () => {
-		const setFilter = jest.fn();
-		const clearSelection = jest.fn();
 		const fetchOptions = jest.fn();
 		usePeerAutocompleteStore.setState({
 			filter: '',
 			selectedPeer: null,
 			options: [],
-			setFilter,
-			clearSelection,
 			fetchOptions
 		});
 
@@ -57,15 +53,21 @@ describe('FilterHeader', () => {
 
 		fireEvent.changeText(getByTestId('new-media-call-search-input'), 'alice');
 
-		expect(setFilter).toHaveBeenCalledWith('alice');
-		expect(clearSelection).toHaveBeenCalledTimes(1);
+		expect(usePeerAutocompleteStore.getState().filter).toBe('alice');
+		expect(usePeerAutocompleteStore.getState().selectedPeer).toBeNull();
 		expect(fetchOptions).not.toHaveBeenCalled();
 
 		act(() => {
 			jest.advanceTimersByTime(textInputDebounceTime);
 		});
 
-		expect(fetchOptions).toHaveBeenCalledWith('alice');
+		expect(fetchOptions).toHaveBeenCalledTimes(1);
+		expect(fetchOptions.mock.calls[0][0]).toBe('alice');
+		expect(fetchOptions.mock.calls[0][1]).toEqual(
+			expect.objectContaining({
+				sipEnabled: expect.any(Boolean)
+			})
+		);
 	});
 });
 

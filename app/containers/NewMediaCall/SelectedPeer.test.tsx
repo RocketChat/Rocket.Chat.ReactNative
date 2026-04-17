@@ -69,9 +69,8 @@ describe('SelectedPeer', () => {
 		expect(getByText('+55 11 99999-9999')).toBeTruthy();
 	});
 
-	it('should call clearSelection when clear button is pressed', () => {
-		const clearSelection = jest.fn();
-		usePeerAutocompleteStore.setState({ selectedPeer: userPeer, clearSelection });
+	it('should clear selected peer when clear button is pressed', () => {
+		usePeerAutocompleteStore.setState({ selectedPeer: userPeer });
 
 		const { getByTestId } = render(
 			<Wrapper>
@@ -80,7 +79,7 @@ describe('SelectedPeer', () => {
 		);
 
 		fireEvent.press(getByTestId('new-media-call-clear-selected-peer'));
-		expect(clearSelection).toHaveBeenCalledTimes(1);
+		expect(usePeerAutocompleteStore.getState().selectedPeer).toBeNull();
 	});
 });
 

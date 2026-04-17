@@ -1,6 +1,8 @@
 import { create } from 'zustand';
 
-import { getPeerAutocompleteOptions, type TPeerItem } from './getPeerAutocompleteOptions';
+import { getPeerAutocompleteOptions, type TPeerAutocompleteAuth, type TPeerItem } from './getPeerAutocompleteOptions';
+
+let peerAutocompleteFetchSeq = 0;
 
 type TPeerAutocompleteState = {
 	options: TPeerItem[];
@@ -9,10 +11,8 @@ type TPeerAutocompleteState = {
 };
 
 type TPeerAutocompleteActions = {
-	fetchOptions: (filter: string) => Promise<void>;
+	fetchOptions: (filter: string, auth: TPeerAutocompleteAuth) => Promise<void>;
 	setSelectedPeer: (peer: TPeerItem | null) => void;
-	setFilter: (filter: string) => void;
-	clearSelection: () => void;
 	reset: () => void;
 };
 
@@ -23,39 +23,52 @@ export const usePeerAutocompleteStore = create<TPeerAutocompleteStore>((set, get
 	selectedPeer: null,
 	filter: '',
 
-	fetchOptions: async (filter: string) => {
+	fetchOptions: async (filter: string, auth: TPeerAutocompleteAuth) => {
 		const term = filter.trim();
 		if (!term) {
 			set({ options: [] });
 			return;
 		}
 
+		const peerSnapshot = get().selectedPeer;
+		const seq = ++peerAutocompleteFetchSeq;
+
 		try {
-			const currentPeer = get().selectedPeer;
 			const options = await getPeerAutocompleteOptions({
 				filter: term,
-				peerInfo: currentPeer
+				peerInfo: peerSnapshot,
+				username: auth.username,
+				sipEnabled: auth.sipEnabled
 			});
+
+			if (seq !== peerAutocompleteFetchSeq) {
+				return;
+			}
+			if (get().filter.trim() !== term || get().selectedPeer !== peerSnapshot) {
+				return;
+			}
 
 			set({ options });
 		} catch {
-			set({ options: [] });
+			if (seq !== peerAutocompleteFetchSeq) {
+				return;
+			}
+			if (get().filter.trim() === term && get().selectedPeer === peerSnapshot) {
+				set({ options: [] });
+			}
 		}
 	},
 
 	setSelectedPeer: (peer: TPeerItem | null) => {
+		if (peer === null) {
+			set({ selectedPeer: null, options: [] });
+			return;
+		}
 		set({ selectedPeer: peer, filter: '', options: [] });
 	},
 
-	setFilter: (filter: string) => {
-		set({ filter });
-	},
-
-	clearSelection: () => {
-		set({ selectedPeer: null });
-	},
-
 	reset: () => {
+		peerAutocompleteFetchSeq++;
 		set({ options: [], selectedPeer: null, filter: '' });
 	}
 }));

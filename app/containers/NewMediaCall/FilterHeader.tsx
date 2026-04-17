@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import I18n from '../../i18n';
 import { useTheme } from '../../theme';
@@ -7,23 +8,31 @@ import { FormTextInput } from '../TextInput';
 import sharedStyles from '../../views/Styles';
 import { textInputDebounceTime } from '../../lib/constants/debounceConfig';
 import { useDebounce } from '../../lib/methods/helpers';
+import type { IApplicationState } from '../../definitions';
 import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';
 
 export const FilterHeader = (): React.ReactElement => {
 	const { colors } = useTheme();
 
 	const filter = usePeerAutocompleteStore(state => state.filter);
-	const setFilter = usePeerAutocompleteStore(state => state.setFilter);
-	const fetchOptions = usePeerAutocompleteStore(state => state.fetchOptions);
-	const clearSelection = usePeerAutocompleteStore(state => state.clearSelection);
 
-	const debouncedFetchOptions = useDebounce((value: string) => {
-		fetchOptions(value);
-	}, textInputDebounceTime);
+	const username = useSelector((state: IApplicationState) => state.login.user?.username);
+	const sipEnabled = useSelector((state: IApplicationState) =>
+		Boolean(state.settings.VoIP_TeamCollab_SIP_Integration_For_Internal_Calls)
+	);
+
+	const debouncedFetchOptions = useDebounce(
+		useCallback(
+			(value: string) => {
+				usePeerAutocompleteStore.getState().fetchOptions(value, { username, sipEnabled });
+			},
+			[username, sipEnabled]
+		),
+		textInputDebounceTime
+	);
 
 	const handleChangeText = (value: string) => {
-		setFilter(value);
-		clearSelection();
+		usePeerAutocompleteStore.setState({ filter: value, selectedPeer: null });
 		debouncedFetchOptions(value);
 	};
 

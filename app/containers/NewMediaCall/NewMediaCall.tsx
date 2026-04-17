@@ -1,23 +1,32 @@
 import React, { useEffect } from 'react';
+import { StyleSheet, View } from 'react-native';
 
 import { PeerList } from './PeerList';
 import { SelectedPeer } from './SelectedPeer';
-import { Container } from './Container';
 import { CreateCall } from './CreateCall';
 import { FilterHeader } from './FilterHeader';
 import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';
+import { useTheme } from '../../theme';
 
 export const NewMediaCall = (): React.ReactElement => {
-	// reset the store when the action sheet is closed
+	const { colors } = useTheme();
 	const reset = usePeerAutocompleteStore(state => state.reset);
 	useEffect(() => () => reset(), [reset]);
 
 	return (
-		<Container>
+		<View style={[styles.screen, { backgroundColor: colors.surfaceLight }]}>
 			<FilterHeader />
 			<SelectedPeer />
 			<PeerList />
 			<CreateCall />
-		</Container>
+		</View>
 	);
 };
+
+const styles = StyleSheet.create({
+	screen: {
+		flex: 1,
+		paddingHorizontal: 16,
+		paddingTop: 16
+	}
+});

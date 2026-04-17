@@ -15,7 +15,7 @@ export const SelectedPeer = () => {
 
 export const SelectedPeerInner = ({ selectedPeer }: { selectedPeer: TPeerItem | null }) => {
 	const { colors } = useTheme();
-	const clearSelection = usePeerAutocompleteStore(state => state.clearSelection);
+	const setSelectedPeer = usePeerAutocompleteStore(state => state.setSelectedPeer);
 
 	if (!selectedPeer) return null;
 
@@ -24,7 +24,7 @@ export const SelectedPeerInner = ({ selectedPeer }: { selectedPeer: TPeerItem | 
 			<View style={[styles.selectedTag, { backgroundColor: colors.buttonBackgroundSecondaryDefault }]}>
 				<PeerItemInner item={selectedPeer} />
 				<BorderlessButton
-					onPress={clearSelection}
+					onPress={() => setSelectedPeer(null)}
 					testID='new-media-call-clear-selected-peer'
 					rippleColor={colors.buttonBackgroundSecondaryPress}
 					foreground
