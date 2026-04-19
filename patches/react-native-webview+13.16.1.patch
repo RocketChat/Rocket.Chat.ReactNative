@@ -33,10 +33,10 @@ index 0000000..122755b
 +	</filteredResources>
 +</projectDescription>
 diff --git a/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebView.java b/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebView.java
-index 5932fc1..1ce86e8 100644
+index 80c6803..97df1fa 100644
 --- a/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebView.java
 +++ b/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebView.java
-@@ -223,6 +223,7 @@ public class RNCWebView extends WebView implements LifecycleEventListener {
+@@ -219,6 +219,7 @@ public class RNCWebView extends WebView implements LifecycleEventListener {
      public void setWebViewClient(WebViewClient client) {
          super.setWebViewClient(client);
          if (client instanceof RNCWebViewClient) {
@@ -45,10 +45,10 @@ index 5932fc1..1ce86e8 100644
              mRNCWebViewClient.setProgressChangedFilter(progressChangedFilter);
          }
 diff --git a/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewClient.java b/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewClient.java
-index 251939e..763cc50 100644
+index 0287e1c..65174cc 100644
 --- a/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewClient.java
 +++ b/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewClient.java
-@@ -34,6 +34,11 @@ import com.reactnativecommunity.webview.events.TopShouldStartLoadWithRequestEven
+@@ -35,6 +35,11 @@ import com.reactnativecommunity.webview.events.TopShouldStartLoadWithRequestEven
  import android.webkit.CookieManager;
  import android.webkit.CookieSyncManager;
  
@@ -60,17 +60,14 @@ index 251939e..763cc50 100644
  import java.util.concurrent.atomic.AtomicReference;
  
  public class RNCWebViewClient extends WebViewClient {
-@@ -45,6 +50,9 @@ public class RNCWebViewClient extends WebViewClient {
-     protected @Nullable String ignoreErrFailedForThisURL = null;
+@@ -45,10 +50,60 @@ public class RNCWebViewClient extends WebViewClient {
+     protected RNCWebView.ProgressChangedFilter progressChangedFilter = null;
      protected @Nullable RNCBasicAuthCredential basicAuthCredential = null;
  
 +    private static String certificateAlias = null;
 +    private ReactContext reactContext;
 +
-     public void setIgnoreErrFailedForThisURL(@Nullable String url) {
-         ignoreErrFailedForThisURL = url;
-     }
-@@ -53,6 +61,53 @@ public class RNCWebViewClient extends WebViewClient {
+     public void setBasicAuthCredential(@Nullable RNCBasicAuthCredential credential) {
          basicAuthCredential = credential;
      }
  
@@ -125,24 +122,24 @@ index 251939e..763cc50 100644
      public void onPageFinished(WebView webView, String url) {
          super.onPageFinished(webView, url);
 diff --git a/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewModuleImpl.java b/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewModuleImpl.java
-index 951749c..12a0bd2 100644
+index 951749c..05792b8 100644
 --- a/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewModuleImpl.java
 +++ b/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewModuleImpl.java
 @@ -551,4 +551,8 @@ public class RNCWebViewModuleImpl implements ActivityEventListener {
          }
          return (PermissionAwareActivity) activity;
      }
-+    
++
 +    public static void setCertificateAlias(String alias) {
 +        RNCWebViewClient.setCertificateAlias(alias);
 +    }
  }
 \ No newline at end of file
 diff --git a/node_modules/react-native-webview/android/src/newarch/com/reactnativecommunity/webview/RNCWebViewManager.java b/node_modules/react-native-webview/android/src/newarch/com/reactnativecommunity/webview/RNCWebViewManager.java
-index e20ae03..01887a6 100644
+index 4709e28..0144ef9 100644
 --- a/node_modules/react-native-webview/android/src/newarch/com/reactnativecommunity/webview/RNCWebViewManager.java
 +++ b/node_modules/react-native-webview/android/src/newarch/com/reactnativecommunity/webview/RNCWebViewManager.java
-@@ -44,6 +44,10 @@ public class RNCWebViewManager extends ViewGroupManager<RNCWebViewWrapper>
+@@ -45,6 +45,10 @@ public class RNCWebViewManager extends ViewGroupManager<RNCWebViewWrapper>
          mRNCWebViewManagerImpl = new RNCWebViewManagerImpl(true);
      }
  
@@ -169,10 +166,10 @@ index 4df0aae..867aa73 100644
      @Override
      public String getName() {
 diff --git a/node_modules/react-native-webview/android/src/oldarch/com/reactnativecommunity/webview/RNCWebViewManager.java b/node_modules/react-native-webview/android/src/oldarch/com/reactnativecommunity/webview/RNCWebViewManager.java
-index 44d3378..3972014 100644
+index 974337f..0099677 100644
 --- a/node_modules/react-native-webview/android/src/oldarch/com/reactnativecommunity/webview/RNCWebViewManager.java
 +++ b/node_modules/react-native-webview/android/src/oldarch/com/reactnativecommunity/webview/RNCWebViewManager.java
-@@ -31,6 +31,10 @@ public class RNCWebViewManager extends ViewGroupManager<RNCWebViewWrapper> {
+@@ -32,6 +32,10 @@ public class RNCWebViewManager extends ViewGroupManager<RNCWebViewWrapper> {
          mRNCWebViewManagerImpl = new RNCWebViewManagerImpl();
      }
  
