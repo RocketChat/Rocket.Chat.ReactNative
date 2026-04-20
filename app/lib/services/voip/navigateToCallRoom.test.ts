@@ -1,6 +1,5 @@
 import { goRoom } from '../../methods/helpers/goRoom';
 import Navigation from '../../navigation/appNavigation';
-import { store } from '../../store/auxStore';
 import { useCallStore } from './useCallStore';
 import { navigateToCallRoom } from './navigateToCallRoom';
 import { SubscriptionType } from '../../../definitions';
@@ -15,12 +14,6 @@ jest.mock('../../methods/helpers/goRoom', () => ({
 	goRoom: jest.fn().mockResolvedValue(undefined)
 }));
 
-jest.mock('../../store/auxStore', () => ({
-	store: {
-		getState: jest.fn()
-	}
-}));
-
 jest.mock('../../navigation/appNavigation', () => ({
 	__esModule: true,
 	default: {
@@ -31,7 +24,6 @@ jest.mock('../../navigation/appNavigation', () => ({
 
 const mockGetState = jest.mocked(useCallStore.getState);
 const mockGoRoom = jest.mocked(goRoom);
-const mockStoreGetState = jest.mocked(store.getState);
 const mockNavigation = jest.mocked(Navigation);
 
 type CallStoreSnapshot = ReturnType<typeof useCallStore.getState>;
@@ -48,7 +40,6 @@ describe('navigateToCallRoom', () => {
 
 	beforeEach(() => {
 		jest.clearAllMocks();
-		mockStoreGetState.mockReturnValue({ app: { isMasterDetail: true } } as ReturnType<typeof store.getState>);
 		mockNavigation.getCurrentRoute.mockReturnValue({ name: 'RoomsListView' } as any);
 	});
 
@@ -62,7 +53,7 @@ describe('navigateToCallRoom', () => {
 			})
 		);
 
-		await navigateToCallRoom();
+		await navigateToCallRoom({ isMasterDetail: true });
 
 		expect(mockGoRoom).not.toHaveBeenCalled();
 		expect(toggleFocus).not.toHaveBeenCalled();
@@ -79,7 +70,7 @@ describe('navigateToCallRoom', () => {
 			})
 		);
 
-		await navigateToCallRoom();
+		await navigateToCallRoom({ isMasterDetail: true });
 
 		expect(mockGoRoom).not.toHaveBeenCalled();
 		expect(toggleFocus).not.toHaveBeenCalled();
@@ -96,7 +87,7 @@ describe('navigateToCallRoom', () => {
 			})
 		);
 
-		await navigateToCallRoom();
+		await navigateToCallRoom({ isMasterDetail: true });
 
 		expect(mockGoRoom).not.toHaveBeenCalled();
 		expect(toggleFocus).not.toHaveBeenCalled();
@@ -113,7 +104,7 @@ describe('navigateToCallRoom', () => {
 			})
 		);
 
-		await navigateToCallRoom();
+		await navigateToCallRoom({ isMasterDetail: true });
 
 		expect(toggleFocus).toHaveBeenCalledTimes(1);
 		expect(mockGoRoom).toHaveBeenCalledWith({
@@ -133,7 +124,7 @@ describe('navigateToCallRoom', () => {
 			})
 		);
 
-		await navigateToCallRoom();
+		await navigateToCallRoom({ isMasterDetail: true });
 
 		expect(toggleFocus).not.toHaveBeenCalled();
 		expect(mockGoRoom).toHaveBeenCalledWith({
@@ -153,7 +144,7 @@ describe('navigateToCallRoom', () => {
 			})
 		);
 
-		await navigateToCallRoom();
+		await navigateToCallRoom({ isMasterDetail: true });
 
 		expect(mockNavigation.navigate).toHaveBeenCalledWith('ChatsStackNavigator');
 		expect(mockGoRoom).toHaveBeenCalledWith({
@@ -174,7 +165,7 @@ describe('navigateToCallRoom', () => {
 			})
 		);
 
-		await navigateToCallRoom();
+		await navigateToCallRoom({ isMasterDetail: true });
 
 		expect(mockNavigation.navigate).toHaveBeenCalledWith('ChatsStackNavigator');
 		expect(mockGoRoom).toHaveBeenCalled();
@@ -192,7 +183,7 @@ describe('navigateToCallRoom', () => {
 			})
 		);
 
-		await navigateToCallRoom();
+		await navigateToCallRoom({ isMasterDetail: true });
 
 		expect(mockNavigation.navigate).toHaveBeenCalledWith('ChatsStackNavigator');
 		expect(mockGoRoom).toHaveBeenCalled();
@@ -210,9 +201,27 @@ describe('navigateToCallRoom', () => {
 			})
 		);
 
-		await navigateToCallRoom();
+		await navigateToCallRoom({ isMasterDetail: true });
 
 		expect(mockNavigation.navigate).not.toHaveBeenCalled();
 		expect(mockGoRoom).toHaveBeenCalled();
+	});
+
+	it('passes isMasterDetail from the caller into goRoom', async () => {
+		mockGetState.mockReturnValue(
+			mockCallStoreState({
+				roomId: 'rid-1',
+				contact: { username: 'alice', sipExtension: '' },
+				focused: false,
+				toggleFocus
+			})
+		);
+
+		await navigateToCallRoom({ isMasterDetail: false });
+
+		expect(mockGoRoom).toHaveBeenCalledWith({
+			item: { rid: 'rid-1', name: 'alice', t: SubscriptionType.DIRECT },
+			isMasterDetail: false
+		});
 	});
 });

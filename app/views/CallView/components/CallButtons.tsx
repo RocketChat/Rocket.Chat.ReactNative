@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
 import I18n from '../../../i18n';
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { navigateToCallRoom } from '../../../lib/services/voip/navigateToCallRoom';
 import { useCallStore, useControlsVisible } from '../../../lib/services/voip/useCallStore';
 import CallActionButton from './CallActionButton';
@@ -27,6 +28,7 @@ export const CallButtons = () => {
 	'use memo';
 
 	const { colors } = useTheme();
+	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 	const { layoutMode } = useCallLayoutMode();
 	const { width, height } = useResponsiveLayout();
 	const isLandscape = width > height;
@@ -55,7 +57,7 @@ export const CallButtons = () => {
 	const messageDisabled = Boolean(contact.sipExtension) || roomId == null;
 
 	const handleMessage = () => {
-		navigateToCallRoom().catch(() => undefined);
+		navigateToCallRoom({ isMasterDetail }).catch(() => undefined);
 	};
 
 	const handleDialpad = () => {
