@@ -267,6 +267,7 @@ describe('getInitialMediaCallEvents — iOS cold start', () => {
 	});
 
 	it('returns true and opens deep link when answered on cold start but host differs from workspace', async () => {
+		const { mediaSessionInstance } = jest.requireMock('./MediaSessionInstance');
 		const callId = 'answered-cross-ws';
 		mockServerSelector.mockReturnValue('https://workspace-ios.example.com');
 		(NativeVoipModule.getInitialEvents as jest.Mock).mockReturnValue(
@@ -287,6 +288,7 @@ describe('getInitialMediaCallEvents — iOS cold start', () => {
 			callId,
 			host: 'https://foreign.example.com'
 		});
+		expect(mediaSessionInstance.applyRestStateSignals).not.toHaveBeenCalled();
 	});
 
 	it('returns false when CallKit initial events have no RNCallKeepPerformAnswerCallAction', async () => {
