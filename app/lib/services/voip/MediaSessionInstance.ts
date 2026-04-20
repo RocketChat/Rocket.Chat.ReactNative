@@ -285,7 +285,7 @@ class MediaSessionInstance {
 		}
 	};
 
-	public startCall = async (userId: string, actor: CallActorType): Promise<void> => {
+	public startCall = (userId: string, actor: CallActorType): void => {
 		requestPhoneStatePermission();
 		mediaCallLogger.info('[VoIP] Starting call:', userId);
 		this.instance?.startCall(actor, userId);

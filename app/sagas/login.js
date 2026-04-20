@@ -41,7 +41,6 @@ import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
 import { mediaSessionInstance } from '../lib/services/voip/MediaSessionInstance';
 import { hasPermission } from '../lib/methods/helpers/helpers';
-import { mediaSessionStore } from '../lib/services/voip/MediaSessionStore';
 import { store as reduxStore } from '../lib/store/auxStore';
 
 const getServer = state => state.server.server;
@@ -262,9 +261,7 @@ const checkVoipPermission = async () => {
 			mediaSessionInstance.reset();
 			return;
 		}
-		if (!mediaSessionStore.getCurrentInstance()) {
-			mediaSessionInstance.init(userId);
-		}
+		mediaSessionInstance.init(userId);
 	} catch (e) {
 		log(e);
 	}
