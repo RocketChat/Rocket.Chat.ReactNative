@@ -24,7 +24,12 @@ final class DDPClient {
     init() {
         stateQueue.setSpecific(key: stateQueueKey, value: ())
     }
-    
+
+    deinit {
+        webSocketTask?.cancel(with: .normalClosure, reason: nil)
+        urlSession?.invalidateAndCancel()
+    }
+
     // MARK: - Connect
     
     func connect(host: String, completion: @escaping (Bool) -> Void) {
@@ -154,19 +159,29 @@ final class DDPClient {
         }
     }
 
-    private func disconnectOnStateQueue() {
+    private func disconnectOnStateQueue(failPending: Bool = false) {
         #if DEBUG
         print("[\(Self.TAG)] Disconnecting")
         #endif
         isConnected = false
+
+        let pendingToFail = failPending ? Array(pendingCallbacks.values) : []
+        let connectedToFail = failPending ? connectedCallback : nil
+        let queuedToFail = failPending ? queuedMethodCalls : []
+
         pendingCallbacks.removeAll()
-        clearQueuedMethodCalls()
+        queuedMethodCalls.removeAll()
         connectedCallback = nil
         onCollectionMessage = nil
         webSocketTask?.cancel(with: .normalClosure, reason: nil)
         webSocketTask = nil
         urlSession?.invalidateAndCancel()
         urlSession = nil
+
+        connectedToFail?(false)
+        let errorPayload: [String: Any] = ["error": ["reason": "disconnected"]]
+        pendingToFail.forEach { $0(errorPayload) }
+        queuedToFail.forEach { $0.completion(false) }
     }
     
     // MARK: - Private
@@ -318,13 +333,14 @@ final class DDPClient {
             default:
                 break
             }
+            guard task === webSocketTask else { return }
             listenForMessages(task: task)
 
         case .failure(let error):
             #if DEBUG
             print("[\(Self.TAG)] Receive error: \(error.localizedDescription)")
             #endif
-            disconnect()
+            disconnectOnStateQueue(failPending: true)
         }
     }
     
@@ -360,10 +376,8 @@ final class DDPClient {
             }
             
         case "changed", "added", "removed":
-            if let collection = json["collection"] as? String {
-                var message = json
-                message["collection"] = collection
-                onCollectionMessage?(message)
+            if (json["collection"] as? String) != nil {
+                onCollectionMessage?(json)
             }
             
         case "nosub":

@@ -6,12 +6,10 @@
 //  Copyright © 2023 Facebook. All rights reserved.
 //
 
+#import <Foundation/NSURLSession.h>
 #import <React/RCTHTTPRequestHandler.h>
 
 NS_ASSUME_NONNULL_BEGIN
-
-@class NSURLSession;
-@class NSURLAuthenticationChallenge;
 
 /// Shared TLS / client-certificate handling used by React Native networking and native URLSessions.
 @interface Challenge : NSObject
