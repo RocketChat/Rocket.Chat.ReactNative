@@ -42,7 +42,7 @@ describe('getPeerAutocompleteOptions', () => {
 		expect(mockedUsersAutoComplete).not.toHaveBeenCalled();
 	});
 
-	it('does not trim the filter (trimming is the store boundary responsibility)', async () => {
+	it('trims the filter before calling the API', async () => {
 		mockedUsersAutoComplete.mockResolvedValue(mockUsersAutoCompleteResponse());
 
 		await getPeerAutocompleteOptions({
@@ -53,9 +53,22 @@ describe('getPeerAutocompleteOptions', () => {
 		});
 
 		expect(mockedUsersAutoComplete).toHaveBeenCalledWith({
-			term: '  alice  ',
+			term: 'alice',
 			exceptions: ['me']
 		});
+	});
+
+	it('returns empty array and skips API call when filter is only whitespace', async () => {
+		await expect(
+			getPeerAutocompleteOptions({
+				filter: '   ',
+				peerInfo: null,
+				username: 'me',
+				sipEnabled: false
+			})
+		).resolves.toEqual([]);
+
+		expect(mockedUsersAutoComplete).not.toHaveBeenCalled();
 	});
 
 	it('excludes the current username from results', async () => {

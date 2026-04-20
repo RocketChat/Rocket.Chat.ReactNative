@@ -29,7 +29,8 @@ export const getPeerAutocompleteOptions = async ({
 	filter: string;
 	peerInfo?: TPeerItem | null;
 } & TPeerAutocompleteAuth): Promise<TPeerItem[]> => {
-	if (!filter) {
+	const term = filter.trim();
+	if (!term) {
 		return [];
 	}
 
@@ -48,7 +49,7 @@ export const getPeerAutocompleteOptions = async ({
 
 	const exceptions = [username, peerUsername].filter(Boolean);
 	const selector = {
-		term: filter,
+		term,
 		exceptions,
 		...(conditions && { conditions })
 	};
@@ -70,8 +71,8 @@ export const getPeerAutocompleteOptions = async ({
 
 	const sipOption: TPeerItem = {
 		type: 'sip',
-		value: filter,
-		label: filter
+		value: term,
+		label: term
 	};
 
 	return [sipOption, ...userOptions];
