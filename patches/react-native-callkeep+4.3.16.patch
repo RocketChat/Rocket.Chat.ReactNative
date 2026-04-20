@@ -57,6 +57,15 @@ diff --git a/node_modules/react-native-callkeep/android/src/main/java/io/wazo/ca
 index 5d58692..f4e4b1b 100644
 --- a/node_modules/react-native-callkeep/android/src/main/java/io/wazo/callkeep/VoiceConnectionService.java
 +++ b/node_modules/react-native-callkeep/android/src/main/java/io/wazo/callkeep/VoiceConnectionService.java
+@@ -317,7 +317,7 @@ public class VoiceConnectionService extends ConnectionService {
+         notificationBuilder.setOngoing(true)
+             .setContentTitle(foregroundSettings.getString("notificationTitle"))
+             .setPriority(NotificationManager.IMPORTANCE_MIN)
+             .setCategory(Notification.CATEGORY_SERVICE);
+ 
+-        Activity currentActivity = RNCallKeepModule.instance.getCurrentReactActivity();
++        Activity currentActivity = RNCallKeepModule.instance != null ? RNCallKeepModule.instance.getCurrentReactActivity() : null;
+         if (currentActivity != null) {
 @@ -459,18 +459,10 @@ public class VoiceConnectionService extends ConnectionService {
          connection.setConnectionCapabilities(Connection.CAPABILITY_MUTE | Connection.CAPABILITY_SUPPORT_HOLD);
  
