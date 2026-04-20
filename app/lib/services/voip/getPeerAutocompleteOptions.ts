@@ -1,5 +1,4 @@
 import { usersAutoComplete } from '../restApi';
-import { store as reduxStore } from '../../store/auxStore';
 
 export type TPeerItem =
 	| { type: 'user'; value: string; label: string; username?: string; callerId?: string }
@@ -7,6 +6,7 @@ export type TPeerItem =
 
 type TUserAutocompleteResponse = {
 	success?: boolean;
+	error?: string | null;
 	items?: Array<{
 		_id: string;
 		name?: string;
@@ -15,51 +15,39 @@ type TUserAutocompleteResponse = {
 	}>;
 };
 
-const getExtensionFromPeerInfo = (peerInfo?: TPeerItem | null): string | undefined => {
-	if (!peerInfo || !('callerId' in peerInfo)) {
-		return undefined;
-	}
-
-	return peerInfo.callerId;
+export type TPeerAutocompleteAuth = {
+	username?: string;
+	sipEnabled: boolean;
 };
 
-const getPeerUsername = (peerInfo?: TPeerItem | null): string | undefined => {
-	if (!peerInfo || !('username' in peerInfo)) {
-		return undefined;
-	}
-
-	return peerInfo.username;
-};
-
-// TODO: hook?
 export const getPeerAutocompleteOptions = async ({
 	filter,
-	peerInfo
+	peerInfo,
+	username,
+	sipEnabled
 }: {
 	filter: string;
 	peerInfo?: TPeerItem | null;
-}): Promise<TPeerItem[]> => {
+} & TPeerAutocompleteAuth): Promise<TPeerItem[]> => {
 	const term = filter.trim();
 	if (!term) {
 		return [];
 	}
 
-	const currentUsername = reduxStore.getState().login.user.username as string | undefined;
-	const peerUsername = getPeerUsername(peerInfo);
-	const peerExtension = getExtensionFromPeerInfo(peerInfo);
-	const forceSIPRouting = Boolean(reduxStore.getState().settings.VoIP_TeamCollab_SIP_Integration_For_Internal_Calls);
+	const peerUsername = peerInfo?.type === 'user' ? peerInfo.username : undefined;
+	const peerExtension = peerInfo?.type === 'user' ? peerInfo.callerId : undefined;
 
 	const conditions =
-		peerExtension || forceSIPRouting
+		peerExtension || sipEnabled
 			? {
 					$and: [
-						forceSIPRouting ? { freeSwitchExtension: { $exists: true } } : null,
+						sipEnabled ? { freeSwitchExtension: { $exists: true } } : null,
 						peerExtension ? { freeSwitchExtension: { $ne: peerExtension } } : null
 					].filter(Boolean)
 			  }
 			: undefined;
 
-	const exceptions = [currentUsername, peerUsername].filter(Boolean);
+	const exceptions = [username, peerUsername].filter(Boolean);
 	const selector = {
 		term,
 		exceptions,

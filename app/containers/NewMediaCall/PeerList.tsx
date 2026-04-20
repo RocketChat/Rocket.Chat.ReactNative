@@ -13,18 +13,7 @@ export const PeerList = () => {
 	if (selectedPeer) return null;
 
 	const handleSelectOption = (option: TPeerItem) => {
-		const peerItem: TPeerItem =
-			option.type === 'sip'
-				? { type: 'sip', value: option.value, label: option.label }
-				: {
-						type: 'user',
-						value: option.value,
-						label: option.label,
-						username: option.username,
-						callerId: option.callerId
-				  };
-
-		setSelectedPeer(peerItem);
+		setSelectedPeer(option);
 	};
 
 	const renderItem = ({ item }: { item: TPeerItem }) => <PeerItem item={item} onSelectOption={handleSelectOption} />;
@@ -33,7 +22,7 @@ export const PeerList = () => {
 		<FlatList
 			data={options}
 			contentContainerStyle={{ flexShrink: 1 }}
-			keyExtractor={item => item.value}
+			keyExtractor={item => `${item.type}:${item.value}`}
 			keyboardShouldPersistTaps='always'
 			renderItem={renderItem}
 			ItemSeparatorComponent={List.Separator}

@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import { getPeerAutocompleteOptions, type TPeerItem } from './getPeerAutocompleteOptions';
+import { getPeerAutocompleteOptions, type TPeerAutocompleteAuth, type TPeerItem } from './getPeerAutocompleteOptions';
 
 type TPeerAutocompleteState = {
 	options: TPeerItem[];
@@ -9,53 +9,70 @@ type TPeerAutocompleteState = {
 };
 
 type TPeerAutocompleteActions = {
-	fetchOptions: (filter: string) => Promise<void>;
-	setSelectedPeer: (peer: TPeerItem | null) => void;
+	fetchOptions: (filter: string, auth: TPeerAutocompleteAuth) => Promise<void>;
 	setFilter: (filter: string) => void;
-	clearSelection: () => void;
+	setSelectedPeer: (peer: TPeerItem | null) => void;
 	reset: () => void;
 };
 
 export type TPeerAutocompleteStore = TPeerAutocompleteState & TPeerAutocompleteActions;
 
-export const usePeerAutocompleteStore = create<TPeerAutocompleteStore>((set, get) => ({
-	options: [],
-	selectedPeer: null,
-	filter: '',
+export const usePeerAutocompleteStore = create<TPeerAutocompleteStore>((set, get) => {
+	let seq = 0;
 
-	fetchOptions: async (filter: string) => {
-		const term = filter.trim();
-		if (!term) {
-			set({ options: [] });
-			return;
+	return {
+		options: [],
+		selectedPeer: null,
+		filter: '',
+
+		fetchOptions: async (filter: string, auth: TPeerAutocompleteAuth) => {
+			const currentSeq = ++seq;
+			const term = filter.trim();
+			if (!term) {
+				set({ options: [] });
+				return;
+			}
+
+			const peerSnapshot = get().selectedPeer;
+
+			try {
+				const options = await getPeerAutocompleteOptions({
+					filter: term,
+					peerInfo: peerSnapshot,
+					username: auth.username,
+					sipEnabled: auth.sipEnabled
+				});
+
+				if (currentSeq !== seq) {
+					return;
+				}
+
+				set({ options });
+			} catch {
+				if (currentSeq !== seq) {
+					return;
+				}
+				set({ options: [] });
+			}
+		},
+
+		setFilter: (filter: string) => {
+			seq++;
+			set({ filter, selectedPeer: null, options: [] });
+		},
+
+		setSelectedPeer: (peer: TPeerItem | null) => {
+			seq++;
+			if (peer === null) {
+				set({ selectedPeer: null, options: [] });
+				return;
+			}
+			set({ selectedPeer: peer, filter: '', options: [] });
+		},
+
+		reset: () => {
+			seq++;
+			set({ options: [], selectedPeer: null, filter: '' });
 		}
-
-		try {
-			const currentPeer = get().selectedPeer;
-			const options = await getPeerAutocompleteOptions({
-				filter: term,
-				peerInfo: currentPeer
-			});
-
-			set({ options });
-		} catch {
-			set({ options: [] });
-		}
-	},
-
-	setSelectedPeer: (peer: TPeerItem | null) => {
-		set({ selectedPeer: peer, filter: '', options: [] });
-	},
-
-	setFilter: (filter: string) => {
-		set({ filter });
-	},
-
-	clearSelection: () => {
-		set({ selectedPeer: null });
-	},
-
-	reset: () => {
-		set({ options: [], selectedPeer: null, filter: '' });
-	}
-}));
+	};
+});

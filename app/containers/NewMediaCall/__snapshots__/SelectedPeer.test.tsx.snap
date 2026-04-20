@@ -201,19 +201,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         onActiveStateChange={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onPress={
-          [MockFunction] {
-            "calls": [
-              [],
-            ],
-            "results": [
-              {
-                "type": "return",
-                "value": undefined,
-              },
-            ],
-          }
-        }
+        onPress={[Function]}
         rippleColor="#9EA2A8"
         style={
           [
@@ -386,19 +374,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         onActiveStateChange={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onPress={
-          [MockFunction] {
-            "calls": [
-              [],
-            ],
-            "results": [
-              {
-                "type": "return",
-                "value": undefined,
-              },
-            ],
-          }
-        }
+        onPress={[Function]}
         rippleColor="#9EA2A8"
         style={
           [
@@ -633,19 +609,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         onActiveStateChange={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onPress={
-          [MockFunction] {
-            "calls": [
-              [],
-            ],
-            "results": [
-              {
-                "type": "return",
-                "value": undefined,
-              },
-            ],
-          }
-        }
+        onPress={[Function]}
         rippleColor="#9EA2A8"
         style={
           [
@@ -893,19 +857,7 @@ exports[`Story Snapshots: LongUsername should match snapshot 1`] = `
         onActiveStateChange={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onPress={
-          [MockFunction] {
-            "calls": [
-              [],
-            ],
-            "results": [
-              {
-                "type": "return",
-                "value": undefined,
-              },
-            ],
-          }
-        }
+        onPress={[Function]}
         rippleColor="#9EA2A8"
         style={
           [
@@ -1091,19 +1043,7 @@ exports[`Story Snapshots: Sip should match snapshot 1`] = `
         onActiveStateChange={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onPress={
-          [MockFunction] {
-            "calls": [
-              [],
-            ],
-            "results": [
-              {
-                "type": "return",
-                "value": undefined,
-              },
-            ],
-          }
-        }
+        onPress={[Function]}
         rippleColor="#9EA2A8"
         style={
           [
@@ -1351,19 +1291,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
         onActiveStateChange={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onPress={
-          [MockFunction] {
-            "calls": [
-              [],
-            ],
-            "results": [
-              {
-                "type": "return",
-                "value": undefined,
-              },
-            ],
-          }
-        }
+        onPress={[Function]}
         rippleColor="#9EA2A8"
         style={
           [
