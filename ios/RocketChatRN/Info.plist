@@ -73,6 +73,8 @@
 	<string>Unlock the app with FaceID</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Use your microphone to record audio messages</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Rocket.Chat uses Contacts to display caller photos on incoming call screens.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Give $(PRODUCT_NAME) permission to save photos</string>
 	<key>NSPhotoLibraryUsageDescription</key>

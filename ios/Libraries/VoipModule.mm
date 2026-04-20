@@ -13,6 +13,7 @@
 + (void)clearInitialEvents;
 + (NSString * _Nonnull)getLastVoipToken;
 + (void)stopDDPClient;
++ (void)requestContactsAccessWithCompletion:(void (^)(NSString * _Nonnull))completion;
 @end
 
 @implementation VoipModule {
@@ -115,6 +116,12 @@ RCT_EXPORT_MODULE()
 
 - (void)stopNativeDDPClient {
     [VoipService stopDDPClient];
+}
+
+- (void)requestContactsAccess:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+    [VoipService requestContactsAccessWithCompletion:^(NSString *status) {
+        resolve(status);
+    }];
 }
 
 // TurboModule codegen calls these on VoipModule directly. Empty implementations replaced

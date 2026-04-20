@@ -28,6 +28,7 @@ public class AppDelegate: ExpoAppDelegate {
     ReplyNotification.configure()
     VoipService.voipRegistration()
     RNCallKeep.setup(["appName": "Rocket.Chat"])
+    CallerContactManager.removeTemporaryContacts()
       
     let delegate = ReactNativeDelegate()
     let factory = RCTReactNativeFactory(delegate: delegate)

@@ -291,6 +291,8 @@
 		66C2701D2EBBCB570062725F /* MMKVKeyManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 66C2701A2EBBCB570062725F /* MMKVKeyManager.mm */; };
 		782E0520ED599FF8DDC2318F /* Pods_defaults_Rocket_Chat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88ED4E003393D3A9256F4EB3 /* Pods_defaults_Rocket_Chat.framework */; };
 		79D8C97F8CE2EC1B6882826B /* SecureStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B215A42CFB843397273C7EA /* SecureStorage.m */; };
+		7A2C00022F6FF00000AAAAAA /* CallerContactManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2C00012F6FF00000AAAAAA /* CallerContactManager.swift */; };
+		7A2C00032F6FF00000AAAAAA /* CallerContactManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2C00012F6FF00000AAAAAA /* CallerContactManager.swift */; };
 		7A0000012F1BAFA700B6B4BD /* VoipService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0000032F1BAFA700B6B4BD /* VoipService.swift */; };
 		7A0000022F1BAFA700B6B4BD /* VoipModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7A0000042F1BAFA700B6B4BD /* VoipModule.mm */; };
 		7A0000052F1BAFA700B6B4BD /* VoipService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0000032F1BAFA700B6B4BD /* VoipService.swift */; };
@@ -636,6 +638,7 @@
 		66C270192EBBCB570062725F /* MMKVKeyManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MMKVKeyManager.h; sourceTree = "<group>"; };
 		66C2701A2EBBCB570062725F /* MMKVKeyManager.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MMKVKeyManager.mm; sourceTree = "<group>"; };
 		7A0000032F1BAFA700B6B4BD /* VoipService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoipService.swift; sourceTree = "<group>"; };
+		7A2C00012F6FF00000AAAAAA /* CallerContactManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallerContactManager.swift; sourceTree = "<group>"; };
 		7A0000042F1BAFA700B6B4BD /* VoipModule.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = VoipModule.mm; sourceTree = "<group>"; };
 		7A006F13229C83B600803143 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7A0129D22C6E8B5900F84A97 /* ShareRocketChatRN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareRocketChatRN.swift; sourceTree = "<group>"; };
@@ -1159,6 +1162,7 @@
 				7A1B58402F5F58FF002A6BDE /* VoipPayload.swift */,
 				7A0000042F1BAFA700B6B4BD /* VoipModule.mm */,
 				7A0000032F1BAFA700B6B4BD /* VoipService.swift */,
+				7A2C00012F6FF00000AAAAAA /* CallerContactManager.swift */,
 				B179038FDD7AAF285047814B /* SecureStorage.h */,
 				9B215A42CFB843397273C7EA /* SecureStorage.m */,
 				A48B46D72D3FFBD200945489 /* A11yFlowModule.h */,
@@ -2095,6 +2099,7 @@
 				66C2701B2EBBCB570062725F /* MMKVKeyManager.mm in Sources */,
 				7A1B58422F5F58FF002A6BDE /* VoipPayload.swift in Sources */,
 				7A0000012F1BAFA700B6B4BD /* VoipService.swift in Sources */,
+				7A2C00022F6FF00000AAAAAA /* CallerContactManager.swift in Sources */,
 				7A0000022F1BAFA700B6B4BD /* VoipModule.mm in Sources */,
 				1ED00BB12513E04400A1331F /* ReplyNotification.swift in Sources */,
 				1E76CBC2251529560067298C /* Storage.swift in Sources */,
@@ -2376,6 +2381,7 @@
 				66C2701C2EBBCB570062725F /* MMKVKeyManager.mm in Sources */,
 				7A1B58412F5F58FF002A6BDE /* VoipPayload.swift in Sources */,
 				7A0000052F1BAFA700B6B4BD /* VoipService.swift in Sources */,
+				7A2C00032F6FF00000AAAAAA /* CallerContactManager.swift in Sources */,
 				7A0000062F1BAFA700B6B4BD /* VoipModule.mm in Sources */,
 				7AAB3E17257E6A6E00707CF6 /* ReplyNotification.swift in Sources */,
 				7AAB3E18257E6A6E00707CF6 /* Storage.swift in Sources */,

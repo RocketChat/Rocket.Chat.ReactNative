@@ -219,6 +219,12 @@ public final class VoipService: NSObject {
         storage.setString(token, forKey: voipTokenStorageKey)
     }
 
+    /// Requests Contacts access for caller photo display. Exposed to JS via VoipModule.
+    @objc
+    public static func requestContactsAccess(completion: @escaping (String) -> Void) {
+        CallerContactManager.requestAccess(completion: completion)
+    }
+
     // MARK: - Incoming Call Timeout
 
     public static func scheduleIncomingCallTimeout(for payload: VoipPayload) {
@@ -256,6 +262,7 @@ public final class VoipService: NSObject {
         clearTrackedIncomingCall(for: payload.callUUID)
         stopDDPClientInternal(callId: payload.callId)
         clearNativeAcceptDedupe(for: payload.callId)
+        CallerContactManager.removeContact(forCallId: payload.callId)
 
         let callId = payload.callId
         let callUUID = payload.callUUID
@@ -419,6 +426,7 @@ public final class VoipService: NSObject {
 
         let finishAccept: (Bool) -> Void = { success in
             stopDDPClientInternal(callId: payload.callId)
+            CallerContactManager.removeContact(forCallId: payload.callId)
             if success {
                 storeInitialEvents(payload)
                 clearNativeAcceptDedupe(for: payload.callId)
@@ -518,6 +526,8 @@ public final class VoipService: NSObject {
     }
 
     private static func reject(payload: VoipPayload) {
+        CallerContactManager.removeContact(forCallId: payload.callId)
+
         guard let api = API(server: payload.host) else {
             #if DEBUG
             print("[\(TAG)] Failed to create API for reject: \(payload.host)")
@@ -552,6 +562,12 @@ public final class VoipService: NSObject {
 
         callObserver.setDelegate(incomingCallObserver, queue: .main)
         isCallObserverConfigured = true
+    }
+
+    /// Returns true if the given callUUID is still tracked as an active incoming call.
+    /// Used by AppDelegate+Voip to check if a call is still ringing before updating CallKit.
+    public static func isCallTracked(_ callUUID: UUID) -> Bool {
+        return observedIncomingCalls[callUUID] != nil
     }
 
     private static func trackIncomingCall(_ payload: VoipPayload) {
@@ -598,6 +614,7 @@ public final class VoipService: NSObject {
         observedIncomingCalls.removeValue(forKey: call.uuid)
         cancelIncomingCallTimeout(for: endedCallId)
         clearNativeAcceptDedupe(for: endedCallId)
+        CallerContactManager.removeContact(forCallId: endedCallId)
 
         RNCallKeep.endCall(withUUID: endedCallId, reason: 3)
         reject(payload: observedCall.payload)

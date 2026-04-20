@@ -838,6 +838,8 @@
   "Shortcut": "Shortcut",
   "Show_badge_for_mentions": "Show badge for mentions",
   "Show_badge_for_mentions_Info": "Display badge for direct mentions only",
+  "Show_caller_photo_on_incoming_calls": "Show caller photo on incoming calls",
+  "Show_caller_photo_on_incoming_calls_description": "Display caller photos on the incoming call screen. Requires access to Contacts.",
   "Show_less": "Show less",
   "Show_more": "Show more",
   "Show_Password": "Show Password",

@@ -1,3 +1,4 @@
+import CallKit
 import PushKit
 
 fileprivate let voipAppDelegateLogTag = "RocketChat.AppDelegate+Voip"
@@ -57,5 +58,32 @@ extension AppDelegate: PKPushRegistryDelegate {
       withCompletionHandler: {}
     )
     completion()
+
+    // After reporting, attempt to show caller avatar on the CallKit UI.
+    // This runs asynchronously — if it fails or is slow, the call still shows with name only.
+    // Feature is opt-in: the user must enable it via the in-app setting (MMKV key).
+    let callerPhotoEnabled = MMKVBridge.build().string(forKey: "VOIP_CALLER_PHOTO_KEY") == "true"
+    if callerPhotoEnabled, let avatarUrl = voipPayload.avatarUrl, !avatarUrl.isEmpty {
+      let callUUID = voipPayload.callUUID
+      CallerContactManager.createTemporaryContact(
+        callerName: caller,
+        username: voipPayload.username,
+        avatarUrl: avatarUrl,
+        callId: callId
+      ) { syntheticNumber in
+        guard let syntheticNumber else { return }
+
+        // Verify the call is still active before updating CallKit
+        guard VoipService.isCallTracked(callUUID) else {
+          CallerContactManager.removeContact(forCallId: callId)
+          return
+        }
+
+        let callUpdate = CXCallUpdate()
+        callUpdate.remoteHandle = CXHandle(type: .phoneNumber, value: syntheticNumber)
+        callUpdate.localizedCallerName = caller
+        RNCallKeep.sharedCXProvider()?.reportCall(with: callUUID, updated: callUpdate)
+      }
+    }
   }
 }

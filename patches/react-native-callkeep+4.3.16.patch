@@ -5,7 +5,7 @@ index 025480a..70a1305 100644
 @@ -434,11 +434,6 @@ public class RNCallKeepModule extends ReactContextBaseJavaModule implements Life
          this.hasListeners = false;
      }
- 
+
 -    @ReactMethod
 -    public void displayIncomingCall(String uuid, String number, String callerName) {
 -        this.displayIncomingCall(uuid, number, callerName, false, null);
@@ -17,7 +17,7 @@ index 025480a..70a1305 100644
 @@ -483,11 +478,6 @@ public class RNCallKeepModule extends ReactContextBaseJavaModule implements Life
          conn.onAnswer();
      }
- 
+
 -    @ReactMethod
 -    public void startCall(String uuid, String number, String callerName) {
 -        this.startCall(uuid, number, callerName, false, null);
@@ -26,6 +26,17 @@ index 025480a..70a1305 100644
      @ReactMethod
      public void startCall(String uuid, String number, String callerName, boolean hasVideo) {
          this.startCall(uuid, number, callerName, hasVideo, null);
+diff --git a/node_modules/react-native-callkeep/ios/RNCallKeep/RNCallKeep.h b/node_modules/react-native-callkeep/ios/RNCallKeep/RNCallKeep.h
+index 4ddafab..1b2c3f6 100644
+--- a/node_modules/react-native-callkeep/ios/RNCallKeep/RNCallKeep.h
++++ b/node_modules/react-native-callkeep/ios/RNCallKeep/RNCallKeep.h
+@@ -46,5 +46,6 @@
+ + (BOOL)isCallActive:(NSString *)uuidString;
+
+ + (void)setup:(NSDictionary *)options;
+++ (CXProvider * _Nullable)sharedCXProvider;
+
+ @end
 diff --git a/node_modules/react-native-callkeep/ios/RNCallKeep/RNCallKeep.m b/node_modules/react-native-callkeep/ios/RNCallKeep/RNCallKeep.m
 index 786045f..a989d58 100644
 --- a/node_modules/react-native-callkeep/ios/RNCallKeep/RNCallKeep.m
@@ -39,3 +50,14 @@ index 786045f..a989d58 100644
          [_delayedEvents addObject:dictionary];
      }
  }
+@@ -205,6 +207,10 @@ + (void)setup:(NSDictionary *)options {
+     RNCallKeep *callKeep = [RNCallKeep allocWithZone: nil];
+     [callKeep setup:options];
+     isSetupNatively = YES;
++}
++
+++ (CXProvider *)sharedCXProvider {
++    return sharedProvider;
+ }
+
+ RCT_EXPORT_METHOD(setup:(NSDictionary *)options)
