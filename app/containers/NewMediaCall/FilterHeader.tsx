@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
@@ -23,12 +23,18 @@ export const FilterHeader = (): React.ReactElement => {
 	const username = useSelector(selectUsername);
 	const sipEnabled = useSelector(selectSipEnabled);
 
-	const debouncedFetchOptions = useDebounce((value: string) => {
-		usePeerAutocompleteStore.getState().fetchOptions(value, { username, sipEnabled });
-	}, textInputDebounceTime);
+	const debouncedFetchOptions = useDebounce(
+		useCallback(
+			(value: string) => {
+				usePeerAutocompleteStore.getState().fetchOptions(value, { username, sipEnabled });
+			},
+			[username, sipEnabled]
+		),
+		textInputDebounceTime
+	);
 
 	const handleChangeText = (value: string) => {
-		usePeerAutocompleteStore.setState({ filter: value, selectedPeer: null });
+		usePeerAutocompleteStore.setState({ filter: value, selectedPeer: null, options: [] });
 		debouncedFetchOptions(value);
 	};
 
