@@ -492,6 +492,21 @@ describe('MediaSessionInstance', () => {
 			expect(session.processSignal).not.toHaveBeenCalled();
 		});
 
+		it('ignores stream-notify-user when eventName has more than two segments', async () => {
+			await mediaSessionInstance.init('user-1');
+			const session = createdSessions[0];
+			session.processSignal.mockClear();
+			const streamHandler = getStreamNotifyHandler();
+			streamHandler({
+				msg: 'changed',
+				fields: {
+					eventName: 'user-1/media-signal/extra',
+					args: [{ type: 'noop' }]
+				}
+			} as unknown as IDDPMessage);
+			expect(session.processSignal).not.toHaveBeenCalled();
+		});
+
 		it('does not call answerCall when store call object is already set', async () => {
 			const answerSpy = jest.spyOn(mediaSessionInstance, 'answerCall').mockResolvedValue(undefined);
 			mockUseCallStoreGetState.mockReturnValue({

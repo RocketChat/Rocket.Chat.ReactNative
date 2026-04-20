@@ -201,11 +201,18 @@ class MediaSessionInstance {
 			if (!this.instance) {
 				return;
 			}
-			const [uid, ev] = ddpMessage.fields.eventName.split('/');
+			const eventNameParts = ddpMessage.fields.eventName.split('/');
+			if (eventNameParts.length !== 2) {
+				return;
+			}
+			const [uid, ev] = eventNameParts;
 			if (uid !== streamUserId || ev !== 'media-signal') {
 				return;
 			}
-			const signal = ddpMessage.fields.args[0];
+			const signal = ddpMessage.fields.args?.[0];
+			if (!signal) {
+				return;
+			}
 			this.instance.processSignal(signal);
 
 			mediaCallLogger.debug('[VoIP] Processed signal:', signal);

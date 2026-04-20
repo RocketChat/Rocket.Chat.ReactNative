@@ -4,7 +4,9 @@ const formatArg = (value: unknown): string => (typeof value === 'string' ? value
 
 export const mediaCallLogger = {
 	info(...args: unknown[]): void {
-		console.log(...args);
+		if (__DEV__) {
+			console.log(...args);
+		}
 	},
 	warn(...args: unknown[]): void {
 		console.warn(...args);
