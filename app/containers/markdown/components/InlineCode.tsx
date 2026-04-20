@@ -1,4 +1,3 @@
-import React from 'react';
 import { Text } from 'react-native';
 import { type InlineCode as InlineCodeProps } from '@rocket.chat/message-parser';
 

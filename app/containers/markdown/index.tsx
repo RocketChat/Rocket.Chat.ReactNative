@@ -1,4 +1,4 @@
-import React from 'react';
+import { type FC } from 'react';
 import { type StyleProp, type TextStyle, View } from 'react-native';
 import { parse } from '@rocket.chat/message-parser';
 import type { Root } from '@rocket.chat/message-parser';
@@ -35,7 +35,7 @@ interface IMarkdownProps {
 	textStyle?: StyleProp<TextStyle>;
 }
 
-const Markdown: React.FC<IMarkdownProps> = ({
+const Markdown: FC<IMarkdownProps> = ({
 	msg,
 	md,
 	mentions,

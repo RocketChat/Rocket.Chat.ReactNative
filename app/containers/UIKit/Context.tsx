@@ -1,4 +1,4 @@
-import React from 'react';
+import { Fragment } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
@@ -15,9 +15,9 @@ const styles = StyleSheet.create({
 export const Context = ({ elements, parser }: IContext) => (
 	<View style={styles.container}>
 		{elements?.map((element, index) => (
-			<React.Fragment key={(element as any).type ? `${(element as any).type}-${index}` : `context-${index}`}>
+			<Fragment key={(element as any).type ? `${(element as any).type}-${index}` : `context-${index}`}>
 				{parser?.renderContext(element, BlockContext.CONTEXT)}
-			</React.Fragment>
+			</Fragment>
 		))}
 	</View>
 );

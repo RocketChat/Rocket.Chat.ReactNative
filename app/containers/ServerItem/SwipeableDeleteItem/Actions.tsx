@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import Animated, {
 	useAnimatedStyle,
@@ -28,7 +28,7 @@ export interface IDeleteActionProps {
 
 const SERVER_ITEM_PADDING_VERTICAL = 12;
 
-export const DeleteAction = React.memo(
+export const DeleteAction = memo(
 	({ transX, width, rowHeight, actionWidth, longSwipe, onDeletePress, testID }: IDeleteActionProps) => {
 		const { colors } = useTheme();
 

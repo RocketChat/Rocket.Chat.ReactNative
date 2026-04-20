@@ -1,4 +1,4 @@
-import React, { type ReactElement, useMemo } from 'react';
+import { useMemo, memo, type ReactElement } from 'react';
 import {
 	I18nManager,
 	type StyleProp,
@@ -112,7 +112,7 @@ interface IListItemContent {
 	numberOfLines?: number;
 }
 
-const Content = React.memo(
+const Content = memo(
 	({
 		title,
 		subtitle,
@@ -225,7 +225,7 @@ interface IListItemButton {
 	underlayColor?: string;
 }
 
-const Button = React.memo(({ onPress, backgroundColor, underlayColor, ...props }: IListButtonPress) => {
+const Button = memo(({ onPress, backgroundColor, underlayColor, ...props }: IListButtonPress) => {
 	'use memo';
 
 	const { colors } = useTheme();
@@ -254,7 +254,7 @@ export interface IListItem extends Omit<IListItemContent, 'theme'>, Omit<IListIt
 	onPress?: Function;
 }
 
-const ListItem = React.memo(({ ...props }: IListItem) => {
+const ListItem = memo(({ ...props }: IListItem) => {
 	'use memo';
 
 	const { colors } = useTheme();

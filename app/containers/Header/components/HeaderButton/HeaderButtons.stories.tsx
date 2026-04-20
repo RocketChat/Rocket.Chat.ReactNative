@@ -1,4 +1,4 @@
-import React from 'react';
+import { type ReactElement } from 'react';
 import { View } from 'react-native';
 import { Header, HeaderBackground, SafeAreaProviderCompat } from '@react-navigation/elements';
 import { NavigationContainer } from '@react-navigation/native';
@@ -8,8 +8,8 @@ import { type TColors, ThemeContext, type TSupportedThemes } from '../../../../t
 import { colors } from '../../../../lib/constants/colors';
 
 interface IHeader {
-	left?: () => React.ReactElement | null;
-	right?: () => React.ReactElement;
+	left?: () => ReactElement | null;
+	right?: () => ReactElement;
 	title?: string;
 	colors?: TColors;
 }

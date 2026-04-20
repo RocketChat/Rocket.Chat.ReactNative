@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import I18n from '../../i18n';
@@ -42,7 +42,7 @@ interface IHeader {
 	thread: TThreadModel | string;
 }
 
-const Header = React.memo(({ room, thread }: IHeader) => {
+const Header = memo(({ room, thread }: IHeader) => {
 	const [title, setTitle] = useState('');
 	const { theme } = useTheme();
 	let type;

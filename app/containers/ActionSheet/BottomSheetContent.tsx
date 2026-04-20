@@ -1,5 +1,5 @@
 import { FlatList, Text, useWindowDimensions, View, type ViewProps } from 'react-native';
-import React from 'react';
+import { memo, type ReactElement } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import I18n from '../../i18n';
@@ -15,14 +15,14 @@ interface IBottomSheetContentProps {
 	hasCancel?: boolean;
 	options?: TActionSheetOptionsItem[];
 	hide: () => void;
-	children?: React.ReactElement | null;
+	children?: ReactElement | null;
 	onLayout: ViewProps['onLayout'];
 	fullContainer?: boolean;
 	contentMinHeight?: number;
 	scrollEnabled?: boolean;
 }
 
-const BottomSheetContent = React.memo(
+const BottomSheetContent = memo(
 	({
 		options,
 		hasCancel,

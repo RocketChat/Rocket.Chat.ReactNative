@@ -1,4 +1,4 @@
-import React, { useRef, memo, type ReactElement } from 'react';
+import { useRef, memo, type ReactElement } from 'react';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 import {
 	Gesture,
@@ -42,7 +42,7 @@ const SwipeableDeleteTouchable = ({
 	onDeletePress,
 	accessibilityLabel,
 	accessibilityHint
-}: ISwipeableDeleteTouchableProps): React.ReactElement => {
+}: ISwipeableDeleteTouchableProps): ReactElement => {
 	const { colors } = useTheme();
 
 	const transX = useSharedValue(0);

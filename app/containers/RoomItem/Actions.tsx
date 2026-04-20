@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 import { View } from 'react-native';
 import Animated, {
 	useAnimatedStyle,
@@ -22,7 +22,7 @@ import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResp
 const CONDENSED_ICON_SIZE = 24;
 const EXPANDED_ICON_SIZE = 28;
 
-export const LeftActions = React.memo(({ transX, isRead, width, onToggleReadPress, displayMode }: ILeftActionsProps) => {
+export const LeftActions = memo(({ transX, isRead, width, onToggleReadPress, displayMode }: ILeftActionsProps) => {
 	const { colors } = useTheme();
 
 	const { rowHeight, rowHeightCondensed } = useResponsiveLayout();
@@ -61,7 +61,7 @@ export const LeftActions = React.memo(({ transX, isRead, width, onToggleReadPres
 	);
 });
 
-export const RightActions = React.memo(({ transX, favorite, width, toggleFav, onHidePress, displayMode }: IRightActionsProps) => {
+export const RightActions = memo(({ transX, favorite, width, toggleFav, onHidePress, displayMode }: IRightActionsProps) => {
 	const { colors } = useTheme();
 
 	const { rowHeight, rowHeightCondensed } = useResponsiveLayout();

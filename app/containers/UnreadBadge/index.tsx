@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 import { type StyleProp, StyleSheet, Text, useWindowDimensions, View, type ViewStyle } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
@@ -52,7 +52,7 @@ function getTestId(userMentions: number | undefined, groupMentions: number | und
 	return '';
 }
 
-const UnreadBadge = React.memo(
+const UnreadBadge = memo(
 	({
 		unread,
 		userMentions,

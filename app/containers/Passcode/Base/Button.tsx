@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 import { Text, type StyleProp, type ViewStyle } from 'react-native';
 
 import styles from './styles';
@@ -15,7 +15,7 @@ interface IPasscodeButton {
 	testID?: string;
 }
 
-const Button = React.memo(({ style, text, disabled, onPress, icon, testID }: IPasscodeButton) => {
+const Button = memo(({ style, text, disabled, onPress, icon, testID }: IPasscodeButton) => {
 	const { colors } = useTheme();
 
 	const press = () => onPress && onPress(text);

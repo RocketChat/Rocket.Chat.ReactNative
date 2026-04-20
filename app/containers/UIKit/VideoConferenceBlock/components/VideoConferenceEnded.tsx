@@ -1,4 +1,4 @@
-import React from 'react';
+import { type ReactElement } from 'react';
 import { Text } from 'react-native';
 
 import { type IUser } from '../../../../definitions';
@@ -21,7 +21,7 @@ export default function VideoConferenceEnded({
 	type: VideoConferenceType;
 	createdBy: Pick<IUser, '_id' | 'username' | 'name'>;
 	rid: string;
-}): React.ReactElement {
+}): ReactElement {
 	const style = useStyle();
 	const username = useAppSelector(state => state.login.user.username);
 	const { showInitCallActionSheet } = useVideoConf(rid);

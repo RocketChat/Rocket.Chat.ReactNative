@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { BaseButton } from './Buttons';
 import { useRoomContext } from '../../../views/RoomView/context';
 import { Gap } from './Gap';

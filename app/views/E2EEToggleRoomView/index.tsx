@@ -1,5 +1,5 @@
 import { type RouteProp, useRoute } from '@react-navigation/native';
-import React, { useLayoutEffect } from 'react';
+import { useLayoutEffect } from 'react';
 
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';

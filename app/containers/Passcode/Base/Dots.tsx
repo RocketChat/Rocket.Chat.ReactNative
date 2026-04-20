@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 import { View } from 'react-native';
 import range from 'lodash/range';
 
@@ -13,7 +13,7 @@ interface IPasscodeDots {
 	length: number;
 }
 
-const Dots = React.memo(({ passcode, length }: IPasscodeDots) => {
+const Dots = memo(({ passcode, length }: IPasscodeDots) => {
 	const { colors } = useTheme();
 
 	return (

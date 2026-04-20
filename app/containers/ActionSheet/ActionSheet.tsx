@@ -1,6 +1,6 @@
 import { useBackHandler } from '@react-native-community/hooks';
 import * as Haptics from 'expo-haptics';
-import React, { forwardRef, isValidElement, useImperativeHandle, useRef, useState } from 'react';
+import { forwardRef, isValidElement, useImperativeHandle, useRef, useState, memo, type ReactElement } from 'react';
 import { Keyboard, type LayoutChangeEvent, Platform, useWindowDimensions } from 'react-native';
 import { TrueSheet } from '@lodev09/react-native-true-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -15,8 +15,8 @@ import styles from './styles';
 
 export const ACTION_SHEET_ANIMATION_DURATION = 250;
 
-const ActionSheet = React.memo(
-	forwardRef(({ children }: { children: React.ReactElement }, ref) => {
+const ActionSheet = memo(
+	forwardRef(({ children }: { children: ReactElement }, ref) => {
 		const { colors } = useTheme();
 		const { height: windowHeight, width: windowWidth, fontScale } = useWindowDimensions();
 		const sheetRef = useRef<TrueSheet>(null);

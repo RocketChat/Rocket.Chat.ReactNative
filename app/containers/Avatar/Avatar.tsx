@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 import { View } from 'react-native';
 import { Image } from 'expo-image';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
@@ -11,7 +11,7 @@ import MarkdownContext from '../markdown/contexts/MarkdownContext';
 import I18n from '../../i18n';
 import Touch from '../Touch';
 
-const Avatar = React.memo(
+const Avatar = memo(
 	({
 		server,
 		style,

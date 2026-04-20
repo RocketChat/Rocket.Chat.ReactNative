@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext, memo } from 'react';
 import { Text } from 'react-native';
 
 import { useTheme } from '../../../../theme';
@@ -18,7 +18,7 @@ interface IAtMention {
 	mentions?: IUserMention[];
 }
 
-const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, useRealName }: IAtMention) => {
+const AtMention = memo(({ mention, mentions, username, navToRoomInfo, useRealName }: IAtMention) => {
 	const { theme } = useTheme();
 	const { textStyle } = useContext(MarkdownContext);
 	const [mentionsWithAtSymbol] = useUserPreferences<boolean>(USER_MENTIONS_PREFERENCES_KEY, false);

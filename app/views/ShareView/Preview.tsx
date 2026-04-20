@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { memo, useState } from 'react';
 import { Video, ResizeMode } from 'expo-av';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
@@ -43,7 +43,7 @@ interface IIconPreview {
 	danger?: boolean;
 }
 
-const IconPreview = React.memo(({ iconName, title, description, theme, width, height, danger }: IIconPreview) => (
+const IconPreview = memo(({ iconName, title, description, theme, width, height, danger }: IIconPreview) => (
 	<ScrollView
 		style={{ backgroundColor: themes[theme].surfaceNeutral }}
 		contentContainerStyle={[styles.fileContainer, { width, height }]}>
@@ -63,7 +63,7 @@ interface IPreview {
 	length: number;
 }
 
-const Preview = React.memo(({ item, theme, length }: IPreview) => {
+const Preview = memo(({ item, theme, length }: IPreview) => {
 	const type = item?.mime;
 	const { width, height } = useWindowDimensions();
 	const insets = useSafeAreaInsets();

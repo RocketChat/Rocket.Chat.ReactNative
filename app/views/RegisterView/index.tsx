@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { AccessibilityInfo, Keyboard, Text, type TextInput, View } from 'react-native';
 import parse from 'url-parse';
 import * as yup from 'yup';
