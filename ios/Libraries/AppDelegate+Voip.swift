@@ -86,8 +86,7 @@ extension AppDelegate: PKPushRegistryDelegate {
       handle: caller,
       localizedCallerName: caller,
       payload: payloadDict,
-      onReportComplete: {}
+      onReportComplete: { completion() }
     )
-    completion()
   }
 }

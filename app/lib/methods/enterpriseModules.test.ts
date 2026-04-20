@@ -12,6 +12,10 @@ describe('isVoipModuleAvailable', () => {
 		mockedStore.dispatch(clearEnterpriseModules());
 	});
 
+	it('returns false when enterpriseModules is empty', () => {
+		expect(isVoipModuleAvailable()).toBe(false);
+	});
+
 	it('returns false when teams-voip is absent', () => {
 		mockedStore.dispatch(setEnterpriseModules(['omnichannel-mobile-enterprise']));
 		expect(isVoipModuleAvailable()).toBe(false);
