@@ -8,11 +8,10 @@ import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.load.model.LazyHeaders;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -54,9 +53,9 @@ public class NotificationHelper {
     }
     
     /**
-     * Build a Glide load model for an avatar URL, appending rc_token/rc_uid as query
-     * parameters when the Ejson has credentials. Mirrors the JS codebase's avatar auth
-     * convention (getAvatarUrl.ts, Reply.tsx, Urls.tsx).
+     * Build a Glide load model for an avatar URL, sending rc_token/rc_uid as HTTP request
+     * headers via GlideUrl + LazyHeaders. The JS codebase appends these as query params
+     * (getAvatarUrl.ts) for convenience; native uses headers because Glide supports it cleanly.
      */
     public static Object avatarLoadModel(String uri, @Nullable Ejson ejson) {
         if (uri == null || uri.isEmpty()) {
@@ -67,16 +66,11 @@ public class NotificationHelper {
         if (rcToken.isEmpty() || rcUid.isEmpty()) {
             return uri;
         }
-        String separator = uri.contains("?") ? "&" : "?";
-        try {
-            String authed = uri + separator
-                    + "rc_token=" + URLEncoder.encode(rcToken, "UTF-8")
-                    + "&rc_uid=" + URLEncoder.encode(rcUid, "UTF-8");
-            return new GlideUrl(authed);
-        } catch (UnsupportedEncodingException e) {
-            Log.e("NotificationHelper", "Failed to encode avatar credentials", e);
-            return uri;
-        }
+        LazyHeaders headers = new LazyHeaders.Builder()
+                .addHeader("rc_token", rcToken)
+                .addHeader("rc_uid", rcUid)
+                .build();
+        return new GlideUrl(uri, headers);
     }
 
     /**
