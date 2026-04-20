@@ -120,12 +120,6 @@ jest.mock('react-native-callkeep', () => ({
 	}
 }));
 
-function emitNativeVoipEvent(eventType: string, payload: unknown): void {
-	mockNativeVoipListeners[eventType]?.forEach(fn => {
-		fn(payload);
-	});
-}
-
 function getEndCallHandler(): (payload: { callUUID: string }) => void {
 	const call = mockAddEventListener.mock.calls.find(([name]) => name === 'endCall');
 	if (!call) {

@@ -10,8 +10,7 @@ import { registerPushToken } from '../restApi';
 import { MediaCallLogger } from './MediaCallLogger';
 
 const Emitter = isIOS ? new NativeEventEmitter(NativeVoipModule) : DeviceEventEmitter;
-const platform = isIOS ? 'iOS' : 'Android';
-const TAG = `[MediaCallEvents][${platform}]`;
+const TAG = isIOS ? '[MediaCallEvents][iOS]' : '[MediaCallEvents][Android]';
 const mediaCallLogger = new MediaCallLogger();
 
 const EVENT_VOIP_ACCEPT_FAILED = 'VoipAcceptFailed';
@@ -138,8 +137,8 @@ export const setupMediaCallEvents = (runtime: MediaCallEventsRuntime): (() => vo
 	// iOS listens for VoIP push token registration and CallKeep UI actions
 	if (isIOS) {
 		subscriptions.push(
-			Emitter.addListener('VoipPushTokenRegistered', ({ token }: { token: string }) => {
-				mediaCallLogger.log(`${TAG} Registered VoIP push token:`, token);
+			Emitter.addListener('VoipPushTokenRegistered', () => {
+				mediaCallLogger.log(`${TAG} Registered VoIP push token`);
 				registerPushToken().catch(error => {
 					mediaCallLogger.log(`${TAG} Failed to register push token after VoIP update:`, error);
 				});
@@ -214,7 +213,7 @@ export const setupMediaCallEvents = (runtime: MediaCallEventsRuntime): (() => vo
 
 	subscriptions.push(
 		Emitter.addListener(EVENT_VOIP_ACCEPT_FAILED, (data: VoipPayload & { voipAcceptFailed?: boolean }) => {
-			mediaCallLogger.log(`${TAG} VoipAcceptFailed event:`, data);
+			mediaCallLogger.log(`${TAG} VoipAcceptFailed event:`, redactVoipPayload(data));
 			dispatchVoipAcceptFailureFromNative(runtime, { ...data, voipAcceptFailed: true });
 			NativeVoipModule.clearInitialEvents();
 		})
@@ -286,6 +285,7 @@ export const getInitialMediaCallEvents = async (runtime: MediaCallEventsRuntime)
 					mediaCallLogger.error(`${TAG} applyRestStateSignals (initial) failed:`, error);
 				});
 				mediaCallLogger.log(`${TAG} Same workspace as VoIP host; skipped deep link open`);
+				NativeVoipModule.clearInitialEvents();
 				return true;
 			}
 
