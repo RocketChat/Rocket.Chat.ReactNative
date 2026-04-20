@@ -83,6 +83,11 @@ class DDPClient {
                 Log.e(TAG, "WebSocket failure: ${t.message}")
                 isConnected = false
                 mainHandler.post {
+                    // Re-check identity on main thread: disconnect()+connect() can interleave
+                    // between the outer guard (OkHttp thread) and this runnable's execution.
+                    // Without this re-check, a stale failure can hijack a newly installed
+                    // connectedCallback via the CAS in tryDeliverConnectOutcome.
+                    if (webSocket !== this@DDPClient.webSocket) return@post
                     tryDeliverConnectOutcome(false)
                 }
             }
@@ -358,7 +363,14 @@ class DDPClient {
         handleMessage(text)
     }
 
-    internal fun testDeliverConnectFailure() {
-        mainHandler.post { tryDeliverConnectOutcome(false) }
+    internal fun testDeliverConnectFailure(fromWebSocket: WebSocket? = null) {
+        mainHandler.post {
+            if (fromWebSocket != null && fromWebSocket !== this@DDPClient.webSocket) return@post
+            tryDeliverConnectOutcome(false)
+        }
+    }
+
+    internal fun testSetActiveWebSocket(ws: WebSocket?) {
+        this.webSocket = ws
     }
 }

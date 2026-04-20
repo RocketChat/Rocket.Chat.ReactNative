@@ -2,6 +2,9 @@ package chat.rocket.reactnative.voip
 
 import android.os.Handler
 import android.os.Looper
+import okhttp3.Request
+import okhttp3.WebSocket
+import okio.ByteString
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -11,6 +14,15 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows
 import org.robolectric.annotation.Config
 import java.util.concurrent.TimeUnit
+
+private class StubWebSocket : WebSocket {
+    override fun request(): Request = Request.Builder().url("wss://example.com").build()
+    override fun queueSize(): Long = 0
+    override fun send(text: String): Boolean = true
+    override fun send(bytes: ByteString): Boolean = true
+    override fun close(code: Int, reason: String?): Boolean = true
+    override fun cancel() {}
+}
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [28])
@@ -90,12 +102,10 @@ class DDPClientTest {
     }
 
     @Test
-    fun `stale failure after completed connect and disconnect is a no-op`() {
-        // Regression: disconnect() previously reset connectResultDelivered, allowing a late
-        // onFailure from the old socket to win the CAS and invoke a newly installed callback.
-        // Fix: remove the reset from disconnect(); the stale-listener guard in onFailure()
-        // is the primary defence, but keeping delivered=true also protects the window before
-        // a new connect() rearms the state.
+    fun `stale failure after completed connect and disconnect is a no-op when no reconnect armed`() {
+        // CAS-gate case: disconnect() no longer resets connectResultDelivered, so a late
+        // failure arriving before any new connect() loses the CAS (delivered is still true
+        // from the completed handshake).
         val client = DDPClient()
         val outcomes = mutableListOf<Boolean>()
         val looper = Shadows.shadowOf(Looper.getMainLooper())
@@ -114,5 +124,47 @@ class DDPClientTest {
 
         // delivered was still true → CAS fails → no spurious false
         assertEquals(listOf(true), outcomes)
+    }
+
+    @Test
+    fun `stale failure during reconnect window does not hijack new callback`() {
+        // Real-hijack-vector regression: L1 onFailure queues a main-thread runnable while L1
+        // is still current. Before the runnable executes, user disconnects and reconnects.
+        // connect2 calls resetConnectHandshakeState() (delivered=false) and installs cb2.
+        // Without the re-check inside the main-handler post, the stale runnable would win
+        // the CAS and hijack cb2 with false. The inner identity check in onFailure's post
+        // must reject the stale failure.
+        val client = DDPClient()
+        val oldSocket = StubWebSocket()
+        val newSocket = StubWebSocket()
+        val cb1Outcomes = mutableListOf<Boolean>()
+        val cb2Outcomes = mutableListOf<Boolean>()
+        val looper = Shadows.shadowOf(Looper.getMainLooper())
+
+        // connect1 with oldSocket succeeds
+        client.testSetActiveWebSocket(oldSocket)
+        client.testStartConnectTimeout(10_000) { cb1Outcomes.add(it) }
+        client.testDeliverRawMessage("""{"msg":"connected"}""")
+        looper.idle()
+        assertEquals(listOf(true), cb1Outcomes)
+
+        // Simulate onFailure from oldSocket queuing a failure runnable
+        // (outer guard passed; runnable is now on main handler awaiting execution)
+        client.testDeliverConnectFailure(oldSocket)
+
+        // Before the runnable runs: quick disconnect + reconnect
+        client.disconnect()
+        client.testSetActiveWebSocket(newSocket)
+        client.testStartConnectTimeout(10_000) { cb2Outcomes.add(it) }
+
+        // Flush the queued stale failure
+        looper.idle()
+
+        // cb2 must NOT receive a spurious false — the inner identity check must reject
+        assertEquals(emptyList<Boolean>(), cb2Outcomes)
+
+        // connect2's own timeout still fires normally
+        looper.idleFor(11_000, TimeUnit.MILLISECONDS)
+        assertEquals(listOf(false), cb2Outcomes)
     }
 }
