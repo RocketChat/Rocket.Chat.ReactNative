@@ -107,9 +107,8 @@ describe('CreateCall', () => {
 			</Wrapper>
 		);
 
-		await act(async () => {
-			fireEvent.press(getByTestId('new-media-call-button'));
-		});
+		fireEvent.press(getByTestId('new-media-call-button'));
+		await act(() => Promise.resolve());
 		expect(mockStartCall).toHaveBeenCalledTimes(1);
 		expect(mockStartCall).toHaveBeenCalledWith('user-1', 'user');
 		expect(mockHideActionSheet).toHaveBeenCalledTimes(1);
@@ -123,9 +122,8 @@ describe('CreateCall', () => {
 			</Wrapper>
 		);
 
-		await act(async () => {
-			fireEvent.press(getByTestId('new-media-call-button'));
-		});
+		fireEvent.press(getByTestId('new-media-call-button'));
+		await act(() => Promise.resolve());
 		expect(mockStartCall).toHaveBeenCalledTimes(1);
 		expect(mockStartCall).toHaveBeenCalledWith('+5511999999999', 'sip');
 		expect(mockHideActionSheet).toHaveBeenCalledTimes(1);

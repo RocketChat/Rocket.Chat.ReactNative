@@ -428,9 +428,8 @@ describe('VoIP call lifecycle (integration)', () => {
 		//   → session.startCall('user', 'user-1') [args reversed for SDK]
 		//   → mock fires 'newCall' → MediaSessionInstance handler
 		//   → useCallStore.setCall + Navigation.navigate('CallView')
-		await act(async () => {
-			fireEvent.press(getByTestId('new-media-call-button'));
-		});
+		fireEvent.press(getByTestId('new-media-call-button'));
+		await act(() => Promise.resolve());
 
 		expect(session.startCall).toHaveBeenCalledWith('user', 'user-1');
 		expect(Navigation.navigate).toHaveBeenCalledWith('CallView');
