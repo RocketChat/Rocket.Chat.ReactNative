@@ -1,17 +1,19 @@
 import { InteractionManager } from 'react-native';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import { type Model, Q } from '@nozbe/watermelondb';
 
 import { type IActiveUsers } from '../../reducers/activeUsers';
 import { store as reduxStore } from '../store/auxStore';
 import { setActiveUsers } from '../../actions/activeUsers';
 import { setUser } from '../../actions/login';
 import database from '../database';
-import { type IUser } from '../../definitions';
+import { type IUser, type TUserModel } from '../../definitions';
 import sdk from '../services/sdk';
 import { compareServerVersion } from './helpers';
 import userPreferences from './userPreferences';
 import { NOTIFICATION_PRESENCE_CAP } from '../constants/notifications';
 import { setNotificationPresenceCap } from '../../actions/app';
+import log from './helpers/log';
 
 export const _activeUsersSubTimeout: { activeUsersSubTimeout: boolean | ReturnType<typeof setTimeout> | number } = {
 	activeUsersSubTimeout: false
@@ -87,27 +89,60 @@ export async function getUsersPresence(usersParams: string[]) {
 
 				const db = database.active;
 				const userCollection = db.get('users');
-				users.forEach(async (user: IUser) => {
-					try {
-						const userRecord = await userCollection.find(user._id);
-						await db.write(async () => {
-							await userRecord.update(u => {
+				try {
+					const userIds = users.map((u: IUser) => u._id);
+					const chunks: string[][] = [];
+					for (let i = 0; i < userIds.length; i += 900) {
+						chunks.push(userIds.slice(i, i + 900));
+					}
+					const existingRecords = (await Promise.all(chunks.map(chunk => userCollection.query(Q.where('id', Q.oneOf(chunk))).fetch()))).flat();
+					const existingRecordsMap = new Map<string, TUserModel>(existingRecords.map(u => [u.id, u]));
+
+					const operations: Model[] = users.map((user: IUser) => {
+						const existingRecord = existingRecordsMap.get(user._id);
+						if (existingRecord) {
+							return existingRecord.prepareUpdate((u: TUserModel) => {
 								Object.assign(u, user);
 							});
+						}
+						return userCollection.prepareCreate(u => {
+							u._raw = sanitizedRaw({ id: user._id }, userCollection.schema);
+							Object.assign(u, user);
+						});
+					});
+
+					try {
+						await db.write(async () => {
+							await db.batch(...operations);
 						});
 					} catch (e) {
-						// User not found
-						await db.write(async () => {
-							await userCollection.create(u => {
-								u._raw = sanitizedRaw({ id: user._id }, userCollection.schema);
-								Object.assign(u, user);
-							});
-						});
+						log(e);
+						const failedOperations: Model[] = [];
+						for (const operation of operations) {
+							try {
+								// eslint-disable-next-line no-await-in-loop
+								await db.write(() => db.batch(operation));
+							} catch (operationError: any) {
+								log({
+									message: 'Fallback per-operation write failed',
+									operationId: operation.id,
+									operationTable: operation.collection.table,
+									error: operationError?.message || operationError
+								});
+								failedOperations.push(operation);
+							}
+						}
+						// If we want to escalate all failures at the end:
+						if (failedOperations.length > 0) {
+							log({ message: `Fallback completed with ${failedOperations.length} failed operations` });
+						}
 					}
-				});
+				} catch (e) {
+					log(e);
+				}
 			}
-		} catch {
-			// do nothing
+		} catch (e) {
+			log(e);
 		}
 	}
 }
@@ -117,7 +152,7 @@ let usersTimer: ReturnType<typeof setTimeout> | null = null;
 export function getUserPresence(uid: string) {
 	if (!usersTimer) {
 		usersTimer = setTimeout(() => {
-			getUsersPresence(usersBatch);
+			getUsersPresence([...new Set(usersBatch)]);
 			usersBatch = [];
 			usersTimer = null;
 		}, 2000);
