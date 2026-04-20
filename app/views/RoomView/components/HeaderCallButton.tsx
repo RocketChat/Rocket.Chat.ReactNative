@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { type ReactElement, useEffect, useRef } from 'react';
 
 import * as HeaderButton from '../../../containers/Header/components/HeaderButton';
 import { useVideoConf } from '../../../lib/hooks/useVideoConf';
@@ -15,7 +15,7 @@ export const HeaderCallButton = ({
 	rid: string;
 	disabled: boolean;
 	accessibilityLabel: string;
-}): React.ReactElement | null => {
+}): ReactElement | null => {
 	'use memo';
 
 	const { showInitCallActionSheet, callEnabled, disabledTooltip } = useVideoConf(rid);

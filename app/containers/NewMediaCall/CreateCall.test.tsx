@@ -1,6 +1,6 @@
-import React from 'react';
 import { act, fireEvent, render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
+import { type ReactNode } from 'react';
 
 import { CreateCall } from './CreateCall';
 import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';
@@ -38,7 +38,7 @@ const setStoreState = (selectedPeer: TPeerItem | null) => {
 	usePeerAutocompleteStore.setState({ selectedPeer });
 };
 
-const Wrapper = ({ children }: { children: React.ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
+const Wrapper = ({ children }: { children: ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
 
 const userPeer: TPeerItem = {
 	type: 'user',

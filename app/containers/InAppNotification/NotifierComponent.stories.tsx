@@ -1,4 +1,4 @@
-import React from 'react';
+import { type ReactNode } from 'react';
 
 import { ThemeContext, type TSupportedThemes } from '../../theme';
 import { themes } from '../../lib/constants/colors';
@@ -33,7 +33,7 @@ const baseNotification = {
 	avatar: 'rocket.cat'
 };
 
-const Wrapper = ({ children, theme = 'light' }: { children: React.ReactNode; theme?: TSupportedThemes }) => (
+const Wrapper = ({ children, theme = 'light' }: { children: ReactNode; theme?: TSupportedThemes }) => (
 	<ThemeContext.Provider value={{ theme, colors: themes[theme] }}>
 		<ResponsiveLayoutContext.Provider value={responsiveLayoutProviderValue}>{children}</ResponsiveLayoutContext.Provider>
 	</ThemeContext.Provider>

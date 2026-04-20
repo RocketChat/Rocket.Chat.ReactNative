@@ -1,6 +1,6 @@
-import React from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
+import { type ReactNode } from 'react';
 
 import { ROOM } from '../../../../actions/actionsTypes';
 import { type IRoomHistoryRequest } from '../../../../actions/room';
@@ -64,7 +64,7 @@ describe('useMessages', () => {
 	let emittedRows: TAnyMessageModel[];
 	let emitVisibleRows: ((rows: TAnyMessageModel[]) => void) | null;
 
-	const wrapper = ({ children }: { children: React.ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
+	const wrapper = ({ children }: { children: ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
 
 	beforeEach(() => {
 		emittedRows = [];

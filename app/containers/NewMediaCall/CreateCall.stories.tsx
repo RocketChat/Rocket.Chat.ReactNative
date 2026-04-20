@@ -1,5 +1,3 @@
-import React from 'react';
-
 import * as ActionSheetModule from '../ActionSheet';
 import { mediaSessionInstance } from '../../lib/services/voip/MediaSessionInstance';
 import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';

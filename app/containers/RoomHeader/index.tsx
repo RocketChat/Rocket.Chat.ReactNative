@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo, type Ref } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 
 import type { IApplicationState, TUserStatus, IOmnichannelSource, IVisitor, ISubscription } from '../../definitions';
@@ -25,10 +25,10 @@ interface IRoomHeaderContainerProps {
 }
 
 type IRoomHeaderContainerWithRefProps = IRoomHeaderContainerProps & {
-	ref?: React.Ref<IRoomHeaderRef>;
+	ref?: Ref<IRoomHeaderRef>;
 };
 
-const RoomHeaderContainer = React.memo(
+const RoomHeaderContainer = memo(
 	({
 		isGroupChat,
 		onPress,

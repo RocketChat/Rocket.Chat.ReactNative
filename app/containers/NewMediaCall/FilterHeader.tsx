@@ -1,6 +1,6 @@
-import React, { useCallback } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
+import { type ReactElement, useCallback } from 'react';
 
 import I18n from '../../i18n';
 import { useTheme } from '../../theme';
@@ -15,7 +15,7 @@ const selectSipEnabled = (state: IApplicationState) => Boolean(state.settings.Vo
 
 const selectUsername = (state: IApplicationState) => state.login.user?.username;
 
-export const FilterHeader = (): React.ReactElement => {
+export const FilterHeader = (): ReactElement => {
 	const { colors } = useTheme();
 
 	const filter = usePeerAutocompleteStore(state => state.filter);

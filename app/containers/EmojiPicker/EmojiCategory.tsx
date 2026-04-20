@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import { memo, type ReactElement } from 'react';
 import { FlatList } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -49,7 +49,7 @@ const EmojiCategory = ({
 	emojis,
 	onEmojiSelected,
 	bottomSheet = false
-}: IEmojiCategoryProps): React.ReactElement | null => {
+}: IEmojiCategoryProps): ReactElement | null => {
 	const items = useEmojis(category);
 	const { bottom } = useSafeAreaInsets();
 

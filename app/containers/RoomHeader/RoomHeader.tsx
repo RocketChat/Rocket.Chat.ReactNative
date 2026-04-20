@@ -1,17 +1,17 @@
-import React from 'react';
 import { AccessibilityInfo, findNodeHandle, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { memo, type ReactElement, type Ref, useImperativeHandle, useRef } from 'react';
 
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
 import { MarkdownPreview } from '../markdown';
 import RoomTypeIcon from '../RoomTypeIcon';
-import { type TUserStatus, type IOmnichannelSource, type ISubscription } from '../../definitions';
+import type { TUserStatus, IOmnichannelSource, ISubscription } from '../../definitions';
 import { useTheme } from '../../theme';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import useStatusAccessibilityLabel from '../../lib/hooks/useStatusAccessibilityLabel';
-import { type IUsersTyping } from '../../reducers/usersTyping';
+import type { IUsersTyping } from '../../reducers/usersTyping';
 
 const HIT_SLOP = {
 	top: 5,
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
 type TRoomHeaderSubTitle = {
 	usersTyping: IUsersTyping;
 	subtitle?: string;
-	renderFunc?: () => React.ReactElement;
+	renderFunc?: () => ReactElement;
 	scale: number;
 };
 
@@ -84,14 +84,14 @@ interface IRoomHeader {
 }
 
 type IRoomHeaderProps = IRoomHeader & {
-	ref?: React.Ref<IRoomHeaderRef>;
+	ref?: Ref<IRoomHeaderRef>;
 };
 
 export interface IRoomHeaderRef {
 	focus: () => void;
 }
 
-const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, scale }: TRoomHeaderSubTitle) => {
+const SubTitle = memo(({ usersTyping, subtitle, renderFunc, scale }: TRoomHeaderSubTitle) => {
 	const { colors } = useTheme();
 	const fontSize = getSubTitleSize(scale);
 	// typing
@@ -123,7 +123,7 @@ const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, scale }: TRoom
 	return null;
 });
 
-const HeaderTitle = React.memo(({ title, tmid, prid, scale, testID }: TRoomHeaderHeaderTitle) => {
+const HeaderTitle = memo(({ title, tmid, prid, scale, testID }: TRoomHeaderHeaderTitle) => {
 	const { colors } = useTheme();
 	const { isLargeFontScale } = useResponsiveLayout();
 
@@ -162,8 +162,8 @@ const Header = ({
 }: IRoomHeaderProps) => {
 	'use memo';
 
-	const headerRef = React.useRef<View | null>(null);
-	React.useImperativeHandle(
+	const headerRef = useRef<View | null>(null);
+	useImperativeHandle(
 		ref,
 		() => ({
 			focus: () => {
