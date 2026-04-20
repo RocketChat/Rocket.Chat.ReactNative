@@ -341,6 +341,7 @@ describe('VoipAcceptSucceeded sentinel-correctness (Android)', () => {
 describe('setupMediaCallEvents — didToggleHoldCallAction', () => {
 	const toggleHold = jest.fn();
 	const getState = useCallStore.getState as jest.Mock;
+	let cleanup: (() => void) | undefined;
 
 	beforeEach(() => {
 		jest.clearAllMocks();
@@ -348,6 +349,12 @@ describe('setupMediaCallEvents — didToggleHoldCallAction', () => {
 		toggleHold.mockClear();
 		mockAddEventListener.mockImplementation(() => ({ remove: jest.fn() }));
 		getState.mockReturnValue({ ...activeCallBase, isOnHold: false, toggleHold });
+		cleanup = undefined;
+	});
+
+	afterEach(() => {
+		cleanup?.();
+		cleanup = undefined;
 	});
 
 	it('registers didToggleHoldCallAction via RNCallKeep.addEventListener', () => {
@@ -455,7 +462,7 @@ describe('setupMediaCallEvents — didToggleHoldCallAction', () => {
 			}
 			return { remove: jest.fn() };
 		});
-		const cleanup = setupMediaCallEvents(testRuntime);
+		cleanup = setupMediaCallEvents(testRuntime);
 		cleanup();
 		expect(remove).toHaveBeenCalled();
 	});
