@@ -17,7 +17,8 @@ async function flushSagaMicrotasks(): Promise<void> {
 }
 
 describe('videoConf saga — VoIP / videoconf lock', () => {
-	// First DDP arg is the envelope object; rooms.ts names it `action` in the tuple destructure.
+	// Mirrors the first DDP arg destructured at app/lib/methods/subscriptions/rooms.ts
+	// and dispatched as `{ action, params }` into handleVideoConfIncomingWebsocketMessages.
 	const envelope = {
 		action: 'call' as const,
 		params: { callId: 'vc-1', uid: 'user-b', rid: 'room-1' }
@@ -35,18 +36,13 @@ describe('videoConf saga — VoIP / videoconf lock', () => {
 		return store;
 	}
 
-	function dispatchIncomingCallLikeRooms(store: ReturnType<typeof setupStoreWithVideoConfSaga>): void {
-		const [wsAction, wsParams] = [envelope, undefined] as const;
-		store.dispatch(handleVideoConfIncomingWebsocketMessages({ action: wsAction, params: wsParams }));
-	}
-
 	it('short-circuits incoming direct videoconf when voipBlocksIncomingVideoconf returns true', async () => {
 		jest.mocked(voipBlocksIncomingVideoconf).mockReturnValue(true);
 
 		const store = setupStoreWithVideoConfSaga();
 		const callsBefore = store.getState().videoConf.calls;
 
-		dispatchIncomingCallLikeRooms(store);
+		store.dispatch(handleVideoConfIncomingWebsocketMessages({ action: envelope, params: undefined }));
 		await flushSagaMicrotasks();
 
 		expect(voipBlocksIncomingVideoconf).toHaveBeenCalled();
@@ -57,7 +53,7 @@ describe('videoConf saga — VoIP / videoconf lock', () => {
 	it('handles incoming direct videoconf when VoIP does not block', async () => {
 		const store = setupStoreWithVideoConfSaga();
 
-		dispatchIncomingCallLikeRooms(store);
+		store.dispatch(handleVideoConfIncomingWebsocketMessages({ action: envelope, params: undefined }));
 		await flushSagaMicrotasks();
 
 		expect(voipBlocksIncomingVideoconf).toHaveBeenCalled();
