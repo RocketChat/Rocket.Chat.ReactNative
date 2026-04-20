@@ -24,7 +24,11 @@ final class DDPClient {
     init() {
         stateQueue.setSpecific(key: stateQueueKey, value: ())
     }
-    
+
+    deinit {
+        disconnectOnStateQueue(error: nil)
+    }
+
     // MARK: - Connect
     
     func connect(host: String, completion: @escaping (Bool) -> Void) {
@@ -43,9 +47,9 @@ final class DDPClient {
             print("[\(Self.TAG)] Connecting to \(wsUrl)")
             #endif
             
-            let session = URLSession(configuration: .default)
+            let session = URLSession(configuration: .default, delegate: DDPClientURLSessionChallengeDelegate(), delegateQueue: nil)
             let task = session.webSocketTask(with: url)
-            
+
             self.urlSession = session
             self.webSocketTask = task
             self.isConnected = false
@@ -98,7 +102,7 @@ final class DDPClient {
                 guard let self else { return }
                 if !success {
                     self.stateQueue.async {
-                        self.pendingCallbacks.removeValue(forKey: msgId ?? "")
+                        guard self.pendingCallbacks.removeValue(forKey: msgId ?? "") != nil else { return }
                         completion(false)
                     }
                 }
@@ -134,7 +138,7 @@ final class DDPClient {
                 guard let self else { return }
                 if !success {
                     self.stateQueue.async {
-                        self.pendingCallbacks.removeValue(forKey: msgId ?? "")
+                        guard self.pendingCallbacks.removeValue(forKey: msgId ?? "") != nil else { return }
                         completion(false)
                     }
                 }
@@ -145,20 +149,41 @@ final class DDPClient {
     // MARK: - Disconnect
     
     func disconnect() {
-        stateQueue.async {
-            #if DEBUG
-            print("[\(Self.TAG)] Disconnecting")
-            #endif
-            self.isConnected = false
-            self.pendingCallbacks.removeAll()
-            self.clearQueuedMethodCalls()
-            self.connectedCallback = nil
-            self.onCollectionMessage = nil
-            self.webSocketTask?.cancel(with: .normalClosure, reason: nil)
-            self.webSocketTask = nil
-            self.urlSession?.invalidateAndCancel()
-            self.urlSession = nil
+        if DispatchQueue.getSpecific(key: stateQueueKey) != nil {
+            disconnectOnStateQueue(error: nil)
+        } else {
+            stateQueue.async { [weak self] in
+                self?.disconnectOnStateQueue(error: nil)
+            }
         }
+    }
+
+    private func disconnectOnStateQueue(error: Error?) {
+        #if DEBUG
+        print("[\(Self.TAG)] Disconnecting")
+        #endif
+        isConnected = false
+
+        let pendingToFail = Array(pendingCallbacks.values)
+        let connectedToFail = connectedCallback
+        let queuedToFail = queuedMethodCalls
+
+        pendingCallbacks.removeAll()
+        queuedMethodCalls.removeAll()
+        connectedCallback = nil
+        onCollectionMessage = nil
+        webSocketTask?.cancel(with: .normalClosure, reason: nil)
+        webSocketTask = nil
+        urlSession?.invalidateAndCancel()
+        urlSession = nil
+
+        connectedToFail?(false)
+        var errorPayload: [String: Any] = ["error": ["reason": "disconnected"]]
+        if let error {
+            errorPayload["error"] = ["reason": "disconnected", "underlying": error.localizedDescription]
+        }
+        pendingToFail.forEach { $0(errorPayload) }
+        queuedToFail.forEach { $0.completion(false) }
     }
     
     // MARK: - Private
@@ -224,7 +249,7 @@ final class DDPClient {
                 guard let self else { return }
                 if !success {
                     self.stateQueue.async {
-                        self.pendingCallbacks.removeValue(forKey: msgId ?? "")
+                        guard self.pendingCallbacks.removeValue(forKey: msgId ?? "") != nil else { return }
                         completion(false)
                     }
                 }
@@ -292,25 +317,32 @@ final class DDPClient {
     
     private func listenForMessages(task: URLSessionWebSocketTask) {
         task.receive { [weak self] result in
-            self?.stateQueue.async {
-                guard let self = self, let currentTask = self.webSocketTask, task === currentTask else { return }
-                
-                switch result {
-                case .success(let message):
-                    switch message {
-                    case .string(let text):
-                        self.handleMessage(text)
-                    default:
-                        break
-                    }
-                    self.listenForMessages(task: task)
-                    
-                case .failure(let error):
-                    #if DEBUG
-                    print("[\(Self.TAG)] Receive error: \(error.localizedDescription)")
-                    #endif
-                }
+            self?.stateQueue.async { [weak self] in
+                guard let self else { return }
+                self.handleWebSocketReceiveResult(result, for: task)
             }
+        }
+    }
+
+    private func handleWebSocketReceiveResult(_ result: Result<URLSessionWebSocketTask.Message, Error>, for task: URLSessionWebSocketTask) {
+        guard task === webSocketTask else { return }
+
+        switch result {
+        case .success(let message):
+            switch message {
+            case .string(let text):
+                handleMessage(text)
+            default:
+                break
+            }
+            guard task === webSocketTask else { return }
+            listenForMessages(task: task)
+
+        case .failure(let error):
+            #if DEBUG
+            print("[\(Self.TAG)] Receive error: \(error.localizedDescription)")
+            #endif
+            disconnectOnStateQueue(error: error)
         }
     }
     
@@ -346,10 +378,8 @@ final class DDPClient {
             }
             
         case "changed", "added", "removed":
-            if let collection = json["collection"] as? String {
-                var message = json
-                message["collection"] = collection
-                onCollectionMessage?(message)
+            if (json["collection"] as? String) != nil {
+                onCollectionMessage?(json)
             }
             
         case "nosub":
@@ -358,9 +388,8 @@ final class DDPClient {
             }
             
         default:
-            if let collection = json["collection"] as? String {
+            if (json["collection"] as? String) != nil {
                 onCollectionMessage?(json)
-                _ = collection
             }
         }
     }
@@ -387,5 +416,17 @@ final class DDPClient {
         
         let scheme = useSsl ? "wss" : "ws"
         return "\(scheme)://\(cleaned)/websocket"
+    }
+}
+
+/// Forwards URL authentication challenges to the existing `Challenge` implementation in `SSLPinning.mm`
+/// (same path as `RCTHTTPRequestHandler` swizzling) so WebSocket TLS uses the same client-certificate flow.
+private final class DDPClientURLSessionChallengeDelegate: NSObject, URLSessionDelegate {
+    func urlSession(
+        _ session: URLSession,
+        didReceive challenge: URLAuthenticationChallenge,
+        completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
+    ) {
+        Challenge.runChallenge(session, didReceiveChallenge: challenge, completionHandler: completionHandler)
     }
 }
