@@ -29,7 +29,11 @@ const Item = ({ userId, name, username, onPress, testID, onLongPress }: IItem) =
 		if (!userId) return;
 		usePeerAutocompleteStore.getState().setSelectedPeer({ type: 'user', value: userId, label: name, username });
 		showActionSheetRef({
-			children: <NewMediaCall />
+			children: <NewMediaCall />,
+			portraitSnaps: ['60%'],
+			landscapeSnaps: ['90%'],
+			enableContentPanningGesture: false,
+			fullContainer: true
 		});
 	};
 
