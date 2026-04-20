@@ -14,7 +14,7 @@ let staleNativeTimer: ReturnType<typeof setTimeout> | null = null;
 /** Call id this timer is for; only `nativeAcceptedCallId` is cleared when it fires, not `callId`. */
 let staleNativeScheduledId: string | null = null;
 
-export function cleanupCallListeners(): void {
+function cleanupCallListeners(): void {
 	callListenersCleanup?.();
 	callListenersCleanup = null;
 }
@@ -89,7 +89,6 @@ interface CallStoreActions {
 	toggleHold: () => void;
 	toggleSpeaker: () => void;
 	toggleControlsVisible: () => void;
-	showControls: () => void;
 	toggleFocus: () => void;
 	endCall: () => void;
 	/** Clears UI/call fields but keeps nativeAcceptedCallId. Restarts the 15s timer (media init calls reset and clears the old timer first). */
@@ -220,10 +219,6 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		set({ controlsVisible: !get().controlsVisible });
 	},
 
-	showControls: () => {
-		set({ controlsVisible: true });
-	},
-
 	toggleMute: () => {
 		const { call, isMuted } = get();
 		if (!call) return;
@@ -309,11 +304,6 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		createStaleNativeTimer(get);
 	}
 }));
-
-export const useCallState = () => {
-	const callState = useCallStore(state => state.callState);
-	return callState === 'none' || callState === 'ringing' || callState === 'accepted';
-};
 
 export const useCallContact = () => useCallStore(state => state.contact);
 export const useDialpadValue = () => useCallStore(state => state.dialpadValue);
