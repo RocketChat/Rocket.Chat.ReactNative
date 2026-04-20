@@ -251,17 +251,19 @@ const checkVoipPermission = async () => {
 		if (!userId) {
 			return;
 		}
-		const allowInternalVoiceCallRoles = state.permissions['allow-internal-voice-calls'];
-		const allowExternalVoiceCallRoles = state.permissions['allow-external-voice-calls'];
 
-		const hasPermissions = await hasPermission([allowInternalVoiceCallRoles, allowExternalVoiceCallRoles]);
-		if (isVoipModuleAvailable() && (hasPermissions[0] || hasPermissions[1])) {
-			if (mediaSessionStore.getCurrentInstance()) {
-				return;
-			}
-			mediaSessionInstance.init(userId);
-		} else {
+		const hasPermissions = await hasPermission([
+			state.permissions['allow-internal-voice-calls'],
+			state.permissions['allow-external-voice-calls']
+		]);
+		const canUseVoip = isVoipModuleAvailable() && (hasPermissions[0] || hasPermissions[1]);
+
+		if (!canUseVoip) {
 			mediaSessionInstance.reset();
+			return;
+		}
+		if (!mediaSessionStore.getCurrentInstance()) {
+			mediaSessionInstance.init(userId);
 		}
 	} catch (e) {
 		log(e);
@@ -272,7 +274,7 @@ let voipPermissionListener;
 
 const stopVoipPermissionListener = () => {
 	if (voipPermissionListener) {
-		voipPermissionListener.then(listener => listener.stop()).catch(() => {});
+		voipPermissionListener.then(listener => listener.stop()).catch(e => log(e));
 		voipPermissionListener = null;
 	}
 };
