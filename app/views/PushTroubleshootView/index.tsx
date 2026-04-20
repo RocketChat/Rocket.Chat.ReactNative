@@ -17,7 +17,7 @@ interface IPushTroubleshootViewProps {
 	navigation: NativeStackNavigationProp<SettingsStackParamList, 'PushTroubleshootView'>;
 }
 
-const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.Element => {
+const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps) => {
 	const dispatch = useDispatch();
 
 	useFocusEffect(

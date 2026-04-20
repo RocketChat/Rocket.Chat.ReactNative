@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const ScreenLockedView = (): JSX.Element => {
+const ScreenLockedView = () => {
 	const [visible, setVisible] = useState(false);
 	const [data, setData] = useState<IData>({});
 

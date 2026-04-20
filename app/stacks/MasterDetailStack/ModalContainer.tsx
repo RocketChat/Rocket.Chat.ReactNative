@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const ModalContainer = ({ navigation, children, theme }: IModalContainer): JSX.Element => {
+export const ModalContainer = ({ navigation, children, theme }: IModalContainer) => {
 	'use memo';
 
 	const { keyboardHeight, keyboardShown } = useKeyboard();

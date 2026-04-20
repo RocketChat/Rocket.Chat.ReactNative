@@ -116,9 +116,6 @@ module.exports = {
 				'new-cap': 'off',
 				'lines-between-class-members': 'off'
 			},
-			globals: {
-				JSX: 'readonly'
-			},
 			settings: {
 				'import/resolver': {
 					node: {

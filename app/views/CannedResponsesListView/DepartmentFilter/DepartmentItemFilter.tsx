@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const DepartmentItemFilter = ({ currentDepartment, value, onPress }: IDepartmentItemFilter): JSX.Element => {
+const DepartmentItemFilter = ({ currentDepartment, value, onPress }: IDepartmentItemFilter) => {
 	const { colors } = useTheme();
 	const iconName = currentDepartment?._id === value?._id ? 'check' : null;
 

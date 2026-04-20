@@ -26,7 +26,7 @@ interface ISearchHeaderProps {
 	style?: StyleProp<ViewStyle>;
 }
 
-const SearchHeader = ({ onSearchChangeText, testID, style }: ISearchHeaderProps): JSX.Element => {
+const SearchHeader = ({ onSearchChangeText, testID, style }: ISearchHeaderProps) => {
 	const { theme } = useTheme();
 	const isLight = theme === 'light';
 
