@@ -89,11 +89,12 @@ jest.mock('../restApi', () => ({
 }));
 
 jest.mock('./MediaCallLogger', () => ({
-	MediaCallLogger: class {
-		log = jest.fn();
-		debug = jest.fn();
-		error = jest.fn();
-		warn = jest.fn();
+	mediaCallLogger: {
+		log: jest.fn(),
+		info: jest.fn(),
+		debug: jest.fn(),
+		error: jest.fn(),
+		warn: jest.fn()
 	}
 }));
 
