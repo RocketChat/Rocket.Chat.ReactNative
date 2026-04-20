@@ -26,8 +26,7 @@ final class DDPClient {
     }
 
     deinit {
-        webSocketTask?.cancel(with: .normalClosure, reason: nil)
-        urlSession?.invalidateAndCancel()
+        disconnectOnStateQueue()
     }
 
     // MARK: - Connect
@@ -159,15 +158,15 @@ final class DDPClient {
         }
     }
 
-    private func disconnectOnStateQueue(failPending: Bool = false) {
+    private func disconnectOnStateQueue() {
         #if DEBUG
         print("[\(Self.TAG)] Disconnecting")
         #endif
         isConnected = false
 
-        let pendingToFail = failPending ? Array(pendingCallbacks.values) : []
-        let connectedToFail = failPending ? connectedCallback : nil
-        let queuedToFail = failPending ? queuedMethodCalls : []
+        let pendingToFail = Array(pendingCallbacks.values)
+        let connectedToFail = connectedCallback
+        let queuedToFail = queuedMethodCalls
 
         pendingCallbacks.removeAll()
         queuedMethodCalls.removeAll()
@@ -340,7 +339,7 @@ final class DDPClient {
             #if DEBUG
             print("[\(Self.TAG)] Receive error: \(error.localizedDescription)")
             #endif
-            disconnectOnStateQueue(failPending: true)
+            disconnectOnStateQueue()
         }
     }
     
