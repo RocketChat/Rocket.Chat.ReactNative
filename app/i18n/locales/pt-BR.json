@@ -308,6 +308,7 @@
   "Enable_encryption_description": "Garante a privacidade das suas conversas",
   "Enable_encryption_title": "Habilitar criptografia",
   "Enable_Message_Parser": "Habilita analisador de mensagem",
+  "Enable_Mobile_Ringing": "Habilitar toque de chamada móvel",
   "Enable_writing_in_room": "Permitir escrita na sala",
   "Enabled": "Habilitado",
   "Enabled_E2E_Encryption_for_this_room": "habilitou criptografia para essa sala",

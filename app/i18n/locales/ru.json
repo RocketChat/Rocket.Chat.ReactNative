@@ -254,6 +254,7 @@
   "Enable_Auto_Translate": "Включить автоперевод",
   "Enable_encryption_button_label": "Включить шифрование",
   "Enable_Message_Parser": "Включить парсер сообщений",
+  "Enable_Mobile_Ringing": "Включить звонок на мобильном устройстве",
   "Encrypted": "Зашифрован",
   "Encrypted_message": "Зашифрованное сообщение",
   "encrypted_room_description": "Введите свой пароль для шифрования от конца к концу для доступа.",

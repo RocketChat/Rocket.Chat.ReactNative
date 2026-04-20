@@ -282,6 +282,7 @@
   "Enable_Auto_Translate": "தானாக மொழிபெயர்க்க அனுமதிக்கவும்",
   "Enable_encryption_button_label": "என்க்ரிப்ஷனை இயக்கு",
   "Enable_Message_Parser": "செய்தி பார்சரை இயக்கு",
+  "Enable_Mobile_Ringing": "மொபைல் ரிங்கிங்கை இயக்கவும்",
   "Enable_writing_in_room": "அறையில் எழுதலை இயக்கு",
   "Enabled_E2E_Encryption_for_this_room": "இந்த அறைக்கு E2E குறியீடு செயல்படுத்தப்பட்டுள்ளது",
   "Encrypted": "என்கிரிப்டு",

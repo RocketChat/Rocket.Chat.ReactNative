@@ -277,6 +277,7 @@
   "Enable_Auto_Translate": "Automatische Übersetzung aktivieren",
   "Enable_encryption_button_label": "Verschlüsselung aktivieren",
   "Enable_Message_Parser": "Nachrichtenparser aktivieren",
+  "Enable_Mobile_Ringing": "Mobiles Klingeln aktivieren",
   "Enabled_E2E_Encryption_for_this_room": "hat E2E-Verschlüsselung für diesen Raum aktiviert",
   "Encrypted": "Verschlüsselt",
   "Encrypted_message": "Verschlüsselte Nachricht",

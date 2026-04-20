@@ -282,6 +282,7 @@
   "Enable_Auto_Translate": "অটো-অনুবাদ সক্রিয় করুন",
   "Enable_encryption_button_label": "এনক্রিপশন সক্রিয় করুন",
   "Enable_Message_Parser": "বার্তা পার্সার সক্ষম করুন",
+  "Enable_Mobile_Ringing": "মোবাইল রিংিং সক্ষম করুন",
   "Enable_writing_in_room": "রুমে লেখা সক্ষম করুন",
   "Enabled_E2E_Encryption_for_this_room": "এই রুমের জন্য E2E এনক্রিপশন সক্রিয় করা হয়েছে",
   "Encrypted": "এনক্রিপ্টেড",

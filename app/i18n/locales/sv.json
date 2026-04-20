@@ -262,6 +262,7 @@
   "Enable_Auto_Translate": "Aktivera automatisk översättning",
   "Enable_encryption_button_label": "Aktivera kryptering",
   "Enable_Message_Parser": "Aktivera meddelandetolken",
+  "Enable_Mobile_Ringing": "Aktivera mobilsamtal",
   "Enabled_E2E_Encryption_for_this_room": "aktivera E2E-kryptering för det här rummet",
   "Encrypted": "Krypterat",
   "Encrypted_message": "Krypterat meddelande",

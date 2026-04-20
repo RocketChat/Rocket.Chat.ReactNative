@@ -191,6 +191,7 @@
   "Emoji_selector": "表情符号选择器",
   "Enable_Auto_Translate": "开启自动翻译",
   "Enable_encryption_button_label": "启用加密",
+  "Enable_Mobile_Ringing": "启用移动来电铃声",
   "Encrypted": "已加密",
   "Encrypted_message": "加密信息",
   "encrypted_room_description": "输入您的端到端加密密码以访问。",

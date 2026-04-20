@@ -282,6 +282,7 @@
   "Enable_Auto_Translate": "Automatikus fordítás engedélyezése",
   "Enable_encryption_button_label": "A titkosítás engedélyezése",
   "Enable_Message_Parser": "Üzenetelemző engedélyezése",
+  "Enable_Mobile_Ringing": "Mobilos csengés engedélyezése",
   "Enable_writing_in_room": "Írás engedélyezése a szobában",
   "Enabled_E2E_Encryption_for_this_room": "E2E engedélyezve ennél a szobánál",
   "Encrypted": "Titkosítva",

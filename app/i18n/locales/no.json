@@ -300,6 +300,7 @@
   "Enable_encryption_description": "Sørg for at samtaler holdes private",
   "Enable_encryption_title": "Aktiver kryptering",
   "Enable_Message_Parser": "Aktiver meldingsparser",
+  "Enable_Mobile_Ringing": "Aktiver mobilring",
   "Enable_writing_in_room": "Tillat skriving i rommet",
   "Enabled": "Aktivert",
   "Enabled_E2E_Encryption_for_this_room": "aktivert E2E-kryptering for dette rommet",

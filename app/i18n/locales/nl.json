@@ -230,6 +230,7 @@
   "Enable_Auto_Translate": "Automatisch vertalen inschakelen",
   "Enable_encryption_button_label": "Versleuteling inschakelen",
   "Enable_Message_Parser": "Berichtparser inschakelen",
+  "Enable_Mobile_Ringing": "Mobiele beltoon inschakelen",
   "Encrypted": "Versleuteld",
   "Encrypted_message": "Versleuteld bericht",
   "encrypted_room_description": "Voer uw end-to-end encryptiewachtwoord in om toegang te krijgen.",

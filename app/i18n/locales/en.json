@@ -314,6 +314,7 @@
   "Enable_encryption_description": "Ensure conversations are kept private",
   "Enable_encryption_title": "Enable encryption",
   "Enable_Message_Parser": "Enable message parser",
+  "Enable_Mobile_Ringing": "Enable Mobile Ringing",
   "Enable_writing_in_room": "Enable writing in room",
   "Enabled": "Enabled",
   "Enabled_E2E_Encryption_for_this_room": "enabled E2E encryption for this room",
