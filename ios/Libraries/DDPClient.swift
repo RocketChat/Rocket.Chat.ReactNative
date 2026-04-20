@@ -26,7 +26,7 @@ final class DDPClient {
     }
 
     deinit {
-        disconnectOnStateQueue()
+        disconnectOnStateQueue(error: nil)
     }
 
     // MARK: - Connect
@@ -150,15 +150,15 @@ final class DDPClient {
     
     func disconnect() {
         if DispatchQueue.getSpecific(key: stateQueueKey) != nil {
-            disconnectOnStateQueue()
+            disconnectOnStateQueue(error: nil)
         } else {
             stateQueue.async { [weak self] in
-                self?.disconnectOnStateQueue()
+                self?.disconnectOnStateQueue(error: nil)
             }
         }
     }
 
-    private func disconnectOnStateQueue() {
+    private func disconnectOnStateQueue(error: Error?) {
         #if DEBUG
         print("[\(Self.TAG)] Disconnecting")
         #endif
@@ -178,7 +178,10 @@ final class DDPClient {
         urlSession = nil
 
         connectedToFail?(false)
-        let errorPayload: [String: Any] = ["error": ["reason": "disconnected"]]
+        var errorPayload: [String: Any] = ["error": ["reason": "disconnected"]]
+        if let error {
+            errorPayload["error"] = ["reason": "disconnected", "underlying": error.localizedDescription]
+        }
         pendingToFail.forEach { $0(errorPayload) }
         queuedToFail.forEach { $0.completion(false) }
     }
@@ -339,7 +342,7 @@ final class DDPClient {
             #if DEBUG
             print("[\(Self.TAG)] Receive error: \(error.localizedDescription)")
             #endif
-            disconnectOnStateQueue()
+            disconnectOnStateQueue(error: error)
         }
     }
     
