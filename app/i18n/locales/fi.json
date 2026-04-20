@@ -262,6 +262,7 @@
   "Enable_Auto_Translate": "Ota käyttöön automaattikäännös",
   "Enable_encryption_button_label": "Ota salaus käyttöön",
   "Enable_Message_Parser": "Ota käyttöön viestin jäsentäjä",
+  "Enable_Mobile_Ringing": "Ota soittoääni käyttöön matkapuhelimessa",
   "Enabled_E2E_Encryption_for_this_room": "otti täyden salauksen käyttöön tässä huoneessa",
   "Encrypted": "Salattu",
   "Encrypted_message": "Salattu viesti",
@@ -886,6 +887,5 @@
   "Your_invite_link_will_never_expire": "Kutsulinkkisi ei vanhene.",
   "Your_password_is": "Salasanasi on",
   "Your_Password_Must_Have": "Salasanasi on oltava:",
-  "Your_workspace": "Työtilasi",
-  "Enable_Mobile_Ringing": "Ota soittoääni käyttöön matkapuhelimessa"
+  "Your_workspace": "Työtilasi"
 }

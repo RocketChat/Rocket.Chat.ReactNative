@@ -182,6 +182,7 @@
   "Emoji_selector": "محدد الرموز التعبيرية",
   "Enable_Auto_Translate": "تمكين الترجمة التلقائية",
   "Enable_encryption_button_label": "تمكين التشفير",
+  "Enable_Mobile_Ringing": "تمكين الرنين على الهاتف الجوال",
   "Encrypted": "مشفر",
   "Encrypted_message": "رسالة مشفرة",
   "encrypted_room_description": "أدخل كلمة المرور الخاصة بالتشفير من طرف إلى طرف للوصول.",
@@ -662,6 +663,5 @@
   "Your_invite_link_will_never_expire": "لن تنتهي صلاحية رابط الدعوة الخاص بك",
   "Your_password_is": "كلمة المرور الخاصة بك هي",
   "Your_Password_Must_Have": "يجب أن تحتوي كلمة المرور الخاصة بك على:",
-  "Your_workspace": "مساحة عملك",
-  "Enable_Mobile_Ringing": "تمكين الرنين على الهاتف الجوال"
+  "Your_workspace": "مساحة عملك"
 }

@@ -313,7 +313,7 @@
   "Enable_encryption_description": "Ensure conversations are kept private",
   "Enable_encryption_title": "Enable encryption",
   "Enable_Message_Parser": "Enable message parser",
-  "Enable_Mobile_Ringing": "Enable mobile ringing",
+  "Enable_Mobile_Ringing": "Enable Mobile Ringing",
   "Enable_writing_in_room": "Enable writing in room",
   "Enabled": "Enabled",
   "Enabled_E2E_Encryption_for_this_room": "enabled E2E encryption for this room",
@@ -1028,6 +1028,5 @@
   "Your_invite_link_will_never_expire": "Your invite link will never expire.",
   "Your_password_is": "Your password is",
   "Your_Password_Must_Have": "Your password must have:",
-  "Your_push_was_sent_to_s_devices": "Your push was sent to {{s}} devices",
-  "Enable_Mobile_Ringing": "Enable Mobile Ringing"
+  "Your_push_was_sent_to_s_devices": "Your push was sent to {{s}} devices"
 }

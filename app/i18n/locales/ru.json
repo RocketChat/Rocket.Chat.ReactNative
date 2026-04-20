@@ -254,6 +254,7 @@
   "Enable_Auto_Translate": "Включить автоперевод",
   "Enable_encryption_button_label": "Включить шифрование",
   "Enable_Message_Parser": "Включить парсер сообщений",
+  "Enable_Mobile_Ringing": "Включить звонок на мобильном устройстве",
   "Encrypted": "Зашифрован",
   "Encrypted_message": "Зашифрованное сообщение",
   "encrypted_room_description": "Введите свой пароль для шифрования от конца к концу для доступа.",
@@ -854,6 +855,5 @@
   "Your_invite_link_will_never_expire": "Ваша ссылка-приглашение никогда не будет просроченной.",
   "Your_password_is": "Ваш пароль",
   "Your_Password_Must_Have": "Ваш пароль должен иметь:",
-  "Your_workspace": "Ваш сервер",
-  "Enable_Mobile_Ringing": "Включить звонок на мобильном устройстве"
+  "Your_workspace": "Ваш сервер"
 }

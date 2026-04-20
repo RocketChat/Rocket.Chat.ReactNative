@@ -300,6 +300,7 @@
   "Enable_Auto_Translate": "Povolit automatický překlad",
   "Enable_encryption_button_label": "Povolit šifrování",
   "Enable_Message_Parser": "Povolit analyzátor zpráv",
+  "Enable_Mobile_Ringing": "Povolení vyzvánění na mobilním telefonu",
   "Enable_writing_in_room": "Povolit psaní v místnosti",
   "Enabled_E2E_Encryption_for_this_room": "povoleno E2E šifrování pro tuto místnost",
   "Encrypted": "Zašifrováno",
@@ -998,6 +999,5 @@
   "Your_password_is": "Vaše heslo je",
   "Your_Password_Must_Have": "Vaše heslo musí mít:",
   "Your_push_was_sent_to_s_devices": "Vaše push byla odeslána do {{s}} zařízení",
-  "Your_workspace": "Váš pracovní prostor",
-  "Enable_Mobile_Ringing": "Povolení vyzvánění na mobilním telefonu"
+  "Your_workspace": "Váš pracovní prostor"
 }

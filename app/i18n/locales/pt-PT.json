@@ -177,6 +177,7 @@
   "Emoji_selector": "Seletor de emojis",
   "Enable_Auto_Translate": "Activar Auto-Tradução",
   "Enable_encryption_button_label": "Ativar encriptação",
+  "Enable_Mobile_Ringing": "Ativar toque de chamada móvel",
   "Encrypted": "Encriptado",
   "Encrypted_message": "Mensagem encriptada",
   "encrypted_room_description": "Insira a sua palavra-passe de encriptação de ponta a ponta para aceder.",
@@ -542,6 +543,5 @@
   "You_dont_have_account": "Não tem uma conta?",
   "you_were_mentioned": "você foi mencionado",
   "You_will_not_be_able_to_recover_this_message": "Você será incapaz de recuperar esta mensagem!",
-  "Your_Password_Must_Have": "Sua palavra-passe deve ter:",
-  "Enable_Mobile_Ringing": "Ativar toque de chamada móvel"
+  "Your_Password_Must_Have": "Sua palavra-passe deve ter:"
 }

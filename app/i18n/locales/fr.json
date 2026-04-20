@@ -230,6 +230,7 @@
   "Enable_Auto_Translate": "Activer la traduction automatique",
   "Enable_encryption_button_label": "Activer le chiffrement",
   "Enable_Message_Parser": "Activer le parseur de messages",
+  "Enable_Mobile_Ringing": "Activer la sonnerie mobile",
   "Encrypted": "Crypté",
   "Encrypted_message": "Message crypté",
   "encrypted_room_description": "Entrez votre mot de passe de cryptage de bout en bout pour accéder.",
@@ -807,6 +808,5 @@
   "Your_invite_link_will_never_expire": "Votre lien d'invitation n'expirera jamais.",
   "Your_password_is": "Votre mot de passe est",
   "Your_Password_Must_Have": "Votre mot de passe doit avoir:",
-  "Your_workspace": "Votre espace de travail",
-  "Enable_Mobile_Ringing": "Activer la sonnerie mobile"
+  "Your_workspace": "Votre espace de travail"
 }

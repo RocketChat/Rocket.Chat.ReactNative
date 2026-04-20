@@ -206,6 +206,7 @@
   "Emoji_selector": "Selettore di emoji",
   "Enable_Auto_Translate": "Abilita traduzione automatica",
   "Enable_encryption_button_label": "Abilita crittografia",
+  "Enable_Mobile_Ringing": "Abilita suoneria mobile",
   "Encrypted": "Crittografato",
   "Encrypted_message": "Messaggio crittografato",
   "encrypted_room_description": "Inserisci la tua password di crittografia end-to-end per accedere.",
@@ -710,6 +711,5 @@
   "Your_invite_link_will_never_expire": "Il tuo link di invito non scadrà mai.",
   "Your_password_is": "La tua password è",
   "Your_Password_Must_Have": "La tua password deve avere:",
-  "Your_workspace": "Il tuo workspace",
-  "Enable_Mobile_Ringing": "Abilita suoneria mobile"
+  "Your_workspace": "Il tuo workspace"
 }

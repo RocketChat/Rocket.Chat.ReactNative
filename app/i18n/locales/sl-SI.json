@@ -240,6 +240,7 @@
   "Enable_Auto_Translate": "Omogoči samodejni prenos",
   "Enable_encryption_button_label": "Omogoči šifriranje",
   "Enable_Message_Parser": "Omogoči razčlenjevalnik sporočil",
+  "Enable_Mobile_Ringing": "Omogoči mobilni zvonjenje",
   "Encrypted": "Šifrirano",
   "Encrypted_message": "Šifrirano sporočilo",
   "encrypted_room_description": "Vnesite geslo za šifriranje od konca do konca za dostop.",
@@ -822,6 +823,5 @@
   "Your_invite_link_will_never_expire": "Vaša povezava za povabilo ne bo nikoli potekala.",
   "Your_password_is": "Vaše geslo je",
   "Your_Password_Must_Have": "Vaše geslo mora imeti:",
-  "Your_workspace": "Vaš delovni prostor",
-  "Enable_Mobile_Ringing": "Omogoči mobilni zvonjenje"
+  "Your_workspace": "Vaš delovni prostor"
 }

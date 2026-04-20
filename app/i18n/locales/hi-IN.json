@@ -282,6 +282,7 @@
   "Enable_Auto_Translate": "स्वच्छता से अनुवाद सक्षम करें",
   "Enable_encryption_button_label": "एन्क्रिप्शन सक्षम करें",
   "Enable_Message_Parser": "संदेश पार्सर सक्षम करें",
+  "Enable_Mobile_Ringing": "मोबाइल रिंगिंग सक्षम करें",
   "Enable_writing_in_room": "कमरे में लेखन सक्षम करें",
   "Enabled_E2E_Encryption_for_this_room": "इस कक्ष के लिए ईटूई एन्क्रिप्शन सक्षम किया गया है",
   "Encrypted": "एन्क्रिप्टेड",
@@ -924,6 +925,5 @@
   "Your_invite_link_will_never_expire": "आपका आमंत्रण लिंक कभी समाप्त नहीं होगा।",
   "Your_password_is": "आपका पासवर्ड है",
   "Your_Password_Must_Have": "आपका पासवर्ड होना चाहिए:",
-  "Your_workspace": "आपका कार्यस्थान",
-  "Enable_Mobile_Ringing": "मोबाइल रिंगिंग सक्षम करें"
+  "Your_workspace": "आपका कार्यस्थान"
 }
