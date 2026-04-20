@@ -102,7 +102,7 @@ final class DDPClient {
                 guard let self else { return }
                 if !success {
                     self.stateQueue.async {
-                        self.pendingCallbacks.removeValue(forKey: msgId ?? "")
+                        guard self.pendingCallbacks.removeValue(forKey: msgId ?? "") != nil else { return }
                         completion(false)
                     }
                 }
@@ -138,7 +138,7 @@ final class DDPClient {
                 guard let self else { return }
                 if !success {
                     self.stateQueue.async {
-                        self.pendingCallbacks.removeValue(forKey: msgId ?? "")
+                        guard self.pendingCallbacks.removeValue(forKey: msgId ?? "") != nil else { return }
                         completion(false)
                     }
                 }
@@ -246,7 +246,7 @@ final class DDPClient {
                 guard let self else { return }
                 if !success {
                     self.stateQueue.async {
-                        self.pendingCallbacks.removeValue(forKey: msgId ?? "")
+                        guard self.pendingCallbacks.removeValue(forKey: msgId ?? "") != nil else { return }
                         completion(false)
                     }
                 }
