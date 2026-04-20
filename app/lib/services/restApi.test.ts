@@ -123,14 +123,25 @@ describe('registerPushToken', () => {
 		expect(mockSdkPost).not.toHaveBeenCalled();
 	});
 
-	it('on iOS returns early when push token exists but VoIP token is missing', async () => {
+	it('on iOS registers apn payload without voipToken when VoIP token is missing', async () => {
 		const { registerPushToken, getDeviceToken: getToken, getLastVoipToken: getVoip } = loadRegisterPushToken('ios');
 		getToken.mockReturnValue('apns-token');
 		getVoip.mockReturnValue('');
 
 		await registerPushToken();
 
-		expect(mockSdkPost).not.toHaveBeenCalled();
+		expect(mockSdkPost).toHaveBeenCalledTimes(1);
+		expect(mockSdkPost).toHaveBeenCalledWith(
+			'push.token',
+			expect.objectContaining({
+				id: 'unique-device-id',
+				value: 'apns-token',
+				type: 'apn',
+				appName: expect.any(String)
+			})
+		);
+		const payload = mockSdkPost.mock.calls[0][1] as Record<string, unknown>;
+		expect(Object.prototype.hasOwnProperty.call(payload, 'voipToken')).toBe(false);
 	});
 
 	it('on Android still registers when VoIP token is missing', async () => {
