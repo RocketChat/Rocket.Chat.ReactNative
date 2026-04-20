@@ -1,4 +1,3 @@
-import React from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 import { type BlockContext } from '@rocket.chat/ui-kit';
 

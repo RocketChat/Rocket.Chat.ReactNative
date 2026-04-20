@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import { Dimensions, type EmitterSubscription, Linking } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -82,7 +82,7 @@ const parseDeepLinking = (url: string) => {
 	return null;
 };
 
-export default class Root extends React.Component<{}, IState> {
+export default class Root extends Component<{}, IState> {
 	private listenerTimeout!: any;
 	private dimensionsListener?: EmitterSubscription;
 	private videoConfActionCleanup?: () => void;

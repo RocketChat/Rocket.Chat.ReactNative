@@ -1,4 +1,4 @@
-import React from 'react';
+import { type FC } from 'react';
 import { type StyleProp, StyleSheet, Text, type TextStyle, type ViewStyle } from 'react-native';
 import { RectButton, type RectButtonProps } from 'react-native-gesture-handler';
 
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Button: React.FC<IButtonProps> = ({
+const Button: FC<IButtonProps> = ({
 	type = 'primary',
 	disabled,
 	loading,

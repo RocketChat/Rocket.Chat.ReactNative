@@ -1,4 +1,3 @@
-import React from 'react';
 import { Text, View } from 'react-native';
 import { type Tasks as TasksProps } from '@rocket.chat/message-parser';
 

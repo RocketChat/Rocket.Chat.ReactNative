@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 import { AccessibilityInfo, Text, View } from 'react-native';
 import isEmpty from 'lodash/isEmpty';
 import { sha256 } from 'js-sha256';
@@ -62,7 +62,7 @@ const methods: IMethods = {
 	}
 };
 
-const TwoFactor = React.memo(() => {
+const TwoFactor = memo(() => {
 	const schema = yup.object().shape({
 		code: yup.string().required(I18n.t('Code_required'))
 	});

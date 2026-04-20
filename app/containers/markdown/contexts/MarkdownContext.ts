@@ -1,4 +1,4 @@
-import React from 'react';
+import { createContext } from 'react';
 import { type StyleProp, type TextStyle } from 'react-native';
 
 import { type IUserMention, type IUserChannel } from '../interfaces';
@@ -23,5 +23,5 @@ const defaultState = {
 	textStyle: undefined
 };
 
-const MarkdownContext = React.createContext<IMarkdownContext>(defaultState);
+const MarkdownContext = createContext<IMarkdownContext>(defaultState);
 export default MarkdownContext;

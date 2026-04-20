@@ -66,6 +66,25 @@ module.exports = {
 		'react-native/no-single-element-style-arrays': 'error',
 		'react-native/no-unused-styles': 'error',
 		'react-native/split-platform-components': 'off',
+		'no-restricted-imports': [
+			'error',
+			{
+				paths: [
+					{
+						name: 'react',
+						importNames: ['default'],
+						message: 'Import specific named exports from React instead.'
+					}
+				]
+			}
+		],
+		'no-restricted-syntax': [
+			'error',
+			{
+				selector: 'MemberExpression[object.name="React"]',
+				message: 'Avoid React.* syntax. Use named imports: import { memo, useState } from "react"'
+			}
+		],
 		'no-unused-vars': 'off',
 		'no-void': 'error',
 		'new-cap': 'error',
@@ -98,6 +117,18 @@ module.exports = {
 				'@typescript-eslint/no-empty-function': 'off',
 				'@typescript-eslint/no-explicit-any': 'off',
 				'@typescript-eslint/no-extra-parens': 'off',
+				'@typescript-eslint/no-restricted-imports': [
+					'error',
+					{
+						paths: [
+							{
+								name: 'react',
+								importNames: ['default'],
+								message: 'Import specific named exports from React instead.'
+							}
+						]
+					}
+				],
 				'@typescript-eslint/no-unused-vars': [
 					'error',
 					{
@@ -109,15 +140,13 @@ module.exports = {
 				'no-return-assign': 'off',
 				'no-dupe-class-members': 'off',
 				'no-extra-parens': 'off',
+				'no-restricted-imports': 'off',
 				'no-spaced-func': 'off',
 				'no-unused-vars': 'off',
 				'no-useless-constructor': 'off',
 				'no-use-before-define': 'off',
 				'new-cap': 'off',
 				'lines-between-class-members': 'off'
-			},
-			globals: {
-				JSX: 'readonly'
 			},
 			settings: {
 				'import/resolver': {

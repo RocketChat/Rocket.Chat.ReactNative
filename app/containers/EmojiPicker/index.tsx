@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState, type ReactElement } from 'react';
 import { View } from 'react-native';
 import { type Route } from 'reanimated-tab-view';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -26,7 +26,7 @@ const EmojiPicker = ({
 	searching = false,
 	searchedEmojis = [],
 	bottomSheet = false
-}: IEmojiPickerProps): React.ReactElement | null => {
+}: IEmojiPickerProps): ReactElement | null => {
 	const [parentWidth, setParentWidth] = useState(0);
 	const { bottom } = useSafeAreaInsets();
 	const { colors } = useTheme();

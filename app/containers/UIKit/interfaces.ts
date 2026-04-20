@@ -11,6 +11,7 @@ import type {
 	ViewClosedUserInteraction,
 	ViewSubmitUserInteraction
 } from '@rocket.chat/ui-kit';
+import { type ReactElement } from 'react';
 
 import { type TSupportedThemes } from '../../theme';
 
@@ -156,20 +157,25 @@ export interface IParser {
 		context: BlockContext,
 		parser?: IParser,
 		index?: number
-	) => JSX.Element | null;
-	renderActions: (data: TActionElement | IElement, context: BlockContext, parser?: IParser, index?: number) => JSX.Element | null;
+	) => ReactElement | null;
+	renderActions: (
+		data: TActionElement | IElement,
+		context: BlockContext,
+		parser?: IParser,
+		index?: number
+	) => ReactElement | null;
 	renderContext: (
 		data: TContextElement | IElement,
 		context: BlockContext,
 		parser?: IParser,
 		index?: number
-	) => JSX.Element | null;
-	renderInputs: (data: TInputElement | IElement, context: BlockContext, parser?: IParser, index?: number) => JSX.Element | null;
-	text: (data: IText) => JSX.Element | null;
-	plain_text?: (data: PlainText | IText, context: BlockContext) => JSX.Element | null;
-	mrkdwn?: (data: Markdown | IText, context: BlockContext) => JSX.Element | null;
-	icon?: (data: IIcon, context: BlockContext) => JSX.Element | null;
-	icon_button?: (data: IIconButton, context: BlockContext) => JSX.Element | null;
+	) => ReactElement | null;
+	renderInputs: (data: TInputElement | IElement, context: BlockContext, parser?: IParser, index?: number) => ReactElement | null;
+	text: (data: IText) => ReactElement | null;
+	plain_text?: (data: PlainText | IText, context: BlockContext) => ReactElement | null;
+	mrkdwn?: (data: Markdown | IText, context: BlockContext) => ReactElement | null;
+	icon?: (data: IIcon, context: BlockContext) => ReactElement | null;
+	icon_button?: (data: IIconButton, context: BlockContext) => ReactElement | null;
 }
 
 export interface IActions extends Block {

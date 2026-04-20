@@ -1,4 +1,4 @@
-import React from 'react';
+import { forwardRef, type ReactNode, type ElementRef } from 'react';
 import { RectButton, type RectButtonProps } from 'react-native-gesture-handler';
 import {
 	View,
@@ -12,7 +12,7 @@ import {
 import { useTheme } from '../theme';
 
 export interface ITouchProps extends RectButtonProps {
-	children: React.ReactNode;
+	children: ReactNode;
 	accessible?: boolean;
 	accessibilityLabel?: string;
 	accessibilityHint?: string;
@@ -23,7 +23,7 @@ export interface ITouchProps extends RectButtonProps {
 	disabled?: boolean;
 }
 
-const Touch = React.forwardRef<React.ElementRef<typeof RectButton>, ITouchProps>(
+const Touch = forwardRef<ElementRef<typeof RectButton>, ITouchProps>(
 	(
 		{
 			children,

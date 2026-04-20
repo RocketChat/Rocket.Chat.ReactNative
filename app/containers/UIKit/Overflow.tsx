@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, createRef, type RefObject } from 'react';
 import { FlatList, StyleSheet, Text, type View } from 'react-native';
 import Popover from 'react-native-popover-view';
 
@@ -41,7 +41,7 @@ const Options = ({ options, onOptionPress, parser, theme }: IOptions) => (
 	/>
 );
 
-const touchable: { [key: string]: React.RefObject<View | null> } = {};
+const touchable: { [key: string]: RefObject<View | null> } = {};
 
 export const Overflow = ({ element, loading, action, parser }: IOverflow) => {
 	const { theme } = useTheme();
@@ -50,10 +50,10 @@ export const Overflow = ({ element, loading, action, parser }: IOverflow) => {
 	const [show, onShow] = useState(false);
 
 	if (!touchable[blockId]) {
-		touchable[blockId] = React.createRef();
+		touchable[blockId] = createRef();
 	}
 
-	const touchableRef = touchable[blockId] as React.RefObject<any>;
+	const touchableRef = touchable[blockId] as RefObject<any>;
 
 	const onOptionPress = ({ value }: any) => {
 		onShow(false);

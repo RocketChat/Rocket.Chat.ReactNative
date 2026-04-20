@@ -1,4 +1,4 @@
-import React from 'react';
+import { type ReactElement } from 'react';
 import { View } from 'react-native';
 
 import { useFocused } from '../../context';
@@ -7,7 +7,7 @@ import { MicOrSendButton } from '../Buttons';
 import { MIN_HEIGHT } from '../../constants';
 import { CancelEdit } from '../CancelEdit';
 
-export const Right = (): React.ReactElement | null => {
+export const Right = (): ReactElement | null => {
 	'use memo';
 
 	const focused = useFocused();

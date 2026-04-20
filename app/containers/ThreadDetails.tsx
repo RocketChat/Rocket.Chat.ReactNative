@@ -1,4 +1,3 @@
-import React from 'react';
 import { StyleSheet, Text, View, type ViewStyle } from 'react-native';
 
 import Touch from './Touch';
@@ -51,7 +50,7 @@ interface IThreadDetails {
 	style: ViewStyle;
 }
 
-const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IThreadDetails): JSX.Element => {
+const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IThreadDetails) => {
 	const { theme } = useTheme();
 	let count: string | number | undefined | null = item.tcount;
 	if (count && count >= 1000) {

@@ -1,5 +1,5 @@
 import isEmpty from 'lodash/isEmpty';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import Modal from 'react-native-modal';
 import useDeepCompareEffect from 'use-deep-compare-effect';
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const ScreenLockedView = (): JSX.Element => {
+const ScreenLockedView = () => {
 	const [visible, setVisible] = useState(false);
 	const [data, setData] = useState<IData>({});
 

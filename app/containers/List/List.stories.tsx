@@ -1,4 +1,3 @@
-import React from 'react';
 import { FlatList } from 'react-native';
 
 import * as List from '.';

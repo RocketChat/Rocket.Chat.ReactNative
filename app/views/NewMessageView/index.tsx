@@ -1,6 +1,6 @@
 import { Q } from '@nozbe/watermelondb';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 import { shallowEqual } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';

@@ -1,10 +1,10 @@
-import React from 'react';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type CompositeNavigationProp, type RouteProp } from '@react-navigation/core';
 import { FlatList, Text, View } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
+import { Component } from 'react';
 
 import { FormTextInput } from '../../containers/TextInput';
 import ActivityIndicator from '../../containers/ActivityIndicator';
@@ -78,7 +78,7 @@ interface ISearchMessagesViewProps extends INavigationOption {
 	useRealName: boolean;
 	isMasterDetail: boolean;
 }
-class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISearchMessagesViewState> {
+class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMessagesViewState> {
 	private offset: number;
 
 	private rid: string;

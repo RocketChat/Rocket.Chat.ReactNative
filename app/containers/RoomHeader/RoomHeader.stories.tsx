@@ -1,4 +1,3 @@
-import React from 'react';
 import { Dimensions, View } from 'react-native';
 
 import { longText } from '../../../.rnstorybook/utils';

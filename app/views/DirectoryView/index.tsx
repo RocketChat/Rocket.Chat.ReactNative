@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import { AccessibilityInfo, FlatList, type ListRenderItem } from 'react-native';
 import { connect } from 'react-redux';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -49,7 +49,7 @@ interface IDirectoryViewState {
 	type: string;
 }
 
-class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewState> {
+class DirectoryView extends Component<IDirectoryViewProps, IDirectoryViewState> {
 	constructor(props: IDirectoryViewProps) {
 		super(props);
 		this.state = {

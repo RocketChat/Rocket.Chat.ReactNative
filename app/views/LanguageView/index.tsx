@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { FlatList } from 'react-native';
 import RNRestart from 'react-native-restart';
 import { useDispatch } from 'react-redux';

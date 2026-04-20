@@ -1,4 +1,4 @@
-import React from 'react';
+import { type ReactElement } from 'react';
 import { Text, View } from 'react-native';
 
 import { CustomIcon } from '../../CustomIcon';
@@ -8,7 +8,7 @@ import { useTheme } from '../../../theme';
 import Touch from '../../Touch';
 
 interface IInput {
-	children?: JSX.Element;
+	children?: ReactElement;
 	onPress: () => void;
 	inputStyle?: object;
 	disabled?: boolean;

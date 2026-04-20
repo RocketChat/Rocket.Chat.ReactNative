@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo, memo, type ReactElement } from 'react';
 import {
 	I18nManager,
 	type StyleProp,
@@ -91,10 +91,10 @@ const ListTitle = ({ title, color, styleTitle, translateTitle, numberOfLines }: 
 
 interface IListItemContent {
 	accessibilityLabel?: string;
-	title: string | (() => JSX.Element | null);
+	title: string | (() => ReactElement | null);
 	subtitle?: string;
-	left?: () => JSX.Element | null;
-	right?: () => JSX.Element | null;
+	left?: () => ReactElement | null;
+	right?: () => ReactElement | null;
 	disabled?: boolean;
 	disabledReason?: string;
 	testID?: string;
@@ -112,7 +112,7 @@ interface IListItemContent {
 	numberOfLines?: number;
 }
 
-const Content = React.memo(
+const Content = memo(
 	({
 		title,
 		subtitle,
@@ -218,14 +218,14 @@ interface IListButtonPress extends IListItemButton {
 }
 
 interface IListItemButton {
-	title: string | (() => JSX.Element | null);
+	title: string | (() => ReactElement | null);
 	disabled?: boolean;
 	disabledReason?: string;
 	backgroundColor?: string;
 	underlayColor?: string;
 }
 
-const Button = React.memo(({ onPress, backgroundColor, underlayColor, ...props }: IListButtonPress) => {
+const Button = memo(({ onPress, backgroundColor, underlayColor, ...props }: IListButtonPress) => {
 	'use memo';
 
 	const { colors } = useTheme();
@@ -254,7 +254,7 @@ export interface IListItem extends Omit<IListItemContent, 'theme'>, Omit<IListIt
 	onPress?: Function;
 }
 
-const ListItem = React.memo(({ ...props }: IListItem) => {
+const ListItem = memo(({ ...props }: IListItem) => {
 	'use memo';
 
 	const { colors } = useTheme();

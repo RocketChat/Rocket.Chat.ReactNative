@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react';
+import { type ReactElement, useLayoutEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, type TextInputProps } from 'react-native';
 
 import { textInputDebounceTime } from '../lib/constants/debounceConfig';
@@ -49,7 +49,7 @@ const RenderSearch = ({ onChangeText }: TextInputProps) => (
 	</>
 );
 
-const PickerView = (): React.ReactElement => {
+const PickerView = (): ReactElement => {
 	const navigation = useAppNavigation();
 	const {
 		params: { title, data: paramData, value: paramValue, total: paramTotal, onSearch, onChangeValue, onEndReached }

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { ThemeContext, type TSupportedThemes } from '../../theme';
 import { longText } from '../../../.rnstorybook/utils';
 import BackgroundContainer, { type IBackgroundContainer } from '.';

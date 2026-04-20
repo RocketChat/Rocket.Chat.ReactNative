@@ -1,4 +1,4 @@
-import React from 'react';
+import { type ReactElement } from 'react';
 import { View } from 'react-native';
 
 import Avatar from '../Avatar';
@@ -22,7 +22,7 @@ const IconOrAvatar = ({
 	displayMode,
 	sourceType,
 	abacAttributes
-}: IIconOrAvatar): React.ReactElement | null => {
+}: IIconOrAvatar): ReactElement | null => {
 	const { rowHeight } = useResponsiveLayout();
 
 	if (showAvatar) {

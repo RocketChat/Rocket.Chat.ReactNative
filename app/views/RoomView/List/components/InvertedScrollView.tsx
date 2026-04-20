@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { ScrollView, requireNativeComponent, type ScrollViewProps, type ViewProps } from 'react-native';
 
 const NativeInvertedScrollContentView = requireNativeComponent<ViewProps>('InvertedScrollContentView');

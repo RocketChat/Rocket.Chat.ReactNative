@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 import { type RouteProp } from '@react-navigation/native';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -49,7 +49,7 @@ interface ICannedResponsesListViewProps {
 	route: RouteProp<ChatsStackParamList, 'CannedResponsesListView'>;
 }
 
-const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListViewProps): JSX.Element => {
+const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListViewProps) => {
 	const [room, setRoom] = useState<ISubscription | null>(null);
 
 	const [cannedResponses, setCannedResponses] = useState<ICannedResponse[]>([]);

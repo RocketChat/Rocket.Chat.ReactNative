@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Text, type TextInput, View } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 

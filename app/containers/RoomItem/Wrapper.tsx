@@ -1,4 +1,4 @@
-import React from 'react';
+import { type ReactElement } from 'react';
 import { View } from 'react-native';
 
 import { DisplayMode } from '../../lib/constants/constantDisplayMode';
@@ -8,7 +8,7 @@ import { type IWrapperProps } from './interfaces';
 import styles from './styles';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
-const Wrapper = ({ accessibilityLabel, children, displayMode, ...props }: IWrapperProps): React.ReactElement => {
+const Wrapper = ({ accessibilityLabel, children, displayMode, ...props }: IWrapperProps): ReactElement => {
 	const { colors } = useTheme();
 	const { rowHeight, rowHeightCondensed } = useResponsiveLayout();
 	return (

@@ -1,5 +1,5 @@
-import { type JSX } from 'react';
 import { ScrollView, View } from 'react-native';
+import { type ReactElement } from 'react';
 
 import MessageContext from '../message/Context';
 import { UiKitMessage } from '.';
@@ -558,7 +558,7 @@ const getInfoCardAction = ({
 	}
 });
 
-const ThemedStory = ({ theme, story }: { theme: TSupportedThemes; story: () => JSX.Element }) => (
+const ThemedStory = ({ theme, story }: { theme: TSupportedThemes; story: () => ReactElement }) => (
 	<ThemeContext.Provider value={{ theme, colors: colors[theme] }}>
 		<View style={{ padding: 10, gap: 10, backgroundColor: colors[theme].surfaceTint }}>{story()}</View>
 	</ThemeContext.Provider>

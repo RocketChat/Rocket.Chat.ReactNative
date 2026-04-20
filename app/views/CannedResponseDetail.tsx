@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
@@ -81,7 +81,7 @@ const Item = ({ label, content, theme, testID }: IItem) =>
 		</View>
 	) : null;
 
-const CannedResponseDetail = (): JSX.Element => {
+const CannedResponseDetail = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList, 'CannedResponseDetail'>>();
 	const route = useRoute<RouteProp<ChatsStackParamList, 'CannedResponseDetail'>>();
 

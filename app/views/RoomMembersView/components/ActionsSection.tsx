@@ -1,8 +1,8 @@
 import { type CompositeNavigationProp, useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import React from 'react';
 import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
+import { type ReactElement } from 'react';
 
 import { setLoading } from '../../../actions/selectedUsers';
 import * as List from '../../../containers/List';
@@ -26,7 +26,7 @@ interface IActionsSection {
 	abacAttributes: TSubscriptionModel['abacAttributes'];
 }
 
-export default function ActionsSection({ rid, t, joined, abacAttributes }: IActionsSection): React.ReactElement {
+export default function ActionsSection({ rid, t, joined, abacAttributes }: IActionsSection): ReactElement {
 	const { navigate, pop } = useNavigation<TNavigation>();
 	const dispatch = useDispatch();
 	const [addUserToJoinedRoomPermission, addUserToAnyCRoomPermission, addUserToAnyPRoomPermission, createInviteLinksPermission] =
