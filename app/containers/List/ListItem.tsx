@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { type ReactElement, useMemo } from 'react';
 import {
 	I18nManager,
 	type StyleProp,
@@ -91,10 +91,10 @@ const ListTitle = ({ title, color, styleTitle, translateTitle, numberOfLines }: 
 
 interface IListItemContent {
 	accessibilityLabel?: string;
-	title: string | (() => JSX.Element | null);
+	title: string | (() => ReactElement | null);
 	subtitle?: string;
-	left?: () => JSX.Element | null;
-	right?: () => JSX.Element | null;
+	left?: () => ReactElement | null;
+	right?: () => ReactElement | null;
 	disabled?: boolean;
 	disabledReason?: string;
 	testID?: string;
@@ -218,7 +218,7 @@ interface IListButtonPress extends IListItemButton {
 }
 
 interface IListItemButton {
-	title: string | (() => JSX.Element | null);
+	title: string | (() => ReactElement | null);
 	disabled?: boolean;
 	disabledReason?: string;
 	backgroundColor?: string;

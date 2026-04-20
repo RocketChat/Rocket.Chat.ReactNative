@@ -57,7 +57,7 @@ const OPTIONS = {
 	]
 };
 
-const Picker = ({ param, first }: { param: 'days' | 'maxUses'; first: string }): JSX.Element => {
+const Picker = ({ param, first }: { param: 'days' | 'maxUses'; first: string }) => {
 	const { colors } = useTheme();
 	const inviteLinkParam = useAppSelector(state => state.inviteLinks[param]);
 	const dispatch = useDispatch();

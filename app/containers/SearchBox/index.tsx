@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const SearchBox = ({ onChangeText, onSubmitEditing, testID }: TextInputProps): JSX.Element => {
+const SearchBox = ({ onChangeText, onSubmitEditing, testID }: TextInputProps) => {
 	const [text, setText] = useState('');
 
 	const { colors } = useTheme();

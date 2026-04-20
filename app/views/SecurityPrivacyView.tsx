@@ -24,7 +24,7 @@ interface ISecurityPrivacyViewProps {
 	navigation: NativeStackNavigationProp<SettingsStackParamList, 'SecurityPrivacyView'>;
 }
 
-const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Element => {
+const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps) => {
 	const [crashReportState, setCrashReportState] = useState(getReportCrashErrorsValue());
 	const [analyticsEventsState, setAnalyticsEventsState] = useState(getReportAnalyticsEventsValue());
 	const [server] = useServer();

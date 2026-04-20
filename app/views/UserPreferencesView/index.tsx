@@ -20,7 +20,7 @@ interface IUserPreferencesViewProps {
 	navigation: NativeStackNavigationProp<ProfileStackParamList, 'UserPreferencesView'>;
 }
 
-const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Element => {
+const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps) => {
 	const { enableMessageParserEarlyAdoption, id, alsoSendThreadToChannel, settings } = useAppSelector(state =>
 		getUserSelector(state)
 	);
