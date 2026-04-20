@@ -280,6 +280,70 @@ describe('MediaCallEvents cross-server accept (slice 3)', () => {
 	});
 });
 
+describe('VoipAcceptSucceeded sentinel-correctness (Android)', () => {
+	const getState = useCallStore.getState as jest.Mock;
+
+	beforeEach(() => {
+		jest.clearAllMocks();
+		resetMediaCallEventsStateForTesting();
+		mockAddEventListener.mockImplementation(() => ({ remove: jest.fn() }));
+		getState.mockReturnValue({ setNativeAcceptedCallId: mockSetNativeAcceptedCallId });
+	});
+
+	it('B1: outgoing_call with same callId does not poison sentinel for subsequent incoming_call', () => {
+		setupMediaCallEvents(makeTestAdapters());
+
+		// First emit: outgoing_call — type guard should bail before setting sentinel
+		DeviceEventEmitter.emit('VoipAcceptSucceeded', buildIncomingPayload({ callId: 'shared-id', type: 'outgoing_call' }));
+		expect(mockSetNativeAcceptedCallId).not.toHaveBeenCalled();
+
+		// Second emit: incoming_call with same callId — must NOT be suppressed
+		DeviceEventEmitter.emit(
+			'VoipAcceptSucceeded',
+			buildIncomingPayload({ callId: 'shared-id', type: 'incoming_call', host: 'https://server-b.example.com' })
+		);
+		expect(mockSetNativeAcceptedCallId).toHaveBeenCalledWith('shared-id');
+		expect(mockOnOpenDeepLink).toHaveBeenCalledTimes(1);
+	});
+
+	it('B2: different callIds are both processed (not suppressed)', () => {
+		setupMediaCallEvents(makeTestAdapters());
+
+		DeviceEventEmitter.emit(
+			'VoipAcceptSucceeded',
+			buildIncomingPayload({ callId: 'call-A', host: 'https://server-b.example.com' })
+		);
+		DeviceEventEmitter.emit(
+			'VoipAcceptSucceeded',
+			buildIncomingPayload({ callId: 'call-B', host: 'https://server-b.example.com' })
+		);
+
+		expect(mockSetNativeAcceptedCallId).toHaveBeenCalledTimes(2);
+		expect(mockSetNativeAcceptedCallId).toHaveBeenCalledWith('call-A');
+		expect(mockSetNativeAcceptedCallId).toHaveBeenCalledWith('call-B');
+	});
+
+	it('B3: getActiveServerUrl returning undefined falls through to deep-link path', () => {
+		const adapters: MediaCallEventsAdapters = {
+			getActiveServerUrl: () => undefined,
+			onOpenDeepLink: mockOnOpenDeepLink
+		};
+		setupMediaCallEvents(adapters);
+
+		DeviceEventEmitter.emit(
+			'VoipAcceptSucceeded',
+			buildIncomingPayload({ callId: 'any-call', host: 'https://server-b.example.com' })
+		);
+
+		// isVoipIncomingHostCurrentWorkspace returns false when active URL is falsy
+		expect(mockOnOpenDeepLink).toHaveBeenCalledTimes(1);
+		expect(mockOnOpenDeepLink).toHaveBeenCalledWith({
+			callId: 'any-call',
+			host: 'https://server-b.example.com'
+		});
+	});
+});
+
 describe('setupMediaCallEvents — didToggleHoldCallAction', () => {
 	const toggleHold = jest.fn();
 	const getState = useCallStore.getState as jest.Mock;

@@ -23,7 +23,6 @@ export type VoipDeepLinkParams = {
 	callId?: string;
 	username?: string;
 	voipAcceptFailed?: boolean;
-	path?: string;
 };
 
 export type MediaCallEventsAdapters = {
@@ -48,12 +47,12 @@ let lastHandledVoipAcceptFailureCallId: string | null = null;
 /** Idempotent warm delivery of native accept success. */
 let lastHandledVoipAcceptSucceededCallId: string | null = null;
 
-function clearVoipAcceptDedupeSentinels(): void {
+export function clearVoipAcceptDedupeSentinels(): void {
 	lastHandledVoipAcceptFailureCallId = null;
 	lastHandledVoipAcceptSucceededCallId = null;
 }
 
-/** Test hook: clears accept dedupe state (and is invoked internally on CallKit endCall). */
+/** Exported for tests only. Clears accept-dedupe sentinels between test cases. Production code calls clearVoipAcceptDedupeSentinels() directly. */
 export function resetMediaCallEventsStateForTesting(): void {
 	clearVoipAcceptDedupeSentinels();
 }
@@ -83,19 +82,19 @@ function handleVoipAcceptSucceededFromNative(data: VoipPayload, adapters: MediaC
 	if (callId && lastHandledVoipAcceptSucceededCallId === callId) {
 		return;
 	}
-	if (callId) {
-		lastHandledVoipAcceptSucceededCallId = callId;
-	}
 	if (data.type !== 'incoming_call') {
 		mediaCallLogger.log(`${TAG} VoipAcceptSucceeded: not an incoming call`);
 		return;
+	}
+	if (callId) {
+		lastHandledVoipAcceptSucceededCallId = callId;
 	}
 	mediaCallLogger.log(`${TAG} VoipAcceptSucceeded:`, data);
 	NativeVoipModule.clearInitialEvents();
 	useCallStore.getState().setNativeAcceptedCallId(data.callId);
 	if (data.host && isVoipIncomingHostCurrentWorkspace(data.host, adapters.getActiveServerUrl)) {
 		mediaSessionInstance.applyRestStateSignals().catch(error => {
-			console.error(`${TAG} applyRestStateSignals failed:`, error);
+			mediaCallLogger.error(`${TAG} applyRestStateSignals failed:`, error);
 		});
 		return;
 	}
@@ -192,7 +191,7 @@ export const setupMediaCallEvents = (adapters: MediaCallEventsAdapters): (() => 
 			try {
 				handleVoipAcceptSucceededFromNative(data, adapters);
 			} catch (error) {
-				console.error(`${TAG} Error handling VoipAcceptSucceeded:`, error);
+				mediaCallLogger.error(`${TAG} Error handling VoipAcceptSucceeded:`, error);
 			}
 		})
 	);
@@ -267,7 +266,7 @@ export const getInitialMediaCallEvents = async (adapters: MediaCallEventsAdapter
 
 			if (initialEvents.host && isVoipIncomingHostCurrentWorkspace(initialEvents.host, adapters.getActiveServerUrl)) {
 				mediaSessionInstance.applyRestStateSignals().catch(error => {
-					console.error(`${TAG} applyRestStateSignals (initial) failed:`, error);
+					mediaCallLogger.error(`${TAG} applyRestStateSignals (initial) failed:`, error);
 				});
 				mediaCallLogger.log(`${TAG} Same workspace as VoIP host; skipped deepLinkingOpen`);
 				return true;
@@ -282,7 +281,7 @@ export const getInitialMediaCallEvents = async (adapters: MediaCallEventsAdapter
 
 		return wasAnswered;
 	} catch (error) {
-		console.error(`${TAG} Error:`, error);
+		mediaCallLogger.error(`${TAG} Error:`, error);
 		return false;
 	}
 };

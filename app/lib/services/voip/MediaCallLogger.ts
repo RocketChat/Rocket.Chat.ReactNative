@@ -12,10 +12,10 @@ export class MediaCallLogger implements IMediaSignalLogger {
 	}
 
 	error(...args: unknown[]): void {
-		console.log(`[Media Call Error] ${JSON.stringify(args)}`);
+		console.error(`[Media Call Error] ${JSON.stringify(args)}`);
 	}
 
 	warn(...args: unknown[]): void {
-		console.log(`[Media Call Warning] ${JSON.stringify(args)}`);
+		console.warn(`[Media Call Warning] ${JSON.stringify(args)}`);
 	}
 }

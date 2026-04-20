@@ -3,9 +3,11 @@
  *
  * iOS-only paths: isIOS = true, NativeEventEmitter for VoIP events, CallKit listeners.
  */
-import type { VoipPayload } from '../../../definitions/Voip';
 import RNCallKeep from 'react-native-callkeep';
+
+import type { VoipPayload } from '../../../definitions/Voip';
 import NativeVoipModule from '../../native/NativeVoip';
+import { registerPushToken } from '../restApi';
 import {
 	getInitialMediaCallEvents,
 	resetMediaCallEventsStateForTesting,
@@ -13,50 +15,44 @@ import {
 	type MediaCallEventsAdapters
 } from './MediaCallEvents';
 import { useCallStore } from './useCallStore';
-import { registerPushToken } from '../restApi';
 
 /** Shared bucket for NativeEventEmitter / DeviceEventEmitter VoIP listeners (Jest allows `mock*` refs inside factories). */
 const mockNativeVoipListeners: Record<string, ((payload: unknown) => void)[]> = {};
 
-/** Minimal RN surface for MediaCallEvents — avoid `requireActual('react-native')` in @jest-environment node. */
+/** Factory: returns an addListener implementation that stores listeners in `bucket`.
+ * Named with `mock` prefix so Jest factory scope rules allow it inside jest.mock() calls. */
+function mockMakeAddListener(bucket: Record<string, ((payload: unknown) => void)[]>) {
+	return (eventType: string, listener: (payload: unknown) => void) => {
+		bucket[eventType] = bucket[eventType] || [];
+		bucket[eventType].push(listener);
+		return {
+			remove() {
+				const list = bucket[eventType];
+				if (!list) {
+					return;
+				}
+				const idx = list.indexOf(listener);
+				if (idx >= 0) {
+					list.splice(idx, 1);
+				}
+			}
+		};
+	};
+}
+
+/** Minimal RN surface for MediaCallEvents — avoid `requireActual('react-native')` in @jest-environment node.
+ * addListener is defined as a method (not a field initializer) so that mockNativeVoipListeners is
+ * captured lazily at call time rather than eagerly when the mock factory / class field runs. */
 jest.mock('react-native', () => ({
 	Platform: { OS: 'ios' },
 	DeviceEventEmitter: {
-		addListener: (eventType: string, listener: (payload: unknown) => void) => {
-			mockNativeVoipListeners[eventType] = mockNativeVoipListeners[eventType] || [];
-			mockNativeVoipListeners[eventType].push(listener);
-			return {
-				remove() {
-					const list = mockNativeVoipListeners[eventType];
-					if (!list) {
-						return;
-					}
-					const idx = list.indexOf(listener);
-					if (idx >= 0) {
-						list.splice(idx, 1);
-					}
-				}
-			};
+		addListener(eventType: string, listener: (payload: unknown) => void) {
+			return mockMakeAddListener(mockNativeVoipListeners)(eventType, listener);
 		}
 	},
 	NativeEventEmitter: class {
-		// eslint-disable-next-line @typescript-eslint/no-useless-constructor, @typescript-eslint/no-unused-vars
-		constructor(_nativeModule?: unknown) {}
 		addListener(eventType: string, listener: (payload: unknown) => void) {
-			mockNativeVoipListeners[eventType] = mockNativeVoipListeners[eventType] || [];
-			mockNativeVoipListeners[eventType].push(listener);
-			return {
-				remove() {
-					const list = mockNativeVoipListeners[eventType];
-					if (!list) {
-						return;
-					}
-					const idx = list.indexOf(listener);
-					if (idx >= 0) {
-						list.splice(idx, 1);
-					}
-				}
-			};
+			return mockMakeAddListener(mockNativeVoipListeners)(eventType, listener);
 		}
 	}
 }));
@@ -137,6 +133,14 @@ function getEndCallHandler(): (payload: { callUUID: string }) => void {
 	return call[1] as (payload: { callUUID: string }) => void;
 }
 
+function getMuteHandler(): (p: { muted: boolean; callUUID: string }) => void {
+	const call = mockAddEventListener.mock.calls.find(([name]) => name === 'didPerformSetMutedCallAction');
+	if (!call) {
+		throw new Error('didPerformSetMutedCallAction listener not registered');
+	}
+	return call[1] as (p: { muted: boolean; callUUID: string }) => void;
+}
+
 function buildIncomingPayload(overrides: Partial<VoipPayload> = {}): VoipPayload {
 	return {
 		callId: 'ios-call-uuid',
@@ -176,23 +180,20 @@ describe('setupMediaCallEvents — didPerformSetMutedCallAction (iOS)', () => {
 
 	it('calls toggleMute when muted state differs from OS and UUIDs match', () => {
 		setupMediaCallEvents(makeTestAdapters());
-		const muteCall = mockAddEventListener.mock.calls.find(([name]) => name === 'didPerformSetMutedCallAction');
-		(muteCall![1] as (p: { muted: boolean; callUUID: string }) => void)({ muted: true, callUUID: 'uuid-1' });
+		getMuteHandler()({ muted: true, callUUID: 'uuid-1' });
 		expect(toggleMute).toHaveBeenCalledTimes(1);
 	});
 
 	it('does not call toggleMute when muted state already matches OS even if UUIDs match', () => {
 		getState.mockReturnValue({ ...activeCallBase, isMuted: true, toggleMute });
 		setupMediaCallEvents(makeTestAdapters());
-		const muteCall = mockAddEventListener.mock.calls.find(([name]) => name === 'didPerformSetMutedCallAction');
-		(muteCall![1] as (p: { muted: boolean; callUUID: string }) => void)({ muted: true, callUUID: 'uuid-1' });
+		getMuteHandler()({ muted: true, callUUID: 'uuid-1' });
 		expect(toggleMute).not.toHaveBeenCalled();
 	});
 
 	it('drops event when callUUID does not match active call id', () => {
 		setupMediaCallEvents(makeTestAdapters());
-		const muteCall = mockAddEventListener.mock.calls.find(([name]) => name === 'didPerformSetMutedCallAction');
-		(muteCall![1] as (p: { muted: boolean; callUUID: string }) => void)({ muted: true, callUUID: 'uuid-2' });
+		getMuteHandler()({ muted: true, callUUID: 'uuid-2' });
 		expect(toggleMute).not.toHaveBeenCalled();
 	});
 
@@ -205,8 +206,7 @@ describe('setupMediaCallEvents — didPerformSetMutedCallAction (iOS)', () => {
 			toggleMute
 		});
 		setupMediaCallEvents(makeTestAdapters());
-		const muteCall = mockAddEventListener.mock.calls.find(([name]) => name === 'didPerformSetMutedCallAction');
-		(muteCall![1] as (p: { muted: boolean; callUUID: string }) => void)({ muted: true, callUUID: 'uuid-1' });
+		getMuteHandler()({ muted: true, callUUID: 'uuid-1' });
 		expect(toggleMute).not.toHaveBeenCalled();
 	});
 });
@@ -222,11 +222,11 @@ describe('setupMediaCallEvents — VoipPushTokenRegistered (iOS)', () => {
 		getState.mockReturnValue({});
 	});
 
-	it('registers push token when native emits VoipPushTokenRegistered', async () => {
+	it('registers push token with no arguments when native emits VoipPushTokenRegistered', async () => {
 		setupMediaCallEvents(makeTestAdapters());
 		emitNativeVoipEvent('VoipPushTokenRegistered', { token: 'voip-token-xyz' });
 		await Promise.resolve();
-		expect(registerPushToken).toHaveBeenCalled();
+		expect(registerPushToken).toHaveBeenCalledWith();
 	});
 });
 
@@ -287,6 +287,22 @@ describe('getInitialMediaCallEvents — iOS cold start', () => {
 			callId,
 			host: 'https://foreign.example.com'
 		});
+	});
+
+	it('returns false when CallKit initial events have no RNCallKeepPerformAnswerCallAction', async () => {
+		const callId = 'unanswered-ios-uuid';
+		(NativeVoipModule.getInitialEvents as jest.Mock).mockReturnValue(
+			buildIncomingPayload({ callId, host: 'https://workspace-ios.example.com' })
+		);
+		(RNCallKeep.getInitialEvents as jest.Mock).mockResolvedValue([
+			{ name: 'RNCallKeepDidDisplayIncomingCall', data: { callUUID: callId } }
+		]);
+
+		const result = await getInitialMediaCallEvents(makeTestAdapters());
+
+		expect(result).toBe(false);
+		expect(mockSetNativeAcceptedCallId).not.toHaveBeenCalled();
+		expect(mockOnOpenDeepLink).not.toHaveBeenCalled();
 	});
 });
 
