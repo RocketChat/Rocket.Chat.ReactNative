@@ -74,10 +74,12 @@ class DDPClient {
             }
 
             override fun onMessage(webSocket: WebSocket, text: String) {
+                if (webSocket !== this@DDPClient.webSocket) return
                 handleMessage(text)
             }
 
             override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
+                if (webSocket !== this@DDPClient.webSocket) return
                 Log.e(TAG, "WebSocket failure: ${t.message}")
                 isConnected = false
                 mainHandler.post {
@@ -86,6 +88,7 @@ class DDPClient {
             }
 
             override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
+                if (webSocket !== this@DDPClient.webSocket) return
                 Log.d(TAG, "WebSocket closed: $code $reason")
                 isConnected = false
             }
@@ -154,7 +157,6 @@ class DDPClient {
         synchronized(pendingCallbacks) { pendingCallbacks.clear() }
         clearQueuedMethodCalls()
         connectedCallback = null
-        connectResultDelivered.set(false)
         onCollectionMessage = null
         webSocket?.close(1000, null)
         webSocket = null
@@ -354,5 +356,9 @@ class DDPClient {
 
     internal fun testDeliverRawMessage(text: String) {
         handleMessage(text)
+    }
+
+    internal fun testDeliverConnectFailure() {
+        mainHandler.post { tryDeliverConnectOutcome(false) }
     }
 }
