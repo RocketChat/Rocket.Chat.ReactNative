@@ -1095,11 +1095,6 @@ export const registerPushToken = async (): Promise<void> => {
 		return;
 	}
 
-	// TODO: voice permission check and retry to avoid race condition
-	if (isIOS && (!token || !voipToken)) {
-		return;
-	}
-
 	let data: TRegisterPushTokenData = {
 		id: await getUniqueId(),
 		value: '',

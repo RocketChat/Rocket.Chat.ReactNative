@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react-native';
+import { act, fireEvent, render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
 import { CreateCall } from './CreateCall';
@@ -99,7 +99,7 @@ describe('CreateCall', () => {
 		expect(button.props.accessibilityState?.disabled).toBe(false);
 	});
 
-	it('should call startCall with user type when user peer is selected and pressed', () => {
+	it('should call startCall with user type when user peer is selected and pressed', async () => {
 		setStoreState(userPeer);
 		const { getByTestId } = render(
 			<Wrapper>
@@ -108,12 +108,13 @@ describe('CreateCall', () => {
 		);
 
 		fireEvent.press(getByTestId('new-media-call-button'));
+		await act(() => Promise.resolve());
 		expect(mockStartCall).toHaveBeenCalledTimes(1);
 		expect(mockStartCall).toHaveBeenCalledWith('user-1', 'user');
 		expect(mockHideActionSheet).toHaveBeenCalledTimes(1);
 	});
 
-	it('should call startCall when SIP peer is selected and pressed', () => {
+	it('should call startCall when SIP peer is selected and pressed', async () => {
 		setStoreState(sipPeer);
 		const { getByTestId } = render(
 			<Wrapper>
@@ -122,6 +123,7 @@ describe('CreateCall', () => {
 		);
 
 		fireEvent.press(getByTestId('new-media-call-button'));
+		await act(() => Promise.resolve());
 		expect(mockStartCall).toHaveBeenCalledTimes(1);
 		expect(mockStartCall).toHaveBeenCalledWith('+5511999999999', 'sip');
 		expect(mockHideActionSheet).toHaveBeenCalledTimes(1);

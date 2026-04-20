@@ -172,14 +172,16 @@ class MediaSessionInstance {
 		useCallStore.getState().setRoomId(room.rid ?? null);
 		const otherUserId = getUidDirectMessage(room);
 		if (otherUserId) {
-			this.startCall(otherUserId, 'user');
+			this.startCall(otherUserId, 'user').catch(error => {
+				console.error('[VoIP] Error starting call from room:', error);
+			});
 		}
 	};
 
-	public startCall = (userId: string, actor: CallActorType) => {
+	public startCall = async (userId: string, actor: CallActorType): Promise<void> => {
 		requestPhoneStatePermission();
 		console.log('[VoIP] Starting call:', userId);
-		this.instance?.startCall(actor, userId);
+		await this.instance?.startCall(actor, userId);
 	};
 
 	public endCall = (callId: string) => {
