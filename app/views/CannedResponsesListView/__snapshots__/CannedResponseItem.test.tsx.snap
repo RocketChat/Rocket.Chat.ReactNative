@@ -7,7 +7,7 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
     collapsable={false}
     delayLongPress={600}
     enabled={true}
-    handlerTag={1}
+    handlerTag={-1}
     handlerType="NativeViewGestureHandler"
     innerRef={null}
     onActiveStateChange={[Function]}
@@ -127,49 +127,56 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
         <RNGestureHandlerButton
           accessibilityLabel="Use"
           accessibilityRole="button"
+          activeOpacity={0.105}
           collapsable={false}
+          delayLongPress={600}
           enabled={true}
-          hitSlop={
-            {
-              "bottom": 0,
-              "left": 0,
-              "right": 0,
-              "top": 0,
-            }
-          }
-          rippleColor="transparent"
+          handlerTag={-1}
+          handlerType="NativeViewGestureHandler"
+          innerRef={null}
+          onActiveStateChange={[Function]}
+          onGestureHandlerEvent={[Function]}
+          onGestureHandlerStateChange={[Function]}
+          onPress={[Function]}
           style={
             [
-              {},
-              [
-                {
-                  "justifyContent": "center",
-                  "paddingHorizontal": 16,
-                  "paddingVertical": 14,
-                },
-                {
-                  "borderRadius": 4,
-                  "marginBottom": 12,
-                },
-                {
-                  "backgroundColor": "#156FF5",
-                },
-                {},
-                [
-                  {
-                    "height": 28,
-                    "marginLeft": 8,
-                    "width": 56,
-                  },
-                  {
-                    "backgroundColor": "#F7F8FA",
-                  },
-                ],
-              ],
+              {
+                "backgroundColor": "#F7F8FA",
+                "borderRadius": 4,
+                "height": 28,
+                "justifyContent": "center",
+                "marginBottom": 12,
+                "marginLeft": 8,
+                "paddingHorizontal": 16,
+                "paddingVertical": 14,
+                "width": 56,
+              },
+              {
+                "cursor": undefined,
+              },
             ]
           }
-          testOnly_onPress={[Function]}
+          underlayColor="black"
         >
+          <View
+            collapsable={false}
+            style={
+              {
+                "backgroundColor": "black",
+                "borderBottomLeftRadius": undefined,
+                "borderBottomRightRadius": undefined,
+                "borderRadius": 4,
+                "borderTopLeftRadius": undefined,
+                "borderTopRightRadius": undefined,
+                "bottom": 0,
+                "left": 0,
+                "opacity": 0,
+                "position": "absolute",
+                "right": 0,
+                "top": 0,
+              }
+            }
+          />
           <Text
             style={
               [
@@ -231,7 +238,7 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
     collapsable={false}
     delayLongPress={600}
     enabled={true}
-    handlerTag={2}
+    handlerTag={-1}
     handlerType="NativeViewGestureHandler"
     innerRef={null}
     onActiveStateChange={[Function]}
@@ -351,49 +358,56 @@ exports[`Story Snapshots: Itens should match snapshot 1`] = `
         <RNGestureHandlerButton
           accessibilityLabel="Use"
           accessibilityRole="button"
+          activeOpacity={0.105}
           collapsable={false}
+          delayLongPress={600}
           enabled={true}
-          hitSlop={
-            {
-              "bottom": 0,
-              "left": 0,
-              "right": 0,
-              "top": 0,
-            }
-          }
-          rippleColor="transparent"
+          handlerTag={-1}
+          handlerType="NativeViewGestureHandler"
+          innerRef={null}
+          onActiveStateChange={[Function]}
+          onGestureHandlerEvent={[Function]}
+          onGestureHandlerStateChange={[Function]}
+          onPress={[Function]}
           style={
             [
-              {},
-              [
-                {
-                  "justifyContent": "center",
-                  "paddingHorizontal": 16,
-                  "paddingVertical": 14,
-                },
-                {
-                  "borderRadius": 4,
-                  "marginBottom": 12,
-                },
-                {
-                  "backgroundColor": "#156FF5",
-                },
-                {},
-                [
-                  {
-                    "height": 28,
-                    "marginLeft": 8,
-                    "width": 56,
-                  },
-                  {
-                    "backgroundColor": "#F7F8FA",
-                  },
-                ],
-              ],
+              {
+                "backgroundColor": "#F7F8FA",
+                "borderRadius": 4,
+                "height": 28,
+                "justifyContent": "center",
+                "marginBottom": 12,
+                "marginLeft": 8,
+                "paddingHorizontal": 16,
+                "paddingVertical": 14,
+                "width": 56,
+              },
+              {
+                "cursor": undefined,
+              },
             ]
           }
-          testOnly_onPress={[Function]}
+          underlayColor="black"
         >
+          <View
+            collapsable={false}
+            style={
+              {
+                "backgroundColor": "black",
+                "borderBottomLeftRadius": undefined,
+                "borderBottomRightRadius": undefined,
+                "borderRadius": 4,
+                "borderTopLeftRadius": undefined,
+                "borderTopRightRadius": undefined,
+                "bottom": 0,
+                "left": 0,
+                "opacity": 0,
+                "position": "absolute",
+                "right": 0,
+                "top": 0,
+              }
+            }
+          />
           <Text
             style={
               [
