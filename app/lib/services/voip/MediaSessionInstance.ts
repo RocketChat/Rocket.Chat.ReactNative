@@ -16,6 +16,7 @@ import { mediaSessionStore } from './MediaSessionStore';
 import { useCallStore } from './useCallStore';
 import { store } from '../../store/auxStore';
 import sdk from '../sdk';
+import { mediaCallsStateSignals } from '../restApi';
 import Navigation from '../../navigation/appNavigation';
 import { parseStringToIceServers } from './parseStringToIceServers';
 import type { IceServer } from '../../../definitions/Voip';
@@ -24,7 +25,6 @@ import type { ISubscription, TSubscriptionModel } from '../../../definitions';
 import { getDMSubscriptionByUsername } from '../../database/services/Subscription';
 import { getUidDirectMessage } from '../../methods/helpers/helpers';
 import { requestPhoneStatePermission } from '../../methods/voipPhoneStatePermission';
-import { mediaCallsStateSignals } from '../restApi';
 
 class MediaSessionInstance {
 	private iceServers: IceServer[] = [];
@@ -80,6 +80,7 @@ class MediaSessionInstance {
 					iceGatheringTimeout: this.iceGatheringTimeout
 				})
 		);
+		// TESTING: DDP signal transport — offer/answer/ICE stay on DDP
 		mediaSessionStore.setSendSignalFn((signal: ClientMediaSignal) => {
 			sdk.methodCall('stream-notify-user', `${userId}/media-calls`, JSON.stringify(signal));
 		});
@@ -95,6 +96,7 @@ class MediaSessionInstance {
 			this.instance = mediaSessionStore.getInstance(userId);
 		});
 
+		// TESTING: DDP real-time signal subscription — stays for offer/answer/ICE/notifications
 		this.mediaSignalListener = sdk.onStreamData('stream-notify-user', (ddpMessage: IDDPMessage) => {
 			if (!this.instance) {
 				return;

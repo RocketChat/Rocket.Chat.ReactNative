@@ -41,6 +41,8 @@ import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
 import { mediaSessionInstance } from '../lib/services/voip/MediaSessionInstance';
 import { hasPermission } from '../lib/methods/helpers/helpers';
+import { mediaSessionStore } from '../lib/services/voip/MediaSessionStore';
+import { store as reduxStore } from '../lib/store/auxStore';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => loginWithPassword(args);
@@ -242,21 +244,51 @@ const checkBackgroundAndSetAway = function* checkBackgroundAndSetAway() {
 	}
 };
 
-const startVoipFork = function* startVoipFork() {
+const checkVoipPermission = async () => {
 	try {
-		const allowInternalVoiceCallRoles = yield select(state => state.permissions['allow-internal-voice-calls']);
-		const allowExternalVoiceCallRoles = yield select(state => state.permissions['allow-external-voice-calls']);
+		const state = reduxStore.getState();
+		const userId = state.login.user?.id;
+		if (!userId) {
+			return;
+		}
 
-		const hasPermissions = yield hasPermission([allowInternalVoiceCallRoles, allowExternalVoiceCallRoles]);
-		if (isVoipModuleAvailable() && (hasPermissions[0] || hasPermissions[1])) {
-			const userId = yield select(state => state.login.user.id);
-			mediaSessionInstance.init(userId);
-		} else {
+		const hasPermissions = await hasPermission([
+			state.permissions['allow-internal-voice-calls'],
+			state.permissions['allow-external-voice-calls']
+		]);
+		const canUseVoip = isVoipModuleAvailable() && (hasPermissions[0] || hasPermissions[1]);
+
+		if (!canUseVoip) {
 			mediaSessionInstance.reset();
+			return;
+		}
+		if (!mediaSessionStore.getCurrentInstance()) {
+			mediaSessionInstance.init(userId);
 		}
 	} catch (e) {
 		log(e);
 	}
+};
+
+let voipPermissionListener;
+
+const stopVoipPermissionListener = () => {
+	if (voipPermissionListener) {
+		voipPermissionListener.stop();
+		voipPermissionListener = null;
+	}
+};
+
+const startVoipFork = function* startVoipFork() {
+	yield call(checkVoipPermission);
+
+	stopVoipPermissionListener();
+	voipPermissionListener = sdk.current.onStreamData('stream-notify-logged', async ddpMessage => {
+		const { eventName } = ddpMessage.fields || {};
+		if (/permissions-changed/.test(eventName)) {
+			await checkVoipPermission();
+		}
+	});
 };
 
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
@@ -331,6 +363,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 };
 
 const handleLogout = function* handleLogout({ forcedByServer, message }) {
+	stopVoipPermissionListener();
 	yield put(encryptionStop());
 	yield put(appStart({ root: RootEnum.ROOT_LOADING, text: I18n.t('Logging_out') }));
 	const server = yield select(getServer);
@@ -407,6 +440,7 @@ const handleSetUser = function* handleSetUser({ user }) {
 };
 
 const handleDeleteAccount = function* handleDeleteAccount() {
+	stopVoipPermissionListener();
 	yield put(encryptionStop());
 	yield put(appStart({ root: RootEnum.ROOT_LOADING, text: I18n.t('Deleting_account') }));
 	const server = yield select(getServer);
