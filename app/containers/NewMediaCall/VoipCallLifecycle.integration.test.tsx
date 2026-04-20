@@ -413,7 +413,7 @@ describe('VoIP call lifecycle (integration)', () => {
 
 	// ── Outgoing calls (button press path) ───────────────────────────────────
 
-	it('user peer: press Call → startCall fires newCall → navigates to CallView', () => {
+	it('user peer: press Call → startCall fires newCall → navigates to CallView', async () => {
 		setSelectedPeer({ type: 'user', value: 'user-1', label: 'Alice', username: 'alice' });
 		const session = createdSessions[createdSessions.length - 1];
 
@@ -428,7 +428,9 @@ describe('VoIP call lifecycle (integration)', () => {
 		//   → session.startCall('user', 'user-1') [args reversed for SDK]
 		//   → mock fires 'newCall' → MediaSessionInstance handler
 		//   → useCallStore.setCall + Navigation.navigate('CallView')
-		fireEvent.press(getByTestId('new-media-call-button'));
+		await act(async () => {
+			fireEvent.press(getByTestId('new-media-call-button'));
+		});
 
 		expect(session.startCall).toHaveBeenCalledWith('user', 'user-1');
 		expect(Navigation.navigate).toHaveBeenCalledWith('CallView');
