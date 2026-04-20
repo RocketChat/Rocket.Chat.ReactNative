@@ -7,12 +7,11 @@ import { mediaSessionInstance } from './MediaSessionInstance';
 import type { VoipPayload } from '../../../definitions/Voip';
 import NativeVoipModule from '../../native/NativeVoip';
 import { registerPushToken } from '../restApi';
-import { MediaCallLogger } from './MediaCallLogger';
+import { mediaCallLogger } from './MediaCallLogger';
 
 const Emitter = isIOS ? new NativeEventEmitter(NativeVoipModule) : DeviceEventEmitter;
 const platform = isIOS ? 'iOS' : 'Android';
 const TAG = `[MediaCallEvents][${platform}]`;
-const mediaCallLogger = new MediaCallLogger();
 
 const EVENT_VOIP_ACCEPT_FAILED = 'VoipAcceptFailed';
 const EVENT_VOIP_ACCEPT_SUCCEEDED = 'VoipAcceptSucceeded';

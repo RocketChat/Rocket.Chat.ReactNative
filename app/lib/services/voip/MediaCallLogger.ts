@@ -3,6 +3,11 @@ import type { IMediaSignalLogger } from '@rocket.chat/media-signaling';
 const formatArg = (value: unknown): string => (typeof value === 'string' ? value : JSON.stringify(value));
 
 export const mediaCallLogger = {
+	log(...args: unknown[]): void {
+		if (__DEV__) {
+			console.log(...args);
+		}
+	},
 	info(...args: unknown[]): void {
 		if (__DEV__) {
 			console.log(...args);

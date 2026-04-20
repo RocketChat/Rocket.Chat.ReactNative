@@ -279,9 +279,11 @@ class MediaSessionInstance {
 		useCallStore.getState().setRoomId(room.rid ?? null);
 		const otherUserId = getUidDirectMessage(room);
 		if (otherUserId) {
-			this.startCall(otherUserId, 'user').catch(error => {
+			try {
+				this.startCall(otherUserId, 'user');
+			} catch (error) {
 				console.error('[VoIP] Error starting call from room:', error);
-			});
+			}
 		}
 	};
 
