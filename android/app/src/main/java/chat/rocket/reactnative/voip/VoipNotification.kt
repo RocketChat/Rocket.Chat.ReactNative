@@ -674,8 +674,10 @@ class VoipNotification(private val context: Context) {
                     return
                 }
 
-            // Build the PhoneAccountHandle using the same (ComponentName, appName) pair that
-            // react-native-callkeep uses so JS-side and native-side accounts collide.
+            // Build the PhoneAccountHandle using the same (ComponentName, packageName) pair
+            // that react-native-callkeep uses (see patches/react-native-callkeep+4.3.16.patch)
+            // so the JS-side and native-side PhoneAccount registrations share one handle.
+            // The ID must be locale-stable; the localized label is only used for display below.
             val componentName = ComponentName(context.packageName, CALLKEEP_CONNECTION_SERVICE_CLASS)
             val phoneAccountHandle = PhoneAccountHandle(componentName, context.packageName)
 
