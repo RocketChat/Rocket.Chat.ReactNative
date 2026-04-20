@@ -213,7 +213,7 @@ class VideoConfNotification(private val context: Context) {
      * Returns null if fetch fails or times out, in which case notification will display without avatar.
      */
     private fun getAvatar(uri: String, ejson: Ejson): Bitmap? {
-        return NotificationHelper.fetchAvatarBitmap(context, uri, ejson.token(), ejson.userId(), null)
+        return NotificationHelper.fetchAvatarBitmap(context, uri, ejson, null)
     }
 
     /**

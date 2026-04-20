@@ -8,10 +8,11 @@ import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.model.GlideUrl;
-import com.bumptech.glide.load.model.LazyHeaders;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -53,47 +54,45 @@ public class NotificationHelper {
     }
     
     /**
-     * Build a Glide load model for an avatar URL. When credentials are present, uses
-     * {@link GlideUrl} with {@link LazyHeaders} so rc_token/rc_uid are sent as HTTP headers
-     * instead of query parameters (avoids leaking credentials in logs and proxies).
+     * Build a Glide load model for an avatar URL, appending rc_token/rc_uid as query
+     * parameters when the Ejson has credentials. Mirrors the JS codebase's avatar auth
+     * convention (getAvatarUrl.ts, Reply.tsx, Urls.tsx).
      */
-    public static Object avatarLoadModel(String uri, @Nullable String rcToken, @Nullable String rcUid) {
+    public static Object avatarLoadModel(String uri, @Nullable Ejson ejson) {
         if (uri == null || uri.isEmpty()) {
             return uri;
         }
-        boolean hasAuth = rcToken != null && !rcToken.isEmpty() && rcUid != null && !rcUid.isEmpty();
-        if (!hasAuth) {
+        String rcToken = ejson != null ? ejson.token() : "";
+        String rcUid = ejson != null ? ejson.userId() : "";
+        if (rcToken.isEmpty() || rcUid.isEmpty()) {
             return uri;
         }
-        LazyHeaders headers = new LazyHeaders.Builder()
-                .addHeader("rc_token", rcToken)
-                .addHeader("rc_uid", rcUid)
-                .build();
-        return new GlideUrl(uri, headers);
+        String separator = uri.contains("?") ? "&" : "?";
+        try {
+            String authed = uri + separator
+                    + "rc_token=" + URLEncoder.encode(rcToken, "UTF-8")
+                    + "&rc_uid=" + URLEncoder.encode(rcUid, "UTF-8");
+            return new GlideUrl(authed);
+        } catch (UnsupportedEncodingException e) {
+            Log.e("NotificationHelper", "Failed to encode avatar credentials", e);
+            return uri;
+        }
     }
 
     /**
-     * Fetches avatar bitmap from URI using Glide.
-     * Uses a 3-second timeout to avoid blocking the FCM service for too long.
-     *
-     * @param context The application context
-     * @param uri The avatar URI to fetch (without rc_token/rc_uid query params)
-     * @param rcToken User auth token for protected avatars (optional)
-     * @param rcUid User id for protected avatars (optional)
-     * @param fallbackIcon Optional fallback bitmap (null if no fallback desired)
-     * @return Avatar bitmap, or fallbackIcon if fetch fails, or null if no fallback provided
+     * Fetches avatar bitmap with a 3-second timeout so we don't block the FCM service
+     * past its 10-second lifetime. Returns fallbackIcon on failure.
      */
     public static Bitmap fetchAvatarBitmap(
             Context context,
             String uri,
-            @Nullable String rcToken,
-            @Nullable String rcUid,
+            @Nullable Ejson ejson,
             @Nullable Bitmap fallbackIcon) {
         if (uri == null || uri.isEmpty()) {
             return fallbackIcon;
         }
 
-        Object loadModel = avatarLoadModel(uri, rcToken, rcUid);
+        Object loadModel = avatarLoadModel(uri, ejson);
 
         try {
             // Use a 3-second timeout to avoid blocking the FCM service for too long

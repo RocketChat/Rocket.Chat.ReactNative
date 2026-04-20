@@ -182,7 +182,7 @@ class IncomingCallActivity : Activity() {
         val sizePx = (120 * resources.displayMetrics.density).toInt().coerceIn(120, 480)
         val ejson = Ejson.forCallerAvatar(payload.host, payload.username) ?: return
         val avatarUrl = ejson.getCallerAvatarUri(sizePx) ?: return
-        val loadModel = NotificationHelper.avatarLoadModel(avatarUrl, ejson.token(), ejson.userId())
+        val loadModel = NotificationHelper.avatarLoadModel(avatarUrl, ejson)
         val cornerRadiusPx = (8 * resources.displayMetrics.density).toFloat()
 
         Glide.with(this)

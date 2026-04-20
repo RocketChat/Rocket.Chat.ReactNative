@@ -405,9 +405,7 @@ public class CustomPushNotification {
     }
 
     private Bitmap getAvatar(String uri, Ejson ejson) {
-        String token = ejson != null ? ejson.token() : "";
-        String uid = ejson != null ? ejson.userId() : "";
-        return NotificationHelper.fetchAvatarBitmap(mContext, uri, token, uid, largeIcon());
+        return NotificationHelper.fetchAvatarBitmap(mContext, uri, ejson, largeIcon());
     }
 
     private Bitmap largeIcon() {

@@ -53,19 +53,12 @@ public class Ejson {
         return MMKV.mmkvWithID("default", MMKV.SINGLE_PROCESS_MODE);
     }
 
-    /**
-     * Helper method to build avatar URI from avatar path.
-     * Validates server URL and credentials, then constructs the full URI.
-     */
-    private String buildAvatarUri(String avatarPath, String errorContext, int sizePx) {
+    private String buildAvatarUri(String avatarPath, int sizePx) {
         String server = serverURL();
         if (server == null || server.isEmpty()) {
-            Log.w(TAG, "Cannot generate " + errorContext + " avatar URI: serverURL is null");
+            Log.w(TAG, "Cannot generate avatar URI: serverURL is null");
             return null;
         }
-        
-        // Auth is supplied via HTTP headers on fetch (GlideUrl + LazyHeaders), not query params,
-        // so tokens are not logged in URLs or proxy access logs.
         return server + avatarPath + "?format=png&size=" + sizePx;
     }
 
@@ -96,7 +89,7 @@ public class Ejson {
             }
         }
         
-        return buildAvatarUri(avatarPath, "", 100);
+        return buildAvatarUri(avatarPath, 100);
     }
 
     /**
@@ -134,7 +127,7 @@ public class Ejson {
         
         try {
             String avatarPath = "/avatar/" + URLEncoder.encode(caller.username, "UTF-8");
-            return buildAvatarUri(avatarPath, "caller", sizePx);
+            return buildAvatarUri(avatarPath, sizePx);
         } catch (UnsupportedEncodingException e) {
             Log.e(TAG, "Failed to encode caller username", e);
             return null;
