@@ -236,7 +236,6 @@ class MediaSessionInstance {
 			const currentIceServers = this.getIceServers();
 			if (currentIceServers !== this.iceServers) {
 				this.iceServers = currentIceServers;
-				// this.instance?.setIceServers(this.iceServers);
 			}
 		});
 	}

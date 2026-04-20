@@ -137,6 +137,36 @@ describe('usePeerAutocompleteStore', () => {
 			expect(usePeerAutocompleteStore.getState().options).toEqual(mockOptions);
 		});
 
+		it('should forward the current username so the service can exclude self', async () => {
+			const { result } = renderHook(() => usePeerAutocompleteStore());
+
+			await act(async () => {
+				await result.current.fetchOptions('bob', { username: 'current.user', sipEnabled: false });
+			});
+
+			expect(mockGetPeerAutocompleteOptions).toHaveBeenCalledWith({
+				filter: 'bob',
+				peerInfo: null,
+				username: 'current.user',
+				sipEnabled: false
+			});
+		});
+
+		it('should trim the filter before passing to the service', async () => {
+			const { result } = renderHook(() => usePeerAutocompleteStore());
+
+			await act(async () => {
+				await result.current.fetchOptions('  alice  ', auth);
+			});
+
+			expect(mockGetPeerAutocompleteOptions).toHaveBeenCalledWith({
+				filter: 'alice',
+				peerInfo: null,
+				username: 'me',
+				sipEnabled: false
+			});
+		});
+
 		it('should pass selected peer to getPeerAutocompleteOptions', async () => {
 			usePeerAutocompleteStore.setState({ selectedPeer: userPeer, filter: 'bob' });
 			const { result } = renderHook(() => usePeerAutocompleteStore());

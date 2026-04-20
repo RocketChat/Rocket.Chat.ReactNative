@@ -6,6 +6,7 @@ export type TPeerItem =
 
 type TUserAutocompleteResponse = {
 	success?: boolean;
+	error?: string | null;
 	items?: Array<{
 		_id: string;
 		name?: string;
@@ -28,13 +29,12 @@ export const getPeerAutocompleteOptions = async ({
 	filter: string;
 	peerInfo?: TPeerItem | null;
 } & TPeerAutocompleteAuth): Promise<TPeerItem[]> => {
-	const term = filter.trim();
-	if (!term) {
+	if (!filter) {
 		return [];
 	}
 
-	const peerUsername = peerInfo && 'username' in peerInfo ? peerInfo.username : undefined;
-	const peerExtension = peerInfo && 'callerId' in peerInfo ? peerInfo.callerId : undefined;
+	const peerUsername = peerInfo?.type === 'user' ? peerInfo.username : undefined;
+	const peerExtension = peerInfo?.type === 'user' ? peerInfo.callerId : undefined;
 
 	const conditions =
 		peerExtension || sipEnabled
@@ -48,7 +48,7 @@ export const getPeerAutocompleteOptions = async ({
 
 	const exceptions = [username, peerUsername].filter(Boolean);
 	const selector = {
-		term,
+		term: filter,
 		exceptions,
 		...(conditions && { conditions })
 	};
@@ -70,8 +70,8 @@ export const getPeerAutocompleteOptions = async ({
 
 	const sipOption: TPeerItem = {
 		type: 'sip',
-		value: term,
-		label: term
+		value: filter,
+		label: filter
 	};
 
 	return [sipOption, ...userOptions];

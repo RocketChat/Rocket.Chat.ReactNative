@@ -5,14 +5,31 @@ jest.mock('../restApi', () => ({
 	usersAutoComplete: jest.fn()
 }));
 
+type TUsersAutoCompleteResponse = Awaited<ReturnType<typeof usersAutoComplete>>;
+
 const mockedUsersAutoComplete = usersAutoComplete as jest.MockedFunction<typeof usersAutoComplete>;
+
+type TAutoCompleteItem = {
+	_id: string;
+	name?: string;
+	username?: string;
+	freeSwitchExtension?: string;
+};
+
+const mockUsersAutoCompleteResponse = (
+	items: TAutoCompleteItem[] = [],
+	overrides: { success?: boolean; error?: string | null } = {}
+): TUsersAutoCompleteResponse => {
+	const { success = true, error = null } = overrides;
+	return { items, success, error } as unknown as TUsersAutoCompleteResponse;
+};
 
 describe('getPeerAutocompleteOptions', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 	});
 
-	it('returns empty array when filter is empty or whitespace', async () => {
+	it('returns empty array and skips API call when filter is empty', async () => {
 		await expect(
 			getPeerAutocompleteOptions({
 				filter: '',
@@ -22,26 +39,64 @@ describe('getPeerAutocompleteOptions', () => {
 			})
 		).resolves.toEqual([]);
 
-		await expect(
-			getPeerAutocompleteOptions({
-				filter: '   ',
-				peerInfo: null,
-				username: 'me',
-				sipEnabled: false
-			})
-		).resolves.toEqual([]);
-
 		expect(mockedUsersAutoComplete).not.toHaveBeenCalled();
 	});
 
+	it('does not trim the filter (trimming is the store boundary responsibility)', async () => {
+		mockedUsersAutoComplete.mockResolvedValue(mockUsersAutoCompleteResponse());
+
+		await getPeerAutocompleteOptions({
+			filter: '  alice  ',
+			peerInfo: null,
+			username: 'me',
+			sipEnabled: false
+		});
+
+		expect(mockedUsersAutoComplete).toHaveBeenCalledWith({
+			term: '  alice  ',
+			exceptions: ['me']
+		});
+	});
+
+	it('excludes the current username from results', async () => {
+		mockedUsersAutoComplete.mockResolvedValue(mockUsersAutoCompleteResponse());
+
+		await getPeerAutocompleteOptions({
+			filter: 'ali',
+			peerInfo: null,
+			username: 'current.user',
+			sipEnabled: false
+		});
+
+		expect(mockedUsersAutoComplete).toHaveBeenCalledWith({
+			term: 'ali',
+			exceptions: ['current.user']
+		});
+	});
+
+	it('omits current username from exceptions when it is not provided', async () => {
+		mockedUsersAutoComplete.mockResolvedValue(mockUsersAutoCompleteResponse());
+
+		await getPeerAutocompleteOptions({
+			filter: 'ali',
+			peerInfo: null,
+			username: undefined,
+			sipEnabled: false
+		});
+
+		expect(mockedUsersAutoComplete).toHaveBeenCalledWith({
+			term: 'ali',
+			exceptions: []
+		});
+	});
+
 	it('returns SIP option first then mapped user options (user branch)', async () => {
-		mockedUsersAutoComplete.mockResolvedValue({
-			success: true,
-			items: [
+		mockedUsersAutoComplete.mockResolvedValue(
+			mockUsersAutoCompleteResponse([
 				{ _id: 'u1', name: 'Alice', username: 'alice', freeSwitchExtension: '1001' },
 				{ _id: 'u2', name: '', username: 'bob', freeSwitchExtension: undefined }
-			]
-		});
+			])
+		);
 
 		const result = await getPeerAutocompleteOptions({
 			filter: 'ali',
@@ -74,8 +129,24 @@ describe('getPeerAutocompleteOptions', () => {
 		] satisfies TPeerItem[]);
 	});
 
+	it('SIP disabled: omits the freeSwitchExtension conditions entirely', async () => {
+		mockedUsersAutoComplete.mockResolvedValue(mockUsersAutoCompleteResponse());
+
+		await getPeerAutocompleteOptions({
+			filter: 'alice',
+			peerInfo: null,
+			username: 'me',
+			sipEnabled: false
+		});
+
+		expect(mockedUsersAutoComplete).toHaveBeenCalledWith({
+			term: 'alice',
+			exceptions: ['me']
+		});
+	});
+
 	it('SIP branch: when sipEnabled, adds freeSwitchExtension exists condition', async () => {
-		mockedUsersAutoComplete.mockResolvedValue({ success: true, items: [] });
+		mockedUsersAutoComplete.mockResolvedValue(mockUsersAutoCompleteResponse());
 
 		await getPeerAutocompleteOptions({
 			filter: '123',
@@ -94,7 +165,7 @@ describe('getPeerAutocompleteOptions', () => {
 	});
 
 	it('SIP branch: when selected peer has callerId, excludes matching extension and adds peer username to exceptions', async () => {
-		mockedUsersAutoComplete.mockResolvedValue({ success: true, items: [] });
+		mockedUsersAutoComplete.mockResolvedValue(mockUsersAutoCompleteResponse());
 
 		const peerInfo: TPeerItem = {
 			type: 'user',
@@ -121,7 +192,7 @@ describe('getPeerAutocompleteOptions', () => {
 	});
 
 	it('when sipEnabled is false but peer has callerId, still applies extension exclusion only', async () => {
-		mockedUsersAutoComplete.mockResolvedValue({ success: true, items: [] });
+		mockedUsersAutoComplete.mockResolvedValue(mockUsersAutoCompleteResponse());
 
 		const peerInfo: TPeerItem = {
 			type: 'user',
@@ -147,8 +218,8 @@ describe('getPeerAutocompleteOptions', () => {
 		});
 	});
 
-	it('returns only SIP option when API returns success false with no items', async () => {
-		mockedUsersAutoComplete.mockResolvedValue({ success: false, items: [] });
+	it('returns only SIP option when API returns success false with items', async () => {
+		mockedUsersAutoComplete.mockResolvedValue(mockUsersAutoCompleteResponse([], { success: false, error: 'error-not-allowed' }));
 
 		const result = await getPeerAutocompleteOptions({
 			filter: 'solo',
