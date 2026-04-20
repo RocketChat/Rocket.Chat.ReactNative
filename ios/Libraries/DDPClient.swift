@@ -414,30 +414,3 @@ private final class DDPClientURLSessionChallengeDelegate: NSObject, URLSessionDe
         Challenge.runChallenge(session, didReceiveChallenge: challenge, completionHandler: completionHandler)
     }
 }
-
-#if DEBUG
-extension DDPClient {
-    /// Installs a WebSocket task so receive-failure handling can be exercised without a live server.
-    func testing_installWebSocketSync(urlSession: URLSession, task: URLSessionWebSocketTask) {
-        stateQueue.sync {
-            self.urlSession?.invalidateAndCancel()
-            self.urlSession = urlSession
-            self.webSocketTask = task
-            self.isConnected = true
-        }
-    }
-
-    func testing_applyReceiveResult(_ result: Result<URLSessionWebSocketTask.Message, Error>, for task: URLSessionWebSocketTask) {
-        stateQueue.async { [weak self] in
-            guard let self else { return }
-            self.handleWebSocketReceiveResult(result, for: task)
-        }
-    }
-
-    func testing_readConnectionState(_ completion: @escaping (_ isConnected: Bool, _ webSocketTaskIsNil: Bool, _ urlSessionIsNil: Bool) -> Void) {
-        stateQueue.async {
-            completion(self.isConnected, self.webSocketTask == nil, self.urlSession == nil)
-        }
-    }
-}
-#endif
