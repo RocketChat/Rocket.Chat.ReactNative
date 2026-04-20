@@ -229,9 +229,14 @@ public final class VoipService: NSObject {
     /// Returns the last registered VoIP token
     @objc
     public static func getLastVoipToken() -> String {
-        bridgeStateQueue.sync {
+        let current = bridgeStateQueue.sync { lastVoipToken }
+        if !current.isEmpty {
+            return current
+        }
+        let persisted = loadPersistedVoipToken()
+        return bridgeStateQueue.sync {
             if lastVoipToken.isEmpty {
-                lastVoipToken = loadPersistedVoipToken()
+                lastVoipToken = persisted
             }
             return lastVoipToken
         }
