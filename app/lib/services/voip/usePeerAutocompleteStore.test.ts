@@ -95,6 +95,46 @@ describe('usePeerAutocompleteStore', () => {
 			expect(usePeerAutocompleteStore.getState().filter).toBe('');
 			expect(usePeerAutocompleteStore.getState().options).toEqual([]);
 		});
+
+		it('should invalidate in-flight fetchOptions when a peer is selected', async () => {
+			let resolveSlow: (options: TPeerItem[]) => void = () => {};
+			const slowPromise = new Promise<TPeerItem[]>(res => {
+				resolveSlow = res;
+			});
+			mockGetPeerAutocompleteOptions.mockReturnValueOnce(slowPromise);
+
+			const { result } = renderHook(() => usePeerAutocompleteStore());
+
+			await act(async () => {
+				const inFlight = result.current.fetchOptions('slow', auth);
+				result.current.setSelectedPeer(userPeer);
+				resolveSlow([{ type: 'sip', value: 'stale', label: 'stale' }]);
+				await inFlight;
+			});
+
+			expect(usePeerAutocompleteStore.getState().options).toEqual([]);
+			expect(usePeerAutocompleteStore.getState().selectedPeer).toEqual(userPeer);
+		});
+
+		it('should invalidate in-flight fetchOptions when selection is cleared', async () => {
+			let resolveSlow: (options: TPeerItem[]) => void = () => {};
+			const slowPromise = new Promise<TPeerItem[]>(res => {
+				resolveSlow = res;
+			});
+			mockGetPeerAutocompleteOptions.mockReturnValueOnce(slowPromise);
+
+			const { result } = renderHook(() => usePeerAutocompleteStore());
+
+			await act(async () => {
+				const inFlight = result.current.fetchOptions('slow', auth);
+				result.current.setSelectedPeer(null);
+				resolveSlow([{ type: 'sip', value: 'stale', label: 'stale' }]);
+				await inFlight;
+			});
+
+			expect(usePeerAutocompleteStore.getState().options).toEqual([]);
+			expect(usePeerAutocompleteStore.getState().selectedPeer).toBeNull();
+		});
 	});
 
 	describe('setFilter', () => {
