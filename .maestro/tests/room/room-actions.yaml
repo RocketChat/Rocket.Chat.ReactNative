@@ -121,8 +121,8 @@ tags:
     from:
       id: action-sheet-handle
     direction: UP
-- extendedWaitUntil:
-    visible:
+- scrollUntilVisible:
+    element:
       text: 'Star'
     timeout: 60000
 - tapOn:
