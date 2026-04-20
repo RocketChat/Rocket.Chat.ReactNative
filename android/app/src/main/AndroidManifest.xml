@@ -146,6 +146,15 @@
         </service>
 
         <service android:name="io.wazo.callkeep.RNCallKeepBackgroundMessagingService" />
+
+        <!-- react-native-webrtc ships MediaProjectionService (foregroundServiceType=mediaProjection)
+             for screen sharing. We don't use screen sharing, and Android 15+ forbids starting
+             restricted foreground service types from BOOT_COMPLETED receivers (expo-notifications
+             merges one in). Play Console flags this as a crash risk. Strip it from the merged
+             manifest. To re-enable, remove this block and set enableMediaProjectionService=true. -->
+        <service
+            android:name="com.oney.WebRTCModule.MediaProjectionService"
+            tools:node="remove" />
     </application>
 
     <queries>
