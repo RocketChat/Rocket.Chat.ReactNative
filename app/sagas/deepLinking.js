@@ -27,7 +27,7 @@ import { loginOAuthOrSso } from '../lib/services/connect';
 import { notifyUser } from '../lib/services/restApi';
 import sdk from '../lib/services/sdk';
 import Navigation from '../lib/navigation/appNavigation';
-import { useCallStore } from '../lib/services/voip/useCallStore';
+import { resetVoipState } from '../lib/services/voip/resetVoipState';
 
 const roomTypes = {
 	channel: 'c',
@@ -99,8 +99,7 @@ const navigate = function* navigate({ params }) {
 const handleVoipAcceptFailed = function* handleVoipAcceptFailed(params) {
 	try {
 		const { callId, username } = params;
-		useCallStore.getState().resetNativeCallId();
-		useCallStore.getState().reset();
+		resetVoipState();
 		if (callId) {
 			RNCallKeep.endCall(callId);
 		}
