@@ -15,8 +15,6 @@ final class DDPClient {
     
     private var webSocketTask: URLSessionWebSocketTask?
     private var urlSession: URLSession?
-    /// Retains the delegate passed to `URLSession` so TLS challenges reuse `Challenge` from `SSLPinning.mm`.
-    private var urlSessionChallengeDelegate: DDPClientURLSessionChallengeDelegate?
     private var sendCounter = 0
     private var isConnected = false
     
@@ -45,11 +43,9 @@ final class DDPClient {
             print("[\(Self.TAG)] Connecting to \(wsUrl)")
             #endif
             
-            let challengeDelegate = DDPClientURLSessionChallengeDelegate()
-            let session = URLSession(configuration: .default, delegate: challengeDelegate, delegateQueue: nil)
+            let session = URLSession(configuration: .default, delegate: DDPClientURLSessionChallengeDelegate(), delegateQueue: nil)
             let task = session.webSocketTask(with: url)
-            
-            self.urlSessionChallengeDelegate = challengeDelegate
+
             self.urlSession = session
             self.webSocketTask = task
             self.isConnected = false
@@ -171,7 +167,6 @@ final class DDPClient {
         webSocketTask = nil
         urlSession?.invalidateAndCancel()
         urlSession = nil
-        urlSessionChallengeDelegate = nil
     }
     
     // MARK: - Private
@@ -410,18 +405,9 @@ final class DDPClient {
 
 /// Forwards URL authentication challenges to the existing `Challenge` implementation in `SSLPinning.mm`
 /// (same path as `RCTHTTPRequestHandler` swizzling) so WebSocket TLS uses the same client-certificate flow.
-private final class DDPClientURLSessionChallengeDelegate: NSObject, URLSessionDelegate, URLSessionTaskDelegate {
+private final class DDPClientURLSessionChallengeDelegate: NSObject, URLSessionDelegate {
     func urlSession(
         _ session: URLSession,
-        didReceive challenge: URLAuthenticationChallenge,
-        completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
-    ) {
-        Challenge.runChallenge(session, didReceiveChallenge: challenge, completionHandler: completionHandler)
-    }
-
-    func urlSession(
-        _ session: URLSession,
-        task: URLSessionTask,
         didReceive challenge: URLAuthenticationChallenge,
         completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
     ) {
