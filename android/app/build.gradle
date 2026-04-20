@@ -155,6 +155,7 @@ dependencies {
     implementation 'androidx.security:security-crypto:1.1.0'
 
     testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.robolectric:robolectric:4.14.1'
 
     // For ProcessLifecycleOwner (app foreground detection)
     implementation 'androidx.lifecycle:lifecycle-process:2.8.7'

@@ -11,6 +11,8 @@ import okhttp3.WebSocketListener
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicInteger
 
 class DDPClient {
     private data class QueuedMethodCall(
@@ -28,17 +30,29 @@ class DDPClient {
 
     private var webSocket: WebSocket? = null
     private val client: OkHttpClient = sharedClient
-    private var sendCounter = 0
+    private val sendCounter = AtomicInteger(0)
+
+    @Volatile
     private var isConnected = false
+
     private val mainHandler = Handler(Looper.getMainLooper())
 
     private val pendingCallbacks = mutableMapOf<String, (JSONObject) -> Unit>()
     private val queuedMethodCalls = mutableListOf<QueuedMethodCall>()
+
+    @Volatile
     private var connectedCallback: ((Boolean) -> Unit)? = null
+
+    @Volatile
+    private var connectTimeoutRunnable: Runnable? = null
+
+    private val connectResultDelivered = AtomicBoolean(false)
 
     var onCollectionMessage: ((JSONObject) -> Unit)? = null
 
     fun connect(host: String, callback: (Boolean) -> Unit) {
+        resetConnectHandshakeState()
+
         val wsUrl = buildWebSocketURL(host)
 
         Log.d(TAG, "Connecting to $wsUrl")
@@ -60,16 +74,26 @@ class DDPClient {
             }
 
             override fun onMessage(webSocket: WebSocket, text: String) {
+                if (webSocket !== this@DDPClient.webSocket) return
                 handleMessage(text)
             }
 
             override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
+                if (webSocket !== this@DDPClient.webSocket) return
                 Log.e(TAG, "WebSocket failure: ${t.message}")
                 isConnected = false
-                mainHandler.post { callback(false) }
+                mainHandler.post {
+                    // Re-check identity on main thread: disconnect()+connect() can interleave
+                    // between the outer guard (OkHttp thread) and this runnable's execution.
+                    // Without this re-check, a stale failure can hijack a newly installed
+                    // connectedCallback via the CAS in tryDeliverConnectOutcome.
+                    if (webSocket !== this@DDPClient.webSocket) return@post
+                    tryDeliverConnectOutcome(false)
+                }
             }
 
             override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
+                if (webSocket !== this@DDPClient.webSocket) return
                 Log.d(TAG, "WebSocket closed: $code $reason")
                 isConnected = false
             }
@@ -134,6 +158,7 @@ class DDPClient {
     fun disconnect() {
         Log.d(TAG, "Disconnecting")
         isConnected = false
+        cancelConnectTimeout()
         synchronized(pendingCallbacks) { pendingCallbacks.clear() }
         clearQueuedMethodCalls()
         connectedCallback = null
@@ -143,10 +168,10 @@ class DDPClient {
     }
 
     private fun nextMessage(msg: String): JSONObject {
-        sendCounter++
+        val nextId = sendCounter.incrementAndGet()
         return JSONObject().apply {
             put("msg", msg)
-            put("id", "ddp-$sendCounter")
+            put("id", "ddp-$nextId")
         }
     }
 
@@ -211,14 +236,44 @@ class DDPClient {
         }
     }
 
+    private fun resetConnectHandshakeState() {
+        connectResultDelivered.set(false)
+    }
+
+    /**
+     * Delivers at most one outcome for the WebSocket connect handshake ([connect] callback).
+     * Uses [AtomicBoolean] so [onFailure], the connect-timeout runnable, and `"connected"` cannot
+     * all report conflicting results.
+     */
+    private fun tryDeliverConnectOutcome(success: Boolean, connectTimeout: Boolean = false) {
+        if (!connectResultDelivered.compareAndSet(false, true)) {
+            return
+        }
+        cancelConnectTimeout()
+        val cb = connectedCallback
+        connectedCallback = null
+        if (connectTimeout) {
+            Log.e(TAG, "Connect timeout")
+        }
+        mainHandler.post {
+            cb?.invoke(success)
+        }
+    }
+
     private fun waitForConnected(timeoutMs: Long, callback: (Boolean) -> Unit) {
         connectedCallback = callback
-        mainHandler.postDelayed({
-            val cb = connectedCallback ?: return@postDelayed
-            connectedCallback = null
-            Log.e(TAG, "Connect timeout")
-            cb(false)
-        }, timeoutMs)
+        cancelConnectTimeout()
+        val runnable = Runnable {
+            connectTimeoutRunnable = null
+            tryDeliverConnectOutcome(false, connectTimeout = true)
+        }
+        connectTimeoutRunnable = runnable
+        mainHandler.postDelayed(runnable, timeoutMs)
+    }
+
+    private fun cancelConnectTimeout() {
+        connectTimeoutRunnable?.let { mainHandler.removeCallbacks(it) }
+        connectTimeoutRunnable = null
     }
 
     private fun handleMessage(text: String) {
@@ -231,10 +286,7 @@ class DDPClient {
         when (json.optString("msg")) {
             "connected" -> {
                 isConnected = true
-                mainHandler.removeCallbacksAndMessages(null)
-                val cb = connectedCallback
-                connectedCallback = null
-                cb?.let { mainHandler.post { it(true) } }
+                tryDeliverConnectOutcome(true)
             }
 
             "ping" -> {
@@ -300,5 +352,25 @@ class DDPClient {
 
         val scheme = if (useSsl) "wss" else "ws"
         return "$scheme://$normalizedHost/websocket"
+    }
+
+    internal fun testStartConnectTimeout(timeoutMs: Long, callback: (Boolean) -> Unit) {
+        resetConnectHandshakeState()
+        waitForConnected(timeoutMs, callback)
+    }
+
+    internal fun testDeliverRawMessage(text: String) {
+        handleMessage(text)
+    }
+
+    internal fun testDeliverConnectFailure(fromWebSocket: WebSocket? = null) {
+        mainHandler.post {
+            if (fromWebSocket != null && fromWebSocket !== this@DDPClient.webSocket) return@post
+            tryDeliverConnectOutcome(false)
+        }
+    }
+
+    internal fun testSetActiveWebSocket(ws: WebSocket?) {
+        this.webSocket = ws
     }
 }

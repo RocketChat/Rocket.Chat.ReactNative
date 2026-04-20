@@ -2,11 +2,11 @@ package chat.rocket.reactnative.voip
 
 import android.util.Log
 import com.facebook.react.bridge.ReactApplicationContext
-import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.WritableMap
 import com.facebook.react.modules.core.DeviceEventManagerModule
-import java.lang.ref.WeakReference
 import chat.rocket.reactnative.networking.NativeVoipSpec
+import java.lang.ref.WeakReference
+import java.util.concurrent.atomic.AtomicReference
 
 /**
  * Native module to expose VoIP call data to JavaScript.
@@ -20,7 +20,8 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
         private const val EVENT_VOIP_ACCEPT_FAILED = "VoipAcceptFailed"
 
         private var reactContextRef: WeakReference<ReactApplicationContext>? = null
-        private var initialEventsData: VoipPayload? = null
+
+        private val initialEventsData = AtomicReference<VoipPayload?>(null)
 
         /**
          * Sets the React context reference for event emission.
@@ -54,7 +55,7 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
          */
         @JvmStatic
         fun storeInitialEvents(voipPayload: VoipPayload) {
-            initialEventsData = voipPayload
+            initialEventsData.set(voipPayload)
             emitInitialEventsEvent(voipPayload)
         }
 
@@ -64,7 +65,7 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
         @JvmStatic
         fun storeAcceptFailureForJs(payload: VoipPayload) {
             val failed = payload.copy(voipAcceptFailed = true)
-            initialEventsData = failed
+            initialEventsData.set(failed)
             emitVoipAcceptFailedEvent(failed)
         }
 
@@ -85,7 +86,7 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
         @JvmStatic
         fun clearInitialEventsInternal() {
             try {
-                initialEventsData = null
+                initialEventsData.set(null)
                 Log.d(TAG, "Cleared initial events")
             } catch (e: Exception) {
                 Log.e(TAG, "Error clearing initial events", e)
@@ -103,18 +104,22 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
      * Returns null if no initial events.
      */
     override fun getInitialEvents(): WritableMap? {
-        val data = initialEventsData ?: return null
+        while (true) {
+            val data = initialEventsData.get() ?: return null
 
-        if (data.isExpired()) {
-            Log.d(TAG, "Discarding expired VoIP initial event: ${data.callId}")
-            clearInitialEventsInternal()
-            return null
+            if (data.isExpired()) {
+                Log.d(TAG, "Discarding expired VoIP initial event: ${data.callId}")
+                if (initialEventsData.compareAndSet(data, null)) {
+                    return null
+                }
+                continue
+            }
+
+            val result = data.toWritableMap()
+            if (initialEventsData.compareAndSet(data, null)) {
+                return result
+            }
         }
-
-        val result = data.toWritableMap()
-        clearInitialEventsInternal()
-        
-        return result
     }
 
     /**
