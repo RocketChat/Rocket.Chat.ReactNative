@@ -274,7 +274,7 @@ let voipPermissionListener;
 
 const stopVoipPermissionListener = () => {
 	if (voipPermissionListener) {
-		voipPermissionListener.then(listener => listener.stop()).catch(e => log(e));
+		voipPermissionListener.stop();
 		voipPermissionListener = null;
 	}
 };
@@ -440,6 +440,7 @@ const handleSetUser = function* handleSetUser({ user }) {
 };
 
 const handleDeleteAccount = function* handleDeleteAccount() {
+	stopVoipPermissionListener();
 	yield put(encryptionStop());
 	yield put(appStart({ root: RootEnum.ROOT_LOADING, text: I18n.t('Deleting_account') }));
 	const server = yield select(getServer);
