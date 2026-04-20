@@ -802,6 +802,7 @@ class VoipNotification(private val context: Context) {
             setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             setAutoCancel(false)
             setOngoing(true)
+            setOnlyAlertOnce(true)
             setTimeoutAfter(remainingLifetimeMs)
             addAction(0, "Decline", declinePendingIntent)
             addAction(0, "Accept", acceptPendingIntent)
