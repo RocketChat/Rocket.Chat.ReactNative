@@ -11,6 +11,7 @@ import okhttp3.WebSocketListener
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 
 class DDPClient {
@@ -42,11 +43,16 @@ class DDPClient {
     @Volatile
     private var connectedCallback: ((Boolean) -> Unit)? = null
 
+    @Volatile
     private var connectTimeoutRunnable: Runnable? = null
+
+    private val connectResultDelivered = AtomicBoolean(false)
 
     var onCollectionMessage: ((JSONObject) -> Unit)? = null
 
     fun connect(host: String, callback: (Boolean) -> Unit) {
+        resetConnectHandshakeState()
+
         val wsUrl = buildWebSocketURL(host)
 
         Log.d(TAG, "Connecting to $wsUrl")
@@ -75,9 +81,7 @@ class DDPClient {
                 Log.e(TAG, "WebSocket failure: ${t.message}")
                 isConnected = false
                 mainHandler.post {
-                    cancelConnectTimeout()
-                    connectedCallback = null
-                    callback(false)
+                    tryDeliverConnectOutcome(false)
                 }
             }
 
@@ -150,6 +154,7 @@ class DDPClient {
         synchronized(pendingCallbacks) { pendingCallbacks.clear() }
         clearQueuedMethodCalls()
         connectedCallback = null
+        connectResultDelivered.set(false)
         onCollectionMessage = null
         webSocket?.close(1000, null)
         webSocket = null
@@ -224,15 +229,36 @@ class DDPClient {
         }
     }
 
+    private fun resetConnectHandshakeState() {
+        connectResultDelivered.set(false)
+    }
+
+    /**
+     * Delivers at most one outcome for the WebSocket connect handshake ([connect] callback).
+     * Uses [AtomicBoolean] so [onFailure], the connect-timeout runnable, and `"connected"` cannot
+     * all report conflicting results.
+     */
+    private fun tryDeliverConnectOutcome(success: Boolean, connectTimeout: Boolean = false) {
+        if (!connectResultDelivered.compareAndSet(false, true)) {
+            return
+        }
+        cancelConnectTimeout()
+        val cb = connectedCallback
+        connectedCallback = null
+        if (connectTimeout) {
+            Log.e(TAG, "Connect timeout")
+        }
+        mainHandler.post {
+            cb?.invoke(success)
+        }
+    }
+
     private fun waitForConnected(timeoutMs: Long, callback: (Boolean) -> Unit) {
         connectedCallback = callback
         cancelConnectTimeout()
         val runnable = Runnable {
             connectTimeoutRunnable = null
-            val cb = connectedCallback ?: return@Runnable
-            connectedCallback = null
-            Log.e(TAG, "Connect timeout")
-            cb(false)
+            tryDeliverConnectOutcome(false, connectTimeout = true)
         }
         connectTimeoutRunnable = runnable
         mainHandler.postDelayed(runnable, timeoutMs)
@@ -253,10 +279,7 @@ class DDPClient {
         when (json.optString("msg")) {
             "connected" -> {
                 isConnected = true
-                cancelConnectTimeout()
-                val cb = connectedCallback
-                connectedCallback = null
-                cb?.let { mainHandler.post { it(true) } }
+                tryDeliverConnectOutcome(true)
             }
 
             "ping" -> {
@@ -325,6 +348,7 @@ class DDPClient {
     }
 
     internal fun testStartConnectTimeout(timeoutMs: Long, callback: (Boolean) -> Unit) {
+        resetConnectHandshakeState()
         waitForConnected(timeoutMs, callback)
     }
 

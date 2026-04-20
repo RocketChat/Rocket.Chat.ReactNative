@@ -58,4 +58,16 @@ class DDPClientTest {
         Shadows.shadowOf(Looper.getMainLooper()).idleFor(6_000, TimeUnit.MILLISECONDS)
         assertEquals(listOf(false), outcomes)
     }
+
+    @Test
+    fun `duplicate connected messages invoke handshake callback once`() {
+        val client = DDPClient()
+        val outcomes = mutableListOf<Boolean>()
+        client.testStartConnectTimeout(10_000) { outcomes.add(it) }
+        client.testDeliverRawMessage("""{"msg":"connected"}""")
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
+        client.testDeliverRawMessage("""{"msg":"connected"}""")
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
+        assertEquals(listOf(true), outcomes)
+    }
 }
