@@ -10,6 +10,7 @@ type TPeerAutocompleteState = {
 
 type TPeerAutocompleteActions = {
 	fetchOptions: (filter: string, auth: TPeerAutocompleteAuth) => Promise<void>;
+	setFilter: (filter: string) => void;
 	setSelectedPeer: (peer: TPeerItem | null) => void;
 	reset: () => void;
 };
@@ -53,6 +54,11 @@ export const usePeerAutocompleteStore = create<TPeerAutocompleteStore>((set, get
 				}
 				set({ options: [] });
 			}
+		},
+
+		setFilter: (filter: string) => {
+			seq++;
+			set({ filter, selectedPeer: null, options: [] });
 		},
 
 		setSelectedPeer: (peer: TPeerItem | null) => {

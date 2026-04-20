@@ -34,7 +34,7 @@ export const FilterHeader = (): React.ReactElement => {
 	);
 
 	const handleChangeText = (value: string) => {
-		usePeerAutocompleteStore.setState({ filter: value, selectedPeer: null, options: [] });
+		usePeerAutocompleteStore.getState().setFilter(value);
 		debouncedFetchOptions(value);
 	};
 

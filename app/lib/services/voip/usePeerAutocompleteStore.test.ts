@@ -97,6 +97,43 @@ describe('usePeerAutocompleteStore', () => {
 		});
 	});
 
+	describe('setFilter', () => {
+		it('should update filter and clear selectedPeer and options', () => {
+			usePeerAutocompleteStore.setState({ filter: 'old', selectedPeer: userPeer, options: mockOptions });
+			const { result } = renderHook(() => usePeerAutocompleteStore());
+
+			act(() => {
+				result.current.setFilter('new');
+			});
+
+			expect(usePeerAutocompleteStore.getState()).toMatchObject({
+				filter: 'new',
+				selectedPeer: null,
+				options: []
+			});
+		});
+
+		it('should invalidate in-flight fetchOptions so stale responses cannot repopulate', async () => {
+			let resolveSlow: (options: TPeerItem[]) => void = () => {};
+			const slowPromise = new Promise<TPeerItem[]>(res => {
+				resolveSlow = res;
+			});
+			mockGetPeerAutocompleteOptions.mockReturnValueOnce(slowPromise);
+
+			const { result } = renderHook(() => usePeerAutocompleteStore());
+
+			await act(async () => {
+				const inFlight = result.current.fetchOptions('slow', auth);
+				result.current.setFilter('fast');
+				resolveSlow([{ type: 'sip', value: 'stale', label: 'stale' }]);
+				await inFlight;
+			});
+
+			expect(usePeerAutocompleteStore.getState().options).toEqual([]);
+			expect(usePeerAutocompleteStore.getState().filter).toBe('fast');
+		});
+	});
+
 	describe('fetchOptions', () => {
 		it('should set empty options when filter is empty', async () => {
 			const { result } = renderHook(() => usePeerAutocompleteStore());
