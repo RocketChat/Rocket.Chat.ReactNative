@@ -20,11 +20,25 @@ jobs:
     steps:
       - run: echo "Waiting for manual approval..."
 
+  run-ios-unit-tests:
+    name: Run iOS Unit Tests
+    runs-on: macos-26
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Checkout and Setup Node
+        uses: ./.github/actions/setup-node
+
+      - name: Run iOS Unit Tests
+        run: xcodebuild test -scheme RocketChatRN -destination 'platform=iOS Simulator,name=iPhone 16'
+        working-directory: ./ios
+
   build-ios:
     name: Build
     runs-on: macos-26
-    needs: [build-hold]
-    if: ${{ inputs.type == 'experimental' && (always() && (needs.build-hold.result == 'success' || needs.build-hold.result == 'skipped')) }}
+    needs: [build-hold, run-ios-unit-tests]
+    if: ${{ inputs.type == 'experimental' && (always() && (needs.build-hold.result == 'success' || needs.build-hold.result == 'skipped') && needs.run-ios-unit-tests.result == 'success') }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
