@@ -19,11 +19,22 @@ jobs:
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
     uses: ./.github/workflows/eslint.yml
 
+  android-unit-tests:
+    name: Android Unit Tests
+    runs-on: ubuntu-latest
+    needs: [run-eslint-and-test]
+    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-node
+      - run: ./gradlew experimentalDebugUnitTest
+        working-directory: ./android
+
   android-build-experimental-store:
     name: Build Android Experimental
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
     uses: ./.github/workflows/build-android.yml
-    needs: [run-eslint-and-test]
+    needs: [run-eslint-and-test, android-unit-tests]
     secrets: inherit
     with:
       type: experimental
