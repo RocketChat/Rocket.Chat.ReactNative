@@ -15,7 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface Challenge : NSObject
 + (void)runChallenge:(NSURLSession *)session
  didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
-  completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential * _Nullable credential))completionHandler;
+  completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential * _Nullable credential))completionHandler
+  NS_SWIFT_NAME(runChallenge(_:didReceiveChallenge:completionHandler:));
 @end
 
 @interface RCTHTTPRequestHandler (Challenge)
