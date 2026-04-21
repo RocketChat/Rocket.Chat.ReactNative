@@ -3,6 +3,7 @@ import { TextInput, StyleSheet, type TextInputProps, InteractionManager } from '
 import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
 import { type RouteProp, useFocusEffect, useRoute } from '@react-navigation/native';
+import { KeyboardController } from 'react-native-keyboard-controller';
 
 import { textInputDebounceTime } from '../../../lib/constants/debounceConfig';
 import I18n from '../../../i18n';
@@ -16,6 +17,7 @@ import {
 import { useAutocompleteParams, useFocused, useMessageComposerApi, useMicOrSend } from '../context';
 import { fetchIsAllOrHere, getMentionRegexp } from '../helpers';
 import { useAutoSaveDraft } from '../hooks';
+import { useEmojiKeyboard } from '../hooks/useEmojiKeyboard';
 import sharedStyles from '../../../views/Styles';
 import { useTheme } from '../../../theme';
 import { userTyping } from '../../../actions/room';
@@ -51,6 +53,7 @@ export const ComposerInput = memo(
 		const { rid, tmid, sharing, action, selectedMessages, setQuotesAndText, room } = useRoomContext();
 		const focused = useFocused();
 		const { setFocused, setMicOrSend, setAutocompleteParams } = useMessageComposerApi();
+		const { closeEmojiKeyboard, showEmojiPickerSharedValue } = useEmojiKeyboard();
 		const autocompleteType = useAutocompleteParams()?.type;
 		const textRef = React.useRef('');
 		const firstRender = React.useRef(true);
@@ -210,6 +213,10 @@ export const ComposerInput = memo(
 		};
 
 		const onTouchStart: TextInputProps['onTouchStart'] = () => {
+			if (showEmojiPickerSharedValue.value) {
+				closeEmojiKeyboard();
+				KeyboardController.setFocusTo('current');
+			}
 			setFocused(true);
 		};
 
