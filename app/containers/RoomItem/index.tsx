@@ -70,7 +70,7 @@ const RoomItemContainer = React.memo(
 			const isScreenReaderEnabled = await AccessibilityInfo.isScreenReaderEnabled();
 			const hasExternalKeyboard = isExternalKeyboardConnected();
 
-			if (item.separator || (!isScreenReaderEnabled && !hasExternalKeyboard)) {
+			if (item.separator || !swipeEnabled || (!isScreenReaderEnabled && !hasExternalKeyboard)) {
 				return;
 			}
 			showActionSheet({

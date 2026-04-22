@@ -82,6 +82,8 @@ const Touch = React.forwardRef<any, ITouchProps>(
 				activeOpacity={1}
 				underlayColor={underlayColor || colors.surfaceNeutral}
 				rippleColor={colors.surfaceNeutral}
+				focusable={!disabled}
+				canBeFocused={!disabled}
 				style={[rectButtonStyle, marginStyles, { backgroundColor, borderRadius }]}
 				{...props}
 				enabled={!disabled}>
