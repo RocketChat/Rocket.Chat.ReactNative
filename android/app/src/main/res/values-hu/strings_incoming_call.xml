@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="incoming_call_status">Bejövő hívás…</string>
-    <string name="incoming_call_reject">Elutasítás</string>
-    <string name="incoming_call_accept">Elfogadás</string>
+    <string name="incoming_call_reject">Elutasít</string>
+    <string name="incoming_call_accept">Elfogad</string>
     <string name="incoming_call_avatar_description">Hívó avatárja</string>
     <string name="incoming_call_unknown_caller">Ismeretlen hívó</string>
     <string name="incoming_call_unknown_host">Ismeretlen host</string>

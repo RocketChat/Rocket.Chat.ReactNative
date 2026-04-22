@@ -4,6 +4,6 @@
     <string name="incoming_call_reject">Avvis</string>
     <string name="incoming_call_accept">Godta</string>
     <string name="incoming_call_avatar_description">Avatar til innringaren</string>
-    <string name="incoming_call_unknown_caller">Ukjend innringjар</string>
+    <string name="incoming_call_unknown_caller">Ukjend innringjar</string>
     <string name="incoming_call_unknown_host">Ukjend vert</string>
 </resources>
