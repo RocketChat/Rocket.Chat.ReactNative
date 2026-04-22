@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="incoming_call_status">আসছে কল…</string>
+    <string name="incoming_call_reject">প্রত্যাখ্যান করুন</string>
+    <string name="incoming_call_accept">গ্রহণ করুন</string>
+    <string name="incoming_call_avatar_description">কলারের অবতার</string>
+    <string name="incoming_call_unknown_caller">অজানা কলার</string>
+    <string name="incoming_call_unknown_host">অজানা হোস্ট</string>
+</resources>

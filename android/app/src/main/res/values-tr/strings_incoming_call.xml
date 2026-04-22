@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="incoming_call_status">Gelen arama…</string>
+    <string name="incoming_call_reject">Reddet</string>
+    <string name="incoming_call_accept">Kabul et</string>
+    <string name="incoming_call_avatar_description">Arayanın avatarı</string>
+    <string name="incoming_call_unknown_caller">Bilinmeyen arayan</string>
+    <string name="incoming_call_unknown_host">Bilinmeyen sunucu</string>
+</resources>

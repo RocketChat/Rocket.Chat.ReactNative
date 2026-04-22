@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="incoming_call_status">Inkomend gesprek…</string>
+    <string name="incoming_call_reject">Weigeren</string>
+    <string name="incoming_call_accept">Accepteren</string>
+    <string name="incoming_call_avatar_description">Avatar van beller</string>
+    <string name="incoming_call_unknown_caller">Onbekende beller</string>
+    <string name="incoming_call_unknown_host">Onbekende host</string>
+</resources>

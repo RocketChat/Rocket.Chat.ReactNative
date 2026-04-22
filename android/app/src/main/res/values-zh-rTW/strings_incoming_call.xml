@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="incoming_call_status">來電…</string>
+    <string name="incoming_call_reject">拒絕</string>
+    <string name="incoming_call_accept">接受</string>
+    <string name="incoming_call_avatar_description">來電者頭像</string>
+    <string name="incoming_call_unknown_caller">未知來電者</string>
+    <string name="incoming_call_unknown_host">未知主機</string>
+</resources>

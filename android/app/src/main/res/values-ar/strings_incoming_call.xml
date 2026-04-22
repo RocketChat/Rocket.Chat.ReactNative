@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="incoming_call_status">مكالمة واردة…</string>
+    <string name="incoming_call_reject">رفض</string>
+    <string name="incoming_call_accept">قبول</string>
+    <string name="incoming_call_avatar_description">صورة المتصل الرمزية</string>
+    <string name="incoming_call_unknown_caller">متصل غير معروف</string>
+    <string name="incoming_call_unknown_host">مضيف غير معروف</string>
+</resources>

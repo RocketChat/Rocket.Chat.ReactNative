@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="incoming_call_status">Chiamata in arrivo…</string>
+    <string name="incoming_call_reject">Rifiuta</string>
+    <string name="incoming_call_accept">Accetta</string>
+    <string name="incoming_call_avatar_description">Avatar del chiamante</string>
+    <string name="incoming_call_unknown_caller">Chiamante sconosciuto</string>
+    <string name="incoming_call_unknown_host">Host sconosciuto</string>
+</resources>

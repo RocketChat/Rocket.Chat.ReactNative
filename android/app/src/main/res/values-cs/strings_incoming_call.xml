@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="incoming_call_status">Příchozí hovor…</string>
+    <string name="incoming_call_reject">Odmítnout</string>
+    <string name="incoming_call_accept">Přijmout</string>
+    <string name="incoming_call_avatar_description">Avatar volajícího</string>
+    <string name="incoming_call_unknown_caller">Neznámý volající</string>
+    <string name="incoming_call_unknown_host">Neznámý hostitel</string>
+</resources>

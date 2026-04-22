@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="incoming_call_status">Saapuva puhelu…</string>
+    <string name="incoming_call_reject">Hylkää</string>
+    <string name="incoming_call_accept">Hyväksy</string>
+    <string name="incoming_call_avatar_description">Soittajan avatar</string>
+    <string name="incoming_call_unknown_caller">Tuntematon soittaja</string>
+    <string name="incoming_call_unknown_host">Tuntematon isäntä</string>
+</resources>

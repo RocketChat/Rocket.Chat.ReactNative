@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="incoming_call_status">Innkommende anrop…</string>
+    <string name="incoming_call_reject">Avvis</string>
+    <string name="incoming_call_accept">Godta</string>
+    <string name="incoming_call_avatar_description">Avatar til innringer</string>
+    <string name="incoming_call_unknown_caller">Ukjent innringer</string>
+    <string name="incoming_call_unknown_host">Ukjent vert</string>
+</resources>

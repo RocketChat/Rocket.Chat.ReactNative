@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="incoming_call_status">Dohodni klic…</string>
+    <string name="incoming_call_reject">Zavrni</string>
+    <string name="incoming_call_accept">Sprejmi</string>
+    <string name="incoming_call_avatar_description">Avatar klicatelja</string>
+    <string name="incoming_call_unknown_caller">Neznan klicatelj</string>
+    <string name="incoming_call_unknown_host">Neznan gostitelj</string>
+</resources>

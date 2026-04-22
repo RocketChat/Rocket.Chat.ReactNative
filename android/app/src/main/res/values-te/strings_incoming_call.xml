@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="incoming_call_status">వస్తున్న కాల్…</string>
+    <string name="incoming_call_reject">తిరస్కరించు</string>
+    <string name="incoming_call_accept">అంగీకరించు</string>
+    <string name="incoming_call_avatar_description">కాలర్ అవతార్</string>
+    <string name="incoming_call_unknown_caller">తెలియని కాలర్</string>
+    <string name="incoming_call_unknown_host">తెలియని హోస్ట్</string>
+</resources>

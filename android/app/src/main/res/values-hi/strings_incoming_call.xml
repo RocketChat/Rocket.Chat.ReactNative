@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="incoming_call_status">आने वाली कॉल…</string>
+    <string name="incoming_call_reject">अस्वीकार करें</string>
+    <string name="incoming_call_accept">स्वीकार करें</string>
+    <string name="incoming_call_avatar_description">कॉलर का अवतार</string>
+    <string name="incoming_call_unknown_caller">अज्ञात कॉलर</string>
+    <string name="incoming_call_unknown_host">अज्ञात होस्ट</string>
+</resources>

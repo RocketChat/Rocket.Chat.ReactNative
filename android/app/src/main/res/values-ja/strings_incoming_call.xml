@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="incoming_call_status">着信中…</string>
+    <string name="incoming_call_reject">拒否</string>
+    <string name="incoming_call_accept">応答</string>
+    <string name="incoming_call_avatar_description">発信者のアバター</string>
+    <string name="incoming_call_unknown_caller">不明な発信者</string>
+    <string name="incoming_call_unknown_host">不明なホスト</string>
+</resources>

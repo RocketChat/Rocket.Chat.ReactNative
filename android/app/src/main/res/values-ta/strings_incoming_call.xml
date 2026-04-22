@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="incoming_call_status">வரும் அழைப்பு…</string>
+    <string name="incoming_call_reject">நிராகரி</string>
+    <string name="incoming_call_accept">ஏற்று</string>
+    <string name="incoming_call_avatar_description">அழைப்பாளர் அவதாரம்</string>
+    <string name="incoming_call_unknown_caller">தெரியாத அழைப்பாளர்</string>
+    <string name="incoming_call_unknown_host">தெரியாத ஹோஸ்ட்</string>
+</resources>
