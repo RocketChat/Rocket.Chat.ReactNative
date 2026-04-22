@@ -108,16 +108,13 @@ class MediaSessionInstance {
 			const signal = ddpMessage.fields.args[0];
 			this.instance.processSignal(signal);
 
-			console.log('🤙 [VoIP] Processed signal:', signal);
-
 			this.tryAnswerIfNativeAcceptedNotification(signal as ServerMediaSignal);
 		});
 
 		this.instance?.on('newCall', ({ call }: { call: IClientMediaCall }) => {
 			if (call && !call.hidden) {
-				call.emitter.on('stateChange', oldState => {
-					console.log(`📊 ${oldState} → ${call.state}`);
-					console.log('🤙 [VoIP] New call data:', call);
+				call.emitter.on('stateChange', _oldState => {
+					// Intentionally empty — state transitions handled by the call layer
 				});
 
 				if (call.localParticipant.role === 'caller') {
@@ -140,18 +137,13 @@ class MediaSessionInstance {
 	public answerCall = async (callId: string) => {
 		const { call: existingCall } = useCallStore.getState();
 		if (existingCall != null && existingCall.callId === callId) {
-			console.log('[VoIP] answerCall skipped — call already bound in store:', callId);
 			return;
 		}
 
-		console.log('[VoIP] Answering call:', callId);
 		const mainCall = this.instance?.getCallData(callId);
-		console.log('[VoIP] Main call:', mainCall);
 
 		if (mainCall && mainCall.callId === callId) {
-			console.log('[VoIP] Accepting call:', callId);
 			await mainCall.accept();
-			console.log('[VoIP] Setting current call active:', callId);
 			RNCallKeep.setCurrentCallActive(callId);
 			useCallStore.getState().setCall(mainCall);
 			Navigation.navigate('CallView');
@@ -180,7 +172,6 @@ class MediaSessionInstance {
 
 	public startCall = async (userId: string, actor: CallActorType): Promise<void> => {
 		requestPhoneStatePermission();
-		console.log('[VoIP] Starting call:', userId);
 		await this.instance?.startCall(actor, userId);
 	};
 

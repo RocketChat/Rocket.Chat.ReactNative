@@ -2,6 +2,7 @@ package chat.rocket.reactnative.voip
 
 import android.app.Notification
 import android.app.NotificationChannel
+import chat.rocket.reactnative.BuildConfig
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
@@ -71,7 +72,9 @@ class VoipCallService : Service() {
             }
             ACTION_START -> {
                 val callId = intent.getStringExtra(EXTRA_CALL_ID) ?: "unknown"
-                Log.d(TAG, "Starting VoipCallService for callId: $callId")
+                if (BuildConfig.DEBUG) {
+                    Log.d(TAG, "Starting VoipCallService for callId: $callId")
+                }
                 if (!isRunning) {
                     isRunning = true
                     startForegroundWithNotification(callId)
@@ -101,7 +104,9 @@ class VoipCallService : Service() {
             startForeground(NOTIFICATION_ID, notification)
         }
 
-        Log.d(TAG, "Started foreground with notification for callId: $callId")
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "Started foreground with notification for callId: $callId")
+        }
     }
 
     private fun buildNotification(callId: String): Notification {
