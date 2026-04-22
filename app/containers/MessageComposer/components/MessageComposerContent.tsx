@@ -12,6 +12,7 @@ import { EmojiSearchbar } from './EmojiSearchbar';
 import { Toolbar } from './Toolbar';
 import { Quotes } from './Quotes';
 import { ComposerInput } from './ComposerInput';
+import { ComposerAttachments } from './Attachments';
 
 interface MessageComposerContentProps {
 	recordingAudio: boolean;
@@ -43,6 +44,7 @@ export const MessageComposerContent = memo<MessageComposerContentProps>(
 					<ComposerInput ref={composerInputComponentRef} inputRef={composerInputRef} />
 					<Right />
 				</View>
+				<ComposerAttachments />
 				<Quotes />
 				<Toolbar />
 				<EmojiSearchbar />

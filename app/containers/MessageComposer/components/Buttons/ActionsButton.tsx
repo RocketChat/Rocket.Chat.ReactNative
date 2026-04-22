@@ -14,15 +14,11 @@ import { useRoomContext } from '../../../../views/RoomView/context';
 export const ActionsButton = () => {
 	'use memo';
 
-	const { rid, tmid, t } = useRoomContext();
+	const { rid, t } = useRoomContext();
 	const { closeEmojiKeyboardAndAction } = useContext(MessageInnerContext);
 	const permissionToUpload = useCanUploadFile(rid);
 	const [permissionToViewCannedResponses] = usePermissions(['view-canned-responses'], rid);
-	const { takePhoto, takeVideo, chooseFromLibrary, chooseFile } = useChooseMedia({
-		rid,
-		tmid,
-		permissionToUpload
-	});
+	const { takePhoto, takeVideo, chooseFromLibrary, chooseFile } = useChooseMedia({ permissionToUpload });
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 

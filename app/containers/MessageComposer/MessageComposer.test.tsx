@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { render, screen, fireEvent, waitFor, userEvent } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
@@ -9,13 +9,15 @@ import { selectServerRequest } from '../../actions/server';
 import { setUser } from '../../actions/login';
 import { mockedStore } from '../../reducers/mockedStore';
 import { type IPermissionsState } from '../../reducers/permissions';
-import { type IMessage } from '../../definitions';
+import { type IMessage, type IShareAttachment } from '../../definitions';
 import { colors } from '../../lib/constants/colors';
 import { type IRoomContext, RoomContext } from '../../views/RoomView/context';
 import * as EmojiKeyboardHook from './hooks/useEmojiKeyboard';
 import { initStore } from '../../lib/store/auxStore';
 import { search } from '../../lib/methods/search';
 import database from '../../lib/database';
+import { useMessageComposerApi } from './context';
+import { sendFileMessage } from '../../lib/methods/sendFileMessage';
 
 jest.useFakeTimers();
 
@@ -29,6 +31,10 @@ jest.mock('../../lib/services/restApi', () => ({
 		success: true,
 		cannedResponses: [{ _id: '1', shortcut: 'brb', text: 'Be right back' }]
 	}))
+}));
+
+jest.mock('../../lib/methods/sendFileMessage', () => ({
+	sendFileMessage: jest.fn(() => Promise.resolve())
 }));
 
 const user = userEvent.setup();
@@ -95,13 +101,23 @@ const initialContext = {
 	onRemoveQuoteMessage: jest.fn()
 };
 
-const Render = ({ context }: { context?: Partial<IRoomContext> }) => (
+const Render = ({ context, children }: { context?: Partial<IRoomContext>; children?: React.ReactElement }) => (
 	<Provider store={mockedStore}>
 		<RoomContext.Provider value={{ ...initialContext, ...context }}>
-			<MessageComposerContainer />
+			<MessageComposerContainer>{children || <></>}</MessageComposerContainer>
 		</RoomContext.Provider>
 	</Provider>
 );
+
+const AttachmentSeeder = ({ attachments }: { attachments: IShareAttachment[] }) => {
+	const { addAttachments } = useMessageComposerApi();
+
+	useEffect(() => {
+		addAttachments(attachments);
+	}, [addAttachments, attachments]);
+
+	return null;
+};
 
 const sharedValue = {
 	value: false,
@@ -689,6 +705,68 @@ describe('MessageComposer', () => {
 			expect(screen.getByTestId('message-composer-send-audio')).toBeOnTheScreen();
 			await user.press(screen.getByTestId('message-composer-send-audio'));
 			expect(screen.toJSON()).toMatchSnapshot();
+		});
+	});
+
+	describe('Attachments', () => {
+		const attachment = {
+			filename: 'IMG_2444.png',
+			size: 1234,
+			mime: 'image/png',
+			path: 'file:///tmp/IMG_2444.png',
+			canUpload: true
+		} as IShareAttachment;
+
+		beforeEach(() => {
+			(sendFileMessage as jest.Mock).mockClear();
+		});
+
+		test('shows inline attachments and remove button', async () => {
+			render(
+				<Render>
+					<AttachmentSeeder attachments={[attachment]} />
+				</Render>
+			);
+
+			await screen.findByTestId('message-composer-attachments');
+			expect(screen.getByTestId('message-composer-attachment-0')).toBeOnTheScreen();
+			expect(screen.getByTestId('message-composer-send')).toBeOnTheScreen();
+			expect(screen.queryByTestId('message-composer-send-audio')).not.toBeOnTheScreen();
+
+			await user.press(screen.getByTestId('message-composer-remove-attachment-0'));
+
+			await waitFor(() => expect(screen.queryByTestId('message-composer-attachments')).not.toBeOnTheScreen());
+			expect(screen.getByTestId('message-composer-send-audio')).toBeOnTheScreen();
+		});
+
+		test('sends composer attachments from the room instead of delegating to onSendMessage', async () => {
+			const onSendMessage = jest.fn();
+			render(
+				<Render context={{ onSendMessage }}>
+					<AttachmentSeeder attachments={[attachment]} />
+				</Render>
+			);
+
+			await screen.findByTestId('message-composer-attachment-0');
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), 'caption');
+			await user.press(screen.getByTestId('message-composer-send'));
+
+			await waitFor(() =>
+				expect(sendFileMessage).toHaveBeenCalledWith(
+					'rid',
+					expect.objectContaining({
+						name: 'IMG_2444.png',
+						path: 'file:///tmp/IMG_2444.png',
+						msg: 'caption',
+						type: 'image/png'
+					}),
+					undefined,
+					'https://open.rocket.chat',
+					expect.objectContaining({ id: 'abc' })
+				)
+			);
+			expect(onSendMessage).not.toHaveBeenCalled();
+			expect(screen.queryByTestId('message-composer-attachments')).not.toBeOnTheScreen();
 		});
 	});
 });

@@ -1,6 +1,6 @@
 import React, { createContext, type ReactElement, useContext, useMemo, useReducer } from 'react';
 
-import { type IEmoji } from '../../definitions';
+import { type IEmoji, type IShareAttachment } from '../../definitions';
 import { type IAutocompleteBase, type TMicOrSend } from './interfaces';
 
 type TMessageComposerContextApi = {
@@ -10,6 +10,10 @@ type TMessageComposerContextApi = {
 	setAlsoSendThreadToChannel(alsoSendThreadToChannel: boolean): void;
 	setRecordingAudio(recordingAudio: boolean): void;
 	setAutocompleteParams(params: IAutocompleteBase): void;
+	addAttachments(attachments: IShareAttachment[]): void;
+	updateAttachment(path: string, attachment: Partial<IShareAttachment>): void;
+	removeAttachment(path: string): void;
+	clearAttachments(): void;
 };
 
 const FocusedContext = createContext<State['focused']>({} as State['focused']);
@@ -18,6 +22,7 @@ const ShowMarkdownToolbarContext = createContext<State['showMarkdownToolbar']>({
 const AlsoSendThreadToChannelContext = createContext<State['alsoSendThreadToChannel']>({} as State['alsoSendThreadToChannel']);
 const RecordingAudioContext = createContext<State['recordingAudio']>({} as State['recordingAudio']);
 const AutocompleteParamsContext = createContext<State['autocompleteParams']>({} as State['autocompleteParams']);
+const ComposerAttachmentsContext = createContext<State['attachments']>([] as State['attachments']);
 const MessageComposerContextApi = createContext<TMessageComposerContextApi>({} as TMessageComposerContextApi);
 
 export const useMessageComposerApi = (): TMessageComposerContextApi => useContext(MessageComposerContextApi);
@@ -27,6 +32,7 @@ export const useShowMarkdownToolbar = (): State['showMarkdownToolbar'] => useCon
 export const useAlsoSendThreadToChannel = (): State['alsoSendThreadToChannel'] => useContext(AlsoSendThreadToChannelContext);
 export const useRecordingAudio = (): State['recordingAudio'] => useContext(RecordingAudioContext);
 export const useAutocompleteParams = (): State['autocompleteParams'] => useContext(AutocompleteParamsContext);
+export const useComposerAttachments = (): State['attachments'] => useContext(ComposerAttachmentsContext);
 
 // TODO: rename
 type TMessageInnerContext = {
@@ -52,6 +58,7 @@ type State = {
 	alsoSendThreadToChannel: boolean;
 	recordingAudio: boolean;
 	autocompleteParams: IAutocompleteBase;
+	attachments: IShareAttachment[];
 };
 
 type Actions =
@@ -60,7 +67,11 @@ type Actions =
 	| { type: 'setMarkdownToolbar'; showMarkdownToolbar: boolean }
 	| { type: 'setAlsoSendThreadToChannel'; alsoSendThreadToChannel: boolean }
 	| { type: 'setRecordingAudio'; recordingAudio: boolean }
-	| { type: 'setAutocompleteParams'; params: IAutocompleteBase };
+	| { type: 'setAutocompleteParams'; params: IAutocompleteBase }
+	| { type: 'addAttachments'; attachments: IShareAttachment[] }
+	| { type: 'updateAttachment'; path: string; attachment: Partial<IShareAttachment> }
+	| { type: 'removeAttachment'; path: string }
+	| { type: 'clearAttachments' };
 
 const reducer = (state: State, action: Actions): State => {
 	switch (action.type) {
@@ -76,6 +87,19 @@ const reducer = (state: State, action: Actions): State => {
 			return { ...state, recordingAudio: action.recordingAudio };
 		case 'setAutocompleteParams':
 			return { ...state, autocompleteParams: action.params };
+		case 'addAttachments':
+			return { ...state, attachments: [...state.attachments, ...action.attachments] };
+		case 'updateAttachment':
+			return {
+				...state,
+				attachments: state.attachments.map(currentAttachment =>
+					currentAttachment.path === action.path ? { ...currentAttachment, ...action.attachment } : currentAttachment
+				)
+			};
+		case 'removeAttachment':
+			return { ...state, attachments: state.attachments.filter(attachment => attachment.path !== action.path) };
+		case 'clearAttachments':
+			return { ...state, attachments: [] };
 	}
 };
 
@@ -83,7 +107,8 @@ export const MessageComposerProvider = ({ children }: { children: ReactElement }
 	'use memo';
 
 	const [state, dispatch] = useReducer(reducer, {
-		autocompleteParams: { text: '', type: null }
+		autocompleteParams: { text: '', type: null },
+		attachments: []
 	} as State);
 
 	const api = useMemo(() => {
@@ -100,13 +125,26 @@ export const MessageComposerProvider = ({ children }: { children: ReactElement }
 
 		const setAutocompleteParams = (params: IAutocompleteBase) => dispatch({ type: 'setAutocompleteParams', params });
 
+		const addAttachments = (attachments: IShareAttachment[]) => dispatch({ type: 'addAttachments', attachments });
+
+		const updateAttachment = (path: string, attachment: Partial<IShareAttachment>) =>
+			dispatch({ type: 'updateAttachment', path, attachment });
+
+		const removeAttachment = (path: string) => dispatch({ type: 'removeAttachment', path });
+
+		const clearAttachments = () => dispatch({ type: 'clearAttachments' });
+
 		return {
 			setFocused,
 			setMicOrSend,
 			setMarkdownToolbar,
 			setAlsoSendThreadToChannel,
 			setRecordingAudio,
-			setAutocompleteParams
+			setAutocompleteParams,
+			addAttachments,
+			updateAttachment,
+			removeAttachment,
+			clearAttachments
 		};
 	}, []);
 
@@ -117,7 +155,9 @@ export const MessageComposerProvider = ({ children }: { children: ReactElement }
 					<AlsoSendThreadToChannelContext.Provider value={state.alsoSendThreadToChannel}>
 						<RecordingAudioContext.Provider value={state.recordingAudio}>
 							<AutocompleteParamsContext.Provider value={state.autocompleteParams}>
-								<MicOrSendContext.Provider value={state.micOrSend}>{children}</MicOrSendContext.Provider>
+								<ComposerAttachmentsContext.Provider value={state.attachments}>
+									<MicOrSendContext.Provider value={state.micOrSend}>{children}</MicOrSendContext.Provider>
+								</ComposerAttachmentsContext.Provider>
 							</AutocompleteParamsContext.Provider>
 						</RecordingAudioContext.Provider>
 					</AlsoSendThreadToChannelContext.Provider>

@@ -7,7 +7,13 @@ import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanima
 import { useRoomContext } from '../../views/RoomView/context';
 import { Autocomplete } from './components';
 import { MIN_HEIGHT } from './constants';
-import { MessageInnerContext, useAlsoSendThreadToChannel, useMessageComposerApi, useRecordingAudio } from './context';
+import {
+	MessageInnerContext,
+	useAlsoSendThreadToChannel,
+	useComposerAttachments,
+	useMessageComposerApi,
+	useRecordingAudio
+} from './context';
 import { type IComposerInput } from './interfaces';
 import { EventTypes } from '../EmojiPicker/interfaces';
 import { type IEmoji } from '../../definitions';
@@ -23,6 +29,10 @@ import { useEmojiKeyboard } from './hooks/useEmojiKeyboard';
 import EmojiPicker from '../EmojiPicker';
 import { MessageComposerContent } from './components/MessageComposerContent';
 import { useTheme } from '../../theme';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { getUserSelector } from '../../selectors/login';
+import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
+import { sendFileMessage } from '../../lib/methods/sendFileMessage';
 
 export const MessageComposer = ({
 	forwardedRef,
@@ -44,13 +54,22 @@ export const MessageComposer = ({
 	});
 	const contentHeight = useSharedValue(MIN_HEIGHT);
 	useCloseKeyboardWhenOrientationChanges();
-	const { rid, tmid, action, selectedMessages, sharing, editRequest, onSendMessage } = useRoomContext();
+	const { rid, tmid, action, selectedMessages, sharing, editRequest, onSendMessage, setQuotesAndText } = useRoomContext();
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
 	const { showEmojiKeyboard, showEmojiSearchbar, openEmojiSearchbar, resetKeyboard, keyboardHeight } = useEmojiKeyboard();
-	const { setAlsoSendThreadToChannel, setAutocompleteParams } = useMessageComposerApi();
+	const { setAlsoSendThreadToChannel, setAutocompleteParams, clearAttachments } = useMessageComposerApi();
 	const recordingAudio = useRecordingAudio();
 	const { formatShortnameToUnicode } = useShortnameToUnicode();
 	const { colors } = useTheme();
+	const user = useAppSelector(state => getUserSelector(state));
+	const server = useAppSelector(state => state.server.server);
+	const serverVersion = useAppSelector(state => state.server.version);
+	const attachments = useComposerAttachments();
+
+	const closeEmojiKeyboardAndAction = (action?: Function, params?: any) => {
+		resetKeyboard();
+		action && action(params);
+	};
 
 	useImperativeHandle(forwardedRef, () => ({
 		closeEmojiKeyboardAndAction,
@@ -65,11 +84,6 @@ export const MessageComposer = ({
 		}
 		return false;
 	});
-
-	const closeEmojiKeyboardAndAction = (action?: Function, params?: any) => {
-		resetKeyboard();
-		action && action(params);
-	};
 
 	const handleLayout = (event: LayoutChangeEvent) => {
 		const { height } = event.nativeEvent.layout;
@@ -92,6 +106,59 @@ export const MessageComposer = ({
 		}
 
 		const textFromInput = composerInputComponentRef.current.getTextAndClear();
+
+		if (attachments.length) {
+			const useAltText = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.4.0');
+			let quotedMessage: string | undefined;
+
+			if (action === 'quote') {
+				quotedMessage = await prepareQuoteMessage(textFromInput, selectedMessages);
+			}
+
+			try {
+				await Promise.all(
+					attachments.map(
+						({ filename: name, mime: type, description, altText, size, path, canUpload, height, width, exif }, index) => {
+							if (!canUpload) {
+								return Promise.resolve();
+							}
+
+							if (exif?.Orientation && ['5', '6', '7', '8'].includes(exif.Orientation)) {
+								[width, height] = [height, width];
+							}
+
+							const fileDescription = useAltText ? altText : description;
+							const fileMsg = index === 0 ? description || quotedMessage || textFromInput : description;
+
+							return sendFileMessage(
+								rid,
+								{
+									rid,
+									name,
+									description: fileDescription,
+									size,
+									type,
+									path,
+									msg: fileMsg,
+									height,
+									width
+								},
+								tmid,
+								server,
+								{ id: user.id, token: user.token }
+							);
+						}
+					)
+				);
+				clearAttachments();
+				setQuotesAndText?.('', []);
+				return;
+			} catch (e) {
+				log(e);
+				composerInputComponentRef.current.setInput(textFromInput);
+				return;
+			}
+		}
 
 		if (action === 'edit') {
 			return editRequest?.({ id: selectedMessages[0], msg: textFromInput, rid });
@@ -169,6 +236,8 @@ export const MessageComposer = ({
 		onKeyboardItemSelected(EventTypes.EMOJI_PRESSED, emoji);
 	};
 
+	const focusComposerInput = () => composerInputComponentRef.current?.focus();
+
 	const accessibilityFocusOnInput = () => {
 		const node = findNodeHandle(composerInputRef.current);
 		if (node) {
@@ -190,7 +259,7 @@ export const MessageComposer = ({
 				sendMessage: handleSendMessage,
 				onEmojiSelected,
 				closeEmojiKeyboardAndAction,
-				focus: composerInputComponentRef.current?.focus
+				focus: focusComposerInput
 			}}>
 			<MessageComposerContent
 				recordingAudio={recordingAudio}
