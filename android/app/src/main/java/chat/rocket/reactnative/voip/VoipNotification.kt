@@ -258,7 +258,7 @@ class VoipNotification(private val context: Context) {
                 timeoutRunnable?.let { timeoutHandler.removeCallbacks(it) }
                 ddpRegistry.stopClient(payload.callId)
                 if (answerRequestSucceeded) {
-                    answerIncomingCall(payload.callId)
+                    answerIncomingCall(appCtx, payload.callId)
                     VoipModule.storeInitialEvents(payload)
                 } else {
                     Log.d(TAG, "media-calls.answer failed for ${payload.callId}; opening app for JS recovery")
@@ -310,11 +310,31 @@ class VoipNotification(private val context: Context) {
             context.startActivity(intent)
         }
 
-        private fun answerIncomingCall(callId: String) {
+        private fun answerIncomingCall(context: Context, callId: String) {
             val connection = VoiceConnectionService.getConnection(callId)
             when (connection) {
                 is VoiceConnection -> connection.onAnswer()
-                null -> Log.d(TAG, "No active VoiceConnection found for accepted call: $callId")
+                null -> {
+                    // Null means Telecom connection is gone (e.g. system killed it).
+                    // Notify JS so the user sees an error instead of a hanging UI.
+                    Log.w(TAG, "No active VoiceConnection for accepted call: $callId — notifying JS of failure")
+                    val appCtx = context.applicationContext
+                    disconnectIncomingCall(callId, false)
+                    cancelById(appCtx, 0)
+                    ddpRegistry.stopClient(callId)
+                    // Stash failure payload for JS: it will show error toast on getInitialEvents.
+                    VoipModule.storeAcceptFailureForJs(VoipPayload(
+                        callId = callId,
+                        caller = "",
+                        username = "",
+                        host = "",
+                        type = "",
+                        hostName = "",
+                        avatarUrl = null,
+                        createdAt = null,
+                        voipAcceptFailed = true
+                    ))
+                }
                 else -> Log.d(TAG, "Non-VoiceConnection for accept, callId: $callId")
             }
         }

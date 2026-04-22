@@ -164,7 +164,7 @@ class MediaSessionInstance {
 			if (st.nativeAcceptedCallId === callId) {
 				st.resetNativeCallId();
 			}
-			console.warn('[VoIP] Call not found:', callId); // TODO: Show error message?
+			console.warn('[VoIP] Call not found after accept:', callId);
 		}
 	};
 
