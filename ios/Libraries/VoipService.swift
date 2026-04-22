@@ -457,10 +457,14 @@ public final class VoipService: NSObject {
 
         cancelIncomingCallTimeout(for: payload.callId)
 
-        var finishAcceptInvoked = false
-        let finishAccept: (Bool) -> Void = { [weak payload] success in
-            guard !finishAcceptInvoked else { return }
-            finishAcceptInvoked = true
+        private final class FinishAcceptBox {
+            var value: Bool
+            init(_ value: Bool) { self.value = value }
+        }
+        private let finishAcceptBox = FinishAcceptBox(false)
+        let finishAccept: (Bool) -> Void = { [weak payload, finishAcceptBox] success in
+            guard !finishAcceptBox.value else { return }
+            finishAcceptBox.value = true
             guard let payload else { return }
             stopDDPClientInternal(callId: payload.callId)
             if success {
@@ -496,9 +500,9 @@ public final class VoipService: NSObject {
         }
 
         // 10-second timeout guard: if REST hasn't completed by then, call finishAccept(false).
-        let timeoutWorkItem = DispatchWorkItem { [weak payload, finishAcceptInvoked] in
+        let timeoutWorkItem = DispatchWorkItem { [weak payload, finishAcceptBox] in
             guard let payload else { return }
-            guard !finishAcceptInvoked else { return }
+            guard !finishAcceptBox.value else { return }
             // Check the callId is still tracked (not already cleaned up).
             nativeAcceptLock.lock()
             let isStillTracked = nativeAcceptHandledCallIds.contains(payload.callId)
