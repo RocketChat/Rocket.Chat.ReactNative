@@ -265,11 +265,8 @@ export const getInitialMediaCallEvents = async (adapters: MediaCallEventsAdapter
 			useCallStore.getState().setNativeAcceptedCallId(initialEvents.callId);
 
 			if (initialEvents.host && isVoipIncomingHostCurrentWorkspace(initialEvents.host, adapters.getActiveServerUrl)) {
-				mediaSessionInstance.applyRestStateSignals().catch(error => {
-					mediaCallLogger.error(`${TAG} applyRestStateSignals (initial) failed:`, error);
-				});
-				mediaCallLogger.log(`${TAG} Same workspace as VoIP host; skipped deepLinkingOpen`);
-				return true;
+				mediaCallLogger.log(`${TAG} Same workspace as VoIP host; continuing appInit for cold-start handoff`);
+				return false;
 			}
 
 			adapters.onOpenDeepLink({
