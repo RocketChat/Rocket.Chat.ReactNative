@@ -160,6 +160,8 @@ const Header = ({
 	abacAttributes,
 	ref
 }: IRoomHeaderProps) => {
+	'use memo';
+
 	const headerRef = React.useRef<View | null>(null);
 	React.useImperativeHandle(
 		ref,
