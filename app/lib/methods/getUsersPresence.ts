@@ -158,10 +158,11 @@ export const getDirectMessageUserIds = async (): Promise<string[]> => {
 			.query(Q.where('t', 'd'), Q.where('open', true), Q.where('archived', false))
 			.fetch();
 		const userIds = subscriptions
-			.map((sub: { uids?: string[] }) => sub.uids?.find(uid => uid && uid !== loggedUserId))
-			.filter((uid): uid is string => Boolean(uid));
+			.flatMap((sub: { uids?: string[] }) => sub.uids ?? [])
+			.filter((uid): uid is string => Boolean(uid) && uid !== loggedUserId);
 		return [...new Set(userIds)];
 	} catch (e) {
+		log(e);
 		return [];
 	}
 };
