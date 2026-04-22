@@ -52,7 +52,7 @@ class VoipCallService : Service() {
             val intent = Intent(context, VoipCallService::class.java).apply {
                 action = ACTION_STOP
             }
-            context.startService(intent)
+            context.stopService(intent)
         }
     }
 
@@ -66,7 +66,7 @@ class VoipCallService : Service() {
         when (intent?.action) {
             ACTION_STOP -> {
                 Log.d(TAG, "Stopping VoipCallService")
-                stopSelf()
+                stopSelf(startId)
                 return START_NOT_STICKY
             }
             ACTION_START -> {
@@ -78,10 +78,11 @@ class VoipCallService : Service() {
                 } else {
                     Log.d(TAG, "Service already running, skipping duplicate start")
                 }
-                return START_STICKY
+                return START_NOT_STICKY
             }
             else -> {
                 Log.w(TAG, "Unknown action: ${intent?.action}")
+                stopSelf(startId)
                 return START_NOT_STICKY
             }
         }
