@@ -240,8 +240,8 @@ class VoipNotification(private val context: Context) {
             Log.d(TAG, "Accept action triggered for callId: ${payload.callId}")
             cancelTimeout(payload.callId)
 
-            // H3 fix: install DDP listener for call-end detection before accepting.
-            // Previously only called from showIncomingCall, so notification-accept path missed it.
+            // Install the DDP end-call listener here so the notification-accept path
+            // also tears down on hangup; previously only showIncomingCall installed it.
             startListeningForCallEnd(context, payload)
 
             // Start foreground service to keep call alive in background.
