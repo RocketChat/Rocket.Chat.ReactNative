@@ -10,7 +10,7 @@ import { getThreadById } from '../../../../lib/database/services/Thread';
 import { compareServerVersion, useDebounce } from '../../../../lib/methods/helpers';
 import { readThreads } from '../../../../lib/services/restApi';
 import { MESSAGE_TYPE_ANY_LOAD, type MessageTypeLoad } from '../../../../lib/constants/messageTypeLoad';
-import { QUERY_SIZE } from '../constants';
+import { MAX_AUTO_LOADS, QUERY_SIZE } from '../constants';
 import { buildVisibleSystemTypesClause } from './buildVisibleSystemTypesClause';
 import { roomHistoryRequest } from '../../../../actions/room';
 
@@ -35,7 +35,22 @@ export const useMessages = ({
 	const subscription = useRef<Subscription | null>(null);
 	const messagesIds = useRef<string[]>([]);
 	const lastDispatchedLoaderId = useRef<string | null>(null);
+	const autoLoadCount = useRef(0);
 	const dispatch = useDispatch();
+
+	const unsubscribe = useCallback(() => {
+		subscription.current?.unsubscribe();
+	}, []);
+
+	const readThread = useDebounce(async () => {
+		if (tmid) {
+			try {
+				await readThreads(tmid);
+			} catch {
+				// Do nothing
+			}
+		}
+	}, 1000);
 
 	const fetchMessages = useCallback(async () => {
 		unsubscribe();
@@ -46,15 +61,12 @@ export const useMessages = ({
 		}
 
 		const db = database.active;
-
-		// Apply the filter to the DB query. This guarantees Q.take() grabs
-		// exactly enough messages to keep pagination from breaking.
-		const visibleSystemClause = hideSystemMessages.length ? buildVisibleSystemTypesClause(hideSystemMessages) : null;
+		// hideSystemMessages applied here so Q.take() counts only visible rows
+		const visibleSystemClause = buildVisibleSystemTypesClause(hideSystemMessages);
 
 		let observable;
 		if (tmid) {
-			// If the thread doesn't exist yet, we fetch it from messages, but trying to get it from threads when possible.
-			// As soon as we have it from threads table, we use it from cache only and never query again.
+			// Prefer threads table; fall back to messages while thread record isn't available yet
 			if (!thread.current || thread.current.collection.table !== 'threads') {
 				thread.current = await getThreadById(tmid);
 				if (!thread.current) {
@@ -98,65 +110,63 @@ export const useMessages = ({
 			readThread();
 			setRawMessages(newMessages);
 		});
-	}, [rid, tmid, showMessageInMainThread, hideSystemMessages]); // hideSystemMessages must be here so the DB re-queries for proper pagination
-
-	const readThread = useDebounce(async () => {
-		if (tmid) {
-			try {
-				await readThreads(tmid);
-			} catch {
-				// Do nothing
-			}
-		}
-	}, 1000);
+		// eslint-disable-next-line react-hooks/exhaustive-deps -- readThread is omitted intentionally: useDebouncedCallback stores func in a ref so changes propagate without recreating fetchMessages; hideSystemMessages must stay so the DB re-queries for proper pagination
+	}, [rid, tmid, showMessageInMainThread, hideSystemMessages, unsubscribe]);
 
 	useLayoutEffect(() => {
 		fetchMessages();
+		return unsubscribe;
+	}, [fetchMessages, unsubscribe]);
 
-		return () => {
-			unsubscribe();
-		};
-	}, [fetchMessages]);
-
-	const unsubscribe = () => {
-		subscription.current?.unsubscribe();
-	};
-
-	const visibleMessages = useMemo(() => {
-		const filtered =
+	const visibleMessages = useMemo(
+		() =>
 			!hideSystemMessages || hideSystemMessages.length === 0
 				? rawMessages
-				: rawMessages.filter(m => !m.t || !hideSystemMessages.includes(m.t));
+				: rawMessages.filter(m => !m.t || !hideSystemMessages.includes(m.t)),
+		[rawMessages, hideSystemMessages]
+	);
 
-		// Derive IDs in the same memo so the ref is never out of sync
-		// with the visible list, even under concurrent rendering.
-		messagesIds.current = filtered.map(m => m.id);
+	// Sync the IDs ref after render, outside the memo, to satisfy the react-hooks/refs rule
+	// while still keeping the ref up to date before any paint (useLayoutEffect timing).
+	useLayoutEffect(() => {
+		messagesIds.current = visibleMessages.map(m => m.id);
+	}, [visibleMessages]);
 
-		return filtered;
-	}, [rawMessages, hideSystemMessages]);
+	useEffect(
+		() => {
+			// Snapshot the currently-visible loader into lastDispatchedLoaderId so the
+			// auto-dispatch effect treats it as already-seen when it re-fires after the rid
+			// change — rawMessages may still reflect the previous room until the new
+			// subscription emits, and we must not dispatch with a stale loader.
+			lastDispatchedLoaderId.current =
+				visibleMessages.find(m => m.t && MESSAGE_TYPE_ANY_LOAD.includes(m.t as MessageTypeLoad))?.id ?? null;
+			autoLoadCount.current = 0;
+		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps -- visibleMessages intentionally omitted: stale read at rid-change is the desired behaviour
+		[rid]
+	);
 
 	/**
-	 * Since 3.16.0 server version, the backend don't response with messages if
-	 * hide system message is enabled
+	 * Since 3.16.0, the server omits system messages when hideSystemMessages is set.
+	 * Auto-dispatch until visible content appears or the safety cap is reached.
 	 */
 	useEffect(() => {
 		if (!compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.16.0') || !hideSystemMessages.length) {
 			return;
 		}
 
+		if (autoLoadCount.current >= MAX_AUTO_LOADS) {
+			return;
+		}
+
 		const loaderId = visibleMessages.find(m => m.t && MESSAGE_TYPE_ANY_LOAD.includes(m.t as MessageTypeLoad))?.id;
 
-		// Only dispatch if a loader exists AND it's a different one
-		// from the last dispatch — prevents hammering on every message update.
 		if (loaderId && loaderId !== lastDispatchedLoaderId.current) {
 			lastDispatchedLoaderId.current = loaderId;
+			autoLoadCount.current += 1;
 			dispatch(roomHistoryRequest({ rid, t, loaderId }));
 		}
 	}, [serverVersion, rid, t, hideSystemMessages, visibleMessages, dispatch]);
-
-	useEffect(() => {
-		lastDispatchedLoaderId.current = null;
-	}, [rid]);
 
 	return [visibleMessages, messagesIds, fetchMessages] as const;
 };

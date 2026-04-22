@@ -3,12 +3,14 @@ import { act, renderHook, waitFor } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
 import { ROOM } from '../../../../actions/actionsTypes';
+import { type IRoomHistoryRequest } from '../../../../actions/room';
 import { type RoomType, type TAnyMessageModel } from '../../../../definitions';
 import database from '../../../../lib/database';
 import { getMessageById } from '../../../../lib/database/services/Message';
 import { getThreadById } from '../../../../lib/database/services/Thread';
 import { MessageTypeLoad } from '../../../../lib/constants/messageTypeLoad';
 import { mockedStore } from '../../../../reducers/mockedStore';
+import { MAX_AUTO_LOADS } from '../constants';
 import { useMessages } from './useMessages';
 
 jest.mock('../../../../lib/database', () => ({
@@ -60,16 +62,19 @@ const msg = (overrides: Partial<TAnyMessageModel> & { id: string }): TAnyMessage
 
 describe('useMessages', () => {
 	let emittedRows: TAnyMessageModel[];
+	let emitVisibleRows: ((rows: TAnyMessageModel[]) => void) | null;
 
 	const wrapper = ({ children }: { children: React.ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
 
 	beforeEach(() => {
 		emittedRows = [];
+		emitVisibleRows = null;
 		jest.clearAllMocks();
 		mockDbGet.mockImplementation(() => ({
 			query: jest.fn().mockReturnValue({
 				observe: () => ({
 					subscribe: (onNext: (rows: TAnyMessageModel[]) => void) => {
+						emitVisibleRows = onNext;
 						onNext(emittedRows);
 						return { unsubscribe: jest.fn() };
 					}
@@ -79,7 +84,55 @@ describe('useMessages', () => {
 	});
 
 	const renderUseMessages = (overrides: Partial<Parameters<typeof useMessages>[0]> = {}) =>
-		renderHook(() => useMessages({ ...baseArgs, ...overrides }), { wrapper });
+		renderHook((props: Partial<Parameters<typeof useMessages>[0]> = {}) => useMessages({ ...baseArgs, ...overrides, ...props }), {
+			wrapper
+		});
+
+	const buildRows = (loaderId: string) => [msg({ id: `${loaderId}-message` }), msg({ id: loaderId, t: MessageTypeLoad.MORE })];
+
+	const emitRows = (rows: TAnyMessageModel[]) => {
+		emittedRows = rows;
+		act(() => {
+			emitVisibleRows?.(rows);
+		});
+	};
+
+	const getHistoryDispatches = (dispatchSpy: jest.SpiedFunction<typeof mockedStore.dispatch>): IRoomHistoryRequest[] =>
+		dispatchSpy.mock.calls
+			.map(([action]) => action)
+			.filter(
+				(action): action is IRoomHistoryRequest =>
+					!!action && typeof action === 'object' && 'type' in action && action.type === ROOM.HISTORY_REQUEST
+			);
+
+	const getHistoryDispatchCount = (dispatchSpy: jest.SpiedFunction<typeof mockedStore.dispatch>) =>
+		getHistoryDispatches(dispatchSpy).length;
+
+	const emitLoaderSequence = async ({
+		dispatchSpy,
+		loaderIds,
+		getExpectedCount
+	}: {
+		dispatchSpy: jest.SpiedFunction<typeof mockedStore.dispatch>;
+		loaderIds: string[];
+		getExpectedCount: (index: number) => number;
+	}): Promise<void> => {
+		const emitAt = async (index: number): Promise<void> => {
+			if (index >= loaderIds.length) {
+				return;
+			}
+
+			emitRows(buildRows(loaderIds[index]));
+
+			await waitFor(() => {
+				expect(getHistoryDispatchCount(dispatchSpy)).toBe(getExpectedCount(index));
+			});
+
+			await emitAt(index + 1);
+		};
+
+		await emitAt(0);
+	};
 
 	it('returns fetchMessages as a function', async () => {
 		emittedRows = [msg({ id: 'm1' })];
@@ -147,23 +200,113 @@ describe('useMessages', () => {
 		const dispatchSpy = jest.spyOn(mockedStore, 'dispatch');
 		emittedRows = [msg({ id: 'load-more-x', t: MessageTypeLoad.MORE })];
 
-		const { rerender } = renderUseMessages({
+		renderUseMessages({
 			serverVersion: '6.0.0',
 			hideSystemMessages: ['uj']
 		});
 
 		await waitFor(() => {
-			const historyDispatches = dispatchSpy.mock.calls.filter(([a]: any) => a?.type === ROOM.HISTORY_REQUEST);
-			expect(historyDispatches.length).toBe(1);
+			expect(getHistoryDispatchCount(dispatchSpy)).toBe(1);
 		});
 
 		// Simulate a new message arriving — visibleMessages changes but loaderId stays the same
-		emittedRows = [msg({ id: 'new-msg' }), msg({ id: 'load-more-x', t: MessageTypeLoad.MORE })];
-		rerender({});
+		emitRows([msg({ id: 'new-msg' }), msg({ id: 'load-more-x', t: MessageTypeLoad.MORE })]);
 
 		await waitFor(() => {
-			const historyDispatches = dispatchSpy.mock.calls.filter(([a]: any) => a?.type === ROOM.HISTORY_REQUEST);
-			expect(historyDispatches.length).toBe(1); // still only once
+			expect(getHistoryDispatchCount(dispatchSpy)).toBe(1); // still only once
+		});
+
+		dispatchSpy.mockRestore();
+	});
+
+	it('caps sequential auto-load dispatches after MAX_AUTO_LOADS unique loaders', async () => {
+		const dispatchSpy = jest.spyOn(mockedStore, 'dispatch');
+		emittedRows = buildRows('loader-1');
+
+		renderUseMessages({
+			serverVersion: '6.0.0',
+			hideSystemMessages: ['uj']
+		});
+
+		await waitFor(() => {
+			expect(getHistoryDispatchCount(dispatchSpy)).toBe(1);
+		});
+
+		await emitLoaderSequence({
+			dispatchSpy,
+			loaderIds: Array.from({ length: MAX_AUTO_LOADS }, (_, index) => `loader-${index + 2}`),
+			getExpectedCount: index => Math.min(index + 2, MAX_AUTO_LOADS)
+		});
+
+		expect(getHistoryDispatchCount(dispatchSpy)).toBe(MAX_AUTO_LOADS);
+		dispatchSpy.mockRestore();
+	});
+
+	it('resets the auto-load cap when rid changes', async () => {
+		const dispatchSpy = jest.spyOn(mockedStore, 'dispatch');
+		emittedRows = buildRows('room-a-loader-1');
+
+		const { rerender } = renderUseMessages({
+			rid: 'ROOM_A',
+			serverVersion: '6.0.0',
+			hideSystemMessages: ['uj']
+		});
+
+		await waitFor(() => {
+			expect(getHistoryDispatchCount(dispatchSpy)).toBe(1);
+		});
+
+		await emitLoaderSequence({
+			dispatchSpy,
+			loaderIds: Array.from({ length: MAX_AUTO_LOADS - 1 }, (_, index) => `room-a-loader-${index + 2}`),
+			getExpectedCount: index => index + 2
+		});
+
+		emittedRows = buildRows('room-b-loader-1');
+		rerender({
+			rid: 'ROOM_B',
+			serverVersion: '6.0.0',
+			hideSystemMessages: ['uj']
+		});
+
+		await waitFor(() => {
+			expect(getHistoryDispatchCount(dispatchSpy)).toBe(MAX_AUTO_LOADS + 1);
+		});
+
+		expect(getHistoryDispatches(dispatchSpy).at(-1)).toEqual(
+			expect.objectContaining({
+				rid: 'ROOM_B',
+				loaderId: 'room-b-loader-1'
+			})
+		);
+		dispatchSpy.mockRestore();
+	});
+
+	it('does not re-dispatch the old room loader immediately after navigation before new messages arrive', async () => {
+		const dispatchSpy = jest.spyOn(mockedStore, 'dispatch');
+		emittedRows = buildRows('room-a-loader');
+
+		const { rerender } = renderUseMessages({
+			rid: 'ROOM_A',
+			serverVersion: '6.0.0',
+			hideSystemMessages: ['uj']
+		});
+
+		await waitFor(() => {
+			expect(getHistoryDispatchCount(dispatchSpy)).toBe(1);
+		});
+
+		// Navigate to ROOM_B — new subscription emits a different loader immediately
+		emittedRows = buildRows('room-b-loader');
+		rerender({ rid: 'ROOM_B', serverVersion: '6.0.0', hideSystemMessages: ['uj'] });
+
+		await waitFor(() => {
+			// Exactly 1 dispatch for ROOM_B (not 2) — the old room-a-loader was
+			// snapshotted into lastDispatchedLoaderId on rid change, so it is skipped.
+			expect(getHistoryDispatchCount(dispatchSpy)).toBe(2);
+			expect(getHistoryDispatches(dispatchSpy).at(-1)).toEqual(
+				expect.objectContaining({ rid: 'ROOM_B', loaderId: 'room-b-loader' })
+			);
 		});
 
 		dispatchSpy.mockRestore();
@@ -179,8 +322,7 @@ describe('useMessages', () => {
 		await waitFor(() => {
 			expect(result.current[0].length).toBeGreaterThan(0);
 		});
-		const historyDispatches = dispatchSpy.mock.calls.filter(([a]: any) => a?.type === ROOM.HISTORY_REQUEST);
-		expect(historyDispatches.length).toBe(0);
+		expect(getHistoryDispatchCount(dispatchSpy)).toBe(0);
 		dispatchSpy.mockRestore();
 	});
 
