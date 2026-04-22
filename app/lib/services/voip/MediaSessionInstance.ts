@@ -225,8 +225,9 @@ class MediaSessionInstance {
 
 		this.storeIceServersUnsubscribe = store.subscribe(() => {
 			const currentIceServers = this.getIceServers();
-			if (currentIceServers !== this.iceServers) {
+			if (JSON.stringify(currentIceServers) !== JSON.stringify(this.iceServers)) {
 				this.iceServers = currentIceServers;
+				this.instance?.setIceServers(currentIceServers);
 			}
 		});
 	}
