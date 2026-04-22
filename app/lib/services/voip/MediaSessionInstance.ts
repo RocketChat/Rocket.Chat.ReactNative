@@ -17,7 +17,7 @@ import { useCallStore } from './useCallStore';
 import { store } from '../../store/auxStore';
 import sdk from '../sdk';
 import { mediaCallsStateSignals } from '../restApi';
-import Navigation from '../../navigation/appNavigation';
+import Navigation, { waitForNavigationReady } from '../../navigation/appNavigation';
 import { parseStringToIceServers } from './parseStringToIceServers';
 import type { IceServer } from '../../../definitions/Voip';
 import type { IDDPMessage } from '../../../definitions/IDDPMessage';
@@ -146,6 +146,7 @@ class MediaSessionInstance {
 			await mainCall.accept();
 			RNCallKeep.setCurrentCallActive(callId);
 			useCallStore.getState().setCall(mainCall);
+			await waitForNavigationReady();
 			Navigation.navigate('CallView');
 			this.resolveRoomIdFromContact(mainCall.remoteParticipants[0]?.contact).catch(error => {
 				console.error('[VoIP] Error resolving room id from contact (answerCall):', error);
