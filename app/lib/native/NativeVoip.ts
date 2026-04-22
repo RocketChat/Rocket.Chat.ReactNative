@@ -35,6 +35,8 @@ export interface Spec extends TurboModule {
 	 */
 	stopNativeDDPClient(): void;
 
+	stopVoipCallService(): void;
+
 	/**
 	 * Required for NativeEventEmitter in TurboModules.
 	 * Called when JS starts listening to events.
@@ -58,6 +60,7 @@ const NativeVoipModule =
 		clearInitialEvents: () => undefined,
 		getLastVoipToken: () => '',
 		stopNativeDDPClient: () => undefined,
+		stopVoipCallService: () => undefined,
 		addListener: () => undefined,
 		removeListeners: () => undefined
 	} as Spec);
