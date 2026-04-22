@@ -233,9 +233,9 @@ describe('useCallStore native accepted + stale timer', () => {
 		expect(s.callId).toBeNull();
 	});
 
-	it('after 15s unbound, clears nativeAcceptedCallId when id still matches scheduled token', () => {
+	it('after 60s unbound, clears nativeAcceptedCallId when id still matches scheduled token', () => {
 		useCallStore.getState().setNativeAcceptedCallId('stale');
-		jest.advanceTimersByTime(15_000);
+		jest.advanceTimersByTime(60_000);
 		const s = useCallStore.getState();
 		expect(s.nativeAcceptedCallId).toBeNull();
 		expect(s.callId).toBeNull();
@@ -244,16 +244,16 @@ describe('useCallStore native accepted + stale timer', () => {
 	it('setCall clears native id and cancels stale timer so advance does not clear bound call context', () => {
 		useCallStore.getState().setNativeAcceptedCallId('x');
 		useCallStore.getState().setCall(createMockCall('x').call);
-		jest.advanceTimersByTime(15_000);
+		jest.advanceTimersByTime(60_000);
 		expect(useCallStore.getState().call).not.toBeNull();
 		expect(useCallStore.getState().nativeAcceptedCallId).toBeNull();
 	});
 
-	it('reset() preserves id and restarts 15s window from last reset', () => {
+	it('reset() preserves id and restarts 60s window from last reset', () => {
 		useCallStore.getState().setNativeAcceptedCallId('keep');
-		jest.advanceTimersByTime(14_000);
+		jest.advanceTimersByTime(59_000);
 		useCallStore.getState().reset();
-		jest.advanceTimersByTime(14_000);
+		jest.advanceTimersByTime(59_000);
 		expect(useCallStore.getState().nativeAcceptedCallId).toBe('keep');
 		jest.advanceTimersByTime(1_000);
 		expect(useCallStore.getState().nativeAcceptedCallId).toBeNull();
@@ -261,9 +261,9 @@ describe('useCallStore native accepted + stale timer', () => {
 
 	it('replacing native id restarts timer so old deadline does not clear new id', () => {
 		useCallStore.getState().setNativeAcceptedCallId('a');
-		jest.advanceTimersByTime(14_000);
+		jest.advanceTimersByTime(59_000);
 		useCallStore.getState().setNativeAcceptedCallId('b');
-		jest.advanceTimersByTime(14_000);
+		jest.advanceTimersByTime(59_000);
 		expect(useCallStore.getState().nativeAcceptedCallId).toBe('b');
 		jest.advanceTimersByTime(1_000);
 		expect(useCallStore.getState().nativeAcceptedCallId).toBeNull();

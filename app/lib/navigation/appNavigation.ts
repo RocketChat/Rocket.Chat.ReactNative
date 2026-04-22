@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { CommonActions, type NavigationContainerRef, StackActions } from '@react-navigation/native';
 
-import { emitter } from '../../methods/helpers';
+import { emitter } from '../../methods/helpers/emitter';
 
 // TODO: we need change this any to the correctly types from our stacks
 const navigationRef = React.createRef<NavigationContainerRef<any>>();
