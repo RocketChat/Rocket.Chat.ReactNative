@@ -22,6 +22,7 @@ import android.widget.TextView
 import android.widget.FrameLayout
 import android.util.Log
 import android.view.ViewOutlineProvider
+import java.util.concurrent.atomic.AtomicBoolean
 import com.bumptech.glide.Glide
 import chat.rocket.reactnative.R
 import android.graphics.Typeface
@@ -43,6 +44,7 @@ class IncomingCallActivity : Activity() {
 
     private var voipPayload: VoipPayload? = null
     private var isCallStateReceiverRegistered = false
+    private val acceptDeclineGuard = AtomicBoolean(false)
     private val timeoutHandler = Handler(Looper.getMainLooper())
     private var timeoutRunnable: Runnable? = null
     private val callStateReceiver = object : BroadcastReceiver() {
@@ -258,6 +260,7 @@ class IncomingCallActivity : Activity() {
     }
 
     private fun handleAccept(payload: VoipPayload) {
+        if (acceptDeclineGuard.compareAndSet(false, true)) return
         if (BuildConfig.DEBUG) {
             Log.d(TAG, "Call accepted - callId: ${payload.callId}")
         }
@@ -268,6 +271,7 @@ class IncomingCallActivity : Activity() {
     }
 
     private fun handleDecline(payload: VoipPayload) {
+        if (acceptDeclineGuard.compareAndSet(false, true)) return
         if (BuildConfig.DEBUG) {
             Log.d(TAG, "Call declined - callId: ${payload.callId}")
         }
