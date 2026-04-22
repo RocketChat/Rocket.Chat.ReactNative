@@ -13,6 +13,7 @@ import { registerGlobals } from 'react-native-webrtc';
 import { getUniqueIdSync } from 'react-native-device-info';
 
 import { mediaSessionStore } from './MediaSessionStore';
+import { terminateNativeCall } from './terminateNativeCall';
 import { useCallStore } from './useCallStore';
 import { store } from '../../store/auxStore';
 import sdk from '../sdk';
@@ -128,7 +129,7 @@ class MediaSessionInstance {
 				}
 
 				call.emitter.on('ended', () => {
-					RNCallKeep.endCall(call.callId);
+					terminateNativeCall(call.callId);
 				});
 			}
 		});
@@ -152,7 +153,7 @@ class MediaSessionInstance {
 				console.error('[VoIP] Error resolving room id from contact (answerCall):', error);
 			});
 		} else {
-			RNCallKeep.endCall(callId);
+			terminateNativeCall(callId);
 			const st = useCallStore.getState();
 			if (st.nativeAcceptedCallId === callId) {
 				st.resetNativeCallId();
@@ -186,7 +187,7 @@ class MediaSessionInstance {
 				mainCall.hangup();
 			}
 		}
-		RNCallKeep.endCall(callId);
+		terminateNativeCall(callId);
 		RNCallKeep.setCurrentCallActive('');
 		RNCallKeep.setAvailable(true);
 		useCallStore.getState().resetNativeCallId();
