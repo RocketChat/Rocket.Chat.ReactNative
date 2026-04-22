@@ -42,6 +42,22 @@ jest.mock('react-native-file-viewer', () => ({
 
 jest.mock('expo-haptics', () => jest.fn(() => null));
 
+jest.mock('react-native-gesture-handler', () => {
+	const React = require('react');
+	const { View } = require('react-native');
+	const GestureHandlerRootView = React.forwardRef(({ children, ...props }, ref) => (
+		<View ref={ref} {...props}>
+			{children}
+		</View>
+	));
+	GestureHandlerRootView.displayName = 'GestureHandlerRootView';
+	return {
+		...jest.requireActual('react-native-gesture-handler'),
+		GestureHandlerRootView,
+		gestureHandlerRootHOC: Component => Component
+	};
+});
+
 jest.mock('expo-font', () => ({
 	isLoaded: jest.fn(() => true),
 	loadAsync: jest.fn(() => Promise.resolve()),
