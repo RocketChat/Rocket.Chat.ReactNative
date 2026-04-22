@@ -6,7 +6,7 @@ import type { IDDPMessage } from '../../../definitions/IDDPMessage';
 import Navigation from '../../navigation/appNavigation';
 import { getDMSubscriptionByUsername } from '../../database/services/Subscription';
 import { getUidDirectMessage } from '../../methods/helpers/helpers';
-import { mediaSessionStore } from './MediaSessionStore';
+import { voipMediaSessionStore as mediaSessionStore } from './MediaSessionStore';
 import { mediaSessionInstance } from './MediaSessionInstance';
 
 jest.mock('../../database/services/Subscription', () => ({
