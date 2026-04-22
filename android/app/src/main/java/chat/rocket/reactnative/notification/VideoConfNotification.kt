@@ -112,7 +112,7 @@ class VideoConfNotification(private val context: Context) {
             putString("rid", rid ?: "")
             putString("notificationType", "videoconf")
             putString("callerId", callerId)
-            putString("callerName", callerName)
+            putString("caller", callerName)
             putString("host", ejson.host ?: "")
             putString("callId", ejson.callId ?: "")
             putString("ejson", bundle.getString("ejson", "{}"))

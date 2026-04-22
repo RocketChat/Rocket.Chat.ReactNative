@@ -39,9 +39,18 @@ jest.mock('react-native-device-info', () => {
 	};
 });
 
-function loadRegisterPushToken(platform: 'ios' | 'android' = 'android') {
+function loadRegisterPushToken(platform: 'ios' | 'android' = 'android', mockServerVersion = '8.0.0') {
 	jest.resetModules();
 	Object.defineProperty(Platform, 'OS', { configurable: true, writable: true, value: platform });
+
+	jest.doMock('../store/auxStore', () => ({
+		store: {
+			getState: () => ({
+				server: { version: mockServerVersion }
+			})
+		}
+	}));
+
 	// eslint-disable-next-line @typescript-eslint/no-require-imports
 	const notifications = require('../notifications');
 	// eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -177,7 +186,7 @@ describe('registerPushToken', () => {
 	});
 
 	it('on iOS posts apn payload with voipToken when both tokens are present', async () => {
-		const { registerPushToken, getDeviceToken: getToken, getLastVoipToken: getVoip } = loadRegisterPushToken('ios');
+		const { registerPushToken, getDeviceToken: getToken, getLastVoipToken: getVoip } = loadRegisterPushToken('ios', '8.4.0');
 		getToken.mockReturnValue('apns-token');
 		getVoip.mockReturnValue('voip-token');
 
@@ -193,5 +202,43 @@ describe('registerPushToken', () => {
 				voipToken: 'voip-token'
 			})
 		);
+	});
+
+	it('on RC < 8.0 does not send id field', async () => {
+		const { registerPushToken, getDeviceToken: getToken } = loadRegisterPushToken('ios', '7.5.0');
+		getToken.mockReturnValue('apns-token');
+
+		await registerPushToken();
+
+		const payload = mockSdkPost.mock.calls[0][1] as Record<string, unknown>;
+		expect(Object.prototype.hasOwnProperty.call(payload, 'id')).toBe(false);
+	});
+
+	it('on RC < 8.0 does not send voipToken field even when present', async () => {
+		const { registerPushToken, getDeviceToken: getToken, getLastVoipToken: getVoip } = loadRegisterPushToken('ios', '7.5.0');
+		getToken.mockReturnValue('apns-token');
+		getVoip.mockReturnValue('voip-token');
+
+		await registerPushToken();
+
+		const payload = mockSdkPost.mock.calls[0][1] as Record<string, unknown>;
+		expect(Object.prototype.hasOwnProperty.call(payload, 'voipToken')).toBe(false);
+	});
+
+	it('on RC 8.0-8.3 sends id but not voipToken', async () => {
+		const { registerPushToken, getDeviceToken: getToken, getLastVoipToken: getVoip } = loadRegisterPushToken('ios', '8.2.0');
+		getToken.mockReturnValue('apns-token');
+		getVoip.mockReturnValue('voip-token');
+
+		await registerPushToken();
+
+		expect(mockSdkPost).toHaveBeenCalledWith(
+			'push.token',
+			expect.objectContaining({
+				id: 'unique-device-id'
+			})
+		);
+		const payload = mockSdkPost.mock.calls[0][1] as Record<string, unknown>;
+		expect(Object.prototype.hasOwnProperty.call(payload, 'voipToken')).toBe(false);
 	});
 });

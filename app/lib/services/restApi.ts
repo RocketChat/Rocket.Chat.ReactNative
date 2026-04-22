@@ -1076,7 +1076,7 @@ let lastToken = '';
 let lastVoipToken = '';
 
 type TRegisterPushTokenData = {
-	id: string;
+	id?: string;
 	value: string;
 	type: string;
 	appName: string;
@@ -1095,12 +1095,15 @@ export const registerPushToken = async (): Promise<void> => {
 		return;
 	}
 
+	const serverVersion = reduxStore.getState().server.version;
 	let data: TRegisterPushTokenData = {
-		id: await getUniqueId(),
 		value: '',
 		type: '',
 		appName: getBundleId
 	};
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.0.0')) {
+		data.id = await getUniqueId();
+	}
 	if (token) {
 		const type = isIOS ? 'apn' : 'gcm';
 		data = {
@@ -1109,7 +1112,7 @@ export const registerPushToken = async (): Promise<void> => {
 			type
 		};
 	}
-	if (voipToken) {
+	if (voipToken && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.4.0')) {
 		data.voipToken = voipToken;
 	}
 
