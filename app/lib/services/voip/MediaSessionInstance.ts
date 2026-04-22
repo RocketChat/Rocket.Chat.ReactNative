@@ -114,8 +114,8 @@ class MediaSessionInstance {
 		this.instance?.on('newCall', ({ call }: { call: IClientMediaCall }) => {
 			if (call && !call.hidden) {
 				call.emitter.on('stateChange', _oldState => {
-						// Intentionally empty — state transitions handled by the call layer
-					});
+					// Intentionally empty — state transitions handled by the call layer
+				});
 
 				if (call.localParticipant.role === 'caller') {
 					useCallStore.getState().setCall(call);
@@ -156,6 +156,7 @@ class MediaSessionInstance {
 			if (st.nativeAcceptedCallId === callId) {
 				st.resetNativeCallId();
 			}
+			console.warn('[VoIP] Call not found after accept:', callId);
 		}
 	};
 

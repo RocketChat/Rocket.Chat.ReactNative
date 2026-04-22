@@ -3,7 +3,6 @@ package chat.rocket.reactnative.voip
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import chat.rocket.reactnative.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
@@ -56,17 +55,13 @@ class DDPClient {
 
         val wsUrl = buildWebSocketURL(host)
 
-        if (BuildConfig.DEBUG) {
-            Log.d(TAG, "Connecting to $wsUrl")
-        }
+        Log.d(TAG, "Connecting to $wsUrl")
 
         val request = Request.Builder().url(wsUrl).build()
 
         webSocket = client.newWebSocket(request, object : WebSocketListener() {
             override fun onOpen(webSocket: WebSocket, response: Response) {
-                if (BuildConfig.DEBUG) {
-                    Log.d(TAG, "WebSocket opened")
-                }
+                Log.d(TAG, "WebSocket opened")
                 val connectMsg = JSONObject().apply {
                     put("msg", "connect")
                     put("version", "1")
@@ -99,9 +94,7 @@ class DDPClient {
 
             override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
                 if (webSocket !== this@DDPClient.webSocket) return
-                if (BuildConfig.DEBUG) {
-                    Log.d(TAG, "WebSocket closed: $code $reason")
-                }
+                Log.d(TAG, "WebSocket closed: $code $reason")
                 isConnected = false
             }
         })
@@ -124,9 +117,7 @@ class DDPClient {
                 if (hasError) {
                     Log.e(TAG, "Login failed: ${data.opt("error")}")
                 } else {
-                    if (BuildConfig.DEBUG) {
-                        Log.d(TAG, "Login succeeded")
-                    }
+                    Log.d(TAG, "Login succeeded")
                 }
                 mainHandler.post { callback(!hasError) }
             }
@@ -150,9 +141,7 @@ class DDPClient {
                 synchronized(pendingCallbacks) { pendingCallbacks.remove(msgId) }
                 val didSubscribe = data.optString("msg") == "ready" && !data.has("error")
                 if (didSubscribe) {
-                    if (BuildConfig.DEBUG) {
-                        Log.d(TAG, "Subscribed to $name")
-                    }
+                    Log.d(TAG, "Subscribed to $name")
                 } else {
                     Log.e(TAG, "Failed to subscribe to $name: ${data.opt("error") ?: "nosub"}")
                 }
@@ -167,9 +156,7 @@ class DDPClient {
     }
 
     fun disconnect() {
-        if (BuildConfig.DEBUG) {
-            Log.d(TAG, "Disconnecting")
-        }
+        Log.d(TAG, "Disconnecting")
         isConnected = false
         cancelConnectTimeout()
         synchronized(pendingCallbacks) { pendingCallbacks.clear() }

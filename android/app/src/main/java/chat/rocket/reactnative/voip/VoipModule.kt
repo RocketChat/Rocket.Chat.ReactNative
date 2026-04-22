@@ -1,7 +1,6 @@
 package chat.rocket.reactnative.voip
 
 import android.util.Log
-import chat.rocket.reactnative.BuildConfig
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.WritableMap
 import com.facebook.react.modules.core.DeviceEventManagerModule
@@ -109,9 +108,7 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
             val data = initialEventsData.get() ?: return null
 
             if (data.isExpired()) {
-                if (BuildConfig.DEBUG) {
-                    Log.d(TAG, "Discarding expired VoIP initial event: ${data.callId}")
-                }
+                Log.d(TAG, "Discarding expired VoIP initial event: ${data.callId}")
                 if (initialEventsData.compareAndSet(data, null)) {
                     return null
                 }
@@ -155,9 +152,7 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
      */
     override fun addListener(eventName: String) {
         // Keep track of listeners if needed
-        if (BuildConfig.DEBUG) {
-            Log.d(TAG, "addListener: $eventName")
-        }
+        Log.d(TAG, "addListener: $eventName")
     }
 
     /**

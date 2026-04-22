@@ -119,7 +119,13 @@ class MediaCallsAnswerRequest(
 
             override fun onResponse(call: Call, response: okhttp3.Response) {
                 response.use {
-                    val success = it.code in 200..299
+                    val code = it.code
+                    val success = code in 200..299
+                    if (success) {
+                        Log.d(TAG, "MediaCallsAnswerRequest response for callId=$callId: code=$code success=true")
+                    } else {
+                        Log.w(TAG, "MediaCallsAnswerRequest failed callId=$callId code=$code answer=$answer")
+                    }
                     mainHandler.post { onResult(success) }
                 }
             }
