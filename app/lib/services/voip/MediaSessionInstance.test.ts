@@ -84,8 +84,16 @@ jest.mock('react-native-callkeep', () => ({
 }));
 
 jest.mock('react-native-device-info', () => ({
+	default: {
+		getUniqueId: jest.fn(() => 'test-device-id'),
+		getUniqueIdSync: jest.fn(() => 'test-device-id'),
+		hasNotch: jest.fn(() => false),
+		getReadableVersion: jest.fn(() => '1.0.0')
+	},
 	getUniqueId: jest.fn(() => 'test-device-id'),
-	getUniqueIdSync: jest.fn(() => 'test-device-id')
+	getUniqueIdSync: jest.fn(() => 'test-device-id'),
+	hasNotch: jest.fn(() => false),
+	getReadableVersion: jest.fn(() => '1.0.0')
 }));
 
 jest.mock('../../native/NativeVoip', () => ({
@@ -95,7 +103,8 @@ jest.mock('../../native/NativeVoip', () => ({
 
 jest.mock('../../navigation/appNavigation', () => ({
 	__esModule: true,
-	default: { navigate: jest.fn() }
+	default: { navigate: jest.fn() },
+	waitForNavigationReady: jest.fn().mockResolvedValue(undefined)
 }));
 
 const mockRequestPhoneStatePermission = jest.fn();
