@@ -83,8 +83,8 @@ export const SingleImageNoAlt = () => (
 	</Provider>
 );
 
-// 5 images on server >= 8.4: renders as 2×2 gallery with +1 overflow on 4th cell
-export const MultipleImagesGallery = () => (
+// Multiple images on server >= 8.4: each attachment renders as its own image row
+export const MultipleImagesNewServer = () => (
 	<Provider store={newServerStore}>
 		<MessageContext.Provider value={mockMessageContext}>
 			<View style={{ padding: 10, width: 350 }}>
