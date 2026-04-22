@@ -614,7 +614,8 @@ describe('MediaSessionInstance', () => {
 			expect(mockGetDMSubscriptionByUsername).not.toHaveBeenCalled();
 		});
 
-		it('newCall caller skips DM lookup for SIP contact', async () => {
+		it('newCall caller resolves roomId from DM when contact has both username and sipExtension', async () => {
+			mockGetDMSubscriptionByUsername.mockResolvedValue({ rid: 'dm-ext' } as any);
 			await mediaSessionInstance.init('user-1');
 			const session = createdSessions[0];
 			const newCallHandler = session.on.mock.calls.find((c: string[]) => c[0] === 'newCall')?.[1] as (p: {
@@ -631,8 +632,8 @@ describe('MediaSessionInstance', () => {
 				} as unknown as IClientMediaCall
 			});
 
-			await Promise.resolve();
-			expect(mockGetDMSubscriptionByUsername).not.toHaveBeenCalled();
+			await waitFor(() => expect(mockSetRoomId).toHaveBeenCalledWith('dm-ext'));
+			expect(mockGetDMSubscriptionByUsername).toHaveBeenCalledWith('alice');
 		});
 
 		it('answerCall resolves roomId from DM for non-SIP callee', async () => {
@@ -652,7 +653,8 @@ describe('MediaSessionInstance', () => {
 			expect(mockGetDMSubscriptionByUsername).toHaveBeenCalledWith('bob');
 		});
 
-		it('answerCall skips DM lookup for SIP contact', async () => {
+		it('answerCall resolves roomId from DM when contact has both username and sipExtension', async () => {
+			mockGetDMSubscriptionByUsername.mockResolvedValue({ rid: 'dm-ext' } as any);
 			await mediaSessionInstance.init('user-1');
 			const session = createdSessions[0];
 			const mainCall = {
@@ -664,9 +666,8 @@ describe('MediaSessionInstance', () => {
 
 			await mediaSessionInstance.answerCall('call-sip');
 
-			await Promise.resolve();
-			expect(mockGetDMSubscriptionByUsername).not.toHaveBeenCalled();
-			expect(mockSetRoomId).not.toHaveBeenCalled();
+			await waitFor(() => expect(mockSetRoomId).toHaveBeenCalledWith('dm-ext'));
+			expect(mockGetDMSubscriptionByUsername).toHaveBeenCalledWith('bob');
 		});
 	});
 });

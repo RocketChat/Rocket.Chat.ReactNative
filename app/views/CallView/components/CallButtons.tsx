@@ -39,7 +39,6 @@ export const CallButtons = () => {
 	const isOnHold = useCallStore(state => state.isOnHold);
 	const isSpeakerOn = useCallStore(state => state.isSpeakerOn);
 	const roomId = useCallStore(state => state.roomId);
-	const contact = useCallStore(state => state.contact);
 
 	const toggleMute = useCallStore(state => state.toggleMute);
 	const toggleHold = useCallStore(state => state.toggleHold);
@@ -54,7 +53,7 @@ export const CallButtons = () => {
 	}));
 
 	const isConnecting = callState === 'none' || callState === 'ringing' || callState === 'accepted';
-	const messageDisabled = Boolean(contact.sipExtension) || roomId == null;
+	const messageDisabled = roomId == null;
 
 	const handleMessage = () => {
 		navigateToCallRoom({ isMasterDetail }).catch(() => undefined);

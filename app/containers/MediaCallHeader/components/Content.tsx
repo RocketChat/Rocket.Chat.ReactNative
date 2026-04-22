@@ -22,8 +22,7 @@ const styles = StyleSheet.create({
 export const Content = () => {
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 	const roomId = useCallStore(state => state.roomId);
-	const contact = useCallStore(state => state.contact);
-	const contentDisabled = Boolean(contact.sipExtension) || roomId == null;
+	const contentDisabled = roomId == null;
 	const pressableStyle = contentDisabled ? [styles.button, { opacity: 0.5 }] : styles.button;
 
 	return (
