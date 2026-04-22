@@ -66,6 +66,7 @@ class VoipCallService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
             ACTION_STOP -> {
+                isRunning = false
                 Log.d(TAG, "Stopping VoipCallService")
                 stopSelf(startId)
                 return START_NOT_STICKY

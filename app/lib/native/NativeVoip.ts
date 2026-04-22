@@ -35,6 +35,11 @@ export interface Spec extends TurboModule {
 	 */
 	stopNativeDDPClient(): void;
 
+	/**
+	 * Stops the VoIP foreground call service.
+	 * iOS: No-op.
+	 * Android: Sends ACTION_STOP to VoipCallService, releasing the mic-type foreground hold.
+	 */
 	stopVoipCallService(): void;
 
 	/**
