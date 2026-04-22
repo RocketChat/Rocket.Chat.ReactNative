@@ -1,11 +1,11 @@
+import { Platform } from 'react-native';
 import RNCallKeep from 'react-native-callkeep';
 
-import { isAndroid } from '../../methods/helpers';
 import NativeVoipModule from '../../native/NativeVoip';
 
 export function terminateNativeCall(callId: string): void {
 	RNCallKeep.endCall(callId);
-	if (isAndroid) {
+	if (Platform.OS === 'android') {
 		try {
 			NativeVoipModule.stopVoipCallService();
 		} catch {
