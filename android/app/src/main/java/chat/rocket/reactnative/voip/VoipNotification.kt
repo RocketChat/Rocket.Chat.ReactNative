@@ -132,6 +132,7 @@ class VoipNotification(private val context: Context) {
         fun handleTimeout(context: Context, payload: VoipPayload) {
             cancelTimeout(payload.callId)
             disconnectTimedOutCall(payload.callId)
+            VoipCallService.stopService(context)
             cancelById(context, payload.notificationId)
             LocalBroadcastManager.getInstance(context).sendBroadcast(
                 Intent(ACTION_TIMEOUT).apply {
@@ -238,6 +239,13 @@ class VoipNotification(private val context: Context) {
         fun handleAcceptAction(context: Context, payload: VoipPayload, skipLaunchMainActivity: Boolean = false) {
             Log.d(TAG, "Accept action triggered for callId: ${payload.callId}")
             cancelTimeout(payload.callId)
+
+            // H3 fix: install DDP listener for call-end detection before accepting.
+            // Previously only called from showIncomingCall, so notification-accept path missed it.
+            startListeningForCallEnd(context, payload)
+
+            // Start foreground service to keep call alive in background.
+            VoipCallService.startService(context, payload.callId)
 
             val appCtx = context.applicationContext
             // Guard so finish() is called at most once, whether by the REST callback or the timeout.
@@ -481,6 +489,7 @@ class VoipNotification(private val context: Context) {
                                         }
                                         cancelTimeout(callId)
                                         disconnectIncomingCall(callId, false)
+                                        VoipCallService.stopService(appContext)
                                         cancelById(appContext, payload.notificationId)
                                         LocalBroadcastManager.getInstance(appContext).sendBroadcast(
                                             Intent(ACTION_DISMISS).apply {
