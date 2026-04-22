@@ -342,7 +342,7 @@ const flushMicrotasks = async () => {
 //   - 'is not a valid icon name' — CallView's CustomIcon reports missing
 //     glyph entries (e.g. 'pause-shape-unfilled') in the Jest env; glyph map
 //     is not loaded. Rendering succeeds, warning is cosmetic for tests.
-//   - '[VoIP] Call not found:' — deterministic expected branch output of
+//   - '[VoIP] Call not found after accept:' — deterministic expected branch output of
 //     answerCall when getCallData returns undefined (exercised by test A2).
 //     Production code warns intentionally; tests should not hide it, but it
 //     is not an unexpected error for the asserting test.
@@ -351,7 +351,7 @@ const CONSOLE_WARN_ALLOWLIST: string[] = [
 	'@expo/vector-icons',
 	'not wrapped in act',
 	'is not a valid icon name',
-	'[VoIP] Call not found:'
+	'[VoIP] Call not found after accept:'
 ];
 
 let consoleErrorSpy: jest.SpyInstance | undefined;
@@ -586,7 +586,7 @@ describe('VoIP call lifecycle (integration)', () => {
 			expect(Navigation.navigate).not.toHaveBeenCalled();
 			expect(useCallStore.getState().call).toBeNull();
 			// Tighten: confirm the known-noise allowlist entry was actually triggered.
-			expect(consoleWarnSpy).toHaveBeenCalledWith('[VoIP] Call not found:', 'missing-1');
+			expect(consoleWarnSpy).toHaveBeenCalledWith('[VoIP] Call not found after accept:', 'missing-1');
 		});
 
 		it('A3: idempotency — existing call matches callId, answerCall early-returns', async () => {
