@@ -13,6 +13,8 @@ export interface IAttachment {
 	size?: number;
 	// For server >= 8.4 this field is also used as the image alt text
 	description?: string;
+	/** Alt text when provided separately from `description` (e.g. some API payloads). */
+	altText?: string;
 	title_link?: string;
 	image_url?: string;
 	image_type?: string;
