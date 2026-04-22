@@ -10,6 +10,7 @@ import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import org.json.JSONArray
 import org.json.JSONObject
+import chat.rocket.reactnative.networking.SSLPinningTurboModule
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
@@ -23,9 +24,11 @@ class DDPClient {
 
     companion object {
         private const val TAG = "RocketChat.DDPClient"
-        private val sharedClient = OkHttpClient.Builder()
-            .pingInterval(30, TimeUnit.SECONDS)
-            .build()
+        private val sharedClient: OkHttpClient by lazy {
+            SSLPinningTurboModule.getSharedOkHttpClient() ?: OkHttpClient.Builder()
+                .pingInterval(30, TimeUnit.SECONDS)
+                .build()
+        }
     }
 
     private var webSocket: WebSocket? = null
@@ -342,8 +345,7 @@ class DDPClient {
                 normalizedHost = normalizedHost.removePrefix("https://")
             }
             normalizedHost.startsWith("http://") -> {
-                useSsl = false
-                normalizedHost = normalizedHost.removePrefix("http://")
+                throw IllegalStateException("DDPClient does not support plaintext http:// servers — use https://")
             }
             else -> {
                 useSsl = true
