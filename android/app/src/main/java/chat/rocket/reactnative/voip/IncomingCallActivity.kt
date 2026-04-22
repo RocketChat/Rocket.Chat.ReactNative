@@ -1,6 +1,7 @@
 package chat.rocket.reactnative.voip
 
 import android.app.Activity
+import chat.rocket.reactnative.BuildConfig
 import android.app.KeyguardManager
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -94,7 +95,9 @@ class IncomingCallActivity : Activity() {
         }
         this.voipPayload = voipPayload
 
-        Log.d(TAG, "IncomingCallActivity created - callId: ${voipPayload.callId}, caller: ${voipPayload.caller}")
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "IncomingCallActivity created - callId: ${voipPayload.callId}, caller: ${voipPayload.caller}")
+        }
 
         updateUI(voipPayload)
         setupButtons(voipPayload)
@@ -255,7 +258,9 @@ class IncomingCallActivity : Activity() {
     }
 
     private fun handleAccept(payload: VoipPayload) {
-        Log.d(TAG, "Call accepted - callId: ${payload.callId}")
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "Call accepted - callId: ${payload.callId}")
+        }
         clearTimeout()
         VoipNotification.cancelTimeout(payload.callId)
         VoipNotification.handleAcceptAction(this, payload)
@@ -263,7 +268,9 @@ class IncomingCallActivity : Activity() {
     }
 
     private fun handleDecline(payload: VoipPayload) {
-        Log.d(TAG, "Call declined - callId: ${payload.callId}")
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "Call declined - callId: ${payload.callId}")
+        }
         clearTimeout()
         VoipNotification.cancelTimeout(payload.callId)
         VoipNotification.handleDeclineAction(this, payload)
