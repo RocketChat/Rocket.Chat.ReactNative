@@ -315,7 +315,7 @@ class VoipNotification(private val context: Context) {
             when (connection) {
                 is VoiceConnection -> connection.onAnswer()
                 null -> {
-                    // C3 fix: null return means Telecom connection is gone (system killed it).
+                    // Null means Telecom connection is gone (e.g. system killed it).
                     // Notify JS so the user sees an error instead of a hanging UI.
                     Log.w(TAG, "No active VoiceConnection for accepted call: $callId — notifying JS of failure")
                     val appCtx = context.applicationContext
