@@ -46,7 +46,13 @@ final class DDPClient {
             #if DEBUG
             print("[\(Self.TAG)] Connecting to \(wsUrl)")
             #endif
-            
+
+            // Cancel any existing connection before creating a new one.
+            self.webSocketTask?.cancel(with: .normalClosure, reason: nil)
+            self.urlSession?.invalidateAndCancel()
+            self.webSocketTask = nil
+            self.urlSession = nil
+
             let session = URLSession(configuration: .default, delegate: DDPClientURLSessionChallengeDelegate(), delegateQueue: nil)
             let task = session.webSocketTask(with: url)
 
