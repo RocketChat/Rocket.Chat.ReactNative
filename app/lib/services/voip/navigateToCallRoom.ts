@@ -5,12 +5,12 @@ import { useCallStore } from './useCallStore';
 
 /**
  * From the VoIP UI, open the DM for the active call: minimizes CallView when it is focused, then navigates.
- * No-ops for SIP calls or when room id or username is missing.
+ * No-ops when room id or username is missing (e.g. pure SIP-only peers).
  */
 export async function navigateToCallRoom({ isMasterDetail }: { isMasterDetail: boolean }): Promise<void> {
 	const { roomId, contact, focused, toggleFocus } = useCallStore.getState();
 
-	if (!roomId || contact.sipExtension) {
+	if (!roomId) {
 		return;
 	}
 

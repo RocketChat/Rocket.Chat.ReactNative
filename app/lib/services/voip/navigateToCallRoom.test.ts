@@ -60,7 +60,7 @@ describe('navigateToCallRoom', () => {
 		expect(mockNavigation.navigate).not.toHaveBeenCalled();
 	});
 
-	it('does not navigate for SIP contact', async () => {
+	it('navigates when contact has both username and sipExtension (RC user with extension)', async () => {
 		mockGetState.mockReturnValue(
 			mockCallStoreState({
 				roomId: 'rid-1',
@@ -72,9 +72,10 @@ describe('navigateToCallRoom', () => {
 
 		await navigateToCallRoom({ isMasterDetail: true });
 
-		expect(mockGoRoom).not.toHaveBeenCalled();
-		expect(toggleFocus).not.toHaveBeenCalled();
-		expect(mockNavigation.navigate).not.toHaveBeenCalled();
+		expect(mockGoRoom).toHaveBeenCalledWith({
+			item: { rid: 'rid-1', name: 'u', t: SubscriptionType.DIRECT },
+			isMasterDetail: true
+		});
 	});
 
 	it('does not navigate when username is missing', async () => {

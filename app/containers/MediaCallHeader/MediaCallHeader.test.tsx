@@ -226,7 +226,7 @@ describe('MediaCallHeader', () => {
 		expect(mockNavigateToCallRoom).toHaveBeenCalledTimes(1);
 	});
 
-	it('does not call navigateToCallRoom when content is pressed for SIP calls', () => {
+	it('calls navigateToCallRoom when contact has both username and sipExtension (RC user with extension)', () => {
 		setStoreState({
 			contact: {
 				id: 'user-1',
@@ -243,7 +243,7 @@ describe('MediaCallHeader', () => {
 		);
 
 		fireEvent.press(getByTestId('media-call-header-content'));
-		expect(mockNavigateToCallRoom).not.toHaveBeenCalled();
+		expect(mockNavigateToCallRoom).toHaveBeenCalledTimes(1);
 	});
 
 	it('does not call navigateToCallRoom when roomId is null', () => {

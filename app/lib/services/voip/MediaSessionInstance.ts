@@ -202,7 +202,7 @@ class MediaSessionInstance {
 	};
 
 	private async resolveRoomIdFromContact(contact: CallContact | undefined): Promise<void> {
-		if (!contact || contact.sipExtension) {
+		if (!contact) {
 			return;
 		}
 		const { username } = contact;
