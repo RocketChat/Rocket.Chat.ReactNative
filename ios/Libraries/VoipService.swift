@@ -486,6 +486,7 @@ public final class VoipService: NSObject {
                     createdAt: payload.createdAt,
                     voipAcceptFailed: true
                 )
+                storeInitialEvents(failedPayload)
                 NotificationCenter.default.post(
                     name: NSNotification.Name("VoipAcceptFailed"),
                     object: nil,
