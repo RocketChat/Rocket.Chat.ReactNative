@@ -36,6 +36,9 @@ public final class VoipService: NSObject {
     private static let storage = MMKVBridge.build()
     /// Serializes access to `lastVoipToken` and `initialEventsData` (main-thread writers vs RN bridge readers).
     private static let bridgeStateQueue = DispatchQueue(label: "chat.rocket.ios.voipService.bridgeState")
+    /// Serializes access to `nativeAcceptHandledCallIds` (CXCallObserver callbacks on main vs
+    /// `handleNativeAccept` on main via CallKit, plus `clearNativeAcceptDedupe` from various contexts).
+    private static let nativeAcceptLock = NSLock()
 
     // MARK: - Static Properties
     
@@ -279,7 +282,9 @@ public final class VoipService: NSObject {
     }
 
     private static func clearNativeAcceptDedupe(for callId: String) {
+        nativeAcceptLock.lock()
         nativeAcceptHandledCallIds.remove(callId)
+        nativeAcceptLock.unlock()
     }
 
     private static func handleIncomingCallTimeout(for payload: VoipPayload) {
@@ -441,14 +446,32 @@ public final class VoipService: NSObject {
 
     /// Native DDP accept when the user answers via CallKit (parity with Android `VoipNotification.handleAcceptAction`).
     private static func handleNativeAccept(payload: VoipPayload) {
-        if nativeAcceptHandledCallIds.contains(payload.callId) {
+        nativeAcceptLock.lock()
+        let alreadyHandled = nativeAcceptHandledCallIds.contains(payload.callId)
+        if alreadyHandled {
+            nativeAcceptLock.unlock()
             return
         }
         nativeAcceptHandledCallIds.insert(payload.callId)
+        nativeAcceptLock.unlock()
 
         cancelIncomingCallTimeout(for: payload.callId)
 
-        let finishAccept: (Bool) -> Void = { success in
+        // 10-second timeout guard: if REST hasn't completed by then, call finishAccept(false).
+        let timeoutWorkItem = DispatchWorkItem { [weak payload] in
+            guard let payload else { return }
+            // Check the callId is still tracked (not already cleaned up).
+            nativeAcceptLock.lock()
+            let isStillTracked = nativeAcceptHandledCallIds.contains(payload.callId)
+            nativeAcceptLock.unlock()
+            if isStillTracked {
+                finishAccept(false)
+            }
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 10.0, execute: timeoutWorkItem)
+
+        let finishAccept: (Bool) -> Void = { [weak timeoutWorkItem] success in
+            timeoutWorkItem?.cancel()
             stopDDPClientInternal(callId: payload.callId)
             if success {
                 storeInitialEvents(payload)
