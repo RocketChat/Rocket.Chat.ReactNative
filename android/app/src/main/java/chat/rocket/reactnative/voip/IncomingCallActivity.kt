@@ -3,6 +3,7 @@ package chat.rocket.reactnative.voip
 import android.app.Activity
 import chat.rocket.reactnative.BuildConfig
 import android.app.KeyguardManager
+import java.util.concurrent.atomic.AtomicBoolean
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -45,6 +46,7 @@ class IncomingCallActivity : Activity() {
     private var isCallStateReceiverRegistered = false
     private val timeoutHandler = Handler(Looper.getMainLooper())
     private var timeoutRunnable: Runnable? = null
+    private val acceptDeclineGuard = AtomicBoolean(false)
     private val callStateReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             val payload = VoipPayload.fromBundle(intent?.extras) ?: return
@@ -258,6 +260,7 @@ class IncomingCallActivity : Activity() {
     }
 
     private fun handleAccept(payload: VoipPayload) {
+        if (acceptDeclineGuard.compareAndSet(false, true)) return
         if (BuildConfig.DEBUG) {
             Log.d(TAG, "Call accepted - callId: ${payload.callId}")
         }
@@ -268,6 +271,7 @@ class IncomingCallActivity : Activity() {
     }
 
     private fun handleDecline(payload: VoipPayload) {
+        if (acceptDeclineGuard.compareAndSet(false, true)) return
         if (BuildConfig.DEBUG) {
             Log.d(TAG, "Call declined - callId: ${payload.callId}")
         }

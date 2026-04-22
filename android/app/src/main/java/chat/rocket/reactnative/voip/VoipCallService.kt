@@ -75,12 +75,8 @@ class VoipCallService : Service() {
                 if (BuildConfig.DEBUG) {
                     Log.d(TAG, "Starting VoipCallService for callId: $callId")
                 }
-                if (!isRunning) {
-                    isRunning = true
-                    startForegroundWithNotification(callId)
-                } else {
-                    Log.d(TAG, "Service already running, skipping duplicate start")
-                }
+                isRunning = true
+                startForegroundWithNotification(callId)
                 return START_NOT_STICKY
             }
             else -> {
