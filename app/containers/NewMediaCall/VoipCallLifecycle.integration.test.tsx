@@ -53,7 +53,8 @@ jest.mock('../../lib/methods/helpers/helpers', () => ({
 }));
 jest.mock('../../lib/navigation/appNavigation', () => ({
 	__esModule: true,
-	default: { navigate: jest.fn(), back: jest.fn() }
+	default: { navigate: jest.fn(), back: jest.fn() },
+	waitForNavigationReady: jest.fn().mockResolvedValue(undefined)
 }));
 jest.mock('../../lib/services/sdk', () => ({
 	__esModule: true,
