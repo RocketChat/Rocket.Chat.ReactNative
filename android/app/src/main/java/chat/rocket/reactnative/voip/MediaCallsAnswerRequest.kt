@@ -12,6 +12,7 @@ import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONArray
 import org.json.JSONObject
+import chat.rocket.reactnative.networking.SSLPinningTurboModule
 import java.io.IOException
 
 /**
@@ -40,7 +41,9 @@ class MediaCallsAnswerRequest(
     companion object {
         private const val TAG = "RocketChat.MediaCallsAnswerRequest"
         private val JSON_MEDIA_TYPE = "application/json; charset=utf-8".toMediaType()
-        private val httpClient = OkHttpClient()
+        private val httpClient: OkHttpClient by lazy {
+            SSLPinningTurboModule.getSharedOkHttpClient() ?: OkHttpClient()
+        }
         private val mainHandler = Handler(Looper.getMainLooper())
 
         @JvmStatic
