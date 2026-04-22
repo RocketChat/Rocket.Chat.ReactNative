@@ -147,6 +147,13 @@
 
         <service android:name="io.wazo.callkeep.RNCallKeepBackgroundMessagingService" />
 
+        <!-- VoIP foreground service for keeping audio calls alive in the background. -->
+        <service
+            android:name="chat.rocket.reactnative.voip.VoipCallService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="microphone" />
+
         <!-- react-native-webrtc ships MediaProjectionService (foregroundServiceType=mediaProjection)
              for screen sharing. We don't use screen sharing, and Android 15+ forbids starting
              restricted foreground service types from BOOT_COMPLETED receivers (expo-notifications
