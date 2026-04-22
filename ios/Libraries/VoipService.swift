@@ -457,21 +457,11 @@ public final class VoipService: NSObject {
 
         cancelIncomingCallTimeout(for: payload.callId)
 
-        // 10-second timeout guard: if REST hasn't completed by then, call finishAccept(false).
-        let timeoutWorkItem = DispatchWorkItem { [weak payload] in
+        var finishAcceptInvoked = false
+        let finishAccept: (Bool) -> Void = { [weak payload] success in
+            guard !finishAcceptInvoked else { return }
+            finishAcceptInvoked = true
             guard let payload else { return }
-            // Check the callId is still tracked (not already cleaned up).
-            nativeAcceptLock.lock()
-            let isStillTracked = nativeAcceptHandledCallIds.contains(payload.callId)
-            nativeAcceptLock.unlock()
-            if isStillTracked {
-                finishAccept(false)
-            }
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 10.0, execute: timeoutWorkItem)
-
-        let finishAccept: (Bool) -> Void = { [weak timeoutWorkItem] success in
-            timeoutWorkItem?.cancel()
             stopDDPClientInternal(callId: payload.callId)
             if success {
                 storeInitialEvents(payload)
@@ -497,29 +487,27 @@ public final class VoipService: NSObject {
                     voipAcceptFailed: true
                 )
                 storeInitialEvents(failedPayload)
-                var acceptFailedUserInfo: [String: Any] = [
-                    "callId": failedPayload.callId,
-                    "caller": failedPayload.caller,
-                    "username": failedPayload.username,
-                    "host": failedPayload.host,
-                    "type": failedPayload.type,
-                    "hostName": failedPayload.hostName,
-                    "notificationId": failedPayload.notificationId,
-                    "voipAcceptFailed": true
-                ]
-                if let avatarUrl = failedPayload.avatarUrl {
-                    acceptFailedUserInfo["avatarUrl"] = avatarUrl
-                }
-                if let createdAt = failedPayload.createdAt {
-                    acceptFailedUserInfo["createdAt"] = createdAt
-                }
                 NotificationCenter.default.post(
                     name: NSNotification.Name("VoipAcceptFailed"),
                     object: nil,
-                    userInfo: acceptFailedUserInfo
+                    userInfo: failedPayload.toDictionary()
                 )
             }
         }
+
+        // 10-second timeout guard: if REST hasn't completed by then, call finishAccept(false).
+        let timeoutWorkItem = DispatchWorkItem { [weak payload, finishAcceptInvoked] in
+            guard let payload else { return }
+            guard !finishAcceptInvoked else { return }
+            // Check the callId is still tracked (not already cleaned up).
+            nativeAcceptLock.lock()
+            let isStillTracked = nativeAcceptHandledCallIds.contains(payload.callId)
+            nativeAcceptLock.unlock()
+            if isStillTracked {
+                finishAccept(false)
+            }
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 10.0, execute: timeoutWorkItem)
 
         guard let api = API(server: payload.host) else {
             #if DEBUG
