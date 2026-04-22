@@ -1,4 +1,4 @@
-import { renderHook, act } from '@testing-library/react-native';
+import { renderHook } from '@testing-library/react-native';
 
 import { useIsVoipCallActive } from './useIsVoipCallActive';
 import { useCallStore } from '../services/voip/useCallStore';

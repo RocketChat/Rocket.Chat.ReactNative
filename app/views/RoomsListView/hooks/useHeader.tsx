@@ -4,6 +4,7 @@ import { useCallback, useContext, useLayoutEffect, useState } from 'react';
 import * as HeaderButton from '../../../containers/Header/components/HeaderButton';
 import i18n from '../../../i18n';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
+import { useIsVoipCallActive } from '../../../lib/hooks/useIsVoipCallActive';
 import { usePermissions } from '../../../lib/hooks/usePermissions';
 import { isTablet } from '../../../lib/methods/helpers';
 import { events, logEvent } from '../../../lib/methods/helpers/log';
@@ -40,7 +41,9 @@ export const useHeader = () => {
 			createDiscussionPermission
 		].filter((r: boolean) => r === true).length > 0;
 
-	const disabled = supportedVersionsStatus === 'expired' || requirePasswordChange;
+	const isVoipCallActive = useIsVoipCallActive();
+
+	const disabled = supportedVersionsStatus === 'expired' || requirePasswordChange || isVoipCallActive;
 
 	const getBadge = useCallback(() => {
 		if (supportedVersionsStatus === 'warn') {
@@ -120,6 +123,7 @@ export const useHeader = () => {
 							onPress={navigateToPushTroubleshootView}
 							testID='rooms-list-view-push-troubleshoot'
 							color={colors.fontDanger}
+							disabled={disabled}
 						/>
 					) : null}
 					{canCreateRoom ? (
@@ -156,6 +160,7 @@ export const useHeader = () => {
 	}, [
 		disabled,
 		issuesWithNotifications,
+		isVoipCallActive,
 		navigation,
 		isMasterDetail,
 		colors,

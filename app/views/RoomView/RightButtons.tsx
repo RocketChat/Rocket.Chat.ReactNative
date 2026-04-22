@@ -20,6 +20,7 @@ import { type ILivechatTag } from '../../definitions/ILivechatTag';
 import i18n from '../../i18n';
 import database from '../../lib/database';
 import { hasPermission, showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers';
+import { useIsVoipCallActive } from '../../lib/hooks/useIsVoipCallActive';
 import { closeLivechat as closeLivechatService } from '../../lib/methods/helpers/closeLivechat';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import { getDepartmentInfo, getTagsList, onHoldLivechat, returnLivechat } from '../../lib/services/restApi';
@@ -60,6 +61,7 @@ interface IRightButtonsProps extends Pick<ISubscription, 't'> {
 	notificationsDisabled?: boolean;
 	hasE2EEWarning: boolean;
 	toggleRoomE2EEncryptionPermission?: string[];
+	isVoipCallActive?: boolean;
 }
 
 interface IRigthButtonsState {
@@ -164,6 +166,9 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			return true;
 		}
 		if (!dequal(nextProps.toggleRoomE2EEncryptionPermission, toggleRoomE2EEncryptionPermission)) {
+			return true;
+		}
+		if (nextProps.isVoipCallActive !== this.props.isVoipCallActive) {
 			return true;
 		}
 		return false;
@@ -468,7 +473,8 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			userId,
 			isGroupChat,
 			status,
-			teamMain
+			teamMain,
+			isVoipCallActive
 		} = this.props;
 
 		const accessibilityRoomName =
@@ -487,7 +493,12 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			if (!this.isOmnichannelPreview()) {
 				return (
 					<HeaderButton.Container>
-						<HeaderButton.Item iconName='kebab' onPress={this.showMoreActions} testID='room-view-header-omnichannel-kebab' />
+						<HeaderButton.Item
+							iconName='kebab'
+							onPress={this.showMoreActions}
+							testID='room-view-header-omnichannel-kebab'
+							disabled={isVoipCallActive}
+						/>
 					</HeaderButton.Container>
 				);
 			}
@@ -501,6 +512,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 						iconName={isFollowingThread ? 'notification' : 'notification-disabled'}
 						onPress={this.toggleFollowThread}
 						testID={isFollowingThread ? 'room-view-header-unfollow' : 'room-view-header-follow'}
+						disabled={isVoipCallActive}
 					/>
 				</HeaderButton.Container>
 			);
@@ -511,7 +523,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 					<HeaderButton.Item
 						iconName='encrypted'
 						onPress={this.goE2EEToggleRoomView}
-						disabled={!canToggleEncryption}
+						disabled={!canToggleEncryption || isVoipCallActive}
 						testID='room-view-header-encryption'
 					/>
 				) : null}
@@ -521,13 +533,13 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 						iconName='notification-disabled'
 						onPress={this.navigateToNotificationOrPushTroubleshoot}
 						testID='room-view-push-troubleshoot'
-						disabled={hasE2EEWarning}
+						disabled={hasE2EEWarning || isVoipCallActive}
 					/>
 				) : null}
 				<HeaderCallButton
 					accessibilityLabel={i18n.t('Call_room_name', { roomName: accessibilityRoomName })}
 					rid={rid}
-					disabled={hasE2EEWarning}
+					disabled={!!(hasE2EEWarning || isVoipCallActive)}
 				/>
 				{threadsEnabled ? (
 					<HeaderButton.Item
@@ -536,7 +548,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 						onPress={this.goThreadsView}
 						testID='room-view-header-threads'
 						badge={() => <HeaderButton.BadgeUnread tunread={tunread} tunreadUser={tunreadUser} tunreadGroup={tunreadGroup} />}
-						disabled={hasE2EEWarning}
+						disabled={hasE2EEWarning || isVoipCallActive}
 					/>
 				) : null}
 				<HeaderButton.Item
@@ -544,7 +556,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 					iconName='search'
 					onPress={this.goSearchView}
 					testID='room-view-search'
-					disabled={hasE2EEWarning}
+					disabled={hasE2EEWarning || isVoipCallActive}
 				/>
 			</HeaderButton.Container>
 		);
@@ -560,4 +572,9 @@ const mapStateToProps = (state: IApplicationState) => ({
 	toggleRoomE2EEncryptionPermission: state.permissions['toggle-room-e2e-encryption']
 });
 
-export default connect(mapStateToProps)(withTheme(RightButtonsContainer));
+const RightButtonsWithVoip = (props: IRightButtonsProps) => {
+	const isVoipCallActive = useIsVoipCallActive();
+	return <RightButtonsContainer {...props} isVoipCallActive={isVoipCallActive} />;
+};
+
+export default connect(mapStateToProps)(withTheme(RightButtonsWithVoip));
