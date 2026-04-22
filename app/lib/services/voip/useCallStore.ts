@@ -7,7 +7,7 @@ import Navigation from '../../navigation/appNavigation';
 import { hideActionSheetRef } from '../../../containers/ActionSheet';
 import { useIsScreenReaderEnabled } from '../../hooks/useIsScreenReaderEnabled';
 
-const STALE_NATIVE_MS = 15_000;
+const STALE_NATIVE_MS = 60_000;
 
 let callListenersCleanup: (() => void) | null = null;
 let staleNativeTimer: ReturnType<typeof setTimeout> | null = null;
