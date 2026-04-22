@@ -21,6 +21,7 @@ import chat.rocket.reactnative.storage.MMKVKeyManager;
 import chat.rocket.reactnative.storage.SecureStoragePackage;
 import chat.rocket.reactnative.notification.VideoConfTurboPackage
 import chat.rocket.reactnative.notification.PushNotificationTurboPackage
+import chat.rocket.reactnative.VoipTurboPackage
 import chat.rocket.reactnative.scroll.InvertedScrollPackage
 
 /**
@@ -45,6 +46,7 @@ open class MainApplication : Application(), ReactApplication {
               add(WatermelonDBJSIPackage())
               add(VideoConfTurboPackage())
               add(PushNotificationTurboPackage())
+              add(VoipTurboPackage())
               add(SecureStoragePackage())
               add(InvertedScrollPackage())
             }

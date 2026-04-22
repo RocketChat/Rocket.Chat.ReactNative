@@ -2,6 +2,7 @@ import React from 'react';
 import { call, cancel, delay, fork, put, race, select, take, takeLatest } from 'redux-saga/effects';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
+
 import dayjs from '../lib/dayjs';
 import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions/app';
@@ -24,21 +25,24 @@ import { RootEnum } from '../definitions';
 import sdk from '../lib/services/sdk';
 import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
 import { getCustomEmojis } from '../lib/methods/getCustomEmojis';
-import { getEnterpriseModules, isOmnichannelModuleAvailable } from '../lib/methods/enterpriseModules';
+import { getEnterpriseModules, isOmnichannelModuleAvailable, isVoipModuleAvailable } from '../lib/methods/enterpriseModules';
 import { getPermissions } from '../lib/methods/getPermissions';
 import { getRoles } from '../lib/methods/getRoles';
 import { getSlashCommands } from '../lib/methods/getSlashCommands';
 import { getUserPresence, subscribeUsersPresence } from '../lib/methods/getUsersPresence';
 import { logout, removeServerData, removeServerDatabase } from '../lib/methods/logout';
 import { subscribeSettings } from '../lib/methods/getSettings';
-import { connect, loginWithPassword, login } from '../lib/services/connect';
+import { disconnect, loginWithPassword, login } from '../lib/services/connect';
 import { saveUserProfile, registerPushToken, getUsersRoles, setUserPresenceAway } from '../lib/services/restApi';
 import { setUsersRoles } from '../actions/usersRoles';
 import { getServerById } from '../lib/database/services/Server';
 import appNavigation from '../lib/navigation/appNavigation';
 import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
-import { isIOS } from '../lib/methods/helpers';
+import { mediaSessionInstance } from '../lib/services/voip/MediaSessionInstance';
+import { hasPermission } from '../lib/methods/helpers/helpers';
+import { mediaSessionStore } from '../lib/services/voip/MediaSessionStore';
+import { store as reduxStore } from '../lib/store/auxStore';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => loginWithPassword(args);
@@ -151,7 +155,7 @@ const subscribeSettingsFork = function* subscribeSettingsFork() {
 	}
 };
 
-const fetchPermissionsFork = function* fetchPermissionsFork() {
+const fetchPermissions = function* fetchPermissions() {
 	try {
 		yield getPermissions();
 	} catch (e) {
@@ -200,7 +204,7 @@ const fetchUsersPresenceFork = function* fetchUsersPresenceFork() {
 	}
 };
 
-const fetchEnterpriseModulesFork = function* fetchEnterpriseModulesFork({ user }) {
+const fetchEnterpriseModules = function* fetchEnterpriseModules({ user }) {
 	try {
 		yield getEnterpriseModules();
 
@@ -240,25 +244,73 @@ const checkBackgroundAndSetAway = function* checkBackgroundAndSetAway() {
 	}
 };
 
+const checkVoipPermission = async () => {
+	try {
+		const state = reduxStore.getState();
+		const userId = state.login.user?.id;
+		if (!userId) {
+			return;
+		}
+
+		const hasPermissions = await hasPermission([
+			state.permissions['allow-internal-voice-calls'],
+			state.permissions['allow-external-voice-calls']
+		]);
+		const canUseVoip = isVoipModuleAvailable() && (hasPermissions[0] || hasPermissions[1]);
+
+		if (!canUseVoip) {
+			mediaSessionInstance.reset();
+			return;
+		}
+		if (!mediaSessionStore.getCurrentInstance()) {
+			mediaSessionInstance.init(userId);
+		}
+	} catch (e) {
+		log(e);
+	}
+};
+
+let voipPermissionListener;
+
+const stopVoipPermissionListener = () => {
+	if (voipPermissionListener) {
+		voipPermissionListener.stop();
+		voipPermissionListener = null;
+	}
+};
+
+const startVoipFork = function* startVoipFork() {
+	yield call(checkVoipPermission);
+
+	stopVoipPermissionListener();
+	voipPermissionListener = sdk.current.onStreamData('stream-notify-logged', async ddpMessage => {
+		const { eventName } = ddpMessage.fields || {};
+		if (/permissions-changed/.test(eventName)) {
+			await checkVoipPermission();
+		}
+	});
+};
+
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	try {
-		getUserPresence(user.id);
+		yield put(setUser(user));
+		setLanguage(user?.language);
 
 		const server = yield select(getServer);
 		yield put(roomsRequest());
 		yield put(encryptionInit());
-		yield fork(fetchPermissionsFork);
+		yield call(fetchPermissions);
+		yield call(fetchEnterpriseModules, { user });
+		yield fork(startVoipFork);
 		yield fork(fetchCustomEmojisFork);
 		yield fork(fetchRolesFork);
 		yield fork(fetchSlashCommandsFork);
 		yield fork(registerPushTokenFork);
 		yield fork(fetchUsersPresenceFork);
-		yield fork(fetchEnterpriseModulesFork, { user });
 		yield fork(subscribeSettingsFork);
 		yield fork(fetchUsersRoles);
 		yield fork(checkBackgroundAndSetAway);
-
-		setLanguage(user?.language);
+		yield getUserPresence(user.id);
 
 		const serversDB = database.servers;
 		const usersCollection = serversDB.get('users');
@@ -294,7 +346,6 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		UserPreferences.setString(`${TOKEN_KEY}-${server}`, user.id);
 		UserPreferences.setString(`${TOKEN_KEY}-${user.id}`, user.token);
 		UserPreferences.setString(CURRENT_SERVER, server);
-		yield put(setUser(user));
 		EventEmitter.emit('connected');
 		const currentRoot = yield select(state => state.app.root);
 		if (currentRoot !== RootEnum.ROOT_SHARE_EXTENSION && currentRoot !== RootEnum.ROOT_LOADING_SHARE_EXTENSION) {
@@ -312,6 +363,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 };
 
 const handleLogout = function* handleLogout({ forcedByServer, message }) {
+	stopVoipPermissionListener();
 	yield put(encryptionStop());
 	yield put(appStart({ root: RootEnum.ROOT_LOADING, text: I18n.t('Logging_out') }));
 	const server = yield select(getServer);
@@ -388,6 +440,7 @@ const handleSetUser = function* handleSetUser({ user }) {
 };
 
 const handleDeleteAccount = function* handleDeleteAccount() {
+	stopVoipPermissionListener();
 	yield put(encryptionStop());
 	yield put(appStart({ root: RootEnum.ROOT_LOADING, text: I18n.t('Deleting_account') }));
 	const server = yield select(getServer);
@@ -412,10 +465,10 @@ const handleDeleteAccount = function* handleDeleteAccount() {
 				}
 			}
 			// if there's no servers, go outside
-			sdk.disconnect();
+			disconnect();
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		} catch (e) {
-			sdk.disconnect();
+			disconnect();
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 			log(e);
 		}

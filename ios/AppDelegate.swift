@@ -4,6 +4,7 @@ import ReactAppDependencyProvider
 import Firebase
 import Bugsnag
 import WatchConnectivity
+import PushKit
 
 @UIApplicationMain
 public class AppDelegate: ExpoAppDelegate {
@@ -25,6 +26,8 @@ public class AppDelegate: ExpoAppDelegate {
     FirebaseApp.configure()
     Bugsnag.start()
     ReplyNotification.configure()
+    VoipService.voipRegistration()
+    RNCallKeep.setup(["appName": "Rocket.Chat"])
       
     let delegate = ReactNativeDelegate()
     let factory = RCTReactNativeFactory(delegate: delegate)

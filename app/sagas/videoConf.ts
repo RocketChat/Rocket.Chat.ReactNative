@@ -20,6 +20,7 @@ import { showToast } from '../lib/methods/helpers/showToast';
 import { videoConfJoin } from '../lib/methods/videoConf';
 import { videoConferenceCancel, notifyUser, videoConferenceStart } from '../lib/services/restApi';
 import { type ICallInfo } from '../reducers/videoConf';
+import { voipBlocksIncomingVideoconf } from '../lib/services/voip/voipBlocksIncomingVideoconf';
 
 interface IGenericAction extends Action {
 	type: string;
@@ -47,6 +48,8 @@ const CALL_INTERVAL = 3000;
 const CALL_ATTEMPT_LIMIT = 10;
 
 function* onDirectCall(payload: ICallInfo) {
+	if (voipBlocksIncomingVideoconf()) return;
+
 	const calls = yield* appSelector(state => state.videoConf.calls);
 	const currentCall = calls.find(c => c.callId === payload.callId);
 	const hasAnotherCall = calls.find(c => c.action === 'call');

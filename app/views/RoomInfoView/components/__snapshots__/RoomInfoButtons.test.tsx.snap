@@ -1,0 +1,1760 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Story Snapshots: Default should match snapshot 1`] = `
+<View
+  style={
+    {
+      "minHeight": 200,
+      "padding": 24,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "flexDirection": "row",
+        "paddingTop": 16,
+      }
+    }
+  >
+    <RNGestureHandlerButton
+      activeOpacity={0.3}
+      borderless={true}
+      collapsable={false}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "justifyContent": "space-between",
+            "marginHorizontal": 4,
+            "opacity": 1,
+            "width": 80,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
+      }
+      testID="room-info-view-message"
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#6C727A",
+              "fontSize": 30,
+            },
+            [
+              {
+                "lineHeight": 30,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+      <Text
+        numberOfLines={1}
+        style={
+          [
+            {
+              "marginTop": 4,
+            },
+            {
+              "color": "#6C727A",
+            },
+          ]
+        }
+      >
+        Message
+      </Text>
+    </RNGestureHandlerButton>
+    <RNGestureHandlerButton
+      activeOpacity={0.3}
+      borderless={true}
+      collapsable={false}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "justifyContent": "space-between",
+            "marginHorizontal": 4,
+            "opacity": 1,
+            "width": 80,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
+      }
+      testID="room-info-view-phone"
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#6C727A",
+              "fontSize": 30,
+            },
+            [
+              {
+                "lineHeight": 30,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+      <Text
+        numberOfLines={1}
+        style={
+          [
+            {
+              "marginTop": 4,
+            },
+            {
+              "color": "#6C727A",
+            },
+          ]
+        }
+      >
+        Voice call
+      </Text>
+    </RNGestureHandlerButton>
+    <RNGestureHandlerButton
+      activeOpacity={0.3}
+      borderless={true}
+      collapsable={false}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[MockFunction]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "justifyContent": "space-between",
+            "marginHorizontal": 4,
+            "opacity": 1,
+            "width": 80,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
+      }
+      testID="room-info-view-video"
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#6C727A",
+              "fontSize": 30,
+            },
+            [
+              {
+                "lineHeight": 30,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+      <Text
+        numberOfLines={1}
+        style={
+          [
+            {
+              "marginTop": 4,
+            },
+            {
+              "color": "#6C727A",
+            },
+          ]
+        }
+      >
+        Video call
+      </Text>
+    </RNGestureHandlerButton>
+    <RNGestureHandlerButton
+      activeOpacity={0.3}
+      borderless={true}
+      collapsable={false}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "justifyContent": "space-between",
+            "marginHorizontal": 4,
+            "opacity": 1,
+            "width": 80,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
+      }
+      testID="room-info-view-kebab"
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#6C727A",
+              "fontSize": 30,
+            },
+            [
+              {
+                "lineHeight": 30,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+      <Text
+        numberOfLines={1}
+        style={
+          [
+            {
+              "marginTop": 4,
+            },
+            {
+              "color": "#6C727A",
+            },
+          ]
+        }
+      >
+        More
+      </Text>
+    </RNGestureHandlerButton>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: ItsMe should match snapshot 1`] = `
+<View
+  style={
+    {
+      "minHeight": 200,
+      "padding": 24,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "flexDirection": "row",
+        "paddingTop": 16,
+      }
+    }
+  >
+    <RNGestureHandlerButton
+      activeOpacity={0.3}
+      borderless={true}
+      collapsable={false}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "justifyContent": "space-between",
+            "marginHorizontal": 4,
+            "opacity": 1,
+            "width": 80,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
+      }
+      testID="room-info-view-message"
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#6C727A",
+              "fontSize": 30,
+            },
+            [
+              {
+                "lineHeight": 30,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+      <Text
+        numberOfLines={1}
+        style={
+          [
+            {
+              "marginTop": 4,
+            },
+            {
+              "color": "#6C727A",
+            },
+          ]
+        }
+      >
+        Message
+      </Text>
+    </RNGestureHandlerButton>
+    <RNGestureHandlerButton
+      activeOpacity={0.3}
+      borderless={true}
+      collapsable={false}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "justifyContent": "space-between",
+            "marginHorizontal": 4,
+            "opacity": 1,
+            "width": 80,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
+      }
+      testID="room-info-view-phone"
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#6C727A",
+              "fontSize": 30,
+            },
+            [
+              {
+                "lineHeight": 30,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+      <Text
+        numberOfLines={1}
+        style={
+          [
+            {
+              "marginTop": 4,
+            },
+            {
+              "color": "#6C727A",
+            },
+          ]
+        }
+      >
+        Voice call
+      </Text>
+    </RNGestureHandlerButton>
+    <RNGestureHandlerButton
+      activeOpacity={0.3}
+      borderless={true}
+      collapsable={false}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[MockFunction]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "justifyContent": "space-between",
+            "marginHorizontal": 4,
+            "opacity": 1,
+            "width": 80,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
+      }
+      testID="room-info-view-video"
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#6C727A",
+              "fontSize": 30,
+            },
+            [
+              {
+                "lineHeight": 30,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+      <Text
+        numberOfLines={1}
+        style={
+          [
+            {
+              "marginTop": 4,
+            },
+            {
+              "color": "#6C727A",
+            },
+          ]
+        }
+      >
+        Video call
+      </Text>
+    </RNGestureHandlerButton>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: NoVoiceCall should match snapshot 1`] = `
+<View
+  style={
+    {
+      "minHeight": 200,
+      "padding": 24,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "flexDirection": "row",
+        "paddingTop": 16,
+      }
+    }
+  >
+    <RNGestureHandlerButton
+      activeOpacity={0.3}
+      borderless={true}
+      collapsable={false}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "justifyContent": "space-between",
+            "marginHorizontal": 4,
+            "opacity": 1,
+            "width": 80,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
+      }
+      testID="room-info-view-message"
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#6C727A",
+              "fontSize": 30,
+            },
+            [
+              {
+                "lineHeight": 30,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+      <Text
+        numberOfLines={1}
+        style={
+          [
+            {
+              "marginTop": 4,
+            },
+            {
+              "color": "#6C727A",
+            },
+          ]
+        }
+      >
+        Message
+      </Text>
+    </RNGestureHandlerButton>
+    <RNGestureHandlerButton
+      activeOpacity={0.3}
+      borderless={true}
+      collapsable={false}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "justifyContent": "space-between",
+            "marginHorizontal": 4,
+            "opacity": 1,
+            "width": 80,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
+      }
+      testID="room-info-view-phone"
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#6C727A",
+              "fontSize": 30,
+            },
+            [
+              {
+                "lineHeight": 30,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+      <Text
+        numberOfLines={1}
+        style={
+          [
+            {
+              "marginTop": 4,
+            },
+            {
+              "color": "#6C727A",
+            },
+          ]
+        }
+      >
+        Voice call
+      </Text>
+    </RNGestureHandlerButton>
+    <RNGestureHandlerButton
+      activeOpacity={0.3}
+      borderless={true}
+      collapsable={false}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[MockFunction]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "justifyContent": "space-between",
+            "marginHorizontal": 4,
+            "opacity": 1,
+            "width": 80,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
+      }
+      testID="room-info-view-video"
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#6C727A",
+              "fontSize": 30,
+            },
+            [
+              {
+                "lineHeight": 30,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+      <Text
+        numberOfLines={1}
+        style={
+          [
+            {
+              "marginTop": 4,
+            },
+            {
+              "color": "#6C727A",
+            },
+          ]
+        }
+      >
+        Video call
+      </Text>
+    </RNGestureHandlerButton>
+    <RNGestureHandlerButton
+      activeOpacity={0.3}
+      borderless={true}
+      collapsable={false}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "justifyContent": "space-between",
+            "marginHorizontal": 4,
+            "opacity": 1,
+            "width": 80,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
+      }
+      testID="room-info-view-kebab"
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#6C727A",
+              "fontSize": 30,
+            },
+            [
+              {
+                "lineHeight": 30,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+      <Text
+        numberOfLines={1}
+        style={
+          [
+            {
+              "marginTop": 4,
+            },
+            {
+              "color": "#6C727A",
+            },
+          ]
+        }
+      >
+        More
+      </Text>
+    </RNGestureHandlerButton>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: OlderServer should match snapshot 1`] = `
+<View
+  style={
+    {
+      "minHeight": 200,
+      "padding": 24,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "flexDirection": "row",
+        "paddingTop": 16,
+      }
+    }
+  >
+    <RNGestureHandlerButton
+      activeOpacity={0.3}
+      borderless={true}
+      collapsable={false}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "justifyContent": "space-between",
+            "marginHorizontal": 4,
+            "opacity": 1,
+            "width": 80,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
+      }
+      testID="room-info-view-message"
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#6C727A",
+              "fontSize": 30,
+            },
+            [
+              {
+                "lineHeight": 30,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+      <Text
+        numberOfLines={1}
+        style={
+          [
+            {
+              "marginTop": 4,
+            },
+            {
+              "color": "#6C727A",
+            },
+          ]
+        }
+      >
+        Message
+      </Text>
+    </RNGestureHandlerButton>
+    <RNGestureHandlerButton
+      activeOpacity={0.3}
+      borderless={true}
+      collapsable={false}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "justifyContent": "space-between",
+            "marginHorizontal": 4,
+            "opacity": 1,
+            "width": 80,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
+      }
+      testID="room-info-view-phone"
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#6C727A",
+              "fontSize": 30,
+            },
+            [
+              {
+                "lineHeight": 30,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+      <Text
+        numberOfLines={1}
+        style={
+          [
+            {
+              "marginTop": 4,
+            },
+            {
+              "color": "#6C727A",
+            },
+          ]
+        }
+      >
+        Voice call
+      </Text>
+    </RNGestureHandlerButton>
+    <RNGestureHandlerButton
+      activeOpacity={0.3}
+      borderless={true}
+      collapsable={false}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[MockFunction]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "justifyContent": "space-between",
+            "marginHorizontal": 4,
+            "opacity": 1,
+            "width": 80,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
+      }
+      testID="room-info-view-video"
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#6C727A",
+              "fontSize": 30,
+            },
+            [
+              {
+                "lineHeight": 30,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+      <Text
+        numberOfLines={1}
+        style={
+          [
+            {
+              "marginTop": 4,
+            },
+            {
+              "color": "#6C727A",
+            },
+          ]
+        }
+      >
+        Video call
+      </Text>
+    </RNGestureHandlerButton>
+    <RNGestureHandlerButton
+      activeOpacity={0.3}
+      borderless={true}
+      collapsable={false}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "justifyContent": "space-between",
+            "marginHorizontal": 4,
+            "opacity": 1,
+            "width": 80,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
+      }
+      testID="room-info-view-ignore"
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#6C727A",
+              "fontSize": 30,
+            },
+            [
+              {
+                "lineHeight": 30,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+      <Text
+        numberOfLines={1}
+        style={
+          [
+            {
+              "marginTop": 4,
+            },
+            {
+              "color": "#6C727A",
+            },
+          ]
+        }
+      >
+        Block
+      </Text>
+    </RNGestureHandlerButton>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: WithBlockedUser should match snapshot 1`] = `
+<View
+  style={
+    {
+      "minHeight": 200,
+      "padding": 24,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "flexDirection": "row",
+        "paddingTop": 16,
+      }
+    }
+  >
+    <RNGestureHandlerButton
+      activeOpacity={0.3}
+      borderless={true}
+      collapsable={false}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "justifyContent": "space-between",
+            "marginHorizontal": 4,
+            "opacity": 1,
+            "width": 80,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
+      }
+      testID="room-info-view-message"
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#6C727A",
+              "fontSize": 30,
+            },
+            [
+              {
+                "lineHeight": 30,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+      <Text
+        numberOfLines={1}
+        style={
+          [
+            {
+              "marginTop": 4,
+            },
+            {
+              "color": "#6C727A",
+            },
+          ]
+        }
+      >
+        Message
+      </Text>
+    </RNGestureHandlerButton>
+    <RNGestureHandlerButton
+      activeOpacity={0.3}
+      borderless={true}
+      collapsable={false}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "justifyContent": "space-between",
+            "marginHorizontal": 4,
+            "opacity": 1,
+            "width": 80,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
+      }
+      testID="room-info-view-phone"
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#6C727A",
+              "fontSize": 30,
+            },
+            [
+              {
+                "lineHeight": 30,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+      <Text
+        numberOfLines={1}
+        style={
+          [
+            {
+              "marginTop": 4,
+            },
+            {
+              "color": "#6C727A",
+            },
+          ]
+        }
+      >
+        Voice call
+      </Text>
+    </RNGestureHandlerButton>
+    <RNGestureHandlerButton
+      activeOpacity={0.3}
+      borderless={true}
+      collapsable={false}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[MockFunction]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "justifyContent": "space-between",
+            "marginHorizontal": 4,
+            "opacity": 1,
+            "width": 80,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
+      }
+      testID="room-info-view-video"
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#6C727A",
+              "fontSize": 30,
+            },
+            [
+              {
+                "lineHeight": 30,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+      <Text
+        numberOfLines={1}
+        style={
+          [
+            {
+              "marginTop": 4,
+            },
+            {
+              "color": "#6C727A",
+            },
+          ]
+        }
+      >
+        Video call
+      </Text>
+    </RNGestureHandlerButton>
+    <RNGestureHandlerButton
+      activeOpacity={0.3}
+      borderless={true}
+      collapsable={false}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "justifyContent": "space-between",
+            "marginHorizontal": 4,
+            "opacity": 1,
+            "width": 80,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
+      }
+      testID="room-info-view-kebab"
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#6C727A",
+              "fontSize": 30,
+            },
+            [
+              {
+                "lineHeight": 30,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+      <Text
+        numberOfLines={1}
+        style={
+          [
+            {
+              "marginTop": 4,
+            },
+            {
+              "color": "#6C727A",
+            },
+          ]
+        }
+      >
+        More
+      </Text>
+    </RNGestureHandlerButton>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: WithRoomFromRid should match snapshot 1`] = `
+<View
+  style={
+    {
+      "minHeight": 200,
+      "padding": 24,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "flexDirection": "row",
+        "paddingTop": 16,
+      }
+    }
+  >
+    <RNGestureHandlerButton
+      activeOpacity={0.3}
+      borderless={true}
+      collapsable={false}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "justifyContent": "space-between",
+            "marginHorizontal": 4,
+            "opacity": 1,
+            "width": 80,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
+      }
+      testID="room-info-view-message"
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#6C727A",
+              "fontSize": 30,
+            },
+            [
+              {
+                "lineHeight": 30,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+      <Text
+        numberOfLines={1}
+        style={
+          [
+            {
+              "marginTop": 4,
+            },
+            {
+              "color": "#6C727A",
+            },
+          ]
+        }
+      >
+        Message
+      </Text>
+    </RNGestureHandlerButton>
+    <RNGestureHandlerButton
+      activeOpacity={0.3}
+      borderless={true}
+      collapsable={false}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "justifyContent": "space-between",
+            "marginHorizontal": 4,
+            "opacity": 1,
+            "width": 80,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
+      }
+      testID="room-info-view-phone"
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#6C727A",
+              "fontSize": 30,
+            },
+            [
+              {
+                "lineHeight": 30,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+      <Text
+        numberOfLines={1}
+        style={
+          [
+            {
+              "marginTop": 4,
+            },
+            {
+              "color": "#6C727A",
+            },
+          ]
+        }
+      >
+        Voice call
+      </Text>
+    </RNGestureHandlerButton>
+    <RNGestureHandlerButton
+      activeOpacity={0.3}
+      borderless={true}
+      collapsable={false}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "justifyContent": "space-between",
+            "marginHorizontal": 4,
+            "opacity": 1,
+            "width": 80,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
+      }
+      testID="room-info-view-ignore"
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#6C727A",
+              "fontSize": 30,
+            },
+            [
+              {
+                "lineHeight": 30,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+      <Text
+        numberOfLines={1}
+        style={
+          [
+            {
+              "marginTop": 4,
+            },
+            {
+              "color": "#6C727A",
+            },
+          ]
+        }
+      >
+        Block
+      </Text>
+    </RNGestureHandlerButton>
+    <RNGestureHandlerButton
+      activeOpacity={0.3}
+      borderless={true}
+      collapsable={false}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "justifyContent": "space-between",
+            "marginHorizontal": 4,
+            "opacity": 1,
+            "width": 80,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
+      }
+      testID="room-info-view-warning"
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#EC0D2A",
+              "fontSize": 30,
+            },
+            [
+              {
+                "lineHeight": 30,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+      <Text
+        numberOfLines={1}
+        style={
+          [
+            {
+              "marginTop": 4,
+            },
+            {
+              "color": "#EC0D2A",
+            },
+          ]
+        }
+      >
+        Report
+      </Text>
+    </RNGestureHandlerButton>
+  </View>
+</View>
+`;

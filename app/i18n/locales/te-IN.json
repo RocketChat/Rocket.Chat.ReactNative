@@ -281,6 +281,7 @@
   "Enable_Auto_Translate": "స్వయం-అనువదించడం అనుమతించండి",
   "Enable_encryption_button_label": "గూఢీకరణను ప్రారంభించు",
   "Enable_Message_Parser": "సందేశ పార్సర్‌ను సక్రియం చేయండి",
+  "Enable_Mobile_Ringing": "మోబైల్ రింగింగ్‌ను ఆన్ చేయండి",
   "Enable_writing_in_room": "{{roomName}}లో రచన అనుమతించండి",
   "Enabled_E2E_Encryption_for_this_room": "ఈ రూమ్‌కు E2E ఎన్క్రిప్షన్ ప్రారంభించబడింది",
   "Encrypted": "ఎన్క్రిప్టెడ్",

@@ -8,7 +8,7 @@
 
 #import <objc/runtime.h>
 #import "SSLPinning.h"
-#import "Shared/RocketChat/MMKVBridge.h"
+#import "../Shared/RocketChat/MMKVBridge.h"
 #import <SDWebImage/SDWebImageDownloader.h>
 #import "SecureStorage.h"
 #import "SRWebSocket.h"

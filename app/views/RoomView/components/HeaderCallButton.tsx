@@ -2,6 +2,7 @@ import React from 'react';
 
 import * as HeaderButton from '../../../containers/Header/components/HeaderButton';
 import { useVideoConf } from '../../../lib/hooks/useVideoConf';
+import { useNewMediaCall } from '../../../lib/hooks/useNewMediaCall';
 
 export const HeaderCallButton = ({
 	rid,
@@ -12,9 +13,24 @@ export const HeaderCallButton = ({
 	disabled: boolean;
 	accessibilityLabel: string;
 }): React.ReactElement | null => {
-	const { showInitCallActionSheet, callEnabled, disabledTooltip } = useVideoConf(rid);
+	'use memo';
 
-	if (callEnabled)
+	const { showInitCallActionSheet, callEnabled, disabledTooltip } = useVideoConf(rid);
+	const { openNewMediaCall, hasMediaCallPermission } = useNewMediaCall(rid);
+
+	if (hasMediaCallPermission) {
+		return (
+			<HeaderButton.Item
+				accessibilityLabel={accessibilityLabel}
+				disabled={disabled}
+				iconName='phone'
+				onPress={openNewMediaCall}
+				testID='room-view-header-call'
+			/>
+		);
+	}
+
+	if (callEnabled) {
 		return (
 			<HeaderButton.Item
 				accessibilityLabel={accessibilityLabel}
@@ -24,5 +40,7 @@ export const HeaderCallButton = ({
 				testID='room-view-header-call'
 			/>
 		);
+	}
+
 	return null;
 };
