@@ -46,6 +46,12 @@ let usersBatch: string[] = [];
 export async function getUsersPresence(usersParams: string[]) {
 	const serverVersion = reduxStore.getState().server.version as string;
 	const { user: loggedUser } = reduxStore.getState().login;
+	const { Presence_broadcast_disabled: presenceBroadcastDisabled } = reduxStore.getState().settings;
+
+	// Skip presence fetch if broadcasting is disabled on the server
+	if (presenceBroadcastDisabled) {
+		return;
+	}
 
 	// if server is greather than or equal 1.1.0
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '1.1.0')) {
