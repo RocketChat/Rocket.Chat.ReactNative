@@ -8,14 +8,17 @@ import { useTheme } from '../../../../../theme';
 const styles = StyleSheet.create({
 	container: {
 		alignSelf: 'flex-start',
-		paddingHorizontal: 6,
-		paddingVertical: 3,
-		borderRadius: 4
+		paddingHorizontal: 4,
+		borderRadius: 4,
+		height: 20,
+		position: 'absolute',
+		bottom: 12,
+		right: 12
 	},
 	label: {
-		fontSize: 12,
-		lineHeight: 16,
-		...sharedStyles.textSemibold
+		fontSize: 14,
+		lineHeight: 20,
+		...sharedStyles.textBold
 	}
 });
 
@@ -25,7 +28,7 @@ const AltTextLabel = () => {
 	const { colors } = useTheme();
 	return (
 		<View style={[styles.container, { backgroundColor: colors.surfaceNeutral }]}>
-			<Text style={[styles.label, { color: colors.fontTitlesLabels }]}>{I18n.t('Alt_text')}</Text>
+			<Text style={[styles.label, { color: colors.fontTitlesLabels }]}>{I18n.t('Alt')}</Text>
 		</View>
 	);
 };
