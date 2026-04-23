@@ -671,18 +671,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                           }
                           accessible={true}
                           collapsable={false}
-<<<<<<< HEAD
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={-1}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#16181a"
-=======
                           focusable={true}
                           onBlur={[Function]}
                           onClick={[Function]}
@@ -693,7 +681,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                           onResponderTerminate={[Function]}
                           onResponderTerminationRequest={[Function]}
                           onStartShouldSetResponder={[Function]}
->>>>>>> develop
                           style={
                             {
                               "alignItems": "center",
@@ -1639,18 +1626,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                           }
                           accessible={true}
                           collapsable={false}
-<<<<<<< HEAD
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={-1}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#16181a"
-=======
                           focusable={true}
                           onBlur={[Function]}
                           onClick={[Function]}
@@ -1661,7 +1636,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                           onResponderTerminate={[Function]}
                           onResponderTerminationRequest={[Function]}
                           onStartShouldSetResponder={[Function]}
->>>>>>> develop
                           style={
                             {
                               "alignItems": "center",
@@ -2441,18 +2415,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                           }
                           accessible={true}
                           collapsable={false}
-<<<<<<< HEAD
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={-1}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#16181a"
-=======
                           focusable={true}
                           onBlur={[Function]}
                           onClick={[Function]}
@@ -2463,7 +2425,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                           onResponderTerminate={[Function]}
                           onResponderTerminationRequest={[Function]}
                           onStartShouldSetResponder={[Function]}
->>>>>>> develop
                           style={
                             {
                               "alignItems": "center",
@@ -2953,18 +2914,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                           }
                           accessible={true}
                           collapsable={false}
-<<<<<<< HEAD
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={-1}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#2D3039"
-=======
                           focusable={true}
                           onBlur={[Function]}
                           onClick={[Function]}
@@ -2975,7 +2924,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                           onResponderTerminate={[Function]}
                           onResponderTerminationRequest={[Function]}
                           onStartShouldSetResponder={[Function]}
->>>>>>> develop
                           style={
                             {
                               "alignItems": "center",
@@ -3921,18 +3869,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                           }
                           accessible={true}
                           collapsable={false}
-<<<<<<< HEAD
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={-1}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#2D3039"
-=======
                           focusable={true}
                           onBlur={[Function]}
                           onClick={[Function]}
@@ -3943,7 +3879,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                           onResponderTerminate={[Function]}
                           onResponderTerminationRequest={[Function]}
                           onStartShouldSetResponder={[Function]}
->>>>>>> develop
                           style={
                             {
                               "alignItems": "center",
@@ -4723,18 +4658,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                           }
                           accessible={true}
                           collapsable={false}
-<<<<<<< HEAD
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={-1}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#2D3039"
-=======
                           focusable={true}
                           onBlur={[Function]}
                           onClick={[Function]}
@@ -4745,7 +4668,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                           onResponderTerminate={[Function]}
                           onResponderTerminationRequest={[Function]}
                           onStartShouldSetResponder={[Function]}
->>>>>>> develop
                           style={
                             {
                               "alignItems": "center",
@@ -5235,18 +5157,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                           }
                           accessible={true}
                           collapsable={false}
-<<<<<<< HEAD
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={-1}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#E4E7EA"
-=======
                           focusable={true}
                           onBlur={[Function]}
                           onClick={[Function]}
@@ -5257,7 +5167,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                           onResponderTerminate={[Function]}
                           onResponderTerminationRequest={[Function]}
                           onStartShouldSetResponder={[Function]}
->>>>>>> develop
                           style={
                             {
                               "alignItems": "center",
@@ -6203,18 +6112,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                           }
                           accessible={true}
                           collapsable={false}
-<<<<<<< HEAD
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={-1}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#E4E7EA"
-=======
                           focusable={true}
                           onBlur={[Function]}
                           onClick={[Function]}
@@ -6225,7 +6122,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                           onResponderTerminate={[Function]}
                           onResponderTerminationRequest={[Function]}
                           onStartShouldSetResponder={[Function]}
->>>>>>> develop
                           style={
                             {
                               "alignItems": "center",
@@ -7005,18 +6901,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                           }
                           accessible={true}
                           collapsable={false}
-<<<<<<< HEAD
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={-1}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#E4E7EA"
-=======
                           focusable={true}
                           onBlur={[Function]}
                           onClick={[Function]}
@@ -7027,7 +6911,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                           onResponderTerminate={[Function]}
                           onResponderTerminationRequest={[Function]}
                           onStartShouldSetResponder={[Function]}
->>>>>>> develop
                           style={
                             {
                               "alignItems": "center",

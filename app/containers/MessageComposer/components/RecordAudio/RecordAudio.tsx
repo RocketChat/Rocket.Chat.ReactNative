@@ -1,6 +1,6 @@
 import { View, Text } from 'react-native';
 import React, { type ReactElement, useEffect, useRef } from 'react';
-import { RecordingPresets, useAudioRecorder, useAudioRecorderState } from 'expo-audio';
+import { RecordingPresets, setAudioModeAsync, useAudioRecorder, useAudioRecorderState } from 'expo-audio';
 import { getInfoAsync } from 'expo-file-system/legacy';
 import { useKeepAwake } from 'expo-keep-awake';
 import { shallowEqual } from 'react-redux';
@@ -24,7 +24,6 @@ import { CancelButton } from './CancelButton';
 import i18n from '../../../../i18n';
 
 export const RecordAudio = (): ReactElement | null => {
-	console.log('RecordAudio');
 	const [styles, colors] = useStyle();
 	const audioRecorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
 	const recorderState = useAudioRecorderState(audioRecorder);
@@ -40,10 +39,10 @@ export const RecordAudio = (): ReactElement | null => {
 	useKeepAwake();
 
 	async function doRecording() {
-		// await setAudioModeAsync({
-		//     playsInSilentMode: true,
-		//     allowsRecording: true,
-		// });
+		await setAudioModeAsync({
+			playsInSilentMode: true,
+			allowsRecording: true,
+		});
 
 		await audioRecorder.prepareToRecordAsync();
 		await audioRecorder.record();
@@ -104,7 +103,6 @@ export const RecordAudio = (): ReactElement | null => {
 				size: fileData.exists ? fileData.size : null
 			} as IUpload;
 
-			console.log(fileInfo);
 			if (fileInfo) {
 				if (permissionToUpload) {
 					await sendFileMessage(rid, fileInfo, tmid, server, user);
