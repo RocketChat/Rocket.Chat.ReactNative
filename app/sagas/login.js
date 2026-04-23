@@ -283,7 +283,8 @@ const startVoipFork = function* startVoipFork() {
 	yield call(checkVoipPermission);
 
 	stopVoipPermissionListener();
-	voipPermissionListener = sdk.current.onStreamData('stream-notify-logged', async ddpMessage => {
+	// Logout between yield start and resolve leaks this listener; safe because the SDK tears down on logout.
+	voipPermissionListener = yield call([sdk.current, 'onStreamData'], 'stream-notify-logged', async ddpMessage => {
 		const { eventName } = ddpMessage.fields || {};
 		if (/permissions-changed/.test(eventName)) {
 			await checkVoipPermission();
