@@ -1671,6 +1671,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 						ref={this.list}
 						listRef={this.flatList}
 						rid={rid}
+						t={t as RoomType}
 						tmid={this.tmid}
 						renderRow={this.renderItem}
 						hideSystemMessages={this.hideSystemMessages}
