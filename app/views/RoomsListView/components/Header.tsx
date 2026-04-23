@@ -47,7 +47,6 @@ const RoomsListHeaderView = ({ search, searchEnabled }: { search: (text: string)
 	const isVoipCallActive = useIsVoipCallActive();
 
 	const onPress = () => {
-		if (isVoipCallActive) return;
 		showActionSheetRef({ children: <ServersList />, enableContentPanningGesture: false });
 	};
 
