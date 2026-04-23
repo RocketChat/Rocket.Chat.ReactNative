@@ -1,21 +1,20 @@
 import React from 'react';
 import { type LayoutChangeEvent, View, TextInput, type TextInputProps, TouchableNativeFeedback } from 'react-native';
-import { PanGestureHandler, type PanGestureHandlerGestureEvent } from 'react-native-gesture-handler';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
 	type SharedValue,
-	runOnJS,
-	useAnimatedGestureHandler,
 	useAnimatedProps,
 	useAnimatedStyle,
 	useDerivedValue,
-	useSharedValue
+	useSharedValue,
+	withTiming
 } from 'react-native-reanimated';
+import { scheduleOnRN } from 'react-native-worklets';
 
 import styles from './styles';
 import { useTheme } from '../../theme';
 import { SEEK_HIT_SLOP, THUMB_SEEK_SIZE, ACTIVE_OFFSET_X, DEFAULT_TIME_LABEL } from './constants';
 
-Animated.addWhitelistedNativeProps({ text: true });
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 
 interface ISeek {
@@ -50,6 +49,7 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 	const timeLabel = useSharedValue(DEFAULT_TIME_LABEL);
 	const scale = useSharedValue(1);
 	const isPanning = useSharedValue(false);
+	const contextX = useSharedValue(0);
 
 	const styleLine = useAnimatedStyle(() => ({
 		width: translateX.value
@@ -64,21 +64,30 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 		maxWidth.value = width;
 	};
 
-	const onGestureEvent = useAnimatedGestureHandler<PanGestureHandlerGestureEvent, { offsetX: number }>({
-		onStart: (event, ctx) => {
+	const panGesture = Gesture.Pan()
+		.enabled(loaded)
+		.activeOffsetX([-ACTIVE_OFFSET_X, ACTIVE_OFFSET_X])
+		.onStart(() => {
 			isPanning.value = true;
-			ctx.offsetX = translateX.value;
-		},
-		onActive: ({ translationX }, ctx) => {
-			translateX.value = clamp(ctx.offsetX + translationX, 0, maxWidth.value);
-			scale.value = 1.3;
-		},
-		onFinish() {
-			scale.value = 1;
+			contextX.value = translateX.value;
+			scale.value = withTiming(1.3, { duration: 150 });
+		})
+		.onUpdate(event => {
+			const newX = contextX.value + event.translationX;
+			translateX.value = clamp(newX, 0, maxWidth.value);
+		})
+		.onEnd(() => {
+			scheduleOnRN(onChangeTime, Math.round(currentTime.value * 1000));
+		})
+		.onFinalize((_, didSucceed) => {
+			if (isPanning.value && !didSucceed) {
+				translateX.value = contextX.value;
+				currentTime.value = (contextX.value * duration.value) / maxWidth.value || 0;
+			}
+
 			isPanning.value = false;
-			runOnJS(onChangeTime)(Math.round(currentTime.value * 1000));
-		}
-	});
+			scale.value = withTiming(1, { duration: 150 });
+		});
 
 	useDerivedValue(() => {
 		if (isPanning.value) {
@@ -118,9 +127,9 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 					<View style={[styles.line, { backgroundColor: colors.strokeLight }]}>
 						<Animated.View style={[styles.line, styleLine, { backgroundColor: colors.buttonBackgroundPrimaryDefault }]} />
 					</View>
-					<PanGestureHandler enabled={loaded} onGestureEvent={onGestureEvent} activeOffsetX={[-ACTIVE_OFFSET_X, ACTIVE_OFFSET_X]}>
+					<GestureDetector gesture={panGesture}>
 						<Animated.View hitSlop={SEEK_HIT_SLOP} style={[styles.thumbSeek, { backgroundColor: thumbColor }, styleThumb]} />
-					</PanGestureHandler>
+					</GestureDetector>
 				</View>
 			</View>
 		</TouchableNativeFeedback>

@@ -28,7 +28,7 @@ import { getEnterpriseModules, isOmnichannelModuleAvailable } from '../lib/metho
 import { getPermissions } from '../lib/methods/getPermissions';
 import { getRoles } from '../lib/methods/getRoles';
 import { getSlashCommands } from '../lib/methods/getSlashCommands';
-import { getUserPresence, subscribeUsersPresence } from '../lib/methods/getUsersPresence';
+import { getUserPresence, refreshDmUsersPresence, subscribeUsersPresence } from '../lib/methods/getUsersPresence';
 import { logout, removeServerData, removeServerDatabase } from '../lib/methods/logout';
 import { subscribeSettings } from '../lib/methods/getSettings';
 import { connect, loginWithPassword, login } from '../lib/services/connect';
@@ -58,7 +58,7 @@ const showSupportedVersionsWarning = function* showSupportedVersionsWarning(serv
 
 	const serversDB = database.servers;
 	yield serversDB.write(async () => {
-		await serverRecord.update((r) => {
+		await serverRecord.update(r => {
 			r.supportedVersionsWarningAt = new Date();
 		});
 	});
@@ -105,7 +105,7 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 						}
 						// this is updating on every login just to save `updated_at`
 						// keeping this server as the most recent on autocomplete order
-						await serverHistoryRecord.update((s) => {
+						await serverHistoryRecord.update(s => {
 							s.username = result.username;
 							if (iconURL) {
 								s.iconURL = iconURL;
@@ -195,6 +195,7 @@ const registerPushTokenFork = function* registerPushTokenFork() {
 const fetchUsersPresenceFork = function* fetchUsersPresenceFork() {
 	try {
 		yield subscribeUsersPresence();
+		yield refreshDmUsersPresence();
 	} catch (e) {
 		log(e);
 	}
@@ -279,12 +280,12 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield serversDB.write(async () => {
 			try {
 				const userRecord = await usersCollection.find(user.id);
-				await userRecord.update((record) => {
+				await userRecord.update(record => {
 					record._raw = sanitizedRaw({ id: user.id, ...record._raw }, usersCollection.schema);
 					Object.assign(record, u);
 				});
 			} catch (e) {
-				await usersCollection.create((record) => {
+				await usersCollection.create(record => {
 					record._raw = sanitizedRaw({ id: user.id }, usersCollection.schema);
 					Object.assign(record, u);
 				});
@@ -362,7 +363,7 @@ const handleSetUser = function* handleSetUser({ user }) {
 		yield serversDB.write(async () => {
 			try {
 				const record = await userCollections.find(userId);
-				await record.update((userRecord) => {
+				await record.update(userRecord => {
 					if ('avatarETag' in user) {
 						userRecord.avatarETag = user.avatarETag;
 					}

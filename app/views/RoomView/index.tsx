@@ -855,9 +855,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				),
 				snaps: ['50%'],
 				enableContentPanningGesture: false,
-				onClose: this.resetAction
+				onClose: this.resetAction,
+				fullContainer: true
 			});
-		}, 100);
+		}, 300);
 	};
 
 	onReactionInit = (messageId: string) => {
@@ -914,7 +915,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.handleCloseEmoji(showActionSheet, {
 			children: <ReactionsList reactions={message?.reactions} getCustomEmoji={this.getCustomEmoji} />,
 			snaps: ['50%'],
-			enableContentPanningGesture: false
+			enableContentPanningGesture: false,
+			fullContainer: true
 		});
 	};
 
@@ -1669,6 +1671,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 						ref={this.list}
 						listRef={this.flatList}
 						rid={rid}
+						t={t as RoomType}
 						tmid={this.tmid}
 						renderRow={this.renderItem}
 						hideSystemMessages={this.hideSystemMessages}

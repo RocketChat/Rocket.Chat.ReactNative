@@ -51,7 +51,9 @@ public class CustomPushNotification {
     public static final String KEY_REPLY = "KEY_REPLY";
     public static final String NOTIFICATION_ID = "NOTIFICATION_ID";
     private static final String CHANNEL_ID = "rocketchatrn_channel_01";
-    private static final String CHANNEL_NAME = "All";
+    private static final String CHANNEL_NAME = "Messages";
+    private static final String CALLS_CHANNEL_ID = "rocketchatrn_channel_calls";
+    private static final String CALLS_CHANNEL_NAME = "Calls";
     
     // Instance fields
     private final Context mContext;
@@ -110,6 +112,11 @@ public class CustomPushNotification {
             Log.d(TAG, "Detected message-id-only notification, will fetch full content from server");
             loadNotificationAndProcess(receivedEjson);
             return; // Exit early, notification will be processed in callback
+        }
+
+        if (receivedEjson != null && receivedEjson.notificationType != null && receivedEjson.notificationType.equals("voip")) {
+            Log.d(TAG, "Notification is a voip notification, ignoring");
+            return;
         }
 
         // For non-message-id-only notifications, process immediately
@@ -294,13 +301,19 @@ public class CustomPushNotification {
     
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(
+            NotificationChannel messagesChannel = new NotificationChannel(
                 CHANNEL_ID,
                 CHANNEL_NAME,
                 NotificationManager.IMPORTANCE_HIGH
             );
+            NotificationChannel callsChannel = new NotificationChannel(
+                CALLS_CHANNEL_ID,
+                CALLS_CHANNEL_NAME,
+                NotificationManager.IMPORTANCE_HIGH
+            );
             if (notificationManager != null) {
-                notificationManager.createNotificationChannel(channel);
+                notificationManager.createNotificationChannel(messagesChannel);
+                notificationManager.createNotificationChannel(callsChannel);
             }
         }
     }
