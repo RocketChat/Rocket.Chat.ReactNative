@@ -64,6 +64,11 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
     renderItem={[Function]}
     scrollEventThrottle={0.0001}
     stickyHeaderIndices={[]}
+    style={
+      {
+        "flex": 1,
+      }
+    }
     viewabilityConfigCallbackPairs={[]}
   >
     <View>
