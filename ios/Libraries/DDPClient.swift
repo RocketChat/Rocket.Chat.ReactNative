@@ -1,5 +1,16 @@
 import Foundation
 
+enum DDPClientError: Error, LocalizedError {
+    case plaintextHttpNotSupported
+
+    var errorDescription: String? {
+        switch self {
+        case .plaintextHttpNotSupported:
+            return "DDPClient does not support plaintext http:// servers — use https://"
+        }
+    }
+}
+
 /// Minimal DDP WebSocket client for listening to Rocket.Chat media-signal events from native iOS.
 /// Only implements the subset needed to detect call hangup: connect, login, subscribe, and ping/pong.
 final class DDPClient {
@@ -33,8 +44,17 @@ final class DDPClient {
     
     func connect(host: String, completion: @escaping (Bool) -> Void) {
         stateQueue.async {
-            let wsUrl = Self.buildWebSocketURL(host: host)
-            
+            let wsUrl: String
+            do {
+                wsUrl = try Self.buildWebSocketURL(host: host)
+            } catch {
+                #if DEBUG
+                print("[\(Self.TAG)] Failed to build WebSocket URL: \(error.localizedDescription)")
+                #endif
+                completion(false)
+                return
+            }
+
             guard let url = URL(string: wsUrl) else {
                 #if DEBUG
                 print("[\(Self.TAG)] Invalid WebSocket URL: \(wsUrl)")
@@ -401,27 +421,21 @@ final class DDPClient {
     }
     
     // MARK: - URL Helpers
-    
-    private static func buildWebSocketURL(host: String) -> String {
+
+    static func buildWebSocketURL(host: String) throws -> String {
         var cleaned = host
-        
+
         if cleaned.hasSuffix("/") {
             cleaned = String(cleaned.dropLast())
         }
-        
-        let useSsl: Bool
+
         if cleaned.hasPrefix("https://") {
-            useSsl = true
             cleaned = String(cleaned.dropFirst("https://".count))
         } else if cleaned.hasPrefix("http://") {
-            useSsl = false
-            cleaned = String(cleaned.dropFirst("http://".count))
-        } else {
-            useSsl = true
+            throw DDPClientError.plaintextHttpNotSupported
         }
-        
-        let scheme = useSsl ? "wss" : "ws"
-        return "\(scheme)://\(cleaned)/websocket"
+
+        return "wss://\(cleaned)/websocket"
     }
 }
 
