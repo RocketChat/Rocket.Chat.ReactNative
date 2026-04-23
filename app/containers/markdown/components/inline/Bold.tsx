@@ -16,27 +16,25 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Bold = ({ value }: IBoldProps) => {
-	return (
-		<Text style={styles.text}>
-			{value.map(block => {
-				switch (block.type) {
-					case 'LINK':
-						return <Link value={block.value} />;
-					case 'PLAIN_TEXT':
-						return <Plain value={block.value} />;
-					case 'STRIKE':
-						return <Strike value={block.value} />;
-					case 'ITALIC':
-						return <Italic value={block.value} />;
-					case 'MENTION_CHANNEL':
-						return <Plain value={`#${block.value.value}`} />;
-					default:
-						return null;
-				}
-			})}
-		</Text>
-	);
-};
+const Bold = ({ value }: IBoldProps) => (
+	<Text style={styles.text}>
+		{value.map(block => {
+			switch (block.type) {
+				case 'LINK':
+					return <Link value={block.value} />;
+				case 'PLAIN_TEXT':
+					return <Plain value={block.value} />;
+				case 'STRIKE':
+					return <Strike value={block.value} />;
+				case 'ITALIC':
+					return <Italic value={block.value} />;
+				case 'MENTION_CHANNEL':
+					return <Plain value={`#${block.value.value}`} />;
+				default:
+					return null;
+			}
+		})}
+	</Text>
+);
 
 export default Bold;

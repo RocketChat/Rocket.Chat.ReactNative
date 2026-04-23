@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Text, type TextStyle } from 'react-native';
+import { Text } from 'react-native';
 
 import { useTheme } from '../../../../theme';
 import { themes } from '../../../../lib/constants/colors';
@@ -18,10 +18,9 @@ interface IAtMention {
 	useRealName?: boolean;
 	mentions?: IUserMention[];
 	disabled?: boolean;
-	style?: TextStyle;
 }
 
-const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, useRealName, disabled = false, style }: IAtMention) => {
+const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, useRealName, disabled = false }: IAtMention) => {
 	const { theme } = useTheme();
 	const { textStyle } = useContext(MarkdownContext);
 	const { isRevealed, spoilerStyle } = useContext(SpoilerContext);
@@ -38,7 +37,6 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, useR
 					{
 						color: themes[theme].statusFontService
 					},
-					style,
 					spoilerStyle
 				]}>
 				{preffix}
@@ -87,7 +85,7 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, useR
 		return (
 			// not enough information on mentions to navigate to team info, so we don't handle onPress
 			<Text
-				style={[styles.mention, ...(textStyle ? [textStyle] : []), mentionStyle, style, spoilerStyle]}
+				style={[styles.mention, ...(textStyle ? [textStyle] : []), mentionStyle, spoilerStyle]}
 				onPress={atMentioned?.type === 'team' || isDisabled ? undefined : handlePress}>
 				{preffix}
 				{text}
