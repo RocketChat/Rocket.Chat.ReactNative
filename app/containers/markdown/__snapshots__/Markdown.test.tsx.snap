@@ -3653,8 +3653,8 @@ exports[`Story Snapshots: Spoiler should match snapshot 1`] = `
                     "color": "#2F343D",
                   },
                   {
-                    "backgroundColor": "#000",
-                    "color": "#000",
+                    "backgroundColor": "#E4E7EA",
+                    "color": "#E4E7EA",
                   },
                 ]
               }
@@ -3734,8 +3734,8 @@ exports[`Story Snapshots: Spoiler should match snapshot 1`] = `
                       "color": "#2F343D",
                     },
                     {
-                      "backgroundColor": "#000",
-                      "color": "#000",
+                      "backgroundColor": "#E4E7EA",
+                      "color": "#E4E7EA",
                     },
                   ]
                 }
@@ -3813,8 +3813,8 @@ exports[`Story Snapshots: Spoiler should match snapshot 1`] = `
                       "color": "#2F343D",
                     },
                     {
-                      "backgroundColor": "#000",
-                      "color": "#000",
+                      "backgroundColor": "#E4E7EA",
+                      "color": "#E4E7EA",
                     },
                   ]
                 }
@@ -3892,8 +3892,8 @@ exports[`Story Snapshots: Spoiler should match snapshot 1`] = `
                       "color": "#2F343D",
                     },
                     {
-                      "backgroundColor": "#000",
-                      "color": "#000",
+                      "backgroundColor": "#E4E7EA",
+                      "color": "#E4E7EA",
                     },
                   ]
                 }
@@ -3979,8 +3979,8 @@ exports[`Story Snapshots: Spoiler should match snapshot 1`] = `
                   [
                     undefined,
                     {
-                      "backgroundColor": "#000",
-                      "color": "#000",
+                      "backgroundColor": "#E4E7EA",
+                      "color": "#E4E7EA",
                     },
                   ]
                 }
@@ -4054,8 +4054,8 @@ exports[`Story Snapshots: Spoiler should match snapshot 1`] = `
                     "color": "#095AD2",
                   },
                   {
-                    "backgroundColor": "#000",
-                    "color": "#000",
+                    "backgroundColor": "#E4E7EA",
+                    "color": "#E4E7EA",
                   },
                 ]
               }
@@ -4127,8 +4127,8 @@ exports[`Story Snapshots: Spoiler should match snapshot 1`] = `
                   },
                   undefined,
                   {
-                    "backgroundColor": "#000",
-                    "color": "#000",
+                    "backgroundColor": "#E4E7EA",
+                    "color": "#E4E7EA",
                   },
                 ]
               }
@@ -4199,8 +4199,8 @@ exports[`Story Snapshots: Spoiler should match snapshot 1`] = `
                     "color": "#095AD2",
                   },
                   {
-                    "backgroundColor": "#000",
-                    "color": "#000",
+                    "backgroundColor": "#E4E7EA",
+                    "color": "#E4E7EA",
                   },
                 ]
               }
@@ -4280,8 +4280,8 @@ exports[`Story Snapshots: Spoiler should match snapshot 1`] = `
                       "color": "#2F343D",
                     },
                     {
-                      "backgroundColor": "#000",
-                      "color": "#000",
+                      "backgroundColor": "#E4E7EA",
+                      "color": "#E4E7EA",
                     },
                   ]
                 }
@@ -4308,8 +4308,8 @@ exports[`Story Snapshots: Spoiler should match snapshot 1`] = `
                         "color": "#2F343D",
                       },
                       {
-                        "backgroundColor": "#000",
-                        "color": "#000",
+                        "backgroundColor": "#E4E7EA",
+                        "color": "#E4E7EA",
                       },
                     ]
                   }
@@ -4398,8 +4398,8 @@ exports[`Story Snapshots: Spoiler should match snapshot 1`] = `
                         "color": "#2F343D",
                       },
                       {
-                        "backgroundColor": "#000",
-                        "color": "#000",
+                        "backgroundColor": "#E4E7EA",
+                        "color": "#E4E7EA",
                       },
                     ]
                   }
@@ -4481,8 +4481,8 @@ exports[`Story Snapshots: Spoiler should match snapshot 1`] = `
                       "color": "#2F343D",
                     },
                     {
-                      "backgroundColor": "#000",
-                      "color": "#000",
+                      "backgroundColor": "#E4E7EA",
+                      "color": "#E4E7EA",
                     },
                   ]
                 }
@@ -4509,8 +4509,8 @@ exports[`Story Snapshots: Spoiler should match snapshot 1`] = `
                         "color": "#2F343D",
                       },
                       {
-                        "backgroundColor": "#000",
-                        "color": "#000",
+                        "backgroundColor": "#E4E7EA",
+                        "color": "#E4E7EA",
                       },
                     ]
                   }
@@ -4597,8 +4597,8 @@ exports[`Story Snapshots: Spoiler should match snapshot 1`] = `
                   [
                     undefined,
                     {
-                      "backgroundColor": "#000",
-                      "color": "#000",
+                      "backgroundColor": "#E4E7EA",
+                      "color": "#E4E7EA",
                     },
                   ]
                 }
@@ -4672,8 +4672,8 @@ exports[`Story Snapshots: Spoiler should match snapshot 1`] = `
                     "color": "#095AD2",
                   },
                   {
-                    "backgroundColor": "#000",
-                    "color": "#000",
+                    "backgroundColor": "#E4E7EA",
+                    "color": "#E4E7EA",
                   },
                 ]
               }
@@ -4702,8 +4702,8 @@ exports[`Story Snapshots: Spoiler should match snapshot 1`] = `
                         "color": "#2F343D",
                       },
                       {
-                        "backgroundColor": "#000",
-                        "color": "#000",
+                        "backgroundColor": "#E4E7EA",
+                        "color": "#E4E7EA",
                       },
                     ]
                   }
@@ -4785,8 +4785,8 @@ exports[`Story Snapshots: Spoiler should match snapshot 1`] = `
                       "color": "#2F343D",
                     },
                     {
-                      "backgroundColor": "#000",
-                      "color": "#000",
+                      "backgroundColor": "#E4E7EA",
+                      "color": "#E4E7EA",
                     },
                   ]
                 }
@@ -4807,8 +4807,8 @@ exports[`Story Snapshots: Spoiler should match snapshot 1`] = `
                     "color": "#2F343D",
                   },
                   {
-                    "backgroundColor": "#000",
-                    "color": "#000",
+                    "backgroundColor": "#E4E7EA",
+                    "color": "#E4E7EA",
                   },
                 ]
               }
@@ -4835,8 +4835,8 @@ exports[`Story Snapshots: Spoiler should match snapshot 1`] = `
                       "color": "#2F343D",
                     },
                     {
-                      "backgroundColor": "#000",
-                      "color": "#000",
+                      "backgroundColor": "#E4E7EA",
+                      "color": "#E4E7EA",
                     },
                   ]
                 }
@@ -4857,8 +4857,8 @@ exports[`Story Snapshots: Spoiler should match snapshot 1`] = `
                     "color": "#2F343D",
                   },
                   {
-                    "backgroundColor": "#000",
-                    "color": "#000",
+                    "backgroundColor": "#E4E7EA",
+                    "color": "#E4E7EA",
                   },
                 ]
               }
@@ -4888,8 +4888,8 @@ exports[`Story Snapshots: Spoiler should match snapshot 1`] = `
                       "color": "#2F343D",
                     },
                     {
-                      "backgroundColor": "#000",
-                      "color": "#000",
+                      "backgroundColor": "#E4E7EA",
+                      "color": "#E4E7EA",
                     },
                   ]
                 }
@@ -5036,8 +5036,8 @@ exports[`Story Snapshots: Spoiler should match snapshot 1`] = `
                     "color": "#2F343D",
                   },
                   {
-                    "backgroundColor": "#000",
-                    "color": "#000",
+                    "backgroundColor": "#E4E7EA",
+                    "color": "#E4E7EA",
                   },
                 ]
               }
@@ -5087,8 +5087,8 @@ exports[`Story Snapshots: Spoiler should match snapshot 1`] = `
                     "color": "#2F343D",
                   },
                   {
-                    "backgroundColor": "#000",
-                    "color": "#000",
+                    "backgroundColor": "#E4E7EA",
+                    "color": "#E4E7EA",
                   },
                 ]
               }
@@ -5138,8 +5138,8 @@ exports[`Story Snapshots: Spoiler should match snapshot 1`] = `
                     "color": "#2F343D",
                   },
                   {
-                    "backgroundColor": "#000",
-                    "color": "#000",
+                    "backgroundColor": "#E4E7EA",
+                    "color": "#E4E7EA",
                   },
                 ]
               }
@@ -5219,8 +5219,8 @@ exports[`Story Snapshots: Spoiler should match snapshot 1`] = `
                       "color": "#2F343D",
                     },
                     {
-                      "backgroundColor": "#000",
-                      "color": "#000",
+                      "backgroundColor": "#E4E7EA",
+                      "color": "#E4E7EA",
                     },
                   ]
                 }
@@ -5278,8 +5278,8 @@ exports[`Story Snapshots: Spoiler should match snapshot 1`] = `
                       "color": "#2F343D",
                     },
                     {
-                      "backgroundColor": "#000",
-                      "color": "#000",
+                      "backgroundColor": "#E4E7EA",
+                      "color": "#E4E7EA",
                     },
                   ]
                 }
@@ -5345,8 +5345,8 @@ exports[`Story Snapshots: Spoiler should match snapshot 1`] = `
                   [
                     undefined,
                     {
-                      "backgroundColor": "#000",
-                      "color": "#000",
+                      "backgroundColor": "#E4E7EA",
+                      "color": "#E4E7EA",
                     },
                   ]
                 }
@@ -5417,8 +5417,8 @@ exports[`Story Snapshots: Spoiler should match snapshot 1`] = `
                     "color": "#2F343D",
                   },
                   {
-                    "backgroundColor": "#000",
-                    "color": "#000",
+                    "backgroundColor": "#E4E7EA",
+                    "color": "#E4E7EA",
                   },
                 ]
               }
@@ -5448,8 +5448,8 @@ exports[`Story Snapshots: Spoiler should match snapshot 1`] = `
                       "color": "#2F343D",
                     },
                     {
-                      "backgroundColor": "#000",
-                      "color": "#000",
+                      "backgroundColor": "#E4E7EA",
+                      "color": "#E4E7EA",
                     },
                   ]
                 }
@@ -5470,8 +5470,8 @@ exports[`Story Snapshots: Spoiler should match snapshot 1`] = `
                     "color": "#2F343D",
                   },
                   {
-                    "backgroundColor": "#000",
-                    "color": "#000",
+                    "backgroundColor": "#E4E7EA",
+                    "color": "#E4E7EA",
                   },
                 ]
               }
@@ -5498,8 +5498,8 @@ exports[`Story Snapshots: Spoiler should match snapshot 1`] = `
                       "color": "#2F343D",
                     },
                     {
-                      "backgroundColor": "#000",
-                      "color": "#000",
+                      "backgroundColor": "#E4E7EA",
+                      "color": "#E4E7EA",
                     },
                   ]
                 }
@@ -5520,8 +5520,8 @@ exports[`Story Snapshots: Spoiler should match snapshot 1`] = `
                     "color": "#2F343D",
                   },
                   {
-                    "backgroundColor": "#000",
-                    "color": "#000",
+                    "backgroundColor": "#E4E7EA",
+                    "color": "#E4E7EA",
                   },
                 ]
               }
@@ -5544,8 +5544,8 @@ exports[`Story Snapshots: Spoiler should match snapshot 1`] = `
                     "color": "#095AD2",
                   },
                   {
-                    "backgroundColor": "#000",
-                    "color": "#000",
+                    "backgroundColor": "#E4E7EA",
+                    "color": "#E4E7EA",
                   },
                 ]
               }

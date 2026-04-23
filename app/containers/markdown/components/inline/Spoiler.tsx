@@ -11,6 +11,8 @@ import Timestamp from '../Timestamp';
 import { AtMention, Hashtag } from '../mentions';
 import { Emoji } from '../emoji';
 import sharedStyles from '../../../../views/Styles';
+import { themes } from '../../../../lib/constants/colors';
+import { useTheme } from '../../../../theme';
 
 interface ISpoilerProps {
 	value: SpoilerProps['value'];
@@ -30,22 +32,31 @@ const styles = StyleSheet.create({
 	spoilerText: {
 		...sharedStyles.textRegular
 	},
-	hidden: {
-		backgroundColor: '#000',
-		color: '#000'
-	}
+	hidden: {}
 });
 
 const Spoiler = ({ value }: ISpoilerProps) => {
 	const [isRevealed, setIsRevealed] = useState(false);
 	const { useRealName, username, navToRoomInfo, mentions, channels } = useContext(MarkdownContext);
+	const { theme } = useTheme();
+
+	const hiddenStyle = useMemo(
+		() =>
+			isRevealed
+				? undefined
+				: {
+						backgroundColor: themes[theme].surfaceNeutral,
+						color: themes[theme].surfaceNeutral
+					},
+		[isRevealed, theme]
+	);
 
 	const contextValue = useMemo(
 		() => ({
 			isRevealed,
-			spoilerStyle: isRevealed ? undefined : styles.hidden
+			spoilerStyle: hiddenStyle
 		}),
-		[isRevealed]
+		[isRevealed, hiddenStyle]
 	);
 
 	const handleToggle = () => {
