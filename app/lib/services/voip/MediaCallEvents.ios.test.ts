@@ -88,14 +88,23 @@ jest.mock('../restApi', () => ({
 	registerPushToken: jest.fn(() => Promise.resolve())
 }));
 
-jest.mock('./MediaCallLogger', () => ({
-	MediaCallLogger: class {
-		log = jest.fn();
-		debug = jest.fn();
-		error = jest.fn();
-		warn = jest.fn();
+jest.mock('./MediaCallLogger', () => {
+	const log = jest.fn();
+	const debug = jest.fn();
+	const error = jest.fn();
+	const warn = jest.fn();
+	class MockMediaCallLogger {
+		log = log;
+		debug = debug;
+		error = error;
+		warn = warn;
 	}
-}));
+	return {
+		MediaCallLogger: MockMediaCallLogger,
+		__mockLog: log,
+		__mockDebug: debug
+	};
+});
 
 const mockAddEventListener = jest.fn();
 
@@ -227,6 +236,19 @@ describe('setupMediaCallEvents — VoipPushTokenRegistered (iOS)', () => {
 		emitNativeVoipEvent('VoipPushTokenRegistered', { token: 'voip-token-xyz' });
 		await Promise.resolve();
 		expect(registerPushToken).toHaveBeenCalledWith();
+	});
+
+	it('calls debug() with the token but NOT log() when VoipPushTokenRegistered is fired', () => {
+		setupMediaCallEvents(makeTestAdapters());
+		emitNativeVoipEvent('VoipPushTokenRegistered', { token: 'voip-token-sensitive' });
+
+		// Access the mock functions that were passed to the MediaCallLogger class
+		const { __mockDebug, __mockLog } = jest.requireMock('./MediaCallLogger');
+
+		// debug() must be called (sensitive data goes through debug level)
+		expect(__mockDebug).toHaveBeenCalledWith(expect.stringContaining('Registered VoIP push token:'), 'voip-token-sensitive');
+		// log() must NOT be called (sensitive data must not reach ungated log())
+		expect(__mockLog).not.toHaveBeenCalled();
 	});
 });
 
