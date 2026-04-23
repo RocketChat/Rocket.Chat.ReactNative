@@ -651,9 +651,27 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                           }
                         }
                       >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
+                        <View
+                          accessibilityState={
+                            {
+                              "busy": undefined,
+                              "checked": undefined,
+                              "disabled": undefined,
+                              "expanded": undefined,
+                              "selected": undefined,
+                            }
+                          }
+                          accessibilityValue={
+                            {
+                              "max": undefined,
+                              "min": undefined,
+                              "now": undefined,
+                              "text": undefined,
+                            }
+                          }
+                          accessible={true}
                           collapsable={false}
+<<<<<<< HEAD
                           delayLongPress={600}
                           enabled={true}
                           handlerTag={-1}
@@ -664,100 +682,70 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                           onGestureHandlerStateChange={[Function]}
                           onPress={[Function]}
                           rippleColor="#16181a"
+=======
+                          focusable={true}
+                          onBlur={[Function]}
+                          onClick={[Function]}
+                          onFocus={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
+>>>>>>> develop
                           style={
-                            [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
-                            ]
+                            {
+                              "alignItems": "center",
+                              "flexDirection": "row",
+                              "flexShrink": 1,
+                              "gap": 4,
+                            }
                           }
                           testID="username-header-diego.mello"
-                          underlayColor="#16181a"
                         >
-                          <View
-                            collapsable={false}
+                          <Text
+                            numberOfLines={1}
                             style={
-                              {
-                                "backgroundColor": "#16181a",
-                                "borderBottomLeftRadius": undefined,
-                                "borderBottomRightRadius": undefined,
-                                "borderRadius": undefined,
-                                "borderTopLeftRadius": undefined,
-                                "borderTopRightRadius": undefined,
-                                "bottom": 0,
-                                "left": 0,
-                                "opacity": 0,
-                                "position": "absolute",
-                                "right": 0,
-                                "top": 0,
-                              }
-                            }
-                          />
-                          <View
-                            style={
-                              {
-                                "alignItems": "center",
-                                "flexDirection": "row",
-                                "flexShrink": 1,
-                                "gap": 4,
-                              }
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "flexShrink": 1,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "600",
+                                  "lineHeight": 22,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#F2F3F5",
+                                },
+                              ]
                             }
                           >
-                            <Text
-                              numberOfLines={1}
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontWeight": "600",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#F2F3F5",
-                                  },
-                                ]
-                              }
-                            >
-                              diego.mello
-                            </Text>
-                            <Text
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontSize": 13,
-                                    "fontWeight": "400",
-                                    "lineHeight": 18,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#9EA2A8",
-                                  },
-                                ]
-                              }
-                            >
-                              10:00 AM
-                            </Text>
-                          </View>
-                        </RNGestureHandlerButton>
+                            diego.mello
+                          </Text>
+                          <Text
+                            style={
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "400",
+                                  "lineHeight": 18,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#9EA2A8",
+                                },
+                                undefined,
+                              ]
+                            }
+                          >
+                            10:00 AM
+                          </Text>
+                        </View>
                         <View
                           style={
                             {
@@ -1631,9 +1619,27 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                           }
                         }
                       >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
+                        <View
+                          accessibilityState={
+                            {
+                              "busy": undefined,
+                              "checked": undefined,
+                              "disabled": undefined,
+                              "expanded": undefined,
+                              "selected": undefined,
+                            }
+                          }
+                          accessibilityValue={
+                            {
+                              "max": undefined,
+                              "min": undefined,
+                              "now": undefined,
+                              "text": undefined,
+                            }
+                          }
+                          accessible={true}
                           collapsable={false}
+<<<<<<< HEAD
                           delayLongPress={600}
                           enabled={true}
                           handlerTag={-1}
@@ -1644,100 +1650,70 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                           onGestureHandlerStateChange={[Function]}
                           onPress={[Function]}
                           rippleColor="#16181a"
+=======
+                          focusable={true}
+                          onBlur={[Function]}
+                          onClick={[Function]}
+                          onFocus={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
+>>>>>>> develop
                           style={
-                            [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
-                            ]
+                            {
+                              "alignItems": "center",
+                              "flexDirection": "row",
+                              "flexShrink": 1,
+                              "gap": 4,
+                            }
                           }
                           testID="username-header-diego.mello"
-                          underlayColor="#16181a"
                         >
-                          <View
-                            collapsable={false}
+                          <Text
+                            numberOfLines={1}
                             style={
-                              {
-                                "backgroundColor": "#16181a",
-                                "borderBottomLeftRadius": undefined,
-                                "borderBottomRightRadius": undefined,
-                                "borderRadius": undefined,
-                                "borderTopLeftRadius": undefined,
-                                "borderTopRightRadius": undefined,
-                                "bottom": 0,
-                                "left": 0,
-                                "opacity": 0,
-                                "position": "absolute",
-                                "right": 0,
-                                "top": 0,
-                              }
-                            }
-                          />
-                          <View
-                            style={
-                              {
-                                "alignItems": "center",
-                                "flexDirection": "row",
-                                "flexShrink": 1,
-                                "gap": 4,
-                              }
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "flexShrink": 1,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "600",
+                                  "lineHeight": 22,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#F2F3F5",
+                                },
+                              ]
                             }
                           >
-                            <Text
-                              numberOfLines={1}
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontWeight": "600",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#F2F3F5",
-                                  },
-                                ]
-                              }
-                            >
-                              diego.mello
-                            </Text>
-                            <Text
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontSize": 13,
-                                    "fontWeight": "400",
-                                    "lineHeight": 18,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#9EA2A8",
-                                  },
-                                ]
-                              }
-                            >
-                              10:00 AM
-                            </Text>
-                          </View>
-                        </RNGestureHandlerButton>
+                            diego.mello
+                          </Text>
+                          <Text
+                            style={
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "400",
+                                  "lineHeight": 18,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#9EA2A8",
+                                },
+                                undefined,
+                              ]
+                            }
+                          >
+                            10:00 AM
+                          </Text>
+                        </View>
                         <View
                           style={
                             {
@@ -2445,9 +2421,27 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                           }
                         }
                       >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
+                        <View
+                          accessibilityState={
+                            {
+                              "busy": undefined,
+                              "checked": undefined,
+                              "disabled": undefined,
+                              "expanded": undefined,
+                              "selected": undefined,
+                            }
+                          }
+                          accessibilityValue={
+                            {
+                              "max": undefined,
+                              "min": undefined,
+                              "now": undefined,
+                              "text": undefined,
+                            }
+                          }
+                          accessible={true}
                           collapsable={false}
+<<<<<<< HEAD
                           delayLongPress={600}
                           enabled={true}
                           handlerTag={-1}
@@ -2458,100 +2452,70 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                           onGestureHandlerStateChange={[Function]}
                           onPress={[Function]}
                           rippleColor="#16181a"
+=======
+                          focusable={true}
+                          onBlur={[Function]}
+                          onClick={[Function]}
+                          onFocus={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
+>>>>>>> develop
                           style={
-                            [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
-                            ]
+                            {
+                              "alignItems": "center",
+                              "flexDirection": "row",
+                              "flexShrink": 1,
+                              "gap": 4,
+                            }
                           }
                           testID="username-header-diego.mello"
-                          underlayColor="#16181a"
                         >
-                          <View
-                            collapsable={false}
+                          <Text
+                            numberOfLines={1}
                             style={
-                              {
-                                "backgroundColor": "#16181a",
-                                "borderBottomLeftRadius": undefined,
-                                "borderBottomRightRadius": undefined,
-                                "borderRadius": undefined,
-                                "borderTopLeftRadius": undefined,
-                                "borderTopRightRadius": undefined,
-                                "bottom": 0,
-                                "left": 0,
-                                "opacity": 0,
-                                "position": "absolute",
-                                "right": 0,
-                                "top": 0,
-                              }
-                            }
-                          />
-                          <View
-                            style={
-                              {
-                                "alignItems": "center",
-                                "flexDirection": "row",
-                                "flexShrink": 1,
-                                "gap": 4,
-                              }
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "flexShrink": 1,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "600",
+                                  "lineHeight": 22,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#F2F3F5",
+                                },
+                              ]
                             }
                           >
-                            <Text
-                              numberOfLines={1}
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontWeight": "600",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#F2F3F5",
-                                  },
-                                ]
-                              }
-                            >
-                              diego.mello
-                            </Text>
-                            <Text
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontSize": 13,
-                                    "fontWeight": "400",
-                                    "lineHeight": 18,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#9EA2A8",
-                                  },
-                                ]
-                              }
-                            >
-                              10:00 AM
-                            </Text>
-                          </View>
-                        </RNGestureHandlerButton>
+                            diego.mello
+                          </Text>
+                          <Text
+                            style={
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "400",
+                                  "lineHeight": 18,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#9EA2A8",
+                                },
+                                undefined,
+                              ]
+                            }
+                          >
+                            10:00 AM
+                          </Text>
+                        </View>
                         <View
                           style={
                             {
@@ -2969,9 +2933,27 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                           }
                         }
                       >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
+                        <View
+                          accessibilityState={
+                            {
+                              "busy": undefined,
+                              "checked": undefined,
+                              "disabled": undefined,
+                              "expanded": undefined,
+                              "selected": undefined,
+                            }
+                          }
+                          accessibilityValue={
+                            {
+                              "max": undefined,
+                              "min": undefined,
+                              "now": undefined,
+                              "text": undefined,
+                            }
+                          }
+                          accessible={true}
                           collapsable={false}
+<<<<<<< HEAD
                           delayLongPress={600}
                           enabled={true}
                           handlerTag={-1}
@@ -2982,100 +2964,70 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                           onGestureHandlerStateChange={[Function]}
                           onPress={[Function]}
                           rippleColor="#2D3039"
+=======
+                          focusable={true}
+                          onBlur={[Function]}
+                          onClick={[Function]}
+                          onFocus={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
+>>>>>>> develop
                           style={
-                            [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
-                            ]
+                            {
+                              "alignItems": "center",
+                              "flexDirection": "row",
+                              "flexShrink": 1,
+                              "gap": 4,
+                            }
                           }
                           testID="username-header-diego.mello"
-                          underlayColor="#2D3039"
                         >
-                          <View
-                            collapsable={false}
+                          <Text
+                            numberOfLines={1}
                             style={
-                              {
-                                "backgroundColor": "#2D3039",
-                                "borderBottomLeftRadius": undefined,
-                                "borderBottomRightRadius": undefined,
-                                "borderRadius": undefined,
-                                "borderTopLeftRadius": undefined,
-                                "borderTopRightRadius": undefined,
-                                "bottom": 0,
-                                "left": 0,
-                                "opacity": 0,
-                                "position": "absolute",
-                                "right": 0,
-                                "top": 0,
-                              }
-                            }
-                          />
-                          <View
-                            style={
-                              {
-                                "alignItems": "center",
-                                "flexDirection": "row",
-                                "flexShrink": 1,
-                                "gap": 4,
-                              }
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "flexShrink": 1,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "600",
+                                  "lineHeight": 22,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#F2F3F5",
+                                },
+                              ]
                             }
                           >
-                            <Text
-                              numberOfLines={1}
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontWeight": "600",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#F2F3F5",
-                                  },
-                                ]
-                              }
-                            >
-                              diego.mello
-                            </Text>
-                            <Text
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontSize": 13,
-                                    "fontWeight": "400",
-                                    "lineHeight": 18,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#9EA2A8",
-                                  },
-                                ]
-                              }
-                            >
-                              10:00 AM
-                            </Text>
-                          </View>
-                        </RNGestureHandlerButton>
+                            diego.mello
+                          </Text>
+                          <Text
+                            style={
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "400",
+                                  "lineHeight": 18,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#9EA2A8",
+                                },
+                                undefined,
+                              ]
+                            }
+                          >
+                            10:00 AM
+                          </Text>
+                        </View>
                         <View
                           style={
                             {
@@ -3949,9 +3901,27 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                           }
                         }
                       >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
+                        <View
+                          accessibilityState={
+                            {
+                              "busy": undefined,
+                              "checked": undefined,
+                              "disabled": undefined,
+                              "expanded": undefined,
+                              "selected": undefined,
+                            }
+                          }
+                          accessibilityValue={
+                            {
+                              "max": undefined,
+                              "min": undefined,
+                              "now": undefined,
+                              "text": undefined,
+                            }
+                          }
+                          accessible={true}
                           collapsable={false}
+<<<<<<< HEAD
                           delayLongPress={600}
                           enabled={true}
                           handlerTag={-1}
@@ -3962,100 +3932,70 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                           onGestureHandlerStateChange={[Function]}
                           onPress={[Function]}
                           rippleColor="#2D3039"
+=======
+                          focusable={true}
+                          onBlur={[Function]}
+                          onClick={[Function]}
+                          onFocus={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
+>>>>>>> develop
                           style={
-                            [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
-                            ]
+                            {
+                              "alignItems": "center",
+                              "flexDirection": "row",
+                              "flexShrink": 1,
+                              "gap": 4,
+                            }
                           }
                           testID="username-header-diego.mello"
-                          underlayColor="#2D3039"
                         >
-                          <View
-                            collapsable={false}
+                          <Text
+                            numberOfLines={1}
                             style={
-                              {
-                                "backgroundColor": "#2D3039",
-                                "borderBottomLeftRadius": undefined,
-                                "borderBottomRightRadius": undefined,
-                                "borderRadius": undefined,
-                                "borderTopLeftRadius": undefined,
-                                "borderTopRightRadius": undefined,
-                                "bottom": 0,
-                                "left": 0,
-                                "opacity": 0,
-                                "position": "absolute",
-                                "right": 0,
-                                "top": 0,
-                              }
-                            }
-                          />
-                          <View
-                            style={
-                              {
-                                "alignItems": "center",
-                                "flexDirection": "row",
-                                "flexShrink": 1,
-                                "gap": 4,
-                              }
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "flexShrink": 1,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "600",
+                                  "lineHeight": 22,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#F2F3F5",
+                                },
+                              ]
                             }
                           >
-                            <Text
-                              numberOfLines={1}
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontWeight": "600",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#F2F3F5",
-                                  },
-                                ]
-                              }
-                            >
-                              diego.mello
-                            </Text>
-                            <Text
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontSize": 13,
-                                    "fontWeight": "400",
-                                    "lineHeight": 18,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#9EA2A8",
-                                  },
-                                ]
-                              }
-                            >
-                              10:00 AM
-                            </Text>
-                          </View>
-                        </RNGestureHandlerButton>
+                            diego.mello
+                          </Text>
+                          <Text
+                            style={
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "400",
+                                  "lineHeight": 18,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#9EA2A8",
+                                },
+                                undefined,
+                              ]
+                            }
+                          >
+                            10:00 AM
+                          </Text>
+                        </View>
                         <View
                           style={
                             {
@@ -4763,9 +4703,27 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                           }
                         }
                       >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
+                        <View
+                          accessibilityState={
+                            {
+                              "busy": undefined,
+                              "checked": undefined,
+                              "disabled": undefined,
+                              "expanded": undefined,
+                              "selected": undefined,
+                            }
+                          }
+                          accessibilityValue={
+                            {
+                              "max": undefined,
+                              "min": undefined,
+                              "now": undefined,
+                              "text": undefined,
+                            }
+                          }
+                          accessible={true}
                           collapsable={false}
+<<<<<<< HEAD
                           delayLongPress={600}
                           enabled={true}
                           handlerTag={-1}
@@ -4776,100 +4734,70 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                           onGestureHandlerStateChange={[Function]}
                           onPress={[Function]}
                           rippleColor="#2D3039"
+=======
+                          focusable={true}
+                          onBlur={[Function]}
+                          onClick={[Function]}
+                          onFocus={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
+>>>>>>> develop
                           style={
-                            [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
-                            ]
+                            {
+                              "alignItems": "center",
+                              "flexDirection": "row",
+                              "flexShrink": 1,
+                              "gap": 4,
+                            }
                           }
                           testID="username-header-diego.mello"
-                          underlayColor="#2D3039"
                         >
-                          <View
-                            collapsable={false}
+                          <Text
+                            numberOfLines={1}
                             style={
-                              {
-                                "backgroundColor": "#2D3039",
-                                "borderBottomLeftRadius": undefined,
-                                "borderBottomRightRadius": undefined,
-                                "borderRadius": undefined,
-                                "borderTopLeftRadius": undefined,
-                                "borderTopRightRadius": undefined,
-                                "bottom": 0,
-                                "left": 0,
-                                "opacity": 0,
-                                "position": "absolute",
-                                "right": 0,
-                                "top": 0,
-                              }
-                            }
-                          />
-                          <View
-                            style={
-                              {
-                                "alignItems": "center",
-                                "flexDirection": "row",
-                                "flexShrink": 1,
-                                "gap": 4,
-                              }
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "flexShrink": 1,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "600",
+                                  "lineHeight": 22,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#F2F3F5",
+                                },
+                              ]
                             }
                           >
-                            <Text
-                              numberOfLines={1}
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontWeight": "600",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#F2F3F5",
-                                  },
-                                ]
-                              }
-                            >
-                              diego.mello
-                            </Text>
-                            <Text
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontSize": 13,
-                                    "fontWeight": "400",
-                                    "lineHeight": 18,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#9EA2A8",
-                                  },
-                                ]
-                              }
-                            >
-                              10:00 AM
-                            </Text>
-                          </View>
-                        </RNGestureHandlerButton>
+                            diego.mello
+                          </Text>
+                          <Text
+                            style={
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "400",
+                                  "lineHeight": 18,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#9EA2A8",
+                                },
+                                undefined,
+                              ]
+                            }
+                          >
+                            10:00 AM
+                          </Text>
+                        </View>
                         <View
                           style={
                             {
@@ -5287,9 +5215,27 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                           }
                         }
                       >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
+                        <View
+                          accessibilityState={
+                            {
+                              "busy": undefined,
+                              "checked": undefined,
+                              "disabled": undefined,
+                              "expanded": undefined,
+                              "selected": undefined,
+                            }
+                          }
+                          accessibilityValue={
+                            {
+                              "max": undefined,
+                              "min": undefined,
+                              "now": undefined,
+                              "text": undefined,
+                            }
+                          }
+                          accessible={true}
                           collapsable={false}
+<<<<<<< HEAD
                           delayLongPress={600}
                           enabled={true}
                           handlerTag={-1}
@@ -5300,100 +5246,70 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                           onGestureHandlerStateChange={[Function]}
                           onPress={[Function]}
                           rippleColor="#E4E7EA"
+=======
+                          focusable={true}
+                          onBlur={[Function]}
+                          onClick={[Function]}
+                          onFocus={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
+>>>>>>> develop
                           style={
-                            [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
-                            ]
+                            {
+                              "alignItems": "center",
+                              "flexDirection": "row",
+                              "flexShrink": 1,
+                              "gap": 4,
+                            }
                           }
                           testID="username-header-diego.mello"
-                          underlayColor="#E4E7EA"
                         >
-                          <View
-                            collapsable={false}
+                          <Text
+                            numberOfLines={1}
                             style={
-                              {
-                                "backgroundColor": "#E4E7EA",
-                                "borderBottomLeftRadius": undefined,
-                                "borderBottomRightRadius": undefined,
-                                "borderRadius": undefined,
-                                "borderTopLeftRadius": undefined,
-                                "borderTopRightRadius": undefined,
-                                "bottom": 0,
-                                "left": 0,
-                                "opacity": 0,
-                                "position": "absolute",
-                                "right": 0,
-                                "top": 0,
-                              }
-                            }
-                          />
-                          <View
-                            style={
-                              {
-                                "alignItems": "center",
-                                "flexDirection": "row",
-                                "flexShrink": 1,
-                                "gap": 4,
-                              }
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "flexShrink": 1,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "600",
+                                  "lineHeight": 22,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#1F2329",
+                                },
+                              ]
                             }
                           >
-                            <Text
-                              numberOfLines={1}
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontWeight": "600",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#1F2329",
-                                  },
-                                ]
-                              }
-                            >
-                              diego.mello
-                            </Text>
-                            <Text
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontSize": 13,
-                                    "fontWeight": "400",
-                                    "lineHeight": 18,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#6C727A",
-                                  },
-                                ]
-                              }
-                            >
-                              10:00 AM
-                            </Text>
-                          </View>
-                        </RNGestureHandlerButton>
+                            diego.mello
+                          </Text>
+                          <Text
+                            style={
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "400",
+                                  "lineHeight": 18,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#6C727A",
+                                },
+                                undefined,
+                              ]
+                            }
+                          >
+                            10:00 AM
+                          </Text>
+                        </View>
                         <View
                           style={
                             {
@@ -6267,9 +6183,27 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                           }
                         }
                       >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
+                        <View
+                          accessibilityState={
+                            {
+                              "busy": undefined,
+                              "checked": undefined,
+                              "disabled": undefined,
+                              "expanded": undefined,
+                              "selected": undefined,
+                            }
+                          }
+                          accessibilityValue={
+                            {
+                              "max": undefined,
+                              "min": undefined,
+                              "now": undefined,
+                              "text": undefined,
+                            }
+                          }
+                          accessible={true}
                           collapsable={false}
+<<<<<<< HEAD
                           delayLongPress={600}
                           enabled={true}
                           handlerTag={-1}
@@ -6280,100 +6214,70 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                           onGestureHandlerStateChange={[Function]}
                           onPress={[Function]}
                           rippleColor="#E4E7EA"
+=======
+                          focusable={true}
+                          onBlur={[Function]}
+                          onClick={[Function]}
+                          onFocus={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
+>>>>>>> develop
                           style={
-                            [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
-                            ]
+                            {
+                              "alignItems": "center",
+                              "flexDirection": "row",
+                              "flexShrink": 1,
+                              "gap": 4,
+                            }
                           }
                           testID="username-header-diego.mello"
-                          underlayColor="#E4E7EA"
                         >
-                          <View
-                            collapsable={false}
+                          <Text
+                            numberOfLines={1}
                             style={
-                              {
-                                "backgroundColor": "#E4E7EA",
-                                "borderBottomLeftRadius": undefined,
-                                "borderBottomRightRadius": undefined,
-                                "borderRadius": undefined,
-                                "borderTopLeftRadius": undefined,
-                                "borderTopRightRadius": undefined,
-                                "bottom": 0,
-                                "left": 0,
-                                "opacity": 0,
-                                "position": "absolute",
-                                "right": 0,
-                                "top": 0,
-                              }
-                            }
-                          />
-                          <View
-                            style={
-                              {
-                                "alignItems": "center",
-                                "flexDirection": "row",
-                                "flexShrink": 1,
-                                "gap": 4,
-                              }
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "flexShrink": 1,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "600",
+                                  "lineHeight": 22,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#1F2329",
+                                },
+                              ]
                             }
                           >
-                            <Text
-                              numberOfLines={1}
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontWeight": "600",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#1F2329",
-                                  },
-                                ]
-                              }
-                            >
-                              diego.mello
-                            </Text>
-                            <Text
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontSize": 13,
-                                    "fontWeight": "400",
-                                    "lineHeight": 18,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#6C727A",
-                                  },
-                                ]
-                              }
-                            >
-                              10:00 AM
-                            </Text>
-                          </View>
-                        </RNGestureHandlerButton>
+                            diego.mello
+                          </Text>
+                          <Text
+                            style={
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "400",
+                                  "lineHeight": 18,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#6C727A",
+                                },
+                                undefined,
+                              ]
+                            }
+                          >
+                            10:00 AM
+                          </Text>
+                        </View>
                         <View
                           style={
                             {
@@ -7081,9 +6985,27 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                           }
                         }
                       >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
+                        <View
+                          accessibilityState={
+                            {
+                              "busy": undefined,
+                              "checked": undefined,
+                              "disabled": undefined,
+                              "expanded": undefined,
+                              "selected": undefined,
+                            }
+                          }
+                          accessibilityValue={
+                            {
+                              "max": undefined,
+                              "min": undefined,
+                              "now": undefined,
+                              "text": undefined,
+                            }
+                          }
+                          accessible={true}
                           collapsable={false}
+<<<<<<< HEAD
                           delayLongPress={600}
                           enabled={true}
                           handlerTag={-1}
@@ -7094,100 +7016,70 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                           onGestureHandlerStateChange={[Function]}
                           onPress={[Function]}
                           rippleColor="#E4E7EA"
+=======
+                          focusable={true}
+                          onBlur={[Function]}
+                          onClick={[Function]}
+                          onFocus={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
+>>>>>>> develop
                           style={
-                            [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
-                            ]
+                            {
+                              "alignItems": "center",
+                              "flexDirection": "row",
+                              "flexShrink": 1,
+                              "gap": 4,
+                            }
                           }
                           testID="username-header-diego.mello"
-                          underlayColor="#E4E7EA"
                         >
-                          <View
-                            collapsable={false}
+                          <Text
+                            numberOfLines={1}
                             style={
-                              {
-                                "backgroundColor": "#E4E7EA",
-                                "borderBottomLeftRadius": undefined,
-                                "borderBottomRightRadius": undefined,
-                                "borderRadius": undefined,
-                                "borderTopLeftRadius": undefined,
-                                "borderTopRightRadius": undefined,
-                                "bottom": 0,
-                                "left": 0,
-                                "opacity": 0,
-                                "position": "absolute",
-                                "right": 0,
-                                "top": 0,
-                              }
-                            }
-                          />
-                          <View
-                            style={
-                              {
-                                "alignItems": "center",
-                                "flexDirection": "row",
-                                "flexShrink": 1,
-                                "gap": 4,
-                              }
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "flexShrink": 1,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "600",
+                                  "lineHeight": 22,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#1F2329",
+                                },
+                              ]
                             }
                           >
-                            <Text
-                              numberOfLines={1}
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontWeight": "600",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#1F2329",
-                                  },
-                                ]
-                              }
-                            >
-                              diego.mello
-                            </Text>
-                            <Text
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontSize": 13,
-                                    "fontWeight": "400",
-                                    "lineHeight": 18,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#6C727A",
-                                  },
-                                ]
-                              }
-                            >
-                              10:00 AM
-                            </Text>
-                          </View>
-                        </RNGestureHandlerButton>
+                            diego.mello
+                          </Text>
+                          <Text
+                            style={
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "400",
+                                  "lineHeight": 18,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#6C727A",
+                                },
+                                undefined,
+                              ]
+                            }
+                          >
+                            10:00 AM
+                          </Text>
+                        </View>
                         <View
                           style={
                             {

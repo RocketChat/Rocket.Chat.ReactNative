@@ -22,6 +22,7 @@ import EventEmitter from '../../lib/methods/helpers/events';
 import { LISTENER } from '../Toast';
 import { isIOS } from '../../lib/methods/helpers';
 
+// Maestro fail to click on child component when we enable accessibility in parent component on iOS
 const shouldDisableAccessibility = process.env.RUNNING_E2E_TESTS === 'true' && isIOS;
 
 const styles = StyleSheet.create({

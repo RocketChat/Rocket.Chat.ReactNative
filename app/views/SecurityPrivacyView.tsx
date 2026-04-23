@@ -108,7 +108,7 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 						right={() => (
 							<Switch value={crashReportState} onValueChange={toggleCrashReport} testID='security-privacy-view-crash-report' />
 						)}
-						additionalAccessibilityLabel={analyticsEventsState}
+						additionalAccessibilityLabel={crashReportState}
 					/>
 					<List.Separator />
 					<List.Info info='Crash_report_disclaimer' />
