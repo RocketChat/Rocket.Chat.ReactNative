@@ -17,6 +17,7 @@ export default StyleSheet.create({
 	},
 	centerContainer: {
 		flex: 1,
+		minWidth: 0,
 		paddingVertical: 10,
 		paddingRight: 14,
 		borderBottomWidth: StyleSheet.hairlineWidth
@@ -32,7 +33,8 @@ export default StyleSheet.create({
 	row: {
 		flex: 1,
 		flexDirection: 'row',
-		alignItems: 'flex-start'
+		alignItems: 'flex-start',
+		minWidth: 0
 	},
 	wrapUpdatedAndBadge: {
 		alignItems: 'flex-end'
@@ -54,8 +56,15 @@ export default StyleSheet.create({
 	status: {
 		marginRight: 2
 	},
-	markdownText: {
+	lastMessageContainer: {
 		flex: 1,
+		flexShrink: 1,
+		minWidth: 0,
+		marginRight: 4
+	},
+	markdownText: {
+		width: '100%',
+		flexShrink: 1,
 		fontSize: 14,
 		...sharedStyles.textRegular
 	},
