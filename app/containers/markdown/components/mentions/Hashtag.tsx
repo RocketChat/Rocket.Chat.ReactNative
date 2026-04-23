@@ -77,7 +77,13 @@ const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, disabled = false
 		);
 	}
 	return (
-		<Text style={[styles.text, ...(textStyle ? [textStyle] : []), { color: themes[theme].fontDefault }, spoilerStyle]}>{`#${hashtag}`}</Text>
+		<Text
+			style={[
+				styles.text,
+				...(textStyle ? [textStyle] : []),
+				{ color: themes[theme].fontDefault },
+				spoilerStyle
+			]}>{`#${hashtag}`}</Text>
 	);
 });
 

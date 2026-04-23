@@ -44,10 +44,13 @@ const Spoiler = ({ value }: ISpoilerProps) => {
 	const [isRevealed, setIsRevealed] = useState(false);
 	const { useRealName, username, navToRoomInfo, mentions, channels } = useContext(MarkdownContext);
 
-	const contextValue = useMemo(() => ({
-		isRevealed,
-		spoilerStyle: isRevealed ? undefined : styles.hidden
-	}), [isRevealed]);
+	const contextValue = useMemo(
+		() => ({
+			isRevealed,
+			spoilerStyle: isRevealed ? undefined : styles.hidden
+		}),
+		[isRevealed]
+	);
 
 	const handleToggle = () => {
 		// if (isRevealed) {
@@ -58,10 +61,7 @@ const Spoiler = ({ value }: ISpoilerProps) => {
 
 	return (
 		<SpoilerContext.Provider value={contextValue}>
-			<Text
-				style={styles.spoilerText}
-				onPress={handleToggle}
-			>
+			<Text style={styles.spoilerText} onPress={handleToggle}>
 				{value.map((block, index) => {
 					switch (block.type) {
 						case 'PLAIN_TEXT':

@@ -94,7 +94,13 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, useR
 	}
 
 	return (
-		<Text style={[styles.text, ...(textStyle ? [textStyle] : []), { color: themes[theme].fontDefault }, spoilerStyle]}>{`@${mention}`}</Text>
+		<Text
+			style={[
+				styles.text,
+				...(textStyle ? [textStyle] : []),
+				{ color: themes[theme].fontDefault },
+				spoilerStyle
+			]}>{`@${mention}`}</Text>
 	);
 });
 

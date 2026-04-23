@@ -17,7 +17,15 @@ const Plain = ({ value, style }: IPlainProps): React.ReactElement => {
 	const { textStyle } = useContext(MarkdownContext);
 	const { spoilerStyle } = useContext(SpoilerContext);
 	return (
-		<Text accessibilityLabel={value} style={[styles.plainText, { color: colors.fontDefault }, ...(textStyle ? [textStyle] : []), ...(style ? [style] : []), spoilerStyle]}>
+		<Text
+			accessibilityLabel={value}
+			style={[
+				styles.plainText,
+				{ color: colors.fontDefault },
+				...(textStyle ? [textStyle] : []),
+				...(style ? [style] : []),
+				spoilerStyle
+			]}>
 			{value}
 		</Text>
 	);
