@@ -1306,6 +1306,7 @@ exports[`Story Snapshots: Links should match snapshot 1`] = `
                 "fontSize": 16,
                 "fontWeight": "400",
                 "textAlign": "left",
+                "textDecorationLine": "underline",
               },
               {
                 "color": "#095AD2",
@@ -1405,6 +1406,7 @@ exports[`Story Snapshots: Links should match snapshot 1`] = `
                 "fontSize": 16,
                 "fontWeight": "400",
                 "textAlign": "left",
+                "textDecorationLine": "underline",
               },
               {
                 "color": "#095AD2",
@@ -1504,6 +1506,7 @@ exports[`Story Snapshots: Links should match snapshot 1`] = `
                 "fontSize": 16,
                 "fontWeight": "400",
                 "textAlign": "left",
+                "textDecorationLine": "underline",
               },
               {
                 "color": "#095AD2",
@@ -1576,6 +1579,7 @@ exports[`Story Snapshots: Links should match snapshot 1`] = `
                 "fontSize": 16,
                 "fontWeight": "400",
                 "textAlign": "left",
+                "textDecorationLine": "underline",
               },
               {
                 "color": "#095AD2",
@@ -1757,6 +1761,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                     "fontSize": 16,
                     "fontWeight": "400",
                     "textAlign": "left",
+                    "textDecorationLine": "underline",
                   },
                   {
                     "color": "#095AD2",
@@ -2029,6 +2034,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                     "fontSize": 16,
                     "fontWeight": "400",
                     "textAlign": "left",
+                    "textDecorationLine": "underline",
                   },
                   {
                     "color": "#095AD2",
@@ -3412,6 +3418,7 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
                 "fontSize": 16,
                 "fontWeight": "400",
                 "textAlign": "left",
+                "textDecorationLine": "underline",
               },
               {
                 "color": "#095AD2",
@@ -5076,6 +5083,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                 "fontSize": 16,
                 "fontWeight": "400",
                 "textAlign": "left",
+                "textDecorationLine": "underline",
               },
               {
                 "color": "red",
