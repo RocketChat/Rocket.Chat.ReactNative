@@ -309,7 +309,7 @@ class VoipNotification(private val context: Context) {
                 callId = payload.callId,
                 contractId = deviceId,
                 answer = "accept",
-                supportedFeatures = listOf("audio")
+                supportedFeatures = listOf("audio", "hold")
             ) { success ->
                 finish(success)
             }
