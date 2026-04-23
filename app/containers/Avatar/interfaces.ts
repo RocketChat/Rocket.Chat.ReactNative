@@ -16,6 +16,7 @@ export interface IAvatar {
 	userId?: string;
 	token?: string;
 	onPress?: () => void;
+	disabled?: boolean;
 	getCustomEmoji?: TGetCustomEmoji;
 	avatarETag?: string;
 	isStatic?: boolean | string;

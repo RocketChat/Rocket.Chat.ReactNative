@@ -20,6 +20,7 @@ const Avatar = React.memo(
 		userId,
 		token,
 		onPress,
+		disabled,
 		emoji,
 		getCustomEmoji,
 		avatarETag,
@@ -97,7 +98,7 @@ const Avatar = React.memo(
 
 		if (onPress) {
 			image = (
-				<Touch accessible={accessible} accessibilityLabel={avatarAccessibilityLabel} onPress={onPress}>
+				<Touch accessible={accessible} accessibilityLabel={avatarAccessibilityLabel} onPress={onPress} disabled={disabled}>
 					{image}
 				</Touch>
 			);

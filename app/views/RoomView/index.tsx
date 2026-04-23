@@ -109,6 +109,7 @@ import { type IRoomFederated, isRoomFederated, isRoomNativeFederated } from '../
 import { InvitedRoom } from './components/InvitedRoom';
 import { getInvitationData } from '../../lib/methods/getInvitationData';
 import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
+import { useIsVoipCallActive } from '../../lib/hooks/useIsVoipCallActive';
 
 class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private rid?: string;
@@ -259,6 +260,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const { state } = this;
 		const { roomUpdate, member, isOnHold, isAutocompleteVisible, showMissingE2EEKey, showE2EEDisabledRoom } = state;
 		const { theme, insets, route, encryptionEnabled, airGappedRestrictionRemainingDays } = this.props;
+		if (this.props.isVoipCallActive !== nextProps.isVoipCallActive) {
+			return true;
+		}
 		if (theme !== nextProps.theme) {
 			return true;
 		}
@@ -464,7 +468,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			showMissingE2EEKey,
 			showE2EEDisabledRoom
 		} = this.state;
-		const { navigation, isMasterDetail, baseUrl, user, route } = this.props;
+		const { navigation, isMasterDetail, baseUrl, user, route, isVoipCallActive } = this.props;
 		const { rid, tmid } = this;
 
 		if (!rid) {
@@ -548,7 +552,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					testID={`room-view-title-${title}`}
 					sourceType={sourceType}
 					abacAttributes={iSubRoom.abacAttributes}
-					disabled={isInviteSubscription(iSubRoom)}
+					disabled={isInviteSubscription(iSubRoom) || isVoipCallActive}
 				/>
 			),
 			headerRight: () => (
@@ -1710,4 +1714,9 @@ const mapStateToProps = (state: IApplicationState) => ({
 	isFederationModuleEnabled: state.enterpriseModules.includes('federation') as boolean
 });
 
-export default connect(mapStateToProps)(withDimensions(withTheme(withSafeAreaInsets(withActionSheet(RoomView)))));
+const ConnectedRoomView = connect(mapStateToProps)(withDimensions(withTheme(withSafeAreaInsets(withActionSheet(RoomView)))));
+const RoomViewWithVoip = (props: any) => {
+	const isVoipCallActive = useIsVoipCallActive();
+	return <ConnectedRoomView {...props} isVoipCallActive={isVoipCallActive} />;
+};
+export default RoomViewWithVoip;

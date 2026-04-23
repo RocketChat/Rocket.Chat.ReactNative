@@ -4,6 +4,7 @@ import { StyleSheet, useWindowDimensions } from 'react-native';
 import Avatar from '../../containers/Avatar';
 import { useAppNavigation } from '../../lib/hooks/navigation';
 import { HeaderBackButton } from '../../containers/Header/components/HeaderBackButton';
+import { useIsVoipCallActive } from '../../lib/hooks/useIsVoipCallActive';
 
 const styles = StyleSheet.create({
 	avatar: {
@@ -39,6 +40,7 @@ const LeftButtons = ({
 	const { goBack } = useAppNavigation();
 	const onPress = () => goRoomActionsView();
 	const { fontScale } = useWindowDimensions();
+	const isVoipCallActive = useIsVoipCallActive();
 
 	if (!isMasterDetail || tmid) {
 		let label = ' ';
@@ -55,7 +57,9 @@ const LeftButtons = ({
 	}
 
 	if (baseUrl && userId && token) {
-		return <Avatar rid={rid} text={title} size={30} type={t} style={styles.avatar} onPress={onPress} />;
+		return (
+			<Avatar rid={rid} text={title} size={30} type={t} style={styles.avatar} onPress={onPress} disabled={isVoipCallActive} />
+		);
 	}
 	return null;
 };

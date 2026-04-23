@@ -34,6 +34,7 @@ export interface IRoomViewProps extends IActionSheetProvider, IBaseScreen<ChatsS
 	airGappedRestrictionRemainingDays: number | undefined;
 	isFederationEnabled: boolean;
 	isFederationModuleEnabled: boolean;
+	isVoipCallActive?: boolean;
 }
 
 export type TStateAttrsUpdate = keyof IRoomViewState;
