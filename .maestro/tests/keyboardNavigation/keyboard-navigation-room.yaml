@@ -63,6 +63,7 @@ tags:
 - pressKey: Remote Dpad Down
 - pressKey: Remote Dpad Right
 - pressKey: Remote Dpad Up
+- pressKey: Remote Dpad Up
 - pressKey: enter
 
 # Send emoji
