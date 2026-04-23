@@ -54,7 +54,7 @@
 		"axios": "0.30.3",
 		"bytebuffer": "~5.0.1",
 		"color2k": "1.2.4",
-		"dayjs": "^1.11.18",
+		"dayjs": "^1.11.20",
 		"dequal": "2.0.3",
 		"ejson": "2.2.3",
 		"eslint-import-resolver-typescript": "^4.4.4",
