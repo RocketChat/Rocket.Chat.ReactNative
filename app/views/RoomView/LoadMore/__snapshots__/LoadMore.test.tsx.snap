@@ -798,6 +798,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                       {
                                         "color": "#E4E7EA",
                                       },
+                                      undefined,
                                     ]
                                   }
                                 >
@@ -984,6 +985,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                       {
                                         "color": "#E4E7EA",
                                       },
+                                      undefined,
                                     ]
                                   }
                                 >
@@ -1177,6 +1179,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                       {
                                         "color": "#E4E7EA",
                                       },
+                                      undefined,
                                     ]
                                   }
                                 >
@@ -1753,6 +1756,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                       {
                                         "color": "#E4E7EA",
                                       },
+                                      undefined,
                                     ]
                                   }
                                 >
@@ -1939,6 +1943,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                       {
                                         "color": "#E4E7EA",
                                       },
+                                      undefined,
                                     ]
                                   }
                                 >
@@ -2132,6 +2137,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                       {
                                         "color": "#E4E7EA",
                                       },
+                                      undefined,
                                     ]
                                   }
                                 >
@@ -2542,6 +2548,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                       {
                                         "color": "#E4E7EA",
                                       },
+                                      undefined,
                                     ]
                                   }
                                 >
@@ -3041,6 +3048,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                       {
                                         "color": "#E4E7EA",
                                       },
+                                      undefined,
                                     ]
                                   }
                                 >
@@ -3227,6 +3235,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                       {
                                         "color": "#E4E7EA",
                                       },
+                                      undefined,
                                     ]
                                   }
                                 >
@@ -3420,6 +3429,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                       {
                                         "color": "#E4E7EA",
                                       },
+                                      undefined,
                                     ]
                                   }
                                 >
@@ -3996,6 +4006,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                       {
                                         "color": "#E4E7EA",
                                       },
+                                      undefined,
                                     ]
                                   }
                                 >
@@ -4182,6 +4193,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                       {
                                         "color": "#E4E7EA",
                                       },
+                                      undefined,
                                     ]
                                   }
                                 >
@@ -4375,6 +4387,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                       {
                                         "color": "#E4E7EA",
                                       },
+                                      undefined,
                                     ]
                                   }
                                 >
@@ -4785,6 +4798,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                       {
                                         "color": "#E4E7EA",
                                       },
+                                      undefined,
                                     ]
                                   }
                                 >
@@ -5284,6 +5298,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                       {
                                         "color": "#2F343D",
                                       },
+                                      undefined,
                                     ]
                                   }
                                 >
@@ -5470,6 +5485,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                       {
                                         "color": "#2F343D",
                                       },
+                                      undefined,
                                     ]
                                   }
                                 >
@@ -5663,6 +5679,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                       {
                                         "color": "#2F343D",
                                       },
+                                      undefined,
                                     ]
                                   }
                                 >
@@ -6239,6 +6256,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                       {
                                         "color": "#2F343D",
                                       },
+                                      undefined,
                                     ]
                                   }
                                 >
@@ -6425,6 +6443,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                       {
                                         "color": "#2F343D",
                                       },
+                                      undefined,
                                     ]
                                   }
                                 >
@@ -6618,6 +6637,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                       {
                                         "color": "#2F343D",
                                       },
+                                      undefined,
                                     ]
                                   }
                                 >
@@ -7028,6 +7048,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                       {
                                         "color": "#2F343D",
                                       },
+                                      undefined,
                                     ]
                                   }
                                 >

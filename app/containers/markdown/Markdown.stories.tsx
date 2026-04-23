@@ -186,3 +186,26 @@ this is a normal line`}
 		<Markdown msg='[Markdown link](https://rocket.chat)' textStyle={textStyle} />
 	</View>
 );
+
+export const Spoiler = () => (
+	<ScrollView style={styles.container}>
+		<Markdown msg='||plain spoiler||' />
+		<Markdown msg='||**bold text**||' />
+		<Markdown msg='||_italic text_||' />
+		<Markdown msg='||~strike text~||' />
+		<Markdown msg='||`inline code`||' />
+		<Markdown msg='||[link text](https://example.com)||' />
+		<Markdown msg='||@all||' mentions={mentions} username='rocket.cat' />
+		<Markdown msg='||#general||' channels={[{ _id: '123', name: 'general' }]} />
+		<Markdown msg='||**bold and _italic_**||' />
+		<Markdown msg='||*_italic and **bold**_*||' />
+		<Markdown msg='||**bold ~and strike~**||' />
+		<Markdown msg='||`code with **bold** inside`||' />
+		<Markdown msg='||[link with **bold**](https://example.com)||' />
+		<Markdown msg='||**bold** plain _italic_ **more bold**||' />
+		<Markdown msg='||**_~`all formats nested`~_**||' />
+		<Markdown msg='||first spoiler|| ||second spoiler|| ||third spoiler||' />
+		<Markdown msg='||**spoiler one**|| ||_spoiler two_|| ||`spoiler three`||' />
+		<Markdown msg='||Click to reveal: **secret** _message_ with [link](https://example.com)||' />
+	</ScrollView>
+);

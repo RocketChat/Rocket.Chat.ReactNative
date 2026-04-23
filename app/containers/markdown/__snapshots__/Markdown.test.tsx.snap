@@ -86,6 +86,7 @@ exports[`Story Snapshots: BlockQuote should match snapshot 1`] = `
                   {
                     "color": "#2F343D",
                   },
+                  undefined,
                 ]
               }
             >
@@ -135,6 +136,7 @@ exports[`Story Snapshots: BlockQuote should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -203,6 +205,7 @@ exports[`Story Snapshots: Code should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -231,7 +234,14 @@ exports[`Story Snapshots: Code should match snapshot 1`] = `
             ]
           }
         >
-          <Text>
+          <Text
+            style={
+              [
+                undefined,
+                undefined,
+              ]
+            }
+          >
             inline code
           </Text>
         </Text>
@@ -285,6 +295,7 @@ exports[`Story Snapshots: Code should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -313,7 +324,14 @@ exports[`Story Snapshots: Code should match snapshot 1`] = `
             ]
           }
         >
-          <Text>
+          <Text
+            style={
+              [
+                undefined,
+                undefined,
+              ]
+            }
+          >
             code
           </Text>
         </Text>
@@ -329,6 +347,7 @@ exports[`Story Snapshots: Code should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -357,7 +376,14 @@ exports[`Story Snapshots: Code should match snapshot 1`] = `
             ]
           }
         >
-          <Text>
+          <Text
+            style={
+              [
+                undefined,
+                undefined,
+              ]
+            }
+          >
             back-ticks around
           </Text>
         </Text>
@@ -373,6 +399,7 @@ exports[`Story Snapshots: Code should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -476,6 +503,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -588,6 +616,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -627,6 +656,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -704,6 +734,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -765,6 +796,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -826,6 +858,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -1040,6 +1073,7 @@ exports[`Story Snapshots: Hashtag should match snapshot 1`] = `
               {
                 "color": "#095AD2",
               },
+              undefined,
             ]
           }
         >
@@ -1057,6 +1091,7 @@ exports[`Story Snapshots: Hashtag should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -1076,6 +1111,7 @@ exports[`Story Snapshots: Hashtag should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -1349,6 +1385,7 @@ exports[`Story Snapshots: Links should match snapshot 1`] = `
               {
                 "color": "#095AD2",
               },
+              undefined,
             ]
           }
         >
@@ -1366,6 +1403,7 @@ exports[`Story Snapshots: Links should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -1394,7 +1432,14 @@ exports[`Story Snapshots: Links should match snapshot 1`] = `
             ]
           }
         >
-          <Text>
+          <Text
+            style={
+              [
+                undefined,
+                undefined,
+              ]
+            }
+          >
             [description](url)
           </Text>
         </Text>
@@ -1451,6 +1496,7 @@ exports[`Story Snapshots: Links should match snapshot 1`] = `
               {
                 "color": "#095AD2",
               },
+              undefined,
             ]
           }
         >
@@ -1468,6 +1514,7 @@ exports[`Story Snapshots: Links should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -1496,7 +1543,14 @@ exports[`Story Snapshots: Links should match snapshot 1`] = `
             ]
           }
         >
-          <Text>
+          <Text
+            style={
+              [
+                undefined,
+                undefined,
+              ]
+            }
+          >
             &lt;url|description&gt;
           </Text>
         </Text>
@@ -1553,6 +1607,7 @@ exports[`Story Snapshots: Links should match snapshot 1`] = `
               {
                 "color": "#095AD2",
               },
+              undefined,
             ]
           }
         >
@@ -1570,6 +1625,7 @@ exports[`Story Snapshots: Links should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -1628,6 +1684,7 @@ exports[`Story Snapshots: Links should match snapshot 1`] = `
               {
                 "color": "#095AD2",
               },
+              undefined,
             ]
           }
         >
@@ -1645,6 +1702,7 @@ exports[`Story Snapshots: Links should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -1739,6 +1797,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                   {
                     "color": "#2F343D",
                   },
+                  undefined,
                 ]
               }
             >
@@ -1815,6 +1874,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                   {
                     "color": "#095AD2",
                   },
+                  undefined,
                 ]
               }
             >
@@ -1864,6 +1924,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -1911,6 +1972,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -2006,6 +2068,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                   {
                     "color": "#2F343D",
                   },
+                  undefined,
                 ]
               }
             >
@@ -2096,6 +2159,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                   {
                     "color": "#095AD2",
                   },
+                  undefined,
                 ]
               }
             >
@@ -2189,6 +2253,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                     {
                       "color": "#2F343D",
                     },
+                    undefined,
                   ]
                 }
               >
@@ -2207,6 +2272,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                   {
                     "color": "#2F343D",
                   },
+                  undefined,
                 ]
               }
             >
@@ -2287,6 +2353,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                     {
                       "color": "#2F343D",
                     },
+                    undefined,
                   ]
                 }
               >
@@ -2305,6 +2372,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                   {
                     "color": "#2F343D",
                   },
+                  undefined,
                 ]
               }
             >
@@ -2385,6 +2453,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                     {
                       "color": "#2F343D",
                     },
+                    undefined,
                   ]
                 }
               >
@@ -2403,6 +2472,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                   {
                     "color": "#2F343D",
                   },
+                  undefined,
                 ]
               }
             >
@@ -2493,6 +2563,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                       {
                         "color": "#2F343D",
                       },
+                      undefined,
                     ]
                   }
                 >
@@ -2512,6 +2583,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                   {
                     "color": "#2F343D",
                   },
+                  undefined,
                 ]
               }
             >
@@ -2602,6 +2674,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                       {
                         "color": "#2F343D",
                       },
+                      undefined,
                     ]
                   }
                 >
@@ -2621,6 +2694,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                   {
                     "color": "#2F343D",
                   },
+                  undefined,
                 ]
               }
             >
@@ -2708,6 +2782,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                       {
                         "color": "#2F343D",
                       },
+                      undefined,
                     ]
                   }
                 >
@@ -2727,6 +2802,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                   {
                     "color": "#2F343D",
                   },
+                  undefined,
                 ]
               }
             >
@@ -2824,6 +2900,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                         {
                           "color": "#2F343D",
                         },
+                        undefined,
                       ]
                     }
                   >
@@ -2900,6 +2977,8 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                 {
                   "color": "#9B1325",
                 },
+                undefined,
+                undefined,
               ]
             }
           >
@@ -2917,6 +2996,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                 {
                   "color": "#2F343D",
                 },
+                undefined,
               ]
             }
           >
@@ -2936,6 +3016,8 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                 {
                   "color": "#8E6300",
                 },
+                undefined,
+                undefined,
               ]
             }
           >
@@ -2953,6 +3035,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                 {
                   "color": "#2F343D",
                 },
+                undefined,
               ]
             }
           >
@@ -2971,6 +3054,8 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                 {
                   "color": "#974809",
                 },
+                undefined,
+                undefined,
               ]
             }
           >
@@ -2988,6 +3073,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                 {
                   "color": "#2F343D",
                 },
+                undefined,
               ]
             }
           >
@@ -3006,6 +3092,8 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                 {
                   "color": "#974809",
                 },
+                undefined,
+                undefined,
               ]
             }
           >
@@ -3023,6 +3111,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                 {
                   "color": "#2F343D",
                 },
+                undefined,
               ]
             }
           >
@@ -3042,6 +3131,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                 {
                   "color": "#2F343D",
                 },
+                undefined,
               ]
             }
           >
@@ -3059,6 +3149,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                 {
                   "color": "#2F343D",
                 },
+                undefined,
               ]
             }
           >
@@ -3077,6 +3168,8 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                 {
                   "color": "#8E6300",
                 },
+                undefined,
+                undefined,
               ]
             }
           >
@@ -3134,6 +3227,8 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                 {
                   "color": "#9B1325",
                 },
+                undefined,
+                undefined,
               ]
             }
           >
@@ -3151,6 +3246,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                 {
                   "color": "#2F343D",
                 },
+                undefined,
               ]
             }
           >
@@ -3170,6 +3266,8 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                 {
                   "color": "#8E6300",
                 },
+                undefined,
+                undefined,
               ]
             }
           >
@@ -3187,6 +3285,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                 {
                   "color": "#2F343D",
                 },
+                undefined,
               ]
             }
           >
@@ -3205,6 +3304,8 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                 {
                   "color": "#974809",
                 },
+                undefined,
+                undefined,
               ]
             }
           >
@@ -3222,6 +3323,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                 {
                   "color": "#2F343D",
                 },
+                undefined,
               ]
             }
           >
@@ -3240,6 +3342,8 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                 {
                   "color": "#974809",
                 },
+                undefined,
+                undefined,
               ]
             }
           >
@@ -3257,6 +3361,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                 {
                   "color": "#2F343D",
                 },
+                undefined,
               ]
             }
           >
@@ -3276,6 +3381,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                 {
                   "color": "#2F343D",
                 },
+                undefined,
               ]
             }
           >
@@ -3293,6 +3399,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                 {
                   "color": "#2F343D",
                 },
+                undefined,
               ]
             }
           >
@@ -3311,6 +3418,8 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                 {
                   "color": "#8E6300",
                 },
+                undefined,
+                undefined,
               ]
             }
           >
@@ -3474,6 +3583,1983 @@ exports[`Story Snapshots: Preview should match snapshot 1`] = `
 </View>
 `;
 
+exports[`Story Snapshots: Spoiler should match snapshot 1`] = `
+<RCTScrollView
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "marginHorizontal": 15,
+      "marginVertical": 50,
+    }
+  }
+>
+  <View>
+    <View
+      style={
+        {
+          "gap": 2,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "textAlign": "left",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
+            }
+          }
+        >
+          <Text
+            onPress={[Function]}
+            style={
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="plain spoiler"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                  {
+                    "backgroundColor": "#000",
+                    "color": "#000",
+                  },
+                ]
+              }
+            >
+              plain spoiler
+            </Text>
+          </Text>
+        </Text>
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "gap": 2,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "textAlign": "left",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
+            }
+          }
+        >
+          <Text
+            onPress={[Function]}
+            style={
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontWeight": "700",
+                  "textAlign": "left",
+                }
+              }
+            >
+              <Text
+                accessibilityLabel="bold text"
+                style={
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 16,
+                      "lineHeight": 22,
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                    {
+                      "backgroundColor": "#000",
+                      "color": "#000",
+                    },
+                  ]
+                }
+              >
+                bold text
+              </Text>
+            </Text>
+          </Text>
+        </Text>
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "gap": 2,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "textAlign": "left",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
+            }
+          }
+        >
+          <Text
+            onPress={[Function]}
+            style={
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "fontStyle": "italic",
+                }
+              }
+            >
+              <Text
+                accessibilityLabel="italic text"
+                style={
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 16,
+                      "lineHeight": 22,
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                    {
+                      "backgroundColor": "#000",
+                      "color": "#000",
+                    },
+                  ]
+                }
+              >
+                italic text
+              </Text>
+            </Text>
+          </Text>
+        </Text>
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "gap": 2,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "textAlign": "left",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
+            }
+          }
+        >
+          <Text
+            onPress={[Function]}
+            style={
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "textDecorationLine": "line-through",
+                }
+              }
+            >
+              <Text
+                accessibilityLabel="strike text"
+                style={
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 16,
+                      "lineHeight": 22,
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                    {
+                      "backgroundColor": "#000",
+                      "color": "#000",
+                    },
+                  ]
+                }
+              >
+                strike text
+              </Text>
+            </Text>
+          </Text>
+        </Text>
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "gap": 2,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "textAlign": "left",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
+            }
+          }
+        >
+          <Text
+            onPress={[Function]}
+            style={
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "fontFamily": "Courier New",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "paddingLeft": 2,
+                    "paddingTop": 2,
+                    "textAlign": "left",
+                  },
+                  {
+                    "backgroundColor": "#E4E7EA",
+                    "borderColor": "#CBCED1",
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              <Text
+                style={
+                  [
+                    undefined,
+                    {
+                      "backgroundColor": "#000",
+                      "color": "#000",
+                    },
+                  ]
+                }
+              >
+                inline code
+              </Text>
+            </Text>
+          </Text>
+        </Text>
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "gap": 2,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "textAlign": "left",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
+            }
+          }
+        >
+          <Text
+            onPress={[Function]}
+            style={
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              onLongPress={[Function]}
+              onPress={[Function]}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#095AD2",
+                  },
+                  {
+                    "backgroundColor": "#000",
+                    "color": "#000",
+                  },
+                ]
+              }
+            >
+              link text
+            </Text>
+          </Text>
+        </Text>
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "gap": 2,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "textAlign": "left",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
+            }
+          }
+        >
+          <Text
+            onPress={[Function]}
+            style={
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#974809",
+                  },
+                  undefined,
+                  {
+                    "backgroundColor": "#000",
+                    "color": "#000",
+                  },
+                ]
+              }
+            >
+              all
+            </Text>
+          </Text>
+        </Text>
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "gap": 2,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "textAlign": "left",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
+            }
+          }
+        >
+          <Text
+            onPress={[Function]}
+            style={
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#095AD2",
+                  },
+                  {
+                    "backgroundColor": "#000",
+                    "color": "#000",
+                  },
+                ]
+              }
+            >
+              general
+            </Text>
+          </Text>
+        </Text>
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "gap": 2,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "textAlign": "left",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
+            }
+          }
+        >
+          <Text
+            onPress={[Function]}
+            style={
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontWeight": "700",
+                  "textAlign": "left",
+                }
+              }
+            >
+              <Text
+                accessibilityLabel="bold and "
+                style={
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 16,
+                      "lineHeight": 22,
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                    {
+                      "backgroundColor": "#000",
+                      "color": "#000",
+                    },
+                  ]
+                }
+              >
+                bold and 
+              </Text>
+              <Text
+                style={
+                  {
+                    "fontStyle": "italic",
+                  }
+                }
+              >
+                <Text
+                  accessibilityLabel="italic"
+                  style={
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                      {
+                        "backgroundColor": "#000",
+                        "color": "#000",
+                      },
+                    ]
+                  }
+                >
+                  italic
+                </Text>
+              </Text>
+            </Text>
+          </Text>
+        </Text>
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "gap": 2,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "textAlign": "left",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
+            }
+          }
+        >
+          <Text
+            onPress={[Function]}
+            style={
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontWeight": "700",
+                  "textAlign": "left",
+                }
+              }
+            >
+              <Text
+                style={
+                  {
+                    "fontStyle": "italic",
+                  }
+                }
+              >
+                <Text
+                  accessibilityLabel="italic and **bold**"
+                  style={
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                      {
+                        "backgroundColor": "#000",
+                        "color": "#000",
+                      },
+                    ]
+                  }
+                >
+                  italic and **bold**
+                </Text>
+              </Text>
+            </Text>
+          </Text>
+        </Text>
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "gap": 2,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "textAlign": "left",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
+            }
+          }
+        >
+          <Text
+            onPress={[Function]}
+            style={
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontWeight": "700",
+                  "textAlign": "left",
+                }
+              }
+            >
+              <Text
+                accessibilityLabel="bold "
+                style={
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 16,
+                      "lineHeight": 22,
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                    {
+                      "backgroundColor": "#000",
+                      "color": "#000",
+                    },
+                  ]
+                }
+              >
+                bold 
+              </Text>
+              <Text
+                style={
+                  {
+                    "textDecorationLine": "line-through",
+                  }
+                }
+              >
+                <Text
+                  accessibilityLabel="and strike"
+                  style={
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                      {
+                        "backgroundColor": "#000",
+                        "color": "#000",
+                      },
+                    ]
+                  }
+                >
+                  and strike
+                </Text>
+              </Text>
+            </Text>
+          </Text>
+        </Text>
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "gap": 2,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "textAlign": "left",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
+            }
+          }
+        >
+          <Text
+            onPress={[Function]}
+            style={
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "fontFamily": "Courier New",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "paddingLeft": 2,
+                    "paddingTop": 2,
+                    "textAlign": "left",
+                  },
+                  {
+                    "backgroundColor": "#E4E7EA",
+                    "borderColor": "#CBCED1",
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              <Text
+                style={
+                  [
+                    undefined,
+                    {
+                      "backgroundColor": "#000",
+                      "color": "#000",
+                    },
+                  ]
+                }
+              >
+                code with **bold** inside
+              </Text>
+            </Text>
+          </Text>
+        </Text>
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "gap": 2,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "textAlign": "left",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
+            }
+          }
+        >
+          <Text
+            onPress={[Function]}
+            style={
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              onLongPress={[Function]}
+              onPress={[Function]}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#095AD2",
+                  },
+                  {
+                    "backgroundColor": "#000",
+                    "color": "#000",
+                  },
+                ]
+              }
+            >
+              link with 
+              <Text
+                style={
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontWeight": "700",
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <Text
+                  accessibilityLabel="bold"
+                  style={
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                      {
+                        "backgroundColor": "#000",
+                        "color": "#000",
+                      },
+                    ]
+                  }
+                >
+                  bold
+                </Text>
+              </Text>
+            </Text>
+          </Text>
+        </Text>
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "gap": 2,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "textAlign": "left",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
+            }
+          }
+        >
+          <Text
+            onPress={[Function]}
+            style={
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontWeight": "700",
+                  "textAlign": "left",
+                }
+              }
+            >
+              <Text
+                accessibilityLabel="bold"
+                style={
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 16,
+                      "lineHeight": 22,
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                    {
+                      "backgroundColor": "#000",
+                      "color": "#000",
+                    },
+                  ]
+                }
+              >
+                bold
+              </Text>
+            </Text>
+            <Text
+              accessibilityLabel=" plain "
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                  {
+                    "backgroundColor": "#000",
+                    "color": "#000",
+                  },
+                ]
+              }
+            >
+               plain 
+            </Text>
+            <Text
+              style={
+                {
+                  "fontStyle": "italic",
+                }
+              }
+            >
+              <Text
+                accessibilityLabel="italic"
+                style={
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 16,
+                      "lineHeight": 22,
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                    {
+                      "backgroundColor": "#000",
+                      "color": "#000",
+                    },
+                  ]
+                }
+              >
+                italic
+              </Text>
+            </Text>
+            <Text
+              accessibilityLabel=" "
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                  {
+                    "backgroundColor": "#000",
+                    "color": "#000",
+                  },
+                ]
+              }
+            >
+               
+            </Text>
+            <Text
+              style={
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontWeight": "700",
+                  "textAlign": "left",
+                }
+              }
+            >
+              <Text
+                accessibilityLabel="more bold"
+                style={
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 16,
+                      "lineHeight": 22,
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                    {
+                      "backgroundColor": "#000",
+                      "color": "#000",
+                    },
+                  ]
+                }
+              >
+                more bold
+              </Text>
+            </Text>
+          </Text>
+        </Text>
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "gap": 2,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "textAlign": "left",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
+            }
+          }
+        >
+          <Text
+            onPress={[Function]}
+            style={
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontWeight": "700",
+                  "textAlign": "left",
+                }
+              }
+            >
+              <Text
+                style={
+                  {
+                    "fontStyle": "italic",
+                  }
+                }
+              >
+                <Text
+                  style={
+                    {
+                      "textDecorationLine": "line-through",
+                    }
+                  }
+                />
+              </Text>
+            </Text>
+          </Text>
+        </Text>
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "gap": 2,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "textAlign": "left",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
+            }
+          }
+        >
+          <Text
+            onPress={[Function]}
+            style={
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="first spoiler"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                  {
+                    "backgroundColor": "#000",
+                    "color": "#000",
+                  },
+                ]
+              }
+            >
+              first spoiler
+            </Text>
+          </Text>
+          <Text
+            accessibilityLabel=" "
+            style={
+              [
+                {
+                  "flexShrink": 1,
+                  "fontSize": 16,
+                  "lineHeight": 22,
+                },
+                {
+                  "color": "#2F343D",
+                },
+                undefined,
+              ]
+            }
+          >
+             
+          </Text>
+          <Text
+            onPress={[Function]}
+            style={
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="second spoiler"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                  {
+                    "backgroundColor": "#000",
+                    "color": "#000",
+                  },
+                ]
+              }
+            >
+              second spoiler
+            </Text>
+          </Text>
+          <Text
+            accessibilityLabel=" "
+            style={
+              [
+                {
+                  "flexShrink": 1,
+                  "fontSize": 16,
+                  "lineHeight": 22,
+                },
+                {
+                  "color": "#2F343D",
+                },
+                undefined,
+              ]
+            }
+          >
+             
+          </Text>
+          <Text
+            onPress={[Function]}
+            style={
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="third spoiler"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                  {
+                    "backgroundColor": "#000",
+                    "color": "#000",
+                  },
+                ]
+              }
+            >
+              third spoiler
+            </Text>
+          </Text>
+        </Text>
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "gap": 2,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "textAlign": "left",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
+            }
+          }
+        >
+          <Text
+            onPress={[Function]}
+            style={
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontWeight": "700",
+                  "textAlign": "left",
+                }
+              }
+            >
+              <Text
+                accessibilityLabel="spoiler one"
+                style={
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 16,
+                      "lineHeight": 22,
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                    {
+                      "backgroundColor": "#000",
+                      "color": "#000",
+                    },
+                  ]
+                }
+              >
+                spoiler one
+              </Text>
+            </Text>
+          </Text>
+          <Text
+            accessibilityLabel=" "
+            style={
+              [
+                {
+                  "flexShrink": 1,
+                  "fontSize": 16,
+                  "lineHeight": 22,
+                },
+                {
+                  "color": "#2F343D",
+                },
+                undefined,
+              ]
+            }
+          >
+             
+          </Text>
+          <Text
+            onPress={[Function]}
+            style={
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "fontStyle": "italic",
+                }
+              }
+            >
+              <Text
+                accessibilityLabel="spoiler two"
+                style={
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 16,
+                      "lineHeight": 22,
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                    {
+                      "backgroundColor": "#000",
+                      "color": "#000",
+                    },
+                  ]
+                }
+              >
+                spoiler two
+              </Text>
+            </Text>
+          </Text>
+          <Text
+            accessibilityLabel=" "
+            style={
+              [
+                {
+                  "flexShrink": 1,
+                  "fontSize": 16,
+                  "lineHeight": 22,
+                },
+                {
+                  "color": "#2F343D",
+                },
+                undefined,
+              ]
+            }
+          >
+             
+          </Text>
+          <Text
+            onPress={[Function]}
+            style={
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "fontFamily": "Courier New",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "paddingLeft": 2,
+                    "paddingTop": 2,
+                    "textAlign": "left",
+                  },
+                  {
+                    "backgroundColor": "#E4E7EA",
+                    "borderColor": "#CBCED1",
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              <Text
+                style={
+                  [
+                    undefined,
+                    {
+                      "backgroundColor": "#000",
+                      "color": "#000",
+                    },
+                  ]
+                }
+              >
+                spoiler three
+              </Text>
+            </Text>
+          </Text>
+        </Text>
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "gap": 2,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "textAlign": "left",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
+            }
+          }
+        >
+          <Text
+            onPress={[Function]}
+            style={
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Click to reveal: "
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                  {
+                    "backgroundColor": "#000",
+                    "color": "#000",
+                  },
+                ]
+              }
+            >
+              Click to reveal: 
+            </Text>
+            <Text
+              style={
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontWeight": "700",
+                  "textAlign": "left",
+                }
+              }
+            >
+              <Text
+                accessibilityLabel="secret"
+                style={
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 16,
+                      "lineHeight": 22,
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                    {
+                      "backgroundColor": "#000",
+                      "color": "#000",
+                    },
+                  ]
+                }
+              >
+                secret
+              </Text>
+            </Text>
+            <Text
+              accessibilityLabel=" "
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                  {
+                    "backgroundColor": "#000",
+                    "color": "#000",
+                  },
+                ]
+              }
+            >
+               
+            </Text>
+            <Text
+              style={
+                {
+                  "fontStyle": "italic",
+                }
+              }
+            >
+              <Text
+                accessibilityLabel="message"
+                style={
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 16,
+                      "lineHeight": 22,
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                    {
+                      "backgroundColor": "#000",
+                      "color": "#000",
+                    },
+                  ]
+                }
+              >
+                message
+              </Text>
+            </Text>
+            <Text
+              accessibilityLabel=" with "
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                  {
+                    "backgroundColor": "#000",
+                    "color": "#000",
+                  },
+                ]
+              }
+            >
+               with 
+            </Text>
+            <Text
+              onLongPress={[Function]}
+              onPress={[Function]}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#095AD2",
+                  },
+                  {
+                    "backgroundColor": "#000",
+                    "color": "#000",
+                  },
+                ]
+              }
+            >
+              link
+            </Text>
+          </Text>
+        </Text>
+      </Text>
+    </View>
+  </View>
+</RCTScrollView>
+`;
+
 exports[`Story Snapshots: Text should match snapshot 1`] = `
 <View
   style={
@@ -3531,6 +5617,7 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -3551,6 +5638,7 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
               {
                 "color": "#095AD2",
               },
+              undefined,
             ]
           }
         >
@@ -3606,6 +5694,7 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -3661,6 +5750,7 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -3708,6 +5798,7 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -3755,6 +5846,7 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -3809,6 +5901,7 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -3870,6 +5963,7 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -3925,6 +6019,7 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -3980,6 +6075,7 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -4007,6 +6103,7 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
                 {
                   "color": "#2F343D",
                 },
+                undefined,
               ]
             }
           >
@@ -4025,6 +6122,7 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -4049,6 +6147,7 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
                 {
                   "color": "#2F343D",
                 },
+                undefined,
               ]
             }
           >
@@ -4067,6 +6166,7 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -4091,6 +6191,7 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
                 {
                   "color": "#2F343D",
                 },
+                undefined,
               ]
             }
           >
@@ -4109,6 +6210,7 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -4143,6 +6245,7 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
                   {
                     "color": "#2F343D",
                   },
+                  undefined,
                 ]
               }
             >
@@ -4162,6 +6265,7 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -4196,6 +6300,7 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
                   {
                     "color": "#2F343D",
                   },
+                  undefined,
                 ]
               }
             >
@@ -4215,6 +6320,7 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -4256,6 +6362,7 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
                     {
                       "color": "#2F343D",
                     },
+                    undefined,
                   ]
                 }
               >
@@ -4276,6 +6383,7 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -4307,6 +6415,7 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
                   {
                     "color": "#2F343D",
                   },
+                  undefined,
                 ]
               }
             >
@@ -4381,6 +6490,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                 "color": "red",
                 "fontSize": 10,
               },
+              undefined,
             ]
           }
         >
@@ -4412,6 +6522,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                   "color": "red",
                   "fontSize": 10,
                 },
+                undefined,
               ]
             }
           >
@@ -4434,6 +6545,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                 "color": "red",
                 "fontSize": 10,
               },
+              undefined,
             ]
           }
         >
@@ -4462,6 +6574,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                   "color": "red",
                   "fontSize": 10,
                 },
+                undefined,
               ]
             }
           >
@@ -4484,6 +6597,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                 "color": "red",
                 "fontSize": 10,
               },
+              undefined,
             ]
           }
         >
@@ -4512,6 +6626,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                   "color": "red",
                   "fontSize": 10,
                 },
+                undefined,
               ]
             }
           >
@@ -4534,6 +6649,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                 "color": "red",
                 "fontSize": 10,
               },
+              undefined,
             ]
           }
         >
@@ -4572,6 +6688,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                     "color": "red",
                     "fontSize": 10,
                   },
+                  undefined,
                 ]
               }
             >
@@ -4595,6 +6712,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                 "color": "red",
                 "fontSize": 10,
               },
+              undefined,
             ]
           }
         >
@@ -4633,6 +6751,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                     "color": "red",
                     "fontSize": 10,
                   },
+                  undefined,
                 ]
               }
             >
@@ -4656,6 +6775,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                 "color": "red",
                 "fontSize": 10,
               },
+              undefined,
             ]
           }
         >
@@ -4701,6 +6821,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                       "color": "red",
                       "fontSize": 10,
                     },
+                    undefined,
                   ]
                 }
               >
@@ -4725,6 +6846,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                 "color": "red",
                 "fontSize": 10,
               },
+              undefined,
             ]
           }
         >
@@ -4760,6 +6882,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                     "color": "red",
                     "fontSize": 10,
                   },
+                  undefined,
                 ]
               }
             >
@@ -4823,6 +6946,8 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
               {
                 "color": "#9B1325",
               },
+              undefined,
+              undefined,
             ]
           }
         >
@@ -4844,6 +6969,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                 "color": "red",
                 "fontSize": 10,
               },
+              undefined,
             ]
           }
         >
@@ -4867,6 +6993,8 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
               {
                 "color": "#8E6300",
               },
+              undefined,
+              undefined,
             ]
           }
         >
@@ -4888,6 +7016,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                 "color": "red",
                 "fontSize": 10,
               },
+              undefined,
             ]
           }
         >
@@ -4910,6 +7039,8 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
               {
                 "color": "#974809",
               },
+              undefined,
+              undefined,
             ]
           }
         >
@@ -4931,6 +7062,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                 "color": "red",
                 "fontSize": 10,
               },
+              undefined,
             ]
           }
         >
@@ -4953,6 +7085,8 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
               {
                 "color": "#974809",
               },
+              undefined,
+              undefined,
             ]
           }
         >
@@ -4974,6 +7108,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                 "color": "red",
                 "fontSize": 10,
               },
+              undefined,
             ]
           }
         >
@@ -4997,6 +7132,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -5018,6 +7154,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                 "color": "red",
                 "fontSize": 10,
               },
+              undefined,
             ]
           }
         >
@@ -5040,6 +7177,8 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
               {
                 "color": "#8E6300",
               },
+              undefined,
+              undefined,
             ]
           }
         >
@@ -5101,6 +7240,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
               {
                 "color": "#095AD2",
               },
+              undefined,
             ]
           }
         >
@@ -5122,6 +7262,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                 "color": "red",
                 "fontSize": 10,
               },
+              undefined,
             ]
           }
         >
@@ -5145,6 +7286,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -5233,6 +7375,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                     "color": "red",
                     "fontSize": 10,
                   },
+                  undefined,
                 ]
               }
             >
@@ -5286,6 +7429,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
                 "color": "red",
                 "fontSize": 10,
               },
+              undefined,
             ]
           }
         >
@@ -5348,6 +7492,7 @@ exports[`Story Snapshots: TextStyle should match snapshot 1`] = `
               {
                 "color": "#095AD2",
               },
+              undefined,
             ]
           }
         >
@@ -5416,6 +7561,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -5490,6 +7636,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -5564,6 +7711,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -5638,6 +7786,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -5712,6 +7861,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -5786,6 +7936,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
@@ -5860,6 +8011,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
               {
                 "color": "#2F343D",
               },
+              undefined,
             ]
           }
         >
