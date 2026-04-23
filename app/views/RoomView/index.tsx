@@ -787,7 +787,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.resetAction();
 	};
 
-	onEditRequest = async (message: Pick<IMessage, 'id' | 'msg' | 'rid'>) => {
+	onEditRequest = async (message: Pick<IMessage, 'id' | 'msg' | 'rid'> & { attachments?: { description: string }[] }) => {
 		try {
 			this.resetAction();
 			await editMessage(message);

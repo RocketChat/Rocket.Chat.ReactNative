@@ -9,6 +9,7 @@ import { useActionSheet } from '../../../ActionSheet';
 import { CustomIcon } from '../../../CustomIcon';
 import Touch from '../../../Touch';
 import { AttachmentActionSheet } from './AttachmentActionSheet';
+import { useRoomContext } from '../../../../views/RoomView/context';
 
 const THUMB_SIZE = 64;
 
@@ -68,6 +69,8 @@ export const ComposerAttachments = memo(() => {
 	const { removeAttachment, updateAttachment } = useMessageComposerApi();
 	const { colors } = useTheme();
 	const { showActionSheet } = useActionSheet();
+	const { action } = useRoomContext();
+	const isEditMode = action === 'edit';
 
 	if (!attachments.length) {
 		return null;
@@ -96,21 +99,23 @@ export const ComposerAttachments = memo(() => {
 					testID={`message-composer-attachment-${index}`}>
 					<>
 						<ThumbContent path={item.path} mime={item.mime} />
-						<RectButton
-							hitSlop={BUTTON_HIT_SLOP}
-							style={[
-								styles.removeButton,
-								{
-									backgroundColor: colors.fontDefault,
-									borderColor: colors.surfaceRoom
-								}
-							]}
-							rippleColor={colors.surfaceNeutral}
-							onPress={() => removeAttachment(item.path)}
-							testID={`message-composer-remove-attachment-${index}`}>
-							<CustomIcon name='close' color={colors.surfaceRoom} size={14} />
-						</RectButton>
-						{!item.canUpload ? (
+						{!isEditMode ? (
+							<RectButton
+								hitSlop={BUTTON_HIT_SLOP}
+								style={[
+									styles.removeButton,
+									{
+										backgroundColor: colors.fontDefault,
+										borderColor: colors.surfaceRoom
+									}
+								]}
+								rippleColor={colors.surfaceNeutral}
+								onPress={() => removeAttachment(item.path)}
+								testID={`message-composer-remove-attachment-${index}`}>
+								<CustomIcon name='close' color={colors.surfaceRoom} size={14} />
+							</RectButton>
+						) : null}
+						{!isEditMode && !item.canUpload ? (
 							<CustomIcon name='warning' size={18} color={colors.buttonBackgroundDangerDefault} style={styles.warningIcon} />
 						) : null}
 					</>
