@@ -47,12 +47,13 @@ const DirectoryOptions = ({
 				isSelected={propType === itemType}
 				onPress={() => changeType(itemType)}
 				left={() => <CustomIcon name={icon} size={22} color={colors.fontDefault} style={styles.filterItemIcon} />}
+				testID={`directory-switch-${itemType}`}
 			/>
 		);
 	};
 
 	return (
-		<View style={{ backgroundColor: colors.surfaceRoom, marginBottom: insets.bottom }}>
+		<List.Container contentContainerStyle={{ backgroundColor: colors.surfaceRoom, marginBottom: insets.bottom }}>
 			<List.Separator />
 			{renderItem('channels')}
 			<List.Separator />
@@ -70,11 +71,11 @@ const DirectoryOptions = ({
 								{I18n.t('Search_global_users_description')}
 							</Text>
 						</View>
-						<Switch value={globalUsers} onValueChange={toggleWorkspace} />
+						<Switch value={globalUsers} onValueChange={toggleWorkspace} testID='directory-switch-global-users' />
 					</View>
 				</>
 			) : null}
-		</View>
+		</List.Container>
 	);
 };
 

@@ -5,7 +5,7 @@ import { BlockContext } from '@rocket.chat/ui-kit';
 
 import ImageContainer from '../message/Components/Attachments/Image';
 import Navigation from '../../lib/navigation/appNavigation';
-import { type IThumb, type IImage, type IElement } from './interfaces';
+import { type IThumb, type IImage } from './interfaces';
 import { type IAttachment } from '../../definitions';
 
 const styles = StyleSheet.create({
@@ -33,7 +33,7 @@ export const Media = ({ element }: IImage) => {
 	return <ImageContainer file={{ image_url: imageUrl }} showAttachment={showAttachment} />;
 };
 
-const genericImage = (element: IElement, context?: number) => {
+const genericImage = ({ element, context }: IImage) => {
 	switch (context) {
 		case BlockContext.SECTION:
 			return <Thumb element={element} />;
@@ -44,4 +44,4 @@ const genericImage = (element: IElement, context?: number) => {
 	}
 };
 
-export const Image = ({ element, context }: IImage) => genericImage(element, context);
+export const Image = (props: IImage) => genericImage(props);

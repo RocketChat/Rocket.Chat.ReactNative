@@ -178,3 +178,21 @@ export const Timestamp = () => (
 		<Markdown msg='R - Relative time: <t:2025-01-01T00:00:00.000+00:00:R>' />
 	</View>
 );
+
+const textStyle = { fontSize: 10, color: 'red' };
+export const TextStyle = () => (
+	<View style={styles.container}>
+		<Markdown
+			msg='Emphasis: *bold* _italic_ ~strikethrough~ *_bold with italic_* *~bold with strike~* *_~bold with italic and strike~_* _~italic with strike~_'
+			textStyle={textStyle}
+		/>
+		<Markdown msg={msgMentions} mentions={mentions} username='rocket.cat' textStyle={textStyle} />
+		<Markdown msg='#test-channel #unknown' channels={[{ _id: '123', name: 'test-channel' }]} textStyle={textStyle} />
+		<Markdown
+			msg={`> This is block quote
+this is a normal line`}
+			textStyle={textStyle}
+		/>
+		<Markdown msg='[Markdown link](https://rocket.chat)' textStyle={textStyle} />
+	</View>
+);

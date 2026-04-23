@@ -90,7 +90,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode VERSIONCODE as Integer
-        versionName "4.71.0"
+        versionName "4.72.0"
         vectorDrawables.useSupportLibrary = true
         manifestPlaceholders = [BugsnagAPIKey: BugsnagAPIKey as String]
         resValue "string", "rn_config_reader_custom_package", "chat.rocket.reactnative"
@@ -152,6 +152,9 @@ dependencies {
     
     // For SecureKeystore (EncryptedSharedPreferences)
     implementation 'androidx.security:security-crypto:1.1.0'
+
+    // For ProcessLifecycleOwner (app foreground detection)
+    implementation 'androidx.lifecycle:lifecycle-process:2.8.7'
 }
 
 apply plugin: 'com.google.gms.google-services'
