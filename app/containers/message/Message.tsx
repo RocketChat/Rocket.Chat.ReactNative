@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useRef } from 'react';
 import { View, type ViewStyle } from 'react-native';
 import { A11y } from 'react-native-a11y-order';
 
@@ -27,6 +27,7 @@ import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResp
 import Quote from './Components/Attachments/Quote';
 import translationLanguages from '../../lib/constants/translationLanguages';
 import Touch from './Touch';
+import { setLastFocusedMessageRef } from '../../lib/a11y/lastFocusedMessage';
 
 const MessageInner = React.memo((props: IMessageInner) => {
 	const { isLargeFontScale } = useResponsiveLayout();
@@ -217,6 +218,7 @@ Message.displayName = 'Message';
 const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 	const { onPress, onLongPress } = useContext(MessageContext);
 	const { colors } = useTheme();
+	const touchRef = useRef<View>(null);
 
 	let backgroundColor = undefined;
 	if (props.isBeingEdited) {
@@ -234,14 +236,30 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 		);
 	}
 
+	const isDisabled =
+		(props.isInfo && !props.isThreadReply) || props.archived || props.isTemp || props.type === 'jitsi_call_started';
+
+	const handleLongPress = () => {
+		setLastFocusedMessageRef(touchRef);
+		onLongPress();
+	};
+
 	return (
 		<A11y.Order>
 			<A11y.Index index={1}>
 				<Touch
-					onLongPress={onLongPress}
+					ref={touchRef}
+					onLongPress={handleLongPress}
 					onPress={onPress}
-					disabled={
-						(props.isInfo && !props.isThreadReply) || props.archived || props.isTemp || props.type === 'jitsi_call_started'
+					disabled={isDisabled}
+					accessibilityHint={!isDisabled ? i18n.t('Long_press_to_open_message_actions') : undefined}
+					accessibilityActions={!isDisabled ? [{ name: 'longPress', label: i18n.t('Open_message_actions') }] : undefined}
+					onAccessibilityAction={
+						!isDisabled
+							? e => {
+									if (e.nativeEvent.actionName === 'longPress') handleLongPress();
+							  }
+							: undefined
 					}
 					style={{ backgroundColor }}>
 					<Message {...props} />

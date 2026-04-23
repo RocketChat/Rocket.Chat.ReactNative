@@ -469,6 +469,16 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
           }
         >
           <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Open message actions",
+                  "name": "longPress",
+                },
+              ]
+            }
+            accessibilityHint="Long press to open message actions"
+            onAccessibilityAction={[Function]}
             style={{}}
           >
             <View
@@ -872,6 +882,16 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
           }
         >
           <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Open message actions",
+                  "name": "longPress",
+                },
+              ]
+            }
+            accessibilityHint="Long press to open message actions"
+            onAccessibilityAction={[Function]}
             style={{}}
           >
             <View
@@ -1065,6 +1085,16 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
           }
         >
           <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Open message actions",
+                  "name": "longPress",
+                },
+              ]
+            }
+            accessibilityHint="Long press to open message actions"
+            onAccessibilityAction={[Function]}
             style={{}}
           >
             <View
@@ -1424,6 +1454,16 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
           }
         >
           <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Open message actions",
+                  "name": "longPress",
+                },
+              ]
+            }
+            accessibilityHint="Long press to open message actions"
+            onAccessibilityAction={[Function]}
             style={{}}
           >
             <View
@@ -1827,6 +1867,16 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
           }
         >
           <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Open message actions",
+                  "name": "longPress",
+                },
+              ]
+            }
+            accessibilityHint="Long press to open message actions"
+            onAccessibilityAction={[Function]}
             style={{}}
           >
             <View
@@ -2020,6 +2070,16 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
           }
         >
           <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Open message actions",
+                  "name": "longPress",
+                },
+              ]
+            }
+            accessibilityHint="Long press to open message actions"
+            onAccessibilityAction={[Function]}
             style={{}}
           >
             <View
@@ -2213,6 +2273,16 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
           }
         >
           <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Open message actions",
+                  "name": "longPress",
+                },
+              ]
+            }
+            accessibilityHint="Long press to open message actions"
+            onAccessibilityAction={[Function]}
             style={{}}
           >
             <View
@@ -2712,6 +2782,16 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
           }
         >
           <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Open message actions",
+                  "name": "longPress",
+                },
+              ]
+            }
+            accessibilityHint="Long press to open message actions"
+            onAccessibilityAction={[Function]}
             style={{}}
           >
             <View
@@ -3115,6 +3195,16 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
           }
         >
           <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Open message actions",
+                  "name": "longPress",
+                },
+              ]
+            }
+            accessibilityHint="Long press to open message actions"
+            onAccessibilityAction={[Function]}
             style={{}}
           >
             <View
@@ -3308,6 +3398,16 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
           }
         >
           <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Open message actions",
+                  "name": "longPress",
+                },
+              ]
+            }
+            accessibilityHint="Long press to open message actions"
+            onAccessibilityAction={[Function]}
             style={{}}
           >
             <View
@@ -3667,6 +3767,16 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
           }
         >
           <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Open message actions",
+                  "name": "longPress",
+                },
+              ]
+            }
+            accessibilityHint="Long press to open message actions"
+            onAccessibilityAction={[Function]}
             style={{}}
           >
             <View
@@ -4070,6 +4180,16 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
           }
         >
           <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Open message actions",
+                  "name": "longPress",
+                },
+              ]
+            }
+            accessibilityHint="Long press to open message actions"
+            onAccessibilityAction={[Function]}
             style={{}}
           >
             <View
@@ -4263,6 +4383,16 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
           }
         >
           <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Open message actions",
+                  "name": "longPress",
+                },
+              ]
+            }
+            accessibilityHint="Long press to open message actions"
+            onAccessibilityAction={[Function]}
             style={{}}
           >
             <View
@@ -4456,6 +4586,16 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
           }
         >
           <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Open message actions",
+                  "name": "longPress",
+                },
+              ]
+            }
+            accessibilityHint="Long press to open message actions"
+            onAccessibilityAction={[Function]}
             style={{}}
           >
             <View
@@ -4955,6 +5095,16 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
           }
         >
           <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Open message actions",
+                  "name": "longPress",
+                },
+              ]
+            }
+            accessibilityHint="Long press to open message actions"
+            onAccessibilityAction={[Function]}
             style={{}}
           >
             <View
@@ -5358,6 +5508,16 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
           }
         >
           <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Open message actions",
+                  "name": "longPress",
+                },
+              ]
+            }
+            accessibilityHint="Long press to open message actions"
+            onAccessibilityAction={[Function]}
             style={{}}
           >
             <View
@@ -5551,6 +5711,16 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
           }
         >
           <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Open message actions",
+                  "name": "longPress",
+                },
+              ]
+            }
+            accessibilityHint="Long press to open message actions"
+            onAccessibilityAction={[Function]}
             style={{}}
           >
             <View
@@ -5910,6 +6080,16 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
           }
         >
           <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Open message actions",
+                  "name": "longPress",
+                },
+              ]
+            }
+            accessibilityHint="Long press to open message actions"
+            onAccessibilityAction={[Function]}
             style={{}}
           >
             <View
@@ -6313,6 +6493,16 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
           }
         >
           <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Open message actions",
+                  "name": "longPress",
+                },
+              ]
+            }
+            accessibilityHint="Long press to open message actions"
+            onAccessibilityAction={[Function]}
             style={{}}
           >
             <View
@@ -6506,6 +6696,16 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
           }
         >
           <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Open message actions",
+                  "name": "longPress",
+                },
+              ]
+            }
+            accessibilityHint="Long press to open message actions"
+            onAccessibilityAction={[Function]}
             style={{}}
           >
             <View
@@ -6699,6 +6899,16 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
           }
         >
           <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Open message actions",
+                  "name": "longPress",
+                },
+              ]
+            }
+            accessibilityHint="Long press to open message actions"
+            onAccessibilityAction={[Function]}
             style={{}}
           >
             <View
