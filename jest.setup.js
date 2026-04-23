@@ -74,6 +74,12 @@ jest.mock('expo-audio', () => {
 		DuckOthers: 2,
 		MixWithOthers: 3
 	};
+	const AudioQuality = {
+		MEDIUM: 0x40
+	};
+	const IOSOutputFormat = {
+		MPEG4AAC: 'mpeg4aac'
+	};
 
 	const mockAudioPlayer = {
 		play: jest.fn(),
@@ -180,7 +186,9 @@ jest.mock('expo-audio', () => {
 			}
 		},
 		InterruptionModeAndroid,
-		InterruptionModeIOS
+		InterruptionModeIOS,
+		AudioQuality,
+		IOSOutputFormat
 	};
 });
 
