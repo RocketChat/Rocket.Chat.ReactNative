@@ -102,8 +102,7 @@ const AttachmentView = (): React.ReactElement => {
 	const [loading, setLoading] = React.useState(true);
 	const { colors } = useTheme();
 	const isAltTextSupported = useAltTextSupported();
-	const altText =
-		isAltTextSupported && attachment.image_url ? attachment.description ?? attachment.altText : undefined;
+	const altText = isAltTextSupported && attachment.image_url ? attachment.description ?? attachment.altText : undefined;
 
 	const { baseUrl, user, Allow_Save_Media_to_Gallery } = useAppSelector(
 		state => ({
