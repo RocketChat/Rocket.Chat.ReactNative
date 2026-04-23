@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, type TextStyle } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import { type Italic as ItalicProps } from '@rocket.chat/message-parser';
 
 import { Bold, Link, Strike } from './index';
@@ -7,7 +7,6 @@ import Plain from '../Plain';
 
 interface IItalicProps {
 	value: ItalicProps['value'];
-	style?: TextStyle;
 }
 
 const styles = StyleSheet.create({
@@ -16,25 +15,27 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Italic = ({ value, style }: IItalicProps) => (
-	<Text style={[styles.text, style]}>
-		{value.map(block => {
-			switch (block.type) {
-				case 'LINK':
-					return <Link value={block.value} style={style} />;
-				case 'PLAIN_TEXT':
-					return <Plain value={block.value} style={style} />;
-				case 'STRIKE':
-					return <Strike value={block.value} style={style} />;
-				case 'BOLD':
-					return <Bold value={block.value} style={style} />;
-				case 'MENTION_CHANNEL':
-					return <Plain value={`#${block.value.value}`} style={style} />;
-				default:
-					return null;
-			}
-		})}
-	</Text>
-);
+const Italic = ({ value }: IItalicProps) => {
+	return (
+		<Text style={styles.text}>
+			{value.map(block => {
+				switch (block.type) {
+					case 'LINK':
+						return <Link value={block.value} />;
+					case 'PLAIN_TEXT':
+						return <Plain value={block.value} />;
+					case 'STRIKE':
+						return <Strike value={block.value} />;
+					case 'BOLD':
+						return <Bold value={block.value} />;
+					case 'MENTION_CHANNEL':
+						return <Plain value={`#${block.value.value}`} />;
+					default:
+						return null;
+				}
+			})}
+		</Text>
+	);
+};
 
 export default Italic;

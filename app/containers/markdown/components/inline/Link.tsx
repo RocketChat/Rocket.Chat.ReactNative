@@ -11,6 +11,7 @@ import openLink from '../../../../lib/methods/helpers/openLink';
 import EventEmitter from '../../../../lib/methods/helpers/events';
 import { themes } from '../../../../lib/constants/colors';
 import MarkdownContext from '../../contexts/MarkdownContext';
+import { SpoilerContext } from './Spoiler';
 import styles from '../../styles';
 
 interface ILinkProps {
@@ -19,12 +20,16 @@ interface ILinkProps {
 	disabled?: boolean;
 }
 
-const Link = ({ value, style, disabled = false }: ILinkProps) => {
+const Link = ({ value, disabled = false }: ILinkProps) => {
 	const { theme } = useTheme();
 	const { onLinkPress, textStyle } = useContext(MarkdownContext);
+	const { isRevealed, spoilerStyle } = useContext(SpoilerContext);
 	const { src, label } = value;
+
+	const isDisabled = disabled || !isRevealed;
+
 	const handlePress = () => {
-		if (!src.value) {
+		if (isDisabled || !src.value) {
 			return;
 		}
 		if (process.env.RUNNING_E2E_TESTS === 'true') {
@@ -38,7 +43,7 @@ const Link = ({ value, style, disabled = false }: ILinkProps) => {
 	};
 
 	const onLongPress = () => {
-		if (!src.value) {
+		if (isDisabled || !src.value) {
 			return;
 		}
 		if (process.env.RUNNING_E2E_TESTS === 'true') {
@@ -51,7 +56,7 @@ const Link = ({ value, style, disabled = false }: ILinkProps) => {
 
 	return (
 		<Text
-			style={[styles.link, ...(textStyle ? [textStyle] : []), { color: themes[theme].fontInfo }]}
+			style={[styles.link, ...(textStyle ? [textStyle] : []), { color: themes[theme].fontInfo }, spoilerStyle]}
 			onPress={handlePress}
 			onLongPress={onLongPress}>
 			{(block => {
