@@ -341,7 +341,7 @@ class VoipNotification(private val context: Context) {
                     }
                     val appCtx = context.applicationContext
                     disconnectIncomingCall(callId, false)
-                    cancelById(appCtx, 0)
+                    cancelById(appCtx, callId.hashCode())
                     ddpRegistry.stopClient(callId)
                     // Stash failure payload for JS: it will show error toast on getInitialEvents.
                     VoipModule.storeAcceptFailureForJs(VoipPayload(
