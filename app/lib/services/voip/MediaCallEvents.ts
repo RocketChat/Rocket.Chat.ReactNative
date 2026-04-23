@@ -89,7 +89,7 @@ function handleVoipAcceptSucceededFromNative(data: VoipPayload, adapters: MediaC
 	if (callId) {
 		lastHandledVoipAcceptSucceededCallId = callId;
 	}
-	mediaCallLogger.log(`${TAG} VoipAcceptSucceeded:`, data);
+	mediaCallLogger.debug(`${TAG} VoipAcceptSucceeded:`, data);
 	NativeVoipModule.clearInitialEvents();
 	useCallStore.getState().setNativeAcceptedCallId(data.callId);
 	if (data.host && isVoipIncomingHostCurrentWorkspace(data.host, adapters.getActiveServerUrl)) {
@@ -115,7 +115,7 @@ export const setupMediaCallEvents = (adapters: MediaCallEventsAdapters): (() => 
 	if (isIOS) {
 		subscriptions.push(
 			Emitter.addListener('VoipPushTokenRegistered', ({ token }: { token: string }) => {
-				mediaCallLogger.log(`${TAG} Registered VoIP push token:`, token);
+				mediaCallLogger.debug(`${TAG} Registered VoIP push token:`, token);
 				registerPushToken().catch(error => {
 					mediaCallLogger.warn(`${TAG} Failed to register push token after VoIP update:`, error);
 				});
@@ -198,7 +198,7 @@ export const setupMediaCallEvents = (adapters: MediaCallEventsAdapters): (() => 
 
 	subscriptions.push(
 		Emitter.addListener(EVENT_VOIP_ACCEPT_FAILED, (data: VoipPayload & { voipAcceptFailed?: boolean }) => {
-			mediaCallLogger.log(`${TAG} VoipAcceptFailed event:`, data);
+			mediaCallLogger.debug(`${TAG} VoipAcceptFailed event:`, data);
 			dispatchVoipAcceptFailureFromNative({ ...data, voipAcceptFailed: true }, adapters.onOpenDeepLink);
 			NativeVoipModule.clearInitialEvents();
 		})
@@ -221,7 +221,7 @@ export const getInitialMediaCallEvents = async (adapters: MediaCallEventsAdapter
 			RNCallKeep.clearInitialEvents();
 			return false;
 		}
-		mediaCallLogger.log(`${TAG} Found initial events:`, initialEvents);
+		mediaCallLogger.debug(`${TAG} Found initial events:`, initialEvents);
 
 		if (initialEvents.voipAcceptFailed && initialEvents.callId && initialEvents.host) {
 			dispatchVoipAcceptFailureFromNative(initialEvents, adapters.onOpenDeepLink);
@@ -243,7 +243,7 @@ export const getInitialMediaCallEvents = async (adapters: MediaCallEventsAdapter
 		if (isIOS) {
 			const callKeepInitialEvents = await RNCallKeep.getInitialEvents();
 			RNCallKeep.clearInitialEvents();
-			mediaCallLogger.log(`${TAG} CallKeep initial events:`, JSON.stringify(callKeepInitialEvents, null, 2));
+			mediaCallLogger.debug(`${TAG} CallKeep initial events:`, JSON.stringify(callKeepInitialEvents, null, 2));
 
 			for (const event of callKeepInitialEvents) {
 				const { name, data } = event;

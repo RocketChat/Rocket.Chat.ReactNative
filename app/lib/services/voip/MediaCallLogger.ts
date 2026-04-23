@@ -2,7 +2,9 @@ import type { IMediaSignalLogger } from '@rocket.chat/media-signaling';
 
 export class MediaCallLogger implements IMediaSignalLogger {
 	log(...args: unknown[]): void {
-		console.log(`[Media Call] ${JSON.stringify(args)}`);
+		if (__DEV__) {
+			console.log(`[Media Call] ${JSON.stringify(args)}`);
+		}
 	}
 
 	debug(...args: unknown[]): void {
