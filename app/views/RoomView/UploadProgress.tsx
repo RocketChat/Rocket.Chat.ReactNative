@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 	},
 	item: {
 		height: 54,
-		borderBottomWidth: StyleSheet.hairlineWidth,
+		borderBottomWidth: 1,
 		justifyContent: 'center',
 		paddingHorizontal: 20
 	},

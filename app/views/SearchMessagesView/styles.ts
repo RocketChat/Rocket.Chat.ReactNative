@@ -12,7 +12,7 @@ export default StyleSheet.create({
 	},
 	divider: {
 		width: '100%',
-		height: StyleSheet.hairlineWidth,
+		height: 1,
 		marginVertical: 20
 	},
 	listEmptyContainer: {
