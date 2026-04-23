@@ -3,7 +3,7 @@ import { useHeaderHeight } from '@react-navigation/elements';
 import { useVideoPlayer, VideoView } from 'expo-video';
 import { useEventListener } from 'expo';
 import React from 'react';
-import { PermissionsAndroid, useWindowDimensions, View } from 'react-native';
+import { Alert, PermissionsAndroid, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
 import * as FileSystem from 'expo-file-system/legacy';
@@ -50,7 +50,8 @@ const VideoContent = ({
 		} else if (status === 'error') {
 			setLoading(false);
 			// surface the error to the user, similar to the previous expo-av behavior
-			// e.g. navigation.pop() + showErrorAlert(error?.message)
+			Alert.alert(I18n.t('Error'), I18n.t('There_was_an_error_while_action', { action: I18n.t('playing_video') }));
+			navigation.goBack();
 		}
 	});
 
