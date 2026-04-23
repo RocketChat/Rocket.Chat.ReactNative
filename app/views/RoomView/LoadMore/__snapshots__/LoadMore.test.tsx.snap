@@ -795,9 +795,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                         "fontSize": 16,
                                         "lineHeight": 22,
                                       },
-                                      {
-                                        "color": "#E4E7EA",
-                                      },
                                     ]
                                   }
                                 >
@@ -980,9 +977,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                         "flexShrink": 1,
                                         "fontSize": 16,
                                         "lineHeight": 22,
-                                      },
-                                      {
-                                        "color": "#E4E7EA",
                                       },
                                     ]
                                   }
@@ -1173,9 +1167,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                         "flexShrink": 1,
                                         "fontSize": 16,
                                         "lineHeight": 22,
-                                      },
-                                      {
-                                        "color": "#E4E7EA",
                                       },
                                     ]
                                   }
@@ -1750,9 +1741,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                         "fontSize": 16,
                                         "lineHeight": 22,
                                       },
-                                      {
-                                        "color": "#E4E7EA",
-                                      },
                                     ]
                                   }
                                 >
@@ -1935,9 +1923,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                         "flexShrink": 1,
                                         "fontSize": 16,
                                         "lineHeight": 22,
-                                      },
-                                      {
-                                        "color": "#E4E7EA",
                                       },
                                     ]
                                   }
@@ -2128,9 +2113,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                         "flexShrink": 1,
                                         "fontSize": 16,
                                         "lineHeight": 22,
-                                      },
-                                      {
-                                        "color": "#E4E7EA",
                                       },
                                     ]
                                   }
@@ -2538,9 +2520,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                         "flexShrink": 1,
                                         "fontSize": 16,
                                         "lineHeight": 22,
-                                      },
-                                      {
-                                        "color": "#E4E7EA",
                                       },
                                     ]
                                   }
@@ -3038,9 +3017,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                         "fontSize": 16,
                                         "lineHeight": 22,
                                       },
-                                      {
-                                        "color": "#E4E7EA",
-                                      },
                                     ]
                                   }
                                 >
@@ -3223,9 +3199,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                         "flexShrink": 1,
                                         "fontSize": 16,
                                         "lineHeight": 22,
-                                      },
-                                      {
-                                        "color": "#E4E7EA",
                                       },
                                     ]
                                   }
@@ -3416,9 +3389,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                         "flexShrink": 1,
                                         "fontSize": 16,
                                         "lineHeight": 22,
-                                      },
-                                      {
-                                        "color": "#E4E7EA",
                                       },
                                     ]
                                   }
@@ -3993,9 +3963,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                         "fontSize": 16,
                                         "lineHeight": 22,
                                       },
-                                      {
-                                        "color": "#E4E7EA",
-                                      },
                                     ]
                                   }
                                 >
@@ -4178,9 +4145,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                         "flexShrink": 1,
                                         "fontSize": 16,
                                         "lineHeight": 22,
-                                      },
-                                      {
-                                        "color": "#E4E7EA",
                                       },
                                     ]
                                   }
@@ -4371,9 +4335,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                         "flexShrink": 1,
                                         "fontSize": 16,
                                         "lineHeight": 22,
-                                      },
-                                      {
-                                        "color": "#E4E7EA",
                                       },
                                     ]
                                   }
@@ -4781,9 +4742,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                         "flexShrink": 1,
                                         "fontSize": 16,
                                         "lineHeight": 22,
-                                      },
-                                      {
-                                        "color": "#E4E7EA",
                                       },
                                     ]
                                   }
@@ -5281,9 +5239,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                         "fontSize": 16,
                                         "lineHeight": 22,
                                       },
-                                      {
-                                        "color": "#2F343D",
-                                      },
                                     ]
                                   }
                                 >
@@ -5466,9 +5421,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                         "flexShrink": 1,
                                         "fontSize": 16,
                                         "lineHeight": 22,
-                                      },
-                                      {
-                                        "color": "#2F343D",
                                       },
                                     ]
                                   }
@@ -5659,9 +5611,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                         "flexShrink": 1,
                                         "fontSize": 16,
                                         "lineHeight": 22,
-                                      },
-                                      {
-                                        "color": "#2F343D",
                                       },
                                     ]
                                   }
@@ -6236,9 +6185,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                         "fontSize": 16,
                                         "lineHeight": 22,
                                       },
-                                      {
-                                        "color": "#2F343D",
-                                      },
                                     ]
                                   }
                                 >
@@ -6421,9 +6367,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                         "flexShrink": 1,
                                         "fontSize": 16,
                                         "lineHeight": 22,
-                                      },
-                                      {
-                                        "color": "#2F343D",
                                       },
                                     ]
                                   }
@@ -6614,9 +6557,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                         "flexShrink": 1,
                                         "fontSize": 16,
                                         "lineHeight": 22,
-                                      },
-                                      {
-                                        "color": "#2F343D",
                                       },
                                     ]
                                   }
@@ -7024,9 +6964,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                         "flexShrink": 1,
                                         "fontSize": 16,
                                         "lineHeight": 22,
-                                      },
-                                      {
-                                        "color": "#2F343D",
                                       },
                                     ]
                                   }
