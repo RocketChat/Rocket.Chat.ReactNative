@@ -46,9 +46,6 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
-	inner: {
-		flex: 1
-	},
 	avatar: {
 		marginRight: 10
 	},
@@ -112,7 +109,7 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifie
 			<Touch style={styles.content} onPress={onPress} hitSlop={BUTTON_HIT_SLOP} testID={`in-app-notification-${text}`}>
 				<>
 					<Avatar text={avatar} size={AVATAR_SIZE} type={type} rid={rid} style={styles.avatar} />
-					<View style={styles.inner}>
+					<View>
 						<Text style={[styles.roomName, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
 							{title}
 						</Text>

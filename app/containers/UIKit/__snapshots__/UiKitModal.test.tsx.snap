@@ -29,13 +29,13 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
       Title
     </Text>
     <A11yOrderView
-      orderKey=":r0:"
+      orderKey="«r0»"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey=":r0:"
+        orderKey="«r0»"
       >
         <View
           style={
@@ -172,6 +172,9 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
+                  },
+                  {
+                    "fontSize": 14,
                   },
                 ]
               }
@@ -718,13 +721,13 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
       Description
     </Text>
     <A11yOrderView
-      orderKey=":r1:"
+      orderKey="«r1»"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey=":r1:"
+        orderKey="«r1»"
       >
         <View
           style={
@@ -880,6 +883,9 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
                     {
                       "color": "#2F343D",
                     },
+                    {
+                      "fontSize": 14,
+                    },
                   ]
                 }
               >
@@ -897,6 +903,9 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
+                  },
+                  {
+                    "fontSize": 14,
                   },
                 ]
               }
@@ -971,6 +980,9 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
                   {
                     "color": "#2F343D",
                   },
+                  {
+                    "fontSize": 14,
+                  },
                 ]
               }
             >
@@ -1002,42 +1014,53 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Primary Action"
       accessibilityRole="button"
+      activeOpacity={0.105}
       collapsable={false}
+      delayLongPress={600}
       enabled={true}
-      hitSlop={
-        {
-          "bottom": 0,
-          "left": 0,
-          "right": 0,
-          "top": 0,
-        }
-      }
-      rippleColor="transparent"
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
       style={
         [
-          {},
-          [
-            {
-              "justifyContent": "center",
-              "paddingHorizontal": 16,
-              "paddingVertical": 14,
-            },
-            {
-              "borderRadius": 4,
-              "marginBottom": 12,
-            },
-            {
-              "backgroundColor": "#156FF5",
-            },
-            {},
-            {
-              "marginBottom": 16,
-            },
-          ],
+          {
+            "backgroundColor": "#156FF5",
+            "borderRadius": 4,
+            "justifyContent": "center",
+            "marginBottom": 16,
+            "paddingHorizontal": 16,
+            "paddingVertical": 14,
+          },
+          {
+            "cursor": undefined,
+          },
         ]
       }
-      testOnly_onPress={[Function]}
+      underlayColor="black"
     >
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "black",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": 4,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
       <Text
         style={
           [
@@ -1063,42 +1086,53 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Secondary"
       accessibilityRole="button"
+      activeOpacity={0.105}
       collapsable={false}
+      delayLongPress={600}
       enabled={true}
-      hitSlop={
-        {
-          "bottom": 0,
-          "left": 0,
-          "right": 0,
-          "top": 0,
-        }
-      }
-      rippleColor="transparent"
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
       style={
         [
-          {},
-          [
-            {
-              "justifyContent": "center",
-              "paddingHorizontal": 16,
-              "paddingVertical": 14,
-            },
-            {
-              "borderRadius": 4,
-              "marginBottom": 12,
-            },
-            {
-              "backgroundColor": "#156FF5",
-            },
-            {},
-            {
-              "marginBottom": 16,
-            },
-          ],
+          {
+            "backgroundColor": "#156FF5",
+            "borderRadius": 4,
+            "justifyContent": "center",
+            "marginBottom": 16,
+            "paddingHorizontal": 16,
+            "paddingVertical": 14,
+          },
+          {
+            "cursor": undefined,
+          },
         ]
       }
-      testOnly_onPress={[Function]}
+      underlayColor="black"
     >
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "black",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": 4,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
       <Text
         style={
           [
@@ -1124,42 +1158,53 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Danger Action"
       accessibilityRole="button"
+      activeOpacity={0.105}
       collapsable={false}
+      delayLongPress={600}
       enabled={true}
-      hitSlop={
-        {
-          "bottom": 0,
-          "left": 0,
-          "right": 0,
-          "top": 0,
-        }
-      }
-      rippleColor="transparent"
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
       style={
         [
-          {},
-          [
-            {
-              "justifyContent": "center",
-              "paddingHorizontal": 16,
-              "paddingVertical": 14,
-            },
-            {
-              "borderRadius": 4,
-              "marginBottom": 12,
-            },
-            {
-              "backgroundColor": "#E4E7EA",
-            },
-            {},
-            {
-              "marginBottom": 16,
-            },
-          ],
+          {
+            "backgroundColor": "#E4E7EA",
+            "borderRadius": 4,
+            "justifyContent": "center",
+            "marginBottom": 16,
+            "paddingHorizontal": 16,
+            "paddingVertical": 14,
+          },
+          {
+            "cursor": undefined,
+          },
         ]
       }
-      testOnly_onPress={[Function]}
+      underlayColor="black"
     >
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "black",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": 4,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
       <Text
         style={
           [
@@ -1185,42 +1230,53 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Button 4"
       accessibilityRole="button"
+      activeOpacity={0.105}
       collapsable={false}
+      delayLongPress={600}
       enabled={true}
-      hitSlop={
-        {
-          "bottom": 0,
-          "left": 0,
-          "right": 0,
-          "top": 0,
-        }
-      }
-      rippleColor="transparent"
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
       style={
         [
-          {},
-          [
-            {
-              "justifyContent": "center",
-              "paddingHorizontal": 16,
-              "paddingVertical": 14,
-            },
-            {
-              "borderRadius": 4,
-              "marginBottom": 12,
-            },
-            {
-              "backgroundColor": "#156FF5",
-            },
-            {},
-            {
-              "marginBottom": 16,
-            },
-          ],
+          {
+            "backgroundColor": "#156FF5",
+            "borderRadius": 4,
+            "justifyContent": "center",
+            "marginBottom": 16,
+            "paddingHorizontal": 16,
+            "paddingVertical": 14,
+          },
+          {
+            "cursor": undefined,
+          },
         ]
       }
-      testOnly_onPress={[Function]}
+      underlayColor="black"
     >
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "black",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": 4,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
       <Text
         style={
           [
@@ -1246,42 +1302,53 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Button 5"
       accessibilityRole="button"
+      activeOpacity={0.105}
       collapsable={false}
+      delayLongPress={600}
       enabled={true}
-      hitSlop={
-        {
-          "bottom": 0,
-          "left": 0,
-          "right": 0,
-          "top": 0,
-        }
-      }
-      rippleColor="transparent"
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
       style={
         [
-          {},
-          [
-            {
-              "justifyContent": "center",
-              "paddingHorizontal": 16,
-              "paddingVertical": 14,
-            },
-            {
-              "borderRadius": 4,
-              "marginBottom": 12,
-            },
-            {
-              "backgroundColor": "#156FF5",
-            },
-            {},
-            {
-              "marginBottom": 16,
-            },
-          ],
+          {
+            "backgroundColor": "#156FF5",
+            "borderRadius": 4,
+            "justifyContent": "center",
+            "marginBottom": 16,
+            "paddingHorizontal": 16,
+            "paddingVertical": 14,
+          },
+          {
+            "cursor": undefined,
+          },
         ]
       }
-      testOnly_onPress={[Function]}
+      underlayColor="black"
     >
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "black",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": 4,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
       <Text
         style={
           [
@@ -1314,42 +1381,53 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Button 6 - Hidden"
       accessibilityRole="button"
+      activeOpacity={0.105}
       collapsable={false}
+      delayLongPress={600}
       enabled={true}
-      hitSlop={
-        {
-          "bottom": 0,
-          "left": 0,
-          "right": 0,
-          "top": 0,
-        }
-      }
-      rippleColor="transparent"
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
       style={
         [
-          {},
-          [
-            {
-              "justifyContent": "center",
-              "paddingHorizontal": 16,
-              "paddingVertical": 14,
-            },
-            {
-              "borderRadius": 4,
-              "marginBottom": 12,
-            },
-            {
-              "backgroundColor": "#156FF5",
-            },
-            {},
-            {
-              "marginBottom": 16,
-            },
-          ],
+          {
+            "backgroundColor": "#156FF5",
+            "borderRadius": 4,
+            "justifyContent": "center",
+            "marginBottom": 16,
+            "paddingHorizontal": 16,
+            "paddingVertical": 14,
+          },
+          {
+            "cursor": undefined,
+          },
         ]
       }
-      testOnly_onPress={[Function]}
+      underlayColor="black"
     >
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "black",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": 4,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
       <Text
         style={
           [
@@ -1382,42 +1460,53 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Button 7 - Hidden"
       accessibilityRole="button"
+      activeOpacity={0.105}
       collapsable={false}
+      delayLongPress={600}
       enabled={true}
-      hitSlop={
-        {
-          "bottom": 0,
-          "left": 0,
-          "right": 0,
-          "top": 0,
-        }
-      }
-      rippleColor="transparent"
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
       style={
         [
-          {},
-          [
-            {
-              "justifyContent": "center",
-              "paddingHorizontal": 16,
-              "paddingVertical": 14,
-            },
-            {
-              "borderRadius": 4,
-              "marginBottom": 12,
-            },
-            {
-              "backgroundColor": "#156FF5",
-            },
-            {},
-            {
-              "marginBottom": 16,
-            },
-          ],
+          {
+            "backgroundColor": "#156FF5",
+            "borderRadius": 4,
+            "justifyContent": "center",
+            "marginBottom": 16,
+            "paddingHorizontal": 16,
+            "paddingVertical": 14,
+          },
+          {
+            "cursor": undefined,
+          },
         ]
       }
-      testOnly_onPress={[Function]}
+      underlayColor="black"
     >
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "black",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": 4,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
       <Text
         style={
           [
@@ -1450,42 +1539,53 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Button 8 - Hidden"
       accessibilityRole="button"
+      activeOpacity={0.105}
       collapsable={false}
+      delayLongPress={600}
       enabled={true}
-      hitSlop={
-        {
-          "bottom": 0,
-          "left": 0,
-          "right": 0,
-          "top": 0,
-        }
-      }
-      rippleColor="transparent"
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
       style={
         [
-          {},
-          [
-            {
-              "justifyContent": "center",
-              "paddingHorizontal": 16,
-              "paddingVertical": 14,
-            },
-            {
-              "borderRadius": 4,
-              "marginBottom": 12,
-            },
-            {
-              "backgroundColor": "#156FF5",
-            },
-            {},
-            {
-              "marginBottom": 16,
-            },
-          ],
+          {
+            "backgroundColor": "#156FF5",
+            "borderRadius": 4,
+            "justifyContent": "center",
+            "marginBottom": 16,
+            "paddingHorizontal": 16,
+            "paddingVertical": 14,
+          },
+          {
+            "cursor": undefined,
+          },
         ]
       }
-      testOnly_onPress={[Function]}
+      underlayColor="black"
     >
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "black",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": 4,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
       <Text
         style={
           [
@@ -1510,40 +1610,53 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
   <RNGestureHandlerButton
     accessibilityLabel="Show more"
     accessibilityRole="button"
+    activeOpacity={0.105}
     collapsable={false}
+    delayLongPress={600}
     enabled={true}
-    hitSlop={
-      {
-        "bottom": 0,
-        "left": 0,
-        "right": 0,
-        "top": 0,
-      }
-    }
-    rippleColor="transparent"
+    handlerTag={-1}
+    handlerType="NativeViewGestureHandler"
+    innerRef={null}
+    onActiveStateChange={[Function]}
+    onGestureHandlerEvent={[Function]}
+    onGestureHandlerStateChange={[Function]}
+    onPress={[Function]}
     style={
       [
-        {},
-        [
-          {
-            "justifyContent": "center",
-            "paddingHorizontal": 16,
-            "paddingVertical": 14,
-          },
-          {
-            "borderRadius": 4,
-            "marginBottom": 12,
-          },
-          {
-            "backgroundColor": "#156FF5",
-          },
-          {},
-          undefined,
-        ],
+        {
+          "backgroundColor": "#156FF5",
+          "borderRadius": 4,
+          "justifyContent": "center",
+          "marginBottom": 12,
+          "paddingHorizontal": 16,
+          "paddingVertical": 14,
+        },
+        {
+          "cursor": undefined,
+        },
       ]
     }
-    testOnly_onPress={[Function]}
+    underlayColor="black"
   >
+    <View
+      collapsable={false}
+      style={
+        {
+          "backgroundColor": "black",
+          "borderBottomLeftRadius": undefined,
+          "borderBottomRightRadius": undefined,
+          "borderRadius": 4,
+          "borderTopLeftRadius": undefined,
+          "borderTopRightRadius": undefined,
+          "bottom": 0,
+          "left": 0,
+          "opacity": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
+      }
+    />
     <Text
       style={
         [
@@ -1631,6 +1744,9 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
                   {
                     "color": "#2F343D",
                   },
+                  {
+                    "fontSize": 14,
+                  },
                 ]
               }
             >
@@ -1658,6 +1774,9 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
                     {
                       "color": "#2F343D",
                     },
+                    {
+                      "fontSize": 14,
+                    },
                   ]
                 }
               >
@@ -1675,6 +1794,9 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
+                  },
+                  {
+                    "fontSize": 14,
                   },
                 ]
               }
@@ -1703,6 +1825,9 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
                     {
                       "color": "#2F343D",
                     },
+                    {
+                      "fontSize": 14,
+                    },
                   ]
                 }
               >
@@ -1720,6 +1845,9 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
+                  },
+                  {
+                    "fontSize": 14,
                   },
                 ]
               }
@@ -1853,6 +1981,9 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
                   {
                     "color": "#2F343D",
                   },
+                  {
+                    "fontSize": 14,
+                  },
                 ]
               }
             >
@@ -1867,7 +1998,7 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-      handlerTag={28}
+      handlerTag={-1}
       handlerType="NativeViewGestureHandler"
       hitSlop={
         {
@@ -1877,7 +2008,7 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
           "top": 4,
         }
       }
-      innerRef={[Function]}
+      innerRef={{"current":"Component"}}
       onActiveStateChange={[Function]}
       onGestureHandlerEvent={[Function]}
       onGestureHandlerStateChange={[Function]}
@@ -2027,6 +2158,9 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
                   {
                     "color": "#2F343D",
                   },
+                  {
+                    "fontSize": 14,
+                  },
                 ]
               }
             >
@@ -2041,7 +2175,7 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-      handlerTag={29}
+      handlerTag={-1}
       handlerType="NativeViewGestureHandler"
       hitSlop={
         {
@@ -2051,7 +2185,7 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
           "top": 4,
         }
       }
-      innerRef={[Function]}
+      innerRef={{"current":"Component"}}
       onActiveStateChange={[Function]}
       onGestureHandlerEvent={[Function]}
       onGestureHandlerStateChange={[Function]}
@@ -2201,6 +2335,9 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
                   {
                     "color": "#2F343D",
                   },
+                  {
+                    "fontSize": 14,
+                  },
                 ]
               }
             >
@@ -2215,7 +2352,7 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-      handlerTag={30}
+      handlerTag={-1}
       handlerType="NativeViewGestureHandler"
       hitSlop={
         {
@@ -2225,7 +2362,7 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
           "top": 4,
         }
       }
-      innerRef={[Function]}
+      innerRef={{"current":"Component"}}
       onActiveStateChange={[Function]}
       onGestureHandlerEvent={[Function]}
       onGestureHandlerStateChange={[Function]}
@@ -2343,7 +2480,7 @@ exports[`Story Snapshots: ModalDatePickerWithError should match snapshot 1`] = `
     collapsable={false}
     delayLongPress={600}
     enabled={true}
-    handlerTag={31}
+    handlerTag={-1}
     handlerType="NativeViewGestureHandler"
     innerRef={null}
     onActiveStateChange={[Function]}
@@ -2494,13 +2631,13 @@ exports[`Story Snapshots: ModalFormInput should match snapshot 1`] = `
     }
   >
     <A11yOrderView
-      orderKey=":r2:"
+      orderKey="«r2»"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey=":r2:"
+        orderKey="«r2»"
       >
         <View
           style={
@@ -2598,13 +2735,13 @@ exports[`Story Snapshots: ModalFormInput should match snapshot 1`] = `
       Outgoing Title
     </Text>
     <A11yOrderView
-      orderKey=":r3:"
+      orderKey="«r3»"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey=":r3:"
+        orderKey="«r3»"
       >
         <View
           style={
@@ -2724,7 +2861,7 @@ exports[`Story Snapshots: ModalFormInput should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-      handlerTag={32}
+      handlerTag={-1}
       handlerType="NativeViewGestureHandler"
       innerRef={null}
       onActiveStateChange={[Function]}
@@ -2949,6 +3086,9 @@ exports[`Story Snapshots: ModalFormTextArea should match snapshot 1`] = `
                   {
                     "color": "#2F343D",
                   },
+                  {
+                    "fontSize": 14,
+                  },
                 ]
               }
             >
@@ -2961,42 +3101,53 @@ exports[`Story Snapshots: ModalFormTextArea should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Change"
       accessibilityRole="button"
+      activeOpacity={0.105}
       collapsable={false}
+      delayLongPress={600}
       enabled={true}
-      hitSlop={
-        {
-          "bottom": 0,
-          "left": 0,
-          "right": 0,
-          "top": 0,
-        }
-      }
-      rippleColor="transparent"
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
       style={
         [
-          {},
-          [
-            {
-              "justifyContent": "center",
-              "paddingHorizontal": 16,
-              "paddingVertical": 14,
-            },
-            {
-              "borderRadius": 4,
-              "marginBottom": 12,
-            },
-            {
-              "backgroundColor": "#156FF5",
-            },
-            {},
-            {
-              "marginBottom": 16,
-            },
-          ],
+          {
+            "backgroundColor": "#156FF5",
+            "borderRadius": 4,
+            "justifyContent": "center",
+            "marginBottom": 16,
+            "paddingHorizontal": 16,
+            "paddingVertical": 14,
+          },
+          {
+            "cursor": undefined,
+          },
         ]
       }
-      testOnly_onPress={[Function]}
+      underlayColor="black"
     >
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "black",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": 4,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
       <Text
         style={
           [
@@ -3081,13 +3232,13 @@ exports[`Story Snapshots: ModalFormTextArea should match snapshot 1`] = `
       Describe your update
     </Text>
     <A11yOrderView
-      orderKey=":r4:"
+      orderKey="«r4»"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey=":r4:"
+        orderKey="«r4»"
       >
         <View
           style={
@@ -3211,13 +3362,13 @@ exports[`Story Snapshots: ModalInputWithAddField should match snapshot 1`] = `
       First field
     </Text>
     <A11yOrderView
-      orderKey=":r5:"
+      orderKey="«r5»"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey=":r5:"
+        orderKey="«r5»"
       >
         <View
           style={
@@ -3315,13 +3466,13 @@ exports[`Story Snapshots: ModalInputWithAddField should match snapshot 1`] = `
       Second field
     </Text>
     <A11yOrderView
-      orderKey=":r6:"
+      orderKey="«r6»"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey=":r6:"
+        orderKey="«r6»"
       >
         <View
           style={
@@ -3481,13 +3632,13 @@ exports[`Story Snapshots: ModalInputWithError should match snapshot 1`] = `
     Label
   </Text>
   <A11yOrderView
-    orderKey=":r7:"
+    orderKey="«r7»"
   >
     <A11yIndexView
       importantForAccessibility="yes"
       orderFocusType={0}
       orderIndex={1}
-      orderKey=":r7:"
+      orderKey="«r7»"
     >
       <View
         style={
@@ -3612,7 +3763,7 @@ exports[`Story Snapshots: ModalMultiSelect should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-      handlerTag={36}
+      handlerTag={-1}
       handlerType="NativeViewGestureHandler"
       innerRef={null}
       onActiveStateChange={[Function]}
@@ -3786,7 +3937,7 @@ exports[`Story Snapshots: ModalMultiSelect should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-      handlerTag={37}
+      handlerTag={-1}
       handlerType="NativeViewGestureHandler"
       innerRef={null}
       onActiveStateChange={[Function]}
@@ -3874,7 +4025,7 @@ exports[`Story Snapshots: ModalMultiSelect should match snapshot 1`] = `
               collapsable={false}
               delayLongPress={600}
               enabled={true}
-              handlerTag={38}
+              handlerTag={-1}
               handlerType="NativeViewGestureHandler"
               innerRef={null}
               onActiveStateChange={[Function]}
@@ -4066,13 +4217,13 @@ exports[`Story Snapshots: ModalMultilneWithError should match snapshot 1`] = `
     Label
   </Text>
   <A11yOrderView
-    orderKey=":r8:"
+    orderKey="«r8»"
   >
     <A11yIndexView
       importantForAccessibility="yes"
       orderFocusType={0}
       orderIndex={1}
-      orderKey=":r8:"
+      orderKey="«r8»"
     >
       <View
         style={
@@ -4246,6 +4397,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                     {
                       "color": "#2F343D",
                     },
+                    {
+                      "fontSize": 14,
+                    },
                   ]
                 }
               >
@@ -4263,6 +4417,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
+                  },
+                  {
+                    "fontSize": 14,
                   },
                 ]
               }
@@ -4311,6 +4468,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                   {
                     "color": "#2F343D",
                   },
+                  {
+                    "fontSize": 14,
+                  },
                 ]
               }
             >
@@ -4338,6 +4498,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                     {
                       "color": "#2F343D",
                     },
+                    {
+                      "fontSize": 14,
+                    },
                   ]
                 }
               >
@@ -4355,6 +4518,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
+                  },
+                  {
+                    "fontSize": 14,
                   },
                 ]
               }
@@ -4403,6 +4569,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                   {
                     "color": "#2F343D",
                   },
+                  {
+                    "fontSize": 14,
+                  },
                 ]
               }
             >
@@ -4430,6 +4599,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                     {
                       "color": "#2F343D",
                     },
+                    {
+                      "fontSize": 14,
+                    },
                   ]
                 }
               >
@@ -4448,6 +4620,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                   {
                     "color": "#2F343D",
                   },
+                  {
+                    "fontSize": 14,
+                  },
                 ]
               }
             >
@@ -4459,7 +4634,7 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
     </View>
     <ViewManagerAdapter_ExpoImage
       borderRadius={2}
-      containerViewRef={"[React.ref]"}
+      containerViewRef={{"current":"Object"}}
       contentFit="cover"
       contentPosition={
         {
@@ -4468,7 +4643,7 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
         }
       }
       height={88}
-      nativeViewRef={"[React.ref]"}
+      nativeViewRef={{"current":"NativeComponent"}}
       onError={[Function]}
       onLoad={[Function]}
       onLoadStart={[Function]}
@@ -4586,6 +4761,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                     {
                       "color": "#2F343D",
                     },
+                    {
+                      "fontSize": 14,
+                    },
                   ]
                 }
               >
@@ -4633,6 +4811,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
+                  },
+                  {
+                    "fontSize": 14,
                   },
                 ]
               }
@@ -4721,6 +4902,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                     {
                       "color": "#2F343D",
                     },
+                    {
+                      "fontSize": 14,
+                    },
                   ]
                 }
               >
@@ -4768,6 +4952,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
+                  },
+                  {
+                    "fontSize": 14,
                   },
                 ]
               }
@@ -4856,6 +5043,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                     {
                       "color": "#2F343D",
                     },
+                    {
+                      "fontSize": 14,
+                    },
                   ]
                 }
               >
@@ -4903,6 +5093,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
+                  },
+                  {
+                    "fontSize": 14,
                   },
                 ]
               }
@@ -4991,6 +5184,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                     {
                       "color": "#2F343D",
                     },
+                    {
+                      "fontSize": 14,
+                    },
                   ]
                 }
               >
@@ -5038,6 +5234,9 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
+                  },
+                  {
+                    "fontSize": 14,
                   },
                 ]
               }
@@ -5131,6 +5330,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                     {
                       "color": "#2F343D",
                     },
+                    {
+                      "fontSize": 14,
+                    },
                   ]
                 }
               >
@@ -5148,6 +5350,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
+                  },
+                  {
+                    "fontSize": 14,
                   },
                 ]
               }
@@ -5215,6 +5420,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                   {
                     "color": "#2F343D",
                   },
+                  {
+                    "fontSize": 14,
+                  },
                 ]
               }
             >
@@ -5230,6 +5438,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                     "fontWeight": "400",
                     "lineHeight": 22,
                     "textAlign": "left",
+                  },
+                  {
+                    "fontSize": 14,
                   },
                   {
                     "color": "#2F343D",
@@ -5346,6 +5557,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                     {
                       "color": "#2F343D",
                     },
+                    {
+                      "fontSize": 14,
+                    },
                   ]
                 }
               >
@@ -5393,6 +5607,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
+                  },
+                  {
+                    "fontSize": 14,
                   },
                 ]
               }
@@ -5476,6 +5693,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                     {
                       "color": "#2F343D",
                     },
+                    {
+                      "fontSize": 14,
+                    },
                   ]
                 }
               >
@@ -5523,6 +5743,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
+                  },
+                  {
+                    "fontSize": 14,
                   },
                 ]
               }
@@ -5619,6 +5842,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                     {
                       "color": "#2F343D",
                     },
+                    {
+                      "fontSize": 14,
+                    },
                   ]
                 }
               >
@@ -5666,6 +5892,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
+                  },
+                  {
+                    "fontSize": 14,
                   },
                 ]
               }
@@ -5749,6 +5978,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                     {
                       "color": "#2F343D",
                     },
+                    {
+                      "fontSize": 14,
+                    },
                   ]
                 }
               >
@@ -5796,6 +6028,9 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
                   },
                   {
                     "color": "#2F343D",
+                  },
+                  {
+                    "fontSize": 14,
                   },
                 ]
               }

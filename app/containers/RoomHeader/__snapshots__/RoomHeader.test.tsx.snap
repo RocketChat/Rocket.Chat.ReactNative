@@ -33,7 +33,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         delayLongPress={600}
         enabled={true}
         exclusive={true}
-        handlerTag={1}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -163,7 +163,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         delayLongPress={600}
         enabled={true}
         exclusive={true}
-        handlerTag={2}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -293,7 +293,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         delayLongPress={600}
         enabled={true}
         exclusive={true}
-        handlerTag={3}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -436,7 +436,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         delayLongPress={600}
         enabled={true}
         exclusive={true}
-        handlerTag={4}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -566,7 +566,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         delayLongPress={600}
         enabled={true}
         exclusive={true}
-        handlerTag={5}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -696,7 +696,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         delayLongPress={600}
         enabled={true}
         exclusive={true}
-        handlerTag={6}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -826,7 +826,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         delayLongPress={600}
         enabled={true}
         exclusive={true}
-        handlerTag={7}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -956,7 +956,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         delayLongPress={600}
         enabled={true}
         exclusive={true}
-        handlerTag={8}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -1086,7 +1086,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         delayLongPress={600}
         enabled={true}
         exclusive={true}
-        handlerTag={9}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -1216,7 +1216,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         delayLongPress={600}
         enabled={true}
         exclusive={true}
-        handlerTag={10}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -1346,7 +1346,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         delayLongPress={600}
         enabled={true}
         exclusive={true}
-        handlerTag={11}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -1476,7 +1476,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         delayLongPress={600}
         enabled={true}
         exclusive={true}
-        handlerTag={12}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -1606,7 +1606,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         delayLongPress={600}
         enabled={true}
         exclusive={true}
-        handlerTag={13}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -1736,7 +1736,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         delayLongPress={600}
         enabled={true}
         exclusive={true}
-        handlerTag={14}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -1871,7 +1871,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
         delayLongPress={600}
         enabled={true}
         exclusive={true}
-        handlerTag={15}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2034,7 +2034,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
         delayLongPress={600}
         enabled={true}
         exclusive={true}
-        handlerTag={16}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2197,7 +2197,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
         delayLongPress={600}
         enabled={true}
         exclusive={true}
-        handlerTag={17}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2365,7 +2365,7 @@ exports[`Story Snapshots: Thread should match snapshot 1`] = `
         delayLongPress={600}
         enabled={true}
         exclusive={true}
-        handlerTag={18}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2540,7 +2540,7 @@ preview
         delayLongPress={600}
         enabled={true}
         exclusive={true}
-        handlerTag={19}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2720,7 +2720,7 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
         delayLongPress={600}
         enabled={true}
         exclusive={true}
-        handlerTag={20}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2850,7 +2850,7 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
         delayLongPress={600}
         enabled={true}
         exclusive={true}
-        handlerTag={21}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2980,7 +2980,7 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
         delayLongPress={600}
         enabled={true}
         exclusive={true}
-        handlerTag={22}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3143,7 +3143,7 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
         delayLongPress={600}
         enabled={true}
         exclusive={true}
-        handlerTag={23}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3306,7 +3306,7 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
         delayLongPress={600}
         enabled={true}
         exclusive={true}
-        handlerTag={24}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3475,7 +3475,7 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
         delayLongPress={600}
         enabled={true}
         exclusive={true}
-        handlerTag={25}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3638,7 +3638,7 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
         delayLongPress={600}
         enabled={true}
         exclusive={true}
-        handlerTag={26}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3801,7 +3801,7 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
         delayLongPress={600}
         enabled={true}
         exclusive={true}
-        handlerTag={27}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {

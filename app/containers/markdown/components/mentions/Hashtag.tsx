@@ -1,5 +1,5 @@
-import React from 'react';
-import { type StyleProp, Text, type TextStyle } from 'react-native';
+import React, { useContext } from 'react';
+import { Text } from 'react-native';
 
 import i18n from '../../../../i18n';
 import { themes } from '../../../../lib/constants/colors';
@@ -14,17 +14,18 @@ import { useTheme } from '../../../../theme';
 import { sendLoadingEvent } from '../../../Loading';
 import { type IUserChannel } from '../../interfaces';
 import styles from '../../styles';
+import MarkdownContext from '../../contexts/MarkdownContext';
 
 interface IHashtag {
 	hashtag: string;
 	navToRoomInfo?: Function;
-	style?: StyleProp<TextStyle>[];
 	channels?: IUserChannel[];
 	disabled?: boolean;
 }
 
-const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [], disabled }: IHashtag) => {
+const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo }: IHashtag) => {
 	const { theme } = useTheme();
+	const { textStyle } = useContext(MarkdownContext);
 	const [roomsWithHashTagSymbol] = useUserPreferences<boolean>(ROOM_MENTIONS_PREFERENCES_KEY, false);
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 	const preffix = roomsWithHashTagSymbol ? '#' : '';
@@ -57,17 +58,19 @@ const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [], disa
 			<Text
 				style={[
 					styles.mention,
+					...(textStyle ? [textStyle] : []),
 					{
 						color: themes[theme].fontInfo
-					},
-					...style
+					}
 				]}
 				onPress={disabled ? undefined : handlePress}>
 				{`${preffix}${hashtag}`}
 			</Text>
 		);
 	}
-	return <Text style={[styles.text, { color: themes[theme].fontDefault }, ...style]}>{`#${hashtag}`}</Text>;
+	return (
+		<Text style={[styles.text, ...(textStyle ? [textStyle] : []), { color: themes[theme].fontDefault }]}>{`#${hashtag}`}</Text>
+	);
 });
 
 export default Hashtag;

@@ -7,7 +7,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
     collapsable={false}
     delayLongPress={600}
     enabled={true}
-    handlerTag={1}
+    handlerTag={-1}
     handlerType="NativeViewGestureHandler"
     innerRef={null}
     onActiveStateChange={[Function]}
@@ -158,7 +158,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
     collapsable={false}
     delayLongPress={600}
     enabled={true}
-    handlerTag={3}
+    handlerTag={-1}
     handlerType="NativeViewGestureHandler"
     innerRef={null}
     onActiveStateChange={[Function]}
@@ -241,7 +241,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
     collapsable={false}
     delayLongPress={600}
     enabled={true}
-    handlerTag={4}
+    handlerTag={-1}
     handlerType="NativeViewGestureHandler"
     innerRef={null}
     onActiveStateChange={[Function]}
@@ -336,7 +336,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-      handlerTag={5}
+      handlerTag={-1}
       handlerType="NativeViewGestureHandler"
       innerRef={null}
       onActiveStateChange={[Function]}
@@ -415,13 +415,13 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
       </View>
     </RNGestureHandlerButton>
     <A11yOrderView
-      orderKey=":r0:"
+      orderKey="«r0»"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey=":r0:"
+        orderKey="«r0»"
       >
         <View
           accessibilityState={
@@ -490,7 +490,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                 importantForAccessibility="yes"
                 orderFocusType={0}
                 orderIndex={2}
-                orderKey=":r0:"
+                orderKey="«r0»"
               >
                 <View
                   accessible={true}
@@ -529,7 +529,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                         collapsable={false}
                         delayLongPress={600}
                         enabled={true}
-                        handlerTag={6}
+                        handlerTag={-1}
                         handlerType="NativeViewGestureHandler"
                         innerRef={null}
                         onActiveStateChange={[Function]}
@@ -585,7 +585,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                         >
                           <ViewManagerAdapter_ExpoImage
                             borderRadius={4}
-                            containerViewRef={"[React.ref]"}
+                            containerViewRef={{"current":"Object"}}
                             contentFit="cover"
                             contentPosition={
                               {
@@ -594,7 +594,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                               }
                             }
                             height={36}
-                            nativeViewRef={"[React.ref]"}
+                            nativeViewRef={{"current":"NativeComponent"}}
                             onError={[Function]}
                             onLoad={[Function]}
                             onLoadStart={[Function]}
@@ -651,113 +651,88 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                           }
                         }
                       >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
+                        <View
+                          accessibilityState={
+                            {
+                              "busy": undefined,
+                              "checked": undefined,
+                              "disabled": undefined,
+                              "expanded": undefined,
+                              "selected": undefined,
+                            }
+                          }
+                          accessibilityValue={
+                            {
+                              "max": undefined,
+                              "min": undefined,
+                              "now": undefined,
+                              "text": undefined,
+                            }
+                          }
+                          accessible={true}
                           collapsable={false}
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={7}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#16181a"
+                          focusable={true}
+                          onBlur={[Function]}
+                          onClick={[Function]}
+                          onFocus={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
                           style={
-                            [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
-                            ]
+                            {
+                              "alignItems": "center",
+                              "flexDirection": "row",
+                              "flexShrink": 1,
+                              "gap": 4,
+                            }
                           }
                           testID="username-header-diego.mello"
-                          underlayColor="#16181a"
                         >
-                          <View
-                            collapsable={false}
+                          <Text
+                            numberOfLines={1}
                             style={
-                              {
-                                "backgroundColor": "#16181a",
-                                "borderBottomLeftRadius": undefined,
-                                "borderBottomRightRadius": undefined,
-                                "borderRadius": undefined,
-                                "borderTopLeftRadius": undefined,
-                                "borderTopRightRadius": undefined,
-                                "bottom": 0,
-                                "left": 0,
-                                "opacity": 0,
-                                "position": "absolute",
-                                "right": 0,
-                                "top": 0,
-                              }
-                            }
-                          />
-                          <View
-                            style={
-                              {
-                                "alignItems": "center",
-                                "flexDirection": "row",
-                                "flexShrink": 1,
-                                "gap": 4,
-                              }
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "flexShrink": 1,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "600",
+                                  "lineHeight": 22,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#F2F3F5",
+                                },
+                              ]
                             }
                           >
-                            <Text
-                              numberOfLines={1}
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontWeight": "600",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#F2F3F5",
-                                  },
-                                ]
-                              }
-                            >
-                              diego.mello
-                            </Text>
-                            <Text
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontSize": 13,
-                                    "fontWeight": "400",
-                                    "lineHeight": 18,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#9EA2A8",
-                                  },
-                                ]
-                              }
-                            >
-                              10:00 AM
-                            </Text>
-                          </View>
-                        </RNGestureHandlerButton>
+                            diego.mello
+                          </Text>
+                          <Text
+                            style={
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "400",
+                                  "lineHeight": 18,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#9EA2A8",
+                                },
+                                undefined,
+                              ]
+                            }
+                          >
+                            10:00 AM
+                          </Text>
+                        </View>
                         <View
                           style={
                             {
@@ -843,13 +818,13 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
       </A11yIndexView>
     </A11yOrderView>
     <A11yOrderView
-      orderKey=":r1:"
+      orderKey="«r1»"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey=":r1:"
+        orderKey="«r1»"
       >
         <View
           accessibilityState={
@@ -918,7 +893,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                 importantForAccessibility="yes"
                 orderFocusType={0}
                 orderIndex={2}
-                orderKey=":r1:"
+                orderKey="«r1»"
               >
                 <View
                   accessible={true}
@@ -1036,13 +1011,13 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
       </A11yIndexView>
     </A11yOrderView>
     <A11yOrderView
-      orderKey=":r2:"
+      orderKey="«r2»"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey=":r2:"
+        orderKey="«r2»"
       >
         <View
           accessibilityState={
@@ -1111,7 +1086,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                 importantForAccessibility="yes"
                 orderFocusType={0}
                 orderIndex={2}
-                orderKey=":r2:"
+                orderKey="«r2»"
               >
                 <View
                   accessible={true}
@@ -1233,7 +1208,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-      handlerTag={8}
+      handlerTag={-1}
       handlerType="NativeViewGestureHandler"
       innerRef={null}
       onActiveStateChange={[Function]}
@@ -1316,7 +1291,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-      handlerTag={9}
+      handlerTag={-1}
       handlerType="NativeViewGestureHandler"
       innerRef={null}
       onActiveStateChange={[Function]}
@@ -1395,13 +1370,13 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
       </View>
     </RNGestureHandlerButton>
     <A11yOrderView
-      orderKey=":r3:"
+      orderKey="«r3»"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey=":r3:"
+        orderKey="«r3»"
       >
         <View
           accessibilityState={
@@ -1470,7 +1445,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                 importantForAccessibility="yes"
                 orderFocusType={0}
                 orderIndex={2}
-                orderKey=":r3:"
+                orderKey="«r3»"
               >
                 <View
                   accessible={true}
@@ -1509,7 +1484,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                         collapsable={false}
                         delayLongPress={600}
                         enabled={true}
-                        handlerTag={10}
+                        handlerTag={-1}
                         handlerType="NativeViewGestureHandler"
                         innerRef={null}
                         onActiveStateChange={[Function]}
@@ -1565,7 +1540,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                         >
                           <ViewManagerAdapter_ExpoImage
                             borderRadius={4}
-                            containerViewRef={"[React.ref]"}
+                            containerViewRef={{"current":"Object"}}
                             contentFit="cover"
                             contentPosition={
                               {
@@ -1574,7 +1549,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                               }
                             }
                             height={36}
-                            nativeViewRef={"[React.ref]"}
+                            nativeViewRef={{"current":"NativeComponent"}}
                             onError={[Function]}
                             onLoad={[Function]}
                             onLoadStart={[Function]}
@@ -1631,113 +1606,88 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                           }
                         }
                       >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
+                        <View
+                          accessibilityState={
+                            {
+                              "busy": undefined,
+                              "checked": undefined,
+                              "disabled": undefined,
+                              "expanded": undefined,
+                              "selected": undefined,
+                            }
+                          }
+                          accessibilityValue={
+                            {
+                              "max": undefined,
+                              "min": undefined,
+                              "now": undefined,
+                              "text": undefined,
+                            }
+                          }
+                          accessible={true}
                           collapsable={false}
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={11}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#16181a"
+                          focusable={true}
+                          onBlur={[Function]}
+                          onClick={[Function]}
+                          onFocus={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
                           style={
-                            [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
-                            ]
+                            {
+                              "alignItems": "center",
+                              "flexDirection": "row",
+                              "flexShrink": 1,
+                              "gap": 4,
+                            }
                           }
                           testID="username-header-diego.mello"
-                          underlayColor="#16181a"
                         >
-                          <View
-                            collapsable={false}
+                          <Text
+                            numberOfLines={1}
                             style={
-                              {
-                                "backgroundColor": "#16181a",
-                                "borderBottomLeftRadius": undefined,
-                                "borderBottomRightRadius": undefined,
-                                "borderRadius": undefined,
-                                "borderTopLeftRadius": undefined,
-                                "borderTopRightRadius": undefined,
-                                "bottom": 0,
-                                "left": 0,
-                                "opacity": 0,
-                                "position": "absolute",
-                                "right": 0,
-                                "top": 0,
-                              }
-                            }
-                          />
-                          <View
-                            style={
-                              {
-                                "alignItems": "center",
-                                "flexDirection": "row",
-                                "flexShrink": 1,
-                                "gap": 4,
-                              }
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "flexShrink": 1,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "600",
+                                  "lineHeight": 22,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#F2F3F5",
+                                },
+                              ]
                             }
                           >
-                            <Text
-                              numberOfLines={1}
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontWeight": "600",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#F2F3F5",
-                                  },
-                                ]
-                              }
-                            >
-                              diego.mello
-                            </Text>
-                            <Text
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontSize": 13,
-                                    "fontWeight": "400",
-                                    "lineHeight": 18,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#9EA2A8",
-                                  },
-                                ]
-                              }
-                            >
-                              10:00 AM
-                            </Text>
-                          </View>
-                        </RNGestureHandlerButton>
+                            diego.mello
+                          </Text>
+                          <Text
+                            style={
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "400",
+                                  "lineHeight": 18,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#9EA2A8",
+                                },
+                                undefined,
+                              ]
+                            }
+                          >
+                            10:00 AM
+                          </Text>
+                        </View>
                         <View
                           style={
                             {
@@ -1823,13 +1773,13 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
       </A11yIndexView>
     </A11yOrderView>
     <A11yOrderView
-      orderKey=":r4:"
+      orderKey="«r4»"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey=":r4:"
+        orderKey="«r4»"
       >
         <View
           accessibilityState={
@@ -1898,7 +1848,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                 importantForAccessibility="yes"
                 orderFocusType={0}
                 orderIndex={2}
-                orderKey=":r4:"
+                orderKey="«r4»"
               >
                 <View
                   accessible={true}
@@ -2016,13 +1966,13 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
       </A11yIndexView>
     </A11yOrderView>
     <A11yOrderView
-      orderKey=":r5:"
+      orderKey="«r5»"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey=":r5:"
+        orderKey="«r5»"
       >
         <View
           accessibilityState={
@@ -2091,7 +2041,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                 importantForAccessibility="yes"
                 orderFocusType={0}
                 orderIndex={2}
-                orderKey=":r5:"
+                orderKey="«r5»"
               >
                 <View
                   accessible={true}
@@ -2209,13 +2159,13 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
       </A11yIndexView>
     </A11yOrderView>
     <A11yOrderView
-      orderKey=":r6:"
+      orderKey="«r6»"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey=":r6:"
+        orderKey="«r6»"
       >
         <View
           accessibilityState={
@@ -2284,7 +2234,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                 importantForAccessibility="yes"
                 orderFocusType={0}
                 orderIndex={2}
-                orderKey=":r6:"
+                orderKey="«r6»"
               >
                 <View
                   accessible={true}
@@ -2323,7 +2273,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                         collapsable={false}
                         delayLongPress={600}
                         enabled={true}
-                        handlerTag={12}
+                        handlerTag={-1}
                         handlerType="NativeViewGestureHandler"
                         innerRef={null}
                         onActiveStateChange={[Function]}
@@ -2379,7 +2329,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                         >
                           <ViewManagerAdapter_ExpoImage
                             borderRadius={4}
-                            containerViewRef={"[React.ref]"}
+                            containerViewRef={{"current":"Object"}}
                             contentFit="cover"
                             contentPosition={
                               {
@@ -2388,7 +2338,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                               }
                             }
                             height={36}
-                            nativeViewRef={"[React.ref]"}
+                            nativeViewRef={{"current":"NativeComponent"}}
                             onError={[Function]}
                             onLoad={[Function]}
                             onLoadStart={[Function]}
@@ -2445,113 +2395,88 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                           }
                         }
                       >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
+                        <View
+                          accessibilityState={
+                            {
+                              "busy": undefined,
+                              "checked": undefined,
+                              "disabled": undefined,
+                              "expanded": undefined,
+                              "selected": undefined,
+                            }
+                          }
+                          accessibilityValue={
+                            {
+                              "max": undefined,
+                              "min": undefined,
+                              "now": undefined,
+                              "text": undefined,
+                            }
+                          }
+                          accessible={true}
                           collapsable={false}
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={13}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#16181a"
+                          focusable={true}
+                          onBlur={[Function]}
+                          onClick={[Function]}
+                          onFocus={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
                           style={
-                            [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
-                            ]
+                            {
+                              "alignItems": "center",
+                              "flexDirection": "row",
+                              "flexShrink": 1,
+                              "gap": 4,
+                            }
                           }
                           testID="username-header-diego.mello"
-                          underlayColor="#16181a"
                         >
-                          <View
-                            collapsable={false}
+                          <Text
+                            numberOfLines={1}
                             style={
-                              {
-                                "backgroundColor": "#16181a",
-                                "borderBottomLeftRadius": undefined,
-                                "borderBottomRightRadius": undefined,
-                                "borderRadius": undefined,
-                                "borderTopLeftRadius": undefined,
-                                "borderTopRightRadius": undefined,
-                                "bottom": 0,
-                                "left": 0,
-                                "opacity": 0,
-                                "position": "absolute",
-                                "right": 0,
-                                "top": 0,
-                              }
-                            }
-                          />
-                          <View
-                            style={
-                              {
-                                "alignItems": "center",
-                                "flexDirection": "row",
-                                "flexShrink": 1,
-                                "gap": 4,
-                              }
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "flexShrink": 1,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "600",
+                                  "lineHeight": 22,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#F2F3F5",
+                                },
+                              ]
                             }
                           >
-                            <Text
-                              numberOfLines={1}
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontWeight": "600",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#F2F3F5",
-                                  },
-                                ]
-                              }
-                            >
-                              diego.mello
-                            </Text>
-                            <Text
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontSize": 13,
-                                    "fontWeight": "400",
-                                    "lineHeight": 18,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#9EA2A8",
-                                  },
-                                ]
-                              }
-                            >
-                              10:00 AM
-                            </Text>
-                          </View>
-                        </RNGestureHandlerButton>
+                            diego.mello
+                          </Text>
+                          <Text
+                            style={
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "400",
+                                  "lineHeight": 18,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#9EA2A8",
+                                },
+                                undefined,
+                              ]
+                            }
+                          >
+                            10:00 AM
+                          </Text>
+                        </View>
                         <View
                           style={
                             {
@@ -2654,7 +2579,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-      handlerTag={14}
+      handlerTag={-1}
       handlerType="NativeViewGestureHandler"
       innerRef={null}
       onActiveStateChange={[Function]}
@@ -2733,13 +2658,13 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
       </View>
     </RNGestureHandlerButton>
     <A11yOrderView
-      orderKey=":r7:"
+      orderKey="«r7»"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey=":r7:"
+        orderKey="«r7»"
       >
         <View
           accessibilityState={
@@ -2808,7 +2733,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                 importantForAccessibility="yes"
                 orderFocusType={0}
                 orderIndex={2}
-                orderKey=":r7:"
+                orderKey="«r7»"
               >
                 <View
                   accessible={true}
@@ -2847,7 +2772,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                         collapsable={false}
                         delayLongPress={600}
                         enabled={true}
-                        handlerTag={15}
+                        handlerTag={-1}
                         handlerType="NativeViewGestureHandler"
                         innerRef={null}
                         onActiveStateChange={[Function]}
@@ -2903,7 +2828,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                         >
                           <ViewManagerAdapter_ExpoImage
                             borderRadius={4}
-                            containerViewRef={"[React.ref]"}
+                            containerViewRef={{"current":"Object"}}
                             contentFit="cover"
                             contentPosition={
                               {
@@ -2912,7 +2837,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                               }
                             }
                             height={36}
-                            nativeViewRef={"[React.ref]"}
+                            nativeViewRef={{"current":"NativeComponent"}}
                             onError={[Function]}
                             onLoad={[Function]}
                             onLoadStart={[Function]}
@@ -2969,113 +2894,88 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                           }
                         }
                       >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
+                        <View
+                          accessibilityState={
+                            {
+                              "busy": undefined,
+                              "checked": undefined,
+                              "disabled": undefined,
+                              "expanded": undefined,
+                              "selected": undefined,
+                            }
+                          }
+                          accessibilityValue={
+                            {
+                              "max": undefined,
+                              "min": undefined,
+                              "now": undefined,
+                              "text": undefined,
+                            }
+                          }
+                          accessible={true}
                           collapsable={false}
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={16}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#2D3039"
+                          focusable={true}
+                          onBlur={[Function]}
+                          onClick={[Function]}
+                          onFocus={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
                           style={
-                            [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
-                            ]
+                            {
+                              "alignItems": "center",
+                              "flexDirection": "row",
+                              "flexShrink": 1,
+                              "gap": 4,
+                            }
                           }
                           testID="username-header-diego.mello"
-                          underlayColor="#2D3039"
                         >
-                          <View
-                            collapsable={false}
+                          <Text
+                            numberOfLines={1}
                             style={
-                              {
-                                "backgroundColor": "#2D3039",
-                                "borderBottomLeftRadius": undefined,
-                                "borderBottomRightRadius": undefined,
-                                "borderRadius": undefined,
-                                "borderTopLeftRadius": undefined,
-                                "borderTopRightRadius": undefined,
-                                "bottom": 0,
-                                "left": 0,
-                                "opacity": 0,
-                                "position": "absolute",
-                                "right": 0,
-                                "top": 0,
-                              }
-                            }
-                          />
-                          <View
-                            style={
-                              {
-                                "alignItems": "center",
-                                "flexDirection": "row",
-                                "flexShrink": 1,
-                                "gap": 4,
-                              }
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "flexShrink": 1,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "600",
+                                  "lineHeight": 22,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#F2F3F5",
+                                },
+                              ]
                             }
                           >
-                            <Text
-                              numberOfLines={1}
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontWeight": "600",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#F2F3F5",
-                                  },
-                                ]
-                              }
-                            >
-                              diego.mello
-                            </Text>
-                            <Text
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontSize": 13,
-                                    "fontWeight": "400",
-                                    "lineHeight": 18,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#9EA2A8",
-                                  },
-                                ]
-                              }
-                            >
-                              10:00 AM
-                            </Text>
-                          </View>
-                        </RNGestureHandlerButton>
+                            diego.mello
+                          </Text>
+                          <Text
+                            style={
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "400",
+                                  "lineHeight": 18,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#9EA2A8",
+                                },
+                                undefined,
+                              ]
+                            }
+                          >
+                            10:00 AM
+                          </Text>
+                        </View>
                         <View
                           style={
                             {
@@ -3161,13 +3061,13 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
       </A11yIndexView>
     </A11yOrderView>
     <A11yOrderView
-      orderKey=":r8:"
+      orderKey="«r8»"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey=":r8:"
+        orderKey="«r8»"
       >
         <View
           accessibilityState={
@@ -3236,7 +3136,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                 importantForAccessibility="yes"
                 orderFocusType={0}
                 orderIndex={2}
-                orderKey=":r8:"
+                orderKey="«r8»"
               >
                 <View
                   accessible={true}
@@ -3354,13 +3254,13 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
       </A11yIndexView>
     </A11yOrderView>
     <A11yOrderView
-      orderKey=":r9:"
+      orderKey="«r9»"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey=":r9:"
+        orderKey="«r9»"
       >
         <View
           accessibilityState={
@@ -3429,7 +3329,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                 importantForAccessibility="yes"
                 orderFocusType={0}
                 orderIndex={2}
-                orderKey=":r9:"
+                orderKey="«r9»"
               >
                 <View
                   accessible={true}
@@ -3551,7 +3451,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-      handlerTag={17}
+      handlerTag={-1}
       handlerType="NativeViewGestureHandler"
       innerRef={null}
       onActiveStateChange={[Function]}
@@ -3634,7 +3534,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-      handlerTag={18}
+      handlerTag={-1}
       handlerType="NativeViewGestureHandler"
       innerRef={null}
       onActiveStateChange={[Function]}
@@ -3713,13 +3613,13 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
       </View>
     </RNGestureHandlerButton>
     <A11yOrderView
-      orderKey=":ra:"
+      orderKey="«ra»"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey=":ra:"
+        orderKey="«ra»"
       >
         <View
           accessibilityState={
@@ -3788,7 +3688,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                 importantForAccessibility="yes"
                 orderFocusType={0}
                 orderIndex={2}
-                orderKey=":ra:"
+                orderKey="«ra»"
               >
                 <View
                   accessible={true}
@@ -3827,7 +3727,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                         collapsable={false}
                         delayLongPress={600}
                         enabled={true}
-                        handlerTag={19}
+                        handlerTag={-1}
                         handlerType="NativeViewGestureHandler"
                         innerRef={null}
                         onActiveStateChange={[Function]}
@@ -3883,7 +3783,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                         >
                           <ViewManagerAdapter_ExpoImage
                             borderRadius={4}
-                            containerViewRef={"[React.ref]"}
+                            containerViewRef={{"current":"Object"}}
                             contentFit="cover"
                             contentPosition={
                               {
@@ -3892,7 +3792,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                               }
                             }
                             height={36}
-                            nativeViewRef={"[React.ref]"}
+                            nativeViewRef={{"current":"NativeComponent"}}
                             onError={[Function]}
                             onLoad={[Function]}
                             onLoadStart={[Function]}
@@ -3949,113 +3849,88 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                           }
                         }
                       >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
+                        <View
+                          accessibilityState={
+                            {
+                              "busy": undefined,
+                              "checked": undefined,
+                              "disabled": undefined,
+                              "expanded": undefined,
+                              "selected": undefined,
+                            }
+                          }
+                          accessibilityValue={
+                            {
+                              "max": undefined,
+                              "min": undefined,
+                              "now": undefined,
+                              "text": undefined,
+                            }
+                          }
+                          accessible={true}
                           collapsable={false}
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={20}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#2D3039"
+                          focusable={true}
+                          onBlur={[Function]}
+                          onClick={[Function]}
+                          onFocus={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
                           style={
-                            [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
-                            ]
+                            {
+                              "alignItems": "center",
+                              "flexDirection": "row",
+                              "flexShrink": 1,
+                              "gap": 4,
+                            }
                           }
                           testID="username-header-diego.mello"
-                          underlayColor="#2D3039"
                         >
-                          <View
-                            collapsable={false}
+                          <Text
+                            numberOfLines={1}
                             style={
-                              {
-                                "backgroundColor": "#2D3039",
-                                "borderBottomLeftRadius": undefined,
-                                "borderBottomRightRadius": undefined,
-                                "borderRadius": undefined,
-                                "borderTopLeftRadius": undefined,
-                                "borderTopRightRadius": undefined,
-                                "bottom": 0,
-                                "left": 0,
-                                "opacity": 0,
-                                "position": "absolute",
-                                "right": 0,
-                                "top": 0,
-                              }
-                            }
-                          />
-                          <View
-                            style={
-                              {
-                                "alignItems": "center",
-                                "flexDirection": "row",
-                                "flexShrink": 1,
-                                "gap": 4,
-                              }
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "flexShrink": 1,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "600",
+                                  "lineHeight": 22,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#F2F3F5",
+                                },
+                              ]
                             }
                           >
-                            <Text
-                              numberOfLines={1}
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontWeight": "600",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#F2F3F5",
-                                  },
-                                ]
-                              }
-                            >
-                              diego.mello
-                            </Text>
-                            <Text
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontSize": 13,
-                                    "fontWeight": "400",
-                                    "lineHeight": 18,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#9EA2A8",
-                                  },
-                                ]
-                              }
-                            >
-                              10:00 AM
-                            </Text>
-                          </View>
-                        </RNGestureHandlerButton>
+                            diego.mello
+                          </Text>
+                          <Text
+                            style={
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "400",
+                                  "lineHeight": 18,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#9EA2A8",
+                                },
+                                undefined,
+                              ]
+                            }
+                          >
+                            10:00 AM
+                          </Text>
+                        </View>
                         <View
                           style={
                             {
@@ -4141,13 +4016,13 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
       </A11yIndexView>
     </A11yOrderView>
     <A11yOrderView
-      orderKey=":rb:"
+      orderKey="«rb»"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey=":rb:"
+        orderKey="«rb»"
       >
         <View
           accessibilityState={
@@ -4216,7 +4091,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                 importantForAccessibility="yes"
                 orderFocusType={0}
                 orderIndex={2}
-                orderKey=":rb:"
+                orderKey="«rb»"
               >
                 <View
                   accessible={true}
@@ -4334,13 +4209,13 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
       </A11yIndexView>
     </A11yOrderView>
     <A11yOrderView
-      orderKey=":rc:"
+      orderKey="«rc»"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey=":rc:"
+        orderKey="«rc»"
       >
         <View
           accessibilityState={
@@ -4409,7 +4284,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                 importantForAccessibility="yes"
                 orderFocusType={0}
                 orderIndex={2}
-                orderKey=":rc:"
+                orderKey="«rc»"
               >
                 <View
                   accessible={true}
@@ -4527,13 +4402,13 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
       </A11yIndexView>
     </A11yOrderView>
     <A11yOrderView
-      orderKey=":rd:"
+      orderKey="«rd»"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey=":rd:"
+        orderKey="«rd»"
       >
         <View
           accessibilityState={
@@ -4602,7 +4477,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                 importantForAccessibility="yes"
                 orderFocusType={0}
                 orderIndex={2}
-                orderKey=":rd:"
+                orderKey="«rd»"
               >
                 <View
                   accessible={true}
@@ -4641,7 +4516,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                         collapsable={false}
                         delayLongPress={600}
                         enabled={true}
-                        handlerTag={21}
+                        handlerTag={-1}
                         handlerType="NativeViewGestureHandler"
                         innerRef={null}
                         onActiveStateChange={[Function]}
@@ -4697,7 +4572,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                         >
                           <ViewManagerAdapter_ExpoImage
                             borderRadius={4}
-                            containerViewRef={"[React.ref]"}
+                            containerViewRef={{"current":"Object"}}
                             contentFit="cover"
                             contentPosition={
                               {
@@ -4706,7 +4581,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                               }
                             }
                             height={36}
-                            nativeViewRef={"[React.ref]"}
+                            nativeViewRef={{"current":"NativeComponent"}}
                             onError={[Function]}
                             onLoad={[Function]}
                             onLoadStart={[Function]}
@@ -4763,113 +4638,88 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                           }
                         }
                       >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
+                        <View
+                          accessibilityState={
+                            {
+                              "busy": undefined,
+                              "checked": undefined,
+                              "disabled": undefined,
+                              "expanded": undefined,
+                              "selected": undefined,
+                            }
+                          }
+                          accessibilityValue={
+                            {
+                              "max": undefined,
+                              "min": undefined,
+                              "now": undefined,
+                              "text": undefined,
+                            }
+                          }
+                          accessible={true}
                           collapsable={false}
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={22}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#2D3039"
+                          focusable={true}
+                          onBlur={[Function]}
+                          onClick={[Function]}
+                          onFocus={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
                           style={
-                            [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
-                            ]
+                            {
+                              "alignItems": "center",
+                              "flexDirection": "row",
+                              "flexShrink": 1,
+                              "gap": 4,
+                            }
                           }
                           testID="username-header-diego.mello"
-                          underlayColor="#2D3039"
                         >
-                          <View
-                            collapsable={false}
+                          <Text
+                            numberOfLines={1}
                             style={
-                              {
-                                "backgroundColor": "#2D3039",
-                                "borderBottomLeftRadius": undefined,
-                                "borderBottomRightRadius": undefined,
-                                "borderRadius": undefined,
-                                "borderTopLeftRadius": undefined,
-                                "borderTopRightRadius": undefined,
-                                "bottom": 0,
-                                "left": 0,
-                                "opacity": 0,
-                                "position": "absolute",
-                                "right": 0,
-                                "top": 0,
-                              }
-                            }
-                          />
-                          <View
-                            style={
-                              {
-                                "alignItems": "center",
-                                "flexDirection": "row",
-                                "flexShrink": 1,
-                                "gap": 4,
-                              }
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "flexShrink": 1,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "600",
+                                  "lineHeight": 22,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#F2F3F5",
+                                },
+                              ]
                             }
                           >
-                            <Text
-                              numberOfLines={1}
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontWeight": "600",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#F2F3F5",
-                                  },
-                                ]
-                              }
-                            >
-                              diego.mello
-                            </Text>
-                            <Text
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontSize": 13,
-                                    "fontWeight": "400",
-                                    "lineHeight": 18,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#9EA2A8",
-                                  },
-                                ]
-                              }
-                            >
-                              10:00 AM
-                            </Text>
-                          </View>
-                        </RNGestureHandlerButton>
+                            diego.mello
+                          </Text>
+                          <Text
+                            style={
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "400",
+                                  "lineHeight": 18,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#9EA2A8",
+                                },
+                                undefined,
+                              ]
+                            }
+                          >
+                            10:00 AM
+                          </Text>
+                        </View>
                         <View
                           style={
                             {
@@ -4972,7 +4822,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-      handlerTag={23}
+      handlerTag={-1}
       handlerType="NativeViewGestureHandler"
       innerRef={null}
       onActiveStateChange={[Function]}
@@ -5051,13 +4901,13 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
       </View>
     </RNGestureHandlerButton>
     <A11yOrderView
-      orderKey=":re:"
+      orderKey="«re»"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey=":re:"
+        orderKey="«re»"
       >
         <View
           accessibilityState={
@@ -5126,7 +4976,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                 importantForAccessibility="yes"
                 orderFocusType={0}
                 orderIndex={2}
-                orderKey=":re:"
+                orderKey="«re»"
               >
                 <View
                   accessible={true}
@@ -5165,7 +5015,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                         collapsable={false}
                         delayLongPress={600}
                         enabled={true}
-                        handlerTag={24}
+                        handlerTag={-1}
                         handlerType="NativeViewGestureHandler"
                         innerRef={null}
                         onActiveStateChange={[Function]}
@@ -5221,7 +5071,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                         >
                           <ViewManagerAdapter_ExpoImage
                             borderRadius={4}
-                            containerViewRef={"[React.ref]"}
+                            containerViewRef={{"current":"Object"}}
                             contentFit="cover"
                             contentPosition={
                               {
@@ -5230,7 +5080,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                               }
                             }
                             height={36}
-                            nativeViewRef={"[React.ref]"}
+                            nativeViewRef={{"current":"NativeComponent"}}
                             onError={[Function]}
                             onLoad={[Function]}
                             onLoadStart={[Function]}
@@ -5287,113 +5137,88 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                           }
                         }
                       >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
+                        <View
+                          accessibilityState={
+                            {
+                              "busy": undefined,
+                              "checked": undefined,
+                              "disabled": undefined,
+                              "expanded": undefined,
+                              "selected": undefined,
+                            }
+                          }
+                          accessibilityValue={
+                            {
+                              "max": undefined,
+                              "min": undefined,
+                              "now": undefined,
+                              "text": undefined,
+                            }
+                          }
+                          accessible={true}
                           collapsable={false}
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={25}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#E4E7EA"
+                          focusable={true}
+                          onBlur={[Function]}
+                          onClick={[Function]}
+                          onFocus={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
                           style={
-                            [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
-                            ]
+                            {
+                              "alignItems": "center",
+                              "flexDirection": "row",
+                              "flexShrink": 1,
+                              "gap": 4,
+                            }
                           }
                           testID="username-header-diego.mello"
-                          underlayColor="#E4E7EA"
                         >
-                          <View
-                            collapsable={false}
+                          <Text
+                            numberOfLines={1}
                             style={
-                              {
-                                "backgroundColor": "#E4E7EA",
-                                "borderBottomLeftRadius": undefined,
-                                "borderBottomRightRadius": undefined,
-                                "borderRadius": undefined,
-                                "borderTopLeftRadius": undefined,
-                                "borderTopRightRadius": undefined,
-                                "bottom": 0,
-                                "left": 0,
-                                "opacity": 0,
-                                "position": "absolute",
-                                "right": 0,
-                                "top": 0,
-                              }
-                            }
-                          />
-                          <View
-                            style={
-                              {
-                                "alignItems": "center",
-                                "flexDirection": "row",
-                                "flexShrink": 1,
-                                "gap": 4,
-                              }
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "flexShrink": 1,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "600",
+                                  "lineHeight": 22,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#1F2329",
+                                },
+                              ]
                             }
                           >
-                            <Text
-                              numberOfLines={1}
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontWeight": "600",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#1F2329",
-                                  },
-                                ]
-                              }
-                            >
-                              diego.mello
-                            </Text>
-                            <Text
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontSize": 13,
-                                    "fontWeight": "400",
-                                    "lineHeight": 18,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#6C727A",
-                                  },
-                                ]
-                              }
-                            >
-                              10:00 AM
-                            </Text>
-                          </View>
-                        </RNGestureHandlerButton>
+                            diego.mello
+                          </Text>
+                          <Text
+                            style={
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "400",
+                                  "lineHeight": 18,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#6C727A",
+                                },
+                                undefined,
+                              ]
+                            }
+                          >
+                            10:00 AM
+                          </Text>
+                        </View>
                         <View
                           style={
                             {
@@ -5479,13 +5304,13 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
       </A11yIndexView>
     </A11yOrderView>
     <A11yOrderView
-      orderKey=":rf:"
+      orderKey="«rf»"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey=":rf:"
+        orderKey="«rf»"
       >
         <View
           accessibilityState={
@@ -5554,7 +5379,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                 importantForAccessibility="yes"
                 orderFocusType={0}
                 orderIndex={2}
-                orderKey=":rf:"
+                orderKey="«rf»"
               >
                 <View
                   accessible={true}
@@ -5672,13 +5497,13 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
       </A11yIndexView>
     </A11yOrderView>
     <A11yOrderView
-      orderKey=":rg:"
+      orderKey="«rg»"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey=":rg:"
+        orderKey="«rg»"
       >
         <View
           accessibilityState={
@@ -5747,7 +5572,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                 importantForAccessibility="yes"
                 orderFocusType={0}
                 orderIndex={2}
-                orderKey=":rg:"
+                orderKey="«rg»"
               >
                 <View
                   accessible={true}
@@ -5869,7 +5694,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-      handlerTag={26}
+      handlerTag={-1}
       handlerType="NativeViewGestureHandler"
       innerRef={null}
       onActiveStateChange={[Function]}
@@ -5952,7 +5777,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-      handlerTag={27}
+      handlerTag={-1}
       handlerType="NativeViewGestureHandler"
       innerRef={null}
       onActiveStateChange={[Function]}
@@ -6031,13 +5856,13 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
       </View>
     </RNGestureHandlerButton>
     <A11yOrderView
-      orderKey=":rh:"
+      orderKey="«rh»"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey=":rh:"
+        orderKey="«rh»"
       >
         <View
           accessibilityState={
@@ -6106,7 +5931,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                 importantForAccessibility="yes"
                 orderFocusType={0}
                 orderIndex={2}
-                orderKey=":rh:"
+                orderKey="«rh»"
               >
                 <View
                   accessible={true}
@@ -6145,7 +5970,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                         collapsable={false}
                         delayLongPress={600}
                         enabled={true}
-                        handlerTag={28}
+                        handlerTag={-1}
                         handlerType="NativeViewGestureHandler"
                         innerRef={null}
                         onActiveStateChange={[Function]}
@@ -6201,7 +6026,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                         >
                           <ViewManagerAdapter_ExpoImage
                             borderRadius={4}
-                            containerViewRef={"[React.ref]"}
+                            containerViewRef={{"current":"Object"}}
                             contentFit="cover"
                             contentPosition={
                               {
@@ -6210,7 +6035,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                               }
                             }
                             height={36}
-                            nativeViewRef={"[React.ref]"}
+                            nativeViewRef={{"current":"NativeComponent"}}
                             onError={[Function]}
                             onLoad={[Function]}
                             onLoadStart={[Function]}
@@ -6267,113 +6092,88 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                           }
                         }
                       >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
+                        <View
+                          accessibilityState={
+                            {
+                              "busy": undefined,
+                              "checked": undefined,
+                              "disabled": undefined,
+                              "expanded": undefined,
+                              "selected": undefined,
+                            }
+                          }
+                          accessibilityValue={
+                            {
+                              "max": undefined,
+                              "min": undefined,
+                              "now": undefined,
+                              "text": undefined,
+                            }
+                          }
+                          accessible={true}
                           collapsable={false}
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={29}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#E4E7EA"
+                          focusable={true}
+                          onBlur={[Function]}
+                          onClick={[Function]}
+                          onFocus={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
                           style={
-                            [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
-                            ]
+                            {
+                              "alignItems": "center",
+                              "flexDirection": "row",
+                              "flexShrink": 1,
+                              "gap": 4,
+                            }
                           }
                           testID="username-header-diego.mello"
-                          underlayColor="#E4E7EA"
                         >
-                          <View
-                            collapsable={false}
+                          <Text
+                            numberOfLines={1}
                             style={
-                              {
-                                "backgroundColor": "#E4E7EA",
-                                "borderBottomLeftRadius": undefined,
-                                "borderBottomRightRadius": undefined,
-                                "borderRadius": undefined,
-                                "borderTopLeftRadius": undefined,
-                                "borderTopRightRadius": undefined,
-                                "bottom": 0,
-                                "left": 0,
-                                "opacity": 0,
-                                "position": "absolute",
-                                "right": 0,
-                                "top": 0,
-                              }
-                            }
-                          />
-                          <View
-                            style={
-                              {
-                                "alignItems": "center",
-                                "flexDirection": "row",
-                                "flexShrink": 1,
-                                "gap": 4,
-                              }
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "flexShrink": 1,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "600",
+                                  "lineHeight": 22,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#1F2329",
+                                },
+                              ]
                             }
                           >
-                            <Text
-                              numberOfLines={1}
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontWeight": "600",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#1F2329",
-                                  },
-                                ]
-                              }
-                            >
-                              diego.mello
-                            </Text>
-                            <Text
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontSize": 13,
-                                    "fontWeight": "400",
-                                    "lineHeight": 18,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#6C727A",
-                                  },
-                                ]
-                              }
-                            >
-                              10:00 AM
-                            </Text>
-                          </View>
-                        </RNGestureHandlerButton>
+                            diego.mello
+                          </Text>
+                          <Text
+                            style={
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "400",
+                                  "lineHeight": 18,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#6C727A",
+                                },
+                                undefined,
+                              ]
+                            }
+                          >
+                            10:00 AM
+                          </Text>
+                        </View>
                         <View
                           style={
                             {
@@ -6459,13 +6259,13 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
       </A11yIndexView>
     </A11yOrderView>
     <A11yOrderView
-      orderKey=":ri:"
+      orderKey="«ri»"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey=":ri:"
+        orderKey="«ri»"
       >
         <View
           accessibilityState={
@@ -6534,7 +6334,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                 importantForAccessibility="yes"
                 orderFocusType={0}
                 orderIndex={2}
-                orderKey=":ri:"
+                orderKey="«ri»"
               >
                 <View
                   accessible={true}
@@ -6652,13 +6452,13 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
       </A11yIndexView>
     </A11yOrderView>
     <A11yOrderView
-      orderKey=":rj:"
+      orderKey="«rj»"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey=":rj:"
+        orderKey="«rj»"
       >
         <View
           accessibilityState={
@@ -6727,7 +6527,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                 importantForAccessibility="yes"
                 orderFocusType={0}
                 orderIndex={2}
-                orderKey=":rj:"
+                orderKey="«rj»"
               >
                 <View
                   accessible={true}
@@ -6845,13 +6645,13 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
       </A11yIndexView>
     </A11yOrderView>
     <A11yOrderView
-      orderKey=":rk:"
+      orderKey="«rk»"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey=":rk:"
+        orderKey="«rk»"
       >
         <View
           accessibilityState={
@@ -6920,7 +6720,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                 importantForAccessibility="yes"
                 orderFocusType={0}
                 orderIndex={2}
-                orderKey=":rk:"
+                orderKey="«rk»"
               >
                 <View
                   accessible={true}
@@ -6959,7 +6759,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                         collapsable={false}
                         delayLongPress={600}
                         enabled={true}
-                        handlerTag={30}
+                        handlerTag={-1}
                         handlerType="NativeViewGestureHandler"
                         innerRef={null}
                         onActiveStateChange={[Function]}
@@ -7015,7 +6815,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                         >
                           <ViewManagerAdapter_ExpoImage
                             borderRadius={4}
-                            containerViewRef={"[React.ref]"}
+                            containerViewRef={{"current":"Object"}}
                             contentFit="cover"
                             contentPosition={
                               {
@@ -7024,7 +6824,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                               }
                             }
                             height={36}
-                            nativeViewRef={"[React.ref]"}
+                            nativeViewRef={{"current":"NativeComponent"}}
                             onError={[Function]}
                             onLoad={[Function]}
                             onLoadStart={[Function]}
@@ -7081,113 +6881,88 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                           }
                         }
                       >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
+                        <View
+                          accessibilityState={
+                            {
+                              "busy": undefined,
+                              "checked": undefined,
+                              "disabled": undefined,
+                              "expanded": undefined,
+                              "selected": undefined,
+                            }
+                          }
+                          accessibilityValue={
+                            {
+                              "max": undefined,
+                              "min": undefined,
+                              "now": undefined,
+                              "text": undefined,
+                            }
+                          }
+                          accessible={true}
                           collapsable={false}
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={31}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#E4E7EA"
+                          focusable={true}
+                          onBlur={[Function]}
+                          onClick={[Function]}
+                          onFocus={[Function]}
+                          onResponderGrant={[Function]}
+                          onResponderMove={[Function]}
+                          onResponderRelease={[Function]}
+                          onResponderTerminate={[Function]}
+                          onResponderTerminationRequest={[Function]}
+                          onStartShouldSetResponder={[Function]}
                           style={
-                            [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
-                            ]
+                            {
+                              "alignItems": "center",
+                              "flexDirection": "row",
+                              "flexShrink": 1,
+                              "gap": 4,
+                            }
                           }
                           testID="username-header-diego.mello"
-                          underlayColor="#E4E7EA"
                         >
-                          <View
-                            collapsable={false}
+                          <Text
+                            numberOfLines={1}
                             style={
-                              {
-                                "backgroundColor": "#E4E7EA",
-                                "borderBottomLeftRadius": undefined,
-                                "borderBottomRightRadius": undefined,
-                                "borderRadius": undefined,
-                                "borderTopLeftRadius": undefined,
-                                "borderTopRightRadius": undefined,
-                                "bottom": 0,
-                                "left": 0,
-                                "opacity": 0,
-                                "position": "absolute",
-                                "right": 0,
-                                "top": 0,
-                              }
-                            }
-                          />
-                          <View
-                            style={
-                              {
-                                "alignItems": "center",
-                                "flexDirection": "row",
-                                "flexShrink": 1,
-                                "gap": 4,
-                              }
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "flexShrink": 1,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "600",
+                                  "lineHeight": 22,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#1F2329",
+                                },
+                              ]
                             }
                           >
-                            <Text
-                              numberOfLines={1}
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "flexShrink": 1,
-                                    "fontFamily": "Inter",
-                                    "fontSize": 16,
-                                    "fontWeight": "600",
-                                    "lineHeight": 22,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#1F2329",
-                                  },
-                                ]
-                              }
-                            >
-                              diego.mello
-                            </Text>
-                            <Text
-                              style={
-                                [
-                                  {
-                                    "backgroundColor": "transparent",
-                                    "fontFamily": "Inter",
-                                    "fontSize": 13,
-                                    "fontWeight": "400",
-                                    "lineHeight": 18,
-                                    "textAlign": "left",
-                                  },
-                                  {
-                                    "color": "#6C727A",
-                                  },
-                                ]
-                              }
-                            >
-                              10:00 AM
-                            </Text>
-                          </View>
-                        </RNGestureHandlerButton>
+                            diego.mello
+                          </Text>
+                          <Text
+                            style={
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "400",
+                                  "lineHeight": 18,
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#6C727A",
+                                },
+                                undefined,
+                              ]
+                            }
+                          >
+                            10:00 AM
+                          </Text>
+                        </View>
                         <View
                           style={
                             {

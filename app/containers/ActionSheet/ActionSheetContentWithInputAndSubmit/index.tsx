@@ -3,7 +3,6 @@ import { StyleSheet, Text, type TextInputProps, View } from 'react-native';
 
 import { CustomIcon, type TIconsName } from '../../CustomIcon';
 import i18n from '../../../i18n';
-import { isIOS } from '../../../lib/methods/helpers';
 import { useTheme } from '../../../theme';
 import sharedStyles from '../../../views/Styles';
 import Button from '../../Button';
@@ -137,7 +136,6 @@ const ActionSheetContentWithInputAndSubmit = ({
 					inputRef={inputRefs.current[index] as any}
 					testID={`${testID}-input-${inputConfig.key}`}
 					secureTextEntry={inputConfig.secureTextEntry}
-					bottomSheet={isIOS}
 				/>
 			));
 		}
@@ -156,7 +154,6 @@ const ActionSheetContentWithInputAndSubmit = ({
 				autoComplete={autoComplete}
 				testID={`${testID}-input`}
 				secureTextEntry={secureTextEntry}
-				bottomSheet={isIOS}
 				containerStyle={{ marginTop: 12, marginBottom: 36 }}
 			/>
 		);

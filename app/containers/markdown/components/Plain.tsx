@@ -1,9 +1,10 @@
-import React from 'react';
-import { Text, type TextStyle } from 'react-native';
+import React, { useContext } from 'react';
+import { Text } from 'react-native';
 import { type Plain as PlainProps } from '@rocket.chat/message-parser';
 
 import { useTheme } from '../../../theme';
 import styles from '../styles';
+import MarkdownContext from '../contexts/MarkdownContext';
 
 interface IPlainProps {
 	value: PlainProps['value'];
@@ -12,8 +13,9 @@ interface IPlainProps {
 
 const Plain = ({ value, style }: IPlainProps): React.ReactElement => {
 	const { colors } = useTheme();
+	const { textStyle } = useContext(MarkdownContext);
 	return (
-		<Text accessibilityLabel={value} style={[styles.plainText, { color: colors.fontDefault }, style]}>
+		<Text accessibilityLabel={value} style={[styles.plainText, { color: colors.fontDefault }, ...(textStyle ? [textStyle] : [])]}>
 			{value}
 		</Text>
 	);

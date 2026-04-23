@@ -57,6 +57,9 @@ export type UsersEndpoints = {
 	'users.resetAvatar': {
 		POST: (params: { userId: string }) => {};
 	};
+	'users.setAvatar': {
+		POST: (params: { avatarUrl: string }) => { success: boolean };
+	};
 	'users.removeOtherTokens': {
 		POST: (params: { userId: string }) => {};
 	};
@@ -68,5 +71,8 @@ export type UsersEndpoints = {
 	};
 	'users.deleteOwnAccount': {
 		POST: (params: { password: string; confirmRelinquish: boolean }) => { success: boolean };
+	};
+	'users.sendConfirmationEmail': {
+		POST: (params: { email: string }) => { success: boolean };
 	};
 };
