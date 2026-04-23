@@ -1144,6 +1144,8 @@ export const removePushToken = (): Promise<boolean | void> => {
 	if (token) {
 		lastToken = '';
 		lastVoipToken = '';
+		pendingToken = '';
+		pendingVoipToken = '';
 		// RC 0.60.0
 		return sdk.current.del('push.token', { token });
 	}
