@@ -1,6 +1,12 @@
 import { View, Text } from 'react-native';
 import React, { type ReactElement, useEffect, useRef } from 'react';
-import { RecordingPresets, requestRecordingPermissionsAsync, setAudioModeAsync, useAudioRecorder, useAudioRecorderState } from 'expo-audio';
+import {
+	RecordingPresets,
+	requestRecordingPermissionsAsync,
+	setAudioModeAsync,
+	useAudioRecorder,
+	useAudioRecorderState
+} from 'expo-audio';
 import { getInfoAsync } from 'expo-file-system/legacy';
 import { useKeepAwake } from 'expo-keep-awake';
 import { shallowEqual } from 'react-redux';
