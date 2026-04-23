@@ -1,4 +1,5 @@
 import React from 'react';
+import type { ViewStyle } from 'react-native';
 
 import i18n from '../../i18n';
 import ListItem, { type IListItem } from './ListItem';
@@ -8,6 +9,7 @@ import { useTheme } from '../../theme';
 interface IListRadio extends IListItem {
 	value: any;
 	isSelected: boolean;
+	style?: ViewStyle;
 }
 
 const ListRadio = ({ value: _, isSelected, ...rest }: IListRadio) => {
