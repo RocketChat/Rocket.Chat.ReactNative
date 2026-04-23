@@ -90,6 +90,7 @@ export default StyleSheet.create({
 	},
 	link: {
 		fontSize: 16,
+		textDecorationLine: 'underline',
 		...sharedStyles.textRegular
 	},
 	heading1: {
