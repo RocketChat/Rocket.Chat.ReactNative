@@ -11,6 +11,7 @@ import {
 import RNCallKeep from 'react-native-callkeep';
 import { registerGlobals } from 'react-native-webrtc';
 import { getUniqueIdSync } from 'react-native-device-info';
+import { dequal } from 'dequal';
 
 import { mediaSessionStore } from './MediaSessionStore';
 import { useCallStore } from './useCallStore';
@@ -225,7 +226,7 @@ class MediaSessionInstance {
 
 		this.storeIceServersUnsubscribe = store.subscribe(() => {
 			const currentIceServers = this.getIceServers();
-			if (JSON.stringify(currentIceServers) !== JSON.stringify(this.iceServers)) {
+			if (!dequal(currentIceServers, this.iceServers)) {
 				this.iceServers = currentIceServers;
 				this.instance?.setIceServers(this.iceServers);
 			}
