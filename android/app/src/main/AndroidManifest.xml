@@ -152,7 +152,7 @@
             android:name="chat.rocket.reactnative.voip.VoipCallService"
             android:enabled="true"
             android:exported="false"
-            android:foregroundServiceType="microphone" />
+            android:foregroundServiceType="phoneCall" />
 
         <!-- react-native-webrtc ships MediaProjectionService (foregroundServiceType=mediaProjection)
              for screen sharing. We don't use screen sharing, and Android 15+ forbids starting
