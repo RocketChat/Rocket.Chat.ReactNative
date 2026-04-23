@@ -61,10 +61,11 @@ export const styles = StyleSheet.create({
 	buttonsRow: {
 		flexDirection: 'row',
 		justifyContent: 'center',
-		gap: 24
+		gap: 48
 	},
 	actionButtonCell: {
-		flex: 1,
+		width: 64,
+		overflow: 'hidden',
 		alignItems: 'center'
 	},
 	actionButton: {
@@ -78,7 +79,6 @@ export const styles = StyleSheet.create({
 	actionButtonLabel: {
 		...sharedStyles.textRegular,
 		fontSize: 14,
-		lineHeight: 20,
-		textAlign: 'center'
+		lineHeight: 20
 	}
 });

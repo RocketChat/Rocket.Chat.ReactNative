@@ -22,6 +22,8 @@ const DialpadButton = ({ digit, letters }: IDialpadButton): React.ReactElement =
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
 	};
 
+	const isLargeDigit = ['*', '#'].includes(digit);
+
 	return (
 		<Pressable
 			onPress={handleDigitPress}
@@ -32,8 +34,8 @@ const DialpadButton = ({ digit, letters }: IDialpadButton): React.ReactElement =
 				{ backgroundColor: pressed ? colors.buttonBackgroundSecondaryPress : colors.buttonBackgroundSecondaryDefault }
 			]}>
 			<View style={styles.digitContainer}>
-				<Text style={[styles.digit, { color: colors.fontDefault }]}>{digit}</Text>
-				<Text style={[styles.letters, { color: colors.fontSecondaryInfo }]}>{letters || ''}</Text>
+				<Text style={[styles.digit, isLargeDigit && styles.digitLarge, { color: colors.fontDefault }]}>{digit}</Text>
+				{!isLargeDigit ? <Text style={[styles.letters, { color: colors.fontSecondaryInfo }]}>{letters || ''}</Text> : null}
 			</View>
 		</Pressable>
 	);
