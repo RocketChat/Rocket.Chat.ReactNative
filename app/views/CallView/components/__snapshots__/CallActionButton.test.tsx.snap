@@ -21,7 +21,8 @@ exports[`Story Snapshots: ActiveButton should match snapshot 1`] = `
       style={
         {
           "alignItems": "center",
-          "flex": 1,
+          "overflow": "hidden",
+          "width": 64,
         }
       }
     >
@@ -112,7 +113,7 @@ exports[`Story Snapshots: ActiveButton should match snapshot 1`] = `
               "fontSize": 14,
               "fontWeight": "400",
               "lineHeight": 20,
-              "textAlign": "center",
+              "textAlign": "left",
             },
             {
               "color": "#2F343D",
@@ -156,7 +157,8 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
         style={
           {
             "alignItems": "center",
-            "flex": 1,
+            "overflow": "hidden",
+            "width": 64,
           }
         }
       >
@@ -247,7 +249,7 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
                 "fontSize": 14,
                 "fontWeight": "400",
                 "lineHeight": 20,
-                "textAlign": "center",
+                "textAlign": "left",
               },
               {
                 "color": "#2F343D",
@@ -262,7 +264,8 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
         style={
           {
             "alignItems": "center",
-            "flex": 1,
+            "overflow": "hidden",
+            "width": 64,
           }
         }
       >
@@ -353,7 +356,7 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
                 "fontSize": 14,
                 "fontWeight": "400",
                 "lineHeight": 20,
-                "textAlign": "center",
+                "textAlign": "left",
               },
               {
                 "color": "#2F343D",
@@ -368,7 +371,8 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
         style={
           {
             "alignItems": "center",
-            "flex": 1,
+            "overflow": "hidden",
+            "width": 64,
           }
         }
       >
@@ -459,7 +463,7 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
                 "fontSize": 14,
                 "fontWeight": "400",
                 "lineHeight": 20,
-                "textAlign": "center",
+                "textAlign": "left",
               },
               {
                 "color": "#2F343D",
@@ -488,7 +492,8 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
         style={
           {
             "alignItems": "center",
-            "flex": 1,
+            "overflow": "hidden",
+            "width": 64,
           }
         }
       >
@@ -579,7 +584,7 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
                 "fontSize": 14,
                 "fontWeight": "400",
                 "lineHeight": 20,
-                "textAlign": "center",
+                "textAlign": "left",
               },
               {
                 "color": "#2F343D",
@@ -594,7 +599,8 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
         style={
           {
             "alignItems": "center",
-            "flex": 1,
+            "overflow": "hidden",
+            "width": 64,
           }
         }
       >
@@ -685,7 +691,7 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
                 "fontSize": 14,
                 "fontWeight": "400",
                 "lineHeight": 20,
-                "textAlign": "center",
+                "textAlign": "left",
               },
               {
                 "color": "#2F343D",
@@ -700,7 +706,8 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
         style={
           {
             "alignItems": "center",
-            "flex": 1,
+            "overflow": "hidden",
+            "width": 64,
           }
         }
       >
@@ -791,7 +798,7 @@ exports[`Story Snapshots: AllVariants should match snapshot 1`] = `
                 "fontSize": 14,
                 "fontWeight": "400",
                 "lineHeight": 20,
-                "textAlign": "center",
+                "textAlign": "left",
               },
               {
                 "color": "#2F343D",
@@ -828,7 +835,8 @@ exports[`Story Snapshots: DangerButton should match snapshot 1`] = `
       style={
         {
           "alignItems": "center",
-          "flex": 1,
+          "overflow": "hidden",
+          "width": 64,
         }
       }
     >
@@ -919,7 +927,7 @@ exports[`Story Snapshots: DangerButton should match snapshot 1`] = `
               "fontSize": 14,
               "fontWeight": "400",
               "lineHeight": 20,
-              "textAlign": "center",
+              "textAlign": "left",
             },
             {
               "color": "#2F343D",
@@ -955,7 +963,8 @@ exports[`Story Snapshots: DefaultButton should match snapshot 1`] = `
       style={
         {
           "alignItems": "center",
-          "flex": 1,
+          "overflow": "hidden",
+          "width": 64,
         }
       }
     >
@@ -1046,7 +1055,7 @@ exports[`Story Snapshots: DefaultButton should match snapshot 1`] = `
               "fontSize": 14,
               "fontWeight": "400",
               "lineHeight": 20,
-              "textAlign": "center",
+              "textAlign": "left",
             },
             {
               "color": "#2F343D",
@@ -1082,7 +1091,8 @@ exports[`Story Snapshots: DisabledButton should match snapshot 1`] = `
       style={
         {
           "alignItems": "center",
-          "flex": 1,
+          "overflow": "hidden",
+          "width": 64,
         }
       }
     >
@@ -1175,7 +1185,7 @@ exports[`Story Snapshots: DisabledButton should match snapshot 1`] = `
               "fontSize": 14,
               "fontWeight": "400",
               "lineHeight": 20,
-              "textAlign": "center",
+              "textAlign": "left",
             },
             {
               "color": "#2F343D",
@@ -1220,7 +1230,8 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
         style={
           {
             "alignItems": "center",
-            "flex": 1,
+            "overflow": "hidden",
+            "width": 64,
           }
         }
       >
@@ -1311,7 +1322,7 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
                 "fontSize": 14,
                 "fontWeight": "400",
                 "lineHeight": 20,
-                "textAlign": "center",
+                "textAlign": "left",
               },
               {
                 "color": "#2F343D",
@@ -1326,7 +1337,8 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
         style={
           {
             "alignItems": "center",
-            "flex": 1,
+            "overflow": "hidden",
+            "width": 64,
           }
         }
       >
@@ -1417,7 +1429,7 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
                 "fontSize": 14,
                 "fontWeight": "400",
                 "lineHeight": 20,
-                "textAlign": "center",
+                "textAlign": "left",
               },
               {
                 "color": "#2F343D",
@@ -1432,7 +1444,8 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
         style={
           {
             "alignItems": "center",
-            "flex": 1,
+            "overflow": "hidden",
+            "width": 64,
           }
         }
       >
@@ -1523,7 +1536,7 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
                 "fontSize": 14,
                 "fontWeight": "400",
                 "lineHeight": 20,
-                "textAlign": "center",
+                "textAlign": "left",
               },
               {
                 "color": "#2F343D",
@@ -1538,7 +1551,8 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
         style={
           {
             "alignItems": "center",
-            "flex": 1,
+            "overflow": "hidden",
+            "width": 64,
           }
         }
       >
@@ -1629,7 +1643,7 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
                 "fontSize": 14,
                 "fontWeight": "400",
                 "lineHeight": 20,
-                "textAlign": "center",
+                "textAlign": "left",
               },
               {
                 "color": "#2F343D",
@@ -1644,7 +1658,8 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
         style={
           {
             "alignItems": "center",
-            "flex": 1,
+            "overflow": "hidden",
+            "width": 64,
           }
         }
       >
@@ -1735,7 +1750,7 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
                 "fontSize": 14,
                 "fontWeight": "400",
                 "lineHeight": 20,
-                "textAlign": "center",
+                "textAlign": "left",
               },
               {
                 "color": "#2F343D",
@@ -1750,7 +1765,8 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
         style={
           {
             "alignItems": "center",
-            "flex": 1,
+            "overflow": "hidden",
+            "width": 64,
           }
         }
       >
@@ -1841,7 +1857,7 @@ exports[`Story Snapshots: TabletAllVariants should match snapshot 1`] = `
                 "fontSize": 14,
                 "fontWeight": "400",
                 "lineHeight": 20,
-                "textAlign": "center",
+                "textAlign": "left",
               },
               {
                 "color": "#2F343D",

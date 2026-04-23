@@ -5,7 +5,10 @@ import sharedStyles from '../../../Styles';
 export const styles = StyleSheet.create({
 	container: {
 		padding: 32,
-		paddingBottom: 32
+		paddingBottom: 32,
+		maxWidth: 400,
+		alignSelf: 'center',
+		width: '100%'
 	},
 	inputContainer: {
 		marginBottom: 24
@@ -16,11 +19,12 @@ export const styles = StyleSheet.create({
 	},
 	row: {
 		flexDirection: 'row',
-		justifyContent: 'space-between',
+		justifyContent: 'center',
 		gap: 40
 	},
 	button: {
 		flex: 1,
+		maxWidth: 68,
 		aspectRatio: 1,
 		borderRadius: 8
 	},
@@ -34,6 +38,12 @@ export const styles = StyleSheet.create({
 		fontSize: 32,
 		lineHeight: 36,
 		textAlign: 'center'
+	},
+	digitLarge: {
+		fontSize: 38,
+		lineHeight: 40,
+		textAlign: 'center',
+		textAlignVertical: 'center'
 	},
 	letters: {
 		...sharedStyles.textRegular,

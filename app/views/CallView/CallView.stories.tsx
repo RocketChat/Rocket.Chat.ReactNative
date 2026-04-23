@@ -8,6 +8,7 @@ import { CallButtons } from './components/CallButtons';
 import { styles as callViewStyles } from './styles';
 import { useTheme } from '../../theme';
 import { useCallStore } from '../../lib/services/voip/useCallStore';
+import { ActionSheetProvider } from '../../containers/ActionSheet';
 import {
 	BASE_ROW_HEIGHT,
 	BASE_ROW_HEIGHT_CONDENSED,
@@ -37,6 +38,7 @@ const setStoreState = (overrides: Partial<ReturnType<typeof useCallStore.getStat
 		setHeld: () => {},
 		hangup: () => {},
 		reject: () => {},
+		sendDTMF: () => {},
 		emitter: {
 			on: () => {},
 			off: () => {}
@@ -118,13 +120,22 @@ export const SpeakerOn = () => {
 	return <CallView />;
 };
 
+export const WithDialpad = () => {
+	setStoreState({ callState: 'active' });
+	return (
+		<ActionSheetProvider>
+			<CallView />
+		</ActionSheetProvider>
+	);
+};
+
 // Tablet / wide layout stories — force layoutMode='wide' via ResponsiveLayoutContext width
 const TabletCallView = () => {
 	const { colors } = useTheme();
 	const call = useCallStore(state => state.call);
 	if (!call) return null;
 	return (
-		<ResponsiveLayoutContext.Provider value={{ ...responsiveLayoutProviderLargeFontValue(1), width: 800 }}>
+		<ResponsiveLayoutContext.Provider value={{ ...responsiveLayoutProviderLargeFontValue(1), width: 700 }}>
 			<View style={[callViewStyles.contentContainer, { backgroundColor: colors.surfaceLight }]}>
 				<CallerInfo />
 				<CallButtons />
@@ -161,4 +172,13 @@ export const TabletMutedAndOnHold = () => {
 export const TabletSpeakerOn = () => {
 	setStoreState({ callState: 'active', isSpeakerOn: true });
 	return <TabletCallView />;
+};
+
+export const TabletWithDialpad = () => {
+	setStoreState({ callState: 'active' });
+	return (
+		<ActionSheetProvider>
+			<TabletCallView />
+		</ActionSheetProvider>
+	);
 };
