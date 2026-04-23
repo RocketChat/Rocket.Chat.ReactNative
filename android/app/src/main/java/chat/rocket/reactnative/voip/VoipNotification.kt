@@ -33,6 +33,7 @@ import android.app.Activity
 import android.app.KeyguardManager
 import chat.rocket.reactnative.MainActivity
 import chat.rocket.reactnative.notification.Ejson
+import chat.rocket.reactnative.BuildConfig
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.concurrent.atomic.AtomicBoolean
