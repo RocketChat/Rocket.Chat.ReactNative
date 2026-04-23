@@ -40,10 +40,7 @@ const Spoiler = ({ value }: ISpoilerProps) => {
 
 	return (
 		<Text
-			style={[
-				styles.spoilerText,
-				!isRevealed && styles.hidden
-			]}
+			style={styles.spoilerText}
 			onPress={handleToggle}
 		>
 			{value.map((block, index) => {
@@ -59,7 +56,7 @@ const Spoiler = ({ value }: ISpoilerProps) => {
 					case 'LINK':
 						return <Link key={index} value={block.value} style={isRevealed ? undefined : styles.hidden} disabled={!isRevealed}/>;
 					case 'INLINE_CODE':
-						return <InlineCode key={index} value={block.value} />;
+						return <InlineCode key={index} value={block.value} style={isRevealed ? undefined : styles.hidden}/>;
 					case 'IMAGE':
 						return <Image key={index} value={block.value} />;
 					case 'TIMESTAMP':

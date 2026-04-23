@@ -17,19 +17,19 @@ const styles = StyleSheet.create({
 });
 
 const Strike = ({ value, style }: IStrikeProps) => (
-	<Text style={[styles.text, style]}>
+	<Text style={styles.text}>
 		{value.map(block => {
 			switch (block.type) {
 				case 'LINK':
-					return <Link value={block.value} />;
+					return <Link value={block.value} style={style} />;
 				case 'PLAIN_TEXT':
-					return <Plain value={block.value} />;
+					return <Plain value={block.value} style={style} />;
 				case 'BOLD':
-					return <Bold value={block.value} />;
+					return <Bold value={block.value} style={style} />;
 				case 'ITALIC':
-					return <Italic value={block.value} />;
+					return <Italic value={block.value} style={style} />;
 				case 'MENTION_CHANNEL':
-					return <Plain value={`#${block.value.value}`} />;
+					return <Plain value={`#${block.value.value}`} style={style} />;
 				default:
 					return null;
 			}

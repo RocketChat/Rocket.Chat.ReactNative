@@ -22,15 +22,15 @@ const Bold = ({ value, style }: IBoldProps) => (
 		{value.map(block => {
 			switch (block.type) {
 				case 'LINK':
-					return <Link value={block.value} />;
+					return <Link value={block.value} style={style} />;
 				case 'PLAIN_TEXT':
-					return <Plain value={block.value} />;
+					return <Plain value={block.value} style={style}/>;
 				case 'STRIKE':
-					return <Strike value={block.value} />;
+					return <Strike value={block.value} style={style}/>;
 				case 'ITALIC':
-					return <Italic value={block.value} />;
+					return <Italic value={block.value} style={style}/>;
 				case 'MENTION_CHANNEL':
-					return <Plain value={`#${block.value.value}`} />;
+					return <Plain value={`#${block.value.value}`} style={style}/>;
 				default:
 					return null;
 			}
