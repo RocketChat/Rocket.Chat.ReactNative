@@ -44,7 +44,7 @@ const VideoContent = ({
 		player.play();
 	});
 
-	useEventListener(player, 'statusChange', ({ status, error }) => {
+	useEventListener(player, 'statusChange', ({ status }) => {
 		if (status === 'readyToPlay') {
 			setLoading(false);
 		} else if (status === 'error') {

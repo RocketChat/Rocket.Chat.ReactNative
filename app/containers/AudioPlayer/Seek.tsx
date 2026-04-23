@@ -83,7 +83,7 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 		.onEnd(() => {
 			scheduleOnRN(onChangeTime, Math.round(currentTime.value));
 		})
-		.onFinalize((didSucceed) => {
+		.onFinalize(didSucceed => {
 			isPanning.value = false;
 			scale.value = withTiming(1, { duration: 150 });
 			if (!didSucceed) {
