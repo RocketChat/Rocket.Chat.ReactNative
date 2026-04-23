@@ -38,7 +38,6 @@ tags:
     visible:
       id: message-composer-input
     timeout: 60000
-- pressKey: Remote Dpad Down
 - inputText: ${output.keyboardMessage}
 - pressKey: Remote Dpad Down
 - pressKey: Remote Dpad Right
