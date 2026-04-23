@@ -81,7 +81,7 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 			translateX.value = clamp(newX, 0, maxWidth.value);
 		})
 		.onEnd(() => {
-			scheduleOnRN(onChangeTime, Math.round(currentTime.value));
+			scheduleOnRN(onChangeTime, currentTime.value);
 		})
 		.onFinalize(didSucceed => {
 			isPanning.value = false;

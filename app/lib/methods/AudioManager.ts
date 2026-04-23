@@ -86,7 +86,9 @@ function createAudioManager() {
 		if (!player) {
 			return;
 		}
-		player.seekTo(time);
+		player.seekTo(time).catch(() => {
+			// Ignore seek errors
+		});
 	}
 
 	function setRateAsync(audioKey: string, value = 1.0) {

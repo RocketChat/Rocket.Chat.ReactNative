@@ -1,6 +1,6 @@
 import { View, Text } from 'react-native';
 import React, { type ReactElement, useEffect, useRef } from 'react';
-import { RecordingPresets, setAudioModeAsync, useAudioRecorder, useAudioRecorderState } from 'expo-audio';
+import { RecordingPresets, requestRecordingPermissionsAsync, setAudioModeAsync, useAudioRecorder, useAudioRecorderState } from 'expo-audio';
 import { getInfoAsync } from 'expo-file-system/legacy';
 import { useKeepAwake } from 'expo-keep-awake';
 import { shallowEqual } from 'react-redux';
@@ -38,6 +38,12 @@ export const RecordAudio = (): ReactElement | null => {
 	useKeepAwake();
 
 	async function doRecording() {
+		const permissions = await requestRecordingPermissionsAsync();
+		if (!permissions.granted) {
+			setRecordingAudio(false);
+			return;
+		}
+
 		await setAudioModeAsync({
 			playsInSilentMode: true,
 			allowsRecording: true
@@ -48,8 +54,9 @@ export const RecordAudio = (): ReactElement | null => {
 	}
 
 	useEffect(() => {
-		doRecording().catch(() => {
-			// Do nothing
+		doRecording().catch(error => {
+			log(error);
+			setRecordingAudio(false);
 		});
 
 		return () => {
@@ -62,7 +69,7 @@ export const RecordAudio = (): ReactElement | null => {
 	useEffect(() => {
 		if (!durationRef.current) return;
 
-		durationRef.current.onRecordingStatusUpdate(recorderState);
+		durationRef.current.onRecordingStatusUpdate?.(recorderState);
 	}, [recorderState]);
 
 	const cancelRecording = async () => {

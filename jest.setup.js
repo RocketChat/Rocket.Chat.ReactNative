@@ -128,7 +128,7 @@ jest.mock('expo-audio', () => {
 			permission: { granted: true },
 			requestPermissions: jest.fn(() => Promise.resolve({ granted: true })),
 			start: jest.fn(),
-			stop: jest.fn(),
+			stop: jest.fn(() => Promise.resolve()),
 			record: jest.fn(() => Promise.resolve()),
 			prepareToRecordAsync: jest.fn(() => Promise.resolve()),
 			getStatus: jest.fn(() => ({ canRecord: true, isRecording: false, duration: 0, metering: 0 }))
