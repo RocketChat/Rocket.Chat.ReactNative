@@ -29,7 +29,7 @@ import { getEnterpriseModules, isOmnichannelModuleAvailable, isVoipModuleAvailab
 import { getPermissions } from '../lib/methods/getPermissions';
 import { getRoles } from '../lib/methods/getRoles';
 import { getSlashCommands } from '../lib/methods/getSlashCommands';
-import { getUserPresence, subscribeUsersPresence } from '../lib/methods/getUsersPresence';
+import { getUserPresence, refreshDmUsersPresence, subscribeUsersPresence } from '../lib/methods/getUsersPresence';
 import { logout, removeServerData, removeServerDatabase } from '../lib/methods/logout';
 import { subscribeSettings } from '../lib/methods/getSettings';
 import { disconnect, loginWithPassword, login } from '../lib/services/connect';
@@ -199,6 +199,7 @@ const registerPushTokenFork = function* registerPushTokenFork() {
 const fetchUsersPresenceFork = function* fetchUsersPresenceFork() {
 	try {
 		yield subscribeUsersPresence();
+		yield refreshDmUsersPresence();
 	} catch (e) {
 		log(e);
 	}
