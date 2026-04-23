@@ -187,6 +187,12 @@ export const pushNotificationConfigure = (onNotification: (notification: INotifi
 			deviceToken = token;
 			console.log('[push.ts] Registered for push notifications:', token);
 
+			// Guard: only register push token if user is authenticated
+			if (!reduxStore.getState().login.isAuthenticated) {
+				console.log('[push.ts] Skipping push token registration - user not authenticated');
+				return;
+			}
+
 			registerPushToken().catch(e => {
 				console.log('[push.ts] Failed to register push token after initial acquisition:', e);
 			});
@@ -196,6 +202,13 @@ export const pushNotificationConfigure = (onNotification: (notification: INotifi
 	// Listen for token updates (FCM can refresh tokens at any time)
 	Notifications.addPushTokenListener(tokenData => {
 		deviceToken = tokenData.data;
+
+		// Guard: only register push token if user is authenticated
+		if (!reduxStore.getState().login.isAuthenticated) {
+			console.log('[push.ts] Skipping push token re-registration - user not authenticated');
+			return;
+		}
+
 		registerPushToken().catch(e => {
 			console.log('[push.ts] Failed to re-register push token after refresh:', e);
 		});
