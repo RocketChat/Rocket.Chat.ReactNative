@@ -1,5 +1,19 @@
 import Foundation
 
+/// Insecure scheme not allowed — Android rejects `http://` via IllegalStateException for the same reason.
+enum DDPClientError: Error {
+    case insecureSchemeNotAllowed
+}
+
+extension DDPClientError: LocalizedError {
+    var errorDescription: String? {
+        switch self {
+        case .insecureSchemeNotAllowed:
+            return "Insecure `http://` scheme not allowed. DDP requires `wss://`. Set server URL to use `https://`."
+        }
+    }
+}
+
 /// Minimal DDP WebSocket client for listening to Rocket.Chat media-signal events from native iOS.
 /// Only implements the subset needed to detect call hangup: connect, login, subscribe, and ping/pong.
 final class DDPClient {
@@ -33,7 +47,8 @@ final class DDPClient {
     
     func connect(host: String, completion: @escaping (Bool) -> Void) {
         stateQueue.async {
-            let wsUrl = Self.buildWebSocketURL(host: host)
+            do {
+                let wsUrl = try Self.buildWebSocketURL(host: host)
             
             guard let url = URL(string: wsUrl) else {
                 #if DEBUG
@@ -76,6 +91,13 @@ final class DDPClient {
                 } else {
                     completion(false)
                 }
+            }
+            } catch {
+                #if DEBUG
+                print("[\(Self.TAG)] Insecure scheme rejected: \(error.localizedDescription)")
+                #endif
+                completion(false)
+                return
             }
         }
     }
@@ -414,8 +436,7 @@ final class DDPClient {
             useSsl = true
             cleaned = String(cleaned.dropFirst("https://".count))
         } else if cleaned.hasPrefix("http://") {
-            useSsl = false
-            cleaned = String(cleaned.dropFirst("http://".count))
+            throw DDPClientError.insecureSchemeNotAllowed
         } else {
             useSsl = true
         }
