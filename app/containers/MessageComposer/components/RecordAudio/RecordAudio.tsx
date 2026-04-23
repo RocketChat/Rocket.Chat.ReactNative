@@ -41,7 +41,7 @@ export const RecordAudio = (): ReactElement | null => {
 	async function doRecording() {
 		await setAudioModeAsync({
 			playsInSilentMode: true,
-			allowsRecording: true,
+			allowsRecording: true
 		});
 
 		await audioRecorder.prepareToRecordAsync();
