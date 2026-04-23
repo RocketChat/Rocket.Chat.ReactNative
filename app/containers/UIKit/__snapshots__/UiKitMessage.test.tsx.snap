@@ -1087,6 +1087,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "fontSize": 14,
                             },
+                            undefined,
                           ]
                         }
                       >
@@ -1190,6 +1191,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "fontSize": 14,
                             },
+                            undefined,
                           ]
                         }
                       >
@@ -1360,6 +1362,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "fontSize": 14,
                             },
+                            undefined,
                           ]
                         }
                       >
@@ -1463,6 +1466,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "fontSize": 14,
                             },
+                            undefined,
                           ]
                         }
                       >
@@ -1633,6 +1637,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "fontSize": 14,
                             },
+                            undefined,
                           ]
                         }
                       >
@@ -1803,6 +1808,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "fontSize": 14,
                             },
+                            undefined,
                           ]
                         }
                       >
@@ -1983,6 +1989,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "fontSize": 14,
                             },
+                            undefined,
                           ]
                         }
                       >
@@ -2086,6 +2093,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "fontSize": 14,
                             },
+                            undefined,
                           ]
                         }
                       >
@@ -2256,6 +2264,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "fontSize": 14,
                             },
+                            undefined,
                           ]
                         }
                       >
@@ -2359,6 +2368,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "fontSize": 14,
                             },
+                            undefined,
                           ]
                         }
                       >
@@ -2529,6 +2539,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "fontSize": 14,
                             },
+                            undefined,
                           ]
                         }
                       >
@@ -2699,6 +2710,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "fontSize": 14,
                             },
+                            undefined,
                           ]
                         }
                       >
@@ -2879,6 +2891,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "fontSize": 14,
                             },
+                            undefined,
                           ]
                         }
                       >
@@ -2982,6 +2995,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "fontSize": 14,
                             },
+                            undefined,
                           ]
                         }
                       >
@@ -3152,6 +3166,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "fontSize": 14,
                             },
+                            undefined,
                           ]
                         }
                       >
@@ -3255,6 +3270,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "fontSize": 14,
                             },
+                            undefined,
                           ]
                         }
                       >
@@ -3425,6 +3441,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "fontSize": 14,
                             },
+                            undefined,
                           ]
                         }
                       >
@@ -3595,6 +3612,7 @@ exports[`Story Snapshots: InfoCard should match snapshot 1`] = `
                             {
                               "fontSize": 14,
                             },
+                            undefined,
                           ]
                         }
                       >
@@ -3720,6 +3738,7 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                       {
                         "fontSize": 14,
                       },
+                      undefined,
                     ]
                   }
                 >
@@ -3823,6 +3842,7 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                       {
                         "fontSize": 14,
                       },
+                      undefined,
                     ]
                   }
                 >
@@ -3926,6 +3946,7 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                       {
                         "fontSize": 14,
                       },
+                      undefined,
                     ]
                   }
                 >
@@ -4029,6 +4050,7 @@ exports[`Story Snapshots: InfoCardI18n should match snapshot 1`] = `
                       {
                         "fontSize": 14,
                       },
+                      undefined,
                     ]
                   }
                 >
@@ -4777,6 +4799,7 @@ exports[`Story Snapshots: Section should match snapshot 1`] = `
                 {
                   "fontSize": 14,
                 },
+                undefined,
               ]
             }
           >
@@ -4860,6 +4883,7 @@ exports[`Story Snapshots: SectionButton should match snapshot 1`] = `
                 {
                   "fontSize": 14,
                 },
+                undefined,
               ]
             }
           >
@@ -5013,6 +5037,7 @@ exports[`Story Snapshots: SectionDatePicker should match snapshot 1`] = `
                 {
                   "fontSize": 14,
                 },
+                undefined,
               ]
             }
           >
@@ -5176,6 +5201,7 @@ exports[`Story Snapshots: SectionMarkdownList should match snapshot 1`] = `
                   {
                     "fontSize": 14,
                   },
+                  undefined,
                 ]
               }
             >
@@ -5197,6 +5223,7 @@ exports[`Story Snapshots: SectionMarkdownList should match snapshot 1`] = `
                 {
                   "fontSize": 14,
                 },
+                undefined,
               ]
             }
           >
@@ -5287,6 +5314,7 @@ exports[`Story Snapshots: SectionMarkdownList should match snapshot 1`] = `
                     {
                       "fontSize": 14,
                     },
+                    undefined,
                   ]
                 }
               >
@@ -5373,6 +5401,7 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
                   {
                     "fontSize": 14,
                   },
+                  undefined,
                 ]
               }
             >
@@ -5523,6 +5552,7 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
                   {
                     "fontSize": 14,
                   },
+                  undefined,
                 ]
               }
             >
@@ -5677,6 +5707,7 @@ exports[`Story Snapshots: SectionOverflow should match snapshot 1`] = `
                 {
                   "fontSize": 14,
                 },
+                undefined,
               ]
             }
           >
@@ -5857,6 +5888,7 @@ exports[`Story Snapshots: SectionSelect should match snapshot 1`] = `
                 {
                   "fontSize": 14,
                 },
+                undefined,
               ]
             }
           >

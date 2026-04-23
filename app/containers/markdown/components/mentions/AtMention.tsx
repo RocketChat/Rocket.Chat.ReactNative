@@ -9,6 +9,7 @@ import { events, logEvent } from '../../../../lib/methods/helpers/log';
 import { type IUserMention } from '../../interfaces';
 import { useUserPreferences } from '../../../../lib/methods/userPreferences';
 import MarkdownContext from '../../contexts/MarkdownContext';
+import { SpoilerContext } from '../inline/Spoiler';
 
 interface IAtMention {
 	mention: string;
@@ -16,11 +17,15 @@ interface IAtMention {
 	navToRoomInfo?: Function;
 	useRealName?: boolean;
 	mentions?: IUserMention[];
+	disabled?: boolean;
 }
 
-const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, useRealName }: IAtMention) => {
+const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, useRealName, disabled = false }: IAtMention) => {
 	const { theme } = useTheme();
 	const { textStyle } = useContext(MarkdownContext);
+	const { isRevealed, spoilerStyle } = useContext(SpoilerContext);
+
+	const isDisabled = disabled || !isRevealed;
 	const [mentionsWithAtSymbol] = useUserPreferences<boolean>(USER_MENTIONS_PREFERENCES_KEY, false);
 	const preffix = mentionsWithAtSymbol ? '@' : '';
 	if (mention === 'all' || mention === 'here') {
@@ -31,7 +36,8 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, useR
 					...(textStyle ? [textStyle] : []),
 					{
 						color: themes[theme].statusFontService
-					}
+					},
+					spoilerStyle
 				]}>
 				{preffix}
 				{mention}
@@ -54,6 +60,9 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, useR
 	const atMentioned = mentions?.find?.((m: any) => m && (m.username === mention || m.name === mention));
 
 	const handlePress = () => {
+		if (isDisabled) {
+			return;
+		}
 		logEvent(events.ROOM_MENTION_GO_USER_INFO);
 		const navParam = {
 			t: 'd',
@@ -76,8 +85,8 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, useR
 		return (
 			// not enough information on mentions to navigate to team info, so we don't handle onPress
 			<Text
-				style={[styles.mention, ...(textStyle ? [textStyle] : []), mentionStyle]}
-				onPress={atMentioned?.type === 'team' ? undefined : handlePress}>
+				style={[styles.mention, ...(textStyle ? [textStyle] : []), mentionStyle, spoilerStyle]}
+				onPress={atMentioned?.type === 'team' || isDisabled ? undefined : handlePress}>
 				{preffix}
 				{text}
 			</Text>
@@ -85,7 +94,13 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, useR
 	}
 
 	return (
-		<Text style={[styles.text, ...(textStyle ? [textStyle] : []), { color: themes[theme].fontDefault }]}>{`@${mention}`}</Text>
+		<Text
+			style={[
+				styles.text,
+				...(textStyle ? [textStyle] : []),
+				{ color: themes[theme].fontDefault },
+				spoilerStyle
+			]}>{`@${mention}`}</Text>
 	);
 });
 
