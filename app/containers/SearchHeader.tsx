@@ -1,5 +1,5 @@
 import React from 'react';
-import { type StyleProp, StyleSheet, View, type ViewStyle } from 'react-native';
+import { Platform, type StyleProp, StyleSheet, View, type ViewStyle } from 'react-native';
 
 import I18n from '../i18n';
 import { useTheme } from '../theme';
@@ -35,7 +35,7 @@ const SearchHeader = ({ onSearchChangeText, testID, style }: ISearchHeaderProps)
 			<TextInput
 				autoFocus
 				style={[styles.title, isLight && { color: themes[theme].fontTitlesLabels }]}
-				placeholder={I18n.t('Search')}
+				placeholder={Platform.OS === 'ios' ? `${I18n.t('Search')} (⌘ + K)` : I18n.t('Search')}
 				onChangeText={onSearchChangeText}
 				testID={testID}
 				autoComplete='off'
