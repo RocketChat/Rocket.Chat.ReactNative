@@ -69,7 +69,6 @@ tags:
 # Send emoji
 - pressKey: Remote Dpad Up
 - pressKey: Remote Dpad Up
-- pressKey: Remote Dpad Up
 - pressKey: enter
 - assertVisible:
     id: 'message-content-😀'
