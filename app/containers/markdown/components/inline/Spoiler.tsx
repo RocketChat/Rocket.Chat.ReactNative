@@ -27,10 +27,6 @@ const SpoilerContext = React.createContext<ISpoilerContext>({
 });
 
 const styles = StyleSheet.create({
-	spoiler: {
-		borderRadius: 2,
-		paddingHorizontal: 2
-	},
 	spoilerText: {
 		...sharedStyles.textRegular
 	},
