@@ -246,10 +246,7 @@ describe('setupMediaCallEvents — VoipPushTokenRegistered (iOS)', () => {
 		const { __mockDebug, __mockLog } = jest.requireMock('./MediaCallLogger');
 
 		// debug() must be called (sensitive data goes through debug level)
-		expect(__mockDebug).toHaveBeenCalledWith(
-			expect.stringContaining('Registered VoIP push token:'),
-			'voip-token-sensitive'
-		);
+		expect(__mockDebug).toHaveBeenCalledWith(expect.stringContaining('Registered VoIP push token:'), 'voip-token-sensitive');
 		// log() must NOT be called (sensitive data must not reach ungated log())
 		expect(__mockLog).not.toHaveBeenCalled();
 	});
