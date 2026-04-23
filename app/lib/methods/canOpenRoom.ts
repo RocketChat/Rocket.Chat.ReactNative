@@ -29,11 +29,17 @@ async function open({ type, rid, name }: { type: ERoomTypes; rid: string; name: 
 		// if it's a group we need to check if you can open
 		if (type === ERoomTypes.GROUP) {
 			try {
-				const result = await getRoomByTypeAndName('p', name);
+				const response = await getRoomByTypeAndName('p', name);
 				// RC 0.61.0
 				// @ts-ignore
-				await sdk.post(`${restTypes[type]}.open`, { roomId: result._id });
+				await sdk.post('groups.open', { roomId: response._id });
+				
+				return {
+					...response,
+					rid: response._id
+				};
 			} catch (e: any) {
+				console.log('e', e);
 				if (!(e.data && /is already open/.test(e.data.error))) {
 					return false;
 				}
@@ -42,7 +48,7 @@ async function open({ type, rid, name }: { type: ERoomTypes; rid: string; name: 
 
 		// if it's a channel or group and the link don't have rid
 		// we'll get info from the room
-		if ((type === ERoomTypes.CHANNEL || type === ERoomTypes.GROUP) && !rid) {
+		if (type === ERoomTypes.CHANNEL && !rid) {
 			// RC 0.72.0
 			// @ts-ignore
 			const result: any = await sdk.get(`${restTypes[type]}.info`, params);
