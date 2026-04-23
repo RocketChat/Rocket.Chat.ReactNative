@@ -8,10 +8,12 @@ import { videoConferenceGetCapabilities } from '../../../lib/services/restApi';
 
 export default function CallSection({
 	room,
-	disabled
+	disabled,
+	itsMe
 }: {
 	room: TSubscriptionModel;
 	disabled: boolean;
+	itsMe?: boolean;
 }): React.ReactElement | null {
 	const { callEnabled, showInitCallActionSheet, disabledTooltip } = useVideoConf(room.rid);
 	const { openNewMediaCall, hasMediaCallPermission } = useNewMediaCall(room.rid);
@@ -25,14 +27,16 @@ export default function CallSection({
 		}
 	}, [callEnabled]);
 
-	if (!hasMediaCallPermission && !callEnabled) {
+	const showVoiceCall = hasMediaCallPermission && !itsMe;
+
+	if (!showVoiceCall && !callEnabled) {
 		return null;
 	}
 
 	return (
 		<List.Section>
 			<List.Separator />
-			{hasMediaCallPermission ? (
+			{showVoiceCall ? (
 				<>
 					<List.Item
 						title={'Voice_call'}

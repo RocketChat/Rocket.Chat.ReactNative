@@ -304,6 +304,62 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
           John Doe
         </Text>
       </View>
+      <RNGestureHandlerButton
+        accessibilityLabel="Voice call"
+        accessibilityRole="button"
+        activeOpacity={0.3}
+        borderless={true}
+        collapsable={false}
+        delayLongPress={600}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#D7DBE0"
+        style={
+          [
+            {
+              "alignSelf": "center",
+              "opacity": 1,
+              "paddingHorizontal": 15,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="new-message-view-item-john.doe-call"
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#2F343D",
+                "fontSize": 22,
+              },
+              [
+                {
+                  "lineHeight": 22,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+      </RNGestureHandlerButton>
     </View>
   </RNGestureHandlerButton>
 </View>
@@ -463,6 +519,62 @@ exports[`Story Snapshots: LongName should match snapshot 1`] = `
           Very Long Display Name That Might Get Truncated
         </Text>
       </View>
+      <RNGestureHandlerButton
+        accessibilityLabel="Voice call"
+        accessibilityRole="button"
+        activeOpacity={0.3}
+        borderless={true}
+        collapsable={false}
+        delayLongPress={600}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#D7DBE0"
+        style={
+          [
+            {
+              "alignSelf": "center",
+              "opacity": 1,
+              "paddingHorizontal": 15,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="new-message-view-item-long.name-call"
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#2F343D",
+                "fontSize": 22,
+              },
+              [
+                {
+                  "lineHeight": 22,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+      </RNGestureHandlerButton>
     </View>
   </RNGestureHandlerButton>
 </View>
@@ -622,6 +734,62 @@ exports[`Story Snapshots: NoVoiceCallPermission should match snapshot 1`] = `
           John Doe
         </Text>
       </View>
+      <RNGestureHandlerButton
+        accessibilityLabel="Voice call"
+        accessibilityRole="button"
+        activeOpacity={0.3}
+        borderless={true}
+        collapsable={false}
+        delayLongPress={600}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#D7DBE0"
+        style={
+          [
+            {
+              "alignSelf": "center",
+              "opacity": 1,
+              "paddingHorizontal": 15,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="new-message-view-item-john.doe-call"
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#2F343D",
+                "fontSize": 22,
+              },
+              [
+                {
+                  "lineHeight": 22,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+      </RNGestureHandlerButton>
     </View>
   </RNGestureHandlerButton>
 </View>

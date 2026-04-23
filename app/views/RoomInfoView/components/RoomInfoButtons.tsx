@@ -85,7 +85,7 @@ export const RoomInfoButtons = ({
 			iconName: 'phone',
 			onPress: openNewMediaCall,
 			enabled: true,
-			show: hasMediaCallPermission
+			show: hasMediaCallPermission && !itsMe
 		},
 		{
 			label: i18n.t('Video_call'),

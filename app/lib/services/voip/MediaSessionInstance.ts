@@ -15,6 +15,8 @@ import { dequal } from 'dequal';
 
 import { mediaSessionStore } from './MediaSessionStore';
 import { useCallStore } from './useCallStore';
+import { MediaCallLogger } from './MediaCallLogger';
+import { isSelfUserId } from './isSelfUserId';
 import { store } from '../../store/auxStore';
 import sdk from '../sdk';
 import { mediaCallsStateSignals } from '../restApi';
@@ -26,6 +28,8 @@ import type { ISubscription, TSubscriptionModel } from '../../../definitions';
 import { getDMSubscriptionByUsername } from '../../database/services/Subscription';
 import { getUidDirectMessage } from '../../methods/helpers/helpers';
 import { requestPhoneStatePermission } from '../../methods/voipPhoneStatePermission';
+
+const mediaCallLogger = new MediaCallLogger();
 
 class MediaSessionInstance {
 	private iceServers: IceServer[] = [];
@@ -172,6 +176,10 @@ class MediaSessionInstance {
 	};
 
 	public startCall = async (userId: string, actor: CallActorType): Promise<void> => {
+		if (isSelfUserId(userId)) {
+			mediaCallLogger.debug('[VoIP] startCall blocked: target userId matches logged-in user');
+			return;
+		}
 		requestPhoneStatePermission();
 		await this.instance?.startCall(actor, userId);
 	};

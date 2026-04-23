@@ -8,6 +8,7 @@ import { setUser } from '../../actions/login';
 import * as stories from './Item.stories';
 import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
 import { NewMediaCall } from '../../containers/NewMediaCall';
+import { initStore } from '../../lib/store/auxStore';
 
 const mockShowActionSheetRef = jest.fn();
 const mockSetSelectedPeer = jest.fn();
@@ -37,6 +38,10 @@ jest.mock('../../containers/NewMediaCall', () => ({
 const Wrapper = ({ children }: { children: React.ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
 
 describe('NewMessageView Item', () => {
+	beforeAll(() => {
+		initStore(mockedStore);
+	});
+
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockedStore.dispatch(setUser({ id: 'abc', username: 'rocket.cat', name: 'Rocket Cat' }));
@@ -156,6 +161,16 @@ describe('NewMessageView Item', () => {
 			</Wrapper>
 		);
 		expect(toJSON()).toMatchSnapshot();
+	});
+
+	it('should not render call button when userId matches the logged-in user id (self-DM / Saved Messages)', () => {
+		mockUseMediaCallPermission.mockReturnValue(true);
+		const { queryByTestId } = render(
+			<Wrapper>
+				<Item userId='abc' name='Rocket Cat' username='rocket.cat' onPress={() => {}} testID='new-message-view-item-rocket.cat' />
+			</Wrapper>
+		);
+		expect(queryByTestId('new-message-view-item-rocket.cat-call')).toBeNull();
 	});
 });
 
