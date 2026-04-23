@@ -70,7 +70,7 @@ const RoomsListHeaderView = ({ search, searchEnabled }: { search: (text: string)
 	}
 	return (
 		<View style={styles.container} accessibilityLabel={`${serverName} ${subtitle}`} accessibilityRole='header' accessible>
-			<TouchableOpacity onPress={onPress} testID='rooms-list-header-servers-list-button'>
+			<TouchableOpacity onPress={onPress} disabled={isVoipCallActive} testID='rooms-list-header-servers-list-button'>
 				<View style={styles.button}>
 					<Text style={[styles.title, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
 						{serverName}
