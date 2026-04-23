@@ -27,7 +27,6 @@ export const RecordAudio = (): ReactElement | null => {
 	const [styles, colors] = useStyle();
 	const audioRecorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
 	const recorderState = useAudioRecorderState(audioRecorder);
-	console.log(audioRecorder, recorderState);
 
 	const durationRef = useRef<IDurationRef>({} as IDurationRef);
 	const [status, setStatus] = React.useState<'recording' | 'reviewing'>('recording');
@@ -49,18 +48,14 @@ export const RecordAudio = (): ReactElement | null => {
 	}
 
 	useEffect(() => {
-		try {
-			doRecording();
-		} catch (e) {
-			console.log(e);
-		}
+		doRecording().catch(() => {
+			// Do nothing
+		});
 
 		return () => {
-			try {
-				audioRecorder.stop();
-			} catch {
+			audioRecorder.stop().catch(() => {
 				// Do nothing
-			}
+			});
 		};
 	}, []);
 
@@ -70,9 +65,9 @@ export const RecordAudio = (): ReactElement | null => {
 		durationRef.current.onRecordingStatusUpdate(recorderState);
 	}, [recorderState]);
 
-	const cancelRecording = () => {
+	const cancelRecording = async () => {
 		try {
-			audioRecorder.stop();
+			await audioRecorder.stop();
 		} catch {
 			// Do nothing
 		} finally {
@@ -80,9 +75,9 @@ export const RecordAudio = (): ReactElement | null => {
 		}
 	};
 
-	const goReview = () => {
+	const goReview = async () => {
 		try {
-			audioRecorder.stop();
+			await audioRecorder.stop();
 			setStatus('reviewing');
 		} catch {
 			// Do nothing

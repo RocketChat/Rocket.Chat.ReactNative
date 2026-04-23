@@ -13,6 +13,8 @@ function createAudioManager() {
 	const audioUris: { [audioKey: string]: string } = {};
 	const audioPositions: { [audioKey: string]: number } = {};
 	const audioRates: { [audioKey: string]: number } = {};
+	const audioSubscriptions: { [audioKey: string]: () => void } = {};
+	const audioCallbacks: { [audioKey: string]: (status: AudioStatus) => void } = {};
 	let audioPlaying = '';
 	const audiosRendered = new Set<string>();
 
@@ -56,6 +58,14 @@ function createAudioManager() {
 			if (audioPositions[audioKey] !== undefined) {
 				await sound.seekTo(audioPositions[audioKey]);
 			}
+
+			// Re-register the callback if it exists
+			if (audioCallbacks[audioKey]) {
+				const sub = sound.addListener('playbackStatusUpdate', status => {
+					onPlaybackStatusUpdate(audioKey, status, audioCallbacks[audioKey]);
+				});
+				if (sub) audioSubscriptions[audioKey] = () => sub.remove?.();
+			}
 		}
 
 		audioQueue[audioKey]?.play();
@@ -96,9 +106,12 @@ function createAudioManager() {
 	}
 
 	function setOnPlaybackStatusUpdate(audioKey: string, callback: (status: AudioStatus) => void): void {
-		audioQueue[audioKey]?.addListener('playbackStatusUpdate', status => {
+		audioCallbacks[audioKey] = callback;
+		audioSubscriptions[audioKey]?.();
+		const sub = audioQueue[audioKey]?.addListener('playbackStatusUpdate', status => {
 			onPlaybackStatusUpdate(audioKey, status, callback);
 		});
+		if (sub) audioSubscriptions[audioKey] = () => sub.remove?.();
 	}
 
 	async function onEnd(audioKey: string, status: AudioStatus) {
@@ -108,9 +121,13 @@ function createAudioManager() {
 
 		if (status.isLoaded && status.didJustFinish) {
 			try {
+				audioSubscriptions[audioKey]?.();
+				delete audioSubscriptions[audioKey];
+				// Don't delete the callback - keep it for replay
 				audioQueue[audioKey].release();
 				delete audioQueue[audioKey];
-				delete audioPositions[audioKey];
+				// Reset position to beginning so audio can be played again
+				audioPositions[audioKey] = 0;
 				audioPlaying = '';
 				emitter.emit('audioFocused', '');
 				await playNextAudioInSequence(audioKey);
@@ -170,6 +187,9 @@ function createAudioManager() {
 			console.log(error);
 		}
 		roomAudioKeysLoaded.forEach(key => {
+			audioSubscriptions[key]?.();
+			delete audioSubscriptions[key];
+			delete audioCallbacks[key];
 			delete audioQueue[key];
 			delete audioUris[key];
 			delete audioPositions[key];

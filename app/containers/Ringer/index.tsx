@@ -1,5 +1,5 @@
-import { createAudioPlayer } from 'expo-audio';
-import React, { useEffect, useRef } from 'react';
+import { useAudioPlayer } from 'expo-audio';
+import React, { useEffect } from 'react';
 
 export enum ERingerSounds {
 	DIALTONE = 'dialtone',
@@ -7,26 +7,17 @@ export enum ERingerSounds {
 }
 
 const Ringer = React.memo(({ ringer }: { ringer: ERingerSounds }) => {
-	const player = useRef(createAudioPlayer());
+	const soundFile = ringer === ERingerSounds.DIALTONE ? require('./dialtone.mp3') : require('./ringtone.mp3');
+	const player = useAudioPlayer(soundFile);
 
 	useEffect(() => {
-		const loadAndPlay = () => {
-			try {
-				const soundFile = ringer === ERingerSounds.DIALTONE ? require(`./dialtone.mp3`) : require(`./ringtone.mp3`);
-				player.current.replace(soundFile);
-				player.current.loop = true;
-				player.current.play();
-			} catch (error) {
-				console.error('Error loading sound:', error);
-			}
-		};
-
-		loadAndPlay();
-
-		return () => {
-			player.current?.release();
-		};
-	}, []);
+		try {
+			player.loop = true;
+			player.play();
+		} catch (error) {
+			console.error('Error loading sound:', error);
+		}
+	}, [player]);
 
 	return null;
 });

@@ -1,4 +1,4 @@
-import { type RecordingOptions } from 'expo-audio';
+import { type RecordingOptions, AudioQuality, IOSOutputFormat } from 'expo-audio';
 
 export const RECORDING_EXTENSION = '.aac';
 export const RECORDING_SETTINGS: RecordingOptions = {
@@ -10,8 +10,8 @@ export const RECORDING_SETTINGS: RecordingOptions = {
 	},
 	ios: {
 		extension: RECORDING_EXTENSION,
-		audioQuality: 64,
-		outputFormat: 'aac',
+		audioQuality: AudioQuality.MEDIUM,
+		outputFormat: IOSOutputFormat.MPEG4AAC,
 		sampleRate: 44100
 	},
 	web: {},

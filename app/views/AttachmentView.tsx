@@ -44,8 +44,14 @@ const VideoContent = ({
 		player.play();
 	});
 
-	useEventListener(player, 'statusChange', () => {
-		setLoading(false);
+	useEventListener(player, 'statusChange', ({ status, error }) => {
+		if (status === 'readyToPlay') {
+			setLoading(false);
+		} else if (status === 'error') {
+			setLoading(false);
+			// surface the error to the user, similar to the previous expo-av behavior
+			// e.g. navigation.pop() + showErrorAlert(error?.message)
+		}
 	});
 
 	React.useEffect(() => {

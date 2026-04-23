@@ -50,6 +50,8 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 	const scale = useSharedValue(1);
 	const isPanning = useSharedValue(false);
 	const contextX = useSharedValue(0);
+	const savedTranslateX = useSharedValue(0);
+	const savedCurrentTime = useSharedValue(0);
 
 	const styleLine = useAnimatedStyle(() => ({
 		width: translateX.value
@@ -70,6 +72,8 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 		.onStart(() => {
 			isPanning.value = true;
 			contextX.value = translateX.value;
+			savedTranslateX.value = translateX.value;
+			savedCurrentTime.value = currentTime.value;
 			scale.value = withTiming(1.3, { duration: 150 });
 		})
 		.onUpdate(event => {
@@ -79,9 +83,13 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 		.onEnd(() => {
 			scheduleOnRN(onChangeTime, Math.round(currentTime.value));
 		})
-		.onFinalize(() => {
+		.onFinalize((didSucceed) => {
 			isPanning.value = false;
 			scale.value = withTiming(1, { duration: 150 });
+			if (!didSucceed) {
+				translateX.value = savedTranslateX.value;
+				currentTime.value = savedCurrentTime.value;
+			}
 		});
 
 	useDerivedValue(() => {

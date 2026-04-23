@@ -133,7 +133,7 @@ jest.mock('expo-audio', () => {
 			canRecord: true,
 			duration: 0,
 			metering: 0,
-			uri: ''
+			url: ''
 		})),
 		RecordingPresets: {
 			HIGH_QUALITY: {
