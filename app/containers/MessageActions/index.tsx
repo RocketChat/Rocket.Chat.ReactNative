@@ -587,7 +587,7 @@ const MessageActions = React.memo(
 							const node = findNodeHandle(focusRef.current);
 							if (node) AccessibilityInfo.setAccessibilityFocus(node);
 							clearLastFocusedMessageRef();
-						}
+					  }
 					: undefined;
 				showActionSheet({
 					options: getOptions(message),
