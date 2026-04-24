@@ -568,10 +568,14 @@ describe('MediaSessionInstance', () => {
 		});
 
 		it('shows alert and skips permission and skips instance.startCall when instance is null', async () => {
+			await mediaSessionInstance.init('user-1');
+			const session = createdSessions[0];
+			mediaSessionInstance.reset();
 			mockRequestPhoneStatePermission.mockClear();
 			await mediaSessionInstance.startCall('peer-1', 'user');
 			expect(mockShowErrorAlert).toHaveBeenCalledTimes(1);
 			expect(mockRequestPhoneStatePermission).not.toHaveBeenCalled();
+			expect(session.startCall).not.toHaveBeenCalled();
 		});
 
 		it('calls through normally when instance is present', async () => {
@@ -583,6 +587,17 @@ describe('MediaSessionInstance', () => {
 			expect(mockShowErrorAlert).not.toHaveBeenCalled();
 			expect(mockRequestPhoneStatePermission).toHaveBeenCalledTimes(1);
 			expect(session.startCall).toHaveBeenCalledWith('user', 'peer-2');
+		});
+
+		it('startCallByRoom shows alert when instance is null', async () => {
+			await mediaSessionInstance.init('user-1');
+			const session = createdSessions[0];
+			mediaSessionInstance.reset();
+			mockGetUidDirectMessage.mockReturnValue('peer-1');
+			mediaSessionInstance.startCallByRoom({ rid: 'rid-dm', t: 'd', uids: ['user-1', 'peer-1'] } as any);
+			await Promise.resolve();
+			expect(mockShowErrorAlert).toHaveBeenCalledTimes(1);
+			expect(session.startCall).not.toHaveBeenCalled();
 		});
 
 		it('startCallByRoom does not invoke startCall when getUidDirectMessage returns own id (itsMe room)', async () => {
