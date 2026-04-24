@@ -109,6 +109,7 @@ import { type IRoomFederated, isRoomFederated, isRoomNativeFederated } from '../
 import { InvitedRoom } from './components/InvitedRoom';
 import { getInvitationData } from '../../lib/methods/getInvitationData';
 import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
+import { isExternalKeyboardConnected } from '../../lib/methods/helpers/externalInput';
 
 class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private rid?: string;
@@ -261,7 +262,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					this.roomHeaderRef.current?.focus();
 					return;
 				}
-				this.messageComposerRef.current?.focus?.();
+				const hasExternalKeyboard = isExternalKeyboardConnected();
+				if (hasExternalKeyboard) {
+					this.messageComposerRef.current?.focus?.();
+				}
 			});
 		});
 	}
