@@ -25,7 +25,8 @@ mockUseVideoConf.mockReturnValue({
 });
 mockUseNewMediaCall.mockReturnValue({
 	openNewMediaCall: noopOpenNewMediaCall,
-	hasMediaCallPermission: true
+	hasMediaCallPermission: true,
+	isInActiveCall: false
 });
 
 jest.mock('../../../lib/hooks/useVideoConf', () => ({
@@ -81,7 +82,8 @@ describe('CallSection', () => {
 		});
 		mockUseNewMediaCall.mockReturnValue({
 			openNewMediaCall: noopOpenNewMediaCall,
-			hasMediaCallPermission: true
+			hasMediaCallPermission: true,
+			isInActiveCall: false
 		});
 		mockVideoConferenceGetCapabilities.mockRejectedValue(new Error('test capabilities'));
 	});
@@ -94,7 +96,8 @@ describe('CallSection', () => {
 		});
 		mockUseNewMediaCall.mockReturnValue({
 			openNewMediaCall: noopOpenNewMediaCall,
-			hasMediaCallPermission: false
+			hasMediaCallPermission: false,
+			isInActiveCall: false
 		});
 		const { toJSON, queryByTestId } = render(
 			<Wrapper>
@@ -114,7 +117,8 @@ describe('CallSection', () => {
 		});
 		mockUseNewMediaCall.mockReturnValue({
 			openNewMediaCall: mockOpenNewMediaCall,
-			hasMediaCallPermission: true
+			hasMediaCallPermission: true,
+			isInActiveCall: false
 		});
 		const { getByTestId, queryByTestId } = render(
 			<Wrapper>
@@ -128,7 +132,8 @@ describe('CallSection', () => {
 	it('should render video call only when voice permission is off', () => {
 		mockUseNewMediaCall.mockReturnValue({
 			openNewMediaCall: noopOpenNewMediaCall,
-			hasMediaCallPermission: false
+			hasMediaCallPermission: false,
+			isInActiveCall: false
 		});
 		const { getByTestId, queryByTestId } = render(
 			<Wrapper>
@@ -152,7 +157,8 @@ describe('CallSection', () => {
 	it('should call openNewMediaCall when voice row is pressed', () => {
 		mockUseNewMediaCall.mockReturnValue({
 			openNewMediaCall: mockOpenNewMediaCall,
-			hasMediaCallPermission: true
+			hasMediaCallPermission: true,
+			isInActiveCall: false
 		});
 		const { getByTestId } = render(
 			<Wrapper>
@@ -190,7 +196,8 @@ describe('CallSection', () => {
 	it('should not invoke handlers when disabled prop is true', () => {
 		mockUseNewMediaCall.mockReturnValue({
 			openNewMediaCall: mockOpenNewMediaCall,
-			hasMediaCallPermission: true
+			hasMediaCallPermission: true,
+			isInActiveCall: false
 		});
 		const { getByTestId } = render(
 			<Wrapper>

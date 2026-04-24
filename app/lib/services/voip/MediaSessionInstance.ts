@@ -27,6 +27,8 @@ import type { ISubscription, TSubscriptionModel } from '../../../definitions';
 import { getDMSubscriptionByUsername } from '../../database/services/Subscription';
 import { getUidDirectMessage } from '../../methods/helpers/helpers';
 import { requestPhoneStatePermission } from '../../methods/voipPhoneStatePermission';
+import { isInActiveVoipCall } from './isInActiveVoipCall';
+import I18n from '../../../i18n';
 
 class MediaSessionInstance {
 	private iceServers: IceServer[] = [];
@@ -164,6 +166,7 @@ class MediaSessionInstance {
 	};
 
 	public startCallByRoom = (room: TSubscriptionModel | ISubscription) => {
+		if (isInActiveVoipCall()) return;
 		useCallStore.getState().setRoomId(room.rid ?? null);
 		const otherUserId = getUidDirectMessage(room);
 		if (otherUserId) {
@@ -174,6 +177,9 @@ class MediaSessionInstance {
 	};
 
 	public startCall = async (userId: string, actor: CallActorType): Promise<void> => {
+		if (isInActiveVoipCall()) {
+			throw new Error(I18n.t('VoIP_Already_In_Call'));
+		}
 		requestPhoneStatePermission();
 		await this.instance?.startCall(actor, userId);
 	};

@@ -14,7 +14,7 @@ export default function CallSection({
 	disabled: boolean;
 }): React.ReactElement | null {
 	const { callEnabled, showInitCallActionSheet, disabledTooltip } = useVideoConf(room.rid);
-	const { openNewMediaCall, hasMediaCallPermission } = useNewMediaCall(room.rid);
+	const { openNewMediaCall, hasMediaCallPermission, isInActiveCall } = useNewMediaCall(room.rid);
 	const [providerName, setProviderName] = useState<string>();
 
 	useEffect(() => {
@@ -40,7 +40,7 @@ export default function CallSection({
 						testID='room-actions-voice-call'
 						left={() => <List.Icon name='phone' />}
 						showActionIndicator
-						disabled={disabledTooltip || disabled}
+						disabled={disabledTooltip || disabled || isInActiveCall}
 					/>
 					<List.Separator />
 				</>

@@ -16,13 +16,13 @@ export const HeaderCallButton = ({
 	'use memo';
 
 	const { showInitCallActionSheet, callEnabled, disabledTooltip } = useVideoConf(rid);
-	const { openNewMediaCall, hasMediaCallPermission } = useNewMediaCall(rid);
+	const { openNewMediaCall, hasMediaCallPermission, isInActiveCall } = useNewMediaCall(rid);
 
 	if (hasMediaCallPermission) {
 		return (
 			<HeaderButton.Item
 				accessibilityLabel={accessibilityLabel}
-				disabled={disabled}
+				disabled={disabled || isInActiveCall}
 				iconName='phone'
 				onPress={openNewMediaCall}
 				testID='room-view-header-call'

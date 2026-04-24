@@ -56,7 +56,7 @@ export const RoomInfoButtons = ({
 	const room = roomFromRid || roomFromProps;
 	const { showActionSheet } = useActionSheet();
 	const { callEnabled, disabledTooltip, showInitCallActionSheet } = useVideoConf(rid);
-	const { openNewMediaCall, hasMediaCallPermission } = useNewMediaCall(rid);
+	const { openNewMediaCall, hasMediaCallPermission, isInActiveCall } = useNewMediaCall(rid);
 
 	// Following the web behavior, when is a DM with myself, shouldn't appear block or ignore option
 	const isDmWithMyself = room?.uids?.filter((uid: string) => uid !== roomUserId).length === 0;
@@ -84,7 +84,7 @@ export const RoomInfoButtons = ({
 			label: i18n.t('Voice_call'),
 			iconName: 'phone',
 			onPress: openNewMediaCall,
-			enabled: true,
+			enabled: !isInActiveCall,
 			show: hasMediaCallPermission
 		},
 		{

@@ -6,6 +6,7 @@ import { useTheme } from '../../theme';
 import { CustomIcon } from '../CustomIcon';
 import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';
 import { mediaSessionInstance } from '../../lib/services/voip/MediaSessionInstance';
+import { useIsInActiveVoipCall } from '../../lib/services/voip/isInActiveVoipCall';
 import { hideActionSheetRef } from '../ActionSheet';
 import { showErrorAlert } from '../../lib/methods/helpers/info';
 import sharedStyles from '../../views/Styles';
@@ -14,6 +15,7 @@ export const CreateCall = () => {
 	const { colors } = useTheme();
 
 	const selectedPeer = usePeerAutocompleteStore(state => state.selectedPeer);
+	const isInActiveCall = useIsInActiveVoipCall();
 
 	const handleCall = async () => {
 		if (!selectedPeer) {
@@ -29,7 +31,7 @@ export const CreateCall = () => {
 		}
 	};
 
-	const isCallDisabled = !selectedPeer;
+	const isCallDisabled = !selectedPeer || isInActiveCall;
 
 	return (
 		<Pressable
