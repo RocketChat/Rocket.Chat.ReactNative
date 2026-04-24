@@ -21,8 +21,6 @@ export const getAvatarURL = ({
 	rid,
 	blockUnauthenticatedAccess,
 	serverVersion,
-	avatarExternalProviderUrl,
-	roomAvatarExternalProviderUrl,
 	cdnPrefix
 }: IAvatar): string => {
 	if (!!avatar && avatar?.startsWith('data:')) {
@@ -31,13 +29,6 @@ export const getAvatarURL = ({
 	let room;
 	if (type === SubscriptionType.DIRECT) {
 		room = text;
-		if (avatarExternalProviderUrl) {
-			const externalUri = avatarExternalProviderUrl.trim().replace(/\/+$/, '').replace('{username}', room);
-			return formatUrl(`${externalUri}`, size);
-		}
-	} else if (rid && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.8.0') && roomAvatarExternalProviderUrl) {
-		const externalUri = roomAvatarExternalProviderUrl.trim().replace(/\/+$/, '').replace('{roomId}', rid);
-		return formatUrl(`${externalUri}`, size);
 	} else if (rid && !compareServerVersion(serverVersion, 'lowerThan', '3.6.0')) {
 		room = `room/${rid}`;
 	} else {
