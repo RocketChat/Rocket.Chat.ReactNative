@@ -1,6 +1,7 @@
 package chat.rocket.reactnative.scroll;
 
 import android.graphics.Rect;
+import android.view.MotionEvent;
 import android.view.View;
 import com.facebook.react.views.view.ReactViewGroup;
 import java.util.ArrayList;
@@ -68,5 +69,13 @@ public class InvertedScrollContentView extends ReactViewGroup {
         views.set(idx2, temp);
       }
     }
+  }
+
+  @Override
+  public boolean onTouchEvent(MotionEvent event) {
+    // Match the stock vertical Android ScrollView content host, which is a plain non-clickable
+    // View. This container exists only to preserve inverted accessibility/focus order and should
+    // never consume fallback taps that miss transformed children after scrolling.
+    return false;
   }
 }
