@@ -2948,6 +2948,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
+					"$(SRCROOT)/Shared/RocketChat",
 				);
 				INFOPLIST_FILE = NotificationService/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
@@ -3001,6 +3002,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
+					"$(SRCROOT)/Shared/RocketChat",
 				);
 				INFOPLIST_FILE = NotificationService/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
