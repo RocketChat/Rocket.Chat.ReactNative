@@ -418,20 +418,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
       orderKey="«r0»"
     >
       <A11yIndexView
-        accessibilityActions={
-          [
-            {
-              "label": "Open message actions",
-              "name": "longPress",
-            },
-          ]
-        }
-        accessibilityHint="Long press to open message actions"
-        accessibilityLabel="diego.mello 10:00:00 AM  Hey!.  "
-        accessibilityRole="button"
-        accessible={true}
         importantForAccessibility="yes"
-        onAccessibilityAction={[Function]}
         orderFocusType={0}
         orderIndex={1}
         orderKey="«r0»"
@@ -485,7 +472,17 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             style={{}}
           >
             <View
-              accessible={false}
+              accessibilityActions={
+                [
+                  {
+                    "label": "Open message actions",
+                    "name": "longPress",
+                  },
+                ]
+              }
+              accessibilityHint="Long press to open message actions"
+              accessibilityLabel="diego.mello 10:00:00 AM  Hey!.  "
+              accessible={true}
               onAccessibilityAction={[Function]}
               style={
                 {
@@ -506,7 +503,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                 orderKey="«r0»"
               >
                 <View
-                  accessible={false}
+                  accessible={true}
                   style={
                     {
                       "flexDirection": "row",
@@ -834,20 +831,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
       orderKey="«r1»"
     >
       <A11yIndexView
-        accessibilityActions={
-          [
-            {
-              "label": "Open message actions",
-              "name": "longPress",
-            },
-          ]
-        }
-        accessibilityHint="Long press to open message actions"
-        accessibilityLabel="diego.mello 10:00:00 AM  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.  "
-        accessibilityRole="button"
-        accessible={true}
         importantForAccessibility="yes"
-        onAccessibilityAction={[Function]}
         orderFocusType={0}
         orderIndex={1}
         orderKey="«r1»"
@@ -901,7 +885,17 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             style={{}}
           >
             <View
-              accessible={false}
+              accessibilityActions={
+                [
+                  {
+                    "label": "Open message actions",
+                    "name": "longPress",
+                  },
+                ]
+              }
+              accessibilityHint="Long press to open message actions"
+              accessibilityLabel="diego.mello 10:00:00 AM  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.  "
+              accessible={true}
               onAccessibilityAction={[Function]}
               style={
                 {
@@ -922,7 +916,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                 orderKey="«r1»"
               >
                 <View
-                  accessible={false}
+                  accessible={true}
                   style={
                     {
                       "flexDirection": "row",
@@ -1040,20 +1034,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
       orderKey="«r2»"
     >
       <A11yIndexView
-        accessibilityActions={
-          [
-            {
-              "label": "Open message actions",
-              "name": "longPress",
-            },
-          ]
-        }
-        accessibilityHint="Long press to open message actions"
-        accessibilityLabel="diego.mello 10:00:00 AM  Older message.  "
-        accessibilityRole="button"
-        accessible={true}
         importantForAccessibility="yes"
-        onAccessibilityAction={[Function]}
         orderFocusType={0}
         orderIndex={1}
         orderKey="«r2»"
@@ -1107,7 +1088,17 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             style={{}}
           >
             <View
-              accessible={false}
+              accessibilityActions={
+                [
+                  {
+                    "label": "Open message actions",
+                    "name": "longPress",
+                  },
+                ]
+              }
+              accessibilityHint="Long press to open message actions"
+              accessibilityLabel="diego.mello 10:00:00 AM  Older message.  "
+              accessible={true}
               onAccessibilityAction={[Function]}
               style={
                 {
@@ -1128,7 +1119,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                 orderKey="«r2»"
               >
                 <View
-                  accessible={false}
+                  accessible={true}
                   style={
                     {
                       "flexDirection": "row",
@@ -1412,20 +1403,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
       orderKey="«r3»"
     >
       <A11yIndexView
-        accessibilityActions={
-          [
-            {
-              "label": "Open message actions",
-              "name": "longPress",
-            },
-          ]
-        }
-        accessibilityHint="Long press to open message actions"
-        accessibilityLabel="diego.mello 10:00:00 AM  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.  "
-        accessibilityRole="button"
-        accessible={true}
         importantForAccessibility="yes"
-        onAccessibilityAction={[Function]}
         orderFocusType={0}
         orderIndex={1}
         orderKey="«r3»"
@@ -1479,7 +1457,17 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             style={{}}
           >
             <View
-              accessible={false}
+              accessibilityActions={
+                [
+                  {
+                    "label": "Open message actions",
+                    "name": "longPress",
+                  },
+                ]
+              }
+              accessibilityHint="Long press to open message actions"
+              accessibilityLabel="diego.mello 10:00:00 AM  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.  "
+              accessible={true}
               onAccessibilityAction={[Function]}
               style={
                 {
@@ -1500,7 +1488,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                 orderKey="«r3»"
               >
                 <View
-                  accessible={false}
+                  accessible={true}
                   style={
                     {
                       "flexDirection": "row",
@@ -1828,20 +1816,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
       orderKey="«r4»"
     >
       <A11yIndexView
-        accessibilityActions={
-          [
-            {
-              "label": "Open message actions",
-              "name": "longPress",
-            },
-          ]
-        }
-        accessibilityHint="Long press to open message actions"
-        accessibilityLabel="diego.mello 10:00:00 AM  This is the third message.  "
-        accessibilityRole="button"
-        accessible={true}
         importantForAccessibility="yes"
-        onAccessibilityAction={[Function]}
         orderFocusType={0}
         orderIndex={1}
         orderKey="«r4»"
@@ -1895,7 +1870,17 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             style={{}}
           >
             <View
-              accessible={false}
+              accessibilityActions={
+                [
+                  {
+                    "label": "Open message actions",
+                    "name": "longPress",
+                  },
+                ]
+              }
+              accessibilityHint="Long press to open message actions"
+              accessibilityLabel="diego.mello 10:00:00 AM  This is the third message.  "
+              accessible={true}
               onAccessibilityAction={[Function]}
               style={
                 {
@@ -1916,7 +1901,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                 orderKey="«r4»"
               >
                 <View
-                  accessible={false}
+                  accessible={true}
                   style={
                     {
                       "flexDirection": "row",
@@ -2034,20 +2019,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
       orderKey="«r5»"
     >
       <A11yIndexView
-        accessibilityActions={
-          [
-            {
-              "label": "Open message actions",
-              "name": "longPress",
-            },
-          ]
-        }
-        accessibilityHint="Long press to open message actions"
-        accessibilityLabel="diego.mello 10:00:00 AM  This is the second message.  "
-        accessibilityRole="button"
-        accessible={true}
         importantForAccessibility="yes"
-        onAccessibilityAction={[Function]}
         orderFocusType={0}
         orderIndex={1}
         orderKey="«r5»"
@@ -2101,7 +2073,17 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             style={{}}
           >
             <View
-              accessible={false}
+              accessibilityActions={
+                [
+                  {
+                    "label": "Open message actions",
+                    "name": "longPress",
+                  },
+                ]
+              }
+              accessibilityHint="Long press to open message actions"
+              accessibilityLabel="diego.mello 10:00:00 AM  This is the second message.  "
+              accessible={true}
               onAccessibilityAction={[Function]}
               style={
                 {
@@ -2122,7 +2104,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                 orderKey="«r5»"
               >
                 <View
-                  accessible={false}
+                  accessible={true}
                   style={
                     {
                       "flexDirection": "row",
@@ -2240,20 +2222,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
       orderKey="«r6»"
     >
       <A11yIndexView
-        accessibilityActions={
-          [
-            {
-              "label": "Open message actions",
-              "name": "longPress",
-            },
-          ]
-        }
-        accessibilityHint="Long press to open message actions"
-        accessibilityLabel="diego.mello 10:00:00 AM  This is the first message.  "
-        accessibilityRole="button"
-        accessible={true}
         importantForAccessibility="yes"
-        onAccessibilityAction={[Function]}
         orderFocusType={0}
         orderIndex={1}
         orderKey="«r6»"
@@ -2307,7 +2276,17 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             style={{}}
           >
             <View
-              accessible={false}
+              accessibilityActions={
+                [
+                  {
+                    "label": "Open message actions",
+                    "name": "longPress",
+                  },
+                ]
+              }
+              accessibilityHint="Long press to open message actions"
+              accessibilityLabel="diego.mello 10:00:00 AM  This is the first message.  "
+              accessible={true}
               onAccessibilityAction={[Function]}
               style={
                 {
@@ -2328,7 +2307,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                 orderKey="«r6»"
               >
                 <View
-                  accessible={false}
+                  accessible={true}
                   style={
                     {
                       "flexDirection": "row",
@@ -2752,20 +2731,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
       orderKey="«r7»"
     >
       <A11yIndexView
-        accessibilityActions={
-          [
-            {
-              "label": "Open message actions",
-              "name": "longPress",
-            },
-          ]
-        }
-        accessibilityHint="Long press to open message actions"
-        accessibilityLabel="diego.mello 10:00:00 AM  Hey!.  "
-        accessibilityRole="button"
-        accessible={true}
         importantForAccessibility="yes"
-        onAccessibilityAction={[Function]}
         orderFocusType={0}
         orderIndex={1}
         orderKey="«r7»"
@@ -2819,7 +2785,17 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             style={{}}
           >
             <View
-              accessible={false}
+              accessibilityActions={
+                [
+                  {
+                    "label": "Open message actions",
+                    "name": "longPress",
+                  },
+                ]
+              }
+              accessibilityHint="Long press to open message actions"
+              accessibilityLabel="diego.mello 10:00:00 AM  Hey!.  "
+              accessible={true}
               onAccessibilityAction={[Function]}
               style={
                 {
@@ -2840,7 +2816,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                 orderKey="«r7»"
               >
                 <View
-                  accessible={false}
+                  accessible={true}
                   style={
                     {
                       "flexDirection": "row",
@@ -3168,20 +3144,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
       orderKey="«r8»"
     >
       <A11yIndexView
-        accessibilityActions={
-          [
-            {
-              "label": "Open message actions",
-              "name": "longPress",
-            },
-          ]
-        }
-        accessibilityHint="Long press to open message actions"
-        accessibilityLabel="diego.mello 10:00:00 AM  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.  "
-        accessibilityRole="button"
-        accessible={true}
         importantForAccessibility="yes"
-        onAccessibilityAction={[Function]}
         orderFocusType={0}
         orderIndex={1}
         orderKey="«r8»"
@@ -3235,7 +3198,17 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             style={{}}
           >
             <View
-              accessible={false}
+              accessibilityActions={
+                [
+                  {
+                    "label": "Open message actions",
+                    "name": "longPress",
+                  },
+                ]
+              }
+              accessibilityHint="Long press to open message actions"
+              accessibilityLabel="diego.mello 10:00:00 AM  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.  "
+              accessible={true}
               onAccessibilityAction={[Function]}
               style={
                 {
@@ -3256,7 +3229,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                 orderKey="«r8»"
               >
                 <View
-                  accessible={false}
+                  accessible={true}
                   style={
                     {
                       "flexDirection": "row",
@@ -3374,20 +3347,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
       orderKey="«r9»"
     >
       <A11yIndexView
-        accessibilityActions={
-          [
-            {
-              "label": "Open message actions",
-              "name": "longPress",
-            },
-          ]
-        }
-        accessibilityHint="Long press to open message actions"
-        accessibilityLabel="diego.mello 10:00:00 AM  Older message.  "
-        accessibilityRole="button"
-        accessible={true}
         importantForAccessibility="yes"
-        onAccessibilityAction={[Function]}
         orderFocusType={0}
         orderIndex={1}
         orderKey="«r9»"
@@ -3441,7 +3401,17 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             style={{}}
           >
             <View
-              accessible={false}
+              accessibilityActions={
+                [
+                  {
+                    "label": "Open message actions",
+                    "name": "longPress",
+                  },
+                ]
+              }
+              accessibilityHint="Long press to open message actions"
+              accessibilityLabel="diego.mello 10:00:00 AM  Older message.  "
+              accessible={true}
               onAccessibilityAction={[Function]}
               style={
                 {
@@ -3462,7 +3432,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                 orderKey="«r9»"
               >
                 <View
-                  accessible={false}
+                  accessible={true}
                   style={
                     {
                       "flexDirection": "row",
@@ -3746,20 +3716,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
       orderKey="«ra»"
     >
       <A11yIndexView
-        accessibilityActions={
-          [
-            {
-              "label": "Open message actions",
-              "name": "longPress",
-            },
-          ]
-        }
-        accessibilityHint="Long press to open message actions"
-        accessibilityLabel="diego.mello 10:00:00 AM  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.  "
-        accessibilityRole="button"
-        accessible={true}
         importantForAccessibility="yes"
-        onAccessibilityAction={[Function]}
         orderFocusType={0}
         orderIndex={1}
         orderKey="«ra»"
@@ -3813,7 +3770,17 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             style={{}}
           >
             <View
-              accessible={false}
+              accessibilityActions={
+                [
+                  {
+                    "label": "Open message actions",
+                    "name": "longPress",
+                  },
+                ]
+              }
+              accessibilityHint="Long press to open message actions"
+              accessibilityLabel="diego.mello 10:00:00 AM  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.  "
+              accessible={true}
               onAccessibilityAction={[Function]}
               style={
                 {
@@ -3834,7 +3801,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                 orderKey="«ra»"
               >
                 <View
-                  accessible={false}
+                  accessible={true}
                   style={
                     {
                       "flexDirection": "row",
@@ -4162,20 +4129,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
       orderKey="«rb»"
     >
       <A11yIndexView
-        accessibilityActions={
-          [
-            {
-              "label": "Open message actions",
-              "name": "longPress",
-            },
-          ]
-        }
-        accessibilityHint="Long press to open message actions"
-        accessibilityLabel="diego.mello 10:00:00 AM  This is the third message.  "
-        accessibilityRole="button"
-        accessible={true}
         importantForAccessibility="yes"
-        onAccessibilityAction={[Function]}
         orderFocusType={0}
         orderIndex={1}
         orderKey="«rb»"
@@ -4229,7 +4183,17 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             style={{}}
           >
             <View
-              accessible={false}
+              accessibilityActions={
+                [
+                  {
+                    "label": "Open message actions",
+                    "name": "longPress",
+                  },
+                ]
+              }
+              accessibilityHint="Long press to open message actions"
+              accessibilityLabel="diego.mello 10:00:00 AM  This is the third message.  "
+              accessible={true}
               onAccessibilityAction={[Function]}
               style={
                 {
@@ -4250,7 +4214,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                 orderKey="«rb»"
               >
                 <View
-                  accessible={false}
+                  accessible={true}
                   style={
                     {
                       "flexDirection": "row",
@@ -4368,20 +4332,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
       orderKey="«rc»"
     >
       <A11yIndexView
-        accessibilityActions={
-          [
-            {
-              "label": "Open message actions",
-              "name": "longPress",
-            },
-          ]
-        }
-        accessibilityHint="Long press to open message actions"
-        accessibilityLabel="diego.mello 10:00:00 AM  This is the second message.  "
-        accessibilityRole="button"
-        accessible={true}
         importantForAccessibility="yes"
-        onAccessibilityAction={[Function]}
         orderFocusType={0}
         orderIndex={1}
         orderKey="«rc»"
@@ -4435,7 +4386,17 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             style={{}}
           >
             <View
-              accessible={false}
+              accessibilityActions={
+                [
+                  {
+                    "label": "Open message actions",
+                    "name": "longPress",
+                  },
+                ]
+              }
+              accessibilityHint="Long press to open message actions"
+              accessibilityLabel="diego.mello 10:00:00 AM  This is the second message.  "
+              accessible={true}
               onAccessibilityAction={[Function]}
               style={
                 {
@@ -4456,7 +4417,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                 orderKey="«rc»"
               >
                 <View
-                  accessible={false}
+                  accessible={true}
                   style={
                     {
                       "flexDirection": "row",
@@ -4574,20 +4535,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
       orderKey="«rd»"
     >
       <A11yIndexView
-        accessibilityActions={
-          [
-            {
-              "label": "Open message actions",
-              "name": "longPress",
-            },
-          ]
-        }
-        accessibilityHint="Long press to open message actions"
-        accessibilityLabel="diego.mello 10:00:00 AM  This is the first message.  "
-        accessibilityRole="button"
-        accessible={true}
         importantForAccessibility="yes"
-        onAccessibilityAction={[Function]}
         orderFocusType={0}
         orderIndex={1}
         orderKey="«rd»"
@@ -4641,7 +4589,17 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             style={{}}
           >
             <View
-              accessible={false}
+              accessibilityActions={
+                [
+                  {
+                    "label": "Open message actions",
+                    "name": "longPress",
+                  },
+                ]
+              }
+              accessibilityHint="Long press to open message actions"
+              accessibilityLabel="diego.mello 10:00:00 AM  This is the first message.  "
+              accessible={true}
               onAccessibilityAction={[Function]}
               style={
                 {
@@ -4662,7 +4620,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                 orderKey="«rd»"
               >
                 <View
-                  accessible={false}
+                  accessible={true}
                   style={
                     {
                       "flexDirection": "row",
@@ -5086,20 +5044,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
       orderKey="«re»"
     >
       <A11yIndexView
-        accessibilityActions={
-          [
-            {
-              "label": "Open message actions",
-              "name": "longPress",
-            },
-          ]
-        }
-        accessibilityHint="Long press to open message actions"
-        accessibilityLabel="diego.mello 10:00:00 AM  Hey!.  "
-        accessibilityRole="button"
-        accessible={true}
         importantForAccessibility="yes"
-        onAccessibilityAction={[Function]}
         orderFocusType={0}
         orderIndex={1}
         orderKey="«re»"
@@ -5153,7 +5098,17 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             style={{}}
           >
             <View
-              accessible={false}
+              accessibilityActions={
+                [
+                  {
+                    "label": "Open message actions",
+                    "name": "longPress",
+                  },
+                ]
+              }
+              accessibilityHint="Long press to open message actions"
+              accessibilityLabel="diego.mello 10:00:00 AM  Hey!.  "
+              accessible={true}
               onAccessibilityAction={[Function]}
               style={
                 {
@@ -5174,7 +5129,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                 orderKey="«re»"
               >
                 <View
-                  accessible={false}
+                  accessible={true}
                   style={
                     {
                       "flexDirection": "row",
@@ -5502,20 +5457,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
       orderKey="«rf»"
     >
       <A11yIndexView
-        accessibilityActions={
-          [
-            {
-              "label": "Open message actions",
-              "name": "longPress",
-            },
-          ]
-        }
-        accessibilityHint="Long press to open message actions"
-        accessibilityLabel="diego.mello 10:00:00 AM  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.  "
-        accessibilityRole="button"
-        accessible={true}
         importantForAccessibility="yes"
-        onAccessibilityAction={[Function]}
         orderFocusType={0}
         orderIndex={1}
         orderKey="«rf»"
@@ -5569,7 +5511,17 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             style={{}}
           >
             <View
-              accessible={false}
+              accessibilityActions={
+                [
+                  {
+                    "label": "Open message actions",
+                    "name": "longPress",
+                  },
+                ]
+              }
+              accessibilityHint="Long press to open message actions"
+              accessibilityLabel="diego.mello 10:00:00 AM  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.  "
+              accessible={true}
               onAccessibilityAction={[Function]}
               style={
                 {
@@ -5590,7 +5542,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                 orderKey="«rf»"
               >
                 <View
-                  accessible={false}
+                  accessible={true}
                   style={
                     {
                       "flexDirection": "row",
@@ -5708,20 +5660,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
       orderKey="«rg»"
     >
       <A11yIndexView
-        accessibilityActions={
-          [
-            {
-              "label": "Open message actions",
-              "name": "longPress",
-            },
-          ]
-        }
-        accessibilityHint="Long press to open message actions"
-        accessibilityLabel="diego.mello 10:00:00 AM  Older message.  "
-        accessibilityRole="button"
-        accessible={true}
         importantForAccessibility="yes"
-        onAccessibilityAction={[Function]}
         orderFocusType={0}
         orderIndex={1}
         orderKey="«rg»"
@@ -5775,7 +5714,17 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             style={{}}
           >
             <View
-              accessible={false}
+              accessibilityActions={
+                [
+                  {
+                    "label": "Open message actions",
+                    "name": "longPress",
+                  },
+                ]
+              }
+              accessibilityHint="Long press to open message actions"
+              accessibilityLabel="diego.mello 10:00:00 AM  Older message.  "
+              accessible={true}
               onAccessibilityAction={[Function]}
               style={
                 {
@@ -5796,7 +5745,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                 orderKey="«rg»"
               >
                 <View
-                  accessible={false}
+                  accessible={true}
                   style={
                     {
                       "flexDirection": "row",
@@ -6080,20 +6029,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
       orderKey="«rh»"
     >
       <A11yIndexView
-        accessibilityActions={
-          [
-            {
-              "label": "Open message actions",
-              "name": "longPress",
-            },
-          ]
-        }
-        accessibilityHint="Long press to open message actions"
-        accessibilityLabel="diego.mello 10:00:00 AM  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.  "
-        accessibilityRole="button"
-        accessible={true}
         importantForAccessibility="yes"
-        onAccessibilityAction={[Function]}
         orderFocusType={0}
         orderIndex={1}
         orderKey="«rh»"
@@ -6147,7 +6083,17 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             style={{}}
           >
             <View
-              accessible={false}
+              accessibilityActions={
+                [
+                  {
+                    "label": "Open message actions",
+                    "name": "longPress",
+                  },
+                ]
+              }
+              accessibilityHint="Long press to open message actions"
+              accessibilityLabel="diego.mello 10:00:00 AM  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.  "
+              accessible={true}
               onAccessibilityAction={[Function]}
               style={
                 {
@@ -6168,7 +6114,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                 orderKey="«rh»"
               >
                 <View
-                  accessible={false}
+                  accessible={true}
                   style={
                     {
                       "flexDirection": "row",
@@ -6496,20 +6442,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
       orderKey="«ri»"
     >
       <A11yIndexView
-        accessibilityActions={
-          [
-            {
-              "label": "Open message actions",
-              "name": "longPress",
-            },
-          ]
-        }
-        accessibilityHint="Long press to open message actions"
-        accessibilityLabel="diego.mello 10:00:00 AM  This is the third message.  "
-        accessibilityRole="button"
-        accessible={true}
         importantForAccessibility="yes"
-        onAccessibilityAction={[Function]}
         orderFocusType={0}
         orderIndex={1}
         orderKey="«ri»"
@@ -6563,7 +6496,17 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             style={{}}
           >
             <View
-              accessible={false}
+              accessibilityActions={
+                [
+                  {
+                    "label": "Open message actions",
+                    "name": "longPress",
+                  },
+                ]
+              }
+              accessibilityHint="Long press to open message actions"
+              accessibilityLabel="diego.mello 10:00:00 AM  This is the third message.  "
+              accessible={true}
               onAccessibilityAction={[Function]}
               style={
                 {
@@ -6584,7 +6527,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                 orderKey="«ri»"
               >
                 <View
-                  accessible={false}
+                  accessible={true}
                   style={
                     {
                       "flexDirection": "row",
@@ -6702,20 +6645,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
       orderKey="«rj»"
     >
       <A11yIndexView
-        accessibilityActions={
-          [
-            {
-              "label": "Open message actions",
-              "name": "longPress",
-            },
-          ]
-        }
-        accessibilityHint="Long press to open message actions"
-        accessibilityLabel="diego.mello 10:00:00 AM  This is the second message.  "
-        accessibilityRole="button"
-        accessible={true}
         importantForAccessibility="yes"
-        onAccessibilityAction={[Function]}
         orderFocusType={0}
         orderIndex={1}
         orderKey="«rj»"
@@ -6769,7 +6699,17 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             style={{}}
           >
             <View
-              accessible={false}
+              accessibilityActions={
+                [
+                  {
+                    "label": "Open message actions",
+                    "name": "longPress",
+                  },
+                ]
+              }
+              accessibilityHint="Long press to open message actions"
+              accessibilityLabel="diego.mello 10:00:00 AM  This is the second message.  "
+              accessible={true}
               onAccessibilityAction={[Function]}
               style={
                 {
@@ -6790,7 +6730,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                 orderKey="«rj»"
               >
                 <View
-                  accessible={false}
+                  accessible={true}
                   style={
                     {
                       "flexDirection": "row",
@@ -6908,20 +6848,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
       orderKey="«rk»"
     >
       <A11yIndexView
-        accessibilityActions={
-          [
-            {
-              "label": "Open message actions",
-              "name": "longPress",
-            },
-          ]
-        }
-        accessibilityHint="Long press to open message actions"
-        accessibilityLabel="diego.mello 10:00:00 AM  This is the first message.  "
-        accessibilityRole="button"
-        accessible={true}
         importantForAccessibility="yes"
-        onAccessibilityAction={[Function]}
         orderFocusType={0}
         orderIndex={1}
         orderKey="«rk»"
@@ -6975,7 +6902,17 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             style={{}}
           >
             <View
-              accessible={false}
+              accessibilityActions={
+                [
+                  {
+                    "label": "Open message actions",
+                    "name": "longPress",
+                  },
+                ]
+              }
+              accessibilityHint="Long press to open message actions"
+              accessibilityLabel="diego.mello 10:00:00 AM  This is the first message.  "
+              accessible={true}
               onAccessibilityAction={[Function]}
               style={
                 {
@@ -6996,7 +6933,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                 orderKey="«rk»"
               >
                 <View
-                  accessible={false}
+                  accessible={true}
                   style={
                     {
                       "flexDirection": "row",
