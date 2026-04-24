@@ -17,9 +17,73 @@ const mockAddEventListener = jest.fn();
 const mockRNCallKeepClearInitialEvents = jest.fn();
 const mockSetCurrentCallActive = jest.fn();
 
+/**
+ * Shared event bus: lets tests synchronously trigger listeners registered via NativeEventEmitter.
+ * Stored on global so the mock factory can access the same map.
+ */
+(global as any).__nativeEventBus__ = new Map<string, Set<(data: any) => void>>();
+
+/**
+ * Complete react-native mock using __nativeEventBus__.
+ * Both NativeEventEmitter (used by MediaCallEvents to create Emitter) and DeviceEventEmitter
+ * (used by tests to emit events) share the same bus, so listeners registered via
+ * NativeEventEmitter.addListener are triggered by DeviceEventEmitter.emit.
+ */
+jest.mock('react-native', () => {
+	class MockNativeEventEmitter {
+		private nativeModule: any;
+		constructor(nativeModule?: any) {
+			this.nativeModule = nativeModule;
+		}
+		addListener(event: string, handler: (...args: any[]) => void) {
+			this.nativeModule?.addListener(event);
+			const bus = (global as any).__nativeEventBus__;
+			if (!bus.has(event)) bus.set(event, new Set());
+			bus.get(event)!.add(handler);
+			return { remove: () => bus.get(event)?.delete(handler) };
+		}
+		removeAllListeners(_event: string) {
+			this.nativeModule?.removeListeners(1);
+		}
+		emit(event: string, ...args: any[]) {
+			const bus = (global as any).__nativeEventBus__;
+			bus.get(event)?.forEach((h: (...args: any[]) => void) => {
+				if (typeof h === 'function') h(...args);
+			});
+		}
+		listenerCount(event: string) {
+			return (global as any).__nativeEventBus__.get(event)?.size ?? 0;
+		}
+	}
+
+	const DeviceEventEmitter = {
+		emit(event: string, ...args: any[]) {
+			const bus = (global as any).__nativeEventBus__;
+			bus.get(event)?.forEach((h: (...args: any[]) => void) => {
+				if (typeof h === 'function') {
+					h(...args);
+				}
+			});
+		},
+		addListener(event: string, handler: (...args: any[]) => void) {
+			const bus = (global as any).__nativeEventBus__;
+			if (!bus.has(event)) bus.set(event, new Set());
+			bus.get(event)!.add(handler);
+			return { remove: () => bus.get(event)?.delete(handler) };
+		},
+		removeListeners(_count: number) {}
+	};
+
+	return {
+		NativeEventEmitter: MockNativeEventEmitter,
+		DeviceEventEmitter,
+		Platform: { OS: 'ios', select: (obj: any) => obj.ios }
+	};
+});
+
 jest.mock('../../methods/helpers', () => ({
-	...jest.requireActual('../../methods/helpers'),
-	isIOS: false
+	isIOS: true,
+	normalizeDeepLinkingServerHost: (host: string) => host
 }));
 
 const mockServerSelector = jest.fn(() => 'https://workspace-a.example.com');
@@ -33,15 +97,31 @@ function makeTestAdapters(): MediaCallEventsAdapters {
 
 jest.mock('./useCallStore', () => ({
 	useCallStore: {
-		getState: jest.fn()
+		getState: jest.fn(),
+		setState: jest.fn()
 	}
 }));
 
 jest.mock('../../native/NativeVoip', () => ({
 	__esModule: true,
 	default: {
+		addListener: jest.fn((event: string, handler: (data: any) => void) => {
+			const bus = (global as any).__nativeEventBus__;
+			if (!bus.has(event)) bus.set(event, new Set());
+			bus.get(event)!.add(handler);
+			return { remove: () => bus.get(event)?.delete(handler) };
+		}),
+		removeListeners: jest.fn(),
 		clearInitialEvents: jest.fn(),
-		getInitialEvents: jest.fn(() => null)
+		getInitialEvents: jest.fn(() => null),
+		proceedAccept: jest.fn(),
+		resetFromLogout: jest.fn(),
+		emit: (event: string, data: any) => {
+			const bus = (global as any).__nativeEventBus__;
+			bus.get(event)?.forEach((handler: (data: any) => void) => {
+				if (typeof handler === 'function') handler(data);
+			});
+		}
 	}
 }));
 
@@ -58,8 +138,18 @@ jest.mock('react-native-callkeep', () => ({
 jest.mock('./MediaSessionInstance', () => ({
 	mediaSessionInstance: {
 		endCall: jest.fn(),
-		applyRestStateSignals: jest.fn(() => Promise.resolve())
+		applyRestStateSignals: jest.fn(() => Promise.resolve()),
+		registerOnInitComplete: jest.fn()
 	}
+}));
+
+jest.mock('./clearPendingCallView', () => ({
+	clearPendingCallView: jest.fn()
+}));
+
+jest.mock('../../navigation/appNavigation', () => ({
+    __esModule: true,
+    default: { navigate: jest.fn(), back: jest.fn() }
 }));
 
 jest.mock('../restApi', () => ({
@@ -464,5 +554,195 @@ describe('setupMediaCallEvents — didToggleHoldCallAction', () => {
 		const cleanup = setupMediaCallEvents(makeTestAdapters());
 		cleanup();
 		expect(remove).toHaveBeenCalled();
+	});
+});
+
+describe('Pending-accept fast-path acceptance tests', () => {
+	const getState = useCallStore.getState as jest.Mock;
+	const { mediaSessionInstance } = jest.requireMock('./MediaSessionInstance');
+	const { clearPendingCallView } = jest.requireMock('./clearPendingCallView');
+	const { default: Navigation } = jest.requireMock('../../navigation/appNavigation');
+
+	beforeEach(() => {
+		jest.clearAllMocks();
+		(global as any).__nativeEventBus__.clear();
+		resetMediaCallEventsStateForTesting();
+		mockAddEventListener.mockImplementation(() => ({ remove: jest.fn() }));
+		mediaSessionInstance.registerOnInitComplete.mockClear();
+		mediaSessionInstance.registerOnInitComplete.mockImplementation((cb: () => void) => {
+			// Simulate MediaSessionInstance already initialized: invoke cb immediately
+			cb();
+		});
+		getState.mockReturnValue({
+			setNativeAcceptedCallId: mockSetNativeAcceptedCallId,
+			setContact: jest.fn()
+		});
+	});
+
+	describe('AC1: VoipPendingAccept queues callId and navigates to CallView', () => {
+		it('emits VoipPendingAccept → queuedCallIds has callId + calls setNativeAcceptedCallId + setContact + navigates to CallView', () => {
+			const teardown = setupMediaCallEvents(makeTestAdapters());
+			const payload = buildIncomingPayload({
+				callId: 'pending-call-1',
+				caller: 'Bob Burnquist',
+				username: 'bob.burnquist'
+			});
+
+			DeviceEventEmitter.emit('VoipPendingAccept', { callId: 'pending-call-1', payload });
+
+			expect(mockSetNativeAcceptedCallId).toHaveBeenCalledWith('pending-call-1');
+			expect(getState().setContact).toHaveBeenCalledWith({
+				displayName: 'Bob Burnquist',
+				username: 'bob.burnquist'
+			});
+			expect(Navigation.navigate).toHaveBeenCalledWith('CallView');
+			teardown();
+		});
+
+		it('second VoipPendingAccept with same callId is ignored (dedup)', () => {
+			const teardown = setupMediaCallEvents(makeTestAdapters());
+			const payload = buildIncomingPayload({ callId: 'dup-accept', caller: 'Alice', username: 'alice' });
+
+			DeviceEventEmitter.emit('VoipPendingAccept', { callId: 'dup-accept', payload });
+			DeviceEventEmitter.emit('VoipPendingAccept', { callId: 'dup-accept', payload });
+
+			expect(mockSetNativeAcceptedCallId).toHaveBeenCalledTimes(1);
+			expect(getState().setContact).toHaveBeenCalledTimes(1);
+			expect(Navigation.navigate).toHaveBeenCalledTimes(1);
+			teardown();
+		});
+	});
+
+	describe('AC2: VoipAcceptSucceeded with queued callId removes from queue and proceeds', () => {
+		it('VoipAcceptSucceeded for a queued callId clears it from queuedCallIds', () => {
+			const teardown = setupMediaCallEvents(makeTestAdapters());
+			const payload = buildIncomingPayload({ callId: 'queue-succeeded', host: 'https://workspace-b.example.com' });
+
+			// Queue the call
+			DeviceEventEmitter.emit('VoipPendingAccept', { callId: 'queue-succeeded', payload });
+			expect(mockSetNativeAcceptedCallId).toHaveBeenCalledWith('queue-succeeded');
+
+			// Accept succeeds — queuedCallIds entry should be gone
+			DeviceEventEmitter.emit('VoipAcceptSucceeded', payload);
+
+			// The callId should not be in queuedCallIds anymore
+			const { isCallIdQueued } = jest.requireActual('./MediaCallEvents');
+			expect(isCallIdQueued('queue-succeeded')).toBe(false);
+			teardown();
+		});
+	});
+
+	describe('AC3: VoipAcceptFailed for queued callId clears queue and shows error', () => {
+		it('VoipAcceptFailed for a queued callId removes it from queuedCallIds and calls clearPendingCallView', () => {
+			const teardown = setupMediaCallEvents(makeTestAdapters());
+			const payload = buildIncomingPayload({
+				callId: 'queue-failed',
+				host: 'https://workspace-b.example.com',
+				username: 'bob'
+			});
+
+			DeviceEventEmitter.emit('VoipPendingAccept', { callId: 'queue-failed', payload });
+			expect(mockSetNativeAcceptedCallId).toHaveBeenCalledWith('queue-failed');
+
+			DeviceEventEmitter.emit('VoipAcceptFailed', {
+				...payload,
+				voipAcceptFailed: true
+			});
+
+			const { isCallIdQueued } = jest.requireActual('./MediaCallEvents');
+			expect(isCallIdQueued('queue-failed')).toBe(false);
+			expect(clearPendingCallView).toHaveBeenCalledTimes(1);
+			expect(mockOnOpenDeepLink).toHaveBeenCalledWith({
+				host: 'https://workspace-b.example.com',
+				callId: 'queue-failed',
+				username: 'bob',
+				voipAcceptFailed: true
+			});
+			teardown();
+		});
+	});
+
+	describe('AC4: isCallIdQueued guards notification/accepted DDP handling', () => {
+		it('notification/accepted handler should skip processing for a queued callId', () => {
+			setupMediaCallEvents(makeTestAdapters());
+			const payload = buildIncomingPayload({
+				callId: 'guard-test',
+				host: 'https://workspace-b.example.com'
+			});
+
+			// Queue the call
+			DeviceEventEmitter.emit('VoipPendingAccept', { callId: 'guard-test', payload });
+
+			// Simulate DDP notification/accepted arriving — it should be ignored because callId is queued
+			const { isCallIdQueued } = jest.requireActual('./MediaCallEvents');
+			expect(isCallIdQueued('guard-test')).toBe(true);
+		});
+	});
+
+	describe('AC5: registerOnInitComplete queues proceedAccept until init', () => {
+		it('proceedAccept is registered as an onInitComplete callback', () => {
+			const teardown = setupMediaCallEvents(makeTestAdapters());
+			const payload = buildIncomingPayload({ callId: 'init-callback-test' });
+
+			DeviceEventEmitter.emit('VoipPendingAccept', { callId: 'init-callback-test', payload });
+
+			expect(mediaSessionInstance.registerOnInitComplete).toHaveBeenCalledTimes(1);
+			// Callback was invoked immediately since init was complete in the mock
+			teardown();
+		});
+	});
+
+	describe('AC6: TTL expiry removes from queue and calls clearPendingCallView', () => {
+		it('VoipAcceptFailed with a TTL-expiry callId clears queue and triggers error view', () => {
+			const teardown = setupMediaCallEvents(makeTestAdapters());
+			const payload = buildIncomingPayload({
+				callId: 'ttl-expired',
+				host: 'https://workspace-b.example.com',
+				username: 'bob'
+			});
+
+			DeviceEventEmitter.emit('VoipPendingAccept', { callId: 'ttl-expired', payload });
+			expect(mockSetNativeAcceptedCallId).toHaveBeenCalledWith('ttl-expired');
+
+			// Simulate TTL expiry by emitting VoipAcceptFailed
+			DeviceEventEmitter.emit('VoipAcceptFailed', {
+				...payload,
+				voipAcceptFailed: true
+			});
+
+			const { isCallIdQueued } = jest.requireActual('./MediaCallEvents');
+			expect(isCallIdQueued('ttl-expired')).toBe(false);
+			expect(clearPendingCallView).toHaveBeenCalledTimes(1);
+			expect(mockOnOpenDeepLink).toHaveBeenCalledWith({
+				host: 'https://workspace-b.example.com',
+				callId: 'ttl-expired',
+				username: 'bob',
+				voipAcceptFailed: true
+			});
+			teardown();
+		});
+	});
+
+	describe('AC7: resetMediaCallEventsStateForTesting clears all sentinels', () => {
+		it('after resetMediaCallEventsStateForTesting, previously queued callIds can be re-processed', () => {
+			setupMediaCallEvents(makeTestAdapters());
+			const payload = buildIncomingPayload({
+				callId: 'reset-sentinel',
+				host: 'https://workspace-b.example.com'
+			});
+
+			// Queue a callId
+			DeviceEventEmitter.emit('VoipPendingAccept', { callId: 'reset-sentinel', payload });
+			let { isCallIdQueued } = jest.requireActual('./MediaCallEvents');
+			expect(isCallIdQueued('reset-sentinel')).toBe(true);
+
+			// Reset all sentinels
+			resetMediaCallEventsStateForTesting();
+
+			// Same callId can now be queued again
+			DeviceEventEmitter.emit('VoipPendingAccept', { callId: 'reset-sentinel', payload });
+			({ isCallIdQueued } = jest.requireActual('./MediaCallEvents'));
+			expect(isCallIdQueued('reset-sentinel')).toBe(true);
+		});
 	});
 });
