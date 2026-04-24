@@ -29,6 +29,8 @@ import type { ISubscription, TSubscriptionModel } from '../../../definitions';
 import { getDMSubscriptionByUsername } from '../../database/services/Subscription';
 import { getUidDirectMessage } from '../../methods/helpers/helpers';
 import { requestPhoneStatePermission } from '../../methods/voipPhoneStatePermission';
+import I18n from '../../../i18n';
+import { showErrorAlert } from '../../methods/helpers/info';
 
 const mediaCallLogger = new MediaCallLogger();
 
@@ -182,8 +184,13 @@ class MediaSessionInstance {
 			mediaCallLogger.debug('[VoIP] startCall blocked: target userId matches logged-in user');
 			return;
 		}
+		if (!this.instance) {
+			mediaCallLogger.debug('[VoIP] startCall blocked: MediaSessionInstance not initialized');
+			showErrorAlert(I18n.t('VoIP_Still_Connecting'), I18n.t('Oops'));
+			return;
+		}
 		requestPhoneStatePermission();
-		await this.instance?.startCall(actor, userId);
+		await this.instance.startCall(actor, userId);
 	};
 
 	public endCall = (callId: string) => {
