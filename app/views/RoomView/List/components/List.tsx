@@ -3,8 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedScrollHandler } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 
-import { useIsScreenReaderEnabled } from 'lib/hooks/useIsScreenReaderEnabled';
-
+import { useIsScreenReaderEnabled } from '../../../../lib/hooks/useIsScreenReaderEnabled';
 import { isIOS } from '../../../../lib/methods/helpers';
 import scrollPersistTaps from '../../../../lib/methods/helpers/scrollPersistTaps';
 import { isExternalKeyboardConnected } from '../../../../lib/methods/helpers/externalInput';
