@@ -582,7 +582,6 @@ describe('MediaSessionInstance', () => {
 			await mediaSessionInstance.init('user-1');
 			mockRequestPhoneStatePermission.mockClear();
 			const session = createdSessions[0];
-			mockShowErrorAlert.mockClear();
 			await mediaSessionInstance.startCall('peer-2', 'user');
 			expect(mockShowErrorAlert).not.toHaveBeenCalled();
 			expect(mockRequestPhoneStatePermission).toHaveBeenCalledTimes(1);
