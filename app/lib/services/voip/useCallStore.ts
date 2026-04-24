@@ -10,6 +10,12 @@ import { useIsScreenReaderEnabled } from '../../hooks/useIsScreenReaderEnabled';
 
 const STALE_NATIVE_MS = 60_000;
 
+/**
+ * Source of truth for the JS-readiness deadline for native fast-accept handshake;
+ * native sides (iOS `VoipService.swift`, Android `VoipNotification.kt`) must match this value.
+ */
+export const PENDING_ACCEPT_TTL_MS = 15_000;
+
 let callListenersCleanup: (() => void) | null = null;
 let staleNativeTimer: ReturnType<typeof setTimeout> | null = null;
 /** Call id this timer is for; only `nativeAcceptedCallId` is cleared when it fires, not `callId`. */

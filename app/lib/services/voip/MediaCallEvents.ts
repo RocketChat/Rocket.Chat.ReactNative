@@ -17,6 +17,18 @@ const mediaCallLogger = new MediaCallLogger();
 const EVENT_VOIP_ACCEPT_FAILED = 'VoipAcceptFailed';
 const EVENT_VOIP_ACCEPT_SUCCEEDED = 'VoipAcceptSucceeded';
 
+// Populated by handleVoipPendingAccept in Phase 2
+const queuedCallIds = new Set<string>();
+
+/**
+ * Returns true when the given callId is currently in the native fast-accept pending-accept
+ * window. Consumers must short-circuit any live-DDP `notification/accepted` handling for
+ * queued callIds — `proceedAccept` is the sole `answerCall` trigger during that window.
+ */
+export function isCallIdQueued(callId: string): boolean {
+	return queuedCallIds.has(callId);
+}
+
 /** Params forwarded into the app deep-linking pipeline for VoIP-driven navigation. */
 export type VoipDeepLinkParams = {
 	host?: string;

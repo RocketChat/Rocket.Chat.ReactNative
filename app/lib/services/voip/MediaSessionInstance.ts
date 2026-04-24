@@ -16,6 +16,7 @@ import { dequal } from 'dequal';
 import { mediaSessionStore } from './MediaSessionStore';
 import { terminateNativeCall } from './terminateNativeCall';
 import { useCallStore } from './useCallStore';
+import { isCallIdQueued } from './MediaCallEvents';
 import { store } from '../../store/auxStore';
 import sdk from '../sdk';
 import { mediaCallsStateSignals } from '../restApi';
@@ -28,6 +29,16 @@ import { getDMSubscriptionByUsername } from '../../database/services/Subscriptio
 import { getUidDirectMessage } from '../../methods/helpers/helpers';
 import { requestPhoneStatePermission } from '../../methods/voipPhoneStatePermission';
 
+/**
+ * Invariant: `proceedAccept` is the only path that fires `answerCall` for callIds in
+ * the pending-accept queue. During the pending-accept window `mainCall` is still null,
+ * so if we let the live `notification/accepted` DDP signal drive `answerCall`, it falls
+ * through the `mainCall == null` branch and terminates the native call via
+ * `terminateNativeCall` / `RNCallKeep.endCall`. Instead, `handleVoipPendingAccept`
+ * registers an init-complete callback that invokes `NativeVoipModule.proceedAccept`,
+ * which is the authoritative trigger. Do not reintroduce the direct-answer path for
+ * queued callIds or the cold-start fast-accept race will regress.
+ */
 class MediaSessionInstance {
 	private iceServers: IceServer[] = [];
 	private iceGatheringTimeout: number = 5000;
@@ -36,8 +47,17 @@ class MediaSessionInstance {
 	private mediaSessionStoreChangeUnsubscribe: (() => void) | null = null;
 	private storeTimeoutUnsubscribe: (() => void) | null = null;
 	private storeIceServersUnsubscribe: (() => void) | null = null;
+	private pendingInitCallbacks: Array<() => void> = [];
 
 	private tryAnswerIfNativeAcceptedNotification(signal: ServerMediaSignal): void {
+		// Live-DDP race guard: during pending-accept window, `proceedAccept` is the sole
+		// trigger for `answerCall`. Covers both call sites (`applyRestStateSignals` and the
+		// stream-notify-user listener). See class-level Invariant comment.
+		// TypeScript doesn't narrow ServerMediaSignal union via `type === 'notification'` alone,
+		// so we cast to access callId on the notification variant.
+		if (isCallIdQueued((signal as any).callId)) {
+			return;
+		}
 		const { call, nativeAcceptedCallId } = useCallStore.getState();
 		if (
 			signal.type === 'notification' &&
@@ -50,6 +70,24 @@ class MediaSessionInstance {
 				console.error('[VoIP] Error answering call on notification/accepted:', error);
 			});
 		}
+	}
+
+	/**
+	 * Registers a callback to fire once `init()` finishes populating `this.instance` and
+	 * replaying REST state signals. If `init` has already completed, invokes the callback
+	 * synchronously. FIFO drain order; `reset()` clears any queued callbacks.
+	 */
+	public registerOnInitComplete(cb: () => void): void {
+		if (this.instance) {
+			cb();
+			return;
+		}
+		this.pendingInitCallbacks.push(cb);
+	}
+
+	/** No-op stub; wired to `NativeVoipModule.resetFromLogout` in Phase 6. */
+	private notifyNativeReset(): void {
+		// TODO: wired in Phase 6
 	}
 
 	/** Replays `media-calls.stateSignals`. Used on init and when native accept raced ahead of `nativeAcceptedCallId`. Caller must ensure SDK/session host matches the call (see MediaCallEvents host gate). `tryAnswerIfNativeAcceptedNotification` may also fire from the stream-notify-user path; `answerCall` is idempotent. */
@@ -134,6 +172,18 @@ class MediaSessionInstance {
 				});
 			}
 		});
+
+		// FIFO drain of callbacks registered before init completed. Swap-then-clear so
+		// callbacks that re-register (or that queue new ones) are not re-drained here.
+		const callbacks = this.pendingInitCallbacks;
+		this.pendingInitCallbacks = [];
+		for (const cb of callbacks) {
+			try {
+				cb();
+			} catch (error) {
+				console.error('[VoIP] pending init callback threw:', error);
+			}
+		}
 	}
 
 	public answerCall = async (callId: string) => {
@@ -236,6 +286,7 @@ class MediaSessionInstance {
 	}
 
 	public reset() {
+		this.notifyNativeReset();
 		if (this.mediaSessionStoreChangeUnsubscribe) {
 			this.mediaSessionStoreChangeUnsubscribe();
 			this.mediaSessionStoreChangeUnsubscribe = null;
@@ -252,6 +303,7 @@ class MediaSessionInstance {
 			this.storeIceServersUnsubscribe();
 			this.storeIceServersUnsubscribe = null;
 		}
+		this.pendingInitCallbacks = [];
 		mediaSessionStore.dispose();
 		this.instance = null;
 		useCallStore.getState().reset();

@@ -83,17 +83,25 @@ jest.mock('react-native-callkeep', () => ({
 	}
 }));
 
+jest.mock('../../methods/helpers', () => ({
+	isIOS: false,
+	normalizeDeepLinkingServerHost: (host: string) => host
+}));
+
 jest.mock('react-native-device-info', () => ({
+	__esModule: true,
 	default: {
 		getUniqueId: jest.fn(() => 'test-device-id'),
 		getUniqueIdSync: jest.fn(() => 'test-device-id'),
 		hasNotch: jest.fn(() => false),
-		getReadableVersion: jest.fn(() => '1.0.0')
+		getReadableVersion: jest.fn(() => '1.0.0'),
+		getBundleId: jest.fn(() => 'com.rocket.chat.test')
 	},
 	getUniqueId: jest.fn(() => 'test-device-id'),
 	getUniqueIdSync: jest.fn(() => 'test-device-id'),
 	hasNotch: jest.fn(() => false),
-	getReadableVersion: jest.fn(() => '1.0.0')
+	getReadableVersion: jest.fn(() => '1.0.0'),
+	getBundleId: jest.fn(() => 'com.rocket.chat.test')
 }));
 
 jest.mock('../../native/NativeVoip', () => ({
