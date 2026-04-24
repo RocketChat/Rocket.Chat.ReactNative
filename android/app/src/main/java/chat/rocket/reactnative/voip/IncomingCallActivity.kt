@@ -260,7 +260,7 @@ class IncomingCallActivity : Activity() {
     }
 
     private fun handleAccept(payload: VoipPayload) {
-        if (acceptDeclineGuard.compareAndSet(false, true)) return
+        if (!acceptDeclineGuard.compareAndSet(false, true)) return
         if (BuildConfig.DEBUG) {
             Log.d(TAG, "Call accepted - callId: ${payload.callId}")
         }
@@ -271,7 +271,7 @@ class IncomingCallActivity : Activity() {
     }
 
     private fun handleDecline(payload: VoipPayload) {
-        if (acceptDeclineGuard.compareAndSet(false, true)) return
+        if (!acceptDeclineGuard.compareAndSet(false, true)) return
         if (BuildConfig.DEBUG) {
             Log.d(TAG, "Call declined - callId: ${payload.callId}")
         }
