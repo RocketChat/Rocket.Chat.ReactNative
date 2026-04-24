@@ -15,4 +15,5 @@ export interface VoipPayload {
 	readonly createdAt?: string | null;
 	readonly notificationId: number;
 	readonly voipAcceptFailed?: boolean;
+	readonly pendingAccept?: boolean;
 }

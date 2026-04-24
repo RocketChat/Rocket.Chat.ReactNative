@@ -55,6 +55,9 @@ public final class VoipService: NSObject {
     private static let incomingCallObserver = IncomingCallObserver()
     private static var isCallObserverConfigured = false
     private static var observedIncomingCalls: [UUID: ObservedIncomingCall] = [:]
+    /// Stores payloads for calls that were native-accepted during the pending-accept window
+    /// (JS hadn't booted yet). Cleared when JS calls `proceedAccept` or when the call ends.
+    private static var pendingAcceptPayloads: [String: VoipPayload] = [:]
     /// Deduplication guard: `CXCallObserver` can call `callChanged` with `hasConnected = true`
     /// multiple times for the same call (e.g. observer re-registration, system race). This set
     /// ensures `handleNativeAccept` sends the DDP accept signal exactly once per `callId` (not a
@@ -225,6 +228,45 @@ public final class VoipService: NSObject {
         #if DEBUG
         print("[\(TAG)] Cleared initial events")
         #endif
+    }
+
+    // MARK: - Pending Accept (Fast Accept Handoff)
+
+    /// Stores a payload for a call that was native-accepted before JS was ready.
+    /// Called from `handleNativeAccept` when a fast-accept occurs.
+    @objc
+    public static func storePendingAccept(_ payload: VoipPayload) {
+        bridgeStateQueue.sync {
+            pendingAcceptPayloads[payload.callId] = payload
+            #if DEBUG
+            print("[\(TAG)] Stored pending accept payload: \(payload.callId)")
+            #endif
+        }
+    }
+
+    /// Called from JS after `init` completes to continue a native-accepted call.
+    /// Retrieves the stored payload and sends the REST accept (or is a no-op if already accepted).
+    @objc
+    public static func proceedAccept(_ callId: String) {
+        guard let payload = bridgeStateQueue.sync({ pendingAcceptPayloads[callId] }) else {
+            #if DEBUG
+            print("[\(TAG)] proceedAccept: no stored payload for \(callId)")
+            #endif
+            return
+        }
+
+        #if DEBUG
+        print("[\(TAG)] proceedAccept: resuming accept for \(callId)")
+        #endif
+
+        // Remove from pending so we don't process again
+        bridgeStateQueue.sync {
+            pendingAcceptPayloads.removeValue(forKey: callId)
+        }
+
+        // Re-run handleNativeAccept with the stored payload.
+        // Deduplication (nativeAcceptHandledCallIds) ensures this is a no-op if already accepted.
+        handleNativeAccept(payload: payload)
     }
 
     // MARK: - VoIP Token
@@ -457,6 +499,9 @@ public final class VoipService: NSObject {
 
         cancelIncomingCallTimeout(for: payload.callId)
 
+        // Store payload in case JS needs to call proceedAccept after init completes
+        storePendingAccept(payload)
+
         var finishAcceptInvoked = [false]
         let finishAccept: (Bool) -> Void = { [weak payload] success in
             guard !finishAcceptInvoked[0] else { return }
@@ -464,6 +509,10 @@ public final class VoipService: NSObject {
             guard let payload else { return }
             stopDDPClientInternal(callId: payload.callId)
             if success {
+                // Remove from pending since we're completing now
+                bridgeStateQueue.sync {
+                    pendingAcceptPayloads.removeValue(forKey: payload.callId)
+                }
                 storeInitialEvents(payload)
                 clearNativeAcceptDedupe(for: payload.callId)
                 NotificationCenter.default.post(

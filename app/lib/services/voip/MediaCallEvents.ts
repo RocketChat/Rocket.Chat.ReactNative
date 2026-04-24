@@ -8,6 +8,8 @@ import type { VoipPayload } from '../../../definitions/Voip';
 import NativeVoipModule from '../../native/NativeVoip';
 import { registerPushToken } from '../restApi';
 import { MediaCallLogger } from './MediaCallLogger';
+import { clearPendingCallView } from './clearPendingCallView';
+import Navigation from '../../navigation/appNavigation';
 
 const Emitter = isIOS ? new NativeEventEmitter(NativeVoipModule) : DeviceEventEmitter;
 const platform = isIOS ? 'iOS' : 'Android';
@@ -16,6 +18,7 @@ const mediaCallLogger = new MediaCallLogger();
 
 const EVENT_VOIP_ACCEPT_FAILED = 'VoipAcceptFailed';
 const EVENT_VOIP_ACCEPT_SUCCEEDED = 'VoipAcceptSucceeded';
+const EVENT_VOIP_PENDING_ACCEPT = 'VoipPendingAccept';
 
 // Populated by handleVoipPendingAccept in Phase 2
 const queuedCallIds = new Set<string>();
@@ -103,6 +106,13 @@ function handleVoipAcceptSucceededFromNative(data: VoipPayload, adapters: MediaC
 	}
 	mediaCallLogger.debug(`${TAG} VoipAcceptSucceeded:`, data);
 	NativeVoipModule.clearInitialEvents();
+
+	// If this callId was queued, remove from set and log completion
+	if (callId && queuedCallIds.has(callId)) {
+		queuedCallIds.delete(callId);
+		mediaCallLogger.debug(`${TAG} VoIP FAST ACCEPT COMPLETED`, { callId });
+	}
+
 	useCallStore.getState().setNativeAcceptedCallId(data.callId);
 	if (data.host && isVoipIncomingHostCurrentWorkspace(data.host, adapters.getActiveServerUrl)) {
 		mediaSessionInstance.applyRestStateSignals().catch(error => {
@@ -114,6 +124,18 @@ function handleVoipAcceptSucceededFromNative(data: VoipPayload, adapters: MediaC
 		callId: data.callId,
 		host: data.host
 	});
+}
+
+function handleVoipPendingAccept({ callId }: { callId: string; payload: VoipPayload }) {
+	// payload is kept in the param type for documentation; callId is the only field needed
+	if (queuedCallIds.has(callId)) {
+		return;
+	}
+	queuedCallIds.add(callId);
+	useCallStore.getState().setNativeAcceptedCallId(callId);
+	Navigation.navigate('CallView');
+	mediaCallLogger.debug(`${TAG} VoIP FAST ACCEPT QUEUED`, { callId });
+	mediaSessionInstance.registerOnInitComplete(() => NativeVoipModule.proceedAccept(callId));
 }
 
 /**
@@ -211,8 +233,26 @@ export const setupMediaCallEvents = (adapters: MediaCallEventsAdapters): (() => 
 	subscriptions.push(
 		Emitter.addListener(EVENT_VOIP_ACCEPT_FAILED, (data: VoipPayload & { voipAcceptFailed?: boolean }) => {
 			mediaCallLogger.debug(`${TAG} VoipAcceptFailed event:`, data);
+
+			// If this callId was queued, remove from set and treat as TTL expiry
+			if (data.callId && queuedCallIds.has(data.callId)) {
+				queuedCallIds.delete(data.callId);
+				mediaCallLogger.debug(`${TAG} VoIP FAST ACCEPT TTL_EXPIRED`, { callId: data.callId });
+				clearPendingCallView();
+			}
+
 			dispatchVoipAcceptFailureFromNative({ ...data, voipAcceptFailed: true }, adapters.onOpenDeepLink);
 			NativeVoipModule.clearInitialEvents();
+		})
+	);
+
+	subscriptions.push(
+		Emitter.addListener(EVENT_VOIP_PENDING_ACCEPT, (data: { callId: string; payload: VoipPayload }) => {
+			try {
+				handleVoipPendingAccept(data);
+			} catch (error) {
+				mediaCallLogger.error(`${TAG} Error handling VoipPendingAccept:`, error);
+			}
 		})
 	);
 
@@ -240,6 +280,13 @@ export const getInitialMediaCallEvents = async (adapters: MediaCallEventsAdapter
 			RNCallKeep.clearInitialEvents();
 			NativeVoipModule.clearInitialEvents();
 			// Avoid racing `appInit()` with the deep-linking saga that handles the failure
+			return true;
+		}
+
+		if (initialEvents.pendingAccept && initialEvents.callId) {
+			mediaCallLogger.debug(`${TAG} Cold start: pendingAccept fast path`, { callId: initialEvents.callId });
+			handleVoipPendingAccept({ callId: initialEvents.callId, payload: initialEvents as VoipPayload });
+			RNCallKeep.clearInitialEvents();
 			return true;
 		}
 

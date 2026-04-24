@@ -20,19 +20,19 @@ enum class VoipPushType(val value: String) {
 data class VoipPayload(
     @SerializedName("callId")
     val callId: String,
-    
+
     @SerializedName("caller")
     val caller: String,
 
     @SerializedName("username")
     val username: String,
-    
+
     @SerializedName("host")
     val host: String,
-    
+
     @SerializedName("type")
     val type: String,
-    
+
     @SerializedName("hostName")
     val hostName: String,
 
@@ -43,6 +43,7 @@ data class VoipPayload(
     val createdAt: String?,
 
     val voipAcceptFailed: Boolean = false,
+    val pendingAccept: Boolean = false,
 ) {
     val notificationId: Int = callId.hashCode()
     val pushType: VoipPushType?
@@ -73,6 +74,7 @@ data class VoipPayload(
             putString("createdAt", createdAt)
             putInt("notificationId", notificationId)
             putBoolean("voipAcceptFailed", voipAcceptFailed)
+            putBoolean("pendingAccept", pendingAccept)
             // Useful flag for MainActivity to know it's handling a VoIP action
             putBoolean("voipAction", true)
         }
@@ -91,6 +93,9 @@ data class VoipPayload(
             putInt("notificationId", notificationId)
             if (voipAcceptFailed) {
                 putBoolean("voipAcceptFailed", true)
+            }
+            if (pendingAccept) {
+                putBoolean("pendingAccept", true)
             }
         }
     }
@@ -196,7 +201,8 @@ data class VoipPayload(
             }
 
             val voipAcceptFailed = bundle.getBoolean("voipAcceptFailed", false)
-            return VoipPayload(callId, caller, username, host, type, hostName, avatarUrl, createdAt, voipAcceptFailed)
+            val pendingAccept = bundle.getBoolean("pendingAccept", false)
+            return VoipPayload(callId, caller, username, host, type, hostName, avatarUrl, createdAt, voipAcceptFailed, pendingAccept)
         }
 
         private fun parseRemotePayload(data: Map<String, String>): RemoteVoipPayload? {

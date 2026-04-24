@@ -89,6 +89,7 @@ public class VoipPayload: NSObject {
     @objc public let avatarUrl: String?
     @objc public let createdAt: String?
     @objc public let voipAcceptFailed: Bool
+    @objc public let pendingAccept: Bool
 
     private var createdAtDate: Date? {
         return Self.parseCreatedAt(createdAt)
@@ -136,7 +137,8 @@ public class VoipPayload: NSObject {
         hostName: String,
         avatarUrl: String?,
         createdAt: String?,
-        voipAcceptFailed: Bool = false
+        voipAcceptFailed: Bool = false,
+        pendingAccept: Bool = false
     ) {
         self.callId = callId
         self.callUUID = callUUID
@@ -148,6 +150,7 @@ public class VoipPayload: NSObject {
         self.avatarUrl = avatarUrl
         self.createdAt = createdAt
         self.voipAcceptFailed = voipAcceptFailed
+        self.pendingAccept = pendingAccept
         super.init()
     }
 
@@ -171,6 +174,9 @@ public class VoipPayload: NSObject {
         ]
         if voipAcceptFailed {
             dict["voipAcceptFailed"] = true
+        }
+        if pendingAccept {
+            dict["pendingAccept"] = true
         }
         return dict
     }

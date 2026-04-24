@@ -35,7 +35,7 @@ RCT_EXPORT_MODULE()
 }
 
 - (NSArray<NSString *> *)supportedEvents {
-    return @[@"VoipPushTokenRegistered", @"VoipAcceptFailed", @"VoipAcceptSucceeded"];
+    return @[@"VoipPushTokenRegistered", @"VoipAcceptFailed", @"VoipAcceptSucceeded", @"VoipPendingAccept"];
 }
 
 - (void)startObserving {
@@ -115,6 +115,12 @@ RCT_EXPORT_MODULE()
 
 - (void)stopNativeDDPClient {
     [VoipService stopDDPClient];
+}
+
+- (void)proceedAccept:(NSString *)callId {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [VoipService proceedAccept:callId];
+    });
 }
 
 // TurboModule codegen calls these on VoipModule directly. Empty implementations replaced

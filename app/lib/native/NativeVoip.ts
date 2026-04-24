@@ -43,6 +43,13 @@ export interface Spec extends TurboModule {
 	stopVoipCallService(): void;
 
 	/**
+	 * Continues a native-accepted VoIP call that was queued in the pending-accept window.
+	 * iOS: Calls `proceedAccept` on VoipService.
+	 * Android: No-op (Android handles accept natively).
+	 */
+	proceedAccept(callId: string): void;
+
+	/**
 	 * Required for NativeEventEmitter in TurboModules.
 	 * Called when JS starts listening to events.
 	 * @platform android
@@ -66,6 +73,7 @@ const NativeVoipModule =
 		getLastVoipToken: () => '',
 		stopNativeDDPClient: () => undefined,
 		stopVoipCallService: () => undefined,
+		proceedAccept: () => undefined,
 		addListener: () => undefined,
 		removeListeners: () => undefined
 	} as Spec);

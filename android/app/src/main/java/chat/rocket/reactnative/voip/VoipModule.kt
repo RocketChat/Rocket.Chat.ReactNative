@@ -19,6 +19,7 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
         private const val TAG = "RocketChat.VoipModule"
         private const val EVENT_VOIP_ACCEPT_SUCCEEDED = "VoipAcceptSucceeded"
         private const val EVENT_VOIP_ACCEPT_FAILED = "VoipAcceptFailed"
+        private const val EVENT_VOIP_PENDING_ACCEPT = "VoipPendingAccept"
 
         private var reactContextRef: WeakReference<ReactApplicationContext>? = null
 
@@ -81,6 +82,21 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to emit VoipAcceptFailed", e)
+            }
+        }
+
+        @JvmStatic
+        fun emitPendingAcceptEvent(voipPayload: VoipPayload) {
+            try {
+                reactContextRef?.get()?.let { context ->
+                    if (context.hasActiveReactInstance()) {
+                        context
+                            .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+                            .emit(EVENT_VOIP_PENDING_ACCEPT, mapOf("callId" to voipPayload.callId, "payload" to voipPayload.toWritableMap()))
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to emit VoipPendingAccept", e)
             }
         }
 
@@ -156,6 +172,14 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
         } catch (e: Exception) {
             Log.e(TAG, "stopVoipCallService: failed to stop service", e)
         }
+    }
+
+    /**
+     * Continues a native-accepted VoIP call that was queued in the pending-accept window.
+     * Android: No-op (Android handles accept natively via Telecom).
+     */
+    override fun proceedAccept(callId: String) {
+        Log.d(TAG, "proceedAccept called on Android (no-op)")
     }
 
     /**
