@@ -7105,15 +7105,15 @@ escodegen@^2.0.0:
   optionalDependencies:
     source-map "~0.6.1"
 
+eslint-config-prettier@10.1.8:
+  version "10.1.8"
+  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-10.1.8.tgz#15734ce4af8c2778cc32f0b01b37b0b5cd1ecb97"
+  integrity sha512-82GZUjRS0p/jganf6q1rEO25VSoHH0hKPCTrgillPjdI/3bgBhAE1QzHrHTizjpRvy6pGAvKjDJtk2pF9NDq8w==
+
 eslint-config-prettier@^8.5.0:
   version "8.10.2"
   resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-8.10.2.tgz#0642e53625ebc62c31c24726b0f050df6bd97a2e"
   integrity sha512-/IGJ6+Dka158JnP5n5YFMOszjDWrXggGz1LaK/guZq9vZTmniaKlHcsscvkAhn9y4U+BU3JuUdYvtAMcv30y4A==
-
-eslint-config-prettier@~10.1.8:
-  version "10.1.8"
-  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-10.1.8.tgz#15734ce4af8c2778cc32f0b01b37b0b5cd1ecb97"
-  integrity sha512-82GZUjRS0p/jganf6q1rEO25VSoHH0hKPCTrgillPjdI/3bgBhAE1QzHrHTizjpRvy6pGAvKjDJtk2pF9NDq8w==
 
 eslint-import-context@^0.1.8:
   version "0.1.9"
@@ -11267,6 +11267,11 @@ react-native-easy-toast@2.3.0:
   dependencies:
     deprecated-react-native-prop-types "^2.3.0"
     prop-types "^15.6.0"
+
+react-native-external-keyboard@^0.9.0:
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/react-native-external-keyboard/-/react-native-external-keyboard-0.9.0.tgz#3ea5d3292b639edce9a702b008d0515e7018195f"
+  integrity sha512-W7h37y5R1k7dqNJLszmrwmk3yJmy/26L9AeL8cDhzu1OwvrWE6+XvogcxbaNl2FHIu2ADuTHHvNqSlEki8Ga6A==
 
 react-native-file-viewer@2.1.4:
   version "2.1.4"
