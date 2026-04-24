@@ -584,9 +584,11 @@ const MessageActions = React.memo(
 				const focusRef = getLastFocusedMessageRef();
 				const onClose = focusRef
 					? () => {
-							const node = findNodeHandle(focusRef.current);
-							if (node) AccessibilityInfo.setAccessibilityFocus(node);
 							clearLastFocusedMessageRef();
+							setTimeout(() => {
+								const node = findNodeHandle(focusRef.current);
+								if (node) AccessibilityInfo.setAccessibilityFocus(node);
+							}, ACTION_SHEET_ANIMATION_DURATION);
 					  }
 					: undefined;
 				showActionSheet({
