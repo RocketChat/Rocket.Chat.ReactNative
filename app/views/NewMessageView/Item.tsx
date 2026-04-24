@@ -9,6 +9,7 @@ import { useTheme } from '../../theme';
 import I18n from '../../i18n';
 import { useMediaCallPermission } from '../../lib/hooks/useMediaCallPermission';
 import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';
+import { isSelfUserId } from '../../lib/services/voip/isSelfUserId';
 import { showActionSheetRef } from '../../containers/ActionSheet';
 import { NewMediaCall } from '../../containers/NewMediaCall';
 
@@ -24,9 +25,10 @@ interface IItem {
 const Item = ({ userId, name, username, onPress, testID, onLongPress }: IItem) => {
 	const { colors } = useTheme();
 	const hasMediaCallPermission = useMediaCallPermission();
+	const isSelf = isSelfUserId(userId);
 
 	const handleCallPress = () => {
-		if (!userId) return;
+		if (!userId || isSelf) return;
 		usePeerAutocompleteStore.getState().setSelectedPeer({ type: 'user', value: userId, label: name, username });
 		showActionSheetRef({
 			children: <NewMediaCall />,
@@ -54,7 +56,7 @@ const Item = ({ userId, name, username, onPress, testID, onLongPress }: IItem) =
 						{name}
 					</Text>
 				</View>
-				{hasMediaCallPermission ? (
+				{hasMediaCallPermission && !isSelf ? (
 					<BorderlessButton
 						onPress={handleCallPress}
 						testID={`${testID}-call`}

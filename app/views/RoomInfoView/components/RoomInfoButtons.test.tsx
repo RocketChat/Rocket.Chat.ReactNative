@@ -170,6 +170,15 @@ describe('RoomInfoButtons', () => {
 		);
 		expect(getByTestId('room-info-view-kebab')).toBeTruthy();
 	});
+
+	it('should not render Voice call button when itsMe is true', () => {
+		const { queryByTestId } = render(
+			<Wrapper>
+				<RoomInfoButtons {...defaultProps} itsMe={true} />
+			</Wrapper>
+		);
+		expect(queryByTestId('room-info-view-phone')).toBeNull();
+	});
 });
 
 generateSnapshots(stories);
