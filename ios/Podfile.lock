@@ -2080,7 +2080,7 @@ PODS:
     - Yoga
   - react-native-cookies (6.2.1):
     - React-Core
-  - react-native-external-keyboard (0.8.2):
+  - react-native-external-keyboard (0.9.0):
     - boost
     - DoubleConversion
     - fast_float
@@ -3979,42 +3979,42 @@ SPEC CHECKSUMS:
   React-CoreModules: dfa38212cf3a91f2eb84ccd43d747d006d33449e
   React-cxxreact: 7a4e2c77e564792252131e63270f6184d93343b3
   React-debug: 29aed758c756956a51b4560223edbd15191ca4c5
-  React-defaultsnativemodule: ee4e3ca63b29c8b91448a6760d72063196ed0796
-  React-domnativemodule: 4d29aad12ebb2b5aa34043e5bdd191a92821f3aa
-  React-Fabric: 21f78a4856240d39a663a52c452e223c5e412098
-  React-FabricComponents: 13fc0ac39a488cea00c83ffa7b16113f024d66e6
-  React-FabricImage: 8961abe0372d20679ee093d144aaf5fb1227bf41
-  React-featureflags: 018934f958e6b83907e71631599b02144e6b17f4
-  React-featureflagsnativemodule: 89fef5751203b7d3cdde43e1e10407983735a4b4
-  React-graphics: 1c62dd11f47071482ca90238981f0147cce4089d
-  React-hermes: 36704d7354fff9c9e3fbb2490e8eeb2ac027f6f0
-  React-idlecallbacksnativemodule: 5f7cbecc1479b53e665f2cd6c2af2c21a80d2ffd
-  React-ImageManager: 4cb6318bb2bcc947106e29f9297a1c24c85a9233
-  React-jserrorhandler: 4b9344f5794cfe8946f8752d38094649f53dd3f3
-  React-jsi: 3a8c6f94a52033b0cca53c38d9bb568306aa9dc1
-  React-jsiexecutor: d7cf79b1c2771c6b21c46691a96dd2e32d4454c7
-  React-jsinspector: 651483ea1d79859e0ed21b86e9042b2a3f4d2b40
-  React-jsinspectorcdp: c800035023789b8bf32b4f5a4c9003c2dc28ee49
-  React-jsinspectornetwork: 249ee46e9de930d773ff6e4726aa8eeb5854b589
-  React-jsinspectortracing: 80e251e13a6071607f06f0e39e03d3f2ce2645cb
-  React-jsitooling: 6ce395671d0139ec1c4721953a4d3d92172fc06f
-  React-jsitracing: 4a4d89334b14d96de0387876751528433d1d2fbd
-  React-logger: 8bcfaf06f8c536fb9e9760526cf3d17ccd53e4ce
-  React-Mapbuffer: 4649384414066eb77e30a3124dbb48732a3aa173
-  React-microtasksnativemodule: e39f94cc96d61b8174a5cfb2d5862a73fa8c0d35
-  react-native-a11y-order: b8de113a5775cc77e0c60574a6779d9aa6f3110c
-  react-native-background-timer: 17ea5e06803401a379ebf1f20505b793ac44d0fe
-  react-native-cameraroll: aa5f6fe38b5574f1066a37ceaad5ece494a157a5
-  react-native-cookies: f54fcded06bb0cda05c11d86788020b43528a26c
-  react-native-external-keyboard: 68a8ec64a2b1db035c25c618348a51f43565f9f2
-  react-native-keyboard-controller: ef239acc614d5d520b07853be6bfa6e87b7770db
-  react-native-mmkv: c70c58437c0f5e5fe6992f1de1e350dcdd236332
-  react-native-netinfo: f0a9899081c185db1de5bb2fdc1c88c202a059ac
-  react-native-restart: 733a51ad137f15b0f8dc34c4082e55af7da00979
-  react-native-safe-area-context: fea29ae0275beaa22f72d0a8be1eb0ab09c3feae
-  react-native-slider: 99493fd3e7254ea482be59fbd94467e737d2b849
-  react-native-webview: 21fdd62caca650645e429b4a84941626612616ef
-  React-NativeModulesApple: 8ce162c145e6b9767bb37a090c77d3d28f7d32b5
+  React-defaultsnativemodule: c406bf7cd78036efffb7dec9df469257a1bca58c
+  React-domnativemodule: 925ea5ff8cb05c68e910057e6349e5898cce00f3
+  React-Fabric: 13130d0a70f17e913865b04673ee64603d6c42fe
+  React-FabricComponents: 1f01ea24a1314bf9abcac4743bb7ad8791336be6
+  React-FabricImage: f364dc54fcf8b0ef77192674a009aa4f65b34d75
+  React-featureflags: 32217ac18a8c216fc571044186fb04164af72772
+  React-featureflagsnativemodule: 9c552bb908a7434baa846002ee1752a77b1a5520
+  React-graphics: 3034a698e46e947f74a443e761f1feef742e9d71
+  React-hermes: a852be3ab9e1f515e46ba3ea9f48c31d4a9df437
+  React-idlecallbacksnativemodule: c43fe1f2221b0548cc366bf15f88efb3b3221bbf
+  React-ImageManager: 7efd7b19cdfaa3a82482e9e6ac0b56606a3ec271
+  React-jserrorhandler: 597057d0b9d158c03e02aa376a4a95f64f46a910
+  React-jsi: 7b53959aea60909ac6bbe4dd0bdec6c10d7dc597
+  React-jsiexecutor: 19938072af05ade148474bac41e0324a2d733f44
+  React-jsinspector: eb6bb244a75cbd56f32767daf2efdb344e2ff10c
+  React-jsinspectorcdp: 727f37537e9c7ab22b6b86c802d879efae5e2757
+  React-jsinspectornetwork: 11d47e644701c58038ef8d7f54a405ddd62b3b16
+  React-jsinspectortracing: 8875637e6c65b3b9a3852b006856562e874e7a78
+  React-jsitooling: b6e6a2551459a6ef9e1529df2ea981fa27ed3a91
+  React-jsitracing: 879e2b2f80dd33d84175989de0a8db5d662505db
+  React-logger: a913317214a26565cd4c045347edf1bcacb80a3f
+  React-Mapbuffer: 017336879e2e0fb7537bbc08c24f34e2384c9260
+  React-microtasksnativemodule: 63ee6730cec233feab9cdcc0c100dc28a12e4165
+  react-native-a11y-order: 20b33ff538af60d8b8a7f7284115a7febc9034d4
+  react-native-background-timer: 4638ae3bee00320753647900b21260b10587b6f7
+  react-native-cameraroll: ae31ba7ee17d31c5ee05d7bb248742e3af482783
+  react-native-cookies: d648ab7025833b977c0b19e142503034f5f29411
+  react-native-external-keyboard: db51d3a78d68c1f87fef41c67353a7c0ddbe51dd
+  react-native-keyboard-controller: c4ca61f44d66c2f8987a7e67e9b78e80dc965c45
+  react-native-mmkv: 7b9c7469fa0a7e463f9411ad3e4fe273bd5ff030
+  react-native-netinfo: cec9c4e86083cb5b6aba0e0711f563e2fbbff187
+  react-native-restart: f6f591aeb40194c41b9b5013901f00e6cf7d0f29
+  react-native-safe-area-context: 0a3b034bb63a5b684dd2f5fffd3c90ef6ed41ee8
+  react-native-slider: 6201419b3e3f7c6b7cf2068e0c01274fa86a1da5
+  react-native-webview: 83c663c5bdf1357d3e7c00986260cb888ea0e328
+  React-NativeModulesApple: cbceb3c4cb726838c461b13802a76cefa6f3476f
   React-oscompat: eb0626e8ba1a2c61673c991bf9dc21834898475d
   React-perflogger: d0d0d1b884120fa0a13bd38ac5e9c3c8e8bfe82a
   React-performancetimeline: ae60fb7a7447c44d4d3227fc4eeba606403aaee3
