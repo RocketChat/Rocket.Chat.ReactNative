@@ -209,6 +209,37 @@ describe('CallSection', () => {
 		expect(mockOpenNewMediaCall).not.toHaveBeenCalled();
 		expect(mockShowInitCallActionSheet).not.toHaveBeenCalled();
 	});
+
+	it('should not render Voice_call row when itsMe is true', () => {
+		mockUseNewMediaCall.mockReturnValue({
+			openNewMediaCall: mockOpenNewMediaCall,
+			hasMediaCallPermission: true
+		});
+		const { queryByTestId } = render(
+			<Wrapper>
+				<CallSection room={createMockRoom()} disabled={false} itsMe={true} />
+			</Wrapper>
+		);
+		expect(queryByTestId('room-actions-voice-call')).toBeNull();
+	});
+
+	it('should return null when itsMe is true and video is unavailable', () => {
+		mockUseVideoConf.mockReturnValue({
+			callEnabled: false,
+			disabledTooltip: false,
+			showInitCallActionSheet: mockShowInitCallActionSheet
+		});
+		mockUseNewMediaCall.mockReturnValue({
+			openNewMediaCall: noopOpenNewMediaCall,
+			hasMediaCallPermission: true
+		});
+		const { toJSON } = render(
+			<Wrapper>
+				<CallSection room={createMockRoom()} disabled={false} itsMe={true} />
+			</Wrapper>
+		);
+		expect(toJSON()).toBeNull();
+	});
 });
 
 generateSnapshots(stories);

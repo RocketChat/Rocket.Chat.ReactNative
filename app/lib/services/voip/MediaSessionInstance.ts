@@ -16,6 +16,8 @@ import { dequal } from 'dequal';
 import { mediaSessionStore } from './MediaSessionStore';
 import { terminateNativeCall } from './terminateNativeCall';
 import { useCallStore } from './useCallStore';
+import { MediaCallLogger } from './MediaCallLogger';
+import { isSelfUserId } from './isSelfUserId';
 import { store } from '../../store/auxStore';
 import sdk from '../sdk';
 import { mediaCallsStateSignals } from '../restApi';
@@ -29,6 +31,9 @@ import { getUidDirectMessage } from '../../methods/helpers/helpers';
 import { requestPhoneStatePermission } from '../../methods/voipPhoneStatePermission';
 import { isInActiveVoipCall } from './isInActiveVoipCall';
 import I18n from '../../../i18n';
+import { showErrorAlert } from '../../methods/helpers/info';
+
+const mediaCallLogger = new MediaCallLogger();
 
 class MediaSessionInstance {
 	private iceServers: IceServer[] = [];
@@ -180,8 +185,17 @@ class MediaSessionInstance {
 		if (isInActiveVoipCall()) {
 			throw new Error(I18n.t('VoIP_Already_In_Call'));
 		}
+		if (isSelfUserId(userId)) {
+			mediaCallLogger.debug('[VoIP] startCall blocked: target userId matches logged-in user');
+			return;
+		}
+		if (!this.instance) {
+			mediaCallLogger.debug('[VoIP] startCall blocked: MediaSessionInstance not initialized');
+			showErrorAlert(I18n.t('VoIP_Still_Connecting'), I18n.t('Oops'));
+			return;
+		}
 		requestPhoneStatePermission();
-		await this.instance?.startCall(actor, userId);
+		await this.instance.startCall(actor, userId);
 	};
 
 	public endCall = (callId: string) => {

@@ -8,6 +8,8 @@ import { mockedStore } from '../../reducers/mockedStore';
 import type { TPeerItem } from '../../lib/services/voip/getPeerAutocompleteOptions';
 import * as stories from './CreateCall.stories';
 import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
+import { initStore } from '../../lib/store/auxStore';
+import { setUser } from '../../actions/login';
 
 const mockStartCall = jest.fn();
 const mockHideActionSheet = jest.fn();
@@ -52,10 +54,15 @@ const sipPeer: TPeerItem = {
 };
 
 describe('CreateCall', () => {
+	beforeAll(() => {
+		initStore(mockedStore);
+	});
+
 	beforeEach(() => {
 		jest.clearAllMocks();
 		usePeerAutocompleteStore.setState({ selectedPeer: null });
 		mockUseIsInActiveVoipCall.mockReturnValue(false);
+		mockedStore.dispatch(setUser({ id: 'me-id', username: 'me' }));
 	});
 
 	it('should render the call button', () => {
@@ -160,6 +167,26 @@ describe('CreateCall', () => {
 		expect(mockStartCall).toHaveBeenCalledTimes(1);
 		expect(mockStartCall).toHaveBeenCalledWith('+5511999999999', 'sip');
 		expect(mockHideActionSheet).toHaveBeenCalledTimes(1);
+	});
+
+	it('should not call startCall when selected user peer matches the logged-in user id', async () => {
+		const selfPeer: TPeerItem = {
+			type: 'user',
+			value: 'me-id',
+			label: 'Me',
+			username: 'me'
+		};
+		setStoreState(selfPeer);
+		const { getByTestId } = render(
+			<Wrapper>
+				<CreateCall />
+			</Wrapper>
+		);
+
+		fireEvent.press(getByTestId('new-media-call-button'));
+		await act(() => Promise.resolve());
+		expect(mockStartCall).not.toHaveBeenCalled();
+		expect(mockHideActionSheet).not.toHaveBeenCalled();
 	});
 });
 

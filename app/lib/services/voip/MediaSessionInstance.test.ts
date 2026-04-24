@@ -57,14 +57,17 @@ jest.mock('../restApi', () => ({
 	mediaCallsStateSignals: (...args: unknown[]) => mockMediaCallsStateSignals(...args)
 }));
 
+const mockAuxStoreState = {
+	settings: {
+		VoIP_TeamCollab_Ice_Servers: '',
+		VoIP_TeamCollab_Ice_Gathering_Timeout: 5000
+	},
+	login: { user: { id: 'user-1' } }
+};
+
 jest.mock('../../store/auxStore', () => ({
 	store: {
-		getState: jest.fn(() => ({
-			settings: {
-				VoIP_TeamCollab_Ice_Servers: '',
-				VoIP_TeamCollab_Ice_Gathering_Timeout: 5000
-			}
-		})),
+		getState: jest.fn(() => mockAuxStoreState),
 		subscribe: jest.fn(() => jest.fn())
 	}
 }));
@@ -120,6 +123,11 @@ jest.mock('./isInActiveVoipCall', () => ({
 jest.mock('../../../i18n', () => ({
 	__esModule: true,
 	default: { t: (key: string) => key }
+}));
+
+const mockShowErrorAlert = jest.fn();
+jest.mock('../../methods/helpers/info', () => ({
+	showErrorAlert: (...args: unknown[]) => mockShowErrorAlert(...args)
 }));
 
 type MockMediaSignalingSession = {
@@ -570,6 +578,55 @@ describe('MediaSessionInstance', () => {
 			await expect(mediaSessionInstance.startCall('peer-1', 'user')).rejects.toThrow('VoIP_Already_In_Call');
 			expect(session.startCall).not.toHaveBeenCalled();
 			expect(mockRequestPhoneStatePermission).not.toHaveBeenCalled();
+		});
+
+		it('silently drops self-call when userId matches logged-in user id', async () => {
+			await mediaSessionInstance.init('user-1');
+			mockRequestPhoneStatePermission.mockClear();
+			const session = createdSessions[0];
+			await mediaSessionInstance.startCall('user-1', 'user');
+			expect(session.startCall).not.toHaveBeenCalled();
+			expect(mockRequestPhoneStatePermission).not.toHaveBeenCalled();
+		});
+
+		it('shows alert and skips permission and skips instance.startCall when instance is null', async () => {
+			await mediaSessionInstance.init('user-1');
+			const session = createdSessions[0];
+			mediaSessionInstance.reset();
+			mockRequestPhoneStatePermission.mockClear();
+			await mediaSessionInstance.startCall('peer-1', 'user');
+			expect(mockShowErrorAlert).toHaveBeenCalledTimes(1);
+			expect(mockRequestPhoneStatePermission).not.toHaveBeenCalled();
+			expect(session.startCall).not.toHaveBeenCalled();
+		});
+
+		it('calls through normally when instance is present', async () => {
+			await mediaSessionInstance.init('user-1');
+			mockRequestPhoneStatePermission.mockClear();
+			const session = createdSessions[0];
+			await mediaSessionInstance.startCall('peer-2', 'user');
+			expect(mockShowErrorAlert).not.toHaveBeenCalled();
+			expect(mockRequestPhoneStatePermission).toHaveBeenCalledTimes(1);
+			expect(session.startCall).toHaveBeenCalledWith('user', 'peer-2');
+		});
+
+		it('startCallByRoom shows alert when instance is null', async () => {
+			await mediaSessionInstance.init('user-1');
+			const session = createdSessions[0];
+			mediaSessionInstance.reset();
+			mockGetUidDirectMessage.mockReturnValue('peer-1');
+			mediaSessionInstance.startCallByRoom({ rid: 'rid-dm', t: 'd', uids: ['user-1', 'peer-1'] } as any);
+			await Promise.resolve();
+			expect(mockShowErrorAlert).toHaveBeenCalledTimes(1);
+			expect(session.startCall).not.toHaveBeenCalled();
+		});
+
+		it('startCallByRoom does not invoke startCall when getUidDirectMessage returns own id (itsMe room)', async () => {
+			mockGetUidDirectMessage.mockReturnValue('user-1');
+			await mediaSessionInstance.init('user-1');
+			const session = createdSessions[0];
+			mediaSessionInstance.startCallByRoom({ rid: 'rid-self', t: 'd', uids: ['user-1'], itsMe: true } as any);
+			expect(session.startCall).not.toHaveBeenCalled();
 		});
 	});
 
