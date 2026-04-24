@@ -426,6 +426,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
+          enableContextMenu={true}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -851,6 +852,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
+          enableContextMenu={true}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -1066,6 +1068,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
+          enableContextMenu={true}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -1447,6 +1450,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
+          enableContextMenu={true}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -1872,6 +1876,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
+          enableContextMenu={true}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -2087,6 +2092,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
+          enableContextMenu={true}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -2302,6 +2308,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
+          enableContextMenu={true}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -2823,6 +2830,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
+          enableContextMenu={true}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -3248,6 +3256,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
+          enableContextMenu={true}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -3463,6 +3472,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
+          enableContextMenu={true}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -3844,6 +3854,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
+          enableContextMenu={true}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -4269,6 +4280,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
+          enableContextMenu={true}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -4484,6 +4496,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
+          enableContextMenu={true}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -4699,6 +4712,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
+          enableContextMenu={true}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -5220,6 +5234,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
+          enableContextMenu={true}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -5645,6 +5660,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
+          enableContextMenu={true}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -5860,6 +5876,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
+          enableContextMenu={true}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -6241,6 +6258,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
+          enableContextMenu={true}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -6666,6 +6684,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
+          enableContextMenu={true}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -6881,6 +6900,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
+          enableContextMenu={true}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
@@ -7096,6 +7116,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
         <ExternalKeyboardView
           canBeFocused={true}
           enableA11yFocus={false}
+          enableContextMenu={true}
           group={false}
           haloEffect={true}
           hasKeyDownPress={false}
