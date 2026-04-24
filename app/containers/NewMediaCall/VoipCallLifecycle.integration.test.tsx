@@ -73,6 +73,9 @@ jest.mock('../../lib/store/auxStore', () => ({
 			settings: {
 				VoIP_TeamCollab_Ice_Servers: '',
 				VoIP_TeamCollab_Ice_Gathering_Timeout: 5000
+			},
+			login: {
+				user: { id: 'me-id', username: 'me' }
 			}
 		})),
 		subscribe: jest.fn(() => jest.fn())
