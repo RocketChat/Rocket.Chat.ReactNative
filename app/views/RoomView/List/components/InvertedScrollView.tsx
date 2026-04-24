@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, findNodeHandle, type LayoutChangeEvent, type ScrollViewProps, processColor } from 'react-native';
+import { Platform, StyleSheet, findNodeHandle, type LayoutChangeEvent, type ScrollViewProps, processColor } from 'react-native';
 import codegenNativeCommands from 'react-native/Libraries/Utilities/codegenNativeCommands';
 
 // NativeComponentRegistry.get() registers components as proper Fabric host components.
@@ -80,7 +80,8 @@ const NativeInvertedScrollContentView = NativeComponentRegistry.get('InvertedScr
 	validAttributes: {
 		isInvertedContent: true,
 		removeClippedSubviews: true,
-		collapsable: true
+		collapsable: true,
+		collapsableChildren: true
 	}
 }));
 
@@ -148,6 +149,8 @@ export default class InvertedScrollView extends React.Component<Props> {
 		const { horizontal, children, style, contentContainerStyle, onContentSizeChange, ...rest } = this.props;
 		const contentStyle = [horizontal ? styles.contentContainerHorizontal : null, contentContainerStyle];
 		const baseStyle = horizontal ? styles.baseHorizontal : styles.baseVertical;
+		const preserveChildren =
+			this.props.maintainVisibleContentPosition != null || (Platform.OS === 'android' && this.props.snapToAlignment != null);
 
 		return (
 			<NativeInvertedScrollView
@@ -160,6 +163,7 @@ export default class InvertedScrollView extends React.Component<Props> {
 					style={contentStyle}
 					removeClippedSubviews={this.props.removeClippedSubviews}
 					collapsable={false}
+					collapsableChildren={!preserveChildren}
 					isInvertedContent>
 					{children}
 				</NativeInvertedScrollContentView>
