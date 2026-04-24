@@ -424,7 +424,7 @@ final class DDPClient {
     
     // MARK: - URL Helpers
     
-    private static func buildWebSocketURL(host: String) -> String {
+    private static func buildWebSocketURL(host: String) throws -> String {
         var cleaned = host
         
         if cleaned.hasSuffix("/") {
