@@ -994,6 +994,7 @@
   "View_Thread": "View thread",
   "Voice_call": "Voice call",
   "VoIP_Call_Issue": "There was an issue with the call, try again later.",
+  "VoIP_Still_Connecting": "Still connecting. Please try again in a moment.",
   "Wait_activation_warning": "Before you can login, your account must be manually activated by an administrator.",
   "Waiting_for_answer": "Waiting for answer",
   "Waiting_for_network": "Waiting for network...",
