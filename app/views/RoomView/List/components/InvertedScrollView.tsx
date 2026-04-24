@@ -1,33 +1,93 @@
 import React from 'react';
-import {
-	StyleSheet,
-	findNodeHandle,
-	type LayoutChangeEvent,
-	requireNativeComponent,
-	type ScrollViewProps,
-	type ViewProps
-} from 'react-native';
+import { StyleSheet, findNodeHandle, type LayoutChangeEvent, type ScrollViewProps, processColor } from 'react-native';
 import codegenNativeCommands from 'react-native/Libraries/Utilities/codegenNativeCommands';
 
-interface InvertedScrollContentViewProps extends ViewProps {
-	isInvertedContent?: boolean;
-}
+// NativeComponentRegistry.get() registers components as proper Fabric host components.
+// requireNativeComponent() uses the legacy interop layer, which breaks Fabric's touch
+// event routing: when Fabric-rendered children (FlatList cells with pressable elements)
+// are nested inside a legacy interop node, Fabric's event router cannot traverse the
+// shadow tree boundary and drops all interaction events. newArchEnabled=true exposes this.
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const NativeComponentRegistry = require('react-native/Libraries/NativeComponent/NativeComponentRegistry') as {
+	get: (name: string, viewConfigProvider: () => object) => React.ComponentType<any>;
+};
 
-interface InvertedScrollViewNativeProps extends ScrollViewProps {
-	exitFocusNativeId?: string;
-}
+const pointsDiffer = require('react-native/Libraries/Utilities/differ/pointsDiffer').default as (
+	a: object | null,
+	b: object | null
+) => boolean;
 
 interface Props extends Omit<ScrollViewProps, 'scrollViewRef'> {
 	exitFocusNativeId?: string;
 }
 
-const NativeInvertedScrollView = requireNativeComponent<InvertedScrollViewNativeProps>('InvertedScrollView');
-const NativeInvertedScrollContentView = requireNativeComponent<InvertedScrollContentViewProps>('InvertedScrollContentView');
+// Mirrors the Android validAttributes of RCTScrollView (ScrollViewNativeComponent.js)
+// extended with our custom exitFocusNativeId prop.
+const NativeInvertedScrollView = NativeComponentRegistry.get('InvertedScrollView', () => ({
+	uiViewClassName: 'InvertedScrollView',
+	bubblingEventTypes: {},
+	directEventTypes: {
+		topMomentumScrollBegin: { registrationName: 'onMomentumScrollBegin' },
+		topMomentumScrollEnd: { registrationName: 'onMomentumScrollEnd' },
+		topScroll: { registrationName: 'onScroll' },
+		topScrollBeginDrag: { registrationName: 'onScrollBeginDrag' },
+		topScrollEndDrag: { registrationName: 'onScrollEndDrag' }
+	},
+	validAttributes: {
+		contentOffset: { diff: pointsDiffer },
+		decelerationRate: true,
+		disableIntervalMomentum: true,
+		maintainVisibleContentPosition: true,
+		pagingEnabled: true,
+		scrollEnabled: true,
+		showsVerticalScrollIndicator: true,
+		snapToAlignment: true,
+		snapToEnd: true,
+		snapToInterval: true,
+		snapToOffsets: true,
+		snapToStart: true,
+		borderBottomLeftRadius: true,
+		borderBottomRightRadius: true,
+		sendMomentumEvents: true,
+		borderRadius: true,
+		nestedScrollEnabled: true,
+		scrollEventThrottle: true,
+		borderStyle: true,
+		borderRightColor: { process: processColor },
+		borderColor: { process: processColor },
+		borderBottomColor: { process: processColor },
+		persistentScrollbar: true,
+		horizontal: true,
+		endFillColor: { process: processColor },
+		fadingEdgeLength: true,
+		overScrollMode: true,
+		borderTopLeftRadius: true,
+		scrollPerfTag: true,
+		borderTopColor: { process: processColor },
+		removeClippedSubviews: true,
+		borderTopRightRadius: true,
+		borderLeftColor: { process: processColor },
+		pointerEvents: true,
+		isInvertedVirtualizedList: true,
+		exitFocusNativeId: true
+	}
+}));
+
+const NativeInvertedScrollContentView = NativeComponentRegistry.get('InvertedScrollContentView', () => ({
+	uiViewClassName: 'InvertedScrollContentView',
+	bubblingEventTypes: {},
+	directEventTypes: {},
+	validAttributes: {
+		isInvertedContent: true,
+		removeClippedSubviews: true,
+		collapsable: true
+	}
+}));
 
 interface InvertedScrollViewCommands {
-	scrollTo: (viewRef: React.ElementRef<typeof NativeInvertedScrollView>, x: number, y: number, animated: boolean) => void;
-	scrollToEnd: (viewRef: React.ElementRef<typeof NativeInvertedScrollView>, animated: boolean) => void;
-	flashScrollIndicators: (viewRef: React.ElementRef<typeof NativeInvertedScrollView>) => void;
+	scrollTo: (viewRef: any, x: number, y: number, animated: boolean) => void;
+	scrollToEnd: (viewRef: any, animated: boolean) => void;
+	flashScrollIndicators: (viewRef: any) => void;
 }
 
 const Commands = codegenNativeCommands<InvertedScrollViewCommands>({
@@ -88,10 +148,9 @@ export default class InvertedScrollView extends React.Component<Props> {
 		const { horizontal, children, style, contentContainerStyle, onContentSizeChange, ...rest } = this.props;
 		const contentStyle = [horizontal ? styles.contentContainerHorizontal : null, contentContainerStyle];
 		const baseStyle = horizontal ? styles.baseHorizontal : styles.baseVertical;
-		const ScrollContainer = NativeInvertedScrollView as React.ComponentClass<InvertedScrollViewNativeProps & ViewProps>;
 
 		return (
-			<ScrollContainer
+			<NativeInvertedScrollView
 				ref={this.setNativeRef}
 				{...rest}
 				style={StyleSheet.compose(baseStyle, style)}
@@ -104,7 +163,7 @@ export default class InvertedScrollView extends React.Component<Props> {
 					isInvertedContent>
 					{children}
 				</NativeInvertedScrollContentView>
-			</ScrollContainer>
+			</NativeInvertedScrollView>
 		);
 	}
 }
