@@ -12,15 +12,17 @@ const CallView = (): React.ReactElement | null => {
 
 	const { colors } = useTheme();
 	const call = useCallStore(state => state.call);
+	const nativeAcceptedCallId = useCallStore(state => state.nativeAcceptedCallId);
+	const isConnecting = !call && !!nativeAcceptedCallId;
 
-	if (!call) {
+	if (!call && !isConnecting) {
 		return null;
 	}
 
 	return (
 		<SafeAreaView testID='call-view-container' style={[styles.contentContainer, { backgroundColor: colors.surfaceLight }]}>
-			<CallerInfo />
-			<CallButtons />
+			<CallerInfo isConnecting={isConnecting} />
+			{isConnecting ? null : <CallButtons />}
 		</SafeAreaView>
 	);
 };

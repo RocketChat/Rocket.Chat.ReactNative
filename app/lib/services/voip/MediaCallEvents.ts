@@ -126,13 +126,16 @@ function handleVoipAcceptSucceededFromNative(data: VoipPayload, adapters: MediaC
 	});
 }
 
-function handleVoipPendingAccept({ callId }: { callId: string; payload: VoipPayload }) {
-	// payload is kept in the param type for documentation; callId is the only field needed
+function handleVoipPendingAccept({ callId, payload }: { callId: string; payload: VoipPayload }) {
 	if (queuedCallIds.has(callId)) {
 		return;
 	}
 	queuedCallIds.add(callId);
 	useCallStore.getState().setNativeAcceptedCallId(callId);
+	useCallStore.getState().setContact({
+		displayName: payload.caller,
+		username: payload.username
+	});
 	Navigation.navigate('CallView');
 	mediaCallLogger.debug(`${TAG} VoIP FAST ACCEPT QUEUED`, { callId });
 	mediaSessionInstance.registerOnInitComplete(() => NativeVoipModule.proceedAccept(callId));

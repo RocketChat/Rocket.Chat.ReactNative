@@ -9,7 +9,11 @@ import { useIsScreenReaderEnabled } from '../../../lib/hooks/useIsScreenReaderEn
 import { CONTROLS_ANIMATION_DURATION, styles } from '../styles';
 import { useTheme } from '../../../theme';
 
-const CallerInfo = (): React.ReactElement => {
+interface CallerInfoProps {
+	isConnecting?: boolean;
+}
+
+const CallerInfo = ({ isConnecting = false }: CallerInfoProps): React.ReactElement => {
 	const { colors } = useTheme();
 	const contact = useCallContact();
 	const toggleControlsVisible = useCallStore(state => state.toggleControlsVisible);
@@ -38,6 +42,11 @@ const CallerInfo = (): React.ReactElement => {
 				<Text style={[styles.caller, { color: colors.fontDefault }]} numberOfLines={1} testID='caller-info-name'>
 					{name}
 				</Text>
+				{isConnecting && (
+					<Text style={[styles.statusText, { color: colors.fontHint }]} testID='caller-info-status'>
+						{I18n.t('Connecting')}
+					</Text>
+				)}
 			</Animated.View>
 		</Pressable>
 	);

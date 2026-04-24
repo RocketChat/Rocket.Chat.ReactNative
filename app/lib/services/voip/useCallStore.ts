@@ -102,6 +102,7 @@ interface CallStoreActions {
 	reset: () => void;
 	setDialpadValue: (value: string) => void;
 	setRoomId: (roomId: string | null) => void;
+	setContact: (contact: CallContact) => void;
 }
 
 export type CallStore = CallStoreState & CallStoreActions;
@@ -277,6 +278,10 @@ export const useCallStore = create<CallStore>((set, get) => ({
 
 	setRoomId: (roomId: string | null) => {
 		set({ roomId });
+	},
+
+	setContact: (contact: CallContact) => {
+		set({ contact });
 	},
 
 	endCall: () => {

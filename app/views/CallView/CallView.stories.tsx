@@ -96,7 +96,13 @@ export const ConnectedCall = () => {
 };
 
 export const ConnectingCall = () => {
-	setStoreState({ callState: 'accepted', callStartTime: null });
+	setStoreState({
+		call: null,
+		nativeAcceptedCallId: 'pending-call-id',
+		callState: 'none',
+		callStartTime: null,
+		contact: { displayName: 'Bob Burnquist', username: 'bob.burnquist' }
+	});
 	return <CallView />;
 };
 
@@ -150,7 +156,13 @@ export const TabletConnectedCall = () => {
 };
 
 export const TabletConnectingCall = () => {
-	setStoreState({ callState: 'accepted', callStartTime: null });
+	setStoreState({
+		call: null,
+		nativeAcceptedCallId: 'pending-call-id',
+		callState: 'none',
+		callStartTime: null,
+		contact: { displayName: 'Bob Burnquist', username: 'bob.burnquist' }
+	});
 	return <TabletCallView />;
 };
 
