@@ -14,11 +14,12 @@ import { getUniqueIdSync } from 'react-native-device-info';
 import { dequal } from 'dequal';
 
 import { mediaSessionStore } from './MediaSessionStore';
+import { terminateNativeCall } from './terminateNativeCall';
 import { useCallStore } from './useCallStore';
 import { store } from '../../store/auxStore';
 import sdk from '../sdk';
 import { mediaCallsStateSignals } from '../restApi';
-import Navigation from '../../navigation/appNavigation';
+import Navigation, { waitForNavigationReady } from '../../navigation/appNavigation';
 import { parseStringToIceServers } from './parseStringToIceServers';
 import type { IceServer } from '../../../definitions/Voip';
 import type { IDDPMessage } from '../../../definitions/IDDPMessage';
@@ -129,7 +130,7 @@ class MediaSessionInstance {
 				}
 
 				call.emitter.on('ended', () => {
-					RNCallKeep.endCall(call.callId);
+					terminateNativeCall(call.callId);
 				});
 			}
 		});
@@ -147,12 +148,13 @@ class MediaSessionInstance {
 			await mainCall.accept();
 			RNCallKeep.setCurrentCallActive(callId);
 			useCallStore.getState().setCall(mainCall);
+			await waitForNavigationReady();
 			Navigation.navigate('CallView');
 			this.resolveRoomIdFromContact(mainCall.remoteParticipants[0]?.contact).catch(error => {
 				console.error('[VoIP] Error resolving room id from contact (answerCall):', error);
 			});
 		} else {
-			RNCallKeep.endCall(callId);
+			terminateNativeCall(callId);
 			const st = useCallStore.getState();
 			if (st.nativeAcceptedCallId === callId) {
 				st.resetNativeCallId();
@@ -186,7 +188,7 @@ class MediaSessionInstance {
 				mainCall.hangup();
 			}
 		}
-		RNCallKeep.endCall(callId);
+		terminateNativeCall(callId);
 		RNCallKeep.setCurrentCallActive('');
 		RNCallKeep.setAvailable(true);
 		useCallStore.getState().resetNativeCallId();

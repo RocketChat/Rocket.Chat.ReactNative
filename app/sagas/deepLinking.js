@@ -15,7 +15,7 @@ import database from '../lib/database';
 import { getServerById } from '../lib/database/services/Server';
 import { canOpenRoom } from '../lib/methods/canOpenRoom';
 import { getServerInfo } from '../lib/methods/getServerInfo';
-import { emitter, getUidDirectMessage, normalizeDeepLinkingServerHost } from '../lib/methods/helpers';
+import { getUidDirectMessage, normalizeDeepLinkingServerHost } from '../lib/methods/helpers';
 import EventEmitter from '../lib/methods/helpers/events';
 import { goRoom, navigateToRoom } from '../lib/methods/helpers/goRoom';
 import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
@@ -26,7 +26,7 @@ import { videoConfJoin } from '../lib/methods/videoConf';
 import { loginOAuthOrSso } from '../lib/services/connect';
 import { notifyUser } from '../lib/services/restApi';
 import sdk from '../lib/services/sdk';
-import Navigation from '../lib/navigation/appNavigation';
+import Navigation, { waitForNavigationReady } from '../lib/navigation/appNavigation';
 import { resetVoipState } from '../lib/services/voip/resetVoipState';
 
 const roomTypes = {
@@ -45,20 +45,6 @@ const handleInviteLink = function* handleInviteLink({ params, requireLogin = fal
 			yield put(inviteLinksRequest(token));
 		}
 	}
-};
-
-const waitForNavigation = () => {
-	if (Navigation.navigationRef.current) {
-		return Promise.resolve();
-	}
-	return new Promise(resolve => {
-		const listener = () => {
-			emitter.off('navigationReady', listener);
-			resolve();
-		};
-
-		emitter.on('navigationReady', listener);
-	});
 };
 
 const navigate = function* navigate({ params }) {
@@ -82,7 +68,7 @@ const navigate = function* navigate({ params }) {
 
 				const isMasterDetail = yield select(state => state.app.isMasterDetail);
 				const jumpToMessageId = params.messageId;
-				yield waitForNavigation();
+				yield waitForNavigationReady();
 				yield goRoom({ item, isMasterDetail, jumpToMessageId, jumpToThreadId });
 			}
 		} else {
@@ -104,7 +90,7 @@ const handleVoipAcceptFailed = function* handleVoipAcceptFailed(params) {
 			RNCallKeep.endCall(callId);
 		}
 
-		yield call(waitForNavigation);
+		yield call(waitForNavigationReady);
 
 		const navigateParams = {
 			...params,

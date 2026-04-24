@@ -149,6 +149,15 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
         VoipNotification.stopDDPClient()
     }
 
+    override fun stopVoipCallService() {
+        try {
+            VoipCallService.stopService(reactApplicationContext)
+            Log.d(TAG, "stopVoipCallService: service stopped")
+        } catch (e: Exception) {
+            Log.e(TAG, "stopVoipCallService: failed to stop service", e)
+        }
+    }
+
     /**
      * Required for NativeEventEmitter in TurboModules.
      * Called when JS starts listening to events.
