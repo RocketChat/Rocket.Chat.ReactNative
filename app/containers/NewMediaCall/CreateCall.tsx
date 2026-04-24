@@ -56,6 +56,7 @@ export const CreateCall = () => {
 const styles = StyleSheet.create({
 	callButton: {
 		height: 52,
+		marginTop: 32,
 		borderRadius: 4,
 		alignItems: 'center',
 		justifyContent: 'center',

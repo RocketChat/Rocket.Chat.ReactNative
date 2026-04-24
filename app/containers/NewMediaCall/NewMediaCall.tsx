@@ -17,11 +17,9 @@ export const NewMediaCall = (): React.ReactElement => {
 
 	return (
 		<View style={[styles.screen, { backgroundColor: colors.surfaceLight, paddingBottom: bottom + 16 }]}>
-			<View style={styles.content}>
-				<FilterHeader />
-				<SelectedPeer />
-				<PeerList />
-			</View>
+			<FilterHeader />
+			<SelectedPeer />
+			<PeerList />
 			<CreateCall />
 		</View>
 	);
@@ -30,11 +28,7 @@ export const NewMediaCall = (): React.ReactElement => {
 const styles = StyleSheet.create({
 	screen: {
 		flex: 1,
-		justifyContent: 'space-between',
 		paddingHorizontal: 16,
 		paddingTop: 16
-	},
-	content: {
-		flex: 1
 	}
 });

@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList } from 'react-native';
 
 import type { TPeerItem } from '../../lib/services/voip/getPeerAutocompleteOptions';
 import { PeerItem } from './PeerItem';
@@ -21,7 +21,6 @@ export const PeerList = () => {
 	return (
 		<FlatList
 			data={options}
-			style={styles.list}
 			contentContainerStyle={{ flexShrink: 1 }}
 			keyExtractor={item => `${item.type}:${item.value}`}
 			keyboardShouldPersistTaps='always'
@@ -30,9 +29,3 @@ export const PeerList = () => {
 		/>
 	);
 };
-
-const styles = StyleSheet.create({
-	list: {
-		flex: 1
-	}
-});

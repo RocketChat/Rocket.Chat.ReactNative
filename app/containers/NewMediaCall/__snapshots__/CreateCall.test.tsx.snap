@@ -42,6 +42,7 @@ exports[`Story Snapshots: Disabled should match snapshot 1`] = `
         "gap": 4,
         "height": 52,
         "justifyContent": "center",
+        "marginTop": 32,
       },
       {
         "backgroundColor": "#C0F6E4",
@@ -140,6 +141,7 @@ exports[`Story Snapshots: Enabled should match snapshot 1`] = `
         "gap": 4,
         "height": 52,
         "justifyContent": "center",
+        "marginTop": 32,
       },
       {
         "backgroundColor": "#158D65",
