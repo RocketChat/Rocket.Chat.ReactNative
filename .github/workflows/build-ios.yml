@@ -22,7 +22,7 @@ jobs:
 
   build-ios:
     name: Build
-    runs-on: macos-15
+    runs-on: macos-26
     needs: [build-hold]
     if: ${{ inputs.type == 'experimental' && (always() && (needs.build-hold.result == 'success' || needs.build-hold.result == 'skipped')) }}
     steps:
@@ -62,7 +62,7 @@ jobs:
 
   upload-ios:
     name: Upload
-    runs-on: macos-15
+    runs-on: macos-26
     needs: [build-ios]
     if: ${{ inputs.type == 'experimental' && (always() && (needs.build-ios.result == 'success')) }}
     steps:

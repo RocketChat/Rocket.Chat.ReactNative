@@ -20,6 +20,7 @@ import { type OperationParams, type ResultFor } from '../../definitions/rest/hel
 import { type SubscriptionsEndpoints } from '../../definitions/rest/v1/subscriptions';
 import { Encryption } from '../encryption';
 import { type RoomTypes, roomTypeToApiType } from '../methods/roomTypeToApiType';
+import { uploadUserAvatarMultipart } from '../methods/uploadAvatar/uploadAvatar';
 import { unsubscribeRooms } from '../methods/subscribeRooms';
 import { compareServerVersion, getBundleId, isIOS } from '../methods/helpers';
 import { getDeviceToken } from '../notifications';
@@ -106,8 +107,14 @@ export const forgotPassword = (email: string) =>
 	// RC 0.64.0
 	sdk.post('users.forgotPassword', { email });
 
-export const sendConfirmationEmail = (email: string): Promise<{ message: string; success: boolean }> =>
-	sdk.methodCallWrapper('sendConfirmationEmail', email);
+export const sendConfirmationEmail = (email: string): Promise<{ success: boolean }> => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.0.0')) {
+		return sdk.post('users.sendConfirmationEmail', { email });
+	}
+
+	return sdk.methodCallWrapper('sendConfirmationEmail', email);
+};
 
 export const spotlight = (
 	search: string,
@@ -411,10 +418,14 @@ export const getTeamListRoom = ({
 };
 
 export const closeLivechat = (rid: string, comment?: string, tags?: string[]) => {
+	const serverVersion = reduxStore.getState().server.version;
 	// RC 3.2.0
 	let params;
 	if (tags && tags?.length) {
 		params = { tags };
+	}
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.0.0')) {
+		return sdk.post('livechat/room.closeByUser', { rid, comment, ...params });
 	}
 	// RC 0.29.0
 	return sdk.methodCallWrapper('livechat:closeRoom', rid, comment, { clientAction: true, ...params });
@@ -443,9 +454,14 @@ export const returnLivechat = (rid: string, departmentId?: string): Promise<any>
 
 export const onHoldLivechat = (roomId: string) => sdk.post('livechat/room.onHold', { roomId });
 
-export const forwardLivechat = (transferData: any) =>
+export const forwardLivechat = (transferData: any) => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.0.0')) {
+		return sdk.post('livechat/room.forward', transferData);
+	}
 	// RC 0.36.0
-	sdk.methodCallWrapper('livechat:transfer', transferData);
+	return sdk.methodCallWrapper('livechat:transfer', transferData);
+};
 
 export const getDepartmentInfo = (departmentId: string) =>
 	// RC 2.2.0
@@ -489,9 +505,18 @@ export const getRoutingConfig = async (): Promise<{
 	return sdk.methodCallWrapper('livechat:getRoutingConfig');
 };
 
-export const getTagsList = (): Promise<ILivechatTag[]> =>
+export const getTagsList = async (): Promise<ILivechatTag[]> => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.0.0')) {
+		const result = await sdk.get('livechat/tags');
+		if (result.success) {
+			return result.tags || [];
+		}
+		return [];
+	}
 	// RC 2.0.0
-	sdk.methodCallWrapper('livechat:getTagsList');
+	return sdk.methodCallWrapper('livechat:getTagsList');
+};
 
 export const getAgentDepartments = (uid: string) =>
 	// RC 2.4.0
@@ -677,25 +702,69 @@ export const getRoomRoles = (
 	// RC 0.65.0
 	sdk.get(`${roomTypeToApiType(type)}.roles`, { roomId });
 
-export const getAvatarSuggestion = (): Promise<{ [service: string]: IAvatarSuggestion }> =>
+export const getAvatarSuggestion = async (): Promise<{ [service: string]: IAvatarSuggestion }> => {
+	const serverVersion = reduxStore.getState().server.version;
+
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.4.0')) {
+		// RC 5.4.0
+		const result = await sdk.get('users.getAvatarSuggestion');
+		if (result.success && 'suggestions' in result) {
+			return result.suggestions;
+		}
+		return {};
+	}
+
 	// RC 0.51.0
-	sdk.methodCallWrapper('getAvatarSuggestion');
+	return sdk.methodCallWrapper('getAvatarSuggestion');
+};
 
 export const resetAvatar = (userId: string) =>
 	// RC 0.55.0
 	sdk.post('users.resetAvatar', { userId });
 
-export const setAvatarFromService = ({
+const isHttpAvatarUrl = (value: string | undefined): value is string =>
+	typeof value === 'string' && (value.startsWith('http://') || value.startsWith('https://'));
+
+export const setAvatarFromService = async ({
 	data,
 	contentType = '',
-	service = null
+	service = null,
+	url
 }: {
 	data: any;
 	contentType?: string;
 	service?: string | null;
-}): Promise<void> =>
-	// RC 0.51.0
-	sdk.methodCallWrapper('setAvatarFromService', data, contentType, service);
+	url?: string;
+}): Promise<void> => {
+	const serverVersion = reduxStore.getState().server.version;
+	const isHttpUrl = isHttpAvatarUrl(url);
+	// In ChangeAvatarView, `url` can be:
+	// - a remote http(s) URL from "Fetch image from URL"
+	// - a local filesystem URI/path from camera/gallery upload (`response.path`)
+	// Only remote URLs should be sent as `avatarUrl`; local paths must go through multipart upload.
+	// RC 0.51.0 — keep DDP + payload shape unchanged below 8.0.0
+	if (compareServerVersion(serverVersion, 'lowerThan', '8.0.0')) {
+		return sdk.methodCallWrapper('setAvatarFromService', data, contentType, service);
+	}
+
+	// RC 8.0.0 — REST users.setAvatar (multipart image or JSON avatarUrl)
+	if (service === 'url' && typeof data === 'string') {
+		await sdk.post('users.setAvatar', { avatarUrl: data });
+		return;
+	}
+
+	if (service === 'upload' && url && !isHttpUrl) {
+		await uploadUserAvatarMultipart(url, contentType || 'image/jpeg', 'avatar.jpg');
+		return;
+	}
+
+	if (isHttpUrl) {
+		await sdk.post('users.setAvatar', { avatarUrl: url });
+		return;
+	}
+
+	throw new Error('Invalid avatar payload');
+};
 
 export const getUsernameSuggestion = () =>
 	// RC 0.65.0

@@ -13,6 +13,9 @@ const styles = StyleSheet.create({
 	pickerText: {
 		...sharedStyles.textRegular,
 		fontSize: 16
+	},
+	pickerItem: {
+		height: 48
 	}
 });
 
@@ -52,6 +55,8 @@ const ListPicker = ({
 							hideActionSheet();
 							onChangeValue({ [preference]: i.value.toString() });
 						}}
+						style={styles.pickerItem}
+						testID={`notification-preferences-${preference}-${i.value}`}
 					/>
 					<List.Separator />
 				</React.Fragment>

@@ -7,6 +7,9 @@ import { dequal } from 'dequal';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { type Subscription } from 'rxjs';
 import * as Haptics from 'expo-haptics';
+import { type NavigatorScreenParams } from '@react-navigation/native';
+
+import { type TNavigation } from 'stacks/stackType';
 
 import dayjs from '../../lib/dayjs';
 import {
@@ -589,7 +592,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					joined,
 					omnichannelPermissions: { canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold }
 				}
-			});
+			} as NavigatorScreenParams<ModalStackParamList & TNavigation>);
 		} else if (this.rid && this.t) {
 			navigation.push('RoomActionsView', {
 				rid: this.rid,
@@ -852,9 +855,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				),
 				snaps: ['50%'],
 				enableContentPanningGesture: false,
-				onClose: this.resetAction
+				onClose: this.resetAction,
+				fullContainer: true
 			});
-		}, 100);
+		}, 300);
 	};
 
 	onReactionInit = (messageId: string) => {
@@ -911,7 +915,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.handleCloseEmoji(showActionSheet, {
 			children: <ReactionsList reactions={message?.reactions} getCustomEmoji={this.getCustomEmoji} />,
 			snaps: ['50%'],
-			enableContentPanningGesture: false
+			enableContentPanningGesture: false,
+			fullContainer: true
 		});
 	};
 
@@ -1666,6 +1671,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 						ref={this.list}
 						listRef={this.flatList}
 						rid={rid}
+						t={t as RoomType}
 						tmid={this.tmid}
 						renderRow={this.renderItem}
 						hideSystemMessages={this.hideSystemMessages}

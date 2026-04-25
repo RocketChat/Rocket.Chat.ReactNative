@@ -45,7 +45,7 @@ const ReactionPicker = ({ onEmojiSelected, messageId, reactionClose }: IReaction
 			<View style={styles.reactionSearchContainer}>
 				<EmojiSearch onChangeText={handleTextChange} bottomSheet />
 			</View>
-			<EmojiPicker onItemClicked={handleEmojiSelect} searching={searching} searchedEmojis={searchedEmojis} />
+			<EmojiPicker onItemClicked={handleEmojiSelect} searching={searching} searchedEmojis={searchedEmojis} bottomSheet />
 		</View>
 	);
 };
