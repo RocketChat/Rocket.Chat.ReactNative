@@ -14,6 +14,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import chat.rocket.reactnative.networking.SSLPinningTurboModule
 import java.io.IOException
+import java.util.concurrent.TimeUnit
 
 /**
  * REST client for `POST /api/v1/media-calls.answer` used by accept/reject flows.
@@ -42,7 +43,13 @@ class MediaCallsAnswerRequest(
         private const val TAG = "RocketChat.MediaCallsAnswerRequest"
         private val JSON_MEDIA_TYPE = "application/json; charset=utf-8".toMediaType()
         private val httpClient: OkHttpClient by lazy {
-            SSLPinningTurboModule.getSharedOkHttpClient() ?: OkHttpClient()
+            val base = SSLPinningTurboModule.getSharedOkHttpClient() ?: OkHttpClient()
+            base.newBuilder()
+                .callTimeout(10, TimeUnit.SECONDS)
+                .connectTimeout(5, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10, TimeUnit.SECONDS)
+                .build()
         }
         private val mainHandler = Handler(Looper.getMainLooper())
 
