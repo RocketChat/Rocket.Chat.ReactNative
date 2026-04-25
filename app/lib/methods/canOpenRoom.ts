@@ -30,6 +30,10 @@ async function open({ type, rid, name }: { type: ERoomTypes; rid: string; name: 
 		if (type === ERoomTypes.GROUP) {
 			try {
 				const response = await getRoomByTypeAndName('p', name);
+				if (!response?._id) {
+					return false;
+				}
+
 				// RC 0.61.0
 				// @ts-ignore
 				await sdk.post('groups.open', { roomId: response._id });
@@ -39,7 +43,6 @@ async function open({ type, rid, name }: { type: ERoomTypes; rid: string; name: 
 					rid: response._id
 				};
 			} catch (e: any) {
-				console.log('e', e);
 				if (!(e.data && /is already open/.test(e.data.error))) {
 					return false;
 				}

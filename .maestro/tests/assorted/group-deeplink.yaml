@@ -19,15 +19,17 @@ tags:
     env:
       link: 'https://go.rocket.chat/room?host=mobile.qa.rocket.chat&path=group/4t6Mw3K4M9JLeHuCH'
 - extendedWaitUntil:
-    visible: 'discussion-with-name'
+    visible:
+      id: 'room-view-title-discussion-with-name'
     timeout: 60000
 
-# open group using name
+# open group using id
 - killApp
 - runFlow:
     file: '../../helpers/open-deeplink.yaml'
     env:
       link: 'https://go.rocket.chat/room?host=mobile.qa.rocket.chat&path=group/69ea9d65395f71c85b3a38bc'
 - extendedWaitUntil:
-    visible: 'discussion-with-id'
+    visible:
+      id: 'room-view-title-discussion-with-id'
     timeout: 60000
