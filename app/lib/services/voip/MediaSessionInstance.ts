@@ -28,6 +28,7 @@ import type { IDDPMessage } from '../../../definitions/IDDPMessage';
 import type { ISubscription, TSubscriptionModel } from '../../../definitions';
 import { getDMSubscriptionByUsername } from '../../database/services/Subscription';
 import { getUidDirectMessage } from '../../methods/helpers/helpers';
+import { Platform, PermissionsAndroid } from 'react-native';
 import { requestPhoneStatePermission } from '../../methods/voipPhoneStatePermission';
 import I18n from '../../../i18n';
 import { showErrorAlert } from '../../methods/helpers/info';
@@ -189,7 +190,24 @@ class MediaSessionInstance {
 			showErrorAlert(I18n.t('VoIP_Still_Connecting'), I18n.t('Oops'));
 			return;
 		}
-		requestPhoneStatePermission();
+		if (Platform.OS === 'android') {
+			const results = await PermissionsAndroid.requestMultiple([
+				PermissionsAndroid.PERMISSIONS.READ_PHONE_STATE,
+				PermissionsAndroid.PERMISSIONS.RECORD_AUDIO
+			]);
+			const allGranted =
+				results[PermissionsAndroid.PERMISSIONS.READ_PHONE_STATE] === PermissionsAndroid.RESULTS.GRANTED &&
+				results[PermissionsAndroid.PERMISSIONS.RECORD_AUDIO] === PermissionsAndroid.RESULTS.GRANTED;
+			if (!allGranted) {
+				showErrorAlert(
+					I18n.t('Go_to_your_device_settings_and_allow_microphone'),
+					I18n.t('Microphone_access_needed_to_record_audio')
+				);
+				return;
+			}
+		} else {
+			requestPhoneStatePermission();
+		}
 		await this.instance.startCall(actor, userId);
 	};
 
