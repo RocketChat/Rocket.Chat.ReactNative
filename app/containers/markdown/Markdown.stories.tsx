@@ -213,7 +213,7 @@ export const TextStyle = () => (
 			textStyle={textStyle}
 		/>
 		<Markdown msg={msgMentions} mentions={mentions} username='rocket.cat' textStyle={textStyle} />
-		<Markdown msg='#test-channel #unknown' channels={[{ _id: '123', name: 'test-channel' }]} textStyle={textStyle} />
+		<Markdown msg='#test-channel #unknown' channels={channels} textStyle={textStyle} />
 		<Markdown
 			msg={`> This is block quote
 this is a normal line`}
