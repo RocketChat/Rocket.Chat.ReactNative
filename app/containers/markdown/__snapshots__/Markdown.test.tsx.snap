@@ -5493,7 +5493,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
             ]
           }
         >
-           12:00 PM 
+           12:00 AM 
         </Text>
       </Text>
     </Text>
@@ -5567,7 +5567,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
             ]
           }
         >
-           12:00:00 PM 
+           12:00:00 AM 
         </Text>
       </Text>
     </Text>
@@ -5789,7 +5789,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
             ]
           }
         >
-           Wednesday, Jan 01, 2025 12:00 PM 
+           Wednesday, Jan 01, 2025 12:00 AM 
         </Text>
       </Text>
     </Text>
@@ -5863,7 +5863,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
             ]
           }
         >
-           Wednesday, Jan 01, 2025 12:00:00 PM 
+           Wednesday, Jan 01, 2025 12:00:00 AM 
         </Text>
       </Text>
     </Text>
