@@ -1,5 +1,6 @@
 import React from 'react';
-import { call, cancel, delay, fork, put, race, select, take, takeLatest } from 'redux-saga/effects';
+import { buffers, eventChannel } from 'redux-saga';
+import { call, cancel, cancelled, delay, fork, put, race, select, take, takeLatest } from 'redux-saga/effects';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 
@@ -245,7 +246,7 @@ const checkBackgroundAndSetAway = function* checkBackgroundAndSetAway() {
 	}
 };
 
-const checkVoipPermission = async () => {
+const checkVoipPermission = function* checkVoipPermission() {
 	try {
 		const state = reduxStore.getState();
 		const userId = state.login.user?.id;
@@ -253,7 +254,7 @@ const checkVoipPermission = async () => {
 			return;
 		}
 
-		const hasPermissions = await hasPermission([
+		const hasPermissions = yield call(hasPermission, [
 			state.permissions['allow-internal-voice-calls'],
 			state.permissions['allow-external-voice-calls']
 		]);
@@ -264,7 +265,7 @@ const checkVoipPermission = async () => {
 			return;
 		}
 		if (!mediaSessionStore.getCurrentInstance()) {
-			mediaSessionInstance.init(userId);
+			yield call([mediaSessionInstance, 'init'], userId);
 		}
 	} catch (e) {
 		log(e);
@@ -280,17 +281,33 @@ const stopVoipPermissionListener = () => {
 	}
 };
 
-const startVoipFork = function* startVoipFork() {
-	yield call(checkVoipPermission);
+const createVoipPermissionsChannel = () =>
+	eventChannel(emit => {
+		stopVoipPermissionListener();
+		voipPermissionListener = sdk.current.onStreamData('stream-notify-logged', ddpMessage => {
+			const { eventName } = ddpMessage.fields || {};
+			if (/permissions-changed/.test(eventName)) {
+				emit(ddpMessage);
+			}
+		});
+		return () => {
+			stopVoipPermissionListener();
+		};
+	}, buffers.sliding(1));
 
-	stopVoipPermissionListener();
-	// Logout between yield start and resolve leaks this listener; safe because the SDK tears down on logout.
-	voipPermissionListener = yield call([sdk.current, 'onStreamData'], 'stream-notify-logged', async ddpMessage => {
-		const { eventName } = ddpMessage.fields || {};
-		if (/permissions-changed/.test(eventName)) {
-			await checkVoipPermission();
+const startVoipFork = function* startVoipFork() {
+	const channel = yield call(createVoipPermissionsChannel);
+	try {
+		yield call(checkVoipPermission);
+		while (true) {
+			yield take(channel);
+			yield call(checkVoipPermission);
 		}
-	});
+	} finally {
+		if (yield cancelled()) {
+			channel.close();
+		}
+	}
 };
 
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
@@ -475,6 +492,14 @@ const handleDeleteAccount = function* handleDeleteAccount() {
 			log(e);
 		}
 	}
+};
+
+// Exposed for unit tests; not part of the public saga surface.
+export const __testables = {
+	checkVoipPermission,
+	createVoipPermissionsChannel,
+	startVoipFork,
+	stopVoipPermissionListener
 };
 
 const root = function* root() {
