@@ -76,6 +76,9 @@ interface CallStoreState {
 	/** DM room id for the current call; cleared on `reset()`. */
 	roomId: string | null;
 
+	/** Direction of the current call. */
+	direction: 'incoming' | 'outgoing' | null;
+
 	// Contact info
 	contact: CallContact;
 }
@@ -96,6 +99,7 @@ interface CallStoreActions {
 	reset: () => void;
 	setDialpadValue: (value: string) => void;
 	setRoomId: (roomId: string | null) => void;
+	setDirection: (direction: 'incoming' | 'outgoing') => void;
 }
 
 export type CallStore = CallStoreState & CallStoreActions;
@@ -115,7 +119,8 @@ const initialState: CallStoreState = {
 	focused: true,
 	controlsVisible: true,
 	dialpadValue: '',
-	roomId: null
+	roomId: null,
+	direction: null
 };
 
 export const useCallStore = create<CallStore>((set, get) => ({
@@ -271,6 +276,10 @@ export const useCallStore = create<CallStore>((set, get) => ({
 
 	setRoomId: (roomId: string | null) => {
 		set({ roomId });
+	},
+
+	setDirection: (direction: 'incoming' | 'outgoing') => {
+		set({ direction });
 	},
 
 	endCall: () => {

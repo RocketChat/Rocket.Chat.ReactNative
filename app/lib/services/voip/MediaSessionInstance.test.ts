@@ -22,10 +22,12 @@ const mockGetUidDirectMessage = jest.mocked(getUidDirectMessage);
 
 const mockCallStoreReset = jest.fn();
 const mockSetRoomId = jest.fn();
+const mockSetDirection = jest.fn();
 const mockUseCallStoreGetState = jest.fn(() => ({
 	reset: mockCallStoreReset,
 	setCall: jest.fn(),
 	setRoomId: mockSetRoomId,
+	setDirection: mockSetDirection,
 	resetNativeCallId: jest.fn(),
 	call: null as unknown,
 	callId: null as string | null,

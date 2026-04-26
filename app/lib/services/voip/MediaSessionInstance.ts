@@ -127,6 +127,7 @@ class MediaSessionInstance {
 
 				if (call.localParticipant.role === 'caller') {
 					useCallStore.getState().setCall(call);
+					useCallStore.getState().setDirection('outgoing');
 					Navigation.navigate('CallView');
 					if (useCallStore.getState().roomId == null) {
 						this.resolveRoomIdFromContact(call.remoteParticipants[0]?.contact).catch(error => {
@@ -154,6 +155,7 @@ class MediaSessionInstance {
 			await mainCall.accept();
 			RNCallKeep.setCurrentCallActive(callId);
 			useCallStore.getState().setCall(mainCall);
+			useCallStore.getState().setDirection('incoming');
 			await waitForNavigationReady();
 			Navigation.navigate('CallView');
 			this.resolveRoomIdFromContact(mainCall.remoteParticipants[0]?.contact).catch(error => {
