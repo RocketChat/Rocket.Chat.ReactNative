@@ -54,7 +54,7 @@ const CallView = (): React.ReactElement | null => {
 
 	return (
 		<SafeAreaView testID='call-view-container' style={[styles.contentContainer, { backgroundColor: colors.surfaceLight }]}>
-			{showRingback && <Ringer ringer={ERingerSounds.DIALTONE} />}
+			{showRingback ? <Ringer ringer={ERingerSounds.DIALTONE} /> : null}
 			<CallerInfo />
 			<CallButtons />
 		</SafeAreaView>
