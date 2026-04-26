@@ -1105,7 +1105,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
               {
                 "busy": undefined,
                 "checked": undefined,
-                "disabled": true,
+                "disabled": false,
                 "expanded": undefined,
                 "selected": undefined,
               }
@@ -1140,9 +1140,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
                   "marginBottom": 8,
                   "width": 64,
                 },
-                {
-                  "opacity": 0.5,
-                },
+                false,
                 {
                   "backgroundColor": "#E4E7EA",
                 },
@@ -6312,7 +6310,7 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
               {
                 "busy": undefined,
                 "checked": undefined,
-                "disabled": true,
+                "disabled": false,
                 "expanded": undefined,
                 "selected": undefined,
               }
@@ -6347,9 +6345,7 @@ exports[`Story Snapshots: TabletConnectingCall should match snapshot 1`] = `
                   "marginBottom": 8,
                   "width": 64,
                 },
-                {
-                  "opacity": 0.5,
-                },
+                false,
                 {
                   "backgroundColor": "#E4E7EA",
                 },
