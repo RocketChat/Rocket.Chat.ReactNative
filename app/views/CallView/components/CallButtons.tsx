@@ -53,6 +53,7 @@ export const CallButtons = () => {
 	}));
 
 	const isConnecting = callState === 'none' || callState === 'ringing' || callState === 'accepted';
+	const speakerDisabled = callState === 'none';
 	const messageDisabled = roomId == null;
 
 	const handleMessage = () => {
@@ -74,7 +75,7 @@ export const CallButtons = () => {
 			label: I18n.t('Speaker'),
 			onPress: toggleSpeaker,
 			variant: isSpeakerOn ? 'active' : 'default',
-			disabled: isConnecting
+			disabled: speakerDisabled
 		},
 		{
 			testID: 'call-view-hold',

@@ -131,14 +131,14 @@ describe('CallButtons', () => {
 		expect(getByText('Dialpad')).toBeTruthy();
 	});
 
-	it('disabled states when ringing', () => {
+	it('speaker enabled but hold/mute/dialpad disabled when ringing', () => {
 		setStoreState({ callState: 'ringing' });
 		const { getByTestId } = render(
 			<Wrapper>
 				<CallButtons />
 			</Wrapper>
 		);
-		expect(getByTestId('call-view-speaker').props.accessibilityState?.disabled).toBe(true);
+		expect(getByTestId('call-view-speaker').props.accessibilityState?.disabled).toBeFalsy();
 		expect(getByTestId('call-view-hold').props.accessibilityState?.disabled).toBe(true);
 		expect(getByTestId('call-view-mute').props.accessibilityState?.disabled).toBe(true);
 		expect(getByTestId('call-view-dialpad').props.accessibilityState?.disabled).toBe(true);
