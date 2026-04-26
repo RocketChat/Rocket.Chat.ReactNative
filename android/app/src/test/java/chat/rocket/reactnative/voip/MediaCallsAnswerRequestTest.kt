@@ -12,7 +12,6 @@ import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.SocketPolicy
 import org.junit.After
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -83,13 +82,17 @@ class MediaCallsAnswerRequestTest {
         val finishSuccessCount = AtomicInteger(0)
         val rejectSentCount = AtomicInteger(0)
 
-        // Countdown that unblocks the test once finish() has run.
-        val done = CountDownLatch(1)
+        // Counts down once the OkHttp callback (success, failure, or late-success
+        // reconcile path) returns. The deadline thread runs independently and does
+        // not affect this latch, so the test can wait for the OkHttp side to fully
+        // settle before reading counters — preventing a race where the deadline
+        // fires first and the test reads rejectSentCount before the late-success
+        // path has incremented it.
+        val okhttpDone = CountDownLatch(1)
 
         fun finish(answerSucceeded: Boolean) {
             if (!finished.compareAndSet(false, true)) return
             if (answerSucceeded) finishSuccessCount.incrementAndGet()
-            done.countDown()
         }
 
         // Deadline runnable — mirrors the 10 s Handler.postDelayed in production.
@@ -111,56 +114,61 @@ class MediaCallsAnswerRequestTest {
 
         client.newCall(acceptRequest).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                // Network/timeout failure — equivalent to the deadline path, no reject needed.
-                finish(false)
+                try {
+                    // Network/timeout failure — equivalent to the deadline path, no reject needed.
+                    finish(false)
+                } finally {
+                    okhttpDone.countDown()
+                }
             }
 
             override fun onResponse(call: Call, response: Response) {
-                response.use {
-                    val success = it.code in 200..299
-                    // Late-success guard (mirrors VoipNotification lines 317-330).
-                    if (success && finished.get()) {
-                        // Deadline already fired; send reject to reconcile server state.
-                        val rejectBody = """{"callId":"test","contractId":"dev","answer":"reject"}"""
-                            .toRequestBody(jsonType)
-                        val rejectRequest = Request.Builder().url(rejectUrl).post(rejectBody).build()
-                        try {
-                            client.newCall(rejectRequest).execute().use { _ ->
+                try {
+                    response.use {
+                        val success = it.code in 200..299
+                        // Late-success guard (mirrors VoipNotification lines 317-330).
+                        if (success && finished.get()) {
+                            // Deadline already fired; send reject to reconcile server state.
+                            val rejectBody = """{"callId":"test","contractId":"dev","answer":"reject"}"""
+                                .toRequestBody(jsonType)
+                            val rejectRequest = Request.Builder().url(rejectUrl).post(rejectBody).build()
+                            try {
+                                client.newCall(rejectRequest).execute().use { _ ->
+                                    rejectSentCount.incrementAndGet()
+                                }
+                            } catch (_: IOException) {
+                                // Reject best-effort; count it anyway for test assertion.
                                 rejectSentCount.incrementAndGet()
                             }
-                        } catch (_: IOException) {
-                            // Reject best-effort; count it anyway for test assertion.
-                            rejectSentCount.incrementAndGet()
+                            return
                         }
-                        return
+                        finish(success)
                     }
-                    finish(success)
+                } finally {
+                    okhttpDone.countDown()
                 }
             }
         })
 
-        // Wait up to 5 s for the scenario to resolve.
-        assertTrue("finish() never called within 5 s", done.await(5, TimeUnit.SECONDS))
+        // Wait up to 5 s for the OkHttp callback to fully settle.
+        assertTrue("OkHttp callback never completed within 5 s", okhttpDone.await(5, TimeUnit.SECONDS))
         deadlineThread.interrupt()
 
         return finishSuccessCount.get() to rejectSentCount.get()
     }
 
     // ---------------------------------------------------------------------------
-    // (a) Response delayed past callTimeout → failure observed, reject sent.
-    //
-    // We use NO_RESPONSE on the accept request so the call times out, then
-    // enqueue a 200 for the subsequent reconcile-reject path.
+    // (a) OkHttp timeout fires before deadline → onFailure path; no reject is sent
+    // because finished=false at that point and the late-success branch is not
+    // reachable. The accept request never gets a server response.
     // ---------------------------------------------------------------------------
 
     @Test
-    fun `delayed response past callTimeout triggers client failure and reject is sent`() {
+    fun `okhttp timeout before deadline fails without dispatching a reconcile reject`() {
         val callTimeoutMs = 200L
 
-        // Accept request: no response → OkHttp times out.
+        // Accept request: no response → OkHttp times out and fires onFailure.
         server.enqueue(MockResponse().apply { socketPolicy = SocketPolicy.NO_RESPONSE })
-        // Reject request (reconciliation): respond immediately with 200.
-        server.enqueue(MockResponse().setResponseCode(200))
 
         val client = buildClient(callTimeoutMs)
         val url = server.url("/api/v1/media-calls.answer").toString()
@@ -174,12 +182,8 @@ class MediaCallsAnswerRequestTest {
         )
 
         assertEquals("finish(true) must NOT be called on timeout", 0, finishSuccess)
-        // When OkHttp times out it fires onFailure, so finished=false at that point;
-        // the reject path is NOT triggered (no late-success). Verify no extra reject.
         assertEquals("No reconcile-reject should fire on OkHttp timeout (already finished=false)", 0, rejectSent)
-
-        // Verify the server received exactly one request (the accept); reject was not needed.
-        assertEquals(1, server.requestCount)
+        assertEquals("Server should receive exactly one request (the accept)", 1, server.requestCount)
     }
 
     // ---------------------------------------------------------------------------
@@ -250,27 +254,4 @@ class MediaCallsAnswerRequestTest {
         assertEquals("Server should receive exactly one request", 1, server.requestCount)
     }
 
-    // ---------------------------------------------------------------------------
-    // OkHttp client configuration sanity: callTimeout ≤ handler deadline (10 s).
-    // ---------------------------------------------------------------------------
-
-    @Test
-    fun `production client callTimeout does not exceed handler deadline`() {
-        // The production constants: callTimeout = 10 s, handler deadline = 10 s.
-        // The invariant is callTimeout <= deadline so the OkHttp call always
-        // resolves (one way or another) before or at the handler deadline.
-        val productionCallTimeoutSec = 10L
-        val handlerDeadlineSec = 10L
-        assertTrue(
-            "callTimeout ($productionCallTimeoutSec s) must be ≤ handler deadline ($handlerDeadlineSec s)",
-            productionCallTimeoutSec <= handlerDeadlineSec
-        )
-
-        // Verify connectTimeout < callTimeout (conservative).
-        val productionConnectTimeoutSec = 5L
-        assertTrue(
-            "connectTimeout ($productionConnectTimeoutSec s) should be < callTimeout ($productionCallTimeoutSec s)",
-            productionConnectTimeoutSec < productionCallTimeoutSec
-        )
-    }
 }

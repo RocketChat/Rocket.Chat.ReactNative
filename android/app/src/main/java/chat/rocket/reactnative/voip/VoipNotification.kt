@@ -325,7 +325,11 @@ class VoipNotification(private val context: Context) {
                         contractId = deviceId,
                         answer = "reject",
                         supportedFeatures = null
-                    ) { _ -> }
+                    ) { rejectSucceeded ->
+                        if (BuildConfig.DEBUG) {
+                            Log.d(TAG, "Late-accept reconcile-reject for ${payload.callId} succeeded=$rejectSucceeded")
+                        }
+                    }
                     return@fetch
                 }
                 finish(success)
