@@ -110,27 +110,13 @@ jest.mock('../../navigation/appNavigation', () => ({
 	waitForNavigationReady: jest.fn().mockResolvedValue(undefined)
 }));
 
-const mockRequestPhoneStatePermission = jest.fn();
-jest.mock('../../methods/voipPhoneStatePermission', () => ({
-	requestPhoneStatePermission: () => mockRequestPhoneStatePermission()
+const mockRequestVoipCallPermissions = jest.fn().mockResolvedValue(true);
+jest.mock('../../methods/voipCallPermissions', () => ({
+	requestVoipCallPermissions: () => mockRequestVoipCallPermissions()
 }));
 
-const mockRequestMultiple = jest.fn();
-
 jest.mock('react-native', () => ({
-	Platform: { OS: 'android' },
-	PermissionsAndroid: {
-		requestMultiple: (...args: unknown[]) => mockRequestMultiple(...args),
-		PERMISSIONS: {
-			READ_PHONE_STATE: 'android.permission.READ_PHONE_STATE',
-			RECORD_AUDIO: 'android.permission.RECORD_AUDIO'
-		},
-		RESULTS: {
-			GRANTED: 'granted',
-			DENIED: 'denied',
-			NEVER_ASK_AGAIN: 'never_ask_again'
-		}
-	}
+	Platform: { OS: 'android' }
 }));
 
 const mockShowErrorAlert = jest.fn();
@@ -227,10 +213,7 @@ describe('MediaSessionInstance', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockMediaCallsStateSignals.mockResolvedValue({ signals: [], success: true });
-		mockRequestMultiple.mockResolvedValue({
-			'android.permission.READ_PHONE_STATE': 'granted',
-			'android.permission.RECORD_AUDIO': 'granted'
-		});
+		mockRequestVoipCallPermissions.mockResolvedValue(true);
 		createdSessions.length = 0;
 		mockGetUidDirectMessage.mockReturnValue('other-user-id');
 		mockGetDMSubscriptionByUsername.mockResolvedValue(null);
@@ -571,87 +554,42 @@ describe('MediaSessionInstance', () => {
 	});
 
 	describe('startCall', () => {
-		it('requests phone state permission fire-and-forget when starting a call (non-android)', async () => {
-			const { Platform } = jest.requireMock('react-native');
-			Platform.OS = 'ios';
+		it('requests voip call permissions and proceeds when granted', async () => {
 			await mediaSessionInstance.init('user-1');
-			mockRequestPhoneStatePermission.mockClear();
+			mockRequestVoipCallPermissions.mockClear();
 			const session = createdSessions[0];
 			await mediaSessionInstance.startCall('peer-1', 'user');
-			expect(mockRequestPhoneStatePermission).toHaveBeenCalledTimes(1);
+			expect(mockRequestVoipCallPermissions).toHaveBeenCalledTimes(1);
 			expect(session.startCall).toHaveBeenCalledWith('user', 'peer-1');
-			Platform.OS = 'android';
+			expect(mockShowErrorAlert).not.toHaveBeenCalled();
 		});
 
 		it('silently drops self-call when userId matches logged-in user id', async () => {
 			await mediaSessionInstance.init('user-1');
-			mockRequestPhoneStatePermission.mockClear();
+			mockRequestVoipCallPermissions.mockClear();
 			const session = createdSessions[0];
 			await mediaSessionInstance.startCall('user-1', 'user');
 			expect(session.startCall).not.toHaveBeenCalled();
-			expect(mockRequestPhoneStatePermission).not.toHaveBeenCalled();
+			expect(mockRequestVoipCallPermissions).not.toHaveBeenCalled();
 		});
 
 		it('shows alert and skips permission and skips instance.startCall when instance is null', async () => {
 			await mediaSessionInstance.init('user-1');
 			const session = createdSessions[0];
 			mediaSessionInstance.reset();
-			mockRequestPhoneStatePermission.mockClear();
+			mockRequestVoipCallPermissions.mockClear();
 			await mediaSessionInstance.startCall('peer-1', 'user');
 			expect(mockShowErrorAlert).toHaveBeenCalledTimes(1);
-			expect(mockRequestPhoneStatePermission).not.toHaveBeenCalled();
+			expect(mockRequestVoipCallPermissions).not.toHaveBeenCalled();
 			expect(session.startCall).not.toHaveBeenCalled();
 		});
 
-		it('calls through normally when instance is present (non-android)', async () => {
-			const { Platform } = jest.requireMock('react-native');
-			Platform.OS = 'ios';
+		it('does not place call and shows error when permissions are denied', async () => {
 			await mediaSessionInstance.init('user-1');
-			mockRequestPhoneStatePermission.mockClear();
+			mockRequestVoipCallPermissions.mockResolvedValueOnce(false);
 			const session = createdSessions[0];
 			await mediaSessionInstance.startCall('peer-2', 'user');
-			expect(mockShowErrorAlert).not.toHaveBeenCalled();
-			expect(mockRequestPhoneStatePermission).toHaveBeenCalledTimes(1);
-			expect(session.startCall).toHaveBeenCalledWith('user', 'peer-2');
-			Platform.OS = 'android';
-		});
-
-		it('android: requests READ_PHONE_STATE and RECORD_AUDIO via requestMultiple', async () => {
-			mockRequestMultiple.mockResolvedValue({
-				'android.permission.READ_PHONE_STATE': 'granted',
-				'android.permission.RECORD_AUDIO': 'granted'
-			});
-			await mediaSessionInstance.init('user-1');
-			const session = createdSessions[0];
-			await mediaSessionInstance.startCall('peer-3', 'user');
-			expect(mockRequestMultiple).toHaveBeenCalledWith([
-				'android.permission.READ_PHONE_STATE',
-				'android.permission.RECORD_AUDIO'
-			]);
-			expect(session.startCall).toHaveBeenCalledWith('user', 'peer-3');
-			expect(mockShowErrorAlert).not.toHaveBeenCalled();
-		});
-
-		it('android: does not place call and shows error when RECORD_AUDIO is denied', async () => {
-			mockRequestMultiple.mockResolvedValue({
-				'android.permission.READ_PHONE_STATE': 'granted',
-				'android.permission.RECORD_AUDIO': 'denied'
-			});
-			await mediaSessionInstance.init('user-1');
-			const session = createdSessions[0];
-			await mediaSessionInstance.startCall('peer-4', 'user');
-			expect(session.startCall).not.toHaveBeenCalled();
-			expect(mockShowErrorAlert).toHaveBeenCalledTimes(1);
-		});
-
-		it('android: does not place call and shows error when READ_PHONE_STATE is denied', async () => {
-			mockRequestMultiple.mockResolvedValue({
-				'android.permission.READ_PHONE_STATE': 'denied',
-				'android.permission.RECORD_AUDIO': 'granted'
-			});
-			await mediaSessionInstance.init('user-1');
-			const session = createdSessions[0];
-			await mediaSessionInstance.startCall('peer-5', 'user');
+			expect(mockRequestVoipCallPermissions).toHaveBeenCalled();
 			expect(session.startCall).not.toHaveBeenCalled();
 			expect(mockShowErrorAlert).toHaveBeenCalledTimes(1);
 		});
