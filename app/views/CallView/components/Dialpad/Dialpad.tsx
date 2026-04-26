@@ -4,6 +4,7 @@ import { View } from 'react-native';
 import { FormTextInput } from '../../../../containers/TextInput';
 import { styles } from './styles';
 import DialpadButton from './DialpadButton';
+import { DialpadProvider } from './DialpadContext';
 import { useCallLayoutMode } from '../../useCallLayoutMode';
 import { useDialpadValue } from '../../../../lib/services/voip/useCallStore';
 import { useTheme } from '../../../../theme';
@@ -71,20 +72,24 @@ const Dialpad = ({ testID }: IDialpad): React.ReactElement => {
 
 	if (isPhoneLandscape) {
 		return (
-			<View testID='dialpad-landscape-container' style={[styles.landscapeContainer, { backgroundColor: colors.surfaceLight }]}>
-				<View style={styles.landscapeInputSection}>{input}</View>
-				<View style={styles.landscapeGridSection}>
-					<DialpadGrid />
+			<DialpadProvider>
+				<View testID='dialpad-landscape-container' style={[styles.landscapeContainer, { backgroundColor: colors.surfaceLight }]}>
+					<View style={styles.landscapeInputSection}>{input}</View>
+					<View style={styles.landscapeGridSection}>
+						<DialpadGrid />
+					</View>
 				</View>
-			</View>
+			</DialpadProvider>
 		);
 	}
 
 	return (
-		<View style={[styles.container, { backgroundColor: colors.surfaceLight }]}>
-			{input}
-			<DialpadGrid />
-		</View>
+		<DialpadProvider>
+			<View style={[styles.container, { backgroundColor: colors.surfaceLight }]}>
+				{input}
+				<DialpadGrid />
+			</View>
+		</DialpadProvider>
 	);
 };
 

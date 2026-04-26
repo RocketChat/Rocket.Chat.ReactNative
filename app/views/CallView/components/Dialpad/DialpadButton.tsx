@@ -4,6 +4,7 @@ import * as Haptics from 'expo-haptics';
 
 import { useCallStore } from '../../../../lib/services/voip/useCallStore';
 import { useTheme } from '../../../../theme';
+import { useDialpadAudio } from './DialpadContext';
 import { styles } from './styles';
 
 interface IDialpadButton {
@@ -16,17 +17,24 @@ const DialpadButton = ({ digit, letters }: IDialpadButton): React.ReactElement =
 
 	const { colors } = useTheme();
 	const setDialpadValue = useCallStore(state => state.setDialpadValue);
+	const { playTone, stopTone } = useDialpadAudio();
 
-	const handleDigitPress = () => {
+	const handlePressIn = () => {
 		setDialpadValue(digit);
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+		playTone(digit);
+	};
+
+	const handlePressOut = () => {
+		stopTone(digit);
 	};
 
 	const isLargeDigit = ['*', '#'].includes(digit);
 
 	return (
 		<Pressable
-			onPress={handleDigitPress}
+			onPressIn={handlePressIn}
+			onPressOut={handlePressOut}
 			accessibilityLabel={letters ? `${digit} ${letters}` : digit}
 			accessibilityRole='button'
 			style={({ pressed }) => [
