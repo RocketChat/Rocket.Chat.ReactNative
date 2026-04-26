@@ -505,7 +505,7 @@ describe('CallView (tablet/wide layout)', () => {
 		expect(queryByTestId('call-buttons-row-0')).toBeNull();
 	});
 
-	it('disables action buttons while connecting on wide layout', () => {
+	it('disables hold/mute/dialpad while connecting; speaker stays enabled on wide layout', () => {
 		const toggleHold = jest.fn();
 		const toggleMute = jest.fn();
 		const toggleSpeaker = jest.fn();
@@ -520,10 +520,11 @@ describe('CallView (tablet/wide layout)', () => {
 
 		fireEvent.press(getByTestId('call-view-hold'));
 		fireEvent.press(getByTestId('call-view-mute'));
+		fireEvent.press(getByTestId('call-view-dialpad'));
 		fireEvent.press(getByTestId('call-view-speaker'));
 		expect(toggleHold).not.toHaveBeenCalled();
 		expect(toggleMute).not.toHaveBeenCalled();
-		expect(toggleSpeaker).not.toHaveBeenCalled();
+		expect(toggleSpeaker).toHaveBeenCalled();
 	});
 });
 
