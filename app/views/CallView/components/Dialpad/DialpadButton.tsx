@@ -10,9 +10,10 @@ import { styles } from './styles';
 interface IDialpadButton {
 	digit: string;
 	letters: string;
+	testID?: string;
 }
 
-const DialpadButton = ({ digit, letters }: IDialpadButton): React.ReactElement => {
+const DialpadButton = ({ digit, letters, testID }: IDialpadButton): React.ReactElement => {
 	'use memo';
 
 	const { colors } = useTheme();
@@ -35,6 +36,7 @@ const DialpadButton = ({ digit, letters }: IDialpadButton): React.ReactElement =
 		<Pressable
 			onPressIn={handlePressIn}
 			onPressOut={handlePressOut}
+			testID={testID ?? `dialpad-button-${digit}`}
 			accessibilityLabel={letters ? `${digit} ${letters}` : digit}
 			accessibilityRole='button'
 			style={({ pressed }) => [
