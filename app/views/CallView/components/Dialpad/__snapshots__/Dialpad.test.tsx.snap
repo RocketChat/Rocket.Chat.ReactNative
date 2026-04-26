@@ -169,6 +169,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
               },
             ]
           }
+          testID="dialpad-button-1"
         >
           <View
             style={
@@ -264,6 +265,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
               },
             ]
           }
+          testID="dialpad-button-2"
         >
           <View
             style={
@@ -361,6 +363,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
               },
             ]
           }
+          testID="dialpad-button-3"
         >
           <View
             style={
@@ -468,6 +471,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
               },
             ]
           }
+          testID="dialpad-button-4"
         >
           <View
             style={
@@ -565,6 +569,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
               },
             ]
           }
+          testID="dialpad-button-5"
         >
           <View
             style={
@@ -662,6 +667,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
               },
             ]
           }
+          testID="dialpad-button-6"
         >
           <View
             style={
@@ -769,6 +775,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
               },
             ]
           }
+          testID="dialpad-button-7"
         >
           <View
             style={
@@ -866,6 +873,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
               },
             ]
           }
+          testID="dialpad-button-8"
         >
           <View
             style={
@@ -963,6 +971,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
               },
             ]
           }
+          testID="dialpad-button-9"
         >
           <View
             style={
@@ -1070,6 +1079,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
               },
             ]
           }
+          testID="dialpad-button-*"
         >
           <View
             style={
@@ -1152,6 +1162,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
               },
             ]
           }
+          testID="dialpad-button-0"
         >
           <View
             style={
@@ -1249,6 +1260,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
               },
             ]
           }
+          testID="dialpad-button-#"
         >
           <View
             style={
@@ -1468,6 +1480,7 @@ exports[`Story Snapshots: TabletLandscape should match snapshot 1`] = `
                 },
               ]
             }
+            testID="dialpad-button-1"
           >
             <View
               style={
@@ -1563,6 +1576,7 @@ exports[`Story Snapshots: TabletLandscape should match snapshot 1`] = `
                 },
               ]
             }
+            testID="dialpad-button-2"
           >
             <View
               style={
@@ -1660,6 +1674,7 @@ exports[`Story Snapshots: TabletLandscape should match snapshot 1`] = `
                 },
               ]
             }
+            testID="dialpad-button-3"
           >
             <View
               style={
@@ -1767,6 +1782,7 @@ exports[`Story Snapshots: TabletLandscape should match snapshot 1`] = `
                 },
               ]
             }
+            testID="dialpad-button-4"
           >
             <View
               style={
@@ -1864,6 +1880,7 @@ exports[`Story Snapshots: TabletLandscape should match snapshot 1`] = `
                 },
               ]
             }
+            testID="dialpad-button-5"
           >
             <View
               style={
@@ -1961,6 +1978,7 @@ exports[`Story Snapshots: TabletLandscape should match snapshot 1`] = `
                 },
               ]
             }
+            testID="dialpad-button-6"
           >
             <View
               style={
@@ -2068,6 +2086,7 @@ exports[`Story Snapshots: TabletLandscape should match snapshot 1`] = `
                 },
               ]
             }
+            testID="dialpad-button-7"
           >
             <View
               style={
@@ -2165,6 +2184,7 @@ exports[`Story Snapshots: TabletLandscape should match snapshot 1`] = `
                 },
               ]
             }
+            testID="dialpad-button-8"
           >
             <View
               style={
@@ -2262,6 +2282,7 @@ exports[`Story Snapshots: TabletLandscape should match snapshot 1`] = `
                 },
               ]
             }
+            testID="dialpad-button-9"
           >
             <View
               style={
@@ -2369,6 +2390,7 @@ exports[`Story Snapshots: TabletLandscape should match snapshot 1`] = `
                 },
               ]
             }
+            testID="dialpad-button-*"
           >
             <View
               style={
@@ -2451,6 +2473,7 @@ exports[`Story Snapshots: TabletLandscape should match snapshot 1`] = `
                 },
               ]
             }
+            testID="dialpad-button-0"
           >
             <View
               style={
@@ -2548,6 +2571,7 @@ exports[`Story Snapshots: TabletLandscape should match snapshot 1`] = `
                 },
               ]
             }
+            testID="dialpad-button-#"
           >
             <View
               style={
@@ -2768,6 +2792,7 @@ exports[`Story Snapshots: TabletLandscapeWithValue should match snapshot 1`] = `
                 },
               ]
             }
+            testID="dialpad-button-1"
           >
             <View
               style={
@@ -2863,6 +2888,7 @@ exports[`Story Snapshots: TabletLandscapeWithValue should match snapshot 1`] = `
                 },
               ]
             }
+            testID="dialpad-button-2"
           >
             <View
               style={
@@ -2960,6 +2986,7 @@ exports[`Story Snapshots: TabletLandscapeWithValue should match snapshot 1`] = `
                 },
               ]
             }
+            testID="dialpad-button-3"
           >
             <View
               style={
@@ -3067,6 +3094,7 @@ exports[`Story Snapshots: TabletLandscapeWithValue should match snapshot 1`] = `
                 },
               ]
             }
+            testID="dialpad-button-4"
           >
             <View
               style={
@@ -3164,6 +3192,7 @@ exports[`Story Snapshots: TabletLandscapeWithValue should match snapshot 1`] = `
                 },
               ]
             }
+            testID="dialpad-button-5"
           >
             <View
               style={
@@ -3261,6 +3290,7 @@ exports[`Story Snapshots: TabletLandscapeWithValue should match snapshot 1`] = `
                 },
               ]
             }
+            testID="dialpad-button-6"
           >
             <View
               style={
@@ -3368,6 +3398,7 @@ exports[`Story Snapshots: TabletLandscapeWithValue should match snapshot 1`] = `
                 },
               ]
             }
+            testID="dialpad-button-7"
           >
             <View
               style={
@@ -3465,6 +3496,7 @@ exports[`Story Snapshots: TabletLandscapeWithValue should match snapshot 1`] = `
                 },
               ]
             }
+            testID="dialpad-button-8"
           >
             <View
               style={
@@ -3562,6 +3594,7 @@ exports[`Story Snapshots: TabletLandscapeWithValue should match snapshot 1`] = `
                 },
               ]
             }
+            testID="dialpad-button-9"
           >
             <View
               style={
@@ -3669,6 +3702,7 @@ exports[`Story Snapshots: TabletLandscapeWithValue should match snapshot 1`] = `
                 },
               ]
             }
+            testID="dialpad-button-*"
           >
             <View
               style={
@@ -3751,6 +3785,7 @@ exports[`Story Snapshots: TabletLandscapeWithValue should match snapshot 1`] = `
                 },
               ]
             }
+            testID="dialpad-button-0"
           >
             <View
               style={
@@ -3848,6 +3883,7 @@ exports[`Story Snapshots: TabletLandscapeWithValue should match snapshot 1`] = `
                 },
               ]
             }
+            testID="dialpad-button-#"
           >
             <View
               style={
@@ -4061,6 +4097,7 @@ exports[`Story Snapshots: WithValue should match snapshot 1`] = `
               },
             ]
           }
+          testID="dialpad-button-1"
         >
           <View
             style={
@@ -4156,6 +4193,7 @@ exports[`Story Snapshots: WithValue should match snapshot 1`] = `
               },
             ]
           }
+          testID="dialpad-button-2"
         >
           <View
             style={
@@ -4253,6 +4291,7 @@ exports[`Story Snapshots: WithValue should match snapshot 1`] = `
               },
             ]
           }
+          testID="dialpad-button-3"
         >
           <View
             style={
@@ -4360,6 +4399,7 @@ exports[`Story Snapshots: WithValue should match snapshot 1`] = `
               },
             ]
           }
+          testID="dialpad-button-4"
         >
           <View
             style={
@@ -4457,6 +4497,7 @@ exports[`Story Snapshots: WithValue should match snapshot 1`] = `
               },
             ]
           }
+          testID="dialpad-button-5"
         >
           <View
             style={
@@ -4554,6 +4595,7 @@ exports[`Story Snapshots: WithValue should match snapshot 1`] = `
               },
             ]
           }
+          testID="dialpad-button-6"
         >
           <View
             style={
@@ -4661,6 +4703,7 @@ exports[`Story Snapshots: WithValue should match snapshot 1`] = `
               },
             ]
           }
+          testID="dialpad-button-7"
         >
           <View
             style={
@@ -4758,6 +4801,7 @@ exports[`Story Snapshots: WithValue should match snapshot 1`] = `
               },
             ]
           }
+          testID="dialpad-button-8"
         >
           <View
             style={
@@ -4855,6 +4899,7 @@ exports[`Story Snapshots: WithValue should match snapshot 1`] = `
               },
             ]
           }
+          testID="dialpad-button-9"
         >
           <View
             style={
@@ -4962,6 +5007,7 @@ exports[`Story Snapshots: WithValue should match snapshot 1`] = `
               },
             ]
           }
+          testID="dialpad-button-*"
         >
           <View
             style={
@@ -5044,6 +5090,7 @@ exports[`Story Snapshots: WithValue should match snapshot 1`] = `
               },
             ]
           }
+          testID="dialpad-button-0"
         >
           <View
             style={
@@ -5141,6 +5188,7 @@ exports[`Story Snapshots: WithValue should match snapshot 1`] = `
               },
             ]
           }
+          testID="dialpad-button-#"
         >
           <View
             style={
