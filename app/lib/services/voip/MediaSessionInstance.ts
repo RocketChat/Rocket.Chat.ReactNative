@@ -8,6 +8,7 @@ import {
 	type ServerMediaSignal,
 	type WebRTCProcessorConfig
 } from '@rocket.chat/media-signaling';
+import { Platform, PermissionsAndroid } from 'react-native';
 import RNCallKeep from 'react-native-callkeep';
 import { registerGlobals } from 'react-native-webrtc';
 import { getUniqueIdSync } from 'react-native-device-info';
@@ -28,7 +29,6 @@ import type { IDDPMessage } from '../../../definitions/IDDPMessage';
 import type { ISubscription, TSubscriptionModel } from '../../../definitions';
 import { getDMSubscriptionByUsername } from '../../database/services/Subscription';
 import { getUidDirectMessage } from '../../methods/helpers/helpers';
-import { Platform, PermissionsAndroid } from 'react-native';
 import { requestPhoneStatePermission } from '../../methods/voipPhoneStatePermission';
 import I18n from '../../../i18n';
 import { showErrorAlert } from '../../methods/helpers/info';
