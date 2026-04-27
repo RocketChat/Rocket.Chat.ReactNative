@@ -49,12 +49,7 @@ runs:
       with:
         ruby-version: 2.7.7
         bundler-cache: true
-
-    - name: Install Fastlane
-      working-directory: android
-      run: |
-        bundle install --path gems
-      shell: bash
+        working-directory: android
 
     - name: Set up Gradle
       uses: gradle/actions/setup-gradle@v4
