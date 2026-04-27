@@ -18,7 +18,7 @@ const DialpadButton = ({ digit, letters, testID }: IDialpadButton): React.ReactE
 
 	const { colors } = useTheme();
 	const setDialpadValue = useCallStore(state => state.setDialpadValue);
-	const { playTone, stopTone } = useDialpadAudio();
+	const { playTone } = useDialpadAudio();
 
 	const handlePressIn = () => {
 		setDialpadValue(digit);
@@ -26,16 +26,11 @@ const DialpadButton = ({ digit, letters, testID }: IDialpadButton): React.ReactE
 		playTone(digit);
 	};
 
-	const handlePressOut = () => {
-		stopTone(digit);
-	};
-
 	const isLargeDigit = ['*', '#'].includes(digit);
 
 	return (
 		<Pressable
 			onPressIn={handlePressIn}
-			onPressOut={handlePressOut}
 			testID={testID ?? `dialpad-button-${digit}`}
 			accessibilityLabel={letters ? `${digit} ${letters}` : digit}
 			accessibilityRole='button'
