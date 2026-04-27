@@ -1,9 +1,11 @@
 module.exports = {
-	testPathIgnorePatterns: ['e2e', 'node_modules', '.worktrees/'],
+	modulePathIgnorePatterns: ['<rootDir>/.*worktrees/'],
+	testPathIgnorePatterns: ['e2e', 'node_modules', '<rootDir>/.*worktrees/'],
 	transformIgnorePatterns: [
 		'node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|@rocket.chat/ui-kit)'
 	],
 	preset: './jest.preset.js',
+	cacheDirectory: '<rootDir>/.jest-cache',
 	coverageDirectory: './coverage/',
 	collectCoverage: false,
 	moduleNameMapper: {

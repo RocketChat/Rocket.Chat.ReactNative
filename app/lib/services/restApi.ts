@@ -22,6 +22,7 @@ import { type OperationParams } from '../../definitions/rest/helpers';
 import { type SubscriptionsEndpoints } from '../../definitions/rest/v1/subscriptions';
 import { Encryption } from '../encryption';
 import { type RoomTypes, roomTypeToApiType } from '../methods/roomTypeToApiType';
+import { uploadUserAvatarMultipart } from '../methods/uploadAvatar/uploadAvatar';
 import { unsubscribeRooms } from '../methods/subscribeRooms';
 import { compareServerVersion, getBundleId, isIOS } from '../methods/helpers';
 import { getDeviceToken } from '../notifications';
@@ -713,17 +714,49 @@ export const resetAvatar = (userId: string) =>
 	// RC 0.55.0
 	sdk.post('/v1/users.resetAvatar', { userId });
 
-export const setAvatarFromService = ({
+const isHttpAvatarUrl = (value: string | undefined): value is string =>
+	typeof value === 'string' && (value.startsWith('http://') || value.startsWith('https://'));
+
+export const setAvatarFromService = async ({
 	data,
 	contentType = '',
-	service = null
+	service = null,
+	url
 }: {
 	data: any;
 	contentType?: string;
 	service?: string | null;
-}): Promise<void> =>
-	// RC 0.51.0
-	sdk.methodCallWrapper('setAvatarFromService', data, contentType, service);
+	url?: string;
+}): Promise<void> => {
+	const serverVersion = reduxStore.getState().server.version;
+	const isHttpUrl = isHttpAvatarUrl(url);
+	// In ChangeAvatarView, `url` can be:
+	// - a remote http(s) URL from "Fetch image from URL"
+	// - a local filesystem URI/path from camera/gallery upload (`response.path`)
+	// Only remote URLs should be sent as `avatarUrl`; local paths must go through multipart upload.
+	// RC 0.51.0 — keep DDP + payload shape unchanged below 8.0.0
+	if (compareServerVersion(serverVersion, 'lowerThan', '8.0.0')) {
+		return sdk.methodCallWrapper('setAvatarFromService', data, contentType, service);
+	}
+
+	// RC 8.0.0 — REST users.setAvatar (multipart image or JSON avatarUrl)
+	if (service === 'url' && typeof data === 'string') {
+		await sdk.post('users.setAvatar', { avatarUrl: data });
+		return;
+	}
+
+	if (service === 'upload' && url && !isHttpUrl) {
+		await uploadUserAvatarMultipart(url, contentType || 'image/jpeg', 'avatar.jpg');
+		return;
+	}
+
+	if (isHttpUrl) {
+		await sdk.post('users.setAvatar', { avatarUrl: url });
+		return;
+	}
+
+	throw new Error('Invalid avatar payload');
+};
 
 export const getUsernameSuggestion = () =>
 	// RC 0.65.0
