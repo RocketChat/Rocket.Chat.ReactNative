@@ -17,10 +17,7 @@ export const ActionsButton = () => {
 	const { rid, tmid, t } = useRoomContext();
 	const { closeEmojiKeyboardAndAction } = useContext(MessageInnerContext);
 	const permissionToUpload = useCanUploadFile(rid);
-	const [permissionToViewCannedResponses] = usePermissions(
-		['view-canned-responses'],
-		rid
-	);
+	const [permissionToViewCannedResponses] = usePermissions(['view-canned-responses'], rid);
 	const [permissionToStartDiscussion] = usePermissions(['start-discussion']);
 	const { takePhoto, takeVideo, chooseFromLibrary, chooseFile } = useChooseMedia({
 		rid,
