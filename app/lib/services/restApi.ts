@@ -1095,6 +1095,14 @@ export const registerPushToken = async (): Promise<void> => {
 		return;
 	}
 
+	// SDK is initialized on connect() only after a server is selected and the user is logged in.
+	// On a fresh-install cold-start, FCM/APNS and iOS PushKit can deliver tokens before that
+	// happens; bail without recording lastToken/lastVoipToken so registerPushTokenFork retries
+	// after login (and a later VoipPushTokenRegistered emission can still re-fire this path).
+	if (!sdk.current) {
+		return;
+	}
+
 	const serverVersion = reduxStore.getState().server.version;
 	let data: TRegisterPushTokenData = {
 		value: '',
