@@ -6,6 +6,7 @@ import { getUidDirectMessage } from '../../methods/helpers/helpers';
 import { usePeerAutocompleteStore } from '../../services/voip/usePeerAutocompleteStore';
 import { useSubscription } from '../useSubscription';
 import { useMediaCallPermission } from '../useMediaCallPermission';
+import { isAndroid } from '../../methods/helpers/deviceInfo';
 
 export const useNewMediaCall = (rid?: string) => {
 	const room = useSubscription(rid);
@@ -20,7 +21,7 @@ export const useNewMediaCall = (rid?: string) => {
 		}
 		showActionSheetRef({
 			children: <NewMediaCall />,
-			enableContentPanningGesture: false
+			fullContainer: isAndroid
 		});
 	};
 

@@ -39,16 +39,21 @@ jest.mock('../../../containers/NewMediaCall', () => ({
 	NewMediaCall: jest.fn(() => null)
 }));
 
+jest.mock('../../methods/helpers/deviceInfo', () => ({
+	isAndroid: false
+}));
+
 describe('useNewMediaCall', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 	});
 
-	const expectNewMediaCallActionSheet = () => {
+	const expectNewMediaCallActionSheet = (expectedFullContainer = false) => {
 		expect(mockShowActionSheetRef).toHaveBeenCalledTimes(1);
 		const [actionSheetArgs] = mockShowActionSheetRef.mock.calls[0];
 		expect(React.isValidElement(actionSheetArgs.children)).toBe(true);
 		expect(actionSheetArgs.children.type).toBe(NewMediaCall);
+		expect(actionSheetArgs.fullContainer).toBe(expectedFullContainer);
 	};
 
 	it('should set selected peer and open action sheet when room has a direct message peer', () => {
@@ -102,5 +107,30 @@ describe('useNewMediaCall', () => {
 		expect(mockGetUidDirectMessage).not.toHaveBeenCalled();
 		expect(mockSetSelectedPeer).not.toHaveBeenCalled();
 		expectNewMediaCallActionSheet();
+	});
+
+	it('should pass fullContainer to the action sheet when isAndroid is true', () => {
+		jest.resetModules();
+		jest.doMock('../../methods/helpers/deviceInfo', () => ({
+			isAndroid: true
+		}));
+		// Must load hook after doMock so `fullContainer: isAndroid` uses Android.
+		// eslint-disable-next-line @typescript-eslint/no-var-requires
+		const { useNewMediaCall: useNewMediaCallAndroid } = require('./useNewMediaCall');
+
+		mockUseSubscription.mockReturnValue(undefined);
+		mockUseMediaCallPermission.mockReturnValue(false);
+
+		const { result } = renderHook(() => useNewMediaCallAndroid('room-id'));
+
+		act(() => {
+			result.current.openNewMediaCall();
+		});
+
+		// Re-required hook uses a fresh NewMediaCall mock ref; only assert fullContainer and element shape.
+		expect(mockShowActionSheetRef).toHaveBeenCalledTimes(1);
+		const [actionSheetArgs] = mockShowActionSheetRef.mock.calls[0];
+		expect(React.isValidElement(actionSheetArgs.children)).toBe(true);
+		expect(actionSheetArgs.fullContainer).toBe(true);
 	});
 });
