@@ -64,8 +64,6 @@ describe('ButtonTests', () => {
 	test('disabled button is in disabled state', async () => {
 		const { findByTestId } = render(<TestButton disabled={true} />);
 		const button = await findByTestId(testProps.testID);
-		// In the test environment, RNGH Pressable may still invoke onPress when disabled,
-		// so we assert the button is in a disabled state (enabled={false}).
 		expect(button.props.enabled).toBe(false);
 	});
 
