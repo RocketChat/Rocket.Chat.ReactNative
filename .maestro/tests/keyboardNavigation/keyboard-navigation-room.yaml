@@ -1,0 +1,74 @@
+appId: chat.rocket.reactnative
+name: Keyboard Navigation Room
+jsEngine: graaljs
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-14
+  - android-only
+
+---
+- evalScript: ${output.user = output.utils.createUser()}
+- evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password)}
+- evalScript: ${output.keyboardMessage = 'keyboard-room-' + output.random(6)}
+
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+# Navigate to RoomView
+- extendedWaitUntil:
+    visible:
+      text: '${output.room.name}'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'Save your encryption password'
+    timeout: 60000
+- pressKey: Remote Dpad Right
+- pressKey: Remote Dpad Right
+- pressKey: Remote Dpad Down
+- pressKey: Remote Dpad Down
+- pressKey: enter
+# Submit: ComposerInput wires onSubmitEditing -> send when soft keyboard is hidden (TV / physical keyboard)
+- extendedWaitUntil:
+    visible:
+      id: message-composer-input
+    timeout: 60000
+- inputText: ${output.keyboardMessage}
+- pressKey: Remote Dpad Down
+- pressKey: Remote Dpad Right
+- pressKey: enter
+- extendedWaitUntil:
+    visible:
+      id: 'message-content-${output.keyboardMessage}'
+    timeout: 60000
+# Open Emoji Keyboard
+- pressKey: Remote Dpad Up
+- pressKey: Remote Dpad Down
+- pressKey: Remote Dpad Right
+- pressKey: enter
+
+# Open category emoji
+- pressKey: Remote Dpad Down
+- pressKey: Remote Dpad Down
+- pressKey: Remote Dpad Down
+- pressKey: Remote Dpad Right
+- pressKey: enter
+
+# Select emoji
+- pressKey: Remote Dpad Down
+- pressKey: Remote Dpad Right
+- pressKey: Remote Dpad Up
+- pressKey: Remote Dpad Up
+- pressKey: enter
+
+# Send emoji
+- pressKey: Remote Dpad Up
+- pressKey: Remote Dpad Up
+- pressKey: enter
+- assertVisible:
+    id: 'message-content-😀'

@@ -118,6 +118,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 						title='Avatars'
 						testID='display-pref-view-avatars'
 						right={() => renderAvatarSwitch(showAvatar)}
+						onPress={toggleAvatar}
 						additionalAccessibilityLabel={showAvatar}
 						accessibilityRole='switch'
 					/>

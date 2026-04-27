@@ -1,5 +1,7 @@
 package chat.rocket.reactnative.scroll;
 
+import android.graphics.Rect;
+import android.view.MotionEvent;
 import android.view.View;
 import com.facebook.react.views.view.ReactViewGroup;
 import java.util.ArrayList;
@@ -11,13 +13,69 @@ import java.util.Collections;
  */
 public class InvertedScrollContentView extends ReactViewGroup {
 
+  private boolean mIsInvertedContent = false;
+
   public InvertedScrollContentView(android.content.Context context) {
     super(context);
+  }
+
+  public void setIsInvertedContent(boolean isInverted) {
+    mIsInvertedContent = isInverted;
   }
 
   @Override
   public void addChildrenForAccessibility(ArrayList<View> outChildren) {
     super.addChildrenForAccessibility(outChildren);
-    Collections.reverse(outChildren);
+    if (mIsInvertedContent) {
+      Collections.reverse(outChildren);
+    }
+  }
+
+  @Override
+  protected boolean onRequestFocusInDescendants(int direction, Rect previouslyFocusedRect) {
+    if (mIsInvertedContent) {
+      for (int i = getChildCount() - 1; i >= 0; i--) {
+        View child = getChildAt(i);
+        if (child.getVisibility() == VISIBLE) {
+          if (child.requestFocus(direction, previouslyFocusedRect)) {
+            return true;
+          }
+        }
+      }
+      return false;
+    }
+    return super.onRequestFocusInDescendants(direction, previouslyFocusedRect);
+  }
+
+  @Override
+  public void addFocusables(ArrayList<View> views, int direction, int focusableMode) {
+    super.addFocusables(views, direction, focusableMode);
+    if (mIsInvertedContent) {
+      // Find indices of focusables that are children of this view
+      ArrayList<Integer> childIndices = new ArrayList<>();
+      for (int i = 0; i < views.size(); i++) {
+        View v = views.get(i);
+        if (v.getParent() == this) {
+          childIndices.add(i);
+        }
+      }
+      // Reverse only the sublist of children focusables
+      int n = childIndices.size();
+      for (int i = 0; i < n / 2; i++) {
+        int idx1 = childIndices.get(i);
+        int idx2 = childIndices.get(n - 1 - i);
+        View temp = views.get(idx1);
+        views.set(idx1, views.get(idx2));
+        views.set(idx2, temp);
+      }
+    }
+  }
+
+  @Override
+  public boolean onTouchEvent(MotionEvent event) {
+    // Match the stock vertical Android ScrollView content host, which is a plain non-clickable
+    // View. This container exists only to preserve inverted accessibility/focus order and should
+    // never consume fallback taps that miss transformed children after scrolling.
+    return false;
   }
 }

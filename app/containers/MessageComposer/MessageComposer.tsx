@@ -1,4 +1,4 @@
-import React, { type ReactElement, useRef, useImperativeHandle } from 'react';
+import React, { type ReactElement, type Ref, useRef, useImperativeHandle } from 'react';
 import { AccessibilityInfo, findNodeHandle, type LayoutChangeEvent } from 'react-native';
 import { useBackHandler } from '@react-native-community/hooks';
 import { Q } from '@nozbe/watermelondb';
@@ -8,7 +8,7 @@ import { useRoomContext } from '../../views/RoomView/context';
 import { Autocomplete } from './components';
 import { MIN_HEIGHT } from './constants';
 import { MessageInnerContext, useAlsoSendThreadToChannel, useMessageComposerApi, useRecordingAudio } from './context';
-import { type IComposerInput } from './interfaces';
+import { type IComposerInput, type IMessageComposerRef } from './interfaces';
 import { EventTypes } from '../EmojiPicker/interfaces';
 import { type IEmoji } from '../../definitions';
 import database from '../../lib/database';
@@ -28,7 +28,7 @@ export const MessageComposer = ({
 	forwardedRef,
 	children
 }: {
-	forwardedRef: any;
+	forwardedRef: Ref<IMessageComposerRef>;
 	children?: ReactElement;
 }): ReactElement | null => {
 	'use memo';
@@ -52,12 +52,6 @@ export const MessageComposer = ({
 	const { formatShortnameToUnicode } = useShortnameToUnicode();
 	const { colors } = useTheme();
 
-	useImperativeHandle(forwardedRef, () => ({
-		closeEmojiKeyboardAndAction,
-		getText: composerInputComponentRef.current?.getText,
-		setInput: composerInputComponentRef.current?.setInput
-	}));
-
 	useBackHandler(() => {
 		if (showEmojiSearchbar) {
 			resetKeyboard();
@@ -70,6 +64,13 @@ export const MessageComposer = ({
 		resetKeyboard();
 		action && action(params);
 	};
+
+	useImperativeHandle(forwardedRef, () => ({
+		closeEmojiKeyboardAndAction,
+		getText: () => composerInputComponentRef.current.getText(),
+		setInput: (...args: Parameters<IMessageComposerRef['setInput']>) => composerInputComponentRef.current.setInput(...args),
+		focus: () => composerInputComponentRef.current.focus()
+	}));
 
 	const handleLayout = (event: LayoutChangeEvent) => {
 		const { height } = event.nativeEvent.layout;
@@ -190,7 +191,7 @@ export const MessageComposer = ({
 				sendMessage: handleSendMessage,
 				onEmojiSelected,
 				closeEmojiKeyboardAndAction,
-				focus: composerInputComponentRef.current?.focus
+				focus: () => composerInputComponentRef.current.focus()
 			}}>
 			<MessageComposerContent
 				recordingAudio={recordingAudio}
