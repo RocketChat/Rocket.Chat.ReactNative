@@ -18,6 +18,7 @@ export const ActionsButton = () => {
 	const { closeEmojiKeyboardAndAction } = useContext(MessageInnerContext);
 	const permissionToUpload = useCanUploadFile(rid);
 	const [permissionToViewCannedResponses] = usePermissions(['view-canned-responses'], rid);
+	const [permissionToStartDiscussion] = usePermissions(['start-discussion']);
 	const { takePhoto, takeVideo, chooseFromLibrary, chooseFile } = useChooseMedia({
 		rid,
 		tmid,
@@ -37,7 +38,7 @@ export const ActionsButton = () => {
 		}
 	};
 
-	const onPress = () => {
+	const getActionOptions = (): TActionSheetOptionsItem[] => {
 		const options: TActionSheetOptionsItem[] = [];
 		if (t === 'l' && permissionToViewCannedResponses) {
 			options.push({
@@ -88,15 +89,26 @@ export const ActionsButton = () => {
 				}
 			);
 		}
+		if (permissionToStartDiscussion) {
+			options.push({
+				title: I18n.t('Create_Discussion'),
+				icon: 'discussions',
+				onPress: () => createDiscussion()
+			});
+		}
+		return options;
+	};
 
-		options.push({
-			title: I18n.t('Create_Discussion'),
-			icon: 'discussions',
-			onPress: () => createDiscussion()
-		});
-
+	const onPress = () => {
+		const options = getActionOptions();
 		closeEmojiKeyboardAndAction(showActionSheet, { options });
 	};
+
+	const hasOptions = getActionOptions().length > 0;
+
+	if (!hasOptions) {
+		return null;
+	}
 
 	return <BaseButton onPress={onPress} testID='message-composer-actions' accessibilityLabel='Actions' icon='add' />;
 };
