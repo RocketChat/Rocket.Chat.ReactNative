@@ -10,7 +10,9 @@ export const PeerList = () => {
 	const selectedPeer = usePeerAutocompleteStore(state => state.selectedPeer);
 	const options = usePeerAutocompleteStore(state => state.options);
 
-	if (selectedPeer) return null;
+	if (selectedPeer || options.length === 0) {
+		return null;
+	}
 
 	const handleSelectOption = (option: TPeerItem) => {
 		setSelectedPeer(option);
