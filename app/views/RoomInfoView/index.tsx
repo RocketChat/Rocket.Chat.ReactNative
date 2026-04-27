@@ -127,7 +127,7 @@ const RoomInfoView = (): React.ReactElement => {
 		try {
 			if (room?.visitor?._id) {
 				const result = await getVisitorInfo(room.visitor._id);
-				if (result.success && result.visitor) {
+				if (result.success) {
 					const { visitor } = result;
 					const params: { os?: string; browser?: string } = {};
 					if (visitor.userAgent) {
@@ -203,7 +203,7 @@ const RoomInfoView = (): React.ReactElement => {
 			try {
 				if (!isDirect) {
 					const result = await getRoomInfo(rid);
-					if (result.success && result.room) setRoom({ ...room, ...(result.room as unknown as ISubscription) });
+					if (result.success) setRoom({ ...room, ...(result.room as unknown as ISubscription) });
 				}
 			} catch (e) {
 				log(e);

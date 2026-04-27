@@ -338,17 +338,18 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 			logEvent(events.TC_GO_ROOM);
 			const { isMasterDetail } = this.props;
 			try {
+				let params = {}
 				const result = await getRoomInfo(item._id);
 				if (result.success) {
-					const params = {
+					params = {
 						rid: item._id,
 						name: getRoomTitle(result.room),
 						joinCodeRequired: result.room.joinCodeRequired,
 						t: result.room.t,
 						teamId: result.room.teamId
 					};
-					goRoom({ item: params, isMasterDetail });
 				}
+				goRoom({ item: params, isMasterDetail });
 			} catch (e: any) {
 				if (e.data.error === 'not-allowed') {
 					showErrorAlert(I18n.t('error-not-allowed'));
@@ -375,10 +376,9 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 				});
 				this.setState({ data: newData });
 			}
-		} catch (e: any) {
+		} catch (e) {
 			logEvent(events.TC_TOGGLE_AUTOJOIN_F);
 			log(e);
-			showErrorAlert(e.data.error);
 		}
 	};
 
