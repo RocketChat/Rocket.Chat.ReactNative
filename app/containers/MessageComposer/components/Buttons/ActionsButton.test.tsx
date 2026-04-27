@@ -85,13 +85,7 @@ const messageInnerContext: IMessageInnerContext = {
 	setMarkdownToolbar: jest.fn()
 };
 
-const Render = ({
-	context,
-	permissions
-}: {
-	context?: Partial<IRoomContext>;
-	permissions?: IPermissionsState;
-}) => {
+const Render = ({ context, permissions }: { context?: Partial<IRoomContext>; permissions?: IPermissionsState }) => {
 	if (permissions) {
 		mockedStore.dispatch(setPermissions(permissions));
 	}
