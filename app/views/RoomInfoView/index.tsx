@@ -219,7 +219,7 @@ const RoomInfoView = (): React.ReactElement => {
 			if (!isEmpty(member)) return resolve();
 			try {
 				const result = await createDirectMessage(roomUser.username);
-				if (result.success && result.room) return resolve({ ...roomUser, rid: result.room.rid });
+				if (result.success) return resolve({ ...roomUser, rid: result.room.rid });
 				return resolve();
 			} catch (e) {
 				reject(e);

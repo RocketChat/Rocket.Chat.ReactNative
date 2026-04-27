@@ -61,7 +61,7 @@ const UserNotificationPreferencesView = () => {
 		try {
 			setPreferences({ ...previousPreferences, ...param });
 			const result = await setUserPreferences(userId, param);
-			if (!result || result.success === false) {
+			if (!result.success) {
 				setPreferences(previousPreferences);
 			}
 		} catch (error) {

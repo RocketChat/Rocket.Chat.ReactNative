@@ -339,7 +339,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 			const { isMasterDetail } = this.props;
 			try {
 				const result = await getRoomInfo(item._id);
-				if (result && result.success && result.room) {
+				if (result.success) {
 					const params = {
 						rid: item._id,
 						name: getRoomTitle(result.room),
@@ -366,7 +366,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 		try {
 			const { data } = this.state;
 			const result = await updateTeamRoom({ roomId: item._id, isDefault: !item.teamDefault });
-			if (result?.success === true) {
+			if (result.success) {
 				const newData = data.map(i => {
 					if (i._id === item._id) {
 						i.teamDefault = !i.teamDefault;

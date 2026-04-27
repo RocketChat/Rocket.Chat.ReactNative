@@ -1121,7 +1121,7 @@ export const getRoomMembers = async ({
 		};
 		// RC 3.16.0
 		const result = await sdk.get(`/v1/${roomTypeToApiType(t)}.members`, params);
-		if (result?.success === true) {
+		if (result.success) {
 			return result.members;
 		}
 	}
