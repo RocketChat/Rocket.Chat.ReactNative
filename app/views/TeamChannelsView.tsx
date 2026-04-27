@@ -406,7 +406,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 		try {
 			const { data } = this.state;
 			const result = await removeTeamRoom({ roomId: item._id, teamId: this.team.teamId as string });
-			if (result && result.success) {
+			if (result.success) {
 				const newData = data.filter(room => result.room._id !== room._id);
 				this.setState({ data: newData });
 			}
