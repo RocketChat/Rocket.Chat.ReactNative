@@ -29,221 +29,244 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
         ]
       }
     />
-    <RNGestureHandlerButton
-      activeOpacity={1}
-      collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
-      rippleColor="#E4E7EA"
+    <ExternalKeyboardView
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onContextMenuPress={[Function]}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={300}
       style={
         [
-          {
-            "backgroundColor": "#FFFFFF",
-            "borderRadius": undefined,
-            "margin": undefined,
-            "marginBottom": undefined,
-            "marginEnd": undefined,
-            "marginHorizontal": undefined,
-            "marginLeft": undefined,
-            "marginRight": undefined,
-            "marginStart": undefined,
-            "marginTop": undefined,
-            "marginVertical": undefined,
-          },
-          {
-            "cursor": undefined,
-          },
+          undefined,
+          undefined,
         ]
       }
-      underlayColor="#E4E7EA"
     >
-      <View
+      <RNGestureHandlerButton
+        activeOpacity={1}
         collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#E4E7EA"
         style={
-          {
-            "backgroundColor": "#E4E7EA",
-            "borderBottomLeftRadius": undefined,
-            "borderBottomRightRadius": undefined,
-            "borderRadius": undefined,
-            "borderTopLeftRadius": undefined,
-            "borderTopRightRadius": undefined,
-            "bottom": 0,
-            "left": 0,
-            "opacity": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          }
+          [
+            {
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
-      />
-      <View
-        style={{}}
+        underlayColor="#E4E7EA"
       >
         <View
-          accessibilityLabel="Voice call"
-          accessibilityRole="button"
-          accessible={true}
+          collapsable={false}
           style={
-            [
-              {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "row",
-                "justifyContent": "center",
-                "paddingHorizontal": 12,
-              },
-              undefined,
-              {
-                "height": 46,
-              },
-            ]
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
           }
-          testID="room-actions-voice-call"
+        />
+        <View
+          style={{}}
         >
           <View
-            style={
-              {
-                "paddingRight": 12,
-              }
-            }
-          >
-            <View
-              style={
-                [
-                  {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
-              }
-            >
-              <Text
-                allowFontScaling={false}
-                selectable={false}
-                style={
-                  [
-                    {
-                      "color": "#2F343D",
-                      "fontSize": 24,
-                    },
-                    [
-                      {
-                        "lineHeight": 24,
-                      },
-                      undefined,
-                    ],
-                    {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    {},
-                  ]
-                }
-              >
-                
-              </Text>
-            </View>
-          </View>
-          <View
-            style={
-              {
-                "flex": 1,
-                "justifyContent": "center",
-              }
-            }
-          >
-            <View
-              style={
-                {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                }
-              }
-            >
-              <Text
-                style={
-                  [
-                    {
-                      "backgroundColor": "transparent",
-                      "flex": 1,
-                      "flexShrink": 1,
-                      "fontFamily": "Inter",
-                      "fontSize": 16,
-                      "fontWeight": "500",
-                      "textAlign": "left",
-                    },
-                    undefined,
-                    {
-                      "color": "#2F343D",
-                    },
-                  ]
-                }
-              >
-                Voice call
-              </Text>
-            </View>
-          </View>
-          <View
+            accessibilityLabel="Voice call"
+            accessibilityRole="button"
+            accessible={true}
             style={
               [
                 {
-                  "paddingLeft": 12,
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "center",
+                  "paddingHorizontal": 12,
                 },
-                {},
+                undefined,
+                {
+                  "height": 46,
+                },
               ]
             }
+            testID="room-actions-voice-call"
           >
+            <View
+              style={
+                {
+                  "paddingRight": 12,
+                }
+              }
+            >
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "justifyContent": "center",
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#2F343D",
+                        "fontSize": 24,
+                      },
+                      [
+                        {
+                          "lineHeight": 24,
+                        },
+                        undefined,
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                {
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "flex": 1,
+                        "flexShrink": 1,
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontWeight": "500",
+                        "textAlign": "left",
+                      },
+                      undefined,
+                      {
+                        "color": "#2F343D",
+                      },
+                    ]
+                  }
+                >
+                  Voice call
+                </Text>
+              </View>
+            </View>
             <View
               style={
                 [
                   {
-                    "alignItems": "center",
-                    "justifyContent": "center",
+                    "paddingLeft": 12,
                   },
                   {},
                 ]
               }
             >
-              <Text
-                allowFontScaling={false}
-                selectable={false}
+              <View
                 style={
                   [
                     {
-                      "color": "#2F343D",
-                      "fontSize": 24,
-                    },
-                    [
-                      {
-                        "lineHeight": 24,
-                      },
-                      undefined,
-                    ],
-                    {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
+                      "alignItems": "center",
+                      "justifyContent": "center",
                     },
                     {},
                   ]
                 }
               >
-                
-              </Text>
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#2F343D",
+                        "fontSize": 24,
+                      },
+                      [
+                        {
+                          "lineHeight": 24,
+                        },
+                        undefined,
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
             </View>
           </View>
         </View>
-      </View>
-    </RNGestureHandlerButton>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
     <View
       style={
         [
@@ -290,223 +313,246 @@ exports[`Story Snapshots: Disabled should match snapshot 1`] = `
         ]
       }
     />
-    <RNGestureHandlerButton
-      activeOpacity={1}
-      collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
-      rippleColor="#E4E7EA"
+    <ExternalKeyboardView
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onContextMenuPress={[Function]}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={300}
       style={
         [
-          {
-            "backgroundColor": "#FFFFFF",
-            "borderRadius": undefined,
-            "margin": undefined,
-            "marginBottom": undefined,
-            "marginEnd": undefined,
-            "marginHorizontal": undefined,
-            "marginLeft": undefined,
-            "marginRight": undefined,
-            "marginStart": undefined,
-            "marginTop": undefined,
-            "marginVertical": undefined,
-          },
-          {
-            "cursor": undefined,
-          },
+          undefined,
+          undefined,
         ]
       }
-      underlayColor="#E4E7EA"
     >
-      <View
+      <RNGestureHandlerButton
+        activeOpacity={1}
         collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#E4E7EA"
         style={
-          {
-            "backgroundColor": "#E4E7EA",
-            "borderBottomLeftRadius": undefined,
-            "borderBottomRightRadius": undefined,
-            "borderRadius": undefined,
-            "borderTopLeftRadius": undefined,
-            "borderTopRightRadius": undefined,
-            "bottom": 0,
-            "left": 0,
-            "opacity": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          }
+          [
+            {
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
-      />
-      <View
-        style={{}}
+        underlayColor="#E4E7EA"
       >
         <View
-          accessibilityLabel="Voice call"
-          accessibilityRole="button"
-          accessible={true}
+          collapsable={false}
           style={
-            [
-              {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "row",
-                "justifyContent": "center",
-                "paddingHorizontal": 12,
-              },
-              {
-                "opacity": 0.3,
-              },
-              {
-                "height": 46,
-              },
-            ]
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
           }
-          testID="room-actions-voice-call"
+        />
+        <View
+          style={{}}
         >
           <View
-            style={
-              {
-                "paddingRight": 12,
-              }
-            }
-          >
-            <View
-              style={
-                [
-                  {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
-              }
-            >
-              <Text
-                allowFontScaling={false}
-                selectable={false}
-                style={
-                  [
-                    {
-                      "color": "#2F343D",
-                      "fontSize": 24,
-                    },
-                    [
-                      {
-                        "lineHeight": 24,
-                      },
-                      undefined,
-                    ],
-                    {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    {},
-                  ]
-                }
-              >
-                
-              </Text>
-            </View>
-          </View>
-          <View
-            style={
-              {
-                "flex": 1,
-                "justifyContent": "center",
-              }
-            }
-          >
-            <View
-              style={
-                {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                }
-              }
-            >
-              <Text
-                style={
-                  [
-                    {
-                      "backgroundColor": "transparent",
-                      "flex": 1,
-                      "flexShrink": 1,
-                      "fontFamily": "Inter",
-                      "fontSize": 16,
-                      "fontWeight": "500",
-                      "textAlign": "left",
-                    },
-                    undefined,
-                    {
-                      "color": "#2F343D",
-                    },
-                  ]
-                }
-              >
-                Voice call
-              </Text>
-            </View>
-          </View>
-          <View
+            accessibilityLabel="Voice call"
+            accessibilityRole="button"
+            accessible={true}
             style={
               [
                 {
-                  "paddingLeft": 12,
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "center",
+                  "paddingHorizontal": 12,
                 },
-                {},
+                {
+                  "opacity": 0.3,
+                },
+                {
+                  "height": 46,
+                },
               ]
             }
+            testID="room-actions-voice-call"
           >
+            <View
+              style={
+                {
+                  "paddingRight": 12,
+                }
+              }
+            >
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "justifyContent": "center",
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#2F343D",
+                        "fontSize": 24,
+                      },
+                      [
+                        {
+                          "lineHeight": 24,
+                        },
+                        undefined,
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                {
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "flex": 1,
+                        "flexShrink": 1,
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontWeight": "500",
+                        "textAlign": "left",
+                      },
+                      undefined,
+                      {
+                        "color": "#2F343D",
+                      },
+                    ]
+                  }
+                >
+                  Voice call
+                </Text>
+              </View>
+            </View>
             <View
               style={
                 [
                   {
-                    "alignItems": "center",
-                    "justifyContent": "center",
+                    "paddingLeft": 12,
                   },
                   {},
                 ]
               }
             >
-              <Text
-                allowFontScaling={false}
-                selectable={false}
+              <View
                 style={
                   [
                     {
-                      "color": "#2F343D",
-                      "fontSize": 24,
-                    },
-                    [
-                      {
-                        "lineHeight": 24,
-                      },
-                      undefined,
-                    ],
-                    {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
+                      "alignItems": "center",
+                      "justifyContent": "center",
                     },
                     {},
                   ]
                 }
               >
-                
-              </Text>
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#2F343D",
+                        "fontSize": 24,
+                      },
+                      [
+                        {
+                          "lineHeight": 24,
+                        },
+                        undefined,
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
             </View>
           </View>
         </View>
-      </View>
-    </RNGestureHandlerButton>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
     <View
       style={
         [
@@ -553,221 +599,244 @@ exports[`Story Snapshots: NoVoiceCall should match snapshot 1`] = `
         ]
       }
     />
-    <RNGestureHandlerButton
-      activeOpacity={1}
-      collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
-      rippleColor="#E4E7EA"
+    <ExternalKeyboardView
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onContextMenuPress={[Function]}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={300}
       style={
         [
-          {
-            "backgroundColor": "#FFFFFF",
-            "borderRadius": undefined,
-            "margin": undefined,
-            "marginBottom": undefined,
-            "marginEnd": undefined,
-            "marginHorizontal": undefined,
-            "marginLeft": undefined,
-            "marginRight": undefined,
-            "marginStart": undefined,
-            "marginTop": undefined,
-            "marginVertical": undefined,
-          },
-          {
-            "cursor": undefined,
-          },
+          undefined,
+          undefined,
         ]
       }
-      underlayColor="#E4E7EA"
     >
-      <View
+      <RNGestureHandlerButton
+        activeOpacity={1}
         collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#E4E7EA"
         style={
-          {
-            "backgroundColor": "#E4E7EA",
-            "borderBottomLeftRadius": undefined,
-            "borderBottomRightRadius": undefined,
-            "borderRadius": undefined,
-            "borderTopLeftRadius": undefined,
-            "borderTopRightRadius": undefined,
-            "bottom": 0,
-            "left": 0,
-            "opacity": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          }
+          [
+            {
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
-      />
-      <View
-        style={{}}
+        underlayColor="#E4E7EA"
       >
         <View
-          accessibilityLabel="Voice call"
-          accessibilityRole="button"
-          accessible={true}
+          collapsable={false}
           style={
-            [
-              {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "row",
-                "justifyContent": "center",
-                "paddingHorizontal": 12,
-              },
-              undefined,
-              {
-                "height": 46,
-              },
-            ]
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
           }
-          testID="room-actions-voice-call"
+        />
+        <View
+          style={{}}
         >
           <View
-            style={
-              {
-                "paddingRight": 12,
-              }
-            }
-          >
-            <View
-              style={
-                [
-                  {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
-              }
-            >
-              <Text
-                allowFontScaling={false}
-                selectable={false}
-                style={
-                  [
-                    {
-                      "color": "#2F343D",
-                      "fontSize": 24,
-                    },
-                    [
-                      {
-                        "lineHeight": 24,
-                      },
-                      undefined,
-                    ],
-                    {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    {},
-                  ]
-                }
-              >
-                
-              </Text>
-            </View>
-          </View>
-          <View
-            style={
-              {
-                "flex": 1,
-                "justifyContent": "center",
-              }
-            }
-          >
-            <View
-              style={
-                {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                }
-              }
-            >
-              <Text
-                style={
-                  [
-                    {
-                      "backgroundColor": "transparent",
-                      "flex": 1,
-                      "flexShrink": 1,
-                      "fontFamily": "Inter",
-                      "fontSize": 16,
-                      "fontWeight": "500",
-                      "textAlign": "left",
-                    },
-                    undefined,
-                    {
-                      "color": "#2F343D",
-                    },
-                  ]
-                }
-              >
-                Voice call
-              </Text>
-            </View>
-          </View>
-          <View
+            accessibilityLabel="Voice call"
+            accessibilityRole="button"
+            accessible={true}
             style={
               [
                 {
-                  "paddingLeft": 12,
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "center",
+                  "paddingHorizontal": 12,
                 },
-                {},
+                undefined,
+                {
+                  "height": 46,
+                },
               ]
             }
+            testID="room-actions-voice-call"
           >
+            <View
+              style={
+                {
+                  "paddingRight": 12,
+                }
+              }
+            >
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "justifyContent": "center",
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#2F343D",
+                        "fontSize": 24,
+                      },
+                      [
+                        {
+                          "lineHeight": 24,
+                        },
+                        undefined,
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                {
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "flex": 1,
+                        "flexShrink": 1,
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontWeight": "500",
+                        "textAlign": "left",
+                      },
+                      undefined,
+                      {
+                        "color": "#2F343D",
+                      },
+                    ]
+                  }
+                >
+                  Voice call
+                </Text>
+              </View>
+            </View>
             <View
               style={
                 [
                   {
-                    "alignItems": "center",
-                    "justifyContent": "center",
+                    "paddingLeft": 12,
                   },
                   {},
                 ]
               }
             >
-              <Text
-                allowFontScaling={false}
-                selectable={false}
+              <View
                 style={
                   [
                     {
-                      "color": "#2F343D",
-                      "fontSize": 24,
-                    },
-                    [
-                      {
-                        "lineHeight": 24,
-                      },
-                      undefined,
-                    ],
-                    {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
+                      "alignItems": "center",
+                      "justifyContent": "center",
                     },
                     {},
                   ]
                 }
               >
-                
-              </Text>
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#2F343D",
+                        "fontSize": 24,
+                      },
+                      [
+                        {
+                          "lineHeight": 24,
+                        },
+                        undefined,
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
             </View>
           </View>
         </View>
-      </View>
-    </RNGestureHandlerButton>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
     <View
       style={
         [
