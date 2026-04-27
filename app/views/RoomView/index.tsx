@@ -262,6 +262,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					this.roomHeaderRef.current?.focus();
 					return;
 				}
+				// Skip autofocus in development because simulators always report a keyboard as connected,
+				// which would force the composer to open on every focus while debugging.
+				if (__DEV__) {
+					return;
+				}
 				const hasExternalKeyboard = isExternalKeyboardConnected();
 				if (hasExternalKeyboard) {
 					this.messageComposerRef.current?.focus?.();
