@@ -9,7 +9,6 @@ import { showErrorAlert } from '../../methods/helpers/info';
 import log from '../../methods/helpers/log';
 import { handleAndroidBltPermission } from '../../methods/videoConf';
 import { videoConferenceGetCapabilities } from '../../services/restApi';
-import { useIsInActiveVoipCall } from '../../services/voip/isInActiveVoipCall';
 import { useAppSelector } from '../useAppSelector';
 import StartACallActionSheet from './StartACallActionSheet';
 import { useVideoConfCall } from './useVideoConfCall';
@@ -33,7 +32,6 @@ export const useVideoConf = (
 	const user = useAppSelector(state => getUserSelector(state));
 	const serverVersion = useAppSelector(state => state.server.version);
 	const { callEnabled, disabledTooltip, roomType } = useVideoConfCall(rid);
-	const isInActiveVoipCall = useIsInActiveVoipCall();
 
 	const [permission, requestPermission] = useCameraPermissions();
 	const { showActionSheet } = useActionSheet();
@@ -42,7 +40,6 @@ export const useVideoConf = (
 
 	const canInitAnCall = async (): Promise<boolean> => {
 		if (!callEnabled) return false;
-		if (isInActiveVoipCall) return false;
 
 		if (isServer5OrNewer) {
 			try {
@@ -59,10 +56,6 @@ export const useVideoConf = (
 
 	const showInitCallActionSheet = async () => {
 		try {
-			if (isInActiveVoipCall) {
-				showErrorAlert(i18n.t('VoIP_Already_In_Call'));
-				return;
-			}
 			const canInit = await canInitAnCall();
 			if (canInit) {
 				showActionSheet({
@@ -87,5 +80,5 @@ export const useVideoConf = (
 		}
 	};
 
-	return { showInitCallActionSheet, callEnabled, disabledTooltip: disabledTooltip || isInActiveVoipCall };
+	return { showInitCallActionSheet, callEnabled, disabledTooltip };
 };

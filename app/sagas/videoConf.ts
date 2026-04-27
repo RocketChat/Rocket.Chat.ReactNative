@@ -172,10 +172,7 @@ function* handleVideoConfIncomingWebsocketMessages({ data }: { data: any }) {
 }
 
 function* initCall({ payload: { mic, cam, direct, rid } }: { payload: TCallProps }) {
-	if (isInActiveVoipCall()) {
-		showErrorAlert(i18n.t('VoIP_Already_In_Call'));
-		return;
-	}
+	if (isInActiveVoipCall()) return;
 	yield put(setCalling(true));
 	const serverVersion = yield* appSelector(state => state.server.version);
 	const isServer5OrNewer = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.0.0');

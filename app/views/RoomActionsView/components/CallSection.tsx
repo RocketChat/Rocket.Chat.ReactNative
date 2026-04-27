@@ -4,6 +4,7 @@ import * as List from '../../../containers/List';
 import { useVideoConf } from '../../../lib/hooks/useVideoConf';
 import type { TSubscriptionModel } from '../../../definitions';
 import { useNewMediaCall } from '../../../lib/hooks/useNewMediaCall';
+import { useIsInActiveVoipCall } from '../../../lib/services/voip/isInActiveVoipCall';
 import { videoConferenceGetCapabilities } from '../../../lib/services/restApi';
 
 export default function CallSection({
@@ -17,6 +18,7 @@ export default function CallSection({
 }): React.ReactElement | null {
 	const { callEnabled, showInitCallActionSheet, disabledTooltip } = useVideoConf(room.rid);
 	const { openNewMediaCall, hasMediaCallPermission, isInActiveCall } = useNewMediaCall(room.rid);
+	const isInActiveVoipCall = useIsInActiveVoipCall();
 	const [providerName, setProviderName] = useState<string>();
 
 	useEffect(() => {
@@ -59,7 +61,7 @@ export default function CallSection({
 						testID='room-actions-call'
 						left={() => <List.Icon name='video' />}
 						showActionIndicator
-						disabled={disabledTooltip || disabled}
+						disabled={disabledTooltip || disabled || isInActiveVoipCall}
 					/>
 					<List.Separator />
 				</>

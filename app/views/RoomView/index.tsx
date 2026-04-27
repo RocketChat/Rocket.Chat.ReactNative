@@ -1267,10 +1267,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	// OLD METHOD - support versions before 5.0.0
 	handleEnterCall = () => {
-		if (isInActiveVoipCall()) {
-			showErrorAlert(I18n.t('VoIP_Already_In_Call'));
-			return;
-		}
+		if (isInActiveVoipCall()) return;
 		const { room } = this.state;
 		if ('id' in room) {
 			const { jitsiTimeout } = room;

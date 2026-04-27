@@ -80,7 +80,7 @@ describe('videoConf saga — VoIP / videoconf lock', () => {
 		});
 	});
 
-	it('short-circuits outgoing INIT_CALL when isInActiveVoipCall returns true', async () => {
+	it('silently short-circuits outgoing INIT_CALL when isInActiveVoipCall returns true', async () => {
 		jest.mocked(isInActiveVoipCall).mockReturnValue(true);
 
 		const store = setupStoreWithVideoConfSaga();
@@ -90,7 +90,8 @@ describe('videoConf saga — VoIP / videoconf lock', () => {
 
 		expect(isInActiveVoipCall).toHaveBeenCalled();
 		expect(videoConferenceStart).not.toHaveBeenCalled();
-		expect(showErrorAlert).toHaveBeenCalled();
+		// UI consumers disable the buttons; saga guard is a silent backstop — no alert.
+		expect(showErrorAlert).not.toHaveBeenCalled();
 		expect(store.getState().videoConf.calling).toBe(false);
 	});
 
