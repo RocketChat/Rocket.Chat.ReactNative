@@ -289,6 +289,10 @@
 		66C2701B2EBBCB570062725F /* MMKVKeyManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 66C2701A2EBBCB570062725F /* MMKVKeyManager.mm */; };
 		66C2701C2EBBCB570062725F /* MMKVKeyManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 66C2701A2EBBCB570062725F /* MMKVKeyManager.mm */; };
 		66C2701D2EBBCB570062725F /* MMKVKeyManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 66C2701A2EBBCB570062725F /* MMKVKeyManager.mm */; };
+		66C270202EBBCB780062725F /* SecureStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 66C2701F2EBBCB780062725F /* SecureStorage.m */; };
+		66C270212EBBCB780062725F /* SecureStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 66C2701F2EBBCB780062725F /* SecureStorage.m */; };
+		6FA7E2382F28A9D300A1D45E /* ExternalInputModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FA7E2372F28A9D300A1D45E /* ExternalInputModule.m */; };
+		6FA7E2392F28A9D300A1D45E /* ExternalInputModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FA7E2372F28A9D300A1D45E /* ExternalInputModule.m */; };
 		782E0520ED599FF8DDC2318F /* Pods_defaults_Rocket_Chat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88ED4E003393D3A9256F4EB3 /* Pods_defaults_Rocket_Chat.framework */; };
 		79D8C97F8CE2EC1B6882826B /* SecureStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B215A42CFB843397273C7EA /* SecureStorage.m */; };
 		7A0000012F1BAFA700B6B4BD /* VoipService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0000032F1BAFA700B6B4BD /* VoipService.swift */; };
@@ -640,6 +644,11 @@
 		65B9A7192AFC24190088956F /* ringtone.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ringtone.mp3; sourceTree = "<group>"; };
 		66C270192EBBCB570062725F /* MMKVKeyManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MMKVKeyManager.h; sourceTree = "<group>"; };
 		66C2701A2EBBCB570062725F /* MMKVKeyManager.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MMKVKeyManager.mm; sourceTree = "<group>"; };
+		66C2701E2EBBCB780062725F /* SecureStorage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SecureStorage.h; sourceTree = "<group>"; };
+		66C2701F2EBBCB780062725F /* SecureStorage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SecureStorage.m; sourceTree = "<group>"; };
+		6CE8C7A54627937DB698E839 /* Pods-defaults-NotificationService.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-defaults-NotificationService.debug.xcconfig"; path = "Target Support Files/Pods-defaults-NotificationService/Pods-defaults-NotificationService.debug.xcconfig"; sourceTree = "<group>"; };
+		6FA7E2362F28A9D300A1D45E /* ExternalInputModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExternalInputModule.h; sourceTree = "<group>"; };
+		6FA7E2372F28A9D300A1D45E /* ExternalInputModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExternalInputModule.m; sourceTree = "<group>"; };
 		7A0000032F1BAFA700B6B4BD /* VoipService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoipService.swift; sourceTree = "<group>"; };
 		7A0000042F1BAFA700B6B4BD /* VoipModule.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = VoipModule.mm; sourceTree = "<group>"; };
 		7A006F13229C83B600803143 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -751,6 +760,10 @@
 		13B07FAE1A68108700A75B9A /* RocketChatRN */ = {
 			isa = PBXGroup;
 			children = (
+				66C2701E2EBBCB780062725F /* SecureStorage.h */,
+				66C2701F2EBBCB780062725F /* SecureStorage.m */,
+				6FA7E2362F28A9D300A1D45E /* ExternalInputModule.h */,
+				6FA7E2372F28A9D300A1D45E /* ExternalInputModule.m */,
 				7ACFE7D82DDE48760090D9BC /* AppDelegate.swift */,
 				65B9A7192AFC24190088956F /* ringtone.mp3 */,
 				7A006F13229C83B600803143 /* GoogleService-Info.plist */,
@@ -2148,6 +2161,8 @@
 				7AC0A1E02C000010001CAA11 /* Challenge.mm in Sources */,
 				1E76CBCF25152C310067298C /* NotificationType.swift in Sources */,
 				1E76CBDA25152C8E0067298C /* SendMessage.swift in Sources */,
+				66C270212EBBCB780062725F /* SecureStorage.m in Sources */,
+				6FA7E2382F28A9D300A1D45E /* ExternalInputModule.m in Sources */,
 				4C4C8603EF082F0A33A95522 /* ExpoModulesProvider.swift in Sources */,
 				A2C6E2DD38F8BEE19BFB2E1D /* SecureStorage.m in Sources */,
 				AE692FD072A44EA955D0C0D8 /* DDPClient.swift in Sources */,
@@ -2433,6 +2448,8 @@
 				7AC0A1E02C000011001CAA11 /* Challenge.mm in Sources */,
 				7AAB3E30257E6A6E00707CF6 /* NotificationType.swift in Sources */,
 				7AAB3E31257E6A6E00707CF6 /* SendMessage.swift in Sources */,
+				66C270202EBBCB780062725F /* SecureStorage.m in Sources */,
+				6FA7E2392F28A9D300A1D45E /* ExternalInputModule.m in Sources */,
 				BC404914E86821389EEB543D /* ExpoModulesProvider.swift in Sources */,
 				79D8C97F8CE2EC1B6882826B /* SecureStorage.m in Sources */,
 				CE4453310C9A08AB0DAC2307 /* DDPClient.swift in Sources */,
