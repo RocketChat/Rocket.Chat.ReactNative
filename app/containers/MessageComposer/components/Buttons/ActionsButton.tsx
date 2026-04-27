@@ -17,7 +17,11 @@ export const ActionsButton = () => {
 	const { rid, tmid, t } = useRoomContext();
 	const { closeEmojiKeyboardAndAction } = useContext(MessageInnerContext);
 	const permissionToUpload = useCanUploadFile(rid);
-	const [permissionToViewCannedResponses] = usePermissions(['view-canned-responses'], rid);
+	const [permissionToViewCannedResponses] = usePermissions(
+		['view-canned-responses'],
+		rid
+	);
+	const [permissionToStartDiscussion] = usePermissions(['start-discussion']);
 	const { takePhoto, takeVideo, chooseFromLibrary, chooseFile } = useChooseMedia({
 		rid,
 		tmid,
@@ -89,14 +93,23 @@ export const ActionsButton = () => {
 			);
 		}
 
-		options.push({
-			title: I18n.t('Create_Discussion'),
-			icon: 'discussions',
-			onPress: () => createDiscussion()
-		});
+		if (permissionToStartDiscussion) {
+			options.push({
+				title: I18n.t('Create_Discussion'),
+				icon: 'discussions',
+				onPress: () => createDiscussion()
+			});
+		}
 
 		closeEmojiKeyboardAndAction(showActionSheet, { options });
 	};
+
+	const hasOptions =
+		(t === 'l' && permissionToViewCannedResponses) || permissionToUpload || permissionToStartDiscussion;
+
+	if (!hasOptions) {
+		return null;
+	}
 
 	return <BaseButton onPress={onPress} testID='message-composer-actions' accessibilityLabel='Actions' icon='add' />;
 };
