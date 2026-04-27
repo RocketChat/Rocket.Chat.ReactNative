@@ -58,7 +58,7 @@ describe('requestVoipCallPermissions', () => {
 		expect(granted).toBe(false);
 	});
 
-	it('returns false when READ_PHONE_STATE is denied (never_ask_again)', async () => {
+	it('returns true when READ_PHONE_STATE is denied but RECORD_AUDIO is granted', async () => {
 		jest.resetModules();
 		jest.doMock('./helpers', () => ({
 			...jest.requireActual('./helpers'),
@@ -72,6 +72,6 @@ describe('requestVoipCallPermissions', () => {
 
 		const granted = await requestVoipCallPermissions();
 
-		expect(granted).toBe(false);
+		expect(granted).toBe(true);
 	});
 });
