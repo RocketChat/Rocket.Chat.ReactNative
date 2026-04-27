@@ -1,5 +1,3 @@
-import { type ChannelsHistoryParams, type GroupsHistoryParams, type ImHistoryParams } from '@rocket.chat/api-typings';
-
 import dayjs from '../dayjs';
 import { MessageTypeLoad } from '../constants/messageTypeLoad';
 import { type IMessage, type TMessageModel } from '../../definitions';
@@ -26,20 +24,7 @@ async function load({ rid: roomId, latest, t }: { rid: string; latest?: Date; t:
 			return;
 		}
 
-		let params;
-		switch (apiType) {
-			case 'channels':
-				params = { roomId, showThreadMessages: false, count: COUNT, ...(lastTs && { latest: lastTs }) } as ChannelsHistoryParams;
-				break;
-			case 'groups':
-				params = { roomId, showThreadMessages: false, count: COUNT, ...(lastTs && { latest: lastTs }) } as GroupsHistoryParams;
-				break;
-			case 'im':
-				params = { roomId, showThreadMessages: false, count: COUNT, ...(lastTs && { latest: lastTs }) } as ImHistoryParams;
-				break;
-			default:
-				return;
-		}
+		const params = { roomId, showThreadMessages: false, count: COUNT, ...(lastTs && { latest: lastTs }) };
 
 		let data;
 		switch (apiType) {
