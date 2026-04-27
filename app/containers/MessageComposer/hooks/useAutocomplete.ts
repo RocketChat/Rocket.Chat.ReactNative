@@ -162,7 +162,7 @@ export const useAutocomplete = ({
 						return;
 					}
 					const response = await getCommandPreview(text, rid, commandParams);
-					if (response.preview) {
+					if (response?.success && response?.preview) {
 						const previewItems = (response.preview?.items || []).map(item => ({
 							id: item.id,
 							preview: item,
@@ -179,7 +179,7 @@ export const useAutocomplete = ({
 				}
 				if (type === '!') {
 					const res = await getListCannedResponse({ text });
-					if (res.cannedResponses) {
+					if (res?.success && res?.cannedResponses) {
 						if (res.cannedResponses.length === 0) {
 							setItems([
 								{

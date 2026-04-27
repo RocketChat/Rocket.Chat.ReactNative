@@ -127,7 +127,7 @@ const RoomInfoView = (): React.ReactElement => {
 		try {
 			if (room?.visitor?._id) {
 				const result = await getVisitorInfo(room.visitor._id);
-				if (result) {
+				if (result.success && result.visitor) {
 					const { visitor } = result;
 					const params: { os?: string; browser?: string } = {};
 					if (visitor.userAgent) {
@@ -166,7 +166,7 @@ const RoomInfoView = (): React.ReactElement => {
 			try {
 				const roomUserId = getUidDirectMessage({ ...(room || { rid, t }), itsMe });
 				const result = await getUserInfo(roomUserId);
-				if (result && result.user) {
+				if (result.success && result.user) {
 					const { user } = result;
 					const r = handleRoles(user);
 					setRoomUser({ ...user, roles: r });
@@ -203,7 +203,7 @@ const RoomInfoView = (): React.ReactElement => {
 			try {
 				if (!isDirect) {
 					const result = await getRoomInfo(rid);
-					if (result) setRoom({ ...room, ...(result.room as unknown as ISubscription) });
+					if (result.success && result.room) setRoom({ ...room, ...(result.room as unknown as ISubscription) });
 				}
 			} catch (e) {
 				log(e);
@@ -219,7 +219,7 @@ const RoomInfoView = (): React.ReactElement => {
 			if (!isEmpty(member)) return resolve();
 			try {
 				const result = await createDirectMessage(roomUser.username);
-				if (result?.room) return resolve({ ...roomUser, rid: result.room.rid });
+				if (result.success && result.room) return resolve({ ...roomUser, rid: result.room.rid });
 			} catch (e) {
 				reject(e);
 			}

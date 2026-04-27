@@ -140,7 +140,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 	}
 
 	// Handle encrypted rooms search messages
-	searchMessages = async (searchText: string): Promise<(TMessageModel)[]> => {
+	searchMessages = async (searchText: string) => {
 		if (!searchText) {
 			return [];
 		}
@@ -160,10 +160,10 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 		}
 		// If it's not a encrypted room, search messages on the server
 		const result = await searchMessages(this.rid, searchText, QUERY_SIZE, this.offset);
-		if (result.messages) {
-			const urlRenderMessages = result.messages?.map(message => {
+		if (result.success && result.messages) {
+			const urlRenderMessages = result.messages.map(message => {
 				if (message.urls && message.urls.length > 0) {
-					message.urls = message.urls?.map((url, index) => {
+					message.urls = message.urls.map((url, index) => {
 						if (url.meta) {
 							return {
 								_id: index,

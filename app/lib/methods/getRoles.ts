@@ -76,7 +76,7 @@ export function getRoles(): Promise<void> {
 			// RC 0.70.0
 			const result = await sdk.get('/v1/roles.list');
 
-			if (!result.roles) {
+			if (!result.success) {
 				return resolve();
 			}
 

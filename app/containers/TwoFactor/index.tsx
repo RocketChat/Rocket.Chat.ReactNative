@@ -94,7 +94,7 @@ const TwoFactor = React.memo(() => {
 		try {
 			if (params?.user) {
 				clearErrors();
-				const response = await sendEmailCode(params?.user);
+				await sendEmailCode(params?.user);
 
 				showToast(I18n.t('Two_Factor_Success_message'));
 			}

@@ -28,7 +28,7 @@ const useUserData = (rid: string) => {
 			} else {
 				try {
 					const result = await getUserInfo(rid);
-					if (result.user) {
+					if (result.success && result.user) {
 						const { user } = result;
 						const username = useRealName && user.name ? user.name : user.username;
 						setUser({

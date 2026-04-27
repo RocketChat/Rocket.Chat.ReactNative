@@ -228,7 +228,7 @@ function stopListener(listener: any): boolean {
 	return listener && listener.stop();
 }
 
-async function login(credentials: ICredentials, isFromWebView = false): Promise<ILoggedUser | undefined> {
+async function login(credentials: ICredentials): Promise<ILoggedUser | undefined> {
 	// TODO: other login methods: ldap, saml, cas, apple, oauth, oauth_custom
 	const result = await sdk.login(credentials);
 	const { me } = result;
@@ -272,10 +272,10 @@ async function login(credentials: ICredentials, isFromWebView = false): Promise<
 	}
 }
 
-function loginTOTP(params: ICredentials, loginEmailPassword?: boolean, isFromWebView = false): Promise<ILoggedUser> {
+function loginTOTP(params: ICredentials, loginEmailPassword?: boolean): Promise<ILoggedUser> {
 	return new Promise(async (resolve, reject) => {
 		try {
-			const result = await login(params, isFromWebView);
+			const result = await login(params);
 			if (result) {
 				return resolve(result);
 			}
@@ -343,7 +343,7 @@ function loginWithPassword({ user, password }: { user: string; password: string 
 }
 
 async function loginOAuthOrSso(params: ICredentials, isFromWebView = true) {
-	const result = await loginTOTP(params, false, isFromWebView);
+	const result = await loginTOTP(params, false);
 	store.dispatch(loginRequest({ resume: result.token }, false, isFromWebView));
 }
 

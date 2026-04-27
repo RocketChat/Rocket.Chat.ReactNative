@@ -292,7 +292,7 @@ const MessageActions = React.memo(
 			const handleReplyInDM = async (message: TAnyMessageModel) => {
 				if (message?.u?.username) {
 					const result = await createDirectMessage(message.u.username);
-					if (result) {
+					if (result?.success) {
 						const { room } = result;
 						const params = {
 							rid: room.rid,

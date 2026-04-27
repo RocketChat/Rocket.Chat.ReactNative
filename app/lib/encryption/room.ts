@@ -314,7 +314,7 @@ export default class EncryptionRoom {
 		try {
 			const decryptedOldGroupKeys = await this.exportOldRoomKeys(this.subscription?.oldRoomKeys);
 			const result = await e2eGetUsersOfRoomWithoutKey(this.roomId);
-			if (result.users) {
+			if (result?.success && result.users) {
 				const { users } = result;
 				if (!users.length) {
 					return;
