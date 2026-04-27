@@ -187,7 +187,8 @@ export function getPermissions(): Promise<void> {
 			}
 			// RC 0.73.0
 			const result = await sdk.get('/v1/permissions.listAll', params);
-			if (!result) {
+
+			if (!result.success) {
 				return resolve();
 			}
 

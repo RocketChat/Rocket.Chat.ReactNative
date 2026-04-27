@@ -82,15 +82,15 @@ export default function subscribeInquiry() {
 			throw new Error('inquiry: @subscribeInquiry user.id not found');
 		}
 
-		getAgentDepartments(user.id).then((result: any) => {
-			if (result?.success) {
+		getAgentDepartments(user.id).then((result) => {
+			if (result.success) {
 				const { departments } = result;
 
 				if (!departments?.length || hasRole('livechat-manager')) {
 					sdk.subscribe(streamTopic, 'public');
 				}
 
-				const departmentIds = departments?.map(({ departmentId }: { departmentId: string }) => departmentId) || [];
+				const departmentIds = departments?.map(({ departmentId }) => departmentId) || [];
 				departmentIds.forEach((departmentId: string) => {
 					// subscribe to all departments of the agent
 					sdk.subscribe(streamTopic, `department/${departmentId}`);

@@ -166,7 +166,7 @@ const RoomInfoView = (): React.ReactElement => {
 			try {
 				const roomUserId = getUidDirectMessage({ ...(room || { rid, t }), itsMe });
 				const result = await getUserInfo(roomUserId);
-				if (result.success && result.user) {
+				if (result.success) {
 					const { user } = result;
 					const r = handleRoles(user);
 					setRoomUser({ ...user, roles: r });

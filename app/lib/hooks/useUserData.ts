@@ -28,12 +28,12 @@ const useUserData = (rid: string) => {
 			} else {
 				try {
 					const result = await getUserInfo(rid);
-					if (result.success && result.user) {
+					if (result.success) {
 						const { user } = result;
 						const username = useRealName && user.name ? user.name : user.username;
 						setUser({
-							username: username || '',
-							avatar: user.username || '',
+							username,
+							avatar: user.username,
 							uid: user._id,
 							type: SubscriptionType.DIRECT,
 							direct: true

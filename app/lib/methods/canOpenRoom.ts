@@ -17,7 +17,7 @@ async function open({ type, rid, name }: { type: ERoomTypes; rid: string; name: 
 		// if the dm already exists it'll return the existent
 		if (type === ERoomTypes.DIRECT && !rid) {
 			const result = await createDirectMessage(name);
-			if (result.room) {
+			if (result.success) {
 				const { room } = result;
 				return {
 					...room,

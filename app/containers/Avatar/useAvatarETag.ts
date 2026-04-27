@@ -48,7 +48,7 @@ export const useAvatarETag = ({
 				}
 
 				if (record) {
-					const observable = record.observe() as unknown as Observable<TSubscriptionModel | TUserModel | TLoggedUserModel>;
+					const observable = record.observe() as Observable<TSubscriptionModel | TUserModel | TLoggedUserModel>;
 					subscription = observable.subscribe(r => {
 						setAvatarETag(r.avatarETag);
 					});

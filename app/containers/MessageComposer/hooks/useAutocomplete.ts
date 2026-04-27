@@ -162,7 +162,7 @@ export const useAutocomplete = ({
 						return;
 					}
 					const response = await getCommandPreview(text, rid, commandParams);
-					if (response?.success && response?.preview) {
+					if (response.success) {
 						const previewItems = (response.preview?.items || []).map(item => ({
 							id: item.id,
 							preview: item,
@@ -182,7 +182,7 @@ export const useAutocomplete = ({
 				}
 				if (type === '!') {
 					const res = await getListCannedResponse({ text });
-					if (res?.success && res?.cannedResponses) {
+					if (res.success) {
 						if (res.cannedResponses.length === 0) {
 							setItems([
 								{
@@ -206,9 +206,6 @@ export const useAutocomplete = ({
 							updateAutocompleteVisible(true);
 							accessibilityFocusOnInput();
 						}
-					} else if (res?.success && !res.cannedResponses) {
-						setItems([]);
-						updateAutocompleteVisible(false);
 					}
 				}
 			} catch (e) {

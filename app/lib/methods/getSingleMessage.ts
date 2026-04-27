@@ -5,10 +5,10 @@ const getSingleMessage = (messageId: string): Promise<IMessage> =>
 	new Promise<IMessage>(async (resolve, reject) => {
 		try {
 			const result = await getSingleMessageService(messageId);
-			if (result?.success && result.message) {
+			if (result.success) {
 				return resolve(result.message);
 			}
-			return reject(new Error('Failed to get message'));
+			return reject();
 		} catch (e) {
 			return reject(e);
 		}
