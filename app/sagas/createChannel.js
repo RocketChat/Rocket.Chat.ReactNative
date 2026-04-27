@@ -57,12 +57,12 @@ const handleRequest = function* handleRequest({ data }) {
 				...result?.group
 			};
 		}
-		console.log('new channel', sub)
 		try {
 			const db = database.active;
 			const subCollection = db.get('subscriptions');
 			yield db.write(async () => {
 				await subCollection.create(s => {
+					Object.assign(s, sub);
 					s._raw = sanitizedRaw({ id: sub.rid }, subCollection.schema);
 					s.id = sub.rid;
 					s._id = sub.rid;
@@ -77,7 +77,6 @@ const handleRequest = function* handleRequest({ data }) {
 					s.userMentions = sub.userMentions ?? 0;
 					s.groupMentions = sub.groupMentions ?? 0;
 					s.ro = sub.ro ?? false;
-					Object.assign(s, sub);
 				});
 			});
 

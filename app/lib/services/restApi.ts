@@ -1068,13 +1068,19 @@ export const registerPushToken = () =>
 		return resolve();
 	});
 
-export const removePushToken = (): Promise<boolean | void> => {
+export const removePushToken = async (): Promise<boolean> => {
 	const token = getDeviceToken();
 	if (token) {
-		// RC 0.60.0
-		sdk.delete('/v1/push.token', { token });
+		try {
+			// RC 0.60.0
+			await sdk.delete('/v1/push.token', { token });
+			return true;
+		} catch (e) {
+			console.log(e);
+			return false;
+		}
 	}
-	return Promise.resolve();
+	return true;
 };
 
 // RC 6.6.0
@@ -1115,8 +1121,8 @@ export const getRoomMembers = async ({
 		};
 		// RC 3.16.0
 		const result = await sdk.get(`/v1/${roomTypeToApiType(t)}.members`, params);
-		if (result) {
-			return result?.members;
+		if (result?.success === true) {
+			return result.members;
 		}
 	}
 	// RC 0.42.0
@@ -1128,14 +1134,14 @@ export const e2eFetchMyKeys = async () => {
 	// RC 0.70.0
 	const result = await sdk.get('/v1/e2e.fetchMyKeys');
 	// snake_case -> camelCase
-	if (result) {
+	if (result?.success === true && result.public_key && result.private_key) {
 		return {
 			success: true,
 			publicKey: result.public_key,
 			privateKey: result.private_key
 		};
 	}
-	return result;
+	return { success: false };
 };
 
 export const logoutOtherLocations = () => {

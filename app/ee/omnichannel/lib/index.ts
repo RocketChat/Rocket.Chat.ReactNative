@@ -17,12 +17,11 @@ export const changeLivechatStatus = () => {
 };
 
 // RC 2.4.0
-// @ts-ignore
 export const getInquiriesQueued = (serverVersion: string) => {
 	const url = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')
 		? '/v1/livechat/inquiries.queuedForUser'
 		: '/v1/livechat/inquiries.queued';
-	return sdk.get(url as any);
+	return sdk.get(url);
 };
 
 // this inquiry is added to the db by the subscriptions stream

@@ -198,7 +198,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				// If the previous users count changes, we will update it and the members count to the value from the room counter.
 				if (this.prevUsersCount !== changes.usersCount) {
 					const counters = await getRoomCounters(room.rid, room.t as any);
-					if (counters.success && counters.members) {
+					if (counters.success && counters.members !== null && counters.members !== undefined) {
 						if (this.mounted) {
 							this.setState({ membersCount: counters.members });
 						} else {

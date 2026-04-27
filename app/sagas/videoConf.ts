@@ -183,9 +183,13 @@ function* initCall({ payload: { mic, cam, direct, rid } }: { payload: TCallProps
 					yield call(hideActionSheetRef);
 					yield put(setCalling(false));
 				}
+			} else {
+				yield put(setCalling(false));
+				yield call(hideActionSheetRef);
 			}
 		} catch (e) {
 			yield put(setCalling(false));
+			yield call(hideActionSheetRef);
 			showErrorAlert(i18n.t('error-init-video-conf'));
 			log(e);
 		}

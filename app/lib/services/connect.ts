@@ -34,12 +34,12 @@ interface IServices {
 	service: string;
 }
 
-function connect({ server, logoutOnError = false }: { server: string; logoutOnError?: boolean }): Promise<void> {
-	return new Promise<void>(async resolve => {
-		if (sdk.current?.connection.url === server) {
-			return resolve();
-		}
+async function connect({ server, logoutOnError = false }: { server: string; logoutOnError?: boolean }): Promise<void> {
+	if (sdk.current?.connection.url === server) {
+		return;
+	}
 
+	try {
 		disconnect();
 		database.setActiveDB(server);
 
@@ -48,8 +48,7 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 		EventEmitter.emit('INQUIRY_UNSUBSCRIBE');
 
 		await sdk.initialize(server);
-		resolve();
-		getSettings();
+		await getSettings();
 
 		sdk.current?.connection.on('connection', status => {
 			if (['connecting', 'reconnecting'].includes(status)) {
@@ -219,9 +218,10 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 		);
 
 		sdk.onCollection('stream-force_logout', () => store.dispatch(logout(true)));
-
-		resolve();
-	});
+	} catch (e) {
+		console.error('Connection error:', e);
+		throw e;
+	}
 }
 
 function stopListener(listener: any): boolean {
@@ -270,6 +270,7 @@ async function login(credentials: ICredentials): Promise<ILoggedUser | undefined
 		};
 		return user;
 	}
+	throw new Error('Login failed: no user returned');
 }
 
 function loginTOTP(params: ICredentials, loginEmailPassword?: boolean): Promise<ILoggedUser> {

@@ -490,7 +490,7 @@ class Encryption {
 					}
 
 					const result = await fetchUsersWaitingForGroupKey(sampleIds);
-					if (!result?.success || !Object.keys(result.usersWaitingForE2EKeys).length) {
+					if (!result?.success || !result.usersWaitingForE2EKeys || typeof result.usersWaitingForE2EKeys !== 'object' || !Object.keys(result.usersWaitingForE2EKeys).length) {
 						return;
 					}
 

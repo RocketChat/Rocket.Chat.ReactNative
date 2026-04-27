@@ -70,7 +70,7 @@ export type ChatEndpoints = {
 			result: {
 				updated: IMessageFromServer[];
 				deleted: IMessageFromServer[];
-			}
+			};
 		};
 	};
 	'chat.delete': {

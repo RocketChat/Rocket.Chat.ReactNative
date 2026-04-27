@@ -62,9 +62,13 @@ const SetUsernameView = () => {
 
 	useEffect(() => {
 		const init = async () => {
-			const suggestion = await getUsernameSuggestion();
-			if (suggestion && suggestion.success) {
-				setValue('username', suggestion.result, { shouldValidate: true });
+			try {
+				const suggestion = await getUsernameSuggestion();
+				if (suggestion && suggestion.success) {
+					setValue('username', suggestion.result, { shouldValidate: true });
+				}
+			} catch (e) {
+				console.log('Failed to get username suggestion:', e);
 			}
 		};
 		init();
