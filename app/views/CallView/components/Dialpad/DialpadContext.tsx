@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useRef } from 'react';
-import { Audio } from 'expo-av';
+import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
 
 const DTMF_ASSETS: Record<string, ReturnType<typeof require>> = {
 	'0': require('../../../../containers/Ringer/dtmf/digit-0.mp3'),
@@ -25,10 +25,22 @@ const DialpadContext = createContext<DialpadContextValue>({ playTone: () => {}, 
 
 export const DialpadProvider = ({ children }: { children: React.ReactNode }) => {
 	const soundsRef = useRef<Record<string, Audio.Sound>>({});
+	const playingRef = useRef<Record<string, Promise<void> | undefined>>({});
 
 	useEffect(() => {
 		let cancelled = false;
 		const loadAll = async () => {
+			try {
+				await Audio.setAudioModeAsync({
+					allowsRecordingIOS: true,
+					playsInSilentModeIOS: true,
+					playThroughEarpieceAndroid: true,
+					interruptionModeIOS: InterruptionModeIOS.DoNotMix,
+					interruptionModeAndroid: InterruptionModeAndroid.DoNotMix
+				});
+			} catch (error) {
+				console.warn('[DialpadContext] Failed to set audio mode:', error);
+			}
 			await Promise.all(
 				Object.entries(DTMF_ASSETS).map(async ([digit, asset]) => {
 					try {
@@ -52,6 +64,7 @@ export const DialpadProvider = ({ children }: { children: React.ReactNode }) => 
 			cancelled = true;
 			Object.values(soundsRef.current).forEach(s => s.unloadAsync().catch(() => {}));
 			soundsRef.current = {};
+			playingRef.current = {};
 		};
 	}, []);
 
@@ -60,16 +73,16 @@ export const DialpadProvider = ({ children }: { children: React.ReactNode }) => 
 		if (!sound) {
 			return;
 		}
-		try {
-			await Audio.setAudioModeAsync({
-				allowsRecordingIOS: true,
-				playThroughEarpieceAndroid: true
-			}).catch(() => {});
-			await sound.setPositionAsync(0);
-			await sound.playAsync();
-		} catch (error) {
-			console.warn(`[DialpadContext] Failed to play DTMF tone for "${digit}":`, error);
-		}
+		const start = (async () => {
+			try {
+				await sound.setPositionAsync(0);
+				await sound.playAsync();
+			} catch (error) {
+				console.warn(`[DialpadContext] Failed to play DTMF tone for "${digit}":`, error);
+			}
+		})();
+		playingRef.current[digit] = start;
+		await start;
 	};
 
 	const stopTone = async (digit: string) => {
@@ -77,6 +90,8 @@ export const DialpadProvider = ({ children }: { children: React.ReactNode }) => 
 		if (!sound) {
 			return;
 		}
+		await playingRef.current[digit];
+		playingRef.current[digit] = undefined;
 		try {
 			await sound.stopAsync();
 		} catch (error) {
