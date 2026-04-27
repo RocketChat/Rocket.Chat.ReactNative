@@ -1,6 +1,7 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
+import * as Haptics from 'expo-haptics';
 
 import Dialpad from './Dialpad';
 import { useCallStore } from '../../../../lib/services/voip/useCallStore';
@@ -35,6 +36,11 @@ jest.mock('react-native-incall-manager', () => ({
 	start: jest.fn(),
 	stop: jest.fn(),
 	setForceSpeakerphoneOn: jest.fn(() => Promise.resolve())
+}));
+
+jest.mock('expo-haptics', () => ({
+	impactAsync: jest.fn(),
+	ImpactFeedbackStyle: { Medium: 'medium' }
 }));
 
 const sendDTMFMock = jest.fn();
@@ -115,21 +121,20 @@ describe('Dialpad', () => {
 		expect(getByText('#')).toBeTruthy();
 	});
 
-	it('should call sendDTMF and update value when digit is pressed', () => {
+	it('should trigger haptics when digit button is pressed in', () => {
 		setStoreState();
-		const { getByText } = render(
+		const { getByTestId } = render(
 			<Wrapper>
 				<Dialpad testID='dialpad' />
 			</Wrapper>
 		);
 
-		fireEvent.press(getByText('5'));
-		expect(sendDTMFMock).toHaveBeenCalledWith('5');
-		expect(sendDTMFMock).toHaveBeenCalledTimes(1);
+		fireEvent(getByTestId('dialpad-button-5'), 'pressIn');
+		expect(Haptics.impactAsync).toHaveBeenCalled();
+		expect(Haptics.impactAsync).toHaveBeenCalledTimes(1);
 
-		fireEvent.press(getByText('2'));
-		expect(sendDTMFMock).toHaveBeenCalledWith('2');
-		expect(sendDTMFMock).toHaveBeenCalledTimes(2);
+		fireEvent(getByTestId('dialpad-button-2'), 'pressIn');
+		expect(Haptics.impactAsync).toHaveBeenCalledTimes(2);
 	});
 
 	it('should display letters on keys that have them', () => {
