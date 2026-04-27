@@ -27,7 +27,6 @@ export const NewMediaCall = (): React.ReactElement => {
 
 const styles = StyleSheet.create({
 	screen: {
-		flex: 1,
 		paddingHorizontal: 16,
 		paddingTop: 16
 	}
