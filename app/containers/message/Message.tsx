@@ -27,7 +27,7 @@ import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResp
 import Quote from './Components/Attachments/Quote';
 import translationLanguages from '../../lib/constants/translationLanguages';
 import Touch from './Touch';
-import { setLastFocusedMessageRef } from '../../lib/a11y/lastFocusedMessage';
+import { useLastFocusedMessageRef } from '../../lib/a11y/useLastFocusedMessageRef';
 import { isIOS } from '../../lib/methods/helpers';
 
 const MessageInner = React.memo((props: IMessageInner) => {
@@ -239,6 +239,7 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 	const { onPress, onLongPress } = useContext(MessageContext);
 	const { colors } = useTheme();
 	const touchRef = useRef<View>(null);
+	const lastFocusedMessageRef = useLastFocusedMessageRef();
 	const accessibilityLabelValue = getMessageAccessibilityLabel(props);
 
 	let backgroundColor = undefined;
@@ -261,7 +262,7 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 		(props.isInfo && !props.isThreadReply) || props.archived || props.isTemp || props.type === 'jitsi_call_started';
 
 	const handleLongPress = () => {
-		setLastFocusedMessageRef(touchRef);
+		lastFocusedMessageRef.set(touchRef);
 		onLongPress();
 	};
 

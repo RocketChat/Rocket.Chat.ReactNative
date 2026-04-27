@@ -14,7 +14,7 @@ import { LISTENER } from '../Toast';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { showConfirmationAlert } from '../../lib/methods/helpers/info';
 import { type TActionSheetOptionsItem, useActionSheet, ACTION_SHEET_ANIMATION_DURATION } from '../ActionSheet';
-import { clearLastFocusedMessageRef, getLastFocusedMessageRef } from '../../lib/a11y/lastFocusedMessage';
+import { useLastFocusedMessageRef } from '../../lib/a11y/useLastFocusedMessageRef';
 import Header, { HEADER_HEIGHT, type IHeader } from './Header';
 import events from '../../lib/methods/helpers/log/events';
 import {
@@ -113,6 +113,7 @@ const MessageActions = React.memo(
 				hasCreateDiscussionOtherUserPermission: false
 			};
 			const { showActionSheet, hideActionSheet } = useActionSheet();
+			const lastFocusedMessageRef = useLastFocusedMessageRef();
 
 			const getPermissions = async () => {
 				try {
@@ -581,10 +582,10 @@ const MessageActions = React.memo(
 			const showMessageActions = async (message: TAnyMessageModel) => {
 				logEvent(events.ROOM_SHOW_MSG_ACTIONS);
 				await getPermissions();
-				const focusRef = getLastFocusedMessageRef();
+				const focusRef = lastFocusedMessageRef.get();
 				const onClose = focusRef
 					? () => {
-							clearLastFocusedMessageRef();
+							lastFocusedMessageRef.clear();
 							setTimeout(() => {
 								const node = findNodeHandle(focusRef.current);
 								if (node) AccessibilityInfo.setAccessibilityFocus(node);
