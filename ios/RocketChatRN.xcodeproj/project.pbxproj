@@ -292,6 +292,8 @@
 		66C2701D2EBBCB570062725F /* MMKVKeyManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 66C2701A2EBBCB570062725F /* MMKVKeyManager.mm */; };
 		66C270202EBBCB780062725F /* SecureStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 66C2701F2EBBCB780062725F /* SecureStorage.m */; };
 		66C270212EBBCB780062725F /* SecureStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 66C2701F2EBBCB780062725F /* SecureStorage.m */; };
+		6FA7E2382F28A9D300A1D45E /* ExternalInputModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FA7E2372F28A9D300A1D45E /* ExternalInputModule.m */; };
+		6FA7E2392F28A9D300A1D45E /* ExternalInputModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FA7E2372F28A9D300A1D45E /* ExternalInputModule.m */; };
 		79D8C97F8CE2EC1B6882826B /* SecureStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B215A42CFB843397273C7EA /* SecureStorage.m */; };
 		7A006F14229C83B600803143 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A006F13229C83B600803143 /* GoogleService-Info.plist */; };
 		7A0129D42C6E8EC800F84A97 /* ShareRocketChatRN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0129D22C6E8B5900F84A97 /* ShareRocketChatRN.swift */; };
@@ -629,6 +631,8 @@
 		66C2701E2EBBCB780062725F /* SecureStorage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SecureStorage.h; sourceTree = "<group>"; };
 		66C2701F2EBBCB780062725F /* SecureStorage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SecureStorage.m; sourceTree = "<group>"; };
 		6CE8C7A54627937DB698E839 /* Pods-defaults-NotificationService.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-defaults-NotificationService.debug.xcconfig"; path = "Target Support Files/Pods-defaults-NotificationService/Pods-defaults-NotificationService.debug.xcconfig"; sourceTree = "<group>"; };
+		6FA7E2362F28A9D300A1D45E /* ExternalInputModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExternalInputModule.h; sourceTree = "<group>"; };
+		6FA7E2372F28A9D300A1D45E /* ExternalInputModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExternalInputModule.m; sourceTree = "<group>"; };
 		7A006F13229C83B600803143 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7A0129D22C6E8B5900F84A97 /* ShareRocketChatRN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareRocketChatRN.swift; sourceTree = "<group>"; };
 		7A0D62D1242AB187006D5C06 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -736,6 +740,8 @@
 			children = (
 				66C2701E2EBBCB780062725F /* SecureStorage.h */,
 				66C2701F2EBBCB780062725F /* SecureStorage.m */,
+				6FA7E2362F28A9D300A1D45E /* ExternalInputModule.h */,
+				6FA7E2372F28A9D300A1D45E /* ExternalInputModule.m */,
 				7ACFE7D82DDE48760090D9BC /* AppDelegate.swift */,
 				A48B46D72D3FFBD200945489 /* A11yFlowModule.h */,
 				A48B46D82D3FFBD200945489 /* A11yFlowModule.m */,
@@ -2117,6 +2123,7 @@
 				1E76CBCF25152C310067298C /* NotificationType.swift in Sources */,
 				1E76CBDA25152C8E0067298C /* SendMessage.swift in Sources */,
 				66C270212EBBCB780062725F /* SecureStorage.m in Sources */,
+				6FA7E2382F28A9D300A1D45E /* ExternalInputModule.m in Sources */,
 				4C4C8603EF082F0A33A95522 /* ExpoModulesProvider.swift in Sources */,
 				A2C6E2DD38F8BEE19BFB2E1D /* SecureStorage.m in Sources */,
 			);
@@ -2393,6 +2400,7 @@
 				7AAB3E30257E6A6E00707CF6 /* NotificationType.swift in Sources */,
 				7AAB3E31257E6A6E00707CF6 /* SendMessage.swift in Sources */,
 				66C270202EBBCB780062725F /* SecureStorage.m in Sources */,
+				6FA7E2392F28A9D300A1D45E /* ExternalInputModule.m in Sources */,
 				BC404914E86821389EEB543D /* ExpoModulesProvider.swift in Sources */,
 				79D8C97F8CE2EC1B6882826B /* SecureStorage.m in Sources */,
 			);

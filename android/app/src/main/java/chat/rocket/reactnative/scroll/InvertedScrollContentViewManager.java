@@ -2,6 +2,7 @@ package chat.rocket.reactnative.scroll;
 
 import com.facebook.react.module.annotations.ReactModule;
 import com.facebook.react.uimanager.ThemedReactContext;
+import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.views.view.ReactViewManager;
 
 /**
@@ -21,5 +22,10 @@ public class InvertedScrollContentViewManager extends ReactViewManager {
   @Override
   public InvertedScrollContentView createViewInstance(ThemedReactContext context) {
     return new InvertedScrollContentView(context);
+  }
+
+  @ReactProp(name = "isInvertedContent")
+  public void setIsInvertedContent(InvertedScrollContentView view, boolean isInverted) {
+    view.setIsInvertedContent(isInverted);
   }
 }
