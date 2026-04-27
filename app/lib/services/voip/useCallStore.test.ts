@@ -163,6 +163,30 @@ describe('useCallStore roomId', () => {
 	});
 });
 
+describe('useCallStore direction', () => {
+	beforeEach(() => {
+		useCallStore.getState().resetNativeCallId();
+		useCallStore.getState().reset();
+	});
+
+	it('defaults to null', () => {
+		expect(useCallStore.getState().direction).toBeNull();
+	});
+
+	it('setDirection sets the value', () => {
+		useCallStore.getState().setDirection('outgoing');
+		expect(useCallStore.getState().direction).toBe('outgoing');
+		useCallStore.getState().setDirection('incoming');
+		expect(useCallStore.getState().direction).toBe('incoming');
+	});
+
+	it('reset clears direction to null', () => {
+		useCallStore.getState().setDirection('outgoing');
+		useCallStore.getState().reset();
+		expect(useCallStore.getState().direction).toBeNull();
+	});
+});
+
 describe('useCallStore callStartTime', () => {
 	beforeEach(() => {
 		useCallStore.getState().resetNativeCallId();
