@@ -311,6 +311,27 @@ class VoipNotification(private val context: Context) {
                 answer = "accept",
                 supportedFeatures = listOf("audio", "hold")
             ) { success ->
+                // Late-success guard: if the handler deadline already fired (finished == true)
+                // and the server accepted the call, we must send a reject so server state
+                // matches client state (the client already tore down the call).
+                if (success && finished.get()) {
+                    if (BuildConfig.DEBUG) {
+                        Log.w(TAG, "Late accept success for ${payload.callId} after deadline; sending reject to reconcile server state")
+                    }
+                    MediaCallsAnswerRequest.fetch(
+                        context = appCtx,
+                        host = payload.host,
+                        callId = payload.callId,
+                        contractId = deviceId,
+                        answer = "reject",
+                        supportedFeatures = null
+                    ) { rejectSucceeded ->
+                        if (BuildConfig.DEBUG) {
+                            Log.d(TAG, "Late-accept reconcile-reject for ${payload.callId} succeeded=$rejectSucceeded")
+                        }
+                    }
+                    return@fetch
+                }
                 finish(success)
             }
         }

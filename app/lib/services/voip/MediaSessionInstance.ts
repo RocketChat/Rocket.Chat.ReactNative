@@ -28,8 +28,8 @@ import type { IDDPMessage } from '../../../definitions/IDDPMessage';
 import type { ISubscription, TSubscriptionModel } from '../../../definitions';
 import { getDMSubscriptionByUsername } from '../../database/services/Subscription';
 import { getUidDirectMessage } from '../../methods/helpers/helpers';
-import { requestPhoneStatePermission } from '../../methods/voipPhoneStatePermission';
 import { isInActiveVoipCall } from './isInActiveVoipCall';
+import { requestVoipCallPermissions } from '../../methods/voipCallPermissions';
 import I18n from '../../../i18n';
 import { showErrorAlert } from '../../methods/helpers/info';
 
@@ -128,6 +128,7 @@ class MediaSessionInstance {
 
 				if (call.localParticipant.role === 'caller') {
 					useCallStore.getState().setCall(call);
+					useCallStore.getState().setDirection('outgoing');
 					Navigation.navigate('CallView');
 					if (useCallStore.getState().roomId == null) {
 						this.resolveRoomIdFromContact(call.remoteParticipants[0]?.contact).catch(error => {
@@ -155,6 +156,7 @@ class MediaSessionInstance {
 			await mainCall.accept();
 			RNCallKeep.setCurrentCallActive(callId);
 			useCallStore.getState().setCall(mainCall);
+			useCallStore.getState().setDirection('incoming');
 			await waitForNavigationReady();
 			Navigation.navigate('CallView');
 			this.resolveRoomIdFromContact(mainCall.remoteParticipants[0]?.contact).catch(error => {
@@ -194,7 +196,14 @@ class MediaSessionInstance {
 			showErrorAlert(I18n.t('VoIP_Still_Connecting'), I18n.t('Oops'));
 			return;
 		}
-		requestPhoneStatePermission();
+		const granted = await requestVoipCallPermissions();
+		if (!granted) {
+			showErrorAlert(
+				I18n.t('Go_to_your_device_settings_and_allow_microphone'),
+				I18n.t('Microphone_access_needed_to_record_audio')
+			);
+			return;
+		}
 		await this.instance.startCall(actor, userId);
 	};
 

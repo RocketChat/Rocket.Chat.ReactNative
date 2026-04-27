@@ -22,10 +22,12 @@ const mockGetUidDirectMessage = jest.mocked(getUidDirectMessage);
 
 const mockCallStoreReset = jest.fn();
 const mockSetRoomId = jest.fn();
+const mockSetDirection = jest.fn();
 const mockUseCallStoreGetState = jest.fn(() => ({
 	reset: mockCallStoreReset,
 	setCall: jest.fn(),
 	setRoomId: mockSetRoomId,
+	setDirection: mockSetDirection,
 	resetNativeCallId: jest.fn(),
 	call: null as unknown,
 	callId: null as string | null,
@@ -110,9 +112,13 @@ jest.mock('../../navigation/appNavigation', () => ({
 	waitForNavigationReady: jest.fn().mockResolvedValue(undefined)
 }));
 
-const mockRequestPhoneStatePermission = jest.fn();
-jest.mock('../../methods/voipPhoneStatePermission', () => ({
-	requestPhoneStatePermission: () => mockRequestPhoneStatePermission()
+const mockRequestVoipCallPermissions = jest.fn().mockResolvedValue(true);
+jest.mock('../../methods/voipCallPermissions', () => ({
+	requestVoipCallPermissions: () => mockRequestVoipCallPermissions()
+}));
+
+jest.mock('react-native', () => ({
+	Platform: { OS: 'android' }
 }));
 
 const mockIsInActiveVoipCall = jest.fn(() => false);
@@ -219,6 +225,7 @@ describe('MediaSessionInstance', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockMediaCallsStateSignals.mockResolvedValue({ signals: [], success: true });
+		mockRequestVoipCallPermissions.mockResolvedValue(true);
 		createdSessions.length = 0;
 		mockGetUidDirectMessage.mockReturnValue('other-user-id');
 		mockGetDMSubscriptionByUsername.mockResolvedValue(null);
@@ -227,6 +234,7 @@ describe('MediaSessionInstance', () => {
 			reset: mockCallStoreReset,
 			setCall: jest.fn(),
 			setRoomId: mockSetRoomId,
+			setDirection: mockSetDirection,
 			resetNativeCallId: jest.fn(),
 			call: null,
 			callId: null,
@@ -320,6 +328,7 @@ describe('MediaSessionInstance', () => {
 				reset: mockCallStoreReset,
 				setCall: mockSetCall,
 				setRoomId: mockSetRoomId,
+				setDirection: mockSetDirection,
 				resetNativeCallId: jest.fn(),
 				call: { callId: 'active-a' } as IClientMediaCall,
 				callId: 'active-a',
@@ -338,6 +347,7 @@ describe('MediaSessionInstance', () => {
 				reset: mockCallStoreReset,
 				setCall: jest.fn(),
 				setRoomId: mockSetRoomId,
+				setDirection: mockSetDirection,
 				resetNativeCallId: jest.fn(),
 				call: { callId: 'active-a' } as IClientMediaCall,
 				callId: 'active-a',
@@ -356,6 +366,7 @@ describe('MediaSessionInstance', () => {
 				reset: mockCallStoreReset,
 				setCall: jest.fn(),
 				setRoomId: mockSetRoomId,
+				setDirection: mockSetDirection,
 				resetNativeCallId: jest.fn(),
 				call: null,
 				callId: null,
@@ -375,6 +386,7 @@ describe('MediaSessionInstance', () => {
 				reset: mockCallStoreReset,
 				setCall: mockSetCall,
 				setRoomId: mockSetRoomId,
+				setDirection: mockSetDirection,
 				resetNativeCallId: jest.fn(),
 				call: null,
 				callId: null,
@@ -420,6 +432,7 @@ describe('MediaSessionInstance', () => {
 				reset: mockCallStoreReset,
 				setCall: jest.fn(),
 				setRoomId: mockSetRoomId,
+				setDirection: mockSetDirection,
 				resetNativeCallId: jest.fn(),
 				call: null,
 				callId: null,
@@ -453,6 +466,7 @@ describe('MediaSessionInstance', () => {
 				reset: mockCallStoreReset,
 				setCall: jest.fn(),
 				setRoomId: mockSetRoomId,
+				setDirection: mockSetDirection,
 				resetNativeCallId: jest.fn(),
 				call: null,
 				callId: null,
@@ -486,6 +500,7 @@ describe('MediaSessionInstance', () => {
 				reset: mockCallStoreReset,
 				setCall: jest.fn(),
 				setRoomId: mockSetRoomId,
+				setDirection: mockSetDirection,
 				resetNativeCallId: jest.fn(),
 				call: { callId: 'from-signal' } as any,
 				callId: 'from-signal',
@@ -532,6 +547,7 @@ describe('MediaSessionInstance', () => {
 				reset: mockCallStoreReset,
 				setCall: jest.fn(),
 				setRoomId: mockSetRoomId,
+				setDirection: mockSetDirection,
 				resetNativeCallId: jest.fn(),
 				call: null,
 				callId: null,
@@ -560,54 +576,55 @@ describe('MediaSessionInstance', () => {
 	});
 
 	describe('startCall', () => {
-		it('requests phone state permission fire-and-forget when starting a call', async () => {
+		it('requests voip call permissions and proceeds when granted', async () => {
 			await mediaSessionInstance.init('user-1');
-			mockRequestPhoneStatePermission.mockClear();
+			mockRequestVoipCallPermissions.mockClear();
 			const session = createdSessions[0];
-			mediaSessionInstance.startCall('peer-1', 'user');
-			expect(mockRequestPhoneStatePermission).toHaveBeenCalledTimes(1);
+			await mediaSessionInstance.startCall('peer-1', 'user');
+			expect(mockRequestVoipCallPermissions).toHaveBeenCalledTimes(1);
 			expect(session.startCall).toHaveBeenCalledWith('user', 'peer-1');
+			expect(mockShowErrorAlert).not.toHaveBeenCalled();
 		});
 
 		it('rejects with VoIP_Already_In_Call when an active VoIP call is present', async () => {
 			await mediaSessionInstance.init('user-1');
 			const session = createdSessions[0];
-			mockRequestPhoneStatePermission.mockClear();
+			mockRequestVoipCallPermissions.mockClear();
 			mockIsInActiveVoipCall.mockReturnValue(true);
 
 			await expect(mediaSessionInstance.startCall('peer-1', 'user')).rejects.toThrow('VoIP_Already_In_Call');
 			expect(session.startCall).not.toHaveBeenCalled();
-			expect(mockRequestPhoneStatePermission).not.toHaveBeenCalled();
+			expect(mockRequestVoipCallPermissions).not.toHaveBeenCalled();
 		});
 
 		it('silently drops self-call when userId matches logged-in user id', async () => {
 			await mediaSessionInstance.init('user-1');
-			mockRequestPhoneStatePermission.mockClear();
+			mockRequestVoipCallPermissions.mockClear();
 			const session = createdSessions[0];
 			await mediaSessionInstance.startCall('user-1', 'user');
 			expect(session.startCall).not.toHaveBeenCalled();
-			expect(mockRequestPhoneStatePermission).not.toHaveBeenCalled();
+			expect(mockRequestVoipCallPermissions).not.toHaveBeenCalled();
 		});
 
 		it('shows alert and skips permission and skips instance.startCall when instance is null', async () => {
 			await mediaSessionInstance.init('user-1');
 			const session = createdSessions[0];
 			mediaSessionInstance.reset();
-			mockRequestPhoneStatePermission.mockClear();
+			mockRequestVoipCallPermissions.mockClear();
 			await mediaSessionInstance.startCall('peer-1', 'user');
 			expect(mockShowErrorAlert).toHaveBeenCalledTimes(1);
-			expect(mockRequestPhoneStatePermission).not.toHaveBeenCalled();
+			expect(mockRequestVoipCallPermissions).not.toHaveBeenCalled();
 			expect(session.startCall).not.toHaveBeenCalled();
 		});
 
-		it('calls through normally when instance is present', async () => {
+		it('does not place call and shows error when permissions are denied', async () => {
 			await mediaSessionInstance.init('user-1');
-			mockRequestPhoneStatePermission.mockClear();
+			mockRequestVoipCallPermissions.mockResolvedValueOnce(false);
 			const session = createdSessions[0];
 			await mediaSessionInstance.startCall('peer-2', 'user');
-			expect(mockShowErrorAlert).not.toHaveBeenCalled();
-			expect(mockRequestPhoneStatePermission).toHaveBeenCalledTimes(1);
-			expect(session.startCall).toHaveBeenCalledWith('user', 'peer-2');
+			expect(mockRequestVoipCallPermissions).toHaveBeenCalled();
+			expect(session.startCall).not.toHaveBeenCalled();
+			expect(mockShowErrorAlert).toHaveBeenCalledTimes(1);
 		});
 
 		it('startCallByRoom shows alert when instance is null', async () => {
@@ -643,6 +660,10 @@ describe('MediaSessionInstance', () => {
 			});
 
 			mediaSessionInstance.startCallByRoom({ rid: 'rid-dm', t: 'd', uids: ['a', 'b'] } as any);
+
+			// startCall is async (awaits permission on Android); flush microtask queue
+			await Promise.resolve();
+			await Promise.resolve();
 
 			expect(mockSetRoomId).toHaveBeenCalledWith('rid-dm');
 			expect(session.startCall).toHaveBeenCalledWith('user', 'other-user-id');
@@ -688,6 +709,7 @@ describe('MediaSessionInstance', () => {
 				reset: mockCallStoreReset,
 				setCall: jest.fn(),
 				setRoomId: mockSetRoomId,
+				setDirection: mockSetDirection,
 				resetNativeCallId: jest.fn(),
 				call: null,
 				callId: null,
