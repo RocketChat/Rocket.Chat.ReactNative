@@ -12,18 +12,18 @@ import { store } from '../store/auxStore';
 import { loginRequest, logout, setLoginServices, setUser } from '../../actions/login';
 import sdk from './sdk';
 import I18n from '../../i18n';
-import { ICredentials, ILoggedUser, STATUSES } from '../../definitions';
+import { type ICredentials, type ILoggedUser, STATUSES } from '../../definitions';
 import { connectRequest, connectSuccess, disconnect as disconnectAction } from '../../actions/connect';
 import { updatePermission } from '../../actions/permissions';
 import EventEmitter from '../methods/helpers/events';
 import { updateSettings } from '../../actions/settings';
 import { defaultSettings } from '../constants/defaultSettings';
 import { compareServerVersion, isIOS } from '../methods/helpers';
-import { onRolesChanged } from '../../lib/methods/getRoles';
-import { getSettings } from '../../lib/methods/getSettings';
-import { setPresenceCap } from '../../lib/methods/getUsersPresence';
-import { _setUser, _activeUsers, _setUserTimer } from '../../lib/methods/setUser';
-import { unsubscribeRooms } from '../../lib/methods/subscribeRooms';
+import { onRolesChanged } from '../methods/getRoles';
+import { getSettings } from '../methods/getSettings';
+import { setPresenceCap } from '../methods/getUsersPresence';
+import { _setUser, _activeUsers, _setUserTimer } from '../methods/setUser';
+import { unsubscribeRooms } from '../methods/subscribeRooms';
 
 interface IServices {
 	[index: string]: string | boolean;
@@ -151,7 +151,7 @@ async function connect({ server, logoutOnError = false }: { server: string; logo
 								store.dispatch(setActiveUsers(activeUsersBatch));
 							});
 							_setUserTimer.setUserTimer = null;
-							//@ts-ignore - fix me
+							// @ts-ignore - fix me
 							_activeUsers.activeUsers = {};
 							return null;
 						}, 10000);

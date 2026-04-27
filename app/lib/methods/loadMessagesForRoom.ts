@@ -1,3 +1,5 @@
+import { type ChannelsHistoryParams, type GroupsHistoryParams, type ImHistoryParams } from '@rocket.chat/api-typings';
+
 import dayjs from '../dayjs';
 import { MessageTypeLoad } from '../constants/messageTypeLoad';
 import { type IMessage, type TMessageModel } from '../../definitions';
@@ -7,7 +9,6 @@ import { type RoomTypes, roomTypeToApiType } from './roomTypeToApiType';
 import sdk from '../services/sdk';
 import updateMessages from './updateMessages';
 import { generateLoadMoreId } from './helpers/generateLoadMoreId';
-import { type ChannelsHistoryParams, type GroupsHistoryParams, type ImHistoryParams } from '@rocket.chat/api-typings';
 
 const COUNT = 50;
 
