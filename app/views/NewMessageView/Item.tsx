@@ -9,6 +9,8 @@ import { useTheme } from '../../theme';
 import I18n from '../../i18n';
 import { useMediaCallPermission } from '../../lib/hooks/useMediaCallPermission';
 import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';
+import { useIsInActiveVoipCall } from '../../lib/services/voip/isInActiveVoipCall';
+import { isSelfUserId } from '../../lib/services/voip/isSelfUserId';
 import { showActionSheetRef } from '../../containers/ActionSheet';
 import { NewMediaCall } from '../../containers/NewMediaCall';
 
@@ -24,9 +26,11 @@ interface IItem {
 const Item = ({ userId, name, username, onPress, testID, onLongPress }: IItem) => {
 	const { colors } = useTheme();
 	const hasMediaCallPermission = useMediaCallPermission();
+	const isInActiveCall = useIsInActiveVoipCall();
+	const isSelf = isSelfUserId(userId);
 
 	const handleCallPress = () => {
-		if (!userId) return;
+		if (!userId || isInActiveCall || isSelf) return;
 		usePeerAutocompleteStore.getState().setSelectedPeer({ type: 'user', value: userId, label: name, username });
 		showActionSheetRef({
 			children: <NewMediaCall />,
@@ -54,15 +58,17 @@ const Item = ({ userId, name, username, onPress, testID, onLongPress }: IItem) =
 						{name}
 					</Text>
 				</View>
-				{hasMediaCallPermission ? (
+				{hasMediaCallPermission && !isSelf ? (
 					<BorderlessButton
 						onPress={handleCallPress}
+						enabled={!isInActiveCall}
 						testID={`${testID}-call`}
 						rippleColor={colors.surfaceSelected}
 						style={styles.iconContainer}
 						accessibilityLabel={I18n.t('Voice_call')}
-						accessibilityRole='button'>
-						<CustomIcon name={'phone'} size={22} color={colors.fontDefault} />
+						accessibilityRole='button'
+						accessibilityState={{ disabled: isInActiveCall }}>
+						<CustomIcon name={'phone'} size={22} color={isInActiveCall ? colors.fontDisabled : colors.fontDefault} />
 					</BorderlessButton>
 				) : null}
 			</View>

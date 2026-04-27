@@ -14,18 +14,26 @@ import { getUniqueIdSync } from 'react-native-device-info';
 import { dequal } from 'dequal';
 
 import { mediaSessionStore } from './MediaSessionStore';
+import { terminateNativeCall } from './terminateNativeCall';
 import { useCallStore } from './useCallStore';
+import { MediaCallLogger } from './MediaCallLogger';
+import { isSelfUserId } from './isSelfUserId';
 import { store } from '../../store/auxStore';
 import sdk from '../sdk';
 import { mediaCallsStateSignals } from '../restApi';
-import Navigation from '../../navigation/appNavigation';
+import Navigation, { waitForNavigationReady } from '../../navigation/appNavigation';
 import { parseStringToIceServers } from './parseStringToIceServers';
 import type { IceServer } from '../../../definitions/Voip';
 import type { IDDPMessage } from '../../../definitions/IDDPMessage';
 import type { ISubscription, TSubscriptionModel } from '../../../definitions';
 import { getDMSubscriptionByUsername } from '../../database/services/Subscription';
 import { getUidDirectMessage } from '../../methods/helpers/helpers';
-import { requestPhoneStatePermission } from '../../methods/voipPhoneStatePermission';
+import { isInActiveVoipCall } from './isInActiveVoipCall';
+import { requestVoipCallPermissions } from '../../methods/voipCallPermissions';
+import I18n from '../../../i18n';
+import { showErrorAlert } from '../../methods/helpers/info';
+
+const mediaCallLogger = new MediaCallLogger();
 
 class MediaSessionInstance {
 	private iceServers: IceServer[] = [];
@@ -120,6 +128,7 @@ class MediaSessionInstance {
 
 				if (call.localParticipant.role === 'caller') {
 					useCallStore.getState().setCall(call);
+					useCallStore.getState().setDirection('outgoing');
 					Navigation.navigate('CallView');
 					if (useCallStore.getState().roomId == null) {
 						this.resolveRoomIdFromContact(call.remoteParticipants[0]?.contact).catch(error => {
@@ -129,7 +138,7 @@ class MediaSessionInstance {
 				}
 
 				call.emitter.on('ended', () => {
-					RNCallKeep.endCall(call.callId);
+					terminateNativeCall(call.callId);
 				});
 			}
 		});
@@ -147,12 +156,14 @@ class MediaSessionInstance {
 			await mainCall.accept();
 			RNCallKeep.setCurrentCallActive(callId);
 			useCallStore.getState().setCall(mainCall);
+			useCallStore.getState().setDirection('incoming');
+			await waitForNavigationReady();
 			Navigation.navigate('CallView');
 			this.resolveRoomIdFromContact(mainCall.remoteParticipants[0]?.contact).catch(error => {
 				console.error('[VoIP] Error resolving room id from contact (answerCall):', error);
 			});
 		} else {
-			RNCallKeep.endCall(callId);
+			terminateNativeCall(callId);
 			const st = useCallStore.getState();
 			if (st.nativeAcceptedCallId === callId) {
 				st.resetNativeCallId();
@@ -162,6 +173,7 @@ class MediaSessionInstance {
 	};
 
 	public startCallByRoom = (room: TSubscriptionModel | ISubscription) => {
+		if (isInActiveVoipCall()) return;
 		useCallStore.getState().setRoomId(room.rid ?? null);
 		const otherUserId = getUidDirectMessage(room);
 		if (otherUserId) {
@@ -172,8 +184,27 @@ class MediaSessionInstance {
 	};
 
 	public startCall = async (userId: string, actor: CallActorType): Promise<void> => {
-		requestPhoneStatePermission();
-		await this.instance?.startCall(actor, userId);
+		if (isInActiveVoipCall()) {
+			throw new Error(I18n.t('VoIP_Already_In_Call'));
+		}
+		if (isSelfUserId(userId)) {
+			mediaCallLogger.debug('[VoIP] startCall blocked: target userId matches logged-in user');
+			return;
+		}
+		if (!this.instance) {
+			mediaCallLogger.debug('[VoIP] startCall blocked: MediaSessionInstance not initialized');
+			showErrorAlert(I18n.t('VoIP_Still_Connecting'), I18n.t('Oops'));
+			return;
+		}
+		const granted = await requestVoipCallPermissions();
+		if (!granted) {
+			showErrorAlert(
+				I18n.t('Go_to_your_device_settings_and_allow_microphone'),
+				I18n.t('Microphone_access_needed_to_record_audio')
+			);
+			return;
+		}
+		await this.instance.startCall(actor, userId);
 	};
 
 	public endCall = (callId: string) => {
@@ -186,7 +217,7 @@ class MediaSessionInstance {
 				mainCall.hangup();
 			}
 		}
-		RNCallKeep.endCall(callId);
+		terminateNativeCall(callId);
 		RNCallKeep.setCurrentCallActive('');
 		RNCallKeep.setAvailable(true);
 		useCallStore.getState().resetNativeCallId();

@@ -1,4 +1,5 @@
 import { usersAutoComplete } from '../restApi';
+import { store as reduxStore } from '../../store/auxStore';
 
 export type TPeerItem =
 	| { type: 'user'; value: string; label: string; username?: string; callerId?: string }
@@ -57,9 +58,11 @@ export const getPeerAutocompleteOptions = async ({
 	const response = (await usersAutoComplete(selector)) as TUserAutocompleteResponse;
 	const canUseItems = response?.success ?? true;
 
+	const loggedInUserId = reduxStore?.getState()?.login?.user?.id;
+
 	const userOptions: TPeerItem[] = canUseItems
 		? (response?.items || [])
-				.filter(item => !!item?._id && !!(item.name || item.username))
+				.filter(item => !!item?._id && !!(item.name || item.username) && item._id !== loggedInUserId)
 				.map(item => ({
 					type: 'user',
 					value: item._id,

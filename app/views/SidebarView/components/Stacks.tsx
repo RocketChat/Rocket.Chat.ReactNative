@@ -9,7 +9,7 @@ const Stacks = ({ currentScreen }: { currentScreen: string | null }) => {
 
 	const { colors } = useTheme();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
-	const { openNewMediaCall, hasMediaCallPermission } = useNewMediaCall();
+	const { openNewMediaCall, hasMediaCallPermission, isInActiveCall } = useNewMediaCall();
 
 	if (isMasterDetail) {
 		return null;
@@ -32,6 +32,7 @@ const Stacks = ({ currentScreen }: { currentScreen: string | null }) => {
 						left={() => <List.Icon name='phone' />}
 						onPress={openNewMediaCall}
 						testID='sidebar-media-call'
+						disabled={isInActiveCall}
 					/>
 					<List.Separator />
 				</>

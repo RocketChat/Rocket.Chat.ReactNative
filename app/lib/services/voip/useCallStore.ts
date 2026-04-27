@@ -3,11 +3,12 @@ import type { CallState, CallContact, IClientMediaCall } from '@rocket.chat/medi
 import RNCallKeep from 'react-native-callkeep';
 import InCallManager from 'react-native-incall-manager';
 
+import { terminateNativeCall } from './terminateNativeCall';
 import Navigation from '../../navigation/appNavigation';
 import { hideActionSheetRef } from '../../../containers/ActionSheet';
 import { useIsScreenReaderEnabled } from '../../hooks/useIsScreenReaderEnabled';
 
-const STALE_NATIVE_MS = 15_000;
+const STALE_NATIVE_MS = 60_000;
 
 let callListenersCleanup: (() => void) | null = null;
 let staleNativeTimer: ReturnType<typeof setTimeout> | null = null;
@@ -75,6 +76,9 @@ interface CallStoreState {
 	/** DM room id for the current call; cleared on `reset()`. */
 	roomId: string | null;
 
+	/** Direction of the current call. */
+	direction: 'incoming' | 'outgoing' | null;
+
 	// Contact info
 	contact: CallContact;
 }
@@ -95,6 +99,7 @@ interface CallStoreActions {
 	reset: () => void;
 	setDialpadValue: (value: string) => void;
 	setRoomId: (roomId: string | null) => void;
+	setDirection: (direction: 'incoming' | 'outgoing') => void;
 }
 
 export type CallStore = CallStoreState & CallStoreActions;
@@ -114,7 +119,8 @@ const initialState: CallStoreState = {
 	focused: true,
 	controlsVisible: true,
 	dialpadValue: '',
-	roomId: null
+	roomId: null,
+	direction: null
 };
 
 export const useCallStore = create<CallStore>((set, get) => ({
@@ -272,6 +278,10 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		set({ roomId });
 	},
 
+	setDirection: (direction: 'incoming' | 'outgoing') => {
+		set({ direction });
+	},
+
 	endCall: () => {
 		const { call, callId, nativeAcceptedCallId } = get();
 		// UUID for the native call UI layer (react-native-callkeep on iOS and Android).
@@ -282,7 +292,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		}
 
 		if (callUuid) {
-			RNCallKeep.endCall(callUuid);
+			terminateNativeCall(callUuid);
 		}
 
 		get().resetNativeCallId();

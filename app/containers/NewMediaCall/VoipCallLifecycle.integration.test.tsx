@@ -53,7 +53,8 @@ jest.mock('../../lib/methods/helpers/helpers', () => ({
 }));
 jest.mock('../../lib/navigation/appNavigation', () => ({
 	__esModule: true,
-	default: { navigate: jest.fn(), back: jest.fn() }
+	default: { navigate: jest.fn(), back: jest.fn() },
+	waitForNavigationReady: jest.fn().mockResolvedValue(undefined)
 }));
 jest.mock('../../lib/services/sdk', () => ({
 	__esModule: true,
@@ -73,6 +74,9 @@ jest.mock('../../lib/store/auxStore', () => ({
 			settings: {
 				VoIP_TeamCollab_Ice_Servers: '',
 				VoIP_TeamCollab_Ice_Gathering_Timeout: 5000
+			},
+			login: {
+				user: { id: 'me-id', username: 'me' }
 			}
 		})),
 		subscribe: jest.fn(() => jest.fn())
@@ -134,8 +138,8 @@ jest.mock('../../lib/native/NativeVoip', () => ({
 	__esModule: true,
 	default: { stopNativeDDPClient: jest.fn() }
 }));
-jest.mock('../../lib/methods/voipPhoneStatePermission', () => ({
-	requestPhoneStatePermission: jest.fn()
+jest.mock('../../lib/methods/voipCallPermissions', () => ({
+	requestVoipCallPermissions: jest.fn().mockResolvedValue(true)
 }));
 jest.mock('../../lib/hooks/useIsScreenReaderEnabled', () => ({
 	useIsScreenReaderEnabled: jest.fn(() => false)
@@ -451,7 +455,7 @@ describe('VoIP call lifecycle (integration)', () => {
 		expect(Navigation.back).toHaveBeenCalled();
 	});
 
-	it('SIP peer: press Call → startCall(sip, number) → navigates to CallView', () => {
+	it('SIP peer: press Call → startCall(sip, number) → navigates to CallView', async () => {
 		setSelectedPeer({ type: 'sip', value: '+5511999999999', label: '+55 11 99999-9999' });
 		const session = createdSessions[createdSessions.length - 1];
 
@@ -462,6 +466,7 @@ describe('VoIP call lifecycle (integration)', () => {
 		);
 
 		fireEvent.press(getByTestId('new-media-call-button'));
+		await act(() => Promise.resolve());
 
 		expect(session.startCall).toHaveBeenCalledWith('sip', '+5511999999999');
 		expect(Navigation.navigate).toHaveBeenCalledWith('CallView');
@@ -617,7 +622,7 @@ describe('VoIP call lifecycle (integration)', () => {
 	// app/views/CallView/components/CallButtons.tsx), NOT MediaSessionInstance.endCall.
 	// The latter is invoked from native CallKit "end" events. Both need coverage.
 	describe('UI store contract: Hang up', () => {
-		it('B1: useCallStore.endCall clears store and triggers RNCallKeep.endCall', () => {
+		it('B1: useCallStore.endCall clears store and triggers RNCallKeep.endCall', async () => {
 			setSelectedPeer({ type: 'user', value: 'user-1', label: 'Alice', username: 'alice' });
 			const { getByTestId } = render(
 				<Wrapper>
@@ -626,6 +631,7 @@ describe('VoIP call lifecycle (integration)', () => {
 			);
 			// Real press path wires listeners via setCall.
 			fireEvent.press(getByTestId('new-media-call-button'));
+			await act(() => Promise.resolve());
 			expect(useCallStore.getState().call?.callId).toBe('call-user-1');
 
 			act(() => {

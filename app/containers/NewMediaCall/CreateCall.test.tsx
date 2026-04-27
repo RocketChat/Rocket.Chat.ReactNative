@@ -8,9 +8,12 @@ import { mockedStore } from '../../reducers/mockedStore';
 import type { TPeerItem } from '../../lib/services/voip/getPeerAutocompleteOptions';
 import * as stories from './CreateCall.stories';
 import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
+import { initStore } from '../../lib/store/auxStore';
+import { setUser } from '../../actions/login';
 
 const mockStartCall = jest.fn();
 const mockHideActionSheet = jest.fn();
+const mockUseIsInActiveVoipCall = jest.fn(() => false);
 
 jest.mock('../../lib/services/voip/MediaSessionInstance', () => {
 	const instance = {};
@@ -21,6 +24,10 @@ jest.mock('../../lib/services/voip/MediaSessionInstance', () => {
 	});
 	return { mediaSessionInstance: instance };
 });
+
+jest.mock('../../lib/services/voip/isInActiveVoipCall', () => ({
+	useIsInActiveVoipCall: () => mockUseIsInActiveVoipCall()
+}));
 
 jest.mock('../ActionSheet', () => ({
 	...jest.requireActual('../ActionSheet'),
@@ -47,9 +54,15 @@ const sipPeer: TPeerItem = {
 };
 
 describe('CreateCall', () => {
+	beforeAll(() => {
+		initStore(mockedStore);
+	});
+
 	beforeEach(() => {
 		jest.clearAllMocks();
 		usePeerAutocompleteStore.setState({ selectedPeer: null });
+		mockUseIsInActiveVoipCall.mockReturnValue(false);
+		mockedStore.dispatch(setUser({ id: 'me-id', username: 'me' }));
 	});
 
 	it('should render the call button', () => {
@@ -114,6 +127,33 @@ describe('CreateCall', () => {
 		expect(mockHideActionSheet).toHaveBeenCalledTimes(1);
 	});
 
+	it('should be disabled when an active VoIP call is present, even with a selected peer', () => {
+		setStoreState(userPeer);
+		mockUseIsInActiveVoipCall.mockReturnValue(true);
+		const { getByTestId } = render(
+			<Wrapper>
+				<CreateCall />
+			</Wrapper>
+		);
+
+		const button = getByTestId('new-media-call-button');
+		expect(button.props.accessibilityState?.disabled).toBe(true);
+	});
+
+	it('should not invoke startCall when an active VoIP call is present and button is pressed', () => {
+		setStoreState(userPeer);
+		mockUseIsInActiveVoipCall.mockReturnValue(true);
+		const { getByTestId } = render(
+			<Wrapper>
+				<CreateCall />
+			</Wrapper>
+		);
+
+		fireEvent.press(getByTestId('new-media-call-button'));
+		expect(mockStartCall).not.toHaveBeenCalled();
+		expect(mockHideActionSheet).not.toHaveBeenCalled();
+	});
+
 	it('should call startCall when SIP peer is selected and pressed', async () => {
 		setStoreState(sipPeer);
 		const { getByTestId } = render(
@@ -127,6 +167,26 @@ describe('CreateCall', () => {
 		expect(mockStartCall).toHaveBeenCalledTimes(1);
 		expect(mockStartCall).toHaveBeenCalledWith('+5511999999999', 'sip');
 		expect(mockHideActionSheet).toHaveBeenCalledTimes(1);
+	});
+
+	it('should not call startCall when selected user peer matches the logged-in user id', async () => {
+		const selfPeer: TPeerItem = {
+			type: 'user',
+			value: 'me-id',
+			label: 'Me',
+			username: 'me'
+		};
+		setStoreState(selfPeer);
+		const { getByTestId } = render(
+			<Wrapper>
+				<CreateCall />
+			</Wrapper>
+		);
+
+		fireEvent.press(getByTestId('new-media-call-button'));
+		await act(() => Promise.resolve());
+		expect(mockStartCall).not.toHaveBeenCalled();
+		expect(mockHideActionSheet).not.toHaveBeenCalled();
 	});
 });
 

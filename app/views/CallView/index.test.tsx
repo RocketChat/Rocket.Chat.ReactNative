@@ -55,7 +55,8 @@ jest.mock('../../lib/hooks/useResponsiveLayout/useResponsiveLayout', () => {
 const mockShowActionSheetRef = jest.fn();
 jest.mock('../../containers/ActionSheet', () => ({
 	showActionSheetRef: (options: any) => mockShowActionSheetRef(options),
-	hideActionSheetRef: jest.fn()
+	hideActionSheetRef: jest.fn(),
+	ActionSheetProvider: ({ children }: { children: React.ReactNode }) => children
 }));
 
 // Helper to create a mock call

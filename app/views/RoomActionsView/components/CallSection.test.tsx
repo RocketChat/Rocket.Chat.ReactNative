@@ -17,6 +17,7 @@ const noopOpenNewMediaCall = () => undefined;
 
 const mockUseVideoConf = jest.fn();
 const mockUseNewMediaCall = jest.fn();
+const mockUseIsInActiveVoipCall = jest.fn();
 
 mockUseVideoConf.mockReturnValue({
 	callEnabled: true,
@@ -25,8 +26,10 @@ mockUseVideoConf.mockReturnValue({
 });
 mockUseNewMediaCall.mockReturnValue({
 	openNewMediaCall: noopOpenNewMediaCall,
-	hasMediaCallPermission: true
+	hasMediaCallPermission: true,
+	isInActiveCall: false
 });
+mockUseIsInActiveVoipCall.mockReturnValue(false);
 
 jest.mock('../../../lib/hooks/useVideoConf', () => ({
 	useVideoConf: (...args: unknown[]) => mockUseVideoConf(...args)
@@ -34,6 +37,10 @@ jest.mock('../../../lib/hooks/useVideoConf', () => ({
 
 jest.mock('../../../lib/hooks/useNewMediaCall', () => ({
 	useNewMediaCall: (...args: unknown[]) => mockUseNewMediaCall(...args)
+}));
+
+jest.mock('../../../lib/services/voip/isInActiveVoipCall', () => ({
+	useIsInActiveVoipCall: () => mockUseIsInActiveVoipCall()
 }));
 
 jest.mock('../../../lib/services/restApi', () => ({
@@ -81,8 +88,10 @@ describe('CallSection', () => {
 		});
 		mockUseNewMediaCall.mockReturnValue({
 			openNewMediaCall: noopOpenNewMediaCall,
-			hasMediaCallPermission: true
+			hasMediaCallPermission: true,
+			isInActiveCall: false
 		});
+		mockUseIsInActiveVoipCall.mockReturnValue(false);
 		mockVideoConferenceGetCapabilities.mockRejectedValue(new Error('test capabilities'));
 	});
 
@@ -94,7 +103,8 @@ describe('CallSection', () => {
 		});
 		mockUseNewMediaCall.mockReturnValue({
 			openNewMediaCall: noopOpenNewMediaCall,
-			hasMediaCallPermission: false
+			hasMediaCallPermission: false,
+			isInActiveCall: false
 		});
 		const { toJSON, queryByTestId } = render(
 			<Wrapper>
@@ -114,7 +124,8 @@ describe('CallSection', () => {
 		});
 		mockUseNewMediaCall.mockReturnValue({
 			openNewMediaCall: mockOpenNewMediaCall,
-			hasMediaCallPermission: true
+			hasMediaCallPermission: true,
+			isInActiveCall: false
 		});
 		const { getByTestId, queryByTestId } = render(
 			<Wrapper>
@@ -128,7 +139,8 @@ describe('CallSection', () => {
 	it('should render video call only when voice permission is off', () => {
 		mockUseNewMediaCall.mockReturnValue({
 			openNewMediaCall: noopOpenNewMediaCall,
-			hasMediaCallPermission: false
+			hasMediaCallPermission: false,
+			isInActiveCall: false
 		});
 		const { getByTestId, queryByTestId } = render(
 			<Wrapper>
@@ -152,7 +164,8 @@ describe('CallSection', () => {
 	it('should call openNewMediaCall when voice row is pressed', () => {
 		mockUseNewMediaCall.mockReturnValue({
 			openNewMediaCall: mockOpenNewMediaCall,
-			hasMediaCallPermission: true
+			hasMediaCallPermission: true,
+			isInActiveCall: false
 		});
 		const { getByTestId } = render(
 			<Wrapper>
@@ -190,7 +203,8 @@ describe('CallSection', () => {
 	it('should not invoke handlers when disabled prop is true', () => {
 		mockUseNewMediaCall.mockReturnValue({
 			openNewMediaCall: mockOpenNewMediaCall,
-			hasMediaCallPermission: true
+			hasMediaCallPermission: true,
+			isInActiveCall: false
 		});
 		const { getByTestId } = render(
 			<Wrapper>
@@ -201,6 +215,63 @@ describe('CallSection', () => {
 		fireEvent.press(getByTestId('room-actions-call'));
 		expect(mockOpenNewMediaCall).not.toHaveBeenCalled();
 		expect(mockShowInitCallActionSheet).not.toHaveBeenCalled();
+	});
+
+	it('should disable video call row when disabledTooltip is true (federated / read-only)', () => {
+		mockUseVideoConf.mockReturnValue({
+			callEnabled: true,
+			disabledTooltip: true,
+			showInitCallActionSheet: mockShowInitCallActionSheet
+		});
+		const { getByTestId } = render(
+			<Wrapper>
+				<CallSection room={createMockRoom()} disabled={false} />
+			</Wrapper>
+		);
+		fireEvent.press(getByTestId('room-actions-call'));
+		expect(mockShowInitCallActionSheet).not.toHaveBeenCalled();
+	});
+
+	it('should disable video call row when an active VoIP call is in progress', () => {
+		mockUseIsInActiveVoipCall.mockReturnValue(true);
+		const { getByTestId } = render(
+			<Wrapper>
+				<CallSection room={createMockRoom()} disabled={false} />
+			</Wrapper>
+		);
+		fireEvent.press(getByTestId('room-actions-call'));
+		expect(mockShowInitCallActionSheet).not.toHaveBeenCalled();
+	});
+
+	it('should not render Voice_call row when itsMe is true', () => {
+		mockUseNewMediaCall.mockReturnValue({
+			openNewMediaCall: mockOpenNewMediaCall,
+			hasMediaCallPermission: true
+		});
+		const { queryByTestId } = render(
+			<Wrapper>
+				<CallSection room={createMockRoom()} disabled={false} itsMe={true} />
+			</Wrapper>
+		);
+		expect(queryByTestId('room-actions-voice-call')).toBeNull();
+	});
+
+	it('should return null when itsMe is true and video is unavailable', () => {
+		mockUseVideoConf.mockReturnValue({
+			callEnabled: false,
+			disabledTooltip: false,
+			showInitCallActionSheet: mockShowInitCallActionSheet
+		});
+		mockUseNewMediaCall.mockReturnValue({
+			openNewMediaCall: noopOpenNewMediaCall,
+			hasMediaCallPermission: true
+		});
+		const { toJSON } = render(
+			<Wrapper>
+				<CallSection room={createMockRoom()} disabled={false} itsMe={true} />
+			</Wrapper>
+		);
+		expect(toJSON()).toBeNull();
 	});
 });
 

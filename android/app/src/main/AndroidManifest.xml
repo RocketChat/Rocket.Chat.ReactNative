@@ -22,8 +22,9 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
     <uses-permission android:name="android.permission.MANAGE_OWN_CALLS" />
-    <uses-feature android:name="android.hardware.audio.output" />
+    <uses-feature android:name="android.hardware.audio.output" android:required="false" />
     <uses-feature android:name="android.hardware.microphone" android:required="false" />
+    <uses-feature android:name="android.hardware.telephony" android:required="false" />
 
     <!-- android 13 notifications -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
@@ -152,7 +153,7 @@
             android:name="chat.rocket.reactnative.voip.VoipCallService"
             android:enabled="true"
             android:exported="false"
-            android:foregroundServiceType="microphone" />
+            android:foregroundServiceType="phoneCall" />
 
         <!-- react-native-webrtc ships MediaProjectionService (foregroundServiceType=mediaProjection)
              for screen sharing. We don't use screen sharing, and Android 15+ forbids starting

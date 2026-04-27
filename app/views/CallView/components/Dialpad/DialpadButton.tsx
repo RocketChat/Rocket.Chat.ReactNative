@@ -4,27 +4,34 @@ import * as Haptics from 'expo-haptics';
 
 import { useCallStore } from '../../../../lib/services/voip/useCallStore';
 import { useTheme } from '../../../../theme';
+import { useDialpadAudio } from './DialpadContext';
 import { styles } from './styles';
 
 interface IDialpadButton {
 	digit: string;
 	letters: string;
+	testID?: string;
 }
 
-const DialpadButton = ({ digit, letters }: IDialpadButton): React.ReactElement => {
+const DialpadButton = ({ digit, letters, testID }: IDialpadButton): React.ReactElement => {
 	'use memo';
 
 	const { colors } = useTheme();
 	const setDialpadValue = useCallStore(state => state.setDialpadValue);
+	const { playTone } = useDialpadAudio();
 
-	const handleDigitPress = () => {
+	const handlePressIn = () => {
 		setDialpadValue(digit);
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+		playTone(digit);
 	};
+
+	const isLargeDigit = ['*', '#'].includes(digit);
 
 	return (
 		<Pressable
-			onPress={handleDigitPress}
+			onPressIn={handlePressIn}
+			testID={testID ?? `dialpad-button-${digit}`}
 			accessibilityLabel={letters ? `${digit} ${letters}` : digit}
 			accessibilityRole='button'
 			style={({ pressed }) => [
@@ -32,8 +39,8 @@ const DialpadButton = ({ digit, letters }: IDialpadButton): React.ReactElement =
 				{ backgroundColor: pressed ? colors.buttonBackgroundSecondaryPress : colors.buttonBackgroundSecondaryDefault }
 			]}>
 			<View style={styles.digitContainer}>
-				<Text style={[styles.digit, { color: colors.fontDefault }]}>{digit}</Text>
-				<Text style={[styles.letters, { color: colors.fontSecondaryInfo }]}>{letters || ''}</Text>
+				<Text style={[styles.digit, isLargeDigit && styles.digitLarge, { color: colors.fontDefault }]}>{digit}</Text>
+				{!isLargeDigit ? <Text style={[styles.letters, { color: colors.fontSecondaryInfo }]}>{letters || ''}</Text> : null}
 			</View>
 		</Pressable>
 	);

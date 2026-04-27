@@ -315,6 +315,9 @@
 		7A610CD527ECE38100B8ABDD /* custom.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A610CD127ECE38100B8ABDD /* custom.ttf */; };
 		7A8B30762BCD9D3F00146A40 /* SSLPinning.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7A8B30752BCD9D3F00146A40 /* SSLPinning.mm */; };
 		7A8B30772BCD9D3F00146A40 /* SSLPinning.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7A8B30752BCD9D3F00146A40 /* SSLPinning.mm */; };
+		7AC0A1E02C000010001CAA11 /* Challenge.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7AC0A1E02C000002001CAA11 /* Challenge.mm */; };
+		7AC0A1E02C000011001CAA11 /* Challenge.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7AC0A1E02C000002001CAA11 /* Challenge.mm */; };
+		7AC0A1E02C000012001CAA11 /* Challenge.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7AC0A1E02C000002001CAA11 /* Challenge.mm */; };
 		7AAB3E15257E6A6E00707CF6 /* Sender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E01C8282511304100FEF824 /* Sender.swift */; };
 		7AAB3E16257E6A6E00707CF6 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E680ED82512990700C9257A /* Request.swift */; };
 		7AAB3E17257E6A6E00707CF6 /* ReplyNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED00BB02513E04400A1331F /* ReplyNotification.swift */; };
@@ -648,6 +651,8 @@
 		7A610CD127ECE38100B8ABDD /* custom.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = custom.ttf; sourceTree = "<group>"; };
 		7A8B30742BCD9D3F00146A40 /* SSLPinning.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSLPinning.h; sourceTree = "<group>"; };
 		7A8B30752BCD9D3F00146A40 /* SSLPinning.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SSLPinning.mm; sourceTree = "<group>"; };
+		7AC0A1E02C000001001CAA11 /* Challenge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Challenge.h; sourceTree = "<group>"; };
+		7AC0A1E02C000002001CAA11 /* Challenge.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Challenge.mm; sourceTree = "<group>"; };
 		7AAA749C23043B1D00F1ADE9 /* RocketChatRN-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RocketChatRN-Bridging-Header.h"; sourceTree = "<group>"; };
 		7AAB3E52257E6A6E00707CF6 /* Rocket.Chat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rocket.Chat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7AACF8A72C94AB8B0082844E /* EncryptedContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptedContent.swift; sourceTree = "<group>"; };
@@ -1167,6 +1172,8 @@
 				66C2701A2EBBCB570062725F /* MMKVKeyManager.mm */,
 				7A8B30742BCD9D3F00146A40 /* SSLPinning.h */,
 				7A8B30752BCD9D3F00146A40 /* SSLPinning.mm */,
+				7AC0A1E02C000001001CAA11 /* Challenge.h */,
+				7AC0A1E02C000002001CAA11 /* Challenge.mm */,
 				9BE2F3DC02A264F204E3EDE3 /* DDPClient.swift */,
 			);
 			path = Libraries;
@@ -2133,6 +2140,7 @@
 				1E76CBCE25152C2F0067298C /* RoomKey.swift in Sources */,
 				1E76CBCC25152C290067298C /* Message.swift in Sources */,
 				7A8B30762BCD9D3F00146A40 /* SSLPinning.mm in Sources */,
+				7AC0A1E02C000010001CAA11 /* Challenge.mm in Sources */,
 				1E76CBCF25152C310067298C /* NotificationType.swift in Sources */,
 				1E76CBDA25152C8E0067298C /* SendMessage.swift in Sources */,
 				4C4C8603EF082F0A33A95522 /* ExpoModulesProvider.swift in Sources */,
@@ -2361,6 +2369,7 @@
 				85160EB6C143E0493FE5F014 /* ExpoModulesProvider.swift in Sources */,
 				3F56D232A9EBA1C9C749F15D /* SecureStorage.m in Sources */,
 				3F56D232A9EBA1C9C749F15E /* MMKVBridge.mm in Sources */,
+				7AC0A1E02C000012001CAA11 /* Challenge.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2415,6 +2424,7 @@
 				7AAB3E2E257E6A6E00707CF6 /* RoomKey.swift in Sources */,
 				7AAB3E2F257E6A6E00707CF6 /* Message.swift in Sources */,
 				7A8B30772BCD9D3F00146A40 /* SSLPinning.mm in Sources */,
+				7AC0A1E02C000011001CAA11 /* Challenge.mm in Sources */,
 				7AAB3E30257E6A6E00707CF6 /* NotificationType.swift in Sources */,
 				7AAB3E31257E6A6E00707CF6 /* SendMessage.swift in Sources */,
 				BC404914E86821389EEB543D /* ExpoModulesProvider.swift in Sources */,

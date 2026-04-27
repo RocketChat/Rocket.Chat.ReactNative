@@ -12,6 +12,7 @@ import { useActionSheet } from '../../../containers/ActionSheet';
 import type { TActionSheetOptionsItem } from '../../../containers/ActionSheet';
 import { BaseButton } from './BaseButton';
 import { useNewMediaCall } from '../../../lib/hooks/useNewMediaCall';
+import { useIsInActiveVoipCall } from '../../../lib/services/voip/isInActiveVoipCall';
 
 type ButtonConfig = {
 	label: string;
@@ -56,7 +57,8 @@ export const RoomInfoButtons = ({
 	const room = roomFromRid || roomFromProps;
 	const { showActionSheet } = useActionSheet();
 	const { callEnabled, disabledTooltip, showInitCallActionSheet } = useVideoConf(rid);
-	const { openNewMediaCall, hasMediaCallPermission } = useNewMediaCall(rid);
+	const { openNewMediaCall, hasMediaCallPermission, isInActiveCall } = useNewMediaCall(rid);
+	const isInActiveVoipCall = useIsInActiveVoipCall();
 
 	// Following the web behavior, when is a DM with myself, shouldn't appear block or ignore option
 	const isDmWithMyself = room?.uids?.filter((uid: string) => uid !== roomUserId).length === 0;
@@ -84,14 +86,14 @@ export const RoomInfoButtons = ({
 			label: i18n.t('Voice_call'),
 			iconName: 'phone',
 			onPress: openNewMediaCall,
-			enabled: true,
-			show: hasMediaCallPermission
+			enabled: !isInActiveCall,
+			show: hasMediaCallPermission && !itsMe
 		},
 		{
 			label: i18n.t('Video_call'),
 			iconName: 'video',
 			onPress: showInitCallActionSheet,
-			enabled: !disabledTooltip,
+			enabled: !disabledTooltip && !isInActiveVoipCall,
 			show: renderVideoCall
 		},
 		{

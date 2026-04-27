@@ -1,9 +1,16 @@
 import { usersAutoComplete } from '../restApi';
 import { getPeerAutocompleteOptions, type TPeerItem } from './getPeerAutocompleteOptions';
+import { mockedStore } from '../../../reducers/mockedStore';
+import { initStore } from '../../store/auxStore';
+import { setUser } from '../../../actions/login';
 
 jest.mock('../restApi', () => ({
 	usersAutoComplete: jest.fn()
 }));
+
+beforeAll(() => {
+	initStore(mockedStore);
+});
 
 type TUsersAutoCompleteResponse = Awaited<ReturnType<typeof usersAutoComplete>>;
 
@@ -242,5 +249,33 @@ describe('getPeerAutocompleteOptions', () => {
 		});
 
 		expect(result).toEqual([{ type: 'sip', value: 'solo', label: 'solo' }]);
+	});
+
+	it('excludes the logged-in user by _id from the returned user options', async () => {
+		mockedStore.dispatch(setUser({ id: 'me-id', username: 'me' }));
+		mockedUsersAutoComplete.mockResolvedValue(
+			mockUsersAutoCompleteResponse([
+				{ _id: 'me-id', name: 'Me', username: 'me' },
+				{ _id: 'other-id', name: 'Other', username: 'other' }
+			])
+		);
+
+		const result = await getPeerAutocompleteOptions({
+			filter: 'x',
+			peerInfo: null,
+			username: 'me',
+			sipEnabled: false
+		});
+
+		expect(result).toEqual([
+			{ type: 'sip', value: 'x', label: 'x' },
+			{
+				type: 'user',
+				value: 'other-id',
+				label: 'Other',
+				username: 'other',
+				callerId: undefined
+			}
+		] satisfies TPeerItem[]);
 	});
 });
