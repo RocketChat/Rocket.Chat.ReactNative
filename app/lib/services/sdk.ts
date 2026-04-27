@@ -202,16 +202,13 @@ class Sdk {
 
 	async login(credentials: any): Promise<any> {
 		try {
-			const loginResult = await this.post('/v1/login', credentials);
-			if (!loginResult?.success) {
-				return Promise.reject(new Error('Invalid response from server'));
-			}
-
-			// TODO: get/set headers from SDK instead?
-			this.setHeaders({ 'X-Auth-Token': loginResult.data.authToken, 'X-User-Id': loginResult.data.userId });
-			await this.current?.account.loginWithToken(loginResult.data.authToken);
-			return loginResult.data;
+			await this.current?.account.loginWithPassword(credentials.user, credentials.password);
+			// const loginResult = await this.post('/v1/login', credentials);
+			// if (!loginResult?.success) {
+			// 	return Promise.reject(new Error('Invalid response from server'));
+			// }
 		} catch (e) {
+			console.log('login error', e);
 			return Promise.reject(e);
 		}
 	}
