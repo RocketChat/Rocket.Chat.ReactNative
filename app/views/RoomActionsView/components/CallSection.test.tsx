@@ -210,6 +210,21 @@ describe('CallSection', () => {
 		expect(mockShowInitCallActionSheet).not.toHaveBeenCalled();
 	});
 
+	it('should disable video call row when disabledTooltip is true (e.g. active VoIP call)', () => {
+		mockUseVideoConf.mockReturnValue({
+			callEnabled: true,
+			disabledTooltip: true,
+			showInitCallActionSheet: mockShowInitCallActionSheet
+		});
+		const { getByTestId } = render(
+			<Wrapper>
+				<CallSection room={createMockRoom()} disabled={false} />
+			</Wrapper>
+		);
+		fireEvent.press(getByTestId('room-actions-call'));
+		expect(mockShowInitCallActionSheet).not.toHaveBeenCalled();
+	});
+
 	it('should not render Voice_call row when itsMe is true', () => {
 		mockUseNewMediaCall.mockReturnValue({
 			openNewMediaCall: mockOpenNewMediaCall,
