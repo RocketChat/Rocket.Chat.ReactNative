@@ -338,7 +338,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 			logEvent(events.TC_GO_ROOM);
 			const { isMasterDetail } = this.props;
 			try {
-				let params = {}
+				let params = {};
 				const result = await getRoomInfo(item._id);
 				if (result.success) {
 					params = {

@@ -15,5 +15,5 @@ export function getRooms(updatedSince: Date) {
 	}
 	// TODO: missing definitions from server
 	// @ts-ignore
-	return Promise.all([sdk.get('/v1/subscriptions.get', {}), sdk.get('/v1/rooms.get', {})]);
+	return Promise.all([sdk.get('/v1/subscriptions.get'), sdk.get('/v1/rooms.get')]);
 }

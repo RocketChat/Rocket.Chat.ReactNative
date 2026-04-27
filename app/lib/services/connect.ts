@@ -151,8 +151,8 @@ async function connect({ server, logoutOnError = false }: { server: string; logo
 								store.dispatch(setActiveUsers(activeUsersBatch));
 							});
 							_setUserTimer.setUserTimer = null;
-                            //@ts-ignore - fix me
-							_activeUsers.activeUsers = {}
+							//@ts-ignore - fix me
+							_activeUsers.activeUsers = {};
 							return null;
 						}, 10000);
 					}

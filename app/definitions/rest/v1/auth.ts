@@ -22,13 +22,8 @@ export interface ILoginDataResponse {
 }
 
 export type AuthEndpoints = {
-	'login': {
-		POST: (params: {
-			user?: string;
-			password?: string;
-			resume?: string;
-			code?: string;
-		}) => {
+	login: {
+		POST: (params: { user?: string; password?: string; resume?: string; code?: string }) => {
 			status: string;
 			data: ILoginDataResponse;
 		};

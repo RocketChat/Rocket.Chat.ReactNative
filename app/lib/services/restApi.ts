@@ -85,7 +85,7 @@ export const e2eRequestRoomKey = (rid: string, e2eKeyId: string): Promise<{ mess
 	sdk.methodCall('stream-notify-room-users', `${rid}/e2ekeyRequest`, rid, e2eKeyId);
 
 // RC 5.5
-export const e2eAcceptSuggestedGroupKey = (rid: string)=> sdk.post('/v1/e2e.acceptSuggestedGroupKey', { rid });
+export const e2eAcceptSuggestedGroupKey = (rid: string) => sdk.post('/v1/e2e.acceptSuggestedGroupKey', { rid });
 
 // RC 5.5
 export const e2eRejectSuggestedGroupKey = (rid: string) => sdk.post('/v1/e2e.rejectSuggestedGroupKey', { rid });
@@ -546,7 +546,7 @@ export const deleteRoom = (roomId: string, t: RoomTypes) => {
 	}
 
 	return sdk.post(`/v1/${roomTypeToApiType(t)}.delete`, { roomId });
-}
+};
 
 export const toggleMuteUserInRoom = (rid: string, username: string, userId: string, mute: boolean) => {
 	const serverVersion = reduxStore.getState().server.version;
@@ -1156,7 +1156,8 @@ export function getUserInfo(userId: string) {
 
 export const toggleFavorite = (roomId: string, favorite: boolean) => sdk.post('/v1/rooms.favorite', { roomId, favorite });
 
-export const sendInvitationReply = (roomId: string, action: 'accept' | 'reject') => sdk.post('/v1/rooms.invite', { roomId, action });
+export const sendInvitationReply = (roomId: string, action: 'accept' | 'reject') =>
+	sdk.post('/v1/rooms.invite', { roomId, action });
 
 export const videoConferenceJoin = (callId: string, cam?: boolean, mic?: boolean) =>
 	sdk.post('/v1/video-conference.join', { callId, state: { cam: !!cam, mic: mic === undefined ? true : mic } });

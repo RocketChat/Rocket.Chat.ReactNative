@@ -21,8 +21,9 @@ class Sdk {
 	private sdk: DDPSDK | undefined;
 	private code: any = null;
 	private headers: Record<string, string> = {
-		'User-Agent': `RC Mobile; ${Platform.OS
-			} ${DeviceInfo.getSystemVersion()}; v${DeviceInfo.getVersion()} (${DeviceInfo.getBuildNumber()})`
+		'User-Agent': `RC Mobile; ${
+			Platform.OS
+		} ${DeviceInfo.getSystemVersion()}; v${DeviceInfo.getVersion()} (${DeviceInfo.getBuildNumber()})`
 	};
 
 	async initialize(server: string): Promise<DDPSDK> {
@@ -109,9 +110,9 @@ class Sdk {
 		params: void extends OperationParams<'GET', MatchPathPattern<TPath>>
 			? void
 			: Serialized<OperationParams<'GET', MatchPathPattern<TPath>>> = undefined as void extends OperationParams<
-				'GET',
-				MatchPathPattern<TPath>
-			>
+			'GET',
+			MatchPathPattern<TPath>
+		>
 			? void
 			: Serialized<OperationParams<'GET', MatchPathPattern<TPath>>>
 	): Promise<Serialized<ResultFor<'GET', MatchPathPattern<TPath>>>> {
@@ -125,9 +126,9 @@ class Sdk {
 		params: void extends OperationParams<'POST', MatchPathPattern<TPath>>
 			? void
 			: Serialized<OperationParams<'POST', MatchPathPattern<TPath>>> = undefined as void extends OperationParams<
-				'POST',
-				MatchPathPattern<TPath>
-			>
+			'POST',
+			MatchPathPattern<TPath>
+		>
 			? void
 			: Serialized<OperationParams<'POST', MatchPathPattern<TPath>>>
 	): Promise<ResultFor<'POST', MatchPathPattern<TPath>>> {
@@ -176,9 +177,9 @@ class Sdk {
 		params: void extends OperationParams<'DELETE', MatchPathPattern<TPath>>
 			? void
 			: Serialized<OperationParams<'DELETE', MatchPathPattern<TPath>>> = undefined as void extends OperationParams<
-				'DELETE',
-				MatchPathPattern<TPath>
-			>
+			'DELETE',
+			MatchPathPattern<TPath>
+		>
 			? void
 			: Serialized<OperationParams<'DELETE', MatchPathPattern<TPath>>>
 	): Promise<Serialized<ResultFor<'DELETE', MatchPathPattern<TPath>>>> {
@@ -290,9 +291,9 @@ class Sdk {
 	}
 
 	onStreamData(name: string, callback: (...data: any) => void): Promise<{ stop: () => void }> {
-		return new Promise((resolve) => {
+		return new Promise(resolve => {
 			if (!this.current) {
-				resolve({ stop: () => { } });
+				resolve({ stop: () => {} });
 				return;
 			}
 			const listener = this.current.client.onCollection(name, (ddpMessage: any) => {
@@ -338,7 +339,7 @@ class Sdk {
 		const [key, args] = Array.isArray(data) ? data : [data];
 
 		if (!this.current) {
-			return { stop: () => { } };
+			return { stop: () => {} };
 		}
 
 		const subscription = this.current.client.subscribe(`stream-${name}`, key, { useCollection: false, args: [args] });
