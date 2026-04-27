@@ -98,7 +98,9 @@ exports[`NewMessageView Item should match snapshot when hasMediaCallPermission i
         source={
           [
             {
-              "headers": undefined,
+              "headers": {
+                "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+              },
               "uri": "https://open.rocket.chat/avatar/john.doe?format=png&size=60",
             },
           ]
@@ -257,7 +259,9 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
           source={
             [
               {
-                "headers": undefined,
+                "headers": {
+                  "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                },
                 "uri": "https://open.rocket.chat/avatar/john.doe?format=png&size=60",
               },
             ]
@@ -307,10 +311,16 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
       <RNGestureHandlerButton
         accessibilityLabel="Voice call"
         accessibilityRole="button"
+        accessibilityState={
+          {
+            "disabled": false,
+          }
+        }
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
         delayLongPress={600}
+        enabled={true}
         handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
@@ -472,7 +482,9 @@ exports[`Story Snapshots: LongName should match snapshot 1`] = `
           source={
             [
               {
-                "headers": undefined,
+                "headers": {
+                  "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                },
                 "uri": "https://open.rocket.chat/avatar/long.name?format=png&size=60",
               },
             ]
@@ -522,10 +534,16 @@ exports[`Story Snapshots: LongName should match snapshot 1`] = `
       <RNGestureHandlerButton
         accessibilityLabel="Voice call"
         accessibilityRole="button"
+        accessibilityState={
+          {
+            "disabled": false,
+          }
+        }
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
         delayLongPress={600}
+        enabled={true}
         handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
@@ -687,7 +705,9 @@ exports[`Story Snapshots: NoVoiceCallPermission should match snapshot 1`] = `
           source={
             [
               {
-                "headers": undefined,
+                "headers": {
+                  "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                },
                 "uri": "https://open.rocket.chat/avatar/john.doe?format=png&size=60",
               },
             ]
@@ -737,10 +757,16 @@ exports[`Story Snapshots: NoVoiceCallPermission should match snapshot 1`] = `
       <RNGestureHandlerButton
         accessibilityLabel="Voice call"
         accessibilityRole="button"
+        accessibilityState={
+          {
+            "disabled": false,
+          }
+        }
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
         delayLongPress={600}
+        enabled={true}
         handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         innerRef={null}

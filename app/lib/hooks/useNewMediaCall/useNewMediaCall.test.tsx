@@ -9,6 +9,7 @@ const mockUseMediaCallPermission = jest.fn();
 const mockShowActionSheetRef = jest.fn();
 const mockGetUidDirectMessage = jest.fn();
 const mockSetSelectedPeer = jest.fn();
+const mockUseIsInActiveVoipCall = jest.fn(() => false);
 const mockGetState = jest.fn(() => ({
 	setSelectedPeer: mockSetSelectedPeer
 }));
@@ -35,6 +36,10 @@ jest.mock('../../services/voip/usePeerAutocompleteStore', () => ({
 	}
 }));
 
+jest.mock('../../services/voip/isInActiveVoipCall', () => ({
+	useIsInActiveVoipCall: () => mockUseIsInActiveVoipCall()
+}));
+
 jest.mock('../../../containers/NewMediaCall', () => ({
 	NewMediaCall: jest.fn(() => null)
 }));
@@ -42,6 +47,7 @@ jest.mock('../../../containers/NewMediaCall', () => ({
 describe('useNewMediaCall', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
+		mockUseIsInActiveVoipCall.mockReturnValue(false);
 	});
 
 	const expectNewMediaCallActionSheet = () => {
@@ -102,5 +108,32 @@ describe('useNewMediaCall', () => {
 		expect(mockGetUidDirectMessage).not.toHaveBeenCalled();
 		expect(mockSetSelectedPeer).not.toHaveBeenCalled();
 		expectNewMediaCallActionSheet();
+	});
+
+	it('exposes isInActiveCall from useIsInActiveVoipCall', () => {
+		mockUseSubscription.mockReturnValue(undefined);
+		mockUseMediaCallPermission.mockReturnValue(true);
+		mockUseIsInActiveVoipCall.mockReturnValue(true);
+
+		const { result } = renderHook(() => useNewMediaCall('room-id'));
+
+		expect(result.current.isInActiveCall).toBe(true);
+	});
+
+	it('openNewMediaCall no-ops when isInActiveCall is true', () => {
+		const room = { name: 'Alice' };
+		mockUseSubscription.mockReturnValue(room);
+		mockUseMediaCallPermission.mockReturnValue(true);
+		mockGetUidDirectMessage.mockReturnValue('user-id');
+		mockUseIsInActiveVoipCall.mockReturnValue(true);
+
+		const { result } = renderHook(() => useNewMediaCall('room-id'));
+
+		act(() => {
+			result.current.openNewMediaCall();
+		});
+
+		expect(mockShowActionSheetRef).not.toHaveBeenCalled();
+		expect(mockSetSelectedPeer).not.toHaveBeenCalled();
 	});
 });

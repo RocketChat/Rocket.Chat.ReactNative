@@ -1,14 +1,26 @@
-jest.mock('../../lib/services/voip/voipBlocksIncomingVideoconf', () => ({
-	voipBlocksIncomingVideoconf: jest.fn(() => false)
+jest.mock('../../lib/services/voip/isInActiveVoipCall', () => ({
+	isInActiveVoipCall: jest.fn(() => false)
+}));
+
+jest.mock('../../lib/services/restApi', () => ({
+	videoConferenceStart: jest.fn(() => Promise.resolve({ success: false })),
+	videoConferenceCancel: jest.fn(() => Promise.resolve({ success: true })),
+	notifyUser: jest.fn(() => Promise.resolve(true))
+}));
+
+jest.mock('../../lib/methods/helpers/info', () => ({
+	showErrorAlert: jest.fn()
 }));
 
 import { applyMiddleware, createStore } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 
-import { handleVideoConfIncomingWebsocketMessages } from '../../actions/videoConf';
+import { handleVideoConfIncomingWebsocketMessages, initVideoCall } from '../../actions/videoConf';
 import reducers from '../../reducers';
 import videoConfRootSaga from '../videoConf';
-import { voipBlocksIncomingVideoconf } from '../../lib/services/voip/voipBlocksIncomingVideoconf';
+import { isInActiveVoipCall } from '../../lib/services/voip/isInActiveVoipCall';
+import { videoConferenceStart } from '../../lib/services/restApi';
+import { showErrorAlert } from '../../lib/methods/helpers/info';
 
 /** Drains pending saga microtasks (takeEvery → call(onDirectCall) completes synchronously today). */
 async function flushSagaMicrotasks(): Promise<void> {
@@ -25,8 +37,10 @@ describe('videoConf saga — VoIP / videoconf lock', () => {
 	};
 
 	beforeEach(() => {
-		jest.mocked(voipBlocksIncomingVideoconf).mockReset();
-		jest.mocked(voipBlocksIncomingVideoconf).mockReturnValue(false);
+		jest.mocked(isInActiveVoipCall).mockReset();
+		jest.mocked(isInActiveVoipCall).mockReturnValue(false);
+		jest.mocked(videoConferenceStart).mockClear();
+		jest.mocked(showErrorAlert).mockClear();
 	});
 
 	function setupStoreWithVideoConfSaga() {
@@ -36,8 +50,8 @@ describe('videoConf saga — VoIP / videoconf lock', () => {
 		return store;
 	}
 
-	it('short-circuits incoming direct videoconf when voipBlocksIncomingVideoconf returns true', async () => {
-		jest.mocked(voipBlocksIncomingVideoconf).mockReturnValue(true);
+	it('short-circuits incoming direct videoconf when isInActiveVoipCall returns true', async () => {
+		jest.mocked(isInActiveVoipCall).mockReturnValue(true);
 
 		const store = setupStoreWithVideoConfSaga();
 		const callsBefore = store.getState().videoConf.calls;
@@ -45,7 +59,7 @@ describe('videoConf saga — VoIP / videoconf lock', () => {
 		store.dispatch(handleVideoConfIncomingWebsocketMessages({ action: envelope, params: undefined }));
 		await flushSagaMicrotasks();
 
-		expect(voipBlocksIncomingVideoconf).toHaveBeenCalled();
+		expect(isInActiveVoipCall).toHaveBeenCalled();
 		expect(store.getState().videoConf.calls).toBe(callsBefore);
 		expect(store.getState().videoConf.calls).toHaveLength(0);
 	});
@@ -56,7 +70,7 @@ describe('videoConf saga — VoIP / videoconf lock', () => {
 		store.dispatch(handleVideoConfIncomingWebsocketMessages({ action: envelope, params: undefined }));
 		await flushSagaMicrotasks();
 
-		expect(voipBlocksIncomingVideoconf).toHaveBeenCalled();
+		expect(isInActiveVoipCall).toHaveBeenCalled();
 		expect(store.getState().videoConf.calls).toHaveLength(1);
 		expect(store.getState().videoConf.calls[0]).toMatchObject({
 			callId: 'vc-1',
@@ -64,5 +78,32 @@ describe('videoConf saga — VoIP / videoconf lock', () => {
 			rid: 'room-1',
 			action: 'call'
 		});
+	});
+
+	it('silently short-circuits outgoing INIT_CALL when isInActiveVoipCall returns true', async () => {
+		jest.mocked(isInActiveVoipCall).mockReturnValue(true);
+
+		const store = setupStoreWithVideoConfSaga();
+
+		store.dispatch(initVideoCall({ mic: true, cam: false, direct: true, rid: 'room-1', uid: 'user-b' }));
+		await flushSagaMicrotasks();
+
+		expect(isInActiveVoipCall).toHaveBeenCalled();
+		expect(videoConferenceStart).not.toHaveBeenCalled();
+		// UI consumers disable the buttons; saga guard is a silent backstop — no alert.
+		expect(showErrorAlert).not.toHaveBeenCalled();
+		expect(store.getState().videoConf.calling).toBe(false);
+	});
+
+	it('does not block outgoing INIT_CALL when VoIP is not active', async () => {
+		const store = setupStoreWithVideoConfSaga();
+
+		store.dispatch(initVideoCall({ mic: true, cam: false, direct: true, rid: 'room-1', uid: 'user-b' }));
+		await flushSagaMicrotasks();
+
+		expect(isInActiveVoipCall).toHaveBeenCalled();
+		expect(showErrorAlert).not.toHaveBeenCalled();
+		// Saga ran past the guard and reached `setCalling(true)`.
+		expect(store.getState().videoConf.calling).toBe(true);
 	});
 });

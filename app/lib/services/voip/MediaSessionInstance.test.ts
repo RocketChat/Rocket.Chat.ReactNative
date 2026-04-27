@@ -121,6 +121,16 @@ jest.mock('react-native', () => ({
 	Platform: { OS: 'android' }
 }));
 
+const mockIsInActiveVoipCall = jest.fn(() => false);
+jest.mock('./isInActiveVoipCall', () => ({
+	isInActiveVoipCall: () => mockIsInActiveVoipCall()
+}));
+
+jest.mock('../../../i18n', () => ({
+	__esModule: true,
+	default: { t: (key: string) => key }
+}));
+
 const mockShowErrorAlert = jest.fn();
 jest.mock('../../methods/helpers/info', () => ({
 	showErrorAlert: (...args: unknown[]) => mockShowErrorAlert(...args)
@@ -219,6 +229,7 @@ describe('MediaSessionInstance', () => {
 		createdSessions.length = 0;
 		mockGetUidDirectMessage.mockReturnValue('other-user-id');
 		mockGetDMSubscriptionByUsername.mockResolvedValue(null);
+		mockIsInActiveVoipCall.mockReturnValue(false);
 		mockUseCallStoreGetState.mockReturnValue({
 			reset: mockCallStoreReset,
 			setCall: jest.fn(),
@@ -575,6 +586,17 @@ describe('MediaSessionInstance', () => {
 			expect(mockShowErrorAlert).not.toHaveBeenCalled();
 		});
 
+		it('rejects with VoIP_Already_In_Call when an active VoIP call is present', async () => {
+			await mediaSessionInstance.init('user-1');
+			const session = createdSessions[0];
+			mockRequestVoipCallPermissions.mockClear();
+			mockIsInActiveVoipCall.mockReturnValue(true);
+
+			await expect(mediaSessionInstance.startCall('peer-1', 'user')).rejects.toThrow('VoIP_Already_In_Call');
+			expect(session.startCall).not.toHaveBeenCalled();
+			expect(mockRequestVoipCallPermissions).not.toHaveBeenCalled();
+		});
+
 		it('silently drops self-call when userId matches logged-in user id', async () => {
 			await mediaSessionInstance.init('user-1');
 			mockRequestVoipCallPermissions.mockClear();
@@ -646,6 +668,17 @@ describe('MediaSessionInstance', () => {
 			expect(mockSetRoomId).toHaveBeenCalledWith('rid-dm');
 			expect(session.startCall).toHaveBeenCalledWith('user', 'other-user-id');
 			expect(order).toEqual(['setRoomId', 'startCall']);
+		});
+
+		it('startCallByRoom no-ops when an active VoIP call is present (no setRoomId, no session.startCall)', async () => {
+			await mediaSessionInstance.init('user-1');
+			const session = createdSessions[0];
+			mockIsInActiveVoipCall.mockReturnValue(true);
+
+			mediaSessionInstance.startCallByRoom({ rid: 'rid-dm', t: 'd', uids: ['a', 'b'] } as any);
+
+			expect(mockSetRoomId).not.toHaveBeenCalled();
+			expect(session.startCall).not.toHaveBeenCalled();
 		});
 
 		it('newCall caller triggers DM lookup when roomId is still null', async () => {

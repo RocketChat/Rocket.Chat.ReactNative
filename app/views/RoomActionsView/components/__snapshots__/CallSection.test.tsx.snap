@@ -99,7 +99,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                 "justifyContent": "center",
                 "paddingHorizontal": 12,
               },
-              false,
+              undefined,
               {
                 "height": 46,
               },
@@ -623,7 +623,7 @@ exports[`Story Snapshots: NoVoiceCall should match snapshot 1`] = `
                 "justifyContent": "center",
                 "paddingHorizontal": 12,
               },
-              false,
+              undefined,
               {
                 "height": 46,
               },

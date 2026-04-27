@@ -77,6 +77,7 @@ import { themes } from '../../lib/constants/colors';
 import { NOTIFICATION_IN_APP_VIBRATION } from '../../lib/constants/notifications';
 import { type ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import { callJitsi } from '../../lib/methods/callJitsi';
+import { isInActiveVoipCall } from '../../lib/services/voip/isInActiveVoipCall';
 import { loadSurroundingMessages } from '../../lib/methods/loadSurroundingMessages';
 import { loadThreadMessages } from '../../lib/methods/loadThreadMessages';
 import { readMessages } from '../../lib/methods/readMessages';
@@ -1266,6 +1267,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	// OLD METHOD - support versions before 5.0.0
 	handleEnterCall = () => {
+		if (isInActiveVoipCall()) return;
 		const { room } = this.state;
 		if ('id' in room) {
 			const { jitsiTimeout } = room;
