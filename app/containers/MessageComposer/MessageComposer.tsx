@@ -90,7 +90,8 @@ export const MessageComposer = ({
 	});
 
 	useEffect(() => {
-		if (action === 'edit' && selectedMessages[0]) {
+		const altTextSupported = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.4.0');
+		if (action === 'edit' && selectedMessages[0] && altTextSupported) {
 			let cancelled = false;
 			const load = async () => {
 				const message = await getMessageById(selectedMessages[0]);
