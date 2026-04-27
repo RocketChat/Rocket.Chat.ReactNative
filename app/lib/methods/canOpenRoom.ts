@@ -42,6 +42,7 @@ async function open({ type, rid, name }: { type: ERoomTypes; rid: string; name: 
 		// we'll get info from the room
 		if ((type === ERoomTypes.CHANNEL || type === ERoomTypes.GROUP) && !rid) {
 			// RC 0.72.0
+			// @ts-ignore
 			const result: any = await sdk.get(`/v1/${restTypes[type]}.info`, params);
 			if (result.success) {
 				const room = result[type];
