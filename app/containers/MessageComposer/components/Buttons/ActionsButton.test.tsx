@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react-native';
+import { fireEvent, render, screen } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
 import { ActionsButton } from './ActionsButton';
@@ -7,16 +7,16 @@ import { setPermissions } from '../../../../actions/permissions';
 import { selectServerRequest } from '../../../../actions/server';
 import { setUser } from '../../../../actions/login';
 import { mockedStore } from '../../../../reducers/mockedStore';
-import { type IPermissionsState } from '../../../../reducers/permissions';
 import { RoomContext, type IRoomContext } from '../../../../views/RoomView/context';
-import { MessageInnerContext, type IMessageInnerContext } from '../../context';
+import { MessageInnerContext, type TMessageInnerContext } from '../../context';
 import { initStore } from '../../../../lib/store/auxStore';
 
+const mockActionSheet = {
+	showActionSheet: jest.fn(),
+	hideActionSheet: jest.fn()
+};
 jest.mock('../../../ActionSheet', () => ({
-	useActionSheet: () => ({
-		showActionSheet: jest.fn(),
-		hideActionSheet: jest.fn()
-	})
+	useActionSheet: () => mockActionSheet
 }));
 
 let mockCanUploadFile = false;
@@ -74,28 +74,15 @@ const roomContext: IRoomContext = {
 	onRemoveQuoteMessage: jest.fn()
 };
 
-const messageInnerContext: IMessageInnerContext = {
-	closeEmojiKeyboardAndAction: jest.fn(),
-	openEmojiKeyboard: jest.fn(),
-	closeEmojiKeyboard: jest.fn(),
-	mentions: [],
-	channels: [],
-	mentionsLoading: false,
-	channelMentionsLoading: false,
-	setMarkdownToolbar: jest.fn()
+const messageInnerContext: TMessageInnerContext = {
+	sendMessage: jest.fn(),
+	onEmojiSelected: jest.fn(),
+	closeEmojiKeyboardAndAction: (action?: Function, params?: any) => action?.(params),
+	focus: jest.fn()
 };
 
-const Render = ({
-	context,
-	permissions
-}: {
-	context?: Partial<IRoomContext>;
-	permissions?: IPermissionsState;
-}) => {
-	if (permissions) {
-		mockedStore.dispatch(setPermissions(permissions));
-	}
-	return (
+const renderActionsButton = ({ context }: { context?: Partial<IRoomContext> }) =>
+	render(
 		<Provider store={mockedStore}>
 			<RoomContext.Provider value={{ ...roomContext, ...context }}>
 				<MessageInnerContext.Provider value={messageInnerContext}>
@@ -104,40 +91,46 @@ const Render = ({
 			</RoomContext.Provider>
 		</Provider>
 	);
-};
 
 describe('ActionsButton', () => {
 	beforeEach(() => {
 		mockedStore.dispatch(setPermissions({}));
 		mockCanUploadFile = false;
+		mockActionSheet.showActionSheet.mockReset();
 	});
 
 	describe('given user has start-discussion permission', () => {
-		test('then Actions button is visible', () => {
+		test('then Actions button is visible and Create discussion option is present', () => {
 			initialStoreState();
-			render(
-				<Render
-					permissions={{
-						'start-discussion': ['user']
-					}}
-				/>
-			);
+			mockedStore.dispatch(setPermissions({ 'start-discussion': ['user'] }));
+			renderActionsButton({});
 			expect(screen.getByTestId('message-composer-actions')).toBeOnTheScreen();
+			fireEvent.press(screen.getByTestId('message-composer-actions'));
+			expect(mockActionSheet.showActionSheet).toHaveBeenCalled();
+			const { options } = mockActionSheet.showActionSheet.mock.calls.at(-1)[0];
+			expect(options.some((o: { title: string }) => o.title === 'Create discussion')).toBe(true);
 		});
 	});
 
 	describe('given user lacks start-discussion permission', () => {
-		describe('and is not in livechat room', () => {
+		describe('and has no other permissions', () => {
 			test('then Actions button is not visible', () => {
 				initialStoreState();
-				render(
-					<Render
-						permissions={{
-							'start-discussion': []
-						}}
-					/>
-				);
+				mockedStore.dispatch(setPermissions({ 'start-discussion': [] }));
+				renderActionsButton({});
 				expect(screen.queryByTestId('message-composer-actions')).not.toBeOnTheScreen();
+			});
+		});
+		describe('but has upload permission', () => {
+			test('then Actions button is visible but Create discussion option is absent', () => {
+				initialStoreState();
+				mockCanUploadFile = true;
+				mockedStore.dispatch(setPermissions({ 'start-discussion': [] }));
+				renderActionsButton({});
+				expect(screen.getByTestId('message-composer-actions')).toBeOnTheScreen();
+				fireEvent.press(screen.getByTestId('message-composer-actions'));
+				const { options } = mockActionSheet.showActionSheet.mock.calls.at(-1)[0];
+				expect(options.some((o: { title: string }) => o.title === 'Create discussion')).toBe(false);
 			});
 		});
 	});
@@ -145,56 +138,57 @@ describe('ActionsButton', () => {
 	describe('given user has view-canned-responses permission', () => {
 		test('and is in livechat room then Actions button is visible', () => {
 			initialStoreState();
-			render(
-				<Render
-					context={{
-						t: 'l',
-						room: {
-							...roomContext.room,
-							t: 'l'
-						}
-					}}
-					permissions={{
-						'view-canned-responses': ['user']
-					}}
-				/>
-			);
+			mockedStore.dispatch(setPermissions({ 'view-canned-responses': ['user'] }));
+			renderActionsButton({
+				context: {
+					t: 'l',
+					room: {
+						...roomContext.room,
+						t: 'l'
+					}
+				}
+			});
 			expect(screen.getByTestId('message-composer-actions')).toBeOnTheScreen();
 		});
 	});
 
 	describe('permission combinations', () => {
-		test('given only start-discussion permission, button is visible', () => {
+		test('given only start-discussion permission, button is visible and option is present', () => {
 			initialStoreState();
-			render(
-				<Render
-					permissions={{
-						'start-discussion': ['user'],
-						'mobile-upload-file': [],
-						'view-canned-responses': []
-					}}
-				/>
+			mockedStore.dispatch(
+				setPermissions({
+					'start-discussion': ['user'],
+					'mobile-upload-file': [],
+					'view-canned-responses': []
+				})
 			);
+			renderActionsButton({});
 			expect(screen.getByTestId('message-composer-actions')).toBeOnTheScreen();
+			fireEvent.press(screen.getByTestId('message-composer-actions'));
+			const { options } = mockActionSheet.showActionSheet.mock.calls.at(-1)[0];
+			expect(options.some((o: { title: string }) => o.title === 'Create discussion')).toBe(true);
 		});
 
-		test('given only upload permission, button is visible', () => {
+		test('given only upload permission, button is visible but Create discussion is absent', () => {
 			initialStoreState();
 			mockCanUploadFile = true;
-			render(<Render permissions={{}} />);
+			mockedStore.dispatch(setPermissions({}));
+			renderActionsButton({});
 			expect(screen.getByTestId('message-composer-actions')).toBeOnTheScreen();
+			fireEvent.press(screen.getByTestId('message-composer-actions'));
+			const { options } = mockActionSheet.showActionSheet.mock.calls.at(-1)[0];
+			expect(options.some((o: { title: string }) => o.title === 'Create discussion')).toBe(false);
 		});
 
 		test('given no permissions, button is not visible', () => {
 			initialStoreState();
-			render(
-				<Render
-					permissions={{
-						'start-discussion': [],
-						'view-canned-responses': []
-					}}
-				/>
+			mockedStore.dispatch(
+				setPermissions({
+					'start-discussion': [],
+					'view-canned-responses': []
+				})
 			);
+			renderActionsButton({});
 			expect(screen.queryByTestId('message-composer-actions')).not.toBeOnTheScreen();
 		});
 	});

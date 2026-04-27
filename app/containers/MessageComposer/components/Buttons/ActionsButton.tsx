@@ -41,7 +41,7 @@ export const ActionsButton = () => {
 		}
 	};
 
-	const onPress = () => {
+	const getActionOptions = (): TActionSheetOptionsItem[] => {
 		const options: TActionSheetOptionsItem[] = [];
 		if (t === 'l' && permissionToViewCannedResponses) {
 			options.push({
@@ -92,7 +92,6 @@ export const ActionsButton = () => {
 				}
 			);
 		}
-
 		if (permissionToStartDiscussion) {
 			options.push({
 				title: I18n.t('Create_Discussion'),
@@ -100,12 +99,15 @@ export const ActionsButton = () => {
 				onPress: () => createDiscussion()
 			});
 		}
+		return options;
+	};
 
+	const onPress = () => {
+		const options = getActionOptions();
 		closeEmojiKeyboardAndAction(showActionSheet, { options });
 	};
 
-	const hasOptions =
-		(t === 'l' && permissionToViewCannedResponses) || permissionToUpload || permissionToStartDiscussion;
+	const hasOptions = getActionOptions().length > 0;
 
 	if (!hasOptions) {
 		return null;

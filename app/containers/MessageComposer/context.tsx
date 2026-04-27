@@ -29,7 +29,7 @@ export const useRecordingAudio = (): State['recordingAudio'] => useContext(Recor
 export const useAutocompleteParams = (): State['autocompleteParams'] => useContext(AutocompleteParamsContext);
 
 // TODO: rename
-type TMessageInnerContext = {
+export type TMessageInnerContext = {
 	sendMessage(): void;
 	onEmojiSelected(emoji: IEmoji): void;
 	// TODO: action should be required
