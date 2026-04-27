@@ -26,8 +26,8 @@ public class AppDelegate: ExpoAppDelegate {
     FirebaseApp.configure()
     Bugsnag.start()
     ReplyNotification.configure()
-    VoipService.voipRegistration()
     if !VoipRegion.isChina() {
+      VoipService.voipRegistration()
       RNCallKeep.setup([
         "appName": "Rocket.Chat",
         "supportsVideo": false,
