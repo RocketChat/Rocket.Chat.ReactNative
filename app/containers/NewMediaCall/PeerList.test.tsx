@@ -67,6 +67,12 @@ describe('PeerList', () => {
 		expect(queryByTestId('new-media-call-option-user-1')).toBeNull();
 	});
 
+	it('should return null when there are no options', () => {
+		usePeerAutocompleteStore.setState({ options: [], selectedPeer: null });
+		const { toJSON } = render(<PeerList />);
+		expect(toJSON()).toBeNull();
+	});
+
 	it('should set selected peer, clear filter and fetch options when option is pressed', () => {
 		usePeerAutocompleteStore.setState({
 			options: mockOptions,

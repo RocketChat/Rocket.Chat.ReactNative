@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { PeerList } from './PeerList';
 import { SelectedPeer } from './SelectedPeer';
@@ -11,10 +12,11 @@ import { useTheme } from '../../theme';
 export const NewMediaCall = (): React.ReactElement => {
 	const { colors } = useTheme();
 	const reset = usePeerAutocompleteStore(state => state.reset);
+	const { bottom } = useSafeAreaInsets();
 	useEffect(() => () => reset(), [reset]);
 
 	return (
-		<View style={[styles.screen, { backgroundColor: colors.surfaceLight }]}>
+		<View style={[styles.screen, { backgroundColor: colors.surfaceLight, paddingBottom: bottom + 16 }]}>
 			<FilterHeader />
 			<SelectedPeer />
 			<PeerList />

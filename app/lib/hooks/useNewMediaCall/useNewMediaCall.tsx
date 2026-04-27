@@ -7,6 +7,7 @@ import { usePeerAutocompleteStore } from '../../services/voip/usePeerAutocomplet
 import { useIsInActiveVoipCall } from '../../services/voip/isInActiveVoipCall';
 import { useSubscription } from '../useSubscription';
 import { useMediaCallPermission } from '../useMediaCallPermission';
+import { isAndroid } from '../../methods/helpers/deviceInfo';
 
 export const useNewMediaCall = (rid?: string) => {
 	const room = useSubscription(rid);
@@ -23,10 +24,7 @@ export const useNewMediaCall = (rid?: string) => {
 		}
 		showActionSheetRef({
 			children: <NewMediaCall />,
-			portraitSnaps: ['60%'],
-			landscapeSnaps: ['90%'],
-			enableContentPanningGesture: false,
-			fullContainer: true
+			fullContainer: isAndroid
 		});
 	};
 
