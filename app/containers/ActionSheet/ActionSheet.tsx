@@ -1,7 +1,15 @@
 import { useBackHandler } from '@react-native-community/hooks';
 import * as Haptics from 'expo-haptics';
 import React, { forwardRef, isValidElement, useImperativeHandle, useRef, useState } from 'react';
-import { Keyboard, type LayoutChangeEvent, Platform, useWindowDimensions } from 'react-native';
+import {
+	AccessibilityInfo,
+	findNodeHandle,
+	Keyboard,
+	type LayoutChangeEvent,
+	Platform,
+	useWindowDimensions,
+	View
+} from 'react-native';
 import { TrueSheet } from '@lodev09/react-native-true-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
@@ -20,6 +28,7 @@ const ActionSheet = React.memo(
 		const { colors } = useTheme();
 		const { height: windowHeight, width: windowWidth, fontScale } = useWindowDimensions();
 		const sheetRef = useRef<TrueSheet>(null);
+		const firstFocusableRef = useRef<View>(null);
 		const [data, setData] = useState<TActionSheetOptions>({} as TActionSheetOptions);
 		const [isVisible, setIsVisible] = useState(false);
 		const [contentHeight, setContentHeight] = useState(0);
@@ -62,10 +71,17 @@ const ActionSheet = React.memo(
 			hideActionSheet: hide
 		}));
 
+		const onDidPresent = () => {
+			const node = findNodeHandle(firstFocusableRef.current);
+			if (node) AccessibilityInfo.setAccessibilityFocus(node);
+		};
+
 		const renderHeader = () => (
 			<GestureHandlerRootView style={{ flex: 0 }}>
-				<Handle onPress={hide} />
-				{isValidElement(data?.customHeader) ? data.customHeader : null}
+				<View ref={firstFocusableRef} collapsable={false}>
+					<Handle onPress={hide} />
+					{isValidElement(data?.customHeader) ? data.customHeader : null}
+				</View>
 			</GestureHandlerRootView>
 		);
 
@@ -120,6 +136,7 @@ const ActionSheet = React.memo(
 					header={renderHeader()}
 					scrollable={isScrollable}
 					style={styles.container}
+					onDidPresent={onDidPresent}
 					onDidDismiss={onDidDismiss}>
 					<GestureHandlerRootView style={styles.contentContainer}>
 						<BottomSheetContent

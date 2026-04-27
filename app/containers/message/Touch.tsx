@@ -86,6 +86,12 @@ const Touch = React.forwardRef<View, ITouchProps>(
 			<KeyboardComponent
 				ref={ref}
 				onPress={onPress}
+				accessible={accessible}
+				accessibilityRole={props.accessibilityRole}
+				accessibilityLabel={accessibilityLabel}
+				accessibilityHint={accessibilityHint}
+				accessibilityActions={accessibilityActions}
+				onAccessibilityAction={onAccessibilityAction}
 				style={[rectButtonStyle, marginStyles, { backgroundColor, borderRadius }]}
 				{...touchableProps}
 				{...props}
