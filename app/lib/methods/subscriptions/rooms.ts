@@ -440,7 +440,8 @@ export default function subscribeRooms() {
 	try {
 		// set the server that started this task
 		subServer = sdk.current?.connection.url || '';
-		sdk.subscribeRaw('stream-notify-user', 'user');
+		const { id: userId } = store.getState().login.user;
+		sdk.subscribeRaw('stream-notify-user', userId);
 		roomsSubscription = { stop: () => stop() };
 		return null;
 	} catch (e) {

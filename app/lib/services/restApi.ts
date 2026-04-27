@@ -1022,9 +1022,7 @@ export function e2eResetOwnKey(): Promise<{ success?: boolean }> {
 	unsubscribeRooms();
 
 	// RC 3.6.0
-	sdk.post('/v1/users.resetE2EKey');
-
-	return Promise.resolve({ success: true });
+	return sdk.post('/v1/users.resetE2EKey');
 }
 
 export function e2eResetRoomKey(rid: string, e2eKey: string, e2eKeyId: string) {
