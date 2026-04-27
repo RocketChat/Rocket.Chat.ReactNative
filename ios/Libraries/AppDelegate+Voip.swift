@@ -90,7 +90,7 @@ extension AppDelegate: PKPushRegistryDelegate {
         onReportComplete: { completion() }
       )
     } else {
-      completion()
+      reportPlaceholderCallAndEnd(callId, caller)
     }
   }
 }
