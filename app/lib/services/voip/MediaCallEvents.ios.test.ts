@@ -330,6 +330,24 @@ describe('getInitialMediaCallEvents — iOS cold start', () => {
 	});
 });
 
+describe('setupMediaCallEvents — didChangeAudioRoute (iOS no-op)', () => {
+	const getState = useCallStore.getState as jest.Mock;
+
+	beforeEach(() => {
+		jest.clearAllMocks();
+		resetMediaCallEventsStateForTesting();
+		Object.keys(mockNativeVoipListeners).forEach(k => delete mockNativeVoipListeners[k]);
+		mockAddEventListener.mockImplementation(() => ({ remove: jest.fn() }));
+		getState.mockReturnValue({});
+	});
+
+	it('does NOT register didChangeAudioRoute on iOS (Telecom-only path)', () => {
+		setupMediaCallEvents(makeTestAdapters());
+		const audioRouteCall = mockAddEventListener.mock.calls.find(([name]) => name === 'didChangeAudioRoute');
+		expect(audioRouteCall).toBeUndefined();
+	});
+});
+
 describe('setupMediaCallEvents — endCall clears accept dedupe (iOS)', () => {
 	const getState = useCallStore.getState as jest.Mock;
 	const mockSetNativeAcceptedCallId = jest.fn();

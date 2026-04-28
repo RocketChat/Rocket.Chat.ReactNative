@@ -1,4 +1,7 @@
 import type { IClientMediaCall } from '@rocket.chat/media-signaling';
+import { Platform } from 'react-native';
+import RNCallKeep from 'react-native-callkeep';
+import InCallManager from 'react-native-incall-manager';
 
 import { useCallStore } from './useCallStore';
 
@@ -18,8 +21,25 @@ jest.mock('react-native-callkeep', () => ({
 	start: jest.fn(),
 	stop: jest.fn(),
 	setForceSpeakerphoneOn: jest.fn(),
-	setAvailable: jest.fn()
+	setAvailable: jest.fn(),
+	setAudioRoute: jest.fn(() => Promise.resolve())
 }));
+
+// Re-evaluate `isIOS` per-test (the helper module computes it once at import time from Platform.OS,
+// so we replace it with a getter that reflects the current Platform.OS in the test).
+jest.mock('../../methods/helpers', () => {
+	const actual = jest.requireActual('../../methods/helpers');
+	const { Platform } = jest.requireActual('react-native');
+	const proxy: Record<string, unknown> = { ...actual };
+	Object.defineProperty(proxy, 'isIOS', {
+		get() {
+			return Platform.OS === 'ios';
+		},
+		enumerable: true,
+		configurable: true
+	});
+	return proxy;
+});
 
 function createMockCall(callId: string, options?: { initialState?: string }) {
 	const initialState = options?.initialState ?? 'active';
@@ -291,5 +311,78 @@ describe('useCallStore native accepted + stale timer', () => {
 		expect(useCallStore.getState().nativeAcceptedCallId).toBe('b');
 		jest.advanceTimersByTime(1_000);
 		expect(useCallStore.getState().nativeAcceptedCallId).toBeNull();
+	});
+});
+
+describe('useCallStore toggleSpeaker', () => {
+	const originalOS = Platform.OS;
+
+	beforeEach(() => {
+		(RNCallKeep.setAudioRoute as jest.Mock).mockClear();
+		(InCallManager.setForceSpeakerphoneOn as jest.Mock).mockClear();
+		useCallStore.getState().resetNativeCallId();
+		useCallStore.getState().reset();
+	});
+
+	afterEach(() => {
+		(Platform as { OS: string }).OS = originalOS;
+	});
+
+	describe('Android', () => {
+		beforeEach(() => {
+			(Platform as { OS: string }).OS = 'android';
+		});
+
+		it('routes audio to Speaker via RNCallKeep.setAudioRoute and flips isSpeakerOn', async () => {
+			const { call } = createMockCall('abc');
+			useCallStore.getState().setCall(call);
+			expect(useCallStore.getState().isSpeakerOn).toBe(false);
+
+			await useCallStore.getState().toggleSpeaker();
+
+			expect(RNCallKeep.setAudioRoute).toHaveBeenCalledTimes(1);
+			expect(RNCallKeep.setAudioRoute).toHaveBeenCalledWith('abc', 'Speaker');
+			expect(InCallManager.setForceSpeakerphoneOn).not.toHaveBeenCalled();
+			expect(useCallStore.getState().isSpeakerOn).toBe(true);
+
+			await useCallStore.getState().toggleSpeaker();
+
+			expect(RNCallKeep.setAudioRoute).toHaveBeenCalledTimes(2);
+			expect(RNCallKeep.setAudioRoute).toHaveBeenLastCalledWith('abc', 'Earpiece');
+			expect(useCallStore.getState().isSpeakerOn).toBe(false);
+		});
+
+		it('does not throw and does not flip isSpeakerOn when call uuid is missing', async () => {
+			// Simulate active call object but no callId/native id (defensive — should not normally happen).
+			const { call } = createMockCall('abc');
+			useCallStore.getState().setCall(call);
+			useCallStore.setState({ callId: null, nativeAcceptedCallId: null });
+			const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+			await expect(useCallStore.getState().toggleSpeaker()).resolves.toBeUndefined();
+
+			expect(RNCallKeep.setAudioRoute).not.toHaveBeenCalled();
+			expect(useCallStore.getState().isSpeakerOn).toBe(false);
+			expect(errorSpy).toHaveBeenCalled();
+			errorSpy.mockRestore();
+		});
+	});
+
+	describe('iOS', () => {
+		beforeEach(() => {
+			(Platform as { OS: string }).OS = 'ios';
+		});
+
+		it('uses InCallManager.setForceSpeakerphoneOn and does not call RNCallKeep.setAudioRoute', async () => {
+			const { call } = createMockCall('ios-call');
+			useCallStore.getState().setCall(call);
+
+			await useCallStore.getState().toggleSpeaker();
+
+			expect(InCallManager.setForceSpeakerphoneOn).toHaveBeenCalledTimes(1);
+			expect(InCallManager.setForceSpeakerphoneOn).toHaveBeenCalledWith(true);
+			expect(RNCallKeep.setAudioRoute).not.toHaveBeenCalled();
+			expect(useCallStore.getState().isSpeakerOn).toBe(true);
+		});
 	});
 });

@@ -154,6 +154,19 @@ export const setupMediaCallEvents = (adapters: MediaCallEventsAdapters): (() => 
 		// (POST /api/v1/media-calls.answer) before JS runs. JS receives VoipAcceptSucceeded after success.
 	}
 
+	// Android: Telecom/ConnectionService owns the audio route. Sync isSpeakerOn from native route changes.
+	if (!isIOS) {
+		subscriptions.push(
+			RNCallKeep.addEventListener('didChangeAudioRoute', ({ output, callUUID }) => {
+				const { call, callId, nativeAcceptedCallId } = useCallStore.getState();
+				const eventUuid = (callUUID ?? '').toLowerCase();
+				const activeUuid = (callId ?? nativeAcceptedCallId ?? '').toLowerCase();
+				if (!call || !activeUuid || eventUuid !== activeUuid) return;
+				useCallStore.setState({ isSpeakerOn: output === 'Speaker' });
+			})
+		);
+	}
+
 	/** Tracks OS-driven hold (competing call) so we only auto-resume that path, not manual hold. */
 	let wasAutoHeld = false;
 	subscriptions.push(

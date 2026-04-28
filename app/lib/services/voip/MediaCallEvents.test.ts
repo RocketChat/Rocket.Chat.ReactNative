@@ -33,7 +33,8 @@ function makeTestAdapters(): MediaCallEventsAdapters {
 
 jest.mock('./useCallStore', () => ({
 	useCallStore: {
-		getState: jest.fn()
+		getState: jest.fn(),
+		setState: jest.fn()
 	}
 }));
 
@@ -457,6 +458,101 @@ describe('setupMediaCallEvents — didToggleHoldCallAction', () => {
 		const remove = jest.fn();
 		mockAddEventListener.mockImplementation((event: string) => {
 			if (event === 'didToggleHoldCallAction') {
+				return { remove };
+			}
+			return { remove: jest.fn() };
+		});
+		const cleanup = setupMediaCallEvents(makeTestAdapters());
+		cleanup();
+		expect(remove).toHaveBeenCalled();
+	});
+});
+
+describe('setupMediaCallEvents — didChangeAudioRoute (Android)', () => {
+	const getState = useCallStore.getState as jest.Mock;
+	const { setState } = useCallStore as unknown as { setState: jest.Mock };
+
+	function getAudioRouteHandler(): (payload: { output: string; callUUID?: string }) => void {
+		const call = mockAddEventListener.mock.calls.find(([name]) => name === 'didChangeAudioRoute');
+		if (!call) {
+			throw new Error('didChangeAudioRoute listener not registered');
+		}
+		return call[1] as (payload: { output: string; callUUID?: string }) => void;
+	}
+
+	beforeEach(() => {
+		jest.clearAllMocks();
+		resetMediaCallEventsStateForTesting();
+		mockAddEventListener.mockImplementation(() => ({ remove: jest.fn() }));
+		setState.mockClear();
+		getState.mockReturnValue({ ...activeCallBase });
+	});
+
+	it('registers didChangeAudioRoute via RNCallKeep.addEventListener', () => {
+		setupMediaCallEvents(makeTestAdapters());
+		expect(mockAddEventListener).toHaveBeenCalledWith('didChangeAudioRoute', expect.any(Function));
+	});
+
+	it('sets isSpeakerOn to true when output is Speaker and uuid matches', () => {
+		setupMediaCallEvents(makeTestAdapters());
+		getAudioRouteHandler()({ output: 'Speaker', callUUID: 'uuid-1' });
+		expect(setState).toHaveBeenCalledWith({ isSpeakerOn: true });
+	});
+
+	it('sets isSpeakerOn to false when output is Earpiece and uuid matches', () => {
+		setupMediaCallEvents(makeTestAdapters());
+		getAudioRouteHandler()({ output: 'Earpiece', callUUID: 'uuid-1' });
+		expect(setState).toHaveBeenCalledWith({ isSpeakerOn: false });
+	});
+
+	it('matches uuid case-insensitively', () => {
+		getState.mockReturnValue({ ...activeCallBase, callId: 'UUID-1' });
+		setupMediaCallEvents(makeTestAdapters());
+		getAudioRouteHandler()({ output: 'Speaker', callUUID: 'uuid-1' });
+		expect(setState).toHaveBeenCalledWith({ isSpeakerOn: true });
+	});
+
+	it('falls back to nativeAcceptedCallId when callId is null', () => {
+		getState.mockReturnValue({
+			call: {} as object,
+			callId: null,
+			nativeAcceptedCallId: 'native-uuid'
+		});
+		setupMediaCallEvents(makeTestAdapters());
+		getAudioRouteHandler()({ output: 'Speaker', callUUID: 'native-uuid' });
+		expect(setState).toHaveBeenCalledWith({ isSpeakerOn: true });
+	});
+
+	it('drops event when callUUID does not match active call id', () => {
+		setupMediaCallEvents(makeTestAdapters());
+		getAudioRouteHandler()({ output: 'Speaker', callUUID: 'other-uuid' });
+		expect(setState).not.toHaveBeenCalled();
+	});
+
+	it('drops event when callUUID is missing', () => {
+		setupMediaCallEvents(makeTestAdapters());
+		getAudioRouteHandler()({ output: 'Speaker' });
+		expect(setState).not.toHaveBeenCalled();
+	});
+
+	it('drops event when there is no active call object', () => {
+		getState.mockReturnValue({ call: null, callId: 'uuid-1', nativeAcceptedCallId: null });
+		setupMediaCallEvents(makeTestAdapters());
+		getAudioRouteHandler()({ output: 'Speaker', callUUID: 'uuid-1' });
+		expect(setState).not.toHaveBeenCalled();
+	});
+
+	it('drops event when there is no active uuid (call set, ids null)', () => {
+		getState.mockReturnValue({ call: {} as object, callId: null, nativeAcceptedCallId: null });
+		setupMediaCallEvents(makeTestAdapters());
+		getAudioRouteHandler()({ output: 'Speaker', callUUID: 'uuid-1' });
+		expect(setState).not.toHaveBeenCalled();
+	});
+
+	it('cleanup removes didChangeAudioRoute subscription', () => {
+		const remove = jest.fn();
+		mockAddEventListener.mockImplementation((event: string) => {
+			if (event === 'didChangeAudioRoute') {
 				return { remove };
 			}
 			return { remove: jest.fn() };
