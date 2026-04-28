@@ -32,7 +32,7 @@ const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 			}
 		}
 	});
-
+	console.log('props', props.data);
 	return (
 		<View style={styles.list}>
 			{/* @ts-ignore */}

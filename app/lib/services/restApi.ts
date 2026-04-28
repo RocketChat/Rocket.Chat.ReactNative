@@ -1,4 +1,7 @@
+import { settings as RocketChatSettings } from '@rocket.chat/sdk';
+
 import {
+	type IAttachment,
 	type IAvatarSuggestion,
 	type IMessage,
 	type IMessagePreferences,
@@ -1044,7 +1047,29 @@ export function e2eResetRoomKey(rid: string, e2eKey: string, e2eKeyId: string): 
 	return sdk.post('e2e.resetRoomKey', { rid, e2eKey, e2eKeyId });
 }
 
-export const editMessage = async (message: Pick<IMessage, 'id' | 'msg' | 'rid' | 'content'>) => {
+export const editMediaMessage = (rid: string, fileId: string, body: { description?: string; filename: string; msg?: string }) => {
+	const { login, server } = reduxStore.getState();
+	const { user } = login;
+	// RC 8.4.0
+	return fetch(`${server.server}/api/v1/rooms.mediaConfirm/${rid}/${fileId}`, {
+		method: 'POST',
+		headers: {
+			...RocketChatSettings.customHeaders,
+			'Content-Type': 'application/json',
+			'X-Auth-Token': user.token,
+			'X-User-Id': user.id
+		},
+		body: JSON.stringify({
+			description: body.description,
+			filename: body.filename,
+			msg: body.msg || ''
+		})
+	});
+};
+
+export const editMessage = async (
+	message: Pick<IMessage, 'id' | 'msg' | 'rid' | 'content'> & { attachments?: Pick<IAttachment, 'description'>[] }
+) => {
 	const result = await Encryption.encryptMessage(message as IMessage);
 	if (!result) {
 		throw new Error('Failed to encrypt message');

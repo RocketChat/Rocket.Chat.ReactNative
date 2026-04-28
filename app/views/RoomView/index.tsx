@@ -16,10 +16,12 @@ import {
 	getRoutingConfig,
 	getUserInfo,
 	editMessage,
+	editMediaMessage,
 	setReaction,
 	joinRoom,
 	toggleFollowMessage
 } from '../../lib/services/restApi';
+import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
 import Touch from '../../containers/Touch';
 import { replyBroadcast } from '../../actions/messages';
 import database from '../../lib/database';
@@ -787,9 +789,33 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.resetAction();
 	};
 
-	onEditRequest = async (message: Pick<IMessage, 'id' | 'msg' | 'rid'>) => {
+	onEditRequest = async (
+		message: Pick<IMessage, 'id' | 'msg' | 'rid'> & {
+			attachments?: { description: string; fileId?: string; filename?: string }[];
+		}
+	) => {
 		try {
 			this.resetAction();
+			const { serverVersion } = this.props;
+			const supportsMediaEdit = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.4.0');
+			const mediaAttachments = message.attachments?.filter(a => a.fileId && a.filename);
+			console.log('mediaAttachments', message);
+			if (supportsMediaEdit && mediaAttachments?.length) {
+				if (message.msg) {
+					await editMessage({ id: message.id, msg: message.msg, rid: message.rid });
+				}
+				console.log('mediaAttachments', mediaAttachments);
+				await Promise.allSettled(
+					mediaAttachments.map(att =>
+						editMediaMessage(message.rid, att.fileId as string, {
+							description: att.description,
+							filename: att.filename as string,
+							msg: message.msg
+						})
+					)
+				);
+				return;
+			}
 			await editMessage(message);
 		} catch (e) {
 			log(e);

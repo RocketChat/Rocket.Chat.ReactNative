@@ -93,4 +93,5 @@ export interface IShareAttachment {
 		Orientation: string;
 	};
 	base64?: string | null;
+	fileId?: string;
 }

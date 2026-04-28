@@ -36,10 +36,10 @@ import { useRoomContext } from '../../../views/RoomView/context';
 import { getMessageById } from '../../../lib/database/services/Message';
 import { generateTriggerId } from '../../../lib/methods/actions';
 import { executeCommandPreview } from '../../../lib/services/restApi';
+import { compareServerVersion } from '../../../lib/methods/helpers/compareServerVersion';
 import log from '../../../lib/methods/helpers/log';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { usePrevious } from '../../../lib/hooks/usePrevious';
-import { compareServerVersion } from '../../../lib/methods/helpers/compareServerVersion';
 import { type ChatsStackParamList } from '../../../stacks/types';
 import { loadDraftMessage } from '../../../lib/methods/draftMessage';
 import useIOSBackSwipeHandler from '../hooks/useIOSBackSwipeHandler';
@@ -105,8 +105,7 @@ export const ComposerInput = memo(
 				const message = await getMessageById(selectedMessages[0]);
 				if (message) {
 					const altTextSupported = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.4.0');
-					const attachmentMsg = altTextSupported ? '' : message?.attachments?.[0]?.description;
-					setInput(message?.msg || attachmentMsg || '');
+					setInput(message?.msg || (altTextSupported ? '' : message?.attachments?.[0]?.description || ''));
 				}
 			};
 

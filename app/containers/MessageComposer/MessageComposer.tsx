@@ -106,6 +106,18 @@ export const MessageComposer = ({
 		}
 
 		const textFromInput = composerInputComponentRef.current.getTextAndClear();
+		const useAltText = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.4.0');
+
+		if (action === 'edit') {
+			const updatedAttachments = attachments.length
+				? attachments.map(({ description, altText, fileId, filename }) =>
+						useAltText ? { description: altText || '', fileId, filename } : { description: description || '' }
+				  )
+				: undefined;
+			editRequest?.({ id: selectedMessages[0], msg: textFromInput, rid, attachments: updatedAttachments });
+			clearAttachments();
+			return;
+		}
 
 		if (attachments.length) {
 			const useAltText = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.4.0');
@@ -158,10 +170,6 @@ export const MessageComposer = ({
 				composerInputComponentRef.current.setInput(textFromInput);
 				return;
 			}
-		}
-
-		if (action === 'edit') {
-			return editRequest?.({ id: selectedMessages[0], msg: textFromInput, rid });
 		}
 
 		if (action === 'quote') {
