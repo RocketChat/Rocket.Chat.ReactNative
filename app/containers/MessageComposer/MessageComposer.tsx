@@ -31,8 +31,8 @@ import { MessageComposerContent } from './components/MessageComposerContent';
 import { useTheme } from '../../theme';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { getUserSelector } from '../../selectors/login';
-import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
 import { sendFileMessage } from '../../lib/methods/sendFileMessage';
+import { useAltTextSupported } from '../../lib/hooks/useAltTextSupported';
 
 export const MessageComposer = ({
 	forwardedRef,
@@ -63,7 +63,7 @@ export const MessageComposer = ({
 	const { colors } = useTheme();
 	const user = useAppSelector(state => getUserSelector(state));
 	const server = useAppSelector(state => state.server.server);
-	const serverVersion = useAppSelector(state => state.server.version);
+	const altTextSupported = useAltTextSupported();
 	const attachments = useComposerAttachments();
 
 	const closeEmojiKeyboardAndAction = (action?: Function, params?: any) => {
@@ -73,8 +73,8 @@ export const MessageComposer = ({
 
 	useImperativeHandle(forwardedRef, () => ({
 		closeEmojiKeyboardAndAction,
-		getText: composerInputComponentRef.current?.getText,
-		setInput: composerInputComponentRef.current?.setInput
+		getText: () => composerInputComponentRef.current.getText(),
+		setInput: (...args: Parameters<IComposerInput['setInput']>) => composerInputComponentRef.current.setInput(...args)
 	}));
 
 	useBackHandler(() => {
@@ -106,12 +106,11 @@ export const MessageComposer = ({
 		}
 
 		const textFromInput = composerInputComponentRef.current.getTextAndClear();
-		const useAltText = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.4.0');
 
 		if (action === 'edit') {
 			const updatedAttachments = attachments.length
 				? attachments.map(({ description, altText, fileId, filename }) =>
-						useAltText ? { description: altText || '', fileId, filename } : { description: description || '' }
+						altTextSupported ? { description: altText || '', fileId, filename } : { description: description || '' }
 				  )
 				: undefined;
 			editRequest?.({ id: selectedMessages[0], msg: textFromInput, rid, attachments: updatedAttachments });
@@ -120,7 +119,6 @@ export const MessageComposer = ({
 		}
 
 		if (attachments.length) {
-			const useAltText = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.4.0');
 			let quotedMessage: string | undefined;
 
 			if (action === 'quote') {
@@ -139,7 +137,7 @@ export const MessageComposer = ({
 								[width, height] = [height, width];
 							}
 
-							const fileDescription = useAltText ? altText : description;
+							const fileDescription = altTextSupported ? altText : description;
 							const fileMsg = index === 0 ? description || quotedMessage || textFromInput : description;
 
 							return sendFileMessage(

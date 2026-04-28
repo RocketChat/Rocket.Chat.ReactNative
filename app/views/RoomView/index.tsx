@@ -799,21 +799,23 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			const { serverVersion } = this.props;
 			const supportsMediaEdit = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.4.0');
 			const mediaAttachments = message.attachments?.filter(a => a.fileId && a.filename);
-			console.log('mediaAttachments', message);
 			if (supportsMediaEdit && mediaAttachments?.length) {
-				if (message.msg) {
-					await editMessage({ id: message.id, msg: message.msg, rid: message.rid });
-				}
-				console.log('mediaAttachments', mediaAttachments);
-				await Promise.allSettled(
-					mediaAttachments.map(att =>
+				const mediaEditResults = await Promise.allSettled(
+					mediaAttachments.map((att, index) =>
 						editMediaMessage(message.rid, att.fileId as string, {
 							description: att.description,
 							filename: att.filename as string,
-							msg: message.msg
+							// Avoid duplicate message updates when multiple attachments are edited.
+							msg: index === 0 ? message.msg : undefined
 						})
 					)
 				);
+
+				mediaEditResults.forEach(result => {
+					if (result.status === 'rejected') {
+						log(result.reason);
+					}
+				});
 				return;
 			}
 			await editMessage(message);

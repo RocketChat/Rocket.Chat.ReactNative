@@ -155,7 +155,10 @@ describe('ShareView', () => {
 		shareView.state.attachments[0].description = 'my caption';
 		shareView.state.attachments[0].altText = 'a cat on a mat';
 		shareView.state.attachments[0].canUpload = true;
-		shareView.state.selected = shareView.state.attachments[0];
+		shareView.state = {
+			...shareView.state,
+			selected: shareView.state.attachments[0]
+		};
 
 		// Wire up share-extension path so send() can complete without navigation
 		(shareView as any).isShareExtension = true;
@@ -167,7 +170,7 @@ describe('ShareView', () => {
 
 		await shareView.send();
 
-		const fileArg = spy.mock.calls[0]?.[1];
+		const fileArg = spy.mock.calls[0]?.[1] as { description?: string; msg?: string } | undefined;
 		expect(fileArg?.description).toBe('a cat on a mat');
 		expect(fileArg?.msg).toBe('my caption');
 

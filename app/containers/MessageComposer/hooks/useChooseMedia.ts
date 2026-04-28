@@ -91,7 +91,6 @@ export const useChooseMedia = ({
 	};
 
 	const handlePickedAttachments = async (attachments: IShareAttachment[]) => {
-		console.log('altTextSupported', altTextSupported);
 		if (altTextSupported) {
 			prepareAttachments(attachments);
 			return;

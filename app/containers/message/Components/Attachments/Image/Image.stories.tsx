@@ -47,12 +47,7 @@ export const WithAltTextOldServer = () => (
 export const WithAltTextNewServer = () => (
 	<View style={{ padding: 10 }}>
 		<WidthAwareContext.Provider value={350}>
-			<MessageImage
-				uri={MOCK_URI}
-				status='downloaded'
-				encrypted={false}
-				altText='A wavy orange and black pattern, designed to be used as a wallpaper'
-			/>
+			<MessageImage uri={MOCK_URI} status='downloaded' encrypted={false} />
 		</WidthAwareContext.Provider>
 	</View>
 );
