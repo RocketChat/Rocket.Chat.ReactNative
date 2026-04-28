@@ -441,7 +441,16 @@ export default function subscribeRooms() {
 		// set the server that started this task
 		subServer = sdk.current?.connection.url || '';
 		const { id: userId } = store.getState().login.user;
-		sdk.subscribeRaw('stream-notify-user', userId);
+		[
+			'message',
+			'notification',
+			'rooms-changed',
+			'subscriptions-changed',
+			'uiInteraction',
+			'e2ekeyRequest',
+			'userData',
+			'video-conference'
+		].forEach(event => sdk.subscribeRaw('stream-notify-user', `${userId}/${event}`));
 		roomsSubscription = { stop: () => stop() };
 		return null;
 	} catch (e) {
