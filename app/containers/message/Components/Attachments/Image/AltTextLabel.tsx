@@ -1,24 +1,21 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { A11y } from 'react-native-a11y-order';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { useActionSheet } from '../../../../ActionSheet';
 import I18n from '../../../../../i18n';
 import sharedStyles from '../../../../../views/Styles';
 import { useTheme } from '../../../../../theme';
-import Touch from '../../../../Touch';
 
 const styles = StyleSheet.create({
 	container: {
+		position: 'absolute',
+		bottom: 12,
+		right: 12,
 		alignSelf: 'flex-start',
 		paddingHorizontal: 4,
 		borderRadius: 4,
-		height: 20
-	},
-	rectButtonStyle: {
-		position: 'absolute',
-		bottom: 12,
-		right: 12
+		height: 20,
+		justifyContent: 'center'
 	},
 	label: {
 		fontSize: 14,
@@ -76,17 +73,15 @@ const AltTextLabel = ({ altText, testID }: TAltTextLabelProps) => {
 	}, [altText, showActionSheet]);
 
 	return (
-		<A11y.Index index={3}>
-			<Touch
-				testID={testID}
-				onPress={handleOpenAltText}
-				accessibilityRole='button'
-				accessibilityLabel={I18n.t('Alt_text')}
-				style={[styles.container, { backgroundColor: colors.surfaceNeutral }]}
-				rectButtonStyle={styles.rectButtonStyle}>
-				<Text style={[styles.label, { color: colors.fontTitlesLabels }]}>{I18n.t('Alt')}</Text>
-			</Touch>
-		</A11y.Index>
+		<Pressable
+			accessible
+			testID={testID}
+			onPress={handleOpenAltText}
+			accessibilityRole='button'
+			accessibilityLabel={I18n.t('Alt_text')}
+			style={[styles.container, { backgroundColor: colors.surfaceNeutral }]}>
+			<Text style={[styles.label, { color: colors.fontTitlesLabels }]}>{I18n.t('Alt')}</Text>
+		</Pressable>
 	);
 };
 
