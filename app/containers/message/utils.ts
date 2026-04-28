@@ -202,7 +202,7 @@ export const getMessageTranslation = (message: TMessageModel, autoTranslateLangu
 };
 
 export const getMessageFromAttachment = (attachment: IAttachment, translateLanguage?: string): string | undefined => {
-	let msg = attachment.description || attachment.altText;
+	let msg = attachment.description ?? attachment.altText;
 	if (translateLanguage) {
 		const translatedMessage = attachment.translations?.[translateLanguage];
 		if (translatedMessage) {

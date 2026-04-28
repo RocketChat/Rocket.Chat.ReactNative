@@ -1,4 +1,4 @@
-import React, { type ReactElement, useEffect, useRef, useImperativeHandle } from 'react';
+import React, { type ReactElement, useRef, useImperativeHandle } from 'react';
 import { AccessibilityInfo, findNodeHandle, type LayoutChangeEvent } from 'react-native';
 import { useBackHandler } from '@react-native-community/hooks';
 import { Q } from '@nozbe/watermelondb';
@@ -16,7 +16,7 @@ import {
 } from './context';
 import { type IComposerInput } from './interfaces';
 import { EventTypes } from '../EmojiPicker/interfaces';
-import { type IAttachment, type IEmoji, type IShareAttachment } from '../../definitions';
+import { type IEmoji } from '../../definitions';
 import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import { generateTriggerId } from '../../lib/methods/actions';
@@ -33,9 +33,6 @@ import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { getUserSelector } from '../../selectors/login';
 import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
 import { sendFileMessage } from '../../lib/methods/sendFileMessage';
-import { getMessageById } from '../../lib/database/services/Message';
-import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
-import { usePrevious } from '../../lib/hooks/usePrevious';
 
 export const MessageComposer = ({
 	forwardedRef,
@@ -60,9 +57,8 @@ export const MessageComposer = ({
 	const { rid, tmid, action, selectedMessages, sharing, editRequest, onSendMessage, setQuotesAndText } = useRoomContext();
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
 	const { showEmojiKeyboard, showEmojiSearchbar, openEmojiSearchbar, resetKeyboard, keyboardHeight } = useEmojiKeyboard();
-	const { setAlsoSendThreadToChannel, setAutocompleteParams, clearAttachments, addAttachments } = useMessageComposerApi();
+	const { setAlsoSendThreadToChannel, setAutocompleteParams, clearAttachments } = useMessageComposerApi();
 	const recordingAudio = useRecordingAudio();
-	const prevAction = usePrevious(action);
 	const { formatShortnameToUnicode } = useShortnameToUnicode();
 	const { colors } = useTheme();
 	const user = useAppSelector(state => getUserSelector(state));
@@ -89,43 +85,6 @@ export const MessageComposer = ({
 		return false;
 	});
 
-	useEffect(() => {
-		const altTextSupported = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.4.0');
-		if (action === 'edit' && selectedMessages[0] && altTextSupported) {
-			let cancelled = false;
-			const load = async () => {
-				const message = await getMessageById(selectedMessages[0]);
-				if (cancelled || !message?.attachments?.length) return;
-				const shareAttachments: IShareAttachment[] = message.attachments
-					.filter((att: IAttachment) => att.image_url || att.video_url || att.audio_url)
-					.map((att: IAttachment) => {
-						const rawUrl = att.title_link || att.image_url || att.video_url || att.audio_url || '';
-						const mime = att.image_type || att.video_type || att.audio_type;
-						const urlPath = rawUrl.split('/').pop()?.split('?')[0] || 'attachment';
-						return {
-							filename: att.title || urlPath,
-							path: formatAttachmentUrl(rawUrl, user.id, user.token, server),
-							mime,
-							size: att.image_size || att.video_size || att.audio_size || 0,
-							description: att.description || '',
-							altText: att.description || '',
-							canUpload: true
-						};
-					});
-				if (!cancelled && shareAttachments.length) {
-					addAttachments(shareAttachments);
-				}
-			};
-			load();
-			return () => {
-				cancelled = true;
-			};
-		}
-		if (prevAction === 'edit' && action !== 'edit') {
-			clearAttachments();
-		}
-	}, [action, selectedMessages]);
-
 	const handleLayout = (event: LayoutChangeEvent) => {
 		const { height } = event.nativeEvent.layout;
 		contentHeight.value = height;
@@ -147,18 +106,9 @@ export const MessageComposer = ({
 		}
 
 		const textFromInput = composerInputComponentRef.current.getTextAndClear();
-		const useAltText = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.4.0');
-
-		if (action === 'edit') {
-			const updatedAttachments = attachments.length
-				? attachments.map(({ description, altText }) => ({ description: useAltText ? altText || '' : description || '' }))
-				: undefined;
-			editRequest?.({ id: selectedMessages[0], msg: textFromInput, rid, attachments: updatedAttachments });
-			clearAttachments();
-			return;
-		}
 
 		if (attachments.length) {
+			const useAltText = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.4.0');
 			let quotedMessage: string | undefined;
 
 			if (action === 'quote') {
@@ -208,6 +158,10 @@ export const MessageComposer = ({
 				composerInputComponentRef.current.setInput(textFromInput);
 				return;
 			}
+		}
+
+		if (action === 'edit') {
+			return editRequest?.({ id: selectedMessages[0], msg: textFromInput, rid });
 		}
 
 		if (action === 'quote') {
