@@ -42,7 +42,7 @@ jest.mock('../../lib/methods/sendFileMessage', () => ({
 const user = userEvent.setup();
 
 const advanceComposerTimers = async (time = 500) => {
-	await act(async () => {
+	await act(() => {
 		jest.advanceTimersByTime(time);
 	});
 };
@@ -582,7 +582,9 @@ describe('MessageComposer', () => {
 			(getSpy as any).mockImplementation((table: string) => {
 				if (table === 'slash_commands') {
 					return {
-						query: jest.fn(() => ({ fetch: jest.fn(() => Promise.resolve([{ id: 'hello', description: 'desc', appId: 'app-id' }])) }))
+						query: jest.fn(() => ({
+							fetch: jest.fn(() => Promise.resolve([{ id: 'hello', description: 'desc', appId: 'app-id' }]))
+						}))
 					};
 				}
 				return { query: jest.fn(() => ({ fetch: jest.fn(() => Promise.resolve([])) })) };

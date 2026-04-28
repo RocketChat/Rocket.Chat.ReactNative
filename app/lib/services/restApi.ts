@@ -1046,7 +1046,11 @@ export function e2eResetRoomKey(rid: string, e2eKey: string, e2eKeyId: string): 
 	return sdk.post('e2e.resetRoomKey', { rid, e2eKey, e2eKeyId });
 }
 
-export const editMediaMessage = async (rid: string, fileId: string, body: { description?: string; filename: string; msg?: string }) => {
+export const editMediaMessage = async (
+	rid: string,
+	fileId: string,
+	body: { description?: string; filename: string; msg?: string }
+) => {
 	const { login, server } = reduxStore.getState();
 	const { user } = login;
 	// RC 8.4.0
@@ -1079,9 +1083,7 @@ export const editMediaMessage = async (rid: string, fileId: string, body: { desc
 	return response.json();
 };
 
-export const editMessage = async (
-	message: Pick<IMessage, 'id' | 'msg' | 'rid' | 'content'>
-) => {
+export const editMessage = async (message: Pick<IMessage, 'id' | 'msg' | 'rid' | 'content'>) => {
 	const result = await Encryption.encryptMessage(message as IMessage);
 	if (!result) {
 		throw new Error('Failed to encrypt message');
