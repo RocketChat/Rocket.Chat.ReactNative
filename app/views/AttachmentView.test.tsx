@@ -1,5 +1,6 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react-native';
+import { A11y } from 'react-native-a11y-order';
 
 import AttachmentView from './AttachmentView';
 
@@ -110,7 +111,11 @@ describe('AttachmentView', () => {
 	it('renders the alt text label and opens the action sheet when pressed', () => {
 		mockUseAltTextSupported.mockReturnValue(true);
 
-		const { getByTestId } = render(<AttachmentView />);
+		const { getByTestId } = render(
+			<A11y.Order>
+				<AttachmentView />
+			</A11y.Order>
+		);
 
 		fireEvent.press(getByTestId('attachment-view-alt-text-label'));
 
@@ -121,7 +126,11 @@ describe('AttachmentView', () => {
 	it('does not render the alt text label when alt text is not supported', () => {
 		mockUseAltTextSupported.mockReturnValue(false);
 
-		const { queryByTestId } = render(<AttachmentView />);
+		const { queryByTestId } = render(
+			<A11y.Order>
+				<AttachmentView />
+			</A11y.Order>
+		);
 
 		expect(queryByTestId('attachment-view-alt-text-label')).toBeNull();
 	});
