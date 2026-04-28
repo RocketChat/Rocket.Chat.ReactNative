@@ -84,5 +84,5 @@ export function useActionSheetDetents({
 		}
 
 		return { detents, maxHeight, scrollEnabled };
-	}, [contentHeight, hasCancel, headerHeight, itemHeight, optionsLength, snaps, windowHeight]);
+	}, [contentHeight, fontScale, hasCancel, headerHeight, itemHeight, optionsLength, snaps, windowHeight]);
 }
