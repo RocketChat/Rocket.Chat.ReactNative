@@ -61,13 +61,13 @@ describe('createDirectMessage wrapper', () => {
 		expect(mockedStub).not.toHaveBeenCalled();
 	});
 
-	it('propagates stub rejection (stub owns its own error handling)', async () => {
+	it('does not reject when stub write fails', async () => {
 		const restResult = { success: true, room: { _id: 'r1', fname: 'Foo' } };
 		mockedRest.mockResolvedValue(restResult);
 		const stubError = new Error('stub write failed');
 		mockedStub.mockRejectedValue(stubError);
 
-		await expect(createDirectMessage('foo')).rejects.toThrow('stub write failed');
+		await expect(createDirectMessage('foo')).resolves.toBe(restResult);
 		expect(mockedRest).toHaveBeenCalledWith('foo');
 		expect(mockedStub).toHaveBeenCalledTimes(1);
 	});
