@@ -39,7 +39,7 @@ export const useChooseMedia = ({
 	};
 
 	const normalizeAttachment = (item: IShareAttachment) =>
-		item.filename ? item : { ...item, filename: item?.path?.split('/').pop() };
+		item.filename ? item : { ...item, filename: item.path ? item.path.split('/').pop() : undefined };
 
 	const prepareAttachments = (attachments: IShareAttachment[]) => {
 		const items = attachments.map(item => {

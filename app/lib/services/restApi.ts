@@ -1,7 +1,6 @@
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import {
-	type IAttachment,
 	type IAvatarSuggestion,
 	type IMessage,
 	type IMessagePreferences,
@@ -1047,11 +1046,11 @@ export function e2eResetRoomKey(rid: string, e2eKey: string, e2eKeyId: string): 
 	return sdk.post('e2e.resetRoomKey', { rid, e2eKey, e2eKeyId });
 }
 
-export const editMediaMessage = (rid: string, fileId: string, body: { description?: string; filename: string; msg?: string }) => {
+export const editMediaMessage = async (rid: string, fileId: string, body: { description?: string; filename: string; msg?: string }) => {
 	const { login, server } = reduxStore.getState();
 	const { user } = login;
 	// RC 8.4.0
-	return fetch(`${server.server}/api/v1/rooms.mediaConfirm/${rid}/${fileId}`, {
+	const response = await fetch(`${server.server}/api/v1/rooms.mediaConfirm/${rid}/${fileId}`, {
 		method: 'POST',
 		headers: {
 			...RocketChatSettings.customHeaders,
@@ -1065,10 +1064,23 @@ export const editMediaMessage = (rid: string, fileId: string, body: { descriptio
 			msg: body.msg || ''
 		})
 	});
+
+	if (!response.ok) {
+		let errorReason = `${response.status} ${response.statusText}`;
+		try {
+			const errorBody = await response.json();
+			errorReason = errorBody?.error || errorBody?.message || errorReason;
+		} catch {
+			// Best effort only: keep default HTTP reason when body is not JSON.
+		}
+		throw new Error(`Failed to edit media message: ${errorReason}`);
+	}
+
+	return response.json();
 };
 
 export const editMessage = async (
-	message: Pick<IMessage, 'id' | 'msg' | 'rid' | 'content'> & { attachments?: Pick<IAttachment, 'description'>[] }
+	message: Pick<IMessage, 'id' | 'msg' | 'rid' | 'content'>
 ) => {
 	const result = await Encryption.encryptMessage(message as IMessage);
 	if (!result) {
