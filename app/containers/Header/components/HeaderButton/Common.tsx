@@ -1,12 +1,15 @@
 import React from 'react';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { type StyleProp, type ViewStyle } from 'react-native';
+import { withKeyboardFocus } from 'react-native-external-keyboard';
 
 import I18n from '../../../../i18n';
 import { isIOS } from '../../../../lib/methods/helpers/deviceInfo';
 import Container from './HeaderButtonContainer';
 import Item, { type IHeaderButtonItem } from './HeaderButtonItem';
 import { useTheme } from '../../../../theme';
+
+const ItemChildren = withKeyboardFocus(Item);
 
 interface IHeaderButtonCommon extends IHeaderButtonItem {
 	navigation?: any; // TODO: Evaluate proper type
@@ -22,16 +25,22 @@ export const Drawer = ({
 	...props
 }: IHeaderButtonCommon) => {
 	const { colors } = useTheme();
+
+	const item = (
+		<ItemChildren
+			autoFocus
+			accessibilityLabel={I18n.t('Menu')}
+			iconName='hamburguer'
+			onPress={onPress}
+			testID={testID}
+			color={colors.fontDefault}
+			{...props}
+		/>
+	);
+
 	return (
 		<Container style={style} left>
-			<Item
-				accessibilityLabel={I18n.t('Menu')}
-				iconName='hamburguer'
-				onPress={onPress}
-				testID={testID}
-				color={colors.fontDefault}
-				{...props}
-			/>
+			{item}
 		</Container>
 	);
 };
