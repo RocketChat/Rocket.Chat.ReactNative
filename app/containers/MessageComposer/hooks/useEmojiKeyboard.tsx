@@ -91,8 +91,8 @@ export const useEmojiKeyboard = () => {
 		) {
 			return;
 		}
-		// On iOS, keyboard controller doesn't include bottom inset, so we add it when keyboard is closed
-		// On Android, keyboard controller already includes it, so we don't add it
+		// When keyboard is closed, add bottom safe area inset to ensure content is visible above
+		// navigation bars/home indicator. When keyboard is open, keyboard height already covers it.
 		const notch = height.value === 0 ? bottom : 0;
 		keyboardHeight.value = height.value + notch;
 		previousHeight.value = keyboardHeight.value;
