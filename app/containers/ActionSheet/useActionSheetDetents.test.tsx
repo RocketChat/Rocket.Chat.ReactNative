@@ -9,7 +9,6 @@ describe('useActionSheetDetents', () => {
 		const { result } = renderHook(() =>
 			useActionSheetDetents({
 				windowHeight,
-				bottomInset: 0,
 				itemHeight: 0,
 				optionsLength: 0,
 				snaps: [0.3, '80%', 2],
@@ -26,7 +25,6 @@ describe('useActionSheetDetents', () => {
 		const { result } = renderHook(() =>
 			useActionSheetDetents({
 				windowHeight,
-				bottomInset: 16,
 				itemHeight: 50,
 				optionsLength: 20,
 				snaps: undefined,
@@ -44,7 +42,6 @@ describe('useActionSheetDetents', () => {
 		const { result } = renderHook(() =>
 			useActionSheetDetents({
 				windowHeight,
-				bottomInset: 10,
 				itemHeight: 20,
 				optionsLength: 3,
 				snaps: undefined,
@@ -54,14 +51,13 @@ describe('useActionSheetDetents', () => {
 			})
 		);
 
-		expect(result.current.detents).toEqual([0.108]);
+		expect(result.current.detents).toEqual([0.098]);
 	});
 
 	it('computes detent from content height when there are no options', () => {
 		const { result } = renderHook(() =>
 			useActionSheetDetents({
 				windowHeight,
-				bottomInset: 50,
 				itemHeight: 0,
 				optionsLength: 0,
 				snaps: undefined,
@@ -71,14 +67,13 @@ describe('useActionSheetDetents', () => {
 			})
 		);
 
-		expect(result.current.detents).toEqual([(300 + 50) / windowHeight]);
+		expect(result.current.detents).toEqual([300 / windowHeight]);
 	});
 
 	it('falls back to minimum height when no content or options', () => {
 		const { result } = renderHook(() =>
 			useActionSheetDetents({
 				windowHeight,
-				bottomInset: 0,
 				itemHeight: 0,
 				optionsLength: 0,
 				snaps: undefined,
