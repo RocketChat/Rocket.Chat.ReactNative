@@ -854,6 +854,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					/>
 				),
 				snaps: ['50%'],
+				enableContentPanningGesture: false,
 				onClose: this.resetAction,
 				fullContainer: true
 			});
@@ -914,6 +915,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.handleCloseEmoji(showActionSheet, {
 			children: <ReactionsList reactions={message?.reactions} getCustomEmoji={this.getCustomEmoji} />,
 			snaps: ['50%'],
+			enableContentPanningGesture: false,
 			fullContainer: true
 		});
 	};
