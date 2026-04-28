@@ -25,7 +25,7 @@ const SidebarView = ({ navigation }: { navigation: DrawerNavigationProp<DrawerPa
 	}, [navigation]);
 
 	return (
-		<ScrollView style={styles.container} {...scrollPersistTaps}>
+		<ScrollView testID='sidebar-view' style={styles.container} {...scrollPersistTaps}>
 			<Profile navigation={navigation} />
 			<SupportedVersionsWarnItem />
 			<CustomStatus />
