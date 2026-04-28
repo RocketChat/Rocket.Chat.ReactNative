@@ -28,7 +28,7 @@ const MOCK_IMAGE_WITH_ALT = {
 	description: 'A wavy orange and black pattern, designed to be used as a wallpaper'
 };
 
-const MOCK_IMAGES_GALLERY = [
+const MOCK_MULTIPLE_IMAGES = [
 	{ image_url: 'https://picsum.photos/seed/3/400/300', image_type: 'image/jpeg', image_preview: '', description: 'Image 1' },
 	{ image_url: 'https://picsum.photos/seed/4/400/300', image_type: 'image/jpeg', image_preview: '', description: 'Image 2' },
 	{ image_url: 'https://picsum.photos/seed/5/400/300', image_type: 'image/jpeg', image_preview: '', description: 'Image 3' },
@@ -88,7 +88,7 @@ export const MultipleImagesNewServer = () => (
 	<Provider store={newServerStore}>
 		<MessageContext.Provider value={mockMessageContext}>
 			<View style={{ padding: 10, width: 350 }}>
-				<Attachments attachments={MOCK_IMAGES_GALLERY} getCustomEmoji={() => null} timeFormat='LT' />
+				<Attachments attachments={MOCK_MULTIPLE_IMAGES} getCustomEmoji={() => null} timeFormat='LT' />
 			</View>
 		</MessageContext.Provider>
 	</Provider>
@@ -99,7 +99,7 @@ export const MultipleImagesOldServer = () => (
 	<Provider store={oldServerStore}>
 		<MessageContext.Provider value={mockMessageContext}>
 			<View style={{ padding: 10, width: 350 }}>
-				<Attachments attachments={MOCK_IMAGES_GALLERY.slice(0, 4)} getCustomEmoji={() => null} timeFormat='LT' />
+				<Attachments attachments={MOCK_MULTIPLE_IMAGES.slice(0, 4)} getCustomEmoji={() => null} timeFormat='LT' />
 			</View>
 		</MessageContext.Provider>
 	</Provider>
