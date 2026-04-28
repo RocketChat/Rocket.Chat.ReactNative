@@ -79,6 +79,11 @@ public class VoipPayload: NSObject {
     // the amount of time in seconds that an incoming call will be kept alive
     @objc public static let INCOMING_CALL_LIFETIME_SEC: TimeInterval = 60
 
+    // Maximum tolerated drift between device clock and server `createdAt` before
+    // treating the device clock as untrusted. Mirrors Android's
+    // MAX_TRUSTED_CLOCK_SKEW_MS.
+    private static let maxTrustedClockSkew: TimeInterval = 10 * 60
+
     @objc public let callId: String
     let callUUID: UUID
     @objc public let caller: String
@@ -176,10 +181,14 @@ public class VoipPayload: NSObject {
     }
 
     public func remainingLifetime(now: Date = Date()) -> TimeInterval? {
-        guard let expiresAt else {
+        guard let createdAtDate else {
             return nil
         }
-
+        let skew = abs(now.timeIntervalSince(createdAtDate))
+        if skew > Self.maxTrustedClockSkew {
+            return Self.INCOMING_CALL_LIFETIME_SEC
+        }
+        let expiresAt = createdAtDate.addingTimeInterval(Self.INCOMING_CALL_LIFETIME_SEC)
         return max(0, expiresAt.timeIntervalSince(now))
     }
 

@@ -51,9 +51,6 @@ data class VoipPayload(
     private val createdAtMs: Long?
         get() = parseCreatedAtMs(createdAt)
 
-    private val expiresAtMs: Long?
-        get() = createdAtMs?.plus(INCOMING_CALL_LIFETIME_MS)
-
     fun isVoipIncomingCall(): Boolean {
         return pushType == VoipPushType.INCOMING_CALL &&
             callId.isNotBlank() &&
@@ -95,14 +92,18 @@ data class VoipPayload(
         }
     }
 
-    fun getRemainingLifetimeMs(): Long? {
-        val expiresAtMs = expiresAtMs ?: return null
-        val nowMs = System.currentTimeMillis()
+    fun getRemainingLifetimeMs(nowMs: Long = System.currentTimeMillis()): Long? {
+        val createdAtMs = createdAtMs ?: return null
+        val skew = kotlin.math.abs(nowMs - createdAtMs)
+        if (skew > MAX_TRUSTED_CLOCK_SKEW_MS) {
+            return INCOMING_CALL_LIFETIME_MS
+        }
+        val expiresAtMs = createdAtMs + INCOMING_CALL_LIFETIME_MS
         return (expiresAtMs - nowMs).coerceAtLeast(0L)
     }
 
-    fun isExpired(): Boolean {
-        val remainingLifetimeMs = getRemainingLifetimeMs()
+    fun isExpired(nowMs: Long = System.currentTimeMillis()): Boolean {
+        val remainingLifetimeMs = getRemainingLifetimeMs(nowMs)
         return remainingLifetimeMs?.let { it <= 0L } ?: true
     }
 
@@ -111,6 +112,10 @@ data class VoipPayload(
         private const val VOIP_NOTIFICATION_TYPE = "voip"
         // the amount of time in milliseconds that an incoming call will be kept alive
         private const val INCOMING_CALL_LIFETIME_MS = 60_000L
+        // Maximum tolerated drift between device clock and server `createdAt` before
+        // treating the device clock as untrusted. Within this window we honour the
+        // existing expiry math; outside we grant the full incoming-call lifetime.
+        private const val MAX_TRUSTED_CLOCK_SKEW_MS = 10 * 60_000L
         private val isoDateFormats = listOf(
             SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX", Locale.US),
             SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX", Locale.US),
