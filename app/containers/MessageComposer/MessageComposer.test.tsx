@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { render, screen, fireEvent, waitFor, userEvent } from '@testing-library/react-native';
+import { act, render, screen, fireEvent, waitFor, userEvent } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
 import { MessageComposerContainer } from './MessageComposerContainer';
@@ -18,6 +18,7 @@ import { search } from '../../lib/methods/search';
 import database from '../../lib/database';
 import { useMessageComposerApi } from './context';
 import { sendFileMessage } from '../../lib/methods/sendFileMessage';
+import { runSlashCommand } from '../../lib/services/restApi';
 
 jest.useFakeTimers();
 
@@ -30,7 +31,8 @@ jest.mock('../../lib/services/restApi', () => ({
 	getListCannedResponse: jest.fn(() => ({
 		success: true,
 		cannedResponses: [{ _id: '1', shortcut: 'brb', text: 'Be right back' }]
-	}))
+	})),
+	runSlashCommand: jest.fn(() => Promise.resolve())
 }));
 
 jest.mock('../../lib/methods/sendFileMessage', () => ({
@@ -38,6 +40,19 @@ jest.mock('../../lib/methods/sendFileMessage', () => ({
 }));
 
 const user = userEvent.setup();
+
+const advanceComposerTimers = async (time = 500) => {
+	await act(async () => {
+		jest.advanceTimersByTime(time);
+	});
+};
+
+const renderAndFlush = async (ui: React.ReactElement) => {
+	render(ui);
+	await act(async () => {
+		await Promise.resolve();
+	});
+};
 
 const initialStoreState = () => {
 	const baseUrl = 'https://open.rocket.chat';
@@ -158,6 +173,7 @@ let showEmojiSearchbar = false;
 beforeEach(() => {
 	showEmojiKeyboard = false;
 	showEmojiSearchbar = false;
+	(runSlashCommand as jest.Mock).mockClear();
 	// Default DB mocks used by autocomplete
 	(database.active.get as unknown as jest.Mock).mockImplementation(() => ({
 		query: jest.fn(() => ({ fetch: jest.fn(() => Promise.resolve([])) }))
@@ -245,7 +261,7 @@ describe('MessageComposer', () => {
 				await user.press(screen.getByTestId('message-composer-bold'));
 				await user.press(screen.getByTestId('message-composer-send'));
 				expect(onSendMessage).toHaveBeenCalledTimes(1);
-				expect(onSendMessage).toHaveBeenCalledWith('**', undefined);
+				expect(onSendMessage).toHaveBeenCalledWith('**', false);
 				expect(screen.toJSON()).toMatchSnapshot();
 			});
 
@@ -264,7 +280,7 @@ describe('MessageComposer', () => {
 				await user.press(screen.getByTestId('message-composer-bold'));
 				await user.press(screen.getByTestId('message-composer-send'));
 				expect(onSendMessage).toHaveBeenCalledTimes(1);
-				expect(onSendMessage).toHaveBeenCalledWith('*test*', undefined);
+				expect(onSendMessage).toHaveBeenCalledWith('*test*', false);
 				expect(screen.toJSON()).toMatchSnapshot();
 			});
 
@@ -279,7 +295,7 @@ describe('MessageComposer', () => {
 				await user.press(screen.getByTestId('message-composer-italic'));
 				await user.press(screen.getByTestId('message-composer-send'));
 				expect(onSendMessage).toHaveBeenCalledTimes(1);
-				expect(onSendMessage).toHaveBeenCalledWith('__', undefined);
+				expect(onSendMessage).toHaveBeenCalledWith('__', false);
 				expect(screen.toJSON()).toMatchSnapshot();
 			});
 
@@ -298,7 +314,7 @@ describe('MessageComposer', () => {
 				await user.press(screen.getByTestId('message-composer-italic'));
 				await user.press(screen.getByTestId('message-composer-send'));
 				expect(onSendMessage).toHaveBeenCalledTimes(1);
-				expect(onSendMessage).toHaveBeenCalledWith('_test_', undefined);
+				expect(onSendMessage).toHaveBeenCalledWith('_test_', false);
 				expect(screen.toJSON()).toMatchSnapshot();
 			});
 
@@ -313,7 +329,7 @@ describe('MessageComposer', () => {
 				await user.press(screen.getByTestId('message-composer-strike'));
 				await user.press(screen.getByTestId('message-composer-send'));
 				expect(onSendMessage).toHaveBeenCalledTimes(1);
-				expect(onSendMessage).toHaveBeenCalledWith('~~', undefined);
+				expect(onSendMessage).toHaveBeenCalledWith('~~', false);
 				expect(screen.toJSON()).toMatchSnapshot();
 			});
 
@@ -332,7 +348,7 @@ describe('MessageComposer', () => {
 				await user.press(screen.getByTestId('message-composer-strike'));
 				await user.press(screen.getByTestId('message-composer-send'));
 				expect(onSendMessage).toHaveBeenCalledTimes(1);
-				expect(onSendMessage).toHaveBeenCalledWith('~test~', undefined);
+				expect(onSendMessage).toHaveBeenCalledWith('~test~', false);
 				expect(screen.toJSON()).toMatchSnapshot();
 			});
 
@@ -347,7 +363,7 @@ describe('MessageComposer', () => {
 				await user.press(screen.getByTestId('message-composer-code'));
 				await user.press(screen.getByTestId('message-composer-send'));
 				expect(onSendMessage).toHaveBeenCalledTimes(1);
-				expect(onSendMessage).toHaveBeenCalledWith('``', undefined);
+				expect(onSendMessage).toHaveBeenCalledWith('``', false);
 				expect(screen.toJSON()).toMatchSnapshot();
 			});
 
@@ -366,7 +382,7 @@ describe('MessageComposer', () => {
 				await user.press(screen.getByTestId('message-composer-code'));
 				await user.press(screen.getByTestId('message-composer-send'));
 				expect(onSendMessage).toHaveBeenCalledTimes(1);
-				expect(onSendMessage).toHaveBeenCalledWith('`test`', undefined);
+				expect(onSendMessage).toHaveBeenCalledWith('`test`', false);
 				expect(screen.toJSON()).toMatchSnapshot();
 			});
 
@@ -381,7 +397,7 @@ describe('MessageComposer', () => {
 				await user.press(screen.getByTestId('message-composer-code-block'));
 				await user.press(screen.getByTestId('message-composer-send'));
 				expect(onSendMessage).toHaveBeenCalledTimes(1);
-				expect(onSendMessage).toHaveBeenCalledWith('``````', undefined);
+				expect(onSendMessage).toHaveBeenCalledWith('``````', false);
 				expect(screen.toJSON()).toMatchSnapshot();
 			});
 
@@ -400,7 +416,7 @@ describe('MessageComposer', () => {
 				await user.press(screen.getByTestId('message-composer-code-block'));
 				await user.press(screen.getByTestId('message-composer-send'));
 				expect(onSendMessage).toHaveBeenCalledTimes(1);
-				expect(onSendMessage).toHaveBeenCalledWith('```test```', undefined);
+				expect(onSendMessage).toHaveBeenCalledWith('```test```', false);
 				expect(screen.toJSON()).toMatchSnapshot();
 			});
 		});
@@ -414,7 +430,7 @@ describe('MessageComposer', () => {
 			await user.press(screen.getByTestId('message-composer-mention'));
 			await user.press(screen.getByTestId('message-composer-send'));
 			expect(onSendMessage).toHaveBeenCalledTimes(1);
-			expect(onSendMessage).toHaveBeenCalledWith('@', undefined);
+			expect(onSendMessage).toHaveBeenCalledWith('@', false);
 			expect(screen.toJSON()).toMatchSnapshot();
 		});
 	});
@@ -429,7 +445,7 @@ describe('MessageComposer', () => {
 				nativeEvent: { selection: { start: 1, end: 1 } }
 			});
 
-			jest.advanceTimersByTime(500);
+			await advanceComposerTimers();
 
 			await waitFor(() => expect(screen.getByTestId('autocomplete')).toBeOnTheScreen());
 		});
@@ -444,7 +460,7 @@ describe('MessageComposer', () => {
 			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
 				nativeEvent: { selection: { start: 1, end: 1 } }
 			});
-			jest.advanceTimersByTime(500);
+			await advanceComposerTimers();
 			await waitFor(() => expect(screen.getByTestId('autocomplete-item-John')).toBeOnTheScreen());
 
 			await user.press(screen.getByTestId('autocomplete-item-John'));
@@ -452,7 +468,7 @@ describe('MessageComposer', () => {
 
 			await user.press(screen.getByTestId('message-composer-send'));
 			expect(onSendMessage).toHaveBeenCalledTimes(1);
-			expect(onSendMessage).toHaveBeenCalledWith('@john', undefined);
+			expect(onSendMessage).toHaveBeenCalledWith('@john', false);
 		});
 
 		test('does not show @all or @here in autocomplete when user does not have permissions', async () => {
@@ -465,7 +481,7 @@ describe('MessageComposer', () => {
 			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
 				nativeEvent: { selection: { start: 1, end: 1 } }
 			});
-			jest.advanceTimersByTime(500);
+			await advanceComposerTimers();
 
 			await waitFor(() => expect(screen.queryByTestId('autocomplete-item-all')).not.toBeOnTheScreen());
 			await waitFor(() => expect(screen.queryByTestId('autocomplete-item-here')).not.toBeOnTheScreen());
@@ -481,7 +497,7 @@ describe('MessageComposer', () => {
 			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
 				nativeEvent: { selection: { start: 1, end: 1 } }
 			});
-			jest.advanceTimersByTime(500);
+			await advanceComposerTimers();
 
 			await waitFor(() => expect(screen.queryByTestId('autocomplete-item-all')).toBeOnTheScreen());
 			await waitFor(() => expect(screen.queryByTestId('autocomplete-item-here')).not.toBeOnTheScreen());
@@ -497,7 +513,7 @@ describe('MessageComposer', () => {
 			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
 				nativeEvent: { selection: { start: 1, end: 1 } }
 			});
-			jest.advanceTimersByTime(500);
+			await advanceComposerTimers();
 
 			await waitFor(() => expect(screen.queryByTestId('autocomplete-item-here')).toBeOnTheScreen());
 			await waitFor(() => expect(screen.queryByTestId('autocomplete-item-all')).not.toBeOnTheScreen());
@@ -513,7 +529,7 @@ describe('MessageComposer', () => {
 			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
 				nativeEvent: { selection: { start: 1, end: 1 } }
 			});
-			jest.advanceTimersByTime(500);
+			await advanceComposerTimers();
 
 			await waitFor(() => expect(screen.queryByTestId('autocomplete-item-all')).toBeOnTheScreen());
 			await waitFor(() => expect(screen.queryByTestId('autocomplete-item-here')).toBeOnTheScreen());
@@ -529,7 +545,7 @@ describe('MessageComposer', () => {
 			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
 				nativeEvent: { selection: { start: 1, end: 1 } }
 			});
-			jest.advanceTimersByTime(500);
+			await advanceComposerTimers();
 			await waitFor(() => expect(screen.getByTestId('autocomplete-item-general')).toBeOnTheScreen());
 
 			await user.press(screen.getByTestId('autocomplete-item-general'));
@@ -537,7 +553,7 @@ describe('MessageComposer', () => {
 
 			await user.press(screen.getByTestId('message-composer-send'));
 			expect(onSendMessage).toHaveBeenCalledTimes(1);
-			expect(onSendMessage).toHaveBeenCalledWith('#general', undefined);
+			expect(onSendMessage).toHaveBeenCalledWith('#general', false);
 		});
 
 		test('select : emoji inserts emoji and sends, autocomplete hides', async () => {
@@ -549,7 +565,7 @@ describe('MessageComposer', () => {
 			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
 				nativeEvent: { selection: { start: 4, end: 4 } }
 			});
-			jest.advanceTimersByTime(500);
+			await advanceComposerTimers();
 			await waitFor(() => expect(screen.getByTestId('autocomplete-item-smile')).toBeOnTheScreen());
 
 			await user.press(screen.getByTestId('autocomplete-item-smile'));
@@ -557,7 +573,7 @@ describe('MessageComposer', () => {
 
 			await user.press(screen.getByTestId('message-composer-send'));
 			expect(onSendMessage).toHaveBeenCalledTimes(1);
-			expect(onSendMessage).toHaveBeenCalledWith(':smile:', undefined);
+			expect(onSendMessage).toHaveBeenCalledWith(':smile:', false);
 		});
 
 		test('select / command inserts command text and sends, autocomplete hides', async () => {
@@ -566,7 +582,7 @@ describe('MessageComposer', () => {
 			(getSpy as any).mockImplementation((table: string) => {
 				if (table === 'slash_commands') {
 					return {
-						query: jest.fn(() => ({ fetch: jest.fn(() => Promise.resolve([{ id: 'hello', description: 'desc' }])) }))
+						query: jest.fn(() => ({ fetch: jest.fn(() => Promise.resolve([{ id: 'hello', description: 'desc', appId: 'app-id' }])) }))
 					};
 				}
 				return { query: jest.fn(() => ({ fetch: jest.fn(() => Promise.resolve([])) })) };
@@ -578,10 +594,12 @@ describe('MessageComposer', () => {
 			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
 				nativeEvent: { selection: { start: 6, end: 6 } }
 			});
-			jest.advanceTimersByTime(500);
+			await advanceComposerTimers();
 			await screen.findByTestId('autocomplete');
 			await user.press(screen.getByTestId('message-composer-send'));
 			await waitFor(() => expect(screen.queryByTestId('autocomplete')).not.toBeOnTheScreen());
+			expect(runSlashCommand).toHaveBeenCalledWith('hello', 'rid', '', expect.any(String), undefined);
+			expect(onSendMessage).not.toHaveBeenCalled();
 		});
 
 		test('select ! canned response inserts text and sends, autocomplete hides', async () => {
@@ -593,7 +611,7 @@ describe('MessageComposer', () => {
 			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
 				nativeEvent: { selection: { start: 1, end: 1 } }
 			});
-			jest.advanceTimersByTime(500);
+			await advanceComposerTimers();
 			await waitFor(() => expect(screen.getByTestId('autocomplete-item-brb')).toBeOnTheScreen());
 
 			await user.press(screen.getByTestId('autocomplete-item-brb'));
@@ -601,7 +619,7 @@ describe('MessageComposer', () => {
 
 			await user.press(screen.getByTestId('message-composer-send'));
 			expect(onSendMessage).toHaveBeenCalledTimes(1);
-			expect(onSendMessage).toHaveBeenCalledWith('Be right back', undefined);
+			expect(onSendMessage).toHaveBeenCalledWith('Be right back', false);
 		});
 	});
 
@@ -611,7 +629,9 @@ describe('MessageComposer', () => {
 		const editRequest = jest.fn();
 		const id = 'messageId';
 		beforeEach(() => {
-			render(<Render context={{ rid: 'rid', selectedMessages: [id], action: 'edit', onSendMessage, editCancel, editRequest }} />);
+			return renderAndFlush(
+				<Render context={{ rid: 'rid', selectedMessages: [id], action: 'edit', onSendMessage, editCancel, editRequest }} />
+			);
 		});
 		test('init', async () => {
 			await screen.findByTestId('message-composer');
@@ -642,7 +662,7 @@ describe('MessageComposer', () => {
 		const editRequest = jest.fn();
 		const id = 'image';
 		test('edit image', async () => {
-			render(<Render context={{ rid: 'rid', selectedMessages: [id], action: 'edit', editRequest }} />);
+			await renderAndFlush(<Render context={{ rid: 'rid', selectedMessages: [id], action: 'edit', editRequest }} />);
 			await screen.findByTestId('message-composer');
 			await user.press(screen.getByTestId('message-composer-send'));
 			expect(editRequest).toHaveBeenCalledWith({ id, msg: `Attachment description for ${id}`, rid: 'rid' });
