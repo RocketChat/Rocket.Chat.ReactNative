@@ -2,335 +2,28 @@
 
 exports[`Story Snapshots: Basic should match snapshot 1`] = `
 [
-  <RNGestureHandlerButton
-    activeOpacity={1}
-    collapsable={false}
-    delayLongPress={600}
-    enabled={true}
-    handlerTag={-1}
-    handlerType="NativeViewGestureHandler"
-    innerRef={null}
-    onActiveStateChange={[Function]}
-    onGestureHandlerEvent={[Function]}
-    onGestureHandlerStateChange={[Function]}
-    onPress={[Function]}
-    rippleColor="#E4E7EA"
+  <ExternalKeyboardView
+    canBeFocused={true}
+    enableA11yFocus={false}
+    enableContextMenu={false}
+    group={false}
+    haloEffect={true}
+    hasKeyDownPress={false}
+    hasKeyUpPress={true}
+    hasOnFocusChanged={true}
+    lockFocus={0}
+    onContextMenuPress={[Function]}
+    onFocusChange={[Function]}
+    onKeyUpPress={[Function]}
+    orderIndex={-1}
+    screenAutoA11yFocusDelay={300}
     style={
       [
-        {
-          "backgroundColor": undefined,
-          "borderRadius": undefined,
-          "margin": undefined,
-          "marginBottom": undefined,
-          "marginEnd": undefined,
-          "marginHorizontal": undefined,
-          "marginLeft": undefined,
-          "marginRight": undefined,
-          "marginStart": undefined,
-          "marginTop": undefined,
-          "marginVertical": undefined,
-        },
-        {
-          "cursor": undefined,
-        },
+        undefined,
+        undefined,
       ]
     }
-    underlayColor="#E4E7EA"
   >
-    <View
-      collapsable={false}
-      style={
-        {
-          "backgroundColor": "#E4E7EA",
-          "borderBottomLeftRadius": undefined,
-          "borderBottomRightRadius": undefined,
-          "borderRadius": undefined,
-          "borderTopLeftRadius": undefined,
-          "borderTopRightRadius": undefined,
-          "bottom": 0,
-          "left": 0,
-          "opacity": 0,
-          "position": "absolute",
-          "right": 0,
-          "top": 0,
-        }
-      }
-    />
-    <View
-      style={
-        {
-          "alignItems": "center",
-          "justifyContent": "center",
-          "paddingVertical": 16,
-        }
-      }
-    >
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "500",
-              "textAlign": "left",
-            },
-            {
-              "color": "#1F2329",
-            },
-          ]
-        }
-      >
-        Load more
-      </Text>
-    </View>
-  </RNGestureHandlerButton>,
-  <RNGestureHandlerButton
-    activeOpacity={1}
-    collapsable={false}
-    delayLongPress={600}
-    enabled={true}
-    handlerTag={2}
-    handlerType="NativeViewGestureHandler"
-    innerRef={null}
-    onActiveStateChange={[Function]}
-    onGestureHandlerEvent={[Function]}
-    onGestureHandlerStateChange={[Function]}
-    onPress={[Function]}
-    rippleColor="#E4E7EA"
-    style={
-      [
-        {
-          "backgroundColor": undefined,
-          "borderRadius": undefined,
-          "margin": undefined,
-          "marginBottom": undefined,
-          "marginEnd": undefined,
-          "marginHorizontal": undefined,
-          "marginLeft": undefined,
-          "marginRight": undefined,
-          "marginStart": undefined,
-          "marginTop": undefined,
-          "marginVertical": undefined,
-        },
-        {
-          "cursor": undefined,
-        },
-      ]
-    }
-    underlayColor="#E4E7EA"
-  >
-    <View
-      collapsable={false}
-      style={
-        {
-          "backgroundColor": "#E4E7EA",
-          "borderBottomLeftRadius": undefined,
-          "borderBottomRightRadius": undefined,
-          "borderRadius": undefined,
-          "borderTopLeftRadius": undefined,
-          "borderTopRightRadius": undefined,
-          "bottom": 0,
-          "left": 0,
-          "opacity": 0,
-          "position": "absolute",
-          "right": 0,
-          "top": 0,
-        }
-      }
-    />
-    <View
-      style={
-        {
-          "alignItems": "center",
-          "justifyContent": "center",
-          "paddingVertical": 16,
-        }
-      }
-    >
-      <ActivityIndicator
-        color="#6C727A"
-      />
-    </View>
-  </RNGestureHandlerButton>,
-  <RNGestureHandlerButton
-    activeOpacity={1}
-    collapsable={false}
-    delayLongPress={600}
-    enabled={true}
-    handlerTag={-1}
-    handlerType="NativeViewGestureHandler"
-    innerRef={null}
-    onActiveStateChange={[Function]}
-    onGestureHandlerEvent={[Function]}
-    onGestureHandlerStateChange={[Function]}
-    onPress={[Function]}
-    rippleColor="#E4E7EA"
-    style={
-      [
-        {
-          "backgroundColor": undefined,
-          "borderRadius": undefined,
-          "margin": undefined,
-          "marginBottom": undefined,
-          "marginEnd": undefined,
-          "marginHorizontal": undefined,
-          "marginLeft": undefined,
-          "marginRight": undefined,
-          "marginStart": undefined,
-          "marginTop": undefined,
-          "marginVertical": undefined,
-        },
-        {
-          "cursor": undefined,
-        },
-      ]
-    }
-    underlayColor="#E4E7EA"
-  >
-    <View
-      collapsable={false}
-      style={
-        {
-          "backgroundColor": "#E4E7EA",
-          "borderBottomLeftRadius": undefined,
-          "borderBottomRightRadius": undefined,
-          "borderRadius": undefined,
-          "borderTopLeftRadius": undefined,
-          "borderTopRightRadius": undefined,
-          "bottom": 0,
-          "left": 0,
-          "opacity": 0,
-          "position": "absolute",
-          "right": 0,
-          "top": 0,
-        }
-      }
-    />
-    <View
-      style={
-        {
-          "alignItems": "center",
-          "justifyContent": "center",
-          "paddingVertical": 16,
-        }
-      }
-    >
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "500",
-              "textAlign": "left",
-            },
-            {
-              "color": "#1F2329",
-            },
-          ]
-        }
-      >
-        Load older
-      </Text>
-    </View>
-  </RNGestureHandlerButton>,
-  <RNGestureHandlerButton
-    activeOpacity={1}
-    collapsable={false}
-    delayLongPress={600}
-    enabled={true}
-    handlerTag={-1}
-    handlerType="NativeViewGestureHandler"
-    innerRef={null}
-    onActiveStateChange={[Function]}
-    onGestureHandlerEvent={[Function]}
-    onGestureHandlerStateChange={[Function]}
-    onPress={[Function]}
-    rippleColor="#E4E7EA"
-    style={
-      [
-        {
-          "backgroundColor": undefined,
-          "borderRadius": undefined,
-          "margin": undefined,
-          "marginBottom": undefined,
-          "marginEnd": undefined,
-          "marginHorizontal": undefined,
-          "marginLeft": undefined,
-          "marginRight": undefined,
-          "marginStart": undefined,
-          "marginTop": undefined,
-          "marginVertical": undefined,
-        },
-        {
-          "cursor": undefined,
-        },
-      ]
-    }
-    underlayColor="#E4E7EA"
-  >
-    <View
-      collapsable={false}
-      style={
-        {
-          "backgroundColor": "#E4E7EA",
-          "borderBottomLeftRadius": undefined,
-          "borderBottomRightRadius": undefined,
-          "borderRadius": undefined,
-          "borderTopLeftRadius": undefined,
-          "borderTopRightRadius": undefined,
-          "bottom": 0,
-          "left": 0,
-          "opacity": 0,
-          "position": "absolute",
-          "right": 0,
-          "top": 0,
-        }
-      }
-    />
-    <View
-      style={
-        {
-          "alignItems": "center",
-          "justifyContent": "center",
-          "paddingVertical": 16,
-        }
-      }
-    >
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "500",
-              "textAlign": "left",
-            },
-            {
-              "color": "#1F2329",
-            },
-          ]
-        }
-      >
-        Load newer
-      </Text>
-    </View>
-  </RNGestureHandlerButton>,
-]
-`;
-
-exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
-<RCTScrollView
-  style={
-    {
-      "backgroundColor": "#000000",
-    }
-  }
->
-  <View>
     <RNGestureHandlerButton
       activeOpacity={1}
       collapsable={false}
@@ -343,7 +36,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
       onGestureHandlerEvent={[Function]}
       onGestureHandlerStateChange={[Function]}
       onPress={[Function]}
-      rippleColor="#16181a"
+      rippleColor="#E4E7EA"
       style={
         [
           {
@@ -364,13 +57,13 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
           },
         ]
       }
-      underlayColor="#16181a"
+      underlayColor="#E4E7EA"
     >
       <View
         collapsable={false}
         style={
           {
-            "backgroundColor": "#16181a",
+            "backgroundColor": "#E4E7EA",
             "borderBottomLeftRadius": undefined,
             "borderBottomRightRadius": undefined,
             "borderRadius": undefined,
@@ -405,7 +98,204 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                 "textAlign": "left",
               },
               {
-                "color": "#F2F3F5",
+                "color": "#1F2329",
+              },
+            ]
+          }
+        >
+          Load more
+        </Text>
+      </View>
+    </RNGestureHandlerButton>
+  </ExternalKeyboardView>,
+  <ExternalKeyboardView
+    canBeFocused={true}
+    enableA11yFocus={false}
+    enableContextMenu={false}
+    group={false}
+    haloEffect={true}
+    hasKeyDownPress={false}
+    hasKeyUpPress={true}
+    hasOnFocusChanged={true}
+    lockFocus={0}
+    onContextMenuPress={[Function]}
+    onFocusChange={[Function]}
+    onKeyUpPress={[Function]}
+    orderIndex={-1}
+    screenAutoA11yFocusDelay={300}
+    style={
+      [
+        undefined,
+        undefined,
+      ]
+    }
+  >
+    <RNGestureHandlerButton
+      activeOpacity={1}
+      collapsable={false}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={2}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      rippleColor="#E4E7EA"
+      style={
+        [
+          {
+            "backgroundColor": undefined,
+            "borderRadius": undefined,
+            "margin": undefined,
+            "marginBottom": undefined,
+            "marginEnd": undefined,
+            "marginHorizontal": undefined,
+            "marginLeft": undefined,
+            "marginRight": undefined,
+            "marginStart": undefined,
+            "marginTop": undefined,
+            "marginVertical": undefined,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
+      }
+      underlayColor="#E4E7EA"
+    >
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "#E4E7EA",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": undefined,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "justifyContent": "center",
+            "paddingVertical": 16,
+          }
+        }
+      >
+        <ActivityIndicator
+          color="#6C727A"
+        />
+      </View>
+    </RNGestureHandlerButton>
+  </ExternalKeyboardView>,
+  <ExternalKeyboardView
+    canBeFocused={true}
+    enableA11yFocus={false}
+    enableContextMenu={false}
+    group={false}
+    haloEffect={true}
+    hasKeyDownPress={false}
+    hasKeyUpPress={true}
+    hasOnFocusChanged={true}
+    lockFocus={0}
+    onContextMenuPress={[Function]}
+    onFocusChange={[Function]}
+    onKeyUpPress={[Function]}
+    orderIndex={-1}
+    screenAutoA11yFocusDelay={300}
+    style={
+      [
+        undefined,
+        undefined,
+      ]
+    }
+  >
+    <RNGestureHandlerButton
+      activeOpacity={1}
+      collapsable={false}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      rippleColor="#E4E7EA"
+      style={
+        [
+          {
+            "backgroundColor": undefined,
+            "borderRadius": undefined,
+            "margin": undefined,
+            "marginBottom": undefined,
+            "marginEnd": undefined,
+            "marginHorizontal": undefined,
+            "marginLeft": undefined,
+            "marginRight": undefined,
+            "marginStart": undefined,
+            "marginTop": undefined,
+            "marginVertical": undefined,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
+      }
+      underlayColor="#E4E7EA"
+    >
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "#E4E7EA",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": undefined,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "justifyContent": "center",
+            "paddingVertical": 16,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "500",
+                "textAlign": "left",
+              },
+              {
+                "color": "#1F2329",
               },
             ]
           }
@@ -414,6 +304,231 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
         </Text>
       </View>
     </RNGestureHandlerButton>
+  </ExternalKeyboardView>,
+  <ExternalKeyboardView
+    canBeFocused={true}
+    enableA11yFocus={false}
+    enableContextMenu={false}
+    group={false}
+    haloEffect={true}
+    hasKeyDownPress={false}
+    hasKeyUpPress={true}
+    hasOnFocusChanged={true}
+    lockFocus={0}
+    onContextMenuPress={[Function]}
+    onFocusChange={[Function]}
+    onKeyUpPress={[Function]}
+    orderIndex={-1}
+    screenAutoA11yFocusDelay={300}
+    style={
+      [
+        undefined,
+        undefined,
+      ]
+    }
+  >
+    <RNGestureHandlerButton
+      activeOpacity={1}
+      collapsable={false}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={-1}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      rippleColor="#E4E7EA"
+      style={
+        [
+          {
+            "backgroundColor": undefined,
+            "borderRadius": undefined,
+            "margin": undefined,
+            "marginBottom": undefined,
+            "marginEnd": undefined,
+            "marginHorizontal": undefined,
+            "marginLeft": undefined,
+            "marginRight": undefined,
+            "marginStart": undefined,
+            "marginTop": undefined,
+            "marginVertical": undefined,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
+      }
+      underlayColor="#E4E7EA"
+    >
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "#E4E7EA",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": undefined,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "justifyContent": "center",
+            "paddingVertical": 16,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "500",
+                "textAlign": "left",
+              },
+              {
+                "color": "#1F2329",
+              },
+            ]
+          }
+        >
+          Load newer
+        </Text>
+      </View>
+    </RNGestureHandlerButton>
+  </ExternalKeyboardView>,
+]
+`;
+
+exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
+<RCTScrollView
+  style={
+    {
+      "backgroundColor": "#000000",
+    }
+  }
+>
+  <View>
+    <ExternalKeyboardView
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onContextMenuPress={[Function]}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={300}
+      style={
+        [
+          undefined,
+          undefined,
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        activeOpacity={1}
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#16181a"
+        style={
+          [
+            {
+              "backgroundColor": undefined,
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        underlayColor="#16181a"
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#16181a",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "justifyContent": "center",
+              "paddingVertical": 16,
+            }
+          }
+        >
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "500",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#F2F3F5",
+                },
+              ]
+            }
+          >
+            Load older
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
     <A11yOrderView
       orderKey="«r0»"
     >
@@ -546,105 +661,128 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                         }
                         testID="avatar"
                       >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
-                          collapsable={false}
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={-1}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#16181a"
+                        <ExternalKeyboardView
+                          canBeFocused={true}
+                          enableA11yFocus={false}
+                          enableContextMenu={false}
+                          group={false}
+                          haloEffect={true}
+                          hasKeyDownPress={false}
+                          hasKeyUpPress={true}
+                          hasOnFocusChanged={true}
+                          lockFocus={0}
+                          onContextMenuPress={[Function]}
+                          onFocusChange={[Function]}
+                          onKeyUpPress={[Function]}
+                          orderIndex={-1}
+                          screenAutoA11yFocusDelay={300}
                           style={
                             [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
+                              undefined,
+                              undefined,
                             ]
                           }
-                          underlayColor="#16181a"
                         >
-                          <View
+                          <RNGestureHandlerButton
+                            activeOpacity={1}
                             collapsable={false}
+                            delayLongPress={600}
+                            enabled={true}
+                            handlerTag={-1}
+                            handlerType="NativeViewGestureHandler"
+                            innerRef={null}
+                            onActiveStateChange={[Function]}
+                            onGestureHandlerEvent={[Function]}
+                            onGestureHandlerStateChange={[Function]}
+                            onPress={[Function]}
+                            rippleColor="#16181a"
                             style={
-                              {
-                                "backgroundColor": "#16181a",
-                                "borderBottomLeftRadius": undefined,
-                                "borderBottomRightRadius": undefined,
-                                "borderRadius": undefined,
-                                "borderTopLeftRadius": undefined,
-                                "borderTopRightRadius": undefined,
-                                "bottom": 0,
-                                "left": 0,
-                                "opacity": 0,
-                                "position": "absolute",
-                                "right": 0,
-                                "top": 0,
-                              }
-                            }
-                          />
-                          <View
-                            accessibilityLabel="diego.mello's avatar"
-                            accessible={true}
-                            style={{}}
-                          >
-                            <ViewManagerAdapter_ExpoImage
-                              borderRadius={4}
-                              containerViewRef={{"current":"Object"}}
-                              contentFit="cover"
-                              contentPosition={
+                              [
                                 {
-                                  "left": "50%",
-                                  "top": "50%",
-                                }
-                              }
-                              height={36}
-                              nativeViewRef={{"current":"NativeComponent"}}
-                              onError={[Function]}
-                              onLoad={[Function]}
-                              onLoadStart={[Function]}
-                              onProgress={[Function]}
-                              placeholder={[]}
-                              priority="high"
-                              source={
-                                [
-                                  {
-                                    "headers": {
-                                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                                    },
-                                    "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
-                                  },
-                                ]
-                              }
+                                  "backgroundColor": undefined,
+                                  "borderRadius": undefined,
+                                  "margin": undefined,
+                                  "marginBottom": undefined,
+                                  "marginEnd": undefined,
+                                  "marginHorizontal": undefined,
+                                  "marginLeft": undefined,
+                                  "marginRight": undefined,
+                                  "marginStart": undefined,
+                                  "marginTop": undefined,
+                                  "marginVertical": undefined,
+                                },
+                                {
+                                  "cursor": undefined,
+                                },
+                              ]
+                            }
+                            underlayColor="#16181a"
+                          >
+                            <View
+                              collapsable={false}
                               style={
                                 {
-                                  "borderRadius": 4,
-                                  "height": 36,
-                                  "width": 36,
+                                  "backgroundColor": "#16181a",
+                                  "borderBottomLeftRadius": undefined,
+                                  "borderBottomRightRadius": undefined,
+                                  "borderRadius": undefined,
+                                  "borderTopLeftRadius": undefined,
+                                  "borderTopRightRadius": undefined,
+                                  "bottom": 0,
+                                  "left": 0,
+                                  "opacity": 0,
+                                  "position": "absolute",
+                                  "right": 0,
+                                  "top": 0,
                                 }
                               }
-                              transition={null}
-                              width={36}
                             />
-                          </View>
-                        </RNGestureHandlerButton>
+                            <View
+                              accessibilityLabel="diego.mello's avatar"
+                              accessible={true}
+                              style={{}}
+                            >
+                              <ViewManagerAdapter_ExpoImage
+                                borderRadius={4}
+                                containerViewRef={{"current":"Object"}}
+                                contentFit="cover"
+                                contentPosition={
+                                  {
+                                    "left": "50%",
+                                    "top": "50%",
+                                  }
+                                }
+                                height={36}
+                                nativeViewRef={{"current":"NativeComponent"}}
+                                onError={[Function]}
+                                onLoad={[Function]}
+                                onLoadStart={[Function]}
+                                onProgress={[Function]}
+                                placeholder={[]}
+                                priority="high"
+                                source={
+                                  [
+                                    {
+                                      "headers": {
+                                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                                      },
+                                      "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
+                                    },
+                                  ]
+                                }
+                                style={
+                                  {
+                                    "borderRadius": 4,
+                                    "height": 36,
+                                    "width": 36,
+                                  }
+                                }
+                                transition={null}
+                                width={36}
+                              />
+                            </View>
+                          </RNGestureHandlerButton>
+                        </ExternalKeyboardView>
                       </View>
                     </View>
                     <View
@@ -1272,172 +1410,218 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
         </ExternalKeyboardView>
       </A11yIndexView>
     </A11yOrderView>
-    <RNGestureHandlerButton
-      activeOpacity={1}
-      collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
-      rippleColor="#16181a"
+    <ExternalKeyboardView
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onContextMenuPress={[Function]}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={300}
       style={
         [
-          {
-            "backgroundColor": undefined,
-            "borderRadius": undefined,
-            "margin": undefined,
-            "marginBottom": undefined,
-            "marginEnd": undefined,
-            "marginHorizontal": undefined,
-            "marginLeft": undefined,
-            "marginRight": undefined,
-            "marginStart": undefined,
-            "marginTop": undefined,
-            "marginVertical": undefined,
-          },
-          {
-            "cursor": undefined,
-          },
+          undefined,
+          undefined,
         ]
       }
-      underlayColor="#16181a"
     >
-      <View
+      <RNGestureHandlerButton
+        activeOpacity={1}
         collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#16181a"
         style={
-          {
-            "backgroundColor": "#16181a",
-            "borderBottomLeftRadius": undefined,
-            "borderBottomRightRadius": undefined,
-            "borderRadius": undefined,
-            "borderTopLeftRadius": undefined,
-            "borderTopRightRadius": undefined,
-            "bottom": 0,
-            "left": 0,
-            "opacity": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          }
+          [
+            {
+              "backgroundColor": undefined,
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
-      />
-      <View
-        style={
-          {
-            "alignItems": "center",
-            "justifyContent": "center",
-            "paddingVertical": 16,
-          }
-        }
+        underlayColor="#16181a"
       >
-        <Text
+        <View
+          collapsable={false}
           style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontWeight": "500",
-                "textAlign": "left",
-              },
-              {
-                "color": "#F2F3F5",
-              },
-            ]
+            {
+              "backgroundColor": "#16181a",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "justifyContent": "center",
+              "paddingVertical": 16,
+            }
           }
         >
-          Load newer
-        </Text>
-      </View>
-    </RNGestureHandlerButton>
-    <RNGestureHandlerButton
-      activeOpacity={1}
-      collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
-      rippleColor="#16181a"
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "500",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#F2F3F5",
+                },
+              ]
+            }
+          >
+            Load newer
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+    <ExternalKeyboardView
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onContextMenuPress={[Function]}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={300}
       style={
         [
-          {
-            "backgroundColor": undefined,
-            "borderRadius": undefined,
-            "margin": undefined,
-            "marginBottom": undefined,
-            "marginEnd": undefined,
-            "marginHorizontal": undefined,
-            "marginLeft": undefined,
-            "marginRight": undefined,
-            "marginStart": undefined,
-            "marginTop": undefined,
-            "marginVertical": undefined,
-          },
-          {
-            "cursor": undefined,
-          },
+          undefined,
+          undefined,
         ]
       }
-      underlayColor="#16181a"
     >
-      <View
+      <RNGestureHandlerButton
+        activeOpacity={1}
         collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#16181a"
         style={
-          {
-            "backgroundColor": "#16181a",
-            "borderBottomLeftRadius": undefined,
-            "borderBottomRightRadius": undefined,
-            "borderRadius": undefined,
-            "borderTopLeftRadius": undefined,
-            "borderTopRightRadius": undefined,
-            "bottom": 0,
-            "left": 0,
-            "opacity": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          }
+          [
+            {
+              "backgroundColor": undefined,
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
-      />
-      <View
-        style={
-          {
-            "alignItems": "center",
-            "justifyContent": "center",
-            "paddingVertical": 16,
-          }
-        }
+        underlayColor="#16181a"
       >
-        <Text
+        <View
+          collapsable={false}
           style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontWeight": "500",
-                "textAlign": "left",
-              },
-              {
-                "color": "#F2F3F5",
-              },
-            ]
+            {
+              "backgroundColor": "#16181a",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "justifyContent": "center",
+              "paddingVertical": 16,
+            }
           }
         >
-          Load more
-        </Text>
-      </View>
-    </RNGestureHandlerButton>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "500",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#F2F3F5",
+                },
+              ]
+            }
+          >
+            Load more
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
     <A11yOrderView
       orderKey="«r3»"
     >
@@ -1570,105 +1754,128 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                         }
                         testID="avatar"
                       >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
-                          collapsable={false}
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={-1}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#16181a"
+                        <ExternalKeyboardView
+                          canBeFocused={true}
+                          enableA11yFocus={false}
+                          enableContextMenu={false}
+                          group={false}
+                          haloEffect={true}
+                          hasKeyDownPress={false}
+                          hasKeyUpPress={true}
+                          hasOnFocusChanged={true}
+                          lockFocus={0}
+                          onContextMenuPress={[Function]}
+                          onFocusChange={[Function]}
+                          onKeyUpPress={[Function]}
+                          orderIndex={-1}
+                          screenAutoA11yFocusDelay={300}
                           style={
                             [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
+                              undefined,
+                              undefined,
                             ]
                           }
-                          underlayColor="#16181a"
                         >
-                          <View
+                          <RNGestureHandlerButton
+                            activeOpacity={1}
                             collapsable={false}
+                            delayLongPress={600}
+                            enabled={true}
+                            handlerTag={-1}
+                            handlerType="NativeViewGestureHandler"
+                            innerRef={null}
+                            onActiveStateChange={[Function]}
+                            onGestureHandlerEvent={[Function]}
+                            onGestureHandlerStateChange={[Function]}
+                            onPress={[Function]}
+                            rippleColor="#16181a"
                             style={
-                              {
-                                "backgroundColor": "#16181a",
-                                "borderBottomLeftRadius": undefined,
-                                "borderBottomRightRadius": undefined,
-                                "borderRadius": undefined,
-                                "borderTopLeftRadius": undefined,
-                                "borderTopRightRadius": undefined,
-                                "bottom": 0,
-                                "left": 0,
-                                "opacity": 0,
-                                "position": "absolute",
-                                "right": 0,
-                                "top": 0,
-                              }
-                            }
-                          />
-                          <View
-                            accessibilityLabel="diego.mello's avatar"
-                            accessible={true}
-                            style={{}}
-                          >
-                            <ViewManagerAdapter_ExpoImage
-                              borderRadius={4}
-                              containerViewRef={{"current":"Object"}}
-                              contentFit="cover"
-                              contentPosition={
+                              [
                                 {
-                                  "left": "50%",
-                                  "top": "50%",
-                                }
-                              }
-                              height={36}
-                              nativeViewRef={{"current":"NativeComponent"}}
-                              onError={[Function]}
-                              onLoad={[Function]}
-                              onLoadStart={[Function]}
-                              onProgress={[Function]}
-                              placeholder={[]}
-                              priority="high"
-                              source={
-                                [
-                                  {
-                                    "headers": {
-                                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                                    },
-                                    "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
-                                  },
-                                ]
-                              }
+                                  "backgroundColor": undefined,
+                                  "borderRadius": undefined,
+                                  "margin": undefined,
+                                  "marginBottom": undefined,
+                                  "marginEnd": undefined,
+                                  "marginHorizontal": undefined,
+                                  "marginLeft": undefined,
+                                  "marginRight": undefined,
+                                  "marginStart": undefined,
+                                  "marginTop": undefined,
+                                  "marginVertical": undefined,
+                                },
+                                {
+                                  "cursor": undefined,
+                                },
+                              ]
+                            }
+                            underlayColor="#16181a"
+                          >
+                            <View
+                              collapsable={false}
                               style={
                                 {
-                                  "borderRadius": 4,
-                                  "height": 36,
-                                  "width": 36,
+                                  "backgroundColor": "#16181a",
+                                  "borderBottomLeftRadius": undefined,
+                                  "borderBottomRightRadius": undefined,
+                                  "borderRadius": undefined,
+                                  "borderTopLeftRadius": undefined,
+                                  "borderTopRightRadius": undefined,
+                                  "bottom": 0,
+                                  "left": 0,
+                                  "opacity": 0,
+                                  "position": "absolute",
+                                  "right": 0,
+                                  "top": 0,
                                 }
                               }
-                              transition={null}
-                              width={36}
                             />
-                          </View>
-                        </RNGestureHandlerButton>
+                            <View
+                              accessibilityLabel="diego.mello's avatar"
+                              accessible={true}
+                              style={{}}
+                            >
+                              <ViewManagerAdapter_ExpoImage
+                                borderRadius={4}
+                                containerViewRef={{"current":"Object"}}
+                                contentFit="cover"
+                                contentPosition={
+                                  {
+                                    "left": "50%",
+                                    "top": "50%",
+                                  }
+                                }
+                                height={36}
+                                nativeViewRef={{"current":"NativeComponent"}}
+                                onError={[Function]}
+                                onLoad={[Function]}
+                                onLoadStart={[Function]}
+                                onProgress={[Function]}
+                                placeholder={[]}
+                                priority="high"
+                                source={
+                                  [
+                                    {
+                                      "headers": {
+                                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                                      },
+                                      "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
+                                    },
+                                  ]
+                                }
+                                style={
+                                  {
+                                    "borderRadius": 4,
+                                    "height": 36,
+                                    "width": 36,
+                                  }
+                                }
+                                transition={null}
+                                width={36}
+                              />
+                            </View>
+                          </RNGestureHandlerButton>
+                        </ExternalKeyboardView>
                       </View>
                     </View>
                     <View
@@ -2428,105 +2635,128 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                         }
                         testID="avatar"
                       >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
-                          collapsable={false}
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={-1}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#16181a"
+                        <ExternalKeyboardView
+                          canBeFocused={true}
+                          enableA11yFocus={false}
+                          enableContextMenu={false}
+                          group={false}
+                          haloEffect={true}
+                          hasKeyDownPress={false}
+                          hasKeyUpPress={true}
+                          hasOnFocusChanged={true}
+                          lockFocus={0}
+                          onContextMenuPress={[Function]}
+                          onFocusChange={[Function]}
+                          onKeyUpPress={[Function]}
+                          orderIndex={-1}
+                          screenAutoA11yFocusDelay={300}
                           style={
                             [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
+                              undefined,
+                              undefined,
                             ]
                           }
-                          underlayColor="#16181a"
                         >
-                          <View
+                          <RNGestureHandlerButton
+                            activeOpacity={1}
                             collapsable={false}
+                            delayLongPress={600}
+                            enabled={true}
+                            handlerTag={-1}
+                            handlerType="NativeViewGestureHandler"
+                            innerRef={null}
+                            onActiveStateChange={[Function]}
+                            onGestureHandlerEvent={[Function]}
+                            onGestureHandlerStateChange={[Function]}
+                            onPress={[Function]}
+                            rippleColor="#16181a"
                             style={
-                              {
-                                "backgroundColor": "#16181a",
-                                "borderBottomLeftRadius": undefined,
-                                "borderBottomRightRadius": undefined,
-                                "borderRadius": undefined,
-                                "borderTopLeftRadius": undefined,
-                                "borderTopRightRadius": undefined,
-                                "bottom": 0,
-                                "left": 0,
-                                "opacity": 0,
-                                "position": "absolute",
-                                "right": 0,
-                                "top": 0,
-                              }
-                            }
-                          />
-                          <View
-                            accessibilityLabel="diego.mello's avatar"
-                            accessible={true}
-                            style={{}}
-                          >
-                            <ViewManagerAdapter_ExpoImage
-                              borderRadius={4}
-                              containerViewRef={{"current":"Object"}}
-                              contentFit="cover"
-                              contentPosition={
+                              [
                                 {
-                                  "left": "50%",
-                                  "top": "50%",
-                                }
-                              }
-                              height={36}
-                              nativeViewRef={{"current":"NativeComponent"}}
-                              onError={[Function]}
-                              onLoad={[Function]}
-                              onLoadStart={[Function]}
-                              onProgress={[Function]}
-                              placeholder={[]}
-                              priority="high"
-                              source={
-                                [
-                                  {
-                                    "headers": {
-                                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                                    },
-                                    "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
-                                  },
-                                ]
-                              }
+                                  "backgroundColor": undefined,
+                                  "borderRadius": undefined,
+                                  "margin": undefined,
+                                  "marginBottom": undefined,
+                                  "marginEnd": undefined,
+                                  "marginHorizontal": undefined,
+                                  "marginLeft": undefined,
+                                  "marginRight": undefined,
+                                  "marginStart": undefined,
+                                  "marginTop": undefined,
+                                  "marginVertical": undefined,
+                                },
+                                {
+                                  "cursor": undefined,
+                                },
+                              ]
+                            }
+                            underlayColor="#16181a"
+                          >
+                            <View
+                              collapsable={false}
                               style={
                                 {
-                                  "borderRadius": 4,
-                                  "height": 36,
-                                  "width": 36,
+                                  "backgroundColor": "#16181a",
+                                  "borderBottomLeftRadius": undefined,
+                                  "borderBottomRightRadius": undefined,
+                                  "borderRadius": undefined,
+                                  "borderTopLeftRadius": undefined,
+                                  "borderTopRightRadius": undefined,
+                                  "bottom": 0,
+                                  "left": 0,
+                                  "opacity": 0,
+                                  "position": "absolute",
+                                  "right": 0,
+                                  "top": 0,
                                 }
                               }
-                              transition={null}
-                              width={36}
                             />
-                          </View>
-                        </RNGestureHandlerButton>
+                            <View
+                              accessibilityLabel="diego.mello's avatar"
+                              accessible={true}
+                              style={{}}
+                            >
+                              <ViewManagerAdapter_ExpoImage
+                                borderRadius={4}
+                                containerViewRef={{"current":"Object"}}
+                                contentFit="cover"
+                                contentPosition={
+                                  {
+                                    "left": "50%",
+                                    "top": "50%",
+                                  }
+                                }
+                                height={36}
+                                nativeViewRef={{"current":"NativeComponent"}}
+                                onError={[Function]}
+                                onLoad={[Function]}
+                                onLoadStart={[Function]}
+                                onProgress={[Function]}
+                                placeholder={[]}
+                                priority="high"
+                                source={
+                                  [
+                                    {
+                                      "headers": {
+                                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                                      },
+                                      "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
+                                    },
+                                  ]
+                                }
+                                style={
+                                  {
+                                    "borderRadius": 4,
+                                    "height": 36,
+                                    "width": 36,
+                                  }
+                                }
+                                transition={null}
+                                width={36}
+                              />
+                            </View>
+                          </RNGestureHandlerButton>
+                        </ExternalKeyboardView>
                       </View>
                     </View>
                     <View
@@ -2735,89 +2965,112 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
   }
 >
   <View>
-    <RNGestureHandlerButton
-      activeOpacity={1}
-      collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
-      rippleColor="#2D3039"
+    <ExternalKeyboardView
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onContextMenuPress={[Function]}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={300}
       style={
         [
-          {
-            "backgroundColor": undefined,
-            "borderRadius": undefined,
-            "margin": undefined,
-            "marginBottom": undefined,
-            "marginEnd": undefined,
-            "marginHorizontal": undefined,
-            "marginLeft": undefined,
-            "marginRight": undefined,
-            "marginStart": undefined,
-            "marginTop": undefined,
-            "marginVertical": undefined,
-          },
-          {
-            "cursor": undefined,
-          },
+          undefined,
+          undefined,
         ]
       }
-      underlayColor="#2D3039"
     >
-      <View
+      <RNGestureHandlerButton
+        activeOpacity={1}
         collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#2D3039"
         style={
-          {
-            "backgroundColor": "#2D3039",
-            "borderBottomLeftRadius": undefined,
-            "borderBottomRightRadius": undefined,
-            "borderRadius": undefined,
-            "borderTopLeftRadius": undefined,
-            "borderTopRightRadius": undefined,
-            "bottom": 0,
-            "left": 0,
-            "opacity": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          }
+          [
+            {
+              "backgroundColor": undefined,
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
-      />
-      <View
-        style={
-          {
-            "alignItems": "center",
-            "justifyContent": "center",
-            "paddingVertical": 16,
-          }
-        }
+        underlayColor="#2D3039"
       >
-        <Text
+        <View
+          collapsable={false}
           style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontWeight": "500",
-                "textAlign": "left",
-              },
-              {
-                "color": "#F2F3F5",
-              },
-            ]
+            {
+              "backgroundColor": "#2D3039",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "justifyContent": "center",
+              "paddingVertical": 16,
+            }
           }
         >
-          Load older
-        </Text>
-      </View>
-    </RNGestureHandlerButton>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "500",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#F2F3F5",
+                },
+              ]
+            }
+          >
+            Load older
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
     <A11yOrderView
       orderKey="«r7»"
     >
@@ -2950,105 +3203,128 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                         }
                         testID="avatar"
                       >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
-                          collapsable={false}
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={-1}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#2D3039"
+                        <ExternalKeyboardView
+                          canBeFocused={true}
+                          enableA11yFocus={false}
+                          enableContextMenu={false}
+                          group={false}
+                          haloEffect={true}
+                          hasKeyDownPress={false}
+                          hasKeyUpPress={true}
+                          hasOnFocusChanged={true}
+                          lockFocus={0}
+                          onContextMenuPress={[Function]}
+                          onFocusChange={[Function]}
+                          onKeyUpPress={[Function]}
+                          orderIndex={-1}
+                          screenAutoA11yFocusDelay={300}
                           style={
                             [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
+                              undefined,
+                              undefined,
                             ]
                           }
-                          underlayColor="#2D3039"
                         >
-                          <View
+                          <RNGestureHandlerButton
+                            activeOpacity={1}
                             collapsable={false}
+                            delayLongPress={600}
+                            enabled={true}
+                            handlerTag={-1}
+                            handlerType="NativeViewGestureHandler"
+                            innerRef={null}
+                            onActiveStateChange={[Function]}
+                            onGestureHandlerEvent={[Function]}
+                            onGestureHandlerStateChange={[Function]}
+                            onPress={[Function]}
+                            rippleColor="#2D3039"
                             style={
-                              {
-                                "backgroundColor": "#2D3039",
-                                "borderBottomLeftRadius": undefined,
-                                "borderBottomRightRadius": undefined,
-                                "borderRadius": undefined,
-                                "borderTopLeftRadius": undefined,
-                                "borderTopRightRadius": undefined,
-                                "bottom": 0,
-                                "left": 0,
-                                "opacity": 0,
-                                "position": "absolute",
-                                "right": 0,
-                                "top": 0,
-                              }
-                            }
-                          />
-                          <View
-                            accessibilityLabel="diego.mello's avatar"
-                            accessible={true}
-                            style={{}}
-                          >
-                            <ViewManagerAdapter_ExpoImage
-                              borderRadius={4}
-                              containerViewRef={{"current":"Object"}}
-                              contentFit="cover"
-                              contentPosition={
+                              [
                                 {
-                                  "left": "50%",
-                                  "top": "50%",
-                                }
-                              }
-                              height={36}
-                              nativeViewRef={{"current":"NativeComponent"}}
-                              onError={[Function]}
-                              onLoad={[Function]}
-                              onLoadStart={[Function]}
-                              onProgress={[Function]}
-                              placeholder={[]}
-                              priority="high"
-                              source={
-                                [
-                                  {
-                                    "headers": {
-                                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                                    },
-                                    "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
-                                  },
-                                ]
-                              }
+                                  "backgroundColor": undefined,
+                                  "borderRadius": undefined,
+                                  "margin": undefined,
+                                  "marginBottom": undefined,
+                                  "marginEnd": undefined,
+                                  "marginHorizontal": undefined,
+                                  "marginLeft": undefined,
+                                  "marginRight": undefined,
+                                  "marginStart": undefined,
+                                  "marginTop": undefined,
+                                  "marginVertical": undefined,
+                                },
+                                {
+                                  "cursor": undefined,
+                                },
+                              ]
+                            }
+                            underlayColor="#2D3039"
+                          >
+                            <View
+                              collapsable={false}
                               style={
                                 {
-                                  "borderRadius": 4,
-                                  "height": 36,
-                                  "width": 36,
+                                  "backgroundColor": "#2D3039",
+                                  "borderBottomLeftRadius": undefined,
+                                  "borderBottomRightRadius": undefined,
+                                  "borderRadius": undefined,
+                                  "borderTopLeftRadius": undefined,
+                                  "borderTopRightRadius": undefined,
+                                  "bottom": 0,
+                                  "left": 0,
+                                  "opacity": 0,
+                                  "position": "absolute",
+                                  "right": 0,
+                                  "top": 0,
                                 }
                               }
-                              transition={null}
-                              width={36}
                             />
-                          </View>
-                        </RNGestureHandlerButton>
+                            <View
+                              accessibilityLabel="diego.mello's avatar"
+                              accessible={true}
+                              style={{}}
+                            >
+                              <ViewManagerAdapter_ExpoImage
+                                borderRadius={4}
+                                containerViewRef={{"current":"Object"}}
+                                contentFit="cover"
+                                contentPosition={
+                                  {
+                                    "left": "50%",
+                                    "top": "50%",
+                                  }
+                                }
+                                height={36}
+                                nativeViewRef={{"current":"NativeComponent"}}
+                                onError={[Function]}
+                                onLoad={[Function]}
+                                onLoadStart={[Function]}
+                                onProgress={[Function]}
+                                placeholder={[]}
+                                priority="high"
+                                source={
+                                  [
+                                    {
+                                      "headers": {
+                                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                                      },
+                                      "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
+                                    },
+                                  ]
+                                }
+                                style={
+                                  {
+                                    "borderRadius": 4,
+                                    "height": 36,
+                                    "width": 36,
+                                  }
+                                }
+                                transition={null}
+                                width={36}
+                              />
+                            </View>
+                          </RNGestureHandlerButton>
+                        </ExternalKeyboardView>
                       </View>
                     </View>
                     <View
@@ -3676,172 +3952,218 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
         </ExternalKeyboardView>
       </A11yIndexView>
     </A11yOrderView>
-    <RNGestureHandlerButton
-      activeOpacity={1}
-      collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
-      rippleColor="#2D3039"
+    <ExternalKeyboardView
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onContextMenuPress={[Function]}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={300}
       style={
         [
-          {
-            "backgroundColor": undefined,
-            "borderRadius": undefined,
-            "margin": undefined,
-            "marginBottom": undefined,
-            "marginEnd": undefined,
-            "marginHorizontal": undefined,
-            "marginLeft": undefined,
-            "marginRight": undefined,
-            "marginStart": undefined,
-            "marginTop": undefined,
-            "marginVertical": undefined,
-          },
-          {
-            "cursor": undefined,
-          },
+          undefined,
+          undefined,
         ]
       }
-      underlayColor="#2D3039"
     >
-      <View
+      <RNGestureHandlerButton
+        activeOpacity={1}
         collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#2D3039"
         style={
-          {
-            "backgroundColor": "#2D3039",
-            "borderBottomLeftRadius": undefined,
-            "borderBottomRightRadius": undefined,
-            "borderRadius": undefined,
-            "borderTopLeftRadius": undefined,
-            "borderTopRightRadius": undefined,
-            "bottom": 0,
-            "left": 0,
-            "opacity": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          }
+          [
+            {
+              "backgroundColor": undefined,
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
-      />
-      <View
-        style={
-          {
-            "alignItems": "center",
-            "justifyContent": "center",
-            "paddingVertical": 16,
-          }
-        }
+        underlayColor="#2D3039"
       >
-        <Text
+        <View
+          collapsable={false}
           style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontWeight": "500",
-                "textAlign": "left",
-              },
-              {
-                "color": "#F2F3F5",
-              },
-            ]
+            {
+              "backgroundColor": "#2D3039",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "justifyContent": "center",
+              "paddingVertical": 16,
+            }
           }
         >
-          Load newer
-        </Text>
-      </View>
-    </RNGestureHandlerButton>
-    <RNGestureHandlerButton
-      activeOpacity={1}
-      collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
-      rippleColor="#2D3039"
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "500",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#F2F3F5",
+                },
+              ]
+            }
+          >
+            Load newer
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+    <ExternalKeyboardView
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onContextMenuPress={[Function]}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={300}
       style={
         [
-          {
-            "backgroundColor": undefined,
-            "borderRadius": undefined,
-            "margin": undefined,
-            "marginBottom": undefined,
-            "marginEnd": undefined,
-            "marginHorizontal": undefined,
-            "marginLeft": undefined,
-            "marginRight": undefined,
-            "marginStart": undefined,
-            "marginTop": undefined,
-            "marginVertical": undefined,
-          },
-          {
-            "cursor": undefined,
-          },
+          undefined,
+          undefined,
         ]
       }
-      underlayColor="#2D3039"
     >
-      <View
+      <RNGestureHandlerButton
+        activeOpacity={1}
         collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#2D3039"
         style={
-          {
-            "backgroundColor": "#2D3039",
-            "borderBottomLeftRadius": undefined,
-            "borderBottomRightRadius": undefined,
-            "borderRadius": undefined,
-            "borderTopLeftRadius": undefined,
-            "borderTopRightRadius": undefined,
-            "bottom": 0,
-            "left": 0,
-            "opacity": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          }
+          [
+            {
+              "backgroundColor": undefined,
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
-      />
-      <View
-        style={
-          {
-            "alignItems": "center",
-            "justifyContent": "center",
-            "paddingVertical": 16,
-          }
-        }
+        underlayColor="#2D3039"
       >
-        <Text
+        <View
+          collapsable={false}
           style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontWeight": "500",
-                "textAlign": "left",
-              },
-              {
-                "color": "#F2F3F5",
-              },
-            ]
+            {
+              "backgroundColor": "#2D3039",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "justifyContent": "center",
+              "paddingVertical": 16,
+            }
           }
         >
-          Load more
-        </Text>
-      </View>
-    </RNGestureHandlerButton>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "500",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#F2F3F5",
+                },
+              ]
+            }
+          >
+            Load more
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
     <A11yOrderView
       orderKey="«ra»"
     >
@@ -3974,105 +4296,128 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                         }
                         testID="avatar"
                       >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
-                          collapsable={false}
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={-1}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#2D3039"
+                        <ExternalKeyboardView
+                          canBeFocused={true}
+                          enableA11yFocus={false}
+                          enableContextMenu={false}
+                          group={false}
+                          haloEffect={true}
+                          hasKeyDownPress={false}
+                          hasKeyUpPress={true}
+                          hasOnFocusChanged={true}
+                          lockFocus={0}
+                          onContextMenuPress={[Function]}
+                          onFocusChange={[Function]}
+                          onKeyUpPress={[Function]}
+                          orderIndex={-1}
+                          screenAutoA11yFocusDelay={300}
                           style={
                             [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
+                              undefined,
+                              undefined,
                             ]
                           }
-                          underlayColor="#2D3039"
                         >
-                          <View
+                          <RNGestureHandlerButton
+                            activeOpacity={1}
                             collapsable={false}
+                            delayLongPress={600}
+                            enabled={true}
+                            handlerTag={-1}
+                            handlerType="NativeViewGestureHandler"
+                            innerRef={null}
+                            onActiveStateChange={[Function]}
+                            onGestureHandlerEvent={[Function]}
+                            onGestureHandlerStateChange={[Function]}
+                            onPress={[Function]}
+                            rippleColor="#2D3039"
                             style={
-                              {
-                                "backgroundColor": "#2D3039",
-                                "borderBottomLeftRadius": undefined,
-                                "borderBottomRightRadius": undefined,
-                                "borderRadius": undefined,
-                                "borderTopLeftRadius": undefined,
-                                "borderTopRightRadius": undefined,
-                                "bottom": 0,
-                                "left": 0,
-                                "opacity": 0,
-                                "position": "absolute",
-                                "right": 0,
-                                "top": 0,
-                              }
-                            }
-                          />
-                          <View
-                            accessibilityLabel="diego.mello's avatar"
-                            accessible={true}
-                            style={{}}
-                          >
-                            <ViewManagerAdapter_ExpoImage
-                              borderRadius={4}
-                              containerViewRef={{"current":"Object"}}
-                              contentFit="cover"
-                              contentPosition={
+                              [
                                 {
-                                  "left": "50%",
-                                  "top": "50%",
-                                }
-                              }
-                              height={36}
-                              nativeViewRef={{"current":"NativeComponent"}}
-                              onError={[Function]}
-                              onLoad={[Function]}
-                              onLoadStart={[Function]}
-                              onProgress={[Function]}
-                              placeholder={[]}
-                              priority="high"
-                              source={
-                                [
-                                  {
-                                    "headers": {
-                                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                                    },
-                                    "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
-                                  },
-                                ]
-                              }
+                                  "backgroundColor": undefined,
+                                  "borderRadius": undefined,
+                                  "margin": undefined,
+                                  "marginBottom": undefined,
+                                  "marginEnd": undefined,
+                                  "marginHorizontal": undefined,
+                                  "marginLeft": undefined,
+                                  "marginRight": undefined,
+                                  "marginStart": undefined,
+                                  "marginTop": undefined,
+                                  "marginVertical": undefined,
+                                },
+                                {
+                                  "cursor": undefined,
+                                },
+                              ]
+                            }
+                            underlayColor="#2D3039"
+                          >
+                            <View
+                              collapsable={false}
                               style={
                                 {
-                                  "borderRadius": 4,
-                                  "height": 36,
-                                  "width": 36,
+                                  "backgroundColor": "#2D3039",
+                                  "borderBottomLeftRadius": undefined,
+                                  "borderBottomRightRadius": undefined,
+                                  "borderRadius": undefined,
+                                  "borderTopLeftRadius": undefined,
+                                  "borderTopRightRadius": undefined,
+                                  "bottom": 0,
+                                  "left": 0,
+                                  "opacity": 0,
+                                  "position": "absolute",
+                                  "right": 0,
+                                  "top": 0,
                                 }
                               }
-                              transition={null}
-                              width={36}
                             />
-                          </View>
-                        </RNGestureHandlerButton>
+                            <View
+                              accessibilityLabel="diego.mello's avatar"
+                              accessible={true}
+                              style={{}}
+                            >
+                              <ViewManagerAdapter_ExpoImage
+                                borderRadius={4}
+                                containerViewRef={{"current":"Object"}}
+                                contentFit="cover"
+                                contentPosition={
+                                  {
+                                    "left": "50%",
+                                    "top": "50%",
+                                  }
+                                }
+                                height={36}
+                                nativeViewRef={{"current":"NativeComponent"}}
+                                onError={[Function]}
+                                onLoad={[Function]}
+                                onLoadStart={[Function]}
+                                onProgress={[Function]}
+                                placeholder={[]}
+                                priority="high"
+                                source={
+                                  [
+                                    {
+                                      "headers": {
+                                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                                      },
+                                      "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
+                                    },
+                                  ]
+                                }
+                                style={
+                                  {
+                                    "borderRadius": 4,
+                                    "height": 36,
+                                    "width": 36,
+                                  }
+                                }
+                                transition={null}
+                                width={36}
+                              />
+                            </View>
+                          </RNGestureHandlerButton>
+                        </ExternalKeyboardView>
                       </View>
                     </View>
                     <View
@@ -4832,105 +5177,128 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                         }
                         testID="avatar"
                       >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
-                          collapsable={false}
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={-1}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#2D3039"
+                        <ExternalKeyboardView
+                          canBeFocused={true}
+                          enableA11yFocus={false}
+                          enableContextMenu={false}
+                          group={false}
+                          haloEffect={true}
+                          hasKeyDownPress={false}
+                          hasKeyUpPress={true}
+                          hasOnFocusChanged={true}
+                          lockFocus={0}
+                          onContextMenuPress={[Function]}
+                          onFocusChange={[Function]}
+                          onKeyUpPress={[Function]}
+                          orderIndex={-1}
+                          screenAutoA11yFocusDelay={300}
                           style={
                             [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
+                              undefined,
+                              undefined,
                             ]
                           }
-                          underlayColor="#2D3039"
                         >
-                          <View
+                          <RNGestureHandlerButton
+                            activeOpacity={1}
                             collapsable={false}
+                            delayLongPress={600}
+                            enabled={true}
+                            handlerTag={-1}
+                            handlerType="NativeViewGestureHandler"
+                            innerRef={null}
+                            onActiveStateChange={[Function]}
+                            onGestureHandlerEvent={[Function]}
+                            onGestureHandlerStateChange={[Function]}
+                            onPress={[Function]}
+                            rippleColor="#2D3039"
                             style={
-                              {
-                                "backgroundColor": "#2D3039",
-                                "borderBottomLeftRadius": undefined,
-                                "borderBottomRightRadius": undefined,
-                                "borderRadius": undefined,
-                                "borderTopLeftRadius": undefined,
-                                "borderTopRightRadius": undefined,
-                                "bottom": 0,
-                                "left": 0,
-                                "opacity": 0,
-                                "position": "absolute",
-                                "right": 0,
-                                "top": 0,
-                              }
-                            }
-                          />
-                          <View
-                            accessibilityLabel="diego.mello's avatar"
-                            accessible={true}
-                            style={{}}
-                          >
-                            <ViewManagerAdapter_ExpoImage
-                              borderRadius={4}
-                              containerViewRef={{"current":"Object"}}
-                              contentFit="cover"
-                              contentPosition={
+                              [
                                 {
-                                  "left": "50%",
-                                  "top": "50%",
-                                }
-                              }
-                              height={36}
-                              nativeViewRef={{"current":"NativeComponent"}}
-                              onError={[Function]}
-                              onLoad={[Function]}
-                              onLoadStart={[Function]}
-                              onProgress={[Function]}
-                              placeholder={[]}
-                              priority="high"
-                              source={
-                                [
-                                  {
-                                    "headers": {
-                                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                                    },
-                                    "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
-                                  },
-                                ]
-                              }
+                                  "backgroundColor": undefined,
+                                  "borderRadius": undefined,
+                                  "margin": undefined,
+                                  "marginBottom": undefined,
+                                  "marginEnd": undefined,
+                                  "marginHorizontal": undefined,
+                                  "marginLeft": undefined,
+                                  "marginRight": undefined,
+                                  "marginStart": undefined,
+                                  "marginTop": undefined,
+                                  "marginVertical": undefined,
+                                },
+                                {
+                                  "cursor": undefined,
+                                },
+                              ]
+                            }
+                            underlayColor="#2D3039"
+                          >
+                            <View
+                              collapsable={false}
                               style={
                                 {
-                                  "borderRadius": 4,
-                                  "height": 36,
-                                  "width": 36,
+                                  "backgroundColor": "#2D3039",
+                                  "borderBottomLeftRadius": undefined,
+                                  "borderBottomRightRadius": undefined,
+                                  "borderRadius": undefined,
+                                  "borderTopLeftRadius": undefined,
+                                  "borderTopRightRadius": undefined,
+                                  "bottom": 0,
+                                  "left": 0,
+                                  "opacity": 0,
+                                  "position": "absolute",
+                                  "right": 0,
+                                  "top": 0,
                                 }
                               }
-                              transition={null}
-                              width={36}
                             />
-                          </View>
-                        </RNGestureHandlerButton>
+                            <View
+                              accessibilityLabel="diego.mello's avatar"
+                              accessible={true}
+                              style={{}}
+                            >
+                              <ViewManagerAdapter_ExpoImage
+                                borderRadius={4}
+                                containerViewRef={{"current":"Object"}}
+                                contentFit="cover"
+                                contentPosition={
+                                  {
+                                    "left": "50%",
+                                    "top": "50%",
+                                  }
+                                }
+                                height={36}
+                                nativeViewRef={{"current":"NativeComponent"}}
+                                onError={[Function]}
+                                onLoad={[Function]}
+                                onLoadStart={[Function]}
+                                onProgress={[Function]}
+                                placeholder={[]}
+                                priority="high"
+                                source={
+                                  [
+                                    {
+                                      "headers": {
+                                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                                      },
+                                      "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
+                                    },
+                                  ]
+                                }
+                                style={
+                                  {
+                                    "borderRadius": 4,
+                                    "height": 36,
+                                    "width": 36,
+                                  }
+                                }
+                                transition={null}
+                                width={36}
+                              />
+                            </View>
+                          </RNGestureHandlerButton>
+                        </ExternalKeyboardView>
                       </View>
                     </View>
                     <View
@@ -5139,89 +5507,112 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
   }
 >
   <View>
-    <RNGestureHandlerButton
-      activeOpacity={1}
-      collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
-      rippleColor="#E4E7EA"
+    <ExternalKeyboardView
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onContextMenuPress={[Function]}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={300}
       style={
         [
-          {
-            "backgroundColor": undefined,
-            "borderRadius": undefined,
-            "margin": undefined,
-            "marginBottom": undefined,
-            "marginEnd": undefined,
-            "marginHorizontal": undefined,
-            "marginLeft": undefined,
-            "marginRight": undefined,
-            "marginStart": undefined,
-            "marginTop": undefined,
-            "marginVertical": undefined,
-          },
-          {
-            "cursor": undefined,
-          },
+          undefined,
+          undefined,
         ]
       }
-      underlayColor="#E4E7EA"
     >
-      <View
+      <RNGestureHandlerButton
+        activeOpacity={1}
         collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#E4E7EA"
         style={
-          {
-            "backgroundColor": "#E4E7EA",
-            "borderBottomLeftRadius": undefined,
-            "borderBottomRightRadius": undefined,
-            "borderRadius": undefined,
-            "borderTopLeftRadius": undefined,
-            "borderTopRightRadius": undefined,
-            "bottom": 0,
-            "left": 0,
-            "opacity": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          }
+          [
+            {
+              "backgroundColor": undefined,
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
-      />
-      <View
-        style={
-          {
-            "alignItems": "center",
-            "justifyContent": "center",
-            "paddingVertical": 16,
-          }
-        }
+        underlayColor="#E4E7EA"
       >
-        <Text
+        <View
+          collapsable={false}
           style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontWeight": "500",
-                "textAlign": "left",
-              },
-              {
-                "color": "#1F2329",
-              },
-            ]
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "justifyContent": "center",
+              "paddingVertical": 16,
+            }
           }
         >
-          Load older
-        </Text>
-      </View>
-    </RNGestureHandlerButton>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "500",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#1F2329",
+                },
+              ]
+            }
+          >
+            Load older
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
     <A11yOrderView
       orderKey="«re»"
     >
@@ -5354,105 +5745,128 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                         }
                         testID="avatar"
                       >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
-                          collapsable={false}
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={-1}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#E4E7EA"
+                        <ExternalKeyboardView
+                          canBeFocused={true}
+                          enableA11yFocus={false}
+                          enableContextMenu={false}
+                          group={false}
+                          haloEffect={true}
+                          hasKeyDownPress={false}
+                          hasKeyUpPress={true}
+                          hasOnFocusChanged={true}
+                          lockFocus={0}
+                          onContextMenuPress={[Function]}
+                          onFocusChange={[Function]}
+                          onKeyUpPress={[Function]}
+                          orderIndex={-1}
+                          screenAutoA11yFocusDelay={300}
                           style={
                             [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
+                              undefined,
+                              undefined,
                             ]
                           }
-                          underlayColor="#E4E7EA"
                         >
-                          <View
+                          <RNGestureHandlerButton
+                            activeOpacity={1}
                             collapsable={false}
+                            delayLongPress={600}
+                            enabled={true}
+                            handlerTag={-1}
+                            handlerType="NativeViewGestureHandler"
+                            innerRef={null}
+                            onActiveStateChange={[Function]}
+                            onGestureHandlerEvent={[Function]}
+                            onGestureHandlerStateChange={[Function]}
+                            onPress={[Function]}
+                            rippleColor="#E4E7EA"
                             style={
-                              {
-                                "backgroundColor": "#E4E7EA",
-                                "borderBottomLeftRadius": undefined,
-                                "borderBottomRightRadius": undefined,
-                                "borderRadius": undefined,
-                                "borderTopLeftRadius": undefined,
-                                "borderTopRightRadius": undefined,
-                                "bottom": 0,
-                                "left": 0,
-                                "opacity": 0,
-                                "position": "absolute",
-                                "right": 0,
-                                "top": 0,
-                              }
-                            }
-                          />
-                          <View
-                            accessibilityLabel="diego.mello's avatar"
-                            accessible={true}
-                            style={{}}
-                          >
-                            <ViewManagerAdapter_ExpoImage
-                              borderRadius={4}
-                              containerViewRef={{"current":"Object"}}
-                              contentFit="cover"
-                              contentPosition={
+                              [
                                 {
-                                  "left": "50%",
-                                  "top": "50%",
-                                }
-                              }
-                              height={36}
-                              nativeViewRef={{"current":"NativeComponent"}}
-                              onError={[Function]}
-                              onLoad={[Function]}
-                              onLoadStart={[Function]}
-                              onProgress={[Function]}
-                              placeholder={[]}
-                              priority="high"
-                              source={
-                                [
-                                  {
-                                    "headers": {
-                                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                                    },
-                                    "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
-                                  },
-                                ]
-                              }
+                                  "backgroundColor": undefined,
+                                  "borderRadius": undefined,
+                                  "margin": undefined,
+                                  "marginBottom": undefined,
+                                  "marginEnd": undefined,
+                                  "marginHorizontal": undefined,
+                                  "marginLeft": undefined,
+                                  "marginRight": undefined,
+                                  "marginStart": undefined,
+                                  "marginTop": undefined,
+                                  "marginVertical": undefined,
+                                },
+                                {
+                                  "cursor": undefined,
+                                },
+                              ]
+                            }
+                            underlayColor="#E4E7EA"
+                          >
+                            <View
+                              collapsable={false}
                               style={
                                 {
-                                  "borderRadius": 4,
-                                  "height": 36,
-                                  "width": 36,
+                                  "backgroundColor": "#E4E7EA",
+                                  "borderBottomLeftRadius": undefined,
+                                  "borderBottomRightRadius": undefined,
+                                  "borderRadius": undefined,
+                                  "borderTopLeftRadius": undefined,
+                                  "borderTopRightRadius": undefined,
+                                  "bottom": 0,
+                                  "left": 0,
+                                  "opacity": 0,
+                                  "position": "absolute",
+                                  "right": 0,
+                                  "top": 0,
                                 }
                               }
-                              transition={null}
-                              width={36}
                             />
-                          </View>
-                        </RNGestureHandlerButton>
+                            <View
+                              accessibilityLabel="diego.mello's avatar"
+                              accessible={true}
+                              style={{}}
+                            >
+                              <ViewManagerAdapter_ExpoImage
+                                borderRadius={4}
+                                containerViewRef={{"current":"Object"}}
+                                contentFit="cover"
+                                contentPosition={
+                                  {
+                                    "left": "50%",
+                                    "top": "50%",
+                                  }
+                                }
+                                height={36}
+                                nativeViewRef={{"current":"NativeComponent"}}
+                                onError={[Function]}
+                                onLoad={[Function]}
+                                onLoadStart={[Function]}
+                                onProgress={[Function]}
+                                placeholder={[]}
+                                priority="high"
+                                source={
+                                  [
+                                    {
+                                      "headers": {
+                                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                                      },
+                                      "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
+                                    },
+                                  ]
+                                }
+                                style={
+                                  {
+                                    "borderRadius": 4,
+                                    "height": 36,
+                                    "width": 36,
+                                  }
+                                }
+                                transition={null}
+                                width={36}
+                              />
+                            </View>
+                          </RNGestureHandlerButton>
+                        </ExternalKeyboardView>
                       </View>
                     </View>
                     <View
@@ -6080,172 +6494,218 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
         </ExternalKeyboardView>
       </A11yIndexView>
     </A11yOrderView>
-    <RNGestureHandlerButton
-      activeOpacity={1}
-      collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
-      rippleColor="#E4E7EA"
+    <ExternalKeyboardView
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onContextMenuPress={[Function]}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={300}
       style={
         [
-          {
-            "backgroundColor": undefined,
-            "borderRadius": undefined,
-            "margin": undefined,
-            "marginBottom": undefined,
-            "marginEnd": undefined,
-            "marginHorizontal": undefined,
-            "marginLeft": undefined,
-            "marginRight": undefined,
-            "marginStart": undefined,
-            "marginTop": undefined,
-            "marginVertical": undefined,
-          },
-          {
-            "cursor": undefined,
-          },
+          undefined,
+          undefined,
         ]
       }
-      underlayColor="#E4E7EA"
     >
-      <View
+      <RNGestureHandlerButton
+        activeOpacity={1}
         collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#E4E7EA"
         style={
-          {
-            "backgroundColor": "#E4E7EA",
-            "borderBottomLeftRadius": undefined,
-            "borderBottomRightRadius": undefined,
-            "borderRadius": undefined,
-            "borderTopLeftRadius": undefined,
-            "borderTopRightRadius": undefined,
-            "bottom": 0,
-            "left": 0,
-            "opacity": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          }
+          [
+            {
+              "backgroundColor": undefined,
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
-      />
-      <View
-        style={
-          {
-            "alignItems": "center",
-            "justifyContent": "center",
-            "paddingVertical": 16,
-          }
-        }
+        underlayColor="#E4E7EA"
       >
-        <Text
+        <View
+          collapsable={false}
           style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontWeight": "500",
-                "textAlign": "left",
-              },
-              {
-                "color": "#1F2329",
-              },
-            ]
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "justifyContent": "center",
+              "paddingVertical": 16,
+            }
           }
         >
-          Load newer
-        </Text>
-      </View>
-    </RNGestureHandlerButton>
-    <RNGestureHandlerButton
-      activeOpacity={1}
-      collapsable={false}
-      delayLongPress={600}
-      enabled={true}
-      handlerTag={-1}
-      handlerType="NativeViewGestureHandler"
-      innerRef={null}
-      onActiveStateChange={[Function]}
-      onGestureHandlerEvent={[Function]}
-      onGestureHandlerStateChange={[Function]}
-      onPress={[Function]}
-      rippleColor="#E4E7EA"
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "500",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#1F2329",
+                },
+              ]
+            }
+          >
+            Load newer
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+    <ExternalKeyboardView
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onContextMenuPress={[Function]}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={300}
       style={
         [
-          {
-            "backgroundColor": undefined,
-            "borderRadius": undefined,
-            "margin": undefined,
-            "marginBottom": undefined,
-            "marginEnd": undefined,
-            "marginHorizontal": undefined,
-            "marginLeft": undefined,
-            "marginRight": undefined,
-            "marginStart": undefined,
-            "marginTop": undefined,
-            "marginVertical": undefined,
-          },
-          {
-            "cursor": undefined,
-          },
+          undefined,
+          undefined,
         ]
       }
-      underlayColor="#E4E7EA"
     >
-      <View
+      <RNGestureHandlerButton
+        activeOpacity={1}
         collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#E4E7EA"
         style={
-          {
-            "backgroundColor": "#E4E7EA",
-            "borderBottomLeftRadius": undefined,
-            "borderBottomRightRadius": undefined,
-            "borderRadius": undefined,
-            "borderTopLeftRadius": undefined,
-            "borderTopRightRadius": undefined,
-            "bottom": 0,
-            "left": 0,
-            "opacity": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          }
+          [
+            {
+              "backgroundColor": undefined,
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
-      />
-      <View
-        style={
-          {
-            "alignItems": "center",
-            "justifyContent": "center",
-            "paddingVertical": 16,
-          }
-        }
+        underlayColor="#E4E7EA"
       >
-        <Text
+        <View
+          collapsable={false}
           style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontWeight": "500",
-                "textAlign": "left",
-              },
-              {
-                "color": "#1F2329",
-              },
-            ]
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "justifyContent": "center",
+              "paddingVertical": 16,
+            }
           }
         >
-          Load more
-        </Text>
-      </View>
-    </RNGestureHandlerButton>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "500",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#1F2329",
+                },
+              ]
+            }
+          >
+            Load more
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
     <A11yOrderView
       orderKey="«rh»"
     >
@@ -6378,105 +6838,128 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                         }
                         testID="avatar"
                       >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
-                          collapsable={false}
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={-1}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#E4E7EA"
+                        <ExternalKeyboardView
+                          canBeFocused={true}
+                          enableA11yFocus={false}
+                          enableContextMenu={false}
+                          group={false}
+                          haloEffect={true}
+                          hasKeyDownPress={false}
+                          hasKeyUpPress={true}
+                          hasOnFocusChanged={true}
+                          lockFocus={0}
+                          onContextMenuPress={[Function]}
+                          onFocusChange={[Function]}
+                          onKeyUpPress={[Function]}
+                          orderIndex={-1}
+                          screenAutoA11yFocusDelay={300}
                           style={
                             [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
+                              undefined,
+                              undefined,
                             ]
                           }
-                          underlayColor="#E4E7EA"
                         >
-                          <View
+                          <RNGestureHandlerButton
+                            activeOpacity={1}
                             collapsable={false}
+                            delayLongPress={600}
+                            enabled={true}
+                            handlerTag={-1}
+                            handlerType="NativeViewGestureHandler"
+                            innerRef={null}
+                            onActiveStateChange={[Function]}
+                            onGestureHandlerEvent={[Function]}
+                            onGestureHandlerStateChange={[Function]}
+                            onPress={[Function]}
+                            rippleColor="#E4E7EA"
                             style={
-                              {
-                                "backgroundColor": "#E4E7EA",
-                                "borderBottomLeftRadius": undefined,
-                                "borderBottomRightRadius": undefined,
-                                "borderRadius": undefined,
-                                "borderTopLeftRadius": undefined,
-                                "borderTopRightRadius": undefined,
-                                "bottom": 0,
-                                "left": 0,
-                                "opacity": 0,
-                                "position": "absolute",
-                                "right": 0,
-                                "top": 0,
-                              }
-                            }
-                          />
-                          <View
-                            accessibilityLabel="diego.mello's avatar"
-                            accessible={true}
-                            style={{}}
-                          >
-                            <ViewManagerAdapter_ExpoImage
-                              borderRadius={4}
-                              containerViewRef={{"current":"Object"}}
-                              contentFit="cover"
-                              contentPosition={
+                              [
                                 {
-                                  "left": "50%",
-                                  "top": "50%",
-                                }
-                              }
-                              height={36}
-                              nativeViewRef={{"current":"NativeComponent"}}
-                              onError={[Function]}
-                              onLoad={[Function]}
-                              onLoadStart={[Function]}
-                              onProgress={[Function]}
-                              placeholder={[]}
-                              priority="high"
-                              source={
-                                [
-                                  {
-                                    "headers": {
-                                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                                    },
-                                    "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
-                                  },
-                                ]
-                              }
+                                  "backgroundColor": undefined,
+                                  "borderRadius": undefined,
+                                  "margin": undefined,
+                                  "marginBottom": undefined,
+                                  "marginEnd": undefined,
+                                  "marginHorizontal": undefined,
+                                  "marginLeft": undefined,
+                                  "marginRight": undefined,
+                                  "marginStart": undefined,
+                                  "marginTop": undefined,
+                                  "marginVertical": undefined,
+                                },
+                                {
+                                  "cursor": undefined,
+                                },
+                              ]
+                            }
+                            underlayColor="#E4E7EA"
+                          >
+                            <View
+                              collapsable={false}
                               style={
                                 {
-                                  "borderRadius": 4,
-                                  "height": 36,
-                                  "width": 36,
+                                  "backgroundColor": "#E4E7EA",
+                                  "borderBottomLeftRadius": undefined,
+                                  "borderBottomRightRadius": undefined,
+                                  "borderRadius": undefined,
+                                  "borderTopLeftRadius": undefined,
+                                  "borderTopRightRadius": undefined,
+                                  "bottom": 0,
+                                  "left": 0,
+                                  "opacity": 0,
+                                  "position": "absolute",
+                                  "right": 0,
+                                  "top": 0,
                                 }
                               }
-                              transition={null}
-                              width={36}
                             />
-                          </View>
-                        </RNGestureHandlerButton>
+                            <View
+                              accessibilityLabel="diego.mello's avatar"
+                              accessible={true}
+                              style={{}}
+                            >
+                              <ViewManagerAdapter_ExpoImage
+                                borderRadius={4}
+                                containerViewRef={{"current":"Object"}}
+                                contentFit="cover"
+                                contentPosition={
+                                  {
+                                    "left": "50%",
+                                    "top": "50%",
+                                  }
+                                }
+                                height={36}
+                                nativeViewRef={{"current":"NativeComponent"}}
+                                onError={[Function]}
+                                onLoad={[Function]}
+                                onLoadStart={[Function]}
+                                onProgress={[Function]}
+                                placeholder={[]}
+                                priority="high"
+                                source={
+                                  [
+                                    {
+                                      "headers": {
+                                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                                      },
+                                      "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
+                                    },
+                                  ]
+                                }
+                                style={
+                                  {
+                                    "borderRadius": 4,
+                                    "height": 36,
+                                    "width": 36,
+                                  }
+                                }
+                                transition={null}
+                                width={36}
+                              />
+                            </View>
+                          </RNGestureHandlerButton>
+                        </ExternalKeyboardView>
                       </View>
                     </View>
                     <View
@@ -7236,105 +7719,128 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                         }
                         testID="avatar"
                       >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
-                          collapsable={false}
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={-1}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#E4E7EA"
+                        <ExternalKeyboardView
+                          canBeFocused={true}
+                          enableA11yFocus={false}
+                          enableContextMenu={false}
+                          group={false}
+                          haloEffect={true}
+                          hasKeyDownPress={false}
+                          hasKeyUpPress={true}
+                          hasOnFocusChanged={true}
+                          lockFocus={0}
+                          onContextMenuPress={[Function]}
+                          onFocusChange={[Function]}
+                          onKeyUpPress={[Function]}
+                          orderIndex={-1}
+                          screenAutoA11yFocusDelay={300}
                           style={
                             [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
+                              undefined,
+                              undefined,
                             ]
                           }
-                          underlayColor="#E4E7EA"
                         >
-                          <View
+                          <RNGestureHandlerButton
+                            activeOpacity={1}
                             collapsable={false}
+                            delayLongPress={600}
+                            enabled={true}
+                            handlerTag={-1}
+                            handlerType="NativeViewGestureHandler"
+                            innerRef={null}
+                            onActiveStateChange={[Function]}
+                            onGestureHandlerEvent={[Function]}
+                            onGestureHandlerStateChange={[Function]}
+                            onPress={[Function]}
+                            rippleColor="#E4E7EA"
                             style={
-                              {
-                                "backgroundColor": "#E4E7EA",
-                                "borderBottomLeftRadius": undefined,
-                                "borderBottomRightRadius": undefined,
-                                "borderRadius": undefined,
-                                "borderTopLeftRadius": undefined,
-                                "borderTopRightRadius": undefined,
-                                "bottom": 0,
-                                "left": 0,
-                                "opacity": 0,
-                                "position": "absolute",
-                                "right": 0,
-                                "top": 0,
-                              }
-                            }
-                          />
-                          <View
-                            accessibilityLabel="diego.mello's avatar"
-                            accessible={true}
-                            style={{}}
-                          >
-                            <ViewManagerAdapter_ExpoImage
-                              borderRadius={4}
-                              containerViewRef={{"current":"Object"}}
-                              contentFit="cover"
-                              contentPosition={
+                              [
                                 {
-                                  "left": "50%",
-                                  "top": "50%",
-                                }
-                              }
-                              height={36}
-                              nativeViewRef={{"current":"NativeComponent"}}
-                              onError={[Function]}
-                              onLoad={[Function]}
-                              onLoadStart={[Function]}
-                              onProgress={[Function]}
-                              placeholder={[]}
-                              priority="high"
-                              source={
-                                [
-                                  {
-                                    "headers": {
-                                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                                    },
-                                    "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
-                                  },
-                                ]
-                              }
+                                  "backgroundColor": undefined,
+                                  "borderRadius": undefined,
+                                  "margin": undefined,
+                                  "marginBottom": undefined,
+                                  "marginEnd": undefined,
+                                  "marginHorizontal": undefined,
+                                  "marginLeft": undefined,
+                                  "marginRight": undefined,
+                                  "marginStart": undefined,
+                                  "marginTop": undefined,
+                                  "marginVertical": undefined,
+                                },
+                                {
+                                  "cursor": undefined,
+                                },
+                              ]
+                            }
+                            underlayColor="#E4E7EA"
+                          >
+                            <View
+                              collapsable={false}
                               style={
                                 {
-                                  "borderRadius": 4,
-                                  "height": 36,
-                                  "width": 36,
+                                  "backgroundColor": "#E4E7EA",
+                                  "borderBottomLeftRadius": undefined,
+                                  "borderBottomRightRadius": undefined,
+                                  "borderRadius": undefined,
+                                  "borderTopLeftRadius": undefined,
+                                  "borderTopRightRadius": undefined,
+                                  "bottom": 0,
+                                  "left": 0,
+                                  "opacity": 0,
+                                  "position": "absolute",
+                                  "right": 0,
+                                  "top": 0,
                                 }
                               }
-                              transition={null}
-                              width={36}
                             />
-                          </View>
-                        </RNGestureHandlerButton>
+                            <View
+                              accessibilityLabel="diego.mello's avatar"
+                              accessible={true}
+                              style={{}}
+                            >
+                              <ViewManagerAdapter_ExpoImage
+                                borderRadius={4}
+                                containerViewRef={{"current":"Object"}}
+                                contentFit="cover"
+                                contentPosition={
+                                  {
+                                    "left": "50%",
+                                    "top": "50%",
+                                  }
+                                }
+                                height={36}
+                                nativeViewRef={{"current":"NativeComponent"}}
+                                onError={[Function]}
+                                onLoad={[Function]}
+                                onLoadStart={[Function]}
+                                onProgress={[Function]}
+                                placeholder={[]}
+                                priority="high"
+                                source={
+                                  [
+                                    {
+                                      "headers": {
+                                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                                      },
+                                      "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
+                                    },
+                                  ]
+                                }
+                                style={
+                                  {
+                                    "borderRadius": 4,
+                                    "height": 36,
+                                    "width": 36,
+                                  }
+                                }
+                                transition={null}
+                                width={36}
+                              />
+                            </View>
+                          </RNGestureHandlerButton>
+                        </ExternalKeyboardView>
                       </View>
                     </View>
                     <View

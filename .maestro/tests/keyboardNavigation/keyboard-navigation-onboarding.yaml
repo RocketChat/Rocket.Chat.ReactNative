@@ -1,0 +1,54 @@
+appId: chat.rocket.reactnative
+name: Keyboard Navigation Onboarding
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-14
+  - android-only
+
+---
+- evalScript: ${output.user = output.utils.createUser()}
+- evalScript: ${output.keyboardMessage = 'keyboard-nav-' + output.random(6)}
+
+- runFlow: ../../helpers/launch-app.yaml
+
+# login from onboarding/NewServerView
+- extendedWaitUntil:
+    visible:
+      id: 'new-server-view'
+    timeout: 60000
+- inputText: ${output.data.server}
+- pressKey: tab
+- pressKey: enter
+- extendedWaitUntil:
+    visible: 'Login'
+    timeout: 60000
+- pressKey: enter
+
+- extendedWaitUntil:
+    visible:
+      id: 'login-view'
+    timeout: 60000
+- pressKey: Remote Dpad Down
+- waitForAnimationToEnd:
+    timeout: 1000
+- pressKey: Remote Dpad Down
+- waitForAnimationToEnd:
+    timeout: 1000
+- pressKey: Remote Dpad Down
+- waitForAnimationToEnd:
+    timeout: 1000
+- pressKey: Remote Dpad Down
+- inputText: ${output.user.email}
+- pressKey: enter
+- waitForAnimationToEnd:
+    timeout: 1000
+- inputText: ${output.user.password}
+- pressKey: enter
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+#

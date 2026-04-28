@@ -3,8 +3,11 @@ import { StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedScrollHandler } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 
+import { useIsScreenReaderEnabled } from '../../../../lib/hooks/useIsScreenReaderEnabled';
 import { isIOS } from '../../../../lib/methods/helpers';
 import scrollPersistTaps from '../../../../lib/methods/helpers/scrollPersistTaps';
+import { isExternalKeyboardConnected } from '../../../../lib/methods/helpers/externalInput';
+import { MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID } from '../../../../lib/constants/accessibility';
 import InvertedScrollView from './InvertedScrollView';
 import NavBottomFAB from './NavBottomFAB';
 import { type IListProps } from '../definitions';
@@ -32,7 +35,10 @@ const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 			}
 		}
 	});
-	console.log('props', props.data);
+
+	const isScreenReaderEnabled = useIsScreenReaderEnabled();
+
+	const renderScrollComponent = !isIOS && (isScreenReaderEnabled || isExternalKeyboardConnected());
 	return (
 		<View style={styles.list}>
 			{/* @ts-ignore */}
@@ -45,7 +51,11 @@ const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 				contentContainerStyle={styles.contentContainer}
 				style={styles.list}
 				inverted
-				renderScrollComponent={isIOS ? undefined : props => <InvertedScrollView {...props} />}
+				renderScrollComponent={
+					renderScrollComponent
+						? props => <InvertedScrollView {...props} exitFocusNativeId={MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID} />
+						: undefined
+				}
 				removeClippedSubviews={isIOS}
 				initialNumToRender={7}
 				onEndReachedThreshold={0.5}

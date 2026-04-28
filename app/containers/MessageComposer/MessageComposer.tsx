@@ -1,4 +1,4 @@
-import React, { type ReactElement, useRef, useImperativeHandle } from 'react';
+import React, { type ReactElement, type Ref, useRef, useImperativeHandle } from 'react';
 import { AccessibilityInfo, findNodeHandle, type LayoutChangeEvent } from 'react-native';
 import { useBackHandler } from '@react-native-community/hooks';
 import { Q } from '@nozbe/watermelondb';
@@ -14,7 +14,7 @@ import {
 	useMessageComposerApi,
 	useRecordingAudio
 } from './context';
-import { type IComposerInput } from './interfaces';
+import { type IComposerInput, type IMessageComposerRef } from './interfaces';
 import { EventTypes } from '../EmojiPicker/interfaces';
 import { type IEmoji } from '../../definitions';
 import database from '../../lib/database';
@@ -38,7 +38,7 @@ export const MessageComposer = ({
 	forwardedRef,
 	children
 }: {
-	forwardedRef: any;
+	forwardedRef: Ref<IMessageComposerRef>;
 	children?: ReactElement;
 }): ReactElement | null => {
 	'use memo';
@@ -66,6 +66,14 @@ export const MessageComposer = ({
 	const altTextSupported = useAltTextSupported();
 	const attachments = useComposerAttachments();
 
+	useBackHandler(() => {
+		if (showEmojiSearchbar) {
+			resetKeyboard();
+			return true;
+		}
+		return false;
+	});
+
 	const closeEmojiKeyboardAndAction = (action?: Function, params?: any) => {
 		resetKeyboard();
 		action && action(params);
@@ -74,16 +82,9 @@ export const MessageComposer = ({
 	useImperativeHandle(forwardedRef, () => ({
 		closeEmojiKeyboardAndAction,
 		getText: () => composerInputComponentRef.current.getText(),
-		setInput: (...args: Parameters<IComposerInput['setInput']>) => composerInputComponentRef.current.setInput(...args)
+		setInput: (...args: Parameters<IMessageComposerRef['setInput']>) => composerInputComponentRef.current.setInput(...args),
+		focus: () => composerInputComponentRef.current.focus()
 	}));
-
-	useBackHandler(() => {
-		if (showEmojiSearchbar) {
-			resetKeyboard();
-			return true;
-		}
-		return false;
-	});
 
 	const handleLayout = (event: LayoutChangeEvent) => {
 		const { height } = event.nativeEvent.layout;

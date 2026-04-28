@@ -6,7 +6,7 @@ import { useTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';
 import ActivityIndicator from '../ActivityIndicator';
 
-interface IButtonProps extends RectButtonProps {
+interface IButtonProps extends Omit<RectButtonProps, 'children' | 'enabled'> {
 	title: string;
 	onPress: () => void;
 	type?: 'primary' | 'secondary';
