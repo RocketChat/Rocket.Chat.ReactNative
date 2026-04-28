@@ -1,13 +1,12 @@
 import React, { memo } from 'react';
-import { FlatList, Image, StyleSheet, View } from 'react-native';
-import { RectButton } from 'react-native-gesture-handler';
+import { FlatList, Image, Pressable, StyleSheet, View } from 'react-native';
 
 import { BUTTON_HIT_SLOP } from '../../../message/utils';
 import { useComposerAttachments, useMessageComposerApi } from '../../context';
 import { useTheme } from '../../../../theme';
 import { useActionSheet } from '../../../ActionSheet';
 import { CustomIcon } from '../../../CustomIcon';
-import Touch from '../../../Touch';
+import I18n from '../../../../i18n';
 import { AttachmentActionSheet } from './AttachmentActionSheet';
 
 const THUMB_SIZE = 64;
@@ -82,39 +81,48 @@ export const ComposerAttachments = memo(() => {
 			showsHorizontalScrollIndicator={false}
 			testID='message-composer-attachments'
 			renderItem={({ item, index }) => (
-				<Touch
-					style={styles.item}
-					onPress={() =>
-						showActionSheet({
-							children: (
-								<AttachmentActionSheet attachment={item} onSave={attachment => updateAttachment(item.path, attachment)} />
-							),
-							snaps: ['85%']
-						})
-					}
-					activeOpacity={0.7}
-					testID={`message-composer-attachment-${index}`}>
-					<>
+				<View style={styles.item}>
+					<Pressable
+						style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }]}
+						accessible
+						accessibilityRole='button'
+						accessibilityLabel={item.filename}
+						accessibilityHint={I18n.t('Edit_attachment_options')}
+						onPress={() =>
+							showActionSheet({
+								children: (
+									<AttachmentActionSheet
+										attachment={item}
+										onSave={attachment => updateAttachment(item.path, attachment)}
+									/>
+								),
+								snaps: ['85%']
+							})
+						}
+						testID={`message-composer-attachment-${index}`}>
 						<ThumbContent path={item.path} mime={item.mime} />
-						<RectButton
-							hitSlop={BUTTON_HIT_SLOP}
-							style={[
-								styles.removeButton,
-								{
-									backgroundColor: colors.fontDefault,
-									borderColor: colors.surfaceRoom
-								}
-							]}
-							rippleColor={colors.surfaceNeutral}
-							onPress={() => removeAttachment(item.path)}
-							testID={`message-composer-remove-attachment-${index}`}>
-							<CustomIcon name='close' color={colors.surfaceRoom} size={14} />
-						</RectButton>
-						{!item.canUpload ? (
-							<CustomIcon name='warning' size={18} color={colors.buttonBackgroundDangerDefault} style={styles.warningIcon} />
-						) : null}
-					</>
-				</Touch>
+					</Pressable>
+					<Pressable
+						accessible
+						accessibilityRole='button'
+						accessibilityLabel={I18n.t('Remove_attachment')}
+						hitSlop={BUTTON_HIT_SLOP}
+						style={({ pressed }) => [
+							styles.removeButton,
+							{
+								backgroundColor: colors.fontDefault,
+								borderColor: colors.surfaceRoom,
+								opacity: pressed ? 0.7 : 1
+							}
+						]}
+						onPress={() => removeAttachment(item.path)}
+						testID={`message-composer-remove-attachment-${index}`}>
+						<CustomIcon name='close' color={colors.surfaceRoom} size={14} />
+					</Pressable>
+					{!item.canUpload ? (
+						<CustomIcon name='warning' size={18} color={colors.buttonBackgroundDangerDefault} style={styles.warningIcon} />
+					) : null}
+				</View>
 			)}
 		/>
 	);
