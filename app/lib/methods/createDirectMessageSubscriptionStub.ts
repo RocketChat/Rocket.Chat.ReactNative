@@ -46,7 +46,12 @@ export const createDirectMessageSubscriptionStub = async ({
 			return;
 		}
 
-		const otherUserId = rid.replace(currentUserId, '').trim();
+		let otherUserId = rid.trim();
+		if (rid.startsWith(currentUserId)) {
+			otherUserId = rid.slice(currentUserId.length).trim();
+		} else if (rid.endsWith(currentUserId)) {
+			otherUserId = rid.slice(0, -currentUserId.length).trim();
+		}
 
 		const db = database.active;
 		const subCollection = db.get(SUBSCRIPTIONS_TABLE);
