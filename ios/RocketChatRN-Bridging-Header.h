@@ -3,8 +3,8 @@
 //
 
 #import <RNCallKeep/RNCallKeep.h>
-#import "SecureStorage.h"
-#import "MMKVKeyManager.h"
+#import "Libraries/SecureStorage.h"
+#import "Libraries/MMKVKeyManager.h"
 #import "Shared/RocketChat/MMKVBridge.h"
 #import <RNBootSplash.h>
 #import <RNDeviceInfo/DeviceUID.h>
@@ -12,4 +12,4 @@
 #import <MobileCrypto/AESCrypto.h>
 #import <MobileCrypto/RandomUtils.h>
 #import <MobileCrypto/CryptoUtils.h>
-#import "SSLPinning.h"
+#import "Libraries/SSLPinning.h"
