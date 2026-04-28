@@ -80,7 +80,14 @@ export default StyleSheet.create({
 	codeBlock: {
 		borderWidth: 1,
 		borderRadius: 4,
-		padding: 4
+		padding: 4,
+		position: 'relative' as const
+	},
+	codeBlockCopyButton: {
+		position: 'absolute' as const,
+		top: 4,
+		right: 4,
+		zIndex: 1
 	},
 	codeBlockText: {
 		fontSize: 16,
