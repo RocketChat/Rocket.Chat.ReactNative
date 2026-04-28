@@ -19,6 +19,7 @@ import {
 
 class Sdk {
 	private sdk: DDPSDK | undefined;
+	private serverUrl: string | undefined;
 	private code: any = null;
 	private headers: Record<string, string> = {
 		'User-Agent': `RC Mobile; ${
@@ -26,11 +27,16 @@ class Sdk {
 		} ${DeviceInfo.getSystemVersion()}; v${DeviceInfo.getVersion()} (${DeviceInfo.getBuildNumber()})`
 	};
 
-	async initialize(server: string): Promise<DDPSDK> {
+	initialize(server: string): DDPSDK {
 		this.sdk = DDPSDK.create(server);
-		this.setBasicAuth();
+		this.serverUrl = server;
+		this.loadBasicAuth();
 		this.sdk.rest.handleTwoFactorChallenge(this.twoFactorHandler);
 		return this.sdk;
+	}
+
+	get server(): string | undefined {
+		return this.serverUrl;
 	}
 
 	private ensureInitialized(): DDPSDK {
@@ -49,11 +55,12 @@ class Sdk {
 			this.sdk.connection.close();
 			this.sdk = undefined;
 		}
+		this.serverUrl = undefined;
 		return null;
 	}
 
-	private setBasicAuth(): void {
-		const basicAuth = UserPreferences.getString(`${BASIC_AUTH_KEY}-${this.sdk?.connection.url}`);
+	private loadBasicAuth(): void {
+		const basicAuth = UserPreferences.getString(`${BASIC_AUTH_KEY}-${this.serverUrl}`);
 		if (basicAuth) {
 			this.setHeaders({ Authorization: `Basic ${basicAuth}` });
 		}
@@ -65,6 +72,23 @@ class Sdk {
 
 	getHeaders(): Record<string, string> {
 		return this.headers;
+	}
+
+	setBasicAuth(basicAuth: string | null): void {
+		const url = this.serverUrl;
+		if (basicAuth) {
+			if (url) {
+				UserPreferences.setString(`${BASIC_AUTH_KEY}-${url}`, basicAuth);
+			}
+			this.setHeaders({ Authorization: `Basic ${basicAuth}` });
+		} else {
+			if (url) {
+				UserPreferences.removeItem(`${BASIC_AUTH_KEY}-${url}`);
+			}
+			const next = { ...this.headers };
+			delete next.Authorization;
+			this.headers = next;
+		}
 	}
 
 	/*

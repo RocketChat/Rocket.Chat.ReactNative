@@ -1,5 +1,4 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import { Alert } from 'react-native';
 
 import { type IUser, type TSendFileMessageFileInfo, type TUploadModel } from '../../../definitions';
@@ -9,6 +8,7 @@ import FileUpload from '../helpers/fileUpload';
 import log from '../helpers/log';
 import { copyFileToCacheDirectoryIfNeeded, getUploadPath, persistUploadError, uploadQueue } from './utils';
 import { type IFormData } from '../helpers/fileUpload/definitions';
+import sdk from '../../services/sdk';
 
 export async function sendFileMessage(
 	rid: string,
@@ -83,11 +83,11 @@ export async function sendFileMessage(
 			});
 		}
 
-		const headers = {
-			...RocketChatSettings.customHeaders,
+		const headers: Record<string, string> = {
+			...sdk.getHeaders(),
 			'Content-Type': 'multipart/form-data',
-			'X-Auth-Token': token,
-			'X-User-Id': id
+			...(token ? { 'X-Auth-Token': token } : {}),
+			...(id ? { 'X-User-Id': id } : {})
 		};
 
 		uploadQueue[uploadPath] = new FileUpload(uploadUrl, headers, formData, async (loaded, total) => {

@@ -157,10 +157,10 @@ export async function getSettings(): Promise<void> {
 		let offset = 0;
 		let remaining;
 		let settings: IData[] = [];
-		const serverVersion = reduxStore.getState().server.version;
+		const { version: serverVersion, server } = reduxStore.getState().server;
 		const url = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')
-			? `${sdk.current?.connection.url}/api/v1/settings.public?_id=${settingsParams.join(',')}`
-			: `${sdk.current?.connection.url}/api/v1/settings.public?query={"_id":{"$in":${JSON.stringify(settingsParams)}}}`;
+			? `${server}/api/v1/settings.public?_id=${settingsParams.join(',')}`
+			: `${server}/api/v1/settings.public?query={"_id":{"$in":${JSON.stringify(settingsParams)}}}`;
 		// Iterate over paginated results to retrieve all settings
 		do {
 			// TODO: why is no-await-in-loop enforced in the first place?

@@ -62,8 +62,8 @@ const handleRequest = function* handleRequest({ data }) {
 			const subCollection = db.get('subscriptions');
 			yield db.write(async () => {
 				await subCollection.create(s => {
-					Object.assign(s, sub);
 					s._raw = sanitizedRaw({ id: sub.rid }, subCollection.schema);
+					Object.assign(s, sub);
 					s.id = sub.rid;
 					s._id = sub.rid;
 					s.ts = sub.ts || new Date();

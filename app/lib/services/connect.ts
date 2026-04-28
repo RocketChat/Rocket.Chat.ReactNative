@@ -35,7 +35,7 @@ interface IServices {
 }
 
 async function connect({ server, logoutOnError = false }: { server: string; logoutOnError?: boolean }): Promise<void> {
-	if (sdk.current?.connection.url === server) {
+	if (sdk.server === server) {
 		return;
 	}
 
