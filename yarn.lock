@@ -4262,9 +4262,10 @@
   dependencies:
     eslint-plugin-import "^2.17.2"
 
-"@rocket.chat/media-signaling@file:./packages/rocket.chat-media-signaling-0.2.0.tgz":
-  version "0.2.0"
-  resolved "file:./packages/rocket.chat-media-signaling-0.2.0.tgz#6fec3d25b95d62e69cd999c0cd649c2b5465acc6"
+"@rocket.chat/media-signaling@1.0.0-rc.1":
+  version "1.0.0-rc.1"
+  resolved "https://registry.yarnpkg.com/@rocket.chat/media-signaling/-/media-signaling-1.0.0-rc.1.tgz#e0bcfb430712078c6367051f22afdca59228c35f"
+  integrity sha512-yUMFOyhJfN1XH4IssQF17zAeaamNiSw3riaeuc+pby4XYDd405aN8jh//Lz2nn9c8DeGCCzUbRStlMlmPsbr6g==
   dependencies:
     "@rocket.chat/emitter" "^0.32.0"
     ajv "^8.17.1"
