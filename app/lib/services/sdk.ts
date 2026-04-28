@@ -27,7 +27,7 @@ class Sdk {
 	};
 
 	async initialize(server: string): Promise<DDPSDK> {
-		this.sdk = await DDPSDK.create(server);
+		this.sdk = DDPSDK.create(server);
 		this.setBasicAuth();
 		this.sdk.rest.handleTwoFactorChallenge(this.twoFactorHandler);
 		return this.sdk;
@@ -118,7 +118,9 @@ class Sdk {
 	): Promise<Serialized<ResultFor<'GET', MatchPathPattern<TPath>>>> {
 		const sdk = this.ensureInitialized();
 		// @ts-ignore
-		return sdk.rest.get(endpoint, params);
+		return sdk.rest.get(endpoint, params, {
+			headers: this.headers
+		});
 	}
 
 	post<TPath extends PathFor<'POST'>>(
@@ -185,7 +187,9 @@ class Sdk {
 	): Promise<Serialized<ResultFor<'DELETE', MatchPathPattern<TPath>>>> {
 		const sdk = this.ensureInitialized();
 		// @ts-ignore
-		return sdk.rest.delete(endpoint, params);
+		return sdk.rest.delete(endpoint, params, {
+			headers: this.headers
+		});
 	}
 
 	async twoFactorHandler({
@@ -202,13 +206,21 @@ class Sdk {
 
 	async login(credentials: any): Promise<any> {
 		try {
-			await this.current?.account.loginWithPassword(credentials.user, credentials.password);
-			// const loginResult = await this.post('/v1/login', credentials);
-			// if (!loginResult?.success) {
-			// 	return Promise.reject(new Error('Invalid response from server'));
-			// }
-		} catch (e) {
-			console.log('login error', e);
+			const loginResult = await this.post('/v1/login', credentials);
+			if (!loginResult?.success) {
+				return Promise.reject(new Error('Invalid response from server'));
+			}
+			await this.current?.account.loginWithToken(loginResult.data.authToken);
+			return loginResult.data;
+		} catch (e: any) {
+			if (e instanceof Response) {
+				try {
+					const data = await e.clone().json();
+					return Promise.reject({ status: e.status, data });
+				} catch {
+					return Promise.reject({ status: e.status, data: {} });
+				}
+			}
 			return Promise.reject(e);
 		}
 	}
