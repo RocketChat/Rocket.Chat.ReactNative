@@ -939,14 +939,14 @@ export const getDirectory = ({
 	const params: any = {
 		count,
 		offset,
-		sort
+		sort: JSON.stringify(sort)
 	};
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')) {
 		params.text = text;
 		params.type = type;
 		params.workspace = workspace;
 	} else {
-		params.query = { text, type, workspace };
+		params.query = JSON.stringify({ text, type, workspace });
 	}
 	return sdk.get('/v1/directory', params);
 };
