@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react-native';
 import { type ComponentProps } from 'react';
+import { A11y } from 'react-native-a11y-order';
 
 import MessageContext from '../../../Context';
 import ImageContainer from './Container';
@@ -26,16 +27,18 @@ jest.mock('./Image', () => ({
 
 const renderImageContainer = (props?: Partial<ComponentProps<typeof ImageContainer>>) =>
 	render(
-		<MessageContext.Provider
-			value={{
-				id: 'message-id',
-				baseUrl: 'https://open.rocket.chat',
-				user: { id: 'user-id', username: 'rocket.cat', token: 'token' },
-				onLongPress: jest.fn(),
-				translateLanguage: undefined
-			}}>
-			<ImageContainer file={{ image_url: 'https://open.rocket.chat/image.png', image_type: 'image/png' }} {...props} />
-		</MessageContext.Provider>
+		<A11y.Order>
+			<MessageContext.Provider
+				value={{
+					id: 'message-id',
+					baseUrl: 'https://open.rocket.chat',
+					user: { id: 'user-id', username: 'rocket.cat', token: 'token' },
+					onLongPress: jest.fn(),
+					translateLanguage: undefined
+				}}>
+				<ImageContainer file={{ image_url: 'https://open.rocket.chat/image.png', image_type: 'image/png' }} {...props} />
+			</MessageContext.Provider>
+		</A11y.Order>
 	);
 
 describe('ImageContainer', () => {

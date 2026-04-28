@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { A11y } from 'react-native-a11y-order';
 
 import { useActionSheet } from '../../../../ActionSheet';
 import I18n from '../../../../../i18n';
@@ -75,15 +76,17 @@ const AltTextLabel = ({ altText, testID }: TAltTextLabelProps) => {
 	}, [altText, showActionSheet]);
 
 	return (
-		<Touch
-			testID={testID}
-			onPress={handleOpenAltText}
-			accessibilityRole='button'
-			accessibilityLabel={I18n.t('Alt_text')}
-			style={[styles.container, { backgroundColor: colors.surfaceNeutral }]}
-			rectButtonStyle={styles.rectButtonStyle}>
-			<Text style={[styles.label, { color: colors.fontTitlesLabels }]}>{I18n.t('Alt')}</Text>
-		</Touch>
+		<A11y.Index index={3}>
+			<Touch
+				testID={testID}
+				onPress={handleOpenAltText}
+				accessibilityRole='button'
+				accessibilityLabel={I18n.t('Alt_text')}
+				style={[styles.container, { backgroundColor: colors.surfaceNeutral }]}
+				rectButtonStyle={styles.rectButtonStyle}>
+				<Text style={[styles.label, { color: colors.fontTitlesLabels }]}>{I18n.t('Alt')}</Text>
+			</Touch>
+		</A11y.Index>
 	);
 };
 
