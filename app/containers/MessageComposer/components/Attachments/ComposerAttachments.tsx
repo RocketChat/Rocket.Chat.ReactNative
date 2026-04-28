@@ -91,10 +91,7 @@ export const ComposerAttachments = memo(() => {
 						onPress={() =>
 							showActionSheet({
 								children: (
-									<AttachmentActionSheet
-										attachment={item}
-										onSave={attachment => updateAttachment(item.path, attachment)}
-									/>
+									<AttachmentActionSheet attachment={item} onSave={attachment => updateAttachment(item.path, attachment)} />
 								),
 								snaps: ['85%']
 							})
