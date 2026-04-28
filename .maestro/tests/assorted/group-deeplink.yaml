@@ -1,0 +1,35 @@
+appId: chat.rocket.reactnative
+name: Group Deeplink
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+tags:
+  - test-12
+
+---
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.account.adminUser}
+      PASSWORD: ${output.account.adminPassword}
+
+# open group using name
+- killApp
+- runFlow:
+    file: '../../helpers/open-deeplink.yaml'
+    env:
+      link: 'https://go.rocket.chat/room?host=mobile.qa.rocket.chat&path=group/4t6Mw3K4M9JLeHuCH'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-discussion-with-name'
+    timeout: 60000
+
+# open group using id
+- killApp
+- runFlow:
+    file: '../../helpers/open-deeplink.yaml'
+    env:
+      link: 'https://go.rocket.chat/room?host=mobile.qa.rocket.chat&path=group/69ea9d65395f71c85b3a38bc'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-discussion-with-id'
+    timeout: 60000
