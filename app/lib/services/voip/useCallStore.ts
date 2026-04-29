@@ -3,6 +3,8 @@ import type { CallState, CallContact, IClientMediaCall } from '@rocket.chat/medi
 import RNCallKeep from 'react-native-callkeep';
 import InCallManager from 'react-native-incall-manager';
 
+import { isIOS } from '../../methods/helpers';
+import NativeVoipModule from '../../native/NativeVoip';
 import { terminateNativeCall } from './terminateNativeCall';
 import Navigation from '../../navigation/appNavigation';
 import { hideActionSheetRef } from '../../../containers/ActionSheet';
@@ -170,6 +172,12 @@ export const useCallStore = create<CallStore>((set, get) => ({
 			console.error('[VoIP] InCallManager.start failed:', error);
 		}
 
+		if (!isIOS) {
+			NativeVoipModule.startAudioRouteSync().catch((error: unknown) => {
+				console.error('[VoIP] startAudioRouteSync failed:', error);
+			});
+		}
+
 		// Subscribe to call events
 		const handleStateChange = () => {
 			const currentCall = get().call;
@@ -310,6 +318,11 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		}
 		set({ ...initialState, nativeAcceptedCallId });
 		hideActionSheetRef();
+		if (!isIOS) {
+			NativeVoipModule.stopAudioRouteSync().catch((error: unknown) => {
+				console.error('[VoIP] stopAudioRouteSync failed:', error);
+			});
+		}
 		// Old timer was cleared above; start a new one if nativeAcceptedCallId is still set.
 		createStaleNativeTimer(get);
 	}

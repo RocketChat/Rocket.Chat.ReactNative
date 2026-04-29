@@ -1,9 +1,15 @@
 package chat.rocket.reactnative.voip
 
+import android.annotation.SuppressLint
+import android.media.AudioDeviceInfo
+import android.media.AudioManager
+import android.os.Build
 import android.util.Log
 import chat.rocket.reactnative.BuildConfig
+import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.WritableMap
+import com.facebook.react.bridge.Arguments
 import com.facebook.react.modules.core.DeviceEventManagerModule
 import chat.rocket.reactnative.networking.NativeVoipSpec
 import java.lang.ref.WeakReference
@@ -95,6 +101,9 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
         }
     }
 
+    private var communicationDeviceListener: AudioManager.OnCommunicationDeviceChangedListener? = null
+    private var audioRouteSyncActive: Boolean = false
+
     init {
         // Store reference for event emission
         setReactContext(reactApplicationContext)
@@ -155,6 +164,61 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
             Log.d(TAG, "stopVoipCallService: service stopped")
         } catch (e: Exception) {
             Log.e(TAG, "stopVoipCallService: failed to stop service", e)
+        }
+    }
+
+    @SuppressLint("NewApi")
+    override fun startAudioRouteSync(promise: Promise) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+            promise.resolve(false)
+            return
+        }
+        if (communicationDeviceListener != null) {
+            promise.resolve(audioRouteSyncActive)
+            return
+        }
+        val audioManager = reactApplicationContext.getSystemService(AudioManager::class.java)
+        val listener = AudioManager.OnCommunicationDeviceChangedListener { device ->
+            val isSpeaker = device?.type == AudioDeviceInfo.TYPE_BUILTIN_SPEAKER
+            emitCommunicationDeviceChanged(isSpeaker)
+        }
+        audioManager.addOnCommunicationDeviceChangedListener(reactApplicationContext.mainExecutor, listener)
+        communicationDeviceListener = listener
+        audioRouteSyncActive = true
+
+        val currentDevice = audioManager.communicationDevice
+        if (currentDevice != null) {
+            val isSpeaker = currentDevice.type == AudioDeviceInfo.TYPE_BUILTIN_SPEAKER
+            emitCommunicationDeviceChanged(isSpeaker)
+        }
+
+        promise.resolve(true)
+    }
+
+    @SuppressLint("NewApi")
+    override fun stopAudioRouteSync(promise: Promise) {
+        val listener = communicationDeviceListener
+        if (listener != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val audioManager = reactApplicationContext.getSystemService(AudioManager::class.java)
+            audioManager.removeOnCommunicationDeviceChangedListener(listener)
+        }
+        communicationDeviceListener = null
+        audioRouteSyncActive = false
+        promise.resolve(true)
+    }
+
+    private fun emitCommunicationDeviceChanged(isSpeaker: Boolean) {
+        try {
+            reactContextRef?.get()?.let { context ->
+                if (context.hasActiveReactInstance()) {
+                    val params = Arguments.createMap().apply { putBoolean("isSpeaker", isSpeaker) }
+                    context
+                        .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+                        .emit("VoipCommunicationDeviceChanged", params)
+                }
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to emit VoipCommunicationDeviceChanged", e)
         }
     }
 

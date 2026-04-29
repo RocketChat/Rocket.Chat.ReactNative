@@ -352,3 +352,20 @@ describe('setupMediaCallEvents — endCall clears accept dedupe (iOS)', () => {
 		expect(mockOnOpenDeepLink).toHaveBeenCalledTimes(2);
 	});
 });
+
+describe('setupMediaCallEvents — VoipCommunicationDeviceChanged NOT subscribed on iOS', () => {
+	const getState = useCallStore.getState as jest.Mock;
+
+	beforeEach(() => {
+		jest.clearAllMocks();
+		resetMediaCallEventsStateForTesting();
+		Object.keys(mockNativeVoipListeners).forEach(k => delete mockNativeVoipListeners[k]);
+		mockAddEventListener.mockImplementation(() => ({ remove: jest.fn() }));
+		getState.mockReturnValue({ setNativeAcceptedCallId: jest.fn() });
+	});
+
+	it('VoipCommunicationDeviceChanged listener is not registered on iOS', () => {
+		setupMediaCallEvents(makeTestAdapters());
+		expect(mockNativeVoipListeners.VoipCommunicationDeviceChanged).toBeUndefined();
+	});
+});

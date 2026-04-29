@@ -21,6 +21,29 @@ jest.mock('react-native-callkeep', () => ({
 	setAvailable: jest.fn()
 }));
 
+jest.mock('../../methods/helpers', () => ({
+	isIOS: false
+}));
+
+const mockStartAudioRouteSync = jest.fn(() => Promise.resolve(true));
+const mockStopAudioRouteSync = jest.fn(() => Promise.resolve(true));
+
+jest.mock('../../native/NativeVoip', () => ({
+	__esModule: true,
+	default: {
+		startAudioRouteSync: () => mockStartAudioRouteSync(),
+		stopAudioRouteSync: () => mockStopAudioRouteSync(),
+		registerVoipToken: jest.fn(),
+		getInitialEvents: jest.fn(() => null),
+		clearInitialEvents: jest.fn(),
+		getLastVoipToken: jest.fn(() => ''),
+		stopNativeDDPClient: jest.fn(),
+		stopVoipCallService: jest.fn(),
+		addListener: jest.fn(),
+		removeListeners: jest.fn()
+	}
+}));
+
 function createMockCall(callId: string, options?: { initialState?: string }) {
 	const initialState = options?.initialState ?? 'active';
 	const listeners: Record<string, Set<(...args: unknown[]) => void>> = {};
@@ -291,5 +314,25 @@ describe('useCallStore native accepted + stale timer', () => {
 		expect(useCallStore.getState().nativeAcceptedCallId).toBe('b');
 		jest.advanceTimersByTime(1_000);
 		expect(useCallStore.getState().nativeAcceptedCallId).toBeNull();
+	});
+});
+
+describe('useCallStore audio route sync (Android, isIOS=false)', () => {
+	beforeEach(() => {
+		useCallStore.getState().resetNativeCallId();
+		useCallStore.getState().reset();
+		mockStartAudioRouteSync.mockClear();
+		mockStopAudioRouteSync.mockClear();
+	});
+
+	it('setCall fires startAudioRouteSync', () => {
+		const { call } = createMockCall('ar-1');
+		useCallStore.getState().setCall(call);
+		expect(mockStartAudioRouteSync).toHaveBeenCalledTimes(1);
+	});
+
+	it('reset fires stopAudioRouteSync', () => {
+		useCallStore.getState().reset();
+		expect(mockStopAudioRouteSync).toHaveBeenCalledTimes(1);
 	});
 });
