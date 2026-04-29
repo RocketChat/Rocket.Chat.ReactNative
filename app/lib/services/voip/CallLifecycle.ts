@@ -1,5 +1,7 @@
 /**
- * CallLifecycle — orchestrates the end-of-call teardown sequence.
+ * CallLifecycle — orchestrates call-state transitions.
+ *
+ * ## End-of-call teardown (CallLifecycle.end)
  *
  * Teardown order (documented here and verified in tests):
  *   1. mediaCall.reject() if state === 'ringing', else mediaCall.hangup()
@@ -13,6 +15,27 @@
  * Idempotency: concurrent callers receive the in-flight Promise (no double teardown).
  *
  * `callId` in the `callEnded` event uses `callId ?? nativeAcceptedCallId` (Pre-bind-safe).
+ *
+ * ## Toggle transitions (CallLifecycle.toggle)
+ *
+ * `toggle(kind, source?, callUuid?)` handles mute, hold, and speaker toggles.
+ *
+ * `source` encodes where the intent originated:
+ *   - `'js'`: user-initiated from the JS UI. Updates store, mutates localParticipant,
+ *             and where applicable issues a voipNative command (e.g. setSpeaker).
+ *   - `'native'`: OS-initiated (CallKit / Telecom). Updates store and mutates
+ *             localParticipant ONLY — does NOT issue a voipNative command back,
+ *             preventing the OS→JS→OS echo loop.
+ *             Exception: `toggle('hold', 'native')` auto-resume issues `markActive`
+ *             when the OS releases a hold it previously placed (wasAutoHeld).
+ *             This is intentional — markActive is a different kind of command,
+ *             not an echo of the hold event itself.
+ *
+ * Stale-UUID drop: when `callUuid` is provided it must match the active callId or
+ * nativeAcceptedCallId (case-insensitive). Mismatched UUIDs are no-ops. This applies
+ * uniformly to all kinds and both platforms — no isIOS branch.
+ *
+ * `wasAutoHeld` is private state owned by CallLifecycle (not useCallStore, not MediaCallEvents).
  */
 
 import { voipNative, type VoipNativePort } from './VoipNative';
@@ -42,6 +65,9 @@ type EventMap = {
 	callEnded: CallEndedEvent;
 	preBindFailed: PreBindFailedEvent; // type-only — no producer in this slice
 };
+
+export type ToggleKind = 'mute' | 'hold' | 'speaker';
+export type ToggleSource = 'js' | 'native';
 
 // ── Typed event emitter ───────────────────────────────────────────────────────
 
@@ -85,6 +111,14 @@ class CallLifecycle {
 	private _endPromise: Promise<void> | null = null;
 
 	/**
+	 * Tracks whether the most recent hold was OS-initiated (auto-held by CallKit/Telecom).
+	 * When the OS releases the hold, we re-issue `markActive` to restore the native UI.
+	 * This is the only documented carve-out from the "native source issues no commands" rule.
+	 * Owned here, not in useCallStore or MediaCallEvents.
+	 */
+	private _wasAutoHeld = false;
+
+	/**
 	 * Attach a custom native seam (optional). If not called, the module-level
 	 * `voipNative` singleton is used. Call once per session for explicit injection.
 	 *
@@ -112,6 +146,92 @@ class CallLifecycle {
 			this._endPromise = null;
 		});
 		return this._endPromise;
+	}
+
+	/**
+	 * Toggle mute, hold, or speaker state.
+	 *
+	 * @param kind    — which toggle to perform
+	 * @param source  — `'js'` (user intent) or `'native'` (OS intent). Defaults to `'js'`.
+	 * @param callUuid — optional UUID for stale-event validation. When provided, the toggle
+	 *                   is a no-op if the UUID does not match the active call or nativeAcceptedCallId.
+	 *
+	 * Returns `Promise<void>` (only speaker is async; mute/hold resolve immediately).
+	 */
+	toggle(kind: ToggleKind, source: ToggleSource = 'js', callUuid?: string): Promise<void> {
+		const native = this._voipNativeOverride ?? voipNative;
+		const { call, callId, nativeAcceptedCallId, isMuted, isOnHold, isSpeakerOn } = useCallStore.getState();
+
+		// ── Stale-UUID drop ──────────────────────────────────────────────────────
+		// When a callUuid is provided, validate it against the active call.
+		// Applies uniformly to all kinds and both platforms — no isIOS branch.
+		if (callUuid !== undefined) {
+			const activeUuid = (callId ?? nativeAcceptedCallId ?? '').toLowerCase();
+			if (!activeUuid || callUuid.toLowerCase() !== activeUuid) {
+				// Stale event — drop silently.
+				return Promise.resolve();
+			}
+		}
+
+		// ── Guard: require an active call for all toggle kinds ──────────────────
+		if (!call) {
+			return Promise.resolve();
+		}
+
+		switch (kind) {
+			case 'mute': {
+				const newMuted = !isMuted;
+				call!.localParticipant.setMuted(newMuted);
+				useCallStore.setState({ isMuted: newMuted });
+				// Echo prevention: 'native' source does NOT issue a voipNative command.
+				// 'js' source also records no command today — no RNCallKeep setMuted exists.
+				// This guard is forward-compatibility scaffolding for when a native mute
+				// command lands (e.g. Android-only). The directionality is tested via speaker.
+				return Promise.resolve();
+			}
+
+			case 'hold': {
+				const newHeld = !isOnHold;
+				call!.localParticipant.setHeld(newHeld);
+				useCallStore.setState({ isOnHold: newHeld });
+
+				if (source === 'native') {
+					if (newHeld) {
+						// OS placed the call on hold — record for auto-resume.
+						this._wasAutoHeld = true;
+					} else if (this._wasAutoHeld) {
+						// OS released the hold it previously placed — re-issue markActive.
+						// This is the documented per-kind exception to the no-echo rule:
+						// markActive is not an echo of the hold event; it restores native UI.
+						const effectiveCallId = callId ?? nativeAcceptedCallId ?? callUuid ?? '';
+						if (effectiveCallId) {
+							native.call.markActive(effectiveCallId);
+						}
+						this._wasAutoHeld = false;
+					}
+					// No other voipNative commands for 'native' source.
+				} else {
+					// 'js' source: no RNCallKeep setHeld command exists today.
+					// Guard is forward-compatibility scaffolding (same as mute).
+					this._wasAutoHeld = false;
+				}
+				return Promise.resolve();
+			}
+
+			case 'speaker': {
+				if (source === 'native') {
+					// Reserved for future audio-route-sync work (slice follow-up).
+					// Out of scope for slice 07 — no-op here so audio-route-sync can
+					// continue writing isSpeakerOn directly via setState.
+					return Promise.resolve();
+				}
+				// 'js' source: issue native command and update store.
+				const newSpeakerOn = !isSpeakerOn;
+				return native.call.setSpeaker(newSpeakerOn).then(() => {
+					useCallStore.setState({ isSpeakerOn: newSpeakerOn });
+				});
+			}
+		}
 	}
 
 	// eslint-disable-next-line require-await
