@@ -1182,7 +1182,7 @@ export const getUsersRoles = async (): Promise<boolean | IRoleUser[]> => {
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.10.0')) {
 		// RC 7.10.0
 		const response = await sdk.get('/v1/roles.getUsersInPublicRoles');
-		if (response.users) {
+		if (response.success) {
 			return response.users;
 		}
 		return false;
