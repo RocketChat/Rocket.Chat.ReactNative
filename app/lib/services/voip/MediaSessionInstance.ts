@@ -1,6 +1,5 @@
 import {
 	MediaCallWebRTCProcessor,
-	type CallContact,
 	type ClientMediaSignal,
 	type IClientMediaCall,
 	type CallActorType,
@@ -13,7 +12,6 @@ import { getUniqueIdSync } from 'react-native-device-info';
 import { dequal } from 'dequal';
 
 import { mediaSessionStore } from './MediaSessionStore';
-import { voipNative } from './VoipNative';
 import { useCallStore } from './useCallStore';
 import { callLifecycle } from './CallLifecycle';
 import { MediaCallLogger } from './MediaCallLogger';
@@ -21,12 +19,10 @@ import { isSelfUserId } from './isSelfUserId';
 import { store } from '../../store/auxStore';
 import sdk from '../sdk';
 import { mediaCallsStateSignals } from '../restApi';
-import Navigation from '../../navigation/appNavigation';
 import { parseStringToIceServers } from './parseStringToIceServers';
 import type { IceServer } from '../../../definitions/Voip';
 import type { IDDPMessage } from '../../../definitions/IDDPMessage';
 import type { ISubscription, TSubscriptionModel } from '../../../definitions';
-import { getDMSubscriptionByUsername } from '../../database/services/Subscription';
 import { getUidDirectMessage } from '../../methods/helpers/helpers';
 import { isInActiveVoipCall } from './isInActiveVoipCall';
 import { requestVoipCallPermissions } from '../../methods/voipCallPermissions';
@@ -127,14 +123,13 @@ class MediaSessionInstance {
 				});
 
 				if (call.localParticipant.role === 'caller') {
-					useCallStore.getState().setCall(call);
-					useCallStore.getState().setDirection('outgoing');
-					Navigation.navigate('CallView');
-					if (useCallStore.getState().roomId == null) {
-						this.resolveRoomIdFromContact(call.remoteParticipants[0]?.contact).catch(error => {
-							console.error('[VoIP] Error resolving room id from contact (newCall):', error);
-						});
-					}
+					// Outgoing-begin side effects delegate to CallLifecycle.
+					// roomId may already be set by startCallByRoom; lifecycle reads it from store.
+					const currentRoomId = useCallStore.getState().roomId;
+					const room = currentRoomId != null ? ({ rid: currentRoomId } as { rid: string }) : undefined;
+					callLifecycle.beginOutgoing(call, room as any).catch(error => {
+						console.error('[VoIP] Error in beginOutgoing (newCall):', error);
+					});
 				}
 
 				call.emitter.on('ended', () => {
@@ -145,32 +140,14 @@ class MediaSessionInstance {
 		});
 	}
 
+	/** Thin accessor for the underlying media call — used by CallLifecycle.answerIncoming. */
+	public getMediaCall(callId: string): IClientMediaCall | null | undefined {
+		return this.instance?.getCallData(callId) ?? null;
+	}
+
 	public answerCall = async (callId: string) => {
-		const { call: existingCall } = useCallStore.getState();
-		if (existingCall != null && existingCall.callId === callId) {
-			return;
-		}
-
-		const mainCall = this.instance?.getCallData(callId);
-
-		if (mainCall && mainCall.callId === callId) {
-			await mainCall.accept();
-			voipNative.call.markActive(callId);
-			useCallStore.getState().setCall(mainCall);
-			useCallStore.getState().setDirection('incoming');
-			// waitForNavigationReady removed — CallNavRouter handles post-call navigation.
-			Navigation.navigate('CallView');
-			this.resolveRoomIdFromContact(mainCall.remoteParticipants[0]?.contact).catch(error => {
-				console.error('[VoIP] Error resolving room id from contact (answerCall):', error);
-			});
-		} else {
-			voipNative.call.end(callId);
-			const st = useCallStore.getState();
-			if (st.nativeAcceptedCallId === callId) {
-				st.resetNativeCallId();
-			}
-			console.warn('[VoIP] Call not found after accept:', callId);
-		}
+		// One-line delegate — CallLifecycle owns the ordered sequence.
+		await callLifecycle.answerIncoming(callId);
 	};
 
 	public startCallByRoom = (room: TSubscriptionModel | ISubscription) => {
@@ -212,20 +189,6 @@ class MediaSessionInstance {
 		// Delegate to CallLifecycle for idempotent, ordered teardown.
 		callLifecycle.end('local');
 	};
-
-	private async resolveRoomIdFromContact(contact: CallContact | undefined): Promise<void> {
-		if (!contact) {
-			return;
-		}
-		const { username } = contact;
-		if (!username) {
-			return;
-		}
-		const sub = await getDMSubscriptionByUsername(username);
-		if (sub) {
-			useCallStore.getState().setRoomId(sub.rid);
-		}
-	}
 
 	private getIceServers() {
 		const iceServers = store.getState().settings.VoIP_TeamCollab_Ice_Servers as any;

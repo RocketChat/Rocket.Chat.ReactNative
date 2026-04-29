@@ -11,11 +11,13 @@
 // Mock navigation BEFORE importing the module under test.
 const mockGetCurrentRoute = jest.fn();
 const mockBack = jest.fn();
+const mockNavigate = jest.fn();
 
 jest.mock('../../navigation/appNavigation', () => ({
 	__esModule: true,
 	default: {
 		back: (...args: unknown[]) => mockBack(...args),
+		navigate: (...args: unknown[]) => mockNavigate(...args),
 		getCurrentRoute: (...args: unknown[]) => mockGetCurrentRoute(...args),
 		// Start with no navigation ref (not ready).
 		navigationRef: { current: null }
@@ -41,6 +43,10 @@ function emitNavigationReady(): void {
 
 function emitCallEnded(callId: string | null = 'test-call'): void {
 	callLifecycle.emitter.emit('callEnded', { callId, reason: 'local' });
+}
+
+function emitCallBegan(callId = 'test-call', direction: 'incoming' | 'outgoing' = 'incoming', roomId?: string): void {
+	callLifecycle.emitter.emit('callBegan', { callId, direction, roomId });
 }
 
 // ── Tests ─────────────────────────────────────────────────────────────────────
@@ -186,6 +192,55 @@ describe('CallNavRouter', () => {
 			emitCallEnded();
 
 			expect(mockBack).toHaveBeenCalledTimes(1);
+		});
+	});
+
+	describe('navigation to CallView on callBegan', () => {
+		beforeEach(() => {
+			CallNavRouter.mount();
+			emitNavigationReady();
+		});
+
+		it('navigates to CallView when callBegan fires (incoming)', () => {
+			emitCallBegan('call-in-1', 'incoming');
+			expect(mockNavigate).toHaveBeenCalledWith('CallView');
+		});
+
+		it('navigates to CallView when callBegan fires (outgoing)', () => {
+			emitCallBegan('call-out-1', 'outgoing');
+			expect(mockNavigate).toHaveBeenCalledWith('CallView');
+		});
+
+		it('navigates exactly once per callBegan event', () => {
+			emitCallBegan('call-once-1', 'incoming');
+			expect(mockNavigate).toHaveBeenCalledTimes(1);
+		});
+
+		it('navigates once per callBegan when multiple events fired', () => {
+			emitCallBegan('call-a', 'incoming');
+			emitCallBegan('call-b', 'outgoing');
+			expect(mockNavigate).toHaveBeenCalledTimes(2);
+			expect(mockNavigate).toHaveBeenNthCalledWith(1, 'CallView');
+			expect(mockNavigate).toHaveBeenNthCalledWith(2, 'CallView');
+		});
+
+		it('does NOT navigate to CallView before navigationReady fires', () => {
+			// Mount fresh router — navigation not yet ready
+			CallNavRouter.unmount();
+			setNavigationRef(false);
+			CallNavRouter.mount();
+
+			emitCallBegan('call-early', 'incoming');
+
+			expect(mockNavigate).not.toHaveBeenCalled();
+		});
+
+		it('navigates after unmount does NOT fire (no listener after unmount)', () => {
+			CallNavRouter.unmount();
+
+			emitCallBegan('call-after-unmount', 'incoming');
+
+			expect(mockNavigate).not.toHaveBeenCalled();
 		});
 	});
 });
