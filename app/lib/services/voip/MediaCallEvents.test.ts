@@ -1,3 +1,7 @@
+import type { VoipPayload } from '../../../definitions/Voip';
+import { createVoipEventDispatcher, type MediaCallEventsAdapters } from './MediaCallEvents';
+import { useCallStore } from './useCallStore';
+
 jest.mock('react-native-callkeep', () => ({
 	__esModule: true,
 	default: {
@@ -24,10 +28,6 @@ jest.mock('../../native/NativeVoip', () => ({
 		removeListeners: jest.fn()
 	}
 }));
-
-import type { VoipPayload } from '../../../definitions/Voip';
-import { createVoipEventDispatcher, type MediaCallEventsAdapters } from './MediaCallEvents';
-import { useCallStore } from './useCallStore';
 
 jest.mock('../../methods/helpers', () => ({
 	...jest.requireActual('../../methods/helpers'),

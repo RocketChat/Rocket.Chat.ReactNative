@@ -2,7 +2,6 @@ import type { IClientMediaCall } from '@rocket.chat/media-signaling';
 import { waitFor } from '@testing-library/react-native';
 
 import { voipNative, type InMemoryVoipNative } from './VoipNative';
-
 import type { IDDPMessage } from '../../../definitions/IDDPMessage';
 import Navigation from '../../navigation/appNavigation';
 import { getDMSubscriptionByUsername } from '../../database/services/Subscription';

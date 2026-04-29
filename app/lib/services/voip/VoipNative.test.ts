@@ -1,3 +1,6 @@
+import type { VoipPayload } from '../../../definitions/Voip';
+import { InMemoryVoipNative, type VoipNativeEvent } from './VoipNative';
+
 jest.mock('react-native-webrtc', () => ({ registerGlobals: jest.fn() }));
 jest.mock('react-native-callkeep', () => ({
 	__esModule: true,
@@ -24,9 +27,6 @@ jest.mock('../../native/NativeVoip', () => ({
 		removeListeners: jest.fn()
 	}
 }));
-
-import type { VoipPayload } from '../../../definitions/Voip';
-import { InMemoryVoipNative, type VoipNativeEvent } from './VoipNative';
 
 function buildPayload(callId = 'call-1'): VoipPayload {
 	return {

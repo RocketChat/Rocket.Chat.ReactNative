@@ -3,6 +3,12 @@
  *
  * iOS-only paths: isIOS = true, pushTokenRegistered, mute, endCall.
  */
+
+import type { VoipPayload } from '../../../definitions/Voip';
+import { registerPushToken } from '../restApi';
+import { createVoipEventDispatcher, type MediaCallEventsAdapters } from './MediaCallEvents';
+import { useCallStore } from './useCallStore';
+
 jest.mock('react-native', () => ({
 	Platform: { OS: 'ios' },
 	DeviceEventEmitter: { addListener: jest.fn(() => ({ remove: jest.fn() })) },
@@ -38,11 +44,6 @@ jest.mock('../../native/NativeVoip', () => ({
 		removeListeners: jest.fn()
 	}
 }));
-
-import type { VoipPayload } from '../../../definitions/Voip';
-import { registerPushToken } from '../restApi';
-import { createVoipEventDispatcher, type MediaCallEventsAdapters } from './MediaCallEvents';
-import { useCallStore } from './useCallStore';
 
 jest.mock('../../methods/helpers', () => ({
 	isIOS: true,
@@ -208,7 +209,7 @@ describe('createVoipEventDispatcher — acceptSucceeded (iOS)', () => {
 		getState.mockReturnValue({ setNativeAcceptedCallId: mockSetNativeAcceptedCallId });
 	});
 
-	it('applies REST signals and returns true for iOS cold-start same-workspace', async () => {
+	it('applies REST signals and returns true for iOS cold-start same-workspace', () => {
 		const { mediaSessionInstance } = jest.requireMock('./MediaSessionInstance');
 		const callId = 'answered-ios-uuid';
 		mockServerSelector.mockReturnValue('https://same.example.com');
