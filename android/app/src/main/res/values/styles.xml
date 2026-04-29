@@ -3,6 +3,7 @@
         <item name="android:colorEdgeEffect">#aaaaaa</item>
         <item name="android:forceDarkAllowed">false</item>
         <item name="android:editTextBackground">@drawable/rn_edit_text_material</item> 
+        <item name="enforceNavigationBarContrast">false</item>
     </style>
 
      <style name="BootTheme" parent="Theme.BootSplash">
