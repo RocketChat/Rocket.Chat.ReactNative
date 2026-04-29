@@ -35,7 +35,6 @@ jest.mock('../../methods/helpers', () => ({
 }));
 
 const mockOnOpenDeepLink = jest.fn();
-const mockSetNativeAcceptedCallId = jest.fn();
 const mockServerSelector = jest.fn(() => 'https://workspace-a.example.com');
 
 function makeTestAdapters(): MediaCallEventsAdapters {
@@ -61,6 +60,8 @@ jest.mock('./MediaSessionInstance', () => ({
 jest.mock('./CallLifecycle', () => ({
 	callLifecycle: {
 		end: jest.fn(() => Promise.resolve()),
+		handleNativeEvent: jest.fn(),
+		preBindStatus: jest.fn(() => ({ kind: 'idle' })),
 		emitter: { on: jest.fn(), off: jest.fn(), emit: jest.fn() }
 	}
 }));
@@ -108,8 +109,7 @@ function buildIncomingPayload(overrides: Partial<VoipPayload> = {}): VoipPayload
 
 const activeCallBase = {
 	call: {} as object,
-	callId: 'uuid-1',
-	nativeAcceptedCallId: null as string | null
+	callId: 'uuid-1'
 };
 
 describe('createVoipEventDispatcher — acceptSucceeded (Android)', () => {
@@ -117,34 +117,37 @@ describe('createVoipEventDispatcher — acceptSucceeded (Android)', () => {
 
 	beforeEach(() => {
 		jest.clearAllMocks();
-		getState.mockReturnValue({ setNativeAcceptedCallId: mockSetNativeAcceptedCallId });
+		getState.mockReturnValue({});
 	});
 
-	it('sets nativeAcceptedCallId and opens deep link for cross-workspace incoming_call', () => {
+	it('routes to FSM via handleNativeEvent and opens deep link for cross-workspace incoming_call', () => {
+		const { callLifecycle: mockLifecycle } = jest.requireMock('./CallLifecycle');
 		const dispatch = createVoipEventDispatcher(makeTestAdapters());
 		const payload = buildIncomingPayload({ callId: 'workspace-b-call', host: 'https://workspace-b.open.rocket.chat' });
 
 		const handled = dispatch({ type: 'acceptSucceeded', payload, fromColdStart: false });
 
-		expect(mockSetNativeAcceptedCallId).toHaveBeenCalledWith('workspace-b-call');
+		expect(mockLifecycle.handleNativeEvent).toHaveBeenCalledWith({ type: 'acceptSucceeded', payload, fromColdStart: false });
 		expect(mockOnOpenDeepLink).toHaveBeenCalledWith({ callId: 'workspace-b-call', host: 'https://workspace-b.open.rocket.chat' });
 		expect(handled).toBe(true);
 	});
 
 	it('replays REST signals when host matches active workspace (live)', () => {
 		const { mediaSessionInstance } = jest.requireMock('./MediaSessionInstance');
+		const { callLifecycle: mockLifecycle } = jest.requireMock('./CallLifecycle');
 		mockServerSelector.mockReturnValueOnce('https://workspace-a.example.com');
 		const dispatch = createVoipEventDispatcher(makeTestAdapters());
 		const payload = buildIncomingPayload({ callId: 'same-ws-call', host: 'https://workspace-a.example.com' });
 
 		dispatch({ type: 'acceptSucceeded', payload, fromColdStart: false });
 
-		expect(mockSetNativeAcceptedCallId).toHaveBeenCalledWith('same-ws-call');
+		expect(mockLifecycle.handleNativeEvent).toHaveBeenCalledWith({ type: 'acceptSucceeded', payload, fromColdStart: false });
 		expect(mediaSessionInstance.applyRestStateSignals).toHaveBeenCalledTimes(1);
 		expect(mockOnOpenDeepLink).not.toHaveBeenCalled();
 	});
 
 	it('returns false and skips handler when type is not incoming_call', () => {
+		const { callLifecycle: mockLifecycle } = jest.requireMock('./CallLifecycle');
 		const dispatch = createVoipEventDispatcher(makeTestAdapters());
 
 		const handled = dispatch({
@@ -153,7 +156,7 @@ describe('createVoipEventDispatcher — acceptSucceeded (Android)', () => {
 			fromColdStart: false
 		});
 
-		expect(mockSetNativeAcceptedCallId).not.toHaveBeenCalled();
+		expect(mockLifecycle.handleNativeEvent).not.toHaveBeenCalled();
 		expect(mockOnOpenDeepLink).not.toHaveBeenCalled();
 		expect(handled).toBe(false);
 	});
@@ -188,6 +191,7 @@ describe('createVoipEventDispatcher — acceptSucceeded (Android)', () => {
 	});
 
 	it('different callIds are both processed', () => {
+		const { callLifecycle: mockLifecycle } = jest.requireMock('./CallLifecycle');
 		const dispatch = createVoipEventDispatcher(makeTestAdapters());
 
 		dispatch({
@@ -201,12 +205,17 @@ describe('createVoipEventDispatcher — acceptSucceeded (Android)', () => {
 			fromColdStart: false
 		});
 
-		expect(mockSetNativeAcceptedCallId).toHaveBeenCalledTimes(2);
-		expect(mockSetNativeAcceptedCallId).toHaveBeenCalledWith('call-A');
-		expect(mockSetNativeAcceptedCallId).toHaveBeenCalledWith('call-B');
+		expect(mockLifecycle.handleNativeEvent).toHaveBeenCalledTimes(2);
+		expect(mockLifecycle.handleNativeEvent).toHaveBeenCalledWith(
+			expect.objectContaining({ type: 'acceptSucceeded', payload: expect.objectContaining({ callId: 'call-A' }) })
+		);
+		expect(mockLifecycle.handleNativeEvent).toHaveBeenCalledWith(
+			expect.objectContaining({ type: 'acceptSucceeded', payload: expect.objectContaining({ callId: 'call-B' }) })
+		);
 	});
 
 	it('outgoing_call type does not prevent subsequent incoming_call with same callId', () => {
+		const { callLifecycle: mockLifecycle } = jest.requireMock('./CallLifecycle');
 		const dispatch = createVoipEventDispatcher(makeTestAdapters());
 
 		dispatch({
@@ -214,14 +223,15 @@ describe('createVoipEventDispatcher — acceptSucceeded (Android)', () => {
 			payload: buildIncomingPayload({ callId: 'shared-id', type: 'outgoing_call' }),
 			fromColdStart: false
 		});
-		expect(mockSetNativeAcceptedCallId).not.toHaveBeenCalled();
+		// outgoing_call type: handleNativeEvent is NOT called (early return before FSM call)
+		expect(mockLifecycle.handleNativeEvent).not.toHaveBeenCalled();
 
 		dispatch({
 			type: 'acceptSucceeded',
 			payload: buildIncomingPayload({ callId: 'shared-id', type: 'incoming_call', host: 'https://server-b.example.com' }),
 			fromColdStart: false
 		});
-		expect(mockSetNativeAcceptedCallId).toHaveBeenCalledWith('shared-id');
+		expect(mockLifecycle.handleNativeEvent).toHaveBeenCalledTimes(1);
 		expect(mockOnOpenDeepLink).toHaveBeenCalledTimes(1);
 	});
 });
@@ -231,7 +241,7 @@ describe('createVoipEventDispatcher — acceptFailed', () => {
 
 	beforeEach(() => {
 		jest.clearAllMocks();
-		getState.mockReturnValue({ setNativeAcceptedCallId: mockSetNativeAcceptedCallId });
+		getState.mockReturnValue({});
 	});
 
 	it('opens deep link with voipAcceptFailed after native failure event', () => {
@@ -317,7 +327,7 @@ describe('createVoipEventDispatcher — hold', () => {
 	});
 
 	it('does not toggle when no active call object', () => {
-		getState.mockReturnValue({ call: null, callId: 'uuid-1', nativeAcceptedCallId: null, isOnHold: false, toggleHold });
+		getState.mockReturnValue({ call: null, callId: 'uuid-1', isOnHold: false, toggleHold });
 		const dispatch = createVoipEventDispatcher(makeTestAdapters());
 		dispatch({ type: 'hold', hold: true, callUuid: 'uuid-1' });
 		expect(toggleHold).not.toHaveBeenCalled();
@@ -348,7 +358,7 @@ describe('createVoipEventDispatcher — hold', () => {
 		const dispatch = createVoipEventDispatcher(makeTestAdapters());
 		dispatch({ type: 'hold', hold: true, callUuid: 'uuid-1' });
 		expect(toggleHold).toHaveBeenCalledTimes(1);
-		getState.mockReturnValue({ call: {}, callId: 'uuid-2', nativeAcceptedCallId: null, isOnHold: true, toggleHold });
+		getState.mockReturnValue({ call: {}, callId: 'uuid-2', isOnHold: true, toggleHold });
 		dispatch({ type: 'hold', hold: false, callUuid: 'uuid-1' }); // uuid mismatch -> clears wasAutoHeld
 		expect(toggleHold).toHaveBeenCalledTimes(1);
 		expect(mockVoipNative.call.markActive).not.toHaveBeenCalled();

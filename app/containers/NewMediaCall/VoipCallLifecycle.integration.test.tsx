@@ -22,6 +22,7 @@ import CallView from '../../views/CallView';
 import Navigation from '../../lib/navigation/appNavigation';
 import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';
 import { useCallStore } from '../../lib/services/voip/useCallStore';
+import { callLifecycle } from '../../lib/services/voip/CallLifecycle';
 import { mediaSessionInstance } from '../../lib/services/voip/MediaSessionInstance';
 import { voipNative, type InMemoryVoipNative } from '../../lib/services/voip/VoipNative';
 import { mockedStore } from '../../reducers/mockedStore';
@@ -553,8 +554,14 @@ describe('VoIP call lifecycle (integration)', () => {
 			const mainCall = makeCall({ callId: 'incoming-1', role: 'callee' });
 			session.getCallData.mockReturnValue(mainCall);
 
-			act(() => {
-				useCallStore.getState().setNativeAcceptedCallId('incoming-1');
+			// Pre-bind FSM: simulate native answer having been received (uuid = incoming-1).
+			// callLifecycle.handleNativeEvent is now the FSM entry point; we spy preBindStatus
+			// so tryAnswerIfNativeAcceptedNotification sees awaitingMediaCall.
+			const preBindSpy = jest.spyOn(callLifecycle, 'preBindStatus').mockReturnValue({
+				kind: 'awaitingMediaCall',
+				uuid: 'incoming-1',
+				host: 'h',
+				cleanupAt: Date.now() + 60_000
 			});
 
 			await act(async () => {
@@ -568,17 +575,23 @@ describe('VoIP call lifecycle (integration)', () => {
 				await flushMicrotasks();
 			});
 
+			preBindSpy.mockRestore();
+
 			expect((voipNative as InMemoryVoipNative).recorded).toContainEqual({ cmd: 'markActive', callUuid: 'incoming-1' });
 			expect(Navigation.navigate).toHaveBeenCalledWith('CallView');
 			expect(useCallStore.getState().call?.callId).toBe('incoming-1');
 		});
 
-		it('A2: accepted signal but call not found → RNCallKeep.endCall, no navigate', async () => {
+		it('A2: accepted signal but call not found → voipNative.end, no navigate', async () => {
 			const session = createdSessions[createdSessions.length - 1];
 			session.getCallData.mockReturnValue(undefined);
 
-			act(() => {
-				useCallStore.getState().setNativeAcceptedCallId('missing-1');
+			// Pre-bind FSM: simulate native answer for a call that never arrives.
+			const preBindSpy = jest.spyOn(callLifecycle, 'preBindStatus').mockReturnValue({
+				kind: 'awaitingMediaCall',
+				uuid: 'missing-1',
+				host: 'h',
+				cleanupAt: Date.now() + 60_000
 			});
 
 			await act(async () => {
@@ -591,8 +604,11 @@ describe('VoIP call lifecycle (integration)', () => {
 				await flushMicrotasks();
 			});
 
+			preBindSpy.mockRestore();
+
 			expect((voipNative as InMemoryVoipNative).recorded).toContainEqual({ cmd: 'end', callUuid: 'missing-1' });
-			expect(useCallStore.getState().nativeAcceptedCallId).toBeNull();
+			// Pre-bind FSM owns state — not the store. FSM returns to idle via callLifecycle.end('error').
+			expect(callLifecycle.preBindStatus()).toEqual({ kind: 'idle' });
 			expect(Navigation.navigate).not.toHaveBeenCalled();
 			expect(useCallStore.getState().call).toBeNull();
 			// Tighten: confirm the known-noise allowlist entry was actually triggered.
@@ -600,8 +616,8 @@ describe('VoIP call lifecycle (integration)', () => {
 		});
 
 		it('A3: idempotency — existing call matches callId, answerCall early-returns', async () => {
-			// Test-pollution guard: confirms the outer reset() actually cleared state.
-			expect(useCallStore.getState().nativeAcceptedCallId).toBeNull();
+			// Test-pollution guard: confirms the FSM is idle (pre-bind state owned by lifecycle).
+			expect(callLifecycle.preBindStatus()).toEqual({ kind: 'idle' });
 
 			const session = createdSessions[createdSessions.length - 1];
 			const existingCall = makeCall({ callId: 'incoming-1', role: 'callee' });

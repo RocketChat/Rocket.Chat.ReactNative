@@ -45,12 +45,14 @@ class MediaSessionInstance {
 	private storeIceServersUnsubscribe: (() => void) | null = null;
 
 	private tryAnswerIfNativeAcceptedNotification(signal: ServerMediaSignal): void {
-		const { call, nativeAcceptedCallId } = useCallStore.getState();
+		const { call } = useCallStore.getState();
+		const preBind = callLifecycle.preBindStatus();
 		if (
 			signal.type === 'notification' &&
 			signal.notification === 'accepted' &&
 			signal.signedContractId === getUniqueIdSync() &&
-			nativeAcceptedCallId === signal.callId &&
+			preBind.kind === 'awaitingMediaCall' &&
+			preBind.uuid === signal.callId &&
 			call == null
 		) {
 			this.answerCall(signal.callId).catch(error => {
@@ -165,10 +167,8 @@ class MediaSessionInstance {
 			});
 		} else {
 			voipNative.call.end(callId);
-			const st = useCallStore.getState();
-			if (st.nativeAcceptedCallId === callId) {
-				st.resetNativeCallId();
-			}
+			// Pre-bind state is owned by CallLifecycle; end('error') collapses FSM to idle.
+			callLifecycle.end('error');
 			console.warn('[VoIP] Call not found after accept:', callId);
 		}
 	};

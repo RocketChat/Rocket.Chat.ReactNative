@@ -111,7 +111,6 @@ jest.mock('./VoipNative', () => ({
 
 const mockOnOpenDeepLink = jest.fn();
 const mockServerSelector = jest.fn(() => 'https://workspace-ios.example.com');
-const mockSetNativeAcceptedCallId = jest.fn();
 
 function makeTestAdapters(): MediaCallEventsAdapters {
 	return {
@@ -135,8 +134,7 @@ function buildIncomingPayload(overrides: Partial<VoipPayload> = {}): VoipPayload
 
 const activeCallBase = {
 	call: {} as object,
-	callId: 'uuid-1',
-	nativeAcceptedCallId: null as string | null
+	callId: 'uuid-1'
 };
 
 describe('createVoipEventDispatcher — mute (iOS)', () => {
@@ -169,7 +167,7 @@ describe('createVoipEventDispatcher — mute (iOS)', () => {
 	});
 
 	it('drops event when there is no active call object even if UUIDs match', () => {
-		getState.mockReturnValue({ call: null, callId: 'uuid-1', nativeAcceptedCallId: null, isMuted: false, toggleMute });
+		getState.mockReturnValue({ call: null, callId: 'uuid-1', isMuted: false, toggleMute });
 		const dispatch = createVoipEventDispatcher(makeTestAdapters());
 		dispatch({ type: 'mute', muted: true, callUuid: 'uuid-1' });
 		expect(toggleMute).not.toHaveBeenCalled();
@@ -206,7 +204,9 @@ describe('createVoipEventDispatcher — acceptSucceeded (iOS)', () => {
 
 	beforeEach(() => {
 		jest.clearAllMocks();
-		getState.mockReturnValue({ setNativeAcceptedCallId: mockSetNativeAcceptedCallId });
+		getState.mockReturnValue({});
+		// Reset callLifecycle FSM state between tests (pre-bind UUID now owned by FSM).
+		(jest.requireActual('./CallLifecycle') as any).callLifecycle._resetForTesting?.();
 	});
 
 	it('applies REST signals and returns true for iOS cold-start same-workspace', () => {
@@ -219,7 +219,7 @@ describe('createVoipEventDispatcher — acceptSucceeded (iOS)', () => {
 		const handled = dispatch({ type: 'acceptSucceeded', payload, fromColdStart: true });
 
 		expect(handled).toBe(true);
-		expect(mockSetNativeAcceptedCallId).toHaveBeenCalledWith(callId);
+		// Pre-bind UUID is now tracked by the FSM (callLifecycle.preBindStatus().uuid).
 		expect(mediaSessionInstance.applyRestStateSignals).toHaveBeenCalled();
 		expect(mockOnOpenDeepLink).not.toHaveBeenCalled();
 	});
@@ -233,7 +233,7 @@ describe('createVoipEventDispatcher — acceptSucceeded (iOS)', () => {
 		const handled = dispatch({ type: 'acceptSucceeded', payload, fromColdStart: true });
 
 		expect(handled).toBe(true);
-		expect(mockSetNativeAcceptedCallId).toHaveBeenCalledWith(callId);
+		// Pre-bind UUID is now tracked by the FSM (callLifecycle.preBindStatus().uuid).
 		expect(mockOnOpenDeepLink).toHaveBeenCalledWith({ callId, host: 'https://foreign.example.com' });
 	});
 });
@@ -243,7 +243,7 @@ describe('createVoipEventDispatcher — endCall clears dispatcher on iOS', () =>
 
 	beforeEach(() => {
 		jest.clearAllMocks();
-		getState.mockReturnValue({ setNativeAcceptedCallId: mockSetNativeAcceptedCallId });
+		getState.mockReturnValue({});
 	});
 
 	it('allows a second acceptSucceeded with same callId after endCall (dedupe lives in adapter, not dispatcher)', () => {

@@ -8,6 +8,11 @@
  *   - Multiple mount() calls are idempotent
  */
 
+import { callLifecycle } from './CallLifecycle';
+import { CallNavRouter } from './CallNavRouter';
+import { emitter } from '../../methods/helpers';
+import Navigation from '../../navigation/appNavigation';
+
 // Mock navigation BEFORE importing the module under test.
 const mockGetCurrentRoute = jest.fn();
 const mockBack = jest.fn();
@@ -22,12 +27,6 @@ jest.mock('../../navigation/appNavigation', () => ({
 	},
 	waitForNavigationReady: jest.fn().mockResolvedValue(undefined)
 }));
-
-// Import after mocks are set up.
-import { callLifecycle } from './CallLifecycle';
-import { CallNavRouter } from './CallNavRouter';
-import { emitter } from '../../methods/helpers';
-import Navigation from '../../navigation/appNavigation';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
