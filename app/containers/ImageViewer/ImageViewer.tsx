@@ -136,13 +136,7 @@ export const ImageViewer = ({ uri = '', width, height, ...props }: ImageViewerPr
 			<GestureDetector gesture={gesture}>
 				<Animated.View onLayout={onLayout} style={[styles.flex, style]}>
 					<Touch onPress={handleGifPlayback} style={styles.flex} rectButtonStyle={styles.flex}>
-						<Image
-							style={styles.image}
-							contentFit='contain'
-							source={{ uri }}
-							ref={expoImageRef}
-							{...props}
-						/>
+						<Image style={styles.image} contentFit='contain' source={{ uri }} ref={expoImageRef} {...props} />
 					</Touch>
 				</Animated.View>
 			</GestureDetector>
