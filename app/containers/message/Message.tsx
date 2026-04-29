@@ -104,6 +104,19 @@ const MessageInner = React.memo((props: IMessageInner) => {
 MessageInner.displayName = 'MessageInner';
 
 const Message = React.memo((props: IMessageTouchable & IMessage) => {
+	const getImageDescriptionLabel = () => {
+		const imageAltText = props.attachments
+			?.filter(attachment => attachment.image_url)
+			.map(attachment => attachment.altText ?? attachment.description)
+			.find(Boolean);
+
+		if (!imageAltText || imageAltText === props.msg) {
+			return '';
+		}
+
+		return `${i18n.t('Image_description')}: ${imageAltText}`;
+	};
+
 	const handleMentionsOnAccessibilityLabel = (label: string) => {
 		const { mentions = [], channels = [] } = props;
 
@@ -127,7 +140,7 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 		let label = '';
 		label = props.isInfo ? (props.msg as string) : `${props.tmid ? `thread message ${props.msg}` : props.msg}`;
 		if (props.isThreadReply) {
-			label = `replying to ${props.tmid ? `thread message ${props.msg}` : props}`;
+			label = `replying to ${props.tmid ? `thread message ${props.msg}` : props.msg}`;
 		}
 		if (props.isThreadSequential) {
 			label = `thread message ${props.msg}`;
@@ -149,9 +162,10 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 		const encryptedMessageLabel = props.isEncrypted ? i18n.t('Encrypted_message') : '';
 		const translatedLanguage = translationLanguages[props?.autoTranslateLanguage || 'en'];
 		const translated = props.isTranslated ? i18n.t('Message_translated_into_idiom', { idiom: translatedLanguage }) : '';
+		const imageDescriptionLabel = getImageDescriptionLabel();
 		return props.isTranslated
 			? `${user} ${hour} ${translated}`
-			: `${user} ${hour} ${translated} ${label}. ${encryptedMessageLabel} ${readReceipt}`;
+			: `${user} ${hour} ${translated} ${label}. ${imageDescriptionLabel} ${encryptedMessageLabel} ${readReceipt}`;
 	};
 
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo || props.isIgnored) {

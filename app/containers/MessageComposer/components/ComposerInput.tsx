@@ -36,6 +36,7 @@ import { useRoomContext } from '../../../views/RoomView/context';
 import { getMessageById } from '../../../lib/database/services/Message';
 import { generateTriggerId } from '../../../lib/methods/actions';
 import { executeCommandPreview } from '../../../lib/services/restApi';
+import { compareServerVersion } from '../../../lib/methods/helpers/compareServerVersion';
 import log from '../../../lib/methods/helpers/log';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { usePrevious } from '../../../lib/hooks/usePrevious';
@@ -58,6 +59,7 @@ export const ComposerInput = memo(
 		const selectionRef = React.useRef<IInputSelection>(defaultSelection);
 		const dispatch = useDispatch();
 		const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+		const serverVersion = useAppSelector(state => state.server.version);
 		let placeholder = tmid ? I18n.t('Add_thread_reply') : '';
 		if (room && !tmid) {
 			placeholder = I18n.t('Message_roomname', { roomName: (room.t === 'd' ? '@' : '#') + getRoomTitle(room) });
@@ -103,7 +105,8 @@ export const ComposerInput = memo(
 			const fetchMessageAndSetInput = async () => {
 				const message = await getMessageById(selectedMessages[0]);
 				if (message) {
-					setInput(message?.msg || message?.attachments?.[0]?.description || '');
+					const altTextSupported = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.4.0');
+					setInput(message?.msg || (altTextSupported ? '' : message?.attachments?.[0]?.description || ''));
 				}
 			};
 
