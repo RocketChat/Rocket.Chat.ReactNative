@@ -125,11 +125,7 @@ class ProductionVoipNative implements VoipNativePort {
 			RNCallKeep.setAvailable(true);
 		},
 		setSpeaker: async (on: boolean) => {
-			if (Platform.OS === 'ios') {
-				await InCallManager.setForceSpeakerphoneOn(on);
-			} else {
-				await NativeVoipModule.setSpeakerOn(on);
-			}
+			await InCallManager.setForceSpeakerphoneOn(on);
 		},
 		startAudio: () => {
 			InCallManager.start({ media: 'audio' });
