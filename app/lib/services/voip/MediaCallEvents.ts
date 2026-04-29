@@ -82,8 +82,8 @@ function handleAcceptFailedEvent(payload: VoipPayload, adapters: MediaCallEvents
  * Returns true when the event indicates a cold-start VoIP path that should suppress the default
  * `appInit()` call.
  *
- * Mute and hold events delegate to `callLifecycle.toggle(kind, 'native', callUuid)`.
- * UUID validation, echo prevention, and wasAutoHeld state all live in CallLifecycle.
+ * Mute and hold events delegate to `callLifecycle.toggle(kind, 'native', callUuid, targetValue)`.
+ * UUID validation, idempotency, echo prevention, and wasAutoHeld state all live in CallLifecycle.
  */
 export function createVoipEventDispatcher(adapters: MediaCallEventsAdapters): (e: VoipNativeEvent) => boolean {
 	return function dispatchVoipNativeEvent(e: VoipNativeEvent): boolean {
@@ -95,20 +95,19 @@ export function createVoipEventDispatcher(adapters: MediaCallEventsAdapters): (e
 			}
 
 			case 'mute': {
-				// Only toggle when OS mute state differs from current store state.
-				// This guards against redundant state mutations when the store already reflects
-				// the OS state (e.g. JS-initiated mute followed by a delayed OS echo).
-				const { isMuted } = useCallStore.getState();
-				if (e.muted !== isMuted) {
-					callLifecycle.toggle('mute', 'native', e.callUuid);
-				}
+				// Pass e.muted as targetValue so CallLifecycle can honour the OS assertion
+				// and skip the toggle when the store already reflects the OS state (idempotent).
+				// The dispatcher guard (isMuted check) is no longer needed — lifecycle handles it.
+				callLifecycle.toggle('mute', 'native', e.callUuid, e.muted);
 				return false;
 			}
 
 			case 'hold': {
-				// Delegate to CallLifecycle — wasAutoHeld state, echo prevention, and stale-UUID
-				// drop all live in CallLifecycle.toggle. The dispatcher just forwards the event.
-				callLifecycle.toggle('hold', 'native', e.callUuid);
+				// Pass e.hold as targetValue so CallLifecycle can honour the OS assertion and
+				// skip the toggle when the store already reflects the OS state (idempotent).
+				// This fixes Regression A (redundant hold:true while already held) and
+				// Regression B (delayed hold:false after user manually resumed).
+				callLifecycle.toggle('hold', 'native', e.callUuid, e.hold);
 				return false;
 			}
 
