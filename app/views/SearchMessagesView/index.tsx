@@ -140,7 +140,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 	}
 
 	// Handle encrypted rooms search messages
-	searchMessages = async (searchText: string): Promise<(IMessageFromServer | TMessageModel)[]> => {
+	searchMessages = async (searchText: string) => {
 		if (!searchText) {
 			return [];
 		}

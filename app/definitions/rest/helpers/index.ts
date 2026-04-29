@@ -26,7 +26,7 @@ type OperationsByPathPatternAndMethod<
 	? {
 			pathPattern: TPathPattern;
 			method: TMethod;
-			path: ReplacePlaceholders<TPathPattern>;
+			path: `/v1/${ReplacePlaceholders<TPathPattern>}`;
 			params: GetParams<Endpoints[TPathPattern][TMethod]>;
 			result: GetResult<Endpoints[TPathPattern][TMethod]>;
 	  }

@@ -8,7 +8,7 @@ import VideoConferenceSkeletonLoading from './components/VideoConferenceSkeleton
 import VideoConferenceIssue from './components/VideoConferenceIssue';
 
 export default function VideoConferenceBlock({ callId, blockId }: { callId: string; blockId: string }): React.ReactElement {
-	const { result, error } = useEndpointData('video-conference.info', { callId });
+	const { result, error } = useEndpointData('/v1/video-conference.info', { callId });
 
 	if (result?.success) {
 		const { users, type, status, createdBy, rid } = result;

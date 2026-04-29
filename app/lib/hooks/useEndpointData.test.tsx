@@ -5,7 +5,7 @@ import { View, Text } from 'react-native';
 import { useEndpointData } from './useEndpointData';
 import sdk from '../services/sdk';
 
-const url = 'chat.getMessage';
+const url = '/v1/chat.getMessage';
 
 const message = {
 	_id: '9tYkmJ67wMwmvQouD',

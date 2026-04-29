@@ -29,13 +29,13 @@ async function load({ rid: roomId, latest, t }: { rid: string; latest?: Date; t:
 		let data;
 		switch (apiType) {
 			case 'channels':
-				data = await sdk.get('channels.history', params);
+				data = await sdk.get('/v1/channels.history', params);
 				break;
 			case 'groups':
-				data = await sdk.get('groups.history', params);
+				data = await sdk.get('/v1/groups.history', params);
 				break;
 			case 'im':
-				data = await sdk.get('im.history', params);
+				data = await sdk.get('/v1/im.history', params);
 				break;
 			default:
 				return;

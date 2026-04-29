@@ -1,6 +1,7 @@
 import { Platform } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
-import { settings as RocketChatSettings } from '@rocket.chat/sdk';
+
+import sdk from '../../services/sdk';
 
 export type TMethods = 'POST' | 'GET' | 'DELETE' | 'PUT' | 'post' | 'get' | 'delete' | 'put';
 
@@ -26,29 +27,15 @@ export const headers: CustomHeaders = {
 	} ${DeviceInfo.getSystemVersion()}; v${DeviceInfo.getVersion()} (${DeviceInfo.getBuildNumber()})`
 };
 
-let _basicAuth;
 export const setBasicAuth = (basicAuth: string | null): void => {
-	_basicAuth = basicAuth;
-	if (basicAuth) {
-		RocketChatSettings.customHeaders = { ...headers, Authorization: `Basic ${_basicAuth}` };
-	} else {
-		RocketChatSettings.customHeaders = headers;
-	}
+	sdk.setBasicAuth(basicAuth);
 };
 export const BASIC_AUTH_KEY = 'BASIC_AUTH_KEY';
 
-RocketChatSettings.customHeaders = headers;
-
 export default (url: string, options: IOptions = {}): Promise<Response> => {
-	let customOptions = { ...options, headers: RocketChatSettings.customHeaders };
+	let customOptions = { ...options, headers: sdk.getHeaders() };
 	if (options && options.headers) {
 		customOptions = { ...customOptions, headers: { ...options.headers, ...customOptions.headers } };
 	}
-	// TODO: Check if this really works and if anyone else has complained about this problem.
-	// if (RocketChat.controller) {
-	// 	// @ts-ignore
-	// 	const { signal } = RocketChat.controller;
-	// 	customOptions = { ...customOptions, signal };
-	// }
 	return fetch(url, customOptions);
 };

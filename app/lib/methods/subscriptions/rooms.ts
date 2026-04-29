@@ -302,7 +302,7 @@ export default function subscribeRooms() {
 		const db = database.active;
 
 		// check if the server from variable is the same as the js sdk client
-		if (sdk && sdk.current.client && sdk.current.client.host !== subServer) {
+		if (sdk && sdk.current && sdk.current.connection && sdk.current.connection.url !== subServer) {
 			return;
 		}
 		if (ddpMessage.msg === 'added') {
@@ -439,8 +439,18 @@ export default function subscribeRooms() {
 
 	try {
 		// set the server that started this task
-		subServer = sdk.current.client.host;
-		sdk.current.subscribeNotifyUser().catch((e: unknown) => console.log(e));
+		subServer = sdk.current?.connection.url || '';
+		const { id: userId } = store.getState().login.user;
+		[
+			'message',
+			'notification',
+			'rooms-changed',
+			'subscriptions-changed',
+			'uiInteraction',
+			'e2ekeyRequest',
+			'userData',
+			'video-conference'
+		].forEach(event => sdk.subscribeRaw('stream-notify-user', `${userId}/${event}`));
 		roomsSubscription = { stop: () => stop() };
 		return null;
 	} catch (e) {
