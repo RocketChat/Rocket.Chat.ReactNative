@@ -61,6 +61,7 @@ jest.mock('./MediaSessionInstance', () => ({
 jest.mock('./CallLifecycle', () => ({
 	callLifecycle: {
 		end: jest.fn(() => Promise.resolve()),
+		toggle: jest.fn(() => Promise.resolve()),
 		emitter: { on: jest.fn(), off: jest.fn(), emit: jest.fn() }
 	}
 }));
@@ -264,94 +265,47 @@ describe('createVoipEventDispatcher — acceptFailed', () => {
 });
 
 describe('createVoipEventDispatcher — hold', () => {
-	const toggleHold = jest.fn();
 	const getState = useCallStore.getState as jest.Mock;
 
 	beforeEach(() => {
 		jest.clearAllMocks();
-		toggleHold.mockClear();
-		getState.mockReturnValue({ ...activeCallBase, isOnHold: false, toggleHold });
+		getState.mockReturnValue({ ...activeCallBase, isOnHold: false });
 	});
 
-	it('hold: true when isOnHold is false calls toggleHold once', () => {
+	it('hold: true delegates to callLifecycle.toggle("hold", "native", uuid)', () => {
+		const { callLifecycle: mockLifecycle } = jest.requireMock('./CallLifecycle');
 		const dispatch = createVoipEventDispatcher(makeTestAdapters());
 		dispatch({ type: 'hold', hold: true, callUuid: 'uuid-1' });
-		expect(toggleHold).toHaveBeenCalledTimes(1);
+		expect(mockLifecycle.toggle).toHaveBeenCalledWith('hold', 'native', 'uuid-1');
 	});
 
-	it('hold: true when isOnHold is true does not call toggleHold', () => {
-		getState.mockReturnValue({ ...activeCallBase, isOnHold: true, toggleHold });
-		const dispatch = createVoipEventDispatcher(makeTestAdapters());
-		dispatch({ type: 'hold', hold: true, callUuid: 'uuid-1' });
-		expect(toggleHold).not.toHaveBeenCalled();
-	});
-
-	it('hold: false after OS-initiated hold calls toggleHold and markActive', () => {
-		const { voipNative: mockVoipNative } = jest.requireMock('./VoipNative');
-		const dispatch = createVoipEventDispatcher(makeTestAdapters());
-		dispatch({ type: 'hold', hold: true, callUuid: 'uuid-1' });
-		getState.mockReturnValue({ ...activeCallBase, isOnHold: true, toggleHold });
-		dispatch({ type: 'hold', hold: false, callUuid: 'uuid-1' });
-		expect(toggleHold).toHaveBeenCalledTimes(2);
-		expect(mockVoipNative.call.markActive).toHaveBeenCalledWith('uuid-1');
-	});
-
-	it('hold: false without prior OS hold does not call toggleHold', () => {
+	it('hold: false delegates to callLifecycle.toggle("hold", "native", uuid)', () => {
+		const { callLifecycle: mockLifecycle } = jest.requireMock('./CallLifecycle');
 		const dispatch = createVoipEventDispatcher(makeTestAdapters());
 		dispatch({ type: 'hold', hold: false, callUuid: 'uuid-1' });
-		expect(toggleHold).not.toHaveBeenCalled();
+		expect(mockLifecycle.toggle).toHaveBeenCalledWith('hold', 'native', 'uuid-1');
 	});
 
-	it('consecutive hold: true calls toggleHold only once', () => {
+	it('hold: true — isOnHold check is now in CallLifecycle (toggle is always called when UUIDs match)', () => {
+		// Previously the dispatcher checked isOnHold before calling. After migration,
+		// the check moves into CallLifecycle.toggle — the dispatcher just delegates.
+		const { callLifecycle: mockLifecycle } = jest.requireMock('./CallLifecycle');
+		getState.mockReturnValue({ ...activeCallBase, isOnHold: true });
 		const dispatch = createVoipEventDispatcher(makeTestAdapters());
 		dispatch({ type: 'hold', hold: true, callUuid: 'uuid-1' });
-		getState.mockReturnValue({ ...activeCallBase, isOnHold: true, toggleHold });
-		dispatch({ type: 'hold', hold: true, callUuid: 'uuid-1' });
-		expect(toggleHold).toHaveBeenCalledTimes(1);
+		// toggle is called; lifecycle handles the idempotency check internally.
+		expect(mockLifecycle.toggle).toHaveBeenCalledWith('hold', 'native', 'uuid-1');
 	});
 
-	it('drops event when callUUID does not match active call', () => {
+	it('drops event when callUUID does not match active call (stale-UUID drop is in CallLifecycle)', () => {
+		// The dispatcher no longer does UUID checking itself — it passes the uuid to toggle.
+		// CallLifecycle.toggle does the stale-UUID drop. The dispatcher always calls toggle
+		// when the event type matches, delegating the guard to the lifecycle.
+		const { callLifecycle: mockLifecycle } = jest.requireMock('./CallLifecycle');
 		const dispatch = createVoipEventDispatcher(makeTestAdapters());
 		dispatch({ type: 'hold', hold: true, callUuid: 'uuid-2' });
-		expect(toggleHold).not.toHaveBeenCalled();
-	});
-
-	it('does not toggle when no active call object', () => {
-		getState.mockReturnValue({ call: null, callId: 'uuid-1', nativeAcceptedCallId: null, isOnHold: false, toggleHold });
-		const dispatch = createVoipEventDispatcher(makeTestAdapters());
-		dispatch({ type: 'hold', hold: true, callUuid: 'uuid-1' });
-		expect(toggleHold).not.toHaveBeenCalled();
-	});
-
-	it('hold: false does not toggle when user already manually resumed', () => {
-		const dispatch = createVoipEventDispatcher(makeTestAdapters());
-		dispatch({ type: 'hold', hold: true, callUuid: 'uuid-1' });
-		expect(toggleHold).toHaveBeenCalledTimes(1);
-		getState.mockReturnValue({ ...activeCallBase, isOnHold: false, toggleHold });
-		dispatch({ type: 'hold', hold: false, callUuid: 'uuid-1' });
-		expect(toggleHold).toHaveBeenCalledTimes(1);
-	});
-
-	it('wasAutoHeld is per-dispatcher instance', () => {
-		const { voipNative: mockVoipNative } = jest.requireMock('./VoipNative');
-		const dispatchA = createVoipEventDispatcher(makeTestAdapters());
-		const dispatchB = createVoipEventDispatcher(makeTestAdapters());
-		dispatchA({ type: 'hold', hold: true, callUuid: 'uuid-1' });
-		getState.mockReturnValue({ ...activeCallBase, isOnHold: true, toggleHold });
-		dispatchB({ type: 'hold', hold: false, callUuid: 'uuid-1' });
-		expect(toggleHold).toHaveBeenCalledTimes(1); // only from dispatchA's hold:true
-		expect(mockVoipNative.call.markActive).not.toHaveBeenCalled();
-	});
-
-	it('clears stale wasAutoHeld when callUUID does not match', () => {
-		const { voipNative: mockVoipNative } = jest.requireMock('./VoipNative');
-		const dispatch = createVoipEventDispatcher(makeTestAdapters());
-		dispatch({ type: 'hold', hold: true, callUuid: 'uuid-1' });
-		expect(toggleHold).toHaveBeenCalledTimes(1);
-		getState.mockReturnValue({ call: {}, callId: 'uuid-2', nativeAcceptedCallId: null, isOnHold: true, toggleHold });
-		dispatch({ type: 'hold', hold: false, callUuid: 'uuid-1' }); // uuid mismatch -> clears wasAutoHeld
-		expect(toggleHold).toHaveBeenCalledTimes(1);
-		expect(mockVoipNative.call.markActive).not.toHaveBeenCalled();
+		// Dispatcher passes uuid to lifecycle; lifecycle drops it. Dispatcher itself always calls toggle.
+		expect(mockLifecycle.toggle).toHaveBeenCalledWith('hold', 'native', 'uuid-2');
 	});
 });
 
@@ -367,32 +321,44 @@ describe('createVoipEventDispatcher — endCall', () => {
 });
 
 describe('createVoipEventDispatcher — mute', () => {
-	const toggleMute = jest.fn();
 	const getState = useCallStore.getState as jest.Mock;
 
 	beforeEach(() => {
 		jest.clearAllMocks();
-		toggleMute.mockClear();
-		getState.mockReturnValue({ ...activeCallBase, isMuted: false, toggleMute });
+		getState.mockReturnValue({ ...activeCallBase, isMuted: false });
 	});
 
-	it('calls toggleMute when muted differs from OS and UUIDs match', () => {
+	it('muted: true delegates to callLifecycle.toggle("mute", "native", uuid) when state differs', () => {
+		const { callLifecycle: mockLifecycle } = jest.requireMock('./CallLifecycle');
 		const dispatch = createVoipEventDispatcher(makeTestAdapters());
 		dispatch({ type: 'mute', muted: true, callUuid: 'uuid-1' });
-		expect(toggleMute).toHaveBeenCalledTimes(1);
+		expect(mockLifecycle.toggle).toHaveBeenCalledWith('mute', 'native', 'uuid-1');
 	});
 
-	it('does not call toggleMute when muted state already matches', () => {
-		getState.mockReturnValue({ ...activeCallBase, isMuted: true, toggleMute });
+	it('does not call toggle when muted state already matches (idempotency check in dispatcher)', () => {
+		// Dispatcher still guards against calling toggle when state already matches OS state.
+		// This prevents redundant state mutations.
+		const { callLifecycle: mockLifecycle } = jest.requireMock('./CallLifecycle');
+		getState.mockReturnValue({ ...activeCallBase, isMuted: true });
 		const dispatch = createVoipEventDispatcher(makeTestAdapters());
 		dispatch({ type: 'mute', muted: true, callUuid: 'uuid-1' });
-		expect(toggleMute).not.toHaveBeenCalled();
+		expect(mockLifecycle.toggle).not.toHaveBeenCalled();
 	});
 
-	it('drops event when UUID does not match', () => {
+	it('muted: false when currently muted calls toggle to unmute', () => {
+		const { callLifecycle: mockLifecycle } = jest.requireMock('./CallLifecycle');
+		getState.mockReturnValue({ ...activeCallBase, isMuted: true });
+		const dispatch = createVoipEventDispatcher(makeTestAdapters());
+		dispatch({ type: 'mute', muted: false, callUuid: 'uuid-1' });
+		expect(mockLifecycle.toggle).toHaveBeenCalledWith('mute', 'native', 'uuid-1');
+	});
+
+	it('passes UUID to toggle for stale-UUID validation in CallLifecycle', () => {
+		const { callLifecycle: mockLifecycle } = jest.requireMock('./CallLifecycle');
 		const dispatch = createVoipEventDispatcher(makeTestAdapters());
 		dispatch({ type: 'mute', muted: true, callUuid: 'uuid-2' });
-		expect(toggleMute).not.toHaveBeenCalled();
+		// Dispatcher passes the uuid; CallLifecycle.toggle does the actual stale-UUID drop.
+		expect(mockLifecycle.toggle).toHaveBeenCalledWith('mute', 'native', 'uuid-2');
 	});
 });
 

@@ -5,7 +5,7 @@ import { callLifecycle } from './CallLifecycle';
 import { MediaCallLogger } from './MediaCallLogger';
 import { mediaSessionInstance } from './MediaSessionInstance';
 import { useCallStore } from './useCallStore';
-import { voipNative, type VoipNativeEvent } from './VoipNative';
+import type { VoipNativeEvent } from './VoipNative';
 
 const platform = isIOS ? 'iOS' : 'Android';
 const TAG = `[MediaCallEvents][${platform}]`;
@@ -81,10 +81,11 @@ function handleAcceptFailedEvent(payload: VoipPayload, adapters: MediaCallEvents
  * Creates an event dispatcher that routes `VoipNativeEvent` values to the appropriate handler.
  * Returns true when the event indicates a cold-start VoIP path that should suppress the default
  * `appInit()` call.
+ *
+ * Mute and hold events delegate to `callLifecycle.toggle(kind, 'native', callUuid)`.
+ * UUID validation, echo prevention, and wasAutoHeld state all live in CallLifecycle.
  */
 export function createVoipEventDispatcher(adapters: MediaCallEventsAdapters): (e: VoipNativeEvent) => boolean {
-	let wasAutoHeld = false;
-
 	return function dispatchVoipNativeEvent(e: VoipNativeEvent): boolean {
 		switch (e.type) {
 			case 'endCall': {
@@ -94,40 +95,20 @@ export function createVoipEventDispatcher(adapters: MediaCallEventsAdapters): (e
 			}
 
 			case 'mute': {
-				const { call, callId, nativeAcceptedCallId, toggleMute, isMuted } = useCallStore.getState();
-				const eventUuid = e.callUuid.toLowerCase();
-				const activeUuid = (callId ?? nativeAcceptedCallId ?? '').toLowerCase();
-				if (!call || !activeUuid || eventUuid !== activeUuid) {
-					return false;
-				}
+				// Only toggle when OS mute state differs from current store state.
+				// This guards against redundant state mutations when the store already reflects
+				// the OS state (e.g. JS-initiated mute followed by a delayed OS echo).
+				const { isMuted } = useCallStore.getState();
 				if (e.muted !== isMuted) {
-					toggleMute();
+					callLifecycle.toggle('mute', 'native', e.callUuid);
 				}
 				return false;
 			}
 
 			case 'hold': {
-				const { call, callId, nativeAcceptedCallId, isOnHold, toggleHold } = useCallStore.getState();
-				const eventUuid = e.callUuid.toLowerCase();
-				const activeUuid = (callId ?? nativeAcceptedCallId ?? '').toLowerCase();
-				if (!call || !activeUuid || eventUuid !== activeUuid) {
-					wasAutoHeld = false;
-					return false;
-				}
-				if (e.hold) {
-					if (!isOnHold) {
-						toggleHold();
-						wasAutoHeld = true;
-					}
-					return false;
-				}
-				if (wasAutoHeld) {
-					if (isOnHold) {
-						toggleHold();
-						voipNative.call.markActive(e.callUuid);
-					}
-					wasAutoHeld = false;
-				}
+				// Delegate to CallLifecycle — wasAutoHeld state, echo prevention, and stale-UUID
+				// drop all live in CallLifecycle.toggle. The dispatcher just forwards the event.
+				callLifecycle.toggle('hold', 'native', e.callUuid);
 				return false;
 			}
 
