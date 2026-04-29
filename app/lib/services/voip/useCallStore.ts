@@ -3,7 +3,7 @@ import type { CallState, CallContact, IClientMediaCall } from '@rocket.chat/medi
 import RNCallKeep from 'react-native-callkeep';
 import InCallManager from 'react-native-incall-manager';
 
-import { terminateNativeCall } from './terminateNativeCall';
+import { voipNative } from './VoipNative';
 import Navigation from '../../navigation/appNavigation';
 import { hideActionSheetRef } from '../../../containers/ActionSheet';
 import { useIsScreenReaderEnabled } from '../../hooks/useIsScreenReaderEnabled';
@@ -292,7 +292,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		}
 
 		if (callUuid) {
-			terminateNativeCall(callUuid);
+			voipNative.call.end(callUuid);
 		}
 
 		get().resetNativeCallId();

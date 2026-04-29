@@ -2,6 +2,8 @@ import type { IClientMediaCall } from '@rocket.chat/media-signaling';
 import RNCallKeep from 'react-native-callkeep';
 import { waitFor } from '@testing-library/react-native';
 
+import { voipNative, type InMemoryVoipNative } from './VoipNative';
+
 import type { IDDPMessage } from '../../../definitions/IDDPMessage';
 import Navigation from '../../navigation/appNavigation';
 import { getDMSubscriptionByUsername } from '../../database/services/Subscription';
@@ -242,6 +244,7 @@ describe('MediaSessionInstance', () => {
 			roomId: null
 		});
 		mediaSessionInstance.reset();
+		(voipNative as InMemoryVoipNative).reset();
 	});
 
 	afterEach(() => {
@@ -339,7 +342,7 @@ describe('MediaSessionInstance', () => {
 			const incoming = buildClientMediaCall({ callId: 'incoming-b', role: 'callee' });
 			getNewCallHandler()({ call: incoming });
 			expect(incoming.reject).not.toHaveBeenCalled();
-			expect(RNCallKeep.endCall).not.toHaveBeenCalledWith('incoming-b');
+			expect((voipNative as InMemoryVoipNative).recorded).not.toContainEqual({ cmd: 'end', callUuid: 'incoming-b' });
 		});
 
 		it('allows incoming callee newCall when nativeAcceptedCallId is set but differs from incoming callId', async () => {
@@ -358,7 +361,7 @@ describe('MediaSessionInstance', () => {
 			const incoming = buildClientMediaCall({ callId: 'incoming-b', role: 'callee' });
 			getNewCallHandler()({ call: incoming });
 			expect(incoming.reject).not.toHaveBeenCalled();
-			expect(RNCallKeep.endCall).not.toHaveBeenCalledWith('incoming-b');
+			expect((voipNative as InMemoryVoipNative).recorded).not.toContainEqual({ cmd: 'end', callUuid: 'incoming-b' });
 		});
 
 		it('allows incoming callee newCall when nativeAcceptedCallId matches incoming callId', async () => {
@@ -377,7 +380,7 @@ describe('MediaSessionInstance', () => {
 			const incoming = buildClientMediaCall({ callId: 'same-id', role: 'callee' });
 			getNewCallHandler()({ call: incoming });
 			expect(incoming.reject).not.toHaveBeenCalled();
-			expect(RNCallKeep.endCall).not.toHaveBeenCalledWith('same-id');
+			expect((voipNative as InMemoryVoipNative).recorded).not.toContainEqual({ cmd: 'end', callUuid: 'same-id' });
 		});
 
 		it('does not reject outgoing (caller) newCall; binds call and navigates', async () => {
