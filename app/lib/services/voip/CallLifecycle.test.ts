@@ -616,6 +616,75 @@ describe('CallLifecycle.toggle(kind, source)', () => {
 			const storeState = useCallStore.getState();
 			expect(storeState).not.toHaveProperty('wasAutoHeld');
 		});
+
+		// ── Negative-path / regression-prevention tests ───────────────────────
+
+		it('hold: redundant hold:true while already held is a no-op (Regression A prevention)', () => {
+			// Regression A: OS sends a second hold:true while the call is already held.
+			// Before the fix, toggle would flip to UNHELD and potentially fire markActive.
+			const { call, participant } = makeToggleCall({ callId: 'hold-native-reg-a' });
+			useCallStore.getState().setCall(call);
+			// Simulate call already held (e.g. by a prior OS event or JS toggle).
+			useCallStore.setState({ callId: 'hold-native-reg-a', isOnHold: true });
+			native.reset();
+
+			// OS sends redundant hold:true — must be a complete no-op.
+			callLifecycle.toggle('hold', 'native', 'hold-native-reg-a', true);
+
+			// Store unchanged.
+			expect(useCallStore.getState().isOnHold).toBe(true);
+			// No native commands (no markActive, no setSpeaker).
+			expect(native.recorded).toHaveLength(0);
+			// Participant setHeld was not called.
+			expect(participant.setHeld).not.toHaveBeenCalled();
+		});
+
+		it('hold: hold:false after manual user-resume is a no-op (Regression B prevention)', () => {
+			// Regression B: OS sends a delayed hold:false AFTER the user manually resumed.
+			// Before the fix, toggle would flip to HELD and set _wasAutoHeld=true.
+			const { call, participant } = makeToggleCall({ callId: 'hold-native-reg-b' });
+			useCallStore.getState().setCall(call);
+			// Simulate call not on hold and _wasAutoHeld=false (user already resumed manually).
+			useCallStore.setState({ callId: 'hold-native-reg-b', isOnHold: false });
+			// Ensure _wasAutoHeld is false (no prior auto-hold that was not cleared).
+			// We verify indirectly: a subsequent markActive should NOT fire.
+			native.reset();
+
+			// OS sends delayed hold:false — must be a complete no-op.
+			callLifecycle.toggle('hold', 'native', 'hold-native-reg-b', false);
+
+			// Store unchanged.
+			expect(useCallStore.getState().isOnHold).toBe(false);
+			// No native commands (no spurious markActive).
+			expect(native.recorded).toHaveLength(0);
+			// Participant setHeld was not called.
+			expect(participant.setHeld).not.toHaveBeenCalled();
+		});
+
+		it('stale-UUID hold event clears _wasAutoHeld', () => {
+			// A stale hold event (wrong UUID) must defensively clear _wasAutoHeld so that
+			// a dead-call's auto-held flag cannot affect the next call's auto-resume path.
+			const { call } = makeToggleCall({ callId: 'hold-native-stale' });
+			useCallStore.getState().setCall(call);
+			useCallStore.setState({ callId: 'hold-native-stale' });
+			native.reset();
+
+			// First: auto-hold the active call (sets _wasAutoHeld=true).
+			callLifecycle.toggle('hold', 'native', 'hold-native-stale', true);
+			expect(useCallStore.getState().isOnHold).toBe(true);
+			native.reset();
+
+			// Now: stale hold event from a different call UUID — must clear _wasAutoHeld.
+			callLifecycle.toggle('hold', 'native', 'WRONG-UUID', true);
+
+			// Verify _wasAutoHeld was cleared by asserting indirect behaviour:
+			// a subsequent hold:false on the active call must NOT issue markActive
+			// (because _wasAutoHeld was cleared by the stale-UUID drop above).
+			callLifecycle.toggle('hold', 'native', 'hold-native-stale', false);
+
+			// No markActive should have been recorded.
+			expect(native.recorded).not.toContainEqual(expect.objectContaining({ cmd: 'markActive' }));
+		});
 	});
 
 	// ── speaker / 'js' ───────────────────────────────────────────────────────
