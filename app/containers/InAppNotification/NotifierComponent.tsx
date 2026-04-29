@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
 	},
 	inner: {
 		flex: 1,
-		marginRight: 10,
+		marginRight: 10
 	},
 	avatar: {
 		marginRight: 10
