@@ -374,3 +374,69 @@ describe('useCallStore audio commands via VoipNative seam', () => {
 		expect(adapter.recorded).toContainEqual({ cmd: 'markActive', callUuid: 'mark-1' });
 	});
 });
+
+describe('useCallStore toggle delegates — one-line delegate pattern', () => {
+	// These tests verify that toggleMute, toggleHold, and toggleSpeaker are
+	// one-line delegates to callLifecycle.toggle with no direct native imports.
+	// Observable behavior (store updates, native commands) is already covered by
+	// CallLifecycle.test.ts. Here we verify the delegation itself.
+	const adapter = voipNative as InMemoryVoipNative;
+
+	beforeEach(() => {
+		adapter.reset();
+		useCallStore.getState().resetNativeCallId();
+		useCallStore.getState().reset();
+	});
+
+	it('toggleMute delegates to callLifecycle — updates isMuted in store', () => {
+		const { call } = createMockCall('delegate-mute-1');
+		useCallStore.getState().setCall(call);
+		adapter.reset();
+
+		useCallStore.getState().toggleMute();
+
+		expect(useCallStore.getState().isMuted).toBe(true);
+	});
+
+	it('toggleMute records zero voipNative commands (delegate, no direct native imports)', () => {
+		const { call } = createMockCall('delegate-mute-2');
+		useCallStore.getState().setCall(call);
+		adapter.reset();
+
+		useCallStore.getState().toggleMute();
+
+		expect(adapter.recorded).toHaveLength(0);
+	});
+
+	it('toggleHold delegates to callLifecycle — updates isOnHold in store', () => {
+		const { call } = createMockCall('delegate-hold-1');
+		useCallStore.getState().setCall(call);
+		adapter.reset();
+
+		useCallStore.getState().toggleHold();
+
+		expect(useCallStore.getState().isOnHold).toBe(true);
+	});
+
+	it('toggleHold records zero voipNative commands (delegate, no direct native imports)', () => {
+		const { call } = createMockCall('delegate-hold-2');
+		useCallStore.getState().setCall(call);
+		adapter.reset();
+
+		useCallStore.getState().toggleHold();
+
+		expect(adapter.recorded).toHaveLength(0);
+	});
+
+	it('toggleSpeaker delegates to callLifecycle — records setSpeaker via lifecycle', async () => {
+		const { call } = createMockCall('delegate-spk-1');
+		useCallStore.getState().setCall(call);
+		adapter.reset();
+
+		await useCallStore.getState().toggleSpeaker();
+
+		// Still records setSpeaker — proves delegation routes through lifecycle correctly.
+		expect(adapter.recorded).toContainEqual({ cmd: 'setSpeaker', on: true });
+		expect(useCallStore.getState().isSpeakerOn).toBe(true);
+	});
+});

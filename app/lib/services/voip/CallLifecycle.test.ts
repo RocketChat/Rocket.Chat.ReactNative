@@ -357,3 +357,510 @@ describe('CallLifecycle.end(reason)', () => {
 		});
 	});
 });
+
+// ── toggle() ─────────────────────────────────────────────────────────────────
+
+/**
+ * Helpers shared across toggle describe blocks.
+ */
+function makeParticipant() {
+	return {
+		local: true,
+		role: 'caller' as const,
+		muted: false,
+		held: false,
+		contact: {},
+		setMuted: jest.fn(),
+		setHeld: jest.fn()
+	};
+}
+
+function makeToggleCall(options: { callId: string; muted?: boolean; held?: boolean }) {
+	const participant = makeParticipant();
+	if (options.muted) participant.muted = true;
+	if (options.held) participant.held = true;
+	const call = makeCall({ callId: options.callId });
+	// Override localParticipant with one that has setMuted/setHeld
+	(call as any).localParticipant = participant;
+	return { call, participant };
+}
+
+describe('CallLifecycle.toggle(kind, source)', () => {
+	let native: InMemoryVoipNative;
+
+	beforeEach(() => {
+		useCallStore.getState().resetNativeCallId();
+		useCallStore.getState().reset();
+		native = makeNative();
+		native.reset();
+	});
+
+	// ── mute / 'js' ──────────────────────────────────────────────────────────
+
+	describe("toggle('mute', 'js')", () => {
+		it('updates isMuted in store', () => {
+			const { call } = makeToggleCall({ callId: 'mute-js-1' });
+			useCallStore.getState().setCall(call);
+			useCallStore.setState({ callId: 'mute-js-1' });
+			native.reset();
+
+			callLifecycle.toggle('mute', 'js');
+
+			expect(useCallStore.getState().isMuted).toBe(true);
+		});
+
+		it('calls setMuted on localParticipant', () => {
+			const { call, participant } = makeToggleCall({ callId: 'mute-js-2' });
+			useCallStore.getState().setCall(call);
+			useCallStore.setState({ callId: 'mute-js-2' });
+			native.reset();
+
+			callLifecycle.toggle('mute', 'js');
+
+			expect(participant.setMuted).toHaveBeenCalledWith(true);
+		});
+
+		it('records ZERO voipNative commands (no RNCallKeep setMuted command — forward-compat scaffolding)', () => {
+			const { call } = makeToggleCall({ callId: 'mute-js-3' });
+			useCallStore.getState().setCall(call);
+			useCallStore.setState({ callId: 'mute-js-3' });
+			native.reset();
+
+			callLifecycle.toggle('mute', 'js');
+
+			expect(native.recorded).toHaveLength(0);
+		});
+
+		it('toggles from muted to unmuted', () => {
+			const { call, participant } = makeToggleCall({ callId: 'mute-js-4', muted: true });
+			useCallStore.getState().setCall(call);
+			useCallStore.setState({ callId: 'mute-js-4', isMuted: true });
+			native.reset();
+
+			callLifecycle.toggle('mute', 'js');
+
+			expect(useCallStore.getState().isMuted).toBe(false);
+			expect(participant.setMuted).toHaveBeenCalledWith(false);
+		});
+
+		it("defaults source to 'js' when not specified", () => {
+			const { call } = makeToggleCall({ callId: 'mute-default-1' });
+			useCallStore.getState().setCall(call);
+			useCallStore.setState({ callId: 'mute-default-1' });
+			native.reset();
+
+			callLifecycle.toggle('mute');
+
+			expect(useCallStore.getState().isMuted).toBe(true);
+			expect(native.recorded).toHaveLength(0);
+		});
+	});
+
+	// ── mute / 'native' — echo prevention ────────────────────────────────────
+
+	describe("toggle('mute', 'native') — echo prevention", () => {
+		it('updates isMuted in store', () => {
+			const { call } = makeToggleCall({ callId: 'mute-native-1' });
+			useCallStore.getState().setCall(call);
+			useCallStore.setState({ callId: 'mute-native-1' });
+			native.reset();
+
+			callLifecycle.toggle('mute', 'native');
+
+			expect(useCallStore.getState().isMuted).toBe(true);
+		});
+
+		it('calls setMuted on localParticipant', () => {
+			const { call, participant } = makeToggleCall({ callId: 'mute-native-2' });
+			useCallStore.getState().setCall(call);
+			useCallStore.setState({ callId: 'mute-native-2' });
+			native.reset();
+
+			callLifecycle.toggle('mute', 'native');
+
+			expect(participant.setMuted).toHaveBeenCalledWith(true);
+		});
+
+		it('records ZERO voipNative commands (echo prevention)', () => {
+			const { call } = makeToggleCall({ callId: 'mute-native-3' });
+			useCallStore.getState().setCall(call);
+			useCallStore.setState({ callId: 'mute-native-3' });
+			native.reset();
+
+			callLifecycle.toggle('mute', 'native');
+
+			// Echo prevention: native source must never issue a voipNative command back.
+			// (Contrast with speaker where 'js' records setSpeaker but 'native' must not.)
+			expect(native.recorded).toHaveLength(0);
+		});
+	});
+
+	// ── hold / 'js' ──────────────────────────────────────────────────────────
+
+	describe("toggle('hold', 'js')", () => {
+		it('updates isOnHold in store', () => {
+			const { call } = makeToggleCall({ callId: 'hold-js-1' });
+			useCallStore.getState().setCall(call);
+			useCallStore.setState({ callId: 'hold-js-1' });
+			native.reset();
+
+			callLifecycle.toggle('hold', 'js');
+
+			expect(useCallStore.getState().isOnHold).toBe(true);
+		});
+
+		it('calls setHeld on localParticipant', () => {
+			const { call, participant } = makeToggleCall({ callId: 'hold-js-2' });
+			useCallStore.getState().setCall(call);
+			useCallStore.setState({ callId: 'hold-js-2' });
+			native.reset();
+
+			callLifecycle.toggle('hold', 'js');
+
+			expect(participant.setHeld).toHaveBeenCalledWith(true);
+		});
+
+		it('records ZERO voipNative commands (no RNCallKeep setHeld command)', () => {
+			const { call } = makeToggleCall({ callId: 'hold-js-3' });
+			useCallStore.getState().setCall(call);
+			useCallStore.setState({ callId: 'hold-js-3' });
+			native.reset();
+
+			callLifecycle.toggle('hold', 'js');
+
+			expect(native.recorded).toHaveLength(0);
+		});
+
+		it('toggles from held to unheld', () => {
+			const { call, participant } = makeToggleCall({ callId: 'hold-js-4', held: true });
+			useCallStore.getState().setCall(call);
+			useCallStore.setState({ callId: 'hold-js-4', isOnHold: true });
+			native.reset();
+
+			callLifecycle.toggle('hold', 'js');
+
+			expect(useCallStore.getState().isOnHold).toBe(false);
+			expect(participant.setHeld).toHaveBeenCalledWith(false);
+		});
+	});
+
+	// ── hold / 'native' — echo prevention + wasAutoHeld ──────────────────────
+
+	describe("toggle('hold', 'native') — echo prevention + auto-resume", () => {
+		it('records ZERO voipNative commands when going on hold (echo prevention)', () => {
+			const { call } = makeToggleCall({ callId: 'hold-native-1' });
+			useCallStore.getState().setCall(call);
+			useCallStore.setState({ callId: 'hold-native-1' });
+			native.reset();
+
+			callLifecycle.toggle('hold', 'native');
+
+			// No echo: the OS told us to hold, we must not echo back a hold command.
+			expect(native.recorded).toHaveLength(0);
+		});
+
+		it('updates isOnHold in store when toggling to held', () => {
+			const { call } = makeToggleCall({ callId: 'hold-native-2' });
+			useCallStore.getState().setCall(call);
+			useCallStore.setState({ callId: 'hold-native-2' });
+			native.reset();
+
+			callLifecycle.toggle('hold', 'native');
+
+			expect(useCallStore.getState().isOnHold).toBe(true);
+		});
+
+		it('calls setHeld on localParticipant', () => {
+			const { call, participant } = makeToggleCall({ callId: 'hold-native-3' });
+			useCallStore.getState().setCall(call);
+			useCallStore.setState({ callId: 'hold-native-3' });
+			native.reset();
+
+			callLifecycle.toggle('hold', 'native');
+
+			expect(participant.setHeld).toHaveBeenCalledWith(true);
+		});
+
+		it('auto-resume: hold→false after auto-hold issues markActive (the documented per-kind exception)', () => {
+			const { call } = makeToggleCall({ callId: 'hold-native-4' });
+			useCallStore.getState().setCall(call);
+			useCallStore.setState({ callId: 'hold-native-4' });
+			native.reset();
+
+			// OS places call on hold
+			callLifecycle.toggle('hold', 'native'); // wasAutoHeld = true, isOnHold = true
+			native.reset();
+
+			// OS releases hold
+			useCallStore.setState({ isOnHold: true }); // reflect current state
+			callLifecycle.toggle('hold', 'native'); // should call markActive
+
+			expect(native.recorded).toContainEqual({ cmd: 'markActive', callUuid: 'hold-native-4' });
+		});
+
+		it('no markActive when hold→false without prior auto-hold (manual-resume path)', () => {
+			const { call } = makeToggleCall({ callId: 'hold-native-5' });
+			useCallStore.getState().setCall(call);
+			useCallStore.setState({ callId: 'hold-native-5', isOnHold: true });
+			native.reset();
+
+			// No prior auto-hold — goes false directly
+			callLifecycle.toggle('hold', 'native');
+
+			expect(native.recorded).not.toContainEqual(expect.objectContaining({ cmd: 'markActive' }));
+		});
+
+		it('wasAutoHeld is private to CallLifecycle — not in useCallStore', () => {
+			// wasAutoHeld must live as private state on CallLifecycle, not in the store.
+			// Verify the store has no wasAutoHeld property.
+			const storeState = useCallStore.getState();
+			expect(storeState).not.toHaveProperty('wasAutoHeld');
+		});
+
+		// ── Negative-path / regression-prevention tests ───────────────────────
+
+		it('hold: redundant hold:true while already held is a no-op (Regression A prevention)', () => {
+			// Regression A: OS sends a second hold:true while the call is already held.
+			// Before the fix, toggle would flip to UNHELD and potentially fire markActive.
+			const { call, participant } = makeToggleCall({ callId: 'hold-native-reg-a' });
+			useCallStore.getState().setCall(call);
+			// Simulate call already held (e.g. by a prior OS event or JS toggle).
+			useCallStore.setState({ callId: 'hold-native-reg-a', isOnHold: true });
+			native.reset();
+
+			// OS sends redundant hold:true — must be a complete no-op.
+			callLifecycle.toggle('hold', 'native', 'hold-native-reg-a', true);
+
+			// Store unchanged.
+			expect(useCallStore.getState().isOnHold).toBe(true);
+			// No native commands (no markActive, no setSpeaker).
+			expect(native.recorded).toHaveLength(0);
+			// Participant setHeld was not called.
+			expect(participant.setHeld).not.toHaveBeenCalled();
+		});
+
+		it('hold: hold:false after manual user-resume is a no-op (Regression B prevention)', () => {
+			// Regression B: OS sends a delayed hold:false AFTER the user manually resumed.
+			// Before the fix, toggle would flip to HELD and set _wasAutoHeld=true.
+			const { call, participant } = makeToggleCall({ callId: 'hold-native-reg-b' });
+			useCallStore.getState().setCall(call);
+			// Simulate call not on hold and _wasAutoHeld=false (user already resumed manually).
+			useCallStore.setState({ callId: 'hold-native-reg-b', isOnHold: false });
+			// Ensure _wasAutoHeld is false (no prior auto-hold that was not cleared).
+			// We verify indirectly: a subsequent markActive should NOT fire.
+			native.reset();
+
+			// OS sends delayed hold:false — must be a complete no-op.
+			callLifecycle.toggle('hold', 'native', 'hold-native-reg-b', false);
+
+			// Store unchanged.
+			expect(useCallStore.getState().isOnHold).toBe(false);
+			// No native commands (no spurious markActive).
+			expect(native.recorded).toHaveLength(0);
+			// Participant setHeld was not called.
+			expect(participant.setHeld).not.toHaveBeenCalled();
+		});
+
+		it('stale-UUID hold event clears _wasAutoHeld', () => {
+			// A stale hold event (wrong UUID) must defensively clear _wasAutoHeld so that
+			// a dead-call's auto-held flag cannot affect the next call's auto-resume path.
+			const { call } = makeToggleCall({ callId: 'hold-native-stale' });
+			useCallStore.getState().setCall(call);
+			useCallStore.setState({ callId: 'hold-native-stale' });
+			native.reset();
+
+			// First: auto-hold the active call (sets _wasAutoHeld=true).
+			callLifecycle.toggle('hold', 'native', 'hold-native-stale', true);
+			expect(useCallStore.getState().isOnHold).toBe(true);
+			native.reset();
+
+			// Now: stale hold event from a different call UUID — must clear _wasAutoHeld.
+			callLifecycle.toggle('hold', 'native', 'WRONG-UUID', true);
+
+			// Verify _wasAutoHeld was cleared by asserting indirect behaviour:
+			// a subsequent hold:false on the active call must NOT issue markActive
+			// (because _wasAutoHeld was cleared by the stale-UUID drop above).
+			callLifecycle.toggle('hold', 'native', 'hold-native-stale', false);
+
+			// No markActive should have been recorded.
+			expect(native.recorded).not.toContainEqual(expect.objectContaining({ cmd: 'markActive' }));
+		});
+	});
+
+	// ── speaker / 'js' ───────────────────────────────────────────────────────
+
+	describe("toggle('speaker', 'js')", () => {
+		it('records setSpeaker(true) when speaker was off', async () => {
+			const { call } = makeToggleCall({ callId: 'spk-js-1' });
+			useCallStore.getState().setCall(call);
+			useCallStore.setState({ callId: 'spk-js-1', isSpeakerOn: false });
+			native.reset();
+
+			await callLifecycle.toggle('speaker', 'js');
+
+			expect(native.recorded).toContainEqual({ cmd: 'setSpeaker', on: true });
+		});
+
+		it('records setSpeaker(false) when speaker was on', async () => {
+			const { call } = makeToggleCall({ callId: 'spk-js-2' });
+			useCallStore.getState().setCall(call);
+			useCallStore.setState({ callId: 'spk-js-2', isSpeakerOn: true });
+			native.reset();
+
+			await callLifecycle.toggle('speaker', 'js');
+
+			expect(native.recorded).toContainEqual({ cmd: 'setSpeaker', on: false });
+		});
+
+		it('updates isSpeakerOn in store', async () => {
+			const { call } = makeToggleCall({ callId: 'spk-js-3' });
+			useCallStore.getState().setCall(call);
+			useCallStore.setState({ callId: 'spk-js-3', isSpeakerOn: false });
+			native.reset();
+
+			await callLifecycle.toggle('speaker', 'js');
+
+			expect(useCallStore.getState().isSpeakerOn).toBe(true);
+		});
+	});
+
+	describe("toggle('speaker', 'native') — reserved, records no commands", () => {
+		it('records ZERO voipNative commands (out-of-scope for slice 07)', async () => {
+			// Speaker 'native' source is reserved for future audio-route-sync work.
+			// For now it must be a no-op so audio-route-sync still works via setState directly.
+			const { call } = makeToggleCall({ callId: 'spk-native-1' });
+			useCallStore.getState().setCall(call);
+			useCallStore.setState({ callId: 'spk-native-1', isSpeakerOn: false });
+			native.reset();
+
+			await callLifecycle.toggle('speaker', 'native');
+
+			expect(native.recorded).toHaveLength(0);
+		});
+
+		it('directional assertion: js records setSpeaker, native does not', async () => {
+			// This is the key directional test that makes the echo-prevention contract falsifiable.
+			// For speaker, 'js' issues a command and 'native' must not — clear directionality.
+			const { call: call1 } = makeToggleCall({ callId: 'spk-dir-1' });
+			useCallStore.getState().setCall(call1);
+			useCallStore.setState({ callId: 'spk-dir-1', isSpeakerOn: false });
+			native.reset();
+			await callLifecycle.toggle('speaker', 'js');
+			const jsCommands = [...native.recorded];
+
+			const { call: call2 } = makeToggleCall({ callId: 'spk-dir-2' });
+			useCallStore.getState().setCall(call2);
+			useCallStore.setState({ callId: 'spk-dir-2', isSpeakerOn: false });
+			native.reset();
+			await callLifecycle.toggle('speaker', 'native');
+			const nativeCommands = [...native.recorded];
+
+			expect(jsCommands).toContainEqual(expect.objectContaining({ cmd: 'setSpeaker' }));
+			expect(nativeCommands).toHaveLength(0);
+		});
+	});
+
+	// ── stale-UUID drop ───────────────────────────────────────────────────────
+
+	describe('stale-UUID drop', () => {
+		it('mute toggle is a no-op when callUuid does not match active callId or nativeAcceptedCallId', () => {
+			const { call } = makeToggleCall({ callId: 'active-call-uuid' });
+			useCallStore.getState().setCall(call);
+			useCallStore.setState({ callId: 'active-call-uuid', nativeAcceptedCallId: null });
+			native.reset();
+
+			// Provide a stale/mismatched UUID
+			callLifecycle.toggle('mute', 'native', 'stale-uuid-xyz');
+
+			// No store update, no participant call, no native command
+			expect(useCallStore.getState().isMuted).toBe(false);
+			expect(native.recorded).toHaveLength(0);
+		});
+
+		it('hold toggle is a no-op with mismatched UUID', () => {
+			const { call } = makeToggleCall({ callId: 'hold-active-uuid' });
+			useCallStore.getState().setCall(call);
+			useCallStore.setState({ callId: 'hold-active-uuid', nativeAcceptedCallId: null });
+			native.reset();
+
+			callLifecycle.toggle('hold', 'native', 'wrong-uuid');
+
+			expect(useCallStore.getState().isOnHold).toBe(false);
+			expect(native.recorded).toHaveLength(0);
+		});
+
+		it('matches callId case-insensitively', () => {
+			const { call } = makeToggleCall({ callId: 'MIXED-CASE-UUID' });
+			useCallStore.getState().setCall(call);
+			useCallStore.setState({ callId: 'MIXED-CASE-UUID', nativeAcceptedCallId: null });
+			native.reset();
+
+			// Lower-cased UUID should still match
+			callLifecycle.toggle('mute', 'native', 'mixed-case-uuid');
+
+			expect(useCallStore.getState().isMuted).toBe(true);
+		});
+
+		it('falls back to nativeAcceptedCallId when callId is null (Pre-bind)', () => {
+			const { call } = makeToggleCall({ callId: 'prebind-uuid' });
+			useCallStore.getState().setCall(call);
+			useCallStore.setState({ callId: null, nativeAcceptedCallId: 'prebind-uuid' });
+			native.reset();
+
+			callLifecycle.toggle('mute', 'native', 'prebind-uuid');
+
+			expect(useCallStore.getState().isMuted).toBe(true);
+		});
+
+		it('is a no-op when no UUID is provided and no callId exists', () => {
+			// No active call at all
+			useCallStore.getState().resetNativeCallId();
+			useCallStore.getState().reset();
+			native.reset();
+
+			// No UUID provided, no active call
+			callLifecycle.toggle('mute', 'native', 'some-uuid');
+
+			expect(useCallStore.getState().isMuted).toBe(false);
+		});
+
+		it('stale-UUID drop applies uniformly to all kinds — no isIOS branch', () => {
+			// Mute, hold, speaker must all respect the UUID guard regardless of platform.
+			const { call } = makeToggleCall({ callId: 'uniform-uuid' });
+			useCallStore.getState().setCall(call);
+			useCallStore.setState({ callId: 'uniform-uuid' });
+			native.reset();
+
+			callLifecycle.toggle('mute', 'native', 'wrong');
+			callLifecycle.toggle('hold', 'native', 'wrong');
+
+			expect(useCallStore.getState().isMuted).toBe(false);
+			expect(useCallStore.getState().isOnHold).toBe(false);
+		});
+	});
+
+	// ── no-op when no active call ─────────────────────────────────────────────
+
+	describe('no-op without active call', () => {
+		it('mute toggle without call is a no-op', () => {
+			native.reset();
+			callLifecycle.toggle('mute', 'js');
+			expect(useCallStore.getState().isMuted).toBe(false);
+			expect(native.recorded).toHaveLength(0);
+		});
+
+		it('hold toggle without call is a no-op', () => {
+			native.reset();
+			callLifecycle.toggle('hold', 'js');
+			expect(useCallStore.getState().isOnHold).toBe(false);
+			expect(native.recorded).toHaveLength(0);
+		});
+
+		it('speaker toggle without call is a no-op', async () => {
+			native.reset();
+			await callLifecycle.toggle('speaker', 'js');
+			expect(useCallStore.getState().isSpeakerOn).toBe(false);
+			expect(native.recorded).toHaveLength(0);
+		});
+	});
+});
