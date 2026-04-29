@@ -1,3 +1,6 @@
+import { resetVoipState } from './resetVoipState';
+import { useCallStore } from './useCallStore';
+
 jest.mock('react-native-callkeep', () => ({
 	__esModule: true,
 	default: {
@@ -24,9 +27,6 @@ jest.mock('../../native/NativeVoip', () => ({
 		removeListeners: jest.fn()
 	}
 }));
-
-import { resetVoipState } from './resetVoipState';
-import { useCallStore } from './useCallStore';
 
 jest.mock('../../methods/helpers', () => ({
 	...jest.requireActual('../../methods/helpers'),

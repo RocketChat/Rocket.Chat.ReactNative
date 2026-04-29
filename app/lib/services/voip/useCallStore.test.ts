@@ -1,3 +1,8 @@
+import type { IClientMediaCall } from '@rocket.chat/media-signaling';
+
+import { useCallStore } from './useCallStore';
+import { voipNative, type InMemoryVoipNative } from './VoipNative';
+
 jest.mock('react-native-webrtc', () => ({ registerGlobals: jest.fn() }));
 jest.mock('react-native-callkeep', () => ({
 	__esModule: true,
@@ -24,11 +29,6 @@ jest.mock('../../native/NativeVoip', () => ({
 		removeListeners: jest.fn()
 	}
 }));
-
-import type { IClientMediaCall } from '@rocket.chat/media-signaling';
-
-import { useCallStore } from './useCallStore';
-import { voipNative, InMemoryVoipNative } from './VoipNative';
 
 jest.mock('../../navigation/appNavigation', () => ({
 	__esModule: true,

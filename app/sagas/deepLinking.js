@@ -1,7 +1,8 @@
 import { InteractionManager } from 'react-native';
-import { voipNative } from '../lib/services/voip/VoipNative';
 import I18n from 'i18n-js';
 import { all, call, delay, put, select, take, takeLatest } from 'redux-saga/effects';
+
+import { voipNative } from '../lib/services/voip/VoipNative';
 
 import { shareSetParams } from '../actions/share';
 import * as types from '../actions/actionsTypes';
