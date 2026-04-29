@@ -1506,7 +1506,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	renderFooter = () => {
 		const { joined, room, readOnly, loading } = this.state;
 		const { theme, insets, airGappedRestrictionRemainingDays } = this.props;
-		const footerBottomInset = { marginBottom: insets.bottom };
+		const footerBottomInset = { paddingBottom: insets.bottom };
 
 		if (!this.rid) {
 			return null;
