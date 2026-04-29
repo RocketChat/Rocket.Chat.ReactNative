@@ -1,6 +1,7 @@
 import type { IClientMediaCall } from '@rocket.chat/media-signaling';
 
 import { useCallStore } from './useCallStore';
+import { voipNative, InMemoryVoipNative } from './VoipNative';
 
 jest.mock('../../navigation/appNavigation', () => ({
 	__esModule: true,
@@ -291,5 +292,54 @@ describe('useCallStore native accepted + stale timer', () => {
 		expect(useCallStore.getState().nativeAcceptedCallId).toBe('b');
 		jest.advanceTimersByTime(1_000);
 		expect(useCallStore.getState().nativeAcceptedCallId).toBeNull();
+	});
+});
+
+describe('useCallStore audio commands via VoipNative seam', () => {
+	const adapter = voipNative as InMemoryVoipNative;
+
+	beforeEach(() => {
+		adapter.reset();
+		useCallStore.getState().resetNativeCallId();
+		useCallStore.getState().reset();
+	});
+
+	it('setCall records startAudio on voipNative', () => {
+		const { call } = createMockCall('audio-1');
+		useCallStore.getState().setCall(call);
+		expect(adapter.recorded).toContainEqual({ cmd: 'startAudio' });
+	});
+
+	it('reset records stopAudio on voipNative', () => {
+		useCallStore.getState().reset();
+		expect(adapter.recorded).toContainEqual({ cmd: 'stopAudio' });
+	});
+
+	it('toggleSpeaker records setSpeaker(true) when speaker was off', async () => {
+		const { call } = createMockCall('spk-1');
+		useCallStore.getState().setCall(call);
+		adapter.reset();
+
+		await useCallStore.getState().toggleSpeaker();
+
+		expect(adapter.recorded).toContainEqual({ cmd: 'setSpeaker', on: true });
+		expect(useCallStore.getState().isSpeakerOn).toBe(true);
+	});
+
+	it('toggleSpeaker records setSpeaker(false) when speaker was on', async () => {
+		const { call } = createMockCall('spk-2');
+		useCallStore.getState().setCall(call);
+		await useCallStore.getState().toggleSpeaker();
+		adapter.reset();
+
+		await useCallStore.getState().toggleSpeaker();
+
+		expect(adapter.recorded).toContainEqual({ cmd: 'setSpeaker', on: false });
+		expect(useCallStore.getState().isSpeakerOn).toBe(false);
+	});
+
+	it('toggleSpeaker is a no-op without an active call', async () => {
+		await useCallStore.getState().toggleSpeaker();
+		expect(adapter.recorded).not.toContainEqual(expect.objectContaining({ cmd: 'setSpeaker' }));
 	});
 });
