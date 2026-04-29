@@ -20,6 +20,7 @@ import { setCurrentScreen } from './lib/methods/helpers/log';
 import { themes } from './lib/constants/colors';
 import { emitter } from './lib/methods/helpers';
 import MediaCallHeader from './containers/MediaCallHeader/MediaCallHeader';
+import { CallNavRouter } from './lib/services/voip/CallNavRouter';
 
 const createStackNavigator = createNativeStackNavigator;
 
@@ -35,6 +36,11 @@ const SetUsernameStack = () => (
 const Stack = createStackNavigator<StackParamList>();
 const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: boolean }) => {
 	const { theme } = useContext(ThemeContext);
+
+	useEffect(() => {
+		// Mount CallNavRouter once — it subscribes to CallLifecycle after NavigationContainer is ready.
+		CallNavRouter.mount();
+	}, []);
 
 	useEffect(() => {
 		if (root) {

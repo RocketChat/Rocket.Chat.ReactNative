@@ -1,5 +1,4 @@
 import { InteractionManager } from 'react-native';
-import { voipNative } from '../lib/services/voip/VoipNative';
 import I18n from 'i18n-js';
 import { all, call, delay, put, select, take, takeLatest } from 'redux-saga/effects';
 
@@ -27,6 +26,7 @@ import { loginOAuthOrSso } from '../lib/services/connect';
 import { notifyUser } from '../lib/services/restApi';
 import sdk from '../lib/services/sdk';
 import Navigation, { waitForNavigationReady } from '../lib/navigation/appNavigation';
+import { callLifecycle } from '../lib/services/voip/CallLifecycle';
 import { resetVoipState } from '../lib/services/voip/resetVoipState';
 
 const roomTypes = {
@@ -84,11 +84,11 @@ const navigate = function* navigate({ params }) {
  */
 const handleVoipAcceptFailed = function* handleVoipAcceptFailed(params) {
 	try {
-		const { callId, username } = params;
+		const { username } = params;
+		// Delegate to CallLifecycle for idempotent, ordered teardown.
+		// 'error' reason: native accept failed pre-bind.
+		callLifecycle.end('error');
 		resetVoipState();
-		if (callId) {
-			voipNative.call.end(callId);
-		}
 
 		yield call(waitForNavigationReady);
 
