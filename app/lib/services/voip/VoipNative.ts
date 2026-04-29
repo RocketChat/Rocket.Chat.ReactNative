@@ -54,8 +54,9 @@ export class InMemoryVoipNative implements VoipNativePort {
 		markAvailable: (callUuid: string) => {
 			this.recorded.push({ cmd: 'markAvailable', callUuid });
 		},
-		setSpeaker: async (on: boolean) => {
+		setSpeaker: (on: boolean) => {
 			this.recorded.push({ cmd: 'setSpeaker', on });
+			return Promise.resolve();
 		},
 		startAudio: () => {
 			this.recorded.push({ cmd: 'startAudio' });
@@ -69,18 +70,18 @@ export class InMemoryVoipNative implements VoipNativePort {
 		this.recorded.splice(0);
 	}
 
-	async attach(opts: { onEvent(e: VoipNativeEvent): void }): Promise<{ detach(): void; pushToken: string }> {
+	attach(opts: { onEvent(e: VoipNativeEvent): void }): Promise<{ detach(): void; pushToken: string }> {
 		this._onEvent = opts.onEvent;
 		const seeds = this._coldStartQueue.splice(0);
 		for (const event of seeds) {
 			this._onEvent(event);
 		}
-		return {
+		return Promise.resolve({
 			detach: () => {
 				this._onEvent = null;
 			},
 			pushToken: ''
-		};
+		});
 	}
 
 	__emit(event: VoipNativeEvent): void {
@@ -119,16 +120,12 @@ class ProductionVoipNative implements VoipNativePort {
 		markActive: (callUuid: string) => {
 			RNCallKeep.setCurrentCallActive(callUuid);
 		},
-		markAvailable: (callUuid: string) => {
+		markAvailable: (_callUuid: string) => {
 			RNCallKeep.setCurrentCallActive('');
 			RNCallKeep.setAvailable(true);
 		},
 		setSpeaker: async (on: boolean) => {
-			if (Platform.OS === 'ios') {
-				await InCallManager.setForceSpeakerphoneOn(on);
-			} else {
-				await NativeVoipModule.setSpeakerOn(on);
-			}
+			await InCallManager.setForceSpeakerphoneOn(on);
 		},
 		startAudio: () => {
 			InCallManager.start({ media: 'audio' });
