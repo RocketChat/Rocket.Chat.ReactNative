@@ -10,7 +10,13 @@ export const messageBlockWithContext = (context: any) => (props: any) =>
 		</KitContext.Provider>
 	);
 
-const MessageBlock = ({ blocks }: any) => UiKitMessage(blocks);
+const MessageBlock = ({ blocks }: any) => {
+	if (!blocks) return null;
+	const renderedBlocks = UiKitMessage(blocks);
+	return Array.isArray(renderedBlocks)
+		? renderedBlocks.map(element => <React.Fragment key={element.props.blockId}>{element}</React.Fragment>)
+		: renderedBlocks;
+};
 
 export const ModalBlockWithContext = (props: any) => (
 	<KitContext.Provider value={props}>
