@@ -15,7 +15,6 @@ import React from 'react';
 import { act, fireEvent, render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import RNCallKeep from 'react-native-callkeep';
-import InCallManager from 'react-native-incall-manager';
 import type { IClientMediaCall } from '@rocket.chat/media-signaling';
 
 import { NewMediaCall } from './NewMediaCall';
@@ -24,6 +23,7 @@ import Navigation from '../../lib/navigation/appNavigation';
 import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';
 import { useCallStore } from '../../lib/services/voip/useCallStore';
 import { mediaSessionInstance } from '../../lib/services/voip/MediaSessionInstance';
+import { voipNative, type InMemoryVoipNative } from '../../lib/services/voip/VoipNative';
 import { mockedStore } from '../../reducers/mockedStore';
 import type { TPeerItem } from '../../lib/services/voip/getPeerAutocompleteOptions';
 import type { InsideStackParamList } from '../../stacks/types';
@@ -387,6 +387,7 @@ describe('VoIP call lifecycle (integration)', () => {
 		usePeerAutocompleteStore.getState().reset();
 		useCallStore.getState().reset();
 		mediaSessionInstance.reset();
+		(voipNative as InMemoryVoipNative).reset();
 
 		consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation((...args: unknown[]) => {
 			const message = formatConsoleArgs(args);
@@ -447,11 +448,11 @@ describe('VoIP call lifecycle (integration)', () => {
 		const { call } = useCallStore.getState();
 		expect(call?.callId).toBe('call-user-1');
 
-		// Firing 'ended' triggers RNCallKeep cleanup and navigation back via real handlers.
+		// Firing 'ended' triggers voipNative cleanup and navigation back via real handlers.
 		act(() => {
 			(call!.emitter as unknown as ReturnType<typeof mockCallEmitter>).emit('ended');
 		});
-		expect(RNCallKeep.endCall as jest.Mock).toHaveBeenCalledWith('call-user-1');
+		expect((voipNative as InMemoryVoipNative).recorded).toContainEqual({ cmd: 'end', callUuid: 'call-user-1' });
 		expect(Navigation.back).toHaveBeenCalled();
 	});
 
@@ -563,7 +564,7 @@ describe('VoIP call lifecycle (integration)', () => {
 				await flushMicrotasks();
 			});
 
-			expect(RNCallKeep.setCurrentCallActive as jest.Mock).toHaveBeenCalledWith('incoming-1');
+			expect((voipNative as InMemoryVoipNative).recorded).toContainEqual({ cmd: 'markActive', callUuid: 'incoming-1' });
 			expect(Navigation.navigate).toHaveBeenCalledWith('CallView');
 			expect(useCallStore.getState().call?.callId).toBe('incoming-1');
 		});
@@ -586,7 +587,7 @@ describe('VoIP call lifecycle (integration)', () => {
 				await flushMicrotasks();
 			});
 
-			expect(RNCallKeep.endCall as jest.Mock).toHaveBeenCalledWith('missing-1');
+			expect((voipNative as InMemoryVoipNative).recorded).toContainEqual({ cmd: 'end', callUuid: 'missing-1' });
 			expect(useCallStore.getState().nativeAcceptedCallId).toBeNull();
 			expect(Navigation.navigate).not.toHaveBeenCalled();
 			expect(useCallStore.getState().call).toBeNull();
@@ -622,7 +623,7 @@ describe('VoIP call lifecycle (integration)', () => {
 	// app/views/CallView/components/CallButtons.tsx), NOT MediaSessionInstance.endCall.
 	// The latter is invoked from native CallKit "end" events. Both need coverage.
 	describe('UI store contract: Hang up', () => {
-		it('B1: useCallStore.endCall clears store and triggers RNCallKeep.endCall', async () => {
+		it('B1: useCallStore.endCall clears store and triggers voipNative.call.end', async () => {
 			setSelectedPeer({ type: 'user', value: 'user-1', label: 'Alice', username: 'alice' });
 			const { getByTestId } = render(
 				<Wrapper>
@@ -638,13 +639,13 @@ describe('VoIP call lifecycle (integration)', () => {
 				useCallStore.getState().endCall();
 			});
 
-			expect(RNCallKeep.endCall as jest.Mock).toHaveBeenCalledWith('call-user-1');
-			expect(InCallManager.stop as jest.Mock).toHaveBeenCalled();
+			expect((voipNative as InMemoryVoipNative).recorded).toContainEqual({ cmd: 'end', callUuid: 'call-user-1' });
+			expect((voipNative as InMemoryVoipNative).recorded).toContainEqual({ cmd: 'stopAudio' });
 			expect(useCallStore.getState().call).toBeNull();
 			expect(useCallStore.getState().callId).toBeNull();
 		});
 
-		it('B2: MediaSessionInstance.endCall during active state → RNCallKeep cleanup, store reset', () => {
+		it('B2: MediaSessionInstance.endCall during active state → voipNative cleanup, store reset', () => {
 			const session = createdSessions[createdSessions.length - 1];
 			const activeCall = makeCall({ callId: 'active-1', state: 'active' });
 			session.getCallData.mockReturnValue(activeCall);
@@ -653,13 +654,12 @@ describe('VoIP call lifecycle (integration)', () => {
 				mediaSessionInstance.endCall('active-1');
 			});
 
-			expect(RNCallKeep.endCall as jest.Mock).toHaveBeenCalledWith('active-1');
-			expect(RNCallKeep.setCurrentCallActive as jest.Mock).toHaveBeenCalledWith('');
-			expect(RNCallKeep.setAvailable as jest.Mock).toHaveBeenCalledWith(true);
+			expect((voipNative as InMemoryVoipNative).recorded).toContainEqual({ cmd: 'end', callUuid: 'active-1' });
+			expect((voipNative as InMemoryVoipNative).recorded).toContainEqual({ cmd: 'markAvailable', callUuid: 'active-1' });
 			expect(useCallStore.getState().call).toBeNull();
 		});
 
-		it('B3: MediaSessionInstance.endCall during ringing → reject (not hangup) + RNCallKeep cleanup', () => {
+		it('B3: MediaSessionInstance.endCall during ringing → reject (not hangup) + voipNative cleanup', () => {
 			const session = createdSessions[createdSessions.length - 1];
 			const ringingCall = makeCall({ callId: 'ringing-1' });
 			session.getCallData.mockReturnValue(ringingCall);
@@ -670,7 +670,7 @@ describe('VoIP call lifecycle (integration)', () => {
 
 			expect(ringingCall.reject).toHaveBeenCalled();
 			expect(ringingCall.hangup).not.toHaveBeenCalled();
-			expect(RNCallKeep.endCall as jest.Mock).toHaveBeenCalledWith('ringing-1');
+			expect((voipNative as InMemoryVoipNative).recorded).toContainEqual({ cmd: 'end', callUuid: 'ringing-1' });
 			expect(useCallStore.getState().call).toBeNull();
 		});
 	});
@@ -747,13 +747,13 @@ describe('VoIP call lifecycle (integration)', () => {
 			await act(async () => {
 				await useCallStore.getState().toggleSpeaker();
 			});
-			expect(InCallManager.setForceSpeakerphoneOn as jest.Mock).toHaveBeenCalledWith(true);
+			expect((voipNative as InMemoryVoipNative).recorded).toContainEqual({ cmd: 'setSpeaker', on: true });
 			expect(useCallStore.getState().isSpeakerOn).toBe(true);
 
 			await act(async () => {
 				await useCallStore.getState().toggleSpeaker();
 			});
-			expect(InCallManager.setForceSpeakerphoneOn as jest.Mock).toHaveBeenCalledWith(false);
+			expect((voipNative as InMemoryVoipNative).recorded).toContainEqual({ cmd: 'setSpeaker', on: false });
 			expect(useCallStore.getState().isSpeakerOn).toBe(false);
 		});
 	});
@@ -800,7 +800,7 @@ describe('VoIP call lifecycle (integration)', () => {
 			expect(useCallStore.getState().isOnHold).toBe(true);
 		});
 
-		it('D3: press end button → call.hangup, RNCallKeep.endCall, store cleared', () => {
+		it('D3: press end button → call.hangup, voipNative.call.end, store cleared', () => {
 			const call = makeCall({ callId: 'btn-end', role: 'caller', state: 'active' });
 			act(() => {
 				useCallStore.getState().setCall(call);
@@ -817,7 +817,7 @@ describe('VoIP call lifecycle (integration)', () => {
 			});
 
 			expect(call.hangup).toHaveBeenCalled();
-			expect(RNCallKeep.endCall as jest.Mock).toHaveBeenCalledWith('btn-end');
+			expect((voipNative as InMemoryVoipNative).recorded).toContainEqual({ cmd: 'end', callUuid: 'btn-end' });
 			expect(useCallStore.getState().call).toBeNull();
 		});
 	});
@@ -844,7 +844,7 @@ describe('VoIP call lifecycle (integration)', () => {
 
 			expect(useCallStore.getState().callState).toBe('active');
 			expect(useCallStore.getState().callStartTime).not.toBeNull();
-			expect(RNCallKeep.setCurrentCallActive as jest.Mock).toHaveBeenCalledWith('state-1');
+			expect((voipNative as InMemoryVoipNative).recorded).toContainEqual({ cmd: 'markActive', callUuid: 'state-1' });
 		});
 	});
 

@@ -1,6 +1,34 @@
 import type { IClientMediaCall } from '@rocket.chat/media-signaling';
 
 import { useCallStore } from './useCallStore';
+import { voipNative, type InMemoryVoipNative } from './VoipNative';
+
+jest.mock('react-native-webrtc', () => ({ registerGlobals: jest.fn() }));
+jest.mock('react-native-callkeep', () => ({
+	__esModule: true,
+	default: {
+		addEventListener: jest.fn(() => ({ remove: jest.fn() })),
+		clearInitialEvents: jest.fn(),
+		getInitialEvents: jest.fn(() => Promise.resolve([]))
+	}
+}));
+jest.mock('react-native-incall-manager', () => ({
+	__esModule: true,
+	default: { start: jest.fn(), stop: jest.fn(), setForceSpeakerphoneOn: jest.fn() }
+}));
+jest.mock('../../native/NativeVoip', () => ({
+	__esModule: true,
+	default: {
+		registerVoipToken: jest.fn(),
+		getInitialEvents: jest.fn(() => null),
+		clearInitialEvents: jest.fn(),
+		getLastVoipToken: jest.fn(() => ''),
+		stopNativeDDPClient: jest.fn(),
+		stopVoipCallService: jest.fn(),
+		addListener: jest.fn(),
+		removeListeners: jest.fn()
+	}
+}));
 
 jest.mock('../../navigation/appNavigation', () => ({
 	__esModule: true,
@@ -9,16 +37,6 @@ jest.mock('../../navigation/appNavigation', () => ({
 
 jest.mock('../../../containers/ActionSheet', () => ({
 	hideActionSheetRef: jest.fn()
-}));
-
-jest.mock('react-native-callkeep', () => ({
-	setCurrentCallActive: jest.fn(),
-	addEventListener: jest.fn(() => ({ remove: jest.fn() })),
-	endCall: jest.fn(),
-	start: jest.fn(),
-	stop: jest.fn(),
-	setForceSpeakerphoneOn: jest.fn(),
-	setAvailable: jest.fn()
 }));
 
 function createMockCall(callId: string, options?: { initialState?: string }) {
@@ -291,5 +309,64 @@ describe('useCallStore native accepted + stale timer', () => {
 		expect(useCallStore.getState().nativeAcceptedCallId).toBe('b');
 		jest.advanceTimersByTime(1_000);
 		expect(useCallStore.getState().nativeAcceptedCallId).toBeNull();
+	});
+});
+
+describe('useCallStore audio commands via VoipNative seam', () => {
+	const adapter = voipNative as InMemoryVoipNative;
+
+	beforeEach(() => {
+		adapter.reset();
+		useCallStore.getState().resetNativeCallId();
+		useCallStore.getState().reset();
+	});
+
+	it('setCall records startAudio on voipNative', () => {
+		const { call } = createMockCall('audio-1');
+		useCallStore.getState().setCall(call);
+		expect(adapter.recorded).toContainEqual({ cmd: 'startAudio' });
+	});
+
+	it('reset records stopAudio on voipNative', () => {
+		useCallStore.getState().reset();
+		expect(adapter.recorded).toContainEqual({ cmd: 'stopAudio' });
+	});
+
+	it('toggleSpeaker records setSpeaker(true) when speaker was off', async () => {
+		const { call } = createMockCall('spk-1');
+		useCallStore.getState().setCall(call);
+		adapter.reset();
+
+		await useCallStore.getState().toggleSpeaker();
+
+		expect(adapter.recorded).toContainEqual({ cmd: 'setSpeaker', on: true });
+		expect(useCallStore.getState().isSpeakerOn).toBe(true);
+	});
+
+	it('toggleSpeaker records setSpeaker(false) when speaker was on', async () => {
+		const { call } = createMockCall('spk-2');
+		useCallStore.getState().setCall(call);
+		await useCallStore.getState().toggleSpeaker();
+		adapter.reset();
+
+		await useCallStore.getState().toggleSpeaker();
+
+		expect(adapter.recorded).toContainEqual({ cmd: 'setSpeaker', on: false });
+		expect(useCallStore.getState().isSpeakerOn).toBe(false);
+	});
+
+	it('toggleSpeaker is a no-op without an active call', async () => {
+		await useCallStore.getState().toggleSpeaker();
+		expect(adapter.recorded).not.toContainEqual(expect.objectContaining({ cmd: 'setSpeaker' }));
+	});
+
+	it('stateChange to active records markActive on voipNative with callId', () => {
+		const { call, emit } = createMockCall('mark-1');
+		useCallStore.getState().setCall(call);
+		adapter.reset();
+
+		emit('stateChange');
+
+		expect(adapter.recorded).toContainEqual({ cmd: 'markActive', callUuid: 'mark-1' });
 	});
 });

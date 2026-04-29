@@ -1,7 +1,7 @@
 import type { IClientMediaCall } from '@rocket.chat/media-signaling';
-import RNCallKeep from 'react-native-callkeep';
 import { waitFor } from '@testing-library/react-native';
 
+import { voipNative, type InMemoryVoipNative } from './VoipNative';
 import type { IDDPMessage } from '../../../definitions/IDDPMessage';
 import Navigation from '../../navigation/appNavigation';
 import { getDMSubscriptionByUsername } from '../../database/services/Subscription';
@@ -77,15 +77,6 @@ jest.mock('../../store/auxStore', () => ({
 jest.mock('react-native-webrtc', () => ({
 	registerGlobals: jest.fn(),
 	mediaDevices: { getUserMedia: jest.fn() }
-}));
-
-jest.mock('react-native-callkeep', () => ({
-	__esModule: true,
-	default: {
-		endCall: jest.fn(),
-		setCurrentCallActive: jest.fn(),
-		setAvailable: jest.fn()
-	}
 }));
 
 jest.mock('react-native-device-info', () => ({
@@ -242,6 +233,7 @@ describe('MediaSessionInstance', () => {
 			roomId: null
 		});
 		mediaSessionInstance.reset();
+		(voipNative as InMemoryVoipNative).reset();
 	});
 
 	afterEach(() => {
@@ -339,7 +331,7 @@ describe('MediaSessionInstance', () => {
 			const incoming = buildClientMediaCall({ callId: 'incoming-b', role: 'callee' });
 			getNewCallHandler()({ call: incoming });
 			expect(incoming.reject).not.toHaveBeenCalled();
-			expect(RNCallKeep.endCall).not.toHaveBeenCalledWith('incoming-b');
+			expect((voipNative as InMemoryVoipNative).recorded).not.toContainEqual({ cmd: 'end', callUuid: 'incoming-b' });
 		});
 
 		it('allows incoming callee newCall when nativeAcceptedCallId is set but differs from incoming callId', async () => {
@@ -358,7 +350,7 @@ describe('MediaSessionInstance', () => {
 			const incoming = buildClientMediaCall({ callId: 'incoming-b', role: 'callee' });
 			getNewCallHandler()({ call: incoming });
 			expect(incoming.reject).not.toHaveBeenCalled();
-			expect(RNCallKeep.endCall).not.toHaveBeenCalledWith('incoming-b');
+			expect((voipNative as InMemoryVoipNative).recorded).not.toContainEqual({ cmd: 'end', callUuid: 'incoming-b' });
 		});
 
 		it('allows incoming callee newCall when nativeAcceptedCallId matches incoming callId', async () => {
@@ -377,7 +369,7 @@ describe('MediaSessionInstance', () => {
 			const incoming = buildClientMediaCall({ callId: 'same-id', role: 'callee' });
 			getNewCallHandler()({ call: incoming });
 			expect(incoming.reject).not.toHaveBeenCalled();
-			expect(RNCallKeep.endCall).not.toHaveBeenCalledWith('same-id');
+			expect((voipNative as InMemoryVoipNative).recorded).not.toContainEqual({ cmd: 'end', callUuid: 'same-id' });
 		});
 
 		it('does not reject outgoing (caller) newCall; binds call and navigates', async () => {
@@ -789,6 +781,41 @@ describe('MediaSessionInstance', () => {
 
 			await waitFor(() => expect(mockSetRoomId).toHaveBeenCalledWith('dm-ext'));
 			expect(mockGetDMSubscriptionByUsername).toHaveBeenCalledWith('bob');
+		});
+
+		it('answerCall records markActive on voipNative with callId', async () => {
+			await mediaSessionInstance.init('user-1');
+			const session = createdSessions[0];
+			const mainCall = {
+				callId: 'ans-mark',
+				accept: jest.fn().mockResolvedValue(undefined),
+				remoteParticipants: [{ contact: {} }]
+			};
+			session.getCallData.mockReturnValue(mainCall);
+			(voipNative as InMemoryVoipNative).reset();
+
+			await mediaSessionInstance.answerCall('ans-mark');
+
+			expect((voipNative as InMemoryVoipNative).recorded).toContainEqual({ cmd: 'markActive', callUuid: 'ans-mark' });
+		});
+	});
+
+	describe('endCall', () => {
+		it('records markAvailable on voipNative when call is found and hung up', async () => {
+			await mediaSessionInstance.init('user-1');
+			const session = createdSessions[0];
+			const mainCall = {
+				callId: 'end-1',
+				state: 'active',
+				hangup: jest.fn(),
+				reject: jest.fn()
+			};
+			session.getCallData.mockReturnValue(mainCall);
+			(voipNative as InMemoryVoipNative).reset();
+
+			mediaSessionInstance.endCall('end-1');
+
+			expect((voipNative as InMemoryVoipNative).recorded).toContainEqual({ cmd: 'markAvailable', callUuid: 'end-1' });
 		});
 	});
 });

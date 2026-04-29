@@ -1,9 +1,7 @@
 import { create } from 'zustand';
 import type { CallState, CallContact, IClientMediaCall } from '@rocket.chat/media-signaling';
-import RNCallKeep from 'react-native-callkeep';
-import InCallManager from 'react-native-incall-manager';
 
-import { terminateNativeCall } from './terminateNativeCall';
+import { voipNative } from './VoipNative';
 import Navigation from '../../navigation/appNavigation';
 import { hideActionSheetRef } from '../../../containers/ActionSheet';
 import { useIsScreenReaderEnabled } from '../../hooks/useIsScreenReaderEnabled';
@@ -164,11 +162,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 			callStartTime: call.state === 'active' ? Date.now() : null
 		});
 
-		try {
-			InCallManager.start({ media: 'audio' });
-		} catch (error) {
-			console.error('[VoIP] InCallManager.start failed:', error);
-		}
+		voipNative.call.startAudio();
 
 		// Subscribe to call events
 		const handleStateChange = () => {
@@ -186,7 +180,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 			// Tell CallKit the call is active so iOS shows it in the system UI (lock screen, Control Center, Dynamic Island)
 			if (newState === 'active') {
 				const { callId, nativeAcceptedCallId } = get();
-				RNCallKeep.setCurrentCallActive(callId ?? nativeAcceptedCallId ?? '');
+				voipNative.call.markActive(callId ?? nativeAcceptedCallId ?? '');
 			}
 		};
 
@@ -246,13 +240,8 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		if (!call) return;
 
 		const newSpeakerOn = !isSpeakerOn;
-
-		try {
-			await InCallManager.setForceSpeakerphoneOn(newSpeakerOn);
-			set({ isSpeakerOn: newSpeakerOn });
-		} catch (error) {
-			console.error('[VoIP] Failed to toggle speaker:', error);
-		}
+		await voipNative.call.setSpeaker(newSpeakerOn);
+		set({ isSpeakerOn: newSpeakerOn });
 	},
 
 	toggleFocus: () => {
@@ -292,7 +281,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		}
 
 		if (callUuid) {
-			terminateNativeCall(callUuid);
+			voipNative.call.end(callUuid);
 		}
 
 		get().resetNativeCallId();
@@ -303,11 +292,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		const { nativeAcceptedCallId } = get();
 		cleanupCallListeners();
 		cancelStaleNativeTimer();
-		try {
-			InCallManager.stop();
-		} catch (error) {
-			console.error('[VoIP] InCallManager.stop failed:', error);
-		}
+		voipNative.call.stopAudio();
 		set({ ...initialState, nativeAcceptedCallId });
 		hideActionSheetRef();
 		// Old timer was cleared above; start a new one if nativeAcceptedCallId is still set.

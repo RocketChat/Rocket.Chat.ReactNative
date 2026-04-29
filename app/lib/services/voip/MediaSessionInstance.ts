@@ -8,13 +8,12 @@ import {
 	type ServerMediaSignal,
 	type WebRTCProcessorConfig
 } from '@rocket.chat/media-signaling';
-import RNCallKeep from 'react-native-callkeep';
 import { registerGlobals } from 'react-native-webrtc';
 import { getUniqueIdSync } from 'react-native-device-info';
 import { dequal } from 'dequal';
 
 import { mediaSessionStore } from './MediaSessionStore';
-import { terminateNativeCall } from './terminateNativeCall';
+import { voipNative } from './VoipNative';
 import { useCallStore } from './useCallStore';
 import { MediaCallLogger } from './MediaCallLogger';
 import { isSelfUserId } from './isSelfUserId';
@@ -138,7 +137,7 @@ class MediaSessionInstance {
 				}
 
 				call.emitter.on('ended', () => {
-					terminateNativeCall(call.callId);
+					voipNative.call.end(call.callId);
 				});
 			}
 		});
@@ -154,7 +153,7 @@ class MediaSessionInstance {
 
 		if (mainCall && mainCall.callId === callId) {
 			await mainCall.accept();
-			RNCallKeep.setCurrentCallActive(callId);
+			voipNative.call.markActive(callId);
 			useCallStore.getState().setCall(mainCall);
 			useCallStore.getState().setDirection('incoming');
 			await waitForNavigationReady();
@@ -163,7 +162,7 @@ class MediaSessionInstance {
 				console.error('[VoIP] Error resolving room id from contact (answerCall):', error);
 			});
 		} else {
-			terminateNativeCall(callId);
+			voipNative.call.end(callId);
 			const st = useCallStore.getState();
 			if (st.nativeAcceptedCallId === callId) {
 				st.resetNativeCallId();
@@ -217,9 +216,8 @@ class MediaSessionInstance {
 				mainCall.hangup();
 			}
 		}
-		terminateNativeCall(callId);
-		RNCallKeep.setCurrentCallActive('');
-		RNCallKeep.setAvailable(true);
+		voipNative.call.end(callId);
+		voipNative.call.markAvailable(callId);
 		useCallStore.getState().resetNativeCallId();
 		useCallStore.getState().reset();
 	};

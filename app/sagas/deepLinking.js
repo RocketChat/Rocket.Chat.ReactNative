@@ -1,7 +1,8 @@
 import { InteractionManager } from 'react-native';
-import RNCallKeep from 'react-native-callkeep';
 import I18n from 'i18n-js';
 import { all, call, delay, put, select, take, takeLatest } from 'redux-saga/effects';
+
+import { voipNative } from '../lib/services/voip/VoipNative';
 
 import { shareSetParams } from '../actions/share';
 import * as types from '../actions/actionsTypes';
@@ -87,7 +88,7 @@ const handleVoipAcceptFailed = function* handleVoipAcceptFailed(params) {
 		const { callId, username } = params;
 		resetVoipState();
 		if (callId) {
-			RNCallKeep.endCall(callId);
+			voipNative.call.end(callId);
 		}
 
 		yield call(waitForNavigationReady);
