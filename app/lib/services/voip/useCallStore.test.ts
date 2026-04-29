@@ -327,9 +327,13 @@ describe('useCallStore audio commands via VoipNative seam', () => {
 		expect(adapter.recorded).toContainEqual({ cmd: 'startAudio' });
 	});
 
-	it('reset records stopAudio on voipNative', () => {
+	it('reset does NOT record stopAudio on voipNative (stopAudio ownership moved to CallLifecycle.end step 6)', () => {
+		// stopAudio is now called by CallLifecycle._runTeardown as step 6 (after reset()),
+		// so subscribers see consistent JS state when callEnded emits.
+		// Direct reset() calls (e.g. session teardown) do not stop audio — by design.
+		adapter.reset();
 		useCallStore.getState().reset();
-		expect(adapter.recorded).toContainEqual({ cmd: 'stopAudio' });
+		expect(adapter.recorded).not.toContainEqual({ cmd: 'stopAudio' });
 	});
 
 	it('toggleSpeaker records setSpeaker(true) when speaker was off', async () => {
