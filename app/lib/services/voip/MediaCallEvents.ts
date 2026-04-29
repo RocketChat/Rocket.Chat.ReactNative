@@ -1,6 +1,7 @@
 import { isIOS, normalizeDeepLinkingServerHost } from '../../methods/helpers';
 import type { VoipPayload } from '../../../definitions/Voip';
 import { registerPushToken } from '../restApi';
+import { callLifecycle } from './CallLifecycle';
 import { MediaCallLogger } from './MediaCallLogger';
 import { mediaSessionInstance } from './MediaSessionInstance';
 import { useCallStore } from './useCallStore';
@@ -88,7 +89,7 @@ export function createVoipEventDispatcher(adapters: MediaCallEventsAdapters): (e
 		switch (e.type) {
 			case 'endCall': {
 				mediaCallLogger.log(`${TAG} End call event listener:`, e.callUuid);
-				mediaSessionInstance.endCall(e.callUuid);
+				callLifecycle.end('remote');
 				return false;
 			}
 
