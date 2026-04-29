@@ -33,11 +33,8 @@ import {
 } from './lib/methods/helpers/theme';
 import { initializePushNotifications, onNotification } from './lib/notifications';
 import { getInitialNotification, setupVideoConfActionListener } from './lib/notifications/videoConf/getInitialNotification';
-import {
-	getInitialMediaCallEvents,
-	setupMediaCallEvents,
-	type MediaCallEventsAdapters
-} from './lib/services/voip/MediaCallEvents';
+import { createVoipEventDispatcher, type MediaCallEventsAdapters } from './lib/services/voip/MediaCallEvents';
+import { voipNative } from './lib/services/voip/VoipNative';
 import store from './lib/store';
 import { initStore } from './lib/store/auxStore';
 import { type TSupportedThemes, ThemeContext } from './theme';
@@ -133,8 +130,6 @@ export default class Root extends React.Component<{}, IState> {
 
 		// Set up video conf action listener for background accept/decline
 		this.videoConfActionCleanup = setupVideoConfActionListener();
-		// Set up media call event listeners for incoming calls
-		this.mediaCallEventCleanup = setupMediaCallEvents(this.getMediaCallEventsAdapters());
 	}
 
 	componentWillUnmount() {
@@ -164,7 +159,17 @@ export default class Root extends React.Component<{}, IState> {
 			return;
 		}
 
-		const voipInitialHandled = await getInitialMediaCallEvents(this.getMediaCallEventsAdapters());
+		// Single VoIP attach: sets up live listeners and drains cold-start events before resolving.
+		let voipInitialHandled = false;
+		const dispatchVoipEvent = createVoipEventDispatcher(this.getMediaCallEventsAdapters());
+		const { detach } = await voipNative.attach({
+			onEvent: e => {
+				if (dispatchVoipEvent(e)) {
+					voipInitialHandled = true;
+				}
+			}
+		});
+		this.mediaCallEventCleanup = detach;
 		if (voipInitialHandled) {
 			// VoIP path already dispatched navigation (or will via deep linking); do not call appInit() in parallel
 			return;

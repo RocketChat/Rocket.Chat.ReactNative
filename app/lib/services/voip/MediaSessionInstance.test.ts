@@ -80,7 +80,6 @@ jest.mock('react-native-webrtc', () => ({
 	mediaDevices: { getUserMedia: jest.fn() }
 }));
 
-
 jest.mock('react-native-device-info', () => ({
 	default: {
 		getUniqueId: jest.fn(() => 'test-device-id'),

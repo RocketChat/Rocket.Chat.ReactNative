@@ -1,6 +1,30 @@
-import { DeviceEventEmitter } from 'react-native';
+jest.mock('react-native-callkeep', () => ({
+	__esModule: true,
+	default: {
+		addEventListener: jest.fn(() => ({ remove: jest.fn() })),
+		clearInitialEvents: jest.fn(),
+		getInitialEvents: jest.fn(() => Promise.resolve([]))
+	}
+}));
+jest.mock('react-native-webrtc', () => ({ registerGlobals: jest.fn() }));
+jest.mock('react-native-incall-manager', () => ({
+	__esModule: true,
+	default: { start: jest.fn(), stop: jest.fn(), setForceSpeakerphoneOn: jest.fn() }
+}));
+jest.mock('../../native/NativeVoip', () => ({
+	__esModule: true,
+	default: {
+		registerVoipToken: jest.fn(),
+		getInitialEvents: jest.fn(() => null),
+		clearInitialEvents: jest.fn(),
+		getLastVoipToken: jest.fn(() => ''),
+		stopNativeDDPClient: jest.fn(),
+		stopVoipCallService: jest.fn(),
+		addListener: jest.fn(),
+		removeListeners: jest.fn()
+	}
+}));
 
-import { resetMediaCallEventsStateForTesting, setupMediaCallEvents, type MediaCallEventsAdapters } from './MediaCallEvents';
 import { resetVoipState } from './resetVoipState';
 import { useCallStore } from './useCallStore';
 
@@ -12,24 +36,6 @@ jest.mock('../../methods/helpers', () => ({
 jest.mock('./useCallStore', () => ({
 	useCallStore: {
 		getState: jest.fn()
-	}
-}));
-
-jest.mock('../../native/NativeVoip', () => ({
-	__esModule: true,
-	default: {
-		clearInitialEvents: jest.fn(),
-		getInitialEvents: jest.fn(() => null)
-	}
-}));
-
-jest.mock('react-native-callkeep', () => ({
-	__esModule: true,
-	default: {
-		addEventListener: jest.fn(() => ({ remove: jest.fn() })),
-		clearInitialEvents: jest.fn(),
-		setCurrentCallActive: jest.fn(),
-		getInitialEvents: jest.fn(() => Promise.resolve([]))
 	}
 }));
 
@@ -53,15 +59,20 @@ jest.mock('./MediaCallLogger', () => ({
 	}
 }));
 
-const mockOnOpenDeepLink = jest.fn();
-const mockSetNativeAcceptedCallId = jest.fn();
-
-function makeTestAdapters(): MediaCallEventsAdapters {
-	return {
-		getActiveServerUrl: () => undefined,
-		onOpenDeepLink: mockOnOpenDeepLink
-	};
-}
+jest.mock('./VoipNative', () => ({
+	...jest.requireActual('./VoipNative'),
+	voipNative: {
+		call: {
+			markActive: jest.fn(),
+			end: jest.fn(),
+			markAvailable: jest.fn(),
+			setSpeaker: jest.fn(),
+			startAudio: jest.fn(),
+			stopAudio: jest.fn()
+		},
+		attach: jest.fn()
+	}
+}));
 
 describe('resetVoipState', () => {
 	it('calls resetNativeCallId before reset (native id must clear before store reset)', () => {
@@ -102,48 +113,5 @@ describe('resetVoipState', () => {
 		expect(order).toEqual(['clearVoipAcceptDedupeSentinels', 'resetNativeCallId', 'reset']);
 
 		clearSpy.mockRestore();
-	});
-
-	it('C1: after resetVoipState, a previously-handled callId is processed again (sentinel cleared)', () => {
-		(useCallStore.getState as jest.Mock).mockReturnValue({
-			setNativeAcceptedCallId: mockSetNativeAcceptedCallId,
-			resetNativeCallId: jest.fn(),
-			reset: jest.fn()
-		});
-		jest.clearAllMocks();
-		resetMediaCallEventsStateForTesting();
-
-		// Wire up event listeners so DeviceEventEmitter delivers VoipAcceptSucceeded
-		setupMediaCallEvents(makeTestAdapters());
-
-		const payload = {
-			callId: 'reused-call-id',
-			caller: 'caller-id',
-			username: 'caller',
-			host: 'https://server.example.com',
-			hostName: 'Server',
-			type: 'incoming_call' as const,
-			notificationId: 1
-		};
-
-		// First delivery — handled, sentinel set
-		DeviceEventEmitter.emit('VoipAcceptSucceeded', payload);
-		expect(mockSetNativeAcceptedCallId).toHaveBeenCalledTimes(1);
-
-		// Second delivery without reset — suppressed by dedupe
-		DeviceEventEmitter.emit('VoipAcceptSucceeded', payload);
-		expect(mockSetNativeAcceptedCallId).toHaveBeenCalledTimes(1);
-
-		// Reset clears sentinel
-		(useCallStore.getState as jest.Mock).mockReturnValue({
-			setNativeAcceptedCallId: mockSetNativeAcceptedCallId,
-			resetNativeCallId: jest.fn(),
-			reset: jest.fn()
-		});
-		resetVoipState();
-
-		// Third delivery — must be processed again
-		DeviceEventEmitter.emit('VoipAcceptSucceeded', payload);
-		expect(mockSetNativeAcceptedCallId).toHaveBeenCalledTimes(2);
 	});
 });

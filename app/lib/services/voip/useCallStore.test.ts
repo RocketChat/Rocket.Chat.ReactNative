@@ -1,3 +1,30 @@
+jest.mock('react-native-webrtc', () => ({ registerGlobals: jest.fn() }));
+jest.mock('react-native-callkeep', () => ({
+	__esModule: true,
+	default: {
+		addEventListener: jest.fn(() => ({ remove: jest.fn() })),
+		clearInitialEvents: jest.fn(),
+		getInitialEvents: jest.fn(() => Promise.resolve([]))
+	}
+}));
+jest.mock('react-native-incall-manager', () => ({
+	__esModule: true,
+	default: { start: jest.fn(), stop: jest.fn(), setForceSpeakerphoneOn: jest.fn() }
+}));
+jest.mock('../../native/NativeVoip', () => ({
+	__esModule: true,
+	default: {
+		registerVoipToken: jest.fn(),
+		getInitialEvents: jest.fn(() => null),
+		clearInitialEvents: jest.fn(),
+		getLastVoipToken: jest.fn(() => ''),
+		stopNativeDDPClient: jest.fn(),
+		stopVoipCallService: jest.fn(),
+		addListener: jest.fn(),
+		removeListeners: jest.fn()
+	}
+}));
+
 import type { IClientMediaCall } from '@rocket.chat/media-signaling';
 
 import { useCallStore } from './useCallStore';
@@ -11,7 +38,6 @@ jest.mock('../../navigation/appNavigation', () => ({
 jest.mock('../../../containers/ActionSheet', () => ({
 	hideActionSheetRef: jest.fn()
 }));
-
 
 function createMockCall(callId: string, options?: { initialState?: string }) {
 	const initialState = options?.initialState ?? 'active';
