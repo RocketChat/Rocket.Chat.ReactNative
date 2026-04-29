@@ -18,7 +18,7 @@
  *
  * ## Toggle transitions (CallLifecycle.toggle)
  *
- * `toggle(kind, source?, callUuid?)` handles mute, hold, and speaker toggles.
+ * `toggle(kind, source?, callUuid?, targetValue?)` handles mute, hold, and speaker toggles.
  *
  * `source` encodes where the intent originated:
  *   - `'js'`: user-initiated from the JS UI. Updates store, mutates localParticipant,
@@ -31,8 +31,16 @@
  *             This is intentional — markActive is a different kind of command,
  *             not an echo of the hold event itself.
  *
+ * `targetValue` — when provided, the toggle uses this as the desired new value rather
+ * than flipping the current value. This makes the toggle idempotent: if `targetValue`
+ * matches the current store value, the call is a no-op (no store change, no native
+ * command, no `_wasAutoHeld` mutation). Used by `'native'` callers to honour OS payload
+ * assertions (e.g. `e.hold`, `e.muted`). `'js'` callers omit `targetValue` and keep
+ * flip semantics unchanged.
+ *
  * Stale-UUID drop: when `callUuid` is provided it must match the active callId or
- * nativeAcceptedCallId (case-insensitive). Mismatched UUIDs are no-ops. This applies
+ * nativeAcceptedCallId (case-insensitive). Mismatched UUIDs are no-ops for mute and
+ * speaker; for `kind='hold'`, a stale-UUID drop also clears `_wasAutoHeld`. This applies
  * uniformly to all kinds and both platforms — no isIOS branch.
  *
  * `wasAutoHeld` is private state owned by CallLifecycle (not useCallStore, not MediaCallEvents).
@@ -151,23 +159,34 @@ class CallLifecycle {
 	/**
 	 * Toggle mute, hold, or speaker state.
 	 *
-	 * @param kind    — which toggle to perform
-	 * @param source  — `'js'` (user intent) or `'native'` (OS intent). Defaults to `'js'`.
-	 * @param callUuid — optional UUID for stale-event validation. When provided, the toggle
-	 *                   is a no-op if the UUID does not match the active call or nativeAcceptedCallId.
+	 * @param kind        — which toggle to perform
+	 * @param source      — `'js'` (user intent) or `'native'` (OS intent). Defaults to `'js'`.
+	 * @param callUuid    — optional UUID for stale-event validation. When provided, the toggle
+	 *                      is a no-op if the UUID does not match the active call or nativeAcceptedCallId.
+	 *                      For `kind='hold'`, a stale-UUID drop also clears `_wasAutoHeld`.
+	 * @param targetValue — optional target value. When provided, the toggle uses this as the
+	 *                      desired new value (idempotent: no-op when it matches current state).
+	 *                      When omitted, flip semantics apply (current behaviour for 'js' callers).
 	 *
 	 * Returns `Promise<void>` (only speaker is async; mute/hold resolve immediately).
 	 */
-	toggle(kind: ToggleKind, source: ToggleSource = 'js', callUuid?: string): Promise<void> {
+	toggle(kind: ToggleKind, source: ToggleSource = 'js', callUuid?: string, targetValue?: boolean): Promise<void> {
 		const native = this._voipNativeOverride ?? voipNative;
 		const { call, callId, nativeAcceptedCallId, isMuted, isOnHold, isSpeakerOn } = useCallStore.getState();
 
 		// ── Stale-UUID drop ──────────────────────────────────────────────────────
 		// When a callUuid is provided, validate it against the active call.
 		// Applies uniformly to all kinds and both platforms — no isIOS branch.
+		// For kind='hold', a stale drop also defensively clears _wasAutoHeld.
 		if (callUuid !== undefined) {
 			const activeUuid = (callId ?? nativeAcceptedCallId ?? '').toLowerCase();
 			if (!activeUuid || callUuid.toLowerCase() !== activeUuid) {
+				if (kind === 'hold') {
+					// Defensive clear: a stale hold event for a dead call must not leave
+					// _wasAutoHeld=true, which could cause a spurious markActive on the
+					// next call's auto-resume path.
+					this._wasAutoHeld = false;
+				}
 				// Stale event — drop silently.
 				return Promise.resolve();
 			}
@@ -180,7 +199,10 @@ class CallLifecycle {
 
 		switch (kind) {
 			case 'mute': {
-				const newMuted = !isMuted;
+				// Derive effective new value: targetValue wins over flip semantics.
+				const newMuted = targetValue ?? !isMuted;
+				// Idempotent: if the target value already matches current state, do nothing.
+				if (newMuted === isMuted) return Promise.resolve();
 				call!.localParticipant.setMuted(newMuted);
 				useCallStore.setState({ isMuted: newMuted });
 				// Echo prevention: 'native' source does NOT issue a voipNative command.
@@ -191,7 +213,12 @@ class CallLifecycle {
 			}
 
 			case 'hold': {
-				const newHeld = !isOnHold;
+				// Derive effective new value: targetValue wins over flip semantics.
+				const newHeld = targetValue ?? !isOnHold;
+				// Idempotent: if the target value already matches current state, do nothing.
+				// This prevents Regression A (OS sends redundant hold:true while already held)
+				// and Regression B (OS sends delayed hold:false after user manually resumed).
+				if (newHeld === isOnHold) return Promise.resolve();
 				call!.localParticipant.setHeld(newHeld);
 				useCallStore.setState({ isOnHold: newHeld });
 
@@ -226,6 +253,7 @@ class CallLifecycle {
 					return Promise.resolve();
 				}
 				// 'js' source: issue native command and update store.
+				// Speaker keeps flip semantics — targetValue is ignored (always flip for 'js').
 				const newSpeakerOn = !isSpeakerOn;
 				return native.call.setSpeaker(newSpeakerOn).then(() => {
 					useCallStore.setState({ isSpeakerOn: newSpeakerOn });
