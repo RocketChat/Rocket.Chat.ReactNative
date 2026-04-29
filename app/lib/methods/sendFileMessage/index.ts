@@ -1,3 +1,4 @@
+import { View } from 'react-native';
 import { type IUpload, type TSendFileMessageFileInfo, type IUser } from '../../../definitions';
 import { store } from '../../store/auxStore';
 import { compareServerVersion } from '../helpers';
