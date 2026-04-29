@@ -8,6 +8,7 @@ import { getDMSubscriptionByUsername } from '../../database/services/Subscriptio
 import { getUidDirectMessage } from '../../methods/helpers/helpers';
 import { mediaSessionStore } from './MediaSessionStore';
 import { mediaSessionInstance } from './MediaSessionInstance';
+import { callLifecycle } from './CallLifecycle';
 
 jest.mock('../../database/services/Subscription', () => ({
 	getDMSubscriptionByUsername: jest.fn()
@@ -801,21 +802,17 @@ describe('MediaSessionInstance', () => {
 	});
 
 	describe('endCall', () => {
-		it('records markAvailable on voipNative when call is found and hung up', async () => {
+		it('delegates to callLifecycle.end("local") — endCall is a one-line delegate', async () => {
+			// endCall now delegates entirely to callLifecycle.end('local').
+			// Teardown ordering and command recording are tested in CallLifecycle.test.ts.
+			// Here we verify only that the delegate fires (no direct voipNative commands in MediaSessionInstance).
 			await mediaSessionInstance.init('user-1');
-			const session = createdSessions[0];
-			const mainCall = {
-				callId: 'end-1',
-				state: 'active',
-				hangup: jest.fn(),
-				reject: jest.fn()
-			};
-			session.getCallData.mockReturnValue(mainCall);
-			(voipNative as InMemoryVoipNative).reset();
+			const endSpy = jest.spyOn(callLifecycle, 'end').mockResolvedValue(undefined);
 
 			mediaSessionInstance.endCall('end-1');
 
-			expect((voipNative as InMemoryVoipNative).recorded).toContainEqual({ cmd: 'markAvailable', callUuid: 'end-1' });
+			expect(endSpy).toHaveBeenCalledWith('local');
+			endSpy.mockRestore();
 		});
 	});
 });
