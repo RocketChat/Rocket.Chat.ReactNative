@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
 		height: '100%'
 	}
 });
- 
+
 export const ImageViewer = ({ uri = '', width, height, ...props }: ImageViewerProps): React.ReactElement => {
 	const [autoplayGifs] = useUserPreferences<boolean>(AUTOPLAY_GIFS_PREFERENCES_KEY, true);
 	const [isPlaying, setIsPlaying] = useState<boolean>(!!autoplayGifs);
