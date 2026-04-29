@@ -15,7 +15,6 @@ import React from 'react';
 import { act, fireEvent, render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import RNCallKeep from 'react-native-callkeep';
-import InCallManager from 'react-native-incall-manager';
 import type { IClientMediaCall } from '@rocket.chat/media-signaling';
 
 import { NewMediaCall } from './NewMediaCall';
