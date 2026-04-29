@@ -105,6 +105,27 @@ export type ChatEndpoints = {
 			success: boolean;
 		};
 	};
+	'chat.sendMessage': {
+		POST: (params: {
+			message: {
+				_id?: string;
+				rid: string;
+				msg?: string;
+				alias?: string;
+				emoji?: string;
+				avatar?: string;
+				attachments?: any[];
+				tmid?: string;
+				tshow?: boolean;
+				blocks?: any[];
+				customFields?: Record<string, any>;
+				previewUrls?: string[];
+			};
+		}) => {
+			message: IMessage;
+			success: boolean;
+		};
+	};
 	'chat.getPinnedMessages': {
 		GET: (params: { roomId: IServerRoom['_id']; offset: number; count: number }) => {
 			messages: IMessageFromServer[];

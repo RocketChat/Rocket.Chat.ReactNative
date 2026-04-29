@@ -3,6 +3,9 @@ import { type IServerTeamUpdateRoom, type ITeam, type TEAM_TYPE } from '../../IT
 import { type PaginatedResult } from '../helpers/PaginatedResult';
 
 export type TeamsEndpoints = {
+	'teams.delete': {
+		POST: (params: { teamId?: string; teamName?: string; roomsToRemove?: string[] }) => { success: boolean };
+	};
 	'teams.removeRoom': {
 		POST: (params: { roomId: string; teamId: string }) => { room: IServerRoom };
 	};
@@ -37,5 +40,8 @@ export type TeamsEndpoints = {
 			type: string;
 			filter?: any;
 		}) => PaginatedResult<{ rooms: IServerTeamUpdateRoom[] }>;
+	};
+	'teams.leave': {
+		POST: (params: { teamId: string; rooms: string[] }) => { success: boolean };
 	};
 };

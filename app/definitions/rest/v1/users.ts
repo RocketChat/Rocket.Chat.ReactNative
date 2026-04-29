@@ -58,7 +58,7 @@ export type UsersEndpoints = {
 		POST: (params: { userId: string }) => {};
 	};
 	'users.setAvatar': {
-		POST: (params: { avatarUrl: string }) => { success: boolean };
+		POST: (params: { avatarUrl: string; userId?: string }) => { success: boolean };
 	};
 	'users.removeOtherTokens': {
 		POST: (params: { userId: string }) => {};

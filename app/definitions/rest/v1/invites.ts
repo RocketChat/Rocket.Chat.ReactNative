@@ -2,6 +2,9 @@ import type { IInvite } from '../../IInvite';
 import type { IServerRoom } from '../../IRoom';
 
 export type InvitesEndpoints = {
+	findOrCreateInvite: {
+		POST: (params: { rid: string; days: number; maxUses: number }) => IInvite;
+	};
 	listInvites: {
 		GET: () => Array<IInvite>;
 	};

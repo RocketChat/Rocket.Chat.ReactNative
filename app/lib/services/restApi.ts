@@ -432,7 +432,7 @@ export const returnLivechat = (rid: string, departmentId?: string): Promise<any>
 	const serverVersion = reduxStore.getState().server.version;
 
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.12.0')) {
-		return sdk.post('/v1/livechat/room.returnAsInquiry', { roomId: rid, departmentId });
+		return sdk.post('/v1/livechat/inquiries.returnAsInquiry', { roomId: rid, departmentId });
 	}
 
 	// RC 0.72.0
