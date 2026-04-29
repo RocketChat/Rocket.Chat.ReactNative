@@ -1,10 +1,11 @@
 /**
- * CallNavRouter — subscribes to CallLifecycle events and handles post-call navigation.
+ * CallNavRouter — subscribes to CallLifecycle events and handles call navigation.
  *
  * Subscribes ONLY after the NavigationContainer is ready (listens for the
  * `navigationReady` emitter event fired from AppContainer.tsx onReady).
  *
- * On `callEnded`: if the current route is `CallView`, calls `Navigation.goBack()`.
+ * On `callBegan`: navigates to `CallView`.
+ * On `callEnded`: if the current route is `CallView`, calls `Navigation.back()`.
  *
  * Mount point: AppContainer.tsx (after NavigationContainer renders).
  */
@@ -14,6 +15,7 @@ import { emitter } from '../../methods/helpers';
 import { callLifecycle } from './CallLifecycle';
 
 let _unsubscribeCallEnded: (() => void) | null = null;
+let _unsubscribeCallBegan: (() => void) | null = null;
 let _mounted = false;
 
 /**
@@ -27,8 +29,13 @@ function mount(): void {
 	// Wait for NavigationContainer to be ready before subscribing.
 	// The `navigationReady` event is emitted from AppContainer.tsx onReady().
 	function onNavigationReady(): void {
-		// Unsubscribe previous callEnded listener if somehow re-mounted.
+		// Unsubscribe previous listeners if somehow re-mounted.
 		_unsubscribeCallEnded?.();
+		_unsubscribeCallBegan?.();
+
+		_unsubscribeCallBegan = callLifecycle.emitter.on('callBegan', () => {
+			Navigation.navigate('CallView');
+		});
 
 		_unsubscribeCallEnded = callLifecycle.emitter.on('callEnded', () => {
 			const currentRoute = Navigation.getCurrentRoute();
@@ -58,6 +65,8 @@ function mount(): void {
 function unmount(): void {
 	_unsubscribeCallEnded?.();
 	_unsubscribeCallEnded = null;
+	_unsubscribeCallBegan?.();
+	_unsubscribeCallBegan = null;
 	_mounted = false;
 }
 
