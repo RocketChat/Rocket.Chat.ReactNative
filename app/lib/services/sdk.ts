@@ -1,5 +1,5 @@
 import { Rocketchat } from '@rocket.chat/sdk';
-import EJSON from 'ejson';
+import EJSON from 'ejson'; 
 import isEmpty from 'lodash/isEmpty';
 
 import { twoFactor } from './twoFactor';
