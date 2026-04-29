@@ -21,7 +21,7 @@ interface ISeek {
 	duration: SharedValue<number>;
 	currentTime: SharedValue<number>;
 	loaded: boolean;
-	onChangeTime: (time: number) => Promise<void>;
+	onChangeTime: (time: number) => void;
 }
 
 function clamp(value: number, min: number, max: number) {
@@ -50,6 +50,8 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 	const scale = useSharedValue(1);
 	const isPanning = useSharedValue(false);
 	const contextX = useSharedValue(0);
+	const savedTranslateX = useSharedValue(0);
+	const savedCurrentTime = useSharedValue(0);
 
 	const styleLine = useAnimatedStyle(() => ({
 		width: translateX.value
@@ -70,6 +72,8 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 		.onStart(() => {
 			isPanning.value = true;
 			contextX.value = translateX.value;
+			savedTranslateX.value = translateX.value;
+			savedCurrentTime.value = currentTime.value;
 			scale.value = withTiming(1.3, { duration: 150 });
 		})
 		.onUpdate(event => {
@@ -77,16 +81,15 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 			translateX.value = clamp(newX, 0, maxWidth.value);
 		})
 		.onEnd(() => {
-			scheduleOnRN(onChangeTime, Math.round(currentTime.value * 1000));
+			scheduleOnRN(onChangeTime, currentTime.value);
 		})
-		.onFinalize((_, didSucceed) => {
-			if (isPanning.value && !didSucceed) {
-				translateX.value = contextX.value;
-				currentTime.value = (contextX.value * duration.value) / maxWidth.value || 0;
-			}
-
+		.onFinalize(didSucceed => {
 			isPanning.value = false;
 			scale.value = withTiming(1, { duration: 150 });
+			if (!didSucceed) {
+				translateX.value = savedTranslateX.value;
+				currentTime.value = savedCurrentTime.value;
+			}
 		});
 
 	useDerivedValue(() => {

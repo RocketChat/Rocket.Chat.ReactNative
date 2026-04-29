@@ -1,4 +1,4 @@
-import { type AVPlaybackStatus, Audio } from 'expo-av';
+import { createAudioPlayer, type AudioPlayer, type AudioStatus } from 'expo-audio';
 import { Q } from '@nozbe/watermelondb';
 
 import dayjs from '../dayjs';
@@ -6,117 +6,148 @@ import { getMessageById } from '../database/services/Message';
 import database from '../database';
 import { getFilePathAudio } from './getFilePathAudio';
 import { type TMessageModel } from '../../definitions';
-import { AUDIO_MODE } from '../constants/audio';
 import { emitter } from './helpers';
 
-const getAudioKey = ({ msgId, rid, uri }: { msgId?: string; rid: string; uri: string }) => `${msgId}-${rid}-${uri}`;
+function createAudioManager() {
+	const audioQueue: { [audioKey: string]: AudioPlayer } = {};
+	const audioUris: { [audioKey: string]: string } = {};
+	const audioPositions: { [audioKey: string]: number } = {};
+	const audioRates: { [audioKey: string]: number } = {};
+	const audioSubscriptions: { [audioKey: string]: () => void } = {};
+	const audioCallbacks: { [audioKey: string]: (status: AudioStatus) => void } = {};
+	let audioPlaying = '';
+	const audiosRendered = new Set<string>();
 
-class AudioManagerClass {
-	private audioQueue: { [audioKey: string]: Audio.Sound };
-	private audioPlaying: string;
-	private audiosRendered: Set<string>;
-
-	constructor() {
-		this.audioQueue = {};
-		this.audioPlaying = '';
-		this.audiosRendered = new Set<string>();
+	function getAudioKey({ msgId, rid, uri }: { msgId?: string; rid: string; uri: string }) {
+		return `${msgId}-${rid}-${uri}`;
 	}
 
-	addAudioRendered = (audioKey: string) => {
-		this.audiosRendered.add(audioKey);
-	};
+	function addAudioRendered(audioKey: string) {
+		audiosRendered.add(audioKey);
+	}
 
-	removeAudioRendered = (audioKey: string) => {
-		this.audiosRendered.delete(audioKey);
-	};
+	function removeAudioRendered(audioKey: string) {
+		audiosRendered.delete(audioKey);
+	}
 
-	async loadAudio({ msgId, rid, uri }: { rid: string; msgId?: string; uri: string }): Promise<string> {
+	function loadAudio({ msgId, rid, uri }: { rid: string; msgId?: string; uri: string }): string {
 		const audioKey = getAudioKey({ msgId, rid, uri });
-		this.addAudioRendered(audioKey);
-		if (this.audioQueue[audioKey]) {
-			return audioKey;
-		}
-		const { sound } = await Audio.Sound.createAsync({ uri }, { androidImplementation: 'MediaPlayer' });
-		this.audioQueue[audioKey] = sound;
+		addAudioRendered(audioKey);
+		audioUris[audioKey] = uri;
+		if (audioQueue[audioKey]) return audioKey;
+
+		const sound = createAudioPlayer({ uri });
+		audioQueue[audioKey] = sound;
 		return audioKey;
 	}
 
-	async playAudio(audioKey: string) {
-		if (this.audioPlaying) {
-			await this.pauseAudio();
+	async function playAudio(audioKey: string) {
+		if (audioPlaying && audioPlaying !== audioKey) {
+			pauseAudio();
 		}
-		await Audio.setAudioModeAsync(AUDIO_MODE);
-		await this.audioQueue[audioKey]?.playAsync();
-		this.audioPlaying = audioKey;
+
+		// If player was released, recreate it
+		if (!audioQueue[audioKey] && audioUris[audioKey]) {
+			const sound = createAudioPlayer({ uri: audioUris[audioKey] });
+			audioQueue[audioKey] = sound;
+
+			if (audioRates[audioKey] !== undefined) {
+				sound.setPlaybackRate(audioRates[audioKey]);
+			}
+
+			if (audioPositions[audioKey] !== undefined) {
+				await sound.seekTo(audioPositions[audioKey]);
+			}
+
+			// Re-register the callback if it exists
+			if (audioCallbacks[audioKey]) {
+				const sub = sound.addListener('playbackStatusUpdate', status => {
+					onPlaybackStatusUpdate(audioKey, status, audioCallbacks[audioKey]);
+				});
+				if (sub) audioSubscriptions[audioKey] = () => sub.remove?.();
+			}
+		}
+
+		audioQueue[audioKey]?.play();
+		audioPlaying = audioKey;
 		emitter.emit('audioFocused', audioKey);
 	}
 
-	async pauseAudio() {
-		if (this.audioPlaying) {
-			await this.audioQueue[this.audioPlaying]?.pauseAsync();
-			this.audioPlaying = '';
+	function pauseAudio() {
+		if (audioPlaying) {
+			audioQueue[audioPlaying]?.pause();
+			audioPlaying = '';
 		}
 	}
 
-	async setPositionAsync(audioKey: string, time: number) {
+	function setPositionAsync(audioKey: string, time: number) {
+		audioPositions[audioKey] = time;
+		const player = audioQueue[audioKey];
+		if (!player) {
+			return;
+		}
+		player.seekTo(time).catch(() => {
+			// Ignore seek errors
+		});
+	}
+
+	function setRateAsync(audioKey: string, value = 1.0) {
+		audioRates[audioKey] = value;
 		try {
-			await this.audioQueue[audioKey]?.setPositionAsync(time);
+			audioQueue[audioKey]?.setPlaybackRate(value);
 		} catch {
-			// Do nothing
+			// Ignore errors when setting playback rate
 		}
 	}
 
-	async setRateAsync(audioKey: string, value = 1.0) {
-		try {
-			await this.audioQueue[audioKey].setRateAsync(value, true);
-		} catch {
-			// Do nothing
-		}
-	}
-
-	onPlaybackStatusUpdate(audioKey: string, status: AVPlaybackStatus, callback: (status: AVPlaybackStatus) => void) {
+	function onPlaybackStatusUpdate(audioKey: string, status: AudioStatus, callback: (status: AudioStatus) => void) {
 		if (status) {
 			callback(status);
-			this.onEnd(audioKey, status);
+			onEnd(audioKey, status);
 		}
 	}
 
-	setOnPlaybackStatusUpdate(audioKey: string, callback: (status: AVPlaybackStatus) => void): void {
-		return this.audioQueue[audioKey]?.setOnPlaybackStatusUpdate(status =>
-			this.onPlaybackStatusUpdate(audioKey, status, callback)
-		);
+	function setOnPlaybackStatusUpdate(audioKey: string, callback: (status: AudioStatus) => void): void {
+		audioCallbacks[audioKey] = callback;
+		audioSubscriptions[audioKey]?.();
+		const sub = audioQueue[audioKey]?.addListener('playbackStatusUpdate', status => {
+			onPlaybackStatusUpdate(audioKey, status, callback);
+		});
+		if (sub) audioSubscriptions[audioKey] = () => sub.remove?.();
 	}
 
-	async onEnd(audioKey: string, status: AVPlaybackStatus) {
+	async function onEnd(audioKey: string, status: AudioStatus) {
+		if (!audioQueue[audioKey]) {
+			return;
+		}
+
 		if (status.isLoaded && status.didJustFinish) {
 			try {
-				await this.audioQueue[audioKey]?.stopAsync();
-				this.audioPlaying = '';
+				audioSubscriptions[audioKey]?.();
+				delete audioSubscriptions[audioKey];
+				// Don't delete the callback - keep it for replay
+				audioQueue[audioKey].release();
+				delete audioQueue[audioKey];
+				// Reset position to beginning so audio can be played again
+				audioPositions[audioKey] = 0;
+				audioPlaying = '';
 				emitter.emit('audioFocused', '');
-				await this.playNextAudioInSequence(audioKey);
+				await playNextAudioInSequence(audioKey);
 			} catch {
-				// do nothing
+				// Ignore errors during cleanup
 			}
 		}
 	}
 
-	getNextAudioKey = ({ message, rid }: { message: TMessageModel; rid: string }) => {
-		if (!message.attachments) {
-			return;
-		}
+	function getNextAudioKey({ message, rid }: { message: TMessageModel; rid: string }) {
+		if (!message.attachments) return;
 		const { audio_url: audioUrl, audio_type: audioType } = message.attachments[0];
 		const uri = getFilePathAudio({ audioUrl, audioType });
-		if (!uri) {
-			return;
-		}
-		return getAudioKey({
-			msgId: message.id,
-			rid,
-			uri
-		});
-	};
+		if (!uri) return;
+		return getAudioKey({ msgId: message.id, rid, uri });
+	}
 
-	async getNextAudioMessage(msgId: string, rid: string) {
+	async function getNextAudioMessage(msgId: string, rid: string) {
 		const msg = await getMessageById(msgId);
 		if (msg) {
 			const db = database.active;
@@ -127,49 +158,64 @@ class AudioManagerClass {
 			} else {
 				whereClause.push(Q.where('rid', rid), Q.where('tmid', null));
 			}
-
 			const [message] = await db
 				.get('messages')
 				.query(...whereClause)
 				.fetch();
 			return message;
 		}
-
 		return null;
 	}
 
-	async playNextAudioInSequence(previousAudioKey: string) {
+	async function playNextAudioInSequence(previousAudioKey: string) {
 		const [msgId, rid] = previousAudioKey.split('-');
-		const nextMessage = await this.getNextAudioMessage(msgId, rid);
+		const nextMessage = await getNextAudioMessage(msgId, rid);
 		if (nextMessage && nextMessage.attachments) {
-			const nextAudioInSeqKey = this.getNextAudioKey({ message: nextMessage, rid });
-			if (nextAudioInSeqKey && this.audioQueue?.[nextAudioInSeqKey] && this.audiosRendered.has(nextAudioInSeqKey)) {
-				await this.playAudio(nextAudioInSeqKey);
+			const nextAudioInSeqKey = getNextAudioKey({ message: nextMessage, rid });
+			if (nextAudioInSeqKey && audioQueue[nextAudioInSeqKey] && audiosRendered.has(nextAudioInSeqKey)) {
+				await playAudio(nextAudioInSeqKey);
 			}
 		}
 	}
 
-	async unloadRoomAudios(rid?: string) {
-		if (!rid) {
-			return;
-		}
+	async function unloadRoomAudios(rid?: string) {
+		if (!rid) return;
 		const regExp = new RegExp(rid);
-		const roomAudioKeysLoaded = Object.keys(this.audioQueue).filter(audioKey => regExp.test(audioKey));
-		const roomAudiosLoaded = roomAudioKeysLoaded.map(key => this.audioQueue[key]);
+		const roomAudioKeysLoaded = Object.keys(audioQueue).filter(audioKey => regExp.test(audioKey));
+		const roomAudiosLoaded = roomAudioKeysLoaded.map(key => audioQueue[key]);
 		try {
-			await Promise.all(
-				roomAudiosLoaded.map(async audio => {
-					await audio?.stopAsync();
-					await audio?.unloadAsync();
-				})
-			);
-		} catch {
-			// Do nothing
+			await Promise.all(roomAudiosLoaded.map(audio => audio?.release()));
+		} catch (error) {
+			console.log(error);
 		}
-		roomAudioKeysLoaded.forEach(key => delete this.audioQueue[key]);
-		this.audioPlaying = '';
+		roomAudioKeysLoaded.forEach(key => {
+			audioSubscriptions[key]?.();
+			delete audioSubscriptions[key];
+			delete audioCallbacks[key];
+			delete audioQueue[key];
+			delete audioUris[key];
+			delete audioPositions[key];
+			delete audioRates[key];
+		});
+		audioPlaying = '';
 	}
+
+	return {
+		playAudio,
+		pauseAudio,
+		setPositionAsync,
+		setRateAsync,
+		onEnd,
+		unloadRoomAudios,
+		playNextAudioInSequence,
+		getNextAudioKey,
+		getNextAudioMessage,
+		addAudioRendered,
+		removeAudioRendered,
+		loadAudio,
+		onPlaybackStatusUpdate,
+		setOnPlaybackStatusUpdate
+	};
 }
 
-const AudioManager = new AudioManagerClass();
-export default AudioManager;
+export default createAudioManager();

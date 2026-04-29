@@ -1,8 +1,9 @@
 import { CameraRoll } from '@react-native-camera-roll/camera-roll';
 import { useHeaderHeight } from '@react-navigation/elements';
-import { ResizeMode, Video } from 'expo-av';
+import { useVideoPlayer, VideoView } from 'expo-video';
+import { useEventListener } from 'expo';
 import React from 'react';
-import { PermissionsAndroid, useWindowDimensions, View } from 'react-native';
+import { Alert, PermissionsAndroid, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
 import * as FileSystem from 'expo-file-system/legacy';
@@ -16,12 +17,57 @@ import { type IAttachment } from '../definitions';
 import I18n from '../i18n';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { useAppNavigation, useAppRoute } from '../lib/hooks/navigation';
-import { formatAttachmentUrl, isAndroid, fileDownload, showErrorAlert } from '../lib/methods/helpers';
+import { formatAttachmentUrl, isAndroid, fileDownload } from '../lib/methods/helpers';
 import EventEmitter from '../lib/methods/helpers/events';
 import { getUserSelector } from '../selectors/login';
 import { type TNavigation } from '../stacks/stackType';
 import { useTheme } from '../theme';
 import { LOCAL_DOCUMENT_DIRECTORY, getFilename } from '../lib/methods/handleMediaDownload';
+
+const VideoContent = ({
+	attachment,
+	user,
+	baseUrl,
+	setLoading
+}: {
+	attachment: IAttachment;
+	user: { id: string; token: string };
+	baseUrl: string;
+	setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
+	const navigation = useAppNavigation<TNavigation, 'AttachmentView'>();
+
+	const url = formatAttachmentUrl(attachment.title_link || attachment.video_url, user.id, user.token, baseUrl);
+	const uri = encodeURI(url);
+
+	const player = useVideoPlayer(uri, player => {
+		player.play();
+	});
+
+	useEventListener(player, 'statusChange', ({ status }) => {
+		if (status === 'readyToPlay') {
+			setLoading(false);
+		} else if (status === 'error') {
+			setLoading(false);
+			// surface the error to the user, similar to the previous expo-av behavior
+			Alert.alert(I18n.t('Error'), I18n.t('There_was_an_error_while_action', { action: I18n.t('playing_video') }));
+			navigation.goBack();
+		}
+	});
+
+	React.useEffect(() => {
+		const blurSub = navigation.addListener('blur', () => {
+			player.pause();
+		});
+		return () => {
+			blurSub();
+		};
+	}, [navigation, player]);
+
+	return (
+		<VideoView player={player} style={{ flex: 1 }} contentFit='contain' nativeControls allowsFullscreen allowsPictureInPicture />
+	);
+};
 
 const RenderContent = ({
 	setLoading,
@@ -30,11 +76,9 @@ const RenderContent = ({
 	setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 	attachment: IAttachment;
 }) => {
-	const videoRef = React.useRef<Video>(null);
 	const insets = useSafeAreaInsets();
 	const { width, height } = useWindowDimensions();
 	const headerHeight = useHeaderHeight();
-	const navigation = useAppNavigation<TNavigation, 'AttachmentView'>();
 	const { baseUrl, user } = useAppSelector(
 		state => ({
 			baseUrl: state.server.server,
@@ -42,17 +86,6 @@ const RenderContent = ({
 		}),
 		shallowEqual
 	);
-
-	React.useLayoutEffect(() => {
-		const blurSub = navigation.addListener('blur', () => {
-			if (videoRef.current && videoRef.current.stopAsync) {
-				videoRef.current.stopAsync();
-			}
-		});
-		return () => {
-			blurSub();
-		};
-	}, [navigation]);
 
 	if (attachment.image_url) {
 		const url = formatAttachmentUrl(attachment.title_link || attachment.image_url, user.id, user.token, baseUrl);
@@ -67,27 +100,7 @@ const RenderContent = ({
 		);
 	}
 	if (attachment.video_url) {
-		const url = formatAttachmentUrl(attachment.title_link || attachment.video_url, user.id, user.token, baseUrl);
-		const uri = encodeURI(url);
-		return (
-			<Video
-				source={{ uri }}
-				rate={1.0}
-				volume={1.0}
-				isMuted={false}
-				resizeMode={ResizeMode.CONTAIN}
-				shouldPlay
-				isLooping={false}
-				style={{ flex: 1 }}
-				useNativeControls
-				onLoad={() => setLoading(false)}
-				onError={() => {
-					navigation.pop();
-					showErrorAlert(I18n.t('Error_play_video'));
-				}}
-				ref={videoRef}
-			/>
-		);
+		return <VideoContent attachment={attachment} user={user} baseUrl={baseUrl} setLoading={setLoading} />;
 	}
 	return null;
 };
