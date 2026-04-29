@@ -7590,15 +7590,6 @@ expo-modules-core@3.0.29:
   dependencies:
     invariant "^2.2.4"
 
-expo-navigation-bar@~5.0.10:
-  version "5.0.10"
-  resolved "https://registry.yarnpkg.com/expo-navigation-bar/-/expo-navigation-bar-5.0.10.tgz#64e4fdb91ff3872110373b56c8e65d196b40979c"
-  integrity sha512-r9rdLw8mY6GPMQmVVOY/r1NBBw74DZefXHF60HxhRsdNI2kjc1wLdfWfR2rk4JVdOvdMDujnGrc9HQmqM3n8Jg==
-  dependencies:
-    "@react-native/normalize-colors" "0.81.5"
-    debug "^4.3.2"
-    react-native-is-edge-to-edge "^1.2.1"
-
 expo-notifications@~0.32.15:
   version "0.32.15"
   resolved "https://registry.yarnpkg.com/expo-notifications/-/expo-notifications-0.32.15.tgz#33476b5b36aa82553abae677430a658b33264f8a"

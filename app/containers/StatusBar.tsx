@@ -1,5 +1,6 @@
 import React from 'react';
 import { StatusBar as StatusBarRN } from 'expo-status-bar';
+import { NavigationBar } from '@zoontek/react-native-navigation-bar';
 
 import { useTheme } from '../theme';
 
@@ -16,7 +17,12 @@ const StatusBar = ({ barStyle, backgroundColor }: IStatusBar) => {
 			barStyle = 'dark';
 		}
 	}
-	return <StatusBarRN backgroundColor={backgroundColor ?? colors.surfaceNeutral} animated style={barStyle} />;
+	return (
+		<>
+			<StatusBarRN backgroundColor={backgroundColor ?? colors.surfaceNeutral} animated style={barStyle} />
+			<NavigationBar barStyle={barStyle === 'dark' ? 'dark-content' : 'light-content'} />
+		</>
+	);
 };
 
 export default StatusBar;
