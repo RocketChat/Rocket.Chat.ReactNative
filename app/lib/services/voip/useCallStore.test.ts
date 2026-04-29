@@ -1,5 +1,9 @@
 import type { IClientMediaCall } from '@rocket.chat/media-signaling';
+import { Platform } from 'react-native';
+import RNCallKeep from 'react-native-callkeep';
+import InCallManager from 'react-native-incall-manager';
 
+import NativeVoipModule from '../../native/NativeVoip';
 import { useCallStore } from './useCallStore';
 
 jest.mock('../../navigation/appNavigation', () => ({
@@ -18,8 +22,32 @@ jest.mock('react-native-callkeep', () => ({
 	start: jest.fn(),
 	stop: jest.fn(),
 	setForceSpeakerphoneOn: jest.fn(),
-	setAvailable: jest.fn()
+	setAvailable: jest.fn(),
+	setAudioRoute: jest.fn(() => Promise.resolve())
 }));
+
+jest.mock('../../native/NativeVoip', () => ({
+	__esModule: true,
+	default: {
+		setSpeakerOn: jest.fn(() => Promise.resolve(true))
+	}
+}));
+
+// Re-evaluate `isIOS` per-test (the helper module computes it once at import time from Platform.OS,
+// so we replace it with a getter that reflects the current Platform.OS in the test).
+jest.mock('../../methods/helpers', () => {
+	const actual = jest.requireActual('../../methods/helpers');
+	const { Platform } = jest.requireActual('react-native');
+	const proxy: Record<string, unknown> = { ...actual };
+	Object.defineProperty(proxy, 'isIOS', {
+		get() {
+			return Platform.OS === 'ios';
+		},
+		enumerable: true,
+		configurable: true
+	});
+	return proxy;
+});
 
 function createMockCall(callId: string, options?: { initialState?: string }) {
 	const initialState = options?.initialState ?? 'active';
@@ -291,5 +319,80 @@ describe('useCallStore native accepted + stale timer', () => {
 		expect(useCallStore.getState().nativeAcceptedCallId).toBe('b');
 		jest.advanceTimersByTime(1_000);
 		expect(useCallStore.getState().nativeAcceptedCallId).toBeNull();
+	});
+});
+
+describe('useCallStore toggleSpeaker', () => {
+	const originalOS = Platform.OS;
+
+	beforeEach(() => {
+		(RNCallKeep.setAudioRoute as jest.Mock).mockClear();
+		(InCallManager.setForceSpeakerphoneOn as jest.Mock).mockClear();
+		(NativeVoipModule.setSpeakerOn as jest.Mock).mockClear();
+		(NativeVoipModule.setSpeakerOn as jest.Mock).mockImplementation(() => Promise.resolve(true));
+		useCallStore.getState().resetNativeCallId();
+		useCallStore.getState().reset();
+	});
+
+	afterEach(() => {
+		(Platform as { OS: string }).OS = originalOS;
+	});
+
+	describe('Android', () => {
+		beforeEach(() => {
+			(Platform as { OS: string }).OS = 'android';
+		});
+
+		it('routes audio to speaker via NativeVoipModule.setSpeakerOn and flips isSpeakerOn', async () => {
+			const { call } = createMockCall('abc');
+			useCallStore.getState().setCall(call);
+			expect(useCallStore.getState().isSpeakerOn).toBe(false);
+
+			await useCallStore.getState().toggleSpeaker();
+
+			expect(NativeVoipModule.setSpeakerOn).toHaveBeenCalledTimes(1);
+			expect(NativeVoipModule.setSpeakerOn).toHaveBeenCalledWith(true);
+			expect(RNCallKeep.setAudioRoute).not.toHaveBeenCalled();
+			expect(InCallManager.setForceSpeakerphoneOn).not.toHaveBeenCalled();
+			expect(useCallStore.getState().isSpeakerOn).toBe(true);
+
+			await useCallStore.getState().toggleSpeaker();
+
+			expect(NativeVoipModule.setSpeakerOn).toHaveBeenCalledTimes(2);
+			expect(NativeVoipModule.setSpeakerOn).toHaveBeenLastCalledWith(false);
+			expect(useCallStore.getState().isSpeakerOn).toBe(false);
+		});
+
+		it('leaves isSpeakerOn unchanged and logs error when NativeVoipModule.setSpeakerOn rejects', async () => {
+			(NativeVoipModule.setSpeakerOn as jest.Mock).mockImplementationOnce(() => Promise.reject(new Error('E_AUDIO_ROUTE')));
+			const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+			const { call } = createMockCall('abc');
+			useCallStore.getState().setCall(call);
+
+			await useCallStore.getState().toggleSpeaker();
+
+			expect(useCallStore.getState().isSpeakerOn).toBe(false);
+			expect(errorSpy).toHaveBeenCalled();
+			errorSpy.mockRestore();
+		});
+	});
+
+	describe('iOS', () => {
+		beforeEach(() => {
+			(Platform as { OS: string }).OS = 'ios';
+		});
+
+		it('uses InCallManager.setForceSpeakerphoneOn and does not call native speaker module', async () => {
+			const { call } = createMockCall('ios-call');
+			useCallStore.getState().setCall(call);
+
+			await useCallStore.getState().toggleSpeaker();
+
+			expect(InCallManager.setForceSpeakerphoneOn).toHaveBeenCalledTimes(1);
+			expect(InCallManager.setForceSpeakerphoneOn).toHaveBeenCalledWith(true);
+			expect(RNCallKeep.setAudioRoute).not.toHaveBeenCalled();
+			expect(NativeVoipModule.setSpeakerOn).not.toHaveBeenCalled();
+			expect(useCallStore.getState().isSpeakerOn).toBe(true);
+		});
 	});
 });
