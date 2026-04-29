@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { View } from 'react-native';
 import { TabView as ReanimatedTabView, type Route, type NavigationState } from 'reanimated-tab-view';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 
 import styles from './styles';
 import { useTheme } from '../../theme';
@@ -26,19 +26,21 @@ export const TabView = ({ routes, renderTabItem, renderScene }: TabViewProps) =>
 	const renderTabBar = useCallback(
 		({ jumpTo, routeIndex }: { jumpTo: (key: string) => void; routeIndex: number }) => (
 			<View style={styles.tabsContainer}>
-				{routes.map((tab: Route, index: number) => (
-					<View key={tab.key} style={styles.tab}>
-						<TouchableOpacity onPress={() => jumpTo(tab.key)} hitSlop={10}>
-							{renderTabItem(tab, routeIndex === index ? colors.strokeHighlight : colors.fontSecondaryInfo)}
-						</TouchableOpacity>
-						<View
-							style={[
-								styles.tabLine,
-								{ backgroundColor: routeIndex === index ? colors.strokeHighlight : colors.strokeExtraLight }
-							]}
-						/>
-					</View>
-				))}
+				<ScrollView horizontal showsHorizontalScrollIndicator={false}>
+					{routes.map((tab: Route, index: number) => (
+						<View key={tab.key} style={styles.tab}>
+							<TouchableOpacity onPress={() => jumpTo(tab.key)} hitSlop={10}>
+								{renderTabItem(tab, routeIndex === index ? colors.strokeHighlight : colors.fontSecondaryInfo)}
+							</TouchableOpacity>
+							<View
+								style={[
+									styles.tabLine,
+									{ backgroundColor: routeIndex === index ? colors.strokeHighlight : colors.strokeExtraLight }
+								]}
+							/>
+						</View>
+					))}
+				</ScrollView>
 			</View>
 		),
 		[colors, renderTabItem, routes]

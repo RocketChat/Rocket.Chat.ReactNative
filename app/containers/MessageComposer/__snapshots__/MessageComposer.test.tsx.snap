@@ -2522,7 +2522,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={45}
+        handlerTag={46}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3148,7 +3148,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={123}
+        handlerTag={124}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3774,7 +3774,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={149}
+        handlerTag={150}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4400,7 +4400,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={71}
+        handlerTag={72}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5652,7 +5652,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={97}
+        handlerTag={98}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6278,7 +6278,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={58}
+        handlerTag={59}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6904,7 +6904,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={136}
+        handlerTag={137}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7530,7 +7530,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={162}
+        handlerTag={163}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8156,7 +8156,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={84}
+        handlerTag={85}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8782,7 +8782,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={110}
+        handlerTag={111}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -9830,951 +9830,962 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
         <View
           style={
             {
-              "flexDirection": "row",
               "width": "100%",
             }
           }
         >
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "column",
-              }
-            }
+          <RCTScrollView
+            collapsable={false}
+            handlerTag={-1}
+            handlerType="NativeViewGestureHandler"
+            horizontal={true}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            showsHorizontalScrollIndicator={false}
           >
-            <RNGestureHandlerButton
-              collapsable={false}
-              delayLongPress={600}
-              enabled={true}
-              exclusive={true}
-              handlerTag={-1}
-              handlerType="NativeViewGestureHandler"
-              hitSlop={
-                {
-                  "bottom": 10,
-                  "left": 10,
-                  "right": 10,
-                  "top": 10,
-                }
-              }
-              innerRef={null}
-              onGestureHandlerEvent={[Function]}
-              onGestureHandlerStateChange={[Function]}
-              rippleColor="transparent"
-              style={
-                [
-                  undefined,
-                  {
-                    "cursor": undefined,
-                  },
-                ]
-              }
-              touchSoundDisabled={false}
-            >
+            <View>
               <View
-                accessible={true}
-                collapsable={false}
                 style={
                   {
-                    "opacity": 1,
+                    "alignItems": "center",
+                    "flexDirection": "column",
+                    "paddingHorizontal": 8,
                   }
                 }
               >
-                <Text
-                  accessibilityLabel="Recently used"
-                  accessible={true}
-                  allowFontScaling={false}
-                  selectable={false}
+                <RNGestureHandlerButton
+                  collapsable={false}
+                  delayLongPress={600}
+                  enabled={true}
+                  exclusive={true}
+                  handlerTag={-1}
+                  handlerType="NativeViewGestureHandler"
+                  hitSlop={
+                    {
+                      "bottom": 10,
+                      "left": 10,
+                      "right": 10,
+                      "top": 10,
+                    }
+                  }
+                  innerRef={null}
+                  onGestureHandlerEvent={[Function]}
+                  onGestureHandlerStateChange={[Function]}
+                  rippleColor="transparent"
+                  style={
+                    [
+                      undefined,
+                      {
+                        "cursor": undefined,
+                      },
+                    ]
+                  }
+                  touchSoundDisabled={false}
+                >
+                  <View
+                    accessible={true}
+                    collapsable={false}
+                    style={
+                      {
+                        "opacity": 1,
+                      }
+                    }
+                  >
+                    <Text
+                      accessibilityLabel="Recently used"
+                      accessible={true}
+                      allowFontScaling={false}
+                      selectable={false}
+                      style={
+                        [
+                          {
+                            "color": "#156FF5",
+                            "fontSize": 24,
+                          },
+                          [
+                            {
+                              "lineHeight": 24,
+                            },
+                            {
+                              "paddingVertical": 4,
+                            },
+                          ],
+                          {
+                            "fontFamily": "custom",
+                            "fontStyle": "normal",
+                            "fontWeight": "normal",
+                          },
+                          {},
+                        ]
+                      }
+                      testID="emoji-picker-tab-clock"
+                    >
+                      
+                    </Text>
+                  </View>
+                </RNGestureHandlerButton>
+                <View
                   style={
                     [
                       {
-                        "color": "#156FF5",
-                        "fontSize": 24,
+                        "height": 2,
+                        "width": "100%",
                       },
-                      [
-                        {
-                          "lineHeight": 24,
-                        },
-                        {
-                          "paddingVertical": 4,
-                        },
-                      ],
                       {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
+                        "backgroundColor": "#156FF5",
                       },
-                      {},
                     ]
                   }
-                  testID="emoji-picker-tab-clock"
-                >
-                  
-                </Text>
+                />
               </View>
-            </RNGestureHandlerButton>
-            <View
-              style={
-                [
-                  {
-                    "height": 2,
-                    "width": "100%",
-                  },
-                  {
-                    "backgroundColor": "#156FF5",
-                  },
-                ]
-              }
-            />
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "column",
-              }
-            }
-          >
-            <RNGestureHandlerButton
-              collapsable={false}
-              delayLongPress={600}
-              enabled={true}
-              exclusive={true}
-              handlerTag={-1}
-              handlerType="NativeViewGestureHandler"
-              hitSlop={
-                {
-                  "bottom": 10,
-                  "left": 10,
-                  "right": 10,
-                  "top": 10,
-                }
-              }
-              innerRef={null}
-              onGestureHandlerEvent={[Function]}
-              onGestureHandlerStateChange={[Function]}
-              rippleColor="transparent"
-              style={
-                [
-                  undefined,
-                  {
-                    "cursor": undefined,
-                  },
-                ]
-              }
-              touchSoundDisabled={false}
-            >
               <View
-                accessible={true}
-                collapsable={false}
                 style={
                   {
-                    "opacity": 1,
+                    "alignItems": "center",
+                    "flexDirection": "column",
+                    "paddingHorizontal": 8,
                   }
                 }
               >
-                <Text
-                  accessibilityLabel="Smileys and people"
-                  accessible={true}
-                  allowFontScaling={false}
-                  selectable={false}
+                <RNGestureHandlerButton
+                  collapsable={false}
+                  delayLongPress={600}
+                  enabled={true}
+                  exclusive={true}
+                  handlerTag={-1}
+                  handlerType="NativeViewGestureHandler"
+                  hitSlop={
+                    {
+                      "bottom": 10,
+                      "left": 10,
+                      "right": 10,
+                      "top": 10,
+                    }
+                  }
+                  innerRef={null}
+                  onGestureHandlerEvent={[Function]}
+                  onGestureHandlerStateChange={[Function]}
+                  rippleColor="transparent"
+                  style={
+                    [
+                      undefined,
+                      {
+                        "cursor": undefined,
+                      },
+                    ]
+                  }
+                  touchSoundDisabled={false}
+                >
+                  <View
+                    accessible={true}
+                    collapsable={false}
+                    style={
+                      {
+                        "opacity": 1,
+                      }
+                    }
+                  >
+                    <Text
+                      accessibilityLabel="Smileys and people"
+                      accessible={true}
+                      allowFontScaling={false}
+                      selectable={false}
+                      style={
+                        [
+                          {
+                            "color": "#6C727A",
+                            "fontSize": 24,
+                          },
+                          [
+                            {
+                              "lineHeight": 24,
+                            },
+                            {
+                              "paddingVertical": 4,
+                            },
+                          ],
+                          {
+                            "fontFamily": "custom",
+                            "fontStyle": "normal",
+                            "fontWeight": "normal",
+                          },
+                          {},
+                        ]
+                      }
+                      testID="emoji-picker-tab-emoji"
+                    >
+                      
+                    </Text>
+                  </View>
+                </RNGestureHandlerButton>
+                <View
                   style={
                     [
                       {
-                        "color": "#6C727A",
-                        "fontSize": 24,
+                        "height": 2,
+                        "width": "100%",
                       },
-                      [
-                        {
-                          "lineHeight": 24,
-                        },
-                        {
-                          "paddingVertical": 4,
-                        },
-                      ],
                       {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
+                        "backgroundColor": "#EBECEF",
                       },
-                      {},
                     ]
                   }
-                  testID="emoji-picker-tab-emoji"
-                >
-                  
-                </Text>
+                />
               </View>
-            </RNGestureHandlerButton>
-            <View
-              style={
-                [
-                  {
-                    "height": 2,
-                    "width": "100%",
-                  },
-                  {
-                    "backgroundColor": "#EBECEF",
-                  },
-                ]
-              }
-            />
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "column",
-              }
-            }
-          >
-            <RNGestureHandlerButton
-              collapsable={false}
-              delayLongPress={600}
-              enabled={true}
-              exclusive={true}
-              handlerTag={-1}
-              handlerType="NativeViewGestureHandler"
-              hitSlop={
-                {
-                  "bottom": 10,
-                  "left": 10,
-                  "right": 10,
-                  "top": 10,
-                }
-              }
-              innerRef={null}
-              onGestureHandlerEvent={[Function]}
-              onGestureHandlerStateChange={[Function]}
-              rippleColor="transparent"
-              style={
-                [
-                  undefined,
-                  {
-                    "cursor": undefined,
-                  },
-                ]
-              }
-              touchSoundDisabled={false}
-            >
               <View
-                accessible={true}
-                collapsable={false}
                 style={
                   {
-                    "opacity": 1,
+                    "alignItems": "center",
+                    "flexDirection": "column",
+                    "paddingHorizontal": 8,
                   }
                 }
               >
-                <Text
-                  accessibilityLabel="Animals and nature"
-                  accessible={true}
-                  allowFontScaling={false}
-                  selectable={false}
+                <RNGestureHandlerButton
+                  collapsable={false}
+                  delayLongPress={600}
+                  enabled={true}
+                  exclusive={true}
+                  handlerTag={-1}
+                  handlerType="NativeViewGestureHandler"
+                  hitSlop={
+                    {
+                      "bottom": 10,
+                      "left": 10,
+                      "right": 10,
+                      "top": 10,
+                    }
+                  }
+                  innerRef={null}
+                  onGestureHandlerEvent={[Function]}
+                  onGestureHandlerStateChange={[Function]}
+                  rippleColor="transparent"
+                  style={
+                    [
+                      undefined,
+                      {
+                        "cursor": undefined,
+                      },
+                    ]
+                  }
+                  touchSoundDisabled={false}
+                >
+                  <View
+                    accessible={true}
+                    collapsable={false}
+                    style={
+                      {
+                        "opacity": 1,
+                      }
+                    }
+                  >
+                    <Text
+                      accessibilityLabel="Animals and nature"
+                      accessible={true}
+                      allowFontScaling={false}
+                      selectable={false}
+                      style={
+                        [
+                          {
+                            "color": "#6C727A",
+                            "fontSize": 24,
+                          },
+                          [
+                            {
+                              "lineHeight": 24,
+                            },
+                            {
+                              "paddingVertical": 4,
+                            },
+                          ],
+                          {
+                            "fontFamily": "custom",
+                            "fontStyle": "normal",
+                            "fontWeight": "normal",
+                          },
+                          {},
+                        ]
+                      }
+                      testID="emoji-picker-tab-leaf"
+                    >
+                      
+                    </Text>
+                  </View>
+                </RNGestureHandlerButton>
+                <View
                   style={
                     [
                       {
-                        "color": "#6C727A",
-                        "fontSize": 24,
+                        "height": 2,
+                        "width": "100%",
                       },
-                      [
-                        {
-                          "lineHeight": 24,
-                        },
-                        {
-                          "paddingVertical": 4,
-                        },
-                      ],
                       {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
+                        "backgroundColor": "#EBECEF",
                       },
-                      {},
                     ]
                   }
-                  testID="emoji-picker-tab-leaf"
-                >
-                  
-                </Text>
+                />
               </View>
-            </RNGestureHandlerButton>
-            <View
-              style={
-                [
-                  {
-                    "height": 2,
-                    "width": "100%",
-                  },
-                  {
-                    "backgroundColor": "#EBECEF",
-                  },
-                ]
-              }
-            />
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "column",
-              }
-            }
-          >
-            <RNGestureHandlerButton
-              collapsable={false}
-              delayLongPress={600}
-              enabled={true}
-              exclusive={true}
-              handlerTag={-1}
-              handlerType="NativeViewGestureHandler"
-              hitSlop={
-                {
-                  "bottom": 10,
-                  "left": 10,
-                  "right": 10,
-                  "top": 10,
-                }
-              }
-              innerRef={null}
-              onGestureHandlerEvent={[Function]}
-              onGestureHandlerStateChange={[Function]}
-              rippleColor="transparent"
-              style={
-                [
-                  undefined,
-                  {
-                    "cursor": undefined,
-                  },
-                ]
-              }
-              touchSoundDisabled={false}
-            >
               <View
-                accessible={true}
-                collapsable={false}
                 style={
                   {
-                    "opacity": 1,
+                    "alignItems": "center",
+                    "flexDirection": "column",
+                    "paddingHorizontal": 8,
                   }
                 }
               >
-                <Text
-                  accessibilityLabel="Food and drink"
-                  accessible={true}
-                  allowFontScaling={false}
-                  selectable={false}
+                <RNGestureHandlerButton
+                  collapsable={false}
+                  delayLongPress={600}
+                  enabled={true}
+                  exclusive={true}
+                  handlerTag={-1}
+                  handlerType="NativeViewGestureHandler"
+                  hitSlop={
+                    {
+                      "bottom": 10,
+                      "left": 10,
+                      "right": 10,
+                      "top": 10,
+                    }
+                  }
+                  innerRef={null}
+                  onGestureHandlerEvent={[Function]}
+                  onGestureHandlerStateChange={[Function]}
+                  rippleColor="transparent"
+                  style={
+                    [
+                      undefined,
+                      {
+                        "cursor": undefined,
+                      },
+                    ]
+                  }
+                  touchSoundDisabled={false}
+                >
+                  <View
+                    accessible={true}
+                    collapsable={false}
+                    style={
+                      {
+                        "opacity": 1,
+                      }
+                    }
+                  >
+                    <Text
+                      accessibilityLabel="Food and drink"
+                      accessible={true}
+                      allowFontScaling={false}
+                      selectable={false}
+                      style={
+                        [
+                          {
+                            "color": "#6C727A",
+                            "fontSize": 24,
+                          },
+                          [
+                            {
+                              "lineHeight": 24,
+                            },
+                            {
+                              "paddingVertical": 4,
+                            },
+                          ],
+                          {
+                            "fontFamily": "custom",
+                            "fontStyle": "normal",
+                            "fontWeight": "normal",
+                          },
+                          {},
+                        ]
+                      }
+                      testID="emoji-picker-tab-burger"
+                    >
+                      
+                    </Text>
+                  </View>
+                </RNGestureHandlerButton>
+                <View
                   style={
                     [
                       {
-                        "color": "#6C727A",
-                        "fontSize": 24,
+                        "height": 2,
+                        "width": "100%",
                       },
-                      [
-                        {
-                          "lineHeight": 24,
-                        },
-                        {
-                          "paddingVertical": 4,
-                        },
-                      ],
                       {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
+                        "backgroundColor": "#EBECEF",
                       },
-                      {},
                     ]
                   }
-                  testID="emoji-picker-tab-burger"
-                >
-                  
-                </Text>
+                />
               </View>
-            </RNGestureHandlerButton>
-            <View
-              style={
-                [
-                  {
-                    "height": 2,
-                    "width": "100%",
-                  },
-                  {
-                    "backgroundColor": "#EBECEF",
-                  },
-                ]
-              }
-            />
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "column",
-              }
-            }
-          >
-            <RNGestureHandlerButton
-              collapsable={false}
-              delayLongPress={600}
-              enabled={true}
-              exclusive={true}
-              handlerTag={-1}
-              handlerType="NativeViewGestureHandler"
-              hitSlop={
-                {
-                  "bottom": 10,
-                  "left": 10,
-                  "right": 10,
-                  "top": 10,
-                }
-              }
-              innerRef={null}
-              onGestureHandlerEvent={[Function]}
-              onGestureHandlerStateChange={[Function]}
-              rippleColor="transparent"
-              style={
-                [
-                  undefined,
-                  {
-                    "cursor": undefined,
-                  },
-                ]
-              }
-              touchSoundDisabled={false}
-            >
               <View
-                accessible={true}
-                collapsable={false}
                 style={
                   {
-                    "opacity": 1,
+                    "alignItems": "center",
+                    "flexDirection": "column",
+                    "paddingHorizontal": 8,
                   }
                 }
               >
-                <Text
-                  accessibilityLabel="Activity"
-                  accessible={true}
-                  allowFontScaling={false}
-                  selectable={false}
+                <RNGestureHandlerButton
+                  collapsable={false}
+                  delayLongPress={600}
+                  enabled={true}
+                  exclusive={true}
+                  handlerTag={-1}
+                  handlerType="NativeViewGestureHandler"
+                  hitSlop={
+                    {
+                      "bottom": 10,
+                      "left": 10,
+                      "right": 10,
+                      "top": 10,
+                    }
+                  }
+                  innerRef={null}
+                  onGestureHandlerEvent={[Function]}
+                  onGestureHandlerStateChange={[Function]}
+                  rippleColor="transparent"
+                  style={
+                    [
+                      undefined,
+                      {
+                        "cursor": undefined,
+                      },
+                    ]
+                  }
+                  touchSoundDisabled={false}
+                >
+                  <View
+                    accessible={true}
+                    collapsable={false}
+                    style={
+                      {
+                        "opacity": 1,
+                      }
+                    }
+                  >
+                    <Text
+                      accessibilityLabel="Activity"
+                      accessible={true}
+                      allowFontScaling={false}
+                      selectable={false}
+                      style={
+                        [
+                          {
+                            "color": "#6C727A",
+                            "fontSize": 24,
+                          },
+                          [
+                            {
+                              "lineHeight": 24,
+                            },
+                            {
+                              "paddingVertical": 4,
+                            },
+                          ],
+                          {
+                            "fontFamily": "custom",
+                            "fontStyle": "normal",
+                            "fontWeight": "normal",
+                          },
+                          {},
+                        ]
+                      }
+                      testID="emoji-picker-tab-basketball"
+                    >
+                      
+                    </Text>
+                  </View>
+                </RNGestureHandlerButton>
+                <View
                   style={
                     [
                       {
-                        "color": "#6C727A",
-                        "fontSize": 24,
+                        "height": 2,
+                        "width": "100%",
                       },
-                      [
-                        {
-                          "lineHeight": 24,
-                        },
-                        {
-                          "paddingVertical": 4,
-                        },
-                      ],
                       {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
+                        "backgroundColor": "#EBECEF",
                       },
-                      {},
                     ]
                   }
-                  testID="emoji-picker-tab-basketball"
-                >
-                  
-                </Text>
+                />
               </View>
-            </RNGestureHandlerButton>
-            <View
-              style={
-                [
-                  {
-                    "height": 2,
-                    "width": "100%",
-                  },
-                  {
-                    "backgroundColor": "#EBECEF",
-                  },
-                ]
-              }
-            />
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "column",
-              }
-            }
-          >
-            <RNGestureHandlerButton
-              collapsable={false}
-              delayLongPress={600}
-              enabled={true}
-              exclusive={true}
-              handlerTag={-1}
-              handlerType="NativeViewGestureHandler"
-              hitSlop={
-                {
-                  "bottom": 10,
-                  "left": 10,
-                  "right": 10,
-                  "top": 10,
-                }
-              }
-              innerRef={null}
-              onGestureHandlerEvent={[Function]}
-              onGestureHandlerStateChange={[Function]}
-              rippleColor="transparent"
-              style={
-                [
-                  undefined,
-                  {
-                    "cursor": undefined,
-                  },
-                ]
-              }
-              touchSoundDisabled={false}
-            >
               <View
-                accessible={true}
-                collapsable={false}
                 style={
                   {
-                    "opacity": 1,
+                    "alignItems": "center",
+                    "flexDirection": "column",
+                    "paddingHorizontal": 8,
                   }
                 }
               >
-                <Text
-                  accessibilityLabel="Travel and places"
-                  accessible={true}
-                  allowFontScaling={false}
-                  selectable={false}
+                <RNGestureHandlerButton
+                  collapsable={false}
+                  delayLongPress={600}
+                  enabled={true}
+                  exclusive={true}
+                  handlerTag={-1}
+                  handlerType="NativeViewGestureHandler"
+                  hitSlop={
+                    {
+                      "bottom": 10,
+                      "left": 10,
+                      "right": 10,
+                      "top": 10,
+                    }
+                  }
+                  innerRef={null}
+                  onGestureHandlerEvent={[Function]}
+                  onGestureHandlerStateChange={[Function]}
+                  rippleColor="transparent"
+                  style={
+                    [
+                      undefined,
+                      {
+                        "cursor": undefined,
+                      },
+                    ]
+                  }
+                  touchSoundDisabled={false}
+                >
+                  <View
+                    accessible={true}
+                    collapsable={false}
+                    style={
+                      {
+                        "opacity": 1,
+                      }
+                    }
+                  >
+                    <Text
+                      accessibilityLabel="Travel and places"
+                      accessible={true}
+                      allowFontScaling={false}
+                      selectable={false}
+                      style={
+                        [
+                          {
+                            "color": "#6C727A",
+                            "fontSize": 24,
+                          },
+                          [
+                            {
+                              "lineHeight": 24,
+                            },
+                            {
+                              "paddingVertical": 4,
+                            },
+                          ],
+                          {
+                            "fontFamily": "custom",
+                            "fontStyle": "normal",
+                            "fontWeight": "normal",
+                          },
+                          {},
+                        ]
+                      }
+                      testID="emoji-picker-tab-airplane"
+                    >
+                      
+                    </Text>
+                  </View>
+                </RNGestureHandlerButton>
+                <View
                   style={
                     [
                       {
-                        "color": "#6C727A",
-                        "fontSize": 24,
+                        "height": 2,
+                        "width": "100%",
                       },
-                      [
-                        {
-                          "lineHeight": 24,
-                        },
-                        {
-                          "paddingVertical": 4,
-                        },
-                      ],
                       {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
+                        "backgroundColor": "#EBECEF",
                       },
-                      {},
                     ]
                   }
-                  testID="emoji-picker-tab-airplane"
-                >
-                  
-                </Text>
+                />
               </View>
-            </RNGestureHandlerButton>
-            <View
-              style={
-                [
-                  {
-                    "height": 2,
-                    "width": "100%",
-                  },
-                  {
-                    "backgroundColor": "#EBECEF",
-                  },
-                ]
-              }
-            />
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "column",
-              }
-            }
-          >
-            <RNGestureHandlerButton
-              collapsable={false}
-              delayLongPress={600}
-              enabled={true}
-              exclusive={true}
-              handlerTag={-1}
-              handlerType="NativeViewGestureHandler"
-              hitSlop={
-                {
-                  "bottom": 10,
-                  "left": 10,
-                  "right": 10,
-                  "top": 10,
-                }
-              }
-              innerRef={null}
-              onGestureHandlerEvent={[Function]}
-              onGestureHandlerStateChange={[Function]}
-              rippleColor="transparent"
-              style={
-                [
-                  undefined,
-                  {
-                    "cursor": undefined,
-                  },
-                ]
-              }
-              touchSoundDisabled={false}
-            >
               <View
-                accessible={true}
-                collapsable={false}
                 style={
                   {
-                    "opacity": 1,
+                    "alignItems": "center",
+                    "flexDirection": "column",
+                    "paddingHorizontal": 8,
                   }
                 }
               >
-                <Text
-                  accessibilityLabel="Objects"
-                  accessible={true}
-                  allowFontScaling={false}
-                  selectable={false}
+                <RNGestureHandlerButton
+                  collapsable={false}
+                  delayLongPress={600}
+                  enabled={true}
+                  exclusive={true}
+                  handlerTag={-1}
+                  handlerType="NativeViewGestureHandler"
+                  hitSlop={
+                    {
+                      "bottom": 10,
+                      "left": 10,
+                      "right": 10,
+                      "top": 10,
+                    }
+                  }
+                  innerRef={null}
+                  onGestureHandlerEvent={[Function]}
+                  onGestureHandlerStateChange={[Function]}
+                  rippleColor="transparent"
+                  style={
+                    [
+                      undefined,
+                      {
+                        "cursor": undefined,
+                      },
+                    ]
+                  }
+                  touchSoundDisabled={false}
+                >
+                  <View
+                    accessible={true}
+                    collapsable={false}
+                    style={
+                      {
+                        "opacity": 1,
+                      }
+                    }
+                  >
+                    <Text
+                      accessibilityLabel="Objects"
+                      accessible={true}
+                      allowFontScaling={false}
+                      selectable={false}
+                      style={
+                        [
+                          {
+                            "color": "#6C727A",
+                            "fontSize": 24,
+                          },
+                          [
+                            {
+                              "lineHeight": 24,
+                            },
+                            {
+                              "paddingVertical": 4,
+                            },
+                          ],
+                          {
+                            "fontFamily": "custom",
+                            "fontStyle": "normal",
+                            "fontWeight": "normal",
+                          },
+                          {},
+                        ]
+                      }
+                      testID="emoji-picker-tab-lamp-bulb"
+                    >
+                      
+                    </Text>
+                  </View>
+                </RNGestureHandlerButton>
+                <View
                   style={
                     [
                       {
-                        "color": "#6C727A",
-                        "fontSize": 24,
+                        "height": 2,
+                        "width": "100%",
                       },
-                      [
-                        {
-                          "lineHeight": 24,
-                        },
-                        {
-                          "paddingVertical": 4,
-                        },
-                      ],
                       {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
+                        "backgroundColor": "#EBECEF",
                       },
-                      {},
                     ]
                   }
-                  testID="emoji-picker-tab-lamp-bulb"
-                >
-                  
-                </Text>
+                />
               </View>
-            </RNGestureHandlerButton>
-            <View
-              style={
-                [
-                  {
-                    "height": 2,
-                    "width": "100%",
-                  },
-                  {
-                    "backgroundColor": "#EBECEF",
-                  },
-                ]
-              }
-            />
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "column",
-              }
-            }
-          >
-            <RNGestureHandlerButton
-              collapsable={false}
-              delayLongPress={600}
-              enabled={true}
-              exclusive={true}
-              handlerTag={-1}
-              handlerType="NativeViewGestureHandler"
-              hitSlop={
-                {
-                  "bottom": 10,
-                  "left": 10,
-                  "right": 10,
-                  "top": 10,
-                }
-              }
-              innerRef={null}
-              onGestureHandlerEvent={[Function]}
-              onGestureHandlerStateChange={[Function]}
-              rippleColor="transparent"
-              style={
-                [
-                  undefined,
-                  {
-                    "cursor": undefined,
-                  },
-                ]
-              }
-              touchSoundDisabled={false}
-            >
               <View
-                accessible={true}
-                collapsable={false}
                 style={
                   {
-                    "opacity": 1,
+                    "alignItems": "center",
+                    "flexDirection": "column",
+                    "paddingHorizontal": 8,
                   }
                 }
               >
-                <Text
-                  accessibilityLabel="Symbols"
-                  accessible={true}
-                  allowFontScaling={false}
-                  selectable={false}
+                <RNGestureHandlerButton
+                  collapsable={false}
+                  delayLongPress={600}
+                  enabled={true}
+                  exclusive={true}
+                  handlerTag={-1}
+                  handlerType="NativeViewGestureHandler"
+                  hitSlop={
+                    {
+                      "bottom": 10,
+                      "left": 10,
+                      "right": 10,
+                      "top": 10,
+                    }
+                  }
+                  innerRef={null}
+                  onGestureHandlerEvent={[Function]}
+                  onGestureHandlerStateChange={[Function]}
+                  rippleColor="transparent"
+                  style={
+                    [
+                      undefined,
+                      {
+                        "cursor": undefined,
+                      },
+                    ]
+                  }
+                  touchSoundDisabled={false}
+                >
+                  <View
+                    accessible={true}
+                    collapsable={false}
+                    style={
+                      {
+                        "opacity": 1,
+                      }
+                    }
+                  >
+                    <Text
+                      accessibilityLabel="Symbols"
+                      accessible={true}
+                      allowFontScaling={false}
+                      selectable={false}
+                      style={
+                        [
+                          {
+                            "color": "#6C727A",
+                            "fontSize": 24,
+                          },
+                          [
+                            {
+                              "lineHeight": 24,
+                            },
+                            {
+                              "paddingVertical": 4,
+                            },
+                          ],
+                          {
+                            "fontFamily": "custom",
+                            "fontStyle": "normal",
+                            "fontWeight": "normal",
+                          },
+                          {},
+                        ]
+                      }
+                      testID="emoji-picker-tab-percentage"
+                    >
+                      
+                    </Text>
+                  </View>
+                </RNGestureHandlerButton>
+                <View
                   style={
                     [
                       {
-                        "color": "#6C727A",
-                        "fontSize": 24,
+                        "height": 2,
+                        "width": "100%",
                       },
-                      [
-                        {
-                          "lineHeight": 24,
-                        },
-                        {
-                          "paddingVertical": 4,
-                        },
-                      ],
                       {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
+                        "backgroundColor": "#EBECEF",
                       },
-                      {},
                     ]
                   }
-                  testID="emoji-picker-tab-percentage"
-                >
-                  
-                </Text>
+                />
               </View>
-            </RNGestureHandlerButton>
-            <View
-              style={
-                [
-                  {
-                    "height": 2,
-                    "width": "100%",
-                  },
-                  {
-                    "backgroundColor": "#EBECEF",
-                  },
-                ]
-              }
-            />
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "column",
-              }
-            }
-          >
-            <RNGestureHandlerButton
-              collapsable={false}
-              delayLongPress={600}
-              enabled={true}
-              exclusive={true}
-              handlerTag={-1}
-              handlerType="NativeViewGestureHandler"
-              hitSlop={
-                {
-                  "bottom": 10,
-                  "left": 10,
-                  "right": 10,
-                  "top": 10,
-                }
-              }
-              innerRef={null}
-              onGestureHandlerEvent={[Function]}
-              onGestureHandlerStateChange={[Function]}
-              rippleColor="transparent"
-              style={
-                [
-                  undefined,
-                  {
-                    "cursor": undefined,
-                  },
-                ]
-              }
-              touchSoundDisabled={false}
-            >
               <View
-                accessible={true}
-                collapsable={false}
                 style={
                   {
-                    "opacity": 1,
+                    "alignItems": "center",
+                    "flexDirection": "column",
+                    "paddingHorizontal": 8,
                   }
                 }
               >
-                <Text
-                  accessibilityLabel="Flags"
-                  accessible={true}
-                  allowFontScaling={false}
-                  selectable={false}
+                <RNGestureHandlerButton
+                  collapsable={false}
+                  delayLongPress={600}
+                  enabled={true}
+                  exclusive={true}
+                  handlerTag={-1}
+                  handlerType="NativeViewGestureHandler"
+                  hitSlop={
+                    {
+                      "bottom": 10,
+                      "left": 10,
+                      "right": 10,
+                      "top": 10,
+                    }
+                  }
+                  innerRef={null}
+                  onGestureHandlerEvent={[Function]}
+                  onGestureHandlerStateChange={[Function]}
+                  rippleColor="transparent"
+                  style={
+                    [
+                      undefined,
+                      {
+                        "cursor": undefined,
+                      },
+                    ]
+                  }
+                  touchSoundDisabled={false}
+                >
+                  <View
+                    accessible={true}
+                    collapsable={false}
+                    style={
+                      {
+                        "opacity": 1,
+                      }
+                    }
+                  >
+                    <Text
+                      accessibilityLabel="Flags"
+                      accessible={true}
+                      allowFontScaling={false}
+                      selectable={false}
+                      style={
+                        [
+                          {
+                            "color": "#6C727A",
+                            "fontSize": 24,
+                          },
+                          [
+                            {
+                              "lineHeight": 24,
+                            },
+                            {
+                              "paddingVertical": 4,
+                            },
+                          ],
+                          {
+                            "fontFamily": "custom",
+                            "fontStyle": "normal",
+                            "fontWeight": "normal",
+                          },
+                          {},
+                        ]
+                      }
+                      testID="emoji-picker-tab-flag"
+                    >
+                      
+                    </Text>
+                  </View>
+                </RNGestureHandlerButton>
+                <View
                   style={
                     [
                       {
-                        "color": "#6C727A",
-                        "fontSize": 24,
+                        "height": 2,
+                        "width": "100%",
                       },
-                      [
-                        {
-                          "lineHeight": 24,
-                        },
-                        {
-                          "paddingVertical": 4,
-                        },
-                      ],
                       {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
+                        "backgroundColor": "#EBECEF",
                       },
-                      {},
                     ]
                   }
-                  testID="emoji-picker-tab-flag"
-                >
-                  
-                </Text>
+                />
               </View>
-            </RNGestureHandlerButton>
-            <View
-              style={
-                [
-                  {
-                    "height": 2,
-                    "width": "100%",
-                  },
-                  {
-                    "backgroundColor": "#EBECEF",
-                  },
-                ]
-              }
-            />
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "column",
-              }
-            }
-          >
-            <RNGestureHandlerButton
-              collapsable={false}
-              delayLongPress={600}
-              enabled={true}
-              exclusive={true}
-              handlerTag={-1}
-              handlerType="NativeViewGestureHandler"
-              hitSlop={
-                {
-                  "bottom": 10,
-                  "left": 10,
-                  "right": 10,
-                  "top": 10,
-                }
-              }
-              innerRef={null}
-              onGestureHandlerEvent={[Function]}
-              onGestureHandlerStateChange={[Function]}
-              rippleColor="transparent"
-              style={
-                [
-                  undefined,
-                  {
-                    "cursor": undefined,
-                  },
-                ]
-              }
-              touchSoundDisabled={false}
-            >
               <View
-                accessible={true}
-                collapsable={false}
                 style={
                   {
-                    "opacity": 1,
+                    "alignItems": "center",
+                    "flexDirection": "column",
+                    "paddingHorizontal": 8,
                   }
                 }
               >
-                <Text
-                  accessibilityLabel="Custom"
-                  accessible={true}
-                  allowFontScaling={false}
-                  selectable={false}
+                <RNGestureHandlerButton
+                  collapsable={false}
+                  delayLongPress={600}
+                  enabled={true}
+                  exclusive={true}
+                  handlerTag={-1}
+                  handlerType="NativeViewGestureHandler"
+                  hitSlop={
+                    {
+                      "bottom": 10,
+                      "left": 10,
+                      "right": 10,
+                      "top": 10,
+                    }
+                  }
+                  innerRef={null}
+                  onGestureHandlerEvent={[Function]}
+                  onGestureHandlerStateChange={[Function]}
+                  rippleColor="transparent"
+                  style={
+                    [
+                      undefined,
+                      {
+                        "cursor": undefined,
+                      },
+                    ]
+                  }
+                  touchSoundDisabled={false}
+                >
+                  <View
+                    accessible={true}
+                    collapsable={false}
+                    style={
+                      {
+                        "opacity": 1,
+                      }
+                    }
+                  >
+                    <Text
+                      accessibilityLabel="Custom"
+                      accessible={true}
+                      allowFontScaling={false}
+                      selectable={false}
+                      style={
+                        [
+                          {
+                            "color": "#6C727A",
+                            "fontSize": 24,
+                          },
+                          [
+                            {
+                              "lineHeight": 24,
+                            },
+                            {
+                              "paddingVertical": 4,
+                            },
+                          ],
+                          {
+                            "fontFamily": "custom",
+                            "fontStyle": "normal",
+                            "fontWeight": "normal",
+                          },
+                          {},
+                        ]
+                      }
+                      testID="emoji-picker-tab-rocket"
+                    >
+                      
+                    </Text>
+                  </View>
+                </RNGestureHandlerButton>
+                <View
                   style={
                     [
                       {
-                        "color": "#6C727A",
-                        "fontSize": 24,
+                        "height": 2,
+                        "width": "100%",
                       },
-                      [
-                        {
-                          "lineHeight": 24,
-                        },
-                        {
-                          "paddingVertical": 4,
-                        },
-                      ],
                       {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
+                        "backgroundColor": "#EBECEF",
                       },
-                      {},
                     ]
                   }
-                  testID="emoji-picker-tab-rocket"
-                >
-                  
-                </Text>
+                />
               </View>
-            </RNGestureHandlerButton>
-            <View
-              style={
-                [
-                  {
-                    "height": 2,
-                    "width": "100%",
-                  },
-                  {
-                    "backgroundColor": "#EBECEF",
-                  },
-                ]
-              }
-            />
-          </View>
+            </View>
+          </RCTScrollView>
         </View>
         <View
           collapsable={false}
@@ -11637,7 +11648,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={175}
+        handlerTag={176}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
