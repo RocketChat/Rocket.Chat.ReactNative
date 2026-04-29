@@ -2,8 +2,9 @@ import CookieManager from '@react-native-cookies/cookies';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import React, { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, Linking, SafeAreaView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Linking, StyleSheet, View } from 'react-native';
 import WebView, { type WebViewNavigation } from 'react-native-webview';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { userAgent } from '../../lib/constants/userAgent';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';

@@ -5092,6 +5092,11 @@
   resolved "https://registry.yarnpkg.com/@yarnpkg/lockfile/-/lockfile-1.1.0.tgz#e77a97fbd345b76d83245edcd17d393b1b41fb31"
   integrity sha512-GpSwvyXOcOOlV70vbnzjj4fW5xW/FdUF6nQEt1ENy7m4ZCczi1+/buVUPAqmGfqznsORNFzUMjctTIp8a9tuCQ==
 
+"@zoontek/react-native-navigation-bar@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@zoontek/react-native-navigation-bar/-/react-native-navigation-bar-1.1.1.tgz#4b06e2efeeebfe691bef287931bf66638a06835f"
+  integrity sha512-uk1snKg+M6uzXL5kXyEqPVAg2YgKpSlO1xlTEWaSR9PcbTpzkp3EhhiRbE7EQo7IyU0fzcNuVJ7tyloTIGSJlA==
+
 abab@^2.0.6:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/abab/-/abab-2.0.6.tgz#41b80f2c871d19686216b82309231cfd3cb3d291"
@@ -7584,15 +7589,6 @@ expo-modules-core@3.0.29:
   integrity sha512-LzipcjGqk8gvkrOUf7O2mejNWugPkf3lmd9GkqL9WuNyeN2fRwU0Dn77e3ZUKI3k6sI+DNwjkq4Nu9fNN9WS7Q==
   dependencies:
     invariant "^2.2.4"
-
-expo-navigation-bar@~5.0.10:
-  version "5.0.10"
-  resolved "https://registry.yarnpkg.com/expo-navigation-bar/-/expo-navigation-bar-5.0.10.tgz#64e4fdb91ff3872110373b56c8e65d196b40979c"
-  integrity sha512-r9rdLw8mY6GPMQmVVOY/r1NBBw74DZefXHF60HxhRsdNI2kjc1wLdfWfR2rk4JVdOvdMDujnGrc9HQmqM3n8Jg==
-  dependencies:
-    "@react-native/normalize-colors" "0.81.5"
-    debug "^4.3.2"
-    react-native-is-edge-to-edge "^1.2.1"
 
 expo-notifications@~0.32.15:
   version "0.32.15"

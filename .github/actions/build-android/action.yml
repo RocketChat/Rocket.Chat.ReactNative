@@ -85,6 +85,7 @@ runs:
         echo -e "reactNativeArchitectures=armeabi-v7a,arm64-v8a,x86,x86_64" >> ./gradle.properties
         echo -e "newArchEnabled=true" >> ./gradle.properties
         echo -e "hermesEnabled=true" >> ./gradle.properties
+        echo -e "edgeToEdgeEnabled=true" >> ./gradle.properties
         echo -e "VERSIONCODE=${{ inputs.BUILD_VERSION }}" >> ./gradle.properties
 
         if [[ "${{ inputs.type }}" == "experimental" ]]; then

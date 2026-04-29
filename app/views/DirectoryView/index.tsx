@@ -181,8 +181,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 					toggleWorkspace={this.toggleWorkspace}
 					isFederationEnabled={isFederationEnabled}
 				/>
-			),
-			enableContentPanningGesture: false
+			)
 		});
 	};
 
