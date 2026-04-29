@@ -15,7 +15,6 @@ import React from 'react';
 import { act, fireEvent, render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import RNCallKeep from 'react-native-callkeep';
-import InCallManager from 'react-native-incall-manager';
 import type { IClientMediaCall } from '@rocket.chat/media-signaling';
 
 import { NewMediaCall } from './NewMediaCall';
@@ -569,7 +568,7 @@ describe('VoIP call lifecycle (integration)', () => {
 				await flushMicrotasks();
 			});
 
-			expect(RNCallKeep.setCurrentCallActive as jest.Mock).toHaveBeenCalledWith('incoming-1');
+			expect((voipNative as InMemoryVoipNative).recorded).toContainEqual({ cmd: 'markActive', callUuid: 'incoming-1' });
 			expect(Navigation.navigate).toHaveBeenCalledWith('CallView');
 			expect(useCallStore.getState().call?.callId).toBe('incoming-1');
 		});
@@ -762,13 +761,13 @@ describe('VoIP call lifecycle (integration)', () => {
 			await act(async () => {
 				await useCallStore.getState().toggleSpeaker();
 			});
-			expect(InCallManager.setForceSpeakerphoneOn as jest.Mock).toHaveBeenCalledWith(true);
+			expect((voipNative as InMemoryVoipNative).recorded).toContainEqual({ cmd: 'setSpeaker', on: true });
 			expect(useCallStore.getState().isSpeakerOn).toBe(true);
 
 			await act(async () => {
 				await useCallStore.getState().toggleSpeaker();
 			});
-			expect(InCallManager.setForceSpeakerphoneOn as jest.Mock).toHaveBeenCalledWith(false);
+			expect((voipNative as InMemoryVoipNative).recorded).toContainEqual({ cmd: 'setSpeaker', on: false });
 			expect(useCallStore.getState().isSpeakerOn).toBe(false);
 		});
 	});
@@ -859,7 +858,7 @@ describe('VoIP call lifecycle (integration)', () => {
 
 			expect(useCallStore.getState().callState).toBe('active');
 			expect(useCallStore.getState().callStartTime).not.toBeNull();
-			expect(RNCallKeep.setCurrentCallActive as jest.Mock).toHaveBeenCalledWith('state-1');
+			expect((voipNative as InMemoryVoipNative).recorded).toContainEqual({ cmd: 'markActive', callUuid: 'state-1' });
 		});
 	});
 
