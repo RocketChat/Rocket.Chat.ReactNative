@@ -1,3 +1,9 @@
+import type { IClientMediaCall } from '@rocket.chat/media-signaling';
+
+import { useCallStore } from './useCallStore';
+import { voipNative } from './VoipNative';
+import type { InMemoryVoipNative } from './VoipNative';
+
 jest.mock('react-native-webrtc', () => ({ registerGlobals: jest.fn() }));
 jest.mock('react-native-callkeep', () => ({
 	__esModule: true,
@@ -24,12 +30,6 @@ jest.mock('../../native/NativeVoip', () => ({
 		removeListeners: jest.fn()
 	}
 }));
-
-import type { IClientMediaCall } from '@rocket.chat/media-signaling';
-
-import { useCallStore } from './useCallStore';
-import { voipNative, InMemoryVoipNative } from './VoipNative';
-
 jest.mock('../../navigation/appNavigation', () => ({
 	__esModule: true,
 	default: { navigate: jest.fn(), back: jest.fn() }
@@ -102,7 +102,6 @@ describe('createMockCall emitter', () => {
 
 describe('useCallStore controlsVisible', () => {
 	beforeEach(() => {
-		useCallStore.getState().resetNativeCallId();
 		useCallStore.getState().reset();
 	});
 
@@ -158,7 +157,6 @@ describe('useCallStore controlsVisible', () => {
 
 describe('useCallStore roomId', () => {
 	beforeEach(() => {
-		useCallStore.getState().resetNativeCallId();
 		useCallStore.getState().reset();
 	});
 
@@ -183,7 +181,6 @@ describe('useCallStore roomId', () => {
 
 describe('useCallStore direction', () => {
 	beforeEach(() => {
-		useCallStore.getState().resetNativeCallId();
 		useCallStore.getState().reset();
 	});
 
@@ -207,7 +204,6 @@ describe('useCallStore direction', () => {
 
 describe('useCallStore callStartTime', () => {
 	beforeEach(() => {
-		useCallStore.getState().resetNativeCallId();
 		useCallStore.getState().reset();
 	});
 
@@ -231,93 +227,11 @@ describe('useCallStore callStartTime', () => {
 	});
 });
 
-describe('useCallStore native accepted + stale timer', () => {
-	beforeEach(() => {
-		jest.useFakeTimers();
-		useCallStore.getState().resetNativeCallId();
-		useCallStore.getState().reset();
-	});
-
-	afterEach(() => {
-		jest.clearAllTimers();
-		jest.useRealTimers();
-	});
-
-	it('reset preserves nativeAcceptedCallId', () => {
-		useCallStore.getState().setNativeAcceptedCallId('cid');
-		useCallStore.getState().reset();
-		const s = useCallStore.getState();
-		expect(s.nativeAcceptedCallId).toBe('cid');
-		expect(s.callId).toBeNull();
-		expect(s.call).toBeNull();
-	});
-
-	it('resetNativeCallId clears sticky id and callId when unbound', () => {
-		useCallStore.getState().setNativeAcceptedCallId('cid');
-		useCallStore.getState().resetNativeCallId();
-		const s = useCallStore.getState();
-		expect(s.nativeAcceptedCallId).toBeNull();
-		expect(s.callId).toBeNull();
-	});
-
-	it('setNativeAcceptedCallId sets only nativeAcceptedCallId (not transient callId)', () => {
-		useCallStore.getState().setNativeAcceptedCallId('x');
-		const s = useCallStore.getState();
-		expect(s.nativeAcceptedCallId).toBe('x');
-		expect(s.callId).toBeNull();
-	});
-
-	it('setNativeAcceptedCallId overwrites previous sticky id', () => {
-		useCallStore.getState().setNativeAcceptedCallId('a');
-		useCallStore.getState().setNativeAcceptedCallId('b');
-		const s = useCallStore.getState();
-		expect(s.nativeAcceptedCallId).toBe('b');
-		expect(s.callId).toBeNull();
-	});
-
-	it('after 60s unbound, clears nativeAcceptedCallId when id still matches scheduled token', () => {
-		useCallStore.getState().setNativeAcceptedCallId('stale');
-		jest.advanceTimersByTime(60_000);
-		const s = useCallStore.getState();
-		expect(s.nativeAcceptedCallId).toBeNull();
-		expect(s.callId).toBeNull();
-	});
-
-	it('setCall clears native id and cancels stale timer so advance does not clear bound call context', () => {
-		useCallStore.getState().setNativeAcceptedCallId('x');
-		useCallStore.getState().setCall(createMockCall('x').call);
-		jest.advanceTimersByTime(60_000);
-		expect(useCallStore.getState().call).not.toBeNull();
-		expect(useCallStore.getState().nativeAcceptedCallId).toBeNull();
-	});
-
-	it('reset() preserves id and restarts 60s window from last reset', () => {
-		useCallStore.getState().setNativeAcceptedCallId('keep');
-		jest.advanceTimersByTime(59_000);
-		useCallStore.getState().reset();
-		jest.advanceTimersByTime(59_000);
-		expect(useCallStore.getState().nativeAcceptedCallId).toBe('keep');
-		jest.advanceTimersByTime(1_000);
-		expect(useCallStore.getState().nativeAcceptedCallId).toBeNull();
-	});
-
-	it('replacing native id restarts timer so old deadline does not clear new id', () => {
-		useCallStore.getState().setNativeAcceptedCallId('a');
-		jest.advanceTimersByTime(59_000);
-		useCallStore.getState().setNativeAcceptedCallId('b');
-		jest.advanceTimersByTime(59_000);
-		expect(useCallStore.getState().nativeAcceptedCallId).toBe('b');
-		jest.advanceTimersByTime(1_000);
-		expect(useCallStore.getState().nativeAcceptedCallId).toBeNull();
-	});
-});
-
 describe('useCallStore audio commands via VoipNative seam', () => {
 	const adapter = voipNative as InMemoryVoipNative;
 
 	beforeEach(() => {
 		adapter.reset();
-		useCallStore.getState().resetNativeCallId();
 		useCallStore.getState().reset();
 	});
 

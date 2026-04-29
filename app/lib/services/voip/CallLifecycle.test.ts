@@ -5,9 +5,18 @@
  *   - Teardown ordering verified via InMemoryVoipNative.recorded
  *   - Idempotency: concurrent end() calls → one observable teardown
  *   - callEnded emits exactly once per call
- *   - callId ?? nativeAcceptedCallId resolution (Pre-bind-safe)
+ *   - Pre-bind FSM (slice 08): preBindStatus(), native-answer → awaitingMediaCall → idle,
+ *     cleanupAt elapse → failed('cleanup') → preBindFailed event → idle,
+ *     pre-bind intent queue, lifecycle.end resets FSM
  *   - reason payload threading
  */
+
+import type { IClientMediaCall } from '@rocket.chat/media-signaling';
+
+import { callLifecycle } from './CallLifecycle';
+import type { CallEndReason, PreBindStatus } from './CallLifecycle';
+import { InMemoryVoipNative } from './VoipNative';
+import { useCallStore } from './useCallStore';
 
 jest.mock('react-native-callkeep', () => ({
 	__esModule: true,
@@ -39,13 +48,6 @@ jest.mock('../../native/NativeVoip', () => ({
 jest.mock('../../../containers/ActionSheet', () => ({
 	hideActionSheetRef: jest.fn()
 }));
-
-import type { IClientMediaCall } from '@rocket.chat/media-signaling';
-
-import { callLifecycle } from './CallLifecycle';
-import type { CallEndReason } from './CallLifecycle';
-import { InMemoryVoipNative } from './VoipNative';
-import { useCallStore } from './useCallStore';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -90,7 +92,6 @@ describe('CallLifecycle.end(reason)', () => {
 
 	beforeEach(() => {
 		// Reset store state before each test
-		useCallStore.getState().resetNativeCallId();
 		useCallStore.getState().reset();
 		native = makeNative();
 		native.reset();
@@ -111,7 +112,7 @@ describe('CallLifecycle.end(reason)', () => {
 			await callLifecycle.end('local');
 
 			// Assert: step 2 (end), step 3 (markActive ''), step 4 (markAvailable), step 6 (stopAudio)
-			const recorded = native.recorded;
+			const { recorded } = native;
 			const endIdx = recorded.findIndex(c => c.cmd === 'end');
 			const markActiveIdx = recorded.findIndex(c => c.cmd === 'markActive');
 			const markAvailableIdx = recorded.findIndex(c => c.cmd === 'markAvailable');
@@ -242,8 +243,7 @@ describe('CallLifecycle.end(reason)', () => {
 		it('callEnded carries the reason', async () => {
 			const reasons: CallEndReason[] = ['local', 'remote', 'rejected', 'error'];
 
-			for (const reason of reasons) {
-				useCallStore.getState().resetNativeCallId();
+			const checkReason = async (reason: CallEndReason) => {
 				useCallStore.getState().reset();
 				native.reset();
 
@@ -253,17 +253,16 @@ describe('CallLifecycle.end(reason)', () => {
 				unsub();
 
 				expect(events[0]).toMatchObject({ reason });
-			}
+			};
+
+			await reasons.reduce((chain, reason) => chain.then(() => checkReason(reason)), Promise.resolve());
 		});
 	});
 
-	describe('callId ?? nativeAcceptedCallId (Pre-bind-safe)', () => {
-		it('uses callId when both callId and nativeAcceptedCallId are present', async () => {
+	describe('callId resolution (Pre-bind FSM owns pre-bind UUID)', () => {
+		it('uses callId from store when an active call is set', async () => {
 			const call = makeCall({ callId: 'cid-1' });
-			useCallStore.getState().setNativeAcceptedCallId('native-1');
 			useCallStore.getState().setCall(call);
-			// After setCall, nativeAcceptedCallId is cleared; simulate pre-bind where both exist
-			useCallStore.setState({ callId: 'cid-1', nativeAcceptedCallId: 'native-1' });
 			native.reset();
 
 			const events: unknown[] = [];
@@ -271,15 +270,13 @@ describe('CallLifecycle.end(reason)', () => {
 			await callLifecycle.end('local');
 			unsub();
 
-			// callId takes precedence
 			expect(events[0]).toMatchObject({ callId: 'cid-1' });
 		});
 
-		it('falls back to nativeAcceptedCallId when callId is null (Pre-bind)', async () => {
-			// Pre-bind state: native accepted the call but no MediaCall yet
-			useCallStore.getState().resetNativeCallId();
+		it('emits callId: null when no active call in store (Pre-bind FSM owns uuid)', async () => {
+			// Pre-bind state is now owned by CallLifecycle.preBindStatus() — not the store.
+			// callEnded uses store callId only; pre-bind uuid is surfaced via preBindStatus().
 			useCallStore.getState().reset();
-			useCallStore.getState().setNativeAcceptedCallId('native-prebind');
 			native.reset();
 
 			const events: unknown[] = [];
@@ -287,12 +284,10 @@ describe('CallLifecycle.end(reason)', () => {
 			await callLifecycle.end('error');
 			unsub();
 
-			expect(events[0]).toMatchObject({ callId: 'native-prebind' });
-			expect(native.recorded).toContainEqual({ cmd: 'end', callUuid: 'native-prebind' });
+			expect(events[0]).toMatchObject({ callId: null });
 		});
 
-		it('emits callId: null when both ids are null', async () => {
-			useCallStore.getState().resetNativeCallId();
+		it('emits callId: null when both store callId and call are null', async () => {
 			useCallStore.getState().reset();
 			native.reset();
 
@@ -354,6 +349,315 @@ describe('CallLifecycle.end(reason)', () => {
 			const freshLifecycle = new (callLifecycle.constructor as new () => typeof callLifecycle)();
 			// Should resolve without throwing (uses module-level InMemoryVoipNative).
 			await expect((freshLifecycle as any)._runTeardown('local')).resolves.toBeUndefined();
+		});
+	});
+});
+
+// ── Pre-bind FSM (slice 08) ────────────────────────────────────────────────────
+
+/**
+ * makeMediaCall returns a minimal IClientMediaCall with a mutable localParticipant.
+ * The `setMuted` / `setHeld` implementations mutate the participant state so replay
+ * assertions can read `localParticipant.muted` / `localParticipant.held`.
+ */
+function makeMediaCall(options: { callId: string; state?: string }): IClientMediaCall {
+	const localParticipant = {
+		local: true as const,
+		role: 'callee' as const,
+		muted: false,
+		held: false,
+		contact: {},
+		setMuted: jest.fn((v: boolean) => {
+			localParticipant.muted = v;
+		}),
+		setHeld: jest.fn((v: boolean) => {
+			localParticipant.held = v;
+		})
+	};
+	return {
+		callId: options.callId,
+		state: options.state ?? 'active',
+		hidden: false,
+		localParticipant,
+		remoteParticipants: [],
+		hangup: jest.fn(),
+		reject: jest.fn(),
+		accept: jest.fn(),
+		sendDTMF: jest.fn(),
+		emitter: { on: jest.fn(), off: jest.fn(), emit: jest.fn() }
+	} as unknown as IClientMediaCall;
+}
+
+/**
+ * Emit a minimal acceptSucceeded event to the native adapter.
+ * VoipPayload has required fields not needed for FSM tests; cast via unknown.
+ */
+function emitAcceptSucceeded(n: InMemoryVoipNative, callId: string, host = 'h', fromColdStart = false): void {
+	n.__emit({
+		type: 'acceptSucceeded',
+		payload: { callId, host, type: 'incoming_call' } as any,
+		fromColdStart
+	});
+}
+
+describe('CallLifecycle — Pre-bind FSM (slice 08)', () => {
+	let native: InMemoryVoipNative;
+
+	beforeEach(() => {
+		jest.useFakeTimers();
+		// Reset the singleton lifecycle's FSM and store between tests.
+		(callLifecycle as any)._resetForTesting();
+		useCallStore.getState().reset();
+		native = new InMemoryVoipNative();
+		callLifecycle.attach(native);
+		native.reset();
+	});
+
+	afterEach(() => {
+		jest.clearAllTimers();
+		jest.useRealTimers();
+	});
+
+	// ── 1. preBindStatus() starts idle ─────────────────────────────────────────
+
+	describe('preBindStatus()', () => {
+		it('returns idle when no native answer has been received', () => {
+			const status: PreBindStatus = callLifecycle.preBindStatus();
+			expect(status).toEqual({ kind: 'idle' });
+		});
+	});
+
+	// ── 2. Native answer → awaitingMediaCall ──────────────────────────────────
+
+	describe('idle → awaitingMediaCall on native answer', () => {
+		it('transitions to awaitingMediaCall with correct uuid and host on acceptSucceeded', async () => {
+			await native.attach({
+				onEvent: callLifecycle.handleNativeEvent.bind(callLifecycle)
+			});
+			emitAcceptSucceeded(native, 'call-1', 'my.host');
+
+			const status = callLifecycle.preBindStatus();
+			expect(status.kind).toBe('awaitingMediaCall');
+			const awaitingStatus = status as Extract<PreBindStatus, { kind: 'awaitingMediaCall' }>;
+			expect(awaitingStatus.uuid).toBe('call-1');
+			expect(awaitingStatus.host).toBe('my.host');
+			expect(awaitingStatus.cleanupAt).toBeGreaterThan(Date.now());
+		});
+
+		it('cleanupAt is set to now + 60_000 ms', async () => {
+			const fixedNow = 1_000_000;
+			jest.setSystemTime(fixedNow);
+			await native.attach({
+				onEvent: callLifecycle.handleNativeEvent.bind(callLifecycle)
+			});
+			emitAcceptSucceeded(native, 'call-2');
+
+			const status = callLifecycle.preBindStatus();
+			expect(status.kind).toBe('awaitingMediaCall');
+			const awaitingStatus = status as Extract<PreBindStatus, { kind: 'awaitingMediaCall' }>;
+			expect(awaitingStatus.cleanupAt).toBe(fixedNow + 60_000);
+		});
+	});
+
+	// ── 3. Matching newCall → bind → idle ─────────────────────────────────────
+
+	describe('awaitingMediaCall → idle on matching MediaCall', () => {
+		it('transitions FSM to idle when onMediaCallNew fires with matching callId', async () => {
+			await native.attach({ onEvent: callLifecycle.handleNativeEvent.bind(callLifecycle) });
+			emitAcceptSucceeded(native, 'bind-1');
+
+			const mediaCall = makeMediaCall({ callId: 'bind-1' });
+			await callLifecycle.onMediaCallNew(mediaCall);
+
+			expect(callLifecycle.preBindStatus()).toEqual({ kind: 'idle' });
+		});
+
+		it('does NOT transition when callId does not match awaiting uuid', async () => {
+			await native.attach({ onEvent: callLifecycle.handleNativeEvent.bind(callLifecycle) });
+			emitAcceptSucceeded(native, 'bind-2');
+
+			const wrongCall = makeMediaCall({ callId: 'wrong-id' });
+			await callLifecycle.onMediaCallNew(wrongCall);
+
+			expect(callLifecycle.preBindStatus().kind).toBe('awaitingMediaCall');
+		});
+
+		it('calls answerIncoming with the callId when binding', async () => {
+			await native.attach({ onEvent: callLifecycle.handleNativeEvent.bind(callLifecycle) });
+			emitAcceptSucceeded(native, 'bind-3');
+
+			const mediaCall = makeMediaCall({ callId: 'bind-3' });
+			const answerSpy = jest.spyOn(callLifecycle, 'answerIncoming').mockResolvedValue(undefined);
+			await callLifecycle.onMediaCallNew(mediaCall);
+
+			expect(answerSpy).toHaveBeenCalledWith('bind-3');
+			answerSpy.mockRestore();
+		});
+	});
+
+	// ── 4. cleanupAt elapse → failed('cleanup') → idle ───────────────────────
+
+	describe('awaitingMediaCall → failed(cleanup) → idle on cleanupAt elapse', () => {
+		it('emits preBindFailed event with uuid and reason cleanup after 60s', async () => {
+			await native.attach({ onEvent: callLifecycle.handleNativeEvent.bind(callLifecycle) });
+			emitAcceptSucceeded(native, 'cleanup-1');
+
+			const failedEvents: unknown[] = [];
+			const unsub = callLifecycle.emitter.on('preBindFailed', e => failedEvents.push(e));
+
+			jest.advanceTimersByTime(60_000);
+			// Allow any promises to settle
+			await Promise.resolve();
+
+			unsub();
+			expect(failedEvents).toHaveLength(1);
+			expect(failedEvents[0]).toMatchObject({ uuid: 'cleanup-1', reason: 'cleanup' });
+		});
+
+		it('FSM returns to idle after cleanupAt elapse', async () => {
+			await native.attach({ onEvent: callLifecycle.handleNativeEvent.bind(callLifecycle) });
+			emitAcceptSucceeded(native, 'cleanup-2');
+
+			jest.advanceTimersByTime(60_000);
+			await Promise.resolve();
+
+			expect(callLifecycle.preBindStatus()).toEqual({ kind: 'idle' });
+		});
+
+		it('calls lifecycle.end(cleanup) on cleanupAt elapse', async () => {
+			await native.attach({ onEvent: callLifecycle.handleNativeEvent.bind(callLifecycle) });
+			emitAcceptSucceeded(native, 'cleanup-3');
+
+			const endSpy = jest.spyOn(callLifecycle, 'end');
+
+			jest.advanceTimersByTime(60_000);
+			await Promise.resolve();
+
+			expect(endSpy).toHaveBeenCalledWith('cleanup');
+			endSpy.mockRestore();
+		});
+
+		it('does NOT emit preBindFailed if MediaCall arrives before 60s', async () => {
+			await native.attach({ onEvent: callLifecycle.handleNativeEvent.bind(callLifecycle) });
+			emitAcceptSucceeded(native, 'cleanup-4');
+
+			// Bind arrives before cleanupAt
+			await callLifecycle.onMediaCallNew(makeMediaCall({ callId: 'cleanup-4' }));
+
+			const failedEvents: unknown[] = [];
+			const unsub = callLifecycle.emitter.on('preBindFailed', e => failedEvents.push(e));
+			jest.advanceTimersByTime(60_000);
+			await Promise.resolve();
+			unsub();
+
+			expect(failedEvents).toHaveLength(0);
+		});
+	});
+
+	// ── 5. Pre-bind intent queue ───────────────────────────────────────────────
+
+	describe('pre-bind intent queue', () => {
+		it('queues mute intent received during awaitingMediaCall and replays on bind', async () => {
+			await native.attach({ onEvent: callLifecycle.handleNativeEvent.bind(callLifecycle) });
+			emitAcceptSucceeded(native, 'queue-1');
+
+			// OS sends mute BEFORE MediaCall is bound
+			native.__emit({ type: 'mute', muted: true, callUuid: 'queue-1' });
+
+			const mediaCall = makeMediaCall({ callId: 'queue-1' });
+			const answerSpy = jest.spyOn(callLifecycle, 'answerIncoming').mockResolvedValue(undefined);
+
+			// Set the media call in store so flush can find it
+			useCallStore.setState({ call: mediaCall, callId: 'queue-1' });
+			await callLifecycle.onMediaCallNew(mediaCall);
+
+			answerSpy.mockRestore();
+
+			// After bind, mute should have been applied
+			expect(mediaCall.localParticipant.setMuted).toHaveBeenCalledWith(true);
+		});
+
+		it('queues hold intent received during awaitingMediaCall and replays on bind', async () => {
+			await native.attach({ onEvent: callLifecycle.handleNativeEvent.bind(callLifecycle) });
+			emitAcceptSucceeded(native, 'queue-2');
+
+			native.__emit({ type: 'hold', hold: true, callUuid: 'queue-2' });
+
+			const mediaCall = makeMediaCall({ callId: 'queue-2' });
+			const answerSpy = jest.spyOn(callLifecycle, 'answerIncoming').mockResolvedValue(undefined);
+			useCallStore.setState({ call: mediaCall, callId: 'queue-2' });
+			await callLifecycle.onMediaCallNew(mediaCall);
+			answerSpy.mockRestore();
+
+			expect(mediaCall.localParticipant.setHeld).toHaveBeenCalledWith(true);
+		});
+
+		it('ignores intents for a different callUuid during awaitingMediaCall', async () => {
+			await native.attach({ onEvent: callLifecycle.handleNativeEvent.bind(callLifecycle) });
+			emitAcceptSucceeded(native, 'queue-3');
+
+			// mute event for a DIFFERENT callUuid — should not be queued
+			native.__emit({ type: 'mute', muted: true, callUuid: 'OTHER' });
+
+			const mediaCall = makeMediaCall({ callId: 'queue-3' });
+			const answerSpy = jest.spyOn(callLifecycle, 'answerIncoming').mockResolvedValue(undefined);
+			useCallStore.setState({ call: mediaCall, callId: 'queue-3' });
+			await callLifecycle.onMediaCallNew(mediaCall);
+			answerSpy.mockRestore();
+
+			expect(mediaCall.localParticipant.setMuted).not.toHaveBeenCalled();
+		});
+
+		it('caps queued intents at 10 — drops oldest on overflow', async () => {
+			await native.attach({ onEvent: callLifecycle.handleNativeEvent.bind(callLifecycle) });
+			emitAcceptSucceeded(native, 'queue-4');
+
+			// Push 12 mute intents — cap is 10, oldest 2 are dropped
+			for (let i = 0; i < 12; i++) {
+				native.__emit({ type: 'mute', muted: i % 2 === 0, callUuid: 'queue-4' });
+			}
+
+			const mediaCall = makeMediaCall({ callId: 'queue-4' });
+			const answerSpy = jest.spyOn(callLifecycle, 'answerIncoming').mockResolvedValue(undefined);
+			useCallStore.setState({ call: mediaCall, callId: 'queue-4' });
+			await callLifecycle.onMediaCallNew(mediaCall);
+			answerSpy.mockRestore();
+
+			// Only 10 intents replayed (cap of 10)
+			expect(mediaCall.localParticipant.setMuted).toHaveBeenCalledTimes(10);
+		});
+	});
+
+	// ── 6. lifecycle.end resets non-idle FSM ──────────────────────────────────
+
+	describe('lifecycle.end resets non-idle FSM', () => {
+		it('FSM returns to idle when lifecycle.end is called during awaitingMediaCall', async () => {
+			await native.attach({ onEvent: callLifecycle.handleNativeEvent.bind(callLifecycle) });
+			emitAcceptSucceeded(native, 'end-fsm-1');
+
+			expect(callLifecycle.preBindStatus().kind).toBe('awaitingMediaCall');
+			await callLifecycle.end('local');
+
+			expect(callLifecycle.preBindStatus()).toEqual({ kind: 'idle' });
+		});
+	});
+
+	// ── 7. useCallStore no longer holds nativeAcceptedCallId ─────────────────
+
+	describe('useCallStore cleanup', () => {
+		it('does not expose nativeAcceptedCallId on store state', () => {
+			const state = useCallStore.getState();
+			expect('nativeAcceptedCallId' in state).toBe(false);
+		});
+
+		it('does not expose setNativeAcceptedCallId action', () => {
+			const state = useCallStore.getState();
+			expect('setNativeAcceptedCallId' in state).toBe(false);
+		});
+
+		it('does not expose resetNativeCallId action', () => {
+			const state = useCallStore.getState();
+			expect('resetNativeCallId' in state).toBe(false);
 		});
 	});
 });

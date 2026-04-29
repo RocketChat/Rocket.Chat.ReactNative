@@ -7,58 +7,17 @@ import { hideActionSheetRef } from '../../../containers/ActionSheet';
 import { useIsScreenReaderEnabled } from '../../hooks/useIsScreenReaderEnabled';
 import { callLifecycle } from './CallLifecycle';
 
-const STALE_NATIVE_MS = 60_000;
-
 let callListenersCleanup: (() => void) | null = null;
-let staleNativeTimer: ReturnType<typeof setTimeout> | null = null;
-/** Call id this timer is for; only `nativeAcceptedCallId` is cleared when it fires, not `callId`. */
-let staleNativeScheduledId: string | null = null;
 
 function cleanupCallListeners(): void {
 	callListenersCleanup?.();
 	callListenersCleanup = null;
 }
 
-function cancelStaleNativeTimer(): void {
-	if (staleNativeTimer != null) {
-		clearTimeout(staleNativeTimer);
-		staleNativeTimer = null;
-	}
-	staleNativeScheduledId = null;
-}
-
-function clearStaleNativeIfStillUnbound(get: () => CallStore, scheduled: string): void {
-	const st = get();
-	if (st.call != null || st.nativeAcceptedCallId !== scheduled) {
-		return;
-	}
-	useCallStore.setState({ nativeAcceptedCallId: null });
-}
-
-function createStaleNativeTimer(get: () => CallStore): void {
-	cancelStaleNativeTimer();
-	const scheduledId = get().nativeAcceptedCallId;
-	if (scheduledId == null || scheduledId === '') {
-		return;
-	}
-	staleNativeScheduledId = scheduledId;
-	staleNativeTimer = setTimeout(() => {
-		staleNativeTimer = null;
-		// Timer uses the id from when it was created, not the current module variable.
-		if (staleNativeScheduledId === scheduledId) {
-			staleNativeScheduledId = null;
-		}
-		clearStaleNativeIfStillUnbound(get, scheduledId);
-	}, STALE_NATIVE_MS);
-}
-
 interface CallStoreState {
 	// Call reference
 	call: IClientMediaCall | null;
 	callId: string | null;
-
-	/** Survives `reset()` until explicit clear — native-accepted incoming call id. */
-	nativeAcceptedCallId: string | null;
 
 	// Call state
 	callState: CallState;
@@ -83,10 +42,6 @@ interface CallStoreState {
 }
 
 interface CallStoreActions {
-	/** Sets native-accepted call id and (re)starts the 15s timer. */
-	setNativeAcceptedCallId: (callId: string) => void;
-	/** Clears native-accepted id and related state; cancels the timer. */
-	resetNativeCallId: () => void;
 	setCall: (call: IClientMediaCall) => void;
 	toggleMute: () => void;
 	toggleHold: () => void;
@@ -94,7 +49,7 @@ interface CallStoreActions {
 	toggleControlsVisible: () => void;
 	toggleFocus: () => void;
 	endCall: () => void;
-	/** Clears UI/call fields but keeps nativeAcceptedCallId. Restarts the 15s timer (media init calls reset and clears the old timer first). */
+	/** Clears all call fields. Pre-bind state is owned by CallLifecycle.preBindStatus(). */
 	reset: () => void;
 	setDialpadValue: (value: string) => void;
 	setRoomId: (roomId: string | null) => void;
@@ -106,7 +61,6 @@ export type CallStore = CallStoreState & CallStoreActions;
 const initialState: CallStoreState = {
 	call: null,
 	callId: null,
-	nativeAcceptedCallId: null,
 	callState: 'none',
 	isMuted: false,
 	isOnHold: false,
@@ -125,24 +79,8 @@ const initialState: CallStoreState = {
 export const useCallStore = create<CallStore>((set, get) => ({
 	...initialState,
 
-	setNativeAcceptedCallId: (callId: string) => {
-		cancelStaleNativeTimer();
-		set({ nativeAcceptedCallId: callId });
-		createStaleNativeTimer(get);
-	},
-
-	resetNativeCallId: () => {
-		cancelStaleNativeTimer();
-		const { call, callId } = get();
-		set({
-			nativeAcceptedCallId: null,
-			callId: call != null ? callId : null
-		});
-	},
-
 	setCall: (call: IClientMediaCall) => {
 		cleanupCallListeners();
-		get().resetNativeCallId();
 		// Update state with call info
 		const remote = call.remoteParticipants[0];
 		const remoteContact = remote?.contact;
@@ -180,8 +118,8 @@ export const useCallStore = create<CallStore>((set, get) => ({
 
 			// Tell CallKit the call is active so iOS shows it in the system UI (lock screen, Control Center, Dynamic Island)
 			if (newState === 'active') {
-				const { callId, nativeAcceptedCallId } = get();
-				voipNative.call.markActive(callId ?? nativeAcceptedCallId ?? '');
+				const { callId } = get();
+				voipNative.call.markActive(callId ?? '');
 			}
 		};
 
@@ -277,18 +215,14 @@ export const useCallStore = create<CallStore>((set, get) => ({
 	},
 
 	reset: () => {
-		const { nativeAcceptedCallId } = get();
 		cleanupCallListeners();
-		cancelStaleNativeTimer();
 		// NOTE: stopAudio is intentionally NOT called here.
 		// CallLifecycle.end() calls voipNative.call.stopAudio() as step 6 (after reset),
 		// ensuring subscribers see consistent JS state when callEnded emits.
 		// If reset() is called outside of CallLifecycle (e.g., on session teardown),
 		// stopAudio is a safe no-op if audio was not started.
-		set({ ...initialState, nativeAcceptedCallId });
+		set(initialState);
 		hideActionSheetRef();
-		// Old timer was cleared above; start a new one if nativeAcceptedCallId is still set.
-		createStaleNativeTimer(get);
 	}
 }));
 

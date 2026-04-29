@@ -29,10 +29,8 @@ const mockUseCallStoreGetState = jest.fn(() => ({
 	setCall: jest.fn(),
 	setRoomId: mockSetRoomId,
 	setDirection: mockSetDirection,
-	resetNativeCallId: jest.fn(),
 	call: null as unknown,
 	callId: null as string | null,
-	nativeAcceptedCallId: null as string | null,
 	roomId: null as string | null
 }));
 
@@ -227,10 +225,8 @@ describe('MediaSessionInstance', () => {
 			setCall: jest.fn(),
 			setRoomId: mockSetRoomId,
 			setDirection: mockSetDirection,
-			resetNativeCallId: jest.fn(),
 			call: null,
 			callId: null,
-			nativeAcceptedCallId: null,
 			roomId: null
 		});
 		mediaSessionInstance.reset();
@@ -322,10 +318,8 @@ describe('MediaSessionInstance', () => {
 				setCall: mockSetCall,
 				setRoomId: mockSetRoomId,
 				setDirection: mockSetDirection,
-				resetNativeCallId: jest.fn(),
 				call: { callId: 'active-a' } as IClientMediaCall,
 				callId: 'active-a',
-				nativeAcceptedCallId: null,
 				roomId: null
 			});
 			await mediaSessionInstance.init('user-1');
@@ -335,16 +329,21 @@ describe('MediaSessionInstance', () => {
 			expect((voipNative as InMemoryVoipNative).recorded).not.toContainEqual({ cmd: 'end', callUuid: 'incoming-b' });
 		});
 
-		it('allows incoming callee newCall when nativeAcceptedCallId is set but differs from incoming callId', async () => {
+		it('allows incoming callee newCall when preBindStatus is awaitingMediaCall for a different uuid', async () => {
+			// Pre-bind FSM has a different uuid than the incoming call — call is not gated by it.
+			const preBindSpy = jest.spyOn(callLifecycle, 'preBindStatus').mockReturnValue({
+				kind: 'awaitingMediaCall',
+				uuid: 'native-other',
+				host: 'h',
+				cleanupAt: Date.now() + 60_000
+			});
 			mockUseCallStoreGetState.mockReturnValue({
 				reset: mockCallStoreReset,
 				setCall: jest.fn(),
 				setRoomId: mockSetRoomId,
 				setDirection: mockSetDirection,
-				resetNativeCallId: jest.fn(),
 				call: { callId: 'active-a' } as IClientMediaCall,
 				callId: 'active-a',
-				nativeAcceptedCallId: 'native-other',
 				roomId: null
 			});
 			await mediaSessionInstance.init('user-1');
@@ -352,18 +351,24 @@ describe('MediaSessionInstance', () => {
 			getNewCallHandler()({ call: incoming });
 			expect(incoming.reject).not.toHaveBeenCalled();
 			expect((voipNative as InMemoryVoipNative).recorded).not.toContainEqual({ cmd: 'end', callUuid: 'incoming-b' });
+			preBindSpy.mockRestore();
 		});
 
-		it('allows incoming callee newCall when nativeAcceptedCallId matches incoming callId', async () => {
+		it('allows incoming callee newCall when preBindStatus is awaitingMediaCall with matching uuid', async () => {
+			// Pre-bind FSM uuid matches incoming callId — the FSM owns the pre-bind, no rejection.
+			const preBindSpy = jest.spyOn(callLifecycle, 'preBindStatus').mockReturnValue({
+				kind: 'awaitingMediaCall',
+				uuid: 'same-id',
+				host: 'h',
+				cleanupAt: Date.now() + 60_000
+			});
 			mockUseCallStoreGetState.mockReturnValue({
 				reset: mockCallStoreReset,
 				setCall: jest.fn(),
 				setRoomId: mockSetRoomId,
 				setDirection: mockSetDirection,
-				resetNativeCallId: jest.fn(),
 				call: null,
 				callId: null,
-				nativeAcceptedCallId: 'same-id',
 				roomId: null
 			});
 			await mediaSessionInstance.init('user-1');
@@ -371,6 +376,7 @@ describe('MediaSessionInstance', () => {
 			getNewCallHandler()({ call: incoming });
 			expect(incoming.reject).not.toHaveBeenCalled();
 			expect((voipNative as InMemoryVoipNative).recorded).not.toContainEqual({ cmd: 'end', callUuid: 'same-id' });
+			preBindSpy.mockRestore();
 		});
 
 		it('does not reject outgoing (caller) newCall; binds call and navigates', async () => {
@@ -380,10 +386,8 @@ describe('MediaSessionInstance', () => {
 				setCall: mockSetCall,
 				setRoomId: mockSetRoomId,
 				setDirection: mockSetDirection,
-				resetNativeCallId: jest.fn(),
 				call: null,
 				callId: null,
-				nativeAcceptedCallId: null,
 				roomId: null
 			});
 			await mediaSessionInstance.init('user-1');
@@ -396,7 +400,8 @@ describe('MediaSessionInstance', () => {
 	});
 
 	describe('stream-notify-user (notification/accepted gated)', () => {
-		it('does not call answerCall when nativeAcceptedCallId is null', async () => {
+		it('does not call answerCall when preBindStatus is idle (no pending native accept)', async () => {
+			// Default: preBindStatus returns idle — no pending native accept.
 			const answerSpy = jest.spyOn(mediaSessionInstance, 'answerCall').mockResolvedValue(undefined);
 			await mediaSessionInstance.init('user-1');
 			const streamHandler = getStreamNotifyHandler();
@@ -419,18 +424,13 @@ describe('MediaSessionInstance', () => {
 			answerSpy.mockRestore();
 		});
 
-		it('calls answerCall when nativeAcceptedCallId matches signal and contract matches device', async () => {
+		it('calls answerCall when preBindStatus.uuid matches signal and contract matches device', async () => {
 			const answerSpy = jest.spyOn(mediaSessionInstance, 'answerCall').mockResolvedValue(undefined);
-			mockUseCallStoreGetState.mockReturnValue({
-				reset: mockCallStoreReset,
-				setCall: jest.fn(),
-				setRoomId: mockSetRoomId,
-				setDirection: mockSetDirection,
-				resetNativeCallId: jest.fn(),
-				call: null,
-				callId: null,
-				nativeAcceptedCallId: 'from-signal',
-				roomId: null
+			const preBindSpy = jest.spyOn(callLifecycle, 'preBindStatus').mockReturnValue({
+				kind: 'awaitingMediaCall',
+				uuid: 'from-signal',
+				host: 'h',
+				cleanupAt: Date.now() + 60_000
 			});
 			await mediaSessionInstance.init('user-1');
 			const streamHandler = getStreamNotifyHandler();
@@ -451,20 +451,16 @@ describe('MediaSessionInstance', () => {
 			await Promise.resolve();
 			expect(answerSpy).toHaveBeenCalledWith('from-signal');
 			answerSpy.mockRestore();
+			preBindSpy.mockRestore();
 		});
 
-		it('calls answerCall when only nativeAcceptedCallId matches (transient callId null)', async () => {
+		it('calls answerCall when preBindStatus.uuid matches and store callId is null (transient pre-bind)', async () => {
 			const answerSpy = jest.spyOn(mediaSessionInstance, 'answerCall').mockResolvedValue(undefined);
-			mockUseCallStoreGetState.mockReturnValue({
-				reset: mockCallStoreReset,
-				setCall: jest.fn(),
-				setRoomId: mockSetRoomId,
-				setDirection: mockSetDirection,
-				resetNativeCallId: jest.fn(),
-				call: null,
-				callId: null,
-				nativeAcceptedCallId: 'sticky-only',
-				roomId: null
+			const preBindSpy = jest.spyOn(callLifecycle, 'preBindStatus').mockReturnValue({
+				kind: 'awaitingMediaCall',
+				uuid: 'sticky-only',
+				host: 'h',
+				cleanupAt: Date.now() + 60_000
 			});
 			await mediaSessionInstance.init('user-1');
 			const streamHandler = getStreamNotifyHandler();
@@ -485,19 +481,24 @@ describe('MediaSessionInstance', () => {
 			await Promise.resolve();
 			expect(answerSpy).toHaveBeenCalledWith('sticky-only');
 			answerSpy.mockRestore();
+			preBindSpy.mockRestore();
 		});
 
 		it('does not call answerCall when store call object is already set', async () => {
 			const answerSpy = jest.spyOn(mediaSessionInstance, 'answerCall').mockResolvedValue(undefined);
+			const preBindSpy = jest.spyOn(callLifecycle, 'preBindStatus').mockReturnValue({
+				kind: 'awaitingMediaCall',
+				uuid: 'from-signal',
+				host: 'h',
+				cleanupAt: Date.now() + 60_000
+			});
 			mockUseCallStoreGetState.mockReturnValue({
 				reset: mockCallStoreReset,
 				setCall: jest.fn(),
 				setRoomId: mockSetRoomId,
 				setDirection: mockSetDirection,
-				resetNativeCallId: jest.fn(),
 				call: { callId: 'from-signal' } as any,
 				callId: 'from-signal',
-				nativeAcceptedCallId: 'from-signal',
 				roomId: null
 			});
 			await mediaSessionInstance.init('user-1');
@@ -519,12 +520,19 @@ describe('MediaSessionInstance', () => {
 			await Promise.resolve();
 			expect(answerSpy).not.toHaveBeenCalled();
 			answerSpy.mockRestore();
+			preBindSpy.mockRestore();
 		});
 	});
 
 	describe('REST state signals replay (native accept race)', () => {
-		it('calls answerCall from init when REST returns accepted and nativeAcceptedCallId already matches', async () => {
+		it('calls answerCall from init when REST returns accepted and preBindStatus.uuid already matches', async () => {
 			const answerSpy = jest.spyOn(mediaSessionInstance, 'answerCall').mockResolvedValue(undefined);
+			const preBindSpy = jest.spyOn(callLifecycle, 'preBindStatus').mockReturnValue({
+				kind: 'awaitingMediaCall',
+				uuid: 'race-call',
+				host: 'h',
+				cleanupAt: Date.now() + 60_000
+			});
 			mockMediaCallsStateSignals.mockResolvedValue({
 				success: true,
 				signals: [
@@ -536,21 +544,11 @@ describe('MediaSessionInstance', () => {
 					}
 				]
 			});
-			mockUseCallStoreGetState.mockReturnValue({
-				reset: mockCallStoreReset,
-				setCall: jest.fn(),
-				setRoomId: mockSetRoomId,
-				setDirection: mockSetDirection,
-				resetNativeCallId: jest.fn(),
-				call: null,
-				callId: null,
-				nativeAcceptedCallId: 'race-call',
-				roomId: null
-			});
 			await mediaSessionInstance.init('user-1');
 			await Promise.resolve();
 			expect(answerSpy).toHaveBeenCalledWith('race-call');
 			answerSpy.mockRestore();
+			preBindSpy.mockRestore();
 		});
 
 		it('applyRestStateSignals skips REST when no instance', async () => {
@@ -703,10 +701,9 @@ describe('MediaSessionInstance', () => {
 				setCall: jest.fn(),
 				setRoomId: mockSetRoomId,
 				setDirection: mockSetDirection,
-				resetNativeCallId: jest.fn(),
 				call: null,
 				callId: null,
-				nativeAcceptedCallId: null,
+
 				roomId: 'preset-rid'
 			});
 			const session = createdSessions[0];

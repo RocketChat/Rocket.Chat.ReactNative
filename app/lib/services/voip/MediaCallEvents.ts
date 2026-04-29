@@ -48,7 +48,8 @@ function handleAcceptSucceededEvent(payload: VoipPayload, adapters: MediaCallEve
 		return false;
 	}
 	mediaCallLogger.debug(`${TAG} VoipAcceptSucceeded:`, payload);
-	useCallStore.getState().setNativeAcceptedCallId(payload.callId);
+	// FSM now owns the pre-bind UUID — callLifecycle.handleNativeEvent updates the Pre-bind FSM.
+	callLifecycle.handleNativeEvent({ type: 'acceptSucceeded', payload, fromColdStart });
 
 	if (payload.host && isVoipIncomingHostCurrentWorkspace(payload.host, adapters.getActiveServerUrl)) {
 		if (fromColdStart && !isIOS) {
@@ -94,9 +95,12 @@ export function createVoipEventDispatcher(adapters: MediaCallEventsAdapters): (e
 			}
 
 			case 'mute': {
-				const { call, callId, nativeAcceptedCallId, toggleMute, isMuted } = useCallStore.getState();
+				// Forward to FSM intent queue (queued when pre-bind; replayed on bind).
+				callLifecycle.handleNativeEvent(e);
+				const { call, callId, toggleMute, isMuted } = useCallStore.getState();
 				const eventUuid = e.callUuid.toLowerCase();
-				const activeUuid = (callId ?? nativeAcceptedCallId ?? '').toLowerCase();
+				const preBind = callLifecycle.preBindStatus();
+				const activeUuid = (callId ?? (preBind.kind === 'awaitingMediaCall' ? preBind.uuid : null) ?? '').toLowerCase();
 				if (!call || !activeUuid || eventUuid !== activeUuid) {
 					return false;
 				}
@@ -107,9 +111,12 @@ export function createVoipEventDispatcher(adapters: MediaCallEventsAdapters): (e
 			}
 
 			case 'hold': {
-				const { call, callId, nativeAcceptedCallId, isOnHold, toggleHold } = useCallStore.getState();
+				// Forward to FSM intent queue (queued when pre-bind; replayed on bind).
+				callLifecycle.handleNativeEvent(e);
+				const { call, callId, isOnHold, toggleHold } = useCallStore.getState();
 				const eventUuid = e.callUuid.toLowerCase();
-				const activeUuid = (callId ?? nativeAcceptedCallId ?? '').toLowerCase();
+				const preBind = callLifecycle.preBindStatus();
+				const activeUuid = (callId ?? (preBind.kind === 'awaitingMediaCall' ? preBind.uuid : null) ?? '').toLowerCase();
 				if (!call || !activeUuid || eventUuid !== activeUuid) {
 					wasAutoHeld = false;
 					return false;
