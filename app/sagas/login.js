@@ -1,5 +1,5 @@
 import React from 'react';
-import { call, cancel, delay, fork, put, race, select, take, takeLatest } from 'redux-saga/effects';
+import { call, cancel, delay, fork, put, race, select, spawn, take, takeLatest } from 'redux-saga/effects';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 
@@ -271,25 +271,17 @@ const checkVoipPermission = async () => {
 	}
 };
 
-let voipPermissionListener;
-
-const stopVoipPermissionListener = () => {
-	if (voipPermissionListener) {
-		voipPermissionListener.stop();
-		voipPermissionListener = null;
-	}
-};
-
 const startVoipFork = function* startVoipFork() {
 	yield call(checkVoipPermission);
 
-	stopVoipPermissionListener();
-	// Logout between yield start and resolve leaks this listener; safe because the SDK tears down on logout.
-	voipPermissionListener = yield call([sdk.current, 'onStreamData'], 'stream-notify-logged', async ddpMessage => {
-		const { eventName } = ddpMessage.fields || {};
-		if (/permissions-changed/.test(eventName)) {
-			await checkVoipPermission();
-		}
+	// Re-check on permission/module changes. selectServer's DB-read phase covers warm relaunches;
+	// PERMISSIONS.SET / ENTERPRISE_MODULES.SET cover first-login on a fresh server; PERMISSIONS.UPDATE
+	// covers runtime changes pushed by the server (handled in connect.ts's stream-notify-logged listener).
+	// Stop on LOGOUT, a new LOGIN.SUCCESS, or SERVER.SELECT_REQUEST so we never leak the saga across
+	// workspace switches.
+	yield race({
+		recheck: takeLatest([types.PERMISSIONS.SET, types.PERMISSIONS.UPDATE, types.ENTERPRISE_MODULES.SET], checkVoipPermission),
+		stop: take([types.LOGOUT, types.LOGIN.SUCCESS, types.SERVER.SELECT_REQUEST])
 	});
 };
 
@@ -301,9 +293,12 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		const server = yield select(getServer);
 		yield put(roomsRequest());
 		yield put(encryptionInit());
+		// VoIP must spawn before the awaited fetches so it survives the 2s cancel race in root().
+		// On warm relaunch, redux is already populated by selectServer; on cold login, it re-checks
+		// when PERMISSIONS.SET / ENTERPRISE_MODULES.SET land.
+		yield spawn(startVoipFork);
 		yield call(fetchPermissions);
 		yield call(fetchEnterpriseModules, { user });
-		yield fork(startVoipFork);
 		yield fork(fetchCustomEmojisFork);
 		yield fork(fetchRolesFork);
 		yield fork(fetchSlashCommandsFork);
@@ -365,7 +360,6 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 };
 
 const handleLogout = function* handleLogout({ forcedByServer, message }) {
-	stopVoipPermissionListener();
 	yield put(encryptionStop());
 	yield put(appStart({ root: RootEnum.ROOT_LOADING, text: I18n.t('Logging_out') }));
 	const server = yield select(getServer);
@@ -442,7 +436,6 @@ const handleSetUser = function* handleSetUser({ user }) {
 };
 
 const handleDeleteAccount = function* handleDeleteAccount() {
-	stopVoipPermissionListener();
 	yield put(encryptionStop());
 	yield put(appStart({ root: RootEnum.ROOT_LOADING, text: I18n.t('Deleting_account') }));
 	const server = yield select(getServer);
