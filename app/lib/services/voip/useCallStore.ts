@@ -1,6 +1,5 @@
 import { create } from 'zustand';
 import type { CallState, CallContact, IClientMediaCall } from '@rocket.chat/media-signaling';
-import RNCallKeep from 'react-native-callkeep';
 
 import { voipNative } from './VoipNative';
 import Navigation from '../../navigation/appNavigation';
@@ -181,7 +180,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 			// Tell CallKit the call is active so iOS shows it in the system UI (lock screen, Control Center, Dynamic Island)
 			if (newState === 'active') {
 				const { callId, nativeAcceptedCallId } = get();
-				RNCallKeep.setCurrentCallActive(callId ?? nativeAcceptedCallId ?? '');
+				voipNative.call.markActive(callId ?? nativeAcceptedCallId ?? '');
 			}
 		};
 

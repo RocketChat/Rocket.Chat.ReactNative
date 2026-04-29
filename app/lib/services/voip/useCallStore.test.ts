@@ -12,15 +12,6 @@ jest.mock('../../../containers/ActionSheet', () => ({
 	hideActionSheetRef: jest.fn()
 }));
 
-jest.mock('react-native-callkeep', () => ({
-	setCurrentCallActive: jest.fn(),
-	addEventListener: jest.fn(() => ({ remove: jest.fn() })),
-	endCall: jest.fn(),
-	start: jest.fn(),
-	stop: jest.fn(),
-	setForceSpeakerphoneOn: jest.fn(),
-	setAvailable: jest.fn()
-}));
 
 function createMockCall(callId: string, options?: { initialState?: string }) {
 	const initialState = options?.initialState ?? 'active';
@@ -341,5 +332,15 @@ describe('useCallStore audio commands via VoipNative seam', () => {
 	it('toggleSpeaker is a no-op without an active call', async () => {
 		await useCallStore.getState().toggleSpeaker();
 		expect(adapter.recorded).not.toContainEqual(expect.objectContaining({ cmd: 'setSpeaker' }));
+	});
+
+	it('stateChange to active records markActive on voipNative with callId', () => {
+		const { call, emit } = createMockCall('mark-1');
+		useCallStore.getState().setCall(call);
+		adapter.reset();
+
+		emit('stateChange');
+
+		expect(adapter.recorded).toContainEqual({ cmd: 'markActive', callUuid: 'mark-1' });
 	});
 });
