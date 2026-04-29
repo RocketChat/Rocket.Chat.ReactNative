@@ -5,7 +5,7 @@ import reducers from '../../reducers';
 import sagas from '../../sagas';
 import applyAppStateMiddleware from './appStateMiddleware';
 import applyInternetStateMiddleware from './internetStateMiddleware';
-import { logger } from './reduxLogger';
+// import { logger } from './reduxLogger';
 
 let sagaMiddleware;
 let enhancers;
@@ -18,8 +18,8 @@ if (__DEV__) {
 		applyAppStateMiddleware(),
 		applyInternetStateMiddleware(),
 		applyMiddleware(reduxImmutableStateInvariant),
-		applyMiddleware(sagaMiddleware),
-		applyMiddleware(logger)
+		applyMiddleware(sagaMiddleware)
+		// applyMiddleware(logger)
 	);
 } else {
 	sagaMiddleware = createSagaMiddleware();
