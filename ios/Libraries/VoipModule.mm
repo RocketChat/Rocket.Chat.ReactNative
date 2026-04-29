@@ -124,6 +124,14 @@ RCT_EXPORT_MODULE()
     resolve(@NO);
 }
 
+- (void)startAudioRouteSync:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+    resolve(nil);
+}
+
+- (void)stopAudioRouteSync:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+    resolve(nil);
+}
+
 // TurboModule codegen calls these on VoipModule directly. Empty implementations replaced
 // RCTEventEmitter's logic, so startObserving/stopObserving never ran and no events reached JS.
 - (void)addListener:(NSString *)eventName {

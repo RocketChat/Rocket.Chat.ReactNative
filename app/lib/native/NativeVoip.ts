@@ -51,6 +51,12 @@ export interface Spec extends TurboModule {
 	 */
 	setSpeakerOn(on: boolean): Promise<boolean>;
 
+	/** Android API 31+: registers OnCommunicationDeviceChangedListener; emits VoipCommunicationDeviceChanged events. No-op elsewhere. */
+	startAudioRouteSync(): Promise<void>;
+
+	/** Unregisters the listener. Safe to call multiple times. */
+	stopAudioRouteSync(): Promise<void>;
+
 	/**
 	 * Required for NativeEventEmitter in TurboModules.
 	 * Called when JS starts listening to events.
@@ -76,6 +82,8 @@ const NativeVoipModule =
 		stopNativeDDPClient: () => undefined,
 		stopVoipCallService: () => undefined,
 		setSpeakerOn: () => Promise.resolve(false),
+		startAudioRouteSync: () => Promise.resolve(),
+		stopAudioRouteSync: () => Promise.resolve(),
 		addListener: () => undefined,
 		removeListeners: () => undefined
 	} as Spec);

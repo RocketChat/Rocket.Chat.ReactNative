@@ -186,6 +186,15 @@ export const setupMediaCallEvents = (adapters: MediaCallEventsAdapters): (() => 
 		})
 	);
 
+	if (!isIOS) {
+		subscriptions.push(
+			Emitter.addListener('VoipCommunicationDeviceChanged', ({ isSpeaker }: { isSpeaker: boolean }) => {
+				if (useCallStore.getState().call == null) return;
+				useCallStore.setState({ isSpeakerOn: isSpeaker });
+			})
+		);
+	}
+
 	subscriptions.push(
 		Emitter.addListener(EVENT_VOIP_ACCEPT_SUCCEEDED, (data: VoipPayload) => {
 			try {
