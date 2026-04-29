@@ -219,30 +219,11 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		set({ controlsVisible: !get().controlsVisible });
 	},
 
-	toggleMute: () => {
-		const { call, isMuted } = get();
-		if (!call) return;
+	toggleMute: () => callLifecycle.toggle('mute'),
 
-		call.localParticipant.setMuted(!isMuted);
-		set({ isMuted: !isMuted });
-	},
+	toggleHold: () => callLifecycle.toggle('hold'),
 
-	toggleHold: () => {
-		const { call, isOnHold } = get();
-		if (!call) return;
-
-		call.localParticipant.setHeld(!isOnHold);
-		set({ isOnHold: !isOnHold });
-	},
-
-	toggleSpeaker: async () => {
-		const { call, isSpeakerOn } = get();
-		if (!call) return;
-
-		const newSpeakerOn = !isSpeakerOn;
-		await voipNative.call.setSpeaker(newSpeakerOn);
-		set({ isSpeakerOn: newSpeakerOn });
-	},
+	toggleSpeaker: () => callLifecycle.toggle('speaker'),
 
 	toggleFocus: () => {
 		const isFocused = get().focused;
