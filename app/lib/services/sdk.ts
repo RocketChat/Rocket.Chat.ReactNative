@@ -17,6 +17,15 @@ import {
 	type ResultFor
 } from '../../definitions/rest/helpers';
 
+async function normalizeResponseError(response: Response): Promise<{ status: number; data: any }> {
+	try {
+		const data = await response.clone().json();
+		return { status: response.status, data };
+	} catch {
+		return { status: response.status, data: {} };
+	}
+}
+
 class Sdk {
 	private sdk: DDPSDK | undefined;
 	private serverUrl: string | undefined;
@@ -129,7 +138,7 @@ class Sdk {
 	};
 	*/
 
-	get<TPath extends PathFor<'GET'>>(
+	async get<TPath extends PathFor<'GET'>>(
 		endpoint: TPath,
 		params: void extends OperationParams<'GET', MatchPathPattern<TPath>>
 			? void
@@ -141,10 +150,14 @@ class Sdk {
 			: Serialized<OperationParams<'GET', MatchPathPattern<TPath>>>
 	): Promise<Serialized<ResultFor<'GET', MatchPathPattern<TPath>>>> {
 		const sdk = this.ensureInitialized();
-		// @ts-ignore
-		return sdk.rest.get(endpoint, params, {
-			headers: this.headers
-		});
+		try {
+			// @ts-ignore
+			return await sdk.rest.get(endpoint, params, {
+				headers: this.headers
+			});
+		} catch (e: any) {
+			throw e instanceof Response ? await normalizeResponseError(e) : e;
+		}
 	}
 
 	post<TPath extends PathFor<'POST'>>(
@@ -179,11 +192,14 @@ class Sdk {
 				}
 				return resolve(result);
 			} catch (e: any) {
-				const errorType = isMethodCall ? e?.error : e?.data?.errorType;
+				// @rocket.chat/api-client rejects with the raw fetch Response on REST errors.
+				// Normalize to { status, data } so callers (and the totp branch below) can read e.data.*
+				const normalized = !isMethodCall && e instanceof Response ? await normalizeResponseError(e) : e;
+				const errorType = isMethodCall ? normalized?.error : normalized?.data?.errorType;
 				const totpInvalid = 'totp-invalid';
 				const totpRequired = 'totp-required';
 				if ([totpInvalid, totpRequired].includes(errorType)) {
-					const { details } = isMethodCall ? e : e?.data;
+					const { details } = isMethodCall ? normalized : normalized?.data;
 					try {
 						await twoFactor({ method: details?.method, invalid: errorType === totpInvalid });
 						return resolve(this.post(endpoint, params));
@@ -192,13 +208,13 @@ class Sdk {
 						return resolve({} as any);
 					}
 				} else {
-					reject(e);
+					reject(normalized);
 				}
 			}
 		});
 	}
 
-	delete<TPath extends PathFor<'DELETE'>>(
+	async delete<TPath extends PathFor<'DELETE'>>(
 		endpoint: TPath,
 		params: void extends OperationParams<'DELETE', MatchPathPattern<TPath>>
 			? void
@@ -210,10 +226,14 @@ class Sdk {
 			: Serialized<OperationParams<'DELETE', MatchPathPattern<TPath>>>
 	): Promise<Serialized<ResultFor<'DELETE', MatchPathPattern<TPath>>>> {
 		const sdk = this.ensureInitialized();
-		// @ts-ignore
-		return sdk.rest.delete(endpoint, params, {
-			headers: this.headers
-		});
+		try {
+			// @ts-ignore
+			return await sdk.rest.delete(endpoint, params, {
+				headers: this.headers
+			});
+		} catch (e: any) {
+			throw e instanceof Response ? await normalizeResponseError(e) : e;
+		}
 	}
 
 	async twoFactorHandler({
@@ -238,12 +258,7 @@ class Sdk {
 			return loginResult.data;
 		} catch (e: any) {
 			if (e instanceof Response) {
-				try {
-					const data = await e.clone().json();
-					return Promise.reject({ status: e.status, data });
-				} catch {
-					return Promise.reject({ status: e.status, data: {} });
-				}
+				return Promise.reject(await normalizeResponseError(e));
 			}
 			return Promise.reject(e);
 		}
