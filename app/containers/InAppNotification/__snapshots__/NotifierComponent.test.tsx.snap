@@ -9,9 +9,9 @@ exports[`Story Snapshots: ChannelMessage should match snapshot 1`] = `
         "borderRadius": 4,
         "borderWidth": 0.5,
         "flexDirection": "row",
-        "justifyContent": "space-between",
         "marginHorizontal": 10,
         "paddingHorizontal": 14,
+        "paddingRight": 30,
       },
       false,
       {
@@ -69,8 +69,10 @@ exports[`Story Snapshots: ChannelMessage should match snapshot 1`] = `
       style={
         [
           {
+            "alignItems": "center",
             "backgroundColor": undefined,
             "borderRadius": undefined,
+            "flexDirection": "row",
             "margin": undefined,
             "marginBottom": undefined,
             "marginEnd": undefined,
@@ -112,7 +114,6 @@ exports[`Story Snapshots: ChannelMessage should match snapshot 1`] = `
         style={
           {
             "alignItems": "center",
-            "flex": 1,
             "flexDirection": "row",
           }
         }
@@ -173,7 +174,14 @@ exports[`Story Snapshots: ChannelMessage should match snapshot 1`] = `
             width={48}
           />
         </View>
-        <View>
+        <View
+          style={
+            {
+              "flex": 1,
+              "marginRight": 10,
+            }
+          }
+        >
           <Text
             numberOfLines={1}
             style={
@@ -318,9 +326,7 @@ exports[`Story Snapshots: ChannelMessage should match snapshot 1`] = `
                 {
                   "lineHeight": 20,
                 },
-                {
-                  "marginLeft": 10,
-                },
+                undefined,
               ],
               {
                 "fontFamily": "custom",
@@ -348,9 +354,9 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
         "borderRadius": 4,
         "borderWidth": 0.5,
         "flexDirection": "row",
-        "justifyContent": "space-between",
         "marginHorizontal": 10,
         "paddingHorizontal": 14,
+        "paddingRight": 30,
       },
       false,
       {
@@ -408,8 +414,10 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
       style={
         [
           {
+            "alignItems": "center",
             "backgroundColor": undefined,
             "borderRadius": undefined,
+            "flexDirection": "row",
             "margin": undefined,
             "marginBottom": undefined,
             "marginEnd": undefined,
@@ -451,7 +459,6 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
         style={
           {
             "alignItems": "center",
-            "flex": 1,
             "flexDirection": "row",
           }
         }
@@ -512,7 +519,14 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
             width={48}
           />
         </View>
-        <View>
+        <View
+          style={
+            {
+              "flex": 1,
+              "marginRight": 10,
+            }
+          }
+        >
           <Text
             numberOfLines={1}
             style={
@@ -657,9 +671,7 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
                 {
                   "lineHeight": 20,
                 },
-                {
-                  "marginLeft": 10,
-                },
+                undefined,
               ],
               {
                 "fontFamily": "custom",
@@ -687,9 +699,9 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
         "borderRadius": 4,
         "borderWidth": 0.5,
         "flexDirection": "row",
-        "justifyContent": "space-between",
         "marginHorizontal": 10,
         "paddingHorizontal": 14,
+        "paddingRight": 30,
       },
       false,
       {
@@ -747,8 +759,10 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
       style={
         [
           {
+            "alignItems": "center",
             "backgroundColor": undefined,
             "borderRadius": undefined,
+            "flexDirection": "row",
             "margin": undefined,
             "marginBottom": undefined,
             "marginEnd": undefined,
@@ -790,7 +804,6 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
         style={
           {
             "alignItems": "center",
-            "flex": 1,
             "flexDirection": "row",
           }
         }
@@ -851,7 +864,14 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
             width={48}
           />
         </View>
-        <View>
+        <View
+          style={
+            {
+              "flex": 1,
+              "marginRight": 10,
+            }
+          }
+        >
           <Text
             numberOfLines={1}
             style={
@@ -996,9 +1016,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                 {
                   "lineHeight": 20,
                 },
-                {
-                  "marginLeft": 10,
-                },
+                undefined,
               ],
               {
                 "fontFamily": "custom",
@@ -1026,9 +1044,9 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
         "borderRadius": 4,
         "borderWidth": 0.5,
         "flexDirection": "row",
-        "justifyContent": "space-between",
         "marginHorizontal": 10,
         "paddingHorizontal": 14,
+        "paddingRight": 30,
       },
       false,
       {
@@ -1086,8 +1104,10 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
       style={
         [
           {
+            "alignItems": "center",
             "backgroundColor": undefined,
             "borderRadius": undefined,
+            "flexDirection": "row",
             "margin": undefined,
             "marginBottom": undefined,
             "marginEnd": undefined,
@@ -1129,7 +1149,6 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
         style={
           {
             "alignItems": "center",
-            "flex": 1,
             "flexDirection": "row",
           }
         }
@@ -1190,7 +1209,14 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
             width={48}
           />
         </View>
-        <View>
+        <View
+          style={
+            {
+              "flex": 1,
+              "marginRight": 10,
+            }
+          }
+        >
           <Text
             numberOfLines={1}
             style={
@@ -1335,9 +1361,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                 {
                   "lineHeight": 20,
                 },
-                {
-                  "marginLeft": 10,
-                },
+                undefined,
               ],
               {
                 "fontFamily": "custom",
