@@ -10,6 +10,9 @@ const mockShowActionSheetRef = jest.fn();
 const mockGetUidDirectMessage = jest.fn();
 const mockSetSelectedPeer = jest.fn();
 const mockUseIsInActiveVoipCall = jest.fn(() => false);
+const mockStartCall = jest.fn();
+const mockIsSelfUserId = jest.fn((_userId: unknown) => false);
+const mockShowErrorAlert = jest.fn();
 const mockGetState = jest.fn(() => ({
 	setSelectedPeer: mockSetSelectedPeer
 }));
@@ -48,10 +51,34 @@ jest.mock('../../methods/helpers/deviceInfo', () => ({
 	isAndroid: false
 }));
 
+jest.mock('../../services/voip/MediaSessionInstance', () => ({
+	mediaSessionInstance: {
+		startCall: (...args: unknown[]) => mockStartCall(...args)
+	}
+}));
+
+jest.mock('../../services/voip/isSelfUserId', () => ({
+	isSelfUserId: (userId: unknown) => mockIsSelfUserId(userId)
+}));
+
+jest.mock('../../methods/helpers/info', () => ({
+	showErrorAlert: (...args: unknown[]) => mockShowErrorAlert(...args)
+}));
+
+jest.mock('../../../i18n', () => ({
+	__esModule: true,
+	default: {
+		t: (key: string) => key
+	}
+}));
+
 describe('useNewMediaCall', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockUseIsInActiveVoipCall.mockReturnValue(false);
+		mockIsSelfUserId.mockReturnValue(false);
+		mockStartCall.mockReset();
+		mockStartCall.mockResolvedValue(undefined);
 	});
 
 	const expectNewMediaCallActionSheet = (expectedFullContainer = false) => {
@@ -140,6 +167,109 @@ describe('useNewMediaCall', () => {
 
 		expect(mockShowActionSheetRef).not.toHaveBeenCalled();
 		expect(mockSetSelectedPeer).not.toHaveBeenCalled();
+	});
+
+	describe('startCallImmediate', () => {
+		it('starts the call directly when room has a direct message peer', async () => {
+			const room = { name: 'Alice' };
+			mockUseSubscription.mockReturnValue(room);
+			mockUseMediaCallPermission.mockReturnValue(true);
+			mockGetUidDirectMessage.mockReturnValue('user-id');
+
+			const { result } = renderHook(() => useNewMediaCall('room-id'));
+
+			await act(async () => {
+				await result.current.startCallImmediate();
+			});
+
+			expect(mockStartCall).toHaveBeenCalledWith('user-id', 'user');
+			expect(mockShowActionSheetRef).not.toHaveBeenCalled();
+			expect(mockShowErrorAlert).not.toHaveBeenCalled();
+		});
+
+		it('falls back to action sheet when room has no direct message peer', async () => {
+			const room = { name: 'Group' };
+			mockUseSubscription.mockReturnValue(room);
+			mockUseMediaCallPermission.mockReturnValue(true);
+			mockGetUidDirectMessage.mockReturnValue(undefined);
+
+			const { result } = renderHook(() => useNewMediaCall('room-id'));
+
+			await act(async () => {
+				await result.current.startCallImmediate();
+			});
+
+			expect(mockStartCall).not.toHaveBeenCalled();
+			expectNewMediaCallActionSheet();
+		});
+
+		it('falls back to action sheet when peer is the logged-in user (note-to-self)', async () => {
+			const room = { name: 'Me' };
+			mockUseSubscription.mockReturnValue(room);
+			mockUseMediaCallPermission.mockReturnValue(true);
+			mockGetUidDirectMessage.mockReturnValue('self-id');
+			mockIsSelfUserId.mockReturnValue(true);
+
+			const { result } = renderHook(() => useNewMediaCall('room-id'));
+
+			await act(async () => {
+				await result.current.startCallImmediate();
+			});
+
+			expect(mockStartCall).not.toHaveBeenCalled();
+			expectNewMediaCallActionSheet();
+		});
+
+		it('shows error alert when startCall throws', async () => {
+			const room = { name: 'Alice' };
+			mockUseSubscription.mockReturnValue(room);
+			mockUseMediaCallPermission.mockReturnValue(true);
+			mockGetUidDirectMessage.mockReturnValue('user-id');
+			mockStartCall.mockRejectedValueOnce(new Error('boom'));
+
+			const { result } = renderHook(() => useNewMediaCall('room-id'));
+
+			await act(async () => {
+				await result.current.startCallImmediate();
+			});
+
+			expect(mockStartCall).toHaveBeenCalledWith('user-id', 'user');
+			expect(mockShowErrorAlert).toHaveBeenCalledWith('boom', 'Oops');
+		});
+
+		it('falls back to default i18n message when error has no message', async () => {
+			const room = { name: 'Alice' };
+			mockUseSubscription.mockReturnValue(room);
+			mockUseMediaCallPermission.mockReturnValue(true);
+			mockGetUidDirectMessage.mockReturnValue('user-id');
+			mockStartCall.mockRejectedValueOnce(new Error(''));
+
+			const { result } = renderHook(() => useNewMediaCall('room-id'));
+
+			await act(async () => {
+				await result.current.startCallImmediate();
+			});
+
+			expect(mockShowErrorAlert).toHaveBeenCalledWith('VoIP_Call_Issue', 'Oops');
+		});
+
+		it('no-ops when isInActiveCall is true', async () => {
+			const room = { name: 'Alice' };
+			mockUseSubscription.mockReturnValue(room);
+			mockUseMediaCallPermission.mockReturnValue(true);
+			mockGetUidDirectMessage.mockReturnValue('user-id');
+			mockUseIsInActiveVoipCall.mockReturnValue(true);
+
+			const { result } = renderHook(() => useNewMediaCall('room-id'));
+
+			await act(async () => {
+				await result.current.startCallImmediate();
+			});
+
+			expect(mockStartCall).not.toHaveBeenCalled();
+			expect(mockShowActionSheetRef).not.toHaveBeenCalled();
+			expect(mockShowErrorAlert).not.toHaveBeenCalled();
+		});
 	});
 
 	it('should pass fullContainer to the action sheet when isAndroid is true', () => {
