@@ -8,6 +8,7 @@ import Navigation from '../../navigation/appNavigation';
 import { hideActionSheetRef } from '../../../containers/ActionSheet';
 import { useIsScreenReaderEnabled } from '../../hooks/useIsScreenReaderEnabled';
 import { isIOS } from '../../methods/helpers';
+import NativeVoipModule from '../../native/NativeVoip';
 
 const STALE_NATIVE_MS = 60_000;
 
@@ -243,7 +244,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 	},
 
 	toggleSpeaker: async () => {
-		const { call, isSpeakerOn, callId, nativeAcceptedCallId } = get();
+		const { call, isSpeakerOn } = get();
 		if (!call) return;
 
 		const newSpeakerOn = !isSpeakerOn;
@@ -251,17 +252,9 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		try {
 			if (isIOS) {
 				await InCallManager.setForceSpeakerphoneOn(newSpeakerOn);
-				set({ isSpeakerOn: newSpeakerOn });
-				return;
+			} else {
+				await NativeVoipModule.setSpeakerOn(newSpeakerOn);
 			}
-
-			// Android: route audio via Telecom/ConnectionService through CallKeep so the route sticks.
-			const callUuid = callId ?? nativeAcceptedCallId;
-			if (!callUuid) {
-				console.error('[VoIP] Failed to toggle speaker: missing call uuid');
-				return;
-			}
-			await RNCallKeep.setAudioRoute(callUuid, newSpeakerOn ? 'Speaker' : 'Earpiece');
 			set({ isSpeakerOn: newSpeakerOn });
 		} catch (error) {
 			console.error('[VoIP] Failed to toggle speaker:', error);

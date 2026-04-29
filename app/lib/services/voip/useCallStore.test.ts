@@ -3,6 +3,7 @@ import { Platform } from 'react-native';
 import RNCallKeep from 'react-native-callkeep';
 import InCallManager from 'react-native-incall-manager';
 
+import NativeVoipModule from '../../native/NativeVoip';
 import { useCallStore } from './useCallStore';
 
 jest.mock('../../navigation/appNavigation', () => ({
@@ -23,6 +24,13 @@ jest.mock('react-native-callkeep', () => ({
 	setForceSpeakerphoneOn: jest.fn(),
 	setAvailable: jest.fn(),
 	setAudioRoute: jest.fn(() => Promise.resolve())
+}));
+
+jest.mock('../../native/NativeVoip', () => ({
+	__esModule: true,
+	default: {
+		setSpeakerOn: jest.fn(() => Promise.resolve(true))
+	}
 }));
 
 // Re-evaluate `isIOS` per-test (the helper module computes it once at import time from Platform.OS,
@@ -320,6 +328,8 @@ describe('useCallStore toggleSpeaker', () => {
 	beforeEach(() => {
 		(RNCallKeep.setAudioRoute as jest.Mock).mockClear();
 		(InCallManager.setForceSpeakerphoneOn as jest.Mock).mockClear();
+		(NativeVoipModule.setSpeakerOn as jest.Mock).mockClear();
+		(NativeVoipModule.setSpeakerOn as jest.Mock).mockImplementation(() => Promise.resolve(true));
 		useCallStore.getState().resetNativeCallId();
 		useCallStore.getState().reset();
 	});
@@ -333,35 +343,34 @@ describe('useCallStore toggleSpeaker', () => {
 			(Platform as { OS: string }).OS = 'android';
 		});
 
-		it('routes audio to Speaker via RNCallKeep.setAudioRoute and flips isSpeakerOn', async () => {
+		it('routes audio to speaker via NativeVoipModule.setSpeakerOn and flips isSpeakerOn', async () => {
 			const { call } = createMockCall('abc');
 			useCallStore.getState().setCall(call);
 			expect(useCallStore.getState().isSpeakerOn).toBe(false);
 
 			await useCallStore.getState().toggleSpeaker();
 
-			expect(RNCallKeep.setAudioRoute).toHaveBeenCalledTimes(1);
-			expect(RNCallKeep.setAudioRoute).toHaveBeenCalledWith('abc', 'Speaker');
+			expect(NativeVoipModule.setSpeakerOn).toHaveBeenCalledTimes(1);
+			expect(NativeVoipModule.setSpeakerOn).toHaveBeenCalledWith(true);
+			expect(RNCallKeep.setAudioRoute).not.toHaveBeenCalled();
 			expect(InCallManager.setForceSpeakerphoneOn).not.toHaveBeenCalled();
 			expect(useCallStore.getState().isSpeakerOn).toBe(true);
 
 			await useCallStore.getState().toggleSpeaker();
 
-			expect(RNCallKeep.setAudioRoute).toHaveBeenCalledTimes(2);
-			expect(RNCallKeep.setAudioRoute).toHaveBeenLastCalledWith('abc', 'Earpiece');
+			expect(NativeVoipModule.setSpeakerOn).toHaveBeenCalledTimes(2);
+			expect(NativeVoipModule.setSpeakerOn).toHaveBeenLastCalledWith(false);
 			expect(useCallStore.getState().isSpeakerOn).toBe(false);
 		});
 
-		it('does not throw and does not flip isSpeakerOn when call uuid is missing', async () => {
-			// Simulate active call object but no callId/native id (defensive — should not normally happen).
+		it('leaves isSpeakerOn unchanged and logs error when NativeVoipModule.setSpeakerOn rejects', async () => {
+			(NativeVoipModule.setSpeakerOn as jest.Mock).mockImplementationOnce(() => Promise.reject(new Error('E_AUDIO_ROUTE')));
+			const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 			const { call } = createMockCall('abc');
 			useCallStore.getState().setCall(call);
-			useCallStore.setState({ callId: null, nativeAcceptedCallId: null });
-			const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
-			await expect(useCallStore.getState().toggleSpeaker()).resolves.toBeUndefined();
+			await useCallStore.getState().toggleSpeaker();
 
-			expect(RNCallKeep.setAudioRoute).not.toHaveBeenCalled();
 			expect(useCallStore.getState().isSpeakerOn).toBe(false);
 			expect(errorSpy).toHaveBeenCalled();
 			errorSpy.mockRestore();
@@ -373,7 +382,7 @@ describe('useCallStore toggleSpeaker', () => {
 			(Platform as { OS: string }).OS = 'ios';
 		});
 
-		it('uses InCallManager.setForceSpeakerphoneOn and does not call RNCallKeep.setAudioRoute', async () => {
+		it('uses InCallManager.setForceSpeakerphoneOn and does not call native speaker module', async () => {
 			const { call } = createMockCall('ios-call');
 			useCallStore.getState().setCall(call);
 
@@ -382,6 +391,7 @@ describe('useCallStore toggleSpeaker', () => {
 			expect(InCallManager.setForceSpeakerphoneOn).toHaveBeenCalledTimes(1);
 			expect(InCallManager.setForceSpeakerphoneOn).toHaveBeenCalledWith(true);
 			expect(RNCallKeep.setAudioRoute).not.toHaveBeenCalled();
+			expect(NativeVoipModule.setSpeakerOn).not.toHaveBeenCalled();
 			expect(useCallStore.getState().isSpeakerOn).toBe(true);
 		});
 	});

@@ -1,7 +1,12 @@
 package chat.rocket.reactnative.voip
 
+import android.content.Context
+import android.media.AudioDeviceInfo
+import android.media.AudioManager
+import android.os.Build
 import android.util.Log
 import chat.rocket.reactnative.BuildConfig
+import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.WritableMap
 import com.facebook.react.modules.core.DeviceEventManagerModule
@@ -155,6 +160,49 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
             Log.d(TAG, "stopVoipCallService: service stopped")
         } catch (e: Exception) {
             Log.e(TAG, "stopVoipCallService: failed to stop service", e)
+        }
+    }
+
+    /**
+     * Routes call audio between the device speakerphone and the system-chosen output (earpiece/headset).
+     *
+     * The app's Telecom PhoneAccount is self-managed, so Connection.setAudioRoute() is a no-op —
+     * the app owns audio routing and must drive AudioManager directly.
+     *
+     * API 31+: setCommunicationDevice(BUILTIN_SPEAKER) preempts WebRTC's AudioDeviceModule routing race.
+     * Pre-31: legacy MODE_IN_COMMUNICATION + setSpeakerphoneOn fallback.
+     */
+    override fun setSpeakerOn(on: Boolean, promise: Promise) {
+        try {
+            val audioManager = reactApplicationContext.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                if (on) {
+                    val speaker = audioManager.availableCommunicationDevices
+                        .firstOrNull { it.type == AudioDeviceInfo.TYPE_BUILTIN_SPEAKER }
+                    if (speaker == null) {
+                        Log.w(TAG, "setSpeakerOn: no BUILTIN_SPEAKER in availableCommunicationDevices")
+                        promise.resolve(false)
+                        return
+                    }
+                    val ok = audioManager.setCommunicationDevice(speaker)
+                    Log.d(TAG, "setSpeakerOn(true) via setCommunicationDevice -> $ok")
+                    promise.resolve(ok)
+                } else {
+                    audioManager.clearCommunicationDevice()
+                    Log.d(TAG, "setSpeakerOn(false) via clearCommunicationDevice")
+                    promise.resolve(true)
+                }
+            } else {
+                @Suppress("DEPRECATION")
+                audioManager.mode = AudioManager.MODE_IN_COMMUNICATION
+                @Suppress("DEPRECATION")
+                audioManager.isSpeakerphoneOn = on
+                Log.d(TAG, "setSpeakerOn($on) via legacy setSpeakerphoneOn")
+                promise.resolve(true)
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "setSpeakerOn failed", e)
+            promise.reject("E_AUDIO_ROUTE", e.message, e)
         }
     }
 
