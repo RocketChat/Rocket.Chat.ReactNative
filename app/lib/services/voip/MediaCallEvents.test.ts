@@ -503,4 +503,27 @@ describe('setupMediaCallEvents — VoipCommunicationDeviceChanged (Android only)
 		DeviceEventEmitter.emit('VoipCommunicationDeviceChanged', { isSpeaker: true });
 		expect(mockSetState).not.toHaveBeenCalled();
 	});
+
+	it('cleanup removes VoipCommunicationDeviceChanged subscription', () => {
+		teardown?.();
+		teardown = undefined;
+
+		const remove = jest.fn();
+		const originalAddListener = DeviceEventEmitter.addListener.bind(DeviceEventEmitter);
+		const addListenerSpy = jest.spyOn(DeviceEventEmitter, 'addListener').mockImplementation(((
+			event: string,
+			listener: (...args: unknown[]) => void
+		) => {
+			if (event === 'VoipCommunicationDeviceChanged') {
+				return { remove };
+			}
+			return originalAddListener(event, listener);
+		}) as never);
+
+		const cleanup = setupMediaCallEvents(makeTestAdapters());
+		cleanup();
+
+		expect(remove).toHaveBeenCalled();
+		addListenerSpy.mockRestore();
+	});
 });

@@ -25,6 +25,7 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
         private const val TAG = "RocketChat.VoipModule"
         private const val EVENT_VOIP_ACCEPT_SUCCEEDED = "VoipAcceptSucceeded"
         private const val EVENT_VOIP_ACCEPT_FAILED = "VoipAcceptFailed"
+        private const val EVENT_VOIP_COMMUNICATION_DEVICE_CHANGED = "VoipCommunicationDeviceChanged"
 
         private var reactContextRef: WeakReference<ReactApplicationContext>? = null
 
@@ -175,33 +176,45 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
             promise.resolve(null)
             return
         }
-        val audioManager = reactApplicationContext.getSystemService(AudioManager::class.java)
-        val listener = AudioManager.OnCommunicationDeviceChangedListener { device ->
-            val isSpeaker = device?.type == AudioDeviceInfo.TYPE_BUILTIN_SPEAKER
-            emitCommunicationDeviceChanged(isSpeaker)
-        }
-        audioManager.addOnCommunicationDeviceChangedListener(reactApplicationContext.mainExecutor, listener)
-        communicationDeviceListener = listener
+        try {
+            val audioManager = reactApplicationContext.getSystemService(AudioManager::class.java)
+            val listener = AudioManager.OnCommunicationDeviceChangedListener { device ->
+                val isSpeaker = device?.type == AudioDeviceInfo.TYPE_BUILTIN_SPEAKER
+                emitCommunicationDeviceChanged(isSpeaker)
+            }
+            audioManager.addOnCommunicationDeviceChangedListener(reactApplicationContext.mainExecutor, listener)
+            communicationDeviceListener = listener
 
-        // addOnCommunicationDeviceChangedListener does not invoke the callback on registration,
-        // so seed the JS-side state with the current device.
-        val currentDevice = audioManager.communicationDevice
-        if (currentDevice != null) {
-            val isSpeaker = currentDevice.type == AudioDeviceInfo.TYPE_BUILTIN_SPEAKER
-            emitCommunicationDeviceChanged(isSpeaker)
-        }
+            // addOnCommunicationDeviceChangedListener does not invoke the callback on registration,
+            // so seed the JS-side state with the current device.
+            val currentDevice = audioManager.communicationDevice
+            if (currentDevice != null) {
+                val isSpeaker = currentDevice.type == AudioDeviceInfo.TYPE_BUILTIN_SPEAKER
+                emitCommunicationDeviceChanged(isSpeaker)
+            }
 
-        promise.resolve(null)
+            promise.resolve(null)
+        } catch (e: Exception) {
+            communicationDeviceListener = null
+            Log.e(TAG, "startAudioRouteSync failed", e)
+            promise.reject("E_AUDIO_ROUTE_SYNC_START", e.message, e)
+        }
     }
 
     override fun stopAudioRouteSync(promise: Promise) {
-        val listener = communicationDeviceListener
-        if (listener != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            val audioManager = reactApplicationContext.getSystemService(AudioManager::class.java)
-            audioManager.removeOnCommunicationDeviceChangedListener(listener)
+        try {
+            val listener = communicationDeviceListener
+            if (listener != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                val audioManager = reactApplicationContext.getSystemService(AudioManager::class.java)
+                audioManager.removeOnCommunicationDeviceChangedListener(listener)
+            }
+            communicationDeviceListener = null
+            promise.resolve(null)
+        } catch (e: Exception) {
+            communicationDeviceListener = null
+            Log.e(TAG, "stopAudioRouteSync failed", e)
+            promise.reject("E_AUDIO_ROUTE_SYNC_STOP", e.message, e)
         }
-        communicationDeviceListener = null
-        promise.resolve(null)
     }
 
     private fun emitCommunicationDeviceChanged(isSpeaker: Boolean) {
@@ -211,7 +224,7 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
                     val params = Arguments.createMap().apply { putBoolean("isSpeaker", isSpeaker) }
                     context
                         .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-                        .emit("VoipCommunicationDeviceChanged", params)
+                        .emit(EVENT_VOIP_COMMUNICATION_DEVICE_CHANGED, params)
                 }
             }
         } catch (e: Exception) {

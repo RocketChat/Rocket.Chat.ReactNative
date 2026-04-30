@@ -67,7 +67,6 @@ jest.mock('../../methods/helpers', () => {
 	return proxy;
 });
 
-
 function createMockCall(callId: string, options?: { initialState?: string }) {
 	const initialState = options?.initialState ?? 'active';
 	const listeners: Record<string, Set<(...args: unknown[]) => void>> = {};

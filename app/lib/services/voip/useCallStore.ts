@@ -174,7 +174,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		}
 
 		if (!isIOS) {
-			// Idempotent on the native side: a second call while a listener is registered is a no-op.
+			// Idempotent: native short-circuits if a listener is already registered or API < 31.
 			NativeVoipModule.startAudioRouteSync().catch((error: unknown) => {
 				console.error('[VoIP] startAudioRouteSync failed:', error);
 			});

@@ -28,8 +28,8 @@ jest.mock('react-native-callkeep', () => ({
 	setAvailable: jest.fn()
 }));
 
-const mockStartAudioRouteSync = jest.fn(() => Promise.resolve(false));
-const mockStopAudioRouteSync = jest.fn(() => Promise.resolve(false));
+const mockStartAudioRouteSync = jest.fn(() => Promise.resolve());
+const mockStopAudioRouteSync = jest.fn(() => Promise.resolve());
 
 jest.mock('../../native/NativeVoip', () => ({
 	__esModule: true,

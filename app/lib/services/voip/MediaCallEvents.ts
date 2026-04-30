@@ -16,6 +16,7 @@ const mediaCallLogger = new MediaCallLogger();
 
 const EVENT_VOIP_ACCEPT_FAILED = 'VoipAcceptFailed';
 const EVENT_VOIP_ACCEPT_SUCCEEDED = 'VoipAcceptSucceeded';
+const EVENT_VOIP_COMMUNICATION_DEVICE_CHANGED = 'VoipCommunicationDeviceChanged';
 
 /** Params forwarded into the app deep-linking pipeline for VoIP-driven navigation. */
 export type VoipDeepLinkParams = {
@@ -188,7 +189,7 @@ export const setupMediaCallEvents = (adapters: MediaCallEventsAdapters): (() => 
 
 	if (!isIOS) {
 		subscriptions.push(
-			Emitter.addListener('VoipCommunicationDeviceChanged', ({ isSpeaker }: { isSpeaker: boolean }) => {
+			Emitter.addListener(EVENT_VOIP_COMMUNICATION_DEVICE_CHANGED, ({ isSpeaker }: { isSpeaker: boolean }) => {
 				if (useCallStore.getState().call == null) return;
 				useCallStore.setState({ isSpeakerOn: isSpeaker });
 			})
