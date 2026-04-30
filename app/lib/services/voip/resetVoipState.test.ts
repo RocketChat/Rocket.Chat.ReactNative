@@ -1,5 +1,6 @@
 import { resetVoipState } from './resetVoipState';
 import { useCallStore } from './useCallStore';
+import { callLifecycle } from './CallLifecycle';
 
 jest.mock('react-native-callkeep', () => ({
 	__esModule: true,
@@ -74,7 +75,18 @@ jest.mock('./VoipNative', () => ({
 	}
 }));
 
+jest.mock('./CallLifecycle', () => ({
+	callLifecycle: {
+		end: jest.fn().mockResolvedValue(undefined),
+		preBindStatus: jest.fn(() => ({ kind: 'idle' }))
+	}
+}));
+
 describe('resetVoipState', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+	});
+
 	it('calls reset (pre-bind UUID is now owned by the FSM, not the store)', () => {
 		const order: string[] = [];
 		const reset = jest.fn(() => {
@@ -85,6 +97,31 @@ describe('resetVoipState', () => {
 		resetVoipState();
 
 		expect(order).toEqual(['reset']);
+	});
+
+	it('calls callLifecycle.end("error") to collapse non-idle FSM state', () => {
+		const reset = jest.fn();
+		(useCallStore.getState as jest.Mock).mockReturnValue({ reset });
+
+		resetVoipState();
+
+		expect(callLifecycle.end).toHaveBeenCalledWith('error');
+	});
+
+	it('callLifecycle.end runs before store reset — ensures FSM is collapsed before JS state clears', () => {
+		const order: string[] = [];
+		(callLifecycle.end as jest.Mock).mockImplementation(() => {
+			order.push('lifecycle.end');
+			return Promise.resolve();
+		});
+		const reset = jest.fn(() => {
+			order.push('reset');
+		});
+		(useCallStore.getState as jest.Mock).mockReturnValue({ reset });
+
+		resetVoipState();
+
+		expect(order).toEqual(['lifecycle.end', 'reset']);
 	});
 
 	it('C2: clearVoipAcceptDedupeSentinels runs before reset', () => {
@@ -100,11 +137,15 @@ describe('resetVoipState', () => {
 		clearSpy.mockImplementation(() => {
 			order.push('clearVoipAcceptDedupeSentinels');
 		});
+		(callLifecycle.end as jest.Mock).mockImplementation(() => {
+			order.push('lifecycle.end');
+			return Promise.resolve();
+		});
 		(useCallStore.getState as jest.Mock).mockReturnValue({ reset });
 
 		resetVoipState();
 
-		expect(order).toEqual(['clearVoipAcceptDedupeSentinels', 'reset']);
+		expect(order).toEqual(['clearVoipAcceptDedupeSentinels', 'lifecycle.end', 'reset']);
 
 		clearSpy.mockRestore();
 	});
