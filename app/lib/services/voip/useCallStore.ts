@@ -6,6 +6,10 @@ import Navigation from '../../navigation/appNavigation';
 import { hideActionSheetRef } from '../../../containers/ActionSheet';
 import { useIsScreenReaderEnabled } from '../../hooks/useIsScreenReaderEnabled';
 import { callLifecycle } from './CallLifecycle';
+import { MediaCallLogger } from './MediaCallLogger';
+
+const mediaCallLogger = new MediaCallLogger();
+const TAG = '[useCallStore]';
 
 const STALE_NATIVE_MS = 60_000;
 
@@ -201,7 +205,9 @@ export const useCallStore = create<CallStore>((set, get) => ({
 
 		const handleEnded = () => {
 			// Navigation.back() removed — CallNavRouter handles navigation after callEnded emits.
-			callLifecycle.end('remote');
+			callLifecycle.end('remote').catch(error => {
+				mediaCallLogger.error(`${TAG} callLifecycle.end failed:`, error);
+			});
 		};
 
 		call.emitter.on('stateChange', handleStateChange);
@@ -273,7 +279,9 @@ export const useCallStore = create<CallStore>((set, get) => ({
 
 	endCall: () => {
 		// Delegate to CallLifecycle for idempotent, ordered teardown.
-		callLifecycle.end('local');
+		callLifecycle.end('local').catch(error => {
+			mediaCallLogger.error(`${TAG} callLifecycle.end failed:`, error);
+		});
 	},
 
 	reset: () => {

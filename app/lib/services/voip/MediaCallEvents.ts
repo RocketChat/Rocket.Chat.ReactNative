@@ -94,7 +94,9 @@ export function createVoipEventDispatcher(adapters: MediaCallEventsAdapters): (e
 		switch (e.type) {
 			case 'endCall': {
 				mediaCallLogger.log(`${TAG} End call event listener:`, e.callUuid);
-				callLifecycle.end('remote');
+				callLifecycle.end('remote').catch(error => {
+					mediaCallLogger.error(`${TAG} callLifecycle.end failed:`, error);
+				});
 				return false;
 			}
 

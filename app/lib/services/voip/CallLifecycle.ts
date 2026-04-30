@@ -135,44 +135,50 @@ class CallLifecycle {
 		// Pre-bind-safe: use whichever id is available.
 		const effectiveCallId = callId ?? nativeAcceptedCallId;
 
+		// `safe` wraps each teardown step so that a throw is logged but does not
+		// abort the rest of the sequence. Without this, a single failure (e.g.
+		// native.call.end throwing) would skip subsequent steps and leak the
+		// `callEnded` emit, leaving listeners subscribed and native state stale.
+		const safe = (label: string, fn: () => void) => {
+			try {
+				fn();
+			} catch (error) {
+				logger.warn(`${TAG} ${label} failed; continuing teardown`, error);
+			}
+		};
+
 		// Step 1: Hang up the MediaCall (reject if ringing, hangup otherwise).
 		// Read the active call from useCallStore — MediaSessionInstance owns it.
-		// Wrapped in try/catch so a throw from reject/hangup does not abort
-		// subsequent teardown steps (which would leak listeners / native state).
 		const mediaCall = useCallStore.getState().call;
 		if (mediaCall) {
-			try {
-				if ((mediaCall as any).state === 'ringing') {
+			const isRinging = (mediaCall as any).state === 'ringing';
+			safe(`mediaCall.${isRinging ? 'reject' : 'hangup'}`, () => {
+				if (isRinging) {
 					mediaCall.reject();
 				} else {
 					mediaCall.hangup();
 				}
-			} catch (error) {
-				logger.warn(
-					`${TAG} mediaCall.${(mediaCall as any).state === 'ringing' ? 'reject' : 'hangup'}() threw; continuing teardown`,
-					error
-				);
-			}
+			});
 		}
 
 		// Step 2: End the native CallKit / Telecom session.
 		if (effectiveCallId) {
-			native.call.end(effectiveCallId);
+			safe('native.call.end', () => native.call.end(effectiveCallId));
 		}
 
 		// Step 3: Clear the "active" indicator in the native UI.
-		native.call.markActive('');
+		safe('native.call.markActive', () => native.call.markActive(''));
 
 		// Step 4: Mark the device as available for new calls.
-		native.call.markAvailable(effectiveCallId ?? '');
+		safe('native.call.markAvailable', () => native.call.markAvailable(effectiveCallId ?? ''));
 
 		// Step 5: Reset JS call state (store clears call, callId, etc.).
 		// NOTE: stopAudio is intentionally NOT called here — step 6 owns it so
 		// that all subscribers see consistent JS state when callEnded emits.
-		useCallStore.getState().reset();
+		safe('useCallStore.reset', () => useCallStore.getState().reset());
 
 		// Step 6: Stop audio after store is cleared.
-		native.call.stopAudio();
+		safe('native.call.stopAudio', () => native.call.stopAudio());
 
 		// Step 7: Notify subscribers.
 		this.emitter.emit('callEnded', { callId: effectiveCallId, reason });

@@ -9,6 +9,13 @@
  *   - reason payload threading
  */
 
+import type { IClientMediaCall } from '@rocket.chat/media-signaling';
+
+import { callLifecycle } from './CallLifecycle';
+import type { CallEndReason } from './CallLifecycle';
+import { InMemoryVoipNative } from './VoipNative';
+import { useCallStore } from './useCallStore';
+
 jest.mock('react-native-callkeep', () => ({
 	__esModule: true,
 	default: {
@@ -39,13 +46,6 @@ jest.mock('../../native/NativeVoip', () => ({
 jest.mock('../../../containers/ActionSheet', () => ({
 	hideActionSheetRef: jest.fn()
 }));
-
-import type { IClientMediaCall } from '@rocket.chat/media-signaling';
-
-import { callLifecycle } from './CallLifecycle';
-import type { CallEndReason } from './CallLifecycle';
-import { InMemoryVoipNative } from './VoipNative';
-import { useCallStore } from './useCallStore';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -111,7 +111,7 @@ describe('CallLifecycle.end(reason)', () => {
 			await callLifecycle.end('local');
 
 			// Assert: step 2 (end), step 3 (markActive ''), step 4 (markAvailable), step 6 (stopAudio)
-			const recorded = native.recorded;
+			const { recorded } = native;
 			const endIdx = recorded.findIndex(c => c.cmd === 'end');
 			const markActiveIdx = recorded.findIndex(c => c.cmd === 'markActive');
 			const markAvailableIdx = recorded.findIndex(c => c.cmd === 'markAvailable');
@@ -249,6 +249,7 @@ describe('CallLifecycle.end(reason)', () => {
 
 				const events: unknown[] = [];
 				const unsub = callLifecycle.emitter.on('callEnded', e => events.push(e));
+				// eslint-disable-next-line no-await-in-loop
 				await callLifecycle.end(reason);
 				unsub();
 
@@ -482,6 +483,122 @@ describe('CallLifecycle.end(reason)', () => {
 			expect(native.recorded).toContainEqual({ cmd: 'markAvailable', callUuid: 'throw-rej-1' });
 			expect(native.recorded).toContainEqual({ cmd: 'stopAudio' });
 			expect(useCallStore.getState().call).toBeNull();
+			expect(callEndedListener).toHaveBeenCalledTimes(1);
+		});
+	});
+
+	// CodeRabbit follow-up: steps 2-6 must also be guarded so a throw in any of
+	// them does not abort the rest of teardown or skip the callEnded emit.
+	describe('steps 2-6 throw isolation', () => {
+		it('continues teardown when native.call.end throws', async () => {
+			const call = makeCall({ callId: 'throw-end-1', state: 'active' });
+			useCallStore.getState().setCall(call);
+			native.reset();
+			jest.spyOn(native.call, 'end').mockImplementationOnce(() => {
+				throw new Error('end boom');
+			});
+
+			const callEndedListener = jest.fn();
+			const unsub = callLifecycle.emitter.on('callEnded', callEndedListener);
+
+			await expect(callLifecycle.end('local')).resolves.toBeUndefined();
+
+			unsub();
+
+			expect(native.recorded).toContainEqual({ cmd: 'markActive', callUuid: '' });
+			expect(native.recorded).toContainEqual({ cmd: 'markAvailable', callUuid: 'throw-end-1' });
+			expect(native.recorded).toContainEqual({ cmd: 'stopAudio' });
+			expect(useCallStore.getState().call).toBeNull();
+			expect(callEndedListener).toHaveBeenCalledTimes(1);
+		});
+
+		it('continues teardown when native.call.markActive throws', async () => {
+			const call = makeCall({ callId: 'throw-ma-1', state: 'active' });
+			useCallStore.getState().setCall(call);
+			native.reset();
+			jest.spyOn(native.call, 'markActive').mockImplementationOnce(() => {
+				throw new Error('markActive boom');
+			});
+
+			const callEndedListener = jest.fn();
+			const unsub = callLifecycle.emitter.on('callEnded', callEndedListener);
+
+			await expect(callLifecycle.end('local')).resolves.toBeUndefined();
+
+			unsub();
+
+			expect(native.recorded).toContainEqual({ cmd: 'end', callUuid: 'throw-ma-1' });
+			expect(native.recorded).toContainEqual({ cmd: 'markAvailable', callUuid: 'throw-ma-1' });
+			expect(native.recorded).toContainEqual({ cmd: 'stopAudio' });
+			expect(useCallStore.getState().call).toBeNull();
+			expect(callEndedListener).toHaveBeenCalledTimes(1);
+		});
+
+		it('continues teardown when native.call.markAvailable throws', async () => {
+			const call = makeCall({ callId: 'throw-mv-1', state: 'active' });
+			useCallStore.getState().setCall(call);
+			native.reset();
+			jest.spyOn(native.call, 'markAvailable').mockImplementationOnce(() => {
+				throw new Error('markAvailable boom');
+			});
+
+			const callEndedListener = jest.fn();
+			const unsub = callLifecycle.emitter.on('callEnded', callEndedListener);
+
+			await expect(callLifecycle.end('local')).resolves.toBeUndefined();
+
+			unsub();
+
+			expect(native.recorded).toContainEqual({ cmd: 'end', callUuid: 'throw-mv-1' });
+			expect(native.recorded).toContainEqual({ cmd: 'markActive', callUuid: '' });
+			expect(native.recorded).toContainEqual({ cmd: 'stopAudio' });
+			expect(useCallStore.getState().call).toBeNull();
+			expect(callEndedListener).toHaveBeenCalledTimes(1);
+		});
+
+		it('continues teardown when useCallStore.reset throws', async () => {
+			const call = makeCall({ callId: 'throw-reset-1', state: 'active' });
+			useCallStore.getState().setCall(call);
+			native.reset();
+			const resetSpy = jest.spyOn(useCallStore.getState(), 'reset').mockImplementationOnce(() => {
+				throw new Error('reset boom');
+			});
+
+			const callEndedListener = jest.fn();
+			const unsub = callLifecycle.emitter.on('callEnded', callEndedListener);
+
+			await expect(callLifecycle.end('local')).resolves.toBeUndefined();
+
+			unsub();
+			resetSpy.mockRestore();
+
+			expect(native.recorded).toContainEqual({ cmd: 'end', callUuid: 'throw-reset-1' });
+			expect(native.recorded).toContainEqual({ cmd: 'markActive', callUuid: '' });
+			expect(native.recorded).toContainEqual({ cmd: 'markAvailable', callUuid: 'throw-reset-1' });
+			expect(native.recorded).toContainEqual({ cmd: 'stopAudio' });
+			expect(callEndedListener).toHaveBeenCalledTimes(1);
+		});
+
+		it('continues teardown when native.call.stopAudio throws', async () => {
+			const call = makeCall({ callId: 'throw-stop-1', state: 'active' });
+			useCallStore.getState().setCall(call);
+			native.reset();
+			jest.spyOn(native.call, 'stopAudio').mockImplementationOnce(() => {
+				throw new Error('stopAudio boom');
+			});
+
+			const callEndedListener = jest.fn();
+			const unsub = callLifecycle.emitter.on('callEnded', callEndedListener);
+
+			await expect(callLifecycle.end('local')).resolves.toBeUndefined();
+
+			unsub();
+
+			expect(native.recorded).toContainEqual({ cmd: 'end', callUuid: 'throw-stop-1' });
+			expect(native.recorded).toContainEqual({ cmd: 'markActive', callUuid: '' });
+			expect(native.recorded).toContainEqual({ cmd: 'markAvailable', callUuid: 'throw-stop-1' });
+			expect(useCallStore.getState().call).toBeNull();
+			// callEnded MUST still emit even though stopAudio threw.
 			expect(callEndedListener).toHaveBeenCalledTimes(1);
 		});
 	});

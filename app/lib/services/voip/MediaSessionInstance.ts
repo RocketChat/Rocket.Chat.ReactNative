@@ -139,7 +139,9 @@ class MediaSessionInstance {
 
 				call.emitter.on('ended', () => {
 					// Route through CallLifecycle for idempotent, ordered teardown.
-					callLifecycle.end('remote');
+					callLifecycle.end('remote').catch(error => {
+						mediaCallLogger.error('[VoIP] callLifecycle.end failed:', error);
+					});
 				});
 			}
 		});
@@ -210,7 +212,9 @@ class MediaSessionInstance {
 
 	public endCall = (_callId: string) => {
 		// Delegate to CallLifecycle for idempotent, ordered teardown.
-		callLifecycle.end('local');
+		callLifecycle.end('local').catch(error => {
+			mediaCallLogger.error('[VoIP] callLifecycle.end failed:', error);
+		});
 	};
 
 	private async resolveRoomIdFromContact(contact: CallContact | undefined): Promise<void> {

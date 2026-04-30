@@ -89,7 +89,9 @@ const handleVoipAcceptFailed = function* handleVoipAcceptFailed(params) {
 		const { username } = params;
 		// Delegate to CallLifecycle for idempotent, ordered teardown.
 		// 'error' reason: native accept failed pre-bind.
-		callLifecycle.end('error');
+		// Yield via redux-saga `call` to await teardown before resetVoipState/navigation,
+		// preventing a race where navigation lands while teardown is still in flight.
+		yield call([callLifecycle, callLifecycle.end], 'error');
 		resetVoipState();
 
 		yield call(waitForNavigationReady);

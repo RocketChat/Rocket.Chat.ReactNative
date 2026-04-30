@@ -14,6 +14,7 @@ import { emitter } from '../../methods/helpers';
 import { callLifecycle } from './CallLifecycle';
 
 let _unsubscribeCallEnded: (() => void) | null = null;
+let _unsubscribeNavigationReady: (() => void) | null = null;
 let _mounted = false;
 
 /**
@@ -44,10 +45,12 @@ function mount(): void {
 	} else {
 		// mitt does not have `once`; implement it manually.
 		const onceNavigationReady = () => {
-			emitter.off('navigationReady', onceNavigationReady);
+			_unsubscribeNavigationReady?.();
+			_unsubscribeNavigationReady = null;
 			onNavigationReady();
 		};
 		emitter.on('navigationReady', onceNavigationReady);
+		_unsubscribeNavigationReady = () => emitter.off('navigationReady', onceNavigationReady);
 	}
 }
 
@@ -56,6 +59,8 @@ function mount(): void {
  * Useful for testing or if the router needs to be reset.
  */
 function unmount(): void {
+	_unsubscribeNavigationReady?.();
+	_unsubscribeNavigationReady = null;
 	_unsubscribeCallEnded?.();
 	_unsubscribeCallEnded = null;
 	_mounted = false;

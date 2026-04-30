@@ -8,7 +8,13 @@
  *   - Multiple mount() calls are idempotent
  */
 
+import { callLifecycle } from './CallLifecycle';
+import { CallNavRouter } from './CallNavRouter';
+import { emitter } from '../../methods/helpers';
+import Navigation from '../../navigation/appNavigation';
+
 // Mock navigation BEFORE importing the module under test.
+// jest.mock is auto-hoisted so it runs before the imports above resolve.
 const mockGetCurrentRoute = jest.fn();
 const mockBack = jest.fn();
 
@@ -22,12 +28,6 @@ jest.mock('../../navigation/appNavigation', () => ({
 	},
 	waitForNavigationReady: jest.fn().mockResolvedValue(undefined)
 }));
-
-// Import after mocks are set up.
-import { callLifecycle } from './CallLifecycle';
-import { CallNavRouter } from './CallNavRouter';
-import { emitter } from '../../methods/helpers';
-import Navigation from '../../navigation/appNavigation';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -186,6 +186,27 @@ describe('CallNavRouter', () => {
 			emitCallEnded();
 
 			expect(mockBack).toHaveBeenCalledTimes(1);
+		});
+
+		// Regression: deferred navigationReady listener was leaking when unmount
+		// happened before navigationReady fired. The listener stayed alive and
+		// could re-subscribe callEnded later, causing routing while "unmounted".
+		it('does not subscribe callEnded if unmount() runs before navigationReady fires', () => {
+			mockGetCurrentRoute.mockReturnValue({ name: 'CallView' });
+			// Nav not ready at mount time.
+			CallNavRouter.mount();
+
+			// Unmount BEFORE navigationReady is emitted.
+			CallNavRouter.unmount();
+
+			// Now nav becomes ready — the deferred listener (if leaked) would
+			// subscribe callEnded here, causing the next emission to call back().
+			emitNavigationReady();
+
+			// callEnded should be ignored — router is unmounted.
+			emitCallEnded();
+
+			expect(mockBack).not.toHaveBeenCalled();
 		});
 	});
 });
