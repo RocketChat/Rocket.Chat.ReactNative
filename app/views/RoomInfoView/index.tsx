@@ -17,7 +17,8 @@ import { getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/meth
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 import { handleIgnore } from '../../lib/methods/helpers/handleIgnore';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import { createDirectMessage, getRoomInfo, getUserInfo, getVisitorInfo, toggleBlockUser } from '../../lib/services/restApi';
+import { getRoomInfo, getUserInfo, getVisitorInfo, toggleBlockUser } from '../../lib/services/restApi';
+import { createDirectMessage } from '../../lib/methods/createDirectMessage';
 import { type MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import { type ChatsStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
