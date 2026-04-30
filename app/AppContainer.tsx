@@ -53,7 +53,7 @@ const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: bool
 
 	return (
 		<>
-			<MediaCallHeader />
+			{root === RootEnum.ROOT_INSIDE ? <MediaCallHeader /> : null}
 			<NavigationContainer
 				theme={navTheme}
 				ref={Navigation.navigationRef}

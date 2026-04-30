@@ -79,30 +79,28 @@ describe('MediaCallHeader', () => {
 		jest.clearAllMocks();
 	});
 
-	it('should render empty placeholder when there is no call', () => {
+	it('should render nothing when there is no call', () => {
 		useCallStore.setState({ call: null });
-		const { getByTestId, queryByTestId } = render(
+		const { queryByTestId } = render(
 			<Wrapper>
 				<MediaCallHeader />
 			</Wrapper>
 		);
 
-		expect(getByTestId('media-call-header-empty')).toBeTruthy();
 		expect(queryByTestId('media-call-header')).toBeNull();
 		expect(queryByTestId('media-call-header-collapse')).toBeNull();
 		expect(queryByTestId('media-call-header-content')).toBeNull();
 		expect(queryByTestId('media-call-header-end')).toBeNull();
 	});
 
-	it('should render empty placeholder when native accepted but call not bound yet (before answerCall completes)', () => {
+	it('should render nothing when native accepted but call not bound yet (before answerCall completes)', () => {
 		useCallStore.getState().setNativeAcceptedCallId('e3246c4d-d23a-412f-8a8b-37ec9f29ef1a');
-		const { getByTestId, queryByTestId } = render(
+		const { queryByTestId } = render(
 			<Wrapper>
 				<MediaCallHeader />
 			</Wrapper>
 		);
 
-		expect(getByTestId('media-call-header-empty')).toBeTruthy();
 		expect(queryByTestId('media-call-header')).toBeNull();
 	});
 

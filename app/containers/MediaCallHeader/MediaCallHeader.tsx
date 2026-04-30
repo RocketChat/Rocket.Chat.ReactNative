@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useShallow } from 'zustand/react/shallow';
@@ -51,7 +51,7 @@ const MediaCallHeader = () => {
 	};
 
 	if (!call) {
-		return <View style={defaultHeaderStyle} testID='media-call-header-empty' />;
+		return null;
 	}
 
 	return (

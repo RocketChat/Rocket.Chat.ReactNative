@@ -22,15 +22,6 @@ const Header = ({ options, navigation, route }: IHeader) => {
 	// 32.5 is the value I found that makes it work correctly on both platforms.
 	const size = 32.5 * fontScale;
 
-	const isRoomViewMasterDetail =
-		!isMasterDetail ||
-		route.name === 'RoomView' ||
-		route.name === 'RoomsListView' ||
-		route.name === 'ShareListView' ||
-		route.name === 'ShareView' ||
-		route.name === 'AttachmentView' ||
-		route.name === 'DrawerNavigator';
-
 	const handleOnLayout = ({
 		nativeEvent: {
 			layout: { width }
@@ -54,11 +45,7 @@ const Header = ({ options, navigation, route }: IHeader) => {
 	};
 
 	return (
-		<HeaderContainer
-			customRightIcon={!!headerRight}
-			customLeftIcon={!!headerLeft}
-			addExtraNotchPadding={isRoomViewMasterDetail}
-			isMasterDetail={isMasterDetail}>
+		<HeaderContainer customRightIcon={!!headerRight} customLeftIcon={!!headerLeft} isMasterDetail={isMasterDetail}>
 			{headerLeft ? (
 				headerLeft({ canGoBack: false })
 			) : (

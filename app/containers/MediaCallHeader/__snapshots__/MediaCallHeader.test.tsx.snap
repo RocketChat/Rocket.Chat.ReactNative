@@ -1336,17 +1336,7 @@ exports[`Story Snapshots: NoCall should match snapshot 1`] = `
       "flex": 1,
     }
   }
->
-  <View
-    style={
-      {
-        "backgroundColor": "#E4E7EA",
-        "paddingTop": 0,
-      }
-    }
-    testID="media-call-header-empty"
-  />
-</View>
+/>
 `;
 
 exports[`Story Snapshots: WithRemoteHeld should match snapshot 1`] = `

@@ -5,7 +5,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '../../../../theme';
 
 interface IHeaderContainer extends ViewProps {
-	addExtraNotchPadding?: boolean;
 	isMasterDetail?: boolean;
 	customLeftIcon?: boolean;
 	customRightIcon?: boolean;
