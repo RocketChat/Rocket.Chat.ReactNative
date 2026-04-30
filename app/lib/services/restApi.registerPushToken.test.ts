@@ -1,6 +1,8 @@
 import { store as reduxStore } from '../store/auxStore';
 import sdk from './sdk';
-import { pendingToken, pendingVoipToken, registerPushToken } from './restApi';
+import * as restApi from './restApi';
+
+const { registerPushToken } = restApi;
 import NativeVoipModule from '../native/NativeVoip';
 import { getDeviceToken } from '../notifications';
 
@@ -77,8 +79,8 @@ describe('registerPushToken - pendingToken cache', () => {
 
 			await registerPushToken();
 
-			expect(pendingToken).toBe('auth-test-token');
-			expect(pendingVoipToken).toBe('');
+			expect(restApi.pendingToken).toBe('auth-test-token');
+			expect(restApi.pendingVoipToken).toBe('');
 		});
 	});
 
@@ -89,7 +91,7 @@ describe('registerPushToken - pendingToken cache', () => {
 
 			await registerPushToken();
 
-			expect(pendingToken).toBe('auth-test-token-403');
+			expect(restApi.pendingToken).toBe('auth-test-token-403');
 		});
 	});
 
@@ -99,14 +101,14 @@ describe('registerPushToken - pendingToken cache', () => {
 			(getDeviceToken as jest.Mock).mockReturnValue('first-token');
 			(sdk.post as jest.Mock).mockRejectedValue({ status: 401 });
 			await registerPushToken();
-			expect(pendingToken).toBe('first-token');
+			expect(restApi.pendingToken).toBe('first-token');
 
 			// Now simulate a successful call — pendingToken should be cleared
 			(sdk.post as jest.Mock).mockResolvedValue({ success: true });
 			await registerPushToken();
 
-			expect(pendingToken).toBe('');
-			expect(pendingVoipToken).toBe('');
+			expect(restApi.pendingToken).toBe('');
+			expect(restApi.pendingVoipToken).toBe('');
 		});
 	});
 
@@ -117,7 +119,7 @@ describe('registerPushToken - pendingToken cache', () => {
 			// First call: 401 sets pendingToken
 			(sdk.post as jest.Mock).mockRejectedValue({ status: 401 });
 			await registerPushToken();
-			expect(pendingToken).toBe('my-token');
+			expect(restApi.pendingToken).toBe('my-token');
 
 			// Second call: same token, but pendingToken is set — should NOT short-circuit
 			// because the short-circuit condition is:
