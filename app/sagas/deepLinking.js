@@ -28,6 +28,7 @@ import { loginOAuthOrSso } from '../lib/services/connect';
 import { notifyUser } from '../lib/services/restApi';
 import sdk from '../lib/services/sdk';
 import Navigation, { waitForNavigationReady } from '../lib/navigation/appNavigation';
+import { callLifecycle } from '../lib/services/voip/CallLifecycle';
 import { resetVoipState } from '../lib/services/voip/resetVoipState';
 
 const roomTypes = {
@@ -85,11 +86,13 @@ const navigate = function* navigate({ params }) {
  */
 const handleVoipAcceptFailed = function* handleVoipAcceptFailed(params) {
 	try {
-		const { callId, username } = params;
+		const { username } = params;
+		// Delegate to CallLifecycle for idempotent, ordered teardown.
+		// 'error' reason: native accept failed pre-bind.
+		// Yield via redux-saga `call` to await teardown before resetVoipState/navigation,
+		// preventing a race where navigation lands while teardown is still in flight.
+		yield call([callLifecycle, callLifecycle.end], 'error');
 		resetVoipState();
-		if (callId) {
-			voipNative.call.end(callId);
-		}
 
 		yield call(waitForNavigationReady);
 

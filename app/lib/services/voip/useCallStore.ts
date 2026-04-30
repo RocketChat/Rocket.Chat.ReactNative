@@ -5,6 +5,11 @@ import { voipNative } from './VoipNative';
 import Navigation from '../../navigation/appNavigation';
 import { hideActionSheetRef } from '../../../containers/ActionSheet';
 import { useIsScreenReaderEnabled } from '../../hooks/useIsScreenReaderEnabled';
+import { callLifecycle } from './CallLifecycle';
+import { MediaCallLogger } from './MediaCallLogger';
+
+const mediaCallLogger = new MediaCallLogger();
+const TAG = '[useCallStore]';
 
 const STALE_NATIVE_MS = 60_000;
 
@@ -199,9 +204,10 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		};
 
 		const handleEnded = () => {
-			get().resetNativeCallId();
-			get().reset();
-			Navigation.back();
+			// Navigation.back() removed — CallNavRouter handles navigation after callEnded emits.
+			callLifecycle.end('remote').catch(error => {
+				mediaCallLogger.error(`${TAG} callLifecycle.end failed:`, error);
+			});
 		};
 
 		call.emitter.on('stateChange', handleStateChange);
@@ -272,27 +278,21 @@ export const useCallStore = create<CallStore>((set, get) => ({
 	},
 
 	endCall: () => {
-		const { call, callId, nativeAcceptedCallId } = get();
-		// UUID for the native call UI layer (react-native-callkeep on iOS and Android).
-		const callUuid = callId ?? nativeAcceptedCallId;
-
-		if (call) {
-			call.hangup();
-		}
-
-		if (callUuid) {
-			voipNative.call.end(callUuid);
-		}
-
-		get().resetNativeCallId();
-		get().reset();
+		// Delegate to CallLifecycle for idempotent, ordered teardown.
+		callLifecycle.end('local').catch(error => {
+			mediaCallLogger.error(`${TAG} callLifecycle.end failed:`, error);
+		});
 	},
 
 	reset: () => {
 		const { nativeAcceptedCallId } = get();
 		cleanupCallListeners();
 		cancelStaleNativeTimer();
-		voipNative.call.stopAudio();
+		// NOTE: stopAudio is intentionally NOT called here.
+		// CallLifecycle.end() calls voipNative.call.stopAudio() as step 6 (after reset),
+		// ensuring subscribers see consistent JS state when callEnded emits.
+		// If reset() is called outside of CallLifecycle (e.g., on session teardown),
+		// stopAudio is a safe no-op if audio was not started.
 		set({ ...initialState, nativeAcceptedCallId });
 		hideActionSheetRef();
 		// Old timer was cleared above; start a new one if nativeAcceptedCallId is still set.

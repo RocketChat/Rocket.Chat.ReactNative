@@ -8,6 +8,7 @@ import { getDMSubscriptionByUsername } from '../../database/services/Subscriptio
 import { getUidDirectMessage } from '../../methods/helpers/helpers';
 import { mediaSessionStore } from './MediaSessionStore';
 import { mediaSessionInstance } from './MediaSessionInstance';
+import { callLifecycle } from './CallLifecycle';
 
 jest.mock('../../database/services/Subscription', () => ({
 	getDMSubscriptionByUsername: jest.fn()
@@ -800,22 +801,85 @@ describe('MediaSessionInstance', () => {
 		});
 	});
 
-	describe('endCall', () => {
-		it('records markAvailable on voipNative when call is found and hung up', async () => {
+	describe("call.emitter 'ended' guard (post-teardown stale emission)", () => {
+		it("does not invoke callLifecycle.end again when 'ended' fires after store has been reset", async () => {
+			const mockSetCall = jest.fn();
+			mockUseCallStoreGetState.mockReturnValue({
+				reset: mockCallStoreReset,
+				setCall: mockSetCall,
+				setRoomId: mockSetRoomId,
+				setDirection: mockSetDirection,
+				resetNativeCallId: jest.fn(),
+				call: null,
+				callId: null,
+				nativeAcceptedCallId: null,
+				roomId: null
+			});
 			await mediaSessionInstance.init('user-1');
-			const session = createdSessions[0];
-			const mainCall = {
-				callId: 'end-1',
-				state: 'active',
-				hangup: jest.fn(),
-				reject: jest.fn()
-			};
-			session.getCallData.mockReturnValue(mainCall);
-			(voipNative as InMemoryVoipNative).reset();
+			const endSpy = jest.spyOn(callLifecycle, 'end').mockResolvedValue(undefined);
+
+			const outgoing = buildClientMediaCall({ callId: 'stale-c1', role: 'caller' });
+			getNewCallHandler()({ call: outgoing });
+
+			const emitterOnMock = (outgoing.emitter as unknown as { on: jest.Mock }).on;
+			const endedEntry = emitterOnMock.mock.calls.find(([name]: [string]) => name === 'ended');
+			expect(endedEntry).toBeDefined();
+			const endedHandler = endedEntry![1] as () => void;
+
+			// State while call is active — store reflects the bound call.
+			mockUseCallStoreGetState.mockReturnValue({
+				reset: mockCallStoreReset,
+				setCall: mockSetCall,
+				setRoomId: mockSetRoomId,
+				setDirection: mockSetDirection,
+				resetNativeCallId: jest.fn(),
+				call: { callId: 'stale-c1' } as unknown as IClientMediaCall,
+				callId: 'stale-c1',
+				nativeAcceptedCallId: null,
+				roomId: null
+			});
+
+			// First 'ended' emission — store still has the call → teardown invoked once.
+			endedHandler();
+			await Promise.resolve();
+			expect(endSpy).toHaveBeenCalledTimes(1);
+			expect(endSpy).toHaveBeenCalledWith('remote');
+
+			// Simulate teardown completing — store cleared (call/callId/native id all null).
+			mockUseCallStoreGetState.mockReturnValue({
+				reset: mockCallStoreReset,
+				setCall: mockSetCall,
+				setRoomId: mockSetRoomId,
+				setDirection: mockSetDirection,
+				resetNativeCallId: jest.fn(),
+				call: null,
+				callId: null,
+				nativeAcceptedCallId: null,
+				roomId: null
+			});
+
+			// Second (stale, late-arriving) 'ended' on the same captured `call` object.
+			endedHandler();
+			await Promise.resolve();
+
+			// Guard must have short-circuited — no additional invocations.
+			expect(endSpy).toHaveBeenCalledTimes(1);
+			endSpy.mockRestore();
+		});
+	});
+
+	describe('endCall', () => {
+		it('delegates to callLifecycle.end("local") — endCall is a one-line delegate', async () => {
+			// endCall now delegates entirely to callLifecycle.end('local').
+			// Teardown ordering and command recording are tested in CallLifecycle.test.ts.
+			// Here we verify only that the delegate fires (no direct voipNative commands in MediaSessionInstance).
+			await mediaSessionInstance.init('user-1');
+			const endSpy = jest.spyOn(callLifecycle, 'end').mockResolvedValue(undefined);
 
 			mediaSessionInstance.endCall('end-1');
 
-			expect((voipNative as InMemoryVoipNative).recorded).toContainEqual({ cmd: 'markAvailable', callUuid: 'end-1' });
+			expect(endSpy).toHaveBeenCalledWith('local');
+			endSpy.mockRestore();
 		});
 	});
 });

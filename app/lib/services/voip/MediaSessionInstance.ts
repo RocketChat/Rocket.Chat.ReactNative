@@ -15,12 +15,13 @@ import { dequal } from 'dequal';
 import { mediaSessionStore } from './MediaSessionStore';
 import { voipNative } from './VoipNative';
 import { useCallStore } from './useCallStore';
+import { callLifecycle } from './CallLifecycle';
 import { MediaCallLogger } from './MediaCallLogger';
 import { isSelfUserId } from './isSelfUserId';
 import { store } from '../../store/auxStore';
 import sdk from '../sdk';
 import { mediaCallsStateSignals } from '../restApi';
-import Navigation, { waitForNavigationReady } from '../../navigation/appNavigation';
+import Navigation from '../../navigation/appNavigation';
 import { parseStringToIceServers } from './parseStringToIceServers';
 import type { IceServer } from '../../../definitions/Voip';
 import type { IDDPMessage } from '../../../definitions/IDDPMessage';
@@ -137,7 +138,18 @@ class MediaSessionInstance {
 				}
 
 				call.emitter.on('ended', () => {
-					voipNative.call.end(call.callId);
+					// Guard against stale 'ended' emissions firing after teardown has cleared the
+					// active call from the store. Without this, a delayed/late server signal on the
+					// captured `call` would trigger a second teardown sequence and emit a duplicate
+					// `callEnded` event with the wrong reason.
+					const { call: activeCall, callId: activeCallId } = useCallStore.getState();
+					if (activeCall?.callId !== call.callId && activeCallId !== call.callId) {
+						return;
+					}
+					// Route through CallLifecycle for idempotent, ordered teardown.
+					callLifecycle.end('remote').catch(error => {
+						mediaCallLogger.error('[VoIP] callLifecycle.end failed:', error);
+					});
 				});
 			}
 		});
@@ -156,7 +168,7 @@ class MediaSessionInstance {
 			voipNative.call.markActive(callId);
 			useCallStore.getState().setCall(mainCall);
 			useCallStore.getState().setDirection('incoming');
-			await waitForNavigationReady();
+			// waitForNavigationReady removed — CallNavRouter handles post-call navigation.
 			Navigation.navigate('CallView');
 			this.resolveRoomIdFromContact(mainCall.remoteParticipants[0]?.contact).catch(error => {
 				console.error('[VoIP] Error resolving room id from contact (answerCall):', error);
@@ -206,20 +218,11 @@ class MediaSessionInstance {
 		await this.instance.startCall(actor, userId);
 	};
 
-	public endCall = (callId: string) => {
-		const mainCall = this.instance?.getCallData(callId);
-
-		if (mainCall && mainCall.callId === callId) {
-			if (mainCall.state === 'ringing') {
-				mainCall.reject();
-			} else {
-				mainCall.hangup();
-			}
-		}
-		voipNative.call.end(callId);
-		voipNative.call.markAvailable(callId);
-		useCallStore.getState().resetNativeCallId();
-		useCallStore.getState().reset();
+	public endCall = (_callId: string) => {
+		// Delegate to CallLifecycle for idempotent, ordered teardown.
+		callLifecycle.end('local').catch(error => {
+			mediaCallLogger.error('[VoIP] callLifecycle.end failed:', error);
+		});
 	};
 
 	private async resolveRoomIdFromContact(contact: CallContact | undefined): Promise<void> {

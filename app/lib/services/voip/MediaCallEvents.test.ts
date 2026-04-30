@@ -58,6 +58,13 @@ jest.mock('./MediaSessionInstance', () => ({
 	}
 }));
 
+jest.mock('./CallLifecycle', () => ({
+	callLifecycle: {
+		end: jest.fn(() => Promise.resolve()),
+		emitter: { on: jest.fn(), off: jest.fn(), emit: jest.fn() }
+	}
+}));
+
 jest.mock('../restApi', () => ({
 	registerPushToken: jest.fn(() => Promise.resolve())
 }));
@@ -254,6 +261,20 @@ describe('createVoipEventDispatcher — acceptFailed', () => {
 
 		expect(handled).toBe(true);
 	});
+
+	// Blocker 2 regression: failed-accept must stash the native callId so the
+	// downstream callLifecycle.end('error') (from deepLinking saga) can resolve
+	// it via `callId ?? nativeAcceptedCallId`. Otherwise the CallKit/Telecom
+	// session is never ended.
+	it('sets nativeAcceptedCallId so subsequent lifecycle.end can resolve the callId', () => {
+		const dispatch = createVoipEventDispatcher(makeTestAdapters());
+		const payload = buildIncomingPayload({ callId: 'failed-needs-id', host: 'https://workspace-b.example.com' });
+
+		dispatch({ type: 'acceptFailed', payload, fromColdStart: false });
+
+		expect(mockSetNativeAcceptedCallId).toHaveBeenCalledTimes(1);
+		expect(mockSetNativeAcceptedCallId).toHaveBeenCalledWith('failed-needs-id');
+	});
 });
 
 describe('createVoipEventDispatcher — hold', () => {
@@ -351,11 +372,11 @@ describe('createVoipEventDispatcher — hold', () => {
 describe('createVoipEventDispatcher — endCall', () => {
 	beforeEach(() => jest.clearAllMocks());
 
-	it('calls mediaSessionInstance.endCall with callUuid', () => {
-		const { mediaSessionInstance } = jest.requireMock('./MediaSessionInstance');
+	it('tags OS-originated end-call as remote by calling callLifecycle.end("remote")', () => {
+		const { callLifecycle } = jest.requireMock('./CallLifecycle');
 		const dispatch = createVoipEventDispatcher(makeTestAdapters());
 		dispatch({ type: 'endCall', callUuid: 'end-uuid' });
-		expect(mediaSessionInstance.endCall).toHaveBeenCalledWith('end-uuid');
+		expect(callLifecycle.end).toHaveBeenCalledWith('remote');
 	});
 });
 

@@ -448,12 +448,18 @@ describe('VoIP call lifecycle (integration)', () => {
 		const { call } = useCallStore.getState();
 		expect(call?.callId).toBe('call-user-1');
 
-		// Firing 'ended' triggers voipNative cleanup and navigation back via real handlers.
-		act(() => {
+		// Firing 'ended' triggers CallLifecycle teardown via the handleEnded listener.
+		// Navigation.back() is now handled by CallNavRouter (not wired in this integration test).
+		// We verify the teardown sequence runs: store cleared, native end issued.
+		// CallLifecycle.end() defers its body to a microtask (re-entry guard); flush it.
+		await act(async () => {
 			(call!.emitter as unknown as ReturnType<typeof mockCallEmitter>).emit('ended');
+			await Promise.resolve();
 		});
 		expect((voipNative as InMemoryVoipNative).recorded).toContainEqual({ cmd: 'end', callUuid: 'call-user-1' });
-		expect(Navigation.back).toHaveBeenCalled();
+		// Navigation.back() is now owned by CallNavRouter after callEnded emits.
+		// In this test environment, CallNavRouter is not mounted, so we assert the store cleared instead.
+		expect(useCallStore.getState().call).toBeNull();
 	});
 
 	it('SIP peer: press Call → startCall(sip, number) → navigates to CallView', async () => {
@@ -635,37 +641,53 @@ describe('VoIP call lifecycle (integration)', () => {
 			await act(() => Promise.resolve());
 			expect(useCallStore.getState().call?.callId).toBe('call-user-1');
 
-			act(() => {
+			// CallLifecycle.end() defers its body to a microtask (re-entry guard); flush it.
+			await act(async () => {
 				useCallStore.getState().endCall();
+				await Promise.resolve();
 			});
 
 			expect((voipNative as InMemoryVoipNative).recorded).toContainEqual({ cmd: 'end', callUuid: 'call-user-1' });
+			// stopAudio is now issued by CallLifecycle.end (step 6) via voipNative.call.stopAudio(),
+			// which in the test environment records to InMemoryVoipNative.recorded rather than calling InCallManager.stop.
 			expect((voipNative as InMemoryVoipNative).recorded).toContainEqual({ cmd: 'stopAudio' });
 			expect(useCallStore.getState().call).toBeNull();
 			expect(useCallStore.getState().callId).toBeNull();
 		});
 
-		it('B2: MediaSessionInstance.endCall during active state → voipNative cleanup, store reset', () => {
-			const session = createdSessions[createdSessions.length - 1];
+		it('B2: MediaSessionInstance.endCall during active state → voipNative cleanup, store reset', async () => {
+			// endCall now delegates to callLifecycle.end('local'). CallLifecycle reads the
+			// active call from useCallStore, so the call must be set there first.
 			const activeCall = makeCall({ callId: 'active-1', state: 'active' });
-			session.getCallData.mockReturnValue(activeCall);
-
 			act(() => {
-				mediaSessionInstance.endCall('active-1');
+				useCallStore.getState().setCall(activeCall);
 			});
 
+			// CallLifecycle.end() defers its body to a microtask (re-entry guard); flush it.
+			await act(async () => {
+				mediaSessionInstance.endCall('active-1');
+				await Promise.resolve();
+			});
+
+			// CallLifecycle.end() steps 2-4 run via InMemoryVoipNative (records commands instead of calling RNCallKeep).
 			expect((voipNative as InMemoryVoipNative).recorded).toContainEqual({ cmd: 'end', callUuid: 'active-1' });
+			expect((voipNative as InMemoryVoipNative).recorded).toContainEqual({ cmd: 'markActive', callUuid: '' });
 			expect((voipNative as InMemoryVoipNative).recorded).toContainEqual({ cmd: 'markAvailable', callUuid: 'active-1' });
 			expect(useCallStore.getState().call).toBeNull();
 		});
 
-		it('B3: MediaSessionInstance.endCall during ringing → reject (not hangup) + voipNative cleanup', () => {
-			const session = createdSessions[createdSessions.length - 1];
-			const ringingCall = makeCall({ callId: 'ringing-1' });
-			session.getCallData.mockReturnValue(ringingCall);
-
+		it('B3: MediaSessionInstance.endCall during ringing → reject (not hangup) + voipNative cleanup', async () => {
+			// CallLifecycle reads the active call from useCallStore to decide reject vs hangup.
+			// The ringing call must be in the store for reject() to be called.
+			const ringingCall = makeCall({ callId: 'ringing-1', state: 'ringing' });
 			act(() => {
+				useCallStore.getState().setCall(ringingCall);
+			});
+
+			// CallLifecycle.end() defers its body to a microtask (re-entry guard); flush it.
+			await act(async () => {
 				mediaSessionInstance.endCall('ringing-1');
+				await Promise.resolve();
 			});
 
 			expect(ringingCall.reject).toHaveBeenCalled();
@@ -800,7 +822,7 @@ describe('VoIP call lifecycle (integration)', () => {
 			expect(useCallStore.getState().isOnHold).toBe(true);
 		});
 
-		it('D3: press end button → call.hangup, voipNative.call.end, store cleared', () => {
+		it('D3: press end button → call.hangup, voipNative.call.end, store cleared', async () => {
 			const call = makeCall({ callId: 'btn-end', role: 'caller', state: 'active' });
 			act(() => {
 				useCallStore.getState().setCall(call);
@@ -812,8 +834,10 @@ describe('VoIP call lifecycle (integration)', () => {
 				</Wrapper>
 			);
 
-			act(() => {
+			// CallLifecycle.end() defers its body to a microtask (re-entry guard); flush it.
+			await act(async () => {
 				fireEvent.press(getByTestId('call-view-end'));
+				await Promise.resolve();
 			});
 
 			expect(call.hangup).toHaveBeenCalled();

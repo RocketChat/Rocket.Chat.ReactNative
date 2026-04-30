@@ -1,6 +1,7 @@
 import { isIOS, normalizeDeepLinkingServerHost } from '../../methods/helpers';
 import type { VoipPayload } from '../../../definitions/Voip';
 import { registerPushToken } from '../restApi';
+import { callLifecycle } from './CallLifecycle';
 import { MediaCallLogger } from './MediaCallLogger';
 import { mediaSessionInstance } from './MediaSessionInstance';
 import { useCallStore } from './useCallStore';
@@ -67,6 +68,11 @@ function handleAcceptSucceededEvent(payload: VoipPayload, adapters: MediaCallEve
 
 function handleAcceptFailedEvent(payload: VoipPayload, adapters: MediaCallEventsAdapters): boolean {
 	mediaCallLogger.debug(`${TAG} VoipAcceptFailed event:`, payload);
+	// Pre-bind: stash the native callId in the store so the subsequent
+	// callLifecycle.end('error') (issued from deepLinking saga) can resolve
+	// it via `callId ?? nativeAcceptedCallId`. Without this, end() has no
+	// callUuid and the native CallKit/Telecom session is not torn down.
+	useCallStore.getState().setNativeAcceptedCallId(payload.callId);
 	adapters.onOpenDeepLink({
 		host: payload.host,
 		callId: payload.callId,
@@ -88,7 +94,9 @@ export function createVoipEventDispatcher(adapters: MediaCallEventsAdapters): (e
 		switch (e.type) {
 			case 'endCall': {
 				mediaCallLogger.log(`${TAG} End call event listener:`, e.callUuid);
-				mediaSessionInstance.endCall(e.callUuid);
+				callLifecycle.end('remote').catch(error => {
+					mediaCallLogger.error(`${TAG} callLifecycle.end failed:`, error);
+				});
 				return false;
 			}
 
