@@ -1,3 +1,5 @@
+import { registerPushToken } from '../lib/services/restApi';
+
 // Mock complex dependencies that cause ESM and NativeEventEmitter issues
 jest.mock('@rocket.chat/media-signaling', () => ({
 	MediaCallWebRTCProcessor: {},
@@ -52,8 +54,6 @@ jest.mock('../lib/services/restApi', () => ({
 	pendingToken: '',
 	pendingVoipToken: ''
 }));
-
-import { registerPushToken } from '../lib/services/restApi';
 
 const mockedRegisterPushToken = registerPushToken as jest.Mock;
 

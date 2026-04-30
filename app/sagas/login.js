@@ -33,7 +33,14 @@ import { getUserPresence, refreshDmUsersPresence, subscribeUsersPresence } from 
 import { logout, removeServerData, removeServerDatabase } from '../lib/methods/logout';
 import { subscribeSettings } from '../lib/methods/getSettings';
 import { disconnect, loginWithPassword, login } from '../lib/services/connect';
-import { saveUserProfile, registerPushToken, getUsersRoles, setUserPresenceAway, pendingToken, pendingVoipToken } from '../lib/services/restApi';
+import {
+	saveUserProfile,
+	registerPushToken,
+	getUsersRoles,
+	setUserPresenceAway,
+	pendingToken,
+	pendingVoipToken
+} from '../lib/services/restApi';
 import { setUsersRoles } from '../actions/usersRoles';
 import { getServerById } from '../lib/database/services/Server';
 import appNavigation from '../lib/navigation/appNavigation';

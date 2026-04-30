@@ -1140,7 +1140,7 @@ export const registerPushToken = async (): Promise<void> => {
 		if (e?.status === 401 || e?.status === 403) {
 			pendingToken = token;
 			pendingVoipToken = voipToken;
-			log('[restApi] Push token registration failed with ' + e.status + ' - caching for replay');
+			log(`[restApi] Push token registration failed with ${e.status} - caching for replay`);
 		}
 		log(e);
 	}

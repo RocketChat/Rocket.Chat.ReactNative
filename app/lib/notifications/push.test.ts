@@ -1,3 +1,5 @@
+import type * as ExpoNotifications from 'expo-notifications';
+
 // Mock the dependencies before importing push.ts
 jest.mock('expo-notifications');
 jest.mock('../store/auxStore', () => ({
@@ -12,7 +14,7 @@ jest.mock('../services/restApi', () => ({
 // Use jest.isolateModules to get a fresh copy of push.ts per test,
 // resetting the module-level `configured = false` flag each time.
 let pushNotificationConfigure: (onNotification: jest.Mock) => Promise<any>;
-let Notifications: typeof import('expo-notifications');
+let Notifications: typeof ExpoNotifications;
 let reduxStore: { getState: jest.Mock };
 let registerPushToken: jest.Mock;
 
