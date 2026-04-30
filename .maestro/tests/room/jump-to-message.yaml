@@ -28,7 +28,7 @@ tags:
       id: '.*Quote first message.*'
     timeout: 60000
 - longPressOn:
-    id: '.*Quote first message.*'
+    text: '.*Quote first message.*'
     retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
