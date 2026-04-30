@@ -6,6 +6,11 @@ import InCallManager from 'react-native-incall-manager';
 import NativeVoipModule from '../../native/NativeVoip';
 import { useCallStore } from './useCallStore';
 
+const mockPlayCallEndedSound = jest.fn(() => Promise.resolve());
+jest.mock('./playCallEndedSound', () => ({
+	playCallEndedSound: () => mockPlayCallEndedSound()
+}));
+
 jest.mock('../../navigation/appNavigation', () => ({
 	__esModule: true,
 	default: { navigate: jest.fn(), back: jest.fn() }
@@ -394,5 +399,52 @@ describe('useCallStore toggleSpeaker', () => {
 			expect(NativeVoipModule.setSpeakerOn).not.toHaveBeenCalled();
 			expect(useCallStore.getState().isSpeakerOn).toBe(true);
 		});
+	});
+});
+
+describe('useCallStore call-ended sound wiring', () => {
+	beforeEach(() => {
+		mockPlayCallEndedSound.mockClear();
+		useCallStore.getState().resetNativeCallId();
+		useCallStore.getState().reset();
+	});
+
+	it('endCall invokes playCallEndedSound', () => {
+		const { call } = createMockCall('end-local');
+		useCallStore.getState().setCall(call);
+
+		useCallStore.getState().endCall();
+
+		expect(mockPlayCallEndedSound).toHaveBeenCalledTimes(1);
+	});
+
+	it('SDK ended event invokes playCallEndedSound', () => {
+		const { call, emit } = createMockCall('end-remote');
+		useCallStore.getState().setCall(call);
+
+		emit('ended');
+
+		expect(mockPlayCallEndedSound).toHaveBeenCalledTimes(1);
+	});
+
+	it('only one termination path fires per call — endCall prevents SDK ended from also firing', () => {
+		const { call } = createMockCall('end-once');
+		useCallStore.getState().setCall(call);
+
+		// Local hangup: endCall calls cleanupCallListeners() inside reset(), removing the 'ended' listener
+		useCallStore.getState().endCall();
+
+		expect(mockPlayCallEndedSound).toHaveBeenCalledTimes(1);
+	});
+
+	it('SDK ended fires exactly once — reset() removes the listener preventing re-fire', () => {
+		const { call, emit } = createMockCall('end-remote-only');
+		useCallStore.getState().setCall(call);
+
+		emit('ended');
+		// Emitting again after reset has removed the listener
+		emit('ended');
+
+		expect(mockPlayCallEndedSound).toHaveBeenCalledTimes(1);
 	});
 });
