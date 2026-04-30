@@ -663,7 +663,7 @@ describe('CallLifecycle — Pre-bind FSM (slice 08)', () => {
 		});
 	});
 
-	// ── 8. preBindChanged event (Major 3) ─────────────────────────────────────
+	// ── 8. preBindChanged event ───────────────────────────────────────────────
 
 	describe('preBindChanged event', () => {
 		it('emits preBindChanged with awaitingMediaCall on idle → awaitingMediaCall transition', async () => {
@@ -724,7 +724,7 @@ describe('CallLifecycle — Pre-bind FSM (slice 08)', () => {
 		});
 	});
 
-	// ── 9. Divergent-UUID native answer policy (Major 4) ─────────────────────
+	// ── 9. Divergent-UUID native answer policy ───────────────────────────────
 
 	describe('divergent-UUID native answer policy', () => {
 		it('second acceptSucceeded with different UUID is silently dropped — FSM stays at first UUID', async () => {
@@ -753,7 +753,7 @@ describe('CallLifecycle — Pre-bind FSM (slice 08)', () => {
 // ── useIsInActiveVoipCall — reactive preBindChanged hook test ─────────────────
 
 /**
- * Tests that useIsInActiveVoipCall reacts to preBindChanged events (Major 3).
+ * Tests that useIsInActiveVoipCall reacts to preBindChanged events.
  * Uses the real callLifecycle singleton so the emitter path is exercised end-to-end.
  * useCallStore is also real — reset between tests.
  */

@@ -575,7 +575,7 @@ describe('VoIP call lifecycle (integration)', () => {
 				await mediaSessionInstance.answerCall(callId);
 			});
 
-			// Step 1: Native accepted the call — FSM transitions to awaitingMediaCall.
+			// Native accepted the call — FSM transitions to awaitingMediaCall.
 			(voipNative as InMemoryVoipNative).__emit({
 				type: 'acceptSucceeded',
 				payload: { callId: 'incoming-1', host: 'workspace-1', type: 'incoming_call' } as any,
@@ -583,7 +583,7 @@ describe('VoIP call lifecycle (integration)', () => {
 			});
 			expect(callLifecycle.preBindStatus()).toMatchObject({ kind: 'awaitingMediaCall', uuid: 'incoming-1' });
 
-			// Step 2: MediaSignalingSession fires newCall → onMediaCallNew → answerIncoming → answerCall.
+			// MediaSignalingSession fires newCall → onMediaCallNew → answerIncoming → answerCall.
 			await act(async () => {
 				session.emit('newCall', { call: mainCall });
 				await flushMicrotasks();
@@ -613,7 +613,7 @@ describe('VoIP call lifecycle (integration)', () => {
 				onEvent: callLifecycle.handleNativeEvent.bind(callLifecycle)
 			});
 
-			// Step 1: Native accepted — FSM transitions to awaitingMediaCall.
+			// Native accepted — FSM transitions to awaitingMediaCall.
 			(voipNative as InMemoryVoipNative).__emit({
 				type: 'acceptSucceeded',
 				payload: { callId: 'missing-1', host: 'workspace-1', type: 'incoming_call' } as any,
@@ -621,7 +621,7 @@ describe('VoIP call lifecycle (integration)', () => {
 			});
 			expect(callLifecycle.preBindStatus()).toMatchObject({ kind: 'awaitingMediaCall', uuid: 'missing-1' });
 
-			// Step 2: DDP signal fires — tryAnswerIfNativeAcceptedNotification sees awaitingMediaCall,
+			// DDP signal fires — tryAnswerIfNativeAcceptedNotification sees awaitingMediaCall,
 			// calls answerCall('missing-1'), which fails to find the call and ends via callLifecycle.end('error').
 			await act(async () => {
 				emitDDPMediaSignal({

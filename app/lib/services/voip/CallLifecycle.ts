@@ -374,16 +374,11 @@ class CallLifecycle {
 			this.emitter.emit('preBindFailed', { uuid, reason: 'cleanup' });
 
 			// Run lifecycle teardown ('cleanup' reason tag).
-			// end() calls _transitionToIdle, which collapses FSM back to idle.
+			// end() calls _transitionToIdle synchronously, which collapses FSM back to idle
+			// (and emits preBindChanged { kind: 'idle' }) before _runTeardown runs async.
 			this.end('cleanup').catch(() => {
 				// end() is idempotent; errors here are non-fatal.
 			});
-
-			// Belt-and-suspenders: if FSM is still 'failed' (e.g. end was already in-flight),
-			// collapse to idle now.
-			if (this._preBind.kind === 'failed') {
-				this._preBind = { kind: 'idle' };
-			}
 		}, CLEANUP_AT_OFFSET_MS);
 	}
 
