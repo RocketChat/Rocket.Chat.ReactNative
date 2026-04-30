@@ -356,4 +356,133 @@ describe('CallLifecycle.end(reason)', () => {
 			await expect((freshLifecycle as any)._runTeardown('local')).resolves.toBeUndefined();
 		});
 	});
+
+	// Blocker 1 regression: faithful spy whose hangup() synchronously emits 'ended'
+	// (mirrors @rocket.chat/media-signaling/dist/lib/Call.js behavior at line 703).
+	// The 'ended' listener at useCallStore.ts handleEnded re-enters callLifecycle.end('remote').
+	// The re-entry guard MUST be set BEFORE _runTeardown body runs, otherwise re-entrant
+	// teardown happens (callEnded fires twice, end command issues twice).
+	describe('re-entry guard against synchronous ended emission from hangup()', () => {
+		function makeCallWithSyncEndedOnHangup(callId: string): IClientMediaCall {
+			const listeners: Record<string, Set<(...args: unknown[]) => void>> = {};
+			const emitter = {
+				on: (ev: string, fn: (...args: unknown[]) => void) => {
+					if (!listeners[ev]) listeners[ev] = new Set();
+					listeners[ev].add(fn);
+					return () => listeners[ev].delete(fn);
+				},
+				off: (ev: string, fn: (...args: unknown[]) => void) => {
+					listeners[ev]?.delete(fn);
+				},
+				emit: (ev: string, ...args: unknown[]) => {
+					listeners[ev]?.forEach(fn => fn(...args));
+				}
+			};
+			const hangup = jest.fn(() => {
+				// Mirror Call.js line 703: changeState('hangup') → emitter.emit('ended')
+				emitter.emit('ended');
+			});
+			return {
+				callId,
+				state: 'active',
+				hidden: false,
+				localParticipant: {
+					local: true,
+					role: 'caller',
+					muted: false,
+					held: false,
+					contact: {},
+					setMuted: jest.fn(),
+					setHeld: jest.fn()
+				},
+				remoteParticipants: [
+					{
+						local: false,
+						role: 'callee',
+						muted: false,
+						held: false,
+						contact: { id: 'u', displayName: 'U', username: 'u', sipExtension: '' }
+					}
+				],
+				hangup,
+				reject: jest.fn(),
+				sendDTMF: jest.fn(),
+				emitter
+			} as unknown as IClientMediaCall;
+		}
+
+		it('end() called from inside hangup() synchronous ended emit hits the re-entry guard', async () => {
+			const call = makeCallWithSyncEndedOnHangup('reentry-1');
+			useCallStore.getState().setCall(call);
+			native.reset();
+
+			const callEndedListener = jest.fn();
+			const unsub = callLifecycle.emitter.on('callEnded', callEndedListener);
+
+			// Outer end('local') triggers hangup() → 'ended' → handleEnded → end('remote')
+			// Re-entrant call MUST hit the guard and return the in-flight promise.
+			await callLifecycle.end('local');
+
+			unsub();
+
+			// callEnded fires exactly once — guard worked.
+			expect(callEndedListener).toHaveBeenCalledTimes(1);
+			// End command issued exactly once.
+			const endCmds = native.recorded.filter(c => c.cmd === 'end');
+			expect(endCmds).toHaveLength(1);
+			// hangup invoked exactly once.
+			expect(call.hangup).toHaveBeenCalledTimes(1);
+		});
+	});
+
+	// Blocker 3 regression: step 1 (mediaCall.reject/hangup) is wrapped in try/catch
+	// so a throw doesn't abort subsequent steps (markActive, markAvailable, store reset, stopAudio, callEnded).
+	describe('step 1 throw isolation', () => {
+		it('continues teardown when mediaCall.hangup() throws', async () => {
+			const call = makeCall({ callId: 'throw-1', state: 'active' });
+			(call.hangup as jest.Mock).mockImplementationOnce(() => {
+				throw new Error('hangup boom');
+			});
+			useCallStore.getState().setCall(call);
+			native.reset();
+
+			const callEndedListener = jest.fn();
+			const unsub = callLifecycle.emitter.on('callEnded', callEndedListener);
+
+			await expect(callLifecycle.end('local')).resolves.toBeUndefined();
+
+			unsub();
+
+			// All subsequent steps still ran.
+			expect(native.recorded).toContainEqual({ cmd: 'end', callUuid: 'throw-1' });
+			expect(native.recorded).toContainEqual({ cmd: 'markActive', callUuid: '' });
+			expect(native.recorded).toContainEqual({ cmd: 'markAvailable', callUuid: 'throw-1' });
+			expect(native.recorded).toContainEqual({ cmd: 'stopAudio' });
+			expect(useCallStore.getState().call).toBeNull();
+			expect(callEndedListener).toHaveBeenCalledTimes(1);
+		});
+
+		it('continues teardown when mediaCall.reject() throws (ringing path)', async () => {
+			const call = makeCall({ callId: 'throw-rej-1', state: 'ringing' });
+			(call.reject as jest.Mock).mockImplementationOnce(() => {
+				throw new Error('reject boom');
+			});
+			useCallStore.getState().setCall(call);
+			native.reset();
+
+			const callEndedListener = jest.fn();
+			const unsub = callLifecycle.emitter.on('callEnded', callEndedListener);
+
+			await expect(callLifecycle.end('rejected')).resolves.toBeUndefined();
+
+			unsub();
+
+			expect(native.recorded).toContainEqual({ cmd: 'end', callUuid: 'throw-rej-1' });
+			expect(native.recorded).toContainEqual({ cmd: 'markActive', callUuid: '' });
+			expect(native.recorded).toContainEqual({ cmd: 'markAvailable', callUuid: 'throw-rej-1' });
+			expect(native.recorded).toContainEqual({ cmd: 'stopAudio' });
+			expect(useCallStore.getState().call).toBeNull();
+			expect(callEndedListener).toHaveBeenCalledTimes(1);
+		});
+	});
 });

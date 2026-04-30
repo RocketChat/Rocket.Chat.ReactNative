@@ -451,8 +451,10 @@ describe('VoIP call lifecycle (integration)', () => {
 		// Firing 'ended' triggers CallLifecycle teardown via the handleEnded listener.
 		// Navigation.back() is now handled by CallNavRouter (not wired in this integration test).
 		// We verify the teardown sequence runs: store cleared, native end issued.
-		act(() => {
+		// CallLifecycle.end() defers its body to a microtask (re-entry guard); flush it.
+		await act(async () => {
 			(call!.emitter as unknown as ReturnType<typeof mockCallEmitter>).emit('ended');
+			await Promise.resolve();
 		});
 		expect((voipNative as InMemoryVoipNative).recorded).toContainEqual({ cmd: 'end', callUuid: 'call-user-1' });
 		// Navigation.back() is now owned by CallNavRouter after callEnded emits.
@@ -639,8 +641,10 @@ describe('VoIP call lifecycle (integration)', () => {
 			await act(() => Promise.resolve());
 			expect(useCallStore.getState().call?.callId).toBe('call-user-1');
 
-			act(() => {
+			// CallLifecycle.end() defers its body to a microtask (re-entry guard); flush it.
+			await act(async () => {
 				useCallStore.getState().endCall();
+				await Promise.resolve();
 			});
 
 			expect((voipNative as InMemoryVoipNative).recorded).toContainEqual({ cmd: 'end', callUuid: 'call-user-1' });
@@ -651,7 +655,7 @@ describe('VoIP call lifecycle (integration)', () => {
 			expect(useCallStore.getState().callId).toBeNull();
 		});
 
-		it('B2: MediaSessionInstance.endCall during active state → voipNative cleanup, store reset', () => {
+		it('B2: MediaSessionInstance.endCall during active state → voipNative cleanup, store reset', async () => {
 			// endCall now delegates to callLifecycle.end('local'). CallLifecycle reads the
 			// active call from useCallStore, so the call must be set there first.
 			const activeCall = makeCall({ callId: 'active-1', state: 'active' });
@@ -659,8 +663,10 @@ describe('VoIP call lifecycle (integration)', () => {
 				useCallStore.getState().setCall(activeCall);
 			});
 
-			act(() => {
+			// CallLifecycle.end() defers its body to a microtask (re-entry guard); flush it.
+			await act(async () => {
 				mediaSessionInstance.endCall('active-1');
+				await Promise.resolve();
 			});
 
 			// CallLifecycle.end() steps 2-4 run via InMemoryVoipNative (records commands instead of calling RNCallKeep).
@@ -670,7 +676,7 @@ describe('VoIP call lifecycle (integration)', () => {
 			expect(useCallStore.getState().call).toBeNull();
 		});
 
-		it('B3: MediaSessionInstance.endCall during ringing → reject (not hangup) + voipNative cleanup', () => {
+		it('B3: MediaSessionInstance.endCall during ringing → reject (not hangup) + voipNative cleanup', async () => {
 			// CallLifecycle reads the active call from useCallStore to decide reject vs hangup.
 			// The ringing call must be in the store for reject() to be called.
 			const ringingCall = makeCall({ callId: 'ringing-1', state: 'ringing' });
@@ -678,8 +684,10 @@ describe('VoIP call lifecycle (integration)', () => {
 				useCallStore.getState().setCall(ringingCall);
 			});
 
-			act(() => {
+			// CallLifecycle.end() defers its body to a microtask (re-entry guard); flush it.
+			await act(async () => {
 				mediaSessionInstance.endCall('ringing-1');
+				await Promise.resolve();
 			});
 
 			expect(ringingCall.reject).toHaveBeenCalled();
@@ -814,7 +822,7 @@ describe('VoIP call lifecycle (integration)', () => {
 			expect(useCallStore.getState().isOnHold).toBe(true);
 		});
 
-		it('D3: press end button → call.hangup, voipNative.call.end, store cleared', () => {
+		it('D3: press end button → call.hangup, voipNative.call.end, store cleared', async () => {
 			const call = makeCall({ callId: 'btn-end', role: 'caller', state: 'active' });
 			act(() => {
 				useCallStore.getState().setCall(call);
@@ -826,8 +834,10 @@ describe('VoIP call lifecycle (integration)', () => {
 				</Wrapper>
 			);
 
-			act(() => {
+			// CallLifecycle.end() defers its body to a microtask (re-entry guard); flush it.
+			await act(async () => {
 				fireEvent.press(getByTestId('call-view-end'));
+				await Promise.resolve();
 			});
 
 			expect(call.hangup).toHaveBeenCalled();

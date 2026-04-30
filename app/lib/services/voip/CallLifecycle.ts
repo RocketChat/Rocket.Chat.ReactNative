@@ -15,8 +15,12 @@
  * `callId` in the `callEnded` event uses `callId ?? nativeAcceptedCallId` (Pre-bind-safe).
  */
 
+import { MediaCallLogger } from './MediaCallLogger';
 import { voipNative, type VoipNativePort } from './VoipNative';
 import { useCallStore } from './useCallStore';
+
+const logger = new MediaCallLogger();
+const TAG = '[CallLifecycle]';
 
 // ── Event types ───────────────────────────────────────────────────────────────
 
@@ -108,9 +112,17 @@ class CallLifecycle {
 			// Concurrent caller — share the in-flight teardown.
 			return this._endPromise;
 		}
-		this._endPromise = this._runTeardown(reason).finally(() => {
-			this._endPromise = null;
-		});
+		// Defer the teardown body to a microtask so `_endPromise` is assigned BEFORE
+		// `_runTeardown` runs. This guarantees that any synchronous re-entry from
+		// inside teardown (e.g. mediaCall.hangup() emits 'ended' synchronously and
+		// useCallStore's handleEnded re-calls callLifecycle.end('remote')) hits the
+		// guard above and shares the in-flight promise instead of starting a second
+		// teardown. See @rocket.chat/media-signaling Call.js line 703.
+		this._endPromise = Promise.resolve()
+			.then(() => this._runTeardown(reason))
+			.finally(() => {
+				this._endPromise = null;
+			});
 		return this._endPromise;
 	}
 
@@ -125,12 +137,21 @@ class CallLifecycle {
 
 		// Step 1: Hang up the MediaCall (reject if ringing, hangup otherwise).
 		// Read the active call from useCallStore — MediaSessionInstance owns it.
+		// Wrapped in try/catch so a throw from reject/hangup does not abort
+		// subsequent teardown steps (which would leak listeners / native state).
 		const mediaCall = useCallStore.getState().call;
 		if (mediaCall) {
-			if ((mediaCall as any).state === 'ringing') {
-				mediaCall.reject();
-			} else {
-				mediaCall.hangup();
+			try {
+				if ((mediaCall as any).state === 'ringing') {
+					mediaCall.reject();
+				} else {
+					mediaCall.hangup();
+				}
+			} catch (error) {
+				logger.warn(
+					`${TAG} mediaCall.${(mediaCall as any).state === 'ringing' ? 'reject' : 'hangup'}() threw; continuing teardown`,
+					error
+				);
 			}
 		}
 
