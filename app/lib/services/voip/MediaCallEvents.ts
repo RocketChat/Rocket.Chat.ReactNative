@@ -68,6 +68,11 @@ function handleAcceptSucceededEvent(payload: VoipPayload, adapters: MediaCallEve
 
 function handleAcceptFailedEvent(payload: VoipPayload, adapters: MediaCallEventsAdapters): boolean {
 	mediaCallLogger.debug(`${TAG} VoipAcceptFailed event:`, payload);
+	// Pre-bind: stash the native callId in the store so the subsequent
+	// callLifecycle.end('error') (issued from deepLinking saga) can resolve
+	// it via `callId ?? nativeAcceptedCallId`. Without this, end() has no
+	// callUuid and the native CallKit/Telecom session is not torn down.
+	useCallStore.getState().setNativeAcceptedCallId(payload.callId);
 	adapters.onOpenDeepLink({
 		host: payload.host,
 		callId: payload.callId,

@@ -261,6 +261,20 @@ describe('createVoipEventDispatcher — acceptFailed', () => {
 
 		expect(handled).toBe(true);
 	});
+
+	// Blocker 2 regression: failed-accept must stash the native callId so the
+	// downstream callLifecycle.end('error') (from deepLinking saga) can resolve
+	// it via `callId ?? nativeAcceptedCallId`. Otherwise the CallKit/Telecom
+	// session is never ended.
+	it('sets nativeAcceptedCallId so subsequent lifecycle.end can resolve the callId', () => {
+		const dispatch = createVoipEventDispatcher(makeTestAdapters());
+		const payload = buildIncomingPayload({ callId: 'failed-needs-id', host: 'https://workspace-b.example.com' });
+
+		dispatch({ type: 'acceptFailed', payload, fromColdStart: false });
+
+		expect(mockSetNativeAcceptedCallId).toHaveBeenCalledTimes(1);
+		expect(mockSetNativeAcceptedCallId).toHaveBeenCalledWith('failed-needs-id');
+	});
 });
 
 describe('createVoipEventDispatcher — hold', () => {
