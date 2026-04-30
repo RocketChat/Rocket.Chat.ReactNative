@@ -33,7 +33,7 @@ import { getUserPresence, refreshDmUsersPresence, subscribeUsersPresence } from 
 import { logout, removeServerData, removeServerDatabase } from '../lib/methods/logout';
 import { subscribeSettings } from '../lib/methods/getSettings';
 import { disconnect, loginWithPassword, login } from '../lib/services/connect';
-import { saveUserProfile, registerPushToken, getUsersRoles, setUserPresenceAway } from '../lib/services/restApi';
+import { saveUserProfile, registerPushToken, getUsersRoles, setUserPresenceAway, pendingToken, pendingVoipToken } from '../lib/services/restApi';
 import { setUsersRoles } from '../actions/usersRoles';
 import { getServerById } from '../lib/database/services/Server';
 import appNavigation from '../lib/navigation/appNavigation';
@@ -190,7 +190,10 @@ const fetchSlashCommandsFork = function* fetchSlashCommandsFork() {
 
 const registerPushTokenFork = function* registerPushTokenFork() {
 	try {
-		yield registerPushToken();
+		// Replay pending push token if available (was cached due to 401/403 before auth)
+		if (pendingToken || pendingVoipToken) {
+			yield registerPushToken();
+		}
 	} catch (e) {
 		log(e);
 	}
