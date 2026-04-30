@@ -66,8 +66,8 @@ const baseState = {
 
 beforeEach(() => {
 	jest.clearAllMocks();
-	restApi.pendingToken = '';
-	restApi.pendingVoipToken = '';
+	(restApi as { pendingToken: string }).pendingToken = '';
+	(restApi as { pendingVoipToken: string }).pendingVoipToken = '';
 	(reduxStore.getState as jest.Mock).mockReturnValue(baseState);
 	(sdk.post as jest.Mock).mockResolvedValue({ success: true });
 	(getDeviceToken as jest.Mock).mockReturnValue('');
