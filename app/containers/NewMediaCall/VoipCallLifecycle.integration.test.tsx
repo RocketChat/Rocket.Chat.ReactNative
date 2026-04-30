@@ -387,6 +387,8 @@ describe('VoIP call lifecycle (integration)', () => {
 		unexpectedConsoleErrors = [];
 		usePeerAutocompleteStore.getState().reset();
 		useCallStore.getState().reset();
+		// Reset CallLifecycle FSM to idle so pre-bind state from prior tests does not bleed.
+		(callLifecycle as any)._resetForTesting();
 		mediaSessionInstance.reset();
 		(voipNative as InMemoryVoipNative).reset();
 
@@ -549,51 +551,78 @@ describe('VoIP call lifecycle (integration)', () => {
 	// ── MediaSessionInstance contract: answerCall ────────────────────────────
 
 	describe('MediaSessionInstance contract: answerCall', () => {
-		it('A1: DDP accepted signal with native pre-accept → answerCall navigates to CallView', async () => {
+		it('A1: native acceptSucceeded → FSM awaitingMediaCall → newCall → onMediaCallNew → answerCall navigates to CallView', async () => {
+			// This test exercises the real FSM wiring end-to-end (no preBindStatus stubs):
+			//   1. voipNative.__emit(acceptSucceeded) → callLifecycle.handleNativeEvent → FSM awaitingMediaCall
+			//   2. session.emit('newCall') → MediaSessionInstance newCall handler → callLifecycle.onMediaCallNew
+			//   3. onMediaCallNew: FSM idle, answerIncoming called
+			//   4. answerIncoming (overridden in this test) delegates to mediaSessionInstance.answerCall
+			//   5. answerCall: accept(), markActive, store.setCall, navigate
 			const session = createdSessions[createdSessions.length - 1];
 			const mainCall = makeCall({ callId: 'incoming-1', role: 'callee' });
 			session.getCallData.mockReturnValue(mainCall);
 
-			// Pre-bind FSM: simulate native answer having been received (uuid = incoming-1).
-			// callLifecycle.handleNativeEvent is now the FSM entry point; we spy preBindStatus
-			// so tryAnswerIfNativeAcceptedNotification sees awaitingMediaCall.
-			const preBindSpy = jest.spyOn(callLifecycle, 'preBindStatus').mockReturnValue({
-				kind: 'awaitingMediaCall',
-				uuid: 'incoming-1',
-				host: 'h',
-				cleanupAt: Date.now() + 60_000
+			// Wire the native event adapter to the FSM. In production this is done by createVoipEventDispatcher;
+			// here we attach callLifecycle.handleNativeEvent directly for simplicity.
+			await (voipNative as InMemoryVoipNative).attach({
+				onEvent: callLifecycle.handleNativeEvent.bind(callLifecycle)
 			});
 
+			// Override answerIncoming stub so the FSM's bind step does the real answerCall work.
+			// Slice 06 will provide the full implementation; this override ensures A1 can assert
+			// the actual observable effects (markActive, navigate, store populated).
+			const answerIncomingSpy = jest.spyOn(callLifecycle, 'answerIncoming').mockImplementation(async (callId: string) => {
+				await mediaSessionInstance.answerCall(callId);
+			});
+
+			// Step 1: Native accepted the call — FSM transitions to awaitingMediaCall.
+			(voipNative as InMemoryVoipNative).__emit({
+				type: 'acceptSucceeded',
+				payload: { callId: 'incoming-1', host: 'workspace-1', type: 'incoming_call' } as any,
+				fromColdStart: false
+			});
+			expect(callLifecycle.preBindStatus()).toMatchObject({ kind: 'awaitingMediaCall', uuid: 'incoming-1' });
+
+			// Step 2: MediaSignalingSession fires newCall → onMediaCallNew → answerIncoming → answerCall.
 			await act(async () => {
-				emitDDPMediaSignal({
-					type: 'notification',
-					notification: 'accepted',
-					signedContractId: 'test-device-id',
-					callId: 'incoming-1'
-				});
-				// Flush the answerCall() microtask queue.
+				session.emit('newCall', { call: mainCall });
 				await flushMicrotasks();
 			});
 
-			preBindSpy.mockRestore();
+			answerIncomingSpy.mockRestore();
 
+			// Observable effects: callId bound, navigation triggered, native markActive issued.
 			expect((voipNative as InMemoryVoipNative).recorded).toContainEqual({ cmd: 'markActive', callUuid: 'incoming-1' });
 			expect(Navigation.navigate).toHaveBeenCalledWith('CallView');
 			expect(useCallStore.getState().call?.callId).toBe('incoming-1');
+			// FSM is back to idle after successful bind.
+			expect(callLifecycle.preBindStatus()).toEqual({ kind: 'idle' });
 		});
 
-		it('A2: accepted signal but call not found → voipNative.end, no navigate', async () => {
+		it('A2: native acceptSucceeded → FSM awaitingMediaCall → DDP signal for missing call → voipNative.end, no navigate', async () => {
+			// This test exercises the real FSM wiring for the "call not found" path:
+			//   1. voipNative.__emit(acceptSucceeded) → FSM awaitingMediaCall
+			//   2. DDP notification/accepted fires → tryAnswerIfNativeAcceptedNotification
+			//      → answerCall('missing-1') → getCallData returns undefined → voipNative.end
+			// No newCall event arrives (call was never established server-side).
 			const session = createdSessions[createdSessions.length - 1];
 			session.getCallData.mockReturnValue(undefined);
 
-			// Pre-bind FSM: simulate native answer for a call that never arrives.
-			const preBindSpy = jest.spyOn(callLifecycle, 'preBindStatus').mockReturnValue({
-				kind: 'awaitingMediaCall',
-				uuid: 'missing-1',
-				host: 'h',
-				cleanupAt: Date.now() + 60_000
+			// Wire the native event adapter to the FSM.
+			await (voipNative as InMemoryVoipNative).attach({
+				onEvent: callLifecycle.handleNativeEvent.bind(callLifecycle)
 			});
 
+			// Step 1: Native accepted — FSM transitions to awaitingMediaCall.
+			(voipNative as InMemoryVoipNative).__emit({
+				type: 'acceptSucceeded',
+				payload: { callId: 'missing-1', host: 'workspace-1', type: 'incoming_call' } as any,
+				fromColdStart: false
+			});
+			expect(callLifecycle.preBindStatus()).toMatchObject({ kind: 'awaitingMediaCall', uuid: 'missing-1' });
+
+			// Step 2: DDP signal fires — tryAnswerIfNativeAcceptedNotification sees awaitingMediaCall,
+			// calls answerCall('missing-1'), which fails to find the call and ends via callLifecycle.end('error').
 			await act(async () => {
 				emitDDPMediaSignal({
 					type: 'notification',
@@ -604,10 +633,8 @@ describe('VoIP call lifecycle (integration)', () => {
 				await flushMicrotasks();
 			});
 
-			preBindSpy.mockRestore();
-
 			expect((voipNative as InMemoryVoipNative).recorded).toContainEqual({ cmd: 'end', callUuid: 'missing-1' });
-			// Pre-bind FSM owns state — not the store. FSM returns to idle via callLifecycle.end('error').
+			// Pre-bind FSM returns to idle via callLifecycle.end('error').
 			expect(callLifecycle.preBindStatus()).toEqual({ kind: 'idle' });
 			expect(Navigation.navigate).not.toHaveBeenCalled();
 			expect(useCallStore.getState().call).toBeNull();
