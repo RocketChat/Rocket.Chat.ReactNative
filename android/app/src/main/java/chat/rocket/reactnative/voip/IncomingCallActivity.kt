@@ -329,6 +329,13 @@ class IncomingCallActivity : Activity() {
         }
 
         // Same caller retrying (or first call hasn't been set yet) — refresh the activity.
+        if (acceptDeclineGuard.get()) {
+            if (BuildConfig.DEBUG) {
+                Log.d(TAG, "onNewIntent: action already in progress, skipping refresh")
+            }
+            return
+        }
+
         if (BuildConfig.DEBUG) {
             Log.d(TAG, "onNewIntent: refreshing UI for call ${newPayload.callId}")
         }
