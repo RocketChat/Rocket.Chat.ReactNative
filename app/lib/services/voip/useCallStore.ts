@@ -7,6 +7,8 @@ import { terminateNativeCall } from './terminateNativeCall';
 import Navigation from '../../navigation/appNavigation';
 import { hideActionSheetRef } from '../../../containers/ActionSheet';
 import { useIsScreenReaderEnabled } from '../../hooks/useIsScreenReaderEnabled';
+import { isIOS } from '../../methods/helpers';
+import NativeVoipModule from '../../native/NativeVoip';
 
 const STALE_NATIVE_MS = 60_000;
 
@@ -248,7 +250,11 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		const newSpeakerOn = !isSpeakerOn;
 
 		try {
-			await InCallManager.setForceSpeakerphoneOn(newSpeakerOn);
+			if (isIOS) {
+				await InCallManager.setForceSpeakerphoneOn(newSpeakerOn);
+			} else {
+				await NativeVoipModule.setSpeakerOn(newSpeakerOn);
+			}
 			set({ isSpeakerOn: newSpeakerOn });
 		} catch (error) {
 			console.error('[VoIP] Failed to toggle speaker:', error);

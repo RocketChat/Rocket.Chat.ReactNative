@@ -33,7 +33,8 @@ function makeTestAdapters(): MediaCallEventsAdapters {
 
 jest.mock('./useCallStore', () => ({
 	useCallStore: {
-		getState: jest.fn()
+		getState: jest.fn(),
+		setState: jest.fn()
 	}
 }));
 

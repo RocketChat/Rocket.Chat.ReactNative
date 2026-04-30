@@ -43,6 +43,15 @@ export interface Spec extends TurboModule {
 	stopVoipCallService(): void;
 
 	/**
+	 * Routes call audio between speakerphone and earpiece.
+	 * Android: API 31+ uses AudioManager.setCommunicationDevice(SPEAKER) for on,
+	 *   clearCommunicationDevice() for off. Pre-31 falls back to MODE_IN_COMMUNICATION + setSpeakerphoneOn.
+	 *   Required because the app's Telecom PhoneAccount is self-managed — Connection.setAudioRoute is a no-op.
+	 * iOS: No-op stub. JS uses InCallManager.setForceSpeakerphoneOn directly.
+	 */
+	setSpeakerOn(on: boolean): Promise<boolean>;
+
+	/**
 	 * Required for NativeEventEmitter in TurboModules.
 	 * Called when JS starts listening to events.
 	 * @platform android
@@ -66,6 +75,7 @@ const NativeVoipModule =
 		getLastVoipToken: () => '',
 		stopNativeDDPClient: () => undefined,
 		stopVoipCallService: () => undefined,
+		setSpeakerOn: () => Promise.resolve(false),
 		addListener: () => undefined,
 		removeListeners: () => undefined
 	} as Spec);
