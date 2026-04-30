@@ -31,10 +31,12 @@ function makeTestAdapters(): MediaCallEventsAdapters {
 	};
 }
 
+const mockSetState = jest.fn();
+
 jest.mock('./useCallStore', () => ({
 	useCallStore: {
 		getState: jest.fn(),
-		setState: jest.fn()
+		setState: (...args: unknown[]) => mockSetState(...args)
 	}
 }));
 
@@ -465,5 +467,63 @@ describe('setupMediaCallEvents — didToggleHoldCallAction', () => {
 		const cleanup = setupMediaCallEvents(makeTestAdapters());
 		cleanup();
 		expect(remove).toHaveBeenCalled();
+	});
+});
+
+describe('setupMediaCallEvents — VoipCommunicationDeviceChanged (Android only)', () => {
+	const getState = useCallStore.getState as jest.Mock;
+	let teardown: (() => void) | undefined;
+
+	beforeEach(() => {
+		jest.clearAllMocks();
+		mockSetState.mockClear();
+		resetMediaCallEventsStateForTesting();
+		mockAddEventListener.mockImplementation(() => ({ remove: jest.fn() }));
+		getState.mockReturnValue({ call: {}, setNativeAcceptedCallId: jest.fn() });
+		teardown = setupMediaCallEvents(makeTestAdapters());
+	});
+
+	afterEach(() => {
+		teardown?.();
+		teardown = undefined;
+	});
+
+	it('sets isSpeakerOn to true when payload.isSpeaker is true', () => {
+		DeviceEventEmitter.emit('VoipCommunicationDeviceChanged', { isSpeaker: true });
+		expect(mockSetState).toHaveBeenCalledWith({ isSpeakerOn: true });
+	});
+
+	it('sets isSpeakerOn to false when payload.isSpeaker is false', () => {
+		DeviceEventEmitter.emit('VoipCommunicationDeviceChanged', { isSpeaker: false });
+		expect(mockSetState).toHaveBeenCalledWith({ isSpeakerOn: false });
+	});
+
+	it('is a no-op when call is null', () => {
+		getState.mockReturnValue({ call: null });
+		DeviceEventEmitter.emit('VoipCommunicationDeviceChanged', { isSpeaker: true });
+		expect(mockSetState).not.toHaveBeenCalled();
+	});
+
+	it('cleanup removes VoipCommunicationDeviceChanged subscription', () => {
+		teardown?.();
+		teardown = undefined;
+
+		const remove = jest.fn();
+		const originalAddListener = DeviceEventEmitter.addListener.bind(DeviceEventEmitter);
+		const addListenerSpy = jest.spyOn(DeviceEventEmitter, 'addListener').mockImplementation(((
+			event: string,
+			listener: (...args: unknown[]) => void
+		) => {
+			if (event === 'VoipCommunicationDeviceChanged') {
+				return { remove };
+			}
+			return originalAddListener(event, listener);
+		}) as never);
+
+		const cleanup = setupMediaCallEvents(makeTestAdapters());
+		cleanup();
+
+		expect(remove).toHaveBeenCalled();
+		addListenerSpy.mockRestore();
 	});
 });

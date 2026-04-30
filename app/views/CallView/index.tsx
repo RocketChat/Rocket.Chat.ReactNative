@@ -8,6 +8,8 @@ import { useTheme } from '../../theme';
 import { CallButtons } from './components/CallButtons';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Ringer, { ERingerSounds } from '../../containers/Ringer';
+import { isIOS } from '../../lib/methods/helpers';
+import NativeVoipModule from '../../lib/native/NativeVoip';
 
 const CallView = (): React.ReactElement | null => {
 	'use memo';
@@ -46,15 +48,29 @@ const CallView = (): React.ReactElement | null => {
 		};
 	}, []);
 
+	const showRingback = callState === 'ringing' && direction === 'outgoing';
+
+	// Android plays ringback natively (USAGE_VOICE_COMMUNICATION) so it follows the active comm
+	// device and toggleSpeaker actually reroutes it. iOS keeps expo-av Ringer (CallKit-managed).
+	useEffect(() => {
+		if (isIOS || !showRingback) return;
+		NativeVoipModule.startRingback().catch(error => {
+			console.error('[VoIP] startRingback failed:', error);
+		});
+		return () => {
+			NativeVoipModule.stopRingback().catch(error => {
+				console.error('[VoIP] stopRingback failed:', error);
+			});
+		};
+	}, [showRingback]);
+
 	if (!call) {
 		return null;
 	}
 
-	const showRingback = callState === 'ringing' && direction === 'outgoing';
-
 	return (
 		<SafeAreaView testID='call-view-container' style={[styles.contentContainer, { backgroundColor: colors.surfaceLight }]}>
-			{showRingback ? <Ringer ringer={ERingerSounds.DIALTONE} /> : null}
+			{showRingback && isIOS ? <Ringer ringer={ERingerSounds.DIALTONE} /> : null}
 			<CallerInfo />
 			<CallButtons />
 		</SafeAreaView>

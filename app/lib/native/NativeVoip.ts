@@ -51,6 +51,22 @@ export interface Spec extends TurboModule {
 	 */
 	setSpeakerOn(on: boolean): Promise<boolean>;
 
+	/** Android API 31+: registers OnCommunicationDeviceChangedListener; emits VoipCommunicationDeviceChanged events. No-op elsewhere. */
+	startAudioRouteSync(): Promise<void>;
+
+	/** Unregisters the listener. Safe to call multiple times. */
+	stopAudioRouteSync(): Promise<void>;
+
+	/**
+	 * Plays the outgoing-call ringback (dialtone) on the voice-communication audio path so it
+	 * follows the active comm device (earpiece/speaker/BT) instead of the music stream.
+	 * Idempotent: a second call while playing is a no-op. iOS no-op (CallKit + AVAudioSession handle routing for expo-av).
+	 */
+	startRingback(): Promise<void>;
+
+	/** Stops and releases the ringback player. Safe to call when not playing. */
+	stopRingback(): Promise<void>;
+
 	/**
 	 * Required for NativeEventEmitter in TurboModules.
 	 * Called when JS starts listening to events.
@@ -76,6 +92,10 @@ const NativeVoipModule =
 		stopNativeDDPClient: () => undefined,
 		stopVoipCallService: () => undefined,
 		setSpeakerOn: () => Promise.resolve(false),
+		startAudioRouteSync: () => Promise.resolve(),
+		stopAudioRouteSync: () => Promise.resolve(),
+		startRingback: () => Promise.resolve(),
+		stopRingback: () => Promise.resolve(),
 		addListener: () => undefined,
 		removeListeners: () => undefined
 	} as Spec);
