@@ -799,12 +799,12 @@ class VoipNotification(private val context: Context) {
             // The caller's display name may contain spaces, '@', or other characters that make
             // Uri.fromParts produce an invalid URI, causing TelecomManager to throw
             // IllegalArgumentException on Android 12+.
-            // The human-readable name is forwarded via EXTRA_CALLER_DISPLAY_NAME, which
-            // Telecom validates separately and surfaces on the lockscreen / in-call UI.
+            // The human-readable name flows through EXTRA_CALLER_NAME, which the call-keep
+            // VoiceConnection constructor reads and applies via Connection.setCallerDisplayName,
+            // so Telecom surfaces it on the lockscreen and in-call UI.
             val extras = Bundle().apply {
                 val callerUri = Uri.fromParts(PhoneAccount.SCHEME_TEL, callId, null)
                 putParcelable(TelecomManager.EXTRA_INCOMING_CALL_ADDRESS, callerUri)
-                putString(TelecomManager.EXTRA_CALLER_DISPLAY_NAME, caller)
                 putString("EXTRA_CALL_UUID", callId)
                 putString("EXTRA_CALLER_NAME", caller)
                 putString("name", caller)
