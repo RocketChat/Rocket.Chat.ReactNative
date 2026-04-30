@@ -22,6 +22,7 @@ exports[`Story Snapshots: ChannelMessage should match snapshot 1`] = `
       },
     ]
   }
+  testID="in-app-notification-Hey! How are you doing?"
 >
   <ExternalKeyboardView
     canBeFocused={true}
@@ -367,6 +368,7 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
       },
     ]
   }
+  testID="in-app-notification-Hey! How are you doing?"
 >
   <ExternalKeyboardView
     canBeFocused={true}
@@ -712,6 +714,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
       },
     ]
   }
+  testID="in-app-notification-Hey! How are you doing?"
 >
   <ExternalKeyboardView
     canBeFocused={true}
@@ -1057,6 +1060,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
       },
     ]
   }
+  testID="in-app-notification-Hey! How are you doing?"
 >
   <ExternalKeyboardView
     canBeFocused={true}

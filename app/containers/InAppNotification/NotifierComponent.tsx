@@ -96,6 +96,7 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifie
 
 	return (
 		<View
+			testID={`in-app-notification-${text}`}
 			style={[
 				styles.container,
 				isMasterDetail && styles.small,
