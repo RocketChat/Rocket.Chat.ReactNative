@@ -1,10 +1,12 @@
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react-native';
+import { act, fireEvent, render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
 import MediaCallHeader from './MediaCallHeader';
 import { navigateToCallRoom } from '../../lib/services/voip/navigateToCallRoom';
 import { useCallStore } from '../../lib/services/voip/useCallStore';
+import { callLifecycle } from '../../lib/services/voip/CallLifecycle';
+import { InMemoryVoipNative } from '../../lib/services/voip/VoipNative';
 import { mockedStore } from '../../reducers/mockedStore';
 import * as stories from './MediaCallHeader.stories';
 import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
@@ -94,11 +96,30 @@ describe('MediaCallHeader', () => {
 		expect(queryByTestId('media-call-header-end')).toBeNull();
 	});
 
-	it('should render empty placeholder when native accepted but call not bound yet (awaitingMediaCall pre-bind state)', () => {
-		// Pre-bind state: FSM is awaitingMediaCall (owned by callLifecycle.preBindStatus()),
-		// but the store's `call` is still null. MediaCallHeader reads `call` and renders empty.
-		// The pre-bind UUID is held by the FSM, not the store.
+	it('should render empty placeholder when native accepted but call not bound yet (awaitingMediaCall pre-bind state)', async () => {
+		// Drive the FSM into awaitingMediaCall via the real event path (not stubs).
+		// MediaCallHeader reads store.call; during the pre-bind window call is still null,
+		// so the header must render the empty placeholder — not a partial/broken UI.
+		(callLifecycle as any)._resetForTesting();
 		useCallStore.setState({ call: null });
+
+		// Wire native adapter → FSM.
+		const native = new InMemoryVoipNative();
+		callLifecycle.attach(native);
+		await native.attach({ onEvent: callLifecycle.handleNativeEvent.bind(callLifecycle) });
+
+		await act(async () => {
+			native.__emit({
+				type: 'acceptSucceeded',
+				payload: { callId: 'header-pre-bind-1', host: 'ws', type: 'incoming_call' } as any,
+				fromColdStart: false
+			});
+		});
+
+		// FSM is now in awaitingMediaCall; store.call is still null.
+		expect(callLifecycle.preBindStatus()).toMatchObject({ kind: 'awaitingMediaCall', uuid: 'header-pre-bind-1' });
+		expect(useCallStore.getState().call).toBeNull();
+
 		const { getByTestId, queryByTestId } = render(
 			<Wrapper>
 				<MediaCallHeader />
@@ -107,6 +128,11 @@ describe('MediaCallHeader', () => {
 
 		expect(getByTestId('media-call-header-empty')).toBeTruthy();
 		expect(queryByTestId('media-call-header')).toBeNull();
+
+		// Cleanup: collapse FSM to idle so it doesn't bleed into subsequent tests.
+		act(() => {
+			(callLifecycle as any)._resetForTesting();
+		});
 	});
 
 	it('should render full header when call exists', () => {
