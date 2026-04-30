@@ -15,6 +15,7 @@ jest.mock('../store/auxStore', () => ({
 jest.mock('./sdk', () => ({
 	__esModule: true,
 	default: {
+		current: {},
 		methodCallWrapper: jest.fn().mockResolvedValue(undefined),
 		post: jest.fn().mockResolvedValue({ success: true })
 	}
