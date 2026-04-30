@@ -428,11 +428,15 @@ describe('useCallStore call-ended sound wiring', () => {
 	});
 
 	it('only one termination path fires per call — endCall prevents SDK ended from also firing', () => {
-		const { call } = createMockCall('end-once');
+		const { call, emit } = createMockCall('end-once');
 		useCallStore.getState().setCall(call);
 
-		// Local hangup: endCall calls cleanupCallListeners() inside reset(), removing the 'ended' listener
+		// Local hangup: endCall calls cleanupCallListeners() inside reset(), removing the 'ended' listener.
 		useCallStore.getState().endCall();
+
+		// Simulate the SDK firing 'ended' after the local hangup (race scenario).
+		// The listener was removed by reset(), so this must be a no-op.
+		emit('ended');
 
 		expect(mockPlayCallEndedSound).toHaveBeenCalledTimes(1);
 	});

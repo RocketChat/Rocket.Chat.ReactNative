@@ -105,4 +105,42 @@ describe('playCallEndedSound', () => {
 		expect(mockLoadAsync).toHaveBeenCalledTimes(1);
 		expect(mockPlayAsync).toHaveBeenCalledTimes(1);
 	});
+
+	it('watchdog releases the lock if didJustFinish never fires', async () => {
+		jest.useFakeTimers();
+		try {
+			await playCallEndedSound();
+			// didJustFinish never fires; lock would be permanent without the watchdog.
+			expect(mockUnloadAsync).not.toHaveBeenCalled();
+
+			jest.advanceTimersByTime(5000);
+
+			// Watchdog forces unload + lock release.
+			expect(mockUnloadAsync).toHaveBeenCalledTimes(1);
+
+			// Subsequent invocation is allowed (lock cleared).
+			mockLoadAsync.mockClear();
+			mockPlayAsync.mockClear();
+			await playCallEndedSound();
+			expect(mockLoadAsync).toHaveBeenCalledTimes(1);
+			expect(mockPlayAsync).toHaveBeenCalledTimes(1);
+		} finally {
+			jest.useRealTimers();
+		}
+	});
+
+	it('didJustFinish clears the watchdog so it does not double-unload', async () => {
+		jest.useFakeTimers();
+		try {
+			await playCallEndedSound();
+			capturedPlaybackStatusUpdate!({ isLoaded: true, didJustFinish: true });
+			expect(mockUnloadAsync).toHaveBeenCalledTimes(1);
+
+			// Watchdog must not fire after natural completion.
+			jest.advanceTimersByTime(10000);
+			expect(mockUnloadAsync).toHaveBeenCalledTimes(1);
+		} finally {
+			jest.useRealTimers();
+		}
+	});
 });
