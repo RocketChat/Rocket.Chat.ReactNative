@@ -1,4 +1,5 @@
 import React from 'react';
+import { Platform } from 'react-native';
 import { fireEvent, render, within } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
@@ -8,6 +9,60 @@ import { useCallStore } from '../../lib/services/voip/useCallStore';
 import { mockedStore } from '../../reducers/mockedStore';
 import * as stories from './CallView.stories';
 import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
+
+const mockStartRingback = jest.fn(() => Promise.resolve());
+const mockStopRingback = jest.fn(() => Promise.resolve());
+
+jest.mock('../../containers/Ringer', () => {
+	const ReactMod = require('react');
+	const RingerMock = (props: { ringer: string }) => ReactMod.createElement('view', { testID: `ringer-${props.ringer}` });
+	return {
+		__esModule: true,
+		default: RingerMock,
+		ERingerSounds: { DIALTONE: 'dialtone', RINGTONE: 'ringtone' }
+	};
+});
+
+jest.mock('../../lib/native/NativeVoip', () => ({
+	__esModule: true,
+	default: {
+		registerVoipToken: jest.fn(),
+		getInitialEvents: jest.fn(() => null),
+		clearInitialEvents: jest.fn(),
+		getLastVoipToken: jest.fn(() => ''),
+		stopNativeDDPClient: jest.fn(),
+		stopVoipCallService: jest.fn(),
+		setSpeakerOn: jest.fn(() => Promise.resolve(true)),
+		startAudioRouteSync: jest.fn(() => Promise.resolve()),
+		stopAudioRouteSync: jest.fn(() => Promise.resolve()),
+		startRingback: () => mockStartRingback(),
+		stopRingback: () => mockStopRingback(),
+		addListener: jest.fn(),
+		removeListeners: jest.fn()
+	}
+}));
+
+// Re-evaluate `isIOS` per-test from Platform.OS (the helper computes it once at import time).
+jest.mock('../../lib/methods/helpers', () => {
+	const actual = jest.requireActual('../../lib/methods/helpers');
+	const { Platform: RNPlatform } = jest.requireActual('react-native');
+	const proxy: Record<string, unknown> = { ...actual };
+	Object.defineProperty(proxy, 'isIOS', {
+		get() {
+			return RNPlatform.OS === 'ios';
+		},
+		enumerable: true,
+		configurable: true
+	});
+	Object.defineProperty(proxy, 'isAndroid', {
+		get() {
+			return RNPlatform.OS !== 'ios';
+		},
+		enumerable: true,
+		configurable: true
+	});
+	return proxy;
+});
 
 let mockWindowWidth = 350;
 let mockWindowHeight = 800;
@@ -525,6 +580,86 @@ describe('CallView (tablet/wide layout)', () => {
 		expect(toggleHold).not.toHaveBeenCalled();
 		expect(toggleMute).not.toHaveBeenCalled();
 		expect(toggleSpeaker).toHaveBeenCalled();
+	});
+});
+
+describe('CallView outgoing ringback', () => {
+	const originalOS = Platform.OS;
+
+	beforeEach(() => {
+		mockStartRingback.mockClear();
+		mockStopRingback.mockClear();
+		useCallStore.getState().reset();
+	});
+
+	afterEach(() => {
+		(Platform as { OS: string }).OS = originalOS;
+	});
+
+	describe('Android', () => {
+		beforeEach(() => {
+			(Platform as { OS: string }).OS = 'android';
+		});
+
+		it('starts native ringback while ringing+outgoing', () => {
+			setStoreState({ callState: 'ringing', direction: 'outgoing' });
+			render(
+				<Wrapper>
+					<CallView />
+				</Wrapper>
+			);
+			expect(mockStartRingback).toHaveBeenCalledTimes(1);
+			expect(mockStopRingback).not.toHaveBeenCalled();
+		});
+
+		it('does not start ringback for incoming ringing', () => {
+			setStoreState({ callState: 'ringing', direction: 'incoming' });
+			render(
+				<Wrapper>
+					<CallView />
+				</Wrapper>
+			);
+			expect(mockStartRingback).not.toHaveBeenCalled();
+		});
+
+		it('does not start ringback when call is active', () => {
+			setStoreState({ callState: 'active', direction: 'outgoing' });
+			render(
+				<Wrapper>
+					<CallView />
+				</Wrapper>
+			);
+			expect(mockStartRingback).not.toHaveBeenCalled();
+		});
+
+		it('stops ringback on unmount', () => {
+			setStoreState({ callState: 'ringing', direction: 'outgoing' });
+			const { unmount } = render(
+				<Wrapper>
+					<CallView />
+				</Wrapper>
+			);
+			expect(mockStartRingback).toHaveBeenCalledTimes(1);
+			unmount();
+			expect(mockStopRingback).toHaveBeenCalledTimes(1);
+		});
+	});
+
+	describe('iOS', () => {
+		beforeEach(() => {
+			(Platform as { OS: string }).OS = 'ios';
+		});
+
+		it('does not call native ringback (expo-av Ringer handles iOS)', () => {
+			setStoreState({ callState: 'ringing', direction: 'outgoing' });
+			render(
+				<Wrapper>
+					<CallView />
+				</Wrapper>
+			);
+			expect(mockStartRingback).not.toHaveBeenCalled();
+			expect(mockStopRingback).not.toHaveBeenCalled();
+		});
 	});
 });
 
