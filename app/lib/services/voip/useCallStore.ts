@@ -4,6 +4,7 @@ import RNCallKeep from 'react-native-callkeep';
 import InCallManager from 'react-native-incall-manager';
 
 import { terminateNativeCall } from './terminateNativeCall';
+import { playCallEndedSound } from './playCallEndedSound';
 import Navigation from '../../navigation/appNavigation';
 import { hideActionSheetRef } from '../../../containers/ActionSheet';
 import { useIsScreenReaderEnabled } from '../../hooks/useIsScreenReaderEnabled';
@@ -207,6 +208,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		};
 
 		const handleEnded = () => {
+			playCallEndedSound();
 			get().resetNativeCallId();
 			get().reset();
 			Navigation.back();
@@ -301,6 +303,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 			terminateNativeCall(callUuid);
 		}
 
+		playCallEndedSound();
 		get().resetNativeCallId();
 		get().reset();
 	},
