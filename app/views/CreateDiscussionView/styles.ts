@@ -48,5 +48,8 @@ export default StyleSheet.create({
 	list: {
 		flex: 1,
 		maxHeight: '25%'
+	},
+	encryptionContainer: {
+		marginTop: 10
 	}
 });
