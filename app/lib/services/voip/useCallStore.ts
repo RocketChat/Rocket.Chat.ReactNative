@@ -91,6 +91,11 @@ interface CallStoreActions {
 	setNativeAcceptedCallId: (callId: string) => void;
 	/** Clears native-accepted id and related state; cancels the timer. */
 	resetNativeCallId: () => void;
+	/**
+	 * Updates JS state and wires call event listeners.
+	 * Does NOT issue native audio commands (startAudio, markActive) — CallLifecycle
+	 * issues those explicitly in the correct order before calling setCall.
+	 */
 	setCall: (call: IClientMediaCall) => void;
 	toggleMute: () => void;
 	toggleHold: () => void;
@@ -147,7 +152,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 	setCall: (call: IClientMediaCall) => {
 		cleanupCallListeners();
 		get().resetNativeCallId();
-		// Update state with call info
+		// Update state with call info (no native audio side effects — CallLifecycle owns those)
 		const remote = call.remoteParticipants[0];
 		const remoteContact = remote?.contact;
 		set({
@@ -166,8 +171,6 @@ export const useCallStore = create<CallStore>((set, get) => ({
 			},
 			callStartTime: call.state === 'active' ? Date.now() : null
 		});
-
-		voipNative.call.startAudio();
 
 		// Subscribe to call events
 		const handleStateChange = () => {

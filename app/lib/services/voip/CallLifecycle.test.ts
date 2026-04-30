@@ -12,9 +12,25 @@
 import type { IClientMediaCall } from '@rocket.chat/media-signaling';
 
 import { callLifecycle } from './CallLifecycle';
-import type { CallEndReason } from './CallLifecycle';
+import type { CallBeganEvent, CallEndReason } from './CallLifecycle';
 import { InMemoryVoipNative } from './VoipNative';
 import { useCallStore } from './useCallStore';
+import { getDMSubscriptionByUsername } from '../../database/services/Subscription';
+
+// Mock mediaSessionInstance — CallLifecycle.answerIncoming reads mediaCall via getMediaCall.
+const mockGetMediaCall = jest.fn();
+jest.mock('./MediaSessionInstance', () => ({
+	mediaSessionInstance: {
+		getMediaCall: (...args: unknown[]) => mockGetMediaCall(...args)
+	}
+}));
+
+// Mock getDMSubscriptionByUsername — CallLifecycle.resolveRoomIdFromContact uses it.
+jest.mock('../../database/services/Subscription', () => ({
+	getDMSubscriptionByUsername: jest.fn()
+}));
+
+const mockGetDMSubscriptionByUsername = jest.mocked(getDMSubscriptionByUsername);
 
 jest.mock('react-native-callkeep', () => ({
 	__esModule: true,
@@ -639,6 +655,504 @@ describe('CallLifecycle.end(reason)', () => {
 			expect(warnCalls.some(msg => msg.includes('callEnded listener failed'))).toBe(true);
 
 			warnSpy.mockRestore();
+		});
+	});
+});
+
+// ── CallLifecycle.answerIncoming ──────────────────────────────────────────────
+
+describe('CallLifecycle.answerIncoming(callId)', () => {
+	let native: InMemoryVoipNative;
+
+	beforeEach(() => {
+		jest.clearAllMocks();
+		useCallStore.getState().resetNativeCallId();
+		useCallStore.getState().reset();
+		native = new InMemoryVoipNative();
+		callLifecycle.attach(native);
+		native.reset();
+		mockGetDMSubscriptionByUsername.mockResolvedValue(null);
+	});
+
+	function makeIncomingCall(callId: string): IClientMediaCall {
+		return {
+			callId,
+			state: 'ringing',
+			hidden: false,
+			localParticipant: { local: true, role: 'callee', muted: false, held: false, contact: {} },
+			remoteParticipants: [
+				{
+					local: false,
+					role: 'caller',
+					muted: false,
+					held: false,
+					contact: { id: 'u', displayName: 'Caller', username: 'caller', sipExtension: '' }
+				}
+			],
+			accept: jest.fn().mockResolvedValue(undefined),
+			hangup: jest.fn(),
+			reject: jest.fn(),
+			sendDTMF: jest.fn(),
+			emitter: { on: jest.fn(), off: jest.fn(), emit: jest.fn() }
+		} as unknown as IClientMediaCall;
+	}
+
+	describe('command ordering', () => {
+		it('calls accept() then markActive() then startAudio() in order', async () => {
+			const call = makeIncomingCall('inc-order-1');
+			mockGetMediaCall.mockReturnValue(call);
+			const order: string[] = [];
+			(call.accept as jest.Mock).mockImplementation(() => {
+				order.push('accept');
+				return Promise.resolve();
+			});
+			jest.spyOn(native.call, 'markActive').mockImplementation(() => {
+				order.push('markActive');
+			});
+			jest.spyOn(native.call, 'startAudio').mockImplementation(() => {
+				order.push('startAudio');
+			});
+
+			await callLifecycle.answerIncoming('inc-order-1');
+
+			expect(order).toEqual(['accept', 'markActive', 'startAudio']);
+		});
+
+		it('records markActive with callId', async () => {
+			const call = makeIncomingCall('inc-mark-1');
+			mockGetMediaCall.mockReturnValue(call);
+
+			await callLifecycle.answerIncoming('inc-mark-1');
+
+			expect(native.recorded).toContainEqual({ cmd: 'markActive', callUuid: 'inc-mark-1' });
+		});
+
+		it('records startAudio', async () => {
+			const call = makeIncomingCall('inc-audio-1');
+			mockGetMediaCall.mockReturnValue(call);
+
+			await callLifecycle.answerIncoming('inc-audio-1');
+
+			expect(native.recorded).toContainEqual({ cmd: 'startAudio' });
+		});
+
+		it('does NOT record markActive or startAudio when call is not found', async () => {
+			mockGetMediaCall.mockReturnValue(null);
+			native.reset();
+
+			await callLifecycle.answerIncoming('not-found');
+
+			expect(native.recorded).not.toContainEqual(expect.objectContaining({ cmd: 'markActive' }));
+			expect(native.recorded).not.toContainEqual(expect.objectContaining({ cmd: 'startAudio' }));
+		});
+	});
+
+	describe('store updates', () => {
+		it('sets call and direction incoming in store', async () => {
+			const call = makeIncomingCall('inc-store-1');
+			mockGetMediaCall.mockReturnValue(call);
+
+			await callLifecycle.answerIncoming('inc-store-1');
+
+			expect(useCallStore.getState().call).toBe(call);
+			expect(useCallStore.getState().direction).toBe('incoming');
+		});
+	});
+
+	describe('callBegan event', () => {
+		it('emits callBegan exactly once with direction incoming', async () => {
+			const call = makeIncomingCall('inc-began-1');
+			mockGetMediaCall.mockReturnValue(call);
+
+			const events: CallBeganEvent[] = [];
+			const unsub = callLifecycle.emitter.on('callBegan', e => events.push(e));
+
+			await callLifecycle.answerIncoming('inc-began-1');
+
+			unsub();
+			expect(events).toHaveLength(1);
+			expect(events[0]).toMatchObject({ callId: 'inc-began-1', direction: 'incoming' });
+		});
+
+		it('callBegan includes roomId when resolved from contact', async () => {
+			const call = makeIncomingCall('inc-room-1');
+			mockGetMediaCall.mockReturnValue(call);
+			mockGetDMSubscriptionByUsername.mockResolvedValue({ rid: 'dm-rid-incoming' } as any);
+
+			const events: CallBeganEvent[] = [];
+			const unsub = callLifecycle.emitter.on('callBegan', e => events.push(e));
+
+			await callLifecycle.answerIncoming('inc-room-1');
+
+			unsub();
+			expect(events[0]).toMatchObject({ callId: 'inc-room-1', direction: 'incoming', roomId: 'dm-rid-incoming' });
+		});
+
+		it('callBegan roomId is undefined when contact has no username', async () => {
+			const call = makeIncomingCall('inc-noroom-1');
+			// Override contact with no username
+			(call as any).remoteParticipants = [{ contact: {} }];
+			mockGetMediaCall.mockReturnValue(call);
+
+			const events: CallBeganEvent[] = [];
+			const unsub = callLifecycle.emitter.on('callBegan', e => events.push(e));
+
+			await callLifecycle.answerIncoming('inc-noroom-1');
+
+			unsub();
+			expect(events[0].roomId).toBeUndefined();
+		});
+
+		it('does NOT emit callBegan when call is not found', async () => {
+			mockGetMediaCall.mockReturnValue(null);
+
+			const listener = jest.fn();
+			const unsub = callLifecycle.emitter.on('callBegan', listener);
+
+			await callLifecycle.answerIncoming('not-found-2');
+
+			unsub();
+			expect(listener).not.toHaveBeenCalled();
+		});
+
+		it('still emits callBegan when DM lookup rejects (audio active → CallView must navigate)', async () => {
+			const call = makeIncomingCall('inc-dbfail-1');
+			mockGetMediaCall.mockReturnValue(call);
+			mockGetDMSubscriptionByUsername.mockRejectedValue(new Error('db boom'));
+
+			const events: CallBeganEvent[] = [];
+			const unsub = callLifecycle.emitter.on('callBegan', e => events.push(e));
+
+			await expect(callLifecycle.answerIncoming('inc-dbfail-1')).resolves.toBeUndefined();
+
+			unsub();
+			expect(events).toHaveLength(1);
+			expect(events[0]).toMatchObject({ callId: 'inc-dbfail-1', direction: 'incoming' });
+			expect(events[0].roomId).toBeUndefined();
+		});
+	});
+
+	describe('idempotency', () => {
+		it('returns early (no double-accept) when store already has a call with same callId', async () => {
+			const call = makeIncomingCall('inc-idempotent-1');
+			mockGetMediaCall.mockReturnValue(call);
+
+			// First call — sets call in store
+			await callLifecycle.answerIncoming('inc-idempotent-1');
+
+			native.reset();
+			const listener = jest.fn();
+			const unsub = callLifecycle.emitter.on('callBegan', listener);
+
+			// Second call with same callId — should be a no-op
+			await callLifecycle.answerIncoming('inc-idempotent-1');
+
+			unsub();
+			expect(call.accept).toHaveBeenCalledTimes(1);
+			expect(native.recorded).toHaveLength(0);
+			expect(listener).not.toHaveBeenCalled();
+		});
+
+		it('concurrent answerIncoming for the same callId — accept called exactly once, one callBegan', async () => {
+			const call = makeIncomingCall('inc-concurrent-1');
+			mockGetMediaCall.mockReturnValue(call);
+
+			const beganEvents: CallBeganEvent[] = [];
+			const unsub = callLifecycle.emitter.on('callBegan', e => beganEvents.push(e));
+
+			// Fire two concurrent answerIncoming calls before either resolves.
+			const [p1, p2] = [callLifecycle.answerIncoming('inc-concurrent-1'), callLifecycle.answerIncoming('inc-concurrent-1')];
+
+			// Both callers should receive the same in-flight Promise.
+			expect(p1).toBe(p2);
+
+			await Promise.all([p1, p2]);
+
+			unsub();
+
+			// accept() must be called exactly once — no WebRTC double offer-answer.
+			expect(call.accept).toHaveBeenCalledTimes(1);
+
+			// markActive and startAudio each appear exactly once.
+			const markActiveCmds = native.recorded.filter(c => c.cmd === 'markActive' && c.callUuid === 'inc-concurrent-1');
+			const startAudioCmds = native.recorded.filter(c => c.cmd === 'startAudio');
+			expect(markActiveCmds).toHaveLength(1);
+			expect(startAudioCmds).toHaveLength(1);
+
+			// callBegan emits exactly once — no duplicate CallView push.
+			expect(beganEvents).toHaveLength(1);
+			expect(beganEvents[0]).toMatchObject({ callId: 'inc-concurrent-1', direction: 'incoming' });
+		});
+
+		it('proceeds normally for a different callId after a prior answer', async () => {
+			const callA = makeIncomingCall('inc-idem-a');
+			mockGetMediaCall.mockReturnValue(callA);
+			await callLifecycle.answerIncoming('inc-idem-a');
+
+			// Reset store for a "new" call scenario
+			useCallStore.getState().reset();
+			const callB = makeIncomingCall('inc-idem-b');
+			mockGetMediaCall.mockReturnValue(callB);
+			native.reset();
+
+			const events: CallBeganEvent[] = [];
+			const unsub = callLifecycle.emitter.on('callBegan', e => events.push(e));
+			await callLifecycle.answerIncoming('inc-idem-b');
+			unsub();
+
+			expect(callB.accept).toHaveBeenCalledTimes(1);
+			expect(events).toHaveLength(1);
+			expect(events[0].callId).toBe('inc-idem-b');
+		});
+	});
+
+	describe('pre-bind compatibility', () => {
+		it('does not remove tryAnswerIfNativeAcceptedNotification path — nativeAcceptedCallId still survives reset()', () => {
+			// Verify store still exposes nativeAcceptedCallId (Pre-bind path in slice 08 depends on it)
+			useCallStore.getState().setNativeAcceptedCallId('prebind-id');
+			useCallStore.getState().reset();
+			expect(useCallStore.getState().nativeAcceptedCallId).toBe('prebind-id');
+		});
+	});
+});
+
+// ── CallLifecycle.beginOutgoing ───────────────────────────────────────────────
+
+describe('CallLifecycle.beginOutgoing(call, room?)', () => {
+	let native: InMemoryVoipNative;
+
+	beforeEach(() => {
+		jest.clearAllMocks();
+		useCallStore.getState().resetNativeCallId();
+		useCallStore.getState().reset();
+		native = new InMemoryVoipNative();
+		callLifecycle.attach(native);
+		native.reset();
+		mockGetDMSubscriptionByUsername.mockResolvedValue(null);
+	});
+
+	function makeOutgoingCall(callId: string): IClientMediaCall {
+		return {
+			callId,
+			state: 'active',
+			hidden: false,
+			localParticipant: { local: true, role: 'caller', muted: false, held: false, contact: {} },
+			remoteParticipants: [
+				{
+					local: false,
+					role: 'callee',
+					muted: false,
+					held: false,
+					contact: { id: 'u', displayName: 'Callee', username: 'callee', sipExtension: '' }
+				}
+			],
+			hangup: jest.fn(),
+			reject: jest.fn(),
+			sendDTMF: jest.fn(),
+			emitter: { on: jest.fn(), off: jest.fn(), emit: jest.fn() }
+		} as unknown as IClientMediaCall;
+	}
+
+	describe('command ordering', () => {
+		it('records markActive then startAudio in order', async () => {
+			const call = makeOutgoingCall('out-order-1');
+			const order: string[] = [];
+			jest.spyOn(native.call, 'markActive').mockImplementation(() => {
+				order.push('markActive');
+			});
+			jest.spyOn(native.call, 'startAudio').mockImplementation(() => {
+				order.push('startAudio');
+			});
+
+			await callLifecycle.beginOutgoing(call);
+
+			expect(order).toEqual(['markActive', 'startAudio']);
+		});
+
+		it('records markActive with callId', async () => {
+			const call = makeOutgoingCall('out-mark-1');
+
+			await callLifecycle.beginOutgoing(call);
+
+			expect(native.recorded).toContainEqual({ cmd: 'markActive', callUuid: 'out-mark-1' });
+		});
+
+		it('records startAudio', async () => {
+			const call = makeOutgoingCall('out-audio-1');
+
+			await callLifecycle.beginOutgoing(call);
+
+			expect(native.recorded).toContainEqual({ cmd: 'startAudio' });
+		});
+	});
+
+	describe('store updates', () => {
+		it('sets call and direction outgoing in store', async () => {
+			const call = makeOutgoingCall('out-store-1');
+
+			await callLifecycle.beginOutgoing(call);
+
+			expect(useCallStore.getState().call).toBe(call);
+			expect(useCallStore.getState().direction).toBe('outgoing');
+		});
+
+		it('sets roomId from room argument when provided', async () => {
+			const call = makeOutgoingCall('out-room-1');
+			const room = { rid: 'room-rid-out' } as any;
+
+			await callLifecycle.beginOutgoing(call, room);
+
+			expect(useCallStore.getState().roomId).toBe('room-rid-out');
+		});
+
+		it('sets roomId to null when no room argument', async () => {
+			const call = makeOutgoingCall('out-noroom-1');
+
+			await callLifecycle.beginOutgoing(call);
+
+			// setRoomId(undefined) should result in null/undefined — doesn't set a non-null value
+			// The store's roomId was null to begin with; verify no roomId is set from an unknown source
+			expect(useCallStore.getState().roomId).toBeFalsy();
+		});
+
+		it('falls back to DM subscription lookup by contact username when no room argument (DM-by-username regression)', async () => {
+			// Pre-refactor parity: outgoing DM initiated by username (CreateCall path)
+			// has roomId == null in the store. The newCall handler used to resolve the
+			// DM rid from the remote participant's username via getDMSubscriptionByUsername.
+			// CallLifecycle.beginOutgoing must keep that fallback alive — otherwise the
+			// "Go to chat" button on CallView stays disabled.
+			const call = makeOutgoingCall('out-fallback-1');
+			mockGetDMSubscriptionByUsername.mockResolvedValue({ rid: 'dm-rid-from-contact' } as any);
+
+			await callLifecycle.beginOutgoing(call);
+
+			expect(mockGetDMSubscriptionByUsername).toHaveBeenCalledWith('callee');
+			expect(useCallStore.getState().roomId).toBe('dm-rid-from-contact');
+		});
+
+		it('does NOT fall back to contact lookup when room argument is provided', async () => {
+			// Caller-supplied roomId (e.g. startCallByRoom path) wins — no DB hit needed.
+			const call = makeOutgoingCall('out-room-wins-1');
+			const room = { rid: 'explicit-room' } as any;
+
+			await callLifecycle.beginOutgoing(call, room);
+
+			expect(mockGetDMSubscriptionByUsername).not.toHaveBeenCalled();
+			expect(useCallStore.getState().roomId).toBe('explicit-room');
+		});
+
+		it('callBegan includes roomId resolved from contact when no room argument', async () => {
+			const call = makeOutgoingCall('out-fallback-began-1');
+			mockGetDMSubscriptionByUsername.mockResolvedValue({ rid: 'dm-rid-began' } as any);
+
+			const events: CallBeganEvent[] = [];
+			const unsub = callLifecycle.emitter.on('callBegan', e => events.push(e));
+
+			await callLifecycle.beginOutgoing(call);
+
+			unsub();
+			expect(events[0]).toMatchObject({
+				callId: 'out-fallback-began-1',
+				direction: 'outgoing',
+				roomId: 'dm-rid-began'
+			});
+		});
+
+		it('keeps roomId falsy when contact has no username (no DM lookup possible)', async () => {
+			const call = makeOutgoingCall('out-noun-1');
+			(call as any).remoteParticipants = [{ contact: {} }];
+
+			await callLifecycle.beginOutgoing(call);
+
+			expect(mockGetDMSubscriptionByUsername).not.toHaveBeenCalled();
+			expect(useCallStore.getState().roomId).toBeFalsy();
+		});
+	});
+
+	describe('callBegan event', () => {
+		it('emits callBegan exactly once with direction outgoing', async () => {
+			const call = makeOutgoingCall('out-began-1');
+
+			const events: CallBeganEvent[] = [];
+			const unsub = callLifecycle.emitter.on('callBegan', e => events.push(e));
+
+			await callLifecycle.beginOutgoing(call);
+
+			unsub();
+			expect(events).toHaveLength(1);
+			expect(events[0]).toMatchObject({ callId: 'out-began-1', direction: 'outgoing' });
+		});
+
+		it('callBegan includes roomId from room argument', async () => {
+			const call = makeOutgoingCall('out-room-began-1');
+			const room = { rid: 'outgoing-room' } as any;
+
+			const events: CallBeganEvent[] = [];
+			const unsub = callLifecycle.emitter.on('callBegan', e => events.push(e));
+
+			await callLifecycle.beginOutgoing(call, room);
+
+			unsub();
+			expect(events[0]).toMatchObject({ callId: 'out-room-began-1', direction: 'outgoing', roomId: 'outgoing-room' });
+		});
+
+		it('callBegan emits once regardless of room argument', async () => {
+			const call = makeOutgoingCall('out-once-1');
+
+			const listener = jest.fn();
+			const unsub = callLifecycle.emitter.on('callBegan', listener);
+
+			await callLifecycle.beginOutgoing(call);
+
+			unsub();
+			expect(listener).toHaveBeenCalledTimes(1);
+		});
+
+		it('still emits callBegan when DM lookup rejects (audio active → CallView must navigate)', async () => {
+			const call = makeOutgoingCall('out-dbfail-1');
+			mockGetDMSubscriptionByUsername.mockRejectedValue(new Error('db boom'));
+
+			const events: CallBeganEvent[] = [];
+			const unsub = callLifecycle.emitter.on('callBegan', e => events.push(e));
+
+			await expect(callLifecycle.beginOutgoing(call)).resolves.toBeUndefined();
+
+			unsub();
+			expect(events).toHaveLength(1);
+			expect(events[0]).toMatchObject({ callId: 'out-dbfail-1', direction: 'outgoing' });
+			expect(events[0].roomId).toBeUndefined();
+		});
+	});
+
+	describe('callBegan emitted exactly once between both transitions', () => {
+		it('answerIncoming + beginOutgoing each emit callBegan independently once', async () => {
+			const incoming = {
+				callId: 'both-inc-1',
+				state: 'ringing',
+				hidden: false,
+				localParticipant: { local: true, role: 'callee', muted: false, held: false, contact: {} },
+				remoteParticipants: [{ local: false, role: 'caller', muted: false, held: false, contact: { username: 'caller' } }],
+				accept: jest.fn().mockResolvedValue(undefined),
+				hangup: jest.fn(),
+				reject: jest.fn(),
+				sendDTMF: jest.fn(),
+				emitter: { on: jest.fn(), off: jest.fn(), emit: jest.fn() }
+			} as unknown as IClientMediaCall;
+			mockGetMediaCall.mockReturnValue(incoming);
+			const outgoing = makeOutgoingCall('both-out-1');
+
+			const events: CallBeganEvent[] = [];
+			const unsub = callLifecycle.emitter.on('callBegan', e => events.push(e));
+
+			await callLifecycle.answerIncoming('both-inc-1');
+			// Reset store to simulate a fresh call scenario
+			useCallStore.getState().reset();
+			await callLifecycle.beginOutgoing(outgoing);
+
+			unsub();
+			expect(events).toHaveLength(2);
+			expect(events[0]).toMatchObject({ callId: 'both-inc-1', direction: 'incoming' });
+			expect(events[1]).toMatchObject({ callId: 'both-out-1', direction: 'outgoing' });
 		});
 	});
 });

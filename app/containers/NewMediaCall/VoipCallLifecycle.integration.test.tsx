@@ -24,6 +24,7 @@ import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocom
 import { useCallStore } from '../../lib/services/voip/useCallStore';
 import { mediaSessionInstance } from '../../lib/services/voip/MediaSessionInstance';
 import { voipNative, type InMemoryVoipNative } from '../../lib/services/voip/VoipNative';
+import { CallNavRouter } from '../../lib/services/voip/CallNavRouter';
 import { mockedStore } from '../../reducers/mockedStore';
 import type { TPeerItem } from '../../lib/services/voip/getPeerAutocompleteOptions';
 import type { InsideStackParamList } from '../../stacks/types';
@@ -53,7 +54,7 @@ jest.mock('../../lib/methods/helpers/helpers', () => ({
 }));
 jest.mock('../../lib/navigation/appNavigation', () => ({
 	__esModule: true,
-	default: { navigate: jest.fn(), back: jest.fn() },
+	default: { navigate: jest.fn(), back: jest.fn(), getCurrentRoute: jest.fn(), navigationRef: { current: {} } },
 	waitForNavigationReady: jest.fn().mockResolvedValue(undefined)
 }));
 jest.mock('../../lib/services/sdk', () => ({
@@ -388,6 +389,11 @@ describe('VoIP call lifecycle (integration)', () => {
 		useCallStore.getState().reset();
 		mediaSessionInstance.reset();
 		(voipNative as InMemoryVoipNative).reset();
+		// Mount CallNavRouter so callBegan → Navigation.navigate('CallView') fires.
+		// Navigation.navigationRef.current is set to {} (truthy) in the mock above,
+		// so the router subscribes immediately without waiting for navigationReady.
+		CallNavRouter.unmount();
+		CallNavRouter.mount();
 
 		consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation((...args: unknown[]) => {
 			const message = formatConsoleArgs(args);
@@ -408,6 +414,7 @@ describe('VoIP call lifecycle (integration)', () => {
 	});
 
 	afterEach(() => {
+		CallNavRouter.unmount();
 		consoleErrorSpy?.mockRestore();
 		consoleWarnSpy?.mockRestore();
 		consoleErrorSpy = undefined;
@@ -447,6 +454,11 @@ describe('VoIP call lifecycle (integration)', () => {
 
 		const { call } = useCallStore.getState();
 		expect(call?.callId).toBe('call-user-1');
+		// Pre-refactor parity: outgoing DM-by-username has no roomId from the caller, so
+		// CallLifecycle.beginOutgoing falls back to getDMSubscriptionByUsername. The mock
+		// here returns null (no DM subscription) AND the synthetic call has no contact
+		// username, so roomId stays null — but the lookup path must remain wired.
+		expect(useCallStore.getState().roomId).toBeNull();
 
 		// Firing 'ended' triggers CallLifecycle teardown via the handleEnded listener.
 		// Navigation.back() is now handled by CallNavRouter (not wired in this integration test).
