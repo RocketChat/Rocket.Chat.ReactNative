@@ -9,6 +9,11 @@ import { getUidDirectMessage } from '../../methods/helpers/helpers';
 import { mediaSessionStore } from './MediaSessionStore';
 import { mediaSessionInstance } from './MediaSessionInstance';
 
+const mockTerminateNativeCall = jest.fn();
+jest.mock('./terminateNativeCall', () => ({
+	terminateNativeCall: (...args: unknown[]) => mockTerminateNativeCall(...args)
+}));
+
 jest.mock('../../database/services/Subscription', () => ({
 	getDMSubscriptionByUsername: jest.fn()
 }));
@@ -789,6 +794,93 @@ describe('MediaSessionInstance', () => {
 
 			await waitFor(() => expect(mockSetRoomId).toHaveBeenCalledWith('dm-ext'));
 			expect(mockGetDMSubscriptionByUsername).toHaveBeenCalledWith('bob');
+		});
+	});
+
+	describe('answerCall error recovery (B5)', () => {
+		it('terminates native call and resets nativeAcceptedCallId when accept() rejects', async () => {
+			await mediaSessionInstance.init('user-1');
+			const session = createdSessions[0];
+			const mockResetNativeCallId = jest.fn();
+			mockUseCallStoreGetState.mockReturnValue({
+				reset: mockCallStoreReset,
+				setCall: jest.fn(),
+				setRoomId: mockSetRoomId,
+				setDirection: mockSetDirection,
+				resetNativeCallId: mockResetNativeCallId,
+				call: null,
+				callId: null,
+				nativeAcceptedCallId: 'call-fail',
+				roomId: null
+			});
+			const mainCall = {
+				callId: 'call-fail',
+				accept: jest.fn().mockRejectedValue(new Error('ICE failure')),
+				remoteParticipants: [{ contact: { username: 'bob' } }]
+			};
+			session.getCallData.mockReturnValue(mainCall);
+
+			await mediaSessionInstance.answerCall('call-fail');
+
+			expect(mockTerminateNativeCall).toHaveBeenCalledWith('call-fail');
+			expect(mockResetNativeCallId).toHaveBeenCalledTimes(1);
+			expect(mockShowErrorAlert).toHaveBeenCalledTimes(1);
+			// Navigation.navigate should NOT be called on the failure path
+			expect(Navigation.navigate).not.toHaveBeenCalled();
+		});
+
+		it('does not navigate or set call when accept() rejects', async () => {
+			await mediaSessionInstance.init('user-1');
+			const session = createdSessions[0];
+			const mockSetCall = jest.fn();
+			mockUseCallStoreGetState.mockReturnValue({
+				reset: mockCallStoreReset,
+				setCall: mockSetCall,
+				setRoomId: mockSetRoomId,
+				setDirection: mockSetDirection,
+				resetNativeCallId: jest.fn(),
+				call: null,
+				callId: null,
+				nativeAcceptedCallId: 'call-err',
+				roomId: null
+			});
+			const mainCall = {
+				callId: 'call-err',
+				accept: jest.fn().mockRejectedValue(new Error('timeout')),
+				remoteParticipants: [{ contact: { username: 'carol' } }]
+			};
+			session.getCallData.mockReturnValue(mainCall);
+
+			await mediaSessionInstance.answerCall('call-err');
+
+			expect(mockSetCall).not.toHaveBeenCalled();
+			expect(Navigation.navigate).not.toHaveBeenCalled();
+		});
+	});
+
+	describe('startCall post-permission guard (B6)', () => {
+		it('throws VoIP_Already_In_Call when active call arrives during permission prompt', async () => {
+			await mediaSessionInstance.init('user-1');
+			const session = createdSessions[0];
+			// isInActiveVoipCall returns false initially, then true after permission resolves
+			mockIsInActiveVoipCall
+				.mockReturnValueOnce(false) // pre-permission synchronous check passes
+				.mockReturnValueOnce(true); // post-permission re-evaluation detects new call
+
+			await expect(mediaSessionInstance.startCall('peer-1', 'user')).rejects.toThrow('VoIP_Already_In_Call');
+			expect(mockRequestVoipCallPermissions).toHaveBeenCalledTimes(1);
+			expect(session.startCall).not.toHaveBeenCalled();
+		});
+
+		it('proceeds to start call when no active call during or after permission prompt', async () => {
+			await mediaSessionInstance.init('user-1');
+			const session = createdSessions[0];
+			// isInActiveVoipCall stays false throughout
+			mockIsInActiveVoipCall.mockReturnValue(false);
+
+			await mediaSessionInstance.startCall('peer-1', 'user');
+
+			expect(session.startCall).toHaveBeenCalledWith('user', 'peer-1');
 		});
 	});
 });

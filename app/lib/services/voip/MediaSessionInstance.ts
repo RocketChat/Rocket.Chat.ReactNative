@@ -153,7 +153,18 @@ class MediaSessionInstance {
 		const mainCall = this.instance?.getCallData(callId);
 
 		if (mainCall && mainCall.callId === callId) {
-			await mainCall.accept();
+			try {
+				await mainCall.accept();
+			} catch (error) {
+				console.error('[VoIP] accept() rejected:', error);
+				terminateNativeCall(callId);
+				const st = useCallStore.getState();
+				if (st.nativeAcceptedCallId === callId) {
+					st.resetNativeCallId();
+				}
+				showErrorAlert(I18n.t('VoIP_Answer_Failed'), I18n.t('Oops'));
+				return;
+			}
 			RNCallKeep.setCurrentCallActive(callId);
 			useCallStore.getState().setCall(mainCall);
 			useCallStore.getState().setDirection('incoming');
@@ -203,6 +214,10 @@ class MediaSessionInstance {
 				I18n.t('Microphone_access_needed_to_record_audio')
 			);
 			return;
+		}
+		// Re-evaluate: an incoming call may have been accepted during the permission prompt.
+		if (isInActiveVoipCall()) {
+			throw new Error(I18n.t('VoIP_Already_In_Call'));
 		}
 		await this.instance.startCall(actor, userId);
 	};
