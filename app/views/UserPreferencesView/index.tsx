@@ -1,5 +1,6 @@
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useEffect } from 'react';
+import { Platform } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { setUser } from '../../actions/login';
@@ -15,6 +16,8 @@ import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import ListPicker from './ListPicker';
 import Switch from '../../containers/Switch';
 import { type IUser } from '../../definitions';
+import { useUserPreferences } from '../../lib/methods/userPreferences';
+import { VOIP_INCLUDES_CALLS_IN_RECENTS } from '../../lib/constants/voip';
 
 interface IUserPreferencesViewProps {
 	navigation: NativeStackNavigationProp<ProfileStackParamList, 'UserPreferencesView'>;
@@ -28,6 +31,7 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 	const dispatch = useDispatch();
 	const convertAsciiEmoji = settings?.preferences?.convertAsciiEmoji;
 	const enableMobileRinging = settings?.preferences?.enableMobileRinging;
+	const [includesCallsInRecents, setIncludesCallsInRecents] = useUserPreferences<boolean>(VOIP_INCLUDES_CALLS_IN_RECENTS, false);
 
 	useEffect(() => {
 		navigation.setOptions({
@@ -147,6 +151,22 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 									/>
 								)}
 								onPress={() => toggleEnableMobileRinging(!enableMobileRinging)}
+							/>
+							<List.Separator />
+						</>
+					) : null}
+					{Platform.OS === 'ios' ? (
+						<>
+							<List.Item
+								title='Show_Calls_In_iPhone_Recents'
+								right={() => (
+									<Switch
+										value={includesCallsInRecents}
+										onValueChange={setIncludesCallsInRecents}
+										testID='preferences-view-show-calls-in-iphone-recents'
+									/>
+								)}
+								onPress={() => setIncludesCallsInRecents(!includesCallsInRecents)}
 							/>
 							<List.Separator />
 						</>

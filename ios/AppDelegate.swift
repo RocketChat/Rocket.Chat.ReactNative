@@ -28,12 +28,14 @@ public class AppDelegate: ExpoAppDelegate {
     ReplyNotification.configure()
     if !VoipRegion.isChina() {
       VoipService.voipRegistration()
+      let mmkv = MMKVBridge.build()
+      let includesCallsInRecents = mmkv.string(forKey: "voip.includesCallsInRecents") == "true"
       RNCallKeep.setup([
         "appName": "Rocket.Chat",
         "supportsVideo": false,
         "maximumCallGroups": 1,
         "maximumCallsPerCallGroup": 1,
-        "includesCallsInRecents": true
+        "includesCallsInRecents": includesCallsInRecents
       ])
     }
       
