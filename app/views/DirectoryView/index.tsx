@@ -24,7 +24,8 @@ import { goRoom, type TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import { type IApplicationState, type IServerRoom, type IUser, SubscriptionType } from '../../definitions';
 import styles from './styles';
 import Options from './Options';
-import { getDirectory, createDirectMessage, getRoomByTypeAndName } from '../../lib/services/restApi';
+import { getDirectory, getRoomByTypeAndName } from '../../lib/services/restApi';
+import { createDirectMessage } from '../../lib/methods/createDirectMessage';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
 
 interface IDirectoryViewProps {
