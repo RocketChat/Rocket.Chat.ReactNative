@@ -159,6 +159,7 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 						<>
 							<List.Item
 								title='Show_Calls_In_iPhone_Recents'
+								subtitle='Requires_restart'
 								right={() => (
 									<Switch
 										value={includesCallsInRecents}
