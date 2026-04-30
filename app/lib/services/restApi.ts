@@ -1074,6 +1074,8 @@ export const editMessage = async (message: Pick<IMessage, 'id' | 'msg' | 'rid' |
 
 let lastToken = '';
 let lastVoipToken = '';
+export let pendingToken = '';
+export let pendingVoipToken = '';
 
 type TRegisterPushTokenData = {
 	id?: string;
@@ -1091,7 +1093,8 @@ export const registerPushToken = async (): Promise<void> => {
 		return;
 	}
 
-	if (token === lastToken && voipToken === lastVoipToken) {
+	// Allow retry when there's a pending token to replay
+	if (token === lastToken && voipToken === lastVoipToken && !pendingToken) {
 		return;
 	}
 
@@ -1129,7 +1132,16 @@ export const registerPushToken = async (): Promise<void> => {
 		await sdk.post('push.token', data);
 		lastToken = token;
 		lastVoipToken = voipToken;
-	} catch (e) {
+		// Clear pending tokens on success
+		pendingToken = '';
+		pendingVoipToken = '';
+	} catch (e: any) {
+		// Cache token for replay on 401/403 (user not authenticated yet)
+		if (e?.status === 401 || e?.status === 403) {
+			pendingToken = token;
+			pendingVoipToken = voipToken;
+			log(`[restApi] Push token registration failed with ${e.status} - caching for replay`);
+		}
 		log(e);
 	}
 };
