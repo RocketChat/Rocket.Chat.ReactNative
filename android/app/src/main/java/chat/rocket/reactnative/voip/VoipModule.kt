@@ -176,45 +176,59 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
             promise.resolve(null)
             return
         }
+        val audioManager = reactApplicationContext.getSystemService(AudioManager::class.java)
+        val listener = AudioManager.OnCommunicationDeviceChangedListener { device ->
+            val isSpeaker = device?.type == AudioDeviceInfo.TYPE_BUILTIN_SPEAKER
+            emitCommunicationDeviceChanged(isSpeaker)
+        }
         try {
-            val audioManager = reactApplicationContext.getSystemService(AudioManager::class.java)
-            val listener = AudioManager.OnCommunicationDeviceChangedListener { device ->
-                val isSpeaker = device?.type == AudioDeviceInfo.TYPE_BUILTIN_SPEAKER
-                emitCommunicationDeviceChanged(isSpeaker)
-            }
             audioManager.addOnCommunicationDeviceChangedListener(reactApplicationContext.mainExecutor, listener)
-            communicationDeviceListener = listener
+        } catch (e: Exception) {
+            Log.e(TAG, "startAudioRouteSync: failed to register listener", e)
+            promise.reject("E_AUDIO_ROUTE_SYNC_START", e.message, e)
+            return
+        }
+        communicationDeviceListener = listener
 
-            // addOnCommunicationDeviceChangedListener does not invoke the callback on registration,
-            // so seed the JS-side state with the current device.
+        // addOnCommunicationDeviceChangedListener does not invoke the callback on registration,
+        // so seed the JS-side state with the current device. Seed failure is non-fatal:
+        // the listener is already active and will deliver subsequent route changes.
+        try {
             val currentDevice = audioManager.communicationDevice
             if (currentDevice != null) {
                 val isSpeaker = currentDevice.type == AudioDeviceInfo.TYPE_BUILTIN_SPEAKER
                 emitCommunicationDeviceChanged(isSpeaker)
             }
-
-            promise.resolve(null)
         } catch (e: Exception) {
-            communicationDeviceListener = null
-            Log.e(TAG, "startAudioRouteSync failed", e)
-            promise.reject("E_AUDIO_ROUTE_SYNC_START", e.message, e)
+            Log.w(TAG, "startAudioRouteSync: failed to seed current device; listener remains active", e)
         }
+
+        promise.resolve(null)
     }
 
     override fun stopAudioRouteSync(promise: Promise) {
-        try {
-            val listener = communicationDeviceListener
-            if (listener != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                val audioManager = reactApplicationContext.getSystemService(AudioManager::class.java)
-                audioManager.removeOnCommunicationDeviceChangedListener(listener)
-            }
+        val listener = communicationDeviceListener
+        if (listener == null) {
+            promise.resolve(null)
+            return
+        }
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
             communicationDeviceListener = null
             promise.resolve(null)
-        } catch (e: Exception) {
-            communicationDeviceListener = null
-            Log.e(TAG, "stopAudioRouteSync failed", e)
-            promise.reject("E_AUDIO_ROUTE_SYNC_STOP", e.message, e)
+            return
         }
+        try {
+            val audioManager = reactApplicationContext.getSystemService(AudioManager::class.java)
+            audioManager.removeOnCommunicationDeviceChangedListener(listener)
+        } catch (e: Exception) {
+            // Leave the handle intact so the next stop attempt can retry removal
+            // instead of leaking a still-registered native listener.
+            Log.e(TAG, "stopAudioRouteSync: removal failed; keeping listener handle", e)
+            promise.reject("E_AUDIO_ROUTE_SYNC_STOP", e.message, e)
+            return
+        }
+        communicationDeviceListener = null
+        promise.resolve(null)
     }
 
     private fun emitCommunicationDeviceChanged(isSpeaker: Boolean) {
