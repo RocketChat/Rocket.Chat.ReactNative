@@ -299,14 +299,20 @@ class CallLifecycle {
 
 	/**
 	 * Resolve the DM room id from a call contact.
-	 * Returns undefined if the contact has no username or no subscription is found.
+	 * Never rejects — a DB error must not abort the surrounding answerIncoming/beginOutgoing
+	 * flow before `callBegan` emits, otherwise audio is active but CallView never navigates.
 	 */
 	private async _resolveRoomIdFromContact(contact: CallContact | undefined): Promise<string | undefined> {
 		if (!contact?.username) {
 			return undefined;
 		}
-		const sub = await _getDMSubscriptionByUsername(contact.username);
-		return sub?.rid ?? undefined;
+		try {
+			const sub = await _getDMSubscriptionByUsername(contact.username);
+			return sub?.rid ?? undefined;
+		} catch (error) {
+			logger.warn(`${TAG} _resolveRoomIdFromContact failed; continuing without roomId`, error);
+			return undefined;
+		}
 	}
 
 	// eslint-disable-next-line require-await

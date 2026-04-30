@@ -814,6 +814,22 @@ describe('CallLifecycle.answerIncoming(callId)', () => {
 			unsub();
 			expect(listener).not.toHaveBeenCalled();
 		});
+
+		it('still emits callBegan when DM lookup rejects (audio active → CallView must navigate)', async () => {
+			const call = makeIncomingCall('inc-dbfail-1');
+			mockGetMediaCall.mockReturnValue(call);
+			mockGetDMSubscriptionByUsername.mockRejectedValue(new Error('db boom'));
+
+			const events: CallBeganEvent[] = [];
+			const unsub = callLifecycle.emitter.on('callBegan', e => events.push(e));
+
+			await expect(callLifecycle.answerIncoming('inc-dbfail-1')).resolves.toBeUndefined();
+
+			unsub();
+			expect(events).toHaveLength(1);
+			expect(events[0]).toMatchObject({ callId: 'inc-dbfail-1', direction: 'incoming' });
+			expect(events[0].roomId).toBeUndefined();
+		});
 	});
 
 	describe('idempotency', () => {
@@ -1090,6 +1106,21 @@ describe('CallLifecycle.beginOutgoing(call, room?)', () => {
 
 			unsub();
 			expect(listener).toHaveBeenCalledTimes(1);
+		});
+
+		it('still emits callBegan when DM lookup rejects (audio active → CallView must navigate)', async () => {
+			const call = makeOutgoingCall('out-dbfail-1');
+			mockGetDMSubscriptionByUsername.mockRejectedValue(new Error('db boom'));
+
+			const events: CallBeganEvent[] = [];
+			const unsub = callLifecycle.emitter.on('callBegan', e => events.push(e));
+
+			await expect(callLifecycle.beginOutgoing(call)).resolves.toBeUndefined();
+
+			unsub();
+			expect(events).toHaveLength(1);
+			expect(events[0]).toMatchObject({ callId: 'out-dbfail-1', direction: 'outgoing' });
+			expect(events[0].roomId).toBeUndefined();
 		});
 	});
 
