@@ -137,6 +137,22 @@ class MediaSessionInstance {
 							console.error('[VoIP] Error resolving room id from contact (newCall):', error);
 						});
 					}
+				} else if (call.localParticipant.role === 'callee') {
+					// Route incoming calls through the Pre-bind FSM.
+					// onMediaCallNew checks whether the FSM is in awaitingMediaCall and the uuid matches:
+					//   - match: transitions FSM to idle, calls answerIncoming, flushes queued intents.
+					//   - no match (FSM is idle / uuid differs): no-op — this is not a pre-bind incoming call.
+					//
+					// The legacy tryAnswerIfNativeAcceptedNotification path (which polled preBindStatus
+					// directly from the DDP signal listener) has been replaced entirely by onMediaCallNew.
+					// answerCall is idempotent, so the DDP-signal path that calls answerCall directly is
+					// still present in tryAnswerIfNativeAcceptedNotification for signals that arrive before
+					// the newCall event (e.g. REST state-signal replay). No double-binding occurs because
+					// tryAnswerIfNativeAcceptedNotification guards on call == null and answerCall guards
+					// on existingCall?.callId === callId.
+					callLifecycle.onMediaCallNew(call).catch(error => {
+						console.error('[VoIP] Error in onMediaCallNew:', error);
+					});
 				}
 
 				call.emitter.on('ended', () => {
