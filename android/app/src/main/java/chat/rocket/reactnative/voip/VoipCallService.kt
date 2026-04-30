@@ -64,6 +64,15 @@ class VoipCallService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        // Enter foreground state unconditionally before branching on action.
+        // The OS five-second rule fires ForegroundServiceDidNotStartInTimeException if startForeground
+        // is never called — including on sticky restarts and unexpected intent redelivery where the
+        // action may be null or unrecognised.  Calling startForeground here then immediately calling
+        // stopSelf is safe: the system will promote the service to foreground and then tear it down
+        // gracefully, which avoids the ANR-style crash.
+        val callId = intent?.getStringExtra(EXTRA_CALL_ID) ?: "unknown"
+        startForegroundWithNotification(callId)
+
         when (intent?.action) {
             ACTION_STOP -> {
                 isRunning = false
@@ -72,16 +81,14 @@ class VoipCallService : Service() {
                 return START_NOT_STICKY
             }
             ACTION_START -> {
-                val callId = intent.getStringExtra(EXTRA_CALL_ID) ?: "unknown"
                 if (BuildConfig.DEBUG) {
                     Log.d(TAG, "Starting VoipCallService for callId: $callId")
                 }
                 isRunning = true
-                startForegroundWithNotification(callId)
                 return START_NOT_STICKY
             }
             else -> {
-                Log.w(TAG, "Unknown action: ${intent?.action}")
+                Log.w(TAG, "Unknown action: ${intent?.action} — entered foreground then stopping")
                 stopSelf(startId)
                 return START_NOT_STICKY
             }

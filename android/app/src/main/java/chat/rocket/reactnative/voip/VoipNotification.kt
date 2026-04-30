@@ -259,8 +259,11 @@ class VoipNotification(private val context: Context) {
             }
             startListeningForCallEnd(context, payload)
 
-            // Start foreground service to keep call alive in background.
-            VoipCallService.startService(context, payload.callId)
+            // NOTE: the foreground service is intentionally NOT started here.
+            // On Android 14, starting FOREGROUND_SERVICE_TYPE_PHONE_CALL while the Telecom
+            // connection is still in the ringing state throws ForegroundServiceStartNotAllowedException.
+            // The service is started inside finish() only after the server answer REST call succeeds
+            // and answerIncomingCall() has transitioned the connection to active.
 
             val appCtx = context.applicationContext
             // Guard so finish() is called at most once, whether by the REST callback or the timeout.
@@ -274,11 +277,17 @@ class VoipNotification(private val context: Context) {
                 ddpRegistry.stopClient(payload.callId)
                 if (answerRequestSucceeded) {
                     answerIncomingCall(appCtx, payload.callId)
+                    // Start foreground service only after the Telecom connection is active
+                    // (answerIncomingCall above called connection.onAnswer()).  Android 14 enforces
+                    // that FOREGROUND_SERVICE_TYPE_PHONE_CALL may only be started while the call is
+                    // active; starting earlier throws ForegroundServiceStartNotAllowedException.
+                    VoipCallService.startService(appCtx, payload.callId)
                     VoipModule.storeInitialEvents(payload)
                 } else {
                     if (BuildConfig.DEBUG) {
                         Log.d(TAG, "media-calls.answer failed for ${payload.callId}; opening app for JS recovery")
                     }
+                    // Server answer failed — do NOT start the foreground service.  Tear down instead.
                     disconnectIncomingCall(payload.callId, false)
                     VoipModule.storeAcceptFailureForJs(payload)
                 }
