@@ -62,9 +62,7 @@ const mockedRegisterPushToken = registerPushToken as jest.Mock;
 const registerPushTokenFork = function* () {
 	const restApi = require('../lib/services/restApi');
 	try {
-		if (restApi.pendingToken || restApi.pendingVoipToken) {
-			yield restApi.registerPushToken();
-		}
+		yield restApi.registerPushToken();
 	} catch (e) {
 		// Log errors but don't rethrow
 	}
@@ -75,28 +73,11 @@ describe('registerPushTokenFork saga', () => {
 		jest.clearAllMocks();
 	});
 
-	it('calls registerPushToken when pendingToken is set', () => {
-		const restApi = require('../lib/services/restApi');
-		restApi.pendingToken = 'pending-test-token';
-		restApi.pendingVoipToken = 'pending-voip-token';
-
+	it('always calls registerPushToken so the request can replay or send the latest token', () => {
 		const gen = registerPushTokenFork();
 		const result = gen.next();
 
 		expect(result.value).toBeDefined();
 		expect(mockedRegisterPushToken).toHaveBeenCalledTimes(1);
-	});
-
-	it('does NOT call registerPushToken when no pendingToken is set', () => {
-		const restApi = require('../lib/services/restApi');
-		restApi.pendingToken = '';
-		restApi.pendingVoipToken = '';
-
-		const gen = registerPushTokenFork();
-		const result = gen.next();
-
-		// Generator should complete without calling registerPushToken
-		expect(result.done).toBe(true);
-		expect(mockedRegisterPushToken).not.toHaveBeenCalled();
 	});
 });

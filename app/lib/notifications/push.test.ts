@@ -70,6 +70,7 @@ describe('push.ts auth guard', () => {
 			(reduxStore.getState as jest.Mock).mockReturnValue(baseState);
 
 			await pushNotificationConfigure(jest.fn());
+			registerPushToken.mockClear();
 
 			const registeredCallbacks = (Notifications.addPushTokenListener as jest.Mock).mock.calls;
 			expect(registeredCallbacks.length).toBe(1);
@@ -91,6 +92,7 @@ describe('push.ts auth guard', () => {
 			});
 
 			await pushNotificationConfigure(jest.fn());
+			registerPushToken.mockClear();
 
 			const registeredCallbacks = (Notifications.addPushTokenListener as jest.Mock).mock.calls;
 			expect(registeredCallbacks.length).toBe(1);
