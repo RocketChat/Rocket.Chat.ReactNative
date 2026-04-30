@@ -837,6 +837,40 @@ describe('CallLifecycle.answerIncoming(callId)', () => {
 			expect(listener).not.toHaveBeenCalled();
 		});
 
+		it('concurrent answerIncoming for the same callId — accept called exactly once, one callBegan', async () => {
+			const call = makeIncomingCall('inc-concurrent-1');
+			mockGetMediaCall.mockReturnValue(call);
+
+			const beganEvents: CallBeganEvent[] = [];
+			const unsub = callLifecycle.emitter.on('callBegan', e => beganEvents.push(e));
+
+			// Fire two concurrent answerIncoming calls before either resolves.
+			const [p1, p2] = [
+				callLifecycle.answerIncoming('inc-concurrent-1'),
+				callLifecycle.answerIncoming('inc-concurrent-1')
+			];
+
+			// Both callers should receive the same in-flight Promise.
+			expect(p1).toBe(p2);
+
+			await Promise.all([p1, p2]);
+
+			unsub();
+
+			// accept() must be called exactly once — no WebRTC double offer-answer.
+			expect(call.accept).toHaveBeenCalledTimes(1);
+
+			// markActive and startAudio each appear exactly once.
+			const markActiveCmds = native.recorded.filter(c => c.cmd === 'markActive' && c.callUuid === 'inc-concurrent-1');
+			const startAudioCmds = native.recorded.filter(c => c.cmd === 'startAudio');
+			expect(markActiveCmds).toHaveLength(1);
+			expect(startAudioCmds).toHaveLength(1);
+
+			// callBegan emits exactly once — no duplicate CallView push.
+			expect(beganEvents).toHaveLength(1);
+			expect(beganEvents[0]).toMatchObject({ callId: 'inc-concurrent-1', direction: 'incoming' });
+		});
+
 		it('proceeds normally for a different callId after a prior answer', async () => {
 			const callA = makeIncomingCall('inc-idem-a');
 			mockGetMediaCall.mockReturnValue(callA);

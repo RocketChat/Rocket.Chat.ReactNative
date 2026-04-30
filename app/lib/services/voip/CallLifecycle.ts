@@ -11,23 +11,25 @@
  *   7. emit callEnded { callId, reason }
  *
  * answerIncoming(callId) order:
- *   1. Idempotency guard — return if store.call.callId === callId
- *   2. mediaCall = mediaSessionInstance.getMediaCall(callId) — abort if null
- *   3. mediaCall.accept()
- *   4. voipNative.call.markActive(callId)
- *   5. voipNative.call.startAudio()
- *   6. useCallStore.setCallStateOnly(mediaCall) + setDirection('incoming')
- *   7. resolveRoomIdFromContact(mediaCall) → setRoomId
- *   8. emit callBegan { callId, direction: 'incoming', roomId? }
+ *   1. Concurrent-call guard — deduplicate via _answerPromises Map (per-callId in-flight promise)
+ *   2. Idempotency guard — return if store.call.callId === callId (already answered)
+ *   3. mediaCall = mediaSessionInstance.getMediaCall(callId) — abort if null
+ *   4. mediaCall.accept()
+ *   5. voipNative.call.markActive(callId)
+ *   6. voipNative.call.startAudio()
+ *   7. useCallStore.setCall(mediaCall) + setDirection('incoming')
+ *   8. resolveRoomIdFromContact(mediaCall) → setRoomId
+ *   9. emit callBegan { callId, direction: 'incoming', roomId? }
  *
  * beginOutgoing(call, room?) order:
  *   1. voipNative.call.markActive(call.callId)
  *   2. voipNative.call.startAudio()
- *   3. useCallStore.setCallStateOnly(call) + setDirection('outgoing') + setRoomId(room?.rid)
+ *   3. useCallStore.setCall(call) + setDirection('outgoing') + setRoomId(room?.rid)
  *   4. emit callBegan { callId, direction: 'outgoing', roomId? }
  *
  * Idempotency: concurrent end() callers receive the in-flight Promise (no double teardown).
- *              answerIncoming re-entry with same callId returns early.
+ *              concurrent answerIncoming() callers for the same callId share the in-flight Promise.
+ *              sequential answerIncoming() re-entry with same callId returns early via store check.
  *
  * `callId` in `callEnded` uses `callId ?? nativeAcceptedCallId` (Pre-bind-safe).
  */
@@ -132,6 +134,13 @@ class CallLifecycle {
 	private _endPromise: Promise<void> | null = null;
 
 	/**
+	 * Per-callId in-flight answer promises.
+	 * Concurrent answerIncoming() callers for the same callId receive the same Promise —
+	 * preventing double accept(), double markActive/startAudio, and double callBegan emission.
+	 */
+	private _answerPromises = new Map<string, Promise<void>>();
+
+	/**
 	 * Attach a custom native seam (optional). If not called, the module-level
 	 * `voipNative` singleton is used. Call once per session for explicit injection.
 	 *
@@ -172,16 +181,34 @@ class CallLifecycle {
 	/**
 	 * Answer an incoming call.
 	 *
-	 * Idempotent: re-entry with the same callId is a no-op (no double-accept,
-	 * no extra native commands, no duplicate callBegan emission).
+	 * Concurrent-safe: if two callers invoke answerIncoming() for the same callId simultaneously,
+	 * they both receive the same in-flight Promise — only one accept/markActive/startAudio/callBegan
+	 * sequence runs. The Map entry is removed once the promise settles (success or error).
 	 *
-	 * Order: accept → markActive → startAudio → setCallStateOnly + setDirection →
-	 *        resolveRoomIdFromContact → emit callBegan.
+	 * Idempotent (sequential): re-entry with the same callId after it is already bound in the store
+	 * returns early inside _runAnswer — no double-accept, no extra native commands.
+	 *
+	 * Order: (concurrent guard) → (idempotency guard) → accept → markActive → startAudio →
+	 *        setCall + setDirection → resolveRoomIdFromContact → emit callBegan.
+	 *
+	 * NOTE: intentionally NOT declared async — the body must return the stored Promise directly so
+	 * that concurrent callers receive the exact same Promise object (identity equality).
+	 * An `async` wrapper would create a new wrapping Promise for each caller.
 	 */
-	async answerIncoming(callId: string): Promise<void> {
+	answerIncoming(callId: string): Promise<void> {
+		// Concurrent-call guard: deduplicate in-flight promises per callId.
+		const existing = this._answerPromises.get(callId);
+		if (existing) return existing;
+		const p = this._runAnswer(callId);
+		this._answerPromises.set(callId, p);
+		p.finally(() => this._answerPromises.delete(callId)).catch(() => {});
+		return p;
+	}
+
+	private async _runAnswer(callId: string): Promise<void> {
 		const native = this._voipNativeOverride ?? voipNative;
 
-		// Step 1: Idempotency guard — return if already answered.
+		// Step 1: Idempotency guard — return if already answered (sequential re-entry).
 		const { call: existingCall } = useCallStore.getState();
 		if (existingCall != null && existingCall.callId === callId) {
 			return;
@@ -210,7 +237,7 @@ class CallLifecycle {
 		native.call.startAudio();
 
 		// Step 6: Update JS store — state only (native side-effects already done above).
-		useCallStore.getState().setCallStateOnly(mediaCall);
+		useCallStore.getState().setCall(mediaCall);
 		useCallStore.getState().setDirection('incoming');
 
 		// Step 7: Resolve room id from contact (async; store updated before callBegan emits).
@@ -229,7 +256,7 @@ class CallLifecycle {
 	 * Called from the `newCall` handler's `role === 'caller'` branch in MediaSessionInstance.
 	 * The IClientMediaCall already exists at this point (produced by the `newCall` event).
 	 *
-	 * Order: markActive → startAudio → setCallStateOnly + setDirection + setRoomId →
+	 * Order: markActive → startAudio → setCall + setDirection + setRoomId →
 	 *        emit callBegan.
 	 */
 	// eslint-disable-next-line require-await
@@ -243,7 +270,7 @@ class CallLifecycle {
 		native.call.startAudio();
 
 		// Step 3: Update JS store — state only (native side-effects already done above).
-		useCallStore.getState().setCallStateOnly(call);
+		useCallStore.getState().setCall(call);
 		useCallStore.getState().setDirection('outgoing');
 		useCallStore.getState().setRoomId(room?.rid ?? null);
 
