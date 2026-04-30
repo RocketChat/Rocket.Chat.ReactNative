@@ -32,7 +32,7 @@ interface IMarkdownProps {
 	navToRoomInfo?: Function;
 	onLinkPress?: TOnLinkPress;
 	isTranslated?: boolean;
-	textStyle?: StyleProp<TextStyle>;
+	highlights?: string[];
 }
 
 const Markdown: React.FC<IMarkdownProps> = ({
@@ -46,7 +46,7 @@ const Markdown: React.FC<IMarkdownProps> = ({
 	getCustomEmoji,
 	onLinkPress,
 	isTranslated,
-	textStyle
+	highlights = []
 }: IMarkdownProps) => {
 	if (!msg) return null;
 
@@ -70,7 +70,7 @@ const Markdown: React.FC<IMarkdownProps> = ({
 					navToRoomInfo,
 					getCustomEmoji,
 					onLinkPress,
-					textStyle
+					highlights
 				}}>
 				{tokens?.map(block => {
 					switch (block.type) {
