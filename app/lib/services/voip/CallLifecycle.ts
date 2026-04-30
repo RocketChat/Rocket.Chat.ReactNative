@@ -25,7 +25,8 @@
  *   1. voipNative.call.markActive(call.callId)
  *   2. voipNative.call.startAudio()
  *   3. useCallStore.setCall(call) + setDirection('outgoing') + setRoomId(room?.rid)
- *   4. emit callBegan { callId, direction: 'outgoing', roomId? }
+ *   4. if no room argument, resolveRoomIdFromContact(remoteParticipants[0]?.contact) → setRoomId
+ *   5. emit callBegan { callId, direction: 'outgoing', roomId? }
  *
  * Idempotency: concurrent end() callers receive the in-flight Promise (no double teardown).
  *              concurrent answerIncoming() callers for the same callId share the in-flight Promise.
@@ -256,10 +257,14 @@ class CallLifecycle {
 	 * Called from the `newCall` handler's `role === 'caller'` branch in MediaSessionInstance.
 	 * The IClientMediaCall already exists at this point (produced by the `newCall` event).
 	 *
+	 * When `room` is omitted (DM-by-username path: CreateCall → startCall(userId, 'user')
+	 * never sets a roomId beforehand), the room id is resolved from the remote participant's
+	 * contact via getDMSubscriptionByUsername — pre-refactor parity, otherwise CallView's
+	 * "Go to chat" button stays disabled because roomId is null.
+	 *
 	 * Order: markActive → startAudio → setCall + setDirection + setRoomId →
-	 *        emit callBegan.
+	 *        (fallback) resolveRoomIdFromContact → emit callBegan.
 	 */
-	// eslint-disable-next-line require-await
 	async beginOutgoing(call: IClientMediaCall, room?: { rid?: string }): Promise<void> {
 		const native = this._voipNativeOverride ?? voipNative;
 
@@ -274,8 +279,22 @@ class CallLifecycle {
 		useCallStore.getState().setDirection('outgoing');
 		useCallStore.getState().setRoomId(room?.rid ?? null);
 
-		// Step 4: Notify subscribers.
-		this.emitter.emit('callBegan', { callId: call.callId, direction: 'outgoing', ...(room?.rid ? { roomId: room.rid } : {}) });
+		// Step 4: Fallback DM lookup when caller didn't supply a room (CreateCall by username).
+		let resolvedRoomId: string | undefined = room?.rid;
+		if (room?.rid == null) {
+			const fromContact = await this._resolveRoomIdFromContact(call.remoteParticipants[0]?.contact);
+			if (fromContact) {
+				useCallStore.getState().setRoomId(fromContact);
+				resolvedRoomId = fromContact;
+			}
+		}
+
+		// Step 5: Notify subscribers.
+		this.emitter.emit('callBegan', {
+			callId: call.callId,
+			direction: 'outgoing',
+			...(resolvedRoomId ? { roomId: resolvedRoomId } : {})
+		});
 	}
 
 	/**

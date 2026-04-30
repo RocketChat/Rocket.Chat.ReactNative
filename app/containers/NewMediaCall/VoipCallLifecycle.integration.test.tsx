@@ -454,6 +454,11 @@ describe('VoIP call lifecycle (integration)', () => {
 
 		const { call } = useCallStore.getState();
 		expect(call?.callId).toBe('call-user-1');
+		// Pre-refactor parity: outgoing DM-by-username has no roomId from the caller, so
+		// CallLifecycle.beginOutgoing falls back to getDMSubscriptionByUsername. The mock
+		// here returns null (no DM subscription) AND the synthetic call has no contact
+		// username, so roomId stays null — but the lookup path must remain wired.
+		expect(useCallStore.getState().roomId).toBeNull();
 
 		// Firing 'ended' triggers CallLifecycle teardown via the handleEnded listener.
 		// Navigation.back() is now handled by CallNavRouter (not wired in this integration test).

@@ -845,10 +845,7 @@ describe('CallLifecycle.answerIncoming(callId)', () => {
 			const unsub = callLifecycle.emitter.on('callBegan', e => beganEvents.push(e));
 
 			// Fire two concurrent answerIncoming calls before either resolves.
-			const [p1, p2] = [
-				callLifecycle.answerIncoming('inc-concurrent-1'),
-				callLifecycle.answerIncoming('inc-concurrent-1')
-			];
+			const [p1, p2] = [callLifecycle.answerIncoming('inc-concurrent-1'), callLifecycle.answerIncoming('inc-concurrent-1')];
 
 			// Both callers should receive the same in-flight Promise.
 			expect(p1).toBe(p2);
@@ -999,6 +996,59 @@ describe('CallLifecycle.beginOutgoing(call, room?)', () => {
 
 			// setRoomId(undefined) should result in null/undefined — doesn't set a non-null value
 			// The store's roomId was null to begin with; verify no roomId is set from an unknown source
+			expect(useCallStore.getState().roomId).toBeFalsy();
+		});
+
+		it('falls back to DM subscription lookup by contact username when no room argument (DM-by-username regression)', async () => {
+			// Pre-refactor parity: outgoing DM initiated by username (CreateCall path)
+			// has roomId == null in the store. The newCall handler used to resolve the
+			// DM rid from the remote participant's username via getDMSubscriptionByUsername.
+			// CallLifecycle.beginOutgoing must keep that fallback alive — otherwise the
+			// "Go to chat" button on CallView stays disabled.
+			const call = makeOutgoingCall('out-fallback-1');
+			mockGetDMSubscriptionByUsername.mockResolvedValue({ rid: 'dm-rid-from-contact' } as any);
+
+			await callLifecycle.beginOutgoing(call);
+
+			expect(mockGetDMSubscriptionByUsername).toHaveBeenCalledWith('callee');
+			expect(useCallStore.getState().roomId).toBe('dm-rid-from-contact');
+		});
+
+		it('does NOT fall back to contact lookup when room argument is provided', async () => {
+			// Caller-supplied roomId (e.g. startCallByRoom path) wins — no DB hit needed.
+			const call = makeOutgoingCall('out-room-wins-1');
+			const room = { rid: 'explicit-room' } as any;
+
+			await callLifecycle.beginOutgoing(call, room);
+
+			expect(mockGetDMSubscriptionByUsername).not.toHaveBeenCalled();
+			expect(useCallStore.getState().roomId).toBe('explicit-room');
+		});
+
+		it('callBegan includes roomId resolved from contact when no room argument', async () => {
+			const call = makeOutgoingCall('out-fallback-began-1');
+			mockGetDMSubscriptionByUsername.mockResolvedValue({ rid: 'dm-rid-began' } as any);
+
+			const events: CallBeganEvent[] = [];
+			const unsub = callLifecycle.emitter.on('callBegan', e => events.push(e));
+
+			await callLifecycle.beginOutgoing(call);
+
+			unsub();
+			expect(events[0]).toMatchObject({
+				callId: 'out-fallback-began-1',
+				direction: 'outgoing',
+				roomId: 'dm-rid-began'
+			});
+		});
+
+		it('keeps roomId falsy when contact has no username (no DM lookup possible)', async () => {
+			const call = makeOutgoingCall('out-noun-1');
+			(call as any).remoteParticipants = [{ contact: {} }];
+
+			await callLifecycle.beginOutgoing(call);
+
+			expect(mockGetDMSubscriptionByUsername).not.toHaveBeenCalled();
 			expect(useCallStore.getState().roomId).toBeFalsy();
 		});
 	});
