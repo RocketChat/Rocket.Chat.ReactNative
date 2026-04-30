@@ -801,6 +801,73 @@ describe('MediaSessionInstance', () => {
 		});
 	});
 
+	describe("call.emitter 'ended' guard (post-teardown stale emission)", () => {
+		it("does not invoke callLifecycle.end again when 'ended' fires after store has been reset", async () => {
+			const mockSetCall = jest.fn();
+			mockUseCallStoreGetState.mockReturnValue({
+				reset: mockCallStoreReset,
+				setCall: mockSetCall,
+				setRoomId: mockSetRoomId,
+				setDirection: mockSetDirection,
+				resetNativeCallId: jest.fn(),
+				call: null,
+				callId: null,
+				nativeAcceptedCallId: null,
+				roomId: null
+			});
+			await mediaSessionInstance.init('user-1');
+			const endSpy = jest.spyOn(callLifecycle, 'end').mockResolvedValue(undefined);
+
+			const outgoing = buildClientMediaCall({ callId: 'stale-c1', role: 'caller' });
+			getNewCallHandler()({ call: outgoing });
+
+			const emitterOnMock = (outgoing.emitter as unknown as { on: jest.Mock }).on;
+			const endedEntry = emitterOnMock.mock.calls.find(([name]: [string]) => name === 'ended');
+			expect(endedEntry).toBeDefined();
+			const endedHandler = endedEntry![1] as () => void;
+
+			// State while call is active — store reflects the bound call.
+			mockUseCallStoreGetState.mockReturnValue({
+				reset: mockCallStoreReset,
+				setCall: mockSetCall,
+				setRoomId: mockSetRoomId,
+				setDirection: mockSetDirection,
+				resetNativeCallId: jest.fn(),
+				call: { callId: 'stale-c1' } as unknown as IClientMediaCall,
+				callId: 'stale-c1',
+				nativeAcceptedCallId: null,
+				roomId: null
+			});
+
+			// First 'ended' emission — store still has the call → teardown invoked once.
+			endedHandler();
+			await Promise.resolve();
+			expect(endSpy).toHaveBeenCalledTimes(1);
+			expect(endSpy).toHaveBeenCalledWith('remote');
+
+			// Simulate teardown completing — store cleared (call/callId/native id all null).
+			mockUseCallStoreGetState.mockReturnValue({
+				reset: mockCallStoreReset,
+				setCall: mockSetCall,
+				setRoomId: mockSetRoomId,
+				setDirection: mockSetDirection,
+				resetNativeCallId: jest.fn(),
+				call: null,
+				callId: null,
+				nativeAcceptedCallId: null,
+				roomId: null
+			});
+
+			// Second (stale, late-arriving) 'ended' on the same captured `call` object.
+			endedHandler();
+			await Promise.resolve();
+
+			// Guard must have short-circuited — no additional invocations.
+			expect(endSpy).toHaveBeenCalledTimes(1);
+			endSpy.mockRestore();
+		});
+	});
+
 	describe('endCall', () => {
 		it('delegates to callLifecycle.end("local") — endCall is a one-line delegate', async () => {
 			// endCall now delegates entirely to callLifecycle.end('local').

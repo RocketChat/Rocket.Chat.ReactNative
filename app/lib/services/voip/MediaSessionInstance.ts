@@ -138,6 +138,14 @@ class MediaSessionInstance {
 				}
 
 				call.emitter.on('ended', () => {
+					// Guard against stale 'ended' emissions firing after teardown has cleared the
+					// active call from the store. Without this, a delayed/late server signal on the
+					// captured `call` would trigger a second teardown sequence and emit a duplicate
+					// `callEnded` event with the wrong reason.
+					const { call: activeCall, callId: activeCallId } = useCallStore.getState();
+					if (activeCall?.callId !== call.callId && activeCallId !== call.callId) {
+						return;
+					}
 					// Route through CallLifecycle for idempotent, ordered teardown.
 					callLifecycle.end('remote').catch(error => {
 						mediaCallLogger.error('[VoIP] callLifecycle.end failed:', error);
