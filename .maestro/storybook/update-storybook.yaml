@@ -1,0 +1,1568 @@
+appId: chat.rocket.reactnative
+---
+
+- openLink: "rocketchat://storybook?path=/story/avatar--avatar-base-64"
+- takeScreenshot:
+    path: .maestro/screenshots/avatar--avatar-base-64
+    cropOn:
+      id: avatar--avatar-base-64
+
+- openLink: "rocketchat://storybook?path=/story/avatar--avatar-external-provider-url"
+- takeScreenshot:
+    path: .maestro/screenshots/avatar--avatar-external-provider-url
+    cropOn:
+      id: avatar--avatar-external-provider-url
+
+- openLink: "rocketchat://storybook?path=/story/avatar--avatar-path"
+- takeScreenshot:
+    path: .maestro/screenshots/avatar--avatar-path
+    cropOn:
+      id: avatar--avatar-path
+
+- openLink: "rocketchat://storybook?path=/story/avatar--avatar-room-id"
+- takeScreenshot:
+    path: .maestro/screenshots/avatar--avatar-room-id
+    cropOn:
+      id: avatar--avatar-room-id
+
+- openLink: "rocketchat://storybook?path=/story/avatar--avatar-text"
+- takeScreenshot:
+    path: .maestro/screenshots/avatar--avatar-text
+    cropOn:
+      id: avatar--avatar-text
+
+- openLink: "rocketchat://storybook?path=/story/avatar--avatar-url"
+- takeScreenshot:
+    path: .maestro/screenshots/avatar--avatar-url
+    cropOn:
+      id: avatar--avatar-url
+
+- openLink: "rocketchat://storybook?path=/story/avatar--channel"
+- takeScreenshot:
+    path: .maestro/screenshots/avatar--channel
+    cropOn:
+      id: avatar--channel
+
+- openLink: "rocketchat://storybook?path=/story/avatar--children"
+- takeScreenshot:
+    path: .maestro/screenshots/avatar--children
+    cropOn:
+      id: avatar--children
+
+- openLink: "rocketchat://storybook?path=/story/avatar--custom-border-radius"
+- takeScreenshot:
+    path: .maestro/screenshots/avatar--custom-border-radius
+    cropOn:
+      id: avatar--custom-border-radius
+
+- openLink: "rocketchat://storybook?path=/story/avatar--custom-style"
+- takeScreenshot:
+    path: .maestro/screenshots/avatar--custom-style
+    cropOn:
+      id: avatar--custom-style
+
+- openLink: "rocketchat://storybook?path=/story/avatar--direct"
+- takeScreenshot:
+    path: .maestro/screenshots/avatar--direct
+    cropOn:
+      id: avatar--direct
+
+- openLink: "rocketchat://storybook?path=/story/avatar--emoji"
+- takeScreenshot:
+    path: .maestro/screenshots/avatar--emoji
+    cropOn:
+      id: avatar--emoji
+
+- openLink: "rocketchat://storybook?path=/story/avatar--room-avatar-external-provider-url"
+- takeScreenshot:
+    path: .maestro/screenshots/avatar--room-avatar-external-provider-url
+    cropOn:
+      id: avatar--room-avatar-external-provider-url
+
+- openLink: "rocketchat://storybook?path=/story/avatar--static"
+- takeScreenshot:
+    path: .maestro/screenshots/avatar--static
+    cropOn:
+      id: avatar--static
+
+- openLink: "rocketchat://storybook?path=/story/avatar--touchable"
+- takeScreenshot:
+    path: .maestro/screenshots/avatar--touchable
+    cropOn:
+      id: avatar--touchable
+
+- openLink: "rocketchat://storybook?path=/story/avatar--with-e-tag"
+- takeScreenshot:
+    path: .maestro/screenshots/avatar--with-e-tag
+    cropOn:
+      id: avatar--with-e-tag
+
+- openLink: "rocketchat://storybook?path=/story/avatar--without-e-tag"
+- takeScreenshot:
+    path: .maestro/screenshots/avatar--without-e-tag
+    cropOn:
+      id: avatar--without-e-tag
+
+- openLink: "rocketchat://storybook?path=/story/avatar--wrong-server"
+- takeScreenshot:
+    path: .maestro/screenshots/avatar--wrong-server
+    cropOn:
+      id: avatar--wrong-server
+
+- openLink: "rocketchat://storybook?path=/story/backgroundcontainer--basic"
+- takeScreenshot:
+    path: .maestro/screenshots/backgroundcontainer--basic
+    cropOn:
+      id: backgroundcontainer--basic
+
+- openLink: "rocketchat://storybook?path=/story/backgroundcontainer--black-theme-loading"
+- takeScreenshot:
+    path: .maestro/screenshots/backgroundcontainer--black-theme-loading
+    cropOn:
+      id: backgroundcontainer--black-theme-loading
+
+- openLink: "rocketchat://storybook?path=/story/backgroundcontainer--black-theme-text"
+- takeScreenshot:
+    path: .maestro/screenshots/backgroundcontainer--black-theme-text
+    cropOn:
+      id: backgroundcontainer--black-theme-text
+
+- openLink: "rocketchat://storybook?path=/story/backgroundcontainer--dark-theme-loading"
+- takeScreenshot:
+    path: .maestro/screenshots/backgroundcontainer--dark-theme-loading
+    cropOn:
+      id: backgroundcontainer--dark-theme-loading
+
+- openLink: "rocketchat://storybook?path=/story/backgroundcontainer--dark-theme-text"
+- takeScreenshot:
+    path: .maestro/screenshots/backgroundcontainer--dark-theme-text
+    cropOn:
+      id: backgroundcontainer--dark-theme-text
+
+- openLink: "rocketchat://storybook?path=/story/backgroundcontainer--loading"
+- takeScreenshot:
+    path: .maestro/screenshots/backgroundcontainer--loading
+    cropOn:
+      id: backgroundcontainer--loading
+
+- openLink: "rocketchat://storybook?path=/story/backgroundcontainer--long-text"
+- takeScreenshot:
+    path: .maestro/screenshots/backgroundcontainer--long-text
+    cropOn:
+      id: backgroundcontainer--long-text
+
+- openLink: "rocketchat://storybook?path=/story/backgroundcontainer--text"
+- takeScreenshot:
+    path: .maestro/screenshots/backgroundcontainer--text
+    cropOn:
+      id: backgroundcontainer--text
+
+- openLink: "rocketchat://storybook?path=/story/button--custom-button"
+- takeScreenshot:
+    path: .maestro/screenshots/button--custom-button
+    cropOn:
+      id: button--custom-button
+
+- openLink: "rocketchat://storybook?path=/story/button--disabled-button"
+- takeScreenshot:
+    path: .maestro/screenshots/button--disabled-button
+    cropOn:
+      id: button--disabled-button
+
+- openLink: "rocketchat://storybook?path=/story/button--disabled-loading-button"
+- takeScreenshot:
+    path: .maestro/screenshots/button--disabled-loading-button
+    cropOn:
+      id: button--disabled-loading-button
+
+- openLink: "rocketchat://storybook?path=/story/button--loading-button"
+- takeScreenshot:
+    path: .maestro/screenshots/button--loading-button
+    cropOn:
+      id: button--loading-button
+
+- openLink: "rocketchat://storybook?path=/story/button--primary-button"
+- takeScreenshot:
+    path: .maestro/screenshots/button--primary-button
+    cropOn:
+      id: button--primary-button
+
+- openLink: "rocketchat://storybook?path=/story/button--secondary-button"
+- takeScreenshot:
+    path: .maestro/screenshots/button--secondary-button
+    cropOn:
+      id: button--secondary-button
+
+- openLink: "rocketchat://storybook?path=/story/button--small-button"
+- takeScreenshot:
+    path: .maestro/screenshots/button--small-button
+    cropOn:
+      id: button--small-button
+
+- openLink: "rocketchat://storybook?path=/story/chip--chip-full-width"
+- takeScreenshot:
+    path: .maestro/screenshots/chip--chip-full-width
+    cropOn:
+      id: chip--chip-full-width
+
+- openLink: "rocketchat://storybook?path=/story/chip--chip-text"
+- takeScreenshot:
+    path: .maestro/screenshots/chip--chip-text
+    cropOn:
+      id: chip--chip-text
+
+- openLink: "rocketchat://storybook?path=/story/chip--chip-without-avatar"
+- takeScreenshot:
+    path: .maestro/screenshots/chip--chip-without-avatar
+    cropOn:
+      id: chip--chip-without-avatar
+
+- openLink: "rocketchat://storybook?path=/story/chip--chip-without-avatar-and-icon"
+- takeScreenshot:
+    path: .maestro/screenshots/chip--chip-without-avatar-and-icon
+    cropOn:
+      id: chip--chip-without-avatar-and-icon
+
+- openLink: "rocketchat://storybook?path=/story/chip--chip-without-icon"
+- takeScreenshot:
+    path: .maestro/screenshots/chip--chip-without-icon
+    cropOn:
+      id: chip--chip-without-icon
+
+- openLink: "rocketchat://storybook?path=/story/chip--chip-with-short-text"
+- takeScreenshot:
+    path: .maestro/screenshots/chip--chip-with-short-text
+    cropOn:
+      id: chip--chip-with-short-text
+
+- openLink: "rocketchat://storybook?path=/story/collapsible-text--item"
+- takeScreenshot:
+    path: .maestro/screenshots/collapsible-text--item
+    cropOn:
+      id: collapsible-text--item
+
+- openLink: "rocketchat://storybook?path=/story/directoryitem--custom-style"
+- takeScreenshot:
+    path: .maestro/screenshots/directoryitem--custom-style
+    cropOn:
+      id: directoryitem--custom-style
+
+- openLink: "rocketchat://storybook?path=/story/directoryitem--default"
+- takeScreenshot:
+    path: .maestro/screenshots/directoryitem--default
+    cropOn:
+      id: directoryitem--default
+
+- openLink: "rocketchat://storybook?path=/story/directoryitem--direct-message"
+- takeScreenshot:
+    path: .maestro/screenshots/directoryitem--direct-message
+    cropOn:
+      id: directoryitem--direct-message
+
+- openLink: "rocketchat://storybook?path=/story/directoryitem--long-room-name"
+- takeScreenshot:
+    path: .maestro/screenshots/directoryitem--long-room-name
+    cropOn:
+      id: directoryitem--long-room-name
+
+- openLink: "rocketchat://storybook?path=/story/directoryitem--only-title"
+- takeScreenshot:
+    path: .maestro/screenshots/directoryitem--only-title
+    cropOn:
+      id: directoryitem--only-title
+
+- openLink: "rocketchat://storybook?path=/story/directoryitem--team-main"
+- takeScreenshot:
+    path: .maestro/screenshots/directoryitem--team-main
+    cropOn:
+      id: directoryitem--team-main
+
+- openLink: "rocketchat://storybook?path=/story/directoryitem--without-description"
+- takeScreenshot:
+    path: .maestro/screenshots/directoryitem--without-description
+    cropOn:
+      id: directoryitem--without-description
+
+- openLink: "rocketchat://storybook?path=/story/directoryitem--with-right-label"
+- takeScreenshot:
+    path: .maestro/screenshots/directoryitem--with-right-label
+    cropOn:
+      id: directoryitem--with-right-label
+
+- openLink: "rocketchat://storybook?path=/story/headerbuttons--badge"
+- takeScreenshot:
+    path: .maestro/screenshots/headerbuttons--badge
+    cropOn:
+      id: headerbuttons--badge
+
+- openLink: "rocketchat://storybook?path=/story/headerbuttons--common"
+- takeScreenshot:
+    path: .maestro/screenshots/headerbuttons--common
+    cropOn:
+      id: headerbuttons--common
+
+- openLink: "rocketchat://storybook?path=/story/headerbuttons--icons"
+- takeScreenshot:
+    path: .maestro/screenshots/headerbuttons--icons
+    cropOn:
+      id: headerbuttons--icons
+
+- openLink: "rocketchat://storybook?path=/story/headerbuttons--themes"
+- takeScreenshot:
+    path: .maestro/screenshots/headerbuttons--themes
+    cropOn:
+      id: headerbuttons--themes
+
+- openLink: "rocketchat://storybook?path=/story/headerbuttons--title"
+- takeScreenshot:
+    path: .maestro/screenshots/headerbuttons--title
+    cropOn:
+      id: headerbuttons--title
+
+- openLink: "rocketchat://storybook?path=/story/list--alert"
+- takeScreenshot:
+    path: .maestro/screenshots/list--alert
+    cropOn:
+      id: list--alert
+
+- openLink: "rocketchat://storybook?path=/story/list--header"
+- takeScreenshot:
+    path: .maestro/screenshots/list--header
+    cropOn:
+      id: list--header
+
+- openLink: "rocketchat://storybook?path=/story/list--icon"
+- takeScreenshot:
+    path: .maestro/screenshots/list--icon
+    cropOn:
+      id: list--icon
+
+- openLink: "rocketchat://storybook?path=/story/list--list-item-with-right-container-style"
+- takeScreenshot:
+    path: .maestro/screenshots/list--list-item-with-right-container-style
+    cropOn:
+      id: list--list-item-with-right-container-style
+
+- openLink: "rocketchat://storybook?path=/story/list--pressable"
+- takeScreenshot:
+    path: .maestro/screenshots/list--pressable
+    cropOn:
+      id: list--pressable
+
+- openLink: "rocketchat://storybook?path=/story/list--radio"
+- takeScreenshot:
+    path: .maestro/screenshots/list--radio
+    cropOn:
+      id: list--radio
+
+- openLink: "rocketchat://storybook?path=/story/list--section-and-info"
+- takeScreenshot:
+    path: .maestro/screenshots/list--section-and-info
+    cropOn:
+      id: list--section-and-info
+
+- openLink: "rocketchat://storybook?path=/story/list--separator"
+- takeScreenshot:
+    path: .maestro/screenshots/list--separator
+    cropOn:
+      id: list--separator
+
+- openLink: "rocketchat://storybook?path=/story/list--title-and-subtitle"
+- takeScreenshot:
+    path: .maestro/screenshots/list--title-and-subtitle
+    cropOn:
+      id: list--title-and-subtitle
+
+- openLink: "rocketchat://storybook?path=/story/list--with-bigger-font"
+- takeScreenshot:
+    path: .maestro/screenshots/list--with-bigger-font
+    cropOn:
+      id: list--with-bigger-font
+
+- openLink: "rocketchat://storybook?path=/story/list--with-black-theme"
+- takeScreenshot:
+    path: .maestro/screenshots/list--with-black-theme
+    cropOn:
+      id: list--with-black-theme
+
+- openLink: "rocketchat://storybook?path=/story/list--with-custom-colors"
+- takeScreenshot:
+    path: .maestro/screenshots/list--with-custom-colors
+    cropOn:
+      id: list--with-custom-colors
+
+- openLink: "rocketchat://storybook?path=/story/list--with-dark-theme"
+- takeScreenshot:
+    path: .maestro/screenshots/list--with-dark-theme
+    cropOn:
+      id: list--with-dark-theme
+
+- openLink: "rocketchat://storybook?path=/story/list--with-flat-list"
+- takeScreenshot:
+    path: .maestro/screenshots/list--with-flat-list
+    cropOn:
+      id: list--with-flat-list
+
+- openLink: "rocketchat://storybook?path=/story/list--with-icon"
+- takeScreenshot:
+    path: .maestro/screenshots/list--with-icon
+    cropOn:
+      id: list--with-icon
+
+- openLink: "rocketchat://storybook?path=/story/list--with-small-font"
+- takeScreenshot:
+    path: .maestro/screenshots/list--with-small-font
+    cropOn:
+      id: list--with-small-font
+
+- openLink: "rocketchat://storybook?path=/story/login-services--separators"
+- takeScreenshot:
+    path: .maestro/screenshots/login-services--separators
+    cropOn:
+      id: login-services--separators
+
+- openLink: "rocketchat://storybook?path=/story/login-services--service-list"
+- takeScreenshot:
+    path: .maestro/screenshots/login-services--service-list
+    cropOn:
+      id: login-services--service-list
+
+- openLink: "rocketchat://storybook?path=/story/reactionslist--reactions-list-full-name"
+- takeScreenshot:
+    path: .maestro/screenshots/reactionslist--reactions-list-full-name
+    cropOn:
+      id: reactionslist--reactions-list-full-name
+
+- openLink: "rocketchat://storybook?path=/story/reactionslist--reactions-list-story"
+- takeScreenshot:
+    path: .maestro/screenshots/reactionslist--reactions-list-story
+    cropOn:
+      id: reactionslist--reactions-list-story
+
+- openLink: "rocketchat://storybook?path=/story/roomheader--icons"
+- takeScreenshot:
+    path: .maestro/screenshots/roomheader--icons
+    cropOn:
+      id: roomheader--icons
+
+- openLink: "rocketchat://storybook?path=/story/roomheader--themes"
+- takeScreenshot:
+    path: .maestro/screenshots/roomheader--themes
+    cropOn:
+      id: roomheader--themes
+
+- openLink: "rocketchat://storybook?path=/story/roomheader--thread"
+- takeScreenshot:
+    path: .maestro/screenshots/roomheader--thread
+    cropOn:
+      id: roomheader--thread
+
+- openLink: "rocketchat://storybook?path=/story/roomheader--title-subtitle"
+- takeScreenshot:
+    path: .maestro/screenshots/roomheader--title-subtitle
+    cropOn:
+      id: roomheader--title-subtitle
+
+- openLink: "rocketchat://storybook?path=/story/roomheader--typing"
+- takeScreenshot:
+    path: .maestro/screenshots/roomheader--typing
+    cropOn:
+      id: roomheader--typing
+
+- openLink: "rocketchat://storybook?path=/story/roomitem--alerts"
+- takeScreenshot:
+    path: .maestro/screenshots/roomitem--alerts
+    cropOn:
+      id: roomitem--alerts
+
+- openLink: "rocketchat://storybook?path=/story/roomitem--basic"
+- takeScreenshot:
+    path: .maestro/screenshots/roomitem--basic
+    cropOn:
+      id: roomitem--basic
+
+- openLink: "rocketchat://storybook?path=/story/roomitem--condensed-room-item"
+- takeScreenshot:
+    path: .maestro/screenshots/roomitem--condensed-room-item
+    cropOn:
+      id: roomitem--condensed-room-item
+
+- openLink: "rocketchat://storybook?path=/story/roomitem--condensed-room-item-without-avatar"
+- takeScreenshot:
+    path: .maestro/screenshots/roomitem--condensed-room-item-without-avatar
+    cropOn:
+      id: roomitem--condensed-room-item-without-avatar
+
+- openLink: "rocketchat://storybook?path=/story/roomitem--expanded-room-item-without-avatar"
+- takeScreenshot:
+    path: .maestro/screenshots/roomitem--expanded-room-item-without-avatar
+    cropOn:
+      id: roomitem--expanded-room-item-without-avatar
+
+- openLink: "rocketchat://storybook?path=/story/roomitem--invited-room"
+- takeScreenshot:
+    path: .maestro/screenshots/roomitem--invited-room
+    cropOn:
+      id: roomitem--invited-room
+
+- openLink: "rocketchat://storybook?path=/story/roomitem--last-message"
+- takeScreenshot:
+    path: .maestro/screenshots/roomitem--last-message
+    cropOn:
+      id: roomitem--last-message
+
+- openLink: "rocketchat://storybook?path=/story/roomitem--omnichannel-icon"
+- takeScreenshot:
+    path: .maestro/screenshots/roomitem--omnichannel-icon
+    cropOn:
+      id: roomitem--omnichannel-icon
+
+- openLink: "rocketchat://storybook?path=/story/roomitem--tag"
+- takeScreenshot:
+    path: .maestro/screenshots/roomitem--tag
+    cropOn:
+      id: roomitem--tag
+
+- openLink: "rocketchat://storybook?path=/story/roomitem--touch"
+- takeScreenshot:
+    path: .maestro/screenshots/roomitem--touch
+    cropOn:
+      id: roomitem--touch
+
+- openLink: "rocketchat://storybook?path=/story/roomitem--type"
+- takeScreenshot:
+    path: .maestro/screenshots/roomitem--type
+    cropOn:
+      id: roomitem--type
+
+- openLink: "rocketchat://storybook?path=/story/roomitem--user"
+- takeScreenshot:
+    path: .maestro/screenshots/roomitem--user
+    cropOn:
+      id: roomitem--user
+
+- openLink: "rocketchat://storybook?path=/story/roomtypeicon--all"
+- takeScreenshot:
+    path: .maestro/screenshots/roomtypeicon--all
+    cropOn:
+      id: roomtypeicon--all
+
+- openLink: "rocketchat://storybook?path=/story/searchbox--basic"
+- takeScreenshot:
+    path: .maestro/screenshots/searchbox--basic
+    cropOn:
+      id: searchbox--basic
+
+- openLink: "rocketchat://storybook?path=/story/serveritem--content"
+- takeScreenshot:
+    path: .maestro/screenshots/serveritem--content
+    cropOn:
+      id: serveritem--content
+
+- openLink: "rocketchat://storybook?path=/story/serveritem--swipe-actions"
+- takeScreenshot:
+    path: .maestro/screenshots/serveritem--swipe-actions
+    cropOn:
+      id: serveritem--swipe-actions
+
+- openLink: "rocketchat://storybook?path=/story/serveritem--themes"
+- takeScreenshot:
+    path: .maestro/screenshots/serveritem--themes
+    cropOn:
+      id: serveritem--themes
+
+- openLink: "rocketchat://storybook?path=/story/status--all"
+- takeScreenshot:
+    path: .maestro/screenshots/status--all
+    cropOn:
+      id: status--all
+
+- openLink: "rocketchat://storybook?path=/story/textinput--icons"
+- takeScreenshot:
+    path: .maestro/screenshots/textinput--icons
+    cropOn:
+      id: textinput--icons
+
+- openLink: "rocketchat://storybook?path=/story/textinput--loading"
+- takeScreenshot:
+    path: .maestro/screenshots/textinput--loading
+    cropOn:
+      id: textinput--loading
+
+- openLink: "rocketchat://storybook?path=/story/textinput--multiline"
+- takeScreenshot:
+    path: .maestro/screenshots/textinput--multiline
+    cropOn:
+      id: textinput--multiline
+
+- openLink: "rocketchat://storybook?path=/story/textinput--secure-text-entry"
+- takeScreenshot:
+    path: .maestro/screenshots/textinput--secure-text-entry
+    cropOn:
+      id: textinput--secure-text-entry
+
+- openLink: "rocketchat://storybook?path=/story/textinput--short-and-long"
+- takeScreenshot:
+    path: .maestro/screenshots/textinput--short-and-long
+    cropOn:
+      id: textinput--short-and-long
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmessage--action-button"
+- takeScreenshot:
+    path: .maestro/screenshots/uikit-uikitmessage--action-button
+    cropOn:
+      id: uikit-uikitmessage--action-button
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmessage--action-select"
+- takeScreenshot:
+    path: .maestro/screenshots/uikit-uikitmessage--action-select
+    cropOn:
+      id: uikit-uikitmessage--action-select
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmessage--fields"
+- takeScreenshot:
+    path: .maestro/screenshots/uikit-uikitmessage--fields
+    cropOn:
+      id: uikit-uikitmessage--fields
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmessage--section"
+- takeScreenshot:
+    path: .maestro/screenshots/uikit-uikitmessage--section
+    cropOn:
+      id: uikit-uikitmessage--section
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmessage--section-button"
+- takeScreenshot:
+    path: .maestro/screenshots/uikit-uikitmessage--section-button
+    cropOn:
+      id: uikit-uikitmessage--section-button
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmessage--section-date-picker"
+- takeScreenshot:
+    path: .maestro/screenshots/uikit-uikitmessage--section-date-picker
+    cropOn:
+      id: uikit-uikitmessage--section-date-picker
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmessage--section-markdown-list"
+- takeScreenshot:
+    path: .maestro/screenshots/uikit-uikitmessage--section-markdown-list
+    cropOn:
+      id: uikit-uikitmessage--section-markdown-list
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmessage--section-multi-select"
+- takeScreenshot:
+    path: .maestro/screenshots/uikit-uikitmessage--section-multi-select
+    cropOn:
+      id: uikit-uikitmessage--section-multi-select
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmessage--section-overflow"
+- takeScreenshot:
+    path: .maestro/screenshots/uikit-uikitmessage--section-overflow
+    cropOn:
+      id: uikit-uikitmessage--section-overflow
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmessage--section-select"
+- takeScreenshot:
+    path: .maestro/screenshots/uikit-uikitmessage--section-select
+    cropOn:
+      id: uikit-uikitmessage--section-select
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmodal--modal-actions"
+- takeScreenshot:
+    path: .maestro/screenshots/uikit-uikitmodal--modal-actions
+    cropOn:
+      id: uikit-uikitmodal--modal-actions
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmodal--modal-actions-with-show-more"
+- takeScreenshot:
+    path: .maestro/screenshots/uikit-uikitmodal--modal-actions-with-show-more
+    cropOn:
+      id: uikit-uikitmodal--modal-actions-with-show-more
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmodal--modal-contexts-dividers"
+- takeScreenshot:
+    path: .maestro/screenshots/uikit-uikitmodal--modal-contexts-dividers
+    cropOn:
+      id: uikit-uikitmodal--modal-contexts-dividers
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmodal--modal-date-picker-with-error"
+- takeScreenshot:
+    path: .maestro/screenshots/uikit-uikitmodal--modal-date-picker-with-error
+    cropOn:
+      id: uikit-uikitmodal--modal-date-picker-with-error
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmodal--modal-form-input"
+- takeScreenshot:
+    path: .maestro/screenshots/uikit-uikitmodal--modal-form-input
+    cropOn:
+      id: uikit-uikitmodal--modal-form-input
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmodal--modal-form-text-area"
+- takeScreenshot:
+    path: .maestro/screenshots/uikit-uikitmodal--modal-form-text-area
+    cropOn:
+      id: uikit-uikitmodal--modal-form-text-area
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmodal--modal-input-with-add-field"
+- takeScreenshot:
+    path: .maestro/screenshots/uikit-uikitmodal--modal-input-with-add-field
+    cropOn:
+      id: uikit-uikitmodal--modal-input-with-add-field
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmodal--modal-input-with-error"
+- takeScreenshot:
+    path: .maestro/screenshots/uikit-uikitmodal--modal-input-with-error
+    cropOn:
+      id: uikit-uikitmodal--modal-input-with-error
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmodal--modal-multilne-with-error"
+- takeScreenshot:
+    path: .maestro/screenshots/uikit-uikitmodal--modal-multilne-with-error
+    cropOn:
+      id: uikit-uikitmodal--modal-multilne-with-error
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmodal--modal-multi-select"
+- takeScreenshot:
+    path: .maestro/screenshots/uikit-uikitmodal--modal-multi-select
+    cropOn:
+      id: uikit-uikitmodal--modal-multi-select
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmodal--modal-section-accessories"
+- takeScreenshot:
+    path: .maestro/screenshots/uikit-uikitmodal--modal-section-accessories
+    cropOn:
+      id: uikit-uikitmodal--modal-section-accessories
+
+- openLink: "rocketchat://storybook?path=/story/uikit-uikitmodal--modal-section-selects"
+- takeScreenshot:
+    path: .maestro/screenshots/uikit-uikitmodal--modal-section-selects
+    cropOn:
+      id: uikit-uikitmodal--modal-section-selects
+
+- openLink: "rocketchat://storybook?path=/story/unread-badge--all"
+- takeScreenshot:
+    path: .maestro/screenshots/unread-badge--all
+    cropOn:
+      id: unread-badge--all
+
+- openLink: "rocketchat://storybook?path=/story/unread-badge--different-mention-types"
+- takeScreenshot:
+    path: .maestro/screenshots/unread-badge--different-mention-types
+    cropOn:
+      id: unread-badge--different-mention-types
+
+- openLink: "rocketchat://storybook?path=/story/unread-badge--normal"
+- takeScreenshot:
+    path: .maestro/screenshots/unread-badge--normal
+    cropOn:
+      id: unread-badge--normal
+
+- openLink: "rocketchat://storybook?path=/story/unread-badge--small"
+- takeScreenshot:
+    path: .maestro/screenshots/unread-badge--small
+    cropOn:
+      id: unread-badge--small
+
+- openLink: "rocketchat://storybook?path=/story/unread-badge--themes"
+- takeScreenshot:
+    path: .maestro/screenshots/unread-badge--themes
+    cropOn:
+      id: unread-badge--themes
+
+- openLink: "rocketchat://storybook?path=/story/markdown--block-quote"
+- takeScreenshot:
+    path: .maestro/screenshots/markdown--block-quote
+    cropOn:
+      id: markdown--block-quote
+
+- openLink: "rocketchat://storybook?path=/story/markdown--code"
+- takeScreenshot:
+    path: .maestro/screenshots/markdown--code
+    cropOn:
+      id: markdown--code
+
+- openLink: "rocketchat://storybook?path=/story/markdown--emoji"
+- takeScreenshot:
+    path: .maestro/screenshots/markdown--emoji
+    cropOn:
+      id: markdown--emoji
+
+- openLink: "rocketchat://storybook?path=/story/markdown--hashtag"
+- takeScreenshot:
+    path: .maestro/screenshots/markdown--hashtag
+    cropOn:
+      id: markdown--hashtag
+
+- openLink: "rocketchat://storybook?path=/story/markdown--headers"
+- takeScreenshot:
+    path: .maestro/screenshots/markdown--headers
+    cropOn:
+      id: markdown--headers
+
+- openLink: "rocketchat://storybook?path=/story/markdown--image"
+- takeScreenshot:
+    path: .maestro/screenshots/markdown--image
+    cropOn:
+      id: markdown--image
+
+- openLink: "rocketchat://storybook?path=/story/markdown--links"
+- takeScreenshot:
+    path: .maestro/screenshots/markdown--links
+    cropOn:
+      id: markdown--links
+
+- openLink: "rocketchat://storybook?path=/story/markdown--lists"
+- takeScreenshot:
+    path: .maestro/screenshots/markdown--lists
+    cropOn:
+      id: markdown--lists
+
+- openLink: "rocketchat://storybook?path=/story/markdown--mentions"
+- takeScreenshot:
+    path: .maestro/screenshots/markdown--mentions
+    cropOn:
+      id: markdown--mentions
+
+- openLink: "rocketchat://storybook?path=/story/markdown--preview"
+- takeScreenshot:
+    path: .maestro/screenshots/markdown--preview
+    cropOn:
+      id: markdown--preview
+
+- openLink: "rocketchat://storybook?path=/story/markdown--text"
+- takeScreenshot:
+    path: .maestro/screenshots/markdown--text
+    cropOn:
+      id: markdown--text
+
+- openLink: "rocketchat://storybook?path=/story/markdown--timestamp"
+- takeScreenshot:
+    path: .maestro/screenshots/markdown--timestamp
+    cropOn:
+      id: markdown--timestamp
+
+- openLink: "rocketchat://storybook?path=/story/collapsiblequote--item"
+- takeScreenshot:
+    path: .maestro/screenshots/collapsiblequote--item
+    cropOn:
+      id: collapsiblequote--item
+
+- openLink: "rocketchat://storybook?path=/story/message--archived"
+- takeScreenshot:
+    path: .maestro/screenshots/message--archived
+    cropOn:
+      id: message--archived
+
+- openLink: "rocketchat://storybook?path=/story/message--archived-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--archived-large-font
+    cropOn:
+      id: message--archived-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--attachment-with-text-and-link"
+- takeScreenshot:
+    path: .maestro/screenshots/message--attachment-with-text-and-link
+    cropOn:
+      id: message--attachment-with-text-and-link
+
+- openLink: "rocketchat://storybook?path=/story/message--attachment-with-text-and-link-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--attachment-with-text-and-link-large-font
+    cropOn:
+      id: message--attachment-with-text-and-link-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--avatar"
+- takeScreenshot:
+    path: .maestro/screenshots/message--avatar
+    cropOn:
+      id: message--avatar
+
+- openLink: "rocketchat://storybook?path=/story/message--basic"
+- takeScreenshot:
+    path: .maestro/screenshots/message--basic
+    cropOn:
+      id: message--basic
+
+- openLink: "rocketchat://storybook?path=/story/message--basic-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--basic-large-font
+    cropOn:
+      id: message--basic-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--block-quote"
+- takeScreenshot:
+    path: .maestro/screenshots/message--block-quote
+    cropOn:
+      id: message--block-quote
+
+- openLink: "rocketchat://storybook?path=/story/message--block-quote-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--block-quote-large-font
+    cropOn:
+      id: message--block-quote-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--broadcast"
+- takeScreenshot:
+    path: .maestro/screenshots/message--broadcast
+    cropOn:
+      id: message--broadcast
+
+- openLink: "rocketchat://storybook?path=/story/message--broadcast-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--broadcast-large-font
+    cropOn:
+      id: message--broadcast-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--collapsed-attachments"
+- takeScreenshot:
+    path: .maestro/screenshots/message--collapsed-attachments
+    cropOn:
+      id: message--collapsed-attachments
+
+- openLink: "rocketchat://storybook?path=/story/message--collapsed-attachments-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--collapsed-attachments-large-font
+    cropOn:
+      id: message--collapsed-attachments-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--collapsible-attachment-with-text"
+- takeScreenshot:
+    path: .maestro/screenshots/message--collapsible-attachment-with-text
+    cropOn:
+      id: message--collapsible-attachment-with-text
+
+- openLink: "rocketchat://storybook?path=/story/message--collapsible-attachment-with-text-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--collapsible-attachment-with-text-large-font
+    cropOn:
+      id: message--collapsible-attachment-with-text-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--colored-attachments"
+- takeScreenshot:
+    path: .maestro/screenshots/message--colored-attachments
+    cropOn:
+      id: message--colored-attachments
+
+- openLink: "rocketchat://storybook?path=/story/message--colored-attachments-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--colored-attachments-large-font
+    cropOn:
+      id: message--colored-attachments-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--custom-fields"
+- takeScreenshot:
+    path: .maestro/screenshots/message--custom-fields
+    cropOn:
+      id: message--custom-fields
+
+- openLink: "rocketchat://storybook?path=/story/message--custom-fields-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--custom-fields-large-font
+    cropOn:
+      id: message--custom-fields-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--date-and-unread-separators"
+- takeScreenshot:
+    path: .maestro/screenshots/message--date-and-unread-separators
+    cropOn:
+      id: message--date-and-unread-separators
+
+- openLink: "rocketchat://storybook?path=/story/message--date-and-unread-separators-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--date-and-unread-separators-large-font
+    cropOn:
+      id: message--date-and-unread-separators-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--discussion"
+- takeScreenshot:
+    path: .maestro/screenshots/message--discussion
+    cropOn:
+      id: message--discussion
+
+- openLink: "rocketchat://storybook?path=/story/message--discussion-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--discussion-large-font
+    cropOn:
+      id: message--discussion-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--edited"
+- takeScreenshot:
+    path: .maestro/screenshots/message--edited
+    cropOn:
+      id: message--edited
+
+- openLink: "rocketchat://storybook?path=/story/message--edited-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--edited-large-font
+    cropOn:
+      id: message--edited-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--editing"
+- takeScreenshot:
+    path: .maestro/screenshots/message--editing
+    cropOn:
+      id: message--editing
+
+- openLink: "rocketchat://storybook?path=/story/message--editing-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--editing-large-font
+    cropOn:
+      id: message--editing-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--emojis"
+- takeScreenshot:
+    path: .maestro/screenshots/message--emojis
+    cropOn:
+      id: message--emojis
+
+- openLink: "rocketchat://storybook?path=/story/message--emojis-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--emojis-large-font
+    cropOn:
+      id: message--emojis-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--encrypted"
+- takeScreenshot:
+    path: .maestro/screenshots/message--encrypted
+    cropOn:
+      id: message--encrypted
+
+- openLink: "rocketchat://storybook?path=/story/message--encrypted-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--encrypted-large-font
+    cropOn:
+      id: message--encrypted-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--error"
+- takeScreenshot:
+    path: .maestro/screenshots/message--error
+    cropOn:
+      id: message--error
+
+- openLink: "rocketchat://storybook?path=/story/message--error-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--error-large-font
+    cropOn:
+      id: message--error-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--file-attachments-with-filenames"
+- takeScreenshot:
+    path: .maestro/screenshots/message--file-attachments-with-filenames
+    cropOn:
+      id: message--file-attachments-with-filenames
+
+- openLink: "rocketchat://storybook?path=/story/message--file-attachments-with-filenames-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--file-attachments-with-filenames-large-font
+    cropOn:
+      id: message--file-attachments-with-filenames-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--full-name"
+- takeScreenshot:
+    path: .maestro/screenshots/message--full-name
+    cropOn:
+      id: message--full-name
+
+- openLink: "rocketchat://storybook?path=/story/message--full-name-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--full-name-large-font
+    cropOn:
+      id: message--full-name-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--grouped-messages"
+- takeScreenshot:
+    path: .maestro/screenshots/message--grouped-messages
+    cropOn:
+      id: message--grouped-messages
+
+- openLink: "rocketchat://storybook?path=/story/message--grouped-messages-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--grouped-messages-large-font
+    cropOn:
+      id: message--grouped-messages-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--ignored"
+- takeScreenshot:
+    path: .maestro/screenshots/message--ignored
+    cropOn:
+      id: message--ignored
+
+- openLink: "rocketchat://storybook?path=/story/message--ignored-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--ignored-large-font
+    cropOn:
+      id: message--ignored-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--inline-katex"
+- takeScreenshot:
+    path: .maestro/screenshots/message--inline-katex
+    cropOn:
+      id: message--inline-katex
+
+- openLink: "rocketchat://storybook?path=/story/message--inline-katex-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--inline-katex-large-font
+    cropOn:
+      id: message--inline-katex-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--katex"
+- takeScreenshot:
+    path: .maestro/screenshots/message--katex
+    cropOn:
+      id: message--katex
+
+- openLink: "rocketchat://storybook?path=/story/message--katex-array"
+- takeScreenshot:
+    path: .maestro/screenshots/message--katex-array
+    cropOn:
+      id: message--katex-array
+
+- openLink: "rocketchat://storybook?path=/story/message--katex-array-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--katex-array-large-font
+    cropOn:
+      id: message--katex-array-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--katex-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--katex-large-font
+    cropOn:
+      id: message--katex-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--lists"
+- takeScreenshot:
+    path: .maestro/screenshots/message--lists
+    cropOn:
+      id: message--lists
+
+- openLink: "rocketchat://storybook?path=/story/message--lists-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--lists-large-font
+    cropOn:
+      id: message--lists-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--long-name-user"
+- takeScreenshot:
+    path: .maestro/screenshots/message--long-name-user
+    cropOn:
+      id: message--long-name-user
+
+- openLink: "rocketchat://storybook?path=/story/message--long-name-user-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--long-name-user-large-font
+    cropOn:
+      id: message--long-name-user-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--mentions"
+- takeScreenshot:
+    path: .maestro/screenshots/message--mentions
+    cropOn:
+      id: message--mentions
+
+- openLink: "rocketchat://storybook?path=/story/message--mentions-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--mentions-large-font
+    cropOn:
+      id: message--mentions-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--message"
+- takeScreenshot:
+    path: .maestro/screenshots/message--message
+    cropOn:
+      id: message--message
+
+- openLink: "rocketchat://storybook?path=/story/message--message-with-nested-reply-and-file"
+- takeScreenshot:
+    path: .maestro/screenshots/message--message-with-nested-reply-and-file
+    cropOn:
+      id: message--message-with-nested-reply-and-file
+
+- openLink: "rocketchat://storybook?path=/story/message--message-with-read-receipt"
+- takeScreenshot:
+    path: .maestro/screenshots/message--message-with-read-receipt
+    cropOn:
+      id: message--message-with-read-receipt
+
+- openLink: "rocketchat://storybook?path=/story/message--message-with-read-receipt-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--message-with-read-receipt-large-font
+    cropOn:
+      id: message--message-with-read-receipt-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--message-with-reply"
+- takeScreenshot:
+    path: .maestro/screenshots/message--message-with-reply
+    cropOn:
+      id: message--message-with-reply
+
+- openLink: "rocketchat://storybook?path=/story/message--message-with-reply-and-file"
+- takeScreenshot:
+    path: .maestro/screenshots/message--message-with-reply-and-file
+    cropOn:
+      id: message--message-with-reply-and-file
+
+- openLink: "rocketchat://storybook?path=/story/message--message-with-reply-and-file-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--message-with-reply-and-file-large-font
+    cropOn:
+      id: message--message-with-reply-and-file-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--message-with-reply-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--message-with-reply-large-font
+    cropOn:
+      id: message--message-with-reply-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--message-with-thread"
+- takeScreenshot:
+    path: .maestro/screenshots/message--message-with-thread
+    cropOn:
+      id: message--message-with-thread
+
+- openLink: "rocketchat://storybook?path=/story/message--message-with-thread-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--message-with-thread-large-font
+    cropOn:
+      id: message--message-with-thread-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--pinned"
+- takeScreenshot:
+    path: .maestro/screenshots/message--pinned
+    cropOn:
+      id: message--pinned
+
+- openLink: "rocketchat://storybook?path=/story/message--pinned-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--pinned-large-font
+    cropOn:
+      id: message--pinned-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--reactions"
+- takeScreenshot:
+    path: .maestro/screenshots/message--reactions
+    cropOn:
+      id: message--reactions
+
+- openLink: "rocketchat://storybook?path=/story/message--reactions-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--reactions-large-font
+    cropOn:
+      id: message--reactions-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--sequential-thread-messages-following-thread-button"
+- takeScreenshot:
+    path: .maestro/screenshots/message--sequential-thread-messages-following-thread-button
+    cropOn:
+      id: message--sequential-thread-messages-following-thread-button
+
+- openLink: "rocketchat://storybook?path=/story/message--sequential-thread-messages-following-thread-button-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--sequential-thread-messages-following-thread-button-large-font
+    cropOn:
+      id: message--sequential-thread-messages-following-thread-button-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--sequential-thread-messages-following-thread-reply"
+- takeScreenshot:
+    path: .maestro/screenshots/message--sequential-thread-messages-following-thread-reply
+    cropOn:
+      id: message--sequential-thread-messages-following-thread-reply
+
+- openLink: "rocketchat://storybook?path=/story/message--sequential-thread-messages-following-thread-reply-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--sequential-thread-messages-following-thread-reply-large-font
+    cropOn:
+      id: message--sequential-thread-messages-following-thread-reply-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--show-button-as-attachment"
+- takeScreenshot:
+    path: .maestro/screenshots/message--show-button-as-attachment
+    cropOn:
+      id: message--show-button-as-attachment
+
+- openLink: "rocketchat://storybook?path=/story/message--show-button-as-attachment-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--show-button-as-attachment-large-font
+    cropOn:
+      id: message--show-button-as-attachment-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--static-avatar"
+- takeScreenshot:
+    path: .maestro/screenshots/message--static-avatar
+    cropOn:
+      id: message--static-avatar
+
+- openLink: "rocketchat://storybook?path=/story/message--static-avatar-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--static-avatar-large-font
+    cropOn:
+      id: message--static-avatar-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--system-messages"
+- takeScreenshot:
+    path: .maestro/screenshots/message--system-messages
+    cropOn:
+      id: message--system-messages
+
+- openLink: "rocketchat://storybook?path=/story/message--system-messages-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--system-messages-large-font
+    cropOn:
+      id: message--system-messages-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--temp"
+- takeScreenshot:
+    path: .maestro/screenshots/message--temp
+    cropOn:
+      id: message--temp
+
+- openLink: "rocketchat://storybook?path=/story/message--temp-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--temp-large-font
+    cropOn:
+      id: message--temp-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--thumbnail-from-server"
+- takeScreenshot:
+    path: .maestro/screenshots/message--thumbnail-from-server
+    cropOn:
+      id: message--thumbnail-from-server
+
+- openLink: "rocketchat://storybook?path=/story/message--thumbnail-from-server-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--thumbnail-from-server-large-font
+    cropOn:
+      id: message--thumbnail-from-server-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--time-format"
+- takeScreenshot:
+    path: .maestro/screenshots/message--time-format
+    cropOn:
+      id: message--time-format
+
+- openLink: "rocketchat://storybook?path=/story/message--time-format-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--time-format-large-font
+    cropOn:
+      id: message--time-format-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--translated"
+- takeScreenshot:
+    path: .maestro/screenshots/message--translated
+    cropOn:
+      id: message--translated
+
+- openLink: "rocketchat://storybook?path=/story/message--translated-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--translated-large-font
+    cropOn:
+      id: message--translated-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--two-short-custom-fields-with-markdown"
+- takeScreenshot:
+    path: .maestro/screenshots/message--two-short-custom-fields-with-markdown
+    cropOn:
+      id: message--two-short-custom-fields-with-markdown
+
+- openLink: "rocketchat://storybook?path=/story/message--two-short-custom-fields-with-markdown-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--two-short-custom-fields-with-markdown-large-font
+    cropOn:
+      id: message--two-short-custom-fields-with-markdown-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--url"
+- takeScreenshot:
+    path: .maestro/screenshots/message--url
+    cropOn:
+      id: message--url
+
+- openLink: "rocketchat://storybook?path=/story/message--url-image-preview"
+- takeScreenshot:
+    path: .maestro/screenshots/message--url-image-preview
+    cropOn:
+      id: message--url-image-preview
+
+- openLink: "rocketchat://storybook?path=/story/message--url-image-preview-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--url-image-preview-large-font
+    cropOn:
+      id: message--url-image-preview-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--url-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--url-large-font
+    cropOn:
+      id: message--url-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--with-alias"
+- takeScreenshot:
+    path: .maestro/screenshots/message--with-alias
+    cropOn:
+      id: message--with-alias
+
+- openLink: "rocketchat://storybook?path=/story/message--with-alias-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--with-alias-large-font
+    cropOn:
+      id: message--with-alias-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--with-audio"
+- takeScreenshot:
+    path: .maestro/screenshots/message--with-audio
+    cropOn:
+      id: message--with-audio
+
+- openLink: "rocketchat://storybook?path=/story/message--with-audio-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--with-audio-large-font
+    cropOn:
+      id: message--with-audio-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--with-file"
+- takeScreenshot:
+    path: .maestro/screenshots/message--with-file
+    cropOn:
+      id: message--with-file
+
+- openLink: "rocketchat://storybook?path=/story/message--with-file-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--with-file-large-font
+    cropOn:
+      id: message--with-file-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--with-image"
+- takeScreenshot:
+    path: .maestro/screenshots/message--with-image
+    cropOn:
+      id: message--with-image
+
+- openLink: "rocketchat://storybook?path=/story/message--with-image-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--with-image-large-font
+    cropOn:
+      id: message--with-image-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--without-header"
+- takeScreenshot:
+    path: .maestro/screenshots/message--without-header
+    cropOn:
+      id: message--without-header
+
+- openLink: "rocketchat://storybook?path=/story/message--without-header-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--without-header-large-font
+    cropOn:
+      id: message--without-header-large-font
+
+- openLink: "rocketchat://storybook?path=/story/message--with-video"
+- takeScreenshot:
+    path: .maestro/screenshots/message--with-video
+    cropOn:
+      id: message--with-video
+
+- openLink: "rocketchat://storybook?path=/story/message--with-video-large-font"
+- takeScreenshot:
+    path: .maestro/screenshots/message--with-video-large-font
+    cropOn:
+      id: message--with-video-large-font
+
+- openLink: "rocketchat://storybook?path=/story/cannedresponseitem--itens"
+- takeScreenshot:
+    path: .maestro/screenshots/cannedresponseitem--itens
+    cropOn:
+      id: cannedresponseitem--itens
+
+- openLink: "rocketchat://storybook?path=/story/switchitem--switch"
+- takeScreenshot:
+    path: .maestro/screenshots/switchitem--switch
+    cropOn:
+      id: switchitem--switch
+
+- openLink: "rocketchat://storybook?path=/story/discussionsview-item--content"
+- takeScreenshot:
+    path: .maestro/screenshots/discussionsview-item--content
+    cropOn:
+      id: discussionsview-item--content
+
+- openLink: "rocketchat://storybook?path=/story/discussionsview-item--themes"
+- takeScreenshot:
+    path: .maestro/screenshots/discussionsview-item--themes
+    cropOn:
+      id: discussionsview-item--themes
+
+- openLink: "rocketchat://storybook?path=/story/servershistoryitem--content"
+- takeScreenshot:
+    path: .maestro/screenshots/servershistoryitem--content
+    cropOn:
+      id: servershistoryitem--content
+
+- openLink: "rocketchat://storybook?path=/story/servershistoryitem--swipe-actions"
+- takeScreenshot:
+    path: .maestro/screenshots/servershistoryitem--swipe-actions
+    cropOn:
+      id: servershistoryitem--swipe-actions
+
+- openLink: "rocketchat://storybook?path=/story/servershistoryitem--themes"
+- takeScreenshot:
+    path: .maestro/screenshots/servershistoryitem--themes
+    cropOn:
+      id: servershistoryitem--themes
+
+- openLink: "rocketchat://storybook?path=/story/roominfoabac--black"
+- takeScreenshot:
+    path: .maestro/screenshots/roominfoabac--black
+    cropOn:
+      id: roominfoabac--black
+
+- openLink: "rocketchat://storybook?path=/story/roominfoabac--dark"
+- takeScreenshot:
+    path: .maestro/screenshots/roominfoabac--dark
+    cropOn:
+      id: roominfoabac--dark
+
+- openLink: "rocketchat://storybook?path=/story/roominfoabac--light"
+- takeScreenshot:
+    path: .maestro/screenshots/roominfoabac--light
+    cropOn:
+      id: roominfoabac--light
+
+- openLink: "rocketchat://storybook?path=/story/roomview-loadmore--basic"
+- takeScreenshot:
+    path: .maestro/screenshots/roomview-loadmore--basic
+    cropOn:
+      id: roomview-loadmore--basic
+
+- openLink: "rocketchat://storybook?path=/story/roomview-loadmore--black-theme"
+- takeScreenshot:
+    path: .maestro/screenshots/roomview-loadmore--black-theme
+    cropOn:
+      id: roomview-loadmore--black-theme
+
+- openLink: "rocketchat://storybook?path=/story/roomview-loadmore--dark-theme"
+- takeScreenshot:
+    path: .maestro/screenshots/roomview-loadmore--dark-theme
+    cropOn:
+      id: roomview-loadmore--dark-theme
+
+- openLink: "rocketchat://storybook?path=/story/roomview-loadmore--light-theme"
+- takeScreenshot:
+    path: .maestro/screenshots/roomview-loadmore--light-theme
+    cropOn:
+      id: roomview-loadmore--light-theme
+
+- openLink: "rocketchat://storybook?path=/story/threadmessagesview-item--badge"
+- takeScreenshot:
+    path: .maestro/screenshots/threadmessagesview-item--badge
+    cropOn:
+      id: threadmessagesview-item--badge
+
+- openLink: "rocketchat://storybook?path=/story/threadmessagesview-item--content"
+- takeScreenshot:
+    path: .maestro/screenshots/threadmessagesview-item--content
+    cropOn:
+      id: threadmessagesview-item--content
+
+- openLink: "rocketchat://storybook?path=/story/threadmessagesview-item--themes"
+- takeScreenshot:
+    path: .maestro/screenshots/threadmessagesview-item--themes
+    cropOn:
+      id: threadmessagesview-item--themes
