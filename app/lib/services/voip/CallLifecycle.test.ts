@@ -602,4 +602,43 @@ describe('CallLifecycle.end(reason)', () => {
 			expect(callEndedListener).toHaveBeenCalledTimes(1);
 		});
 	});
+
+	// CodeRabbit follow-up: emit() must isolate per-listener throws so a single
+	// failing subscriber neither aborts later listeners nor propagates up to
+	// _runTeardown and rejects the _endPromise after teardown already finished.
+	describe('callEnded listener throw isolation', () => {
+		it('await end() resolves and remaining listeners still fire when an earlier listener throws', async () => {
+			const call = makeCall({ callId: 'listener-throw-1', state: 'active' });
+			useCallStore.getState().setCall(call);
+			native.reset();
+
+			const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => undefined);
+
+			const throwingListener = jest.fn(() => {
+				throw new Error('listener boom');
+			});
+			const survivingListener = jest.fn();
+
+			const unsub1 = callLifecycle.emitter.on('callEnded', throwingListener);
+			const unsub2 = callLifecycle.emitter.on('callEnded', survivingListener);
+
+			// 1. end() must resolve, not reject — teardown completed before emit.
+			await expect(callLifecycle.end('local')).resolves.toBeUndefined();
+
+			unsub1();
+			unsub2();
+
+			// 2. Both listeners ran; the throw did not abort the loop.
+			expect(throwingListener).toHaveBeenCalledTimes(1);
+			expect(survivingListener).toHaveBeenCalledTimes(1);
+			expect(survivingListener).toHaveBeenCalledWith(expect.objectContaining({ callId: 'listener-throw-1', reason: 'local' }));
+
+			// 3. The failure was logged via logger.warn → console.warn.
+			expect(warnSpy).toHaveBeenCalled();
+			const warnCalls = warnSpy.mock.calls.map(args => String(args[0] ?? ''));
+			expect(warnCalls.some(msg => msg.includes('callEnded listener failed'))).toBe(true);
+
+			warnSpy.mockRestore();
+		});
+	});
 });

@@ -67,8 +67,16 @@ class CallLifecycleEmitter {
 	emit<K extends keyof EventMap>(event: K, payload: EventMap[K]): void {
 		const set = this._listeners[event] as Set<CallLifecycleListener<EventMap[K]>> | undefined;
 		if (!set) return;
-		for (const listener of set) {
-			listener(payload);
+		// Snapshot the set before iterating so listeners can safely add/remove
+		// other listeners mid-emit. Wrap each invocation in try/catch so a
+		// throwing listener does not skip subsequent listeners or propagate up
+		// to `_runTeardown` and reject the `_endPromise` after teardown completed.
+		for (const listener of [...set]) {
+			try {
+				listener(payload);
+			} catch (error) {
+				logger.warn(`${TAG} ${String(event)} listener failed; continuing emit`, error);
+			}
 		}
 	}
 }
