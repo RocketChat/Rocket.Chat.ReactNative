@@ -66,7 +66,7 @@ beforeEach(() => {
 	(reduxStore.getState as jest.Mock).mockReturnValue(baseState);
 	(sdk.post as jest.Mock).mockResolvedValue({ success: true });
 	(getDeviceToken as jest.Mock).mockReturnValue('');
-	NativeVoipModule.getLastVoipToken.mockReturnValue('');
+	(NativeVoipModule.getLastVoipToken as jest.Mock).mockReturnValue('');
 });
 
 describe('registerPushToken - pendingToken cache', () => {
