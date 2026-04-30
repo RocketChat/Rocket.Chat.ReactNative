@@ -70,29 +70,15 @@ describe('getAvatarURL function', () => {
 		expect(result).toEqual(expected);
 	});
 
-	test('uses external provider URL for direct messages', () => {
+	test('ignores external provider URL for direct messages and routes through server', () => {
 		const type = SubscriptionType.DIRECT;
 		const text = 'username123';
-		const avatarExternalProviderUrl = 'https://external.provider.com/avatar/{username}';
+		const server = 'https://mobile.qa.rocket.chat';
 		const size = 30;
 
-		const expected = 'https://external.provider.com/avatar/username123?format=png&size=30';
-		const result = getAvatarURL({ type, text, avatarExternalProviderUrl, size });
+		const expected = 'https://mobile.qa.rocket.chat/avatar/username123?format=png&size=30';
+		const result = getAvatarURL({ type, text, server, size });
 		expect(result).toEqual(expected);
-	});
-
-	test('uses room avatar external provider URL when serverVersion >= 3.8.0', () => {
-		const rid = 'room123';
-		const serverVersion = '3.8.0';
-		const roomAvatarExternalProviderUrl = 'https://external.provider.com/room/{roomId}';
-		const size = 30;
-
-		mockCompareServerVersion.mockReturnValue(true);
-
-		const expected = 'https://external.provider.com/room/room123?format=png&size=30';
-		const result = getAvatarURL({ rid, serverVersion, roomAvatarExternalProviderUrl, size });
-		expect(result).toEqual(expected);
-		expect(mockCompareServerVersion).toHaveBeenCalledWith('3.8.0', 'greaterThanOrEqualTo', '3.8.0');
 	});
 
 	test('uses room/{rid} format when serverVersion >= 3.6.0', () => {
@@ -185,17 +171,6 @@ describe('getAvatarURL function', () => {
 
 		const expected = 'https://mobile.qa.rocket.chat/avatar/@username123?format=png&size=30';
 		const result = getAvatarURL({ text, server, size });
-		expect(result).toEqual(expected);
-	});
-
-	test('trims trailing slashes from external provider URLs', () => {
-		const type = SubscriptionType.DIRECT;
-		const text = 'username123';
-		const avatarExternalProviderUrl = 'https://external.provider.com/avatar/{username}//';
-		const size = 30;
-
-		const expected = 'https://external.provider.com/avatar/username123?format=png&size=30';
-		const result = getAvatarURL({ type, text, avatarExternalProviderUrl, size });
 		expect(result).toEqual(expected);
 	});
 
