@@ -101,7 +101,7 @@ describe('CallLifecycle.end(reason)', () => {
 	});
 
 	describe('teardown ordering', () => {
-		it('records commands in the documented order (steps 2-4, 6)', async () => {
+		it('records native commands in the documented order: end → markActive → markAvailable → stopAudio', async () => {
 			// Arrange: set up an active call in store
 			const call = makeCall({ callId: 'order-1', state: 'active' });
 			useCallStore.getState().setCall(call);
@@ -110,7 +110,6 @@ describe('CallLifecycle.end(reason)', () => {
 			// Act
 			await callLifecycle.end('local');
 
-			// Assert: step 2 (end), step 3 (markActive ''), step 4 (markAvailable), step 6 (stopAudio)
 			const recorded = native.recorded;
 			const endIdx = recorded.findIndex(c => c.cmd === 'end');
 			const markActiveIdx = recorded.findIndex(c => c.cmd === 'markActive');
@@ -123,7 +122,7 @@ describe('CallLifecycle.end(reason)', () => {
 			expect(stopAudioIdx).toBeGreaterThan(markAvailableIdx);
 		});
 
-		it('step 2: issues end with callId', async () => {
+		it('issues end with callId', async () => {
 			const call = makeCall({ callId: 'end-test-1', state: 'active' });
 			useCallStore.getState().setCall(call);
 			native.reset();
@@ -133,7 +132,7 @@ describe('CallLifecycle.end(reason)', () => {
 			expect(native.recorded).toContainEqual({ cmd: 'end', callUuid: 'end-test-1' });
 		});
 
-		it('step 3: issues markActive with empty string', async () => {
+		it('issues markActive with empty string', async () => {
 			const call = makeCall({ callId: 'mark-1' });
 			useCallStore.getState().setCall(call);
 			native.reset();
@@ -143,7 +142,7 @@ describe('CallLifecycle.end(reason)', () => {
 			expect(native.recorded).toContainEqual({ cmd: 'markActive', callUuid: '' });
 		});
 
-		it('step 4: issues markAvailable with callId', async () => {
+		it('issues markAvailable with callId', async () => {
 			const call = makeCall({ callId: 'avail-1' });
 			useCallStore.getState().setCall(call);
 			native.reset();
@@ -153,7 +152,7 @@ describe('CallLifecycle.end(reason)', () => {
 			expect(native.recorded).toContainEqual({ cmd: 'markAvailable', callUuid: 'avail-1' });
 		});
 
-		it('step 5: store is cleared (reset called)', async () => {
+		it('store is cleared (reset called)', async () => {
 			const call = makeCall({ callId: 'store-1' });
 			useCallStore.getState().setCall(call);
 
@@ -163,7 +162,7 @@ describe('CallLifecycle.end(reason)', () => {
 			expect(useCallStore.getState().callId).toBeNull();
 		});
 
-		it('step 6: stopAudio fires after store is cleared', async () => {
+		it('stopAudio fires after store is cleared', async () => {
 			const call = makeCall({ callId: 'stop-1' });
 			useCallStore.getState().setCall(call);
 			native.reset();
@@ -181,7 +180,7 @@ describe('CallLifecycle.end(reason)', () => {
 			expect(storeStateAtStopAudio).toBeNull();
 		});
 
-		it('step 1a: calls hangup() on active call', async () => {
+		it('calls hangup() on active call', async () => {
 			const call = makeCall({ callId: 'hang-1', state: 'active' });
 			useCallStore.getState().setCall(call);
 
@@ -191,7 +190,7 @@ describe('CallLifecycle.end(reason)', () => {
 			expect(call.reject).not.toHaveBeenCalled();
 		});
 
-		it('step 1b: calls reject() on ringing call', async () => {
+		it('calls reject() on ringing call', async () => {
 			const call = makeCall({ callId: 'ring-1', state: 'ringing' });
 			useCallStore.getState().setCall(call);
 
@@ -201,7 +200,7 @@ describe('CallLifecycle.end(reason)', () => {
 			expect(call.hangup).not.toHaveBeenCalled();
 		});
 
-		it('skips step 1 when no active call in store', async () => {
+		it('skips MediaCall hangup/reject when no active call in store', async () => {
 			// No call set; should not throw and should still run native steps.
 			native.reset();
 			await callLifecycle.end('remote');
@@ -354,6 +353,58 @@ describe('CallLifecycle.end(reason)', () => {
 			const freshLifecycle = new (callLifecycle.constructor as new () => typeof callLifecycle)();
 			// Should resolve without throwing (uses module-level InMemoryVoipNative).
 			await expect((freshLifecycle as any)._runTeardown('local')).resolves.toBeUndefined();
+		});
+	});
+
+	describe('teardown clears private auto-hold flag', () => {
+		it('_wasAutoHeld resets after end() so a JS-held next call does not auto-resume', async () => {
+			// Why: callLifecycle is a module singleton and _wasAutoHeld persists between
+			// distinct calls. If teardown leaves it set, a subsequent OS hold:false on
+			// the next call would spuriously issue markActive (auto-resume path) even
+			// though the next call was held by JS, never auto-held by the OS.
+			const participantA = {
+				local: true,
+				role: 'caller' as const,
+				muted: false,
+				held: false,
+				contact: {},
+				setMuted: jest.fn(),
+				setHeld: jest.fn()
+			};
+			const callA = makeCall({ callId: 'auto-held-a' });
+			(callA as any).localParticipant = participantA;
+			useCallStore.getState().setCall(callA);
+			useCallStore.setState({ callId: 'auto-held-a' });
+
+			// OS auto-holds the first call (sets _wasAutoHeld=true internally).
+			callLifecycle.toggle('hold', 'native', 'auto-held-a', true);
+			native.reset();
+
+			// End the call — should reset _wasAutoHeld.
+			await callLifecycle.end('remote');
+
+			// Start a new call that is JS-held (e.g. user pressed hold from in-app UI).
+			const participantB = {
+				local: true,
+				role: 'caller' as const,
+				muted: false,
+				held: true,
+				contact: {},
+				setMuted: jest.fn(),
+				setHeld: jest.fn()
+			};
+			const callB = makeCall({ callId: 'auto-held-b' });
+			(callB as any).localParticipant = participantB;
+			useCallStore.getState().setCall(callB);
+			useCallStore.setState({ callId: 'auto-held-b', isOnHold: true });
+			native.reset();
+
+			// OS-driven hold:false on the new call — since the previous call's
+			// _wasAutoHeld must not bleed into this one, no markActive should fire.
+			callLifecycle.toggle('hold', 'native', 'auto-held-b', false);
+
+			expect(useCallStore.getState().isOnHold).toBe(false);
+			expect(native.recorded).not.toContainEqual(expect.objectContaining({ cmd: 'markActive' }));
 		});
 	});
 });
@@ -617,19 +668,20 @@ describe('CallLifecycle.toggle(kind, source)', () => {
 			expect(storeState).not.toHaveProperty('wasAutoHeld');
 		});
 
-		// ── Negative-path / regression-prevention tests ───────────────────────
+		// ── Idempotency: targetValue matching current state is a no-op ────────
 
-		it('hold: redundant hold:true while already held is a no-op (Regression A prevention)', () => {
-			// Regression A: OS sends a second hold:true while the call is already held.
-			// Before the fix, toggle would flip to UNHELD and potentially fire markActive.
-			const { call, participant } = makeToggleCall({ callId: 'hold-native-reg-a' });
+		it('hold: redundant hold:true while already held is a no-op', () => {
+			// Why: OS may send a second hold:true while the call is already held. Without
+			// the targetValue idempotency check the toggle would flip to UNHELD and could
+			// fire a spurious markActive.
+			const { call, participant } = makeToggleCall({ callId: 'hold-native-redundant' });
 			useCallStore.getState().setCall(call);
 			// Simulate call already held (e.g. by a prior OS event or JS toggle).
-			useCallStore.setState({ callId: 'hold-native-reg-a', isOnHold: true });
+			useCallStore.setState({ callId: 'hold-native-redundant', isOnHold: true });
 			native.reset();
 
 			// OS sends redundant hold:true — must be a complete no-op.
-			callLifecycle.toggle('hold', 'native', 'hold-native-reg-a', true);
+			callLifecycle.toggle('hold', 'native', 'hold-native-redundant', true);
 
 			// Store unchanged.
 			expect(useCallStore.getState().isOnHold).toBe(true);
@@ -639,19 +691,20 @@ describe('CallLifecycle.toggle(kind, source)', () => {
 			expect(participant.setHeld).not.toHaveBeenCalled();
 		});
 
-		it('hold: hold:false after manual user-resume is a no-op (Regression B prevention)', () => {
-			// Regression B: OS sends a delayed hold:false AFTER the user manually resumed.
-			// Before the fix, toggle would flip to HELD and set _wasAutoHeld=true.
-			const { call, participant } = makeToggleCall({ callId: 'hold-native-reg-b' });
+		it('hold: hold:false after manual user-resume is a no-op', () => {
+			// Why: OS may deliver a delayed hold:false AFTER the user already resumed
+			// manually. Without idempotency the toggle would flip back to HELD and set
+			// _wasAutoHeld=true, which would then trigger a spurious markActive next time.
+			const { call, participant } = makeToggleCall({ callId: 'hold-native-late-resume' });
 			useCallStore.getState().setCall(call);
 			// Simulate call not on hold and _wasAutoHeld=false (user already resumed manually).
-			useCallStore.setState({ callId: 'hold-native-reg-b', isOnHold: false });
+			useCallStore.setState({ callId: 'hold-native-late-resume', isOnHold: false });
 			// Ensure _wasAutoHeld is false (no prior auto-hold that was not cleared).
 			// We verify indirectly: a subsequent markActive should NOT fire.
 			native.reset();
 
 			// OS sends delayed hold:false — must be a complete no-op.
-			callLifecycle.toggle('hold', 'native', 'hold-native-reg-b', false);
+			callLifecycle.toggle('hold', 'native', 'hold-native-late-resume', false);
 
 			// Store unchanged.
 			expect(useCallStore.getState().isOnHold).toBe(false);

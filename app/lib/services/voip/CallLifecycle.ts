@@ -8,8 +8,8 @@
  *   2. voipNative.call.end(callUuid)
  *   3. voipNative.call.markActive('')
  *   4. voipNative.call.markAvailable(callUuid)
- *   5. useCallStore.reset()        ← clears JS state; stopAudio removed from here (step 6 owns it)
- *   6. voipNative.call.stopAudio() ← fires after store reset so subscribers see consistent state
+ *   5. useCallStore.reset()        — clears JS state
+ *   6. voipNative.call.stopAudio() — fires after store reset so subscribers see consistent state
  *   7. emit callEnded { callId, reason }
  *
  * Idempotency: concurrent callers receive the in-flight Promise (no double teardown).
@@ -216,8 +216,9 @@ class CallLifecycle {
 				// Derive effective new value: targetValue wins over flip semantics.
 				const newHeld = targetValue ?? !isOnHold;
 				// Idempotent: if the target value already matches current state, do nothing.
-				// This prevents Regression A (OS sends redundant hold:true while already held)
-				// and Regression B (OS sends delayed hold:false after user manually resumed).
+				// Honours OS payload assertions — a redundant hold:true while already held,
+				// or a late hold:false after the user already resumed, must be a no-op so we
+				// don't flip state, mutate _wasAutoHeld, or fire a spurious markActive.
 				if (newHeld === isOnHold) return Promise.resolve();
 				call!.localParticipant.setHeld(newHeld);
 				useCallStore.setState({ isOnHold: newHeld });
@@ -271,7 +272,6 @@ class CallLifecycle {
 		// Pre-bind-safe: use whichever id is available.
 		const effectiveCallId = callId ?? nativeAcceptedCallId;
 
-		// Step 1: Hang up the MediaCall (reject if ringing, hangup otherwise).
 		// Read the active call from useCallStore — MediaSessionInstance owns it.
 		const mediaCall = useCallStore.getState().call;
 		if (mediaCall) {
@@ -282,26 +282,24 @@ class CallLifecycle {
 			}
 		}
 
-		// Step 2: End the native CallKit / Telecom session.
 		if (effectiveCallId) {
 			native.call.end(effectiveCallId);
 		}
 
-		// Step 3: Clear the "active" indicator in the native UI.
 		native.call.markActive('');
-
-		// Step 4: Mark the device as available for new calls.
 		native.call.markAvailable(effectiveCallId ?? '');
 
-		// Step 5: Reset JS call state (store clears call, callId, etc.).
-		// NOTE: stopAudio is intentionally NOT called here — step 6 owns it so
-		// that all subscribers see consistent JS state when callEnded emits.
+		// Reset JS state BEFORE stopAudio so that all callEnded subscribers see a
+		// consistent cleared store when audio actually stops.
 		useCallStore.getState().reset();
 
-		// Step 6: Stop audio after store is cleared.
+		// callLifecycle is a module singleton — clear instance flags so the next
+		// call starts fresh and a stale auto-held bit cannot trigger a spurious
+		// markActive on the next OS hold:false event.
+		this._wasAutoHeld = false;
+
 		native.call.stopAudio();
 
-		// Step 7: Notify subscribers.
 		this.emitter.emit('callEnded', { callId: effectiveCallId, reason });
 	}
 }

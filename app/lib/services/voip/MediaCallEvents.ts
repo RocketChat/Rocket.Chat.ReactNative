@@ -105,8 +105,7 @@ export function createVoipEventDispatcher(adapters: MediaCallEventsAdapters): (e
 			case 'hold': {
 				// Pass e.hold as targetValue so CallLifecycle can honour the OS assertion and
 				// skip the toggle when the store already reflects the OS state (idempotent).
-				// This fixes Regression A (redundant hold:true while already held) and
-				// Regression B (delayed hold:false after user manually resumed).
+				// Without this, redundant or late OS hold events would flip the state spuriously.
 				callLifecycle.toggle('hold', 'native', e.callUuid, e.hold);
 				return false;
 			}
