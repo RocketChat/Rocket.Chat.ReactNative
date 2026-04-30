@@ -91,13 +91,12 @@ interface CallStoreActions {
 	setNativeAcceptedCallId: (callId: string) => void;
 	/** Clears native-accepted id and related state; cancels the timer. */
 	resetNativeCallId: () => void;
-	setCall: (call: IClientMediaCall) => void;
 	/**
-	 * State-only variant of setCall — updates JS state and wires call event listeners
-	 * but does NOT issue native audio commands (startAudio, markActive).
-	 * Used by CallLifecycle, which issues those commands explicitly in the correct order.
+	 * Updates JS state and wires call event listeners.
+	 * Does NOT issue native audio commands (startAudio, markActive) — CallLifecycle
+	 * issues those explicitly in the correct order before calling setCall.
 	 */
-	setCallStateOnly: (call: IClientMediaCall) => void;
+	setCall: (call: IClientMediaCall) => void;
 	toggleMute: () => void;
 	toggleHold: () => void;
 	toggleSpeaker: () => void;
@@ -150,7 +149,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		});
 	},
 
-	setCallStateOnly: (call: IClientMediaCall) => {
+	setCall: (call: IClientMediaCall) => {
 		cleanupCallListeners();
 		get().resetNativeCallId();
 		// Update state with call info (no native audio side effects — CallLifecycle owns those)
@@ -223,12 +222,6 @@ export const useCallStore = create<CallStore>((set, get) => ({
 			call.emitter.off('trackStateChange', handleTrackStateChange);
 			call.emitter.off('ended', handleEnded);
 		};
-	},
-
-	setCall: (call: IClientMediaCall) => {
-		// Delegate to state-only, then issue audio (for legacy callers not going through CallLifecycle).
-		get().setCallStateOnly(call);
-		voipNative.call.startAudio();
 	},
 
 	toggleControlsVisible: () => {

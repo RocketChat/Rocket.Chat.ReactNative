@@ -321,10 +321,11 @@ describe('useCallStore audio commands via VoipNative seam', () => {
 		useCallStore.getState().reset();
 	});
 
-	it('setCall records startAudio on voipNative', () => {
+	it('setCall does NOT record startAudio on voipNative (startAudio ownership is CallLifecycle, not setCall)', () => {
+		// setCall is now state-only — CallLifecycle issues startAudio explicitly before calling setCall.
 		const { call } = createMockCall('audio-1');
 		useCallStore.getState().setCall(call);
-		expect(adapter.recorded).toContainEqual({ cmd: 'startAudio' });
+		expect(adapter.recorded).not.toContainEqual({ cmd: 'startAudio' });
 	});
 
 	it('reset does NOT record stopAudio on voipNative (stopAudio ownership moved to CallLifecycle.end step 6)', () => {

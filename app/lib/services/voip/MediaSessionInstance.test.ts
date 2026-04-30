@@ -23,11 +23,10 @@ const mockGetUidDirectMessage = jest.mocked(getUidDirectMessage);
 const mockCallStoreReset = jest.fn();
 const mockSetRoomId = jest.fn();
 const mockSetDirection = jest.fn();
-const mockSetCallStateOnly = jest.fn();
+const mockSetCall = jest.fn();
 const mockUseCallStoreGetState = jest.fn(() => ({
 	reset: mockCallStoreReset,
-	setCall: jest.fn(),
-	setCallStateOnly: mockSetCallStateOnly,
+	setCall: mockSetCall,
 	setRoomId: mockSetRoomId,
 	setDirection: mockSetDirection,
 	resetNativeCallId: jest.fn(),
@@ -225,8 +224,7 @@ describe('MediaSessionInstance', () => {
 		mockIsInActiveVoipCall.mockReturnValue(false);
 		mockUseCallStoreGetState.mockReturnValue({
 			reset: mockCallStoreReset,
-			setCall: jest.fn(),
-			setCallStateOnly: mockSetCallStateOnly,
+			setCall: mockSetCall,
 			setRoomId: mockSetRoomId,
 			setDirection: mockSetDirection,
 			resetNativeCallId: jest.fn(),
@@ -318,11 +316,9 @@ describe('MediaSessionInstance', () => {
 
 	describe('newCall (no JS busy-reject; native decides)', () => {
 		it('allows incoming callee newCall when store already has an active call', async () => {
-			const mockSetCall = jest.fn();
 			mockUseCallStoreGetState.mockReturnValue({
 				reset: mockCallStoreReset,
 				setCall: mockSetCall,
-				setCallStateOnly: mockSetCallStateOnly,
 				setRoomId: mockSetRoomId,
 				setDirection: mockSetDirection,
 				resetNativeCallId: jest.fn(),
@@ -341,8 +337,7 @@ describe('MediaSessionInstance', () => {
 		it('allows incoming callee newCall when nativeAcceptedCallId is set but differs from incoming callId', async () => {
 			mockUseCallStoreGetState.mockReturnValue({
 				reset: mockCallStoreReset,
-				setCall: jest.fn(),
-				setCallStateOnly: mockSetCallStateOnly,
+				setCall: mockSetCall,
 				setRoomId: mockSetRoomId,
 				setDirection: mockSetDirection,
 				resetNativeCallId: jest.fn(),
@@ -361,8 +356,7 @@ describe('MediaSessionInstance', () => {
 		it('allows incoming callee newCall when nativeAcceptedCallId matches incoming callId', async () => {
 			mockUseCallStoreGetState.mockReturnValue({
 				reset: mockCallStoreReset,
-				setCall: jest.fn(),
-				setCallStateOnly: mockSetCallStateOnly,
+				setCall: mockSetCall,
 				setRoomId: mockSetRoomId,
 				setDirection: mockSetDirection,
 				resetNativeCallId: jest.fn(),
@@ -379,11 +373,9 @@ describe('MediaSessionInstance', () => {
 		});
 
 		it('does not reject outgoing (caller) newCall; delegates to lifecycle.beginOutgoing', async () => {
-			const mockSetCall = jest.fn();
 			mockUseCallStoreGetState.mockReturnValue({
 				reset: mockCallStoreReset,
 				setCall: mockSetCall,
-				setCallStateOnly: mockSetCallStateOnly,
 				setRoomId: mockSetRoomId,
 				setDirection: mockSetDirection,
 				resetNativeCallId: jest.fn(),
@@ -431,8 +423,7 @@ describe('MediaSessionInstance', () => {
 			const answerSpy = jest.spyOn(mediaSessionInstance, 'answerCall').mockResolvedValue(undefined);
 			mockUseCallStoreGetState.mockReturnValue({
 				reset: mockCallStoreReset,
-				setCall: jest.fn(),
-				setCallStateOnly: mockSetCallStateOnly,
+				setCall: mockSetCall,
 				setRoomId: mockSetRoomId,
 				setDirection: mockSetDirection,
 				resetNativeCallId: jest.fn(),
@@ -466,8 +457,7 @@ describe('MediaSessionInstance', () => {
 			const answerSpy = jest.spyOn(mediaSessionInstance, 'answerCall').mockResolvedValue(undefined);
 			mockUseCallStoreGetState.mockReturnValue({
 				reset: mockCallStoreReset,
-				setCall: jest.fn(),
-				setCallStateOnly: mockSetCallStateOnly,
+				setCall: mockSetCall,
 				setRoomId: mockSetRoomId,
 				setDirection: mockSetDirection,
 				resetNativeCallId: jest.fn(),
@@ -501,8 +491,7 @@ describe('MediaSessionInstance', () => {
 			const answerSpy = jest.spyOn(mediaSessionInstance, 'answerCall').mockResolvedValue(undefined);
 			mockUseCallStoreGetState.mockReturnValue({
 				reset: mockCallStoreReset,
-				setCall: jest.fn(),
-				setCallStateOnly: mockSetCallStateOnly,
+				setCall: mockSetCall,
 				setRoomId: mockSetRoomId,
 				setDirection: mockSetDirection,
 				resetNativeCallId: jest.fn(),
@@ -549,8 +538,7 @@ describe('MediaSessionInstance', () => {
 			});
 			mockUseCallStoreGetState.mockReturnValue({
 				reset: mockCallStoreReset,
-				setCall: jest.fn(),
-				setCallStateOnly: mockSetCallStateOnly,
+				setCall: mockSetCall,
 				setRoomId: mockSetRoomId,
 				setDirection: mockSetDirection,
 				resetNativeCallId: jest.fn(),
@@ -717,8 +705,7 @@ describe('MediaSessionInstance', () => {
 			await mediaSessionInstance.init('user-1');
 			mockUseCallStoreGetState.mockReturnValue({
 				reset: mockCallStoreReset,
-				setCall: jest.fn(),
-				setCallStateOnly: mockSetCallStateOnly,
+				setCall: mockSetCall,
 				setRoomId: mockSetRoomId,
 				setDirection: mockSetDirection,
 				resetNativeCallId: jest.fn(),
