@@ -882,5 +882,23 @@ describe('MediaSessionInstance', () => {
 
 			expect(session.startCall).toHaveBeenCalledWith('user', 'peer-1');
 		});
+
+		it('startCallByRoom clears optimistic roomId when post-permission guard rejects', async () => {
+			await mediaSessionInstance.init('user-1');
+			// pre-permission guard inside startCallByRoom passes (false),
+			// pre-permission check inside startCall passes (false),
+			// post-permission re-evaluation flips to true and triggers throw.
+			mockIsInActiveVoipCall.mockReturnValueOnce(false).mockReturnValueOnce(false).mockReturnValueOnce(true);
+
+			mediaSessionInstance.startCallByRoom({ rid: 'rid-dm', t: 'd', uids: ['a', 'b'] } as any);
+
+			// Flush microtasks: setRoomId(rid-dm) -> startCall -> permission await -> throw -> .catch -> setRoomId(null).
+			await Promise.resolve();
+			await Promise.resolve();
+			await Promise.resolve();
+
+			expect(mockSetRoomId).toHaveBeenNthCalledWith(1, 'rid-dm');
+			expect(mockSetRoomId).toHaveBeenLastCalledWith(null);
+		});
 	});
 });
