@@ -778,9 +778,10 @@ class VoipNotification(private val context: Context) {
      */
     private fun registerCallWithTelecomManager(callId: String, caller: String) {
         try {
-            // Validate inputs
-            if (callId.isEmpty() || caller.isEmpty()) {
-                Log.e(TAG, "Cannot register call with TelecomManager: callId='$callId' caller='$caller' — empty values rejected")
+            // Validate inputs — callId is used for the handle URI and must be non-empty.
+            // caller (display name) may be empty; an empty string is a safe display value.
+            if (callId.isEmpty()) {
+                Log.e(TAG, "Cannot register call with TelecomManager: callId is empty")
                 return
             }
 
@@ -802,9 +803,16 @@ class VoipNotification(private val context: Context) {
             // registerPhoneAccount is idempotent for the same handle.
             ensureSelfManagedPhoneAccountRegistered(telecomManager, phoneAccountHandle, getApplicationLabel())
 
-            // Create extras for the incoming call
+            // Create extras for the incoming call.
+            // IMPORTANT: use callId (a UUID) as the URI's user-info component, not caller.
+            // The caller's display name may contain spaces, '@', or other characters that make
+            // Uri.fromParts produce an invalid URI, causing TelecomManager to throw
+            // IllegalArgumentException on Android 12+.
+            // The human-readable name flows through EXTRA_CALLER_NAME, which the call-keep
+            // VoiceConnection constructor reads and applies via Connection.setCallerDisplayName,
+            // so Telecom surfaces it on the lockscreen and in-call UI.
             val extras = Bundle().apply {
-                val callerUri = Uri.fromParts(PhoneAccount.SCHEME_TEL, caller, null)
+                val callerUri = Uri.fromParts(PhoneAccount.SCHEME_TEL, callId, null)
                 putParcelable(TelecomManager.EXTRA_INCOMING_CALL_ADDRESS, callerUri)
                 putString("EXTRA_CALL_UUID", callId)
                 putString("EXTRA_CALLER_NAME", caller)
