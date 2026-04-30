@@ -1,10 +1,10 @@
 import { store as reduxStore } from '../store/auxStore';
 import sdk from './sdk';
 import * as restApi from './restApi';
-
-const { registerPushToken } = restApi;
 import NativeVoipModule from '../native/NativeVoip';
 import { getDeviceToken } from '../notifications';
+
+const { registerPushToken } = restApi;
 
 jest.mock('../store/auxStore', () => ({
 	store: {
