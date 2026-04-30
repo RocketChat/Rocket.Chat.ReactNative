@@ -82,12 +82,28 @@ export type PreBindFailedEvent = {
 	reason: 'cleanup' | 'replayMismatch';
 };
 
+export type PreBindChangedEvent = {
+	/** The new FSM state after the transition. */
+	status: PreBindStatus;
+};
+
 export type CallLifecycleListener<T> = (event: T) => void;
 
 type EventMap = {
 	callBegan: CallBeganEvent; // type-only — no producer in this slice
 	callEnded: CallEndedEvent;
 	preBindFailed: PreBindFailedEvent;
+	/**
+	 * Fired on every Pre-bind FSM transition:
+	 *   - idle → awaitingMediaCall (entry edge — native accepted)
+	 *   - awaitingMediaCall → idle (matching newCall bound)
+	 *   - awaitingMediaCall → idle (lifecycle.end called, e.g. local hangup during pre-bind)
+	 *   - awaitingMediaCall → failed → idle (cleanupAt elapse; preBindFailed fires separately)
+	 *
+	 * Subscribers can use this to reactively gate UI (e.g. isInActiveVoipCall) on the
+	 * FSM entry edge, not just the exit edge (callEnded / preBindFailed).
+	 */
+	preBindChanged: PreBindChangedEvent;
 };
 
 // ── Typed event emitter ───────────────────────────────────────────────────────
@@ -309,7 +325,15 @@ class CallLifecycle {
 
 	private _onNativeAnswer(payload: VoipPayload): void {
 		if (this._preBind.kind === 'awaitingMediaCall') {
-			// Already awaiting a call — possibly a duplicate event; ignore.
+			// Already awaiting a call — policy: first native answer wins.
+			// A second acceptSucceeded with a different UUID is silently dropped.
+			// Rationale: only one native call can be active at a time; the first
+			// native accept transitions the FSM and starts the cleanup timer. A
+			// spurious duplicate with a different UUID would require ending the
+			// in-progress pre-bind window first (via lifecycle.end), which is not
+			// done automatically here to avoid unintended teardown of a legitimate
+			// pending call. If the first call's pre-bind expires, the cleanup path
+			// resets the FSM to idle, at which point a new native answer is accepted.
 			return;
 		}
 
@@ -322,6 +346,9 @@ class CallLifecycle {
 			cleanupAt,
 			queuedIntents: []
 		};
+
+		// Emit preBindChanged on entry edge (idle → awaitingMediaCall).
+		this.emitter.emit('preBindChanged', { status: this.preBindStatus() });
 
 		// Schedule garbage collection at cleanupAt.
 		this._scheduleCleanup(payload.callId);
@@ -338,6 +365,10 @@ class CallLifecycle {
 
 			// Transition to failed.
 			this._preBind = { kind: 'failed', uuid, reason: 'cleanup' };
+
+			// Emit preBindChanged on awaitingMediaCall → failed edge.
+			// failed is transient; preBindFailed and a subsequent idle preBindChanged follow.
+			this.emitter.emit('preBindChanged', { status: { kind: 'failed', uuid, reason: 'cleanup' } });
 
 			// Emit preBindFailed so CallNavRouter can react.
 			this.emitter.emit('preBindFailed', { uuid, reason: 'cleanup' });
@@ -364,8 +395,14 @@ class CallLifecycle {
 	}
 
 	private _transitionToIdle(): void {
+		const wasNonIdle = this._preBind.kind !== 'idle';
 		this._cancelCleanupTimer();
 		this._preBind = { kind: 'idle' };
+		// Emit preBindChanged only when we actually transitioned (avoid spurious events
+		// when already idle, e.g. repeated end() calls after teardown completes).
+		if (wasNonIdle) {
+			this.emitter.emit('preBindChanged', { status: { kind: 'idle' } });
+		}
 	}
 
 	private _onPreBindIntent(intent: PreBindIntent, callUuid: string): void {

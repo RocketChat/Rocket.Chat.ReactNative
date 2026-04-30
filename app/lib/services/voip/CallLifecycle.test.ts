@@ -12,11 +12,13 @@
  */
 
 import type { IClientMediaCall } from '@rocket.chat/media-signaling';
+import { act, renderHook } from '@testing-library/react-native';
 
 import { callLifecycle } from './CallLifecycle';
 import type { CallEndReason, PreBindStatus } from './CallLifecycle';
 import { InMemoryVoipNative } from './VoipNative';
 import { useCallStore } from './useCallStore';
+import { useIsInActiveVoipCall } from './isInActiveVoipCall';
 
 jest.mock('react-native-callkeep', () => ({
 	__esModule: true,
@@ -659,5 +661,158 @@ describe('CallLifecycle — Pre-bind FSM (slice 08)', () => {
 			const state = useCallStore.getState();
 			expect('resetNativeCallId' in state).toBe(false);
 		});
+	});
+
+	// ── 8. preBindChanged event (Major 3) ─────────────────────────────────────
+
+	describe('preBindChanged event', () => {
+		it('emits preBindChanged with awaitingMediaCall on idle → awaitingMediaCall transition', async () => {
+			const events: unknown[] = [];
+			const unsub = callLifecycle.emitter.on('preBindChanged', e => events.push(e));
+
+			await native.attach({ onEvent: callLifecycle.handleNativeEvent.bind(callLifecycle) });
+			emitAcceptSucceeded(native, 'pbc-1', 'h');
+
+			unsub();
+			expect(events).toHaveLength(1);
+			expect(events[0]).toMatchObject({ status: { kind: 'awaitingMediaCall', uuid: 'pbc-1' } });
+		});
+
+		it('emits preBindChanged with idle on awaitingMediaCall → idle (matching newCall) transition', async () => {
+			await native.attach({ onEvent: callLifecycle.handleNativeEvent.bind(callLifecycle) });
+			emitAcceptSucceeded(native, 'pbc-2');
+
+			const events: unknown[] = [];
+			const unsub = callLifecycle.emitter.on('preBindChanged', e => events.push(e));
+
+			const mediaCall = makeMediaCall({ callId: 'pbc-2' });
+			const answerSpy = jest.spyOn(callLifecycle, 'answerIncoming').mockResolvedValue(undefined);
+			await callLifecycle.onMediaCallNew(mediaCall);
+			answerSpy.mockRestore();
+
+			unsub();
+			expect(events).toHaveLength(1);
+			expect(events[0]).toMatchObject({ status: { kind: 'idle' } });
+		});
+
+		it('emits preBindChanged with failed then idle on cleanupAt elapse', async () => {
+			await native.attach({ onEvent: callLifecycle.handleNativeEvent.bind(callLifecycle) });
+			emitAcceptSucceeded(native, 'pbc-3');
+
+			const events: unknown[] = [];
+			const unsub = callLifecycle.emitter.on('preBindChanged', e => events.push(e));
+
+			jest.advanceTimersByTime(60_000);
+			await Promise.resolve();
+
+			unsub();
+			// First: awaitingMediaCall → failed, Second: failed → idle
+			expect(events.length).toBeGreaterThanOrEqual(2);
+			expect(events[0]).toMatchObject({ status: { kind: 'failed', uuid: 'pbc-3', reason: 'cleanup' } });
+			expect(events[events.length - 1]).toMatchObject({ status: { kind: 'idle' } });
+		});
+
+		it('does NOT emit preBindChanged when already idle and end() is called', async () => {
+			// FSM is already idle; _transitionToIdle is a no-op emitter-wise.
+			const events: unknown[] = [];
+			const unsub = callLifecycle.emitter.on('preBindChanged', e => events.push(e));
+
+			await callLifecycle.end('remote');
+
+			unsub();
+			expect(events).toHaveLength(0);
+		});
+	});
+
+	// ── 9. Divergent-UUID native answer policy (Major 4) ─────────────────────
+
+	describe('divergent-UUID native answer policy', () => {
+		it('second acceptSucceeded with different UUID is silently dropped — FSM stays at first UUID', async () => {
+			// Policy: first native answer wins. A second acceptSucceeded with a different UUID
+			// is ignored while the FSM is in awaitingMediaCall. This prevents a spurious duplicate
+			// from displacing a legitimate pending pre-bind window.
+			// If the policy were "second wins", we would need to call lifecycle.end('error') for the
+			// dropped UUID first — chosen not to do that here to avoid unintended teardown.
+			await native.attach({ onEvent: callLifecycle.handleNativeEvent.bind(callLifecycle) });
+
+			emitAcceptSucceeded(native, 'uuid-A', 'host-A');
+			expect(callLifecycle.preBindStatus()).toMatchObject({ kind: 'awaitingMediaCall', uuid: 'uuid-A' });
+
+			// Second native answer with a different UUID — should be silently dropped.
+			emitAcceptSucceeded(native, 'uuid-B', 'host-B');
+
+			// FSM stays at uuid-A; uuid-B is dropped.
+			const status = callLifecycle.preBindStatus();
+			expect(status.kind).toBe('awaitingMediaCall');
+			const awaitingStatus = status as Extract<PreBindStatus, { kind: 'awaitingMediaCall' }>;
+			expect(awaitingStatus.uuid).toBe('uuid-A');
+		});
+	});
+});
+
+// ── useIsInActiveVoipCall — reactive preBindChanged hook test ─────────────────
+
+/**
+ * Tests that useIsInActiveVoipCall reacts to preBindChanged events (Major 3).
+ * Uses the real callLifecycle singleton so the emitter path is exercised end-to-end.
+ * useCallStore is also real — reset between tests.
+ */
+describe('useIsInActiveVoipCall — reactive preBindChanged subscription', () => {
+	let native: InMemoryVoipNative;
+
+	beforeEach(() => {
+		jest.useFakeTimers();
+		(callLifecycle as any)._resetForTesting();
+		useCallStore.getState().reset();
+		native = new InMemoryVoipNative();
+		callLifecycle.attach(native);
+		native.reset();
+	});
+
+	afterEach(() => {
+		jest.clearAllTimers();
+		jest.useRealTimers();
+	});
+
+	it('returns true after awaitingMediaCall transition fires (preBindChanged entry edge)', async () => {
+		const { result } = renderHook(() => useIsInActiveVoipCall());
+
+		// Initially idle — no active call, no pre-bind.
+		expect(result.current).toBe(false);
+
+		// Emit native acceptSucceeded → callLifecycle.handleNativeEvent → FSM awaitingMediaCall
+		// → preBindChanged emitted → useSyncExternalStore re-renders.
+		await act(async () => {
+			await native.attach({ onEvent: callLifecycle.handleNativeEvent.bind(callLifecycle) });
+			native.__emit({
+				type: 'acceptSucceeded',
+				payload: { callId: 'reactive-1', host: 'h', type: 'incoming_call' } as any,
+				fromColdStart: false
+			});
+		});
+
+		// Hook should now return true because FSM is in awaitingMediaCall.
+		expect(callLifecycle.preBindStatus()).toMatchObject({ kind: 'awaitingMediaCall', uuid: 'reactive-1' });
+		expect(result.current).toBe(true);
+	});
+
+	it('returns false after FSM returns to idle (preBindChanged exit edge)', async () => {
+		await native.attach({ onEvent: callLifecycle.handleNativeEvent.bind(callLifecycle) });
+		native.__emit({
+			type: 'acceptSucceeded',
+			payload: { callId: 'reactive-2', host: 'h', type: 'incoming_call' } as any,
+			fromColdStart: false
+		});
+
+		const { result } = renderHook(() => useIsInActiveVoipCall());
+		expect(result.current).toBe(true);
+
+		// End the pre-bind via lifecycle.end — FSM returns to idle, preBindChanged emitted.
+		await act(async () => {
+			await callLifecycle.end('error');
+		});
+
+		expect(callLifecycle.preBindStatus()).toEqual({ kind: 'idle' });
+		expect(result.current).toBe(false);
 	});
 });

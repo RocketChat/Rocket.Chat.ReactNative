@@ -24,15 +24,18 @@ export const useIsInActiveVoipCall = (): boolean => {
 
 	const isPreBind = useSyncExternalStore(
 		subscribe => {
-			// Re-render when the Pre-bind FSM transitions (via preBindFailed or callEnded events).
-			// The native-answer transition itself must be signalled separately via a custom event
-			// or store field if the consumer needs to react to awaitingMediaCall entry.
-			// For the common case (isInActiveVoipCall gating), callEnded covers the exit path;
-			// preBindFailed covers the cleanup path. The entry path is covered by store.call
-			// being set shortly after answerIncoming binds the MediaCall.
+			// Re-render when the Pre-bind FSM transitions:
+			//   - preBindChanged: covers ALL FSM transitions including the entry edge
+			//     (idle → awaitingMediaCall) so UI gating is reactive immediately on
+			//     native accept, not just on exit/cleanup.
+			//   - preBindFailed: belt-and-suspenders for the cleanup path (also fires preBindChanged).
+			//   - callEnded: belt-and-suspenders for the exit path (also fires preBindChanged via
+			//     _transitionToIdle inside end()).
+			const unsubPreBindChanged = callLifecycle.emitter.on('preBindChanged', subscribe);
 			const unsubPreBindFailed = callLifecycle.emitter.on('preBindFailed', subscribe);
 			const unsubCallEnded = callLifecycle.emitter.on('callEnded', subscribe);
 			return () => {
+				unsubPreBindChanged();
 				unsubPreBindFailed();
 				unsubCallEnded();
 			};
