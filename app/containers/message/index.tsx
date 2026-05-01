@@ -1,5 +1,6 @@
 import React from 'react';
-import { Keyboard } from 'react-native';
+import { Alert, Keyboard } from 'react-native';
+import { dequal } from 'dequal';
 
 import Message from './Message';
 import MessageContext from './Context';
@@ -7,11 +8,12 @@ import { debounce } from '../../lib/methods/helpers';
 import { getMessageTranslation } from './utils';
 import { type TSupportedThemes, withTheme } from '../../theme';
 import openLink from '../../lib/methods/helpers/openLink';
-import { type IAttachment, type TAnyMessageModel, type TGetCustomEmoji } from '../../definitions';
+import { type IReaction, type IAttachment, type TAnyMessageModel, type TGetCustomEmoji } from '../../definitions';
 import { type IRoomInfoParam } from '../../views/SearchMessagesView';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/constants/keys';
 import { messagesStatus } from '../../lib/constants/messagesStatus';
 import MessageSeparator from '../MessageSeparator';
+import i18n from '../../i18n';
 
 interface IMessageContainerProps {
 	item: TAnyMessageModel;
@@ -39,7 +41,7 @@ interface IMessageContainerProps {
 	highlighted?: boolean;
 	getCustomEmoji: TGetCustomEmoji;
 	onLongPress?: (item: TAnyMessageModel) => void;
-	onReactionPress?: (emoji: string, id: string) => void;
+	onReactionPress?: (emoji: string, id: string) => Promise<boolean>;
 	onEncryptedPress?: () => void;
 	onDiscussionPress?: (item: TAnyMessageModel) => void;
 	onThreadPress?: (item: TAnyMessageModel) => void;
@@ -67,6 +69,8 @@ interface IMessageContainerProps {
 
 interface IMessageContainerState {
 	isManualUnignored: boolean;
+	// for optimistic reaction updates
+	proxyReactions?: IReaction[];
 }
 
 class MessageContainer extends React.Component<IMessageContainerProps, IMessageContainerState> {
@@ -80,7 +84,10 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 		theme: 'light' as TSupportedThemes
 	};
 
-	state = { isManualUnignored: false };
+	/**
+	 * set undefined when we are using value from server
+	 */
+	state = { isManualUnignored: false, proxyReactions: undefined };
 
 	private subscription?: Function;
 
@@ -92,13 +99,14 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 			// experimentalSubscribe(subscriber: (isDeleted: boolean) => void, debugInfo?: any): Unsubscribe
 			// @ts-ignore
 			this.subscription = item.experimentalSubscribe(() => {
-				this.forceUpdate();
+				this.setState({ proxyReactions: undefined });
 			});
 		}
 	}
 
 	shouldComponentUpdate(nextProps: IMessageContainerProps, nextState: IMessageContainerState) {
-		const { isManualUnignored } = this.state;
+		const { isManualUnignored, proxyReactions } = this.state;
+
 		const {
 			threadBadgeColor,
 			isIgnored,
@@ -108,9 +116,18 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 			autoTranslateLanguage,
 			isBeingEdited,
 			showUnreadSeparator,
-			dateSeparator
+			dateSeparator,
+			item
 		} = this.props;
 
+		// optimistic UI updates
+		if (!dequal(nextState.proxyReactions, proxyReactions)) {
+			return true;
+		}
+
+		if (!dequal(nextProps.item.reactions, item.reactions)) {
+			return true;
+		}
 		if (nextProps.showUnreadSeparator !== showUnreadSeparator) {
 			return true;
 		}
@@ -205,11 +222,78 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 		}
 	};
 
-	onReactionPress = (emoji: string) => {
-		const { onReactionPress, item } = this.props;
-		if (onReactionPress) {
-			onReactionPress(emoji, item.id);
+	// proxy reaction utility functions
+	private removeUserFromReaction = (reaction: IReaction, username: string): IReaction | null => {
+		const usernames = reaction.usernames.filter(u => u !== username);
+		const names = usernames;
+
+		if (usernames.length === 0) return null; // remove entirely
+
+		return { ...reaction, usernames, names };
+	};
+
+	private addUserToReaction = (reaction: IReaction, username: string): IReaction => ({
+		...reaction,
+		usernames: [...reaction.usernames, username],
+		names: [...reaction.usernames, username]
+	});
+
+	private toggleReactionInList = (reactions: IReaction[], emoji: string, username: string): IReaction[] => {
+		let updated = [...reactions];
+		const index = updated.findIndex(r => r.emoji === emoji);
+
+		if (index === -1) {
+			// New reaction
+			updated.push({ _id: `${emoji}-${Date.now()}-${Math.random()}`, emoji, usernames: [username], names: [username] });
+			return updated;
 		}
+
+		const alreadyReacted = updated[index].usernames.includes(username);
+
+		if (alreadyReacted) {
+			const next = this.removeUserFromReaction(updated[index], username);
+
+			if (next === null) {
+				updated = updated.filter((_, i) => i !== index);
+				return updated;
+			}
+
+			updated = updated.map((r, i) => (i === index ? next : r));
+			return updated;
+		}
+
+		updated[index] = this.addUserToReaction(updated[index], username);
+		return updated;
+	};
+
+	private applyOptimisticReaction = (emoji: string, username: string) => {
+		this.setState(prev => {
+			const current = prev.proxyReactions ?? this.props.item.reactions ?? [];
+			return { proxyReactions: this.toggleReactionInList(current, emoji, username) };
+		});
+	};
+
+	private rollbackReaction = () => {
+		Alert.alert(i18n.t('Error'), i18n.t('Reaction_Failed'));
+		this.setState({ proxyReactions: undefined });
+	};
+
+	onReactionPress = async (emoji: string) => {
+		const {
+			onReactionPress,
+			item,
+			user: { username }
+		} = this.props;
+		if (!onReactionPress) return;
+
+		// proxy reactions first for instant update
+		this.applyOptimisticReaction(emoji, username);
+
+		// then update on server
+		const success = await onReactionPress(emoji, item.id);
+
+		if (!success) return this.rollbackReaction();
+		if (!this.subscription) this.setState({ proxyReactions: undefined });
 	};
 
 	onReactionLongPress = () => {
@@ -387,7 +471,6 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 			ts,
 			attachments,
 			urls,
-			reactions,
 			t,
 			avatar,
 			emoji,
@@ -412,6 +495,10 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 			comment,
 			pinned
 		} = item;
+
+		// extract reactions later for optimistic updates
+		const serverReactions = item.reactions;
+		const reactions = this.state.proxyReactions ?? serverReactions;
 
 		let message = msg;
 		let isTranslated = false;
