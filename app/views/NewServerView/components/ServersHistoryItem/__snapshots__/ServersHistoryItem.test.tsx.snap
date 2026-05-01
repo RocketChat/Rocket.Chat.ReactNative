@@ -124,173 +124,196 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
     <View
       style={[Function]}
     >
-      <RNGestureHandlerButton
-        activeOpacity={1}
-        collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
-        innerRef={null}
-        onActiveStateChange={[Function]}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        onPress={[Function]}
-        rippleColor="#E4E7EA"
+      <ExternalKeyboardView
+        canBeFocused={true}
+        enableA11yFocus={false}
+        enableContextMenu={false}
+        group={false}
+        haloEffect={true}
+        hasKeyDownPress={false}
+        hasKeyUpPress={true}
+        hasOnFocusChanged={true}
+        lockFocus={0}
+        onContextMenuPress={[Function]}
+        onFocusChange={[Function]}
+        onKeyUpPress={[Function]}
+        orderIndex={-1}
+        screenAutoA11yFocusDelay={300}
         style={
           [
-            {
-              "backgroundColor": "#FFFFFF",
-              "borderRadius": undefined,
-              "margin": undefined,
-              "marginBottom": undefined,
-              "marginEnd": undefined,
-              "marginHorizontal": undefined,
-              "marginLeft": undefined,
-              "marginRight": undefined,
-              "marginStart": undefined,
-              "marginTop": undefined,
-              "marginVertical": undefined,
-            },
-            {
-              "cursor": undefined,
-            },
+            undefined,
+            undefined,
           ]
         }
-        testID="servers-history-https://open.rocket.chat"
-        underlayColor="#E4E7EA"
       >
-        <View
+        <RNGestureHandlerButton
+          activeOpacity={1}
           collapsable={false}
+          delayLongPress={600}
+          enabled={true}
+          handlerTag={-1}
+          handlerType="NativeViewGestureHandler"
+          innerRef={null}
+          onActiveStateChange={[Function]}
+          onGestureHandlerEvent={[Function]}
+          onGestureHandlerStateChange={[Function]}
+          onPress={[Function]}
+          rippleColor="#E4E7EA"
           style={
-            {
-              "backgroundColor": "#E4E7EA",
-              "borderBottomLeftRadius": undefined,
-              "borderBottomRightRadius": undefined,
-              "borderRadius": undefined,
-              "borderTopLeftRadius": undefined,
-              "borderTopRightRadius": undefined,
-              "bottom": 0,
-              "left": 0,
-              "opacity": 0,
-              "position": "absolute",
-              "right": 0,
-              "top": 0,
-            }
-          }
-        />
-        <View
-          accessibilityActions={
             [
               {
-                "label": "Delete",
-                "name": "delete",
+                "backgroundColor": "#FFFFFF",
+                "borderRadius": undefined,
+                "margin": undefined,
+                "marginBottom": undefined,
+                "marginEnd": undefined,
+                "marginHorizontal": undefined,
+                "marginLeft": undefined,
+                "marginRight": undefined,
+                "marginStart": undefined,
+                "marginTop": undefined,
+                "marginVertical": undefined,
+              },
+              {
+                "cursor": undefined,
               },
             ]
           }
-          accessibilityHint="Activate to select server. Available actions: delete"
-          accessibilityLabel="https://open.rocket.chat, john.doe"
-          accessible={true}
-          onAccessibilityAction={[Function]}
-          style={{}}
+          testID="servers-history-https://open.rocket.chat"
+          underlayColor="#E4E7EA"
         >
           <View
+            collapsable={false}
             style={
               {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "minHeight": 56,
-                "padding": 12,
+                "backgroundColor": "#E4E7EA",
+                "borderBottomLeftRadius": undefined,
+                "borderBottomRightRadius": undefined,
+                "borderRadius": undefined,
+                "borderTopLeftRadius": undefined,
+                "borderTopRightRadius": undefined,
+                "bottom": 0,
+                "left": 0,
+                "opacity": 0,
+                "position": "absolute",
+                "right": 0,
+                "top": 0,
               }
             }
+          />
+          <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Delete",
+                  "name": "delete",
+                },
+              ]
+            }
+            accessibilityHint="Activate to select server. Available actions: delete"
+            accessibilityLabel="https://open.rocket.chat, john.doe"
+            accessible={true}
+            onAccessibilityAction={[Function]}
+            style={{}}
           >
-            <ViewManagerAdapter_ExpoImage
-              borderRadius={4}
-              containerViewRef={{"current":"Object"}}
-              contentFit="contain"
-              contentPosition={
-                {
-                  "left": "50%",
-                  "top": "50%",
-                }
-              }
-              height={44}
-              nativeViewRef={{"current":"NativeComponent"}}
-              onError={[Function]}
-              onLoad={[Function]}
-              onLoadStart={[Function]}
-              onProgress={[Function]}
-              placeholder={[]}
-              source={
-                [
-                  {
-                    "uri": "https://open.rocket.chat/images/logo/android-chrome-512x512.png",
-                  },
-                ]
-              }
-              style={
-                {
-                  "borderRadius": 4,
-                  "height": 44,
-                  "width": 44,
-                }
-              }
-              transition={null}
-              width={44}
-            />
             <View
               style={
                 {
-                  "flex": 1,
-                  "flexDirection": "column",
-                  "justifyContent": "center",
-                  "paddingLeft": 12,
-                  "paddingRight": 18,
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "minHeight": 56,
+                  "padding": 12,
                 }
               }
             >
-              <Text
-                numberOfLines={1}
-                style={
+              <ViewManagerAdapter_ExpoImage
+                borderRadius={4}
+                containerViewRef={{"current":"Object"}}
+                contentFit="contain"
+                contentPosition={
+                  {
+                    "left": "50%",
+                    "top": "50%",
+                  }
+                }
+                height={44}
+                nativeViewRef={{"current":"NativeComponent"}}
+                onError={[Function]}
+                onLoad={[Function]}
+                onLoadStart={[Function]}
+                onProgress={[Function]}
+                placeholder={[]}
+                source={
                   [
                     {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontSize": 18,
-                      "fontWeight": "600",
-                      "textAlign": "left",
-                    },
-                    {
-                      "color": "#1F2329",
+                      "uri": "https://open.rocket.chat/images/logo/android-chrome-512x512.png",
                     },
                   ]
                 }
-              >
-                https://open.rocket.chat
-              </Text>
-              <Text
-                numberOfLines={1}
                 style={
-                  [
-                    {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontSize": 16,
-                      "fontWeight": "400",
-                      "textAlign": "left",
-                    },
-                    {
-                      "color": "#6C727A",
-                    },
-                  ]
+                  {
+                    "borderRadius": 4,
+                    "height": 44,
+                    "width": 44,
+                  }
+                }
+                transition={null}
+                width={44}
+              />
+              <View
+                style={
+                  {
+                    "flex": 1,
+                    "flexDirection": "column",
+                    "justifyContent": "center",
+                    "paddingLeft": 12,
+                    "paddingRight": 18,
+                  }
                 }
               >
-                john.doe
-              </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 18,
+                        "fontWeight": "600",
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#1F2329",
+                      },
+                    ]
+                  }
+                >
+                  https://open.rocket.chat
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#6C727A",
+                      },
+                    ]
+                  }
+                >
+                  john.doe
+                </Text>
+              </View>
             </View>
           </View>
-        </View>
-      </RNGestureHandlerButton>
+        </RNGestureHandlerButton>
+      </ExternalKeyboardView>
     </View>
   </View>,
   <View
@@ -415,173 +438,196 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
     <View
       style={[Function]}
     >
-      <RNGestureHandlerButton
-        activeOpacity={1}
-        collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
-        innerRef={null}
-        onActiveStateChange={[Function]}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        onPress={[Function]}
-        rippleColor="#E4E7EA"
+      <ExternalKeyboardView
+        canBeFocused={true}
+        enableA11yFocus={false}
+        enableContextMenu={false}
+        group={false}
+        haloEffect={true}
+        hasKeyDownPress={false}
+        hasKeyUpPress={true}
+        hasOnFocusChanged={true}
+        lockFocus={0}
+        onContextMenuPress={[Function]}
+        onFocusChange={[Function]}
+        onKeyUpPress={[Function]}
+        orderIndex={-1}
+        screenAutoA11yFocusDelay={300}
         style={
           [
-            {
-              "backgroundColor": "#FFFFFF",
-              "borderRadius": undefined,
-              "margin": undefined,
-              "marginBottom": undefined,
-              "marginEnd": undefined,
-              "marginHorizontal": undefined,
-              "marginLeft": undefined,
-              "marginRight": undefined,
-              "marginStart": undefined,
-              "marginTop": undefined,
-              "marginVertical": undefined,
-            },
-            {
-              "cursor": undefined,
-            },
+            undefined,
+            undefined,
           ]
         }
-        testID="servers-history-https://superlongservername.tologintoasuperlongservername.rocket.chat"
-        underlayColor="#E4E7EA"
       >
-        <View
+        <RNGestureHandlerButton
+          activeOpacity={1}
           collapsable={false}
+          delayLongPress={600}
+          enabled={true}
+          handlerTag={-1}
+          handlerType="NativeViewGestureHandler"
+          innerRef={null}
+          onActiveStateChange={[Function]}
+          onGestureHandlerEvent={[Function]}
+          onGestureHandlerStateChange={[Function]}
+          onPress={[Function]}
+          rippleColor="#E4E7EA"
           style={
-            {
-              "backgroundColor": "#E4E7EA",
-              "borderBottomLeftRadius": undefined,
-              "borderBottomRightRadius": undefined,
-              "borderRadius": undefined,
-              "borderTopLeftRadius": undefined,
-              "borderTopRightRadius": undefined,
-              "bottom": 0,
-              "left": 0,
-              "opacity": 0,
-              "position": "absolute",
-              "right": 0,
-              "top": 0,
-            }
-          }
-        />
-        <View
-          accessibilityActions={
             [
               {
-                "label": "Delete",
-                "name": "delete",
+                "backgroundColor": "#FFFFFF",
+                "borderRadius": undefined,
+                "margin": undefined,
+                "marginBottom": undefined,
+                "marginEnd": undefined,
+                "marginHorizontal": undefined,
+                "marginLeft": undefined,
+                "marginRight": undefined,
+                "marginStart": undefined,
+                "marginTop": undefined,
+                "marginVertical": undefined,
+              },
+              {
+                "cursor": undefined,
               },
             ]
           }
-          accessibilityHint="Activate to select server. Available actions: delete"
-          accessibilityLabel="https://superlongservername.tologintoasuperlongservername.rocket.chat, very.long.username.here"
-          accessible={true}
-          onAccessibilityAction={[Function]}
-          style={{}}
+          testID="servers-history-https://superlongservername.tologintoasuperlongservername.rocket.chat"
+          underlayColor="#E4E7EA"
         >
           <View
+            collapsable={false}
             style={
               {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "minHeight": 56,
-                "padding": 12,
+                "backgroundColor": "#E4E7EA",
+                "borderBottomLeftRadius": undefined,
+                "borderBottomRightRadius": undefined,
+                "borderRadius": undefined,
+                "borderTopLeftRadius": undefined,
+                "borderTopRightRadius": undefined,
+                "bottom": 0,
+                "left": 0,
+                "opacity": 0,
+                "position": "absolute",
+                "right": 0,
+                "top": 0,
               }
             }
+          />
+          <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Delete",
+                  "name": "delete",
+                },
+              ]
+            }
+            accessibilityHint="Activate to select server. Available actions: delete"
+            accessibilityLabel="https://superlongservername.tologintoasuperlongservername.rocket.chat, very.long.username.here"
+            accessible={true}
+            onAccessibilityAction={[Function]}
+            style={{}}
           >
-            <ViewManagerAdapter_ExpoImage
-              borderRadius={4}
-              containerViewRef={{"current":"Object"}}
-              contentFit="contain"
-              contentPosition={
-                {
-                  "left": "50%",
-                  "top": "50%",
-                }
-              }
-              height={44}
-              nativeViewRef={{"current":"NativeComponent"}}
-              onError={[Function]}
-              onLoad={[Function]}
-              onLoadStart={[Function]}
-              onProgress={[Function]}
-              placeholder={[]}
-              source={
-                [
-                  {
-                    "uri": "https://open.rocket.chat/images/logo/android-chrome-512x512.png",
-                  },
-                ]
-              }
-              style={
-                {
-                  "borderRadius": 4,
-                  "height": 44,
-                  "width": 44,
-                }
-              }
-              transition={null}
-              width={44}
-            />
             <View
               style={
                 {
-                  "flex": 1,
-                  "flexDirection": "column",
-                  "justifyContent": "center",
-                  "paddingLeft": 12,
-                  "paddingRight": 18,
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "minHeight": 56,
+                  "padding": 12,
                 }
               }
             >
-              <Text
-                numberOfLines={1}
-                style={
+              <ViewManagerAdapter_ExpoImage
+                borderRadius={4}
+                containerViewRef={{"current":"Object"}}
+                contentFit="contain"
+                contentPosition={
+                  {
+                    "left": "50%",
+                    "top": "50%",
+                  }
+                }
+                height={44}
+                nativeViewRef={{"current":"NativeComponent"}}
+                onError={[Function]}
+                onLoad={[Function]}
+                onLoadStart={[Function]}
+                onProgress={[Function]}
+                placeholder={[]}
+                source={
                   [
                     {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontSize": 18,
-                      "fontWeight": "600",
-                      "textAlign": "left",
-                    },
-                    {
-                      "color": "#1F2329",
+                      "uri": "https://open.rocket.chat/images/logo/android-chrome-512x512.png",
                     },
                   ]
                 }
-              >
-                https://superlongservername.tologintoasuperlongservername.rocket.chat
-              </Text>
-              <Text
-                numberOfLines={1}
                 style={
-                  [
-                    {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontSize": 16,
-                      "fontWeight": "400",
-                      "textAlign": "left",
-                    },
-                    {
-                      "color": "#6C727A",
-                    },
-                  ]
+                  {
+                    "borderRadius": 4,
+                    "height": 44,
+                    "width": 44,
+                  }
+                }
+                transition={null}
+                width={44}
+              />
+              <View
+                style={
+                  {
+                    "flex": 1,
+                    "flexDirection": "column",
+                    "justifyContent": "center",
+                    "paddingLeft": 12,
+                    "paddingRight": 18,
+                  }
                 }
               >
-                very.long.username.here
-              </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 18,
+                        "fontWeight": "600",
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#1F2329",
+                      },
+                    ]
+                  }
+                >
+                  https://superlongservername.tologintoasuperlongservername.rocket.chat
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#6C727A",
+                      },
+                    ]
+                  }
+                >
+                  very.long.username.here
+                </Text>
+              </View>
             </View>
           </View>
-        </View>
-      </RNGestureHandlerButton>
+        </RNGestureHandlerButton>
+      </ExternalKeyboardView>
     </View>
   </View>,
   <View
@@ -706,173 +752,196 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
     <View
       style={[Function]}
     >
-      <RNGestureHandlerButton
-        activeOpacity={1}
-        collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
-        innerRef={null}
-        onActiveStateChange={[Function]}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        onPress={[Function]}
-        rippleColor="#E4E7EA"
+      <ExternalKeyboardView
+        canBeFocused={true}
+        enableA11yFocus={false}
+        enableContextMenu={false}
+        group={false}
+        haloEffect={true}
+        hasKeyDownPress={false}
+        hasKeyUpPress={true}
+        hasOnFocusChanged={true}
+        lockFocus={0}
+        onContextMenuPress={[Function]}
+        onFocusChange={[Function]}
+        onKeyUpPress={[Function]}
+        orderIndex={-1}
+        screenAutoA11yFocusDelay={300}
         style={
           [
-            {
-              "backgroundColor": "#FFFFFF",
-              "borderRadius": undefined,
-              "margin": undefined,
-              "marginBottom": undefined,
-              "marginEnd": undefined,
-              "marginHorizontal": undefined,
-              "marginLeft": undefined,
-              "marginRight": undefined,
-              "marginStart": undefined,
-              "marginTop": undefined,
-              "marginVertical": undefined,
-            },
-            {
-              "cursor": undefined,
-            },
+            undefined,
+            undefined,
           ]
         }
-        testID="servers-history-https://stable.rocket.chat"
-        underlayColor="#E4E7EA"
       >
-        <View
+        <RNGestureHandlerButton
+          activeOpacity={1}
           collapsable={false}
+          delayLongPress={600}
+          enabled={true}
+          handlerTag={-1}
+          handlerType="NativeViewGestureHandler"
+          innerRef={null}
+          onActiveStateChange={[Function]}
+          onGestureHandlerEvent={[Function]}
+          onGestureHandlerStateChange={[Function]}
+          onPress={[Function]}
+          rippleColor="#E4E7EA"
           style={
-            {
-              "backgroundColor": "#E4E7EA",
-              "borderBottomLeftRadius": undefined,
-              "borderBottomRightRadius": undefined,
-              "borderRadius": undefined,
-              "borderTopLeftRadius": undefined,
-              "borderTopRightRadius": undefined,
-              "bottom": 0,
-              "left": 0,
-              "opacity": 0,
-              "position": "absolute",
-              "right": 0,
-              "top": 0,
-            }
-          }
-        />
-        <View
-          accessibilityActions={
             [
               {
-                "label": "Delete",
-                "name": "delete",
+                "backgroundColor": "#FFFFFF",
+                "borderRadius": undefined,
+                "margin": undefined,
+                "marginBottom": undefined,
+                "marginEnd": undefined,
+                "marginHorizontal": undefined,
+                "marginLeft": undefined,
+                "marginRight": undefined,
+                "marginStart": undefined,
+                "marginTop": undefined,
+                "marginVertical": undefined,
+              },
+              {
+                "cursor": undefined,
               },
             ]
           }
-          accessibilityHint="Activate to select server. Available actions: delete"
-          accessibilityLabel="https://stable.rocket.chat, admin"
-          accessible={true}
-          onAccessibilityAction={[Function]}
-          style={{}}
+          testID="servers-history-https://stable.rocket.chat"
+          underlayColor="#E4E7EA"
         >
           <View
+            collapsable={false}
             style={
               {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "minHeight": 56,
-                "padding": 12,
+                "backgroundColor": "#E4E7EA",
+                "borderBottomLeftRadius": undefined,
+                "borderBottomRightRadius": undefined,
+                "borderRadius": undefined,
+                "borderTopLeftRadius": undefined,
+                "borderTopRightRadius": undefined,
+                "bottom": 0,
+                "left": 0,
+                "opacity": 0,
+                "position": "absolute",
+                "right": 0,
+                "top": 0,
               }
             }
+          />
+          <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Delete",
+                  "name": "delete",
+                },
+              ]
+            }
+            accessibilityHint="Activate to select server. Available actions: delete"
+            accessibilityLabel="https://stable.rocket.chat, admin"
+            accessible={true}
+            onAccessibilityAction={[Function]}
+            style={{}}
           >
-            <ViewManagerAdapter_ExpoImage
-              borderRadius={4}
-              containerViewRef={{"current":"Object"}}
-              contentFit="contain"
-              contentPosition={
-                {
-                  "left": "50%",
-                  "top": "50%",
-                }
-              }
-              height={44}
-              nativeViewRef={{"current":"NativeComponent"}}
-              onError={[Function]}
-              onLoad={[Function]}
-              onLoadStart={[Function]}
-              onProgress={[Function]}
-              placeholder={[]}
-              source={
-                [
-                  {
-                    "uri": "test-file-stub",
-                  },
-                ]
-              }
-              style={
-                {
-                  "borderRadius": 4,
-                  "height": 44,
-                  "width": 44,
-                }
-              }
-              transition={null}
-              width={44}
-            />
             <View
               style={
                 {
-                  "flex": 1,
-                  "flexDirection": "column",
-                  "justifyContent": "center",
-                  "paddingLeft": 12,
-                  "paddingRight": 18,
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "minHeight": 56,
+                  "padding": 12,
                 }
               }
             >
-              <Text
-                numberOfLines={1}
-                style={
+              <ViewManagerAdapter_ExpoImage
+                borderRadius={4}
+                containerViewRef={{"current":"Object"}}
+                contentFit="contain"
+                contentPosition={
+                  {
+                    "left": "50%",
+                    "top": "50%",
+                  }
+                }
+                height={44}
+                nativeViewRef={{"current":"NativeComponent"}}
+                onError={[Function]}
+                onLoad={[Function]}
+                onLoadStart={[Function]}
+                onProgress={[Function]}
+                placeholder={[]}
+                source={
                   [
                     {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontSize": 18,
-                      "fontWeight": "600",
-                      "textAlign": "left",
-                    },
-                    {
-                      "color": "#1F2329",
+                      "uri": "test-file-stub",
                     },
                   ]
                 }
-              >
-                https://stable.rocket.chat
-              </Text>
-              <Text
-                numberOfLines={1}
                 style={
-                  [
-                    {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontSize": 16,
-                      "fontWeight": "400",
-                      "textAlign": "left",
-                    },
-                    {
-                      "color": "#6C727A",
-                    },
-                  ]
+                  {
+                    "borderRadius": 4,
+                    "height": 44,
+                    "width": 44,
+                  }
+                }
+                transition={null}
+                width={44}
+              />
+              <View
+                style={
+                  {
+                    "flex": 1,
+                    "flexDirection": "column",
+                    "justifyContent": "center",
+                    "paddingLeft": 12,
+                    "paddingRight": 18,
+                  }
                 }
               >
-                admin
-              </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 18,
+                        "fontWeight": "600",
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#1F2329",
+                      },
+                    ]
+                  }
+                >
+                  https://stable.rocket.chat
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#6C727A",
+                      },
+                    ]
+                  }
+                >
+                  admin
+                </Text>
+              </View>
             </View>
           </View>
-        </View>
-      </RNGestureHandlerButton>
+        </RNGestureHandlerButton>
+      </ExternalKeyboardView>
     </View>
   </View>,
 ]
@@ -1002,173 +1071,196 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
     <View
       style={[Function]}
     >
-      <RNGestureHandlerButton
-        activeOpacity={1}
-        collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
-        innerRef={null}
-        onActiveStateChange={[Function]}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        onPress={[Function]}
-        rippleColor="#E4E7EA"
+      <ExternalKeyboardView
+        canBeFocused={true}
+        enableA11yFocus={false}
+        enableContextMenu={false}
+        group={false}
+        haloEffect={true}
+        hasKeyDownPress={false}
+        hasKeyUpPress={true}
+        hasOnFocusChanged={true}
+        lockFocus={0}
+        onContextMenuPress={[Function]}
+        onFocusChange={[Function]}
+        onKeyUpPress={[Function]}
+        orderIndex={-1}
+        screenAutoA11yFocusDelay={300}
         style={
           [
-            {
-              "backgroundColor": "#FFFFFF",
-              "borderRadius": undefined,
-              "margin": undefined,
-              "marginBottom": undefined,
-              "marginEnd": undefined,
-              "marginHorizontal": undefined,
-              "marginLeft": undefined,
-              "marginRight": undefined,
-              "marginStart": undefined,
-              "marginTop": undefined,
-              "marginVertical": undefined,
-            },
-            {
-              "cursor": undefined,
-            },
+            undefined,
+            undefined,
           ]
         }
-        testID="servers-history-https://open.rocket.chat"
-        underlayColor="#E4E7EA"
       >
-        <View
+        <RNGestureHandlerButton
+          activeOpacity={1}
           collapsable={false}
+          delayLongPress={600}
+          enabled={true}
+          handlerTag={-1}
+          handlerType="NativeViewGestureHandler"
+          innerRef={null}
+          onActiveStateChange={[Function]}
+          onGestureHandlerEvent={[Function]}
+          onGestureHandlerStateChange={[Function]}
+          onPress={[Function]}
+          rippleColor="#E4E7EA"
           style={
-            {
-              "backgroundColor": "#E4E7EA",
-              "borderBottomLeftRadius": undefined,
-              "borderBottomRightRadius": undefined,
-              "borderRadius": undefined,
-              "borderTopLeftRadius": undefined,
-              "borderTopRightRadius": undefined,
-              "bottom": 0,
-              "left": 0,
-              "opacity": 0,
-              "position": "absolute",
-              "right": 0,
-              "top": 0,
-            }
-          }
-        />
-        <View
-          accessibilityActions={
             [
               {
-                "label": "Delete",
-                "name": "delete",
+                "backgroundColor": "#FFFFFF",
+                "borderRadius": undefined,
+                "margin": undefined,
+                "marginBottom": undefined,
+                "marginEnd": undefined,
+                "marginHorizontal": undefined,
+                "marginLeft": undefined,
+                "marginRight": undefined,
+                "marginStart": undefined,
+                "marginTop": undefined,
+                "marginVertical": undefined,
+              },
+              {
+                "cursor": undefined,
               },
             ]
           }
-          accessibilityHint="Activate to select server. Available actions: delete"
-          accessibilityLabel="https://open.rocket.chat, john.doe"
-          accessible={true}
-          onAccessibilityAction={[Function]}
-          style={{}}
+          testID="servers-history-https://open.rocket.chat"
+          underlayColor="#E4E7EA"
         >
           <View
+            collapsable={false}
             style={
               {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "minHeight": 56,
-                "padding": 12,
+                "backgroundColor": "#E4E7EA",
+                "borderBottomLeftRadius": undefined,
+                "borderBottomRightRadius": undefined,
+                "borderRadius": undefined,
+                "borderTopLeftRadius": undefined,
+                "borderTopRightRadius": undefined,
+                "bottom": 0,
+                "left": 0,
+                "opacity": 0,
+                "position": "absolute",
+                "right": 0,
+                "top": 0,
               }
             }
+          />
+          <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Delete",
+                  "name": "delete",
+                },
+              ]
+            }
+            accessibilityHint="Activate to select server. Available actions: delete"
+            accessibilityLabel="https://open.rocket.chat, john.doe"
+            accessible={true}
+            onAccessibilityAction={[Function]}
+            style={{}}
           >
-            <ViewManagerAdapter_ExpoImage
-              borderRadius={4}
-              containerViewRef={{"current":"Object"}}
-              contentFit="contain"
-              contentPosition={
-                {
-                  "left": "50%",
-                  "top": "50%",
-                }
-              }
-              height={44}
-              nativeViewRef={{"current":"NativeComponent"}}
-              onError={[Function]}
-              onLoad={[Function]}
-              onLoadStart={[Function]}
-              onProgress={[Function]}
-              placeholder={[]}
-              source={
-                [
-                  {
-                    "uri": "https://open.rocket.chat/images/logo/android-chrome-512x512.png",
-                  },
-                ]
-              }
-              style={
-                {
-                  "borderRadius": 4,
-                  "height": 44,
-                  "width": 44,
-                }
-              }
-              transition={null}
-              width={44}
-            />
             <View
               style={
                 {
-                  "flex": 1,
-                  "flexDirection": "column",
-                  "justifyContent": "center",
-                  "paddingLeft": 12,
-                  "paddingRight": 18,
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "minHeight": 56,
+                  "padding": 12,
                 }
               }
             >
-              <Text
-                numberOfLines={1}
-                style={
+              <ViewManagerAdapter_ExpoImage
+                borderRadius={4}
+                containerViewRef={{"current":"Object"}}
+                contentFit="contain"
+                contentPosition={
+                  {
+                    "left": "50%",
+                    "top": "50%",
+                  }
+                }
+                height={44}
+                nativeViewRef={{"current":"NativeComponent"}}
+                onError={[Function]}
+                onLoad={[Function]}
+                onLoadStart={[Function]}
+                onProgress={[Function]}
+                placeholder={[]}
+                source={
                   [
                     {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontSize": 18,
-                      "fontWeight": "600",
-                      "textAlign": "left",
-                    },
-                    {
-                      "color": "#1F2329",
+                      "uri": "https://open.rocket.chat/images/logo/android-chrome-512x512.png",
                     },
                   ]
                 }
-              >
-                https://open.rocket.chat
-              </Text>
-              <Text
-                numberOfLines={1}
                 style={
-                  [
-                    {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontSize": 16,
-                      "fontWeight": "400",
-                      "textAlign": "left",
-                    },
-                    {
-                      "color": "#6C727A",
-                    },
-                  ]
+                  {
+                    "borderRadius": 4,
+                    "height": 44,
+                    "width": 44,
+                  }
+                }
+                transition={null}
+                width={44}
+              />
+              <View
+                style={
+                  {
+                    "flex": 1,
+                    "flexDirection": "column",
+                    "justifyContent": "center",
+                    "paddingLeft": 12,
+                    "paddingRight": 18,
+                  }
                 }
               >
-                john.doe
-              </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 18,
+                        "fontWeight": "600",
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#1F2329",
+                      },
+                    ]
+                  }
+                >
+                  https://open.rocket.chat
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#6C727A",
+                      },
+                    ]
+                  }
+                >
+                  john.doe
+                </Text>
+              </View>
             </View>
           </View>
-        </View>
-      </RNGestureHandlerButton>
+        </RNGestureHandlerButton>
+      </ExternalKeyboardView>
     </View>
   </View>,
   <View
@@ -1293,173 +1385,196 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
     <View
       style={[Function]}
     >
-      <RNGestureHandlerButton
-        activeOpacity={1}
-        collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
-        innerRef={null}
-        onActiveStateChange={[Function]}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        onPress={[Function]}
-        rippleColor="#E4E7EA"
+      <ExternalKeyboardView
+        canBeFocused={true}
+        enableA11yFocus={false}
+        enableContextMenu={false}
+        group={false}
+        haloEffect={true}
+        hasKeyDownPress={false}
+        hasKeyUpPress={true}
+        hasOnFocusChanged={true}
+        lockFocus={0}
+        onContextMenuPress={[Function]}
+        onFocusChange={[Function]}
+        onKeyUpPress={[Function]}
+        orderIndex={-1}
+        screenAutoA11yFocusDelay={300}
         style={
           [
-            {
-              "backgroundColor": "#FFFFFF",
-              "borderRadius": undefined,
-              "margin": undefined,
-              "marginBottom": undefined,
-              "marginEnd": undefined,
-              "marginHorizontal": undefined,
-              "marginLeft": undefined,
-              "marginRight": undefined,
-              "marginStart": undefined,
-              "marginTop": undefined,
-              "marginVertical": undefined,
-            },
-            {
-              "cursor": undefined,
-            },
+            undefined,
+            undefined,
           ]
         }
-        testID="servers-history-https://example.com"
-        underlayColor="#E4E7EA"
       >
-        <View
+        <RNGestureHandlerButton
+          activeOpacity={1}
           collapsable={false}
+          delayLongPress={600}
+          enabled={true}
+          handlerTag={-1}
+          handlerType="NativeViewGestureHandler"
+          innerRef={null}
+          onActiveStateChange={[Function]}
+          onGestureHandlerEvent={[Function]}
+          onGestureHandlerStateChange={[Function]}
+          onPress={[Function]}
+          rippleColor="#E4E7EA"
           style={
-            {
-              "backgroundColor": "#E4E7EA",
-              "borderBottomLeftRadius": undefined,
-              "borderBottomRightRadius": undefined,
-              "borderRadius": undefined,
-              "borderTopLeftRadius": undefined,
-              "borderTopRightRadius": undefined,
-              "bottom": 0,
-              "left": 0,
-              "opacity": 0,
-              "position": "absolute",
-              "right": 0,
-              "top": 0,
-            }
-          }
-        />
-        <View
-          accessibilityActions={
             [
               {
-                "label": "Delete",
-                "name": "delete",
+                "backgroundColor": "#FFFFFF",
+                "borderRadius": undefined,
+                "margin": undefined,
+                "marginBottom": undefined,
+                "marginEnd": undefined,
+                "marginHorizontal": undefined,
+                "marginLeft": undefined,
+                "marginRight": undefined,
+                "marginStart": undefined,
+                "marginTop": undefined,
+                "marginVertical": undefined,
+              },
+              {
+                "cursor": undefined,
               },
             ]
           }
-          accessibilityHint="Activate to select server. Available actions: delete"
-          accessibilityLabel="https://example.com, user123"
-          accessible={true}
-          onAccessibilityAction={[Function]}
-          style={{}}
+          testID="servers-history-https://example.com"
+          underlayColor="#E4E7EA"
         >
           <View
+            collapsable={false}
             style={
               {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "minHeight": 56,
-                "padding": 12,
+                "backgroundColor": "#E4E7EA",
+                "borderBottomLeftRadius": undefined,
+                "borderBottomRightRadius": undefined,
+                "borderRadius": undefined,
+                "borderTopLeftRadius": undefined,
+                "borderTopRightRadius": undefined,
+                "bottom": 0,
+                "left": 0,
+                "opacity": 0,
+                "position": "absolute",
+                "right": 0,
+                "top": 0,
               }
             }
+          />
+          <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Delete",
+                  "name": "delete",
+                },
+              ]
+            }
+            accessibilityHint="Activate to select server. Available actions: delete"
+            accessibilityLabel="https://example.com, user123"
+            accessible={true}
+            onAccessibilityAction={[Function]}
+            style={{}}
           >
-            <ViewManagerAdapter_ExpoImage
-              borderRadius={4}
-              containerViewRef={{"current":"Object"}}
-              contentFit="contain"
-              contentPosition={
-                {
-                  "left": "50%",
-                  "top": "50%",
-                }
-              }
-              height={44}
-              nativeViewRef={{"current":"NativeComponent"}}
-              onError={[Function]}
-              onLoad={[Function]}
-              onLoadStart={[Function]}
-              onProgress={[Function]}
-              placeholder={[]}
-              source={
-                [
-                  {
-                    "uri": "https://open.rocket.chat/images/logo/android-chrome-512x512.png",
-                  },
-                ]
-              }
-              style={
-                {
-                  "borderRadius": 4,
-                  "height": 44,
-                  "width": 44,
-                }
-              }
-              transition={null}
-              width={44}
-            />
             <View
               style={
                 {
-                  "flex": 1,
-                  "flexDirection": "column",
-                  "justifyContent": "center",
-                  "paddingLeft": 12,
-                  "paddingRight": 18,
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "minHeight": 56,
+                  "padding": 12,
                 }
               }
             >
-              <Text
-                numberOfLines={1}
-                style={
+              <ViewManagerAdapter_ExpoImage
+                borderRadius={4}
+                containerViewRef={{"current":"Object"}}
+                contentFit="contain"
+                contentPosition={
+                  {
+                    "left": "50%",
+                    "top": "50%",
+                  }
+                }
+                height={44}
+                nativeViewRef={{"current":"NativeComponent"}}
+                onError={[Function]}
+                onLoad={[Function]}
+                onLoadStart={[Function]}
+                onProgress={[Function]}
+                placeholder={[]}
+                source={
                   [
                     {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontSize": 18,
-                      "fontWeight": "600",
-                      "textAlign": "left",
-                    },
-                    {
-                      "color": "#1F2329",
+                      "uri": "https://open.rocket.chat/images/logo/android-chrome-512x512.png",
                     },
                   ]
                 }
-              >
-                https://example.com
-              </Text>
-              <Text
-                numberOfLines={1}
                 style={
-                  [
-                    {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontSize": 16,
-                      "fontWeight": "400",
-                      "textAlign": "left",
-                    },
-                    {
-                      "color": "#6C727A",
-                    },
-                  ]
+                  {
+                    "borderRadius": 4,
+                    "height": 44,
+                    "width": 44,
+                  }
+                }
+                transition={null}
+                width={44}
+              />
+              <View
+                style={
+                  {
+                    "flex": 1,
+                    "flexDirection": "column",
+                    "justifyContent": "center",
+                    "paddingLeft": 12,
+                    "paddingRight": 18,
+                  }
                 }
               >
-                user123
-              </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 18,
+                        "fontWeight": "600",
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#1F2329",
+                      },
+                    ]
+                  }
+                >
+                  https://example.com
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#6C727A",
+                      },
+                    ]
+                  }
+                >
+                  user123
+                </Text>
+              </View>
             </View>
           </View>
-        </View>
-      </RNGestureHandlerButton>
+        </RNGestureHandlerButton>
+      </ExternalKeyboardView>
     </View>
   </View>,
 ]
@@ -1589,173 +1704,196 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
     <View
       style={[Function]}
     >
-      <RNGestureHandlerButton
-        activeOpacity={1}
-        collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
-        innerRef={null}
-        onActiveStateChange={[Function]}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        onPress={[Function]}
-        rippleColor="#E4E7EA"
+      <ExternalKeyboardView
+        canBeFocused={true}
+        enableA11yFocus={false}
+        enableContextMenu={false}
+        group={false}
+        haloEffect={true}
+        hasKeyDownPress={false}
+        hasKeyUpPress={true}
+        hasOnFocusChanged={true}
+        lockFocus={0}
+        onContextMenuPress={[Function]}
+        onFocusChange={[Function]}
+        onKeyUpPress={[Function]}
+        orderIndex={-1}
+        screenAutoA11yFocusDelay={300}
         style={
           [
-            {
-              "backgroundColor": "#FFFFFF",
-              "borderRadius": undefined,
-              "margin": undefined,
-              "marginBottom": undefined,
-              "marginEnd": undefined,
-              "marginHorizontal": undefined,
-              "marginLeft": undefined,
-              "marginRight": undefined,
-              "marginStart": undefined,
-              "marginTop": undefined,
-              "marginVertical": undefined,
-            },
-            {
-              "cursor": undefined,
-            },
+            undefined,
+            undefined,
           ]
         }
-        testID="servers-history-https://open.rocket.chat"
-        underlayColor="#E4E7EA"
       >
-        <View
+        <RNGestureHandlerButton
+          activeOpacity={1}
           collapsable={false}
+          delayLongPress={600}
+          enabled={true}
+          handlerTag={-1}
+          handlerType="NativeViewGestureHandler"
+          innerRef={null}
+          onActiveStateChange={[Function]}
+          onGestureHandlerEvent={[Function]}
+          onGestureHandlerStateChange={[Function]}
+          onPress={[Function]}
+          rippleColor="#E4E7EA"
           style={
-            {
-              "backgroundColor": "#E4E7EA",
-              "borderBottomLeftRadius": undefined,
-              "borderBottomRightRadius": undefined,
-              "borderRadius": undefined,
-              "borderTopLeftRadius": undefined,
-              "borderTopRightRadius": undefined,
-              "bottom": 0,
-              "left": 0,
-              "opacity": 0,
-              "position": "absolute",
-              "right": 0,
-              "top": 0,
-            }
-          }
-        />
-        <View
-          accessibilityActions={
             [
               {
-                "label": "Delete",
-                "name": "delete",
+                "backgroundColor": "#FFFFFF",
+                "borderRadius": undefined,
+                "margin": undefined,
+                "marginBottom": undefined,
+                "marginEnd": undefined,
+                "marginHorizontal": undefined,
+                "marginLeft": undefined,
+                "marginRight": undefined,
+                "marginStart": undefined,
+                "marginTop": undefined,
+                "marginVertical": undefined,
+              },
+              {
+                "cursor": undefined,
               },
             ]
           }
-          accessibilityHint="Activate to select server. Available actions: delete"
-          accessibilityLabel="https://open.rocket.chat, john.doe"
-          accessible={true}
-          onAccessibilityAction={[Function]}
-          style={{}}
+          testID="servers-history-https://open.rocket.chat"
+          underlayColor="#E4E7EA"
         >
           <View
+            collapsable={false}
             style={
               {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "minHeight": 56,
-                "padding": 12,
+                "backgroundColor": "#E4E7EA",
+                "borderBottomLeftRadius": undefined,
+                "borderBottomRightRadius": undefined,
+                "borderRadius": undefined,
+                "borderTopLeftRadius": undefined,
+                "borderTopRightRadius": undefined,
+                "bottom": 0,
+                "left": 0,
+                "opacity": 0,
+                "position": "absolute",
+                "right": 0,
+                "top": 0,
               }
             }
+          />
+          <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Delete",
+                  "name": "delete",
+                },
+              ]
+            }
+            accessibilityHint="Activate to select server. Available actions: delete"
+            accessibilityLabel="https://open.rocket.chat, john.doe"
+            accessible={true}
+            onAccessibilityAction={[Function]}
+            style={{}}
           >
-            <ViewManagerAdapter_ExpoImage
-              borderRadius={4}
-              containerViewRef={{"current":"Object"}}
-              contentFit="contain"
-              contentPosition={
-                {
-                  "left": "50%",
-                  "top": "50%",
-                }
-              }
-              height={44}
-              nativeViewRef={{"current":"NativeComponent"}}
-              onError={[Function]}
-              onLoad={[Function]}
-              onLoadStart={[Function]}
-              onProgress={[Function]}
-              placeholder={[]}
-              source={
-                [
-                  {
-                    "uri": "https://open.rocket.chat/images/logo/android-chrome-512x512.png",
-                  },
-                ]
-              }
-              style={
-                {
-                  "borderRadius": 4,
-                  "height": 44,
-                  "width": 44,
-                }
-              }
-              transition={null}
-              width={44}
-            />
             <View
               style={
                 {
-                  "flex": 1,
-                  "flexDirection": "column",
-                  "justifyContent": "center",
-                  "paddingLeft": 12,
-                  "paddingRight": 18,
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "minHeight": 56,
+                  "padding": 12,
                 }
               }
             >
-              <Text
-                numberOfLines={1}
-                style={
+              <ViewManagerAdapter_ExpoImage
+                borderRadius={4}
+                containerViewRef={{"current":"Object"}}
+                contentFit="contain"
+                contentPosition={
+                  {
+                    "left": "50%",
+                    "top": "50%",
+                  }
+                }
+                height={44}
+                nativeViewRef={{"current":"NativeComponent"}}
+                onError={[Function]}
+                onLoad={[Function]}
+                onLoadStart={[Function]}
+                onProgress={[Function]}
+                placeholder={[]}
+                source={
                   [
                     {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontSize": 18,
-                      "fontWeight": "600",
-                      "textAlign": "left",
-                    },
-                    {
-                      "color": "#1F2329",
+                      "uri": "https://open.rocket.chat/images/logo/android-chrome-512x512.png",
                     },
                   ]
                 }
-              >
-                https://open.rocket.chat
-              </Text>
-              <Text
-                numberOfLines={1}
                 style={
-                  [
-                    {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontSize": 16,
-                      "fontWeight": "400",
-                      "textAlign": "left",
-                    },
-                    {
-                      "color": "#6C727A",
-                    },
-                  ]
+                  {
+                    "borderRadius": 4,
+                    "height": 44,
+                    "width": 44,
+                  }
+                }
+                transition={null}
+                width={44}
+              />
+              <View
+                style={
+                  {
+                    "flex": 1,
+                    "flexDirection": "column",
+                    "justifyContent": "center",
+                    "paddingLeft": 12,
+                    "paddingRight": 18,
+                  }
                 }
               >
-                john.doe
-              </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 18,
+                        "fontWeight": "600",
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#1F2329",
+                      },
+                    ]
+                  }
+                >
+                  https://open.rocket.chat
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#6C727A",
+                      },
+                    ]
+                  }
+                >
+                  john.doe
+                </Text>
+              </View>
             </View>
           </View>
-        </View>
-      </RNGestureHandlerButton>
+        </RNGestureHandlerButton>
+      </ExternalKeyboardView>
     </View>
   </View>,
   <View
@@ -1880,173 +2018,196 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
     <View
       style={[Function]}
     >
-      <RNGestureHandlerButton
-        activeOpacity={1}
-        collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
-        innerRef={null}
-        onActiveStateChange={[Function]}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        onPress={[Function]}
-        rippleColor="#2D3039"
+      <ExternalKeyboardView
+        canBeFocused={true}
+        enableA11yFocus={false}
+        enableContextMenu={false}
+        group={false}
+        haloEffect={true}
+        hasKeyDownPress={false}
+        hasKeyUpPress={true}
+        hasOnFocusChanged={true}
+        lockFocus={0}
+        onContextMenuPress={[Function]}
+        onFocusChange={[Function]}
+        onKeyUpPress={[Function]}
+        orderIndex={-1}
+        screenAutoA11yFocusDelay={300}
         style={
           [
-            {
-              "backgroundColor": "#262931",
-              "borderRadius": undefined,
-              "margin": undefined,
-              "marginBottom": undefined,
-              "marginEnd": undefined,
-              "marginHorizontal": undefined,
-              "marginLeft": undefined,
-              "marginRight": undefined,
-              "marginStart": undefined,
-              "marginTop": undefined,
-              "marginVertical": undefined,
-            },
-            {
-              "cursor": undefined,
-            },
+            undefined,
+            undefined,
           ]
         }
-        testID="servers-history-https://open.rocket.chat"
-        underlayColor="#2D3039"
       >
-        <View
+        <RNGestureHandlerButton
+          activeOpacity={1}
           collapsable={false}
+          delayLongPress={600}
+          enabled={true}
+          handlerTag={-1}
+          handlerType="NativeViewGestureHandler"
+          innerRef={null}
+          onActiveStateChange={[Function]}
+          onGestureHandlerEvent={[Function]}
+          onGestureHandlerStateChange={[Function]}
+          onPress={[Function]}
+          rippleColor="#2D3039"
           style={
-            {
-              "backgroundColor": "#2D3039",
-              "borderBottomLeftRadius": undefined,
-              "borderBottomRightRadius": undefined,
-              "borderRadius": undefined,
-              "borderTopLeftRadius": undefined,
-              "borderTopRightRadius": undefined,
-              "bottom": 0,
-              "left": 0,
-              "opacity": 0,
-              "position": "absolute",
-              "right": 0,
-              "top": 0,
-            }
-          }
-        />
-        <View
-          accessibilityActions={
             [
               {
-                "label": "Delete",
-                "name": "delete",
+                "backgroundColor": "#262931",
+                "borderRadius": undefined,
+                "margin": undefined,
+                "marginBottom": undefined,
+                "marginEnd": undefined,
+                "marginHorizontal": undefined,
+                "marginLeft": undefined,
+                "marginRight": undefined,
+                "marginStart": undefined,
+                "marginTop": undefined,
+                "marginVertical": undefined,
+              },
+              {
+                "cursor": undefined,
               },
             ]
           }
-          accessibilityHint="Activate to select server. Available actions: delete"
-          accessibilityLabel="https://open.rocket.chat, john.doe"
-          accessible={true}
-          onAccessibilityAction={[Function]}
-          style={{}}
+          testID="servers-history-https://open.rocket.chat"
+          underlayColor="#2D3039"
         >
           <View
+            collapsable={false}
             style={
               {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "minHeight": 56,
-                "padding": 12,
+                "backgroundColor": "#2D3039",
+                "borderBottomLeftRadius": undefined,
+                "borderBottomRightRadius": undefined,
+                "borderRadius": undefined,
+                "borderTopLeftRadius": undefined,
+                "borderTopRightRadius": undefined,
+                "bottom": 0,
+                "left": 0,
+                "opacity": 0,
+                "position": "absolute",
+                "right": 0,
+                "top": 0,
               }
             }
+          />
+          <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Delete",
+                  "name": "delete",
+                },
+              ]
+            }
+            accessibilityHint="Activate to select server. Available actions: delete"
+            accessibilityLabel="https://open.rocket.chat, john.doe"
+            accessible={true}
+            onAccessibilityAction={[Function]}
+            style={{}}
           >
-            <ViewManagerAdapter_ExpoImage
-              borderRadius={4}
-              containerViewRef={{"current":"Object"}}
-              contentFit="contain"
-              contentPosition={
-                {
-                  "left": "50%",
-                  "top": "50%",
-                }
-              }
-              height={44}
-              nativeViewRef={{"current":"NativeComponent"}}
-              onError={[Function]}
-              onLoad={[Function]}
-              onLoadStart={[Function]}
-              onProgress={[Function]}
-              placeholder={[]}
-              source={
-                [
-                  {
-                    "uri": "https://open.rocket.chat/images/logo/android-chrome-512x512.png",
-                  },
-                ]
-              }
-              style={
-                {
-                  "borderRadius": 4,
-                  "height": 44,
-                  "width": 44,
-                }
-              }
-              transition={null}
-              width={44}
-            />
             <View
               style={
                 {
-                  "flex": 1,
-                  "flexDirection": "column",
-                  "justifyContent": "center",
-                  "paddingLeft": 12,
-                  "paddingRight": 18,
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "minHeight": 56,
+                  "padding": 12,
                 }
               }
             >
-              <Text
-                numberOfLines={1}
-                style={
+              <ViewManagerAdapter_ExpoImage
+                borderRadius={4}
+                containerViewRef={{"current":"Object"}}
+                contentFit="contain"
+                contentPosition={
+                  {
+                    "left": "50%",
+                    "top": "50%",
+                  }
+                }
+                height={44}
+                nativeViewRef={{"current":"NativeComponent"}}
+                onError={[Function]}
+                onLoad={[Function]}
+                onLoadStart={[Function]}
+                onProgress={[Function]}
+                placeholder={[]}
+                source={
                   [
                     {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontSize": 18,
-                      "fontWeight": "600",
-                      "textAlign": "left",
-                    },
-                    {
-                      "color": "#F2F3F5",
+                      "uri": "https://open.rocket.chat/images/logo/android-chrome-512x512.png",
                     },
                   ]
                 }
-              >
-                https://open.rocket.chat
-              </Text>
-              <Text
-                numberOfLines={1}
                 style={
-                  [
-                    {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontSize": 16,
-                      "fontWeight": "400",
-                      "textAlign": "left",
-                    },
-                    {
-                      "color": "#9EA2A8",
-                    },
-                  ]
+                  {
+                    "borderRadius": 4,
+                    "height": 44,
+                    "width": 44,
+                  }
+                }
+                transition={null}
+                width={44}
+              />
+              <View
+                style={
+                  {
+                    "flex": 1,
+                    "flexDirection": "column",
+                    "justifyContent": "center",
+                    "paddingLeft": 12,
+                    "paddingRight": 18,
+                  }
                 }
               >
-                john.doe
-              </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 18,
+                        "fontWeight": "600",
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#F2F3F5",
+                      },
+                    ]
+                  }
+                >
+                  https://open.rocket.chat
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#9EA2A8",
+                      },
+                    ]
+                  }
+                >
+                  john.doe
+                </Text>
+              </View>
             </View>
           </View>
-        </View>
-      </RNGestureHandlerButton>
+        </RNGestureHandlerButton>
+      </ExternalKeyboardView>
     </View>
   </View>,
   <View
@@ -2171,173 +2332,196 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
     <View
       style={[Function]}
     >
-      <RNGestureHandlerButton
-        activeOpacity={1}
-        collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        handlerTag={-1}
-        handlerType="NativeViewGestureHandler"
-        innerRef={null}
-        onActiveStateChange={[Function]}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        onPress={[Function]}
-        rippleColor="#16181a"
+      <ExternalKeyboardView
+        canBeFocused={true}
+        enableA11yFocus={false}
+        enableContextMenu={false}
+        group={false}
+        haloEffect={true}
+        hasKeyDownPress={false}
+        hasKeyUpPress={true}
+        hasOnFocusChanged={true}
+        lockFocus={0}
+        onContextMenuPress={[Function]}
+        onFocusChange={[Function]}
+        onKeyUpPress={[Function]}
+        orderIndex={-1}
+        screenAutoA11yFocusDelay={300}
         style={
           [
-            {
-              "backgroundColor": "#0d0d0d",
-              "borderRadius": undefined,
-              "margin": undefined,
-              "marginBottom": undefined,
-              "marginEnd": undefined,
-              "marginHorizontal": undefined,
-              "marginLeft": undefined,
-              "marginRight": undefined,
-              "marginStart": undefined,
-              "marginTop": undefined,
-              "marginVertical": undefined,
-            },
-            {
-              "cursor": undefined,
-            },
+            undefined,
+            undefined,
           ]
         }
-        testID="servers-history-https://open.rocket.chat"
-        underlayColor="#16181a"
       >
-        <View
+        <RNGestureHandlerButton
+          activeOpacity={1}
           collapsable={false}
+          delayLongPress={600}
+          enabled={true}
+          handlerTag={-1}
+          handlerType="NativeViewGestureHandler"
+          innerRef={null}
+          onActiveStateChange={[Function]}
+          onGestureHandlerEvent={[Function]}
+          onGestureHandlerStateChange={[Function]}
+          onPress={[Function]}
+          rippleColor="#16181a"
           style={
-            {
-              "backgroundColor": "#16181a",
-              "borderBottomLeftRadius": undefined,
-              "borderBottomRightRadius": undefined,
-              "borderRadius": undefined,
-              "borderTopLeftRadius": undefined,
-              "borderTopRightRadius": undefined,
-              "bottom": 0,
-              "left": 0,
-              "opacity": 0,
-              "position": "absolute",
-              "right": 0,
-              "top": 0,
-            }
-          }
-        />
-        <View
-          accessibilityActions={
             [
               {
-                "label": "Delete",
-                "name": "delete",
+                "backgroundColor": "#0d0d0d",
+                "borderRadius": undefined,
+                "margin": undefined,
+                "marginBottom": undefined,
+                "marginEnd": undefined,
+                "marginHorizontal": undefined,
+                "marginLeft": undefined,
+                "marginRight": undefined,
+                "marginStart": undefined,
+                "marginTop": undefined,
+                "marginVertical": undefined,
+              },
+              {
+                "cursor": undefined,
               },
             ]
           }
-          accessibilityHint="Activate to select server. Available actions: delete"
-          accessibilityLabel="https://open.rocket.chat, john.doe"
-          accessible={true}
-          onAccessibilityAction={[Function]}
-          style={{}}
+          testID="servers-history-https://open.rocket.chat"
+          underlayColor="#16181a"
         >
           <View
+            collapsable={false}
             style={
               {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "minHeight": 56,
-                "padding": 12,
+                "backgroundColor": "#16181a",
+                "borderBottomLeftRadius": undefined,
+                "borderBottomRightRadius": undefined,
+                "borderRadius": undefined,
+                "borderTopLeftRadius": undefined,
+                "borderTopRightRadius": undefined,
+                "bottom": 0,
+                "left": 0,
+                "opacity": 0,
+                "position": "absolute",
+                "right": 0,
+                "top": 0,
               }
             }
+          />
+          <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Delete",
+                  "name": "delete",
+                },
+              ]
+            }
+            accessibilityHint="Activate to select server. Available actions: delete"
+            accessibilityLabel="https://open.rocket.chat, john.doe"
+            accessible={true}
+            onAccessibilityAction={[Function]}
+            style={{}}
           >
-            <ViewManagerAdapter_ExpoImage
-              borderRadius={4}
-              containerViewRef={{"current":"Object"}}
-              contentFit="contain"
-              contentPosition={
-                {
-                  "left": "50%",
-                  "top": "50%",
-                }
-              }
-              height={44}
-              nativeViewRef={{"current":"NativeComponent"}}
-              onError={[Function]}
-              onLoad={[Function]}
-              onLoadStart={[Function]}
-              onProgress={[Function]}
-              placeholder={[]}
-              source={
-                [
-                  {
-                    "uri": "https://open.rocket.chat/images/logo/android-chrome-512x512.png",
-                  },
-                ]
-              }
-              style={
-                {
-                  "borderRadius": 4,
-                  "height": 44,
-                  "width": 44,
-                }
-              }
-              transition={null}
-              width={44}
-            />
             <View
               style={
                 {
-                  "flex": 1,
-                  "flexDirection": "column",
-                  "justifyContent": "center",
-                  "paddingLeft": 12,
-                  "paddingRight": 18,
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "minHeight": 56,
+                  "padding": 12,
                 }
               }
             >
-              <Text
-                numberOfLines={1}
-                style={
+              <ViewManagerAdapter_ExpoImage
+                borderRadius={4}
+                containerViewRef={{"current":"Object"}}
+                contentFit="contain"
+                contentPosition={
+                  {
+                    "left": "50%",
+                    "top": "50%",
+                  }
+                }
+                height={44}
+                nativeViewRef={{"current":"NativeComponent"}}
+                onError={[Function]}
+                onLoad={[Function]}
+                onLoadStart={[Function]}
+                onProgress={[Function]}
+                placeholder={[]}
+                source={
                   [
                     {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontSize": 18,
-                      "fontWeight": "600",
-                      "textAlign": "left",
-                    },
-                    {
-                      "color": "#F2F3F5",
+                      "uri": "https://open.rocket.chat/images/logo/android-chrome-512x512.png",
                     },
                   ]
                 }
-              >
-                https://open.rocket.chat
-              </Text>
-              <Text
-                numberOfLines={1}
                 style={
-                  [
-                    {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "Inter",
-                      "fontSize": 16,
-                      "fontWeight": "400",
-                      "textAlign": "left",
-                    },
-                    {
-                      "color": "#9EA2A8",
-                    },
-                  ]
+                  {
+                    "borderRadius": 4,
+                    "height": 44,
+                    "width": 44,
+                  }
+                }
+                transition={null}
+                width={44}
+              />
+              <View
+                style={
+                  {
+                    "flex": 1,
+                    "flexDirection": "column",
+                    "justifyContent": "center",
+                    "paddingLeft": 12,
+                    "paddingRight": 18,
+                  }
                 }
               >
-                john.doe
-              </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 18,
+                        "fontWeight": "600",
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#F2F3F5",
+                      },
+                    ]
+                  }
+                >
+                  https://open.rocket.chat
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#9EA2A8",
+                      },
+                    ]
+                  }
+                >
+                  john.doe
+                </Text>
+              </View>
             </View>
           </View>
-        </View>
-      </RNGestureHandlerButton>
+        </RNGestureHandlerButton>
+      </ExternalKeyboardView>
     </View>
   </View>,
 ]

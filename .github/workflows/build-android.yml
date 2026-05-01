@@ -29,7 +29,7 @@ jobs:
       BUILD_VERSION: ${{ steps.version.outputs.BUILD_VERSION }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
       - name: Checkout and Setup Node
         uses: ./.github/actions/setup-node
@@ -76,7 +76,7 @@ jobs:
     if: ${{ inputs.type == 'experimental' && (always() && (needs.upload-hold.result == 'success' || needs.upload-hold.result == 'skipped') && needs.build-android.result == 'success') }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
       - name: Checkout and Setup Node
         uses: ./.github/actions/setup-node
@@ -97,7 +97,7 @@ jobs:
     if: ${{ inputs.type == 'experimental' && inputs.trigger == 'pr' }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
       - name: Checkout and Setup Node
         uses: ./.github/actions/setup-node

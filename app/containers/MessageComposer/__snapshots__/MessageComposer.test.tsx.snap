@@ -111,12 +111,14 @@ exports[`MessageComposer Audio tap record 1`] = `
             },
           ]
         }
-        testID="message-composer-delete-audio"
       >
         <View
           accessibilityLabel="Cancel and delete recording"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-delete-audio"
         >
           <Text
             allowFontScaling={false}
@@ -260,6 +262,7 @@ exports[`MessageComposer Audio tap record 1`] = `
 exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
 [
   <View
+    nativeID="message-composer-exit-focus"
     onLayout={[Function]}
     style={
       [
@@ -326,12 +329,14 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
               },
             ]
           }
-          testID="message-composer-actions"
         >
           <View
             accessibilityLabel="Actions"
             accessibilityRole="button"
             accessible={true}
+            collapsable={false}
+            onFocus={[Function]}
+            testID="message-composer-actions"
           >
             <Text
               allowFontScaling={false}
@@ -442,12 +447,14 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
               },
             ]
           }
-          testID="message-composer-send-audio"
         >
           <View
             accessibilityLabel="Record audio message"
             accessibilityRole="button"
             accessible={true}
+            collapsable={false}
+            onFocus={[Function]}
+            testID="message-composer-send-audio"
           >
             <Text
               allowFontScaling={false}
@@ -614,12 +621,14 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
                     },
                   ]
                 }
-                testID="composer-quote-remove-abc"
               >
                 <View
                   accessibilityLabel="Remove quote message"
                   accessibilityRole="button"
                   accessible={true}
+                  collapsable={false}
+                  onFocus={[Function]}
+                  testID="composer-quote-remove-abc"
                 >
                   <Text
                     allowFontScaling={false}
@@ -703,6 +712,7 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
 exports[`MessageComposer Quote Add quote \`def\` 1`] = `
 [
   <View
+    nativeID="message-composer-exit-focus"
     onLayout={[Function]}
     style={
       [
@@ -769,12 +779,14 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
               },
             ]
           }
-          testID="message-composer-actions"
         >
           <View
             accessibilityLabel="Actions"
             accessibilityRole="button"
             accessible={true}
+            collapsable={false}
+            onFocus={[Function]}
+            testID="message-composer-actions"
           >
             <Text
               allowFontScaling={false}
@@ -885,12 +897,14 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
               },
             ]
           }
-          testID="message-composer-send-audio"
         >
           <View
             accessibilityLabel="Record audio message"
             accessibilityRole="button"
             accessible={true}
+            collapsable={false}
+            onFocus={[Function]}
+            testID="message-composer-send-audio"
           >
             <Text
               allowFontScaling={false}
@@ -1058,12 +1072,14 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                     },
                   ]
                 }
-                testID="composer-quote-remove-abc"
               >
                 <View
                   accessibilityLabel="Remove quote message"
                   accessibilityRole="button"
                   accessible={true}
+                  collapsable={false}
+                  onFocus={[Function]}
+                  testID="composer-quote-remove-abc"
                 >
                   <Text
                     allowFontScaling={false}
@@ -1239,12 +1255,14 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                     },
                   ]
                 }
-                testID="composer-quote-remove-def"
               >
                 <View
                   accessibilityLabel="Remove quote message"
                   accessibilityRole="button"
                   accessible={true}
+                  collapsable={false}
+                  onFocus={[Function]}
+                  testID="composer-quote-remove-def"
                 >
                   <Text
                     allowFontScaling={false}
@@ -1328,6 +1346,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
 exports[`MessageComposer Quote Remove a quote 1`] = `
 [
   <View
+    nativeID="message-composer-exit-focus"
     onLayout={[Function]}
     style={
       [
@@ -1394,12 +1413,14 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
               },
             ]
           }
-          testID="message-composer-actions"
         >
           <View
             accessibilityLabel="Actions"
             accessibilityRole="button"
             accessible={true}
+            collapsable={false}
+            onFocus={[Function]}
+            testID="message-composer-actions"
           >
             <Text
               allowFontScaling={false}
@@ -1510,12 +1531,14 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
               },
             ]
           }
-          testID="message-composer-send-audio"
         >
           <View
             accessibilityLabel="Record audio message"
             accessibilityRole="button"
             accessible={true}
+            collapsable={false}
+            onFocus={[Function]}
+            testID="message-composer-send-audio"
           >
             <Text
               allowFontScaling={false}
@@ -1683,12 +1706,14 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                     },
                   ]
                 }
-                testID="composer-quote-remove-abc"
               >
                 <View
                   accessibilityLabel="Remove quote message"
                   accessibilityRole="button"
                   accessible={true}
+                  collapsable={false}
+                  onFocus={[Function]}
+                  testID="composer-quote-remove-abc"
                 >
                   <Text
                     allowFontScaling={false}
@@ -1864,12 +1889,14 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                     },
                   ]
                 }
-                testID="composer-quote-remove-def"
               >
                 <View
                   accessibilityLabel="Remove quote message"
                   accessibilityRole="button"
                   accessible={true}
+                  collapsable={false}
+                  onFocus={[Function]}
+                  testID="composer-quote-remove-def"
                 >
                   <Text
                     allowFontScaling={false}
@@ -1953,6 +1980,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
 exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
 [
   <View
+    nativeID="message-composer-exit-focus"
     onLayout={[Function]}
     style={
       [
@@ -2055,12 +2083,14 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
             },
           ]
         }
-        testID="message-composer-close-markdown"
       >
         <View
           accessibilityLabel="Close"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-close-markdown"
         >
           <Text
             allowFontScaling={false}
@@ -2131,12 +2161,14 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
             },
           ]
         }
-        testID="message-composer-bold"
       >
         <View
           accessibilityLabel="Bold"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-bold"
         >
           <Text
             allowFontScaling={false}
@@ -2207,12 +2239,14 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
             },
           ]
         }
-        testID="message-composer-italic"
       >
         <View
           accessibilityLabel="Italic"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-italic"
         >
           <Text
             allowFontScaling={false}
@@ -2283,12 +2317,14 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
             },
           ]
         }
-        testID="message-composer-strike"
       >
         <View
           accessibilityLabel="Strikethrough"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-strike"
         >
           <Text
             allowFontScaling={false}
@@ -2359,12 +2395,14 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
             },
           ]
         }
-        testID="message-composer-code"
       >
         <View
           accessibilityLabel="Inline code"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code"
         >
           <Text
             allowFontScaling={false}
@@ -2435,12 +2473,14 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
             },
           ]
         }
-        testID="message-composer-code-block"
       >
         <View
           accessibilityLabel="Code block"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code-block"
         >
           <Text
             allowFontScaling={false}
@@ -2511,12 +2551,14 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
             },
           ]
         }
-        testID="message-composer-send-audio"
       >
         <View
           accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-send-audio"
         >
           <Text
             allowFontScaling={false}
@@ -2564,6 +2606,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
 exports[`MessageComposer Toolbar Markdown tap code 1`] = `
 [
   <View
+    nativeID="message-composer-exit-focus"
     onLayout={[Function]}
     style={
       [
@@ -2666,12 +2709,14 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
             },
           ]
         }
-        testID="message-composer-close-markdown"
       >
         <View
           accessibilityLabel="Close"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-close-markdown"
         >
           <Text
             allowFontScaling={false}
@@ -2742,12 +2787,14 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
             },
           ]
         }
-        testID="message-composer-bold"
       >
         <View
           accessibilityLabel="Bold"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-bold"
         >
           <Text
             allowFontScaling={false}
@@ -2818,12 +2865,14 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
             },
           ]
         }
-        testID="message-composer-italic"
       >
         <View
           accessibilityLabel="Italic"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-italic"
         >
           <Text
             allowFontScaling={false}
@@ -2894,12 +2943,14 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
             },
           ]
         }
-        testID="message-composer-strike"
       >
         <View
           accessibilityLabel="Strikethrough"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-strike"
         >
           <Text
             allowFontScaling={false}
@@ -2970,12 +3021,14 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
             },
           ]
         }
-        testID="message-composer-code"
       >
         <View
           accessibilityLabel="Inline code"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code"
         >
           <Text
             allowFontScaling={false}
@@ -3046,12 +3099,14 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
             },
           ]
         }
-        testID="message-composer-code-block"
       >
         <View
           accessibilityLabel="Code block"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code-block"
         >
           <Text
             allowFontScaling={false}
@@ -3122,12 +3177,14 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
             },
           ]
         }
-        testID="message-composer-send-audio"
       >
         <View
           accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-send-audio"
         >
           <Text
             allowFontScaling={false}
@@ -3175,6 +3232,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
 exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
 [
   <View
+    nativeID="message-composer-exit-focus"
     onLayout={[Function]}
     style={
       [
@@ -3277,12 +3335,14 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
             },
           ]
         }
-        testID="message-composer-close-markdown"
       >
         <View
           accessibilityLabel="Close"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-close-markdown"
         >
           <Text
             allowFontScaling={false}
@@ -3353,12 +3413,14 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
             },
           ]
         }
-        testID="message-composer-bold"
       >
         <View
           accessibilityLabel="Bold"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-bold"
         >
           <Text
             allowFontScaling={false}
@@ -3429,12 +3491,14 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
             },
           ]
         }
-        testID="message-composer-italic"
       >
         <View
           accessibilityLabel="Italic"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-italic"
         >
           <Text
             allowFontScaling={false}
@@ -3505,12 +3569,14 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
             },
           ]
         }
-        testID="message-composer-strike"
       >
         <View
           accessibilityLabel="Strikethrough"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-strike"
         >
           <Text
             allowFontScaling={false}
@@ -3581,12 +3647,14 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
             },
           ]
         }
-        testID="message-composer-code"
       >
         <View
           accessibilityLabel="Inline code"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code"
         >
           <Text
             allowFontScaling={false}
@@ -3657,12 +3725,14 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
             },
           ]
         }
-        testID="message-composer-code-block"
       >
         <View
           accessibilityLabel="Code block"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code-block"
         >
           <Text
             allowFontScaling={false}
@@ -3733,12 +3803,14 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
             },
           ]
         }
-        testID="message-composer-send-audio"
       >
         <View
           accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-send-audio"
         >
           <Text
             allowFontScaling={false}
@@ -3786,6 +3858,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
 exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
 [
   <View
+    nativeID="message-composer-exit-focus"
     onLayout={[Function]}
     style={
       [
@@ -3888,12 +3961,14 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
             },
           ]
         }
-        testID="message-composer-close-markdown"
       >
         <View
           accessibilityLabel="Close"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-close-markdown"
         >
           <Text
             allowFontScaling={false}
@@ -3964,12 +4039,14 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
             },
           ]
         }
-        testID="message-composer-bold"
       >
         <View
           accessibilityLabel="Bold"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-bold"
         >
           <Text
             allowFontScaling={false}
@@ -4040,12 +4117,14 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
             },
           ]
         }
-        testID="message-composer-italic"
       >
         <View
           accessibilityLabel="Italic"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-italic"
         >
           <Text
             allowFontScaling={false}
@@ -4116,12 +4195,14 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
             },
           ]
         }
-        testID="message-composer-strike"
       >
         <View
           accessibilityLabel="Strikethrough"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-strike"
         >
           <Text
             allowFontScaling={false}
@@ -4192,12 +4273,14 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
             },
           ]
         }
-        testID="message-composer-code"
       >
         <View
           accessibilityLabel="Inline code"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code"
         >
           <Text
             allowFontScaling={false}
@@ -4268,12 +4351,14 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
             },
           ]
         }
-        testID="message-composer-code-block"
       >
         <View
           accessibilityLabel="Code block"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code-block"
         >
           <Text
             allowFontScaling={false}
@@ -4344,12 +4429,14 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
             },
           ]
         }
-        testID="message-composer-send-audio"
       >
         <View
           accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-send-audio"
         >
           <Text
             allowFontScaling={false}
@@ -4397,6 +4484,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
 exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
 [
   <View
+    nativeID="message-composer-exit-focus"
     onLayout={[Function]}
     style={
       [
@@ -4499,12 +4587,14 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
             },
           ]
         }
-        testID="message-composer-close-markdown"
       >
         <View
           accessibilityLabel="Close"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-close-markdown"
         >
           <Text
             allowFontScaling={false}
@@ -4575,12 +4665,14 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
             },
           ]
         }
-        testID="message-composer-bold"
       >
         <View
           accessibilityLabel="Bold"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-bold"
         >
           <Text
             allowFontScaling={false}
@@ -4651,12 +4743,14 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
             },
           ]
         }
-        testID="message-composer-italic"
       >
         <View
           accessibilityLabel="Italic"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-italic"
         >
           <Text
             allowFontScaling={false}
@@ -4727,12 +4821,14 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
             },
           ]
         }
-        testID="message-composer-strike"
       >
         <View
           accessibilityLabel="Strikethrough"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-strike"
         >
           <Text
             allowFontScaling={false}
@@ -4803,12 +4899,14 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
             },
           ]
         }
-        testID="message-composer-code"
       >
         <View
           accessibilityLabel="Inline code"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code"
         >
           <Text
             allowFontScaling={false}
@@ -4879,12 +4977,14 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
             },
           ]
         }
-        testID="message-composer-code-block"
       >
         <View
           accessibilityLabel="Code block"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code-block"
         >
           <Text
             allowFontScaling={false}
@@ -4955,12 +5055,14 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
             },
           ]
         }
-        testID="message-composer-send-audio"
       >
         <View
           accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-send-audio"
         >
           <Text
             allowFontScaling={false}
@@ -5008,6 +5110,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
 exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
 [
   <View
+    nativeID="message-composer-exit-focus"
     onLayout={[Function]}
     style={
       [
@@ -5110,12 +5213,14 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
             },
           ]
         }
-        testID="message-composer-close-markdown"
       >
         <View
           accessibilityLabel="Close"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-close-markdown"
         >
           <Text
             allowFontScaling={false}
@@ -5186,12 +5291,14 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
             },
           ]
         }
-        testID="message-composer-bold"
       >
         <View
           accessibilityLabel="Bold"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-bold"
         >
           <Text
             allowFontScaling={false}
@@ -5262,12 +5369,14 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
             },
           ]
         }
-        testID="message-composer-italic"
       >
         <View
           accessibilityLabel="Italic"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-italic"
         >
           <Text
             allowFontScaling={false}
@@ -5338,12 +5447,14 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
             },
           ]
         }
-        testID="message-composer-strike"
       >
         <View
           accessibilityLabel="Strikethrough"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-strike"
         >
           <Text
             allowFontScaling={false}
@@ -5414,12 +5525,14 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
             },
           ]
         }
-        testID="message-composer-code"
       >
         <View
           accessibilityLabel="Inline code"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code"
         >
           <Text
             allowFontScaling={false}
@@ -5490,12 +5603,14 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
             },
           ]
         }
-        testID="message-composer-code-block"
       >
         <View
           accessibilityLabel="Code block"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code-block"
         >
           <Text
             allowFontScaling={false}
@@ -5566,12 +5681,14 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
             },
           ]
         }
-        testID="message-composer-send-audio"
       >
         <View
           accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-send-audio"
         >
           <Text
             allowFontScaling={false}
@@ -5619,6 +5736,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
 exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
 [
   <View
+    nativeID="message-composer-exit-focus"
     onLayout={[Function]}
     style={
       [
@@ -5721,12 +5839,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
             },
           ]
         }
-        testID="message-composer-close-markdown"
       >
         <View
           accessibilityLabel="Close"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-close-markdown"
         >
           <Text
             allowFontScaling={false}
@@ -5797,12 +5917,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
             },
           ]
         }
-        testID="message-composer-bold"
       >
         <View
           accessibilityLabel="Bold"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-bold"
         >
           <Text
             allowFontScaling={false}
@@ -5873,12 +5995,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
             },
           ]
         }
-        testID="message-composer-italic"
       >
         <View
           accessibilityLabel="Italic"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-italic"
         >
           <Text
             allowFontScaling={false}
@@ -5949,12 +6073,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
             },
           ]
         }
-        testID="message-composer-strike"
       >
         <View
           accessibilityLabel="Strikethrough"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-strike"
         >
           <Text
             allowFontScaling={false}
@@ -6025,12 +6151,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
             },
           ]
         }
-        testID="message-composer-code"
       >
         <View
           accessibilityLabel="Inline code"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code"
         >
           <Text
             allowFontScaling={false}
@@ -6101,12 +6229,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
             },
           ]
         }
-        testID="message-composer-code-block"
       >
         <View
           accessibilityLabel="Code block"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code-block"
         >
           <Text
             allowFontScaling={false}
@@ -6177,12 +6307,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
             },
           ]
         }
-        testID="message-composer-send-audio"
       >
         <View
           accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-send-audio"
         >
           <Text
             allowFontScaling={false}
@@ -6230,6 +6362,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
 exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
 [
   <View
+    nativeID="message-composer-exit-focus"
     onLayout={[Function]}
     style={
       [
@@ -6332,12 +6465,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
             },
           ]
         }
-        testID="message-composer-close-markdown"
       >
         <View
           accessibilityLabel="Close"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-close-markdown"
         >
           <Text
             allowFontScaling={false}
@@ -6408,12 +6543,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
             },
           ]
         }
-        testID="message-composer-bold"
       >
         <View
           accessibilityLabel="Bold"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-bold"
         >
           <Text
             allowFontScaling={false}
@@ -6484,12 +6621,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
             },
           ]
         }
-        testID="message-composer-italic"
       >
         <View
           accessibilityLabel="Italic"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-italic"
         >
           <Text
             allowFontScaling={false}
@@ -6560,12 +6699,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
             },
           ]
         }
-        testID="message-composer-strike"
       >
         <View
           accessibilityLabel="Strikethrough"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-strike"
         >
           <Text
             allowFontScaling={false}
@@ -6636,12 +6777,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
             },
           ]
         }
-        testID="message-composer-code"
       >
         <View
           accessibilityLabel="Inline code"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code"
         >
           <Text
             allowFontScaling={false}
@@ -6712,12 +6855,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
             },
           ]
         }
-        testID="message-composer-code-block"
       >
         <View
           accessibilityLabel="Code block"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code-block"
         >
           <Text
             allowFontScaling={false}
@@ -6788,12 +6933,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
             },
           ]
         }
-        testID="message-composer-send-audio"
       >
         <View
           accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-send-audio"
         >
           <Text
             allowFontScaling={false}
@@ -6841,6 +6988,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
 exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
 [
   <View
+    nativeID="message-composer-exit-focus"
     onLayout={[Function]}
     style={
       [
@@ -6943,12 +7091,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
             },
           ]
         }
-        testID="message-composer-close-markdown"
       >
         <View
           accessibilityLabel="Close"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-close-markdown"
         >
           <Text
             allowFontScaling={false}
@@ -7019,12 +7169,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
             },
           ]
         }
-        testID="message-composer-bold"
       >
         <View
           accessibilityLabel="Bold"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-bold"
         >
           <Text
             allowFontScaling={false}
@@ -7095,12 +7247,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
             },
           ]
         }
-        testID="message-composer-italic"
       >
         <View
           accessibilityLabel="Italic"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-italic"
         >
           <Text
             allowFontScaling={false}
@@ -7171,12 +7325,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
             },
           ]
         }
-        testID="message-composer-strike"
       >
         <View
           accessibilityLabel="Strikethrough"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-strike"
         >
           <Text
             allowFontScaling={false}
@@ -7247,12 +7403,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
             },
           ]
         }
-        testID="message-composer-code"
       >
         <View
           accessibilityLabel="Inline code"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code"
         >
           <Text
             allowFontScaling={false}
@@ -7323,12 +7481,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
             },
           ]
         }
-        testID="message-composer-code-block"
       >
         <View
           accessibilityLabel="Code block"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code-block"
         >
           <Text
             allowFontScaling={false}
@@ -7399,12 +7559,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
             },
           ]
         }
-        testID="message-composer-send-audio"
       >
         <View
           accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-send-audio"
         >
           <Text
             allowFontScaling={false}
@@ -7452,6 +7614,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
 exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
 [
   <View
+    nativeID="message-composer-exit-focus"
     onLayout={[Function]}
     style={
       [
@@ -7554,12 +7717,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
             },
           ]
         }
-        testID="message-composer-close-markdown"
       >
         <View
           accessibilityLabel="Close"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-close-markdown"
         >
           <Text
             allowFontScaling={false}
@@ -7630,12 +7795,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
             },
           ]
         }
-        testID="message-composer-bold"
       >
         <View
           accessibilityLabel="Bold"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-bold"
         >
           <Text
             allowFontScaling={false}
@@ -7706,12 +7873,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
             },
           ]
         }
-        testID="message-composer-italic"
       >
         <View
           accessibilityLabel="Italic"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-italic"
         >
           <Text
             allowFontScaling={false}
@@ -7782,12 +7951,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
             },
           ]
         }
-        testID="message-composer-strike"
       >
         <View
           accessibilityLabel="Strikethrough"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-strike"
         >
           <Text
             allowFontScaling={false}
@@ -7858,12 +8029,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
             },
           ]
         }
-        testID="message-composer-code"
       >
         <View
           accessibilityLabel="Inline code"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code"
         >
           <Text
             allowFontScaling={false}
@@ -7934,12 +8107,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
             },
           ]
         }
-        testID="message-composer-code-block"
       >
         <View
           accessibilityLabel="Code block"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code-block"
         >
           <Text
             allowFontScaling={false}
@@ -8010,12 +8185,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
             },
           ]
         }
-        testID="message-composer-send-audio"
       >
         <View
           accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-send-audio"
         >
           <Text
             allowFontScaling={false}
@@ -8063,6 +8240,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
 exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
 [
   <View
+    nativeID="message-composer-exit-focus"
     onLayout={[Function]}
     style={
       [
@@ -8165,12 +8343,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
             },
           ]
         }
-        testID="message-composer-close-markdown"
       >
         <View
           accessibilityLabel="Close"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-close-markdown"
         >
           <Text
             allowFontScaling={false}
@@ -8241,12 +8421,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
             },
           ]
         }
-        testID="message-composer-bold"
       >
         <View
           accessibilityLabel="Bold"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-bold"
         >
           <Text
             allowFontScaling={false}
@@ -8317,12 +8499,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
             },
           ]
         }
-        testID="message-composer-italic"
       >
         <View
           accessibilityLabel="Italic"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-italic"
         >
           <Text
             allowFontScaling={false}
@@ -8393,12 +8577,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
             },
           ]
         }
-        testID="message-composer-strike"
       >
         <View
           accessibilityLabel="Strikethrough"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-strike"
         >
           <Text
             allowFontScaling={false}
@@ -8469,12 +8655,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
             },
           ]
         }
-        testID="message-composer-code"
       >
         <View
           accessibilityLabel="Inline code"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code"
         >
           <Text
             allowFontScaling={false}
@@ -8545,12 +8733,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
             },
           ]
         }
-        testID="message-composer-code-block"
       >
         <View
           accessibilityLabel="Code block"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code-block"
         >
           <Text
             allowFontScaling={false}
@@ -8621,12 +8811,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
             },
           ]
         }
-        testID="message-composer-send-audio"
       >
         <View
           accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-send-audio"
         >
           <Text
             allowFontScaling={false}
@@ -8674,6 +8866,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
 exports[`MessageComposer Toolbar tap actions 1`] = `
 [
   <View
+    nativeID="message-composer-exit-focus"
     onLayout={[Function]}
     style={
       [
@@ -8776,12 +8969,14 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
             },
           ]
         }
-        testID="message-composer-actions"
       >
         <View
           accessibilityLabel="Actions"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-actions"
         >
           <Text
             allowFontScaling={false}
@@ -8852,12 +9047,14 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
             },
           ]
         }
-        testID="message-composer-open-emoji"
       >
         <View
           accessibilityLabel="Emoji selector"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-open-emoji"
         >
           <Text
             allowFontScaling={false}
@@ -8928,12 +9125,14 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
             },
           ]
         }
-        testID="message-composer-open-markdown"
       >
         <View
           accessibilityLabel="Markdown tools"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-open-markdown"
         >
           <Text
             allowFontScaling={false}
@@ -9004,12 +9203,14 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
             },
           ]
         }
-        testID="message-composer-mention"
       >
         <View
           accessibilityLabel="Mention user"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-mention"
         >
           <Text
             allowFontScaling={false}
@@ -9080,12 +9281,14 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
             },
           ]
         }
-        testID="message-composer-send-audio"
       >
         <View
           accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-send-audio"
         >
           <Text
             allowFontScaling={false}
@@ -9133,6 +9336,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
 exports[`MessageComposer Toolbar tap emoji 1`] = `
 [
   <View
+    nativeID="message-composer-exit-focus"
     onLayout={[Function]}
     style={
       [
@@ -9235,12 +9439,14 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
             },
           ]
         }
-        testID="message-composer-actions"
       >
         <View
           accessibilityLabel="Actions"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-actions"
         >
           <Text
             allowFontScaling={false}
@@ -9311,12 +9517,14 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
             },
           ]
         }
-        testID="message-composer-open-emoji"
       >
         <View
           accessibilityLabel="Emoji selector"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-open-emoji"
         >
           <Text
             allowFontScaling={false}
@@ -9387,12 +9595,14 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
             },
           ]
         }
-        testID="message-composer-open-markdown"
       >
         <View
           accessibilityLabel="Markdown tools"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-open-markdown"
         >
           <Text
             allowFontScaling={false}
@@ -9463,12 +9673,14 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
             },
           ]
         }
-        testID="message-composer-mention"
       >
         <View
           accessibilityLabel="Mention user"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-mention"
         >
           <Text
             allowFontScaling={false}
@@ -9539,12 +9751,14 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
             },
           ]
         }
-        testID="message-composer-send-audio"
       >
         <View
           accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-send-audio"
         >
           <Text
             allowFontScaling={false}
@@ -11037,6 +11251,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
 exports[`MessageComposer Toolbar tap mention 1`] = `
 [
   <View
+    nativeID="message-composer-exit-focus"
     onLayout={[Function]}
     style={
       [
@@ -11139,12 +11354,14 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
             },
           ]
         }
-        testID="message-composer-actions"
       >
         <View
           accessibilityLabel="Actions"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-actions"
         >
           <Text
             allowFontScaling={false}
@@ -11215,12 +11432,14 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
             },
           ]
         }
-        testID="message-composer-open-emoji"
       >
         <View
           accessibilityLabel="Emoji selector"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-open-emoji"
         >
           <Text
             allowFontScaling={false}
@@ -11291,12 +11510,14 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
             },
           ]
         }
-        testID="message-composer-open-markdown"
       >
         <View
           accessibilityLabel="Markdown tools"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-open-markdown"
         >
           <Text
             allowFontScaling={false}
@@ -11367,12 +11588,14 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
             },
           ]
         }
-        testID="message-composer-mention"
       >
         <View
           accessibilityLabel="Mention user"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-mention"
         >
           <Text
             allowFontScaling={false}
@@ -11443,12 +11666,14 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
             },
           ]
         }
-        testID="message-composer-send-audio"
       >
         <View
           accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-send-audio"
         >
           <Text
             allowFontScaling={false}
