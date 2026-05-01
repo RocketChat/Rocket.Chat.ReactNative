@@ -6,7 +6,7 @@ import DeviceInfo from 'react-native-device-info';
 
 import { twoFactor } from './twoFactor';
 import { store as reduxStore } from '../store/auxStore';
-import { random } from '../methods/helpers';
+import { compareServerVersion, random } from '../methods/helpers';
 import UserPreferences from '../methods/userPreferences';
 import { BASIC_AUTH_KEY } from '../methods/helpers/fetch';
 import {
@@ -326,8 +326,14 @@ class Sdk {
 			return Promise.resolve(subscriptions);
 		}
 		try {
+			const { version: serverVersion } = reduxStore.getState().server;
+			const topic = 'stream-notify-room';
+			const typingEvent = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '4.0.0') ? 'user-activity' : 'typing';
 			subscriptions.push(this.current.client.subscribe('stream-room-messages', rid));
-			subscriptions.push(this.current.client.subscribe('stream-notify-room', rid, { useCollection: false }));
+			subscriptions.push(this.current.client.subscribe(topic, `${rid}/${typingEvent}`));
+			subscriptions.push(this.current.client.subscribe(topic, `${rid}/deleteMessage`));
+			subscriptions.push(this.current.client.subscribe(topic, `${rid}/deleteMessageBulk`));
+			subscriptions.push(this.current.client.subscribe(topic, `${rid}/messagesRead`));
 			return Promise.resolve(subscriptions);
 		} catch (e) {
 			return Promise.resolve(subscriptions);
