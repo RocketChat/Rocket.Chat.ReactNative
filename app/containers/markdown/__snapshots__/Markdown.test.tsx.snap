@@ -1249,40 +1249,44 @@ exports[`Story Snapshots: Image should match snapshot 1`] = `
           }
         }
       >
-        <ViewManagerAdapter_ExpoImage
-          borderColor={4291546833}
-          containerViewRef={{"current":"Object"}}
-          contentFit="contain"
-          contentPosition={
-            {
-              "left": "50%",
-              "top": "50%",
-            }
-          }
-          height={300}
-          nativeViewRef={{"current":"NativeComponent"}}
-          onError={[Function]}
-          onLoad={[Function]}
-          onLoadStart={[Function]}
-          onProgress={[Function]}
-          placeholder={[]}
-          source={
-            [
+        <View>
+          <ViewManagerAdapter_ExpoImage
+            aspectRatio={1}
+            borderColor={4291546833}
+            containerViewRef={{"current":"Object"}}
+            contentFit="contain"
+            contentPosition={
               {
-                "uri": "https://play.google.com/intl/en_us/badges/images/badge_new.png",
-              },
-            ]
-          }
-          style={
-            {
-              "borderColor": "#CBCED1",
-              "height": 300,
-              "width": 300,
+                "left": "50%",
+                "top": "50%",
+              }
             }
-          }
-          transition={null}
-          width={300}
-        />
+            maxHeight={300}
+            nativeViewRef={{"current":"NativeComponent"}}
+            onError={[Function]}
+            onLoad={[Function]}
+            onLoadStart={[Function]}
+            onProgress={[Function]}
+            placeholder={[]}
+            source={
+              [
+                {
+                  "uri": "https://play.google.com/intl/en_us/badges/images/badge_new.png",
+                },
+              ]
+            }
+            style={
+              {
+                "aspectRatio": 1,
+                "borderColor": "#CBCED1",
+                "maxHeight": 300,
+                "width": "100%",
+              }
+            }
+            transition={null}
+            width="100%"
+          />
+        </View>
       </Text>
     </Text>
   </View>
