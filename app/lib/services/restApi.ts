@@ -741,7 +741,7 @@ export const setAvatarFromService = async ({
 
 	// RC 8.0.0 — REST users.setAvatar (multipart image or JSON avatarUrl)
 	if (service === 'url' && typeof data === 'string') {
-		await sdk.post('users.setAvatar', { avatarUrl: data });
+		await sdk.post('/v1/users.setAvatar', { avatarUrl: data });
 		return;
 	}
 
@@ -751,7 +751,7 @@ export const setAvatarFromService = async ({
 	}
 
 	if (isHttpUrl) {
-		await sdk.post('users.setAvatar', { avatarUrl: url });
+		await sdk.post('/v1/users.setAvatar', { avatarUrl: url });
 		return;
 	}
 

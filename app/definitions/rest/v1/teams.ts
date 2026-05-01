@@ -42,6 +42,6 @@ export type TeamsEndpoints = {
 		}) => PaginatedResult<{ rooms: IServerTeamUpdateRoom[] }>;
 	};
 	'teams.leave': {
-		POST: (params: { teamId: string; rooms: string[] }) => { success: boolean };
+		POST: (params: ({ teamId: string } | { teamName: string }) & { rooms?: string[] }) => { success: boolean };
 	};
 };

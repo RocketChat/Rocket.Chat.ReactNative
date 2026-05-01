@@ -68,6 +68,9 @@ export type GroupsEndpoints = {
 	'groups.close': {
 		POST: (params: { roomId: string }) => {};
 	};
+	'groups.open': {
+		POST: (params: { roomId: string } | { roomName: string }) => { success: boolean };
+	};
 	'groups.kick': {
 		POST: (params: { roomId: string; userId: string }) => {};
 	};
