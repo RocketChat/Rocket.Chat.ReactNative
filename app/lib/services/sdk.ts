@@ -270,8 +270,8 @@ class Sdk {
 				if (!this.current || !this.current.client) {
 					throw new Error('SDK not initialized');
 				}
-				// @ts-ignore
-				const result = await this.current.client.callAsyncWithOptions(...args, this.code || '');
+				const [method, ...params] = args;
+				const result = await this.current.client.callAsyncWithOptions(method, {}, ...params, this.code || '');
 				return resolve(result);
 			} catch (e: any) {
 				if (e.error && (e.error === 'totp-required' || e.error === 'totp-invalid')) {
