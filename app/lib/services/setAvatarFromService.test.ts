@@ -60,7 +60,7 @@ describe('setAvatarFromService', () => {
 			service: 'url',
 			url: 'https://example.com/a.png'
 		});
-		expect(sdk.post).toHaveBeenCalledWith('users.setAvatar', {
+		expect(sdk.post).toHaveBeenCalledWith('/v1/users.setAvatar', {
 			avatarUrl: 'https://example.com/a.png'
 		});
 		expect(sdk.methodCallWrapper).not.toHaveBeenCalled();
@@ -85,7 +85,7 @@ describe('setAvatarFromService', () => {
 			service: 'upload',
 			url: 'https://example.com/remote.jpg'
 		});
-		expect(sdk.post).toHaveBeenCalledWith('users.setAvatar', {
+		expect(sdk.post).toHaveBeenCalledWith('/v1/users.setAvatar', {
 			avatarUrl: 'https://example.com/remote.jpg'
 		});
 		expect(uploadUserAvatarMultipart).not.toHaveBeenCalled();
@@ -98,7 +98,7 @@ describe('setAvatarFromService', () => {
 			service: 'google',
 			url: 'https://lh3.googleusercontent.com/a/abc'
 		});
-		expect(sdk.post).toHaveBeenCalledWith('users.setAvatar', {
+		expect(sdk.post).toHaveBeenCalledWith('/v1/users.setAvatar', {
 			avatarUrl: 'https://lh3.googleusercontent.com/a/abc'
 		});
 		expect(uploadUserAvatarMultipart).not.toHaveBeenCalled();
