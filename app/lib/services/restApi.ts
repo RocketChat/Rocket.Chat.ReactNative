@@ -768,7 +768,7 @@ export const getFiles = (roomId: string, type: SubscriptionType, offset: number)
 	return sdk.get(`/v1/${roomTypeToApiType(t)}.files`, {
 		roomId,
 		offset,
-		sort: { uploadedAt: -1 }
+		sort: JSON.stringify({ uploadedAt: -1 })
 	});
 };
 
@@ -794,7 +794,7 @@ export const getMessages = ({
 		const params: any = {
 			roomId,
 			offset,
-			sort: { ts: -1 }
+			sort: JSON.stringify({ ts: -1 })
 		};
 
 		if (mentionIds && mentionIds.length > 0) {
@@ -814,19 +814,24 @@ export const getMessages = ({
 	const params: any = {
 		roomId,
 		offset,
-		sort: { ts: -1 }
+		sort: JSON.stringify({ ts: -1 })
 	};
+	const query: any = {};
 
 	if (mentionIds && mentionIds.length > 0) {
-		params.query = { ...params.query, 'mentions._id': { $in: mentionIds } };
+		query['mentions._id'] = { $in: mentionIds };
 	}
 
 	if (starredIds && starredIds.length > 0) {
-		params.query = { ...params.query, 'starred._id': { $in: starredIds } };
+		query['starred._id'] = { $in: starredIds };
 	}
 
 	if (pinned) {
-		params.query = { ...params.query, pinned: true };
+		query.pinned = true;
+	}
+
+	if (Object.keys(query).length > 0) {
+		params.query = JSON.stringify(query);
 	}
 
 	// RC 0.59.0
