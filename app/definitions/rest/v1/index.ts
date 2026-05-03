@@ -1,3 +1,4 @@
+import { type AuthEndpoints } from './auth';
 import { type ChannelsEndpoints } from './channels';
 import { type ChatEndpoints } from './chat';
 import { type CustomUserStatusEndpoints } from './customUserStatus';
@@ -22,7 +23,8 @@ import { type DirectoryEndpoint } from './directory';
 import { type AutoTranslateEndpoints } from './autotranslate';
 import { type ModerationEndpoints } from './moderation';
 
-export type Endpoints = ChannelsEndpoints &
+export type Endpoints = AuthEndpoints &
+	ChannelsEndpoints &
 	ChatEndpoints &
 	CustomUserStatusEndpoints &
 	DmEndpoints &

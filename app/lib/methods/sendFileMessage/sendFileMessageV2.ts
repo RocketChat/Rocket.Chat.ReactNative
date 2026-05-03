@@ -1,5 +1,3 @@
-import { settings as RocketChatSettings } from '@rocket.chat/sdk';
-
 import { type TSendFileMessageFileInfo, type IUser, type TUploadModel } from '../../../definitions';
 import database from '../../database';
 import { Encryption } from '../../encryption';
@@ -7,6 +5,7 @@ import { copyFileToCacheDirectoryIfNeeded, createUploadRecord, persistUploadErro
 import FileUpload from '../helpers/fileUpload';
 import { type IFormData } from '../helpers/fileUpload/definitions';
 import fetch from '../helpers/fetch';
+import sdk from '../../services/sdk';
 
 export async function sendFileMessageV2(
 	rid: string,
@@ -20,11 +19,11 @@ export async function sendFileMessageV2(
 	let uploadRecord: TUploadModel | null;
 	try {
 		const { id, token } = user;
-		const headers = {
-			...RocketChatSettings.customHeaders,
+		const headers: Record<string, string> = {
+			...sdk.getHeaders(),
 			'Content-Type': 'multipart/form-data',
-			'X-Auth-Token': token,
-			'X-User-Id': id
+			...(token ? { 'X-Auth-Token': token } : {}),
+			...(id ? { 'X-User-Id': id } : {})
 		};
 		const db = database.active;
 

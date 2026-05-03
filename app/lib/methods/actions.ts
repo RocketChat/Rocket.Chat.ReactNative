@@ -108,8 +108,11 @@ export async function triggerAction({
 	const payload = rest.payload ?? rest.value;
 
 	try {
-		const { userId, authToken } = sdk.current.currentLogin;
-		const { host } = sdk.current.client;
+		const { userId, authToken } = sdk.currentLogin;
+		const host = sdk.server;
+		if (!host) {
+			throw new Error('SDK not initialized');
+		}
 		const interaction = toUserInteraction({
 			type,
 			actionId,

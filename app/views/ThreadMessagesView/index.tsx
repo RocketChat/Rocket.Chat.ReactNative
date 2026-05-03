@@ -348,10 +348,12 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 					end: result.count < API_FETCH_COUNT,
 					offset: offset + API_FETCH_COUNT
 				});
+			} else {
+				this.setState({ loading: false });
 			}
 		} catch (e) {
 			log(e);
-			this.setState({ loading: false, end: true });
+			this.setState({ loading: false, end: false });
 		}
 	}, 300);
 

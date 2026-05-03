@@ -20,8 +20,11 @@ jest.mock('../sendFileMessage/utils', () => ({
 	copyFileToCacheDirectoryIfNeeded: jest.fn((p: string) => Promise.resolve(`cached:${p}`))
 }));
 
-jest.mock('@rocket.chat/sdk', () => ({
-	settings: { customHeaders: { 'X-Custom': 'custom' } }
+jest.mock('../../services/sdk', () => ({
+	__esModule: true,
+	default: {
+		getHeaders: () => ({ 'X-Custom': 'custom' })
+	}
 }));
 
 const baseState = {

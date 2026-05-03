@@ -175,7 +175,7 @@ function* initCall({ payload: { mic, cam, direct, rid } }: { payload: TCallProps
 	if (isServer5OrNewer) {
 		try {
 			const videoConfResponse = yield* call(videoConferenceStart, rid);
-			if (videoConfResponse.success) {
+			if (videoConfResponse.success && videoConfResponse.data) {
 				if (direct && videoConfResponse.data.type === 'direct') {
 					yield call(callUser, { rid, uid: videoConfResponse.data.calleeId, callId: videoConfResponse.data.callId });
 				} else {
@@ -183,9 +183,14 @@ function* initCall({ payload: { mic, cam, direct, rid } }: { payload: TCallProps
 					yield call(hideActionSheetRef);
 					yield put(setCalling(false));
 				}
+			} else {
+				yield put(setCalling(false));
+				yield call(hideActionSheetRef);
+				showErrorAlert(i18n.t('error-init-video-conf'));
 			}
 		} catch (e) {
 			yield put(setCalling(false));
+			yield call(hideActionSheetRef);
 			showErrorAlert(i18n.t('error-init-video-conf'));
 			log(e);
 		}

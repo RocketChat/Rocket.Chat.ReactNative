@@ -42,6 +42,7 @@ let streamListener: Promise<any> | false;
 let subServer: string;
 let queue: { [key: string]: ISubscription | IRoom } = {};
 let subTimer: ReturnType<typeof setTimeout> | null | false = null;
+let rawSubscriptionHandles: { stop: () => void }[] = [];
 const WINDOW_TIME = 500;
 
 export let roomsSubscription: { stop: () => void } | null = null;
@@ -302,7 +303,7 @@ export default function subscribeRooms() {
 		const db = database.active;
 
 		// check if the server from variable is the same as the js sdk client
-		if (sdk && sdk.current.client && sdk.current.client.host !== subServer) {
+		if (sdk && sdk.current && sdk.current.connection && sdk.current.connection.url !== subServer) {
 			return;
 		}
 		if (ddpMessage.msg === 'added') {
@@ -427,6 +428,14 @@ export default function subscribeRooms() {
 			streamListener.then(removeListener);
 			streamListener = false;
 		}
+		rawSubscriptionHandles.forEach(handle => {
+			try {
+				handle.stop();
+			} catch (e) {
+				log(e);
+			}
+		});
+		rawSubscriptionHandles = [];
 		queue = {};
 		if (subTimer) {
 			clearTimeout(subTimer);
@@ -439,8 +448,27 @@ export default function subscribeRooms() {
 
 	try {
 		// set the server that started this task
-		subServer = sdk.current.client.host;
-		sdk.current.subscribeNotifyUser().catch((e: unknown) => console.log(e));
+		subServer = sdk.current?.connection.url || '';
+		const { user } = store.getState().login;
+		const userId = user?.id;
+		if (!userId) {
+			throw new Error('subscribeRooms: missing userId, cannot create stream-notify-user subscriptions');
+		}
+		[
+			'message',
+			'notification',
+			'rooms-changed',
+			'subscriptions-changed',
+			'uiInteraction',
+			'e2ekeyRequest',
+			'userData',
+			'video-conference'
+		].forEach(event => {
+			const handle = sdk.subscribeRaw('stream-notify-user', `${userId}/${event}`);
+			if (handle) {
+				rawSubscriptionHandles.push(handle);
+			}
+		});
 		roomsSubscription = { stop: () => stop() };
 		return null;
 	} catch (e) {

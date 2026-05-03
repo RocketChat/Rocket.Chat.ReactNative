@@ -405,7 +405,7 @@ tags:
       message: 'message to delete'
 - extendedWaitUntil:
     visible:
-      text: '.*message to delete.*'
+      id: 'message-content-message to delete'
     timeout: 60000
 - longPressOn:
     id: 'message-content-message to delete'
@@ -430,7 +430,7 @@ tags:
     text: 'Delete'
 - extendedWaitUntil:
     notVisible:
-      text: '.*message to delete.*'
+      id: 'message-content-message to delete'
     timeout: 60000
 - runFlow: '../../helpers/go-back.yaml'
 
