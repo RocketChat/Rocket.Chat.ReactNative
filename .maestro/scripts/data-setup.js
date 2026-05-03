@@ -204,34 +204,17 @@ const createDM = (username, password, otherUsername) => {
     return json(result.body);
 }
 
-const deleteCreatedUser = async (username) => {
-    try {
-        http.post(`${data.server}/api/v1/users.delete`, {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers
-            },
-            body: JSON.stringify({
-                username,
-                confirmRelinquish: true
-            })
-        });
-    } catch (error) {
-        console.log(JSON.stringify(error));
-    }
-};
-
 const deleteCreatedUsers = () => {
     if (data.accounts.length) {
         for (const deleteUser of data.accounts) {
-            deleteCreatedUser(deleteUser.username);
+            deleteCreatedUser(deleteUser);
         }
     }
 };
 
 const deleteCreatedRoom = async (roomId) => {
     try {
-        http.post(`${data.server}/api/v1/rooms.delete`, {
+        postWithRetry(`${data.server}/api/v1/rooms.delete`, {
             headers: {
                 'Content-Type': 'application/json',
                 ...headers
@@ -255,7 +238,7 @@ const deleteCreatedRooms = () => {
 
 const deleteCreatedTeam = async (teamName) => {
     try {
-        http.post(`${data.server}/api/v1/teams.delete`, {
+        postWithRetry(`${data.server}/api/v1/teams.delete`, {
             headers: {
                 'Content-Type': 'application/json',
                 ...headers
