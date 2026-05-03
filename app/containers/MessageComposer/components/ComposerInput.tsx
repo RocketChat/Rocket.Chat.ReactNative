@@ -42,6 +42,7 @@ import { usePrevious } from '../../../lib/hooks/usePrevious';
 import { type ChatsStackParamList } from '../../../stacks/types';
 import { loadDraftMessage } from '../../../lib/methods/draftMessage';
 import useIOSBackSwipeHandler from '../hooks/useIOSBackSwipeHandler';
+import { isExternalKeyboardConnected } from '../../../lib/methods/helpers/externalInput';
 
 const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
@@ -214,7 +215,7 @@ export const ComposerInput = memo(
 		};
 
 		const onBlur: TextInputProps['onBlur'] = () => {
-			if (!iOSBackSwipe.current) {
+			if (!iOSBackSwipe.current && !isExternalKeyboardConnected()) {
 				setFocused(false);
 				stopAutocomplete();
 			}

@@ -5,55 +5,43 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
   collapsable={false}
   pointerEvents="box-none"
   style={
-    [
-      {
-        "height": 44,
-        "maxHeight": undefined,
-        "minHeight": undefined,
-        "opacity": undefined,
-        "transform": undefined,
-      },
-    ]
+    {
+      "height": 44,
+      "maxHeight": undefined,
+      "minHeight": undefined,
+      "opacity": undefined,
+      "transform": undefined,
+    }
   }
 >
   <View
     collapsable={false}
     pointerEvents="box-none"
     style={
-      [
-        {
-          "bottom": 0,
-          "left": 0,
-          "position": "absolute",
-          "right": 0,
-          "top": 0,
-        },
-        undefined,
-      ]
+      {
+        "bottom": 0,
+        "left": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+      }
     }
   >
     <View
       collapsable={false}
       style={
-        [
-          {
-            "flex": 1,
-            "shadowOffset": {
-              "height": 0.5,
-              "width": 0,
-            },
-            "shadowOpacity": 0.3,
-            "shadowRadius": 0,
+        {
+          "backgroundColor": undefined,
+          "borderBottomColor": "rgb(216, 216, 216)",
+          "flex": 1,
+          "shadowColor": "rgba(0, 0, 0, 1)",
+          "shadowOffset": {
+            "height": 0.5,
+            "width": 0,
           },
-          {
-            "backgroundColor": "rgb(255, 255, 255)",
-            "borderBottomColor": "rgb(216, 216, 216)",
-            "shadowColor": "rgba(0, 0, 0, 1)",
-          },
-          {
-            "backgroundColor": undefined,
-          },
-        ]
+          "shadowOpacity": 0.3,
+          "shadowRadius": 0,
+        }
       }
     />
   </View>
@@ -74,7 +62,9 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
           "flex": 1,
           "flexDirection": "row",
         },
-        null,
+        {
+          "marginHorizontal": 5,
+        },
       ]
     }
   >
@@ -82,21 +72,14 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
       collapsable={false}
       pointerEvents="box-none"
       style={
-        [
-          {
-            "alignItems": "center",
-            "flexDirection": "row",
-            "justifyContent": "flex-start",
-          },
-          {
-            "flexBasis": 0,
-            "flexGrow": 1,
-          },
-          {
-            "marginStart": 0,
-          },
-          undefined,
-        ]
+        {
+          "alignItems": "center",
+          "flexBasis": 0,
+          "flexDirection": "row",
+          "flexGrow": 1,
+          "justifyContent": "flex-start",
+          "marginStart": 0,
+        }
       }
     >
       <View
@@ -121,7 +104,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
           collapsable={false}
           delayLongPress={600}
           enabled={true}
-          handlerTag={1}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -237,7 +220,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
           collapsable={false}
           delayLongPress={600}
           enabled={true}
-          handlerTag={2}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -353,7 +336,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
           collapsable={false}
           delayLongPress={600}
           enabled={true}
-          handlerTag={3}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -479,96 +462,123 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
             ]
           }
         >
-          <RNGestureHandlerButton
-            activeOpacity={0.3}
-            borderless={true}
-            collapsable={false}
-            delayLongPress={600}
-            enabled={true}
-            handlerTag={4}
-            handlerType="NativeViewGestureHandler"
-            hitSlop={
-              {
-                "bottom": 5,
-                "left": 5,
-                "right": 5,
-                "top": 5,
-              }
-            }
-            innerRef={null}
-            onActiveStateChange={[Function]}
-            onGestureHandlerEvent={[Function]}
-            onGestureHandlerStateChange={[Function]}
-            onPress={[Function]}
+          <ExternalKeyboardView
+            autoFocus={true}
+            canBeFocused={true}
+            enableA11yFocus={false}
+            enableContextMenu={false}
+            group={false}
+            haloEffect={true}
+            hasKeyDownPress={false}
+            hasKeyUpPress={true}
+            hasOnFocusChanged={true}
+            lockFocus={0}
+            onContextMenuPress={[Function]}
+            onFocusChange={[Function]}
+            onKeyUpPress={[Function]}
+            orderIndex={-1}
+            screenAutoA11yFocusDelay={300}
             style={
               [
-                {
-                  "opacity": 1,
-                  "padding": 6,
-                },
-                {
-                  "cursor": undefined,
-                },
+                undefined,
+                undefined,
               ]
             }
           >
-            <View
-              accessibilityLabel="Menu"
-              accessible={true}
-              style={
+            <RNGestureHandlerButton
+              activeOpacity={0.3}
+              borderless={true}
+              collapsable={false}
+              delayLongPress={600}
+              enabled={true}
+              handlerTag={-1}
+              handlerType="NativeViewGestureHandler"
+              hitSlop={
                 {
-                  "opacity": 1,
+                  "bottom": 5,
+                  "left": 5,
+                  "right": 5,
+                  "top": 5,
                 }
               }
+              innerRef={null}
+              onActiveStateChange={[Function]}
+              onGestureHandlerEvent={[Function]}
+              onGestureHandlerStateChange={[Function]}
+              onPress={[Function]}
+              style={
+                [
+                  {
+                    "opacity": 1,
+                    "padding": 6,
+                  },
+                  {
+                    "cursor": undefined,
+                  },
+                ]
+              }
             >
-              <Text
-                allowFontScaling={false}
-                selectable={false}
+              <View
+                accessibilityLabel="Menu"
+                accessible={true}
                 style={
-                  [
-                    {
-                      "color": "#2F343D",
-                      "fontSize": 24,
-                    },
-                    [
-                      {
-                        "lineHeight": 24,
-                      },
-                      undefined,
-                    ],
-                    {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    {},
-                  ]
+                  {
+                    "opacity": 1,
+                  }
                 }
               >
-                
-              </Text>
-              <View
-                style={
-                  [
-                    {
-                      "alignItems": "center",
-                      "borderRadius": 10,
-                      "justifyContent": "center",
-                      "padding": 2,
-                      "position": "absolute",
-                      "right": -4,
-                      "top": -4,
-                    },
-                    {
-                      "backgroundColor": "red",
-                      "height": 10,
-                      "width": 10,
-                    },
-                  ]
-                }
-              />
-            </View>
-          </RNGestureHandlerButton>
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#2F343D",
+                        "fontSize": 24,
+                      },
+                      [
+                        {
+                          "lineHeight": 24,
+                        },
+                        [
+                          undefined,
+                          undefined,
+                        ],
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <View
+                  style={
+                    [
+                      {
+                        "alignItems": "center",
+                        "borderRadius": 10,
+                        "justifyContent": "center",
+                        "padding": 2,
+                        "position": "absolute",
+                        "right": -4,
+                        "top": -4,
+                      },
+                      {
+                        "backgroundColor": "red",
+                        "height": 10,
+                        "width": 10,
+                      },
+                    ]
+                  }
+                />
+              </View>
+            </RNGestureHandlerButton>
+          </ExternalKeyboardView>
         </View>
       </View>
     </View>
@@ -576,18 +586,11 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
       collapsable={false}
       pointerEvents="box-none"
       style={
-        [
-          {
-            "justifyContent": "center",
-          },
-          {
-            "maxWidth": 230,
-          },
-          {
-            "marginHorizontal": 16,
-          },
-          undefined,
-        ]
+        {
+          "justifyContent": "center",
+          "marginHorizontal": 16,
+          "maxWidth": 590,
+        }
       }
     >
       <Text
@@ -597,19 +600,12 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
         onLayout={[Function]}
         role="heading"
         style={
-          [
-            {
-              "color": "rgb(28, 28, 30)",
-            },
-            {
-              "fontFamily": "System",
-              "fontWeight": "600",
-            },
-            {
-              "fontSize": 17,
-            },
-            undefined,
-          ]
+          {
+            "color": "rgb(28, 28, 30)",
+            "fontFamily": "System",
+            "fontSize": 17,
+            "fontWeight": "600",
+          }
         }
       />
     </View>
@@ -617,21 +613,14 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
       collapsable={false}
       pointerEvents="box-none"
       style={
-        [
-          {
-            "alignItems": "center",
-            "flexDirection": "row",
-            "justifyContent": "flex-end",
-          },
-          {
-            "flexBasis": 0,
-            "flexGrow": 1,
-          },
-          {
-            "marginEnd": 0,
-          },
-          undefined,
-        ]
+        {
+          "alignItems": "center",
+          "flexBasis": 0,
+          "flexDirection": "row",
+          "flexGrow": 1,
+          "justifyContent": "flex-end",
+          "marginEnd": 0,
+        }
       }
     />
   </View>
@@ -644,55 +633,43 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
     collapsable={false}
     pointerEvents="box-none"
     style={
-      [
-        {
-          "height": 44,
-          "maxHeight": undefined,
-          "minHeight": undefined,
-          "opacity": undefined,
-          "transform": undefined,
-        },
-      ]
+      {
+        "height": 44,
+        "maxHeight": undefined,
+        "minHeight": undefined,
+        "opacity": undefined,
+        "transform": undefined,
+      }
     }
   >
     <View
       collapsable={false}
       pointerEvents="box-none"
       style={
-        [
-          {
-            "bottom": 0,
-            "left": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          },
-          undefined,
-        ]
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
       }
     >
       <View
         collapsable={false}
         style={
-          [
-            {
-              "flex": 1,
-              "shadowOffset": {
-                "height": 0.5,
-                "width": 0,
-              },
-              "shadowOpacity": 0.3,
-              "shadowRadius": 0,
+          {
+            "backgroundColor": undefined,
+            "borderBottomColor": "rgb(216, 216, 216)",
+            "flex": 1,
+            "shadowColor": "rgba(0, 0, 0, 1)",
+            "shadowOffset": {
+              "height": 0.5,
+              "width": 0,
             },
-            {
-              "backgroundColor": "rgb(255, 255, 255)",
-              "borderBottomColor": "rgb(216, 216, 216)",
-              "shadowColor": "rgba(0, 0, 0, 1)",
-            },
-            {
-              "backgroundColor": undefined,
-            },
-          ]
+            "shadowOpacity": 0.3,
+            "shadowRadius": 0,
+          }
         }
       />
     </View>
@@ -713,7 +690,9 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
             "flex": 1,
             "flexDirection": "row",
           },
-          null,
+          {
+            "marginHorizontal": 5,
+          },
         ]
       }
     >
@@ -721,21 +700,14 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
         collapsable={false}
         pointerEvents="box-none"
         style={
-          [
-            {
-              "alignItems": "center",
-              "flexDirection": "row",
-              "justifyContent": "flex-start",
-            },
-            {
-              "flexBasis": 0,
-              "flexGrow": 1,
-            },
-            {
-              "marginStart": 0,
-            },
-            undefined,
-          ]
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-start",
+            "marginStart": 0,
+          }
         }
       >
         <View
@@ -754,94 +726,114 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
             ]
           }
         >
-          <RNGestureHandlerButton
-            activeOpacity={0.3}
-            borderless={true}
-            collapsable={false}
-            delayLongPress={600}
-            enabled={true}
-            handlerTag={5}
-            handlerType="NativeViewGestureHandler"
-            hitSlop={
-              {
-                "bottom": 5,
-                "left": 5,
-                "right": 5,
-                "top": 5,
-              }
-            }
-            innerRef={null}
-            onActiveStateChange={[Function]}
-            onGestureHandlerEvent={[Function]}
-            onGestureHandlerStateChange={[Function]}
-            onPress={[Function]}
+          <ExternalKeyboardView
+            autoFocus={true}
+            canBeFocused={true}
+            enableA11yFocus={false}
+            enableContextMenu={false}
+            group={false}
+            haloEffect={true}
+            hasKeyDownPress={false}
+            hasKeyUpPress={true}
+            hasOnFocusChanged={true}
+            lockFocus={0}
+            onContextMenuPress={[Function]}
+            onFocusChange={[Function]}
+            onKeyUpPress={[Function]}
+            orderIndex={-1}
+            screenAutoA11yFocusDelay={300}
             style={
               [
-                {
-                  "opacity": 1,
-                  "padding": 6,
-                },
-                {
-                  "cursor": undefined,
-                },
+                undefined,
+                undefined,
               ]
             }
           >
-            <View
-              accessibilityLabel="Menu"
-              accessible={true}
-              style={
+            <RNGestureHandlerButton
+              activeOpacity={0.3}
+              borderless={true}
+              collapsable={false}
+              delayLongPress={600}
+              enabled={true}
+              handlerTag={-1}
+              handlerType="NativeViewGestureHandler"
+              hitSlop={
                 {
-                  "opacity": 1,
+                  "bottom": 5,
+                  "left": 5,
+                  "right": 5,
+                  "top": 5,
                 }
               }
+              innerRef={null}
+              onActiveStateChange={[Function]}
+              onGestureHandlerEvent={[Function]}
+              onGestureHandlerStateChange={[Function]}
+              onPress={[Function]}
+              style={
+                [
+                  {
+                    "opacity": 1,
+                    "padding": 6,
+                  },
+                  {
+                    "cursor": undefined,
+                  },
+                ]
+              }
             >
-              <Text
-                allowFontScaling={false}
-                selectable={false}
+              <View
+                accessibilityLabel="Menu"
+                accessible={true}
                 style={
-                  [
-                    {
-                      "color": "#2F343D",
-                      "fontSize": 24,
-                    },
-                    [
-                      {
-                        "lineHeight": 24,
-                      },
-                      undefined,
-                    ],
-                    {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    {},
-                  ]
+                  {
+                    "opacity": 1,
+                  }
                 }
               >
-                
-              </Text>
-            </View>
-          </RNGestureHandlerButton>
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#2F343D",
+                        "fontSize": 24,
+                      },
+                      [
+                        {
+                          "lineHeight": 24,
+                        },
+                        [
+                          undefined,
+                          undefined,
+                        ],
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
+            </RNGestureHandlerButton>
+          </ExternalKeyboardView>
         </View>
       </View>
       <View
         collapsable={false}
         pointerEvents="box-none"
         style={
-          [
-            {
-              "justifyContent": "center",
-            },
-            {
-              "maxWidth": 230,
-            },
-            {
-              "marginHorizontal": 16,
-            },
-            undefined,
-          ]
+          {
+            "justifyContent": "center",
+            "marginHorizontal": 16,
+            "maxWidth": 590,
+          }
         }
       >
         <Text
@@ -851,19 +843,12 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
           onLayout={[Function]}
           role="heading"
           style={
-            [
-              {
-                "color": "rgb(28, 28, 30)",
-              },
-              {
-                "fontFamily": "System",
-                "fontWeight": "600",
-              },
-              {
-                "fontSize": 17,
-              },
-              undefined,
-            ]
+            {
+              "color": "rgb(28, 28, 30)",
+              "fontFamily": "System",
+              "fontSize": 17,
+              "fontWeight": "600",
+            }
           }
         />
       </View>
@@ -871,21 +856,14 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
         collapsable={false}
         pointerEvents="box-none"
         style={
-          [
-            {
-              "alignItems": "center",
-              "flexDirection": "row",
-              "justifyContent": "flex-end",
-            },
-            {
-              "flexBasis": 0,
-              "flexGrow": 1,
-            },
-            {
-              "marginEnd": 0,
-            },
-            undefined,
-          ]
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-end",
+            "marginEnd": 0,
+          }
         }
       />
     </View>
@@ -894,55 +872,43 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
     collapsable={false}
     pointerEvents="box-none"
     style={
-      [
-        {
-          "height": 44,
-          "maxHeight": undefined,
-          "minHeight": undefined,
-          "opacity": undefined,
-          "transform": undefined,
-        },
-      ]
+      {
+        "height": 44,
+        "maxHeight": undefined,
+        "minHeight": undefined,
+        "opacity": undefined,
+        "transform": undefined,
+      }
     }
   >
     <View
       collapsable={false}
       pointerEvents="box-none"
       style={
-        [
-          {
-            "bottom": 0,
-            "left": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          },
-          undefined,
-        ]
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
       }
     >
       <View
         collapsable={false}
         style={
-          [
-            {
-              "flex": 1,
-              "shadowOffset": {
-                "height": 0.5,
-                "width": 0,
-              },
-              "shadowOpacity": 0.3,
-              "shadowRadius": 0,
+          {
+            "backgroundColor": undefined,
+            "borderBottomColor": "rgb(216, 216, 216)",
+            "flex": 1,
+            "shadowColor": "rgba(0, 0, 0, 1)",
+            "shadowOffset": {
+              "height": 0.5,
+              "width": 0,
             },
-            {
-              "backgroundColor": "rgb(255, 255, 255)",
-              "borderBottomColor": "rgb(216, 216, 216)",
-              "shadowColor": "rgba(0, 0, 0, 1)",
-            },
-            {
-              "backgroundColor": undefined,
-            },
-          ]
+            "shadowOpacity": 0.3,
+            "shadowRadius": 0,
+          }
         }
       />
     </View>
@@ -963,7 +929,9 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
             "flex": 1,
             "flexDirection": "row",
           },
-          null,
+          {
+            "marginHorizontal": 5,
+          },
         ]
       }
     >
@@ -971,21 +939,14 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
         collapsable={false}
         pointerEvents="box-none"
         style={
-          [
-            {
-              "alignItems": "center",
-              "flexDirection": "row",
-              "justifyContent": "flex-start",
-            },
-            {
-              "flexBasis": 0,
-              "flexGrow": 1,
-            },
-            {
-              "marginStart": 0,
-            },
-            undefined,
-          ]
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-start",
+            "marginStart": 0,
+          }
         }
       >
         <View
@@ -1010,7 +971,7 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={6}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             hitSlop={
               {
@@ -1080,18 +1041,11 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
         collapsable={false}
         pointerEvents="box-none"
         style={
-          [
-            {
-              "justifyContent": "center",
-            },
-            {
-              "maxWidth": 230,
-            },
-            {
-              "marginHorizontal": 16,
-            },
-            undefined,
-          ]
+          {
+            "justifyContent": "center",
+            "marginHorizontal": 16,
+            "maxWidth": 590,
+          }
         }
       >
         <Text
@@ -1101,19 +1055,12 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
           onLayout={[Function]}
           role="heading"
           style={
-            [
-              {
-                "color": "rgb(28, 28, 30)",
-              },
-              {
-                "fontFamily": "System",
-                "fontWeight": "600",
-              },
-              {
-                "fontSize": 17,
-              },
-              undefined,
-            ]
+            {
+              "color": "rgb(28, 28, 30)",
+              "fontFamily": "System",
+              "fontSize": 17,
+              "fontWeight": "600",
+            }
           }
         />
       </View>
@@ -1121,21 +1068,14 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
         collapsable={false}
         pointerEvents="box-none"
         style={
-          [
-            {
-              "alignItems": "center",
-              "flexDirection": "row",
-              "justifyContent": "flex-end",
-            },
-            {
-              "flexBasis": 0,
-              "flexGrow": 1,
-            },
-            {
-              "marginEnd": 0,
-            },
-            undefined,
-          ]
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-end",
+            "marginEnd": 0,
+          }
         }
       />
     </View>
@@ -1144,55 +1084,43 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
     collapsable={false}
     pointerEvents="box-none"
     style={
-      [
-        {
-          "height": 44,
-          "maxHeight": undefined,
-          "minHeight": undefined,
-          "opacity": undefined,
-          "transform": undefined,
-        },
-      ]
+      {
+        "height": 44,
+        "maxHeight": undefined,
+        "minHeight": undefined,
+        "opacity": undefined,
+        "transform": undefined,
+      }
     }
   >
     <View
       collapsable={false}
       pointerEvents="box-none"
       style={
-        [
-          {
-            "bottom": 0,
-            "left": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          },
-          undefined,
-        ]
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
       }
     >
       <View
         collapsable={false}
         style={
-          [
-            {
-              "flex": 1,
-              "shadowOffset": {
-                "height": 0.5,
-                "width": 0,
-              },
-              "shadowOpacity": 0.3,
-              "shadowRadius": 0,
+          {
+            "backgroundColor": undefined,
+            "borderBottomColor": "rgb(216, 216, 216)",
+            "flex": 1,
+            "shadowColor": "rgba(0, 0, 0, 1)",
+            "shadowOffset": {
+              "height": 0.5,
+              "width": 0,
             },
-            {
-              "backgroundColor": "rgb(255, 255, 255)",
-              "borderBottomColor": "rgb(216, 216, 216)",
-              "shadowColor": "rgba(0, 0, 0, 1)",
-            },
-            {
-              "backgroundColor": undefined,
-            },
-          ]
+            "shadowOpacity": 0.3,
+            "shadowRadius": 0,
+          }
         }
       />
     </View>
@@ -1213,7 +1141,9 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
             "flex": 1,
             "flexDirection": "row",
           },
-          null,
+          {
+            "marginHorizontal": 5,
+          },
         ]
       }
     >
@@ -1221,21 +1151,14 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
         collapsable={false}
         pointerEvents="box-none"
         style={
-          [
-            {
-              "alignItems": "center",
-              "flexDirection": "row",
-              "justifyContent": "flex-start",
-            },
-            {
-              "flexBasis": 0,
-              "flexGrow": 1,
-            },
-            {
-              "marginStart": 0,
-            },
-            undefined,
-          ]
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-start",
+            "marginStart": 0,
+          }
         }
       >
         <View
@@ -1260,7 +1183,7 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={7}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             hitSlop={
               {
@@ -1320,18 +1243,11 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
         collapsable={false}
         pointerEvents="box-none"
         style={
-          [
-            {
-              "justifyContent": "center",
-            },
-            {
-              "maxWidth": 230,
-            },
-            {
-              "marginHorizontal": 16,
-            },
-            undefined,
-          ]
+          {
+            "justifyContent": "center",
+            "marginHorizontal": 16,
+            "maxWidth": 590,
+          }
         }
       >
         <Text
@@ -1341,19 +1257,12 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
           onLayout={[Function]}
           role="heading"
           style={
-            [
-              {
-                "color": "rgb(28, 28, 30)",
-              },
-              {
-                "fontFamily": "System",
-                "fontWeight": "600",
-              },
-              {
-                "fontSize": 17,
-              },
-              undefined,
-            ]
+            {
+              "color": "rgb(28, 28, 30)",
+              "fontFamily": "System",
+              "fontSize": 17,
+              "fontWeight": "600",
+            }
           }
         />
       </View>
@@ -1361,21 +1270,14 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
         collapsable={false}
         pointerEvents="box-none"
         style={
-          [
-            {
-              "alignItems": "center",
-              "flexDirection": "row",
-              "justifyContent": "flex-end",
-            },
-            {
-              "flexBasis": 0,
-              "flexGrow": 1,
-            },
-            {
-              "marginEnd": 0,
-            },
-            undefined,
-          ]
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-end",
+            "marginEnd": 0,
+          }
         }
       />
     </View>
@@ -1384,55 +1286,43 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
     collapsable={false}
     pointerEvents="box-none"
     style={
-      [
-        {
-          "height": 44,
-          "maxHeight": undefined,
-          "minHeight": undefined,
-          "opacity": undefined,
-          "transform": undefined,
-        },
-      ]
+      {
+        "height": 44,
+        "maxHeight": undefined,
+        "minHeight": undefined,
+        "opacity": undefined,
+        "transform": undefined,
+      }
     }
   >
     <View
       collapsable={false}
       pointerEvents="box-none"
       style={
-        [
-          {
-            "bottom": 0,
-            "left": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          },
-          undefined,
-        ]
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
       }
     >
       <View
         collapsable={false}
         style={
-          [
-            {
-              "flex": 1,
-              "shadowOffset": {
-                "height": 0.5,
-                "width": 0,
-              },
-              "shadowOpacity": 0.3,
-              "shadowRadius": 0,
+          {
+            "backgroundColor": undefined,
+            "borderBottomColor": "rgb(216, 216, 216)",
+            "flex": 1,
+            "shadowColor": "rgba(0, 0, 0, 1)",
+            "shadowOffset": {
+              "height": 0.5,
+              "width": 0,
             },
-            {
-              "backgroundColor": "rgb(255, 255, 255)",
-              "borderBottomColor": "rgb(216, 216, 216)",
-              "shadowColor": "rgba(0, 0, 0, 1)",
-            },
-            {
-              "backgroundColor": undefined,
-            },
-          ]
+            "shadowOpacity": 0.3,
+            "shadowRadius": 0,
+          }
         }
       />
     </View>
@@ -1453,7 +1343,9 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
             "flex": 1,
             "flexDirection": "row",
           },
-          null,
+          {
+            "marginHorizontal": 5,
+          },
         ]
       }
     >
@@ -1461,39 +1353,25 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
         collapsable={false}
         pointerEvents="box-none"
         style={
-          [
-            {
-              "alignItems": "center",
-              "flexDirection": "row",
-              "justifyContent": "flex-start",
-            },
-            {
-              "flexBasis": 0,
-              "flexGrow": 1,
-            },
-            {
-              "marginStart": 0,
-            },
-            undefined,
-          ]
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-start",
+            "marginStart": 0,
+          }
         }
       />
       <View
         collapsable={false}
         pointerEvents="box-none"
         style={
-          [
-            {
-              "justifyContent": "center",
-            },
-            {
-              "maxWidth": 326,
-            },
-            {
-              "marginHorizontal": 16,
-            },
-            undefined,
-          ]
+          {
+            "justifyContent": "center",
+            "marginHorizontal": 16,
+            "maxWidth": 686,
+          }
         }
       >
         <Text
@@ -1503,19 +1381,12 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
           onLayout={[Function]}
           role="heading"
           style={
-            [
-              {
-                "color": "rgb(28, 28, 30)",
-              },
-              {
-                "fontFamily": "System",
-                "fontWeight": "600",
-              },
-              {
-                "fontSize": 17,
-              },
-              undefined,
-            ]
+            {
+              "color": "rgb(28, 28, 30)",
+              "fontFamily": "System",
+              "fontSize": 17,
+              "fontWeight": "600",
+            }
           }
         />
       </View>
@@ -1523,21 +1394,14 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
         collapsable={false}
         pointerEvents="box-none"
         style={
-          [
-            {
-              "alignItems": "center",
-              "flexDirection": "row",
-              "justifyContent": "flex-end",
-            },
-            {
-              "flexBasis": 0,
-              "flexGrow": 1,
-            },
-            {
-              "marginEnd": 0,
-            },
-            undefined,
-          ]
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-end",
+            "marginEnd": 0,
+          }
         }
       >
         <View
@@ -1561,7 +1425,7 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={8}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             hitSlop={
               {
@@ -1631,55 +1495,43 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
     collapsable={false}
     pointerEvents="box-none"
     style={
-      [
-        {
-          "height": 44,
-          "maxHeight": undefined,
-          "minHeight": undefined,
-          "opacity": undefined,
-          "transform": undefined,
-        },
-      ]
+      {
+        "height": 44,
+        "maxHeight": undefined,
+        "minHeight": undefined,
+        "opacity": undefined,
+        "transform": undefined,
+      }
     }
   >
     <View
       collapsable={false}
       pointerEvents="box-none"
       style={
-        [
-          {
-            "bottom": 0,
-            "left": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          },
-          undefined,
-        ]
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
       }
     >
       <View
         collapsable={false}
         style={
-          [
-            {
-              "flex": 1,
-              "shadowOffset": {
-                "height": 0.5,
-                "width": 0,
-              },
-              "shadowOpacity": 0.3,
-              "shadowRadius": 0,
+          {
+            "backgroundColor": undefined,
+            "borderBottomColor": "rgb(216, 216, 216)",
+            "flex": 1,
+            "shadowColor": "rgba(0, 0, 0, 1)",
+            "shadowOffset": {
+              "height": 0.5,
+              "width": 0,
             },
-            {
-              "backgroundColor": "rgb(255, 255, 255)",
-              "borderBottomColor": "rgb(216, 216, 216)",
-              "shadowColor": "rgba(0, 0, 0, 1)",
-            },
-            {
-              "backgroundColor": undefined,
-            },
-          ]
+            "shadowOpacity": 0.3,
+            "shadowRadius": 0,
+          }
         }
       />
     </View>
@@ -1700,7 +1552,9 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
             "flex": 1,
             "flexDirection": "row",
           },
-          null,
+          {
+            "marginHorizontal": 5,
+          },
         ]
       }
     >
@@ -1708,39 +1562,25 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
         collapsable={false}
         pointerEvents="box-none"
         style={
-          [
-            {
-              "alignItems": "center",
-              "flexDirection": "row",
-              "justifyContent": "flex-start",
-            },
-            {
-              "flexBasis": 0,
-              "flexGrow": 1,
-            },
-            {
-              "marginStart": 0,
-            },
-            undefined,
-          ]
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-start",
+            "marginStart": 0,
+          }
         }
       />
       <View
         collapsable={false}
         pointerEvents="box-none"
         style={
-          [
-            {
-              "justifyContent": "center",
-            },
-            {
-              "maxWidth": 326,
-            },
-            {
-              "marginHorizontal": 16,
-            },
-            undefined,
-          ]
+          {
+            "justifyContent": "center",
+            "marginHorizontal": 16,
+            "maxWidth": 686,
+          }
         }
       >
         <Text
@@ -1750,19 +1590,12 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
           onLayout={[Function]}
           role="heading"
           style={
-            [
-              {
-                "color": "rgb(28, 28, 30)",
-              },
-              {
-                "fontFamily": "System",
-                "fontWeight": "600",
-              },
-              {
-                "fontSize": 17,
-              },
-              undefined,
-            ]
+            {
+              "color": "rgb(28, 28, 30)",
+              "fontFamily": "System",
+              "fontSize": 17,
+              "fontWeight": "600",
+            }
           }
         />
       </View>
@@ -1770,21 +1603,14 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
         collapsable={false}
         pointerEvents="box-none"
         style={
-          [
-            {
-              "alignItems": "center",
-              "flexDirection": "row",
-              "justifyContent": "flex-end",
-            },
-            {
-              "flexBasis": 0,
-              "flexGrow": 1,
-            },
-            {
-              "marginEnd": 0,
-            },
-            undefined,
-          ]
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-end",
+            "marginEnd": 0,
+          }
         }
       >
         <View
@@ -1808,7 +1634,7 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={9}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             hitSlop={
               {
@@ -1878,55 +1704,43 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
     collapsable={false}
     pointerEvents="box-none"
     style={
-      [
-        {
-          "height": 44,
-          "maxHeight": undefined,
-          "minHeight": undefined,
-          "opacity": undefined,
-          "transform": undefined,
-        },
-      ]
+      {
+        "height": 44,
+        "maxHeight": undefined,
+        "minHeight": undefined,
+        "opacity": undefined,
+        "transform": undefined,
+      }
     }
   >
     <View
       collapsable={false}
       pointerEvents="box-none"
       style={
-        [
-          {
-            "bottom": 0,
-            "left": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          },
-          undefined,
-        ]
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
       }
     >
       <View
         collapsable={false}
         style={
-          [
-            {
-              "flex": 1,
-              "shadowOffset": {
-                "height": 0.5,
-                "width": 0,
-              },
-              "shadowOpacity": 0.3,
-              "shadowRadius": 0,
+          {
+            "backgroundColor": undefined,
+            "borderBottomColor": "rgb(216, 216, 216)",
+            "flex": 1,
+            "shadowColor": "rgba(0, 0, 0, 1)",
+            "shadowOffset": {
+              "height": 0.5,
+              "width": 0,
             },
-            {
-              "backgroundColor": "rgb(255, 255, 255)",
-              "borderBottomColor": "rgb(216, 216, 216)",
-              "shadowColor": "rgba(0, 0, 0, 1)",
-            },
-            {
-              "backgroundColor": undefined,
-            },
-          ]
+            "shadowOpacity": 0.3,
+            "shadowRadius": 0,
+          }
         }
       />
     </View>
@@ -1947,7 +1761,9 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
             "flex": 1,
             "flexDirection": "row",
           },
-          null,
+          {
+            "marginHorizontal": 5,
+          },
         ]
       }
     >
@@ -1955,39 +1771,25 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
         collapsable={false}
         pointerEvents="box-none"
         style={
-          [
-            {
-              "alignItems": "center",
-              "flexDirection": "row",
-              "justifyContent": "flex-start",
-            },
-            {
-              "flexBasis": 0,
-              "flexGrow": 1,
-            },
-            {
-              "marginStart": 0,
-            },
-            undefined,
-          ]
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-start",
+            "marginStart": 0,
+          }
         }
       />
       <View
         collapsable={false}
         pointerEvents="box-none"
         style={
-          [
-            {
-              "justifyContent": "center",
-            },
-            {
-              "maxWidth": 326,
-            },
-            {
-              "marginHorizontal": 16,
-            },
-            undefined,
-          ]
+          {
+            "justifyContent": "center",
+            "marginHorizontal": 16,
+            "maxWidth": 686,
+          }
         }
       >
         <Text
@@ -1997,19 +1799,12 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
           onLayout={[Function]}
           role="heading"
           style={
-            [
-              {
-                "color": "rgb(28, 28, 30)",
-              },
-              {
-                "fontFamily": "System",
-                "fontWeight": "600",
-              },
-              {
-                "fontSize": 17,
-              },
-              undefined,
-            ]
+            {
+              "color": "rgb(28, 28, 30)",
+              "fontFamily": "System",
+              "fontSize": 17,
+              "fontWeight": "600",
+            }
           }
         />
       </View>
@@ -2017,21 +1812,14 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
         collapsable={false}
         pointerEvents="box-none"
         style={
-          [
-            {
-              "alignItems": "center",
-              "flexDirection": "row",
-              "justifyContent": "flex-end",
-            },
-            {
-              "flexBasis": 0,
-              "flexGrow": 1,
-            },
-            {
-              "marginEnd": 0,
-            },
-            undefined,
-          ]
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-end",
+            "marginEnd": 0,
+          }
         }
       >
         <View
@@ -2055,7 +1843,7 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={10}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             hitSlop={
               {
@@ -2125,55 +1913,43 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
     collapsable={false}
     pointerEvents="box-none"
     style={
-      [
-        {
-          "height": 44,
-          "maxHeight": undefined,
-          "minHeight": undefined,
-          "opacity": undefined,
-          "transform": undefined,
-        },
-      ]
+      {
+        "height": 44,
+        "maxHeight": undefined,
+        "minHeight": undefined,
+        "opacity": undefined,
+        "transform": undefined,
+      }
     }
   >
     <View
       collapsable={false}
       pointerEvents="box-none"
       style={
-        [
-          {
-            "bottom": 0,
-            "left": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          },
-          undefined,
-        ]
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
       }
     >
       <View
         collapsable={false}
         style={
-          [
-            {
-              "flex": 1,
-              "shadowOffset": {
-                "height": 0.5,
-                "width": 0,
-              },
-              "shadowOpacity": 0.3,
-              "shadowRadius": 0,
+          {
+            "backgroundColor": undefined,
+            "borderBottomColor": "rgb(216, 216, 216)",
+            "flex": 1,
+            "shadowColor": "rgba(0, 0, 0, 1)",
+            "shadowOffset": {
+              "height": 0.5,
+              "width": 0,
             },
-            {
-              "backgroundColor": "rgb(255, 255, 255)",
-              "borderBottomColor": "rgb(216, 216, 216)",
-              "shadowColor": "rgba(0, 0, 0, 1)",
-            },
-            {
-              "backgroundColor": undefined,
-            },
-          ]
+            "shadowOpacity": 0.3,
+            "shadowRadius": 0,
+          }
         }
       />
     </View>
@@ -2194,7 +1970,9 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
             "flex": 1,
             "flexDirection": "row",
           },
-          null,
+          {
+            "marginHorizontal": 5,
+          },
         ]
       }
     >
@@ -2202,39 +1980,25 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
         collapsable={false}
         pointerEvents="box-none"
         style={
-          [
-            {
-              "alignItems": "center",
-              "flexDirection": "row",
-              "justifyContent": "flex-start",
-            },
-            {
-              "flexBasis": 0,
-              "flexGrow": 1,
-            },
-            {
-              "marginStart": 0,
-            },
-            undefined,
-          ]
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-start",
+            "marginStart": 0,
+          }
         }
       />
       <View
         collapsable={false}
         pointerEvents="box-none"
         style={
-          [
-            {
-              "justifyContent": "center",
-            },
-            {
-              "maxWidth": 326,
-            },
-            {
-              "marginHorizontal": 16,
-            },
-            undefined,
-          ]
+          {
+            "justifyContent": "center",
+            "marginHorizontal": 16,
+            "maxWidth": 686,
+          }
         }
       >
         <Text
@@ -2244,19 +2008,12 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
           onLayout={[Function]}
           role="heading"
           style={
-            [
-              {
-                "color": "rgb(28, 28, 30)",
-              },
-              {
-                "fontFamily": "System",
-                "fontWeight": "600",
-              },
-              {
-                "fontSize": 17,
-              },
-              undefined,
-            ]
+            {
+              "color": "rgb(28, 28, 30)",
+              "fontFamily": "System",
+              "fontSize": 17,
+              "fontWeight": "600",
+            }
           }
         />
       </View>
@@ -2264,21 +2021,14 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
         collapsable={false}
         pointerEvents="box-none"
         style={
-          [
-            {
-              "alignItems": "center",
-              "flexDirection": "row",
-              "justifyContent": "flex-end",
-            },
-            {
-              "flexBasis": 0,
-              "flexGrow": 1,
-            },
-            {
-              "marginEnd": 0,
-            },
-            undefined,
-          ]
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-end",
+            "marginEnd": 0,
+          }
         }
       >
         <View
@@ -2302,7 +2052,7 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={11}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             hitSlop={
               {
@@ -2379,55 +2129,43 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
     collapsable={false}
     pointerEvents="box-none"
     style={
-      [
-        {
-          "height": 44,
-          "maxHeight": undefined,
-          "minHeight": undefined,
-          "opacity": undefined,
-          "transform": undefined,
-        },
-      ]
+      {
+        "height": 44,
+        "maxHeight": undefined,
+        "minHeight": undefined,
+        "opacity": undefined,
+        "transform": undefined,
+      }
     }
   >
     <View
       collapsable={false}
       pointerEvents="box-none"
       style={
-        [
-          {
-            "bottom": 0,
-            "left": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          },
-          undefined,
-        ]
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
       }
     >
       <View
         collapsable={false}
         style={
-          [
-            {
-              "flex": 1,
-              "shadowOffset": {
-                "height": 0.5,
-                "width": 0,
-              },
-              "shadowOpacity": 0.3,
-              "shadowRadius": 0,
+          {
+            "backgroundColor": undefined,
+            "borderBottomColor": "rgb(216, 216, 216)",
+            "flex": 1,
+            "shadowColor": "rgba(0, 0, 0, 1)",
+            "shadowOffset": {
+              "height": 0.5,
+              "width": 0,
             },
-            {
-              "backgroundColor": "rgb(255, 255, 255)",
-              "borderBottomColor": "rgb(216, 216, 216)",
-              "shadowColor": "rgba(0, 0, 0, 1)",
-            },
-            {
-              "backgroundColor": undefined,
-            },
-          ]
+            "shadowOpacity": 0.3,
+            "shadowRadius": 0,
+          }
         }
       />
     </View>
@@ -2448,7 +2186,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             "flex": 1,
             "flexDirection": "row",
           },
-          null,
+          {
+            "marginHorizontal": 5,
+          },
         ]
       }
     >
@@ -2456,21 +2196,14 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         collapsable={false}
         pointerEvents="box-none"
         style={
-          [
-            {
-              "alignItems": "center",
-              "flexDirection": "row",
-              "justifyContent": "flex-start",
-            },
-            {
-              "flexBasis": 0,
-              "flexGrow": 1,
-            },
-            {
-              "marginStart": 0,
-            },
-            undefined,
-          ]
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-start",
+            "marginStart": 0,
+          }
         }
       >
         <View
@@ -2495,7 +2228,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={12}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             hitSlop={
               {
@@ -2563,18 +2296,11 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         collapsable={false}
         pointerEvents="box-none"
         style={
-          [
-            {
-              "justifyContent": "center",
-            },
-            {
-              "maxWidth": 198,
-            },
-            {
-              "marginHorizontal": 16,
-            },
-            undefined,
-          ]
+          {
+            "justifyContent": "center",
+            "marginHorizontal": 16,
+            "maxWidth": 558,
+          }
         }
       >
         <Text
@@ -2584,19 +2310,12 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           onLayout={[Function]}
           role="heading"
           style={
-            [
-              {
-                "color": "rgb(28, 28, 30)",
-              },
-              {
-                "fontFamily": "System",
-                "fontWeight": "600",
-              },
-              {
-                "fontSize": 17,
-              },
-              undefined,
-            ]
+            {
+              "color": "rgb(28, 28, 30)",
+              "fontFamily": "System",
+              "fontSize": 17,
+              "fontWeight": "600",
+            }
           }
         />
       </View>
@@ -2604,21 +2323,14 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         collapsable={false}
         pointerEvents="box-none"
         style={
-          [
-            {
-              "alignItems": "center",
-              "flexDirection": "row",
-              "justifyContent": "flex-end",
-            },
-            {
-              "flexBasis": 0,
-              "flexGrow": 1,
-            },
-            {
-              "marginEnd": 0,
-            },
-            undefined,
-          ]
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-end",
+            "marginEnd": 0,
+          }
         }
       >
         <View
@@ -2642,7 +2354,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={13}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             hitSlop={
               {
@@ -2712,55 +2424,43 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
     collapsable={false}
     pointerEvents="box-none"
     style={
-      [
-        {
-          "height": 44,
-          "maxHeight": undefined,
-          "minHeight": undefined,
-          "opacity": undefined,
-          "transform": undefined,
-        },
-      ]
+      {
+        "height": 44,
+        "maxHeight": undefined,
+        "minHeight": undefined,
+        "opacity": undefined,
+        "transform": undefined,
+      }
     }
   >
     <View
       collapsable={false}
       pointerEvents="box-none"
       style={
-        [
-          {
-            "bottom": 0,
-            "left": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          },
-          undefined,
-        ]
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
       }
     >
       <View
         collapsable={false}
         style={
-          [
-            {
-              "flex": 1,
-              "shadowOffset": {
-                "height": 0.5,
-                "width": 0,
-              },
-              "shadowOpacity": 0.3,
-              "shadowRadius": 0,
+          {
+            "backgroundColor": undefined,
+            "borderBottomColor": "rgb(216, 216, 216)",
+            "flex": 1,
+            "shadowColor": "rgba(0, 0, 0, 1)",
+            "shadowOffset": {
+              "height": 0.5,
+              "width": 0,
             },
-            {
-              "backgroundColor": "rgb(255, 255, 255)",
-              "borderBottomColor": "rgb(216, 216, 216)",
-              "shadowColor": "rgba(0, 0, 0, 1)",
-            },
-            {
-              "backgroundColor": undefined,
-            },
-          ]
+            "shadowOpacity": 0.3,
+            "shadowRadius": 0,
+          }
         }
       />
     </View>
@@ -2781,7 +2481,9 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             "flex": 1,
             "flexDirection": "row",
           },
-          null,
+          {
+            "marginHorizontal": 5,
+          },
         ]
       }
     >
@@ -2789,21 +2491,14 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         collapsable={false}
         pointerEvents="box-none"
         style={
-          [
-            {
-              "alignItems": "center",
-              "flexDirection": "row",
-              "justifyContent": "flex-start",
-            },
-            {
-              "flexBasis": 0,
-              "flexGrow": 1,
-            },
-            {
-              "marginStart": 0,
-            },
-            undefined,
-          ]
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-start",
+            "marginStart": 0,
+          }
         }
       >
         <View
@@ -2828,7 +2523,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={14}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             hitSlop={
               {
@@ -2896,7 +2591,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={15}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             hitSlop={
               {
@@ -2964,18 +2659,11 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         collapsable={false}
         pointerEvents="box-none"
         style={
-          [
-            {
-              "justifyContent": "center",
-            },
-            {
-              "maxWidth": 198,
-            },
-            {
-              "marginHorizontal": 16,
-            },
-            undefined,
-          ]
+          {
+            "justifyContent": "center",
+            "marginHorizontal": 16,
+            "maxWidth": 558,
+          }
         }
       >
         <Text
@@ -2985,19 +2673,12 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           onLayout={[Function]}
           role="heading"
           style={
-            [
-              {
-                "color": "rgb(28, 28, 30)",
-              },
-              {
-                "fontFamily": "System",
-                "fontWeight": "600",
-              },
-              {
-                "fontSize": 17,
-              },
-              undefined,
-            ]
+            {
+              "color": "rgb(28, 28, 30)",
+              "fontFamily": "System",
+              "fontSize": 17,
+              "fontWeight": "600",
+            }
           }
         />
       </View>
@@ -3005,21 +2686,14 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         collapsable={false}
         pointerEvents="box-none"
         style={
-          [
-            {
-              "alignItems": "center",
-              "flexDirection": "row",
-              "justifyContent": "flex-end",
-            },
-            {
-              "flexBasis": 0,
-              "flexGrow": 1,
-            },
-            {
-              "marginEnd": 0,
-            },
-            undefined,
-          ]
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-end",
+            "marginEnd": 0,
+          }
         }
       >
         <View
@@ -3043,7 +2717,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={16}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             hitSlop={
               {
@@ -3111,7 +2785,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={17}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             hitSlop={
               {
@@ -3193,55 +2867,43 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
       collapsable={false}
       pointerEvents="box-none"
       style={
-        [
-          {
-            "height": 44,
-            "maxHeight": undefined,
-            "minHeight": undefined,
-            "opacity": undefined,
-            "transform": undefined,
-          },
-        ]
+        {
+          "height": 44,
+          "maxHeight": undefined,
+          "minHeight": undefined,
+          "opacity": undefined,
+          "transform": undefined,
+        }
       }
     >
       <View
         collapsable={false}
         pointerEvents="box-none"
         style={
-          [
-            {
-              "bottom": 0,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-              "top": 0,
-            },
-            undefined,
-          ]
+          {
+            "bottom": 0,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
         }
       >
         <View
           collapsable={false}
           style={
-            [
-              {
-                "flex": 1,
-                "shadowOffset": {
-                  "height": 0.5,
-                  "width": 0,
-                },
-                "shadowOpacity": 0.3,
-                "shadowRadius": 0,
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderBottomColor": "rgb(216, 216, 216)",
+              "flex": 1,
+              "shadowColor": "rgba(0, 0, 0, 1)",
+              "shadowOffset": {
+                "height": 0.5,
+                "width": 0,
               },
-              {
-                "backgroundColor": "rgb(255, 255, 255)",
-                "borderBottomColor": "rgb(216, 216, 216)",
-                "shadowColor": "rgba(0, 0, 0, 1)",
-              },
-              {
-                "backgroundColor": "#E4E7EA",
-              },
-            ]
+              "shadowOpacity": 0.3,
+              "shadowRadius": 0,
+            }
           }
         />
       </View>
@@ -3262,7 +2924,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               "flex": 1,
               "flexDirection": "row",
             },
-            null,
+            {
+              "marginHorizontal": 5,
+            },
           ]
         }
       >
@@ -3270,21 +2934,14 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           collapsable={false}
           pointerEvents="box-none"
           style={
-            [
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "justifyContent": "flex-start",
-              },
-              {
-                "flexBasis": 0,
-                "flexGrow": 1,
-              },
-              {
-                "marginStart": 0,
-              },
-              undefined,
-            ]
+            {
+              "alignItems": "center",
+              "flexBasis": 0,
+              "flexDirection": "row",
+              "flexGrow": 1,
+              "justifyContent": "flex-start",
+              "marginStart": 0,
+            }
           }
         >
           <View
@@ -3319,96 +2976,123 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                 ]
               }
             >
-              <RNGestureHandlerButton
-                activeOpacity={0.3}
-                borderless={true}
-                collapsable={false}
-                delayLongPress={600}
-                enabled={true}
-                handlerTag={18}
-                handlerType="NativeViewGestureHandler"
-                hitSlop={
-                  {
-                    "bottom": 5,
-                    "left": 5,
-                    "right": 5,
-                    "top": 5,
-                  }
-                }
-                innerRef={null}
-                onActiveStateChange={[Function]}
-                onGestureHandlerEvent={[Function]}
-                onGestureHandlerStateChange={[Function]}
-                onPress={[Function]}
+              <ExternalKeyboardView
+                autoFocus={true}
+                canBeFocused={true}
+                enableA11yFocus={false}
+                enableContextMenu={false}
+                group={false}
+                haloEffect={true}
+                hasKeyDownPress={false}
+                hasKeyUpPress={true}
+                hasOnFocusChanged={true}
+                lockFocus={0}
+                onContextMenuPress={[Function]}
+                onFocusChange={[Function]}
+                onKeyUpPress={[Function]}
+                orderIndex={-1}
+                screenAutoA11yFocusDelay={300}
                 style={
                   [
-                    {
-                      "opacity": 1,
-                      "padding": 6,
-                    },
-                    {
-                      "cursor": undefined,
-                    },
+                    undefined,
+                    undefined,
                   ]
                 }
               >
-                <View
-                  accessibilityLabel="Menu"
-                  accessible={true}
-                  style={
+                <RNGestureHandlerButton
+                  activeOpacity={0.3}
+                  borderless={true}
+                  collapsable={false}
+                  delayLongPress={600}
+                  enabled={true}
+                  handlerTag={-1}
+                  handlerType="NativeViewGestureHandler"
+                  hitSlop={
                     {
-                      "opacity": 1,
+                      "bottom": 5,
+                      "left": 5,
+                      "right": 5,
+                      "top": 5,
                     }
                   }
+                  innerRef={null}
+                  onActiveStateChange={[Function]}
+                  onGestureHandlerEvent={[Function]}
+                  onGestureHandlerStateChange={[Function]}
+                  onPress={[Function]}
+                  style={
+                    [
+                      {
+                        "opacity": 1,
+                        "padding": 6,
+                      },
+                      {
+                        "cursor": undefined,
+                      },
+                    ]
+                  }
                 >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
+                  <View
+                    accessibilityLabel="Menu"
+                    accessible={true}
                     style={
-                      [
-                        {
-                          "color": "#2F343D",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
+                      {
+                        "opacity": 1,
+                      }
                     }
                   >
-                    
-                  </Text>
-                  <View
-                    style={
-                      [
-                        {
-                          "alignItems": "center",
-                          "borderRadius": 10,
-                          "justifyContent": "center",
-                          "padding": 2,
-                          "position": "absolute",
-                          "right": -4,
-                          "top": -4,
-                        },
-                        {
-                          "backgroundColor": "#EC0D2A",
-                          "height": 10,
-                          "width": 10,
-                        },
-                      ]
-                    }
-                  />
-                </View>
-              </RNGestureHandlerButton>
+                    <Text
+                      allowFontScaling={false}
+                      selectable={false}
+                      style={
+                        [
+                          {
+                            "color": "#2F343D",
+                            "fontSize": 24,
+                          },
+                          [
+                            {
+                              "lineHeight": 24,
+                            },
+                            [
+                              undefined,
+                              undefined,
+                            ],
+                          ],
+                          {
+                            "fontFamily": "custom",
+                            "fontStyle": "normal",
+                            "fontWeight": "normal",
+                          },
+                          {},
+                        ]
+                      }
+                    >
+                      
+                    </Text>
+                    <View
+                      style={
+                        [
+                          {
+                            "alignItems": "center",
+                            "borderRadius": 10,
+                            "justifyContent": "center",
+                            "padding": 2,
+                            "position": "absolute",
+                            "right": -4,
+                            "top": -4,
+                          },
+                          {
+                            "backgroundColor": "#EC0D2A",
+                            "height": 10,
+                            "width": 10,
+                          },
+                        ]
+                      }
+                    />
+                  </View>
+                </RNGestureHandlerButton>
+              </ExternalKeyboardView>
             </View>
             <RNGestureHandlerButton
               activeOpacity={0.3}
@@ -3416,7 +3100,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               collapsable={false}
               delayLongPress={600}
               enabled={true}
-              handlerTag={19}
+              handlerTag={-1}
               handlerType="NativeViewGestureHandler"
               hitSlop={
                 {
@@ -3484,18 +3168,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           collapsable={false}
           pointerEvents="box-none"
           style={
-            [
-              {
-                "justifyContent": "center",
-              },
-              {
-                "maxWidth": 198,
-              },
-              {
-                "marginHorizontal": 16,
-              },
-              undefined,
-            ]
+            {
+              "justifyContent": "center",
+              "marginHorizontal": 16,
+              "maxWidth": 558,
+            }
           }
         >
           <Text
@@ -3505,19 +3182,12 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             onLayout={[Function]}
             role="heading"
             style={
-              [
-                {
-                  "color": "rgb(28, 28, 30)",
-                },
-                {
-                  "fontFamily": "System",
-                  "fontWeight": "600",
-                },
-                {
-                  "fontSize": 17,
-                },
-                undefined,
-              ]
+              {
+                "color": "rgb(28, 28, 30)",
+                "fontFamily": "System",
+                "fontSize": 17,
+                "fontWeight": "600",
+              }
             }
           />
         </View>
@@ -3525,21 +3195,14 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           collapsable={false}
           pointerEvents="box-none"
           style={
-            [
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "justifyContent": "flex-end",
-              },
-              {
-                "flexBasis": 0,
-                "flexGrow": 1,
-              },
-              {
-                "marginEnd": 0,
-              },
-              undefined,
-            ]
+            {
+              "alignItems": "center",
+              "flexBasis": 0,
+              "flexDirection": "row",
+              "flexGrow": 1,
+              "justifyContent": "flex-end",
+              "marginEnd": 0,
+            }
           }
         >
           <View
@@ -3563,7 +3226,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               collapsable={false}
               delayLongPress={600}
               enabled={true}
-              handlerTag={20}
+              handlerTag={-1}
               handlerType="NativeViewGestureHandler"
               hitSlop={
                 {
@@ -3623,7 +3286,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               collapsable={false}
               delayLongPress={600}
               enabled={true}
-              handlerTag={21}
+              handlerTag={-1}
               handlerType="NativeViewGestureHandler"
               hitSlop={
                 {
@@ -3749,55 +3412,43 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
       collapsable={false}
       pointerEvents="box-none"
       style={
-        [
-          {
-            "height": 44,
-            "maxHeight": undefined,
-            "minHeight": undefined,
-            "opacity": undefined,
-            "transform": undefined,
-          },
-        ]
+        {
+          "height": 44,
+          "maxHeight": undefined,
+          "minHeight": undefined,
+          "opacity": undefined,
+          "transform": undefined,
+        }
       }
     >
       <View
         collapsable={false}
         pointerEvents="box-none"
         style={
-          [
-            {
-              "bottom": 0,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-              "top": 0,
-            },
-            undefined,
-          ]
+          {
+            "bottom": 0,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
         }
       >
         <View
           collapsable={false}
           style={
-            [
-              {
-                "flex": 1,
-                "shadowOffset": {
-                  "height": 0.5,
-                  "width": 0,
-                },
-                "shadowOpacity": 0.3,
-                "shadowRadius": 0,
+            {
+              "backgroundColor": "#2D3039",
+              "borderBottomColor": "rgb(216, 216, 216)",
+              "flex": 1,
+              "shadowColor": "rgba(0, 0, 0, 1)",
+              "shadowOffset": {
+                "height": 0.5,
+                "width": 0,
               },
-              {
-                "backgroundColor": "rgb(255, 255, 255)",
-                "borderBottomColor": "rgb(216, 216, 216)",
-                "shadowColor": "rgba(0, 0, 0, 1)",
-              },
-              {
-                "backgroundColor": "#2D3039",
-              },
-            ]
+              "shadowOpacity": 0.3,
+              "shadowRadius": 0,
+            }
           }
         />
       </View>
@@ -3818,7 +3469,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               "flex": 1,
               "flexDirection": "row",
             },
-            null,
+            {
+              "marginHorizontal": 5,
+            },
           ]
         }
       >
@@ -3826,21 +3479,14 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           collapsable={false}
           pointerEvents="box-none"
           style={
-            [
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "justifyContent": "flex-start",
-              },
-              {
-                "flexBasis": 0,
-                "flexGrow": 1,
-              },
-              {
-                "marginStart": 0,
-              },
-              undefined,
-            ]
+            {
+              "alignItems": "center",
+              "flexBasis": 0,
+              "flexDirection": "row",
+              "flexGrow": 1,
+              "justifyContent": "flex-start",
+              "marginStart": 0,
+            }
           }
         >
           <View
@@ -3875,96 +3521,123 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                 ]
               }
             >
-              <RNGestureHandlerButton
-                activeOpacity={0.3}
-                borderless={true}
-                collapsable={false}
-                delayLongPress={600}
-                enabled={true}
-                handlerTag={22}
-                handlerType="NativeViewGestureHandler"
-                hitSlop={
-                  {
-                    "bottom": 5,
-                    "left": 5,
-                    "right": 5,
-                    "top": 5,
-                  }
-                }
-                innerRef={null}
-                onActiveStateChange={[Function]}
-                onGestureHandlerEvent={[Function]}
-                onGestureHandlerStateChange={[Function]}
-                onPress={[Function]}
+              <ExternalKeyboardView
+                autoFocus={true}
+                canBeFocused={true}
+                enableA11yFocus={false}
+                enableContextMenu={false}
+                group={false}
+                haloEffect={true}
+                hasKeyDownPress={false}
+                hasKeyUpPress={true}
+                hasOnFocusChanged={true}
+                lockFocus={0}
+                onContextMenuPress={[Function]}
+                onFocusChange={[Function]}
+                onKeyUpPress={[Function]}
+                orderIndex={-1}
+                screenAutoA11yFocusDelay={300}
                 style={
                   [
-                    {
-                      "opacity": 1,
-                      "padding": 6,
-                    },
-                    {
-                      "cursor": undefined,
-                    },
+                    undefined,
+                    undefined,
                   ]
                 }
               >
-                <View
-                  accessibilityLabel="Menu"
-                  accessible={true}
-                  style={
+                <RNGestureHandlerButton
+                  activeOpacity={0.3}
+                  borderless={true}
+                  collapsable={false}
+                  delayLongPress={600}
+                  enabled={true}
+                  handlerTag={-1}
+                  handlerType="NativeViewGestureHandler"
+                  hitSlop={
                     {
-                      "opacity": 1,
+                      "bottom": 5,
+                      "left": 5,
+                      "right": 5,
+                      "top": 5,
                     }
                   }
+                  innerRef={null}
+                  onActiveStateChange={[Function]}
+                  onGestureHandlerEvent={[Function]}
+                  onGestureHandlerStateChange={[Function]}
+                  onPress={[Function]}
+                  style={
+                    [
+                      {
+                        "opacity": 1,
+                        "padding": 6,
+                      },
+                      {
+                        "cursor": undefined,
+                      },
+                    ]
+                  }
                 >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
+                  <View
+                    accessibilityLabel="Menu"
+                    accessible={true}
                     style={
-                      [
-                        {
-                          "color": "#E4E7EA",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
+                      {
+                        "opacity": 1,
+                      }
                     }
                   >
-                    
-                  </Text>
-                  <View
-                    style={
-                      [
-                        {
-                          "alignItems": "center",
-                          "borderRadius": 10,
-                          "justifyContent": "center",
-                          "padding": 2,
-                          "position": "absolute",
-                          "right": -4,
-                          "top": -4,
-                        },
-                        {
-                          "backgroundColor": "#BB3E4E",
-                          "height": 10,
-                          "width": 10,
-                        },
-                      ]
-                    }
-                  />
-                </View>
-              </RNGestureHandlerButton>
+                    <Text
+                      allowFontScaling={false}
+                      selectable={false}
+                      style={
+                        [
+                          {
+                            "color": "#E4E7EA",
+                            "fontSize": 24,
+                          },
+                          [
+                            {
+                              "lineHeight": 24,
+                            },
+                            [
+                              undefined,
+                              undefined,
+                            ],
+                          ],
+                          {
+                            "fontFamily": "custom",
+                            "fontStyle": "normal",
+                            "fontWeight": "normal",
+                          },
+                          {},
+                        ]
+                      }
+                    >
+                      
+                    </Text>
+                    <View
+                      style={
+                        [
+                          {
+                            "alignItems": "center",
+                            "borderRadius": 10,
+                            "justifyContent": "center",
+                            "padding": 2,
+                            "position": "absolute",
+                            "right": -4,
+                            "top": -4,
+                          },
+                          {
+                            "backgroundColor": "#BB3E4E",
+                            "height": 10,
+                            "width": 10,
+                          },
+                        ]
+                      }
+                    />
+                  </View>
+                </RNGestureHandlerButton>
+              </ExternalKeyboardView>
             </View>
             <RNGestureHandlerButton
               activeOpacity={0.3}
@@ -3972,7 +3645,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               collapsable={false}
               delayLongPress={600}
               enabled={true}
-              handlerTag={23}
+              handlerTag={-1}
               handlerType="NativeViewGestureHandler"
               hitSlop={
                 {
@@ -4040,18 +3713,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           collapsable={false}
           pointerEvents="box-none"
           style={
-            [
-              {
-                "justifyContent": "center",
-              },
-              {
-                "maxWidth": 198,
-              },
-              {
-                "marginHorizontal": 16,
-              },
-              undefined,
-            ]
+            {
+              "justifyContent": "center",
+              "marginHorizontal": 16,
+              "maxWidth": 558,
+            }
           }
         >
           <Text
@@ -4061,19 +3727,12 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             onLayout={[Function]}
             role="heading"
             style={
-              [
-                {
-                  "color": "rgb(28, 28, 30)",
-                },
-                {
-                  "fontFamily": "System",
-                  "fontWeight": "600",
-                },
-                {
-                  "fontSize": 17,
-                },
-                undefined,
-              ]
+              {
+                "color": "rgb(28, 28, 30)",
+                "fontFamily": "System",
+                "fontSize": 17,
+                "fontWeight": "600",
+              }
             }
           />
         </View>
@@ -4081,21 +3740,14 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           collapsable={false}
           pointerEvents="box-none"
           style={
-            [
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "justifyContent": "flex-end",
-              },
-              {
-                "flexBasis": 0,
-                "flexGrow": 1,
-              },
-              {
-                "marginEnd": 0,
-              },
-              undefined,
-            ]
+            {
+              "alignItems": "center",
+              "flexBasis": 0,
+              "flexDirection": "row",
+              "flexGrow": 1,
+              "justifyContent": "flex-end",
+              "marginEnd": 0,
+            }
           }
         >
           <View
@@ -4119,7 +3771,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               collapsable={false}
               delayLongPress={600}
               enabled={true}
-              handlerTag={24}
+              handlerTag={-1}
               handlerType="NativeViewGestureHandler"
               hitSlop={
                 {
@@ -4179,7 +3831,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               collapsable={false}
               delayLongPress={600}
               enabled={true}
-              handlerTag={25}
+              handlerTag={-1}
               handlerType="NativeViewGestureHandler"
               hitSlop={
                 {
@@ -4305,55 +3957,43 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
       collapsable={false}
       pointerEvents="box-none"
       style={
-        [
-          {
-            "height": 44,
-            "maxHeight": undefined,
-            "minHeight": undefined,
-            "opacity": undefined,
-            "transform": undefined,
-          },
-        ]
+        {
+          "height": 44,
+          "maxHeight": undefined,
+          "minHeight": undefined,
+          "opacity": undefined,
+          "transform": undefined,
+        }
       }
     >
       <View
         collapsable={false}
         pointerEvents="box-none"
         style={
-          [
-            {
-              "bottom": 0,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-              "top": 0,
-            },
-            undefined,
-          ]
+          {
+            "bottom": 0,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
         }
       >
         <View
           collapsable={false}
           style={
-            [
-              {
-                "flex": 1,
-                "shadowOffset": {
-                  "height": 0.5,
-                  "width": 0,
-                },
-                "shadowOpacity": 0.3,
-                "shadowRadius": 0,
+            {
+              "backgroundColor": "#16181a",
+              "borderBottomColor": "rgb(216, 216, 216)",
+              "flex": 1,
+              "shadowColor": "rgba(0, 0, 0, 1)",
+              "shadowOffset": {
+                "height": 0.5,
+                "width": 0,
               },
-              {
-                "backgroundColor": "rgb(255, 255, 255)",
-                "borderBottomColor": "rgb(216, 216, 216)",
-                "shadowColor": "rgba(0, 0, 0, 1)",
-              },
-              {
-                "backgroundColor": "#16181a",
-              },
-            ]
+              "shadowOpacity": 0.3,
+              "shadowRadius": 0,
+            }
           }
         />
       </View>
@@ -4374,7 +4014,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               "flex": 1,
               "flexDirection": "row",
             },
-            null,
+            {
+              "marginHorizontal": 5,
+            },
           ]
         }
       >
@@ -4382,21 +4024,14 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           collapsable={false}
           pointerEvents="box-none"
           style={
-            [
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "justifyContent": "flex-start",
-              },
-              {
-                "flexBasis": 0,
-                "flexGrow": 1,
-              },
-              {
-                "marginStart": 0,
-              },
-              undefined,
-            ]
+            {
+              "alignItems": "center",
+              "flexBasis": 0,
+              "flexDirection": "row",
+              "flexGrow": 1,
+              "justifyContent": "flex-start",
+              "marginStart": 0,
+            }
           }
         >
           <View
@@ -4431,96 +4066,123 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                 ]
               }
             >
-              <RNGestureHandlerButton
-                activeOpacity={0.3}
-                borderless={true}
-                collapsable={false}
-                delayLongPress={600}
-                enabled={true}
-                handlerTag={26}
-                handlerType="NativeViewGestureHandler"
-                hitSlop={
-                  {
-                    "bottom": 5,
-                    "left": 5,
-                    "right": 5,
-                    "top": 5,
-                  }
-                }
-                innerRef={null}
-                onActiveStateChange={[Function]}
-                onGestureHandlerEvent={[Function]}
-                onGestureHandlerStateChange={[Function]}
-                onPress={[Function]}
+              <ExternalKeyboardView
+                autoFocus={true}
+                canBeFocused={true}
+                enableA11yFocus={false}
+                enableContextMenu={false}
+                group={false}
+                haloEffect={true}
+                hasKeyDownPress={false}
+                hasKeyUpPress={true}
+                hasOnFocusChanged={true}
+                lockFocus={0}
+                onContextMenuPress={[Function]}
+                onFocusChange={[Function]}
+                onKeyUpPress={[Function]}
+                orderIndex={-1}
+                screenAutoA11yFocusDelay={300}
                 style={
                   [
-                    {
-                      "opacity": 1,
-                      "padding": 6,
-                    },
-                    {
-                      "cursor": undefined,
-                    },
+                    undefined,
+                    undefined,
                   ]
                 }
               >
-                <View
-                  accessibilityLabel="Menu"
-                  accessible={true}
-                  style={
+                <RNGestureHandlerButton
+                  activeOpacity={0.3}
+                  borderless={true}
+                  collapsable={false}
+                  delayLongPress={600}
+                  enabled={true}
+                  handlerTag={-1}
+                  handlerType="NativeViewGestureHandler"
+                  hitSlop={
                     {
-                      "opacity": 1,
+                      "bottom": 5,
+                      "left": 5,
+                      "right": 5,
+                      "top": 5,
                     }
                   }
+                  innerRef={null}
+                  onActiveStateChange={[Function]}
+                  onGestureHandlerEvent={[Function]}
+                  onGestureHandlerStateChange={[Function]}
+                  onPress={[Function]}
+                  style={
+                    [
+                      {
+                        "opacity": 1,
+                        "padding": 6,
+                      },
+                      {
+                        "cursor": undefined,
+                      },
+                    ]
+                  }
                 >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
+                  <View
+                    accessibilityLabel="Menu"
+                    accessible={true}
                     style={
-                      [
-                        {
-                          "color": "#E4E7EA",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
+                      {
+                        "opacity": 1,
+                      }
                     }
                   >
-                    
-                  </Text>
-                  <View
-                    style={
-                      [
-                        {
-                          "alignItems": "center",
-                          "borderRadius": 10,
-                          "justifyContent": "center",
-                          "padding": 2,
-                          "position": "absolute",
-                          "right": -4,
-                          "top": -4,
-                        },
-                        {
-                          "backgroundColor": "#BB3E4E",
-                          "height": 10,
-                          "width": 10,
-                        },
-                      ]
-                    }
-                  />
-                </View>
-              </RNGestureHandlerButton>
+                    <Text
+                      allowFontScaling={false}
+                      selectable={false}
+                      style={
+                        [
+                          {
+                            "color": "#E4E7EA",
+                            "fontSize": 24,
+                          },
+                          [
+                            {
+                              "lineHeight": 24,
+                            },
+                            [
+                              undefined,
+                              undefined,
+                            ],
+                          ],
+                          {
+                            "fontFamily": "custom",
+                            "fontStyle": "normal",
+                            "fontWeight": "normal",
+                          },
+                          {},
+                        ]
+                      }
+                    >
+                      
+                    </Text>
+                    <View
+                      style={
+                        [
+                          {
+                            "alignItems": "center",
+                            "borderRadius": 10,
+                            "justifyContent": "center",
+                            "padding": 2,
+                            "position": "absolute",
+                            "right": -4,
+                            "top": -4,
+                          },
+                          {
+                            "backgroundColor": "#BB3E4E",
+                            "height": 10,
+                            "width": 10,
+                          },
+                        ]
+                      }
+                    />
+                  </View>
+                </RNGestureHandlerButton>
+              </ExternalKeyboardView>
             </View>
             <RNGestureHandlerButton
               activeOpacity={0.3}
@@ -4528,7 +4190,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               collapsable={false}
               delayLongPress={600}
               enabled={true}
-              handlerTag={27}
+              handlerTag={-1}
               handlerType="NativeViewGestureHandler"
               hitSlop={
                 {
@@ -4596,18 +4258,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           collapsable={false}
           pointerEvents="box-none"
           style={
-            [
-              {
-                "justifyContent": "center",
-              },
-              {
-                "maxWidth": 198,
-              },
-              {
-                "marginHorizontal": 16,
-              },
-              undefined,
-            ]
+            {
+              "justifyContent": "center",
+              "marginHorizontal": 16,
+              "maxWidth": 558,
+            }
           }
         >
           <Text
@@ -4617,19 +4272,12 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             onLayout={[Function]}
             role="heading"
             style={
-              [
-                {
-                  "color": "rgb(28, 28, 30)",
-                },
-                {
-                  "fontFamily": "System",
-                  "fontWeight": "600",
-                },
-                {
-                  "fontSize": 17,
-                },
-                undefined,
-              ]
+              {
+                "color": "rgb(28, 28, 30)",
+                "fontFamily": "System",
+                "fontSize": 17,
+                "fontWeight": "600",
+              }
             }
           />
         </View>
@@ -4637,21 +4285,14 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           collapsable={false}
           pointerEvents="box-none"
           style={
-            [
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "justifyContent": "flex-end",
-              },
-              {
-                "flexBasis": 0,
-                "flexGrow": 1,
-              },
-              {
-                "marginEnd": 0,
-              },
-              undefined,
-            ]
+            {
+              "alignItems": "center",
+              "flexBasis": 0,
+              "flexDirection": "row",
+              "flexGrow": 1,
+              "justifyContent": "flex-end",
+              "marginEnd": 0,
+            }
           }
         >
           <View
@@ -4675,7 +4316,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               collapsable={false}
               delayLongPress={600}
               enabled={true}
-              handlerTag={28}
+              handlerTag={-1}
               handlerType="NativeViewGestureHandler"
               hitSlop={
                 {
@@ -4735,7 +4376,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               collapsable={false}
               delayLongPress={600}
               enabled={true}
-              handlerTag={29}
+              handlerTag={-1}
               handlerType="NativeViewGestureHandler"
               hitSlop={
                 {
@@ -4859,55 +4500,43 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
     collapsable={false}
     pointerEvents="box-none"
     style={
-      [
-        {
-          "height": 44,
-          "maxHeight": undefined,
-          "minHeight": undefined,
-          "opacity": undefined,
-          "transform": undefined,
-        },
-      ]
+      {
+        "height": 44,
+        "maxHeight": undefined,
+        "minHeight": undefined,
+        "opacity": undefined,
+        "transform": undefined,
+      }
     }
   >
     <View
       collapsable={false}
       pointerEvents="box-none"
       style={
-        [
-          {
-            "bottom": 0,
-            "left": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          },
-          undefined,
-        ]
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
       }
     >
       <View
         collapsable={false}
         style={
-          [
-            {
-              "flex": 1,
-              "shadowOffset": {
-                "height": 0.5,
-                "width": 0,
-              },
-              "shadowOpacity": 0.3,
-              "shadowRadius": 0,
+          {
+            "backgroundColor": undefined,
+            "borderBottomColor": "rgb(216, 216, 216)",
+            "flex": 1,
+            "shadowColor": "rgba(0, 0, 0, 1)",
+            "shadowOffset": {
+              "height": 0.5,
+              "width": 0,
             },
-            {
-              "backgroundColor": "rgb(255, 255, 255)",
-              "borderBottomColor": "rgb(216, 216, 216)",
-              "shadowColor": "rgba(0, 0, 0, 1)",
-            },
-            {
-              "backgroundColor": undefined,
-            },
-          ]
+            "shadowOpacity": 0.3,
+            "shadowRadius": 0,
+          }
         }
       />
     </View>
@@ -4928,7 +4557,9 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
             "flex": 1,
             "flexDirection": "row",
           },
-          null,
+          {
+            "marginHorizontal": 5,
+          },
         ]
       }
     >
@@ -4936,21 +4567,14 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
         collapsable={false}
         pointerEvents="box-none"
         style={
-          [
-            {
-              "alignItems": "center",
-              "flexDirection": "row",
-              "justifyContent": "flex-start",
-            },
-            {
-              "flexBasis": 0,
-              "flexGrow": 1,
-            },
-            {
-              "marginStart": 0,
-            },
-            undefined,
-          ]
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-start",
+            "marginStart": 0,
+          }
         }
       >
         <View
@@ -4975,7 +4599,7 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={30}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             hitSlop={
               {
@@ -5035,18 +4659,11 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
         collapsable={false}
         pointerEvents="box-none"
         style={
-          [
-            {
-              "justifyContent": "center",
-            },
-            {
-              "maxWidth": 198,
-            },
-            {
-              "marginHorizontal": 16,
-            },
-            undefined,
-          ]
+          {
+            "justifyContent": "center",
+            "marginHorizontal": 16,
+            "maxWidth": 558,
+          }
         }
       >
         <Text
@@ -5056,19 +4673,12 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
           onLayout={[Function]}
           role="heading"
           style={
-            [
-              {
-                "color": "rgb(28, 28, 30)",
-              },
-              {
-                "fontFamily": "System",
-                "fontWeight": "600",
-              },
-              {
-                "fontSize": 17,
-              },
-              undefined,
-            ]
+            {
+              "color": "rgb(28, 28, 30)",
+              "fontFamily": "System",
+              "fontSize": 17,
+              "fontWeight": "600",
+            }
           }
         />
       </View>
@@ -5076,21 +4686,14 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
         collapsable={false}
         pointerEvents="box-none"
         style={
-          [
-            {
-              "alignItems": "center",
-              "flexDirection": "row",
-              "justifyContent": "flex-end",
-            },
-            {
-              "flexBasis": 0,
-              "flexGrow": 1,
-            },
-            {
-              "marginEnd": 0,
-            },
-            undefined,
-          ]
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-end",
+            "marginEnd": 0,
+          }
         }
       >
         <View
@@ -5114,7 +4717,7 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={31}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             hitSlop={
               {
@@ -5176,55 +4779,43 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
     collapsable={false}
     pointerEvents="box-none"
     style={
-      [
-        {
-          "height": 44,
-          "maxHeight": undefined,
-          "minHeight": undefined,
-          "opacity": undefined,
-          "transform": undefined,
-        },
-      ]
+      {
+        "height": 44,
+        "maxHeight": undefined,
+        "minHeight": undefined,
+        "opacity": undefined,
+        "transform": undefined,
+      }
     }
   >
     <View
       collapsable={false}
       pointerEvents="box-none"
       style={
-        [
-          {
-            "bottom": 0,
-            "left": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          },
-          undefined,
-        ]
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
       }
     >
       <View
         collapsable={false}
         style={
-          [
-            {
-              "flex": 1,
-              "shadowOffset": {
-                "height": 0.5,
-                "width": 0,
-              },
-              "shadowOpacity": 0.3,
-              "shadowRadius": 0,
+          {
+            "backgroundColor": undefined,
+            "borderBottomColor": "rgb(216, 216, 216)",
+            "flex": 1,
+            "shadowColor": "rgba(0, 0, 0, 1)",
+            "shadowOffset": {
+              "height": 0.5,
+              "width": 0,
             },
-            {
-              "backgroundColor": "rgb(255, 255, 255)",
-              "borderBottomColor": "rgb(216, 216, 216)",
-              "shadowColor": "rgba(0, 0, 0, 1)",
-            },
-            {
-              "backgroundColor": undefined,
-            },
-          ]
+            "shadowOpacity": 0.3,
+            "shadowRadius": 0,
+          }
         }
       />
     </View>
@@ -5245,7 +4836,9 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
             "flex": 1,
             "flexDirection": "row",
           },
-          null,
+          {
+            "marginHorizontal": 5,
+          },
         ]
       }
     >
@@ -5253,21 +4846,14 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
         collapsable={false}
         pointerEvents="box-none"
         style={
-          [
-            {
-              "alignItems": "center",
-              "flexDirection": "row",
-              "justifyContent": "flex-start",
-            },
-            {
-              "flexBasis": 0,
-              "flexGrow": 1,
-            },
-            {
-              "marginStart": 0,
-            },
-            undefined,
-          ]
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-start",
+            "marginStart": 0,
+          }
         }
       >
         <View
@@ -5292,7 +4878,7 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={32}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             hitSlop={
               {
@@ -5352,7 +4938,7 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={33}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             hitSlop={
               {
@@ -5412,18 +4998,11 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
         collapsable={false}
         pointerEvents="box-none"
         style={
-          [
-            {
-              "justifyContent": "center",
-            },
-            {
-              "maxWidth": 198,
-            },
-            {
-              "marginHorizontal": 16,
-            },
-            undefined,
-          ]
+          {
+            "justifyContent": "center",
+            "marginHorizontal": 16,
+            "maxWidth": 558,
+          }
         }
       >
         <Text
@@ -5433,19 +5012,12 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
           onLayout={[Function]}
           role="heading"
           style={
-            [
-              {
-                "color": "rgb(28, 28, 30)",
-              },
-              {
-                "fontFamily": "System",
-                "fontWeight": "600",
-              },
-              {
-                "fontSize": 17,
-              },
-              undefined,
-            ]
+            {
+              "color": "rgb(28, 28, 30)",
+              "fontFamily": "System",
+              "fontSize": 17,
+              "fontWeight": "600",
+            }
           }
         />
       </View>
@@ -5453,21 +5025,14 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
         collapsable={false}
         pointerEvents="box-none"
         style={
-          [
-            {
-              "alignItems": "center",
-              "flexDirection": "row",
-              "justifyContent": "flex-end",
-            },
-            {
-              "flexBasis": 0,
-              "flexGrow": 1,
-            },
-            {
-              "marginEnd": 0,
-            },
-            undefined,
-          ]
+          {
+            "alignItems": "center",
+            "flexBasis": 0,
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "flex-end",
+            "marginEnd": 0,
+          }
         }
       >
         <View
@@ -5491,7 +5056,7 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={34}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             hitSlop={
               {
@@ -5551,7 +5116,7 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
             collapsable={false}
             delayLongPress={600}
             enabled={true}
-            handlerTag={35}
+            handlerTag={-1}
             handlerType="NativeViewGestureHandler"
             hitSlop={
               {

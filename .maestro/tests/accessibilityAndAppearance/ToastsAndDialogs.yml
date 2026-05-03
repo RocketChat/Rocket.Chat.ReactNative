@@ -18,10 +18,13 @@ tags:
 # Show alerts as Toasts
 - tapOn: 'Menu'
 - tapOn: 'Accessibility & appearance'
-- tapOn: 'Show alerts as. Toasts'
+- tapOn: '.*Show alerts as.*'
 - assertVisible: 'Toasts. Dismissed automatically. Checked'
 - assertVisible: 'Dialogs. Require manual dismissal. Unchecked'
-- tapOn: 'Bottom Sheet backdrop'
+- tapOn:
+    id: 'action-sheet-handle'
+- waitForAnimationToEnd:
+    timeout: 5000
 - tapOn: 'Menu'
 - tapOn: 'Edit status'
 - tapOn:
@@ -34,7 +37,7 @@ tags:
 
 # Show alerts as Dialogs
 - tapOn: 'Accessibility & appearance'
-- tapOn: 'Show alerts as. Toasts'
+- tapOn: '.*Show alerts as.*'
 - assertVisible: 'Toasts. Dismissed automatically. Checked'
 - tapOn: 'Dialogs. Require manual dismissal. Unchecked'
 - tapOn: 'Menu'

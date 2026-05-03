@@ -1,7 +1,9 @@
 package chat.rocket.reactnative.scroll;
 
+import androidx.annotation.Nullable;
 import com.facebook.react.module.annotations.ReactModule;
 import com.facebook.react.uimanager.ThemedReactContext;
+import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.views.scroll.ReactScrollViewManager;
 
 /**
@@ -22,5 +24,10 @@ public class InvertedScrollViewManager extends ReactScrollViewManager {
   @Override
   public InvertedScrollView createViewInstance(ThemedReactContext context) {
     return new InvertedScrollView(context);
+  }
+
+  @ReactProp(name = "exitFocusNativeId")
+  public void setExitFocusNativeId(InvertedScrollView view, @Nullable String nativeId) {
+    view.setExitFocusNativeId(nativeId);
   }
 }

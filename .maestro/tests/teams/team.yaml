@@ -107,11 +107,11 @@ tags:
     id: create-channel-name
 - inputText: ${output.privateRoomName}
 - runFlow: '../../helpers/hide-keyboard.yaml'
-- extendedWaitUntil:
-    visible:
-      id: create-channel-submit
+- scrollUntilVisible:
+    element:
+      id: 'create-channel-submit'
     timeout: 60000
-    label: should have submit button
+    centerElement: true
 - tapOn:
     id: create-channel-submit
 - extendedWaitUntil:

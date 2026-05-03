@@ -9,20 +9,22 @@ on:
 
 jobs:
   ios-test:
-    runs-on: macos-26
+    runs-on: macos-14
+    env:
+      MAESTRO_VERSION: 2.2.0
 
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
       - name: Setup Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@c1e323688fd81a25caa38c78aa6df2d33d3e20d9 # v4.8.0
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          distribution: temurin
+          java-version: "17"
 
       - name: Download App
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           name: ios-simulator-app
           path: ios-simulator-app
@@ -33,89 +35,74 @@ jobs:
           E2E_ACCOUNT: ${{ secrets.E2E_ACCOUNT }}
 
       - name: Cache Maestro
-        uses: actions/cache@v4
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: ~/.maestro
-          key: maestro-macos
+          key: maestro-${{ runner.os }}-${{ env.MAESTRO_VERSION }}
 
-      - name: Install Maestro
+      - name: Install Maestro + idb
         run: |
           brew tap facebook/fb
           brew install facebook/fb/idb-companion
-          curl -Ls "https://get.maestro.mobile.dev" | bash
-        env:
-          MAESTRO_VERSION: 2.2.0
+          curl -fsSL "https://get.maestro.mobile.dev" | bash
+          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
 
       - name: Configure Simulator
         run: |
           defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false
-          defaults write com.apple.iphonesimulator ShowSingleTouches 1
           defaults write com.apple.iphonesimulator SlowAnimations -bool false
           defaults write com.apple.iphonesimulator ShowDeviceBezels -bool false
           defaults write com.apple.iphonesimulator DisableShadows -bool true
+          defaults write com.apple.iphonesimulator AllowFullscreenMode -bool false
+          defaults write com.apple.iphonesimulator PasteboardAutomaticSync -bool false
+          defaults write com.apple.iphonesimulator ShowChrome -bool false
+          defaults write com.apple.iphonesimulator DeviceFramebufferOnly -bool true
 
       - name: Boot Simulator
-        timeout-minutes: 30
+        timeout-minutes: 15
         run: |
-          open -a Simulator
+          SIM_NAME="iPhone 16 Pro"
 
-          SIM_NAME="iPhone 16 Pro Max"
-          TIMEOUT=300  # 5 minutes in seconds
-          INTERVAL=5   # Check every 5 seconds
-    
+          echo "Booting simulator: $SIM_NAME"
+
           xcrun simctl boot "$SIM_NAME" || true
-        
-          ELAPSED=0
-          while true; do
-            BOOTED=$(xcrun simctl list devices | grep "$SIM_NAME (" | grep "(Booted)")
-            if [ -n "$BOOTED" ]; then
-                echo "$SIM_NAME is booted"
-                break
-            fi
-        
-            if [ $ELAPSED -ge $TIMEOUT ]; then
-                echo "Simulator did not boot within 5 minutes. Retrying..."
-                xcrun simctl shutdown "$SIM_NAME"
-                xcrun simctl boot "$SIM_NAME"
-                ELAPSED=0
-            fi
-        
-            sleep $INTERVAL
-            ELAPSED=$((ELAPSED + INTERVAL))
-            done
-        
+          xcrun simctl bootstatus "$SIM_NAME" -b
+
+          echo "Disabling animations"
+          xcrun simctl spawn booted defaults write -g UIAnimationDragCoefficient -float 10
+
+          echo "Warming SpringBoard"
+          xcrun simctl launch booted com.apple.springboard
+          sleep 15
+
+          echo "Booted devices:"
           xcrun simctl list devices | grep Booted
 
-      - name: Get Simulator UDID 
+      - name: Get Booted Simulator UDID
         id: booted-sim
         run: |
-          UDID=$(xcrun simctl list devices | grep "iPhone 16 Pro Max (" | grep "(Booted)" | grep -oE '[A-F0-9-]{36}' | head -n1)
+          UDID=$(xcrun simctl list devices booted | grep -oE '[A-F0-9-]{36}' | head -n1)
           echo "UDID=$UDID"
           echo "UDID=$UDID" >> $GITHUB_ENV
 
-      - name: Make Maestro script executable
-        run: chmod +x .github/scripts/run-maestro.sh
-
-      - name: Set Maestro Driver Startup Timeout
-        run: echo "MAESTRO_DRIVER_STARTUP_TIMEOUT=180000" >> $GITHUB_ENV
-
       - name: Install App
         run: |
-          xcrun simctl install $UDID "ios-simulator-app"
+          xcrun simctl install booted ios-simulator-app
 
-      - name: Run Tests
-        timeout-minutes: 60
-        id: maestro_run
-        run: ./.github/scripts/run-maestro.sh ios ${{ inputs.shard }}
+      - name: Make Maestro Script Executable
+        run: chmod +x .github/scripts/run-maestro.sh
 
-      - name: Run Tests (Retry)
-        if: steps.maestro_run.outcome == 'failure'
-        timeout-minutes: 60
-        run: ./.github/scripts/run-maestro.sh ios ${{ inputs.shard }}
+      - name: Run Maestro Tests
+        uses: nick-fields/retry@ce71cc2ab81d554ebbe88c79ab5975992d79ba08 # v3.0.2
+        with:
+          timeout_minutes: 30
+          max_attempts: 2
+          retry_on: timeout
+          command: ./.github/scripts/run-maestro.sh ios ${{ inputs.shard }}
 
-      - name: iOS Maestro Logs
+      - name: Upload Maestro Logs
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: iOS Maestro Logs - Shard ${{ inputs.shard }}
           path: ~/.maestro/tests/**/*.png

@@ -9,8 +9,6 @@ import {
 	View,
 	type ViewStyle
 } from 'react-native';
-import { BottomSheetTextInput } from '@discord/bottom-sheet';
-import Touchable from 'react-native-platform-touchable';
 import { A11y } from 'react-native-a11y-order';
 
 import i18n from '../../i18n';
@@ -20,6 +18,7 @@ import ActivityIndicator from '../ActivityIndicator';
 import { CustomIcon, type TIconsName } from '../CustomIcon';
 import { TextInput } from './TextInput';
 import { isIOS } from '../../lib/methods/helpers';
+import Touch from '../Touch';
 
 const styles = StyleSheet.create({
 	error: {
@@ -72,6 +71,10 @@ const styles = StyleSheet.create({
 	},
 	iconRight: {
 		right: 12
+	},
+	clearInputIcon: {
+		width: 20,
+		height: 20
 	}
 });
 
@@ -87,7 +90,6 @@ export interface IRCTextInputProps extends TextInputProps {
 	iconLeft?: TIconsName;
 	iconRight?: TIconsName;
 	left?: JSX.Element;
-	bottomSheet?: boolean;
 	onClearInput?: () => void;
 }
 
@@ -115,7 +117,6 @@ export const FormTextInput = ({
 	left,
 	testID,
 	secureTextEntry,
-	bottomSheet,
 	placeholder,
 	accessibilityLabel,
 	showErrorMessage = true,
@@ -124,8 +125,6 @@ export const FormTextInput = ({
 	const { colors } = useTheme();
 	const [showPassword, setShowPassword] = useState(false);
 	const showClearInput = onClearInput && value && value.length > 0;
-	const Input = bottomSheet ? BottomSheetTextInput : TextInput;
-
 	const inputError = getInputError(error);
 	const accessibilityLabelText = useMemo(() => {
 		const baseLabel = `${accessibilityLabel || label || ''}`;
@@ -151,7 +150,7 @@ export const FormTextInput = ({
 					) : null}
 
 					<View accessible={false} style={styles.wrap}>
-						<Input
+						<TextInput
 							accessible
 							accessibilityLabel={accessibilityLabelText}
 							style={[
@@ -194,9 +193,16 @@ export const FormTextInput = ({
 						) : null}
 
 						{showClearInput ? (
-							<Touchable onPress={onClearInput} style={[styles.iconContainer, styles.iconRight]} testID='clear-text-input'>
-								<CustomIcon name='input-clear' size={20} color={colors.fontDefault} />
-							</Touchable>
+							<View style={[styles.iconContainer, styles.iconRight]}>
+								<Touch
+									testID='clear-text-input'
+									onPress={() => onClearInput?.()}
+									accessible
+									accessibilityLabel={i18n.t('Clear_input')}
+									style={styles.clearInputIcon}>
+									<CustomIcon name='input-clear' size={20} color={colors.fontDefault} />
+								</Touch>
+							</View>
 						) : null}
 
 						{iconRight && !showClearInput ? (
@@ -212,7 +218,7 @@ export const FormTextInput = ({
 
 						{secureTextEntry ? (
 							<A11y.Index index={2} style={[styles.iconContainer, styles.iconRight]}>
-								<Touchable
+								<Touch
 									accessible
 									accessibilityLabel={showPassword ? i18n.t('Hide_Password') : i18n.t('Show_Password')}
 									onPress={() => setShowPassword(!showPassword)}>
@@ -222,7 +228,7 @@ export const FormTextInput = ({
 										size={20}
 										color={colors.fontDefault}
 									/>
-								</Touchable>
+								</Touch>
 							</A11y.Index>
 						) : null}
 

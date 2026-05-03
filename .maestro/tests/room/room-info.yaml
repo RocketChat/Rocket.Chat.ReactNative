@@ -290,7 +290,7 @@ tags:
     env:
       id: 'room-info-edit-view-name'
 - inputText: ${output.newroomname}
-- pressKey: Enter
+- runFlow: '../../helpers/hide-keyboard.yaml'
 - scrollUntilVisible:
     element:
       id: 'room-info-edit-view-submit'
@@ -321,6 +321,14 @@ tags:
     timeout: 60000
 
 # should change room description, topic, announcement
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - extendedWaitUntil:
+          notVisible:
+            text: '.*Settings succesfully changed.*'
+          timeout: 60000
 - scrollUntilVisible:
     element:
       id: 'room-info-edit-view-topic'

@@ -17,6 +17,8 @@ import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.ProcessLifecycleOwner;
 
 import com.google.gson.Gson;
 
@@ -49,7 +51,9 @@ public class CustomPushNotification {
     public static final String KEY_REPLY = "KEY_REPLY";
     public static final String NOTIFICATION_ID = "NOTIFICATION_ID";
     private static final String CHANNEL_ID = "rocketchatrn_channel_01";
-    private static final String CHANNEL_NAME = "All";
+    private static final String CHANNEL_NAME = "Messages";
+    private static final String CALLS_CHANNEL_ID = "rocketchatrn_channel_calls";
+    private static final String CALLS_CHANNEL_NAME = "Calls";
     
     // Instance fields
     private final Context mContext;
@@ -67,6 +71,14 @@ public class CustomPushNotification {
 
     public static void clearMessages(int notId) {
         notificationMessages.remove(Integer.toString(notId));
+    }
+
+    /**
+     * Checks if the app is currently in the foreground.
+     * Uses ProcessLifecycleOwner to reliably detect app state.
+     */
+    public static boolean isAppInForeground() {
+        return ProcessLifecycleOwner.get().getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED);
     }
     
     public void onReceived() {
@@ -100,6 +112,11 @@ public class CustomPushNotification {
             Log.d(TAG, "Detected message-id-only notification, will fetch full content from server");
             loadNotificationAndProcess(receivedEjson);
             return; // Exit early, notification will be processed in callback
+        }
+
+        if (receivedEjson != null && receivedEjson.notificationType != null && receivedEjson.notificationType.equals("voip")) {
+            Log.d(TAG, "Notification is a voip notification, ignoring");
+            return;
         }
 
         // For non-message-id-only notifications, process immediately
@@ -228,6 +245,15 @@ public class CustomPushNotification {
             if (ENABLE_VERBOSE_LOGS) {
                 Log.d(TAG, "[Before add to notificationMessages] notId=" + notId + ", bundle.message length=" + (bundle.getString("message") != null ? bundle.getString("message").length() : 0) + ", bundle.notificationLoaded=" + bundle.getBoolean("notificationLoaded", false));
             }
+
+            // Don't show notification if app is in foreground
+            if (isAppInForeground()) {
+                if (ENABLE_VERBOSE_LOGS) {
+                    Log.d(TAG, "App is in foreground, skipping native notification");
+                }
+                return;
+            }
+
             notificationMessages.get(notId).add(bundle);
             if (ENABLE_VERBOSE_LOGS) {
                 Log.d(TAG, "[After add] notificationMessages[" + notId + "].size=" + notificationMessages.get(notId).size());
@@ -275,13 +301,19 @@ public class CustomPushNotification {
     
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(
+            NotificationChannel messagesChannel = new NotificationChannel(
                 CHANNEL_ID,
                 CHANNEL_NAME,
                 NotificationManager.IMPORTANCE_HIGH
             );
+            NotificationChannel callsChannel = new NotificationChannel(
+                CALLS_CHANNEL_ID,
+                CALLS_CHANNEL_NAME,
+                NotificationManager.IMPORTANCE_HIGH
+            );
             if (notificationManager != null) {
-                notificationManager.createNotificationChannel(channel);
+                notificationManager.createNotificationChannel(messagesChannel);
+                notificationManager.createNotificationChannel(callsChannel);
             }
         }
     }

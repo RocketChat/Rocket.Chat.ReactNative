@@ -82,7 +82,7 @@ exports[`MessageComposer Audio tap record 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={289}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -111,12 +111,14 @@ exports[`MessageComposer Audio tap record 1`] = `
             },
           ]
         }
-        testID="message-composer-delete-audio"
       >
         <View
           accessibilityLabel="Cancel and delete recording"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-delete-audio"
         >
           <Text
             allowFontScaling={false}
@@ -177,7 +179,7 @@ exports[`MessageComposer Audio tap record 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={290}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -247,9 +249,7 @@ exports[`MessageComposer Audio tap record 1`] = `
   <View
     style={
       [
-        {
-          "height": 0,
-        },
+        [Function],
         {
           "backgroundColor": "#FFFFFF",
         },
@@ -262,6 +262,7 @@ exports[`MessageComposer Audio tap record 1`] = `
 exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
 [
   <View
+    nativeID="message-composer-exit-focus"
     onLayout={[Function]}
     style={
       [
@@ -299,7 +300,7 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={276}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -328,12 +329,14 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
               },
             ]
           }
-          testID="message-composer-actions"
         >
           <View
             accessibilityLabel="Actions"
             accessibilityRole="button"
             accessible={true}
+            collapsable={false}
+            onFocus={[Function]}
+            testID="message-composer-actions"
           >
             <Text
               allowFontScaling={false}
@@ -415,7 +418,7 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={277}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -444,12 +447,14 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
               },
             ]
           }
-          testID="message-composer-send-audio"
         >
           <View
             accessibilityLabel="Record audio message"
             accessibilityRole="button"
             accessible={true}
+            collapsable={false}
+            onFocus={[Function]}
+            testID="message-composer-send-audio"
           >
             <Text
               allowFontScaling={false}
@@ -587,7 +592,7 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
                 borderless={true}
                 collapsable={false}
                 delayLongPress={600}
-                handlerTag={278}
+                handlerTag={-1}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   {
@@ -616,12 +621,14 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
                     },
                   ]
                 }
-                testID="composer-quote-remove-abc"
               >
                 <View
                   accessibilityLabel="Remove quote message"
                   accessibilityRole="button"
                   accessible={true}
+                  collapsable={false}
+                  onFocus={[Function]}
+                  testID="composer-quote-remove-abc"
                 >
                   <Text
                     allowFontScaling={false}
@@ -692,9 +699,7 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
   <View
     style={
       [
-        {
-          "height": 0,
-        },
+        [Function],
         {
           "backgroundColor": "#FFFFFF",
         },
@@ -707,6 +712,7 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
 exports[`MessageComposer Quote Add quote \`def\` 1`] = `
 [
   <View
+    nativeID="message-composer-exit-focus"
     onLayout={[Function]}
     style={
       [
@@ -744,7 +750,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={279}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -773,12 +779,14 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
               },
             ]
           }
-          testID="message-composer-actions"
         >
           <View
             accessibilityLabel="Actions"
             accessibilityRole="button"
             accessible={true}
+            collapsable={false}
+            onFocus={[Function]}
+            testID="message-composer-actions"
           >
             <Text
               allowFontScaling={false}
@@ -860,7 +868,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={280}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -889,12 +897,14 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
               },
             ]
           }
-          testID="message-composer-send-audio"
         >
           <View
             accessibilityLabel="Record audio message"
             accessibilityRole="button"
             accessible={true}
+            collapsable={false}
+            onFocus={[Function]}
+            testID="message-composer-send-audio"
           >
             <Text
               allowFontScaling={false}
@@ -1033,7 +1043,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                 borderless={true}
                 collapsable={false}
                 delayLongPress={600}
-                handlerTag={281}
+                handlerTag={-1}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   {
@@ -1062,12 +1072,14 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                     },
                   ]
                 }
-                testID="composer-quote-remove-abc"
               >
                 <View
                   accessibilityLabel="Remove quote message"
                   accessibilityRole="button"
                   accessible={true}
+                  collapsable={false}
+                  onFocus={[Function]}
+                  testID="composer-quote-remove-abc"
                 >
                   <Text
                     allowFontScaling={false}
@@ -1214,7 +1226,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                 borderless={true}
                 collapsable={false}
                 delayLongPress={600}
-                handlerTag={282}
+                handlerTag={-1}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   {
@@ -1243,12 +1255,14 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                     },
                   ]
                 }
-                testID="composer-quote-remove-def"
               >
                 <View
                   accessibilityLabel="Remove quote message"
                   accessibilityRole="button"
                   accessible={true}
+                  collapsable={false}
+                  onFocus={[Function]}
+                  testID="composer-quote-remove-def"
                 >
                   <Text
                     allowFontScaling={false}
@@ -1319,9 +1333,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
   <View
     style={
       [
-        {
-          "height": 0,
-        },
+        [Function],
         {
           "backgroundColor": "#FFFFFF",
         },
@@ -1334,6 +1346,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
 exports[`MessageComposer Quote Remove a quote 1`] = `
 [
   <View
+    nativeID="message-composer-exit-focus"
     onLayout={[Function]}
     style={
       [
@@ -1371,7 +1384,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={283}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -1400,12 +1413,14 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
               },
             ]
           }
-          testID="message-composer-actions"
         >
           <View
             accessibilityLabel="Actions"
             accessibilityRole="button"
             accessible={true}
+            collapsable={false}
+            onFocus={[Function]}
+            testID="message-composer-actions"
           >
             <Text
               allowFontScaling={false}
@@ -1487,7 +1502,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={284}
+          handlerTag={-1}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -1516,12 +1531,14 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
               },
             ]
           }
-          testID="message-composer-send-audio"
         >
           <View
             accessibilityLabel="Record audio message"
             accessibilityRole="button"
             accessible={true}
+            collapsable={false}
+            onFocus={[Function]}
+            testID="message-composer-send-audio"
           >
             <Text
               allowFontScaling={false}
@@ -1660,7 +1677,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                 borderless={true}
                 collapsable={false}
                 delayLongPress={600}
-                handlerTag={285}
+                handlerTag={-1}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   {
@@ -1689,12 +1706,14 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                     },
                   ]
                 }
-                testID="composer-quote-remove-abc"
               >
                 <View
                   accessibilityLabel="Remove quote message"
                   accessibilityRole="button"
                   accessible={true}
+                  collapsable={false}
+                  onFocus={[Function]}
+                  testID="composer-quote-remove-abc"
                 >
                   <Text
                     allowFontScaling={false}
@@ -1841,7 +1860,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                 borderless={true}
                 collapsable={false}
                 delayLongPress={600}
-                handlerTag={286}
+                handlerTag={-1}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   {
@@ -1870,12 +1889,14 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                     },
                   ]
                 }
-                testID="composer-quote-remove-def"
               >
                 <View
                   accessibilityLabel="Remove quote message"
                   accessibilityRole="button"
                   accessible={true}
+                  collapsable={false}
+                  onFocus={[Function]}
+                  testID="composer-quote-remove-def"
                 >
                   <Text
                     allowFontScaling={false}
@@ -1946,9 +1967,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
   <View
     style={
       [
-        {
-          "height": 0,
-        },
+        [Function],
         {
           "backgroundColor": "#FFFFFF",
         },
@@ -1961,6 +1980,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
 exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
 [
   <View
+    nativeID="message-composer-exit-focus"
     onLayout={[Function]}
     style={
       [
@@ -2034,7 +2054,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={46}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2063,12 +2083,14 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
             },
           ]
         }
-        testID="message-composer-close-markdown"
       >
         <View
           accessibilityLabel="Close"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-close-markdown"
         >
           <Text
             allowFontScaling={false}
@@ -2110,7 +2132,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={47}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2139,12 +2161,14 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
             },
           ]
         }
-        testID="message-composer-bold"
       >
         <View
           accessibilityLabel="Bold"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-bold"
         >
           <Text
             allowFontScaling={false}
@@ -2186,7 +2210,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={48}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2215,12 +2239,14 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
             },
           ]
         }
-        testID="message-composer-italic"
       >
         <View
           accessibilityLabel="Italic"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-italic"
         >
           <Text
             allowFontScaling={false}
@@ -2262,7 +2288,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={49}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2291,12 +2317,14 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
             },
           ]
         }
-        testID="message-composer-strike"
       >
         <View
           accessibilityLabel="Strikethrough"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-strike"
         >
           <Text
             allowFontScaling={false}
@@ -2338,7 +2366,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={50}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2367,12 +2395,14 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
             },
           ]
         }
-        testID="message-composer-code"
       >
         <View
           accessibilityLabel="Inline code"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code"
         >
           <Text
             allowFontScaling={false}
@@ -2414,7 +2444,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={51}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2443,12 +2473,14 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
             },
           ]
         }
-        testID="message-composer-code-block"
       >
         <View
           accessibilityLabel="Code block"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code-block"
         >
           <Text
             allowFontScaling={false}
@@ -2519,12 +2551,14 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
             },
           ]
         }
-        testID="message-composer-send-audio"
       >
         <View
           accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-send-audio"
         >
           <Text
             allowFontScaling={false}
@@ -2559,9 +2593,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
   <View
     style={
       [
-        {
-          "height": 0,
-        },
+        [Function],
         {
           "backgroundColor": "#FFFFFF",
         },
@@ -2574,6 +2606,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
 exports[`MessageComposer Toolbar Markdown tap code 1`] = `
 [
   <View
+    nativeID="message-composer-exit-focus"
     onLayout={[Function]}
     style={
       [
@@ -2647,7 +2680,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={124}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2676,12 +2709,14 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
             },
           ]
         }
-        testID="message-composer-close-markdown"
       >
         <View
           accessibilityLabel="Close"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-close-markdown"
         >
           <Text
             allowFontScaling={false}
@@ -2723,7 +2758,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={125}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2752,12 +2787,14 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
             },
           ]
         }
-        testID="message-composer-bold"
       >
         <View
           accessibilityLabel="Bold"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-bold"
         >
           <Text
             allowFontScaling={false}
@@ -2799,7 +2836,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={126}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2828,12 +2865,14 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
             },
           ]
         }
-        testID="message-composer-italic"
       >
         <View
           accessibilityLabel="Italic"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-italic"
         >
           <Text
             allowFontScaling={false}
@@ -2875,7 +2914,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={127}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2904,12 +2943,14 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
             },
           ]
         }
-        testID="message-composer-strike"
       >
         <View
           accessibilityLabel="Strikethrough"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-strike"
         >
           <Text
             allowFontScaling={false}
@@ -2951,7 +2992,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={128}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2980,12 +3021,14 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
             },
           ]
         }
-        testID="message-composer-code"
       >
         <View
           accessibilityLabel="Inline code"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code"
         >
           <Text
             allowFontScaling={false}
@@ -3027,7 +3070,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={129}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3056,12 +3099,14 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
             },
           ]
         }
-        testID="message-composer-code-block"
       >
         <View
           accessibilityLabel="Code block"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code-block"
         >
           <Text
             allowFontScaling={false}
@@ -3132,12 +3177,14 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
             },
           ]
         }
-        testID="message-composer-send-audio"
       >
         <View
           accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-send-audio"
         >
           <Text
             allowFontScaling={false}
@@ -3172,9 +3219,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
   <View
     style={
       [
-        {
-          "height": 0,
-        },
+        [Function],
         {
           "backgroundColor": "#FFFFFF",
         },
@@ -3187,6 +3232,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
 exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
 [
   <View
+    nativeID="message-composer-exit-focus"
     onLayout={[Function]}
     style={
       [
@@ -3260,7 +3306,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={150}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3289,12 +3335,14 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
             },
           ]
         }
-        testID="message-composer-close-markdown"
       >
         <View
           accessibilityLabel="Close"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-close-markdown"
         >
           <Text
             allowFontScaling={false}
@@ -3336,7 +3384,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={151}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3365,12 +3413,14 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
             },
           ]
         }
-        testID="message-composer-bold"
       >
         <View
           accessibilityLabel="Bold"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-bold"
         >
           <Text
             allowFontScaling={false}
@@ -3412,7 +3462,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={152}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3441,12 +3491,14 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
             },
           ]
         }
-        testID="message-composer-italic"
       >
         <View
           accessibilityLabel="Italic"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-italic"
         >
           <Text
             allowFontScaling={false}
@@ -3488,7 +3540,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={153}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3517,12 +3569,14 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
             },
           ]
         }
-        testID="message-composer-strike"
       >
         <View
           accessibilityLabel="Strikethrough"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-strike"
         >
           <Text
             allowFontScaling={false}
@@ -3564,7 +3618,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={154}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3593,12 +3647,14 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
             },
           ]
         }
-        testID="message-composer-code"
       >
         <View
           accessibilityLabel="Inline code"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code"
         >
           <Text
             allowFontScaling={false}
@@ -3640,7 +3696,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={155}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3669,12 +3725,14 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
             },
           ]
         }
-        testID="message-composer-code-block"
       >
         <View
           accessibilityLabel="Code block"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code-block"
         >
           <Text
             allowFontScaling={false}
@@ -3745,12 +3803,14 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
             },
           ]
         }
-        testID="message-composer-send-audio"
       >
         <View
           accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-send-audio"
         >
           <Text
             allowFontScaling={false}
@@ -3785,9 +3845,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
   <View
     style={
       [
-        {
-          "height": 0,
-        },
+        [Function],
         {
           "backgroundColor": "#FFFFFF",
         },
@@ -3800,6 +3858,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
 exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
 [
   <View
+    nativeID="message-composer-exit-focus"
     onLayout={[Function]}
     style={
       [
@@ -3873,7 +3932,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={72}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3902,12 +3961,14 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
             },
           ]
         }
-        testID="message-composer-close-markdown"
       >
         <View
           accessibilityLabel="Close"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-close-markdown"
         >
           <Text
             allowFontScaling={false}
@@ -3949,7 +4010,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={73}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3978,12 +4039,14 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
             },
           ]
         }
-        testID="message-composer-bold"
       >
         <View
           accessibilityLabel="Bold"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-bold"
         >
           <Text
             allowFontScaling={false}
@@ -4025,7 +4088,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={74}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4054,12 +4117,14 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
             },
           ]
         }
-        testID="message-composer-italic"
       >
         <View
           accessibilityLabel="Italic"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-italic"
         >
           <Text
             allowFontScaling={false}
@@ -4101,7 +4166,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={75}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4130,12 +4195,14 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
             },
           ]
         }
-        testID="message-composer-strike"
       >
         <View
           accessibilityLabel="Strikethrough"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-strike"
         >
           <Text
             allowFontScaling={false}
@@ -4177,7 +4244,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={76}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4206,12 +4273,14 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
             },
           ]
         }
-        testID="message-composer-code"
       >
         <View
           accessibilityLabel="Inline code"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code"
         >
           <Text
             allowFontScaling={false}
@@ -4253,7 +4322,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={77}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4282,12 +4351,14 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
             },
           ]
         }
-        testID="message-composer-code-block"
       >
         <View
           accessibilityLabel="Code block"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code-block"
         >
           <Text
             allowFontScaling={false}
@@ -4358,12 +4429,14 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
             },
           ]
         }
-        testID="message-composer-send-audio"
       >
         <View
           accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-send-audio"
         >
           <Text
             allowFontScaling={false}
@@ -4398,9 +4471,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
   <View
     style={
       [
-        {
-          "height": 0,
-        },
+        [Function],
         {
           "backgroundColor": "#FFFFFF",
         },
@@ -4413,6 +4484,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
 exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
 [
   <View
+    nativeID="message-composer-exit-focus"
     onLayout={[Function]}
     style={
       [
@@ -4486,7 +4558,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={33}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4515,12 +4587,14 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
             },
           ]
         }
-        testID="message-composer-close-markdown"
       >
         <View
           accessibilityLabel="Close"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-close-markdown"
         >
           <Text
             allowFontScaling={false}
@@ -4562,7 +4636,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={34}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4591,12 +4665,14 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
             },
           ]
         }
-        testID="message-composer-bold"
       >
         <View
           accessibilityLabel="Bold"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-bold"
         >
           <Text
             allowFontScaling={false}
@@ -4638,7 +4714,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={35}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4667,12 +4743,14 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
             },
           ]
         }
-        testID="message-composer-italic"
       >
         <View
           accessibilityLabel="Italic"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-italic"
         >
           <Text
             allowFontScaling={false}
@@ -4714,7 +4792,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={36}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4743,12 +4821,14 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
             },
           ]
         }
-        testID="message-composer-strike"
       >
         <View
           accessibilityLabel="Strikethrough"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-strike"
         >
           <Text
             allowFontScaling={false}
@@ -4790,7 +4870,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={37}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4819,12 +4899,14 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
             },
           ]
         }
-        testID="message-composer-code"
       >
         <View
           accessibilityLabel="Inline code"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code"
         >
           <Text
             allowFontScaling={false}
@@ -4866,7 +4948,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={38}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4895,12 +4977,14 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
             },
           ]
         }
-        testID="message-composer-code-block"
       >
         <View
           accessibilityLabel="Code block"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code-block"
         >
           <Text
             allowFontScaling={false}
@@ -4942,7 +5026,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={32}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4971,12 +5055,14 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
             },
           ]
         }
-        testID="message-composer-send-audio"
       >
         <View
           accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-send-audio"
         >
           <Text
             allowFontScaling={false}
@@ -5011,9 +5097,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
   <View
     style={
       [
-        {
-          "height": 0,
-        },
+        [Function],
         {
           "backgroundColor": "#FFFFFF",
         },
@@ -5026,6 +5110,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
 exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
 [
   <View
+    nativeID="message-composer-exit-focus"
     onLayout={[Function]}
     style={
       [
@@ -5099,7 +5184,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={98}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5128,12 +5213,14 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
             },
           ]
         }
-        testID="message-composer-close-markdown"
       >
         <View
           accessibilityLabel="Close"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-close-markdown"
         >
           <Text
             allowFontScaling={false}
@@ -5175,7 +5262,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={99}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5204,12 +5291,14 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
             },
           ]
         }
-        testID="message-composer-bold"
       >
         <View
           accessibilityLabel="Bold"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-bold"
         >
           <Text
             allowFontScaling={false}
@@ -5251,7 +5340,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={100}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5280,12 +5369,14 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
             },
           ]
         }
-        testID="message-composer-italic"
       >
         <View
           accessibilityLabel="Italic"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-italic"
         >
           <Text
             allowFontScaling={false}
@@ -5327,7 +5418,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={101}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5356,12 +5447,14 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
             },
           ]
         }
-        testID="message-composer-strike"
       >
         <View
           accessibilityLabel="Strikethrough"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-strike"
         >
           <Text
             allowFontScaling={false}
@@ -5403,7 +5496,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={102}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5432,12 +5525,14 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
             },
           ]
         }
-        testID="message-composer-code"
       >
         <View
           accessibilityLabel="Inline code"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code"
         >
           <Text
             allowFontScaling={false}
@@ -5479,7 +5574,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={103}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5508,12 +5603,14 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
             },
           ]
         }
-        testID="message-composer-code-block"
       >
         <View
           accessibilityLabel="Code block"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code-block"
         >
           <Text
             allowFontScaling={false}
@@ -5584,12 +5681,14 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
             },
           ]
         }
-        testID="message-composer-send-audio"
       >
         <View
           accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-send-audio"
         >
           <Text
             allowFontScaling={false}
@@ -5624,9 +5723,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
   <View
     style={
       [
-        {
-          "height": 0,
-        },
+        [Function],
         {
           "backgroundColor": "#FFFFFF",
         },
@@ -5639,6 +5736,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
 exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
 [
   <View
+    nativeID="message-composer-exit-focus"
     onLayout={[Function]}
     style={
       [
@@ -5712,7 +5810,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={59}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5741,12 +5839,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
             },
           ]
         }
-        testID="message-composer-close-markdown"
       >
         <View
           accessibilityLabel="Close"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-close-markdown"
         >
           <Text
             allowFontScaling={false}
@@ -5788,7 +5888,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={60}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5817,12 +5917,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
             },
           ]
         }
-        testID="message-composer-bold"
       >
         <View
           accessibilityLabel="Bold"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-bold"
         >
           <Text
             allowFontScaling={false}
@@ -5864,7 +5966,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={61}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5893,12 +5995,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
             },
           ]
         }
-        testID="message-composer-italic"
       >
         <View
           accessibilityLabel="Italic"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-italic"
         >
           <Text
             allowFontScaling={false}
@@ -5940,7 +6044,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={62}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5969,12 +6073,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
             },
           ]
         }
-        testID="message-composer-strike"
       >
         <View
           accessibilityLabel="Strikethrough"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-strike"
         >
           <Text
             allowFontScaling={false}
@@ -6016,7 +6122,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={63}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6045,12 +6151,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
             },
           ]
         }
-        testID="message-composer-code"
       >
         <View
           accessibilityLabel="Inline code"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code"
         >
           <Text
             allowFontScaling={false}
@@ -6092,7 +6200,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={64}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6121,12 +6229,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
             },
           ]
         }
-        testID="message-composer-code-block"
       >
         <View
           accessibilityLabel="Code block"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code-block"
         >
           <Text
             allowFontScaling={false}
@@ -6197,12 +6307,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
             },
           ]
         }
-        testID="message-composer-send-audio"
       >
         <View
           accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-send-audio"
         >
           <Text
             allowFontScaling={false}
@@ -6237,9 +6349,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
   <View
     style={
       [
-        {
-          "height": 0,
-        },
+        [Function],
         {
           "backgroundColor": "#FFFFFF",
         },
@@ -6252,6 +6362,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
 exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
 [
   <View
+    nativeID="message-composer-exit-focus"
     onLayout={[Function]}
     style={
       [
@@ -6325,7 +6436,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={137}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6354,12 +6465,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
             },
           ]
         }
-        testID="message-composer-close-markdown"
       >
         <View
           accessibilityLabel="Close"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-close-markdown"
         >
           <Text
             allowFontScaling={false}
@@ -6401,7 +6514,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={138}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6430,12 +6543,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
             },
           ]
         }
-        testID="message-composer-bold"
       >
         <View
           accessibilityLabel="Bold"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-bold"
         >
           <Text
             allowFontScaling={false}
@@ -6477,7 +6592,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={139}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6506,12 +6621,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
             },
           ]
         }
-        testID="message-composer-italic"
       >
         <View
           accessibilityLabel="Italic"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-italic"
         >
           <Text
             allowFontScaling={false}
@@ -6553,7 +6670,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={140}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6582,12 +6699,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
             },
           ]
         }
-        testID="message-composer-strike"
       >
         <View
           accessibilityLabel="Strikethrough"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-strike"
         >
           <Text
             allowFontScaling={false}
@@ -6629,7 +6748,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={141}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6658,12 +6777,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
             },
           ]
         }
-        testID="message-composer-code"
       >
         <View
           accessibilityLabel="Inline code"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code"
         >
           <Text
             allowFontScaling={false}
@@ -6705,7 +6826,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={142}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6734,12 +6855,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
             },
           ]
         }
-        testID="message-composer-code-block"
       >
         <View
           accessibilityLabel="Code block"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code-block"
         >
           <Text
             allowFontScaling={false}
@@ -6810,12 +6933,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
             },
           ]
         }
-        testID="message-composer-send-audio"
       >
         <View
           accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-send-audio"
         >
           <Text
             allowFontScaling={false}
@@ -6850,9 +6975,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
   <View
     style={
       [
-        {
-          "height": 0,
-        },
+        [Function],
         {
           "backgroundColor": "#FFFFFF",
         },
@@ -6865,6 +6988,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
 exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
 [
   <View
+    nativeID="message-composer-exit-focus"
     onLayout={[Function]}
     style={
       [
@@ -6938,7 +7062,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={163}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6967,12 +7091,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
             },
           ]
         }
-        testID="message-composer-close-markdown"
       >
         <View
           accessibilityLabel="Close"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-close-markdown"
         >
           <Text
             allowFontScaling={false}
@@ -7014,7 +7140,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={164}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7043,12 +7169,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
             },
           ]
         }
-        testID="message-composer-bold"
       >
         <View
           accessibilityLabel="Bold"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-bold"
         >
           <Text
             allowFontScaling={false}
@@ -7090,7 +7218,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={165}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7119,12 +7247,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
             },
           ]
         }
-        testID="message-composer-italic"
       >
         <View
           accessibilityLabel="Italic"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-italic"
         >
           <Text
             allowFontScaling={false}
@@ -7166,7 +7296,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={166}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7195,12 +7325,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
             },
           ]
         }
-        testID="message-composer-strike"
       >
         <View
           accessibilityLabel="Strikethrough"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-strike"
         >
           <Text
             allowFontScaling={false}
@@ -7242,7 +7374,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={167}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7271,12 +7403,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
             },
           ]
         }
-        testID="message-composer-code"
       >
         <View
           accessibilityLabel="Inline code"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code"
         >
           <Text
             allowFontScaling={false}
@@ -7318,7 +7452,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={168}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7347,12 +7481,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
             },
           ]
         }
-        testID="message-composer-code-block"
       >
         <View
           accessibilityLabel="Code block"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code-block"
         >
           <Text
             allowFontScaling={false}
@@ -7423,12 +7559,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
             },
           ]
         }
-        testID="message-composer-send-audio"
       >
         <View
           accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-send-audio"
         >
           <Text
             allowFontScaling={false}
@@ -7463,9 +7601,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
   <View
     style={
       [
-        {
-          "height": 0,
-        },
+        [Function],
         {
           "backgroundColor": "#FFFFFF",
         },
@@ -7478,6 +7614,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
 exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
 [
   <View
+    nativeID="message-composer-exit-focus"
     onLayout={[Function]}
     style={
       [
@@ -7551,7 +7688,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={85}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7580,12 +7717,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
             },
           ]
         }
-        testID="message-composer-close-markdown"
       >
         <View
           accessibilityLabel="Close"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-close-markdown"
         >
           <Text
             allowFontScaling={false}
@@ -7627,7 +7766,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={86}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7656,12 +7795,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
             },
           ]
         }
-        testID="message-composer-bold"
       >
         <View
           accessibilityLabel="Bold"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-bold"
         >
           <Text
             allowFontScaling={false}
@@ -7703,7 +7844,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={87}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7732,12 +7873,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
             },
           ]
         }
-        testID="message-composer-italic"
       >
         <View
           accessibilityLabel="Italic"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-italic"
         >
           <Text
             allowFontScaling={false}
@@ -7779,7 +7922,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={88}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7808,12 +7951,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
             },
           ]
         }
-        testID="message-composer-strike"
       >
         <View
           accessibilityLabel="Strikethrough"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-strike"
         >
           <Text
             allowFontScaling={false}
@@ -7855,7 +8000,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={89}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7884,12 +8029,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
             },
           ]
         }
-        testID="message-composer-code"
       >
         <View
           accessibilityLabel="Inline code"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code"
         >
           <Text
             allowFontScaling={false}
@@ -7931,7 +8078,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={90}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7960,12 +8107,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
             },
           ]
         }
-        testID="message-composer-code-block"
       >
         <View
           accessibilityLabel="Code block"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code-block"
         >
           <Text
             allowFontScaling={false}
@@ -8036,12 +8185,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
             },
           ]
         }
-        testID="message-composer-send-audio"
       >
         <View
           accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-send-audio"
         >
           <Text
             allowFontScaling={false}
@@ -8076,9 +8227,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
   <View
     style={
       [
-        {
-          "height": 0,
-        },
+        [Function],
         {
           "backgroundColor": "#FFFFFF",
         },
@@ -8091,6 +8240,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
 exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
 [
   <View
+    nativeID="message-composer-exit-focus"
     onLayout={[Function]}
     style={
       [
@@ -8164,7 +8314,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={111}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8193,12 +8343,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
             },
           ]
         }
-        testID="message-composer-close-markdown"
       >
         <View
           accessibilityLabel="Close"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-close-markdown"
         >
           <Text
             allowFontScaling={false}
@@ -8240,7 +8392,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={112}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8269,12 +8421,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
             },
           ]
         }
-        testID="message-composer-bold"
       >
         <View
           accessibilityLabel="Bold"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-bold"
         >
           <Text
             allowFontScaling={false}
@@ -8316,7 +8470,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={113}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8345,12 +8499,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
             },
           ]
         }
-        testID="message-composer-italic"
       >
         <View
           accessibilityLabel="Italic"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-italic"
         >
           <Text
             allowFontScaling={false}
@@ -8392,7 +8548,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={114}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8421,12 +8577,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
             },
           ]
         }
-        testID="message-composer-strike"
       >
         <View
           accessibilityLabel="Strikethrough"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-strike"
         >
           <Text
             allowFontScaling={false}
@@ -8468,7 +8626,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={115}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8497,12 +8655,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
             },
           ]
         }
-        testID="message-composer-code"
       >
         <View
           accessibilityLabel="Inline code"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code"
         >
           <Text
             allowFontScaling={false}
@@ -8544,7 +8704,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={116}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8573,12 +8733,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
             },
           ]
         }
-        testID="message-composer-code-block"
       >
         <View
           accessibilityLabel="Code block"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-code-block"
         >
           <Text
             allowFontScaling={false}
@@ -8649,12 +8811,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
             },
           ]
         }
-        testID="message-composer-send-audio"
       >
         <View
           accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-send-audio"
         >
           <Text
             allowFontScaling={false}
@@ -8689,9 +8853,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
   <View
     style={
       [
-        {
-          "height": 0,
-        },
+        [Function],
         {
           "backgroundColor": "#FFFFFF",
         },
@@ -8704,6 +8866,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
 exports[`MessageComposer Toolbar tap actions 1`] = `
 [
   <View
+    nativeID="message-composer-exit-focus"
     onLayout={[Function]}
     style={
       [
@@ -8777,7 +8940,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={3}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8806,12 +8969,14 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
             },
           ]
         }
-        testID="message-composer-actions"
       >
         <View
           accessibilityLabel="Actions"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-actions"
         >
           <Text
             allowFontScaling={false}
@@ -8853,7 +9018,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={4}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8882,12 +9047,14 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
             },
           ]
         }
-        testID="message-composer-open-emoji"
       >
         <View
           accessibilityLabel="Emoji selector"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-open-emoji"
         >
           <Text
             allowFontScaling={false}
@@ -8929,7 +9096,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={5}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8958,12 +9125,14 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
             },
           ]
         }
-        testID="message-composer-open-markdown"
       >
         <View
           accessibilityLabel="Markdown tools"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-open-markdown"
         >
           <Text
             allowFontScaling={false}
@@ -9005,7 +9174,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={6}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -9034,12 +9203,14 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
             },
           ]
         }
-        testID="message-composer-mention"
       >
         <View
           accessibilityLabel="Mention user"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-mention"
         >
           <Text
             allowFontScaling={false}
@@ -9081,7 +9252,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={7}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -9110,12 +9281,14 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
             },
           ]
         }
-        testID="message-composer-send-audio"
       >
         <View
           accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-send-audio"
         >
           <Text
             allowFontScaling={false}
@@ -9150,9 +9323,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
   <View
     style={
       [
-        {
-          "height": 0,
-        },
+        [Function],
         {
           "backgroundColor": "#FFFFFF",
         },
@@ -9165,6 +9336,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
 exports[`MessageComposer Toolbar tap emoji 1`] = `
 [
   <View
+    nativeID="message-composer-exit-focus"
     onLayout={[Function]}
     style={
       [
@@ -9267,12 +9439,14 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
             },
           ]
         }
-        testID="message-composer-actions"
       >
         <View
           accessibilityLabel="Actions"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-actions"
         >
           <Text
             allowFontScaling={false}
@@ -9343,12 +9517,14 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
             },
           ]
         }
-        testID="message-composer-open-emoji"
       >
         <View
           accessibilityLabel="Emoji selector"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-open-emoji"
         >
           <Text
             allowFontScaling={false}
@@ -9390,7 +9566,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={12}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -9419,12 +9595,14 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
             },
           ]
         }
-        testID="message-composer-open-markdown"
       >
         <View
           accessibilityLabel="Markdown tools"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-open-markdown"
         >
           <Text
             allowFontScaling={false}
@@ -9466,7 +9644,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={13}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -9495,12 +9673,14 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
             },
           ]
         }
-        testID="message-composer-mention"
       >
         <View
           accessibilityLabel="Mention user"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-mention"
         >
           <Text
             allowFontScaling={false}
@@ -9542,7 +9722,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={14}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -9571,12 +9751,14 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
             },
           ]
         }
-        testID="message-composer-send-audio"
       >
         <View
           accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-send-audio"
         >
           <Text
             allowFontScaling={false}
@@ -9611,9 +9793,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
   <View
     style={
       [
-        {
-          "height": 0,
-        },
+        [Function],
         {
           "backgroundColor": "#FFFFFF",
         },
@@ -9669,7 +9849,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
               delayLongPress={600}
               enabled={true}
               exclusive={true}
-              handlerTag={15}
+              handlerTag={-1}
               handlerType="NativeViewGestureHandler"
               hitSlop={
                 {
@@ -9763,7 +9943,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
               delayLongPress={600}
               enabled={true}
               exclusive={true}
-              handlerTag={16}
+              handlerTag={-1}
               handlerType="NativeViewGestureHandler"
               hitSlop={
                 {
@@ -9857,7 +10037,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
               delayLongPress={600}
               enabled={true}
               exclusive={true}
-              handlerTag={17}
+              handlerTag={-1}
               handlerType="NativeViewGestureHandler"
               hitSlop={
                 {
@@ -9951,7 +10131,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
               delayLongPress={600}
               enabled={true}
               exclusive={true}
-              handlerTag={18}
+              handlerTag={-1}
               handlerType="NativeViewGestureHandler"
               hitSlop={
                 {
@@ -10045,7 +10225,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
               delayLongPress={600}
               enabled={true}
               exclusive={true}
-              handlerTag={19}
+              handlerTag={-1}
               handlerType="NativeViewGestureHandler"
               hitSlop={
                 {
@@ -10139,7 +10319,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
               delayLongPress={600}
               enabled={true}
               exclusive={true}
-              handlerTag={20}
+              handlerTag={-1}
               handlerType="NativeViewGestureHandler"
               hitSlop={
                 {
@@ -10233,7 +10413,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
               delayLongPress={600}
               enabled={true}
               exclusive={true}
-              handlerTag={21}
+              handlerTag={-1}
               handlerType="NativeViewGestureHandler"
               hitSlop={
                 {
@@ -10327,7 +10507,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
               delayLongPress={600}
               enabled={true}
               exclusive={true}
-              handlerTag={22}
+              handlerTag={-1}
               handlerType="NativeViewGestureHandler"
               hitSlop={
                 {
@@ -10421,7 +10601,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
               delayLongPress={600}
               enabled={true}
               exclusive={true}
-              handlerTag={23}
+              handlerTag={-1}
               handlerType="NativeViewGestureHandler"
               hitSlop={
                 {
@@ -10515,7 +10695,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
               delayLongPress={600}
               enabled={true}
               exclusive={true}
-              handlerTag={24}
+              handlerTag={-1}
               handlerType="NativeViewGestureHandler"
               hitSlop={
                 {
@@ -10622,13 +10802,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                   "left": 0,
                 },
                 undefined,
-                {
-                  "transform": [
-                    {
-                      "translateX": -0,
-                    },
-                  ],
-                },
+                [Function],
               ]
             }
           >
@@ -10639,14 +10813,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                     "height": "100%",
                     "width": "100%",
                   },
-                  {
-                    "opacity": 1,
-                    "transform": [
-                      {
-                        "translateX": 0,
-                      },
-                    ],
-                  },
+                  [Function],
                 ]
               }
             />
@@ -10664,13 +10831,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                   "left": 0,
                 },
                 undefined,
-                {
-                  "transform": [
-                    {
-                      "translateX": -0,
-                    },
-                  ],
-                },
+                [Function],
               ]
             }
           >
@@ -10681,14 +10842,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                     "height": "100%",
                     "width": "100%",
                   },
-                  {
-                    "opacity": 1,
-                    "transform": [
-                      {
-                        "translateX": 0,
-                      },
-                    ],
-                  },
+                  [Function],
                 ]
               }
             />
@@ -10706,13 +10860,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                   "left": 0,
                 },
                 undefined,
-                {
-                  "transform": [
-                    {
-                      "translateX": -0,
-                    },
-                  ],
-                },
+                [Function],
               ]
             }
           >
@@ -10723,14 +10871,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                     "height": "100%",
                     "width": "100%",
                   },
-                  {
-                    "opacity": 1,
-                    "transform": [
-                      {
-                        "translateX": 0,
-                      },
-                    ],
-                  },
+                  [Function],
                 ]
               }
             />
@@ -10748,13 +10889,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                   "left": 0,
                 },
                 undefined,
-                {
-                  "transform": [
-                    {
-                      "translateX": -0,
-                    },
-                  ],
-                },
+                [Function],
               ]
             }
           >
@@ -10765,14 +10900,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                     "height": "100%",
                     "width": "100%",
                   },
-                  {
-                    "opacity": 1,
-                    "transform": [
-                      {
-                        "translateX": 0,
-                      },
-                    ],
-                  },
+                  [Function],
                 ]
               }
             />
@@ -10790,13 +10918,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                   "left": 0,
                 },
                 undefined,
-                {
-                  "transform": [
-                    {
-                      "translateX": -0,
-                    },
-                  ],
-                },
+                [Function],
               ]
             }
           >
@@ -10807,14 +10929,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                     "height": "100%",
                     "width": "100%",
                   },
-                  {
-                    "opacity": 1,
-                    "transform": [
-                      {
-                        "translateX": 0,
-                      },
-                    ],
-                  },
+                  [Function],
                 ]
               }
             />
@@ -10832,13 +10947,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                   "left": 0,
                 },
                 undefined,
-                {
-                  "transform": [
-                    {
-                      "translateX": -0,
-                    },
-                  ],
-                },
+                [Function],
               ]
             }
           >
@@ -10849,14 +10958,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                     "height": "100%",
                     "width": "100%",
                   },
-                  {
-                    "opacity": 1,
-                    "transform": [
-                      {
-                        "translateX": 0,
-                      },
-                    ],
-                  },
+                  [Function],
                 ]
               }
             />
@@ -10874,13 +10976,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                   "left": 0,
                 },
                 undefined,
-                {
-                  "transform": [
-                    {
-                      "translateX": -0,
-                    },
-                  ],
-                },
+                [Function],
               ]
             }
           >
@@ -10891,14 +10987,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                     "height": "100%",
                     "width": "100%",
                   },
-                  {
-                    "opacity": 1,
-                    "transform": [
-                      {
-                        "translateX": 0,
-                      },
-                    ],
-                  },
+                  [Function],
                 ]
               }
             />
@@ -10916,13 +11005,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                   "left": 0,
                 },
                 undefined,
-                {
-                  "transform": [
-                    {
-                      "translateX": -0,
-                    },
-                  ],
-                },
+                [Function],
               ]
             }
           >
@@ -10933,14 +11016,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                     "height": "100%",
                     "width": "100%",
                   },
-                  {
-                    "opacity": 1,
-                    "transform": [
-                      {
-                        "translateX": 0,
-                      },
-                    ],
-                  },
+                  [Function],
                 ]
               }
             />
@@ -10958,13 +11034,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                   "left": 0,
                 },
                 undefined,
-                {
-                  "transform": [
-                    {
-                      "translateX": -0,
-                    },
-                  ],
-                },
+                [Function],
               ]
             }
           >
@@ -10975,14 +11045,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                     "height": "100%",
                     "width": "100%",
                   },
-                  {
-                    "opacity": 1,
-                    "transform": [
-                      {
-                        "translateX": 0,
-                      },
-                    ],
-                  },
+                  [Function],
                 ]
               }
             />
@@ -11000,13 +11063,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                   "left": 0,
                 },
                 undefined,
-                {
-                  "transform": [
-                    {
-                      "translateX": -0,
-                    },
-                  ],
-                },
+                [Function],
               ]
             }
           >
@@ -11017,14 +11074,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                     "height": "100%",
                     "width": "100%",
                   },
-                  {
-                    "opacity": 1,
-                    "transform": [
-                      {
-                        "translateX": 0,
-                      },
-                    ],
-                  },
+                  [Function],
                 ]
               }
             />
@@ -11201,6 +11251,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
 exports[`MessageComposer Toolbar tap mention 1`] = `
 [
   <View
+    nativeID="message-composer-exit-focus"
     onLayout={[Function]}
     style={
       [
@@ -11274,7 +11325,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={171}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -11303,12 +11354,14 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
             },
           ]
         }
-        testID="message-composer-actions"
       >
         <View
           accessibilityLabel="Actions"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-actions"
         >
           <Text
             allowFontScaling={false}
@@ -11350,7 +11403,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={172}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -11379,12 +11432,14 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
             },
           ]
         }
-        testID="message-composer-open-emoji"
       >
         <View
           accessibilityLabel="Emoji selector"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-open-emoji"
         >
           <Text
             allowFontScaling={false}
@@ -11426,7 +11481,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={173}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -11455,12 +11510,14 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
             },
           ]
         }
-        testID="message-composer-open-markdown"
       >
         <View
           accessibilityLabel="Markdown tools"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-open-markdown"
         >
           <Text
             allowFontScaling={false}
@@ -11502,7 +11559,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={174}
+        handlerTag={-1}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -11531,12 +11588,14 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
             },
           ]
         }
-        testID="message-composer-mention"
       >
         <View
           accessibilityLabel="Mention user"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-mention"
         >
           <Text
             allowFontScaling={false}
@@ -11607,12 +11666,14 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
             },
           ]
         }
-        testID="message-composer-send-audio"
       >
         <View
           accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
+          collapsable={false}
+          onFocus={[Function]}
+          testID="message-composer-send-audio"
         >
           <Text
             allowFontScaling={false}
@@ -11647,9 +11708,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
   <View
     style={
       [
-        {
-          "height": 0,
-        },
+        [Function],
         {
           "backgroundColor": "#FFFFFF",
         },

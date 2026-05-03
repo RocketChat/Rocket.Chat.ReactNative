@@ -11,19 +11,22 @@ jobs:
   android-test:
     name: 'Android Tests'
     runs-on: ubuntu-latest
+    env:
+      MAESTRO_VERSION: 2.2.0
+      ANDROID_AVD_HOME: /home/runner/.android/avd
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
       - name: Setup Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@c1e323688fd81a25caa38c78aa6df2d33d3e20d9 # v4.8.0
         with:
           distribution: temurin
           java-version: 17
 
       - name: Cache Android AVD
-        uses: actions/cache@v4
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: |
             ~/.android/avd/*
@@ -31,13 +34,13 @@ jobs:
           key: avd-${{ runner.os }}-api34
 
       - name: Cache Maestro
-        uses: actions/cache@v4
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: ~/.maestro
-          key: maestro-${{ runner.os }}
+          key: maestro-${{ runner.os }}-${{ env.MAESTRO_VERSION }}
 
       - name: Download APK
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           name: Android Experimental APK
 
@@ -49,8 +52,7 @@ jobs:
       - name: Install Maestro
         run: |
           curl -Ls "https://get.maestro.mobile.dev" | bash
-        env:
-          MAESTRO_VERSION: 2.2.0
+          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
 
       - name: Enable KVM group permissions
         run: |
@@ -66,8 +68,82 @@ jobs:
       - name: Make Maestro script executable
         run: chmod +x .github/scripts/run-maestro.sh
 
-      - name: Start Android Emulator and Run Maestro Tests
-        uses: reactivecircus/android-emulator-runner@v2
+      - name: Create Keyboard-enabled AVD (shard 14)
+        if: ${{ inputs.shard == '14' }}
+        run: |
+          set -eux
+
+          ANDROID_SDK="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}}"
+          SDKMANAGER="$ANDROID_SDK/cmdline-tools/latest/bin/sdkmanager"
+          AVDMANAGER="$ANDROID_SDK/cmdline-tools/latest/bin/avdmanager"
+          AVD_NAME="Pixel_API_34_Keyboard"
+          IMAGE="system-images;android-34;google_apis;x86_64"
+          AVD_BASE="$ANDROID_AVD_HOME"
+          AVD_INI="$AVD_BASE/${AVD_NAME}.ini"
+
+          mkdir -p "$AVD_BASE"
+          rm -rf "$AVD_BASE/${AVD_NAME}.avd" "$AVD_INI"
+
+          "$SDKMANAGER" --install emulator "$IMAGE"
+          yes | "$SDKMANAGER" --licenses > /dev/null || true
+
+          echo "no" | "$AVDMANAGER" create avd -n "$AVD_NAME" -d pixel_7_pro --package "$IMAGE" --force
+
+          if [ ! -f "$AVD_INI" ]; then
+            echo "Expected AVD ini not found: $AVD_INI"
+            echo "--- avdmanager list avd ---"
+            "$AVDMANAGER" list avd || true
+            echo "--- ls AVD_BASE ---"
+            ls -la "$AVD_BASE" || true
+            exit 1
+          fi
+
+          AVD_PATH="$(sed -n 's/^path=//p' "$AVD_INI")"
+          if [ -z "$AVD_PATH" ]; then
+            echo "Could not resolve AVD path from: $AVD_INI"
+            cat "$AVD_INI"
+            exit 1
+          fi
+
+          AVD_CONFIG="$AVD_PATH/config.ini"
+          if [ ! -f "$AVD_CONFIG" ]; then
+            echo "Expected AVD config not found: $AVD_CONFIG"
+            ls -la "$AVD_BASE" || true
+            ls -la "$AVD_PATH" || true
+            exit 1
+          fi
+
+          {
+            echo "hw.keyboard=yes"
+            echo "hw.keyboard.lid=no"
+            echo "hw.lcd.density=440"
+            echo "hw.lcd.height=2280"
+            echo "hw.lcd.width=1080"
+          } >> "$AVD_CONFIG"
+
+          echo "$AVD_NAME created with physical keyboard support"
+
+      - name: Start Android Emulator and Run Maestro Tests (keyboard AVD)
+        if: ${{ inputs.shard == '14' }}
+        uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a # v2.37.0
+        timeout-minutes: 60
+        with:
+          api-level: 34
+          disk-size: 4096M
+          arch: x86_64
+          target: google_apis
+          avd-name: Pixel_API_34_Keyboard
+          cores: 4
+          ram-size: 4096M
+          force-avd-creation: false
+          disable-animations: true
+          emulator-boot-timeout: 900
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -accel on
+          script: ./.github/scripts/run-maestro.sh android ${{ inputs.shard }}
+
+      - name: Start Android Emulator and Run Maestro Tests (default)
+        if: ${{ inputs.shard != '14' }}
+        uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a # v2.37.0
         timeout-minutes: 60
         with:
           api-level: 34
@@ -85,7 +161,7 @@ jobs:
 
       - name: Android Maestro Logs
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: Android Maestro Logs - Shard ${{ inputs.shard }}
           path: ~/.maestro/tests/**/*.png

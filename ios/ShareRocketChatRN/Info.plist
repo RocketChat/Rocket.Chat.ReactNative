@@ -2,10 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>AppGroup</key>
-	<string>group.ios.chat.rocket</string>
 	<key>IS_OFFICIAL</key>
 	<false/>
+	<key>AppGroup</key>
+	<string>group.ios.chat.rocket</string>
 	<key>bugsnag</key>
 	<dict>
 		<key>apiKey</key>
@@ -26,7 +26,7 @@
 	<key>CFBundlePackageType</key>
 	<string>XPC!</string>
 	<key>CFBundleShortVersionString</key>
-	<string>4.70.0</string>
+	<string>4.72.0</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>KeychainGroup</key>
@@ -67,6 +67,8 @@
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.share-services</string>
 	</dict>
+	<key>RCTNewArchEnabled</key>
+	<true/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>custom.ttf</string>

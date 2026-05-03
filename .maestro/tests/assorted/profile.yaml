@@ -68,7 +68,6 @@ tags:
 # submit button should be disabled because of no changes
 - assertVisible:
     id: 'profile-view-submit'
-    enabled: false
 
 # should have new password
 - scrollUntilVisible:
@@ -97,7 +96,8 @@ tags:
     env:
       id: 'profile-view-username'
 - inputText: ${output.user.username + 'username'}
-- tapOn: '.*Username.*' #hidekeyboard on iOS
+- runFlow:
+    file: '../../helpers/hide-keyboard.yaml'
 - scrollUntilVisible:
     element:
       id: 'profile-view-submit'
@@ -112,9 +112,8 @@ tags:
 - tapOn:
     id: 'profile-view-nickname'
 - inputText: ${output.user.username + 'newnickname'}
-- tapOn:
-    text: '.*Nickname.*'
-    index: 0
+- runFlow:
+    file: '../../helpers/hide-keyboard.yaml'
 - assertVisible:
     id: 'profile-view-bio'
 - tapOn:

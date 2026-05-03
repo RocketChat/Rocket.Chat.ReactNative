@@ -24,7 +24,8 @@ const EmojiPicker = ({
 	onItemClicked,
 	isEmojiKeyboard = false,
 	searching = false,
-	searchedEmojis = []
+	searchedEmojis = [],
+	bottomSheet = false
 }: IEmojiPickerProps): React.ReactElement | null => {
 	const [parentWidth, setParentWidth] = useState(0);
 	const { bottom } = useSafeAreaInsets();
@@ -39,7 +40,12 @@ const EmojiPicker = ({
 	);
 
 	const renderScene = ({ route }: { route: Route }) => (
-		<EmojiCategory parentWidth={parentWidth} onEmojiSelected={handleEmojiSelect} category={route.key as any} />
+		<EmojiCategory
+			parentWidth={parentWidth}
+			onEmojiSelected={handleEmojiSelect}
+			category={route.key as any}
+			bottomSheet={bottomSheet}
+		/>
 	);
 
 	const renderTabItem = (tab: Route, color: string) => (
@@ -63,6 +69,7 @@ const EmojiPicker = ({
 					emojis={searchedEmojis}
 					onEmojiSelected={(emoji: IEmoji) => handleEmojiSelect(emoji)}
 					parentWidth={parentWidth}
+					bottomSheet={bottomSheet}
 				/>
 			) : (
 				<TabView renderScene={renderScene} renderTabItem={renderTabItem} routes={routes} />
