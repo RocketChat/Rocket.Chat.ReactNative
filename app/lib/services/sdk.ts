@@ -385,7 +385,10 @@ class Sdk {
 
 	async logout(): Promise<void> {
 		if (this.current?.account) {
-			await this.current.account.logout();
+			await Promise.race([
+				this.current.account.logout(),
+				new Promise<void>(resolve => setTimeout(resolve, 5000))
+			]);
 		}
 	}
 
