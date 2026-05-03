@@ -5,17 +5,14 @@ import {
 	type ViewStyle,
 	type StyleProp,
 	type AccessibilityActionEvent,
-	type AccessibilityActionInfo,
-	TouchableOpacity,
-	TouchableHighlight,
-	type TouchableWithoutFeedbackProps
+	type AccessibilityActionInfo
 } from 'react-native';
+import { RectButton, type RectButtonProps } from 'react-native-gesture-handler';
 import { withKeyboardFocus } from 'react-native-external-keyboard';
 
 import { useTheme } from '../../theme';
-import { isIOS } from '../../lib/methods/helpers';
 
-export interface ITouchProps extends TouchableWithoutFeedbackProps {
+export interface ITouchProps extends RectButtonProps {
 	children: React.ReactNode;
 	accessible?: boolean;
 	accessibilityLabel?: string;
@@ -28,8 +25,7 @@ export interface ITouchProps extends TouchableWithoutFeedbackProps {
 	android_rippleColor?: string;
 }
 
-const Component = isIOS ? TouchableOpacity : TouchableHighlight;
-const KeyboardComponent = withKeyboardFocus(Component);
+const KeyboardComponent = withKeyboardFocus(RectButton);
 
 const Touch = React.forwardRef<View, ITouchProps>(
 	(
@@ -80,16 +76,17 @@ const Touch = React.forwardRef<View, ITouchProps>(
 			marginStart,
 			marginTop
 		};
-		const touchableProps = isIOS ? {} : { underlayColor: android_rippleColor ?? colors.surfaceNeutral, activeOpacity: 1 };
 
 		return (
 			<KeyboardComponent
 				ref={ref}
 				onPress={onPress}
+				underlayColor={android_rippleColor ?? colors.surfaceNeutral}
+				rippleColor={android_rippleColor ?? colors.surfaceNeutral}
+				activeOpacity={1}
 				style={[rectButtonStyle, marginStyles, { backgroundColor, borderRadius }]}
-				{...touchableProps}
 				{...props}
-				disabled={!enabled}
+				enabled={enabled}
 				focusable={enabled}
 				canBeFocused={enabled}>
 				<View

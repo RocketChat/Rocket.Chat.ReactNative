@@ -240,8 +240,8 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 				<Touch
 					onLongPress={onLongPress}
 					onPress={onPress}
-					disabled={
-						(props.isInfo && !props.isThreadReply) || props.archived || props.isTemp || props.type === 'jitsi_call_started'
+					enabled={
+						!((props.isInfo && !props.isThreadReply) || props.archived || props.isTemp || props.type === 'jitsi_call_started')
 					}
 					style={{ backgroundColor }}>
 					<Message {...props} />
