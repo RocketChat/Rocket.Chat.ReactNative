@@ -33,9 +33,6 @@ export const setBasicAuth = (basicAuth: string | null): void => {
 export const BASIC_AUTH_KEY = 'BASIC_AUTH_KEY';
 
 export default (url: string, options: IOptions = {}): Promise<Response> => {
-	let customOptions = { ...options, headers: sdk.getHeaders() };
-	if (options && options.headers) {
-		customOptions = { ...customOptions, headers: { ...options.headers, ...customOptions.headers } };
-	}
+	const customOptions = { ...options, headers: { ...sdk.getHeaders(), ...(options.headers || {}) } };
 	return fetch(url, customOptions);
 };

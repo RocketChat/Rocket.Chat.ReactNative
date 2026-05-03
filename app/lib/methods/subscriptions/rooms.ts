@@ -42,6 +42,7 @@ let streamListener: Promise<any> | false;
 let subServer: string;
 let queue: { [key: string]: ISubscription | IRoom } = {};
 let subTimer: ReturnType<typeof setTimeout> | null | false = null;
+let rawSubscriptionHandles: { stop: () => void }[] = [];
 const WINDOW_TIME = 500;
 
 export let roomsSubscription: { stop: () => void } | null = null;
@@ -427,6 +428,14 @@ export default function subscribeRooms() {
 			streamListener.then(removeListener);
 			streamListener = false;
 		}
+		rawSubscriptionHandles.forEach(handle => {
+			try {
+				handle.stop();
+			} catch (e) {
+				log(e);
+			}
+		});
+		rawSubscriptionHandles = [];
 		queue = {};
 		if (subTimer) {
 			clearTimeout(subTimer);
@@ -440,7 +449,11 @@ export default function subscribeRooms() {
 	try {
 		// set the server that started this task
 		subServer = sdk.current?.connection.url || '';
-		const { id: userId } = store.getState().login.user;
+		const { user } = store.getState().login;
+		const userId = user?.id;
+		if (!userId) {
+			throw new Error('subscribeRooms: missing userId, cannot create stream-notify-user subscriptions');
+		}
 		[
 			'message',
 			'notification',
@@ -450,7 +463,12 @@ export default function subscribeRooms() {
 			'e2ekeyRequest',
 			'userData',
 			'video-conference'
-		].forEach(event => sdk.subscribeRaw('stream-notify-user', `${userId}/${event}`));
+		].forEach(event => {
+			const handle = sdk.subscribeRaw('stream-notify-user', `${userId}/${event}`);
+			if (handle) {
+				rawSubscriptionHandles.push(handle);
+			}
+		});
 		roomsSubscription = { stop: () => stop() };
 		return null;
 	} catch (e) {

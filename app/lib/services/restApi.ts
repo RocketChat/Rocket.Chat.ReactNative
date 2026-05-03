@@ -1053,39 +1053,38 @@ export const editMessage = async (message: Pick<IMessage, 'id' | 'msg' | 'rid' |
 	return sdk.post('/v1/chat.update', { roomId: message.rid, msgId: message.id, text: result.msg || '' });
 };
 
-export const registerPushToken = () =>
-	new Promise<void>(async resolve => {
-		const token = getDeviceToken();
-		if (token) {
-			const type: IPushTokenTypes = isIOS ? 'apn' : 'gcm';
-			const data = {
-				value: token,
-				type,
-				appName: getBundleId
-			};
-			try {
-				// RC 0.60.0
-				await sdk.post('/v1/push.token', data);
-			} catch (error) {
-				console.log(error);
-			}
-		}
-		return resolve();
-	});
+export const registerPushToken = async (): Promise<void> => {
+	const token = getDeviceToken();
+	if (!token) {
+		return;
+	}
+	const type: IPushTokenTypes = isIOS ? 'apn' : 'gcm';
+	const data = {
+		value: token,
+		type,
+		appName: getBundleId
+	};
+	try {
+		// RC 0.60.0
+		await sdk.post('/v1/push.token', data);
+	} catch (error) {
+		console.log(error);
+	}
+};
 
 export const removePushToken = async (): Promise<boolean> => {
 	const token = getDeviceToken();
-	if (token) {
-		try {
-			// RC 0.60.0
-			await sdk.delete('/v1/push.token', { token });
-			return true;
-		} catch (e) {
-			console.log(e);
-			return false;
-		}
+	if (!token) {
+		return true;
 	}
-	return true;
+	try {
+		// RC 0.60.0
+		const response = await sdk.delete('/v1/push.token', { token });
+		return response?.success === true;
+	} catch (e) {
+		console.log(e);
+		return false;
+	}
 };
 
 // RC 6.6.0

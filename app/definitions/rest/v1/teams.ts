@@ -4,7 +4,7 @@ import { type PaginatedResult } from '../helpers/PaginatedResult';
 
 export type TeamsEndpoints = {
 	'teams.delete': {
-		POST: (params: { teamId?: string; teamName?: string; roomsToRemove?: string[] }) => { success: boolean };
+		POST: (params: ({ teamId: string } | { teamName: string }) & { roomsToRemove?: string[] }) => { success: boolean };
 	};
 	'teams.removeRoom': {
 		POST: (params: { roomId: string; teamId: string }) => { room: IServerRoom };
