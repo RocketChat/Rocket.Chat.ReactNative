@@ -34,6 +34,7 @@ import android.app.KeyguardManager
 import chat.rocket.reactnative.MainActivity
 import chat.rocket.reactnative.notification.Ejson
 import chat.rocket.reactnative.BuildConfig
+import chat.rocket.reactnative.R
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.concurrent.atomic.AtomicBoolean
@@ -697,8 +698,7 @@ class VoipNotification(private val context: Context) {
                 CHANNEL_NAME,
                 NotificationManager.IMPORTANCE_HIGH
             ).apply {
-                // TODO: i18n
-                description = "Incoming VoIP calls"
+                description = context.getString(R.string.voip_incoming_call_channel_description)
                 enableLights(true)
                 enableVibration(true)
                 lockscreenVisibility = Notification.VISIBILITY_PUBLIC
@@ -938,8 +938,8 @@ class VoipNotification(private val context: Context) {
         // Build notification
         val builder = NotificationCompat.Builder(context, CHANNEL_ID).apply {
             setSmallIcon(smallIconResId)
-            setContentTitle("Incoming call")
-            setContentText("Call from $caller")
+            setContentTitle(context.getString(R.string.voip_incoming_call_title))
+            setContentText(context.getString(R.string.voip_incoming_call_text, caller))
             priority = NotificationCompat.PRIORITY_MAX
             setCategory(NotificationCompat.CATEGORY_CALL)
             setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
@@ -947,8 +947,8 @@ class VoipNotification(private val context: Context) {
             setOngoing(true)
             setOnlyAlertOnce(true)
             setTimeoutAfter(remainingLifetimeMs)
-            addAction(0, "Decline", declinePendingIntent)
-            addAction(0, "Accept", acceptPendingIntent)
+            addAction(0, context.getString(R.string.incoming_call_reject), declinePendingIntent)
+            addAction(0, context.getString(R.string.incoming_call_accept), acceptPendingIntent)
 
             if (avatarBitmap != null) {
                 setLargeIcon(avatarBitmap)
