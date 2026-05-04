@@ -76,12 +76,15 @@ class VoipNotification(private val context: Context) {
         private val timeoutHandler = Handler(Looper.getMainLooper())
         private val timeoutCallbacks = mutableMapOf<String, Runnable>()
         private val ddpRegistry = VoipPerCallDdpRegistry<DDPClient> { client ->
-            client.clearQueuedMethodCalls()
             client.disconnect()
         }
 
         /** False when [callId] was reassigned or torn down (stale DDP callback). */
         private fun isLiveClient(callId: String, client: DDPClient) = ddpRegistry.clientFor(callId) === client
+
+        /** Returns the stable Android device ID used as `contractId` in media-calls.answer requests. */
+        private fun deviceId(context: Context): String =
+            Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
 
         /**
          * Cancels a VoIP notification by ID.
@@ -163,12 +166,11 @@ class VoipNotification(private val context: Context) {
             }
             cancelTimeout(payload.callId)
             ddpRegistry.stopClient(payload.callId)
-            val deviceId = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
             MediaCallsAnswerRequest.fetch(
                 context = context,
                 host = payload.host,
                 callId = payload.callId,
-                contractId = deviceId,
+                contractId = deviceId(context),
                 answer = "reject",
                 supportedFeatures = null
             ) { _ -> }
@@ -311,12 +313,11 @@ class VoipNotification(private val context: Context) {
             timeoutRunnable = postedTimeout
             timeoutHandler.postDelayed(postedTimeout, 10_000L)
 
-            val deviceId = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
             MediaCallsAnswerRequest.fetch(
                 context = context,
                 host = payload.host,
                 callId = payload.callId,
-                contractId = deviceId,
+                contractId = deviceId(context),
                 answer = "accept",
                 supportedFeatures = listOf("audio", "hold")
             ) { success ->
@@ -331,7 +332,7 @@ class VoipNotification(private val context: Context) {
                         context = appCtx,
                         host = payload.host,
                         callId = payload.callId,
-                        contractId = deviceId,
+                        contractId = deviceId(appCtx),
                         answer = "reject",
                         supportedFeatures = null
                     ) { rejectSucceeded ->
@@ -483,16 +484,6 @@ class VoipNotification(private val context: Context) {
             return false
         }
 
-        private fun flushPendingQueuedSignalsIfNeeded(callId: String): Boolean {
-            val client = ddpRegistry.clientFor(callId) ?: return false
-            if (!client.hasQueuedMethodCalls()) {
-                return false
-            }
-
-            client.flushQueuedMethodCalls()
-            return true
-        }
-
         /**
          * Rejects an incoming call because the user is already on another call.
          *
@@ -508,12 +499,11 @@ class VoipNotification(private val context: Context) {
                 Log.d(TAG, "Rejected busy call ${payload.callId} — user already on a call")
             }
             cancelTimeout(payload.callId)
-            val deviceId = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
             MediaCallsAnswerRequest.fetch(
                 context = context,
                 host = payload.host,
                 callId = payload.callId,
-                contractId = deviceId,
+                contractId = deviceId(context),
                 answer = "reject",
                 supportedFeatures = null
             ) { _ -> }
@@ -535,7 +525,6 @@ class VoipNotification(private val context: Context) {
                 return
             }
 
-            val deviceId = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
             val callId = payload.callId
             val client = DDPClient()
             ddpRegistry.putClient(callId, client)
@@ -567,7 +556,7 @@ class VoipNotification(private val context: Context) {
                                 if (signalType == "notification" &&
                                     (
                                         // accepted from other device
-                                        (!signedContractId.isNullOrEmpty() && signedContractId != deviceId) ||
+                                        (!signedContractId.isNullOrEmpty() && signedContractId != deviceId(context)) ||
                                         // hung up by other device
                                         (signalNotification == "hangup")
                                     )) {
@@ -619,9 +608,6 @@ class VoipNotification(private val context: Context) {
                     }
 
                     ddpRegistry.markLoggedIn(callId)
-                    if (flushPendingQueuedSignalsIfNeeded(callId)) {
-                        return@login
-                    }
 
                     val params = JSONArray().apply {
                         put("$userId/media-signal")
