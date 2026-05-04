@@ -12,6 +12,7 @@ import { EmojiSearchbar } from './EmojiSearchbar';
 import { Toolbar } from './Toolbar';
 import { Quotes } from './Quotes';
 import { ComposerInput } from './ComposerInput';
+import { ComposerAttachments } from './Attachments';
 import { MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID } from '../../../lib/constants/accessibility';
 
 interface MessageComposerContentProps {
@@ -45,6 +46,7 @@ export const MessageComposerContent = memo<MessageComposerContentProps>(
 					<ComposerInput ref={composerInputComponentRef} inputRef={composerInputRef} />
 					<Right />
 				</View>
+				<ComposerAttachments />
 				<Quotes />
 				<Toolbar />
 				<EmojiSearchbar />

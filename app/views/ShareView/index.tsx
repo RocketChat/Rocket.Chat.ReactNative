@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
 import { type Dispatch } from 'redux';
 
+import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
 import { type IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
 import { type InsideStackParamList } from '../../stacks/types';
 import { themes } from '../../lib/constants/colors';
@@ -21,6 +22,7 @@ import database from '../../lib/database';
 import Thumbs from './Thumbs';
 import Preview from './Preview';
 import Header from './Header';
+import AltTextInput from './AltTextInput';
 import styles from './styles';
 import {
 	type IApplicationState,
@@ -44,6 +46,7 @@ interface IShareViewState {
 	readOnly: boolean;
 	attachments: IShareAttachment[];
 	text: string;
+	altText: string;
 	room: TSubscriptionModel;
 	thread: TThreadModel | string;
 	maxFileSize?: number;
@@ -62,6 +65,7 @@ interface IShareViewProps {
 		token: string;
 	};
 	server: string;
+	serverVersion?: string;
 	FileUpload_MediaTypeWhiteList?: string;
 	FileUpload_MaxFileSize?: number;
 	dispatch: Dispatch;
@@ -90,6 +94,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			readOnly: false,
 			attachments: [],
 			text: props.route.params?.text ?? '',
+			altText: '',
 			room: props.route.params?.room ?? {},
 			thread: props.route.params?.thread ?? {},
 			maxFileSize: this.isShareExtension ? this.serverInfo?.FileUpload_MaxFileSize : props.FileUpload_MaxFileSize,
@@ -261,11 +266,13 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			msg = await prepareQuoteMessage('', selectedMessages);
 		}
 
+		const useAltText = compareServerVersion(this.effectiveServerVersion, 'greaterThanOrEqualTo', '8.4.0');
+
 		try {
 			// Send attachment
 			if (attachments.length) {
 				await Promise.all(
-					attachments.map(({ filename: name, mime: type, description, size, path, canUpload, height, width, exif }) => {
+					attachments.map(({ filename: name, mime: type, description, altText, size, path, canUpload, height, width, exif }) => {
 						if (!canUpload) {
 							return Promise.resolve();
 						}
@@ -274,16 +281,20 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 							[width, height] = [height, width];
 						}
 
+						// On server >= 8.4, description = alt text; caption moves to msg
+						const fileDescription = useAltText ? altText : description;
+						const fileMsg = useAltText ? description || msg : msg;
+
 						return sendFileMessage(
 							room.rid,
 							{
 								rid: room.rid,
 								name,
-								description,
+								description: fileDescription,
 								size,
 								type,
 								path,
-								msg,
+								msg: fileMsg,
 								height,
 								width
 							},
@@ -316,16 +327,17 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 	};
 
 	selectFile = (item: IShareAttachment) => {
-		const { attachments, selected } = this.state;
+		const { attachments, selected, altText } = this.state;
 		if (attachments.length > 0) {
 			const text = this.messageComposerRef.current?.getText();
 			const newAttachments = attachments.map(att => {
 				if (att.path === selected.path) {
 					att.description = text;
+					att.altText = altText;
 				}
 				return att;
 			});
-			this.setState({ attachments: newAttachments, selected: item });
+			this.setState({ attachments: newAttachments, selected: item, altText: item.altText || '' });
 			this.messageComposerRef.current?.setInput(item.description || '');
 		}
 	};
@@ -342,14 +354,33 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			} else {
 				newSelected = attachments[selectedIndex - 1] || {};
 			}
+			this.setState({
+				attachments: attachments.filter(att => att.path !== item.path),
+				selected: newSelected,
+				altText: newSelected.altText || ''
+			});
+			this.messageComposerRef.current?.setInput(newSelected.description || '');
+			return;
 		}
-		this.setState({ attachments: attachments.filter(att => att.path !== item.path), selected: newSelected ?? selected });
+		this.setState({ attachments: attachments.filter(att => att.path !== item.path), selected: newSelected });
 		this.messageComposerRef.current?.setInput(newSelected.description || '');
 	};
 
 	onChangeText = (text: string) => {
 		this.setState({ text });
 	};
+
+	onChangeAltText = (altText: string) => {
+		this.setState({ altText });
+	};
+
+	private get effectiveServerVersion(): string | undefined {
+		const { serverVersion } = this.props;
+		// Share extension targets a specific workspace; prefer its version over the Redux-connected server
+		return this.isShareExtension
+			? (this.serverInfo as any)?.version || serverVersion
+			: serverVersion || (this.serverInfo as any)?.version;
+	}
 
 	onRemoveQuoteMessage = (messageId: string) => {
 		const { selectedMessages } = this.state;
@@ -358,8 +389,11 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 	};
 
 	renderContent = () => {
-		const { attachments, selected, text, room, thread, selectedMessages } = this.state;
+		const { attachments, selected, altText, text, room, thread, selectedMessages } = this.state;
 		const { theme, route } = this.props;
+
+		const showAltTextInput =
+			compareServerVersion(this.effectiveServerVersion, 'greaterThanOrEqualTo', '8.4.0') && selected?.mime?.startsWith('image/');
 
 		if (attachments.length) {
 			return (
@@ -383,6 +417,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 							length={attachments.length}
 							theme={theme}
 						/>
+						{showAltTextInput ? <AltTextInput value={altText} onChangeText={this.onChangeAltText} theme={theme} /> : null}
 						<MessageComposerContainer ref={this.messageComposerRef}>
 							<Thumbs
 								attachments={attachments}
@@ -436,8 +471,10 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 const mapStateToProps = (state: IApplicationState) => ({
 	user: getUserSelector(state),
 	server: state.server.server,
+	serverVersion: state.server.version,
 	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList as string,
 	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize as number
 });
 
+export { ShareView };
 export default connect(mapStateToProps)(withTheme(ShareView));

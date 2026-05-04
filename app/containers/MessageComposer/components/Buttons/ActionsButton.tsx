@@ -18,11 +18,7 @@ export const ActionsButton = () => {
 	const { closeEmojiKeyboardAndAction } = useContext(MessageInnerContext);
 	const permissionToUpload = useCanUploadFile(rid);
 	const [permissionToViewCannedResponses] = usePermissions(['view-canned-responses'], rid);
-	const { takePhoto, takeVideo, chooseFromLibrary, chooseFile } = useChooseMedia({
-		rid,
-		tmid,
-		permissionToUpload
-	});
+	const { takePhoto, takeVideo, chooseFromLibrary, chooseFile } = useChooseMedia({ rid, tmid, permissionToUpload });
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 

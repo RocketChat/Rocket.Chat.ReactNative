@@ -16,10 +16,12 @@ import {
 	getRoutingConfig,
 	getUserInfo,
 	editMessage,
+	editMediaMessage,
 	setReaction,
 	joinRoom,
 	toggleFollowMessage
 } from '../../lib/services/restApi';
+import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
 import Touch from '../../containers/Touch';
 import { replyBroadcast } from '../../actions/messages';
 import database from '../../lib/database';
@@ -808,9 +810,35 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.resetAction();
 	};
 
-	onEditRequest = async (message: Pick<IMessage, 'id' | 'msg' | 'rid'>) => {
+	onEditRequest = async (
+		message: Pick<IMessage, 'id' | 'msg' | 'rid'> & {
+			attachments?: { description: string; fileId?: string; filename?: string }[];
+		}
+	) => {
 		try {
 			this.resetAction();
+			const { serverVersion } = this.props;
+			const supportsMediaEdit = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.4.0');
+			const mediaAttachments = message.attachments?.filter(a => a.fileId && a.filename);
+			if (supportsMediaEdit && mediaAttachments?.length) {
+				const mediaEditResults = await Promise.allSettled(
+					mediaAttachments.map((att, index) =>
+						editMediaMessage(message.rid, att.fileId as string, {
+							description: att.description,
+							filename: att.filename as string,
+							// Avoid duplicate message updates when multiple attachments are edited.
+							msg: index === 0 ? message.msg : undefined
+						})
+					)
+				);
+
+				mediaEditResults.forEach(result => {
+					if (result.status === 'rejected') {
+						log(result.reason);
+					}
+				});
+				return;
+			}
 			await editMessage(message);
 		} catch (e) {
 			log(e);

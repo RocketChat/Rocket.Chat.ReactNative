@@ -1,4 +1,3 @@
-import { Alert } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
 
 import { IMAGE_PICKER_CONFIG, LIBRARY_PICKER_CONFIG, VIDEO_PICKER_CONFIG } from '../constants';
@@ -11,7 +10,10 @@ import { getThreadById } from '../../../lib/database/services/Thread';
 import Navigation from '../../../lib/navigation/appNavigation';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { useRoomContext } from '../../../views/RoomView/context';
+import { type IShareAttachment } from '../../../definitions';
 import ImagePicker, { type ImageOrVideo } from '../../../lib/methods/helpers/ImagePicker/ImagePicker';
+import { useMessageComposerApi } from '../context';
+import { useAltTextSupported } from '../../../lib/hooks/useAltTextSupported';
 
 export const useChooseMedia = ({
 	rid,
@@ -25,7 +27,9 @@ export const useChooseMedia = ({
 	'use memo';
 
 	const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = useAppSelector(state => state.settings);
+	const { addAttachments } = useMessageComposerApi();
 	const { action, setQuotesAndText, selectedMessages, getText } = useRoomContext();
+	const altTextSupported = useAltTextSupported();
 	const allowList = FileUpload_MediaTypeWhiteList as string;
 	const maxFileSize = FileUpload_MaxFileSize as number;
 	const libPickerLabels = {
@@ -34,22 +38,72 @@ export const useChooseMedia = ({
 		loadingLabelText: I18n.t('Processing')
 	};
 
-	const takePhoto = async () => {
-		try {
-			let image = await ImagePicker.openCamera({ ...IMAGE_PICKER_CONFIG, ...libPickerLabels });
-			image = forceJpgExtension(image);
-			const file = image as any; // FIXME: unify those types to remove the need for any
-			const canUploadResult = canUploadFile({
-				file,
+	const normalizeAttachment = (item: IShareAttachment) =>
+		item.filename ? item : { ...item, filename: item.path ? item.path.split('/').pop() : undefined };
+
+	const prepareAttachments = (attachments: IShareAttachment[]) => {
+		const items = attachments.map(item => {
+			const normalizedItem = normalizeAttachment(item);
+			const { success: canUpload, error } = canUploadFile({
+				file: normalizedItem as IShareAttachment,
 				allowList,
 				maxFileSize,
 				permissionToUploadFile: permissionToUpload
 			});
-			if (canUploadResult.success) {
-				return openShareView([image]);
-			}
 
-			handleError(canUploadResult.error);
+			return {
+				...normalizedItem,
+				canUpload,
+				error
+			};
+		});
+
+		addAttachments(items as IShareAttachment[]);
+	};
+
+	const startShareView = () => {
+		const text = getText?.() || '';
+		return {
+			selectedMessages,
+			text
+		};
+	};
+
+	const finishShareView = (text = '', quotes = []) => setQuotesAndText?.(text, quotes);
+
+	const openShareView = async (attachments: IShareAttachment[]) => {
+		if (!rid) return;
+		const room = await getSubscriptionByRoomId(rid);
+		let thread;
+		if (tmid) {
+			thread = await getThreadById(tmid);
+		}
+		if (room) {
+			Navigation.navigate('ShareView', {
+				room,
+				thread: thread || tmid,
+				attachments,
+				action,
+				finishShareView,
+				startShareView
+			});
+		}
+	};
+
+	const handlePickedAttachments = async (attachments: IShareAttachment[]) => {
+		if (altTextSupported) {
+			prepareAttachments(attachments);
+			return;
+		}
+
+		await openShareView(attachments.map(item => normalizeAttachment(item)) as IShareAttachment[]);
+	};
+
+	const takePhoto = async () => {
+		try {
+			let image = await ImagePicker.openCamera({ ...IMAGE_PICKER_CONFIG, ...libPickerLabels });
+			image = forceJpgExtension(image);
+			await handlePickedAttachments([image as IShareAttachment]);
 		} catch (e) {
 			log(e);
 		}
@@ -58,18 +112,7 @@ export const useChooseMedia = ({
 	const takeVideo = async () => {
 		try {
 			const video = await ImagePicker.openCamera({ ...VIDEO_PICKER_CONFIG, ...libPickerLabels });
-			const file = video as any; // FIXME: unify those types to remove the need for any
-			const canUploadResult = canUploadFile({
-				file,
-				allowList,
-				maxFileSize,
-				permissionToUploadFile: permissionToUpload
-			});
-			if (canUploadResult.success) {
-				return openShareView([video]);
-			}
-
-			handleError(canUploadResult.error);
+			await handlePickedAttachments([video as IShareAttachment]);
 		} catch (e) {
 			log(e);
 		}
@@ -83,7 +126,7 @@ export const useChooseMedia = ({
 				...libPickerLabels
 			})) as unknown as ImageOrVideo[]; // FIXME: type this
 			attachments = attachments.map(att => forceJpgExtension(att));
-			openShareView(attachments);
+			await handlePickedAttachments(attachments as IShareAttachment[]);
 		} catch (e) {
 			log(e);
 		}
@@ -99,55 +142,12 @@ export const useChooseMedia = ({
 					size: asset.size,
 					mime: asset.mimeType,
 					path: asset.uri
-				} as any;
-				const canUploadResult = canUploadFile({
-					file,
-					allowList,
-					maxFileSize,
-					permissionToUploadFile: permissionToUpload
-				});
-				if (canUploadResult.success) {
-					return openShareView([file]);
-				}
-				handleError(canUploadResult.error);
+				} as IShareAttachment;
+				await handlePickedAttachments([file]);
 			}
 		} catch (e) {
 			log(e);
 		}
-	};
-
-	const startShareView = () => {
-		const text = getText?.() || '';
-		return {
-			selectedMessages,
-			text
-		};
-	};
-
-	const finishShareView = (text = '', quotes = []) => setQuotesAndText?.(text, quotes);
-
-	const openShareView = async (attachments: any) => {
-		if (!rid) return;
-		const room = await getSubscriptionByRoomId(rid);
-		let thread;
-		if (tmid) {
-			thread = await getThreadById(tmid);
-		}
-		if (room) {
-			// FIXME: use useNavigation
-			Navigation.navigate('ShareView', {
-				room,
-				thread: thread || tmid,
-				attachments,
-				action,
-				finishShareView,
-				startShareView
-			});
-		}
-	};
-
-	const handleError = (error?: string) => {
-		Alert.alert(I18n.t('Error_uploading'), error && I18n.isTranslated(error) ? I18n.t(error) : error);
 	};
 
 	return {

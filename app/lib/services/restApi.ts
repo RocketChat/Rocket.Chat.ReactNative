@@ -1,3 +1,5 @@
+import { settings as RocketChatSettings } from '@rocket.chat/sdk';
+
 import {
 	type IAvatarSuggestion,
 	type IMessage,
@@ -1043,6 +1045,43 @@ export function e2eResetRoomKey(rid: string, e2eKey: string, e2eKeyId: string): 
 	// RC ?
 	return sdk.post('e2e.resetRoomKey', { rid, e2eKey, e2eKeyId });
 }
+
+export const editMediaMessage = async (
+	rid: string,
+	fileId: string,
+	body: { description?: string; filename: string; msg?: string }
+) => {
+	const { login, server } = reduxStore.getState();
+	const { user } = login;
+	// RC 8.4.0
+	const response = await fetch(`${server.server}/api/v1/rooms.mediaConfirm/${rid}/${fileId}`, {
+		method: 'POST',
+		headers: {
+			...RocketChatSettings.customHeaders,
+			'Content-Type': 'application/json',
+			'X-Auth-Token': user.token,
+			'X-User-Id': user.id
+		},
+		body: JSON.stringify({
+			description: body.description,
+			filename: body.filename,
+			msg: body.msg || ''
+		})
+	});
+
+	if (!response.ok) {
+		let errorReason = `${response.status} ${response.statusText}`;
+		try {
+			const errorBody = await response.json();
+			errorReason = errorBody?.error || errorBody?.message || errorReason;
+		} catch {
+			// Best effort only: keep default HTTP reason when body is not JSON.
+		}
+		throw new Error(`Failed to edit media message: ${errorReason}`);
+	}
+
+	return response.json();
+};
 
 export const editMessage = async (message: Pick<IMessage, 'id' | 'msg' | 'rid' | 'content'>) => {
 	const result = await Encryption.encryptMessage(message as IMessage);
