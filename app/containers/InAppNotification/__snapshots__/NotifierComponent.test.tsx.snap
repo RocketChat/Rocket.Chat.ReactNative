@@ -134,7 +134,7 @@ exports[`Story Snapshots: ChannelMessage should match snapshot 1`] = `
               },
             ]
           }
-          testID="avatar"
+          testID="avatar-rocket.cat"
         >
           <ViewManagerAdapter_ExpoImage
             borderRadius={4}
@@ -480,7 +480,7 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
               },
             ]
           }
-          testID="avatar"
+          testID="avatar-rocket.cat"
         >
           <ViewManagerAdapter_ExpoImage
             borderRadius={4}
@@ -826,7 +826,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
               },
             ]
           }
-          testID="avatar"
+          testID="avatar-rocket.cat"
         >
           <ViewManagerAdapter_ExpoImage
             borderRadius={4}
@@ -1172,7 +1172,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
               },
             ]
           }
-          testID="avatar"
+          testID="avatar-rocket.cat"
         >
           <ViewManagerAdapter_ExpoImage
             borderRadius={4}

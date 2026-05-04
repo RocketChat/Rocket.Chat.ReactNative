@@ -185,7 +185,7 @@ exports[`Story Snapshots: ChipText should match snapshot 1`] = `
             },
           ]
         }
-        testID="avatar"
+        testID="avatar-rocket.cat"
       >
         <ViewManagerAdapter_ExpoImage
           borderRadius={4}
@@ -368,7 +368,7 @@ exports[`Story Snapshots: ChipWithShortText should match snapshot 1`] = `
             },
           ]
         }
-        testID="avatar"
+        testID="avatar-rocket.cat"
       >
         <ViewManagerAdapter_ExpoImage
           borderRadius={4}
@@ -781,7 +781,7 @@ exports[`Story Snapshots: ChipWithoutIcon should match snapshot 1`] = `
             },
           ]
         }
-        testID="avatar"
+        testID="avatar-rocket.cat"
       >
         <ViewManagerAdapter_ExpoImage
           borderRadius={4}
