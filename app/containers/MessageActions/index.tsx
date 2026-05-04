@@ -589,7 +589,7 @@ const MessageActions = React.memo(
 							setTimeout(() => {
 								const node = findNodeHandle(focusRef.current);
 								if (node) AccessibilityInfo.setAccessibilityFocus(node);
-							}, ACTION_SHEET_ANIMATION_DURATION);
+							}, ACTION_SHEET_ANIMATION_DURATION + 50);
 					  }
 					: undefined;
 				showActionSheet({

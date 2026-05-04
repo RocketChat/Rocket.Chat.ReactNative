@@ -106,11 +106,9 @@ const MessageInner = React.memo((props: IMessageInner) => {
 MessageInner.displayName = 'MessageInner';
 
 interface IMessageA11y {
-	accessibilityHint?: string;
 	accessibilityActions?: AccessibilityActionInfo[];
 	onAccessibilityAction?: (event: AccessibilityActionEvent) => void;
 	handleLongPress?: () => void;
-	useExternalAccessibilityElement?: boolean;
 }
 
 const getMessageAccessibilityLabel = (props: IMessageTouchable & IMessage & IMessageA11y) => {
@@ -163,7 +161,6 @@ const getMessageAccessibilityLabel = (props: IMessageTouchable & IMessage & IMes
 
 const Message = React.memo((props: IMessageTouchable & IMessage & IMessageA11y) => {
 	const accessibilityLabelValue = getMessageAccessibilityLabel(props);
-	const accessible = !props.useExternalAccessibilityElement;
 
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo || props.isIgnored) {
 		const thread = props.isThreadReply ? <RepliedThread {...props} /> : null;
@@ -172,7 +169,16 @@ const Message = React.memo((props: IMessageTouchable & IMessage & IMessageA11y) 
 		return (
 			<View style={[styles.container, { marginTop: 4 }]}>
 				{thread}
-				<View accessible accessibilityLabel={accessibilityLabelValue} style={[styles.flex, infoStyle]}>
+				<View
+					accessible
+					accessibilityLabel={accessibilityLabelValue}
+					accessibilityActions={props.accessibilityActions}
+					onAccessibilityAction={e => {
+						if (e.nativeEvent.actionName === 'magicTap' || e.nativeEvent.actionName === 'longPress') {
+							props.handleLongPress?.();
+						}
+					}}
+					style={[styles.flex, infoStyle]}>
 					<MessageAvatar small {...props} />
 					<A11y.Index
 						accessible={props.isTranslated}
@@ -193,25 +199,15 @@ const Message = React.memo((props: IMessageTouchable & IMessage & IMessageA11y) 
 			</View>
 		);
 	}
+
 	return (
-		<View
-			testID={`message-${props.id}`}
-			accessible={accessible}
-			accessibilityLabel={accessible ? accessibilityLabelValue : undefined}
-			accessibilityHint={accessible ? props.accessibilityHint : undefined}
-			accessibilityActions={accessible ? props.accessibilityActions : undefined}
-			onAccessibilityAction={e => {
-				if (e.nativeEvent.actionName === 'longPress') {
-					props.handleLongPress?.();
-				}
-			}}
-			style={styles.container}>
+		<View testID={`message-${props.id}`} style={styles.container}>
 			<A11y.Index
-				accessible={props.isTranslated && !props.useExternalAccessibilityElement}
+				accessible={props.isTranslated}
 				accessibilityLabel={props?.msg || ''}
 				accessibilityLanguage={props.autoTranslateLanguage}
 				index={2}>
-				<View accessible={accessible} style={styles.flex}>
+				<View style={styles.flex}>
 					<MessageAvatar {...props} />
 					<View style={styles.messageContent}>
 						<MessageInner {...props} />
@@ -270,13 +266,19 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 		return (
 			<A11y.Order>
 				<A11y.Index index={1}>
-					<Touch ref={touchRef} onLongPress={handleLongPress} onPress={onPress} disabled={isDisabled} style={{ backgroundColor }}>
-						<Message
-							{...props}
-							handleLongPress={!isDisabled ? handleLongPress : undefined}
-							accessibilityHint={!isDisabled ? i18n.t('Long_press_to_open_message_actions') : undefined}
-							accessibilityActions={!isDisabled ? [{ name: 'longPress', label: i18n.t('Open_message_actions') }] : undefined}
-						/>
+					<Touch
+						componentRef={touchRef}
+						onLongPress={handleLongPress}
+						onPress={onPress}
+						disabled={isDisabled}
+						style={{ backgroundColor }}
+						accessible
+						accessibilityLabel={accessibilityLabelValue}
+						accessibilityActions={!isDisabled ? [{ name: 'magicTap' }] : undefined}
+						onAccessibilityAction={e => {
+							if (e.nativeEvent.actionName === 'magicTap') handleLongPress();
+						}}>
+						<Message {...props} handleLongPress={!isDisabled ? handleLongPress : undefined} />
 					</Touch>
 				</A11y.Index>
 			</A11y.Order>
@@ -290,13 +292,17 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 				accessible
 				accessibilityRole='button'
 				accessibilityLabel={accessibilityLabelValue}
-				accessibilityHint={!isDisabled ? i18n.t('Long_press_to_open_message_actions') : undefined}
-				accessibilityActions={!isDisabled ? [{ name: 'longPress', label: i18n.t('Open_message_actions') }] : undefined}
+				accessibilityActions={!isDisabled ? [{ name: 'longpress', label: i18n.t('Open_message_actions') }] : undefined}
 				onAccessibilityAction={e => {
-					if (e.nativeEvent.actionName === 'longPress') handleLongPress();
+					if (e.nativeEvent.actionName === 'longpress') handleLongPress();
 				}}>
-				<Touch ref={touchRef} onLongPress={handleLongPress} onPress={onPress} disabled={isDisabled} style={{ backgroundColor }}>
-					<Message useExternalAccessibilityElement {...props} />
+				<Touch
+					componentRef={touchRef}
+					onLongPress={handleLongPress}
+					onPress={onPress}
+					disabled={isDisabled}
+					style={{ backgroundColor }}>
+					<Message {...props} />
 				</Touch>
 			</A11y.Index>
 		</A11y.Order>
