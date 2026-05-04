@@ -22,16 +22,18 @@ export interface ITouchProps extends RectButtonProps {
 	testID?: string;
 	rectButtonStyle?: StyleProp<ViewStyle>;
 	disabled?: boolean;
+	android_rippleColor?: string;
 }
 
 const KeyboardRectButton = withKeyboardFocus(RectButton);
 
-const Touch = React.forwardRef<any, ITouchProps>(
+const Touch = React.forwardRef<View, ITouchProps>(
 	(
 		{
 			children,
 			onPress,
 			underlayColor,
+			android_rippleColor,
 			accessible,
 			accessibilityLabel,
 			accessibilityHint,
@@ -81,7 +83,7 @@ const Touch = React.forwardRef<any, ITouchProps>(
 				onPress={onPress}
 				activeOpacity={1}
 				underlayColor={underlayColor || colors.surfaceNeutral}
-				rippleColor={colors.surfaceNeutral}
+				rippleColor={android_rippleColor || colors.surfaceNeutral}
 				focusable={!disabled}
 				canBeFocused={!disabled}
 				style={[rectButtonStyle, marginStyles, { backgroundColor, borderRadius }]}
