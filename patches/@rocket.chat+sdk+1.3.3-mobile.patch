@@ -1,8 +1,111 @@
 diff --git a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
-index 19d31ae..d5295b5 100644
+index 19d31ae..0000000 100644
 --- a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
 +++ b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
-@@ -549,7 +549,9 @@ export class DDPDriver extends EventEmitter implements ISocket, IDriver {
+@@ -175,15 +175,95 @@
+     return Promise.resolve()
+   }
+ 
+-  // Call open directly, so it skips openTimeout
+-  checkAndReopen = () => {
+-    if (!this.connected) {
+-      if (this.openTimeout) {
+-        clearTimeout(this.openTimeout as any)
+-        delete this.openTimeout
++  /**
++   * Probe an existing connection by sending a raw `ping` and waiting for `pong`.
++   * Bypasses the SDK send() pipeline (which would await `pong` indefinitely on
++   * a zombie socket). Resolves true if a pong arrives within 2s; false on
++   * timeout or synchronous send throw.
++   */
++  probe = (): Promise<boolean> => {
++    return new Promise(resolve => {
++      let settled = false
++      const finish = (alive: boolean) => {
++        if (settled) return
++        settled = true
++        this.off('pong', onPong)
++        clearTimeout(timer)
++        resolve(alive)
+       }
+-      this.open()
++      const onPong = () => finish(true)
++      const timer = setTimeout(() => finish(false), 2000)
++      this.once('pong', onPong)
++      try {
++        if (!this.connection) return finish(false)
++        this.connection.send(JSON.stringify({ msg: 'ping' }))
++      } catch {
++        finish(false)
++      }
++    })
++  }
++
++  /**
++   * Tear down the existing connection and start a fresh one. Used when the
++   * socket is known or suspected dead. Emits `disconnected` so any in-flight
++   * send() promises (which register `once('disconnected', reject)`) reject
++   * visibly instead of hanging forever.
++   */
++  forceReopen = () => {
++    this.lastPing = 0
++    if (this.openTimeout) {
++      clearTimeout(this.openTimeout as any)
++      delete this.openTimeout
++    }
++    if (this.pingTimeout) {
++      clearTimeout(this.pingTimeout as any)
++      delete this.pingTimeout
++    }
++    this.emit('disconnected')
++    this.subscriptions = {}
++    if (this.connection) {
++      try {
++        this.connection.onopen = null as any
++        this.connection.onmessage = null as any
++        this.connection.onerror = null as any
++        this.connection.onclose = null as any
++        this.connection.close(userDisconnectCloseCode)
++      } catch (e) {
++        this.logger.debug(`[ddp] forceReopen close error: ${(e as Error).message}`)
++      }
++      this.connection = undefined
++    }
++    this.open()
++  }
++
++  /**
++   * Decide whether the socket needs reopening when the app foregrounds.
++   * Three buckets keyed on time since last incoming message (`lastPing`):
++   *   - stale  (> ping*2):       force reopen, no probe (already past alive())
++   *   - fresh  (< 2000ms):       no-op (recent traffic confirms liveness)
++   *   - gray   (in between):     probe; if no pong in 2s, force reopen
++   */
++  checkAndReopen = async () => {
++    const elapsed = Date.now() - this.lastPing
++    if (!this.connection || this.connection.readyState !== 1) {
++      this.logger.info(`[ddp] checkAndReopen bucket=stale elapsed=${elapsed}`)
++      return this.forceReopen()
+     }
++    if (elapsed > this.config.ping * 2) {
++      this.logger.info(`[ddp] checkAndReopen bucket=stale elapsed=${elapsed}`)
++      return this.forceReopen()
++    }
++    if (elapsed < 2000) {
++      this.logger.info(`[ddp] checkAndReopen bucket=fresh elapsed=${elapsed}`)
++      return
++    }
++    const alive = await this.probe()
++    if (alive) {
++      this.logger.info(`[ddp] checkAndReopen bucket=probe-pass elapsed=${elapsed}`)
++      return
++    }
++    this.logger.info(`[ddp] checkAndReopen bucket=probe-fail elapsed=${elapsed}`)
++    return this.forceReopen()
+   }
+ 
+   /** Clear connection and try to connect again. */
+@@ -549,7 +629,9 @@
        'uiInteraction',
        'e2ekeyRequest',
        'userData',

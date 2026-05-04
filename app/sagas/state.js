@@ -19,13 +19,15 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 	if (appRoot !== RootEnum.ROOT_INSIDE) {
 		return;
 	}
-	const isReady = yield isAuthAndConnected();
-	if (!isReady) {
+	const login = yield select(state => state.login);
+	if (!login.isAuthenticated) {
 		return;
 	}
 	try {
 		const server = yield select(state => state.server.server);
 		yield localAuthenticate(server);
+		// Always reconnect on foreground; gating on meteor.connected would skip
+		// the call precisely when the socket died silently in background.
 		checkAndReopen();
 		// Check for pending notification when app comes to foreground (Android - notification tap while in background)
 		checkPendingNotification().catch(e => {
