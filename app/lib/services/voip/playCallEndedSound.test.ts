@@ -1,5 +1,11 @@
 import { playCallEndedSound, resetPlayCallEndedSoundForTesting } from './playCallEndedSound';
 
+const mockLog = jest.fn();
+jest.mock('../../methods/helpers/log', () => ({
+	__esModule: true,
+	default: (...args: unknown[]) => mockLog(...args)
+}));
+
 // Mock expo-av at the test boundary, matching the style used in the VoIP services directory.
 const mockLoadAsync = jest.fn(() => Promise.resolve());
 const mockPlayAsync = jest.fn(() => Promise.resolve());
@@ -28,6 +34,7 @@ beforeEach(() => {
 	jest.clearAllMocks();
 	capturedPlaybackStatusUpdate = null;
 	resetPlayCallEndedSoundForTesting();
+	mockLog.mockClear();
 });
 
 describe('playCallEndedSound', () => {
@@ -142,5 +149,14 @@ describe('playCallEndedSound', () => {
 		} finally {
 			jest.useRealTimers();
 		}
+	});
+
+	it('calls log when loadAsync throws', async () => {
+		const err = new Error('E_LOAD_FAILED');
+		mockLoadAsync.mockRejectedValueOnce(err);
+
+		await playCallEndedSound();
+
+		expect(mockLog).toHaveBeenCalledWith(err);
 	});
 });

@@ -4,6 +4,7 @@ import RNCallKeep from 'react-native-callkeep';
 import InCallManager from 'react-native-incall-manager';
 
 import { isIOS } from '../../methods/helpers';
+import log from '../../methods/helpers/log';
 import NativeVoipModule from '../../native/NativeVoip';
 import { terminateNativeCall } from './terminateNativeCall';
 import { playCallEndedSound } from './playCallEndedSound';
@@ -170,13 +171,13 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		try {
 			InCallManager.start({ media: 'audio' });
 		} catch (error) {
-			console.error('[VoIP] InCallManager.start failed:', error);
+			log(error);
 		}
 
 		if (!isIOS) {
 			// Idempotent: native short-circuits if a listener is already registered or API < 31.
 			NativeVoipModule.startAudioRouteSync().catch((error: unknown) => {
-				console.error('[VoIP] startAudioRouteSync failed:', error);
+				log(error);
 			});
 		}
 
@@ -266,7 +267,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 			}
 			set({ isSpeakerOn: newSpeakerOn });
 		} catch (error) {
-			console.error('[VoIP] Failed to toggle speaker:', error);
+			log(error);
 		}
 	},
 
@@ -322,13 +323,13 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		try {
 			InCallManager.stop();
 		} catch (error) {
-			console.error('[VoIP] InCallManager.stop failed:', error);
+			log(error);
 		}
 		set({ ...initialState, nativeAcceptedCallId });
 		hideActionSheetRef();
 		if (!isIOS) {
 			NativeVoipModule.stopAudioRouteSync().catch((error: unknown) => {
-				console.error('[VoIP] stopAudioRouteSync failed:', error);
+				log(error);
 			});
 		}
 		// Old timer was cleared above; start a new one if nativeAcceptedCallId is still set.
