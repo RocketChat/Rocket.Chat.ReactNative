@@ -28,7 +28,6 @@ import Quote from './Components/Attachments/Quote';
 import translationLanguages from '../../lib/constants/translationLanguages';
 import Touch from './Touch';
 import { useLastFocusedMessageRef } from '../../lib/a11y/useLastFocusedMessageRef';
-import { isIOS } from '../../lib/methods/helpers';
 
 const MessageInner = React.memo((props: IMessageInner) => {
 	const { isLargeFontScale } = useResponsiveLayout();
@@ -163,10 +162,7 @@ const getMessageAccessibilityActions = (isDisabled: boolean): AccessibilityActio
 	if (isDisabled) {
 		return undefined;
 	}
-	if (isIOS) {
-		return [{ name: 'magicTap' }];
-	}
-	return [{ name: 'longpress', label: i18n.t('Open_message_actions') }];
+	return [{ name: 'showActions', label: i18n.t('Show_message_actions') }];
 };
 
 const Message = React.memo((props: IMessageTouchable & IMessage & IMessageA11y) => {
@@ -184,7 +180,7 @@ const Message = React.memo((props: IMessageTouchable & IMessage & IMessageA11y) 
 					accessibilityLabel={accessibilityLabelValue}
 					accessibilityActions={props.accessibilityActions}
 					onAccessibilityAction={e => {
-						if (e.nativeEvent.actionName === 'magicTap' || e.nativeEvent.actionName === 'longPress') {
+						if (e.nativeEvent.actionName === 'showActions') {
 							props.handleLongPress?.();
 						}
 					}}
@@ -288,8 +284,7 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 					accessibilityLabel={accessibilityLabelValue}
 					accessibilityActions={accessibilityActions}
 					onAccessibilityAction={e => {
-						const action = e.nativeEvent.actionName;
-						if (action === 'magicTap' || action === 'longpress') handleLongPress();
+						if (e.nativeEvent.actionName === 'showActions') handleLongPress();
 					}}>
 					<Message {...props} handleLongPress={!isDisabled ? handleLongPress : undefined} />
 				</Touch>
