@@ -91,6 +91,11 @@ class MediaSessionInstance {
 		);
 		// TESTING: DDP signal transport — offer/answer/ICE stay on DDP
 		mediaSessionStore.setSendSignalFn((signal: ClientMediaSignal) => {
+			// Heal a stale socket on warm lock-screen accepts: when the device stays locked the
+			// foreground saga never fires, so nothing else nudges the SDK to reopen. checkAndReopen
+			// is a no-op when alive; otherwise it triggers reconnect → relogin → resubscribe so
+			// answer SDP and ICE candidates can flow over a fresh DDP session.
+			sdk.current?.checkAndReopen?.();
 			sdk.methodCall('stream-notify-user', `${userId}/media-calls`, JSON.stringify(signal));
 		});
 		this.instance = mediaSessionStore.getInstance(userId);
