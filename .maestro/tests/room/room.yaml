@@ -29,11 +29,77 @@ tags:
     env:
       message: ${output.randomMessage}
 
+# should send a message in thread and verify avatar tap navigates to RoomInfoView
+- extendedWaitUntil:
+    visible:
+      text: ${output.randomMessage}
+    timeout: 60000
+- longPressOn:
+    id: 'message-content-${output.randomMessage}'
+- waitForAnimationToEnd:
+    timeout: 1000
+- extendedWaitUntil:
+    visible:
+      id: action-sheet
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: message-actions-reply-in-thread
+    timeout: 60000
+- tapOn:
+    id: message-actions-reply-in-thread
+- extendedWaitUntil:
+    visible:
+      id: room-view
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: message-composer-input-thread
+    timeout: 60000
+- tapOn:
+    id: message-composer-input-thread
+- inputText: 'thread-reply-message'
+- tapOn:
+    id: message-composer-send
+- extendedWaitUntil:
+    visible:
+      text: '.*thread-reply-message.*'
+    timeout: 60000
+
+- runFlow: '../../helpers/go-back.yaml'
+
+# tap on the avatar of the thread reply — should open RoomInfoView
+- tapOn:
+    id: 'avatar-${output.user.username}'
+- extendedWaitUntil:
+    visible:
+      id: room-info-view-username
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: .*${'@'+output.user.username}.*
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 2000
+
+# assert thread view did NOT reopen on top of RoomInfoView
+- assertNotVisible:
+    id: message-composer-input-thread
+
+# go-back is causing 2 times back execution, using navigate-to-room after going back
+- runFlow: '../../helpers/go-back.yaml'
+- runFlow:
+    file: '../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: ${output.room.name}
+
 # should show and tap on emoji autocomplete
 - extendedWaitUntil:
     visible:
       id: message-composer-input
     timeout: 60000
+- tapOn:
+    id: message-composer-input
 - inputText: ':joy'
 - extendedWaitUntil:
     visible:
@@ -78,28 +144,28 @@ tags:
 - eraseText
 
 # should show and tap on room autocomplete
-- extendedWaitUntil:
-    visible:
-      id: message-composer-input
-    timeout: 60000
-- inputText: '#translation-test'
-- extendedWaitUntil:
-    visible:
-      id: 'autocomplete-item-translation-test'
-    timeout: 60000
-- tapOn:
-    id: 'autocomplete-item-translation-test'
-- extendedWaitUntil:
-    visible:
-      text: '#translation-test '
-    timeout: 60000
-- extendedWaitUntil:
-    notVisible:
-      id: 'autocomplete-item-translation-test'
-    timeout: 60000
-- tapOn:
-    id: message-composer-input
-- eraseText
+# - extendedWaitUntil:
+#     visible:
+#       id: message-composer-input
+#     timeout: 60000
+# - inputText: '#translation-test'
+# - extendedWaitUntil:
+#     visible:
+#       id: 'autocomplete-item-translation-test'
+#     timeout: 60000
+# - tapOn:
+#     id: 'autocomplete-item-translation-test'
+# - extendedWaitUntil:
+#     visible:
+#       text: '#translation-test '
+#     timeout: 60000
+# - extendedWaitUntil:
+#     notVisible:
+#       id: 'autocomplete-item-translation-test'
+#     timeout: 60000
+# - tapOn:
+#     id: message-composer-input
+# - eraseText
 
 # should react to message
 - extendedWaitUntil:

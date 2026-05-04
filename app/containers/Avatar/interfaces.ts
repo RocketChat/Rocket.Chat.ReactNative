@@ -6,6 +6,7 @@ import { type TGetCustomEmoji } from '../../definitions/IEmoji';
 export interface IAvatar {
 	server?: string;
 	style?: ViewStyle;
+	testID?: string;
 	text?: string;
 	avatar?: string;
 	emoji?: string;
