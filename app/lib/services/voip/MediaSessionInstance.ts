@@ -90,7 +90,6 @@ class MediaSessionInstance {
 					iceGatheringTimeout: this.iceGatheringTimeout
 				})
 		);
-		// TESTING: DDP signal transport — offer/answer/ICE stay on DDP
 		mediaSessionStore.setSendSignalFn((signal: ClientMediaSignal) => {
 			sdk.methodCall('stream-notify-user', `${userId}/media-calls`, JSON.stringify(signal));
 		});
@@ -106,7 +105,6 @@ class MediaSessionInstance {
 			this.instance = mediaSessionStore.getInstance(userId);
 		});
 
-		// TESTING: DDP real-time signal subscription — stays for offer/answer/ICE/notifications
 		this.mediaSignalListener = sdk.onStreamData('stream-notify-user', (ddpMessage: IDDPMessage) => {
 			if (!this.instance) {
 				return;
@@ -123,10 +121,6 @@ class MediaSessionInstance {
 
 		this.instance?.on('newCall', ({ call }: { call: IClientMediaCall }) => {
 			if (call && !call.hidden) {
-				call.emitter.on('stateChange', _oldState => {
-					// Intentionally empty — state transitions handled by the call layer
-				});
-
 				if (call.localParticipant.role === 'caller') {
 					useCallStore.getState().setCall(call);
 					useCallStore.getState().setDirection('outgoing');
