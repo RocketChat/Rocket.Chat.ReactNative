@@ -1,3 +1,6 @@
+import { InteractionManager } from 'react-native';
+import RNCallKeep from 'react-native-callkeep';
+import I18n from 'i18n-js';
 import { all, call, delay, put, select, take, takeLatest } from 'redux-saga/effects';
 
 import { shareSetParams } from '../actions/share';
@@ -12,17 +15,19 @@ import database from '../lib/database';
 import { getServerById } from '../lib/database/services/Server';
 import { canOpenRoom } from '../lib/methods/canOpenRoom';
 import { getServerInfo } from '../lib/methods/getServerInfo';
-import { emitter, getUidDirectMessage } from '../lib/methods/helpers';
+import { getUidDirectMessage, normalizeDeepLinkingServerHost } from '../lib/methods/helpers';
 import EventEmitter from '../lib/methods/helpers/events';
 import { goRoom, navigateToRoom } from '../lib/methods/helpers/goRoom';
 import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
 import log from '../lib/methods/helpers/log';
+import { showToast } from '../lib/methods/helpers/showToast';
 import UserPreferences from '../lib/methods/userPreferences';
 import { videoConfJoin } from '../lib/methods/videoConf';
 import { loginOAuthOrSso } from '../lib/services/connect';
 import { notifyUser } from '../lib/services/restApi';
 import sdk from '../lib/services/sdk';
-import Navigation from '../lib/navigation/appNavigation';
+import Navigation, { waitForNavigationReady } from '../lib/navigation/appNavigation';
+import { resetVoipState } from '../lib/services/voip/resetVoipState';
 
 const roomTypes = {
 	channel: 'c',
@@ -40,20 +45,6 @@ const handleInviteLink = function* handleInviteLink({ params, requireLogin = fal
 			yield put(inviteLinksRequest(token));
 		}
 	}
-};
-
-const waitForNavigation = () => {
-	if (Navigation.navigationRef.current) {
-		return Promise.resolve();
-	}
-	return new Promise(resolve => {
-		const listener = () => {
-			emitter.off('navigationReady', listener);
-			resolve();
-		};
-
-		emitter.on('navigationReady', listener);
-	});
 };
 
 const navigate = function* navigate({ params }) {
@@ -77,7 +68,7 @@ const navigate = function* navigate({ params }) {
 
 				const isMasterDetail = yield select(state => state.app.isMasterDetail);
 				const jumpToMessageId = params.messageId;
-				yield waitForNavigation();
+				yield waitForNavigationReady();
 				yield goRoom({ item, isMasterDetail, jumpToMessageId, jumpToThreadId });
 			}
 		} else {
@@ -85,6 +76,47 @@ const navigate = function* navigate({ params }) {
 		}
 	}
 	yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
+};
+
+/**
+ * After native VoIP accept fails: reset call state, end CallKit session, land inside root,
+ * optionally open DM via same pipeline as deep links (`direct/username`), then toast/dialog per a11y.
+ */
+const handleVoipAcceptFailed = function* handleVoipAcceptFailed(params) {
+	try {
+		const { callId, username } = params;
+		resetVoipState();
+		if (callId) {
+			RNCallKeep.endCall(callId);
+		}
+
+		yield call(waitForNavigationReady);
+
+		const navigateParams = {
+			...params,
+			path: username ? `direct/${username}` : params.path
+		};
+		yield navigate({ params: navigateParams });
+
+		yield call(
+			() =>
+				new Promise(resolve => {
+					InteractionManager.runAfterInteractions(() => resolve());
+				})
+		);
+
+		showToast(I18n.t('VoIP_Call_Issue'));
+	} catch (e) {
+		log(e);
+	}
+};
+
+const completeDeepLinkNavigation = function* completeDeepLinkNavigation(params) {
+	if (params.voipAcceptFailed) {
+		yield call(handleVoipAcceptFailed, params);
+	} else {
+		yield navigate({ params });
+	}
 };
 
 const fallbackNavigation = function* fallbackNavigation() {
@@ -140,25 +172,17 @@ const handleOpen = function* handleOpen({ params }) {
 	// If there's no host on the deep link params and the app is opened, just call appInit()
 	let { host } = params;
 	if (!host) {
+		if (params.voipAcceptFailed) {
+			yield call(handleVoipAcceptFailed, params);
+			return;
+		}
 		yield fallbackNavigation();
 		return;
 	}
 
 	// If there's host, continue
-	if (!/^(http|https)/.test(host)) {
-		if (/^localhost(:\d+)?/.test(host)) {
-			host = `http://${host}`;
-		} else {
-			host = `https://${host}`;
-		}
-	} else {
-		// Notification should always come from https
-		host = host.replace('http://', 'https://');
-	}
-	// remove last "/" from host
-	if (host.slice(-1) === '/') {
-		host = host.slice(0, host.length - 1);
-	}
+	host = normalizeDeepLinkingServerHost(host);
+	params.host = host;
 
 	const [server, user] = yield all([
 		UserPreferences.getString(CURRENT_SERVER),
@@ -176,7 +200,7 @@ const handleOpen = function* handleOpen({ params }) {
 			yield put(selectServerRequest(host, serverRecord.version, true));
 			yield take(types.LOGIN.SUCCESS);
 		}
-		yield navigate({ params });
+		yield completeDeepLinkNavigation(params);
 	} else {
 		// search if deep link's server already exists
 		try {
@@ -184,7 +208,7 @@ const handleOpen = function* handleOpen({ params }) {
 				yield localAuthenticate(host);
 				yield put(selectServerRequest(host, serverRecord.version, true, true));
 				yield take(types.LOGIN.SUCCESS);
-				yield navigate({ params });
+				yield completeDeepLinkNavigation(params);
 				return;
 			}
 		} catch (e) {
@@ -193,6 +217,10 @@ const handleOpen = function* handleOpen({ params }) {
 		// if deep link is from a different server
 		const result = yield getServerInfo(host);
 		if (!result.success) {
+			if (params.voipAcceptFailed) {
+				yield call(handleVoipAcceptFailed, params);
+				return;
+			}
 			// Fallback to prevent the app from being stuck on splash screen
 			yield fallbackNavigation();
 			return;
@@ -207,7 +235,7 @@ const handleOpen = function* handleOpen({ params }) {
 			yield put(loginRequest({ resume: params.token }, true));
 			yield take(types.LOGIN.SUCCESS);
 			yield put(appReady({}));
-			yield navigate({ params });
+			yield completeDeepLinkNavigation(params);
 		} else {
 			yield handleInviteLink({ params, requireLogin: true });
 		}
@@ -250,9 +278,11 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 		return;
 	}
 
-	if (host.slice(-1) === '/') {
-		host = host.slice(0, host.length - 1);
+	host = normalizeDeepLinkingServerHost(host);
+	if (!host) {
+		return;
 	}
+	params.host = host;
 
 	const [server, user] = yield all([
 		UserPreferences.getString(CURRENT_SERVER),
