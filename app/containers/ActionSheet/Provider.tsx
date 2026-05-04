@@ -35,6 +35,7 @@ export type TActionSheetOptions = {
 	onClose?: () => void;
 	enableContentPanningGesture?: boolean;
 	fullContainer?: boolean;
+	hugContent?: boolean;
 };
 export interface IActionSheetProvider {
 	showActionSheet: (item: TActionSheetOptions) => void;

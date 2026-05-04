@@ -68,6 +68,7 @@ export default StyleSheet.create({
 	},
 	fullContainer: {
 		width: '100%',
+		height: '100%',
 		flex: 0
 	}
 });
