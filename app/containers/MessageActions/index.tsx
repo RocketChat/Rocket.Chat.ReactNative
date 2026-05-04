@@ -1,5 +1,5 @@
 import React, { forwardRef, useImperativeHandle } from 'react';
-import { Alert, Share } from 'react-native';
+import { AccessibilityInfo, Alert, findNodeHandle, Share } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { connect } from 'react-redux';
 
@@ -14,6 +14,7 @@ import { LISTENER } from '../Toast';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { showConfirmationAlert } from '../../lib/methods/helpers/info';
 import { type TActionSheetOptionsItem, useActionSheet, ACTION_SHEET_ANIMATION_DURATION } from '../ActionSheet';
+import { useLastFocusedMessageRef } from '../../lib/a11y/useLastFocusedMessageRef';
 import Header, { HEADER_HEIGHT, type IHeader } from './Header';
 import events from '../../lib/methods/helpers/log/events';
 import {
@@ -112,6 +113,7 @@ const MessageActions = React.memo(
 				hasCreateDiscussionOtherUserPermission: false
 			};
 			const { showActionSheet, hideActionSheet } = useActionSheet();
+			const lastFocusedMessageRef = useLastFocusedMessageRef();
 
 			const getPermissions = async () => {
 				try {
@@ -580,6 +582,16 @@ const MessageActions = React.memo(
 			const showMessageActions = async (message: TAnyMessageModel) => {
 				logEvent(events.ROOM_SHOW_MSG_ACTIONS);
 				await getPermissions();
+				const focusRef = lastFocusedMessageRef.get();
+				const onClose = focusRef
+					? () => {
+							lastFocusedMessageRef.clear();
+							setTimeout(() => {
+								const node = findNodeHandle(focusRef.current);
+								if (node) AccessibilityInfo.setAccessibilityFocus(node);
+							}, ACTION_SHEET_ANIMATION_DURATION + 50);
+					  }
+					: undefined;
 				showActionSheet({
 					options: getOptions(message),
 					headerHeight: HEADER_HEIGHT,
@@ -589,7 +601,8 @@ const MessageActions = React.memo(
 								<Header handleReaction={handleReaction} isMasterDetail={isMasterDetail} message={message} />
 							) : null}
 						</>
-					)
+					),
+					onClose
 				});
 			};
 

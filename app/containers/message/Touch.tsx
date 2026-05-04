@@ -26,6 +26,7 @@ export interface ITouchProps extends TouchableWithoutFeedbackProps {
 	rectButtonStyle?: StyleProp<ViewStyle>;
 	enabled?: boolean;
 	android_rippleColor?: string;
+	componentRef?: React.RefObject<View | null>;
 }
 
 const Component = isIOS ? TouchableOpacity : TouchableHighlight;
@@ -45,6 +46,7 @@ const Touch = React.forwardRef<View, ITouchProps>(
 			style,
 			rectButtonStyle,
 			enabled = true,
+			componentRef,
 			...props
 		},
 		ref
@@ -85,7 +87,14 @@ const Touch = React.forwardRef<View, ITouchProps>(
 		return (
 			<KeyboardComponent
 				ref={ref}
+				componentRef={componentRef as React.RefObject<View>}
 				onPress={onPress}
+				accessible={accessible}
+				accessibilityRole={props.accessibilityRole}
+				accessibilityLabel={accessibilityLabel}
+				accessibilityHint={accessibilityHint}
+				accessibilityActions={accessibilityActions}
+				onAccessibilityAction={onAccessibilityAction}
 				style={[rectButtonStyle, marginStyles, { backgroundColor, borderRadius }]}
 				{...touchableProps}
 				{...props}
