@@ -2,7 +2,51 @@ diff --git a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts b/node_modules/@ro
 index 19d31ae..d5295b5 100644
 --- a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
 +++ b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
-@@ -549,7 +549,9 @@ export class DDPDriver extends EventEmitter implements ISocket, IDriver {
+@@ -175,15 +175,36 @@
+     return Promise.resolve()
+   }
+ 
+-  // Call open directly, so it skips openTimeout
++  // Tear down any existing socket and reopen unconditionally. The `connected`
++  // getter trusts `readyState === 1 && alive()` — both can lie after iOS
++  // background suspend (zombie WebSocket still reporting OPEN, lastPing still
++  // inside the alive window because of a server message just before suspend).
++  // Forcing teardown + resetting lastPing guarantees a fresh connection.
+   checkAndReopen = () => {
+-    if (!this.connected) {
+-      if (this.openTimeout) {
+-        clearTimeout(this.openTimeout as any)
+-        delete this.openTimeout
+-      }
+-      this.open()
++    this.lastPing = 0
++    if (this.openTimeout) {
++      clearTimeout(this.openTimeout as any)
++      delete this.openTimeout
+     }
++    if (this.pingTimeout) {
++      clearTimeout(this.pingTimeout as any)
++      delete this.pingTimeout
++    }
++    if (this.connection) {
++      try {
++        // Detach handlers before close so the orphaned socket can't trigger
++        // another reopen() race against the open() we're about to start.
++        this.connection.onopen = null as any
++        this.connection.onmessage = null as any
++        this.connection.onerror = null as any
++        this.connection.onclose = null as any
++        this.connection.close(userDisconnectCloseCode)
++      } catch (e) {
++        this.logger.debug(`[ddp] checkAndReopen close error: ${(e as Error).message}`)
++      }
++      this.connection = undefined
++    }
++    this.open()
+   }
+ 
+   /** Clear connection and try to connect again. */
+@@ -549,7 +570,9 @@
        'uiInteraction',
        'e2ekeyRequest',
        'userData',
