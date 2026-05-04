@@ -2,6 +2,12 @@ import type { IClientMediaCall } from '@rocket.chat/media-signaling';
 import RNCallKeep from 'react-native-callkeep';
 import { waitFor } from '@testing-library/react-native';
 
+const mockLog = jest.fn();
+jest.mock('../../methods/helpers/log', () => ({
+	__esModule: true,
+	default: (...args: unknown[]) => mockLog(...args)
+}));
+
 import type { IDDPMessage } from '../../../definitions/IDDPMessage';
 import Navigation from '../../navigation/appNavigation';
 import { getDMSubscriptionByUsername } from '../../database/services/Subscription';
@@ -899,6 +905,92 @@ describe('MediaSessionInstance', () => {
 
 			expect(mockSetRoomId).toHaveBeenNthCalledWith(1, 'rid-dm');
 			expect(mockSetRoomId).toHaveBeenLastCalledWith(null);
+		});
+	});
+
+	describe('log() helper — error reporting', () => {
+		beforeEach(() => {
+			mockLog.mockClear();
+		});
+
+		it('calls log when applyRestStateSignals REST fetch rejects', async () => {
+			await mediaSessionInstance.init('user-1');
+			mockMediaCallsStateSignals.mockRejectedValueOnce(new Error('E_FETCH_SIGNALS'));
+			await mediaSessionInstance.applyRestStateSignals();
+			expect(mockLog).toHaveBeenCalledWith(expect.any(Error));
+		});
+
+		it('calls log when accept() rejects in answerCall', async () => {
+			await mediaSessionInstance.init('user-1');
+			const session = createdSessions[0];
+			const mainCall = {
+				callId: 'call-log-err',
+				accept: jest.fn().mockRejectedValue(new Error('ICE fail')),
+				remoteParticipants: [{ contact: { username: 'bob' } }]
+			};
+			session.getCallData.mockReturnValue(mainCall);
+			mockUseCallStoreGetState.mockReturnValue({
+				reset: mockCallStoreReset,
+				setCall: jest.fn(),
+				setRoomId: mockSetRoomId,
+				setDirection: mockSetDirection,
+				resetNativeCallId: jest.fn(),
+				call: null,
+				callId: null,
+				nativeAcceptedCallId: 'call-log-err',
+				roomId: null
+			});
+
+			await mediaSessionInstance.answerCall('call-log-err');
+
+			expect(mockLog).toHaveBeenCalledWith(expect.any(Error));
+		});
+
+		it('calls log when answerCall call data not found (warn path)', async () => {
+			await mediaSessionInstance.init('user-1');
+			const session = createdSessions[0];
+			session.getCallData.mockReturnValue(null);
+
+			await mediaSessionInstance.answerCall('missing-call');
+
+			expect(mockLog).toHaveBeenCalledWith(expect.any(Error));
+		});
+
+		it('calls log when startCallByRoom startCall rejects', async () => {
+			await mediaSessionInstance.init('user-1');
+			const session = createdSessions[0];
+			session.startCall.mockRejectedValueOnce(new Error('E_START'));
+			mockGetUidDirectMessage.mockReturnValue('peer-x');
+
+			mediaSessionInstance.startCallByRoom({ rid: 'rid-dm', t: 'd', uids: ['a', 'b'] } as any);
+
+			// Flush microtasks to let the rejection propagate to .catch
+			await Promise.resolve();
+			await Promise.resolve();
+			await Promise.resolve();
+
+			expect(mockLog).toHaveBeenCalledWith(expect.any(Error));
+		});
+
+		it('calls log when newCall resolveRoomIdFromContact rejects', async () => {
+			mockGetDMSubscriptionByUsername.mockRejectedValueOnce(new Error('E_DB'));
+			await mediaSessionInstance.init('user-1');
+			const session = createdSessions[0];
+			const newCallHandler = session.on.mock.calls.find((c: string[]) => c[0] === 'newCall')?.[1] as (p: {
+				call: IClientMediaCall;
+			}) => void;
+
+			newCallHandler({
+				call: {
+					hidden: false,
+					localParticipant: { role: 'caller' },
+					remoteParticipants: [{ contact: { username: 'alice' } }],
+					callId: 'c-log',
+					emitter: { on: jest.fn(), off: jest.fn() }
+				} as unknown as IClientMediaCall
+			});
+
+			await waitFor(() => expect(mockLog).toHaveBeenCalledWith(expect.any(Error)));
 		});
 	});
 });

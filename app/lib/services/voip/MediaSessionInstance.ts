@@ -28,6 +28,7 @@ import type { IDDPMessage } from '../../../definitions/IDDPMessage';
 import type { ISubscription, TSubscriptionModel } from '../../../definitions';
 import { getDMSubscriptionByUsername } from '../../database/services/Subscription';
 import { getUidDirectMessage } from '../../methods/helpers/helpers';
+import log from '../../methods/helpers/log';
 import { isInActiveVoipCall } from './isInActiveVoipCall';
 import { requestVoipCallPermissions } from '../../methods/voipCallPermissions';
 import I18n from '../../../i18n';
@@ -54,7 +55,7 @@ class MediaSessionInstance {
 			call == null
 		) {
 			this.answerCall(signal.callId).catch(error => {
-				console.error('[VoIP] Error answering call on notification/accepted:', error);
+				log(error);
 			});
 		}
 	}
@@ -71,7 +72,7 @@ class MediaSessionInstance {
 				this.tryAnswerIfNativeAcceptedNotification(signal);
 			}
 		} catch (error) {
-			console.error('[VoIP] Failed to fetch or apply REST state signals:', error);
+			log(error);
 		}
 	}
 
@@ -132,7 +133,7 @@ class MediaSessionInstance {
 					Navigation.navigate('CallView');
 					if (useCallStore.getState().roomId == null) {
 						this.resolveRoomIdFromContact(call.remoteParticipants[0]?.contact).catch(error => {
-							console.error('[VoIP] Error resolving room id from contact (newCall):', error);
+							log(error);
 						});
 					}
 				}
@@ -156,7 +157,7 @@ class MediaSessionInstance {
 			try {
 				await mainCall.accept();
 			} catch (error) {
-				console.error('[VoIP] accept() rejected:', error);
+				log(error);
 				terminateNativeCall(callId);
 				const st = useCallStore.getState();
 				if (st.nativeAcceptedCallId === callId) {
@@ -171,7 +172,7 @@ class MediaSessionInstance {
 			await waitForNavigationReady();
 			Navigation.navigate('CallView');
 			this.resolveRoomIdFromContact(mainCall.remoteParticipants[0]?.contact).catch(error => {
-				console.error('[VoIP] Error resolving room id from contact (answerCall):', error);
+				log(error);
 			});
 		} else {
 			terminateNativeCall(callId);
@@ -179,7 +180,7 @@ class MediaSessionInstance {
 			if (st.nativeAcceptedCallId === callId) {
 				st.resetNativeCallId();
 			}
-			console.warn('[VoIP] Call not found after accept:', callId);
+			log(new Error(`[VoIP] Call not found after accept: ${callId}`));
 		}
 	};
 
@@ -191,7 +192,7 @@ class MediaSessionInstance {
 			this.startCall(otherUserId, 'user').catch(error => {
 				// Clear the optimistic roomId so a concurrent incoming call can resolve its own DM context.
 				useCallStore.getState().setRoomId(null);
-				console.error('[VoIP] Error starting call from room:', error);
+				log(error);
 			});
 		}
 	};

@@ -5,6 +5,12 @@ import type { IClientMediaCall } from '@rocket.chat/media-signaling';
 
 import { useCallStore } from './useCallStore';
 
+const mockLog = jest.fn();
+jest.mock('../../methods/helpers/log', () => ({
+	__esModule: true,
+	default: (...args: unknown[]) => mockLog(...args)
+}));
+
 jest.mock('../../methods/helpers', () => ({
 	isIOS: true
 }));

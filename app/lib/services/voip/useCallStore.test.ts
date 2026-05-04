@@ -6,6 +6,12 @@ import InCallManager from 'react-native-incall-manager';
 import NativeVoipModule from '../../native/NativeVoip';
 import { useCallStore } from './useCallStore';
 
+const mockLog = jest.fn();
+jest.mock('../../methods/helpers/log', () => ({
+	__esModule: true,
+	default: (...args: unknown[]) => mockLog(...args)
+}));
+
 const mockPlayCallEndedSound = jest.fn(() => Promise.resolve());
 jest.mock('./playCallEndedSound', () => ({
 	playCallEndedSound: () => mockPlayCallEndedSound()
@@ -381,17 +387,16 @@ describe('useCallStore toggleSpeaker', () => {
 			expect(useCallStore.getState().isSpeakerOn).toBe(false);
 		});
 
-		it('leaves isSpeakerOn unchanged and logs error when NativeVoipModule.setSpeakerOn rejects', async () => {
+		it('leaves isSpeakerOn unchanged and calls log when NativeVoipModule.setSpeakerOn rejects', async () => {
 			(NativeVoipModule.setSpeakerOn as jest.Mock).mockImplementationOnce(() => Promise.reject(new Error('E_AUDIO_ROUTE')));
-			const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+			mockLog.mockClear();
 			const { call } = createMockCall('abc');
 			useCallStore.getState().setCall(call);
 
 			await useCallStore.getState().toggleSpeaker();
 
 			expect(useCallStore.getState().isSpeakerOn).toBe(false);
-			expect(errorSpy).toHaveBeenCalled();
-			errorSpy.mockRestore();
+			expect(mockLog).toHaveBeenCalledWith(expect.any(Error));
 		});
 	});
 
@@ -490,5 +495,50 @@ describe('useCallStore audio route sync (Android)', () => {
 	it('reset fires stopAudioRouteSync', () => {
 		useCallStore.getState().reset();
 		expect(mockStopAudioRouteSync).toHaveBeenCalledTimes(1);
+	});
+
+	it('calls log when startAudioRouteSync rejects', async () => {
+		mockLog.mockClear();
+		mockStartAudioRouteSync.mockImplementationOnce(() => Promise.reject(new Error('E_START_ROUTE')));
+		const { call } = createMockCall('ar-err-start');
+		useCallStore.getState().setCall(call);
+		// flush the rejected promise
+		await Promise.resolve();
+		await Promise.resolve();
+		expect(mockLog).toHaveBeenCalledWith(expect.any(Error));
+	});
+
+	it('calls log when stopAudioRouteSync rejects', async () => {
+		mockLog.mockClear();
+		mockStopAudioRouteSync.mockImplementationOnce(() => Promise.reject(new Error('E_STOP_ROUTE')));
+		useCallStore.getState().reset();
+		await Promise.resolve();
+		await Promise.resolve();
+		expect(mockLog).toHaveBeenCalledWith(expect.any(Error));
+	});
+});
+
+describe('useCallStore log helper — InCallManager error paths', () => {
+	beforeEach(() => {
+		mockLog.mockClear();
+		useCallStore.getState().resetNativeCallId();
+		useCallStore.getState().reset();
+	});
+
+	it('calls log when InCallManager.start throws', () => {
+		(InCallManager.start as jest.Mock).mockImplementationOnce(() => {
+			throw new Error('E_INCALL_START');
+		});
+		const { call } = createMockCall('incall-start-err');
+		useCallStore.getState().setCall(call);
+		expect(mockLog).toHaveBeenCalledWith(expect.any(Error));
+	});
+
+	it('calls log when InCallManager.stop throws', () => {
+		(InCallManager.stop as jest.Mock).mockImplementationOnce(() => {
+			throw new Error('E_INCALL_STOP');
+		});
+		useCallStore.getState().reset();
+		expect(mockLog).toHaveBeenCalledWith(expect.any(Error));
 	});
 });

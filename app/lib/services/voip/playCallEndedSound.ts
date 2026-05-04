@@ -1,5 +1,7 @@
 import { Audio } from 'expo-av';
 
+import log from '../../methods/helpers/log';
+
 // Module-scoped state so it survives React tree unmounts and is safe to call
 // fire-and-forget from any termination path.
 let isPlaying = false;
@@ -58,7 +60,7 @@ export async function playCallEndedSound(): Promise<void> {
 	} catch (error) {
 		// Never throw — this is fire-and-forget
 		releaseLock();
-		console.error('[VoIP] playCallEndedSound failed:', error);
+		log(error);
 	}
 }
 
