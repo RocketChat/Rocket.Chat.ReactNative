@@ -17,12 +17,6 @@ import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 
 class DDPClient {
-    private data class QueuedMethodCall(
-        val method: String,
-        val params: JSONArray,
-        val callback: (Boolean) -> Unit
-    )
-
     companion object {
         private const val TAG = "RocketChat.DDPClient"
         private val sharedClient: OkHttpClient by lazy {
@@ -42,7 +36,6 @@ class DDPClient {
     private val mainHandler = Handler(Looper.getMainLooper())
 
     private val pendingCallbacks = mutableMapOf<String, (JSONObject) -> Unit>()
-    private val queuedMethodCalls = mutableListOf<QueuedMethodCall>()
 
     @Volatile
     private var connectedCallback: ((Boolean) -> Unit)? = null
@@ -176,7 +169,6 @@ class DDPClient {
         isConnected = false
         cancelConnectTimeout()
         synchronized(pendingCallbacks) { pendingCallbacks.clear() }
-        clearQueuedMethodCalls()
         connectedCallback = null
         onCollectionMessage = null
         webSocket?.close(1000, null)
@@ -218,37 +210,6 @@ class DDPClient {
         if (!send(msg)) {
             synchronized(pendingCallbacks) { pendingCallbacks.remove(msgId) }
             mainHandler.post { callback(false) }
-        }
-    }
-
-    fun queueMethodCall(method: String, params: JSONArray, callback: (Boolean) -> Unit = {}) {
-        synchronized(queuedMethodCalls) {
-            queuedMethodCalls.add(
-                QueuedMethodCall(
-                    method = method,
-                    params = params,
-                    callback = callback
-                )
-            )
-        }
-    }
-
-    fun hasQueuedMethodCalls(): Boolean =
-        synchronized(queuedMethodCalls) { queuedMethodCalls.isNotEmpty() }
-
-    fun flushQueuedMethodCalls() {
-        val queuedCalls = synchronized(queuedMethodCalls) {
-            queuedMethodCalls.toList().also { queuedMethodCalls.clear() }
-        }
-
-        queuedCalls.forEach { queuedCall ->
-            callMethod(queuedCall.method, queuedCall.params, queuedCall.callback)
-        }
-    }
-
-    fun clearQueuedMethodCalls() {
-        synchronized(queuedMethodCalls) {
-            queuedMethodCalls.clear()
         }
     }
 

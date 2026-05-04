@@ -58,7 +58,7 @@ export function clearVoipAcceptDedupeSentinels(): void {
 	lastHandledVoipAcceptSucceededCallId = null;
 }
 
-/** Exported for tests only. Clears accept-dedupe sentinels between test cases. Production code calls clearVoipAcceptDedupeSentinels() directly. */
+/** @internal — exported for tests; production code calls clearVoipAcceptDedupeSentinels directly */
 export function resetMediaCallEventsStateForTesting(): void {
 	clearVoipAcceptDedupeSentinels();
 }

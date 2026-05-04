@@ -81,12 +81,12 @@ describe('useNewMediaCall', () => {
 		mockStartCall.mockResolvedValue(undefined);
 	});
 
-	const expectNewMediaCallActionSheet = (expectedFullContainer = false) => {
+	const expectNewMediaCallActionSheet = (expectedHugContent = false) => {
 		expect(mockShowActionSheetRef).toHaveBeenCalledTimes(1);
 		const [actionSheetArgs] = mockShowActionSheetRef.mock.calls[0];
 		expect(React.isValidElement(actionSheetArgs.children)).toBe(true);
 		expect(actionSheetArgs.children.type).toBe(NewMediaCall);
-		expect(actionSheetArgs.fullContainer).toBe(expectedFullContainer);
+		expect(actionSheetArgs.hugContent).toBe(expectedHugContent);
 	};
 
 	it('should set selected peer and open action sheet when room has a direct message peer', () => {
@@ -272,12 +272,12 @@ describe('useNewMediaCall', () => {
 		});
 	});
 
-	it('should pass fullContainer to the action sheet when isAndroid is true', () => {
+	it('should pass hugContent: true to the action sheet when isAndroid is true', () => {
 		jest.resetModules();
 		jest.doMock('../../methods/helpers/deviceInfo', () => ({
 			isAndroid: true
 		}));
-		// Must load hook after doMock so `fullContainer: isAndroid` uses Android.
+		// Must load hook after doMock so `hugContent: isAndroid` uses Android.
 		// eslint-disable-next-line @typescript-eslint/no-var-requires
 		const { useNewMediaCall: useNewMediaCallAndroid } = require('./useNewMediaCall');
 
@@ -290,10 +290,26 @@ describe('useNewMediaCall', () => {
 			result.current.openNewMediaCall();
 		});
 
-		// Re-required hook uses a fresh NewMediaCall mock ref; only assert fullContainer and element shape.
+		// Re-required hook uses a fresh NewMediaCall mock ref; only assert hugContent and element shape.
 		expect(mockShowActionSheetRef).toHaveBeenCalledTimes(1);
 		const [actionSheetArgs] = mockShowActionSheetRef.mock.calls[0];
 		expect(React.isValidElement(actionSheetArgs.children)).toBe(true);
-		expect(actionSheetArgs.fullContainer).toBe(true);
+		expect(actionSheetArgs.hugContent).toBe(true);
+	});
+
+	it('should pass hugContent: false to the action sheet when isAndroid is false (iOS)', () => {
+		// isAndroid is already false per the top-level mock
+		mockUseSubscription.mockReturnValue(undefined);
+		mockUseMediaCallPermission.mockReturnValue(false);
+
+		const { result } = renderHook(() => useNewMediaCall('room-id'));
+
+		act(() => {
+			result.current.openNewMediaCall();
+		});
+
+		expect(mockShowActionSheetRef).toHaveBeenCalledTimes(1);
+		const [actionSheetArgs] = mockShowActionSheetRef.mock.calls[0];
+		expect(actionSheetArgs.hugContent).toBe(false);
 	});
 });

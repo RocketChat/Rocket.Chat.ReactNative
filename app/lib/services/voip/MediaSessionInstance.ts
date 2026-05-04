@@ -30,6 +30,7 @@ import type { IDDPMessage } from '../../../definitions/IDDPMessage';
 import type { ISubscription, TSubscriptionModel } from '../../../definitions';
 import { getDMSubscriptionByUsername } from '../../database/services/Subscription';
 import { getUidDirectMessage } from '../../methods/helpers/helpers';
+import log from '../../methods/helpers/log';
 import { isInActiveVoipCall } from './isInActiveVoipCall';
 import { requestVoipCallPermissions } from '../../methods/voipCallPermissions';
 import I18n from '../../../i18n';
@@ -58,7 +59,7 @@ class MediaSessionInstance {
 			voipDebugLog('tryAnswer', 'matched -> answerCall', { callId: signal.callId });
 			this.answerCall(signal.callId).catch(error => {
 				voipDebugLog('tryAnswer', 'answerCall rejected', String(error));
-				console.error('[VoIP] Error answering call on notification/accepted:', error);
+				log(error);
 			});
 		}
 	}
@@ -82,7 +83,7 @@ class MediaSessionInstance {
 			}
 		} catch (error) {
 			voipDebugLog('applyRestStateSignals', 'error', String(error));
-			console.error('[VoIP] Failed to fetch or apply REST state signals:', error);
+			log(error);
 		}
 	}
 
@@ -101,10 +102,6 @@ class MediaSessionInstance {
 					iceGatheringTimeout: this.iceGatheringTimeout
 				})
 		);
-		// DDP signal transport — offer/answer/ICE stay on DDP. Gate methodCall on `loggedIn`
-		// (not just socket open). ddp.send awaits 'open' but server-side stream-notify-user requires
-		// `this.userId` — sending before relogin = silent drop. Pre-emptive force-reconnect in
-		// MediaCallEvents covers warm-locked accept; this gate handles the residual reconnect window.
 		mediaSessionStore.setSendSignalFn((signal: ClientMediaSignal) => {
 			voipDebugLog('sendSignal', 'enter', { type: (signal as any)?.type, callId: (signal as any)?.callId });
 			void (async () => {
@@ -148,7 +145,6 @@ class MediaSessionInstance {
 			this.instance = mediaSessionStore.getInstance(userId);
 		});
 
-		// TESTING: DDP real-time signal subscription — stays for offer/answer/ICE/notifications
 		this.mediaSignalListener = sdk.onStreamData('stream-notify-user', (ddpMessage: IDDPMessage) => {
 			if (!this.instance) {
 				voipDebugLog('streamData', 'no instance');
@@ -191,7 +187,7 @@ class MediaSessionInstance {
 					Navigation.navigate('CallView');
 					if (useCallStore.getState().roomId == null) {
 						this.resolveRoomIdFromContact(call.remoteParticipants[0]?.contact).catch(error => {
-							console.error('[VoIP] Error resolving room id from contact (newCall):', error);
+							log(error);
 						});
 					}
 				}
@@ -222,7 +218,7 @@ class MediaSessionInstance {
 				voipDebugLog('answerCall', 'accept() resolved');
 			} catch (error) {
 				voipDebugLog('answerCall', 'accept() rejected', String(error));
-				console.error('[VoIP] accept() rejected:', error);
+				log(error);
 				terminateNativeCall(callId);
 				const st = useCallStore.getState();
 				if (st.nativeAcceptedCallId === callId) {
@@ -238,7 +234,7 @@ class MediaSessionInstance {
 			Navigation.navigate('CallView');
 			voipDebugLog('answerCall', 'post-accept navigate done', { callId });
 			this.resolveRoomIdFromContact(mainCall.remoteParticipants[0]?.contact).catch(error => {
-				console.error('[VoIP] Error resolving room id from contact (answerCall):', error);
+				log(error);
 			});
 		} else {
 			voipDebugLog('answerCall', 'call not found', { callId, hasInstance: !!this.instance });
@@ -247,7 +243,7 @@ class MediaSessionInstance {
 			if (st.nativeAcceptedCallId === callId) {
 				st.resetNativeCallId();
 			}
-			console.warn('[VoIP] Call not found after accept:', callId);
+			log(new Error(`[VoIP] Call not found after accept: ${callId}`));
 		}
 	};
 
@@ -259,7 +255,7 @@ class MediaSessionInstance {
 			this.startCall(otherUserId, 'user').catch(error => {
 				// Clear the optimistic roomId so a concurrent incoming call can resolve its own DM context.
 				useCallStore.getState().setRoomId(null);
-				console.error('[VoIP] Error starting call from room:', error);
+				log(error);
 			});
 		}
 	};
