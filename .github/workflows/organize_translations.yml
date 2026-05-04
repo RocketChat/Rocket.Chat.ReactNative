@@ -9,12 +9,12 @@ jobs:
   organize-and-commit:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
       with:
         fetch-depth: 0
 
     - name: Setup Node.js
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
       with:
         node-version: 18 
 
@@ -39,6 +39,6 @@ jobs:
 
     - name: Commit and push if changes
       if: steps.git-check.outputs.any_changed == 'true'
-      uses: EndBug/add-and-commit@v9
+      uses: EndBug/add-and-commit@a94899bca583c204427a224a7af87c02f9b325d5 # v9.1.4
       with:
         message: 'action: organized translations'

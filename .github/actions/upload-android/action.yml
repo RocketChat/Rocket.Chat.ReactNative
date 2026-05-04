@@ -23,29 +23,24 @@ runs:
   steps:
     - name: Download Experimental AAB
       if: ${{ inputs.type == 'experimental' }}
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
       with:
         name: android-aab-experimental
         path: android/app/build/outputs/bundle/experimentalRelease/
 
     - name: Download Official AAB
       if: ${{ inputs.type == 'official' }}
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
       with:
         name: android-aab-official
         path: android/app/build/outputs/bundle/officialRelease/
 
     - name: Set up Ruby and Bundler
-      uses: ruby/setup-ruby@v1
+      uses: ruby/setup-ruby@7372622e62b60b3cb750dcd2b9e32c247ffec26a # v1.302.0
       with:
         ruby-version: 2.7.7
         bundler-cache: true
-
-    - name: Install Fastlane
-      working-directory: android
-      run: |
-        bundle install --path gems
-      shell: bash
+        working-directory: android
 
     - name: Store the Google service account key
       working-directory: android
@@ -53,7 +48,7 @@ runs:
         echo "${{ inputs.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}" | base64 --decode > service_account.json
       shell: bash
 
-    - uses: actions/download-artifact@v4
+    - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
       if: ${{ inputs.trigger == 'develop' }}
       with:
         name: release-changelog

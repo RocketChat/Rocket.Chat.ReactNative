@@ -292,6 +292,8 @@
 		66C2701D2EBBCB570062725F /* MMKVKeyManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 66C2701A2EBBCB570062725F /* MMKVKeyManager.mm */; };
 		66C270202EBBCB780062725F /* SecureStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 66C2701F2EBBCB780062725F /* SecureStorage.m */; };
 		66C270212EBBCB780062725F /* SecureStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 66C2701F2EBBCB780062725F /* SecureStorage.m */; };
+		6FA7E2382F28A9D300A1D45E /* ExternalInputModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FA7E2372F28A9D300A1D45E /* ExternalInputModule.m */; };
+		6FA7E2392F28A9D300A1D45E /* ExternalInputModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FA7E2372F28A9D300A1D45E /* ExternalInputModule.m */; };
 		79D8C97F8CE2EC1B6882826B /* SecureStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B215A42CFB843397273C7EA /* SecureStorage.m */; };
 		7A006F14229C83B600803143 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A006F13229C83B600803143 /* GoogleService-Info.plist */; };
 		7A0129D42C6E8EC800F84A97 /* ShareRocketChatRN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0129D22C6E8B5900F84A97 /* ShareRocketChatRN.swift */; };
@@ -365,6 +367,10 @@
 		A48B46D92D3FFBD200945489 /* A11yFlowModule.m in Sources */ = {isa = PBXBuildFile; fileRef = A48B46D82D3FFBD200945489 /* A11yFlowModule.m */; };
 		A48B46DA2D3FFBD200945489 /* A11yFlowModule.m in Sources */ = {isa = PBXBuildFile; fileRef = A48B46D82D3FFBD200945489 /* A11yFlowModule.m */; };
 		ACCF5C382F186B5D43B2C952 /* Pods_defaults_Rocket_Chat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85094D3182EA9331CC444733 /* Pods_defaults_Rocket_Chat.framework */; };
+		B1E1F0012F03A00000EXT001 /* ExternalInputModule.m in Sources */ = {isa = PBXBuildFile; fileRef = B1E1F0042F03A00000EXT004 /* ExternalInputModule.m */; };
+		B1E1F0022F03A00000EXT002 /* ExternalInputModule.m in Sources */ = {isa = PBXBuildFile; fileRef = B1E1F0042F03A00000EXT004 /* ExternalInputModule.m */; };
+		B1E1F0052F03A00000EXT005 /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1E1F0072F03A00000EXT007 /* GameController.framework */; };
+		B1E1F0062F03A00000EXT006 /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1E1F0072F03A00000EXT007 /* GameController.framework */; };
 		BC404914E86821389EEB543D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391C4F7AA7023CD41EEBD106 /* ExpoModulesProvider.swift */; };
 		DD2BA30A89E64F189C2C24AC /* libWatermelonDB.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BA7E862283664608B3894E34 /* libWatermelonDB.a */; };
 /* End PBXBuildFile section */
@@ -625,6 +631,8 @@
 		66C2701E2EBBCB780062725F /* SecureStorage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SecureStorage.h; sourceTree = "<group>"; };
 		66C2701F2EBBCB780062725F /* SecureStorage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SecureStorage.m; sourceTree = "<group>"; };
 		6CE8C7A54627937DB698E839 /* Pods-defaults-NotificationService.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-defaults-NotificationService.debug.xcconfig"; path = "Target Support Files/Pods-defaults-NotificationService/Pods-defaults-NotificationService.debug.xcconfig"; sourceTree = "<group>"; };
+		6FA7E2362F28A9D300A1D45E /* ExternalInputModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExternalInputModule.h; sourceTree = "<group>"; };
+		6FA7E2372F28A9D300A1D45E /* ExternalInputModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExternalInputModule.m; sourceTree = "<group>"; };
 		7A006F13229C83B600803143 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7A0129D22C6E8B5900F84A97 /* ShareRocketChatRN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareRocketChatRN.swift; sourceTree = "<group>"; };
 		7A0D62D1242AB187006D5C06 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -648,6 +656,9 @@
 		A48B46D72D3FFBD200945489 /* A11yFlowModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = A11yFlowModule.h; sourceTree = "<group>"; };
 		A48B46D82D3FFBD200945489 /* A11yFlowModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = A11yFlowModule.m; sourceTree = "<group>"; };
 		B179038FDD7AAF285047814B /* SecureStorage.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = SecureStorage.h; sourceTree = "<group>"; };
+		B1E1F0032F03A00000EXT003 /* ExternalInputModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExternalInputModule.h; sourceTree = "<group>"; };
+		B1E1F0042F03A00000EXT004 /* ExternalInputModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExternalInputModule.m; sourceTree = "<group>"; };
+		B1E1F0072F03A00000EXT007 /* GameController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameController.framework; path = System/Library/Frameworks/GameController.framework; sourceTree = SDKROOT; };
 		B37C79D9BD0742CE936B6982 /* libc++.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		BA7E862283664608B3894E34 /* libWatermelonDB.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libWatermelonDB.a; sourceTree = "<group>"; };
 		CD1F8BBE6FE382D33AB37935 /* Pods-defaults-Rocket.Chat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-defaults-Rocket.Chat.release.xcconfig"; path = "Target Support Files/Pods-defaults-Rocket.Chat/Pods-defaults-Rocket.Chat.release.xcconfig"; sourceTree = "<group>"; };
@@ -669,6 +680,7 @@
 				1E1EA80E2326CD2F00E22452 /* CoreGraphics.framework in Frameworks */,
 				1E1EA80C2326CD2800E22452 /* AudioToolbox.framework in Frameworks */,
 				1E1EA80A2326CD2200E22452 /* AVFoundation.framework in Frameworks */,
+				B1E1F0052F03A00000EXT005 /* GameController.framework in Frameworks */,
 				7ACD4897222860DE00442C55 /* JavaScriptCore.framework in Frameworks */,
 				24A2AEF2383D44B586D31C01 /* libz.tbd in Frameworks */,
 				DD2BA30A89E64F189C2C24AC /* libWatermelonDB.a in Frameworks */,
@@ -712,6 +724,7 @@
 				7AAB3E3A257E6A6E00707CF6 /* CoreGraphics.framework in Frameworks */,
 				7AAB3E3B257E6A6E00707CF6 /* AudioToolbox.framework in Frameworks */,
 				7AAB3E3C257E6A6E00707CF6 /* AVFoundation.framework in Frameworks */,
+				B1E1F0062F03A00000EXT006 /* GameController.framework in Frameworks */,
 				7AAB3E3D257E6A6E00707CF6 /* JavaScriptCore.framework in Frameworks */,
 				7AAB3E3E257E6A6E00707CF6 /* libz.tbd in Frameworks */,
 				7AAB3E3F257E6A6E00707CF6 /* libWatermelonDB.a in Frameworks */,
@@ -727,9 +740,13 @@
 			children = (
 				66C2701E2EBBCB780062725F /* SecureStorage.h */,
 				66C2701F2EBBCB780062725F /* SecureStorage.m */,
+				6FA7E2362F28A9D300A1D45E /* ExternalInputModule.h */,
+				6FA7E2372F28A9D300A1D45E /* ExternalInputModule.m */,
 				7ACFE7D82DDE48760090D9BC /* AppDelegate.swift */,
 				A48B46D72D3FFBD200945489 /* A11yFlowModule.h */,
 				A48B46D82D3FFBD200945489 /* A11yFlowModule.m */,
+				B1E1F0032F03A00000EXT003 /* ExternalInputModule.h */,
+				B1E1F0042F03A00000EXT004 /* ExternalInputModule.m */,
 				7A8B30742BCD9D3F00146A40 /* SSLPinning.h */,
 				7A8B30752BCD9D3F00146A40 /* SSLPinning.mm */,
 				65B9A7192AFC24190088956F /* ringtone.mp3 */,
@@ -1244,6 +1261,7 @@
 				1E1EA80D2326CD2F00E22452 /* CoreGraphics.framework */,
 				1E1EA80B2326CD2800E22452 /* AudioToolbox.framework */,
 				1E1EA8092326CD2200E22452 /* AVFoundation.framework */,
+				B1E1F0072F03A00000EXT007 /* GameController.framework */,
 				7ACD4853222860DE00442C55 /* JavaScriptCore.framework */,
 				B37C79D9BD0742CE936B6982 /* libc++.tbd */,
 				06BB44DD4855498082A744AD /* libz.tbd */,
@@ -1839,7 +1857,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"$TARGET_BUILD_DIR/$INFOPLIST_PATH",
+				$TARGET_BUILD_DIR/$INFOPLIST_PATH,
 			);
 			name = "Upload source maps to Bugsnag";
 			outputFileListPaths = (
@@ -1859,7 +1877,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"$TARGET_BUILD_DIR/$INFOPLIST_PATH",
+				$TARGET_BUILD_DIR/$INFOPLIST_PATH,
 			);
 			name = "Upload source maps to Bugsnag";
 			outputFileListPaths = (
@@ -2082,6 +2100,7 @@
 				7ACFE7DA2DDE48760090D9BC /* AppDelegate.swift in Sources */,
 				1E9A71742B59F36E00477BA2 /* ClientSSL.swift in Sources */,
 				A48B46D92D3FFBD200945489 /* A11yFlowModule.m in Sources */,
+				B1E1F0012F03A00000EXT001 /* ExternalInputModule.m in Sources */,
 				3F56D232A9EBA1C9C749F15F /* MMKVBridge.mm in Sources */,
 				7AACF8AC2C94B28B0082844E /* DecryptedContent.swift in Sources */,
 				1ED038A52B50900800C007D4 /* Bundle+Extensions.swift in Sources */,
@@ -2104,6 +2123,7 @@
 				1E76CBCF25152C310067298C /* NotificationType.swift in Sources */,
 				1E76CBDA25152C8E0067298C /* SendMessage.swift in Sources */,
 				66C270212EBBCB780062725F /* SecureStorage.m in Sources */,
+				6FA7E2382F28A9D300A1D45E /* ExternalInputModule.m in Sources */,
 				4C4C8603EF082F0A33A95522 /* ExpoModulesProvider.swift in Sources */,
 				A2C6E2DD38F8BEE19BFB2E1D /* SecureStorage.m in Sources */,
 			);
@@ -2357,6 +2377,7 @@
 				7ACFE7D92DDE48760090D9BC /* AppDelegate.swift in Sources */,
 				1E9A71752B59F36E00477BA2 /* ClientSSL.swift in Sources */,
 				A48B46DA2D3FFBD200945489 /* A11yFlowModule.m in Sources */,
+				B1E1F0022F03A00000EXT002 /* ExternalInputModule.m in Sources */,
 				3F56D232A9EBA1C9C749F160 /* MMKVBridge.mm in Sources */,
 				7AACF8AE2C94B28B0082844E /* DecryptedContent.swift in Sources */,
 				1ED038A72B50900800C007D4 /* Bundle+Extensions.swift in Sources */,
@@ -2379,6 +2400,7 @@
 				7AAB3E30257E6A6E00707CF6 /* NotificationType.swift in Sources */,
 				7AAB3E31257E6A6E00707CF6 /* SendMessage.swift in Sources */,
 				66C270202EBBCB780062725F /* SecureStorage.m in Sources */,
+				6FA7E2392F28A9D300A1D45E /* ExternalInputModule.m in Sources */,
 				BC404914E86821389EEB543D /* ExpoModulesProvider.swift in Sources */,
 				79D8C97F8CE2EC1B6882826B /* SecureStorage.m in Sources */,
 			);
@@ -2614,7 +2636,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/rn-extensions-share/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
-					"$PODS_CONFIGURATION_BUILD_DIR/Firebase",
+					$PODS_CONFIGURATION_BUILD_DIR/Firebase,
 				);
 				INFOPLIST_FILE = ShareRocketChatRN/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
@@ -2690,7 +2712,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/rn-extensions-share/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
-					"$PODS_CONFIGURATION_BUILD_DIR/Firebase",
+					$PODS_CONFIGURATION_BUILD_DIR/Firebase,
 				);
 				INFOPLIST_FILE = ShareRocketChatRN/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
