@@ -2,18 +2,18 @@ import type { IClientMediaCall } from '@rocket.chat/media-signaling';
 import RNCallKeep from 'react-native-callkeep';
 import { waitFor } from '@testing-library/react-native';
 
-const mockLog = jest.fn();
-jest.mock('../../methods/helpers/log', () => ({
-	__esModule: true,
-	default: (...args: unknown[]) => mockLog(...args)
-}));
-
 import type { IDDPMessage } from '../../../definitions/IDDPMessage';
 import Navigation from '../../navigation/appNavigation';
 import { getDMSubscriptionByUsername } from '../../database/services/Subscription';
 import { getUidDirectMessage } from '../../methods/helpers/helpers';
 import { mediaSessionStore } from './MediaSessionStore';
 import { mediaSessionInstance } from './MediaSessionInstance';
+
+const mockLog = jest.fn();
+jest.mock('../../methods/helpers/log', () => ({
+	__esModule: true,
+	default: (...args: unknown[]) => mockLog(...args)
+}));
 
 const mockTerminateNativeCall = jest.fn();
 jest.mock('./terminateNativeCall', () => ({
