@@ -118,6 +118,25 @@ jest.mock('react-native-callkeep', () => ({
 	}
 }));
 
+jest.mock('../sdk', () => ({
+	__esModule: true,
+	default: { current: null }
+}));
+
+jest.mock('../../store/auxStore', () => ({
+	store: { dispatch: jest.fn() }
+}));
+
+jest.mock('../../../actions/connect', () => ({
+	disconnect: jest.fn(() => ({ type: 'METEOR.DISCONNECT' }))
+}));
+
+jest.mock('./voipReconnectTiming', () => ({
+	markVoipReconnectStart: jest.fn(),
+	logVoipLoginElapsed: jest.fn(),
+	logVoipFirstSignalElapsed: jest.fn()
+}));
+
 const mockOnOpenDeepLink = jest.fn();
 const mockServerSelector = jest.fn(() => 'https://workspace-ios.example.com');
 

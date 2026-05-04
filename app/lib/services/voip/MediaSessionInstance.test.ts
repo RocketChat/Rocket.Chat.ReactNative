@@ -282,6 +282,7 @@ describe('MediaSessionInstance', () => {
 			expect(spy).toHaveBeenCalled();
 			const sendFn = spy.mock.calls[spy.mock.calls.length - 1][0] as (signal: { type: string }) => void;
 			sendFn({ type: 'register' });
+			await new Promise(resolve => setImmediate(resolve));
 			expect(mockMethodCall).toHaveBeenCalledWith(
 				'stream-notify-user',
 				'user-xyz/media-calls',

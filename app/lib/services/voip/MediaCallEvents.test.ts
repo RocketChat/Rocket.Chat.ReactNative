@@ -78,6 +78,25 @@ jest.mock('./MediaCallLogger', () => ({
 	}
 }));
 
+jest.mock('../sdk', () => ({
+	__esModule: true,
+	default: { current: null }
+}));
+
+jest.mock('../../store/auxStore', () => ({
+	store: { dispatch: jest.fn() }
+}));
+
+jest.mock('../../../actions/connect', () => ({
+	disconnect: jest.fn(() => ({ type: 'METEOR.DISCONNECT' }))
+}));
+
+jest.mock('./voipReconnectTiming', () => ({
+	markVoipReconnectStart: jest.fn(),
+	logVoipLoginElapsed: jest.fn(),
+	logVoipFirstSignalElapsed: jest.fn()
+}));
+
 function buildIncomingPayload(overrides: Partial<VoipPayload> = {}): VoipPayload {
 	return {
 		callId: 'call-b-uuid',
