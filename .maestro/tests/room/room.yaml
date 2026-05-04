@@ -144,28 +144,28 @@ tags:
 - eraseText
 
 # should show and tap on room autocomplete
-# - extendedWaitUntil:
-#     visible:
-#       id: message-composer-input
-#     timeout: 60000
-# - inputText: '#translation-test'
-# - extendedWaitUntil:
-#     visible:
-#       id: 'autocomplete-item-translation-test'
-#     timeout: 60000
-# - tapOn:
-#     id: 'autocomplete-item-translation-test'
-# - extendedWaitUntil:
-#     visible:
-#       text: '#translation-test '
-#     timeout: 60000
-# - extendedWaitUntil:
-#     notVisible:
-#       id: 'autocomplete-item-translation-test'
-#     timeout: 60000
-# - tapOn:
-#     id: message-composer-input
-# - eraseText
+- extendedWaitUntil:
+    visible:
+      id: message-composer-input
+    timeout: 60000
+- inputText: '#translation-test'
+- extendedWaitUntil:
+    visible:
+      id: 'autocomplete-item-translation-test'
+    timeout: 60000
+- tapOn:
+    id: 'autocomplete-item-translation-test'
+- extendedWaitUntil:
+    visible:
+      text: '#translation-test '
+    timeout: 60000
+- extendedWaitUntil:
+    notVisible:
+      id: 'autocomplete-item-translation-test'
+    timeout: 60000
+- tapOn:
+    id: message-composer-input
+- eraseText
 
 # should react to message
 - extendedWaitUntil:
