@@ -3,6 +3,7 @@ package chat.rocket.reactnative.voip
 import android.app.Notification
 import android.app.NotificationChannel
 import chat.rocket.reactnative.BuildConfig
+import chat.rocket.reactnative.R
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
@@ -129,8 +130,8 @@ class VoipCallService : Service() {
         )
 
         return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("VoIP Call")
-            .setContentText("Call in progress")
+            .setContentTitle(getString(R.string.voip_call_service_title))
+            .setContentText(getString(R.string.voip_call_service_text))
             .setSmallIcon(getApplicationInfo().icon)
             .setContentIntent(pendingIntent)
             .setOngoing(true)
@@ -148,7 +149,7 @@ class VoipCallService : Service() {
                 CHANNEL_NAME,
                 NotificationManager.IMPORTANCE_LOW
             ).apply {
-                description = "VoIP call in progress"
+                description = getString(R.string.voip_call_service_channel_description)
                 setShowBadge(false)
             }
             val notificationManager = getSystemService(NotificationManager::class.java)
