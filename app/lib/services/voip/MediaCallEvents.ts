@@ -1,5 +1,5 @@
 import RNCallKeep from 'react-native-callkeep';
-import { DeviceEventEmitter, NativeEventEmitter } from 'react-native';
+import { AppState, DeviceEventEmitter, NativeEventEmitter } from 'react-native';
 
 import { isIOS, normalizeDeepLinkingServerHost } from '../../methods/helpers';
 import { useCallStore } from './useCallStore';
@@ -8,6 +8,11 @@ import type { VoipPayload } from '../../../definitions/Voip';
 import NativeVoipModule from '../../native/NativeVoip';
 import { registerPushToken } from '../restApi';
 import { MediaCallLogger } from './MediaCallLogger';
+import { voipDebugLog } from './voipDebugLogger';
+import { logVoipLoginElapsed, markVoipReconnectStart } from './voipReconnectTiming';
+import sdk from '../sdk';
+import { store } from '../../store/auxStore';
+import { disconnect as disconnectAction } from '../../../actions/connect';
 
 const Emitter = isIOS ? new NativeEventEmitter(NativeVoipModule) : DeviceEventEmitter;
 const platform = isIOS ? 'iOS' : 'Android';
@@ -80,7 +85,9 @@ function dispatchVoipAcceptFailureFromNative(
 
 function handleVoipAcceptSucceededFromNative(data: VoipPayload, adapters: MediaCallEventsAdapters) {
 	const { callId } = data;
+	voipDebugLog('VoipAcceptSucceeded', 'enter', { callId, type: data.type, host: data.host });
 	if (callId && lastHandledVoipAcceptSucceededCallId === callId) {
+		voipDebugLog('VoipAcceptSucceeded', 'dedup hit');
 		return;
 	}
 	if (data.type !== 'incoming_call') {
@@ -94,11 +101,47 @@ function handleVoipAcceptSucceededFromNative(data: VoipPayload, adapters: MediaC
 	NativeVoipModule.clearInitialEvents();
 	useCallStore.getState().setNativeAcceptedCallId(data.callId);
 	if (data.host && isVoipIncomingHostCurrentWorkspace(data.host, adapters.getActiveServerUrl)) {
+		// Foreground accept (AppState 'active'): JS runtime never suspended, socket fresh.
+		// Background/locked accept: iOS suspended TCP → socket may be zombie. Force reconnect
+		// before WebRTC needs to send answer SDP. Otherwise peer times out at ~10s.
+		const appState = AppState.currentState;
+		const forceReconnect = appState !== 'active';
+		voipDebugLog('VoipAcceptSucceeded', 'reconnect decision', { appState, forceReconnect });
+		markVoipReconnectStart(forceReconnect);
+
+		if (forceReconnect) {
+			// connectedListener (connect.ts:113) early-returns if redux meteor.connected is still true.
+			// Force redux flip so loginRequest fires on the new 'connected' event.
+			store.dispatch(disconnectAction());
+			(async () => {
+				try {
+					const driver = await (sdk.current as any)?.socket;
+					const ddpSocket = driver?.ddp;
+					try {
+						ddpSocket?.connection?.close();
+						voipDebugLog('VoipAcceptSucceeded', 'forced ws close');
+					} catch (e) {
+						voipDebugLog('VoipAcceptSucceeded', 'forced ws close threw', String(e));
+					}
+					sdk.current?.checkAndReopen?.();
+					voipDebugLog('VoipAcceptSucceeded', 'checkAndReopen kicked');
+					ddpSocket?.once?.('login', () => {
+						logVoipLoginElapsed();
+					});
+				} catch (e) {
+					voipDebugLog('VoipAcceptSucceeded', 'force reconnect threw', String(e));
+				}
+			})();
+		}
+
+		voipDebugLog('VoipAcceptSucceeded', 'same workspace -> applyRestStateSignals');
 		mediaSessionInstance.applyRestStateSignals().catch(error => {
+			voipDebugLog('VoipAcceptSucceeded', 'applyRestStateSignals failed', String(error));
 			mediaCallLogger.error(`${TAG} applyRestStateSignals failed:`, error);
 		});
 		return;
 	}
+	voipDebugLog('VoipAcceptSucceeded', 'different workspace -> deeplink');
 	adapters.onOpenDeepLink({
 		callId: data.callId,
 		host: data.host
@@ -116,10 +159,14 @@ export const setupMediaCallEvents = (adapters: MediaCallEventsAdapters): (() => 
 	if (isIOS) {
 		subscriptions.push(
 			Emitter.addListener('VoipPushTokenRegistered', ({ token }: { token: string }) => {
+				voipDebugLog('VoipPushTokenRegistered', 'received', { token });
 				mediaCallLogger.debug(`${TAG} Registered VoIP push token:`, token);
-				registerPushToken().catch(error => {
-					mediaCallLogger.warn(`${TAG} Failed to register push token after VoIP update:`, error);
-				});
+				registerPushToken()
+					.then(() => voipDebugLog('VoipPushTokenRegistered', 'registerPushToken resolved'))
+					.catch(error => {
+						voipDebugLog('VoipPushTokenRegistered', 'registerPushToken rejected', String(error));
+						mediaCallLogger.warn(`${TAG} Failed to register push token after VoIP update:`, error);
+					});
 			})
 		);
 
@@ -224,8 +271,10 @@ export const setupMediaCallEvents = (adapters: MediaCallEventsAdapters): (() => 
  * @returns true if startup should skip the default `appInit()` path (answered call, or accept failure handed to deep linking)
  */
 export const getInitialMediaCallEvents = async (adapters: MediaCallEventsAdapters): Promise<boolean> => {
+	voipDebugLog('getInitialMediaCallEvents', 'enter');
 	try {
 		const initialEvents = NativeVoipModule.getInitialEvents() as (VoipPayload & { voipAcceptFailed?: boolean }) | null;
+		voipDebugLog('getInitialMediaCallEvents', 'initial', initialEvents ?? null);
 		if (!initialEvents) {
 			mediaCallLogger.log(`${TAG} No initial events from native module`);
 			RNCallKeep.clearInitialEvents();

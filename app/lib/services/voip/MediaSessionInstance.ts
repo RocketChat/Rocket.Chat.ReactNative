@@ -18,6 +18,8 @@ import { terminateNativeCall } from './terminateNativeCall';
 import { useCallStore } from './useCallStore';
 import { MediaCallLogger } from './MediaCallLogger';
 import { isSelfUserId } from './isSelfUserId';
+import { logVoipFirstSignalElapsed } from './voipReconnectTiming';
+import { voipDebugLog } from './voipDebugLogger';
 import { store } from '../../store/auxStore';
 import sdk from '../sdk';
 import { mediaCallsStateSignals } from '../restApi';
@@ -53,7 +55,9 @@ class MediaSessionInstance {
 			nativeAcceptedCallId === signal.callId &&
 			call == null
 		) {
+			voipDebugLog('tryAnswer', 'matched -> answerCall', { callId: signal.callId });
 			this.answerCall(signal.callId).catch(error => {
+				voipDebugLog('tryAnswer', 'answerCall rejected', String(error));
 				console.error('[VoIP] Error answering call on notification/accepted:', error);
 			});
 		}
@@ -62,20 +66,28 @@ class MediaSessionInstance {
 	/** Replays `media-calls.stateSignals`. Used on init and when native accept raced ahead of `nativeAcceptedCallId`. Caller must ensure SDK/session host matches the call (see MediaCallEvents host gate). `tryAnswerIfNativeAcceptedNotification` may also fire from the stream-notify-user path; `answerCall` is idempotent. */
 	public async applyRestStateSignals(): Promise<void> {
 		if (!this.instance) {
+			voipDebugLog('applyRestStateSignals', 'no instance');
 			return;
 		}
 		try {
+			voipDebugLog('applyRestStateSignals', 'fetch start');
 			const { signals } = await mediaCallsStateSignals(getUniqueIdSync());
+			voipDebugLog('applyRestStateSignals', 'fetched', {
+				count: signals.length,
+				types: signals.map((s: any) => `${s.type}${s.notification ? `/${s.notification}` : ''}`)
+			});
 			for (const signal of signals) {
 				this.instance.processSignal(signal);
 				this.tryAnswerIfNativeAcceptedNotification(signal);
 			}
 		} catch (error) {
+			voipDebugLog('applyRestStateSignals', 'error', String(error));
 			console.error('[VoIP] Failed to fetch or apply REST state signals:', error);
 		}
 	}
 
 	public async init(userId: string): Promise<void> {
+		voipDebugLog('init', 'enter', { userId });
 		this.reset();
 
 		registerGlobals();
@@ -89,14 +101,40 @@ class MediaSessionInstance {
 					iceGatheringTimeout: this.iceGatheringTimeout
 				})
 		);
-		// TESTING: DDP signal transport — offer/answer/ICE stay on DDP
+		// DDP signal transport — offer/answer/ICE stay on DDP. Gate methodCall on `loggedIn`
+		// (not just socket open). ddp.send awaits 'open' but server-side stream-notify-user requires
+		// `this.userId` — sending before relogin = silent drop. Pre-emptive force-reconnect in
+		// MediaCallEvents covers warm-locked accept; this gate handles the residual reconnect window.
 		mediaSessionStore.setSendSignalFn((signal: ClientMediaSignal) => {
-			// Heal a stale socket on warm lock-screen accepts: when the device stays locked the
-			// foreground saga never fires, so nothing else nudges the SDK to reopen. checkAndReopen
-			// is a no-op when alive; otherwise it triggers reconnect → relogin → resubscribe so
-			// answer SDP and ICE candidates can flow over a fresh DDP session.
-			sdk.current?.checkAndReopen?.();
-			sdk.methodCall('stream-notify-user', `${userId}/media-calls`, JSON.stringify(signal));
+			voipDebugLog('sendSignal', 'enter', { type: (signal as any)?.type, callId: (signal as any)?.callId });
+			void (async () => {
+				try {
+					try {
+						sdk.current?.checkAndReopen?.();
+					} catch (e) {
+						voipDebugLog('sendSignal', 'checkAndReopen threw', String(e));
+					}
+					const driver = await (sdk.current as any)?.socket;
+					const ddpSocket = driver?.ddp;
+					if (ddpSocket && !ddpSocket.loggedIn) {
+						voipDebugLog('sendSignal', 'awaiting login', { type: (signal as any)?.type });
+						await Promise.race([
+							new Promise<void>(resolve => ddpSocket.once('login', () => resolve())),
+							new Promise<void>(resolve => setTimeout(resolve, 8000))
+						]);
+						if (!ddpSocket.loggedIn) {
+							voipDebugLog('sendSignal', 'login wait timed out, dropping', { type: (signal as any)?.type });
+							return;
+						}
+						voipDebugLog('sendSignal', 'login ready, proceeding');
+					}
+					await sdk.methodCall('stream-notify-user', `${userId}/media-calls`, JSON.stringify(signal));
+					voipDebugLog('sendSignal', 'methodCall resolved', { type: (signal as any)?.type });
+					logVoipFirstSignalElapsed();
+				} catch (e: unknown) {
+					voipDebugLog('sendSignal', 'methodCall rejected', String(e));
+				}
+			})();
 		});
 		this.instance = mediaSessionStore.getInstance(userId);
 
@@ -113,6 +151,7 @@ class MediaSessionInstance {
 		// TESTING: DDP real-time signal subscription — stays for offer/answer/ICE/notifications
 		this.mediaSignalListener = sdk.onStreamData('stream-notify-user', (ddpMessage: IDDPMessage) => {
 			if (!this.instance) {
+				voipDebugLog('streamData', 'no instance');
 				return;
 			}
 			const [, ev] = ddpMessage.fields.eventName.split('/');
@@ -120,15 +159,30 @@ class MediaSessionInstance {
 				return;
 			}
 			const signal = ddpMessage.fields.args[0];
+			voipDebugLog('streamData', 'media-signal', {
+				type: (signal as any)?.type,
+				notification: (signal as any)?.notification,
+				callId: (signal as any)?.callId
+			});
 			this.instance.processSignal(signal);
 
 			this.tryAnswerIfNativeAcceptedNotification(signal as ServerMediaSignal);
 		});
 
 		this.instance?.on('newCall', ({ call }: { call: IClientMediaCall }) => {
+			voipDebugLog('newCall', 'enter', {
+				callId: call?.callId,
+				hidden: call?.hidden,
+				role: call?.localParticipant?.role,
+				state: (call as any)?.state
+			});
 			if (call && !call.hidden) {
 				call.emitter.on('stateChange', _oldState => {
-					// Intentionally empty — state transitions handled by the call layer
+					voipDebugLog('callState', 'change', {
+						callId: call.callId,
+						from: String(_oldState),
+						to: String((call as any)?.state)
+					});
 				});
 
 				if (call.localParticipant.role === 'caller') {
@@ -143,6 +197,7 @@ class MediaSessionInstance {
 				}
 
 				call.emitter.on('ended', () => {
+					voipDebugLog('callState', 'ended', { callId: call.callId });
 					terminateNativeCall(call.callId);
 				});
 			}
@@ -150,17 +205,23 @@ class MediaSessionInstance {
 	}
 
 	public answerCall = async (callId: string) => {
+		voipDebugLog('answerCall', 'enter', { callId });
 		const { call: existingCall } = useCallStore.getState();
 		if (existingCall != null && existingCall.callId === callId) {
+			voipDebugLog('answerCall', 'already same call');
 			return;
 		}
 
 		const mainCall = this.instance?.getCallData(callId);
+		voipDebugLog('answerCall', 'lookup', { found: !!mainCall, hasInstance: !!this.instance });
 
 		if (mainCall && mainCall.callId === callId) {
 			try {
+				voipDebugLog('answerCall', 'accept() start');
 				await mainCall.accept();
+				voipDebugLog('answerCall', 'accept() resolved');
 			} catch (error) {
+				voipDebugLog('answerCall', 'accept() rejected', String(error));
 				console.error('[VoIP] accept() rejected:', error);
 				terminateNativeCall(callId);
 				const st = useCallStore.getState();
@@ -175,10 +236,12 @@ class MediaSessionInstance {
 			useCallStore.getState().setDirection('incoming');
 			await waitForNavigationReady();
 			Navigation.navigate('CallView');
+			voipDebugLog('answerCall', 'post-accept navigate done', { callId });
 			this.resolveRoomIdFromContact(mainCall.remoteParticipants[0]?.contact).catch(error => {
 				console.error('[VoIP] Error resolving room id from contact (answerCall):', error);
 			});
 		} else {
+			voipDebugLog('answerCall', 'call not found', { callId, hasInstance: !!this.instance });
 			terminateNativeCall(callId);
 			const st = useCallStore.getState();
 			if (st.nativeAcceptedCallId === callId) {

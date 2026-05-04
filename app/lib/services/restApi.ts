@@ -32,6 +32,7 @@ import { store as reduxStore } from '../store/auxStore';
 import sdk from './sdk';
 import fetch from '../methods/helpers/fetch';
 import log from '../methods/helpers/log';
+import { voipDebugLog } from './voip/voipDebugLogger';
 
 export const createChannel = ({
 	name,
@@ -1086,12 +1087,19 @@ export const registerPushToken = async (): Promise<void> => {
 	const token = getDeviceToken();
 	// Always returns an empty string on Android
 	const voipToken = NativeVoipModule.getLastVoipToken();
+	voipDebugLog('registerPushToken', 'enter', {
+		token,
+		voipToken,
+		hasSdk: !!sdk.current
+	});
 
 	if (!token) {
+		voipDebugLog('registerPushToken', 'no token -> bail');
 		return;
 	}
 
 	if (token === lastToken && voipToken === lastVoipToken) {
+		voipDebugLog('registerPushToken', 'unchanged tokens -> bail');
 		return;
 	}
 
@@ -1100,6 +1108,7 @@ export const registerPushToken = async (): Promise<void> => {
 	// happens; bail without recording lastToken/lastVoipToken so registerPushTokenFork retries
 	// after login (and a later VoipPushTokenRegistered emission can still re-fire this path).
 	if (!sdk.current) {
+		voipDebugLog('registerPushToken', 'no sdk -> bail (will retry post-login)');
 		return;
 	}
 
@@ -1126,10 +1135,25 @@ export const registerPushToken = async (): Promise<void> => {
 
 	try {
 		// RC 0.60.0
+		voipDebugLog('registerPushToken', 'POST push.token', {
+			type: data.type,
+			value: data.value,
+			voipToken: data.voipToken,
+			appName: data.appName,
+			id: (data as any).id
+		});
 		await sdk.post('push.token', data);
+		voipDebugLog('registerPushToken', 'POST push.token success');
 		lastToken = token;
 		lastVoipToken = voipToken;
-	} catch (e) {
+	} catch (e: any) {
+		voipDebugLog('registerPushToken', 'POST push.token failed', {
+			message: e?.message,
+			data: e?.data,
+			status: e?.status,
+			statusText: e?.statusText,
+			raw: JSON.stringify(e, Object.getOwnPropertyNames(e ?? {}))
+		});
 		log(e);
 	}
 };

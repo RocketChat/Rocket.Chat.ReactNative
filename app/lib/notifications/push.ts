@@ -8,6 +8,7 @@ import { store as reduxStore } from '../store/auxStore';
 import { registerPushToken } from '../services/restApi';
 import I18n from '../../i18n';
 import NativePushNotificationModule from '../native/NativePushNotificationAndroid';
+import { voipDebugLog } from '../services/voip/voipDebugLogger';
 
 export let deviceToken = '';
 
@@ -130,8 +131,9 @@ const setupNotificationCategories = async (): Promise<void> => {
  * Request notification permissions and register for push notifications
  */
 const registerForPushNotifications = async (): Promise<string | null> => {
+	voipDebugLog('push', 'registerForPushNotifications enter');
 	if (!Device.isDevice && isIOS) {
-		console.log('Push notifications require a physical device');
+		voipDebugLog('push', 'not a physical device');
 		return null;
 	}
 
@@ -139,22 +141,25 @@ const registerForPushNotifications = async (): Promise<string | null> => {
 		// Check and request permissions
 		const { status: existingStatus } = await Notifications.getPermissionsAsync();
 		let finalStatus = existingStatus;
+		voipDebugLog('push', 'existing perm status', existingStatus);
 
 		if (existingStatus !== 'granted') {
 			const { status } = await Notifications.requestPermissionsAsync();
 			finalStatus = status;
+			voipDebugLog('push', 'requested perm status', status);
 		}
 
 		if (finalStatus !== 'granted') {
-			console.log('Failed to get push notification permissions');
+			voipDebugLog('push', 'permission not granted');
 			return null;
 		}
 
 		// Get the device push token (FCM for Android, APNs for iOS)
 		const tokenData = await Notifications.getDevicePushTokenAsync();
+		voipDebugLog('push', 'getDevicePushTokenAsync resolved', { type: tokenData.type, token: tokenData.data });
 		return tokenData.data;
 	} catch (e) {
-		console.log('Error registering for push notifications:', e);
+		voipDebugLog('push', 'registerForPushNotifications threw', String(e));
 		return null;
 	}
 };
@@ -185,20 +190,23 @@ export const pushNotificationConfigure = (onNotification: (notification: INotifi
 	registerForPushNotifications().then(token => {
 		if (token) {
 			deviceToken = token;
-			console.log('[push.ts] Registered for push notifications:', token);
+			voipDebugLog('push', 'token acquired -> registerPushToken', { token });
 
-			registerPushToken().catch(e => {
-				console.log('[push.ts] Failed to register push token after initial acquisition:', e);
-			});
+			registerPushToken()
+				.then(() => voipDebugLog('push', 'registerPushToken success'))
+				.catch(e => voipDebugLog('push', 'registerPushToken failed', String(e)));
+		} else {
+			voipDebugLog('push', 'no token returned');
 		}
 	});
 
 	// Listen for token updates (FCM can refresh tokens at any time)
 	Notifications.addPushTokenListener(tokenData => {
 		deviceToken = tokenData.data;
-		registerPushToken().catch(e => {
-			console.log('[push.ts] Failed to re-register push token after refresh:', e);
-		});
+		voipDebugLog('push', 'token refresh -> registerPushToken', { token: tokenData.data });
+		registerPushToken()
+			.then(() => voipDebugLog('push', 'registerPushToken (refresh) success'))
+			.catch(e => voipDebugLog('push', 'registerPushToken (refresh) failed', String(e)));
 	});
 
 	// Listen for notification responses (when user taps on notification)
