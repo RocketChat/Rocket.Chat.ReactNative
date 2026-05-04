@@ -34,7 +34,7 @@ const append = (line: string) => {
 
 export const voipDebugLog = (tag: string, msg: string, data?: unknown) => {
 	const line = `${ts()} [${tag}] ${msg}${data !== undefined ? ` ${safeStringify(data)}` : ''}`;
-	(globalThis as any).console['log'](line);
+	console.log(line);
 	append(line);
 };
 

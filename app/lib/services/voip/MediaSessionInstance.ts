@@ -104,7 +104,7 @@ class MediaSessionInstance {
 		);
 		mediaSessionStore.setSendSignalFn((signal: ClientMediaSignal) => {
 			voipDebugLog('sendSignal', 'enter', { type: (signal as any)?.type, callId: (signal as any)?.callId });
-			void (async () => {
+			(async () => {
 				try {
 					try {
 						sdk.current?.checkAndReopen?.();
