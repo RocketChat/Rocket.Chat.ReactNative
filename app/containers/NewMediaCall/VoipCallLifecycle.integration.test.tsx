@@ -352,15 +352,11 @@ const flushMicrotasks = async () => {
 //     is not loaded. Rendering succeeds, warning is cosmetic for tests.
 //   - '[VoIP] Call not found after accept:' — deterministic expected branch output of
 //     answerCall when getCallData returns undefined (exercised by test A2).
-//     Production code warns intentionally; tests should not hide it, but it
-//     is not an unexpected error for the asserting test.
-const CONSOLE_ERROR_ALLOWLIST: string[] = [];
-const CONSOLE_WARN_ALLOWLIST: string[] = [
-	'@expo/vector-icons',
-	'not wrapped in act',
-	'is not a valid icon name',
-	'[VoIP] Call not found after accept:'
-];
+//     Routed through the log() helper, which in __DEV__ falls through to
+//     console.error(Error). Allowlisted on the error side, asserted via the
+//     error spy in the corresponding test.
+const CONSOLE_ERROR_ALLOWLIST: string[] = ['[VoIP] Call not found after accept:'];
+const CONSOLE_WARN_ALLOWLIST: string[] = ['@expo/vector-icons', 'not wrapped in act', 'is not a valid icon name'];
 
 let consoleErrorSpy: jest.SpyInstance | undefined;
 let consoleWarnSpy: jest.SpyInstance | undefined;
@@ -595,7 +591,9 @@ describe('VoIP call lifecycle (integration)', () => {
 			expect(Navigation.navigate).not.toHaveBeenCalled();
 			expect(useCallStore.getState().call).toBeNull();
 			// Tighten: confirm the known-noise allowlist entry was actually triggered.
-			expect(consoleWarnSpy).toHaveBeenCalledWith('[VoIP] Call not found after accept:', 'missing-1');
+			expect(consoleErrorSpy).toHaveBeenCalledWith(
+				expect.objectContaining({ message: '[VoIP] Call not found after accept: missing-1' })
+			);
 		});
 
 		it('A3: idempotency — existing call matches callId, answerCall early-returns', async () => {

@@ -28,7 +28,7 @@ export const useNewMediaCall = (rid?: string) => {
 		}
 		showActionSheetRef({
 			children: <NewMediaCall />,
-			fullContainer: isAndroid
+			hugContent: isAndroid
 		});
 	};
 
