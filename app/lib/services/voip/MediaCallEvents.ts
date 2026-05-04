@@ -6,6 +6,7 @@ import { useCallStore } from './useCallStore';
 import { mediaSessionInstance } from './MediaSessionInstance';
 import type { VoipPayload } from '../../../definitions/Voip';
 import NativeVoipModule from '../../native/NativeVoip';
+import { checkAndReopen } from '../connect';
 import { registerPushToken } from '../restApi';
 import { MediaCallLogger } from './MediaCallLogger';
 
@@ -94,9 +95,15 @@ function handleVoipAcceptSucceededFromNative(data: VoipPayload, adapters: MediaC
 	NativeVoipModule.clearInitialEvents();
 	useCallStore.getState().setNativeAcceptedCallId(data.callId);
 	if (data.host && isVoipIncomingHostCurrentWorkspace(data.host, adapters.getActiveServerUrl)) {
-		mediaSessionInstance.applyRestStateSignals().catch(error => {
-			mediaCallLogger.error(`${TAG} applyRestStateSignals failed:`, error);
-		});
+		Promise.resolve()
+			.then(() => checkAndReopen())
+			.catch(error => {
+				mediaCallLogger.warn(`${TAG} checkAndReopen failed before applyRestStateSignals:`, error);
+			})
+			.then(() => mediaSessionInstance.applyRestStateSignals())
+			.catch(error => {
+				mediaCallLogger.error(`${TAG} applyRestStateSignals failed:`, error);
+			});
 		return;
 	}
 	adapters.onOpenDeepLink({

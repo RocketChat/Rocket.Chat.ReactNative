@@ -1,8 +1,7 @@
 diff --git a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
-index 19d31ae..0000000 100644
 --- a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
 +++ b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
-@@ -175,15 +175,95 @@
+@@ -175,15 +175,107 @@
      return Promise.resolve()
    }
  
@@ -41,13 +40,19 @@ index 19d31ae..0000000 100644
 +    })
 +  }
 +
++  _reopenInFlight: Promise<void> | null = null
++
 +  /**
 +   * Tear down the existing connection and start a fresh one. Used when the
 +   * socket is known or suspected dead. Emits `disconnected` so any in-flight
 +   * send() promises (which register `once('disconnected', reject)`) reject
-+   * visibly instead of hanging forever.
++   * visibly instead of hanging forever. Concurrent invocations join the same
++   * in-flight reconnect promise so the parallel callers don't tear each other
++   * down. Resolves only after the new socket has reached `OPEN` and the DDP
++   * `connect` handshake has been acked.
 +   */
-+  forceReopen = () => {
++  forceReopen = (): Promise<void> => {
++    if (this._reopenInFlight) return this._reopenInFlight
 +    this.lastPing = 0
 +    if (this.openTimeout) {
 +      clearTimeout(this.openTimeout as any)
@@ -71,7 +76,11 @@ index 19d31ae..0000000 100644
 +      }
 +      this.connection = undefined
 +    }
-+    this.open()
++    const p = Promise.resolve(this.open()).then(() => undefined)
++    this._reopenInFlight = p
++    const clear = () => { if (this._reopenInFlight === p) this._reopenInFlight = null }
++    p.then(clear, clear)
++    return p
 +  }
 +
 +  /**
@@ -81,15 +90,17 @@ index 19d31ae..0000000 100644
 +   *   - fresh  (< 2000ms):       no-op (recent traffic confirms liveness)
 +   *   - gray   (in between):     probe; if no pong in 2s, force reopen
 +   */
-+  checkAndReopen = async () => {
++  checkAndReopen = async (): Promise<void> => {
 +    const elapsed = Date.now() - this.lastPing
 +    if (!this.connection || this.connection.readyState !== 1) {
 +      this.logger.info(`[ddp] checkAndReopen bucket=stale elapsed=${elapsed}`)
-+      return this.forceReopen()
-     }
++      await this.forceReopen()
++      return
++    }
 +    if (elapsed > this.config.ping * 2) {
 +      this.logger.info(`[ddp] checkAndReopen bucket=stale elapsed=${elapsed}`)
-+      return this.forceReopen()
++      await this.forceReopen()
++      return
 +    }
 +    if (elapsed < 2000) {
 +      this.logger.info(`[ddp] checkAndReopen bucket=fresh elapsed=${elapsed}`)
@@ -99,13 +110,13 @@ index 19d31ae..0000000 100644
 +    if (alive) {
 +      this.logger.info(`[ddp] checkAndReopen bucket=probe-pass elapsed=${elapsed}`)
 +      return
-+    }
+     }
 +    this.logger.info(`[ddp] checkAndReopen bucket=probe-fail elapsed=${elapsed}`)
-+    return this.forceReopen()
++    await this.forceReopen()
    }
  
    /** Clear connection and try to connect again. */
-@@ -549,7 +629,9 @@
+@@ -549,7 +641,9 @@
        'uiInteraction',
        'e2ekeyRequest',
        'userData',

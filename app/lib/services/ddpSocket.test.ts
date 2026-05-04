@@ -49,6 +49,50 @@ describe('Socket.probe', () => {
 	});
 });
 
+describe('Socket.forceReopen awaitability', () => {
+	it('returned promise resolves only after open() resolves', async () => {
+		const { socket } = buildSocket();
+		let resolveOpen: () => void = () => undefined;
+		const openPromise = new Promise<void>(res => {
+			resolveOpen = res;
+		});
+		socket.open = jest.fn(() => openPromise);
+
+		let settled = false;
+		const result = socket.forceReopen();
+		result.then(() => {
+			settled = true;
+		});
+
+		await Promise.resolve();
+		await Promise.resolve();
+		expect(settled).toBe(false);
+
+		resolveOpen();
+		await result;
+		expect(settled).toBe(true);
+	});
+
+	it('concurrent invocations share the same in-flight reconnect', async () => {
+		const { socket } = buildSocket();
+		let resolveOpen: () => void = () => undefined;
+		const openPromise = new Promise<void>(res => {
+			resolveOpen = res;
+		});
+		const openMock = jest.fn(() => openPromise);
+		socket.open = openMock;
+
+		const a = socket.forceReopen();
+		const b = socket.forceReopen();
+
+		expect(openMock).toHaveBeenCalledTimes(1);
+
+		resolveOpen();
+		await Promise.all([a, b]);
+		expect(openMock).toHaveBeenCalledTimes(1);
+	});
+});
+
 describe('Socket.checkAndReopen bucket dispatch', () => {
 	const PING = 10000;
 
@@ -93,5 +137,35 @@ describe('Socket.checkAndReopen bucket dispatch', () => {
 		await socket.checkAndReopen();
 		expect(probe).toHaveBeenCalledTimes(1);
 		expect(forceReopen).toHaveBeenCalledTimes(1);
+	});
+
+	it('stale and probe-fail buckets resolve only after forceReopen resolves', async () => {
+		const tryBucket = async (setup: (s: any) => void) => {
+			const { socket } = buildSocket();
+			let resolveReopen: () => void = () => undefined;
+			const reopenPromise = new Promise<void>(res => {
+				resolveReopen = res;
+			});
+			socket.forceReopen = jest.fn(() => reopenPromise);
+			socket.probe = jest.fn().mockResolvedValue(false);
+			setup(socket);
+			let settled = false;
+			const p = socket.checkAndReopen().then(() => {
+				settled = true;
+			});
+			await Promise.resolve();
+			await Promise.resolve();
+			expect(settled).toBe(false);
+			resolveReopen();
+			await p;
+			expect(settled).toBe(true);
+		};
+
+		await tryBucket(socket => {
+			socket.lastPing = Date.now() - PING * 2 - 1000;
+		});
+		await tryBucket(socket => {
+			socket.lastPing = Date.now() - 5000;
+		});
 	});
 });
