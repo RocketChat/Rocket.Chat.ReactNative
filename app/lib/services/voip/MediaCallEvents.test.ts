@@ -69,6 +69,10 @@ jest.mock('../restApi', () => ({
 	registerPushToken: jest.fn(() => Promise.resolve())
 }));
 
+jest.mock('../connect', () => ({
+	checkAndReopen: jest.fn()
+}));
+
 jest.mock('./MediaCallLogger', () => ({
 	MediaCallLogger: class {
 		log = jest.fn();
@@ -157,6 +161,67 @@ describe('MediaCallEvents cross-server accept (slice 3)', () => {
 				expect(mockSetNativeAcceptedCallId).toHaveBeenCalledWith('same-ws-call');
 				expect(mediaSessionInstance.applyRestStateSignals).toHaveBeenCalledTimes(1);
 				expect(mockOnOpenDeepLink).not.toHaveBeenCalled();
+			});
+
+			it('triggers SDK reconnect via checkAndReopen when host matches active workspace', () => {
+				const { checkAndReopen } = jest.requireMock('../connect');
+				mockServerSelector.mockReturnValueOnce('https://workspace-a.example.com');
+				const payload = buildIncomingPayload({
+					callId: 'reopen-trigger-call',
+					host: 'https://workspace-a.example.com'
+				});
+
+				DeviceEventEmitter.emit('VoipAcceptSucceeded', payload);
+
+				expect(checkAndReopen).toHaveBeenCalledTimes(1);
+			});
+
+			it('does not trigger SDK reconnect when host belongs to a different workspace', () => {
+				const { checkAndReopen } = jest.requireMock('../connect');
+				const payload = buildIncomingPayload({
+					callId: 'cross-ws-call',
+					host: 'https://workspace-b.open.rocket.chat'
+				});
+
+				DeviceEventEmitter.emit('VoipAcceptSucceeded', payload);
+
+				expect(checkAndReopen).not.toHaveBeenCalled();
+			});
+
+			it('triggers SDK reconnect only once for duplicate VoipAcceptSucceeded with the same callId', () => {
+				const { checkAndReopen } = jest.requireMock('../connect');
+				mockServerSelector.mockReturnValue('https://workspace-a.example.com');
+				const payload = buildIncomingPayload({
+					callId: 'reopen-dedupe',
+					host: 'https://workspace-a.example.com'
+				});
+
+				DeviceEventEmitter.emit('VoipAcceptSucceeded', payload);
+				DeviceEventEmitter.emit('VoipAcceptSucceeded', payload);
+
+				expect(checkAndReopen).toHaveBeenCalledTimes(1);
+			});
+
+			it('triggers SDK reconnect before replaying REST state signals', () => {
+				const { checkAndReopen } = jest.requireMock('../connect');
+				const { mediaSessionInstance } = jest.requireMock('./MediaSessionInstance');
+				const callOrder: string[] = [];
+				(checkAndReopen as jest.Mock).mockImplementationOnce(() => {
+					callOrder.push('checkAndReopen');
+				});
+				(mediaSessionInstance.applyRestStateSignals as jest.Mock).mockImplementationOnce(() => {
+					callOrder.push('applyRestStateSignals');
+					return Promise.resolve();
+				});
+				mockServerSelector.mockReturnValueOnce('https://workspace-a.example.com');
+				const payload = buildIncomingPayload({
+					callId: 'reopen-order',
+					host: 'https://workspace-a.example.com'
+				});
+
+				DeviceEventEmitter.emit('VoipAcceptSucceeded', payload);
+
+				expect(callOrder).toEqual(['checkAndReopen', 'applyRestStateSignals']);
 			});
 
 			it('does not open deep link or set native id when type is not incoming_call', () => {
