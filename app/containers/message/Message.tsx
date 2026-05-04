@@ -159,6 +159,16 @@ const getMessageAccessibilityLabel = (props: IMessageTouchable & IMessage & IMes
 		: `${user} ${hour} ${translated} ${label}. ${encryptedMessageLabel} ${readReceipt}`;
 };
 
+const getMessageAccessibilityActions = (isDisabled: boolean): AccessibilityActionInfo[] | undefined => {
+	if (isDisabled) {
+		return undefined;
+	}
+	if (isIOS) {
+		return [{ name: 'magicTap' }];
+	}
+	return [{ name: 'longpress', label: i18n.t('Open_message_actions') }];
+};
+
 const Message = React.memo((props: IMessageTouchable & IMessage & IMessageA11y) => {
 	const accessibilityLabelValue = getMessageAccessibilityLabel(props);
 
@@ -262,47 +272,26 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 		onLongPress();
 	};
 
-	if (isIOS) {
-		return (
-			<A11y.Order>
-				<A11y.Index index={1}>
-					<Touch
-						componentRef={touchRef}
-						onLongPress={handleLongPress}
-						onPress={onPress}
-						disabled={isDisabled}
-						style={{ backgroundColor }}
-						accessible
-						accessibilityLabel={accessibilityLabelValue}
-						accessibilityActions={!isDisabled ? [{ name: 'magicTap' }] : undefined}
-						onAccessibilityAction={e => {
-							if (e.nativeEvent.actionName === 'magicTap') handleLongPress();
-						}}>
-						<Message {...props} handleLongPress={!isDisabled ? handleLongPress : undefined} />
-					</Touch>
-				</A11y.Index>
-			</A11y.Order>
-		);
-	}
+	const accessibilityActions = getMessageAccessibilityActions(isDisabled);
 
 	return (
 		<A11y.Order>
-			<A11y.Index
-				index={1}
-				accessible
-				accessibilityRole='button'
-				accessibilityLabel={accessibilityLabelValue}
-				accessibilityActions={!isDisabled ? [{ name: 'longpress', label: i18n.t('Open_message_actions') }] : undefined}
-				onAccessibilityAction={e => {
-					if (e.nativeEvent.actionName === 'longpress') handleLongPress();
-				}}>
+			<A11y.Index index={1}>
 				<Touch
 					componentRef={touchRef}
 					onLongPress={handleLongPress}
 					onPress={onPress}
 					disabled={isDisabled}
-					style={{ backgroundColor }}>
-					<Message {...props} />
+					style={{ backgroundColor }}
+					accessible
+					accessibilityRole='button'
+					accessibilityLabel={accessibilityLabelValue}
+					accessibilityActions={accessibilityActions}
+					onAccessibilityAction={e => {
+						const action = e.nativeEvent.actionName;
+						if (action === 'magicTap' || action === 'longpress') handleLongPress();
+					}}>
+					<Message {...props} handleLongPress={!isDisabled ? handleLongPress : undefined} />
 				</Touch>
 			</A11y.Index>
 		</A11y.Order>
