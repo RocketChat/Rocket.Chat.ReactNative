@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-native-config-reader/RNConfigReader.podspec b/node_modules/react-native-config-reader/RNConfigReader.podspec
+index 0000000..1111111 100644
+--- a/node_modules/react-native-config-reader/RNConfigReader.podspec
++++ b/node_modules/react-native-config-reader/RNConfigReader.podspec
+@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
+   s.author       = { "author" => "author@domain.cn" }
+   s.platform     = :ios, "7.0"
+   s.source       = { :git => "https://github.com/author/RNConfigReader.git", :tag => "master" }
+-  s.source_files = 'ios/**/*'
++  s.source_files = 'ios/*.{h,m}'
+   s.requires_arc = true
+
+   s.dependency "React"

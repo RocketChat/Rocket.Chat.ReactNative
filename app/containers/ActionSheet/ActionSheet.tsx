@@ -145,6 +145,7 @@ const ActionSheet = React.memo(
 							hasCancel={data?.hasCancel}
 							onLayout={handleContentLayout}
 							fullContainer={data.fullContainer}
+							hugContent={data.hugContent}
 							contentMinHeight={isIOS ? contentMinHeight : undefined}
 							scrollEnabled={scrollEnabled}>
 							{data?.children}

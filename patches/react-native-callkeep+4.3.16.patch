@@ -1,0 +1,104 @@
+diff --git a/node_modules/react-native-callkeep/android/src/main/java/io/wazo/callkeep/RNCallKeepModule.java b/node_modules/react-native-callkeep/android/src/main/java/io/wazo/callkeep/RNCallKeepModule.java
+index 025480a..6a66858 100644
+--- a/node_modules/react-native-callkeep/android/src/main/java/io/wazo/callkeep/RNCallKeepModule.java
++++ b/node_modules/react-native-callkeep/android/src/main/java/io/wazo/callkeep/RNCallKeepModule.java
+@@ -221,7 +221,7 @@ public class RNCallKeepModule extends ReactContextBaseJavaModule implements Life
+         ComponentName cName = new ComponentName(context, VoiceConnectionService.class);
+         String appName = this.getApplicationName(context);
+ 
+-        handle = new PhoneAccountHandle(cName, appName);
++        handle = new PhoneAccountHandle(cName, context.getPackageName());
+         telecomManager = (TelecomManager) context.getSystemService(Context.TELECOM_SERVICE);
+     }
+ 
+@@ -434,11 +434,6 @@ public class RNCallKeepModule extends ReactContextBaseJavaModule implements Life
+         this.hasListeners = false;
+     }
+ 
+-    @ReactMethod
+-    public void displayIncomingCall(String uuid, String number, String callerName) {
+-        this.displayIncomingCall(uuid, number, callerName, false, null);
+-    }
+-
+     @ReactMethod
+     public void displayIncomingCall(String uuid, String number, String callerName, boolean hasVideo) {
+         this.displayIncomingCall(uuid, number, callerName, hasVideo, null);
+@@ -483,11 +478,6 @@ public class RNCallKeepModule extends ReactContextBaseJavaModule implements Life
+         conn.onAnswer();
+     }
+ 
+-    @ReactMethod
+-    public void startCall(String uuid, String number, String callerName) {
+-        this.startCall(uuid, number, callerName, false, null);
+-    }
+-
+     @ReactMethod
+     public void startCall(String uuid, String number, String callerName, boolean hasVideo) {
+         this.startCall(uuid, number, callerName, hasVideo, null);
+@@ -1196,9 +1186,14 @@ public class RNCallKeepModule extends ReactContextBaseJavaModule implements Life
+             return true;
+         }
+ 
+-        return isConnectionServiceAvailable() && telecomManager != null &&
+-            hasPermissions() && telecomManager.getPhoneAccount(handle) != null &&
+-            telecomManager.getPhoneAccount(handle).isEnabled();
++        try {
++            return isConnectionServiceAvailable() && telecomManager != null &&
++                hasPermissions() && telecomManager.getPhoneAccount(handle) != null &&
++                telecomManager.getPhoneAccount(handle).isEnabled();
++        } catch (SecurityException e) {
++            Log.w(TAG, "[RNCallKeepModule] hasPhoneAccount: SecurityException querying phone account", e);
++            return false;
++        }
+     }
+ 
+     protected void registerReceiver() {
+diff --git a/node_modules/react-native-callkeep/android/src/main/java/io/wazo/callkeep/VoiceConnectionService.java b/node_modules/react-native-callkeep/android/src/main/java/io/wazo/callkeep/VoiceConnectionService.java
+index 5d58692..f4e4b1b 100644
+--- a/node_modules/react-native-callkeep/android/src/main/java/io/wazo/callkeep/VoiceConnectionService.java
++++ b/node_modules/react-native-callkeep/android/src/main/java/io/wazo/callkeep/VoiceConnectionService.java
+@@ -317,7 +317,7 @@ public class VoiceConnectionService extends ConnectionService {
+         notificationBuilder.setOngoing(true)
+             .setContentTitle(foregroundSettings.getString("notificationTitle"))
+             .setPriority(NotificationManager.IMPORTANCE_MIN)
+             .setCategory(Notification.CATEGORY_SERVICE);
+ 
+-        Activity currentActivity = RNCallKeepModule.instance.getCurrentReactActivity();
++        Activity currentActivity = RNCallKeepModule.instance != null ? RNCallKeepModule.instance.getCurrentReactActivity() : null;
+         if (currentActivity != null) {
+@@ -459,18 +459,10 @@ public class VoiceConnectionService extends ConnectionService {
+         connection.setConnectionCapabilities(Connection.CAPABILITY_MUTE | Connection.CAPABILITY_SUPPORT_HOLD);
+ 
+         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+-            Context context = getApplicationContext();
+-            TelecomManager telecomManager = (TelecomManager) context.getSystemService(context.TELECOM_SERVICE);
+-            PhoneAccount phoneAccount = telecomManager.getPhoneAccount(request.getAccountHandle());
+-
+-            //If the phone account is self managed, then this connection must also be self managed.
+-            if((phoneAccount.getCapabilities() & PhoneAccount.CAPABILITY_SELF_MANAGED) == PhoneAccount.CAPABILITY_SELF_MANAGED) {
+-                Log.d(TAG, "[VoiceConnectionService] PhoneAccount is SELF_MANAGED, so connection will be too");
+-                connection.setConnectionProperties(Connection.PROPERTY_SELF_MANAGED);
+-            }
+-            else {
+-                Log.d(TAG, "[VoiceConnectionService] PhoneAccount is not SELF_MANAGED, so connection won't be either");
+-            }
++            // This app always registers its PhoneAccount with CAPABILITY_SELF_MANAGED.
++            // Skip telecomManager.getPhoneAccount(...) which requires READ_PHONE_NUMBERS on
++            // Android 11+ and isn't grantable from an FCM background context.
++            connection.setConnectionProperties(Connection.PROPERTY_SELF_MANAGED);
+         }
+ 
+         connection.setInitializing();
+diff --git a/node_modules/react-native-callkeep/ios/RNCallKeep/RNCallKeep.m b/node_modules/react-native-callkeep/ios/RNCallKeep/RNCallKeep.m
+index 786045f..a989d58 100644
+--- a/node_modules/react-native-callkeep/ios/RNCallKeep/RNCallKeep.m
++++ b/node_modules/react-native-callkeep/ios/RNCallKeep/RNCallKeep.m
+@@ -171,6 +171,8 @@ RCT_EXPORT_MODULE()
+             body, @"data",
+             nil
+         ];
++        // https://github.com/react-native-webrtc/react-native-callkeep/issues/822#issuecomment-2866354202
++        if (_delayedEvents == nil) _delayedEvents = [NSMutableArray array];
+         [_delayedEvents addObject:dictionary];
+     }
+ }
