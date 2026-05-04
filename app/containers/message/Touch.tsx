@@ -87,7 +87,7 @@ const Touch = React.forwardRef<View, ITouchProps>(
 		return (
 			<KeyboardComponent
 				ref={ref}
-				componentRef={componentRef}
+				componentRef={componentRef as React.RefObject<View>}
 				onPress={onPress}
 				accessible={accessible}
 				accessibilityRole={props.accessibilityRole}
