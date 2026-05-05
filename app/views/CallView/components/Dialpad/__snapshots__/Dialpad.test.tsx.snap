@@ -1,0 +1,5233 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Story Snapshots: Default should match snapshot 1`] = `
+<View
+  style={
+    {
+      "padding": 24,
+      "width": 500,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "alignSelf": "center",
+          "maxWidth": 400,
+          "padding": 32,
+          "paddingBottom": 32,
+          "width": "100%",
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
+    }
+  >
+    <A11yOrderView
+      orderKey="«ra»"
+    >
+      <A11yIndexView
+        importantForAccessibility="yes"
+        orderFocusType={0}
+        orderIndex={1}
+        orderKey="«ra»"
+      >
+        <View
+          style={
+            [
+              {
+                "gap": 4,
+                "marginBottom": 10,
+              },
+              {
+                "marginBottom": 24,
+              },
+            ]
+          }
+        >
+          <View
+            accessible={false}
+            style={
+              {
+                "justifyContent": "center",
+                "position": "relative",
+              }
+            }
+          >
+            <TextInput
+              accessibilityLabel=""
+              accessible={true}
+              autoCapitalize="none"
+              autoCorrect={false}
+              editable={false}
+              keyboardAppearance="light"
+              keyboardType="phone-pad"
+              multiline={true}
+              placeholder=""
+              placeholderTextColor="#9EA2A8"
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                  },
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "borderRadius": 4,
+                      "borderWidth": 1,
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "paddingHorizontal": 16,
+                      "paddingVertical": 14,
+                      "textAlign": "left",
+                    },
+                    undefined,
+                    {},
+                    {
+                      "backgroundColor": "#FFFFFF",
+                      "borderColor": "#9EA2A8",
+                      "color": "#1F2329",
+                    },
+                    {},
+                    undefined,
+                  ],
+                  {
+                    "textAlign": "auto",
+                  },
+                ]
+              }
+              testID="dialpad-input"
+              underlineColorAndroid="transparent"
+              value=""
+            />
+          </View>
+        </View>
+      </A11yIndexView>
+    </A11yOrderView>
+    <View
+      style={
+        {
+          "gap": 28,
+          "padding": 10,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "gap": 40,
+            "justifyContent": "center",
+          }
+        }
+      >
+        <View
+          accessibilityLabel="1"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "aspectRatio": 1,
+                "borderRadius": 8,
+                "flex": 1,
+                "maxWidth": 68,
+              },
+              {
+                "backgroundColor": "#E4E7EA",
+              },
+            ]
+          }
+          testID="dialpad-button-1"
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+                "justifyContent": "center",
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 32,
+                    "fontWeight": "400",
+                    "lineHeight": 36,
+                    "textAlign": "center",
+                  },
+                  false,
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              1
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 12,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 18,
+                    "textAlign": "center",
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            />
+          </View>
+        </View>
+        <View
+          accessibilityLabel="2 ABC"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "aspectRatio": 1,
+                "borderRadius": 8,
+                "flex": 1,
+                "maxWidth": 68,
+              },
+              {
+                "backgroundColor": "#E4E7EA",
+              },
+            ]
+          }
+          testID="dialpad-button-2"
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+                "justifyContent": "center",
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 32,
+                    "fontWeight": "400",
+                    "lineHeight": 36,
+                    "textAlign": "center",
+                  },
+                  false,
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              2
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 12,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 18,
+                    "textAlign": "center",
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              ABC
+            </Text>
+          </View>
+        </View>
+        <View
+          accessibilityLabel="3 DEF"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "aspectRatio": 1,
+                "borderRadius": 8,
+                "flex": 1,
+                "maxWidth": 68,
+              },
+              {
+                "backgroundColor": "#E4E7EA",
+              },
+            ]
+          }
+          testID="dialpad-button-3"
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+                "justifyContent": "center",
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 32,
+                    "fontWeight": "400",
+                    "lineHeight": 36,
+                    "textAlign": "center",
+                  },
+                  false,
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              3
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 12,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 18,
+                    "textAlign": "center",
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              DEF
+            </Text>
+          </View>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "gap": 40,
+            "justifyContent": "center",
+          }
+        }
+      >
+        <View
+          accessibilityLabel="4 GHI"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "aspectRatio": 1,
+                "borderRadius": 8,
+                "flex": 1,
+                "maxWidth": 68,
+              },
+              {
+                "backgroundColor": "#E4E7EA",
+              },
+            ]
+          }
+          testID="dialpad-button-4"
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+                "justifyContent": "center",
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 32,
+                    "fontWeight": "400",
+                    "lineHeight": 36,
+                    "textAlign": "center",
+                  },
+                  false,
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              4
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 12,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 18,
+                    "textAlign": "center",
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              GHI
+            </Text>
+          </View>
+        </View>
+        <View
+          accessibilityLabel="5 JKL"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "aspectRatio": 1,
+                "borderRadius": 8,
+                "flex": 1,
+                "maxWidth": 68,
+              },
+              {
+                "backgroundColor": "#E4E7EA",
+              },
+            ]
+          }
+          testID="dialpad-button-5"
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+                "justifyContent": "center",
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 32,
+                    "fontWeight": "400",
+                    "lineHeight": 36,
+                    "textAlign": "center",
+                  },
+                  false,
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              5
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 12,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 18,
+                    "textAlign": "center",
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              JKL
+            </Text>
+          </View>
+        </View>
+        <View
+          accessibilityLabel="6 MNO"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "aspectRatio": 1,
+                "borderRadius": 8,
+                "flex": 1,
+                "maxWidth": 68,
+              },
+              {
+                "backgroundColor": "#E4E7EA",
+              },
+            ]
+          }
+          testID="dialpad-button-6"
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+                "justifyContent": "center",
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 32,
+                    "fontWeight": "400",
+                    "lineHeight": 36,
+                    "textAlign": "center",
+                  },
+                  false,
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              6
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 12,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 18,
+                    "textAlign": "center",
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              MNO
+            </Text>
+          </View>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "gap": 40,
+            "justifyContent": "center",
+          }
+        }
+      >
+        <View
+          accessibilityLabel="7 PQRS"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "aspectRatio": 1,
+                "borderRadius": 8,
+                "flex": 1,
+                "maxWidth": 68,
+              },
+              {
+                "backgroundColor": "#E4E7EA",
+              },
+            ]
+          }
+          testID="dialpad-button-7"
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+                "justifyContent": "center",
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 32,
+                    "fontWeight": "400",
+                    "lineHeight": 36,
+                    "textAlign": "center",
+                  },
+                  false,
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              7
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 12,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 18,
+                    "textAlign": "center",
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              PQRS
+            </Text>
+          </View>
+        </View>
+        <View
+          accessibilityLabel="8 TUV"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "aspectRatio": 1,
+                "borderRadius": 8,
+                "flex": 1,
+                "maxWidth": 68,
+              },
+              {
+                "backgroundColor": "#E4E7EA",
+              },
+            ]
+          }
+          testID="dialpad-button-8"
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+                "justifyContent": "center",
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 32,
+                    "fontWeight": "400",
+                    "lineHeight": 36,
+                    "textAlign": "center",
+                  },
+                  false,
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              8
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 12,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 18,
+                    "textAlign": "center",
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              TUV
+            </Text>
+          </View>
+        </View>
+        <View
+          accessibilityLabel="9 WXYZ"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "aspectRatio": 1,
+                "borderRadius": 8,
+                "flex": 1,
+                "maxWidth": 68,
+              },
+              {
+                "backgroundColor": "#E4E7EA",
+              },
+            ]
+          }
+          testID="dialpad-button-9"
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+                "justifyContent": "center",
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 32,
+                    "fontWeight": "400",
+                    "lineHeight": 36,
+                    "textAlign": "center",
+                  },
+                  false,
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              9
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 12,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 18,
+                    "textAlign": "center",
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              WXYZ
+            </Text>
+          </View>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "gap": 40,
+            "justifyContent": "center",
+          }
+        }
+      >
+        <View
+          accessibilityLabel="*"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "aspectRatio": 1,
+                "borderRadius": 8,
+                "flex": 1,
+                "maxWidth": 68,
+              },
+              {
+                "backgroundColor": "#E4E7EA",
+              },
+            ]
+          }
+          testID="dialpad-button-*"
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+                "justifyContent": "center",
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 32,
+                    "fontWeight": "400",
+                    "lineHeight": 36,
+                    "textAlign": "center",
+                  },
+                  {
+                    "fontSize": 38,
+                    "lineHeight": 40,
+                    "textAlign": "center",
+                    "textAlignVertical": "center",
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              *
+            </Text>
+          </View>
+        </View>
+        <View
+          accessibilityLabel="0 +"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "aspectRatio": 1,
+                "borderRadius": 8,
+                "flex": 1,
+                "maxWidth": 68,
+              },
+              {
+                "backgroundColor": "#E4E7EA",
+              },
+            ]
+          }
+          testID="dialpad-button-0"
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+                "justifyContent": "center",
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 32,
+                    "fontWeight": "400",
+                    "lineHeight": 36,
+                    "textAlign": "center",
+                  },
+                  false,
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              0
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 12,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 18,
+                    "textAlign": "center",
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              +
+            </Text>
+          </View>
+        </View>
+        <View
+          accessibilityLabel="#"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "aspectRatio": 1,
+                "borderRadius": 8,
+                "flex": 1,
+                "maxWidth": 68,
+              },
+              {
+                "backgroundColor": "#E4E7EA",
+              },
+            ]
+          }
+          testID="dialpad-button-#"
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+                "justifyContent": "center",
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 32,
+                    "fontWeight": "400",
+                    "lineHeight": 36,
+                    "textAlign": "center",
+                  },
+                  {
+                    "fontSize": 38,
+                    "lineHeight": 40,
+                    "textAlign": "center",
+                    "textAlignVertical": "center",
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              #
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: TabletLandscape should match snapshot 1`] = `
+<View
+  style={
+    {
+      "padding": 24,
+      "width": 500,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "width": 700,
+      }
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignSelf": "center",
+            "maxWidth": 400,
+            "padding": 32,
+            "paddingBottom": 32,
+            "width": "100%",
+          },
+          {
+            "backgroundColor": "#FFFFFF",
+          },
+        ]
+      }
+    >
+      <A11yOrderView
+        orderKey="«rb»"
+      >
+        <A11yIndexView
+          importantForAccessibility="yes"
+          orderFocusType={0}
+          orderIndex={1}
+          orderKey="«rb»"
+        >
+          <View
+            style={
+              [
+                {
+                  "gap": 4,
+                  "marginBottom": 10,
+                },
+                {
+                  "marginBottom": 24,
+                },
+              ]
+            }
+          >
+            <View
+              accessible={false}
+              style={
+                {
+                  "justifyContent": "center",
+                  "position": "relative",
+                }
+              }
+            >
+              <TextInput
+                accessibilityLabel=""
+                accessible={true}
+                autoCapitalize="none"
+                autoCorrect={false}
+                editable={false}
+                keyboardAppearance="light"
+                keyboardType="phone-pad"
+                multiline={true}
+                placeholder=""
+                placeholderTextColor="#9EA2A8"
+                style={
+                  [
+                    {
+                      "color": "#1F2329",
+                    },
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "borderRadius": 4,
+                        "borderWidth": 1,
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontWeight": "400",
+                        "paddingHorizontal": 16,
+                        "paddingVertical": 14,
+                        "textAlign": "left",
+                      },
+                      undefined,
+                      {},
+                      {
+                        "backgroundColor": "#FFFFFF",
+                        "borderColor": "#9EA2A8",
+                        "color": "#1F2329",
+                      },
+                      {},
+                      undefined,
+                    ],
+                    {
+                      "textAlign": "auto",
+                    },
+                  ]
+                }
+                testID="dialpad-input"
+                underlineColorAndroid="transparent"
+                value=""
+              />
+            </View>
+          </View>
+        </A11yIndexView>
+      </A11yOrderView>
+      <View
+        style={
+          {
+            "gap": 28,
+            "padding": 10,
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "flexDirection": "row",
+              "gap": 40,
+              "justifyContent": "center",
+            }
+          }
+        >
+          <View
+            accessibilityLabel="1"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "aspectRatio": 1,
+                  "borderRadius": 8,
+                  "flex": 1,
+                  "maxWidth": 68,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="dialpad-button-1"
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 32,
+                      "fontWeight": "400",
+                      "lineHeight": 36,
+                      "textAlign": "center",
+                    },
+                    false,
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                1
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "400",
+                      "letterSpacing": 0,
+                      "lineHeight": 18,
+                      "textAlign": "center",
+                    },
+                    {
+                      "color": "#6C727A",
+                    },
+                  ]
+                }
+              />
+            </View>
+          </View>
+          <View
+            accessibilityLabel="2 ABC"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "aspectRatio": 1,
+                  "borderRadius": 8,
+                  "flex": 1,
+                  "maxWidth": 68,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="dialpad-button-2"
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 32,
+                      "fontWeight": "400",
+                      "lineHeight": 36,
+                      "textAlign": "center",
+                    },
+                    false,
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                2
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "400",
+                      "letterSpacing": 0,
+                      "lineHeight": 18,
+                      "textAlign": "center",
+                    },
+                    {
+                      "color": "#6C727A",
+                    },
+                  ]
+                }
+              >
+                ABC
+              </Text>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="3 DEF"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "aspectRatio": 1,
+                  "borderRadius": 8,
+                  "flex": 1,
+                  "maxWidth": 68,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="dialpad-button-3"
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 32,
+                      "fontWeight": "400",
+                      "lineHeight": 36,
+                      "textAlign": "center",
+                    },
+                    false,
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                3
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "400",
+                      "letterSpacing": 0,
+                      "lineHeight": 18,
+                      "textAlign": "center",
+                    },
+                    {
+                      "color": "#6C727A",
+                    },
+                  ]
+                }
+              >
+                DEF
+              </Text>
+            </View>
+          </View>
+        </View>
+        <View
+          style={
+            {
+              "flexDirection": "row",
+              "gap": 40,
+              "justifyContent": "center",
+            }
+          }
+        >
+          <View
+            accessibilityLabel="4 GHI"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "aspectRatio": 1,
+                  "borderRadius": 8,
+                  "flex": 1,
+                  "maxWidth": 68,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="dialpad-button-4"
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 32,
+                      "fontWeight": "400",
+                      "lineHeight": 36,
+                      "textAlign": "center",
+                    },
+                    false,
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                4
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "400",
+                      "letterSpacing": 0,
+                      "lineHeight": 18,
+                      "textAlign": "center",
+                    },
+                    {
+                      "color": "#6C727A",
+                    },
+                  ]
+                }
+              >
+                GHI
+              </Text>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="5 JKL"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "aspectRatio": 1,
+                  "borderRadius": 8,
+                  "flex": 1,
+                  "maxWidth": 68,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="dialpad-button-5"
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 32,
+                      "fontWeight": "400",
+                      "lineHeight": 36,
+                      "textAlign": "center",
+                    },
+                    false,
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                5
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "400",
+                      "letterSpacing": 0,
+                      "lineHeight": 18,
+                      "textAlign": "center",
+                    },
+                    {
+                      "color": "#6C727A",
+                    },
+                  ]
+                }
+              >
+                JKL
+              </Text>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="6 MNO"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "aspectRatio": 1,
+                  "borderRadius": 8,
+                  "flex": 1,
+                  "maxWidth": 68,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="dialpad-button-6"
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 32,
+                      "fontWeight": "400",
+                      "lineHeight": 36,
+                      "textAlign": "center",
+                    },
+                    false,
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                6
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "400",
+                      "letterSpacing": 0,
+                      "lineHeight": 18,
+                      "textAlign": "center",
+                    },
+                    {
+                      "color": "#6C727A",
+                    },
+                  ]
+                }
+              >
+                MNO
+              </Text>
+            </View>
+          </View>
+        </View>
+        <View
+          style={
+            {
+              "flexDirection": "row",
+              "gap": 40,
+              "justifyContent": "center",
+            }
+          }
+        >
+          <View
+            accessibilityLabel="7 PQRS"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "aspectRatio": 1,
+                  "borderRadius": 8,
+                  "flex": 1,
+                  "maxWidth": 68,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="dialpad-button-7"
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 32,
+                      "fontWeight": "400",
+                      "lineHeight": 36,
+                      "textAlign": "center",
+                    },
+                    false,
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                7
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "400",
+                      "letterSpacing": 0,
+                      "lineHeight": 18,
+                      "textAlign": "center",
+                    },
+                    {
+                      "color": "#6C727A",
+                    },
+                  ]
+                }
+              >
+                PQRS
+              </Text>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="8 TUV"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "aspectRatio": 1,
+                  "borderRadius": 8,
+                  "flex": 1,
+                  "maxWidth": 68,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="dialpad-button-8"
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 32,
+                      "fontWeight": "400",
+                      "lineHeight": 36,
+                      "textAlign": "center",
+                    },
+                    false,
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                8
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "400",
+                      "letterSpacing": 0,
+                      "lineHeight": 18,
+                      "textAlign": "center",
+                    },
+                    {
+                      "color": "#6C727A",
+                    },
+                  ]
+                }
+              >
+                TUV
+              </Text>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="9 WXYZ"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "aspectRatio": 1,
+                  "borderRadius": 8,
+                  "flex": 1,
+                  "maxWidth": 68,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="dialpad-button-9"
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 32,
+                      "fontWeight": "400",
+                      "lineHeight": 36,
+                      "textAlign": "center",
+                    },
+                    false,
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                9
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "400",
+                      "letterSpacing": 0,
+                      "lineHeight": 18,
+                      "textAlign": "center",
+                    },
+                    {
+                      "color": "#6C727A",
+                    },
+                  ]
+                }
+              >
+                WXYZ
+              </Text>
+            </View>
+          </View>
+        </View>
+        <View
+          style={
+            {
+              "flexDirection": "row",
+              "gap": 40,
+              "justifyContent": "center",
+            }
+          }
+        >
+          <View
+            accessibilityLabel="*"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "aspectRatio": 1,
+                  "borderRadius": 8,
+                  "flex": 1,
+                  "maxWidth": 68,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="dialpad-button-*"
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 32,
+                      "fontWeight": "400",
+                      "lineHeight": 36,
+                      "textAlign": "center",
+                    },
+                    {
+                      "fontSize": 38,
+                      "lineHeight": 40,
+                      "textAlign": "center",
+                      "textAlignVertical": "center",
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                *
+              </Text>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="0 +"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "aspectRatio": 1,
+                  "borderRadius": 8,
+                  "flex": 1,
+                  "maxWidth": 68,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="dialpad-button-0"
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 32,
+                      "fontWeight": "400",
+                      "lineHeight": 36,
+                      "textAlign": "center",
+                    },
+                    false,
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                0
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "400",
+                      "letterSpacing": 0,
+                      "lineHeight": 18,
+                      "textAlign": "center",
+                    },
+                    {
+                      "color": "#6C727A",
+                    },
+                  ]
+                }
+              >
+                +
+              </Text>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="#"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "aspectRatio": 1,
+                  "borderRadius": 8,
+                  "flex": 1,
+                  "maxWidth": 68,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="dialpad-button-#"
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 32,
+                      "fontWeight": "400",
+                      "lineHeight": 36,
+                      "textAlign": "center",
+                    },
+                    {
+                      "fontSize": 38,
+                      "lineHeight": 40,
+                      "textAlign": "center",
+                      "textAlignVertical": "center",
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                #
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: TabletLandscapeWithValue should match snapshot 1`] = `
+<View
+  style={
+    {
+      "padding": 24,
+      "width": 500,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "width": 700,
+      }
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignSelf": "center",
+            "maxWidth": 400,
+            "padding": 32,
+            "paddingBottom": 32,
+            "width": "100%",
+          },
+          {
+            "backgroundColor": "#FFFFFF",
+          },
+        ]
+      }
+    >
+      <A11yOrderView
+        orderKey="«rc»"
+      >
+        <A11yIndexView
+          importantForAccessibility="yes"
+          orderFocusType={0}
+          orderIndex={1}
+          orderKey="«rc»"
+        >
+          <View
+            style={
+              [
+                {
+                  "gap": 4,
+                  "marginBottom": 10,
+                },
+                {
+                  "marginBottom": 24,
+                },
+              ]
+            }
+          >
+            <View
+              accessible={false}
+              style={
+                {
+                  "justifyContent": "center",
+                  "position": "relative",
+                }
+              }
+            >
+              <TextInput
+                accessibilityLabel="1234."
+                accessible={true}
+                autoCapitalize="none"
+                autoCorrect={false}
+                editable={false}
+                keyboardAppearance="light"
+                keyboardType="phone-pad"
+                multiline={true}
+                placeholder=""
+                placeholderTextColor="#9EA2A8"
+                style={
+                  [
+                    {
+                      "color": "#1F2329",
+                    },
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "borderRadius": 4,
+                        "borderWidth": 1,
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontWeight": "400",
+                        "paddingHorizontal": 16,
+                        "paddingVertical": 14,
+                        "textAlign": "left",
+                      },
+                      undefined,
+                      {},
+                      {
+                        "backgroundColor": "#FFFFFF",
+                        "borderColor": "#9EA2A8",
+                        "color": "#1F2329",
+                      },
+                      {},
+                      undefined,
+                    ],
+                    {
+                      "textAlign": "auto",
+                    },
+                  ]
+                }
+                testID="dialpad-input"
+                underlineColorAndroid="transparent"
+                value="1234"
+              />
+            </View>
+          </View>
+        </A11yIndexView>
+      </A11yOrderView>
+      <View
+        style={
+          {
+            "gap": 28,
+            "padding": 10,
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "flexDirection": "row",
+              "gap": 40,
+              "justifyContent": "center",
+            }
+          }
+        >
+          <View
+            accessibilityLabel="1"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "aspectRatio": 1,
+                  "borderRadius": 8,
+                  "flex": 1,
+                  "maxWidth": 68,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="dialpad-button-1"
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 32,
+                      "fontWeight": "400",
+                      "lineHeight": 36,
+                      "textAlign": "center",
+                    },
+                    false,
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                1
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "400",
+                      "letterSpacing": 0,
+                      "lineHeight": 18,
+                      "textAlign": "center",
+                    },
+                    {
+                      "color": "#6C727A",
+                    },
+                  ]
+                }
+              />
+            </View>
+          </View>
+          <View
+            accessibilityLabel="2 ABC"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "aspectRatio": 1,
+                  "borderRadius": 8,
+                  "flex": 1,
+                  "maxWidth": 68,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="dialpad-button-2"
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 32,
+                      "fontWeight": "400",
+                      "lineHeight": 36,
+                      "textAlign": "center",
+                    },
+                    false,
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                2
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "400",
+                      "letterSpacing": 0,
+                      "lineHeight": 18,
+                      "textAlign": "center",
+                    },
+                    {
+                      "color": "#6C727A",
+                    },
+                  ]
+                }
+              >
+                ABC
+              </Text>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="3 DEF"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "aspectRatio": 1,
+                  "borderRadius": 8,
+                  "flex": 1,
+                  "maxWidth": 68,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="dialpad-button-3"
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 32,
+                      "fontWeight": "400",
+                      "lineHeight": 36,
+                      "textAlign": "center",
+                    },
+                    false,
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                3
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "400",
+                      "letterSpacing": 0,
+                      "lineHeight": 18,
+                      "textAlign": "center",
+                    },
+                    {
+                      "color": "#6C727A",
+                    },
+                  ]
+                }
+              >
+                DEF
+              </Text>
+            </View>
+          </View>
+        </View>
+        <View
+          style={
+            {
+              "flexDirection": "row",
+              "gap": 40,
+              "justifyContent": "center",
+            }
+          }
+        >
+          <View
+            accessibilityLabel="4 GHI"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "aspectRatio": 1,
+                  "borderRadius": 8,
+                  "flex": 1,
+                  "maxWidth": 68,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="dialpad-button-4"
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 32,
+                      "fontWeight": "400",
+                      "lineHeight": 36,
+                      "textAlign": "center",
+                    },
+                    false,
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                4
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "400",
+                      "letterSpacing": 0,
+                      "lineHeight": 18,
+                      "textAlign": "center",
+                    },
+                    {
+                      "color": "#6C727A",
+                    },
+                  ]
+                }
+              >
+                GHI
+              </Text>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="5 JKL"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "aspectRatio": 1,
+                  "borderRadius": 8,
+                  "flex": 1,
+                  "maxWidth": 68,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="dialpad-button-5"
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 32,
+                      "fontWeight": "400",
+                      "lineHeight": 36,
+                      "textAlign": "center",
+                    },
+                    false,
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                5
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "400",
+                      "letterSpacing": 0,
+                      "lineHeight": 18,
+                      "textAlign": "center",
+                    },
+                    {
+                      "color": "#6C727A",
+                    },
+                  ]
+                }
+              >
+                JKL
+              </Text>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="6 MNO"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "aspectRatio": 1,
+                  "borderRadius": 8,
+                  "flex": 1,
+                  "maxWidth": 68,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="dialpad-button-6"
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 32,
+                      "fontWeight": "400",
+                      "lineHeight": 36,
+                      "textAlign": "center",
+                    },
+                    false,
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                6
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "400",
+                      "letterSpacing": 0,
+                      "lineHeight": 18,
+                      "textAlign": "center",
+                    },
+                    {
+                      "color": "#6C727A",
+                    },
+                  ]
+                }
+              >
+                MNO
+              </Text>
+            </View>
+          </View>
+        </View>
+        <View
+          style={
+            {
+              "flexDirection": "row",
+              "gap": 40,
+              "justifyContent": "center",
+            }
+          }
+        >
+          <View
+            accessibilityLabel="7 PQRS"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "aspectRatio": 1,
+                  "borderRadius": 8,
+                  "flex": 1,
+                  "maxWidth": 68,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="dialpad-button-7"
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 32,
+                      "fontWeight": "400",
+                      "lineHeight": 36,
+                      "textAlign": "center",
+                    },
+                    false,
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                7
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "400",
+                      "letterSpacing": 0,
+                      "lineHeight": 18,
+                      "textAlign": "center",
+                    },
+                    {
+                      "color": "#6C727A",
+                    },
+                  ]
+                }
+              >
+                PQRS
+              </Text>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="8 TUV"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "aspectRatio": 1,
+                  "borderRadius": 8,
+                  "flex": 1,
+                  "maxWidth": 68,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="dialpad-button-8"
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 32,
+                      "fontWeight": "400",
+                      "lineHeight": 36,
+                      "textAlign": "center",
+                    },
+                    false,
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                8
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "400",
+                      "letterSpacing": 0,
+                      "lineHeight": 18,
+                      "textAlign": "center",
+                    },
+                    {
+                      "color": "#6C727A",
+                    },
+                  ]
+                }
+              >
+                TUV
+              </Text>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="9 WXYZ"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "aspectRatio": 1,
+                  "borderRadius": 8,
+                  "flex": 1,
+                  "maxWidth": 68,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="dialpad-button-9"
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 32,
+                      "fontWeight": "400",
+                      "lineHeight": 36,
+                      "textAlign": "center",
+                    },
+                    false,
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                9
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "400",
+                      "letterSpacing": 0,
+                      "lineHeight": 18,
+                      "textAlign": "center",
+                    },
+                    {
+                      "color": "#6C727A",
+                    },
+                  ]
+                }
+              >
+                WXYZ
+              </Text>
+            </View>
+          </View>
+        </View>
+        <View
+          style={
+            {
+              "flexDirection": "row",
+              "gap": 40,
+              "justifyContent": "center",
+            }
+          }
+        >
+          <View
+            accessibilityLabel="*"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "aspectRatio": 1,
+                  "borderRadius": 8,
+                  "flex": 1,
+                  "maxWidth": 68,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="dialpad-button-*"
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 32,
+                      "fontWeight": "400",
+                      "lineHeight": 36,
+                      "textAlign": "center",
+                    },
+                    {
+                      "fontSize": 38,
+                      "lineHeight": 40,
+                      "textAlign": "center",
+                      "textAlignVertical": "center",
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                *
+              </Text>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="0 +"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "aspectRatio": 1,
+                  "borderRadius": 8,
+                  "flex": 1,
+                  "maxWidth": 68,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="dialpad-button-0"
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 32,
+                      "fontWeight": "400",
+                      "lineHeight": 36,
+                      "textAlign": "center",
+                    },
+                    false,
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                0
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "400",
+                      "letterSpacing": 0,
+                      "lineHeight": 18,
+                      "textAlign": "center",
+                    },
+                    {
+                      "color": "#6C727A",
+                    },
+                  ]
+                }
+              >
+                +
+              </Text>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="#"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "aspectRatio": 1,
+                  "borderRadius": 8,
+                  "flex": 1,
+                  "maxWidth": 68,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="dialpad-button-#"
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 32,
+                      "fontWeight": "400",
+                      "lineHeight": 36,
+                      "textAlign": "center",
+                    },
+                    {
+                      "fontSize": 38,
+                      "lineHeight": 40,
+                      "textAlign": "center",
+                      "textAlignVertical": "center",
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                #
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: WithValue should match snapshot 1`] = `
+<View
+  style={
+    {
+      "padding": 24,
+      "width": 500,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "alignSelf": "center",
+          "maxWidth": 400,
+          "padding": 32,
+          "paddingBottom": 32,
+          "width": "100%",
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
+    }
+  >
+    <A11yOrderView
+      orderKey="«rd»"
+    >
+      <A11yIndexView
+        importantForAccessibility="yes"
+        orderFocusType={0}
+        orderIndex={1}
+        orderKey="«rd»"
+      >
+        <View
+          style={
+            [
+              {
+                "gap": 4,
+                "marginBottom": 10,
+              },
+              {
+                "marginBottom": 24,
+              },
+            ]
+          }
+        >
+          <View
+            accessible={false}
+            style={
+              {
+                "justifyContent": "center",
+                "position": "relative",
+              }
+            }
+          >
+            <TextInput
+              accessibilityLabel="123."
+              accessible={true}
+              autoCapitalize="none"
+              autoCorrect={false}
+              editable={false}
+              keyboardAppearance="light"
+              keyboardType="phone-pad"
+              multiline={true}
+              placeholder=""
+              placeholderTextColor="#9EA2A8"
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                  },
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "borderRadius": 4,
+                      "borderWidth": 1,
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "paddingHorizontal": 16,
+                      "paddingVertical": 14,
+                      "textAlign": "left",
+                    },
+                    undefined,
+                    {},
+                    {
+                      "backgroundColor": "#FFFFFF",
+                      "borderColor": "#9EA2A8",
+                      "color": "#1F2329",
+                    },
+                    {},
+                    undefined,
+                  ],
+                  {
+                    "textAlign": "auto",
+                  },
+                ]
+              }
+              testID="dialpad-input"
+              underlineColorAndroid="transparent"
+              value="123"
+            />
+          </View>
+        </View>
+      </A11yIndexView>
+    </A11yOrderView>
+    <View
+      style={
+        {
+          "gap": 28,
+          "padding": 10,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "gap": 40,
+            "justifyContent": "center",
+          }
+        }
+      >
+        <View
+          accessibilityLabel="1"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "aspectRatio": 1,
+                "borderRadius": 8,
+                "flex": 1,
+                "maxWidth": 68,
+              },
+              {
+                "backgroundColor": "#E4E7EA",
+              },
+            ]
+          }
+          testID="dialpad-button-1"
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+                "justifyContent": "center",
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 32,
+                    "fontWeight": "400",
+                    "lineHeight": 36,
+                    "textAlign": "center",
+                  },
+                  false,
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              1
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 12,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 18,
+                    "textAlign": "center",
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            />
+          </View>
+        </View>
+        <View
+          accessibilityLabel="2 ABC"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "aspectRatio": 1,
+                "borderRadius": 8,
+                "flex": 1,
+                "maxWidth": 68,
+              },
+              {
+                "backgroundColor": "#E4E7EA",
+              },
+            ]
+          }
+          testID="dialpad-button-2"
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+                "justifyContent": "center",
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 32,
+                    "fontWeight": "400",
+                    "lineHeight": 36,
+                    "textAlign": "center",
+                  },
+                  false,
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              2
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 12,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 18,
+                    "textAlign": "center",
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              ABC
+            </Text>
+          </View>
+        </View>
+        <View
+          accessibilityLabel="3 DEF"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "aspectRatio": 1,
+                "borderRadius": 8,
+                "flex": 1,
+                "maxWidth": 68,
+              },
+              {
+                "backgroundColor": "#E4E7EA",
+              },
+            ]
+          }
+          testID="dialpad-button-3"
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+                "justifyContent": "center",
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 32,
+                    "fontWeight": "400",
+                    "lineHeight": 36,
+                    "textAlign": "center",
+                  },
+                  false,
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              3
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 12,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 18,
+                    "textAlign": "center",
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              DEF
+            </Text>
+          </View>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "gap": 40,
+            "justifyContent": "center",
+          }
+        }
+      >
+        <View
+          accessibilityLabel="4 GHI"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "aspectRatio": 1,
+                "borderRadius": 8,
+                "flex": 1,
+                "maxWidth": 68,
+              },
+              {
+                "backgroundColor": "#E4E7EA",
+              },
+            ]
+          }
+          testID="dialpad-button-4"
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+                "justifyContent": "center",
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 32,
+                    "fontWeight": "400",
+                    "lineHeight": 36,
+                    "textAlign": "center",
+                  },
+                  false,
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              4
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 12,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 18,
+                    "textAlign": "center",
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              GHI
+            </Text>
+          </View>
+        </View>
+        <View
+          accessibilityLabel="5 JKL"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "aspectRatio": 1,
+                "borderRadius": 8,
+                "flex": 1,
+                "maxWidth": 68,
+              },
+              {
+                "backgroundColor": "#E4E7EA",
+              },
+            ]
+          }
+          testID="dialpad-button-5"
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+                "justifyContent": "center",
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 32,
+                    "fontWeight": "400",
+                    "lineHeight": 36,
+                    "textAlign": "center",
+                  },
+                  false,
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              5
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 12,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 18,
+                    "textAlign": "center",
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              JKL
+            </Text>
+          </View>
+        </View>
+        <View
+          accessibilityLabel="6 MNO"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "aspectRatio": 1,
+                "borderRadius": 8,
+                "flex": 1,
+                "maxWidth": 68,
+              },
+              {
+                "backgroundColor": "#E4E7EA",
+              },
+            ]
+          }
+          testID="dialpad-button-6"
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+                "justifyContent": "center",
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 32,
+                    "fontWeight": "400",
+                    "lineHeight": 36,
+                    "textAlign": "center",
+                  },
+                  false,
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              6
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 12,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 18,
+                    "textAlign": "center",
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              MNO
+            </Text>
+          </View>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "gap": 40,
+            "justifyContent": "center",
+          }
+        }
+      >
+        <View
+          accessibilityLabel="7 PQRS"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "aspectRatio": 1,
+                "borderRadius": 8,
+                "flex": 1,
+                "maxWidth": 68,
+              },
+              {
+                "backgroundColor": "#E4E7EA",
+              },
+            ]
+          }
+          testID="dialpad-button-7"
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+                "justifyContent": "center",
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 32,
+                    "fontWeight": "400",
+                    "lineHeight": 36,
+                    "textAlign": "center",
+                  },
+                  false,
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              7
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 12,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 18,
+                    "textAlign": "center",
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              PQRS
+            </Text>
+          </View>
+        </View>
+        <View
+          accessibilityLabel="8 TUV"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "aspectRatio": 1,
+                "borderRadius": 8,
+                "flex": 1,
+                "maxWidth": 68,
+              },
+              {
+                "backgroundColor": "#E4E7EA",
+              },
+            ]
+          }
+          testID="dialpad-button-8"
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+                "justifyContent": "center",
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 32,
+                    "fontWeight": "400",
+                    "lineHeight": 36,
+                    "textAlign": "center",
+                  },
+                  false,
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              8
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 12,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 18,
+                    "textAlign": "center",
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              TUV
+            </Text>
+          </View>
+        </View>
+        <View
+          accessibilityLabel="9 WXYZ"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "aspectRatio": 1,
+                "borderRadius": 8,
+                "flex": 1,
+                "maxWidth": 68,
+              },
+              {
+                "backgroundColor": "#E4E7EA",
+              },
+            ]
+          }
+          testID="dialpad-button-9"
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+                "justifyContent": "center",
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 32,
+                    "fontWeight": "400",
+                    "lineHeight": 36,
+                    "textAlign": "center",
+                  },
+                  false,
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              9
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 12,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 18,
+                    "textAlign": "center",
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              WXYZ
+            </Text>
+          </View>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "gap": 40,
+            "justifyContent": "center",
+          }
+        }
+      >
+        <View
+          accessibilityLabel="*"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "aspectRatio": 1,
+                "borderRadius": 8,
+                "flex": 1,
+                "maxWidth": 68,
+              },
+              {
+                "backgroundColor": "#E4E7EA",
+              },
+            ]
+          }
+          testID="dialpad-button-*"
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+                "justifyContent": "center",
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 32,
+                    "fontWeight": "400",
+                    "lineHeight": 36,
+                    "textAlign": "center",
+                  },
+                  {
+                    "fontSize": 38,
+                    "lineHeight": 40,
+                    "textAlign": "center",
+                    "textAlignVertical": "center",
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              *
+            </Text>
+          </View>
+        </View>
+        <View
+          accessibilityLabel="0 +"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "aspectRatio": 1,
+                "borderRadius": 8,
+                "flex": 1,
+                "maxWidth": 68,
+              },
+              {
+                "backgroundColor": "#E4E7EA",
+              },
+            ]
+          }
+          testID="dialpad-button-0"
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+                "justifyContent": "center",
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 32,
+                    "fontWeight": "400",
+                    "lineHeight": 36,
+                    "textAlign": "center",
+                  },
+                  false,
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              0
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 12,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 18,
+                    "textAlign": "center",
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              +
+            </Text>
+          </View>
+        </View>
+        <View
+          accessibilityLabel="#"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "aspectRatio": 1,
+                "borderRadius": 8,
+                "flex": 1,
+                "maxWidth": 68,
+              },
+              {
+                "backgroundColor": "#E4E7EA",
+              },
+            ]
+          }
+          testID="dialpad-button-#"
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+                "justifyContent": "center",
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 32,
+                    "fontWeight": "400",
+                    "lineHeight": 36,
+                    "textAlign": "center",
+                  },
+                  {
+                    "fontSize": 38,
+                    "lineHeight": 40,
+                    "textAlign": "center",
+                    "textAlignVertical": "center",
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              #
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;

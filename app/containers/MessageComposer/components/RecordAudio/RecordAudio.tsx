@@ -149,7 +149,7 @@ export const RecordAudio = (): ReactElement | null => {
 	return (
 		<View style={styles.recording}>
 			<View style={styles.duration}>
-				<CustomIcon name='microphone' size={24} color={colors.fontDanger} />
+				<CustomIcon name='mic' size={24} color={colors.fontDanger} />
 				<Duration ref={durationRef} />
 			</View>
 			<View style={styles.buttons}>

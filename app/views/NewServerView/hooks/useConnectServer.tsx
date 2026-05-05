@@ -1,7 +1,7 @@
 import { Keyboard } from 'react-native';
 import { useDispatch } from 'react-redux';
 
-import sdk from '../../../lib/services/sdk';
+import { disconnect } from '../../../lib/services/connect';
 import { events, logEvent } from '../../../lib/methods/helpers/log';
 import { selectServerClear, serverRequest } from '../../../actions/server';
 import completeUrl from '../utils/completeUrl';
@@ -24,7 +24,7 @@ const useConnectServer = ({ workspaceUrl, certificate, previousServer }: TUseNew
 
 		// Clear the previous workspace to prevent being stuck on the previous server
 		if (!previousServer) {
-			sdk.disconnect();
+			disconnect();
 			dispatch(selectServerClear());
 		}
 		if (workspaceUrl || serverUrl) {
