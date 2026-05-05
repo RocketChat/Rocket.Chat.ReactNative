@@ -64,8 +64,7 @@ NSString *serviceName = nil;
     NSMutableDictionary *searchDictionary = [[NSMutableDictionary alloc] init];
 
     // this value is shared by main app and extensions, so, is the best to be used here
-    serviceName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroupIdentifier"]
-                  ?: [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"];
+    serviceName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroupIdentifier"];
 
     if(serviceName == nil){
         serviceName = [[NSBundle mainBundle] bundleIdentifier];
