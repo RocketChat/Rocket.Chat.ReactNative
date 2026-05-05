@@ -3196,6 +3196,11 @@
   resolved "https://registry.yarnpkg.com/@hookform/resolvers/-/resolvers-2.9.11.tgz#9ce96e7746625a89239f68ca57c4f654264c17ef"
   integrity sha512-bA3aZ79UgcHj7tFV7RlgThzwSSHZgvfbt2wprldRkYBcMopdMvHyO17Wwp/twcJasNFischFfS7oz8Katz8DdQ==
 
+"@huggingface/jinja@^0.5.0":
+  version "0.5.8"
+  resolved "https://registry.yarnpkg.com/@huggingface/jinja/-/jinja-0.5.8.tgz#14dbc533464c8218963473595c9fb882a2988ae1"
+  integrity sha512-ZdElB7DPS7QQS8ZnFc5RPPtkg+eN11z8AmIZWAyes6pSbwXqiFB/POVevvm01begdSX1ho9Gxln/F6qlQMsuaA==
+
 "@humanwhocodes/config-array@^0.13.0":
   version "0.13.0"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.13.0.tgz#fb907624df3256d04b9aa2df50d7aa97ec648748"
@@ -9612,6 +9617,16 @@ jsonify@^0.0.1:
   resolved "https://registry.yarnpkg.com/jsonify/-/jsonify-0.0.1.tgz#2aa3111dae3d34a0f151c63f3a45d995d9420978"
   integrity sha512-2/Ki0GcmuqSrgFyelQq9M05y7PS0mEwuIzrf3f1fPqkVDVRvZrPZtVSMHxdgo8Aq0sxAOb/cr2aqqA3LeWHVPg==
 
+jsonrepair@^3.12.0:
+  version "3.14.0"
+  resolved "https://registry.yarnpkg.com/jsonrepair/-/jsonrepair-3.14.0.tgz#10c9ae7f3221d4c5ae49a2d7d531a2eb87bb02d3"
+  integrity sha512-tWPGKMZf/8UPim+fcW2EfcQ/d/7aKUrP6IECz9G3Tu6Q5dX0orSleqJ9z6sSw7qrQkjF8/Edo4DvsWBZ8H+HNg==
+
+jsonschema@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/jsonschema/-/jsonschema-1.5.0.tgz#f6aceb1ab9123563dd901d05f81f9d4883d3b7d8"
+  integrity sha512-K+A9hhqbn0f3pJX17Q/7H6yQfD/5OXgdrR5UE12gMXCiN9D5Xq2o5mddV2QEcX/bjla99ASsAAQUyMCCRWAEhw==
+
 jsrsasign@11.0.0:
   version "11.0.0"
   resolved "https://registry.yarnpkg.com/jsrsasign/-/jsrsasign-11.0.0.tgz#766570c21f87d68075a142f5188f7e583cee9d70"
@@ -10911,6 +10926,11 @@ pngjs@^3.3.0:
   resolved "https://registry.yarnpkg.com/pngjs/-/pngjs-3.4.0.tgz#99ca7d725965fb655814eaf65f38f12bbdbf555f"
   integrity sha512-NCrCHhWmnQklfH4MtJMRjZ2a8c80qXeMlQMv2uVp9ISJMTt562SbGd6n2oq0PaPgKm7Z6pL9E2UlLIhC+SHL3w==
 
+pngjs@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/pngjs/-/pngjs-7.0.0.tgz#a8b7446020ebbc6ac739db6c5415a65d17090e26"
+  integrity sha512-LKWqWJRhstyYo9pGvgor/ivk2w94eSjE3RGVuzLGlr3NmD8bf7RcYGze1mNdEHRP6TRP6rMuDHk5t44hnTRyow==
+
 polished@^4.3.1:
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/polished/-/polished-4.3.1.tgz#5a00ae32715609f83d89f6f31d0f0261c6170548"
@@ -11226,6 +11246,13 @@ react-native-animatable@1.3.3:
   dependencies:
     prop-types "^15.7.2"
 
+react-native-audio-api@0.12.1:
+  version "0.12.1"
+  resolved "https://registry.yarnpkg.com/react-native-audio-api/-/react-native-audio-api-0.12.1.tgz#6f1674f53e1fbbef2d940526a8b0dc84e519167c"
+  integrity sha512-4SWtsgUNOfVLQ6jaOfmXklc+JiB4a04x6gzd1nX4NN3F8e2CQ7cH4aNuIo7E86nNk+epncZVyr124S+V6mxumw==
+  dependencies:
+    semver "^7.7.3"
+
 react-native-background-timer@2.4.1:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/react-native-background-timer/-/react-native-background-timer-2.4.1.tgz#a3bc1cafa8c1e3aeefd0611de120298b67978a0f"
@@ -11300,6 +11327,22 @@ react-native-easy-toast@2.3.0:
   dependencies:
     deprecated-react-native-prop-types "^2.3.0"
     prop-types "^15.6.0"
+
+react-native-executorch-expo-resource-fetcher@0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/react-native-executorch-expo-resource-fetcher/-/react-native-executorch-expo-resource-fetcher-0.8.0.tgz#583c66e26c9729b36001658e5c701b44d20e2476"
+  integrity sha512-vdAne2FBL0nCQ2c2yHTSt8Uttm0Klmo/K7tirSVlKxgVtli4cmsfl+UpR5giaNtlRZ3ImMAMXNW34j0fItmRfQ==
+
+react-native-executorch@0.8.4:
+  version "0.8.4"
+  resolved "https://registry.yarnpkg.com/react-native-executorch/-/react-native-executorch-0.8.4.tgz#be496c718170cc14fe673954cb9fcc01704166b6"
+  integrity sha512-3g4TIKsMJCn8gkwx15yEtM9/glmRnSEzpz4J1jCiG5W0oe6E27bI46sU+x9uRo0xq9pXwoGygQw/cqv3Y+I+aw==
+  dependencies:
+    "@huggingface/jinja" "^0.5.0"
+    jsonrepair "^3.12.0"
+    jsonschema "^1.5.0"
+    pngjs "^7.0.0"
+    zod "^4.3.6"
 
 react-native-external-keyboard@^0.9.0:
   version "0.9.0"
@@ -13840,6 +13883,11 @@ yup@0.32.11:
   version "4.3.6"
   resolved "https://registry.yarnpkg.com/zod/-/zod-4.3.6.tgz#89c56e0aa7d2b05107d894412227087885ab112a"
   integrity sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg==
+
+zod@^4.3.6:
+  version "4.4.3"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-4.4.3.tgz#b680f172885d18bbebf21a834ea25e55a1bbf356"
+  integrity sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ==
 
 zustand@^5.0.10:
   version "5.0.12"
