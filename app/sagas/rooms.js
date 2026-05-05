@@ -10,6 +10,7 @@ import mergeSubscriptionsRooms from '../lib/methods/helpers/mergeSubscriptionsRo
 import buildMessage from '../lib/methods/helpers/buildMessage';
 import { getRooms } from '../lib/methods/getRooms';
 import { subscribeRooms } from '../lib/methods/subscribeRooms';
+import { voipDebugLog } from '../lib/services/voip/voipDebugLogger';
 
 const updateRooms = function* updateRooms({ server, newRoomsUpdatedAt }) {
 	const serversDB = database.servers;
@@ -29,6 +30,7 @@ const updateRooms = function* updateRooms({ server, newRoomsUpdatedAt }) {
 
 const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 	try {
+		voipDebugLog('saga.rooms', 'handleRoomsRequest enter -> subscribeRooms');
 		const serversDB = database.servers;
 		subscribeRooms();
 		const newRoomsUpdatedAt = new Date();

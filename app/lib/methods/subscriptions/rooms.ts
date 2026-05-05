@@ -27,6 +27,7 @@ import {
 	SubscriptionType
 } from '../../../definitions';
 import sdk from '../../services/sdk';
+import { voipDebugLog } from '../../services/voip/voipDebugLogger';
 import { type IDDPMessage } from '../../../definitions/IDDPMessage';
 import { getSubscriptionByRoomId } from '../../database/services/Subscription';
 import { getMessageById } from '../../database/services/Message';
@@ -440,10 +441,18 @@ export default function subscribeRooms() {
 	try {
 		// set the server that started this task
 		subServer = sdk.current.client.host;
-		sdk.current.subscribeNotifyUser().catch((e: unknown) => console.log(e));
+		voipDebugLog('subscribeRooms', 'subscribeNotifyUser start');
+		sdk.current
+			.subscribeNotifyUser()
+			.then(() => voipDebugLog('subscribeRooms', 'subscribeNotifyUser resolved'))
+			.catch((e: unknown) => {
+				voipDebugLog('subscribeRooms', 'subscribeNotifyUser rejected', String(e));
+				console.log(e);
+			});
 		roomsSubscription = { stop: () => stop() };
 		return null;
 	} catch (e) {
+		voipDebugLog('subscribeRooms', 'threw', String(e));
 		log(e);
 		return Promise.reject();
 	}

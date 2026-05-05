@@ -8,7 +8,9 @@ import type { VoipPayload } from '../../../definitions/Voip';
 import NativeVoipModule from '../../native/NativeVoip';
 import { awaitDdpLoggedIn, checkAndReopen } from '../connect';
 import { registerPushToken } from '../restApi';
+import sdk from '../sdk';
 import { MediaCallLogger } from './MediaCallLogger';
+import { voipDebugLog } from './voipDebugLogger';
 
 const Emitter = isIOS ? new NativeEventEmitter(NativeVoipModule) : DeviceEventEmitter;
 const platform = isIOS ? 'iOS' : 'Android';
@@ -81,39 +83,55 @@ function dispatchVoipAcceptFailureFromNative(
 
 /**
  * Heal a zombie DDP socket and replay state signals so the WebRTC negotiation
- * can complete. Called from the warm-locked CallKit accept path. The double
- * REST replay covers the gap window: the early shot catches signals already
- * queued server-side; the late shot (after re-login + `subscribeNotifyUser`)
- * catches signals the server forwarded into the dead sub during reconnect.
- * Without the late shot, caller's offer SDP — typically pushed within 100s of
- * ms of the accept — lands on a torn-down sub and is lost, and the callee
- * `Call` instance hits `TIMEOUT_TO_PROGRESS_SIGNALING` (10s) → hangup.
+ * can complete. Called from the warm-locked CallKit accept path. Replay must
+ * run AFTER re-login + `subscribeNotifyUser`: replaying earlier surfaces the
+ * call but fires the answer SDP through a half-open session — methodCall may
+ * resolve while the server's stream-notify-user route still points at the
+ * torn-down sub, so the caller never receives the answer and the `Call`
+ * instance hits `TIMEOUT_TO_PROGRESS_SIGNALING` (10s) → hangup.
  */
 async function runReconnectAndReplaySignals(): Promise<void> {
+	const t0 = Date.now();
+	voipDebugLog('runReconnectAndReplaySignals', 'enter');
 	try {
+		voipDebugLog('runReconnectAndReplaySignals', 'checkAndReopen start');
 		await checkAndReopen();
+		voipDebugLog('runReconnectAndReplaySignals', 'checkAndReopen done', { ms: Date.now() - t0 });
 	} catch (error) {
+		voipDebugLog('runReconnectAndReplaySignals', 'checkAndReopen failed', String(error));
 		mediaCallLogger.warn(`${TAG} checkAndReopen failed:`, error);
 	}
-	try {
-		await mediaSessionInstance.applyRestStateSignals();
-	} catch (error) {
-		mediaCallLogger.error(`${TAG} applyRestStateSignals (early) failed:`, error);
-	}
+	voipDebugLog('runReconnectAndReplaySignals', 'awaitDdpLoggedIn start', { ms: Date.now() - t0 });
 	await awaitDdpLoggedIn(5000);
+	voipDebugLog('runReconnectAndReplaySignals', 'awaitDdpLoggedIn done', { ms: Date.now() - t0 });
 	try {
-		await mediaSessionInstance.applyRestStateSignals();
+		voipDebugLog('runReconnectAndReplaySignals', 'subscribeNotifyUser start', { ms: Date.now() - t0 });
+		await sdk.current?.subscribeNotifyUser?.();
+		voipDebugLog('runReconnectAndReplaySignals', 'subscribeNotifyUser done', { ms: Date.now() - t0 });
 	} catch (error) {
-		mediaCallLogger.error(`${TAG} applyRestStateSignals (late) failed:`, error);
+		voipDebugLog('runReconnectAndReplaySignals', 'subscribeNotifyUser failed', String(error));
+		mediaCallLogger.warn(`${TAG} subscribeNotifyUser failed:`, error);
 	}
+	try {
+		voipDebugLog('runReconnectAndReplaySignals', 'applyRestStateSignals start', { ms: Date.now() - t0 });
+		await mediaSessionInstance.applyRestStateSignals();
+		voipDebugLog('runReconnectAndReplaySignals', 'applyRestStateSignals done', { ms: Date.now() - t0 });
+	} catch (error) {
+		voipDebugLog('runReconnectAndReplaySignals', 'applyRestStateSignals failed', String(error));
+		mediaCallLogger.error(`${TAG} applyRestStateSignals failed:`, error);
+	}
+	voipDebugLog('runReconnectAndReplaySignals', 'exit', { totalMs: Date.now() - t0 });
 }
 
 function handleVoipAcceptSucceededFromNative(data: VoipPayload, adapters: MediaCallEventsAdapters) {
 	const { callId } = data;
+	voipDebugLog('VoipAcceptSucceeded', 'enter', { callId, type: data.type, host: data.host });
 	if (callId && lastHandledVoipAcceptSucceededCallId === callId) {
+		voipDebugLog('VoipAcceptSucceeded', 'dedup hit');
 		return;
 	}
 	if (data.type !== 'incoming_call') {
+		voipDebugLog('VoipAcceptSucceeded', 'not incoming_call -> bail');
 		mediaCallLogger.log(`${TAG} VoipAcceptSucceeded: not an incoming call`);
 		return;
 	}
@@ -124,11 +142,14 @@ function handleVoipAcceptSucceededFromNative(data: VoipPayload, adapters: MediaC
 	NativeVoipModule.clearInitialEvents();
 	useCallStore.getState().setNativeAcceptedCallId(data.callId);
 	if (data.host && isVoipIncomingHostCurrentWorkspace(data.host, adapters.getActiveServerUrl)) {
+		voipDebugLog('VoipAcceptSucceeded', 'same workspace -> runReconnectAndReplaySignals');
 		runReconnectAndReplaySignals().catch(error => {
+			voipDebugLog('VoipAcceptSucceeded', 'runReconnectAndReplaySignals threw', String(error));
 			mediaCallLogger.error(`${TAG} runReconnectAndReplaySignals threw:`, error);
 		});
 		return;
 	}
+	voipDebugLog('VoipAcceptSucceeded', 'different workspace -> deeplink');
 	adapters.onOpenDeepLink({
 		callId: data.callId,
 		host: data.host

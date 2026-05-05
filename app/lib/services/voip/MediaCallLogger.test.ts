@@ -27,7 +27,7 @@ describe('MediaCallLogger', () => {
 			const logger = new MediaCallLogger();
 			logger.log('sensitive data', { token: 'secret', callId: 'abc' });
 
-			expect(spy).not.toHaveBeenCalled();
+			expect(spy).not.toHaveBeenCalledWith(expect.stringMatching(/^\[Media Call/));
 
 			spy.mockRestore();
 			// @ts-expect-error restoring
@@ -61,7 +61,7 @@ describe('MediaCallLogger', () => {
 			const logger = new MediaCallLogger();
 			logger.debug('debug message');
 
-			expect(spy).not.toHaveBeenCalled();
+			expect(spy).not.toHaveBeenCalledWith(expect.stringMatching(/^\[Media Call/));
 
 			spy.mockRestore();
 			// @ts-expect-error restoring

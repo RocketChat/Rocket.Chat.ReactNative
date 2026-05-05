@@ -93,6 +93,15 @@ jest.mock('../connect', () => ({
 	awaitDdpLoggedIn: jest.fn(() => Promise.resolve())
 }));
 
+jest.mock('../sdk', () => ({
+	__esModule: true,
+	default: {
+		current: {
+			subscribeNotifyUser: jest.fn(() => Promise.resolve())
+		}
+	}
+}));
+
 jest.mock('./MediaCallLogger', () => {
 	const log = jest.fn();
 	const debug = jest.fn();

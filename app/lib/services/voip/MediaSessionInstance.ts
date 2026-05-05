@@ -18,6 +18,7 @@ import { terminateNativeCall } from './terminateNativeCall';
 import { useCallStore } from './useCallStore';
 import { MediaCallLogger } from './MediaCallLogger';
 import { isSelfUserId } from './isSelfUserId';
+import { voipDebugLog } from './voipDebugLogger';
 import { store } from '../../store/auxStore';
 import sdk from '../sdk';
 import { mediaCallsStateSignals } from '../restApi';
@@ -54,8 +55,17 @@ class MediaSessionInstance {
 			nativeAcceptedCallId === signal.callId &&
 			call == null
 		) {
-			this.answerCall(signal.callId).catch(error => {
-				log(error);
+			// Defer accept past the current sync emit chain so the lib's `updatingInputTrack`
+			// re-entrancy lock (held during processSignal) has released before our state
+			// changes fire. Otherwise `requestInputTrackUpdate` bails inside the lock and the
+			// mic is never opened — call hangs in `waiting-for-offer` until 10s timeout.
+			// `queueMicrotask` runs FIFO after the lock-release microtask the lib already queued.
+			voipDebugLog('tryAnswer', 'matched -> answerCall (deferred)', { callId: signal.callId });
+			queueMicrotask(() => {
+				this.answerCall(signal.callId).catch(error => {
+					voipDebugLog('tryAnswer', 'answerCall rejected', String(error));
+					log(error);
+				});
 			});
 		}
 	}
@@ -63,20 +73,28 @@ class MediaSessionInstance {
 	/** Replays `media-calls.stateSignals`. Used on init and when native accept raced ahead of `nativeAcceptedCallId`. Caller must ensure SDK/session host matches the call (see MediaCallEvents host gate). `tryAnswerIfNativeAcceptedNotification` may also fire from the stream-notify-user path; `answerCall` is idempotent. */
 	public async applyRestStateSignals(): Promise<void> {
 		if (!this.instance) {
+			voipDebugLog('applyRestStateSignals', 'no instance');
 			return;
 		}
 		try {
+			voipDebugLog('applyRestStateSignals', 'fetch start');
 			const { signals } = await mediaCallsStateSignals(getUniqueIdSync());
+			voipDebugLog('applyRestStateSignals', 'fetched', {
+				count: signals.length,
+				types: signals.map((s: any) => `${s.type}${s.notification ? `/${s.notification}` : ''}`)
+			});
 			for (const signal of signals) {
 				this.instance.processSignal(signal);
 				this.tryAnswerIfNativeAcceptedNotification(signal);
 			}
 		} catch (error) {
+			voipDebugLog('applyRestStateSignals', 'error', String(error));
 			log(error);
 		}
 	}
 
 	public async init(userId: string): Promise<void> {
+		voipDebugLog('init', 'enter', { userId });
 		this.reset();
 
 		registerGlobals();
@@ -91,7 +109,15 @@ class MediaSessionInstance {
 				})
 		);
 		mediaSessionStore.setSendSignalFn((signal: ClientMediaSignal) => {
-			sdk.methodCall('stream-notify-user', `${userId}/media-calls`, JSON.stringify(signal));
+			voipDebugLog('sendSignal', 'enter', { type: (signal as any)?.type, callId: (signal as any)?.callId });
+			void (async () => {
+				try {
+					await sdk.methodCall('stream-notify-user', `${userId}/media-calls`, JSON.stringify(signal));
+					voipDebugLog('sendSignal', 'methodCall resolved', { type: (signal as any)?.type });
+				} catch (e: unknown) {
+					voipDebugLog('sendSignal', 'methodCall rejected', String(e));
+				}
+			})();
 		});
 		this.instance = mediaSessionStore.getInstance(userId);
 
@@ -107,6 +133,7 @@ class MediaSessionInstance {
 
 		this.mediaSignalListener = sdk.onStreamData('stream-notify-user', (ddpMessage: IDDPMessage) => {
 			if (!this.instance) {
+				voipDebugLog('streamData', 'no instance');
 				return;
 			}
 			const [, ev] = ddpMessage.fields.eventName.split('/');
@@ -114,12 +141,23 @@ class MediaSessionInstance {
 				return;
 			}
 			const signal = ddpMessage.fields.args[0];
+			voipDebugLog('streamData', 'media-signal', {
+				type: (signal as any)?.type,
+				notification: (signal as any)?.notification,
+				callId: (signal as any)?.callId
+			});
 			this.instance.processSignal(signal);
 
 			this.tryAnswerIfNativeAcceptedNotification(signal as ServerMediaSignal);
 		});
 
 		this.instance?.on('newCall', ({ call }: { call: IClientMediaCall }) => {
+			voipDebugLog('newCall', 'enter', {
+				callId: call?.callId,
+				hidden: call?.hidden,
+				role: call?.localParticipant?.role,
+				state: (call as any)?.state
+			});
 			if (call && !call.hidden) {
 				if (call.localParticipant.role === 'caller') {
 					useCallStore.getState().setCall(call);
@@ -133,6 +171,7 @@ class MediaSessionInstance {
 				}
 
 				call.emitter.on('ended', () => {
+					voipDebugLog('callState', 'ended', { callId: call.callId });
 					terminateNativeCall(call.callId);
 				});
 			}
@@ -140,17 +179,23 @@ class MediaSessionInstance {
 	}
 
 	public answerCall = async (callId: string) => {
+		voipDebugLog('answerCall', 'enter', { callId });
 		const { call: existingCall } = useCallStore.getState();
 		if (existingCall != null && existingCall.callId === callId) {
+			voipDebugLog('answerCall', 'already same call');
 			return;
 		}
 
 		const mainCall = this.instance?.getCallData(callId);
+		voipDebugLog('answerCall', 'lookup', { found: !!mainCall, hasInstance: !!this.instance });
 
 		if (mainCall && mainCall.callId === callId) {
 			try {
+				voipDebugLog('answerCall', 'accept() start');
 				await mainCall.accept();
+				voipDebugLog('answerCall', 'accept() resolved');
 			} catch (error) {
+				voipDebugLog('answerCall', 'accept() rejected', String(error));
 				log(error);
 				terminateNativeCall(callId);
 				const st = useCallStore.getState();
@@ -165,10 +210,12 @@ class MediaSessionInstance {
 			useCallStore.getState().setDirection('incoming');
 			await waitForNavigationReady();
 			Navigation.navigate('CallView');
+			voipDebugLog('answerCall', 'post-accept navigate done', { callId });
 			this.resolveRoomIdFromContact(mainCall.remoteParticipants[0]?.contact).catch(error => {
 				log(error);
 			});
 		} else {
+			voipDebugLog('answerCall', 'call not found', { callId, hasInstance: !!this.instance });
 			terminateNativeCall(callId);
 			const st = useCallStore.getState();
 			if (st.nativeAcceptedCallId === callId) {

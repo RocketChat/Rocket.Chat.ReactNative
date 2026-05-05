@@ -28,6 +28,7 @@ import { compareServerVersion } from '../methods/helpers/compareServerVersion';
 import { isIOS } from '../methods/helpers/deviceInfo';
 import { isSsl } from '../methods/helpers/isSsl';
 import fetch from '../methods/helpers/fetch';
+import { voipDebugLog } from './voip/voipDebugLogger';
 
 interface IServices {
 	[index: string]: string | boolean;
@@ -106,22 +107,26 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			});
 
 		connectingListener = sdk.current.onStreamData('connecting', () => {
+			voipDebugLog('sdk', 'connecting');
 			store.dispatch(connectRequest());
 		});
 
 		connectedListener = sdk.current.onStreamData('connected', () => {
 			const { connected } = store.getState().meteor;
+			voipDebugLog('sdk', 'connected event', { reduxAlreadyConnected: connected });
 			if (connected) {
 				return;
 			}
 			store.dispatch(connectSuccess());
 			const { user } = store.getState().login;
 			if (user?.token) {
+				voipDebugLog('sdk', 'connected -> dispatching loginRequest');
 				store.dispatch(loginRequest({ resume: user.token }, logoutOnError));
 			}
 		});
 
 		closeListener = sdk.current.onStreamData('close', () => {
+			voipDebugLog('sdk', 'close event');
 			store.dispatch(disconnectAction());
 		});
 
@@ -408,33 +413,40 @@ function checkAndReopen() {
 }
 
 /**
- * Resolves when the DDP socket is logged in (or `timeoutMs` elapses).
- * Used to gate post-reconnect work that depends on the saga-driven
- * `loginRequest → subscribeNotifyUser` chain having actually re-established
- * `${userId}/media-signal`. `checkAndReopen()` only awaits the WebSocket
- * `OPEN` + DDP `connect` handshake — not the login that re-subscribes streams.
+ * Resolves when the current session is fully logged in (or `timeoutMs` elapses).
+ * Gates post-reconnect work on the saga-driven `loginRequest → LOGIN.SUCCESS`
+ * chain having actually completed. The underlying `ddp.loggedIn` flag is not
+ * cleared on socket close, so it can read true for a stale session — we trust
+ * redux instead, which is reset to `isAuthenticated=false` by `LOGIN.REQUEST`
+ * (dispatched from the connectedListener) and back to true on `LOGIN.SUCCESS`
+ * after the network round trip. `meteor.connected` covers the connect handshake.
  */
 async function awaitDdpLoggedIn(timeoutMs: number = 5000): Promise<void> {
-	if (!sdk.current) return;
-	try {
-		const driver: any = await (sdk.current as any).socket;
-		const ddp = driver?.ddp;
-		if (!ddp) return;
-		if (ddp.loggedIn) return;
-		await new Promise<void>(resolve => {
-			const onLogin = () => {
-				clearTimeout(timer);
-				resolve();
-			};
-			const timer = setTimeout(() => {
-				ddp.off('login', onLogin);
-				resolve();
-			}, timeoutMs);
-			ddp.once('login', onLogin);
-		});
-	} catch {
-		// best-effort: callers should fall through to whatever they planned next
+	const t0 = Date.now();
+	const isReady = () => {
+		const s = store.getState();
+		return s.login.isAuthenticated && s.meteor.connected;
+	};
+	if (isReady()) {
+		voipDebugLog('awaitDdpLoggedIn', 'already loggedIn');
+		return;
 	}
+	voipDebugLog('awaitDdpLoggedIn', 'waiting for login + connected', { timeoutMs });
+	await new Promise<void>(resolve => {
+		const unsub = store.subscribe(() => {
+			if (isReady()) {
+				clearTimeout(timer);
+				unsub();
+				voipDebugLog('awaitDdpLoggedIn', 'login event fired', { ms: Date.now() - t0 });
+				resolve();
+			}
+		});
+		const timer = setTimeout(() => {
+			unsub();
+			voipDebugLog('awaitDdpLoggedIn', 'timeout', { ms: Date.now() - t0 });
+			resolve();
+		}, timeoutMs);
+	});
 }
 
 function disconnect() {
