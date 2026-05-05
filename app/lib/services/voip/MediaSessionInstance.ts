@@ -110,14 +110,9 @@ class MediaSessionInstance {
 		);
 		mediaSessionStore.setSendSignalFn((signal: ClientMediaSignal) => {
 			voipDebugLog('sendSignal', 'enter', { type: (signal as any)?.type, callId: (signal as any)?.callId });
-			void (async () => {
-				try {
-					await sdk.methodCall('stream-notify-user', `${userId}/media-calls`, JSON.stringify(signal));
-					voipDebugLog('sendSignal', 'methodCall resolved', { type: (signal as any)?.type });
-				} catch (e: unknown) {
-					voipDebugLog('sendSignal', 'methodCall rejected', String(e));
-				}
-			})();
+			Promise.resolve(sdk.methodCall('stream-notify-user', `${userId}/media-calls`, JSON.stringify(signal)))
+				.then(() => voipDebugLog('sendSignal', 'methodCall resolved', { type: (signal as any)?.type }))
+				.catch((e: unknown) => voipDebugLog('sendSignal', 'methodCall rejected', String(e)));
 		});
 		this.instance = mediaSessionStore.getInstance(userId);
 
