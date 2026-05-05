@@ -1,7 +1,7 @@
 diff --git a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
 --- a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
 +++ b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
-@@ -175,15 +175,107 @@
+@@ -175,15 +175,113 @@
      return Promise.resolve()
    }
  
@@ -46,10 +46,15 @@ diff --git a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts b/node_modules/@ro
 +   * Tear down the existing connection and start a fresh one. Used when the
 +   * socket is known or suspected dead. Emits `disconnected` so any in-flight
 +   * send() promises (which register `once('disconnected', reject)`) reject
-+   * visibly instead of hanging forever. Concurrent invocations join the same
-+   * in-flight reconnect promise so the parallel callers don't tear each other
-+   * down. Resolves only after the new socket has reached `OPEN` and the DDP
-+   * `connect` handshake has been acked.
++   * visibly instead of hanging forever, and emits `close` synchronously so
++   * app-level `close` listeners (e.g. Redux `disconnectAction` dispatch in
++   * `connect.ts`) flip to disconnected before the new socket opens; otherwise
++   * the next `'connected'` event would short-circuit on stale Redux state and
++   * the loginRequest → subscribeNotifyUser chain would never re-run, leaving
++   * the fresh socket without `${userId}/media-signal` or any other sub.
++   * Concurrent invocations join the same in-flight reconnect promise so the
++   * parallel callers don't tear each other down. Resolves only after the new
++   * socket has reached `OPEN` and the DDP `connect` handshake has been acked.
 +   */
 +  forceReopen = (): Promise<void> => {
 +    if (this._reopenInFlight) return this._reopenInFlight
@@ -63,6 +68,7 @@ diff --git a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts b/node_modules/@ro
 +      delete this.pingTimeout
 +    }
 +    this.emit('disconnected')
++    this.emit('close', { code: userDisconnectCloseCode })
 +    this.subscriptions = {}
 +    if (this.connection) {
 +      try {
@@ -116,7 +122,7 @@ diff --git a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts b/node_modules/@ro
    }
  
    /** Clear connection and try to connect again. */
-@@ -549,7 +641,9 @@
+@@ -549,7 +647,9 @@
        'uiInteraction',
        'e2ekeyRequest',
        'userData',

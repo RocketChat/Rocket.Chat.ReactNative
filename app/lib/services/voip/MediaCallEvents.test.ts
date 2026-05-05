@@ -70,7 +70,8 @@ jest.mock('../restApi', () => ({
 }));
 
 jest.mock('../connect', () => ({
-	checkAndReopen: jest.fn(() => Promise.resolve())
+	checkAndReopen: jest.fn(() => Promise.resolve()),
+	awaitDdpLoggedIn: jest.fn(() => Promise.resolve())
 }));
 
 jest.mock('./MediaCallLogger', () => ({
@@ -148,7 +149,7 @@ describe('MediaCallEvents cross-server accept (slice 3)', () => {
 				});
 			});
 
-			it('skips deep link open and replays REST state signals when host matches active workspace', async () => {
+			it('skips deep link open and replays REST state signals twice (early + after re-login) when host matches active workspace', async () => {
 				const { mediaSessionInstance } = jest.requireMock('./MediaSessionInstance');
 				mockServerSelector.mockReturnValueOnce('https://workspace-a.example.com');
 				const payload = buildIncomingPayload({
@@ -160,7 +161,7 @@ describe('MediaCallEvents cross-server accept (slice 3)', () => {
 
 				expect(mockSetNativeAcceptedCallId).toHaveBeenCalledWith('same-ws-call');
 				await new Promise(res => setImmediate(res));
-				expect(mediaSessionInstance.applyRestStateSignals).toHaveBeenCalledTimes(1);
+				expect(mediaSessionInstance.applyRestStateSignals).toHaveBeenCalledTimes(2);
 				expect(mockOnOpenDeepLink).not.toHaveBeenCalled();
 			});
 
@@ -213,10 +214,10 @@ describe('MediaCallEvents cross-server accept (slice 3)', () => {
 
 				resolveReopen();
 				await new Promise(res => setImmediate(res));
-				expect(mediaSessionInstance.applyRestStateSignals).toHaveBeenCalledTimes(1);
+				expect(mediaSessionInstance.applyRestStateSignals).toHaveBeenCalledTimes(2);
 			});
 
-			it('still calls applyRestStateSignals and warns when checkAndReopen rejects', async () => {
+			it('still calls applyRestStateSignals (early + late) and warns when checkAndReopen rejects', async () => {
 				const { checkAndReopen } = jest.requireMock('../connect');
 				const { mediaSessionInstance } = jest.requireMock('./MediaSessionInstance');
 				(checkAndReopen as jest.Mock).mockRejectedValueOnce(new Error('reconnect-failed'));
@@ -232,7 +233,34 @@ describe('MediaCallEvents cross-server accept (slice 3)', () => {
 
 				await new Promise(res => setImmediate(res));
 				expect(checkAndReopen).toHaveBeenCalledTimes(1);
+				expect(mediaSessionInstance.applyRestStateSignals).toHaveBeenCalledTimes(2);
+			});
+
+			it('runs late applyRestStateSignals after awaitDdpLoggedIn resolves on same-workspace accept', async () => {
+				const { awaitDdpLoggedIn } = jest.requireMock('../connect');
+				const { mediaSessionInstance } = jest.requireMock('./MediaSessionInstance');
+				let resolveLogin: () => void = () => undefined;
+				const loginPromise = new Promise<void>(res => {
+					resolveLogin = res;
+				});
+				(awaitDdpLoggedIn as jest.Mock).mockReturnValueOnce(loginPromise);
+				mockServerSelector.mockReturnValueOnce('https://workspace-a.example.com');
+
+				DeviceEventEmitter.emit(
+					'VoipAcceptSucceeded',
+					buildIncomingPayload({
+						callId: 'same-ws-late',
+						host: 'https://workspace-a.example.com'
+					})
+				);
+
+				await new Promise(res => setImmediate(res));
+				expect(awaitDdpLoggedIn).toHaveBeenCalledTimes(1);
 				expect(mediaSessionInstance.applyRestStateSignals).toHaveBeenCalledTimes(1);
+
+				resolveLogin();
+				await new Promise(res => setImmediate(res));
+				expect(mediaSessionInstance.applyRestStateSignals).toHaveBeenCalledTimes(2);
 			});
 
 			it('does not call checkAndReopen when accept is for a different workspace', async () => {

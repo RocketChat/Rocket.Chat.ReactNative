@@ -6,7 +6,7 @@ import { useCallStore } from './useCallStore';
 import { mediaSessionInstance } from './MediaSessionInstance';
 import type { VoipPayload } from '../../../definitions/Voip';
 import NativeVoipModule from '../../native/NativeVoip';
-import { checkAndReopen } from '../connect';
+import { awaitDdpLoggedIn, checkAndReopen } from '../connect';
 import { registerPushToken } from '../restApi';
 import { MediaCallLogger } from './MediaCallLogger';
 
@@ -79,6 +79,35 @@ function dispatchVoipAcceptFailureFromNative(
 	});
 }
 
+/**
+ * Heal a zombie DDP socket and replay state signals so the WebRTC negotiation
+ * can complete. Called from the warm-locked CallKit accept path. The double
+ * REST replay covers the gap window: the early shot catches signals already
+ * queued server-side; the late shot (after re-login + `subscribeNotifyUser`)
+ * catches signals the server forwarded into the dead sub during reconnect.
+ * Without the late shot, caller's offer SDP — typically pushed within 100s of
+ * ms of the accept — lands on a torn-down sub and is lost, and the callee
+ * `Call` instance hits `TIMEOUT_TO_PROGRESS_SIGNALING` (10s) → hangup.
+ */
+async function runReconnectAndReplaySignals(): Promise<void> {
+	try {
+		await checkAndReopen();
+	} catch (error) {
+		mediaCallLogger.warn(`${TAG} checkAndReopen failed:`, error);
+	}
+	try {
+		await mediaSessionInstance.applyRestStateSignals();
+	} catch (error) {
+		mediaCallLogger.error(`${TAG} applyRestStateSignals (early) failed:`, error);
+	}
+	await awaitDdpLoggedIn(5000);
+	try {
+		await mediaSessionInstance.applyRestStateSignals();
+	} catch (error) {
+		mediaCallLogger.error(`${TAG} applyRestStateSignals (late) failed:`, error);
+	}
+}
+
 function handleVoipAcceptSucceededFromNative(data: VoipPayload, adapters: MediaCallEventsAdapters) {
 	const { callId } = data;
 	if (callId && lastHandledVoipAcceptSucceededCallId === callId) {
@@ -95,15 +124,7 @@ function handleVoipAcceptSucceededFromNative(data: VoipPayload, adapters: MediaC
 	NativeVoipModule.clearInitialEvents();
 	useCallStore.getState().setNativeAcceptedCallId(data.callId);
 	if (data.host && isVoipIncomingHostCurrentWorkspace(data.host, adapters.getActiveServerUrl)) {
-		Promise.resolve()
-			.then(() => checkAndReopen())
-			.catch(error => {
-				mediaCallLogger.warn(`${TAG} checkAndReopen failed before applyRestStateSignals:`, error);
-			})
-			.then(() => mediaSessionInstance.applyRestStateSignals())
-			.catch(error => {
-				mediaCallLogger.error(`${TAG} applyRestStateSignals failed:`, error);
-			});
+		void runReconnectAndReplaySignals();
 		return;
 	}
 	adapters.onOpenDeepLink({

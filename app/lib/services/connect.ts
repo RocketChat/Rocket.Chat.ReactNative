@@ -407,6 +407,33 @@ function checkAndReopen() {
 	return sdk.current.checkAndReopen();
 }
 
+/**
+ * Resolves when the DDP socket is logged in (or `timeoutMs` elapses).
+ * Used to gate post-reconnect work that depends on the saga-driven
+ * `loginRequest → subscribeNotifyUser` chain having actually re-established
+ * `${userId}/media-signal`. `checkAndReopen()` only awaits the WebSocket
+ * `OPEN` + DDP `connect` handshake — not the login that re-subscribes streams.
+ */
+async function awaitDdpLoggedIn(timeoutMs: number = 5000): Promise<void> {
+	if (!sdk.current) return;
+	try {
+		const driver: any = await (sdk.current as any).socket;
+		const ddp = driver?.ddp;
+		if (!ddp) return;
+		if (ddp.loggedIn) return;
+		await new Promise<void>(resolve => {
+			const timer = setTimeout(resolve, timeoutMs);
+			const onLogin = () => {
+				clearTimeout(timer);
+				resolve();
+			};
+			ddp.once('login', onLogin);
+		});
+	} catch {
+		// best-effort: callers should fall through to whatever they planned next
+	}
+}
+
 function disconnect() {
 	const result = sdk.disconnect();
 	mediaSessionInstance.reset();
@@ -499,6 +526,7 @@ export {
 	loginWithPassword,
 	loginOAuthOrSso,
 	checkAndReopen,
+	awaitDdpLoggedIn,
 	abort,
 	connect,
 	disconnect,

@@ -91,6 +91,18 @@ describe('Socket.forceReopen awaitability', () => {
 		await Promise.all([a, b]);
 		expect(openMock).toHaveBeenCalledTimes(1);
 	});
+
+	it("emits 'close' synchronously before opening so app-level Redux disconnect dispatches", async () => {
+		const { socket } = buildSocket();
+		socket.open = jest.fn(() => Promise.resolve());
+		const closeListener = jest.fn();
+		socket.on('close', closeListener);
+		socket.forceReopen();
+		// Synchronous emit: must have fired by the time forceReopen returns.
+		expect(closeListener).toHaveBeenCalledTimes(1);
+		const [event] = closeListener.mock.calls[0];
+		expect(event).toEqual({ code: 4000 });
+	});
 });
 
 describe('Socket.checkAndReopen bucket dispatch', () => {
