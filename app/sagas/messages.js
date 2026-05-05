@@ -5,7 +5,8 @@ import { MESSAGES } from '../actions/actionsTypes';
 import database from '../lib/database';
 import log from '../lib/methods/helpers/log';
 import { goRoom } from '../lib/methods/helpers/goRoom';
-import { editMessage, createDirectMessage } from '../lib/services/restApi';
+import { editMessage } from '../lib/services/restApi';
+import { createDirectMessage } from '../lib/methods/createDirectMessage';
 
 const handleReplyBroadcast = function* handleReplyBroadcast({ message }) {
 	try {
