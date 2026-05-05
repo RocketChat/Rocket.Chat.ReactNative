@@ -92,34 +92,34 @@ describe('Socket.forceReopen awaitability', () => {
 		expect(openMock).toHaveBeenCalledTimes(1);
 	});
 
-	it("emits 'close' synchronously before opening so app-level Redux disconnect dispatches", () => {
+	it("emits 'close' synchronously before opening so app-level Redux disconnect dispatches", async () => {
 		const { socket } = buildSocket();
 		socket.open = jest.fn(() => Promise.resolve());
 		const closeListener = jest.fn();
 		socket.on('close', closeListener);
-		socket.forceReopen();
+		const reopenPromise = socket.forceReopen();
 		// Synchronous emit: must have fired by the time forceReopen returns.
 		expect(closeListener).toHaveBeenCalledTimes(1);
 		const [event] = closeListener.mock.calls[0];
 		expect(event).toEqual({ code: 4000 });
+		await reopenPromise;
 	});
 });
 
 describe('Socket.checkAndReopen bucket dispatch', () => {
-	const PING = 10000;
-
 	const buildWithSpies = () => {
 		const { socket } = buildSocket();
+		const { ping } = socket.config;
 		const forceReopen = jest.fn();
 		const probe = jest.fn();
 		socket.forceReopen = forceReopen;
 		socket.probe = probe;
-		return { socket, forceReopen, probe };
+		return { socket, forceReopen, probe, ping };
 	};
 
 	it('stale (elapsed > ping*2) calls forceReopen and skips probe', async () => {
-		const { socket, forceReopen, probe } = buildWithSpies();
-		socket.lastPing = Date.now() - PING * 2 - 1000;
+		const { socket, forceReopen, probe, ping } = buildWithSpies();
+		socket.lastPing = Date.now() - ping * 2 - 1000;
 		await socket.checkAndReopen();
 		expect(forceReopen).toHaveBeenCalledTimes(1);
 		expect(probe).not.toHaveBeenCalled();
@@ -174,7 +174,7 @@ describe('Socket.checkAndReopen bucket dispatch', () => {
 		};
 
 		await tryBucket(socket => {
-			socket.lastPing = Date.now() - PING * 2 - 1000;
+			socket.lastPing = Date.now() - socket.config.ping * 2 - 1000;
 		});
 		await tryBucket(socket => {
 			socket.lastPing = Date.now() - 5000;

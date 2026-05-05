@@ -69,19 +69,9 @@ jest.mock('../restApi', () => ({
 	registerPushToken: jest.fn(() => Promise.resolve())
 }));
 
-jest.mock('../connect', () => ({
-	checkAndReopen: jest.fn(() => Promise.resolve()),
-	awaitDdpLoggedIn: jest.fn(() => Promise.resolve())
-}));
+jest.mock('../connect', () => require('./MediaCallEvents.testHelpers').createConnectMock());
 
-jest.mock('../sdk', () => ({
-	__esModule: true,
-	default: {
-		current: {
-			subscribeNotifyUser: jest.fn(() => Promise.resolve())
-		}
-	}
-}));
+jest.mock('../sdk', () => require('./MediaCallEvents.testHelpers').createSdkMock());
 
 jest.mock('./MediaCallLogger', () => ({
 	MediaCallLogger: class {

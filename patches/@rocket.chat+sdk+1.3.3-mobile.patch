@@ -1,7 +1,8 @@
 diff --git a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
+index 19d31ae..3f33982 100644
 --- a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
 +++ b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
-@@ -175,15 +175,113 @@
+@@ -175,15 +175,115 @@ export class Socket extends EventEmitter {
      return Promise.resolve()
    }
  
@@ -26,8 +27,7 @@ diff --git a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts b/node_modules/@ro
 +        this.off('pong', onPong)
 +        clearTimeout(timer)
 +        resolve(alive)
-       }
--      this.open()
++      }
 +      const onPong = () => finish(true)
 +      const timer = setTimeout(() => finish(false), 2000)
 +      this.once('pong', onPong)
@@ -79,10 +79,13 @@ diff --git a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts b/node_modules/@ro
 +        this.connection.close(userDisconnectCloseCode)
 +      } catch (e) {
 +        this.logger.debug(`[ddp] forceReopen close error: ${(e as Error).message}`)
-+      }
+       }
+-      this.open()
 +      this.connection = undefined
 +    }
-+    const p = Promise.resolve(this.open()).then(() => undefined)
++    // Mark socket fresh so the next checkAndReopen doesn't see lastPing=0
++    // and falsely classify the brand-new connection as stale.
++    const p = Promise.resolve(this.open()).then(() => { this.lastPing = Date.now() })
 +    this._reopenInFlight = p
 +    const clear = () => { if (this._reopenInFlight === p) this._reopenInFlight = null }
 +    p.then(clear, clear)
@@ -122,7 +125,7 @@ diff --git a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts b/node_modules/@ro
    }
  
    /** Clear connection and try to connect again. */
-@@ -549,7 +647,9 @@
+@@ -549,7 +649,9 @@ export class DDPDriver extends EventEmitter implements ISocket, IDriver {
        'uiInteraction',
        'e2ekeyRequest',
        'userData',
