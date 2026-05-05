@@ -2,12 +2,11 @@ import Foundation
 
 extension FileManager {
   func groupDir() -> String {
-    let applicationGroupIdentifier = Bundle.main.string(forKey: "AppGroup")
-    
-    guard let path = containerURL(forSecurityApplicationGroupIdentifier: applicationGroupIdentifier)?.path else {
+    guard let appGroup = Bundle.main.object(forInfoDictionaryKey: "AppGroupIdentifier") as? String,
+          let path = containerURL(forSecurityApplicationGroupIdentifier: appGroup)?.path else {
       return ""
     }
-    
+
     return path
   }
 }

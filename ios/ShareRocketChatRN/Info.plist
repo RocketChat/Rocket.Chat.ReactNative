@@ -6,8 +6,6 @@
 	<false/>
 	<key>AppGroupIdentifier</key>
 	<string>group.ios.chat.rocket</string>
-	<key>AppGroup</key>
-	<string>group.ios.chat.rocket</string>
 	<key>bugsnag</key>
 	<dict>
 		<key>apiKey</key>
