@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { FlatList, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import I18n from '../../i18n';
 import * as List from '../../containers/List';
@@ -48,6 +49,7 @@ const DefaultBrowserView = () => {
 	const [supported, setSupported] = useState<IBrowsersValues[]>([]);
 
 	const navigation = useNavigation();
+	const { bottom } = useSafeAreaInsets();
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -86,7 +88,7 @@ const DefaultBrowserView = () => {
 			<FlatList
 				data={DEFAULT_BROWSERS.concat(supported)}
 				keyExtractor={item => item.value}
-				contentContainerStyle={List.styles.contentContainerStyleFlatList}
+				contentContainerStyle={[List.styles.contentContainerStyleFlatList, { paddingBottom: bottom }]}
 				renderItem={({ item }) => (
 					<List.Radio
 						isSelected={(!browser && item.value === 'systemDefault:') || item.title === browser}

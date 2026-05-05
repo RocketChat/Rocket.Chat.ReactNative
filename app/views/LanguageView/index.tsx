@@ -4,6 +4,7 @@ import RNRestart from 'react-native-restart';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import ListRadio from '../../containers/List/ListRadio';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
@@ -29,6 +30,7 @@ const LanguageView = () => {
 
 	const dispatch = useDispatch();
 	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'LanguageView'>>();
+	const { bottom } = useSafeAreaInsets();
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -95,7 +97,7 @@ const LanguageView = () => {
 				keyExtractor={item => item.value}
 				ListHeaderComponent={List.Separator}
 				ListFooterComponent={List.Separator}
-				contentContainerStyle={List.styles.contentContainerStyleFlatList}
+				contentContainerStyle={[List.styles.contentContainerStyleFlatList, { paddingBottom: bottom }]}
 				renderItem={({ item }) => (
 					<ListRadio
 						testID={`language-view-${item.value}`}

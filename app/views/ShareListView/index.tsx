@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import * as mime from 'react-native-mime-types';
 import { dequal } from 'dequal';
 import { Q } from '@nozbe/watermelondb';
+import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import database from '../../lib/database';
 import I18n from '../../i18n';
@@ -61,6 +62,7 @@ interface IShareListViewProps extends INavigationOption {
 	airGappedRestrictionRemainingDays: number | undefined;
 	shareExtensionParams: Record<string, any>;
 	dispatch: Dispatch;
+	insets: EdgeInsets;
 }
 
 const getItemLayout = (data: any, index: number) => ({ length: data.length, offset: ROW_HEIGHT * index, index });
@@ -446,7 +448,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 
 	render = () => {
 		const { chats, loading, searchResults, searching, serversCount } = this.state;
-		const { theme } = this.props;
+		const { theme, insets } = this.props;
 
 		if (loading) {
 			return <ActivityIndicator />;
@@ -487,6 +489,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 					data={searching ? searchResults : chats}
 					keyExtractor={keyExtractor}
 					style={[styles.flatlist, { backgroundColor: themes[theme].surfaceHover }]}
+					contentContainerStyle={{ paddingBottom: insets.bottom }}
 					renderItem={this.renderItem}
 					getItemLayout={getItemLayout}
 					ItemSeparatorComponent={List.Separator}
@@ -514,4 +517,4 @@ const mapStateToProps = ({ login, server, share, settings }: IApplicationState) 
 			: undefined
 });
 
-export default connect(mapStateToProps)(withTheme(ShareListView));
+export default connect(mapStateToProps)(withTheme(withSafeAreaInsets(ShareListView)));

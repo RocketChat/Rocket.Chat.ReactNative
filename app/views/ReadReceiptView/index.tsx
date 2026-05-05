@@ -4,6 +4,7 @@ import { dequal } from 'dequal';
 import { connect } from 'react-redux';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type RouteProp } from '@react-navigation/core';
+import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import dayjs from '../../lib/dayjs';
 import * as List from '../../containers/List';
@@ -32,6 +33,7 @@ interface INavigationOption {
 interface IReadReceiptViewProps extends INavigationOption {
 	Message_TimeAndDateFormat: string;
 	theme: TSupportedThemes;
+	insets: EdgeInsets;
 }
 
 class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceiptViewState> {
@@ -138,7 +140,7 @@ class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceip
 
 	render() {
 		const { receipts, loading } = this.state;
-		const { theme } = this.props;
+		const { theme, insets } = this.props;
 
 		return (
 			<SafeAreaView testID='read-receipt-view'>
@@ -147,7 +149,7 @@ class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceip
 					renderItem={this.renderItem}
 					ItemSeparatorComponent={List.Separator}
 					ListEmptyComponent={this.renderEmpty}
-					contentContainerStyle={List.styles.contentContainerStyleFlatList}
+					contentContainerStyle={[List.styles.contentContainerStyleFlatList, { paddingBottom: insets.bottom }]}
 					style={[
 						styles.list,
 						{
@@ -169,4 +171,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	Message_TimeAndDateFormat: state.settings.Message_TimeAndDateFormat as string
 });
 
-export default connect(mapStateToProps)(withTheme(ReadReceiptView));
+export default connect(mapStateToProps)(withTheme(withSafeAreaInsets(ReadReceiptView)));
