@@ -46,9 +46,9 @@ export function useActionSheetDetents({
 	contentHeight
 }: UseActionSheetDetentsParams): { detents: SheetDetent[]; maxHeight: number; scrollEnabled: boolean } {
 	const { fontScale } = useWindowDimensions();
-	const CANCEL_HEIGHT = 48 * fontScale;
 
 	return useMemo(() => {
+		const CANCEL_HEIGHT = 48 * fontScale;
 		const maxHeight = windowHeight * ACTION_SHEET_MAX_HEIGHT_FRACTION;
 		const hasOptions = optionsLength > 0;
 
