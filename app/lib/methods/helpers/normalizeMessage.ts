@@ -41,7 +41,7 @@ export default (msg: any): IMessage | IThreadResult | null => {
 			_id: `${msg._id}${key}`,
 			emoji: key,
 			usernames: msg.reactions ? msg.reactions[key].usernames : [],
-			names: msg.reactions ? msg.reactions[key].names : []
+			names: msg.reactions[key].usernames.map((username: string, index: number) => msg.reactions[key].names?.[index] || username)
 		}));
 	}
 	if (msg.translations && Object.keys(msg.translations).length) {
