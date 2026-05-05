@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="voip_incoming_call_channel_description">Incoming VoIP calls</string>
+    <string name="voip_incoming_call_title">Incoming call</string>
+    <string name="voip_incoming_call_text">Call from %1$s</string>
+    <string name="voip_call_service_channel_description">VoIP call in progress</string>
+    <string name="voip_call_service_title">VoIP Call</string>
+    <string name="voip_call_service_text">Call in progress</string>
+</resources>

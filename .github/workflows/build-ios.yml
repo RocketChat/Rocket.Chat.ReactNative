@@ -27,7 +27,7 @@ jobs:
     if: ${{ inputs.type == 'experimental' && (always() && (needs.build-hold.result == 'success' || needs.build-hold.result == 'skipped')) }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
       - name: Checkout and Setup Node
         uses: ./.github/actions/setup-node
@@ -67,7 +67,7 @@ jobs:
     if: ${{ inputs.type == 'experimental' && (always() && (needs.build-ios.result == 'success')) }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
       - name: Setup Node
         uses: ./.github/actions/setup-node
