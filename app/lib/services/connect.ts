@@ -422,11 +422,14 @@ async function awaitDdpLoggedIn(timeoutMs: number = 5000): Promise<void> {
 		if (!ddp) return;
 		if (ddp.loggedIn) return;
 		await new Promise<void>(resolve => {
-			const timer = setTimeout(resolve, timeoutMs);
 			const onLogin = () => {
 				clearTimeout(timer);
 				resolve();
 			};
+			const timer = setTimeout(() => {
+				ddp.off('login', onLogin);
+				resolve();
+			}, timeoutMs);
 			ddp.once('login', onLogin);
 		});
 	} catch {
