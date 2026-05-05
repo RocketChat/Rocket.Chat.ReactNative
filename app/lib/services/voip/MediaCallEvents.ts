@@ -124,7 +124,9 @@ function handleVoipAcceptSucceededFromNative(data: VoipPayload, adapters: MediaC
 	NativeVoipModule.clearInitialEvents();
 	useCallStore.getState().setNativeAcceptedCallId(data.callId);
 	if (data.host && isVoipIncomingHostCurrentWorkspace(data.host, adapters.getActiveServerUrl)) {
-		void runReconnectAndReplaySignals();
+		runReconnectAndReplaySignals().catch(error => {
+			mediaCallLogger.error(`${TAG} runReconnectAndReplaySignals threw:`, error);
+		});
 		return;
 	}
 	adapters.onOpenDeepLink({

@@ -92,7 +92,7 @@ describe('Socket.forceReopen awaitability', () => {
 		expect(openMock).toHaveBeenCalledTimes(1);
 	});
 
-	it("emits 'close' synchronously before opening so app-level Redux disconnect dispatches", async () => {
+	it("emits 'close' synchronously before opening so app-level Redux disconnect dispatches", () => {
 		const { socket } = buildSocket();
 		socket.open = jest.fn(() => Promise.resolve());
 		const closeListener = jest.fn();
