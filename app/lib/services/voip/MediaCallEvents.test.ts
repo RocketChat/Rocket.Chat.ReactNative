@@ -70,7 +70,7 @@ jest.mock('../restApi', () => ({
 }));
 
 jest.mock('../connect', () => ({
-	checkAndReopen: jest.fn()
+	checkAndReopen: jest.fn(() => Promise.resolve())
 }));
 
 jest.mock('./MediaCallLogger', () => ({
@@ -190,7 +190,7 @@ describe('MediaCallEvents cross-server accept (slice 3)', () => {
 
 			it('triggers SDK reconnect only once for duplicate VoipAcceptSucceeded with the same callId', () => {
 				const { checkAndReopen } = jest.requireMock('../connect');
-				mockServerSelector.mockReturnValue('https://workspace-a.example.com');
+				mockServerSelector.mockReturnValueOnce('https://workspace-a.example.com');
 				const payload = buildIncomingPayload({
 					callId: 'reopen-dedupe',
 					host: 'https://workspace-a.example.com'
@@ -208,6 +208,7 @@ describe('MediaCallEvents cross-server accept (slice 3)', () => {
 				const callOrder: string[] = [];
 				(checkAndReopen as jest.Mock).mockImplementationOnce(() => {
 					callOrder.push('checkAndReopen');
+					return Promise.resolve();
 				});
 				(mediaSessionInstance.applyRestStateSignals as jest.Mock).mockImplementationOnce(() => {
 					callOrder.push('applyRestStateSignals');

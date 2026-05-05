@@ -96,7 +96,9 @@ function handleVoipAcceptSucceededFromNative(data: VoipPayload, adapters: MediaC
 	useCallStore.getState().setNativeAcceptedCallId(data.callId);
 	if (data.host && isVoipIncomingHostCurrentWorkspace(data.host, adapters.getActiveServerUrl)) {
 		mediaCallLogger.debug(`${TAG} Triggering SDK reconnect on native accept`);
-		checkAndReopen();
+		checkAndReopen().catch(error => {
+			mediaCallLogger.error(`${TAG} checkAndReopen failed:`, error);
+		});
 		mediaSessionInstance.applyRestStateSignals().catch(error => {
 			mediaCallLogger.error(`${TAG} applyRestStateSignals failed:`, error);
 		});

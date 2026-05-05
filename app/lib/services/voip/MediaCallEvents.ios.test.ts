@@ -89,7 +89,7 @@ jest.mock('../restApi', () => ({
 }));
 
 jest.mock('../connect', () => ({
-	checkAndReopen: jest.fn()
+	checkAndReopen: jest.fn(() => Promise.resolve())
 }));
 
 jest.mock('./MediaCallLogger', () => {
