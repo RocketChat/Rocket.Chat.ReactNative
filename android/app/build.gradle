@@ -148,10 +148,15 @@ dependencies {
 
     implementation "com.google.code.gson:gson:2.8.9"
     implementation "io.github.zhongwuzw:mmkv:2.2.4"
+    implementation "com.github.bumptech.glide:glide:${rootProject.ext.glideVersion}"
     implementation 'com.facebook.soloader:soloader:0.10.4'
     
     // For SecureKeystore (EncryptedSharedPreferences)
     implementation 'androidx.security:security-crypto:1.1.0'
+
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.robolectric:robolectric:4.14.1'
+    testImplementation 'com.squareup.okhttp3:mockwebserver:4.9.2'
 
     // For ProcessLifecycleOwner (app foreground detection)
     implementation 'androidx.lifecycle:lifecycle-process:2.8.7'

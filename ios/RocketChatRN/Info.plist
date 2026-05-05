@@ -74,7 +74,7 @@
 	<key>NSFaceIDUsageDescription</key>
 	<string>Unlock the app with FaceID</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Use your microphone to record audio messages</string>
+	<string>$(PRODUCT_NAME) uses your microphone to make voice calls and record audio messages</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Give $(PRODUCT_NAME) permission to save photos</string>
 	<key>NSPhotoLibraryUsageDescription</key>

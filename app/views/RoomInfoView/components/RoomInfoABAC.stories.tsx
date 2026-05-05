@@ -7,7 +7,7 @@ import { ThemeContext } from '../../../theme';
 import { colors } from '../../../lib/constants/colors';
 
 export default {
-	title: 'RoomInfoABAC',
+	title: 'RoomInfoView/RoomInfoABAC',
 	component: RoomInfoABAC,
 	decorators: [
 		(Story: any) => (

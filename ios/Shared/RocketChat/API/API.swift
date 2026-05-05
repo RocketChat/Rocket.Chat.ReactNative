@@ -8,6 +8,25 @@
 
 import Foundation
 
+/// Shared TLS / client-certificate handling delegate for URLSession.
+/// Forwards authentication challenges to the existing `Challenge` implementation in `SSLPinning.mm`
+/// so both WebSocket (DDP) and REST (API) traffic use the same pinning flow.
+final class RocketChatURLSessionDelegate: NSObject, URLSessionDelegate {
+    func urlSession(
+        _ session: URLSession,
+        didReceive challenge: URLAuthenticationChallenge,
+        completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
+    ) {
+        Challenge.runChallenge(session, didReceiveChallenge: challenge, completionHandler: completionHandler)
+    }
+}
+
+/// Shared pinned URLSession singleton — reuses `Challenge.runChallenge()` for all REST calls.
+private let pinnedSession: URLSession = {
+    let config = URLSessionConfiguration.default
+    return URLSession(configuration: config, delegate: RocketChatURLSessionDelegate(), delegateQueue: nil)
+}()
+
 struct Retry {
   let retries: Int
   let retryTimeout = [10.0, 5.0, 3.0, 1.0]
@@ -68,7 +87,7 @@ final class API {
       return
     }
     
-    let task = URLSession.shared.dataTask(with: request) {(data, _, error) in
+    let task = pinnedSession.dataTask(with: request) {(data, _, error) in
       if let _ = error as NSError? {
         onError()
         return

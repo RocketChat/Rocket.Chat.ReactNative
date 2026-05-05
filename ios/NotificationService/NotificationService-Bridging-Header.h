@@ -3,7 +3,8 @@
 //  NotificationService-Bridging-Header.h
 //
 
-#import "SecureStorage.h"
+#import "../Libraries/SecureStorage.h"
+#import "../Libraries/Challenge.h"
 #import "MMKVBridge.h"
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>

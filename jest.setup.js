@@ -40,7 +40,20 @@ jest.mock('react-native-file-viewer', () => ({
 	open: jest.fn(() => null)
 }));
 
-jest.mock('expo-haptics', () => jest.fn(() => null));
+jest.mock('react-native-incall-manager', () => ({
+	start: jest.fn(),
+	stop: jest.fn(),
+	setForceSpeakerphoneOn: jest.fn(() => Promise.resolve())
+}));
+
+jest.mock('expo-haptics', () => ({
+	impactAsync: jest.fn(),
+	ImpactFeedbackStyle: {
+		Light: 'light',
+		Medium: 'medium',
+		Heavy: 'heavy'
+	}
+}));
 
 jest.mock('react-native-gesture-handler', () => {
 	const React = require('react');
@@ -302,6 +315,10 @@ jest.mock('react-native-math-view', () => {
 });
 
 jest.mock('react-native-keyboard-controller');
+
+jest.mock('./app/lib/methods/helpers/externalInput', () => ({
+	isExternalKeyboardConnected: jest.fn(() => false)
+}));
 
 jest.mock('react-native-webview', () => {
 	const React = require('react');
