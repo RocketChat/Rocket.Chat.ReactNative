@@ -28,7 +28,6 @@ import { compareServerVersion } from '../methods/helpers/compareServerVersion';
 import { isIOS } from '../methods/helpers/deviceInfo';
 import { isSsl } from '../methods/helpers/isSsl';
 import fetch from '../methods/helpers/fetch';
-import { voipDebugLog } from './voip/voipDebugLogger';
 
 interface IServices {
 	[index: string]: string | boolean;
@@ -107,26 +106,22 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			});
 
 		connectingListener = sdk.current.onStreamData('connecting', () => {
-			voipDebugLog('sdk', 'connecting');
 			store.dispatch(connectRequest());
 		});
 
 		connectedListener = sdk.current.onStreamData('connected', () => {
 			const { connected } = store.getState().meteor;
-			voipDebugLog('sdk', 'connected event', { reduxAlreadyConnected: connected });
 			if (connected) {
 				return;
 			}
 			store.dispatch(connectSuccess());
 			const { user } = store.getState().login;
 			if (user?.token) {
-				voipDebugLog('sdk', 'connected -> dispatching loginRequest');
 				store.dispatch(loginRequest({ resume: user.token }, logoutOnError));
 			}
 		});
 
 		closeListener = sdk.current.onStreamData('close', () => {
-			voipDebugLog('sdk', 'close event');
 			store.dispatch(disconnectAction());
 		});
 
@@ -414,36 +409,29 @@ function checkAndReopen() {
 
 /**
  * Resolves when the current session is fully logged in (or `timeoutMs` elapses).
- * Gates post-reconnect work on the saga-driven `loginRequest → LOGIN.SUCCESS`
- * chain having actually completed. The underlying `ddp.loggedIn` flag is not
- * cleared on socket close, so it can read true for a stale session — we trust
- * redux instead, which is reset to `isAuthenticated=false` by `LOGIN.REQUEST`
- * (dispatched from the connectedListener) and back to true on `LOGIN.SUCCESS`
- * after the network round trip. `meteor.connected` covers the connect handshake.
+ * Trusts redux state rather than `ddp.loggedIn`, which isn't cleared on socket
+ * close and can read true for a stale session. Redux resets to
+ * `isAuthenticated=false` on `LOGIN.REQUEST` (dispatched by the connectedListener)
+ * and back to true on `LOGIN.SUCCESS`; `meteor.connected` covers the handshake.
  */
 async function awaitDdpLoggedIn(timeoutMs: number = 5000): Promise<void> {
-	const t0 = Date.now();
 	const isReady = () => {
 		const s = store.getState();
 		return s.login.isAuthenticated && s.meteor.connected;
 	};
 	if (isReady()) {
-		voipDebugLog('awaitDdpLoggedIn', 'already loggedIn');
 		return;
 	}
-	voipDebugLog('awaitDdpLoggedIn', 'waiting for login + connected', { timeoutMs });
 	await new Promise<void>(resolve => {
 		const unsub = store.subscribe(() => {
 			if (isReady()) {
 				clearTimeout(timer);
 				unsub();
-				voipDebugLog('awaitDdpLoggedIn', 'login event fired', { ms: Date.now() - t0 });
 				resolve();
 			}
 		});
 		const timer = setTimeout(() => {
 			unsub();
-			voipDebugLog('awaitDdpLoggedIn', 'timeout', { ms: Date.now() - t0 });
 			resolve();
 		}, timeoutMs);
 	});

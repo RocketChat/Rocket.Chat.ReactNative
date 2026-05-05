@@ -34,7 +34,6 @@ import { logout, removeServerData, removeServerDatabase } from '../lib/methods/l
 import { subscribeSettings } from '../lib/methods/getSettings';
 import { disconnect, loginWithPassword, login } from '../lib/services/connect';
 import { saveUserProfile, registerPushToken, getUsersRoles, setUserPresenceAway } from '../lib/services/restApi';
-import { voipDebugLog } from '../lib/services/voip/voipDebugLogger';
 import { setUsersRoles } from '../actions/usersRoles';
 import { getServerById } from '../lib/database/services/Server';
 import appNavigation from '../lib/navigation/appNavigation';
@@ -288,12 +287,10 @@ const startVoipFork = function* startVoipFork() {
 
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	try {
-		voipDebugLog('saga.login', 'handleLoginSuccess enter', { userId: user?.id });
 		yield put(setUser(user));
 		setLanguage(user?.language);
 
 		const server = yield select(getServer);
-		voipDebugLog('saga.login', 'dispatching roomsRequest');
 		yield put(roomsRequest());
 		yield put(encryptionInit());
 		// VoIP must spawn before the awaited fetches so it survives the 2s cancel race in root().
