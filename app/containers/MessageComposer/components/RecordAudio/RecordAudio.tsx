@@ -1,6 +1,12 @@
 import { View, Text } from 'react-native';
 import React, { type ReactElement, useEffect, useRef } from 'react';
-import { Audio } from 'expo-av';
+import {
+	RecordingPresets,
+	requestRecordingPermissionsAsync,
+	setAudioModeAsync,
+	useAudioRecorder,
+	useAudioRecorderState
+} from 'expo-audio';
 import { getInfoAsync } from 'expo-file-system/legacy';
 import { useKeepAwake } from 'expo-keep-awake';
 import { shallowEqual } from 'react-redux';
@@ -12,7 +18,7 @@ import sharedStyles from '../../../../views/Styles';
 import { ReviewButton } from './ReviewButton';
 import { useMessageComposerApi } from '../../context';
 import { sendFileMessage } from '../../../../lib/methods/sendFileMessage';
-import { RECORDING_EXTENSION, RECORDING_MODE, RECORDING_SETTINGS } from '../../../../lib/constants/audio';
+import { RECORDING_EXTENSION } from '../../../../lib/constants/audio';
 import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
 import log from '../../../../lib/methods/helpers/log';
 import { type IUpload } from '../../../../definitions';
@@ -25,9 +31,10 @@ import i18n from '../../../../i18n';
 
 export const RecordAudio = (): ReactElement | null => {
 	const [styles, colors] = useStyle();
-	const recordingRef = useRef<Audio.Recording | null>(null);
+	const audioRecorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
+	const recorderState = useAudioRecorderState(audioRecorder);
+
 	const durationRef = useRef<IDurationRef>({} as IDurationRef);
-	const numberOfTriesRef = useRef(0);
 	const [status, setStatus] = React.useState<'recording' | 'reviewing'>('recording');
 	const { setRecordingAudio } = useMessageComposerApi();
 	const { rid, tmid } = useRoomContext();
@@ -36,45 +43,44 @@ export const RecordAudio = (): ReactElement | null => {
 	const permissionToUpload = useCanUploadFile(rid);
 	useKeepAwake();
 
+	async function doRecording() {
+		const permissions = await requestRecordingPermissionsAsync();
+		if (!permissions.granted) {
+			setRecordingAudio(false);
+			return;
+		}
+
+		await setAudioModeAsync({
+			playsInSilentMode: true,
+			allowsRecording: true
+		});
+
+		await audioRecorder.prepareToRecordAsync();
+		await audioRecorder.record();
+	}
+
 	useEffect(() => {
-		const record = async () => {
-			try {
-				await Audio.setAudioModeAsync(RECORDING_MODE);
-				recordingRef.current = new Audio.Recording();
-				await recordingRef.current.prepareToRecordAsync(RECORDING_SETTINGS);
-				recordingRef.current.setOnRecordingStatusUpdate(durationRef.current.onRecordingStatusUpdate);
-				await recordingRef.current.startAsync();
-			} catch (error: any) {
-				// error only occurs on iOS devices
-				if (error?.code === 'E_AUDIO_RECORDERNOTCREATED') {
-					if (numberOfTriesRef.current <= 5) {
-						recordingRef.current = null;
-						numberOfTriesRef.current += 1;
-						setTimeout(() => {
-							record();
-						}, 100);
-					} else {
-						console.error(error);
-					}
-				} else {
-					console.error(error);
-				}
-			}
-		};
-		record();
+		doRecording().catch(error => {
+			log(error);
+			setRecordingAudio(false);
+		});
 
 		return () => {
-			try {
-				recordingRef.current?.stopAndUnloadAsync();
-			} catch {
+			audioRecorder.stop().catch(() => {
 				// Do nothing
-			}
+			});
 		};
 	}, []);
 
+	useEffect(() => {
+		if (!durationRef.current) return;
+
+		durationRef.current.onRecordingStatusUpdate?.(recorderState);
+	}, [recorderState]);
+
 	const cancelRecording = async () => {
 		try {
-			await recordingRef.current?.stopAndUnloadAsync();
+			await audioRecorder.stop();
 		} catch {
 			// Do nothing
 		} finally {
@@ -84,7 +90,7 @@ export const RecordAudio = (): ReactElement | null => {
 
 	const goReview = async () => {
 		try {
-			await recordingRef.current?.stopAndUnloadAsync();
+			await audioRecorder.stop();
 			setStatus('reviewing');
 		} catch {
 			// Do nothing
@@ -95,14 +101,13 @@ export const RecordAudio = (): ReactElement | null => {
 		try {
 			if (!rid) return;
 			setRecordingAudio(false);
-			const fileURI = recordingRef.current?.getURI();
-			const fileData = await getInfoAsync(fileURI as string);
+			const fileData = await getInfoAsync(recorderState.url as string);
 			const fileInfo = {
 				name: `${Date.now()}${RECORDING_EXTENSION}`,
 				mime: 'audio/aac',
 				type: 'audio/aac',
 				store: 'Uploads',
-				path: fileURI,
+				path: recorderState.url,
 				size: fileData.exists ? fileData.size : null
 			} as IUpload;
 
@@ -124,7 +129,7 @@ export const RecordAudio = (): ReactElement | null => {
 		return (
 			<View style={styles.review}>
 				<View style={styles.audioPlayer}>
-					<AudioPlayer fileUri={recordingRef.current?.getURI() ?? ''} rid={rid} downloadState='downloaded' />
+					<AudioPlayer fileUri={recorderState.url ?? ''} rid={rid} downloadState='downloaded' />
 				</View>
 				<View style={styles.buttons}>
 					<CancelButton onPress={cancelRecording} />

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Video, ResizeMode } from 'expo-av';
+import { useVideoPlayer, VideoView } from 'expo-video';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import prettyBytes from 'pretty-bytes';
@@ -15,6 +15,14 @@ import { themes } from '../../lib/constants/colors';
 import { type IShareAttachment } from '../../definitions';
 
 const MESSAGE_COMPOSER_HEIGHT = 56;
+
+const VideoPreview = React.memo(({ uri, width, height }: { uri: string; width?: number; height?: number }) => {
+	const player = useVideoPlayer(uri, player => {
+		player.play();
+	});
+
+	return <VideoView player={player} style={{ width, height }} contentFit='contain' nativeControls allowsFullscreen />;
+});
 
 const styles = StyleSheet.create({
 	fileContainer: {
@@ -83,16 +91,7 @@ const Preview = React.memo(({ item, theme, length }: IPreview) => {
 							height: ev.nativeEvent.layout.height
 						});
 					}}>
-					<Video
-						source={{ uri: item.path }}
-						rate={1.0}
-						volume={1.0}
-						isMuted={false}
-						resizeMode={ResizeMode.CONTAIN}
-						isLooping={false}
-						style={{ width: wrapperDimensions?.width, height: wrapperDimensions?.height }}
-						useNativeControls
-					/>
+					<VideoPreview uri={item.path} width={wrapperDimensions?.width} height={wrapperDimensions?.height} />
 				</View>
 			);
 		}

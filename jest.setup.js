@@ -77,7 +77,7 @@ jest.mock('expo-font', () => ({
 	__esModule: true
 }));
 
-jest.mock('expo-av', () => {
+jest.mock('expo-audio', () => {
 	const InterruptionModeAndroid = {
 		DoNotMix: 1,
 		DuckOthers: 2
@@ -87,108 +87,156 @@ jest.mock('expo-av', () => {
 		DuckOthers: 2,
 		MixWithOthers: 3
 	};
+	const AudioQuality = {
+		MEDIUM: 0x40
+	};
+	const IOSOutputFormat = {
+		MPEG4AAC: 'mpeg4aac'
+	};
+
+	const mockAudioPlayer = {
+		play: jest.fn(),
+		pause: jest.fn(),
+		stop: jest.fn(),
+		replay: jest.fn(),
+		setPlaying: jest.fn(),
+		setLooping: jest.fn(),
+		setMuted: jest.fn(),
+		setVolume: jest.fn(),
+		setPlaybackRate: jest.fn(),
+		seekTo: jest.fn(),
+		release: jest.fn(),
+		addListener: jest.fn(() => jest.fn()),
+		removeListener: jest.fn(),
+		getStatusAsync: jest.fn(() => Promise.resolve()),
+		playing: false,
+		looping: false,
+		muted: false,
+		volume: 1.0,
+		playbackRate: 1.0,
+		currentTime: 0,
+		duration: 0,
+		loaded: false,
+		progress: 0,
+		buffering: false,
+		keepAlive: false
+	};
 
 	return {
+		createAudioPlayer: jest.fn(() => mockAudioPlayer),
+		AudioPlayer: jest.fn(() => mockAudioPlayer),
 		Audio: {
-			getPermissionsAsync: jest.fn(() => Promise.resolve({ status: 'granted', granted: true, canAskAgain: true })),
-			requestPermissionsAsync: jest.fn(() => Promise.resolve({ status: 'granted', granted: true, canAskAgain: true })),
 			setAudioModeAsync: jest.fn(() => Promise.resolve()),
-			Recording: jest.fn(() => ({
-				prepareToRecordAsync: jest.fn(() => Promise.resolve()),
-				startAsync: jest.fn(() => Promise.resolve()),
-				stopAndUnloadAsync: jest.fn(() => Promise.resolve()),
-				setOnRecordingStatusUpdate: jest.fn(),
-				getStatusAsync: jest.fn(() => Promise.resolve())
-			})),
-			Sound: {
-				createAsync: jest.fn(() =>
-					Promise.resolve({
-						sound: {
-							setOnPlaybackStatusUpdate: jest.fn(),
-							playAsync: jest.fn(() => Promise.resolve()),
-							pauseAsync: jest.fn(() => Promise.resolve()),
-							stopAsync: jest.fn(() => Promise.resolve()),
-							unloadAsync: jest.fn(() => Promise.resolve()),
-							getStatusAsync: jest.fn(() => Promise.resolve()),
-							setPositionAsync: jest.fn(() => Promise.resolve())
-						},
-						status: {}
-					})
-				),
-				create: jest.fn(() => ({
-					setOnPlaybackStatusUpdate: jest.fn(),
-					playAsync: jest.fn(() => Promise.resolve()),
-					pauseAsync: jest.fn(() => Promise.resolve()),
-					stopAsync: jest.fn(() => Promise.resolve()),
-					unloadAsync: jest.fn(() => Promise.resolve()),
-					getStatusAsync: jest.fn(() => Promise.resolve()),
-					setPositionAsync: jest.fn(() => Promise.resolve()),
-					loadAsync: jest.fn(() => Promise.resolve())
-				}))
-			},
-			RecordingStatus: {
-				StatusDict: {}
-			},
-			AudioStatus: {
-				StatusDict: {}
-			},
-			AndroidOutputFormat: {
-				AAC_ADTS: 0
-			},
-			AndroidAudioEncoder: {
-				AAC: 0
-			},
-			IOSAudioQuality: {
-				LOW: 0,
-				MEDIUM: 1,
-				HIGH: 2
-			},
-			IOSOutputFormat: {
-				MPEG4AAC: 0
-			},
-			RecordingOptionsPresets: {
-				LOW_QUALITY: {
-					android: {
-						extension: '.aac',
-						outputFormat: 0,
-						audioEncoder: 0,
-						sampleRate: 16000,
-						numberOfChannels: 1,
-						bitRate: 64000
-					},
-					ios: {
-						extension: '.aac',
-						audioQuality: 1,
-						outputFormat: 0,
-						sampleRate: 16000,
-						numberOfChannels: 1,
-						bitRate: 64000
-					},
-					web: {}
+			getAudioModeAsync: jest.fn(() => Promise.resolve({})),
+			requestRecordingPermissionsAsync: jest.fn(() => Promise.resolve({ status: 'granted', granted: true, canAskAgain: true })),
+			getRecordingPermissionsAsync: jest.fn(() => Promise.resolve({ status: 'granted', granted: true, canAskAgain: true }))
+		},
+		setAudioModeAsync: jest.fn(() => Promise.resolve()),
+		getAudioModeAsync: jest.fn(() => Promise.resolve({})),
+		requestRecordingPermissionsAsync: jest.fn(() => Promise.resolve({ status: 'granted', granted: true, canAskAgain: true })),
+		getRecordingPermissionsAsync: jest.fn(() => Promise.resolve({ status: 'granted', granted: true, canAskAgain: true })),
+		useAudioPlayer: jest.fn(() => mockAudioPlayer),
+		useAudioRecorder: jest.fn(() => ({
+			isRecording: false,
+			permission: { granted: true },
+			requestPermissions: jest.fn(() => Promise.resolve({ granted: true })),
+			start: jest.fn(),
+			stop: jest.fn(() => Promise.resolve()),
+			record: jest.fn(() => Promise.resolve()),
+			prepareToRecordAsync: jest.fn(() => Promise.resolve()),
+			getStatus: jest.fn(() => ({ canRecord: true, isRecording: false, duration: 0, metering: 0 }))
+		})),
+		useAudioRecorderState: jest.fn(() => ({
+			isRecording: false,
+			permission: { granted: true },
+			canRecord: true,
+			duration: 0,
+			metering: 0,
+			url: ''
+		})),
+		RecordingPresets: {
+			HIGH_QUALITY: {
+				android: {
+					bitRate: 128000,
+					channels: 2,
+					codec: 'aac',
+					outputFormat: 'mpeg_ts',
+					sampleRate: 48000
 				},
-				HIGH_QUALITY: {
-					android: {
-						extension: '.aac',
-						outputFormat: 0,
-						audioEncoder: 0,
-						sampleRate: 48000,
-						numberOfChannels: 2,
-						bitRate: 128000
-					},
-					ios: {
-						extension: '.aac',
-						audioQuality: 1,
-						outputFormat: 0,
-						sampleRate: 48000,
-						numberOfChannels: 2,
-						bitRate: 128000
-					},
-					web: {}
-				}
+				ios: {
+					averageBitRate: 128000,
+					channels: 2,
+					codec: 'aac',
+					extension: 'caf',
+					linearPCMBitDepth: 16,
+					linearPCMIsBigEndian: false,
+					linearPCMIsFloat: false,
+					outputFormat: 'aac',
+					sampleRate: 48000
+				},
+				web: {}
+			},
+			LOW_QUALITY: {
+				android: {
+					bitRate: 64000,
+					channels: 1,
+					codec: 'aac',
+					outputFormat: 'mpeg_ts',
+					sampleRate: 16000
+				},
+				ios: {
+					averageBitRate: 64000,
+					channels: 1,
+					codec: 'aac',
+					extension: 'caf',
+					linearPCMBitDepth: 16,
+					linearPCMIsBigEndian: false,
+					linearPCMIsFloat: false,
+					outputFormat: 'aac',
+					sampleRate: 16000
+				},
+				web: {}
 			}
 		},
 		InterruptionModeAndroid,
-		InterruptionModeIOS
+		InterruptionModeIOS,
+		AudioQuality,
+		IOSOutputFormat
+	};
+});
+
+jest.mock('expo-video', () => {
+	const mockVideoPlayer = {
+		play: jest.fn(),
+		pause: jest.fn(),
+		stop: jest.fn(),
+		replay: jest.fn(),
+		setPlaying: jest.fn(),
+		setLooping: jest.fn(),
+		setMuted: jest.fn(),
+		setVolume: jest.fn(),
+		setPlaybackRate: jest.fn(),
+		seekTo: jest.fn(),
+		replace: jest.fn(),
+		release: jest.fn(),
+		addListener: jest.fn(() => jest.fn()),
+		removeListener: jest.fn(),
+		playing: false,
+		looping: false,
+		muted: false,
+		volume: 1.0,
+		playbackRate: 1.0,
+		currentTime: 0,
+		duration: 0,
+		loaded: false,
+		progress: 0,
+		buffering: false
+	};
+
+	return {
+		useVideoPlayer: jest.fn(() => mockVideoPlayer),
+		VideoView: jest.fn(() => null),
+		VideoPlayer: jest.fn(() => mockVideoPlayer)
 	};
 });
 
