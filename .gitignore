@@ -84,7 +84,14 @@ e2e/e2e_account.ts
 **/e2e_account.ts
 
 *.p8
-.claude/
 .worktrees/
 .omc/
+.claude/
+.agents/
+.cursor/
+skills-lock.json
+CLAUDE.local.md
+AGENTS.md
+docs/
+.superset/
 .jest-cache/

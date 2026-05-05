@@ -6,7 +6,9 @@
 //  Copyright © 2023 Facebook. All rights reserved.
 //
 
+#import <Foundation/NSURLSession.h>
 #import <React/RCTHTTPRequestHandler.h>
+#import "Challenge.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

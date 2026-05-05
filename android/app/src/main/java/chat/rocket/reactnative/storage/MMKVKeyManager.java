@@ -69,17 +69,17 @@ public class MMKVKeyManager {
                 Log.i(TAG, "Existing encryption key found");
             }
 
-            // Cache the encryption key for other native code
+            // Cache the encryption key for other native code.
+            // Do NOT open MMKV here: Tencent MMKV 1.2 (this JAR) caches instances
+            // per-ID in a singleton registry. Opening the file now — before JS has
+            // written anything — would cache an empty-state instance. When
+            // Ejson.java later reads via the same JAR, it gets that stale cached
+            // instance and misses writes made through react-native-mmkv (MMKV 2.0),
+            // which has its own separate registry. This manifests as the
+            // "No userId found in MMKV for server" failure on first install,
+            // resolved only by restarting the app (which clears the cache).
             encryptionKey = password;
-
-            // Verify MMKV can be opened with this key
-            MMKV mmkv = MMKV.mmkvWithID(DEFAULT_INSTANCE_ID, MMKV.SINGLE_PROCESS_MODE, password);
-            if (mmkv != null) {
-                long keyCount = mmkv.count();
-                Log.i(TAG, "MMKV initialized with encryption, " + keyCount + " keys found");
-            } else {
-                Log.w(TAG, "MMKV instance is null after initialization");
-            }
+            Log.i(TAG, "MMKV encryption key ready");
 
         } catch (Exception e) {
             Log.e(TAG, "MMKV encryption initialization failed", e);

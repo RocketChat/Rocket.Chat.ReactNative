@@ -18,6 +18,7 @@ interface IBottomSheetContentProps {
 	children?: React.ReactElement | null;
 	onLayout: ViewProps['onLayout'];
 	fullContainer?: boolean;
+	hugContent?: boolean;
 	contentMinHeight?: number;
 	scrollEnabled?: boolean;
 }
@@ -30,6 +31,7 @@ const BottomSheetContent = React.memo(
 		children,
 		onLayout,
 		fullContainer,
+		hugContent,
 		contentMinHeight,
 		scrollEnabled
 	}: IBottomSheetContentProps) => {
@@ -77,7 +79,10 @@ const BottomSheetContent = React.memo(
 			);
 		}
 		return (
-			<View testID='action-sheet' style={fullContainer ? [styles.fullContainer, minHeightStyle] : undefined} onLayout={onLayout}>
+			<View
+				testID='action-sheet'
+				style={fullContainer && !(hugContent && isAndroid) ? [styles.fullContainer, minHeightStyle] : undefined}
+				onLayout={onLayout}>
 				{children}
 			</View>
 		);

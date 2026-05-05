@@ -404,8 +404,8 @@ public class CustomPushNotification {
         }
     }
 
-    private Bitmap getAvatar(String uri) {
-        return NotificationHelper.fetchAvatarBitmap(mContext, uri, largeIcon());
+    private Bitmap getAvatar(String uri, Ejson ejson) {
+        return NotificationHelper.fetchAvatarBitmap(mContext, uri, ejson, largeIcon());
     }
 
     private Bitmap largeIcon() {
@@ -426,7 +426,7 @@ public class CustomPushNotification {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             String avatarUri = ejson != null ? ejson.getAvatarUri() : null;
             if (avatarUri != null) {
-                Bitmap avatar = getAvatar(avatarUri);
+                Bitmap avatar = getAvatar(avatarUri, ejson);
                 if (avatar != null) {
                     notification.setLargeIcon(avatar);
                 }
@@ -506,7 +506,7 @@ public class CustomPushNotification {
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
                         messageStyle.addMessage(m, timestamp, displaySenderName);
                     } else {
-                        Bitmap avatar = getAvatar(avatarUri);
+                        Bitmap avatar = getAvatar(avatarUri, ejson);
                         Person.Builder senderBuilder = new Person.Builder()
                                 .setKey(senderId)
                                 .setName(displaySenderName);

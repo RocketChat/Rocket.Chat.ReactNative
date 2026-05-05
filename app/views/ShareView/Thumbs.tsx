@@ -80,7 +80,7 @@ const ThumbContent = React.memo(({ item, theme }: IThumbContent) => {
 	if (type?.match(/video/)) {
 		return (
 			<View style={[styles.thumb, { borderColor: themes[theme].strokeLight }]}>
-				<CustomIcon name='camera' size={30} color={themes[theme].badgeBackgroundLevel2} />
+				<CustomIcon name='camera-photo' size={30} color={themes[theme].badgeBackgroundLevel2} />
 			</View>
 		);
 	}
