@@ -2465,14 +2465,14 @@ packages:
     resolution: {integrity: sha512-YWHdin2ejndwgQJXlHIzAmQB+xvZLeEOqOkPq8RxdyTjAaGo1DbBCrc0aU7u0LOUnGN+jm3H4grnYdI9SPwitA==, tarball: https://registry.npmjs.org/@rocket.chat/message-parser/-/message-parser-0.31.31.tgz}
 
   '@rocket.chat/mobile-crypto@https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/57deaffbcda0453c34987efb81d722da7e7a4f9e':
-    resolution: {gitHosted: true, integrity: sha512-+9dAN7R+ZUnTwE5X246Y6W/K5EV4k2UUq6nmBcm7YEiQjtJQDD8Z2NLo/MUEG4tRyrer9OqNLo+IQjKztdfg+A==, tarball: https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/57deaffbcda0453c34987efb81d722da7e7a4f9e}
+    resolution: {gitHosted: true, tarball: https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/57deaffbcda0453c34987efb81d722da7e7a4f9e}
     version: 0.2.2
     peerDependencies:
       react: '*'
       react-native: '*'
 
   '@rocket.chat/sdk@https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/b6d2b3f25b0ff8283dd71faf6dae720c47fecd8f':
-    resolution: {gitHosted: true, integrity: sha512-HxqZk8xrtHnl7D+JjGEC3CVnzKq4nsKZfaQQAk5mBRDbN11jodw+Fkmvf/q+3aU7WiZECd/2D9px5Hxx/tpF3g==, tarball: https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/b6d2b3f25b0ff8283dd71faf6dae720c47fecd8f}
+    resolution: {gitHosted: true, tarball: https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/b6d2b3f25b0ff8283dd71faf6dae720c47fecd8f}
     version: 1.3.3-mobile
     engines: {node: '> 8.0.0', npm: '> 5.0.0'}
 
@@ -6459,7 +6459,7 @@ packages:
       react-native: '*'
 
   react-native-image-crop-picker@https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/f028aac24373d05166747ef6d9e59bb037fe3224:
-    resolution: {gitHosted: true, integrity: sha512-KEHtYIXO1DkDAVoPW34xKOzho8UF6F+HZBbHQOtQ2ERPGlsVi1kY4+cOS5+thBEPNbXq/3VvH5bSEBAdZEOX0A==, tarball: https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/f028aac24373d05166747ef6d9e59bb037fe3224}
+    resolution: {gitHosted: true, tarball: https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/f028aac24373d05166747ef6d9e59bb037fe3224}
     version: 0.51.0
     peerDependencies:
       react: '*'
@@ -6477,7 +6477,7 @@ packages:
       react-native: '*'
 
   react-native-katex@https://codeload.github.com/RocketChat/react-native-katex/tar.gz/37e579804fe238732d8a4b06dec073610ab062b1:
-    resolution: {gitHosted: true, integrity: sha512-ovD0cOy8/Ef2F0kmYF7XfMwPje94Fu+q6gO9ffiJbEPGj5ivGeshiTFGoWiPFxvqtlvujBCVOPyY323Apt8hGQ==, tarball: https://codeload.github.com/RocketChat/react-native-katex/tar.gz/37e579804fe238732d8a4b06dec073610ab062b1}
+    resolution: {gitHosted: true, tarball: https://codeload.github.com/RocketChat/react-native-katex/tar.gz/37e579804fe238732d8a4b06dec073610ab062b1}
     version: 1.3.0
     peerDependencies:
       react: '>=16'
