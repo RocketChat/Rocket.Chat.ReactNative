@@ -291,6 +291,60 @@ class IncomingCallActivity : Activity() {
         }
     }
 
+    /**
+     * Called when the OS delivers a new incoming-call Intent to this already-running
+     * singleInstance Activity (i.e. a second caller rings while we are showing the first).
+     *
+     * Two cases:
+     * 1. **Different call ID** — the user is already seeing call A. Silently decline call B
+     *    with a busy reason via [VoipNotification.rejectBusyCall] and leave the UI unchanged.
+     * 2. **Same call ID (or no call displayed yet)** — treat it as a refresh: re-parse the
+     *    payload, update the displayed caller info, and reschedule the ring timeout so a rapid
+     *    retry by the same caller does not leave a stale timer.
+     *
+     * [setIntent] is called first so [getIntent] always returns the latest intent, matching
+     * the Android convention for singleInstance activities.
+     */
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+
+        val newPayload = VoipPayload.fromBundle(intent?.extras)
+        if (newPayload == null || !newPayload.isVoipIncomingCall()) {
+            if (BuildConfig.DEBUG) {
+                Log.d(TAG, "onNewIntent: invalid or non-VoIP payload — ignoring")
+            }
+            return
+        }
+
+        val currentCallId = voipPayload?.callId
+        if (currentCallId != null && currentCallId != newPayload.callId) {
+            // A second, distinct caller arrived while we are already handling another call.
+            // Decline it as busy without touching the on-screen UI.
+            if (BuildConfig.DEBUG) {
+                Log.d(TAG, "onNewIntent: second call ${newPayload.callId} arrived while showing $currentCallId — declining as busy")
+            }
+            VoipNotification.rejectBusyCall(this, newPayload)
+            return
+        }
+
+        // Same caller retrying (or first call hasn't been set yet) — refresh the activity.
+        if (acceptDeclineGuard.get()) {
+            if (BuildConfig.DEBUG) {
+                Log.d(TAG, "onNewIntent: action already in progress, skipping refresh")
+            }
+            return
+        }
+
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "onNewIntent: refreshing UI for call ${newPayload.callId}")
+        }
+        voipPayload = newPayload
+        updateUI(newPayload)
+        setupButtons(newPayload)
+        scheduleTimeout(newPayload)
+    }
+
     override fun onBackPressed() {
         voipPayload?.let { handleDecline(it) } ?: finish()
     }
