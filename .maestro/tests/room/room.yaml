@@ -420,6 +420,7 @@ tags:
 - scrollUntilVisible:
     element:
       id: message-actions-delete
+    timeout: 60000
 - tapOn:
     id: message-actions-delete
 - extendedWaitUntil:

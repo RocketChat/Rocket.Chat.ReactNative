@@ -189,6 +189,13 @@ tags:
       message: dummymessagebetweenthethread
 - tapOn:
     id: 'message-thread-button-thread'
+- runFlow:
+    when:
+      notVisible:
+        id: 'message-composer-input-thread'
+    commands:
+      - runFlow:
+          file: '../../helpers/hide-keyboard.yaml'
 - extendedWaitUntil:
     visible:
       id: 'message-composer-input-thread'
@@ -262,6 +269,13 @@ tags:
     visible:
       id: 'room-view-title-thread'
     timeout: 60000
+- runFlow:
+    when:
+      notVisible:
+        id: 'message-composer-input-thread'
+    commands:
+      - runFlow:
+          file: '../../helpers/hide-keyboard.yaml'
 - tapOn:
     id: 'message-composer-input-thread'
 - inputText: 'draftthread'
@@ -282,6 +296,13 @@ tags:
     visible:
       text: '.*draftthread.*'
     timeout: 60000
+- runFlow:
+    when:
+      notVisible:
+        id: 'message-composer-input-thread'
+    commands:
+      - runFlow:
+          file: '../../helpers/hide-keyboard.yaml'
 - tapOn:
     id: 'message-composer-input-thread'
 - eraseText
@@ -334,6 +355,13 @@ tags:
     visible:
       id: 'room-view-title-thread-message-count'
     timeout: 60000
+- runFlow:
+    when:
+      notVisible:
+        id: 'message-composer-input-thread'
+    commands:
+      - runFlow:
+          file: '../../helpers/hide-keyboard.yaml'
 - extendedWaitUntil:
     visible:
       id: 'message-composer-input-thread'
@@ -359,10 +387,10 @@ tags:
     direction: UP
 - scrollUntilVisible:
     element:
-      text: 'Delete'
+      id: message-actions-delete
     timeout: 60000
 - tapOn:
-    text: 'Delete'
+    id: 'message-actions-delete'
 - extendedWaitUntil:
     visible:
       text: '.*You will not be able to recover this message.*'
