@@ -1,8 +1,131 @@
 diff --git a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
-index 19d31ae..d5295b5 100644
+index 19d31ae..3f33982 100644
 --- a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
 +++ b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
-@@ -549,7 +549,9 @@ export class DDPDriver extends EventEmitter implements ISocket, IDriver {
+@@ -175,15 +175,115 @@ export class Socket extends EventEmitter {
+     return Promise.resolve()
+   }
+ 
+-  // Call open directly, so it skips openTimeout
+-  checkAndReopen = () => {
+-    if (!this.connected) {
+-      if (this.openTimeout) {
+-        clearTimeout(this.openTimeout as any)
+-        delete this.openTimeout
++  /**
++   * Probe an existing connection by sending a raw `ping` and waiting for `pong`.
++   * Bypasses the SDK send() pipeline (which would await `pong` indefinitely on
++   * a zombie socket). Resolves true if a pong arrives within 2s; false on
++   * timeout or synchronous send throw.
++   */
++  probe = (): Promise<boolean> => {
++    return new Promise(resolve => {
++      let settled = false
++      const finish = (alive: boolean) => {
++        if (settled) return
++        settled = true
++        this.off('pong', onPong)
++        clearTimeout(timer)
++        resolve(alive)
++      }
++      const onPong = () => finish(true)
++      const timer = setTimeout(() => finish(false), 2000)
++      this.once('pong', onPong)
++      try {
++        if (!this.connection) return finish(false)
++        this.connection.send(JSON.stringify({ msg: 'ping' }))
++      } catch {
++        finish(false)
++      }
++    })
++  }
++
++  _reopenInFlight: Promise<void> | null = null
++
++  /**
++   * Tear down the existing connection and start a fresh one. Used when the
++   * socket is known or suspected dead. Emits `disconnected` so any in-flight
++   * send() promises (which register `once('disconnected', reject)`) reject
++   * visibly instead of hanging forever, and emits `close` synchronously so
++   * app-level `close` listeners (e.g. Redux `disconnectAction` dispatch in
++   * `connect.ts`) flip to disconnected before the new socket opens; otherwise
++   * the next `'connected'` event would short-circuit on stale Redux state and
++   * the loginRequest → subscribeNotifyUser chain would never re-run, leaving
++   * the fresh socket without `${userId}/media-signal` or any other sub.
++   * Concurrent invocations join the same in-flight reconnect promise so the
++   * parallel callers don't tear each other down. Resolves only after the new
++   * socket has reached `OPEN` and the DDP `connect` handshake has been acked.
++   */
++  forceReopen = (): Promise<void> => {
++    if (this._reopenInFlight) return this._reopenInFlight
++    this.lastPing = 0
++    if (this.openTimeout) {
++      clearTimeout(this.openTimeout as any)
++      delete this.openTimeout
++    }
++    if (this.pingTimeout) {
++      clearTimeout(this.pingTimeout as any)
++      delete this.pingTimeout
++    }
++    this.emit('disconnected')
++    this.emit('close', { code: userDisconnectCloseCode })
++    this.subscriptions = {}
++    if (this.connection) {
++      try {
++        this.connection.onopen = null as any
++        this.connection.onmessage = null as any
++        this.connection.onerror = null as any
++        this.connection.onclose = null as any
++        this.connection.close(userDisconnectCloseCode)
++      } catch (e) {
++        this.logger.debug(`[ddp] forceReopen close error: ${(e as Error).message}`)
+       }
+-      this.open()
++      this.connection = undefined
++    }
++    // Mark socket fresh so the next checkAndReopen doesn't see lastPing=0
++    // and falsely classify the brand-new connection as stale.
++    const p = Promise.resolve(this.open()).then(() => { this.lastPing = Date.now() })
++    this._reopenInFlight = p
++    const clear = () => { if (this._reopenInFlight === p) this._reopenInFlight = null }
++    p.then(clear, clear)
++    return p
++  }
++
++  /**
++   * Decide whether the socket needs reopening when the app foregrounds.
++   * Three buckets keyed on time since last incoming message (`lastPing`):
++   *   - stale  (> ping*2):       force reopen, no probe (already past alive())
++   *   - fresh  (< 2000ms):       no-op (recent traffic confirms liveness)
++   *   - gray   (in between):     probe; if no pong in 2s, force reopen
++   */
++  checkAndReopen = async (): Promise<void> => {
++    const elapsed = Date.now() - this.lastPing
++    if (!this.connection || this.connection.readyState !== 1) {
++      this.logger.info(`[ddp] checkAndReopen bucket=stale elapsed=${elapsed}`)
++      await this.forceReopen()
++      return
++    }
++    if (elapsed > this.config.ping * 2) {
++      this.logger.info(`[ddp] checkAndReopen bucket=stale elapsed=${elapsed}`)
++      await this.forceReopen()
++      return
++    }
++    if (elapsed < 2000) {
++      this.logger.info(`[ddp] checkAndReopen bucket=fresh elapsed=${elapsed}`)
++      return
++    }
++    const alive = await this.probe()
++    if (alive) {
++      this.logger.info(`[ddp] checkAndReopen bucket=probe-pass elapsed=${elapsed}`)
++      return
+     }
++    this.logger.info(`[ddp] checkAndReopen bucket=probe-fail elapsed=${elapsed}`)
++    await this.forceReopen()
+   }
+ 
+   /** Clear connection and try to connect again. */
+@@ -549,7 +649,9 @@ export class DDPDriver extends EventEmitter implements ISocket, IDriver {
        'uiInteraction',
        'e2ekeyRequest',
        'userData',
