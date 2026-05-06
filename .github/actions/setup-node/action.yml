@@ -1,5 +1,5 @@
 name: Setup Node
-description: Setup node and pnpm via corepack, with pnpm store cache
+description: Setup node and pnpm via corepack, with node_modules + pnpm store caches
 runs:
   using: "composite"
   steps:
@@ -12,6 +12,14 @@ runs:
         node-version: 'lts/*'
         cache: 'pnpm'
 
+    - name: Cache node_modules
+      id: node-modules-cache
+      uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-node-modules-pnpm-${{ hashFiles('pnpm-lock.yaml', 'patches/**') }}
+
     - name: Install JS dependencies
+      if: steps.node-modules-cache.outputs.cache-hit != 'true'
       shell: bash
       run: pnpm install --frozen-lockfile
