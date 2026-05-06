@@ -65,6 +65,13 @@ tags:
     visible:
       id: 'room-view-title-thread'
     timeout: 60000
+- runFlow:
+    when:
+      notVisible:
+        id: 'message-composer-input-thread'
+    commands:
+      - runFlow:
+          file: '../../helpers/hide-keyboard.yaml'
 - extendedWaitUntil:
     visible:
       id: 'message-composer-input-thread'
@@ -146,6 +153,13 @@ tags:
     visible:
       id: 'room-view-title-thread'
     timeout: 60000
+- runFlow:
+    when:
+      notVisible:
+        id: 'message-composer-input-thread'
+    commands:
+      - runFlow:
+          file: '../../helpers/hide-keyboard.yaml'
 - tapOn:
     id: 'message-composer-input-thread'
 - inputText: 'sendToChannel'
