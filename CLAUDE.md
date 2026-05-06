@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Rocket.Chat React Native mobile client. Single-package React Native app (not a monorepo) using Yarn 1.22.22 (npm won't work). Supports iOS 13.4+ and Android 6.0+.
+Rocket.Chat React Native mobile client. Single-package React Native app (not a monorepo) using pnpm (version pinned in `package.json#packageManager`, activated via corepack). Supports iOS 13.4+ and Android 6.0+.
 
 - React 19.1, React Native 0.81, Expo 54
 - TypeScript with strict mode, baseUrl set to `app/` (imports resolve from there)
@@ -14,34 +14,41 @@ Rocket.Chat React Native mobile client. Single-package React Native app (not a m
 ## Commands
 
 ```bash
+# First-time setup (per machine)
+corepack enable            # Activates the pnpm version pinned in package.json
+
 # Install & setup
-yarn                       # Install dependencies (postinstall runs patch-package)
-yarn pod-install           # Install iOS CocoaPods (required before iOS builds)
+pnpm install               # Install dependencies (postinstall runs patch-package)
+pnpm pod-install           # Install iOS CocoaPods (required before iOS builds)
 
 # Run
-yarn start                 # Start Metro bundler
-yarn ios                   # Build and run on iOS
-yarn android               # Build and run on Android
+pnpm start                 # Start Metro bundler
+pnpm ios                   # Build and run on iOS
+pnpm android               # Build and run on Android
 
 # Test
-TZ=UTC yarn test           # Run Jest unit tests (TZ=UTC is set in script)
-yarn test -- --testPathPattern='path/to/test'  # Run a single test file
-yarn test-update           # Update snapshots
+TZ=UTC pnpm test           # Run Jest unit tests (TZ=UTC is set in script)
+pnpm test -- --testPathPattern='path/to/test'  # Run a single test file
+pnpm test-update           # Update snapshots
 
 # Lint & format
-yarn lint                  # ESLint + TypeScript compiler check
-yarn prettier-lint         # Prettier auto-fix + lint
+pnpm lint                  # ESLint + TypeScript compiler check
+pnpm prettier-lint         # Prettier auto-fix + lint
 
 # Storybook
-yarn storybook:start       # Start Metro with Storybook UI
-yarn storybook-generate    # Generate story snapshots
+pnpm storybook:start       # Start Metro with Storybook UI
+pnpm storybook-generate    # Generate story snapshots
 ```
+
+## Worktree contract
+
+When using worktrees (`wt`), the post-start hook runs `pnpm install` only. `wt step copy-ignored` is opt-in and only used when the worktree will perform a native build (iOS/Android/Pods/Gradle/Bundler caches).
 
 ## Code Style
 
 - **Prettier**: tabs, single quotes, 130 char width, no trailing commas, arrow parens avoid, bracket same line
 - **ESLint**: `@rocket.chat/eslint-config` base with React, React Native, TypeScript, Jest plugins
-- **Before committing**: Run `yarn prettier-lint` and `TZ=UTC yarn test` for modified files
+- **Before committing**: Run `pnpm prettier-lint` and `TZ=UTC pnpm test` for modified files
 - Pre-commit hooks enforce these checks
 
 ## Architecture
