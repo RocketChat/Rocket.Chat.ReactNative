@@ -132,7 +132,7 @@ jobs:
           disk-size: 4096M
           arch: x86_64
           target: google_apis
-          profile: enable-hw-keyboard
+          profile: pixel_7_pro
           cores: 4
           ram-size: 4096M
           force-avd-creation: false
@@ -158,7 +158,7 @@ jobs:
           disable-animations: true
           enable-hw-keyboard: false
           emulator-boot-timeout: 900
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -accel on 
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -accel on
           script: ./.github/scripts/run-maestro.sh android ${{ inputs.shard }}
 
       - name: Android Maestro Logs
