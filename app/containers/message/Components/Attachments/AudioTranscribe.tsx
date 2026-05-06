@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { AccessibilityInfo, ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import I18n from '../../../../i18n';
 import { useTheme } from '../../../../theme';
@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
 const TranscriptionRunner = ({ uri }: { uri: string }) => {
 	const { colors } = useTheme();
 	const { status, text, downloadProgress } = useAudioTranscription(uri);
+	const announcedStartRef = useRef(false);
 
 	const isWorking = status === 'loading-model' || status === 'transcribing';
 	let label = I18n.t('Translating');
@@ -48,17 +49,50 @@ const TranscriptionRunner = ({ uri }: { uri: string }) => {
 		label = `${I18n.t('Translating')} ${Math.round(downloadProgress * 100)}%`;
 	}
 
+	useEffect(() => {
+		if (isWorking && !announcedStartRef.current) {
+			announcedStartRef.current = true;
+			AccessibilityInfo.announceForAccessibility(I18n.t('Translating'));
+		}
+	}, [isWorking]);
+
+	useEffect(() => {
+		if (status === 'done' && text) {
+			AccessibilityInfo.announceForAccessibility(text);
+		} else if (status === 'error') {
+			AccessibilityInfo.announceForAccessibility(I18n.t('Translation_failed'));
+		}
+	}, [status, text]);
+
 	return (
 		<View style={styles.container}>
 			{isWorking ? (
-				<View style={[styles.button, { backgroundColor: colors.buttonBackgroundPrimaryDisabled }]}>
+				<View
+					accessible
+					accessibilityLiveRegion='polite'
+					accessibilityLabel={label}
+					style={[styles.button, { backgroundColor: colors.buttonBackgroundPrimaryDisabled }]}>
 					<ActivityIndicator size='small' color={colors.fontWhite} />
 					<Text style={[styles.buttonLabel, { color: colors.fontWhite }]}>{label}</Text>
 				</View>
 			) : null}
-			{status === 'done' && text ? <Text style={[styles.transcript, { color: colors.fontDefault }]}>{text}</Text> : null}
+			{status === 'done' && text ? (
+				<Text
+					accessible
+					accessibilityLiveRegion='polite'
+					accessibilityLabel={text}
+					style={[styles.transcript, { color: colors.fontDefault }]}>
+					{text}
+				</Text>
+			) : null}
 			{status === 'error' ? (
-				<Text style={[styles.error, { color: colors.fontDanger }]}>{I18n.t('Translation_failed')}</Text>
+				<Text
+					accessible
+					accessibilityLiveRegion='assertive'
+					accessibilityLabel={I18n.t('Translation_failed')}
+					style={[styles.error, { color: colors.fontDanger }]}>
+					{I18n.t('Translation_failed')}
+				</Text>
 			) : null}
 		</View>
 	);
