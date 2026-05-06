@@ -3,10 +3,10 @@ import {
 	forwardRoom,
 	leaveRoom,
 	removedRoom,
-	roomHistoryBatchFetchEnd,
-	roomHistoryBatchFetchStart,
 	roomHistoryFinished,
 	roomHistoryRequest,
+	roomHistoryUiLoaderPop,
+	roomHistoryUiLoaderPush,
 	subscribeRoom,
 	unsubscribeRoom
 } from '../actions/room';
@@ -72,14 +72,14 @@ describe('test room reducer', () => {
 		expect(historyLoaders).toEqual([]);
 	});
 
-	it('should set historyBatchFetchingRid after HISTORY_BATCH_FETCH_START', () => {
-		mockedStore.dispatch(roomHistoryBatchFetchStart({ rid: 'ROOM_X' }));
-		expect(mockedStore.getState().room.historyBatchFetchingRid).toEqual('ROOM_X');
+	it('should append loader id after HISTORY_UI_LOADER_PUSH', () => {
+		mockedStore.dispatch(roomHistoryUiLoaderPush({ loaderId: 'ui-loader' }));
+		expect(mockedStore.getState().room.historyLoaders).toContain('ui-loader');
 	});
 
-	it('should clear historyBatchFetchingRid after HISTORY_BATCH_FETCH_END', () => {
-		mockedStore.dispatch(roomHistoryBatchFetchStart({ rid: 'ROOM_X' }));
-		mockedStore.dispatch(roomHistoryBatchFetchEnd());
-		expect(mockedStore.getState().room.historyBatchFetchingRid).toBeNull();
+	it('should remove loader id after HISTORY_UI_LOADER_POP', () => {
+		mockedStore.dispatch(roomHistoryUiLoaderPush({ loaderId: 'pop-me' }));
+		mockedStore.dispatch(roomHistoryUiLoaderPop({ loaderId: 'pop-me' }));
+		expect(mockedStore.getState().room.historyLoaders).not.toContain('pop-me');
 	});
 });

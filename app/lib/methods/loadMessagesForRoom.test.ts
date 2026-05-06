@@ -1,7 +1,9 @@
 import { loadMessagesForRoom } from './loadMessagesForRoom';
 import sdk from '../services/sdk';
+import { ROOM } from '../../actions/actionsTypes';
 import { getMessageById } from '../database/services/Message';
 import updateMessages from './updateMessages';
+import { store } from '../store/auxStore';
 
 jest.mock('../services/sdk', () => ({
 	__esModule: true,
@@ -32,6 +34,7 @@ jest.mock('./updateMessages', () => jest.fn());
 const mockedSdkGet = sdk.get as jest.MockedFunction<typeof sdk.get>;
 const mockedGetMessageById = getMessageById as jest.MockedFunction<typeof getMessageById>;
 const mockedUpdateMessages = updateMessages as jest.MockedFunction<typeof updateMessages>;
+const mockedDispatch = store.dispatch as jest.MockedFunction<typeof store.dispatch>;
 
 const buildMessage = ({ id, ts, t }: { id: string; ts: string; t?: string }) =>
 	({
@@ -82,7 +85,20 @@ describe('loadMessagesForRoom', () => {
 				latest: firstBatch[firstBatch.length - 1].ts
 			})
 		);
-		expect(mockedUpdateMessages).toHaveBeenCalledWith(
+
+		expect(mockedUpdateMessages).toHaveBeenCalledTimes(2);
+		expect(mockedUpdateMessages).toHaveBeenNthCalledWith(
+			1,
+			expect.objectContaining({
+				rid: 'ROOM_ID',
+				update: expect.arrayContaining([
+					expect.objectContaining({ _id: 'first-50' }),
+					expect.objectContaining({ _id: 'load-more-first-50', t: 'load_more' })
+				])
+			})
+		);
+		expect(mockedUpdateMessages).toHaveBeenNthCalledWith(
+			2,
 			expect.objectContaining({
 				rid: 'ROOM_ID',
 				update: expect.arrayContaining([
@@ -90,6 +106,19 @@ describe('loadMessagesForRoom', () => {
 					expect.objectContaining({ _id: 'second-49' }),
 					expect.objectContaining({ _id: 'load-more-second-50', t: 'load_more' })
 				])
+			})
+		);
+
+		expect(mockedDispatch).toHaveBeenCalledWith(
+			expect.objectContaining({
+				type: ROOM.HISTORY_UI_LOADER_PUSH,
+				loaderId: 'load-more-first-50'
+			})
+		);
+		expect(mockedDispatch).toHaveBeenCalledWith(
+			expect.objectContaining({
+				type: ROOM.HISTORY_UI_LOADER_POP,
+				loaderId: 'load-more-first-50'
 			})
 		);
 	});

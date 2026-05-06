@@ -59,11 +59,13 @@ export interface IRoomHistoryFinished extends Action {
 	loaderId: string;
 }
 
-export interface IRoomHistoryBatchFetchStart extends Action {
-	rid: string;
+export interface IRoomHistoryUiLoaderPush extends Action {
+	loaderId: string;
 }
 
-export interface IRoomHistoryBatchFetchEnd extends Action {}
+export interface IRoomHistoryUiLoaderPop extends Action {
+	loaderId: string;
+}
 
 export type TActionsRoom = TSubscribeRoom &
 	TUnsubscribeRoom &
@@ -73,8 +75,8 @@ export type TActionsRoom = TSubscribeRoom &
 	IUserTyping &
 	IRoomHistoryRequest &
 	IRoomHistoryFinished &
-	IRoomHistoryBatchFetchStart &
-	IRoomHistoryBatchFetchEnd;
+	IRoomHistoryUiLoaderPush &
+	IRoomHistoryUiLoaderPop;
 
 export function subscribeRoom(rid: string): TSubscribeRoom {
 	return {
@@ -147,15 +149,16 @@ export function roomHistoryFinished({ loaderId }: { loaderId: string }): IRoomHi
 	};
 }
 
-export function roomHistoryBatchFetchStart({ rid }: { rid: string }): IRoomHistoryBatchFetchStart {
+export function roomHistoryUiLoaderPush({ loaderId }: { loaderId: string }): IRoomHistoryUiLoaderPush {
 	return {
-		type: ROOM.HISTORY_BATCH_FETCH_START,
-		rid
+		type: ROOM.HISTORY_UI_LOADER_PUSH,
+		loaderId
 	};
 }
 
-export function roomHistoryBatchFetchEnd(): IRoomHistoryBatchFetchEnd {
+export function roomHistoryUiLoaderPop({ loaderId }: { loaderId: string }): IRoomHistoryUiLoaderPop {
 	return {
-		type: ROOM.HISTORY_BATCH_FETCH_END
+		type: ROOM.HISTORY_UI_LOADER_POP,
+		loaderId
 	};
 }

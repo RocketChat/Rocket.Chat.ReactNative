@@ -1,6 +1,6 @@
 import dayjs from '../dayjs';
 import { MessageTypeLoad } from '../constants/messageTypeLoad';
-import { roomHistoryBatchFetchEnd, roomHistoryBatchFetchStart } from '../../actions/room';
+import { roomHistoryUiLoaderPop, roomHistoryUiLoaderPush } from '../../actions/room';
 import { type IMessage, type TMessageModel } from '../../definitions';
 import log from './helpers/log';
 import { getMessageById } from '../database/services/Message';
@@ -26,39 +26,30 @@ async function resolveHideSystemMessages(rid: string): Promise<string[]> {
 	return Array.isArray(fromSettings) ? fromSettings : [];
 }
 
-async function load({
-	rid: roomId,
-	latest,
-	t,
-	showBatchFetchIndicator
-}: {
+async function load(args: {
 	rid: string;
 	latest?: Date;
 	t: RoomTypes;
-	/** When true, Redux shows a list indicator while fetching batch 2+ (initial open only; Load More already has its row spinner). */
-	showBatchFetchIndicator: boolean;
-}): Promise<{ messages: IMessage[]; shouldAddLoader: boolean }> {
+	loaderItem?: TMessageModel;
+}): Promise<{ messages: IMessage[]; shouldAddLoader: boolean; uiLoaderId: string | null }> {
+	const roomId = args.rid;
 	const hideSystemMessages = await resolveHideSystemMessages(roomId);
-	const apiType = roomTypeToApiType(t);
+	const apiType = roomTypeToApiType(args.t);
 	if (!apiType) {
-		return { messages: [], shouldAddLoader: false };
+		return { messages: [], shouldAddLoader: false, uiLoaderId: null };
 	}
 
 	const allMessages: IMessage[] = [];
 	let visibleMainMessagesCount = 0;
 	let batchesFetched = 0;
 	let shouldAddLoader = false;
-	let batchIndicatorActive = false;
+	let uiLoaderId: string | null = null;
 
 	async function fetchBatch(lastTs?: string): Promise<void> {
 		if (visibleMainMessagesCount >= COUNT || batchesFetched >= MAX_BATCHES) {
 			return;
 		}
 		batchesFetched += 1;
-		if (showBatchFetchIndicator && batchesFetched === 2) {
-			store.dispatch(roomHistoryBatchFetchStart({ rid: roomId }));
-			batchIndicatorActive = true;
-		}
 
 		const params = { roomId, showThreadMessages: false, count: COUNT, ...(lastTs && { latest: lastTs }) };
 
@@ -92,18 +83,38 @@ async function load({
 
 		if (needsMoreVisibleMainMessages) {
 			const lastMessage = batch[batch.length - 1];
+
+			if (!args.loaderItem && batchesFetched === 1) {
+				const loadMoreMessage = {
+					_id: generateLoadMoreId(lastMessage._id as string),
+					rid: lastMessage.rid,
+					ts: dayjs(lastMessage.ts).subtract(1, 'millisecond').toString(),
+					t: MessageTypeLoad.MORE,
+					msg: lastMessage.msg
+				} as IMessage;
+
+				await updateMessages({
+					rid: roomId,
+					update: [...allMessages, loadMoreMessage],
+					loaderItem: args.loaderItem
+				});
+				store.dispatch(roomHistoryUiLoaderPush({ loaderId: loadMoreMessage._id }));
+				uiLoaderId = loadMoreMessage._id;
+			}
+
 			await fetchBatch(lastMessage.ts as string);
 		}
 	}
 
-	const startTimestamp = latest ? new Date(latest).toISOString() : undefined;
+	const startTimestamp = args.latest ? new Date(args.latest).toISOString() : undefined;
 	try {
 		await fetchBatch(startTimestamp);
-		return { messages: allMessages, shouldAddLoader };
-	} finally {
-		if (batchIndicatorActive) {
-			store.dispatch(roomHistoryBatchFetchEnd());
+		return { messages: allMessages, shouldAddLoader, uiLoaderId };
+	} catch (e) {
+		if (uiLoaderId) {
+			store.dispatch(roomHistoryUiLoaderPop({ loaderId: uiLoaderId }));
 		}
+		throw e;
 	}
 }
 
@@ -114,11 +125,10 @@ export function loadMessagesForRoom(args: {
 	loaderItem?: TMessageModel;
 }): Promise<void> {
 	return new Promise(async (resolve, reject) => {
+		let uiLoaderId: string | null = null;
 		try {
-			const { messages, shouldAddLoader } = await load({
-				...args,
-				showBatchFetchIndicator: !args.loaderItem
-			});
+			const { messages, shouldAddLoader, uiLoaderId: pushedLoaderId } = await load(args);
+			uiLoaderId = pushedLoaderId;
 			const data = messages;
 			if (data?.length) {
 				const lastMessage = data[data.length - 1];
@@ -140,6 +150,10 @@ export function loadMessagesForRoom(args: {
 		} catch (e) {
 			log(e);
 			reject(e);
+		} finally {
+			if (uiLoaderId) {
+				store.dispatch(roomHistoryUiLoaderPop({ loaderId: uiLoaderId }));
+			}
 		}
 	});
 }
