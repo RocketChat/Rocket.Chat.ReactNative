@@ -24,7 +24,7 @@ jobs:
         uses: ./.github/actions/setup-node
 
       - name: Run Prettier
-        run: yarn prettier --write .
+        run: pnpm exec prettier --write .
 
       - name: Run ESLint
         run: npx eslint . --fix
