@@ -45,8 +45,8 @@ echo "no" | avdmanager create avd \
 
 CONFIG="$HOME/.android/avd/${AVD_NAME}.avd/config.ini"
 
-echo "hw.lcd.density=440" >> "$CONFIG"
-echo "hw.lcd.height=2280" >> "$CONFIG"
+echo "hw.lcd.density=420" >> "$CONFIG"
+echo "hw.lcd.height=2424" >> "$CONFIG"
 echo "hw.lcd.width=1080" >> "$CONFIG"
 echo "hw.gpu.enabled=yes" >> "$CONFIG"
 
