@@ -5,8 +5,6 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { enableScreens } from 'react-native-screens';
 import { Provider } from 'react-redux';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
-import { initExecutorch } from 'react-native-executorch';
-import { ExpoResourceFetcher } from 'react-native-executorch-expo-resource-fetcher';
 
 import ResponsiveLayoutProvider from './lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import AppContainer from './AppContainer';
@@ -49,7 +47,6 @@ import StatusBar from './containers/StatusBar';
 
 enableScreens();
 initStore(store);
-initExecutorch({ resourceFetcher: ExpoResourceFetcher });
 
 interface IDimensions {
 	width: number;

@@ -1,10 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { AccessibilityInfo, ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { Suspense, lazy, useState } from 'react';
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import I18n from '../../../../i18n';
 import { useTheme } from '../../../../theme';
 import sharedStyles from '../../../../views/Styles';
-import { useAudioTranscription } from '../../hooks/useAudioTranscription';
+
+// Lazy-load the runner so `react-native-executorch` (and its native JSI
+// bindings — see SECURITY_REVIEW_REACT_NATIVE_EXECUTORCH.md §11.1) is only
+// pulled into the JS bundle and initialised when the user actually opts in.
+const TranscriptionRunner = lazy(() => import('./TranscriptionRunner'));
 
 interface IAudioTranscribeProps {
 	uri: string;
@@ -12,9 +16,6 @@ interface IAudioTranscribeProps {
 }
 
 const styles = StyleSheet.create({
-	container: {
-		gap: 6
-	},
 	button: {
 		flexDirection: 'row',
 		alignItems: 'center',
@@ -28,72 +29,22 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		...sharedStyles.textSemibold
 	},
-	transcript: {
-		fontSize: 14,
-		...sharedStyles.textRegular
-	},
-	error: {
-		fontSize: 13,
-		...sharedStyles.textRegular
+	loading: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		alignSelf: 'flex-start',
+		paddingVertical: 6,
+		paddingHorizontal: 12,
+		gap: 8
 	}
 });
 
-const TranscriptionRunner = ({ uri }: { uri: string }) => {
+const RunnerFallback = () => {
 	const { colors } = useTheme();
-	const { status, text, downloadProgress } = useAudioTranscription(uri);
-	const announcedStartRef = useRef(false);
-
-	const isWorking = status === 'loading-model' || status === 'transcribing';
-	let label = I18n.t('Translating');
-	if (status === 'loading-model' && downloadProgress > 0 && downloadProgress < 1) {
-		label = `${I18n.t('Translating')} ${Math.round(downloadProgress * 100)}%`;
-	}
-
-	useEffect(() => {
-		if (isWorking && !announcedStartRef.current) {
-			announcedStartRef.current = true;
-			AccessibilityInfo.announceForAccessibility(I18n.t('Translating'));
-		}
-	}, [isWorking]);
-
-	useEffect(() => {
-		if (status === 'done' && text) {
-			AccessibilityInfo.announceForAccessibility(text);
-		} else if (status === 'error') {
-			AccessibilityInfo.announceForAccessibility(I18n.t('Translation_failed'));
-		}
-	}, [status, text]);
-
 	return (
-		<View style={styles.container}>
-			{isWorking ? (
-				<View
-					accessible
-					accessibilityLiveRegion='polite'
-					accessibilityLabel={label}
-					style={[styles.button, { backgroundColor: colors.buttonBackgroundPrimaryDisabled }]}>
-					<ActivityIndicator size='small' color={colors.fontWhite} />
-					<Text style={[styles.buttonLabel, { color: colors.fontWhite }]}>{label}</Text>
-				</View>
-			) : null}
-			{status === 'done' && text ? (
-				<Text
-					accessible
-					accessibilityLiveRegion='polite'
-					accessibilityLabel={text}
-					style={[styles.transcript, { color: colors.fontDefault }]}>
-					{text}
-				</Text>
-			) : null}
-			{status === 'error' ? (
-				<Text
-					accessible
-					accessibilityLiveRegion='assertive'
-					accessibilityLabel={I18n.t('Translation_failed')}
-					style={[styles.error, { color: colors.fontDanger }]}>
-					{I18n.t('Translation_failed')}
-				</Text>
-			) : null}
+		<View style={styles.loading}>
+			<ActivityIndicator size='small' color={colors.fontDefault} />
+			<Text style={[styles.buttonLabel, { color: colors.fontDefault }]}>{I18n.t('Translating')}</Text>
 		</View>
 	);
 };
@@ -105,7 +56,11 @@ const AudioTranscribe = ({ uri, enabled }: IAudioTranscribeProps) => {
 	if (!enabled || !uri) return null;
 
 	if (started) {
-		return <TranscriptionRunner uri={uri} />;
+		return (
+			<Suspense fallback={<RunnerFallback />}>
+				<TranscriptionRunner uri={uri} />
+			</Suspense>
+		);
 	}
 
 	return (
