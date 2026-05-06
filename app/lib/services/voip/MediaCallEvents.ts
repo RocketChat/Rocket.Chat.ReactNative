@@ -6,7 +6,9 @@ import { useCallStore } from './useCallStore';
 import { mediaSessionInstance } from './MediaSessionInstance';
 import type { VoipPayload } from '../../../definitions/Voip';
 import NativeVoipModule from '../../native/NativeVoip';
+import { awaitDdpLoggedIn, checkAndReopen } from '../connect';
 import { registerPushToken } from '../restApi';
+import sdk from '../sdk';
 import { MediaCallLogger } from './MediaCallLogger';
 
 const Emitter = isIOS ? new NativeEventEmitter(NativeVoipModule) : DeviceEventEmitter;
@@ -78,6 +80,33 @@ function dispatchVoipAcceptFailureFromNative(
 	});
 }
 
+/**
+ * Warm-locked CallKit accept path: heal a zombie DDP socket then replay missed
+ * signals. Order matters — replay must run AFTER re-login + `subscribeNotifyUser`.
+ * If we replay earlier, the answer SDP fires through a half-open session: methodCall
+ * resolves while the server's stream-notify-user route still points at the torn-down
+ * sub, the caller never receives the answer, and the call hits
+ * `TIMEOUT_TO_PROGRESS_SIGNALING` (10s) → hangup.
+ */
+async function runReconnectAndReplaySignals(): Promise<void> {
+	try {
+		await checkAndReopen();
+	} catch (error) {
+		mediaCallLogger.warn(`${TAG} checkAndReopen failed:`, error);
+	}
+	await awaitDdpLoggedIn(5000);
+	try {
+		await sdk.current?.subscribeNotifyUser?.();
+	} catch (error) {
+		mediaCallLogger.warn(`${TAG} subscribeNotifyUser failed:`, error);
+	}
+	try {
+		await mediaSessionInstance.applyRestStateSignals();
+	} catch (error) {
+		mediaCallLogger.error(`${TAG} applyRestStateSignals failed:`, error);
+	}
+}
+
 function handleVoipAcceptSucceededFromNative(data: VoipPayload, adapters: MediaCallEventsAdapters) {
 	const { callId } = data;
 	if (callId && lastHandledVoipAcceptSucceededCallId === callId) {
@@ -94,8 +123,8 @@ function handleVoipAcceptSucceededFromNative(data: VoipPayload, adapters: MediaC
 	NativeVoipModule.clearInitialEvents();
 	useCallStore.getState().setNativeAcceptedCallId(data.callId);
 	if (data.host && isVoipIncomingHostCurrentWorkspace(data.host, adapters.getActiveServerUrl)) {
-		mediaSessionInstance.applyRestStateSignals().catch(error => {
-			mediaCallLogger.error(`${TAG} applyRestStateSignals failed:`, error);
+		runReconnectAndReplaySignals().catch(error => {
+			mediaCallLogger.error(`${TAG} runReconnectAndReplaySignals threw:`, error);
 		});
 		return;
 	}
