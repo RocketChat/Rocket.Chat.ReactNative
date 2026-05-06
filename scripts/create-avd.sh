@@ -38,12 +38,13 @@ sdkmanager "$IMAGE"
 
 echo "Creating AVD"
 
+AVD_BASE="$HOME/.android/avd"
+mkdir -p "$AVD_BASE"
+
 echo "no" | avdmanager create avd \
   -n "$AVD_NAME" \
   -d "pixel_7_pro" \
   --package "$IMAGE"
-
-AVD_BASE="$HOME/.android/avd"
 AVD_INI="$AVD_BASE/${AVD_NAME}.ini"
 
 if [ ! -f "$AVD_INI" ]; then
