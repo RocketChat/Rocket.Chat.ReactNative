@@ -50,6 +50,7 @@ const AvatarContainer = ({
 
 	return (
 		<Avatar
+			testID={`avatar-${username}`}
 			server={server}
 			style={style}
 			text={text}

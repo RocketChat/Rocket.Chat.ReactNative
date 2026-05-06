@@ -129,7 +129,7 @@ exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
                     },
                   ]
                 }
-                testID="avatar"
+                testID="avatar-rocket.cat"
               >
                 <ViewManagerAdapter_ExpoImage
                   borderRadius={4}
@@ -409,7 +409,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
                     },
                   ]
                 }
-                testID="avatar"
+                testID="avatar-rocket.cat"
               >
                 <ViewManagerAdapter_ExpoImage
                   borderRadius={4}
@@ -689,7 +689,7 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
                     },
                   ]
                 }
-                testID="avatar"
+                testID="avatar-rocket.cat"
               >
                 <ViewManagerAdapter_ExpoImage
                   borderRadius={4}
@@ -938,7 +938,7 @@ exports[`Story Snapshots: LongRoomName should match snapshot 1`] = `
                     },
                   ]
                 }
-                testID="avatar"
+                testID="avatar-rocket.cat"
               >
                 <ViewManagerAdapter_ExpoImage
                   borderRadius={4}
@@ -1428,7 +1428,7 @@ exports[`Story Snapshots: TeamMain should match snapshot 1`] = `
                     },
                   ]
                 }
-                testID="avatar"
+                testID="avatar-rocket.cat"
               >
                 <ViewManagerAdapter_ExpoImage
                   borderRadius={4}
@@ -1708,7 +1708,7 @@ exports[`Story Snapshots: WithRightLabel should match snapshot 1`] = `
                     },
                   ]
                 }
-                testID="avatar"
+                testID="avatar-rocket.cat"
               >
                 <ViewManagerAdapter_ExpoImage
                   borderRadius={4}
@@ -2007,7 +2007,7 @@ exports[`Story Snapshots: WithoutDescription should match snapshot 1`] = `
                     },
                   ]
                 }
-                testID="avatar"
+                testID="avatar-rocket.cat"
               >
                 <ViewManagerAdapter_ExpoImage
                   borderRadius={4}
