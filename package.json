@@ -8,7 +8,7 @@
 		"test": "TZ=UTC jest",
 		"test-update": "TZ=UTC jest --updateSnapshot",
 		"lint": "eslint . && tsc",
-		"prettier-lint": "prettier --write . && yarn lint",
+		"prettier-lint": "prettier --write . && pnpm lint",
 		"ios": "npx react-native run-ios",
 		"pod-install": "bundle exec pod install --project-directory=ios",
 		"android": "npx react-native run-android --mode=experimentalDebug --main-activity chat.rocket.reactnative.MainActivity",

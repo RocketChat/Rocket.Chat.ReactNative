@@ -28,7 +28,7 @@ pnpm android               # Build and run on Android
 
 # Test
 TZ=UTC pnpm test           # Run Jest unit tests (TZ=UTC is set in script)
-pnpm test -- --testPathPattern='path/to/test'  # Run a single test file
+pnpm test --testPathPattern='path/to/test'  # Run a single test file
 pnpm test-update           # Update snapshots
 
 # Lint & format
