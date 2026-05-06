@@ -151,7 +151,7 @@ sequenceDiagram
         Note over Events,JS: see Cross-workspace flow
     end
 
-    Note over Server,JS: Concurrent path: DDP notification/accepted may arrive first; matcher gates by mobileDeviceId and triggers the same answerCall. Idempotent.
+    Note over Server,JS: Concurrent path — DDP notification/accepted may arrive first, matcher gates by mobileDeviceId and triggers the same answerCall (idempotent).
 ```
 
 _Last verified: cd2faa00a_
