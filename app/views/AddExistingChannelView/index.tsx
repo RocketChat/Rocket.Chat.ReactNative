@@ -3,6 +3,7 @@ import { type NativeStackNavigationOptions, type NativeStackNavigationProp } fro
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { FlatList } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { textInputDebounceTime } from '../../lib/constants/debounceConfig';
 import * as List from '../../containers/List';
@@ -37,6 +38,7 @@ const AddExistingChannelView = () => {
 	const {
 		params: { teamId }
 	} = useRoute<TRoute>();
+	const { bottom } = useSafeAreaInsets();
 
 	const { serverVersion, addTeamChannelPermission, isMasterDetail, moveRoomToTeamPermission } = useAppSelector(state => ({
 		serverVersion: state.server.version,
@@ -174,7 +176,7 @@ const AddExistingChannelView = () => {
 					);
 				}}
 				ItemSeparatorComponent={List.Separator}
-				contentContainerStyle={{ backgroundColor: colors.surfaceRoom }}
+				contentContainerStyle={{ backgroundColor: colors.surfaceRoom, paddingBottom: bottom }}
 				keyboardShouldPersistTaps='always'
 			/>
 		</SafeAreaView>

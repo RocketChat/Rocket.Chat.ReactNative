@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
 import { setUser } from '../../actions/login';
@@ -128,6 +129,7 @@ const StatusView = (): React.ReactElement => {
 	const dispatch = useDispatch();
 	const { setOptions, goBack } = useNavigation();
 	const { colors } = useTheme();
+	const { bottom } = useSafeAreaInsets();
 
 	const submit = async () => {
 		const { status } = inputValues;
@@ -214,6 +216,7 @@ const StatusView = (): React.ReactElement => {
 				}
 				ListFooterComponent={FooterComponent}
 				style={{ backgroundColor: colors.surfaceTint }}
+				contentContainerStyle={{ paddingBottom: bottom }}
 			/>
 		</SafeAreaView>
 	);

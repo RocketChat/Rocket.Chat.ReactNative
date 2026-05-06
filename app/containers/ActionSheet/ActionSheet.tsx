@@ -1,12 +1,12 @@
 import { useBackHandler } from '@react-native-community/hooks';
 import * as Haptics from 'expo-haptics';
 import React, { forwardRef, isValidElement, useImperativeHandle, useRef, useState } from 'react';
-import { Keyboard, type LayoutChangeEvent, Platform, useWindowDimensions } from 'react-native';
+import { Keyboard, type LayoutChangeEvent, useWindowDimensions } from 'react-native';
 import { TrueSheet } from '@lodev09/react-native-true-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { useTheme } from '../../theme';
-import { isAndroid, isIOS } from '../../lib/methods/helpers';
+import { isIOS } from '../../lib/methods/helpers';
 import { Handle } from './Handle';
 import { type TActionSheetOptions } from './Provider';
 import BottomSheetContent from './BottomSheetContent';
@@ -25,10 +25,6 @@ const ActionSheet = React.memo(
 		const [contentHeight, setContentHeight] = useState(0);
 		const onCloseSnapshotRef = useRef<TActionSheetOptions['onClose']>(undefined);
 
-		// TrueSheet detects the bottom inset for Android 16 and iOS
-		// To avoid content hiding behind navigation bar on older Android versions
-		const isNewAndroid = isAndroid && Number(Platform.Version) >= 36;
-		const bottom = isIOS || isNewAndroid ? 0 : windowHeight * 0.03;
 		const itemHeight = 48 * fontScale;
 
 		const handleContentLayout = ({ nativeEvent: { layout } }: LayoutChangeEvent) => {
@@ -82,7 +78,6 @@ const ActionSheet = React.memo(
 
 		const { detents, maxHeight, scrollEnabled } = useActionSheetDetents({
 			windowHeight,
-			bottomInset: bottom,
 			itemHeight,
 			optionsLength: data?.options?.length || 0,
 			snaps: effectiveSnaps,
@@ -93,7 +88,7 @@ const ActionSheet = React.memo(
 
 		const hasOptions = !!data?.options?.length;
 		const hasSnaps = !!effectiveSnaps?.length;
-		const disableContentPanning = data?.enableContentPanningGesture === false || (!scrollEnabled && isAndroid);
+		const disableContentPanning = data?.enableContentPanningGesture === false;
 		const isScrollable = hasOptions || (hasSnaps && !disableContentPanning);
 
 		const contentMinHeight =

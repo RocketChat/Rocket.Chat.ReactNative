@@ -5,6 +5,7 @@ import { FlatList, Text, View } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
+import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { FormTextInput } from '../../containers/TextInput';
 import ActivityIndicator from '../../containers/ActivityIndicator';
@@ -77,6 +78,7 @@ interface ISearchMessagesViewProps extends INavigationOption {
 	theme: TSupportedThemes;
 	useRealName: boolean;
 	isMasterDetail: boolean;
+	insets: EdgeInsets;
 }
 class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISearchMessagesViewState> {
 	private offset: number;
@@ -306,7 +308,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 
 	renderList = () => {
 		const { messages, loading, searchText } = this.state;
-		const { theme } = this.props;
+		const { theme, insets } = this.props;
 
 		if (!loading && messages.length === 0 && searchText.length) {
 			return this.renderEmpty();
@@ -317,6 +319,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 				data={messages}
 				renderItem={this.renderItem}
 				style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
+				contentContainerStyle={{ paddingBottom: insets.bottom }}
 				keyExtractor={item => item._id}
 				onEndReached={this.onEndReached}
 				ListFooterComponent={loading ? <ActivityIndicator /> : null}
@@ -357,4 +360,4 @@ const mapStateToProps = (state: any) => ({
 	customEmojis: state.customEmojis
 });
 
-export default connect(mapStateToProps)(withTheme(SearchMessagesView));
+export default connect(mapStateToProps)(withTheme(withSafeAreaInsets(SearchMessagesView)));

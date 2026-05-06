@@ -1,5 +1,4 @@
 import React, { createContext, type ReactElement, useContext, useState } from 'react';
-import { Platform } from 'react-native';
 import { useKeyboardHandler } from 'react-native-keyboard-controller';
 import { type SharedValue, useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -79,9 +78,8 @@ export const useEmojiKeyboard = () => {
 
 	const { bottom } = useSafeAreaInsets();
 	const { height } = useKeyboardAnimation();
-	const initialHeight = Platform.OS === 'ios' ? bottom : 0;
-	const keyboardHeight = useSharedValue(initialHeight);
-	const previousHeight = useSharedValue(initialHeight);
+	const keyboardHeight = useSharedValue(bottom);
+	const previousHeight = useSharedValue(bottom);
 
 	const updateHeight = (force: boolean = false) => {
 		'worklet';
@@ -93,9 +91,9 @@ export const useEmojiKeyboard = () => {
 		) {
 			return;
 		}
-		// On iOS, keyboard controller doesn't include bottom inset, so we add it when keyboard is closed
-		// On Android, keyboard controller already includes it, so we don't add it
-		const notch = Platform.OS === 'ios' && height.value === 0 ? bottom : 0;
+		// When keyboard is closed, add bottom safe area inset to ensure content is visible above
+		// navigation bars/home indicator. When keyboard is open, keyboard height already covers it.
+		const notch = height.value === 0 ? bottom : 0;
 		keyboardHeight.value = height.value + notch;
 		previousHeight.value = keyboardHeight.value;
 	};

@@ -3,6 +3,7 @@ import { AccessibilityInfo, FlatList, type ListRenderItem } from 'react-native';
 import { connect } from 'react-redux';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type CompositeNavigationProp } from '@react-navigation/native';
+import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { hideActionSheetRef, showActionSheetRef } from '../../containers/ActionSheet';
 import { type ChatsStackParamList } from '../../stacks/types';
@@ -39,6 +40,7 @@ interface IDirectoryViewProps {
 	theme: TSupportedThemes;
 	directoryDefaultView: string;
 	isMasterDetail: boolean;
+	insets: EdgeInsets;
 }
 
 interface IDirectoryViewState {
@@ -182,8 +184,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 					toggleWorkspace={this.toggleWorkspace}
 					isFederationEnabled={isFederationEnabled}
 				/>
-			),
-			enableContentPanningGesture: false
+			)
 		});
 	};
 
@@ -300,13 +301,13 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 
 	render = () => {
 		const { data, loading } = this.state;
-		const { theme } = this.props;
+		const { theme, insets } = this.props;
 		return (
 			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='directory-view'>
 				<FlatList
 					data={data}
 					style={styles.list}
-					contentContainerStyle={styles.listContainer}
+					contentContainerStyle={[styles.listContainer, { paddingBottom: insets.bottom }]}
 					extraData={this.state}
 					keyExtractor={item => item._id}
 					ListHeaderComponent={this.renderHeader}
@@ -329,4 +330,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	isMasterDetail: state.app.isMasterDetail
 });
 
-export default connect(mapStateToProps)(withTheme(DirectoryView));
+export default connect(mapStateToProps)(withTheme(withSafeAreaInsets(DirectoryView)));

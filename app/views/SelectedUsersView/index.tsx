@@ -6,6 +6,7 @@ import { shallowEqual, useDispatch } from 'react-redux';
 import { type Subscription } from 'rxjs';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { addUser, removeUser, reset } from '../../actions/selectedUsers';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
@@ -42,6 +43,7 @@ const SelectedUsersView = () => {
 
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
+	const { bottom } = useSafeAreaInsets();
 
 	const { users, loading, useRealName, user } = useAppSelector(
 		state => ({
@@ -175,7 +177,7 @@ const SelectedUsersView = () => {
 				ItemSeparatorComponent={List.Separator}
 				ListFooterComponent={<List.Separator />}
 				ListHeaderComponent={<Header useRealName={useRealName} onChangeText={handleSearch} onPressItem={toggleUser} />}
-				contentContainerStyle={{ backgroundColor: colors.surfaceRoom }}
+				contentContainerStyle={{ backgroundColor: colors.surfaceRoom, paddingBottom: bottom }}
 				keyboardShouldPersistTaps='always'
 			/>
 		</SafeAreaView>

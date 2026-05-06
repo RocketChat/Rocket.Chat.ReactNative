@@ -1,5 +1,4 @@
 import { Appearance } from 'react-native';
-import * as NavigationBar from 'expo-navigation-bar';
 import * as SystemUI from 'expo-system-ui';
 
 import { type IThemePreference, type TThemeMode } from '../../../definitions/ITheme';
@@ -7,7 +6,6 @@ import { themes } from '../../constants/colors';
 import { THEME_PREFERENCES_KEY } from '../../constants/keys';
 import UserPreferences from '../userPreferences';
 import { type TSupportedThemes } from '../../../theme';
-import { isAndroid } from './deviceInfo';
 
 let themeListener: { remove: () => void } | null;
 
@@ -50,14 +48,6 @@ export const newThemeState = (prevState: { themePreferences: IThemePreference },
 
 export const setNativeTheme = (themePreferences: IThemePreference) => {
 	const theme = getTheme(themePreferences);
-	const isLightTheme = theme === 'light';
-	if (isAndroid) {
-		try {
-			NavigationBar.setStyle(isLightTheme ? 'dark' : 'light');
-		} catch (error) {
-			// Do nothing
-		}
-	}
 	SystemUI.setBackgroundColorAsync(themes[theme].surfaceNeutral);
 };
 

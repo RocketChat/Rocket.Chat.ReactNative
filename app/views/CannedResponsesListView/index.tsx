@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 import { type RouteProp } from '@react-navigation/native';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import database from '../../lib/database';
 import I18n from '../../i18n';
@@ -67,6 +68,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 
 	const { theme } = useTheme();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+	const { bottom } = useSafeAreaInsets();
 
 	const getRoomFromDb = async () => {
 		const { rid } = route.params;
@@ -271,6 +273,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 				data={cannedResponsesScopeName}
 				extraData={cannedResponsesScopeName}
 				style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
+				contentContainerStyle={{ paddingBottom: bottom }}
 				renderItem={({ item }) => (
 					<CannedResponseItem
 						theme={theme}

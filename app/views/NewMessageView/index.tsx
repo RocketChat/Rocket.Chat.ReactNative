@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import { FlatList } from 'react-native';
 import { shallowEqual } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import * as List from '../../containers/List';
@@ -32,6 +33,7 @@ const NewMessageView = () => {
 	const { colors } = useTheme();
 
 	const navigation = useNavigation<NativeStackNavigationProp<NewMessageStackParamList, 'NewMessageView'>>();
+	const { bottom } = useSafeAreaInsets();
 
 	const { isMasterDetail, maxUsers, useRealName } = useAppSelector(
 		state => ({
@@ -104,6 +106,7 @@ const NewMessageView = () => {
 				ItemSeparatorComponent={List.Separator}
 				ListFooterComponent={List.Separator}
 				style={{ backgroundColor: colors.surfaceTint }}
+				contentContainerStyle={{ paddingBottom: bottom }}
 				keyboardShouldPersistTaps='always'
 			/>
 		</SafeAreaView>

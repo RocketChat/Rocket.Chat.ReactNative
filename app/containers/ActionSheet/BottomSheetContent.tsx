@@ -41,7 +41,6 @@ const BottomSheetContent = React.memo(
 		const { bottom } = useSafeAreaInsets();
 		const { fontScale } = useWindowDimensions();
 		const height = 48 * fontScale;
-		const paddingBottom = isAndroid ? bottom + height : bottom;
 		const minHeightStyle = isAndroid || !contentMinHeight ? undefined : { minHeight: contentMinHeight };
 
 		const renderFooter = () =>
@@ -68,7 +67,7 @@ const BottomSheetContent = React.memo(
 					style={{ backgroundColor: colors.strokeExtraDark }}
 					keyboardDismissMode='interactive'
 					indicatorStyle='black'
-					contentContainerStyle={{ paddingBottom, backgroundColor: colors.surfaceLight }}
+					contentContainerStyle={{ paddingBottom: bottom, backgroundColor: colors.surfaceLight }}
 					ItemSeparatorComponent={List.Separator}
 					ListHeaderComponent={List.Separator}
 					ListFooterComponent={renderFooter}

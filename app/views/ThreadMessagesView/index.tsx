@@ -5,6 +5,7 @@ import { Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { type NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { type Observable, type Subscription } from 'rxjs';
+import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { showActionSheetRef } from '../../containers/ActionSheet';
 import { CustomIcon } from '../../containers/CustomIcon';
@@ -65,6 +66,7 @@ interface IThreadMessagesViewProps extends IBaseScreen<ChatsStackParamList, 'Thr
 	useRealName: boolean;
 	theme: TSupportedThemes;
 	isMasterDetail: boolean;
+	insets: EdgeInsets;
 }
 
 class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThreadMessagesViewState> {
@@ -490,7 +492,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 
 	renderContent = () => {
 		const { loading, messages, displayingThreads, currentFilter } = this.state;
-		const { theme } = this.props;
+		const { theme, insets } = this.props;
 		if (!messages?.length || !displayingThreads?.length) {
 			let text;
 			if (currentFilter === Filter.Following) {
@@ -509,7 +511,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 				extraData={this.state}
 				renderItem={this.renderItem}
 				style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
-				contentContainerStyle={styles.contentContainer}
+				contentContainerStyle={[styles.contentContainer, { paddingBottom: insets.bottom }]}
 				onEndReached={this.load}
 				onEndReachedThreshold={0.5}
 				maxToRenderPerBatch={5}
@@ -536,4 +538,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	isMasterDetail: state.app.isMasterDetail
 });
 
-export default connect(mapStateToProps)(withTheme(ThreadMessagesView));
+export default connect(mapStateToProps)(withTheme(withSafeAreaInsets(ThreadMessagesView)));
