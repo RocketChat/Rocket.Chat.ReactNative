@@ -86,6 +86,9 @@
 | **Direct Video Conference** | A 1-on-1 Video Conference                                                                           | —                      |
 | **Group Video Conference**  | A multi-participant Video Conference with title and anonymous user support                          | —                      |
 | **VOIP**                    | Voice-over-IP phone-style call, separate from Video Conference — uses ICE servers and media streams | Phone call, voice call |
+| **Native Accept**           | An incoming VOIP call answered by native code (CallKit on iOS, Telecom on Android) before the JS runtime is available; native issues the REST accept and JS reconciles state on launch via initial events | JS accept, app accept |
+| **Per-call DDP**            | A short-lived DDP client opened by native code per incoming VOIP call so accept and signaling land before JS boots; separate from the main app DDP session | Native socket, side socket |
+| **Media Signal**            | A typed event on the `@rocket.chat/media-signaling` wire protocol (offer, answer, ICE candidate, state update) carried over DDP `stream-notify-user` and replayable via REST `media-calls.stateSignals` | Signal, RTC event |
 
 ## Server & Connection
 
