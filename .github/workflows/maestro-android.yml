@@ -132,12 +132,11 @@ jobs:
           disk-size: 4096M
           arch: x86_64
           target: google_apis
-          profile: pixel_7_pro
+          avd-name: Pixel_API_34_Keyboard
           cores: 4
           ram-size: 4096M
           force-avd-creation: false
           disable-animations: true
-          enable-hw-keyboard: true
           emulator-boot-timeout: 900
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -accel on
           script: ./.github/scripts/run-maestro.sh android ${{ inputs.shard }}
