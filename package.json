@@ -2,7 +2,7 @@
 	"name": "rocket-chat-reactnative",
 	"version": "4.72.0",
 	"private": true,
-	"packageManager": "yarn@1.22.22",
+	"packageManager": "pnpm@10.33.4",
 	"scripts": {
 		"start": "react-native start",
 		"test": "TZ=UTC jest",
@@ -142,9 +142,20 @@
 		"yup": "0.32.11",
 		"zustand": "^5.0.10"
 	},
-	"resolutions": {
-		"ua-parser-js": "1.0.2",
-		"jpeg-js": "0.4.4"
+	"pnpm": {
+		"overrides": {
+			"ua-parser-js": "1.0.2",
+			"jpeg-js": "0.4.4"
+		},
+		"onlyBuiltDependencies": [
+			"@bugsnag/cli",
+			"@rocket.chat/mobile-crypto",
+			"core-js-pure",
+			"esbuild",
+			"protobufjs",
+			"sharp",
+			"unrs-resolver"
+		]
 	},
 	"devDependencies": {
 		"@babel/core": "~7.25.9",
@@ -221,7 +232,6 @@
 		}
 	},
 	"volta": {
-		"node": "24.13.1",
-		"yarn": "1.22.22"
+		"node": "24.13.1"
 	}
 }
