@@ -123,6 +123,12 @@ jobs:
 
           echo "$AVD_NAME created with physical keyboard support"
 
+      - name: Create Hardware Keyboard Disabled AVD
+        if: ${{ inputs.shard != '14' }}
+        run: |
+          chmod +x scripts/create-avd.sh
+          bash scripts/create-avd.sh
+
       - name: Start Android Emulator and Run Maestro Tests (keyboard AVD)
         if: ${{ inputs.shard == '14' }}
         uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a # v2.37.0
@@ -150,11 +156,12 @@ jobs:
           disk-size: 4096M
           arch: x86_64
           target: google_apis
-          profile: pixel_7_pro
+          avd-name: Pixel_API_34
           cores: 4
           ram-size: 4096M
           force-avd-creation: false
           disable-animations: true
+          enable-hw-keyboard: false
           emulator-boot-timeout: 900
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -accel on
           script: ./.github/scripts/run-maestro.sh android ${{ inputs.shard }}

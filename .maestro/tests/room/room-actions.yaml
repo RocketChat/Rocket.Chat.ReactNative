@@ -171,8 +171,8 @@ tags:
     from:
       id: action-sheet-handle
     direction: UP
-- extendedWaitUntil:
-    visible:
+- scrollUntilVisible:
+    element:
       text: 'Unstar'
     timeout: 60000
 - tapOn:
@@ -226,9 +226,9 @@ tags:
     from:
       id: action-sheet-handle
     direction: UP
-- extendedWaitUntil:
-    visible:
-      text: Pin
+- scrollUntilVisible:
+    element:
+      text: 'Pin'
     timeout: 60000
 - tapOn:
     text: Pin
@@ -251,8 +251,12 @@ tags:
 # should unpin a message
 - longPressOn:
     id: message-content-messageToPin
-- extendedWaitUntil:
-    visible:
+- swipe:
+    from:
+      id: action-sheet-handle
+    direction: UP
+- scrollUntilVisible:
+    element:
       text: 'Unpin'
     timeout: 60000
 - tapOn:
