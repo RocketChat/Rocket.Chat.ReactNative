@@ -54,8 +54,11 @@ class MediaSessionInstance {
 			nativeAcceptedCallId === signal.callId &&
 			call == null
 		) {
-			this.answerCall(signal.callId).catch(error => {
-				log(error);
+			// Defer past the lib's `updatingInputTrack` re-entrancy lock held during the
+			// current `processSignal` tick — otherwise `accept()`'s state change is dropped
+			// inside the lock, mic never opens, call hangs in `waiting-for-offer` for 10s.
+			queueMicrotask(() => {
+				this.answerCall(signal.callId).catch(error => log(error));
 			});
 		}
 	}
@@ -68,7 +71,9 @@ class MediaSessionInstance {
 		try {
 			const { signals } = await mediaCallsStateSignals(getUniqueIdSync());
 			for (const signal of signals) {
-				this.instance.processSignal(signal);
+				// Sequential replay: signals depend on prior state mutations.
+				// eslint-disable-next-line no-await-in-loop
+				await this.instance.processSignal(signal);
 				this.tryAnswerIfNativeAcceptedNotification(signal);
 			}
 		} catch (error) {
@@ -105,7 +110,7 @@ class MediaSessionInstance {
 			this.instance = mediaSessionStore.getInstance(userId);
 		});
 
-		this.mediaSignalListener = sdk.onStreamData('stream-notify-user', (ddpMessage: IDDPMessage) => {
+		this.mediaSignalListener = sdk.onStreamData('stream-notify-user', async (ddpMessage: IDDPMessage) => {
 			if (!this.instance) {
 				return;
 			}
@@ -114,8 +119,7 @@ class MediaSessionInstance {
 				return;
 			}
 			const signal = ddpMessage.fields.args[0];
-			this.instance.processSignal(signal);
-
+			await this.instance.processSignal(signal);
 			this.tryAnswerIfNativeAcceptedNotification(signal as ServerMediaSignal);
 		});
 
