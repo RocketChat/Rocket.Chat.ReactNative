@@ -1,0 +1,19 @@
+diff --git a/node_modules/react-native-audio-api/ios/audioapi/ios/system/AudioSessionManager.mm b/node_modules/react-native-audio-api/ios/audioapi/ios/system/AudioSessionManager.mm
+index 0000000..1111111 100644
+--- a/node_modules/react-native-audio-api/ios/audioapi/ios/system/AudioSessionManager.mm
++++ b/node_modules/react-native-audio-api/ios/audioapi/ios/system/AudioSessionManager.mm
+@@ -519,12 +519,14 @@
+       continue;
+     }
+
++#if defined(__IPHONE_26_2) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_26_2
+     if ([option isEqualToString:@"farFieldInput"]) {
+       if (@available(iOS 26.2, *)) {
+         options |= AVAudioSessionCategoryOptionFarFieldInput;
+         continue;
+       }
+     }
++#endif
+
+     if ([option isEqualToString:@"interruptSpokenAudioAndMixWithOthers"]) {
+       options |= AVAudioSessionCategoryOptionInterruptSpokenAudioAndMixWithOthers;
