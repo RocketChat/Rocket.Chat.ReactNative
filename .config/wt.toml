@@ -1,0 +1,12 @@
+# Project configuration for worktrunk (https://worktrunk.dev).
+# Hooks defined here apply to this repository for any teammate using `wt`.
+# See `wt hook --help` for available hook types.
+
+# Rehydrate JS dependencies whenever a new worktree is created.
+# pnpm uses a global content-addressable store, so this is fast (hardlinks) once
+# the store is warm. Requires `corepack enable` once per machine; see CONTRIBUTING.md.
+#
+# Native build caches (ios/Pods, android/.gradle, vendor/bundle) are NOT copied
+# automatically. Run `wt step copy-ignored` on demand when the worktree will
+# perform a native iOS or Android build.
+post-start = "pnpm install"
