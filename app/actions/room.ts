@@ -59,6 +59,12 @@ export interface IRoomHistoryFinished extends Action {
 	loaderId: string;
 }
 
+export interface IRoomHistoryBatchFetchStart extends Action {
+	rid: string;
+}
+
+export interface IRoomHistoryBatchFetchEnd extends Action {}
+
 export type TActionsRoom = TSubscribeRoom &
 	TUnsubscribeRoom &
 	ILeaveRoom &
@@ -66,7 +72,9 @@ export type TActionsRoom = TSubscribeRoom &
 	IForwardRoom &
 	IUserTyping &
 	IRoomHistoryRequest &
-	IRoomHistoryFinished;
+	IRoomHistoryFinished &
+	IRoomHistoryBatchFetchStart &
+	IRoomHistoryBatchFetchEnd;
 
 export function subscribeRoom(rid: string): TSubscribeRoom {
 	return {
@@ -136,5 +144,18 @@ export function roomHistoryFinished({ loaderId }: { loaderId: string }): IRoomHi
 	return {
 		type: ROOM.HISTORY_FINISHED,
 		loaderId
+	};
+}
+
+export function roomHistoryBatchFetchStart({ rid }: { rid: string }): IRoomHistoryBatchFetchStart {
+	return {
+		type: ROOM.HISTORY_BATCH_FETCH_START,
+		rid
+	};
+}
+
+export function roomHistoryBatchFetchEnd(): IRoomHistoryBatchFetchEnd {
+	return {
+		type: ROOM.HISTORY_BATCH_FETCH_END
 	};
 }

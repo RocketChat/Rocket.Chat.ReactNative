@@ -3,6 +3,8 @@ import {
 	forwardRoom,
 	leaveRoom,
 	removedRoom,
+	roomHistoryBatchFetchEnd,
+	roomHistoryBatchFetchStart,
 	roomHistoryFinished,
 	roomHistoryRequest,
 	subscribeRoom,
@@ -68,5 +70,16 @@ describe('test room reducer', () => {
 		mockedStore.dispatch(roomHistoryFinished({ loaderId: 'loader' }));
 		const { historyLoaders } = mockedStore.getState().room;
 		expect(historyLoaders).toEqual([]);
+	});
+
+	it('should set historyBatchFetchingRid after HISTORY_BATCH_FETCH_START', () => {
+		mockedStore.dispatch(roomHistoryBatchFetchStart({ rid: 'ROOM_X' }));
+		expect(mockedStore.getState().room.historyBatchFetchingRid).toEqual('ROOM_X');
+	});
+
+	it('should clear historyBatchFetchingRid after HISTORY_BATCH_FETCH_END', () => {
+		mockedStore.dispatch(roomHistoryBatchFetchStart({ rid: 'ROOM_X' }));
+		mockedStore.dispatch(roomHistoryBatchFetchEnd());
+		expect(mockedStore.getState().room.historyBatchFetchingRid).toBeNull();
 	});
 });

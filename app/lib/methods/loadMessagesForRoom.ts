@@ -1,5 +1,6 @@
 import dayjs from '../dayjs';
 import { MessageTypeLoad } from '../constants/messageTypeLoad';
+import { roomHistoryBatchFetchEnd, roomHistoryBatchFetchStart } from '../../actions/room';
 import { type IMessage, type TMessageModel } from '../../definitions';
 import log from './helpers/log';
 import { getMessageById } from '../database/services/Message';
@@ -28,11 +29,14 @@ async function resolveHideSystemMessages(rid: string): Promise<string[]> {
 async function load({
 	rid: roomId,
 	latest,
-	t
+	t,
+	showBatchFetchIndicator
 }: {
 	rid: string;
 	latest?: Date;
 	t: RoomTypes;
+	/** When true, Redux shows a list indicator while fetching batch 2+ (initial open only; Load More already has its row spinner). */
+	showBatchFetchIndicator: boolean;
 }): Promise<{ messages: IMessage[]; shouldAddLoader: boolean }> {
 	const hideSystemMessages = await resolveHideSystemMessages(roomId);
 	const apiType = roomTypeToApiType(t);
@@ -44,12 +48,17 @@ async function load({
 	let visibleMainMessagesCount = 0;
 	let batchesFetched = 0;
 	let shouldAddLoader = false;
+	let batchIndicatorActive = false;
 
 	async function fetchBatch(lastTs?: string): Promise<void> {
 		if (visibleMainMessagesCount >= COUNT || batchesFetched >= MAX_BATCHES) {
 			return;
 		}
 		batchesFetched += 1;
+		if (showBatchFetchIndicator && batchesFetched === 2) {
+			store.dispatch(roomHistoryBatchFetchStart({ rid: roomId }));
+			batchIndicatorActive = true;
+		}
 
 		const params = { roomId, showThreadMessages: false, count: COUNT, ...(lastTs && { latest: lastTs }) };
 
@@ -88,8 +97,14 @@ async function load({
 	}
 
 	const startTimestamp = latest ? new Date(latest).toISOString() : undefined;
-	await fetchBatch(startTimestamp);
-	return { messages: allMessages, shouldAddLoader };
+	try {
+		await fetchBatch(startTimestamp);
+		return { messages: allMessages, shouldAddLoader };
+	} finally {
+		if (batchIndicatorActive) {
+			store.dispatch(roomHistoryBatchFetchEnd());
+		}
+	}
 }
 
 export function loadMessagesForRoom(args: {
@@ -100,7 +115,10 @@ export function loadMessagesForRoom(args: {
 }): Promise<void> {
 	return new Promise(async (resolve, reject) => {
 		try {
-			const { messages, shouldAddLoader } = await load(args);
+			const { messages, shouldAddLoader } = await load({
+				...args,
+				showBatchFetchIndicator: !args.loaderItem
+			});
 			const data = messages;
 			if (data?.length) {
 				const lastMessage = data[data.length - 1];

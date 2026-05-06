@@ -8,13 +8,16 @@ export interface IRoom {
 	isDeleting: boolean;
 	subscribedRoom: string;
 	historyLoaders: string[];
+	/** Room id while loading an extra history batch (e.g. filling the page after hidden system messages). */
+	historyBatchFetchingRid: string | null;
 }
 
 export const initialState: IRoom = {
 	rid: '',
 	isDeleting: false,
 	subscribedRoom: '',
-	historyLoaders: []
+	historyLoaders: [],
+	historyBatchFetchingRid: null
 };
 
 export default function (state = initialState, action: TActionsRoom): IRoom {
@@ -67,6 +70,16 @@ export default function (state = initialState, action: TActionsRoom): IRoom {
 			return {
 				...state,
 				historyLoaders: state.historyLoaders.filter(loaderId => loaderId !== action.loaderId)
+			};
+		case ROOM.HISTORY_BATCH_FETCH_START:
+			return {
+				...state,
+				historyBatchFetchingRid: action.rid
+			};
+		case ROOM.HISTORY_BATCH_FETCH_END:
+			return {
+				...state,
+				historyBatchFetchingRid: null
 			};
 		default:
 			return state;

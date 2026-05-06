@@ -22,7 +22,8 @@ jest.mock('../store/auxStore', () => ({
 	store: {
 		getState: jest.fn(() => ({
 			settings: { Hide_System_Messages: ['uj'] }
-		}))
+		})),
+		dispatch: jest.fn()
 	}
 }));
 
