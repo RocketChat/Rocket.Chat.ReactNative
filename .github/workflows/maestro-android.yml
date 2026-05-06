@@ -132,53 +132,15 @@ jobs:
           disk-size: 4096M
           arch: x86_64
           target: google_apis
-          avd-name: Pixel_API_34_Keyboard
+          profile: enable-hw-keyboard
           cores: 4
           ram-size: 4096M
           force-avd-creation: false
           disable-animations: true
+          enable-hw-keyboard: true
           emulator-boot-timeout: 900
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -accel on
           script: ./.github/scripts/run-maestro.sh android ${{ inputs.shard }}
-
-      - name: Create AVD without keyboard support (non-keyboard shards)
-        if: ${{ inputs.shard != '14' }}
-        run: |
-          set -eux
-
-          ANDROID_SDK="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}}"
-          SDKMANAGER="$ANDROID_SDK/cmdline-tools/latest/bin/sdkmanager"
-          AVDMANAGER="$ANDROID_SDK/cmdline-tools/latest/bin/avdmanager"
-          AVD_NAME="Pixel_API_34_NoKeyboard"
-          IMAGE="system-images;android-34;google_apis;x86_64"
-          AVD_BASE="$ANDROID_AVD_HOME"
-          AVD_INI="$AVD_BASE/${AVD_NAME}.ini"
-
-          mkdir -p "$AVD_BASE"
-          rm -rf "$AVD_BASE/${AVD_NAME}.avd" "$AVD_INI"
-
-          "$SDKMANAGER" --install emulator "$IMAGE"
-          yes | "$SDKMANAGER" --licenses > /dev/null || true
-
-          echo "no" | "$AVDMANAGER" create avd -n "$AVD_NAME" -d pixel_7_pro --package "$IMAGE" --force
-
-          if [ ! -f "$AVD_INI" ]; then
-            echo "Expected AVD ini not found: $AVD_INI"
-            exit 1
-          fi
-
-          AVD_PATH="$(sed -n 's/^path=//p' "$AVD_INI")"
-          AVD_CONFIG="$AVD_PATH/config.ini"
-
-          {
-            echo "hw.keyboard=no"
-            echo "hw.keyboard.lid=yes"
-            echo "hw.lcd.density=440"
-            echo "hw.lcd.height=2280"
-            echo "hw.lcd.width=1080"
-          } >> "$AVD_CONFIG"
-
-          echo "$AVD_NAME created without keyboard support"
 
       - name: Start Android Emulator and Run Maestro Tests (default)
         if: ${{ inputs.shard != '14' }}
@@ -189,13 +151,14 @@ jobs:
           disk-size: 4096M
           arch: x86_64
           target: google_apis
-          avd-name: Pixel_API_34_NoKeyboard
+          profile: pixel_7_pro
           cores: 4
           ram-size: 4096M
           force-avd-creation: false
           disable-animations: true
+          enable-hw-keyboard: false
           emulator-boot-timeout: 900
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -accel on
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -accel on 
           script: ./.github/scripts/run-maestro.sh android ${{ inputs.shard }}
 
       - name: Android Maestro Logs
