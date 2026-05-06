@@ -235,6 +235,12 @@ const handleOpen = function* handleOpen({ params }) {
 			yield put(loginRequest({ resume: params.token }, true));
 			yield take(types.LOGIN.SUCCESS);
 			yield put(appReady({}));
+			// Wait for the login saga's appStart(ROOT_INSIDE) before navigating, so
+			// InsideStack is mounted and goRoom dispatches into the correct stack.
+			const currentRoot = yield select(state => state.app.root);
+			if (currentRoot !== RootEnum.ROOT_INSIDE) {
+				yield take(action => action.type === types.APP.START && action.root === RootEnum.ROOT_INSIDE);
+			}
 			yield completeDeepLinkNavigation(params);
 		} else {
 			yield handleInviteLink({ params, requireLogin: true });
