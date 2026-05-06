@@ -71,6 +71,8 @@ class MediaSessionInstance {
 		try {
 			const { signals } = await mediaCallsStateSignals(getUniqueIdSync());
 			for (const signal of signals) {
+				// Sequential replay: signals depend on prior state mutations.
+				// eslint-disable-next-line no-await-in-loop
 				await this.instance.processSignal(signal);
 				this.tryAnswerIfNativeAcceptedNotification(signal);
 			}
