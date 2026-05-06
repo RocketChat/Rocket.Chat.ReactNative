@@ -15,7 +15,7 @@ jobs:
         uses: ./.github/actions/setup-node
 
       - name: Run ESLint
-        run: yarn lint
+        run: pnpm lint
 
       - name: Run Tests
-        run: yarn test --runInBand
+        run: pnpm test -- --runInBand
