@@ -43,7 +43,32 @@ echo "no" | avdmanager create avd \
   -d "pixel_7_pro" \
   --package "$IMAGE"
 
-CONFIG="$HOME/.android/avd/${AVD_NAME}.avd/config.ini"
+AVD_BASE="$HOME/.android/avd"
+AVD_INI="$AVD_BASE/${AVD_NAME}.ini"
+
+if [ ! -f "$AVD_INI" ]; then
+  echo "Expected AVD ini not found: $AVD_INI"
+  echo "--- avdmanager list avd ---"
+  avdmanager list avd || true
+  echo "--- ls AVD_BASE ---"
+  ls -la "$AVD_BASE" || true
+  exit 1
+fi
+
+AVD_PATH="$(sed -n 's/^path=//p' "$AVD_INI")"
+if [ -z "$AVD_PATH" ]; then
+  echo "Could not resolve AVD path from: $AVD_INI"
+  cat "$AVD_INI"
+  exit 1
+fi
+
+CONFIG="$AVD_PATH/config.ini"
+if [ ! -f "$CONFIG" ]; then
+  echo "Expected AVD config not found: $CONFIG"
+  ls -la "$AVD_BASE" || true
+  ls -la "$AVD_PATH" || true
+  exit 1
+fi
 
 echo "hw.lcd.density=420" >> "$CONFIG"
 echo "hw.lcd.height=2424" >> "$CONFIG"
