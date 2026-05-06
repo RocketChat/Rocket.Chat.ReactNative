@@ -64,7 +64,7 @@ jobs:
 
       - name: pod install
         run: |
-          yarn pod-install
+          pnpm pod-install
 
       - name: Decode p8
         run: |
