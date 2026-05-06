@@ -10,3 +10,11 @@
 # automatically. Run `wt step copy-ignored` on demand when the worktree will
 # perform a native iOS or Android build.
 post-start = "pnpm install"
+
+# `wt step copy-ignored` is for native build caches only — never overlay another
+# worktree's node_modules. pnpm-managed node_modules (with .pnpm/ virtual store
+# and hardlinks) cannot be safely merged with another tree's layout, and a
+# subsequent `pnpm install` is idempotent on the lockfile and won't repair a
+# mixed/dirty tree.
+[step.copy-ignored]
+exclude = ["node_modules/"]
