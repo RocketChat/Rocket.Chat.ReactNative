@@ -5,6 +5,7 @@ on:
     inputs:
       DISABLE_KEYBOARD_NAVIGATION:
         required: true
+        type: string
     secrets:
       EXPERIMENTAL_KEYSTORE_BASE64:
         required: true
