@@ -12,7 +12,9 @@ jobs:
     name: 'Android Tests'
     runs-on: ubuntu-latest
     env:
-      MAESTRO_VERSION: 2.2.0
+      # 2.5.0 switched gRPC to dadb direct ADB socket — eliminates flaky TCP forwarding (Broken pipe at install).
+      # https://github.com/mobile-dev-inc/maestro/releases/tag/cli-2.5.0
+      MAESTRO_VERSION: 2.5.1
       ANDROID_AVD_HOME: /home/runner/.android/avd
 
     steps:
