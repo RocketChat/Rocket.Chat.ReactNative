@@ -5,7 +5,7 @@ on:
     inputs:
       DISABLE_KEYBOARD_NAVIGATION:
         required: true
-        type: string
+        type: boolean
     secrets:
       EXPERIMENTAL_KEYSTORE_BASE64:
         required: true
@@ -96,14 +96,14 @@ jobs:
           DISABLE_KEYBOARD_NAVIGATION_ENABLED: ${{ inputs.DISABLE_KEYBOARD_NAVIGATION }}
 
       - name: Upload APK
-        if: ${{ inputs.DISABLE_KEYBOARD_NAVIGATION == 'true' }}
+        if: ${{ inputs.DISABLE_KEYBOARD_NAVIGATION }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: Android Experimental APK
           path: android/app/build/outputs/apk/experimental/release/app-experimental-release.apk
 
       - name: Upload APK with Keyboard Navigation
-        if: ${{ inputs.DISABLE_KEYBOARD_NAVIGATION == 'false' }}
+        if: ${{ !inputs.DISABLE_KEYBOARD_NAVIGATION }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: Android Experimental APK with Keyboard Navigation
