@@ -7,7 +7,7 @@ on:
         required: false
         type: string
       KEYBOARD_NAVIGATION:
-        required: false
+        required: true
         type: boolean
 
 jobs:
