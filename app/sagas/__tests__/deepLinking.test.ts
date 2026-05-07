@@ -126,7 +126,7 @@ const makeParams = (overrides: Record<string, any> = {}) => ({
 	...overrides
 });
 
-/** Params for the unknown-server-with-token path (F4 tests). */
+/** Params for the unknown-server-with-token path. */
 const makeParamsWithToken = (overrides: Record<string, any> = {}) =>
 	makeParams({ token: TOKEN, path: 'channel/general', ...overrides });
 
@@ -140,9 +140,9 @@ const makeServerRecord = (overrides: Record<string, any> = {}) => ({
 /** Stored user token stub as returned by UserPreferences.getString(TOKEN_KEY-host). */
 const makeStoredUser = () => TOKEN;
 
-// ─── Group F4 — Regression race (new server + token + room path) ──────────────
+// ─── Regression race (new server + token + room path) ──────────────
 
-describe('deepLinking saga — F4 regression race (new server + token + room path)', () => {
+describe('deepLinking saga — Regression race (new server + token + room path)', () => {
 	beforeEach(() => {
 		jest.useFakeTimers();
 
@@ -181,11 +181,11 @@ describe('deepLinking saga — F4 regression race (new server + token + room pat
 	});
 
 	/**
-	 * F4a — Regression positive: full chain, dispatch SERVER.SELECT_SUCCESS,
+	 * Regression positive: full chain, dispatch SERVER.SELECT_SUCCESS,
 	 * LOGIN.SUCCESS, then APP.START(ROOT_INSIDE). Assert goRoom called exactly
 	 * once, sequenced after the APP.START dispatch.
 	 */
-	it('F4a: calls goRoom exactly once after APP.START(ROOT_INSIDE) completes the chain', async () => {
+	it('calls goRoom exactly once after APP.START(ROOT_INSIDE) completes the chain', async () => {
 		const store = setupStore();
 		const params = makeParamsWithToken();
 
@@ -222,11 +222,11 @@ describe('deepLinking saga — F4 regression race (new server + token + room pat
 	});
 
 	/**
-	 * F4b — Regression negative: dispatch SERVER.SELECT_SUCCESS, LOGIN.SUCCESS.
+	 * Regression negative: dispatch SERVER.SELECT_SUCCESS, LOGIN.SUCCESS.
 	 * Flush microtasks. Assert goRoom NOT yet called.
 	 * Then dispatch APP.START(ROOT_INSIDE). Flush. Assert goRoom called once.
 	 */
-	it('F4b: goRoom is NOT called between LOGIN.SUCCESS and APP.START(ROOT_INSIDE)', async () => {
+	it('goRoom is NOT called between LOGIN.SUCCESS and APP.START(ROOT_INSIDE)', async () => {
 		const store = setupStore();
 		const params = makeParamsWithToken();
 
@@ -253,12 +253,12 @@ describe('deepLinking saga — F4 regression race (new server + token + room pat
 	});
 
 	/**
-	 * F4c — Early-exit branch: the saga selects state.app.root after LOGIN.SUCCESS.
+	 * Early-exit branch: the saga selects state.app.root after LOGIN.SUCCESS.
 	 * If root === ROOT_INSIDE at that moment, the take is skipped and goRoom fires
 	 * immediately. We achieve this by dispatching APP.START(ROOT_INSIDE) synchronously
 	 * before flushing, so the reducer updates the root before the saga's select runs.
 	 */
-	it('F4c: skips the APP.START take when state.app.root is already ROOT_INSIDE at select time', async () => {
+	it('skips the APP.START take when state.app.root is already ROOT_INSIDE at select time', async () => {
 		const store = setupStore();
 		const params = makeParamsWithToken();
 
@@ -283,11 +283,11 @@ describe('deepLinking saga — F4 regression race (new server + token + room pat
 	});
 
 	/**
-	 * F4d — Wrong-root rejection: dispatch APP.START(ROOT_OUTSIDE) — wrong root.
+	 * Wrong-root rejection: dispatch APP.START(ROOT_OUTSIDE) — wrong root.
 	 * Assert goRoom NOT called. Then dispatch APP.START(ROOT_INSIDE). Assert goRoom
 	 * called once.
 	 */
-	it('F4d: APP.START(ROOT_OUTSIDE) does not satisfy the take; APP.START(ROOT_INSIDE) does', async () => {
+	it('APP.START(ROOT_OUTSIDE) does not satisfy the take; APP.START(ROOT_INSIDE) does', async () => {
 		const store = setupStore();
 		const params = makeParamsWithToken();
 
@@ -318,11 +318,11 @@ describe('deepLinking saga — F4 regression race (new server + token + room pat
 	});
 
 	/**
-	 * F4e — Multiple APP.START: after the take fires once, dispatch a second
+	 * Multiple APP.START: after the take fires once, dispatch a second
 	 * APP.START(ROOT_INSIDE). Assert goRoom still called only once (saga is past
 	 * the take, takeLatest has not been retriggered).
 	 */
-	it('F4e: a second APP.START(ROOT_INSIDE) after navigation does not re-trigger goRoom', async () => {
+	it('a second APP.START(ROOT_INSIDE) after navigation does not re-trigger goRoom', async () => {
 		const store = setupStore();
 		const params = makeParamsWithToken();
 
