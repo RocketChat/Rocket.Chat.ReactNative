@@ -169,9 +169,9 @@ const makeServerRecord = (overrides: Record<string, any> = {}) => ({
 /** Stored user token stub as returned by UserPreferences.getString(TOKEN_KEY-host). */
 const makeStoredUser = () => TOKEN;
 
-// ─── Group F4 — Regression race (new server + token + room path) ──────────────
+// ─── Regression race (new server + token + room path) ────────────────────────
 
-describe('deepLinking saga — F4 regression race (new server + token + room path)', () => {
+describe('deepLinking saga — Regression race (new server + token + room path)', () => {
 	beforeEach(() => {
 		jest.useFakeTimers();
 
@@ -210,11 +210,11 @@ describe('deepLinking saga — F4 regression race (new server + token + room pat
 	});
 
 	/**
-	 * F4a — Regression positive: full chain, dispatch SERVER.SELECT_SUCCESS,
+	 * Regression positive: full chain, dispatch SERVER.SELECT_SUCCESS,
 	 * LOGIN.SUCCESS, then APP.START(ROOT_INSIDE). Assert goRoom called exactly
 	 * once, sequenced after the APP.START dispatch.
 	 */
-	it('F4a: calls goRoom exactly once after APP.START(ROOT_INSIDE) completes the chain', async () => {
+	it('calls goRoom exactly once after APP.START(ROOT_INSIDE) completes the chain', async () => {
 		const store = setupStore();
 		const params = makeParamsWithToken();
 
@@ -251,11 +251,11 @@ describe('deepLinking saga — F4 regression race (new server + token + room pat
 	});
 
 	/**
-	 * F4b — Regression negative: dispatch SERVER.SELECT_SUCCESS, LOGIN.SUCCESS.
+	 * Regression negative: dispatch SERVER.SELECT_SUCCESS, LOGIN.SUCCESS.
 	 * Flush microtasks. Assert goRoom NOT yet called.
 	 * Then dispatch APP.START(ROOT_INSIDE). Flush. Assert goRoom called once.
 	 */
-	it('F4b: goRoom is NOT called between LOGIN.SUCCESS and APP.START(ROOT_INSIDE)', async () => {
+	it('goRoom is NOT called between LOGIN.SUCCESS and APP.START(ROOT_INSIDE)', async () => {
 		const store = setupStore();
 		const params = makeParamsWithToken();
 
@@ -282,12 +282,12 @@ describe('deepLinking saga — F4 regression race (new server + token + room pat
 	});
 
 	/**
-	 * F4c — Early-exit branch: the saga selects state.app.root after LOGIN.SUCCESS.
+	 * Early-exit branch: the saga selects state.app.root after LOGIN.SUCCESS.
 	 * If root === ROOT_INSIDE at that moment, the take is skipped and goRoom fires
 	 * immediately. We achieve this by dispatching APP.START(ROOT_INSIDE) synchronously
 	 * before flushing, so the reducer updates the root before the saga's select runs.
 	 */
-	it('F4c: skips the APP.START take when state.app.root is already ROOT_INSIDE at select time', async () => {
+	it('skips the APP.START take when state.app.root is already ROOT_INSIDE at select time', async () => {
 		const store = setupStore();
 		const params = makeParamsWithToken();
 
@@ -312,11 +312,11 @@ describe('deepLinking saga — F4 regression race (new server + token + room pat
 	});
 
 	/**
-	 * F4d — Wrong-root rejection: dispatch APP.START(ROOT_OUTSIDE) — wrong root.
+	 * Wrong-root rejection: dispatch APP.START(ROOT_OUTSIDE) — wrong root.
 	 * Assert goRoom NOT called. Then dispatch APP.START(ROOT_INSIDE). Assert goRoom
 	 * called once.
 	 */
-	it('F4d: APP.START(ROOT_OUTSIDE) does not satisfy the take; APP.START(ROOT_INSIDE) does', async () => {
+	it('APP.START(ROOT_OUTSIDE) does not satisfy the take; APP.START(ROOT_INSIDE) does', async () => {
 		const store = setupStore();
 		const params = makeParamsWithToken();
 
@@ -347,11 +347,11 @@ describe('deepLinking saga — F4 regression race (new server + token + room pat
 	});
 
 	/**
-	 * F4e — Multiple APP.START: after the take fires once, dispatch a second
+	 * Multiple APP.START: after the take fires once, dispatch a second
 	 * APP.START(ROOT_INSIDE). Assert goRoom still called only once (saga is past
 	 * the take, takeLatest has not been retriggered).
 	 */
-	it('F4e: a second APP.START(ROOT_INSIDE) after navigation does not re-trigger goRoom', async () => {
+	it('a second APP.START(ROOT_INSIDE) after navigation does not re-trigger goRoom', async () => {
 		const store = setupStore();
 		const params = makeParamsWithToken();
 
@@ -389,7 +389,7 @@ describe('deepLinking saga — F4 regression race (new server + token + room pat
 //   server === host && user && serverRecord && connected === true
 // so navigate() is reached without any authentication dance.
 
-describe('deepLinking saga — Group G: navigate() URL-shape → goRoom contract', () => {
+describe('deepLinking saga — navigate() URL-shape → goRoom contract', () => {
 	/** Preloaded store state: connected to HOST, phone layout (no tablet). */
 	const connectedState = {
 		server: {
@@ -451,7 +451,7 @@ describe('deepLinking saga — Group G: navigate() URL-shape → goRoom contract
 		await flushSagaMicrotasks();
 	}
 
-	it('G1: channel/general → goRoom with t:"c" and name:"general"', async () => {
+	it('channel/general → goRoom with t:"c" and name:"general"', async () => {
 		const store = setupStore(connectedState as any);
 		await driveNavigate(store, makeParams({ path: 'channel/general' }));
 
@@ -463,7 +463,7 @@ describe('deepLinking saga — Group G: navigate() URL-shape → goRoom contract
 		expect(call.jumpToThreadId).toBeUndefined();
 	});
 
-	it('G2: direct/alice → goRoom with t:"d" and roomUserId from getUidDirectMessage', async () => {
+	it('direct/alice → goRoom with t:"d" and roomUserId from getUidDirectMessage', async () => {
 		jest.mocked(getUidDirectMessage).mockReturnValue('uid-alice' as any);
 		jest.mocked(canOpenRoom).mockResolvedValue({ rid: 'dm-1', name: 'alice', t: 'd' } as any);
 
@@ -477,7 +477,7 @@ describe('deepLinking saga — Group G: navigate() URL-shape → goRoom contract
 		expect(call.item.roomUserId).toBe('uid-alice');
 	});
 
-	it('G3: group/secret → goRoom with t:"p"', async () => {
+	it('group/secret → goRoom with t:"p"', async () => {
 		jest.mocked(canOpenRoom).mockResolvedValue({ rid: 'grp-1', name: 'secret', t: 'p' } as any);
 
 		const store = setupStore(connectedState as any);
@@ -489,7 +489,7 @@ describe('deepLinking saga — Group G: navigate() URL-shape → goRoom contract
 		expect(call.item.name).toBe('secret');
 	});
 
-	it('G4: channels/livechat-1 → goRoom with t:"l"', async () => {
+	it('channels/livechat-1 → goRoom with t:"l"', async () => {
 		jest.mocked(canOpenRoom).mockResolvedValue({ rid: 'lc-1', name: 'livechat-1', t: 'l' } as any);
 
 		const store = setupStore(connectedState as any);
@@ -501,7 +501,7 @@ describe('deepLinking saga — Group G: navigate() URL-shape → goRoom contract
 		expect(call.item.name).toBe('livechat-1');
 	});
 
-	it('G5: group/foo/thread/abc123 → goRoom with jumpToThreadId:"abc123"', async () => {
+	it('group/foo/thread/abc123 → goRoom with jumpToThreadId:"abc123"', async () => {
 		jest.mocked(canOpenRoom).mockResolvedValue({ rid: 'grp-2', name: 'foo', t: 'p' } as any);
 
 		const store = setupStore(connectedState as any);
@@ -513,7 +513,7 @@ describe('deepLinking saga — Group G: navigate() URL-shape → goRoom contract
 		expect(call.item.name).toBe('foo');
 	});
 
-	it('G6: params.messageId="msg42" → goRoom with jumpToMessageId:"msg42"', async () => {
+	it('params.messageId="msg42" → goRoom with jumpToMessageId:"msg42"', async () => {
 		const store = setupStore(connectedState as any);
 		await driveNavigate(store, makeParams({ path: 'channel/general', messageId: 'msg42' }));
 
@@ -522,7 +522,7 @@ describe('deepLinking saga — Group G: navigate() URL-shape → goRoom contract
 		expect(call.jumpToMessageId).toBe('msg42');
 	});
 
-	it('G7: invite/xyz789 → no goRoom, dispatches inviteLinksRequest("xyz789")', async () => {
+	it('invite/xyz789 → no goRoom, dispatches inviteLinksRequest("xyz789")', async () => {
 		// Saga `put()` effects don't pass through `store.dispatch` overrides; use collector middleware
 		const { store, dispatched } = setupStoreWithCollector(connectedState as any);
 
@@ -534,7 +534,7 @@ describe('deepLinking saga — Group G: navigate() URL-shape → goRoom contract
 		expect(inviteAction.token).toBe('xyz789');
 	});
 
-	it('G8: params.rid only (no path) → goRoom invoked with the room spread', async () => {
+	it('params.rid only (no path) → goRoom invoked with the room spread', async () => {
 		jest.mocked(canOpenRoom).mockResolvedValue({ rid: 'rid-only-1', name: 'rid-room', t: 'c' } as any);
 
 		const store = setupStore(connectedState as any);
@@ -547,7 +547,7 @@ describe('deepLinking saga — Group G: navigate() URL-shape → goRoom contract
 		expect(call.item.rid).toBe('rid-only-1');
 	});
 
-	it('G9: canOpenRoom returns null → no goRoom, still dispatches appStart(ROOT_INSIDE)', async () => {
+	it('canOpenRoom returns null → no goRoom, still dispatches appStart(ROOT_INSIDE)', async () => {
 		jest.mocked(canOpenRoom).mockResolvedValue(null as any);
 
 		const store = setupStore(connectedState as any);
@@ -558,7 +558,7 @@ describe('deepLinking saga — Group G: navigate() URL-shape → goRoom contract
 		expect(store.getState().app.root).toBe(RootEnum.ROOT_INSIDE);
 	});
 
-	it('G10: tablet (isMasterDetail=true) → goRoom invoked with isMasterDetail:true', async () => {
+	it('tablet (isMasterDetail=true) → goRoom invoked with isMasterDetail:true', async () => {
 		const tabletState = {
 			...connectedState,
 			app: { ...connectedState.app, isMasterDetail: true }
@@ -572,7 +572,7 @@ describe('deepLinking saga — Group G: navigate() URL-shape → goRoom contract
 		expect(call.isMasterDetail).toBe(true);
 	});
 
-	it('G11: canOpenRoom throws → error propagates (no try/catch in navigate)', async () => {
+	it('canOpenRoom throws → error propagates (no try/catch in navigate)', async () => {
 		const boom = new Error('canOpenRoom exploded');
 		jest.mocked(canOpenRoom).mockRejectedValue(boom);
 
@@ -589,12 +589,12 @@ describe('deepLinking saga — Group G: navigate() URL-shape → goRoom contract
 	});
 });
 
-// ─── Group H — handleVoipAcceptFailed completion path ────────────────────────
+// ─── handleVoipAcceptFailed completion path ──────────────────────────────────
 //
-// Driven via the no-host + voipAcceptFailed=true branch (Group C1):
+// Driven via the no-host + voipAcceptFailed=true branch:
 //   !host && params.voipAcceptFailed → handleVoipAcceptFailed(params)
 
-describe('deepLinking saga — Group H: handleVoipAcceptFailed recovery path', () => {
+describe('deepLinking saga — handleVoipAcceptFailed recovery path', () => {
 	let interactionSpy: jest.SpyInstance;
 
 	beforeEach(() => {
@@ -633,7 +633,7 @@ describe('deepLinking saga — Group H: handleVoipAcceptFailed recovery path', (
 		await flushSagaMicrotasks();
 	}
 
-	it('H1: with callId and username → resetVoipState, endCall, navigate to direct/alice, showToast', async () => {
+	it('with callId and username → resetVoipState, endCall, navigate to direct/alice, showToast', async () => {
 		const store = setupStore();
 		await driveVoipFail(store, { callId: 'call-42', username: 'alice' });
 
@@ -643,7 +643,7 @@ describe('deepLinking saga — Group H: handleVoipAcceptFailed recovery path', (
 		expect(jest.mocked(showToast)).toHaveBeenCalledWith('VoIP_Call_Issue');
 	});
 
-	it('H2: without callId → RNCallKeep.endCall NOT called, other steps unchanged', async () => {
+	it('without callId → RNCallKeep.endCall NOT called, other steps unchanged', async () => {
 		const store = setupStore();
 		await driveVoipFail(store, { username: 'alice' }); // no callId
 
@@ -652,7 +652,7 @@ describe('deepLinking saga — Group H: handleVoipAcceptFailed recovery path', (
 		expect(jest.mocked(showToast)).toHaveBeenCalledWith('VoIP_Call_Issue');
 	});
 
-	it('H3: without username but with params.path → uses params.path for navigation', async () => {
+	it('without username but with params.path → uses params.path for navigation', async () => {
 		jest.mocked(canOpenRoom).mockResolvedValue({ rid: 'rm-1', name: 'bob', t: 'd' } as any);
 
 		const store = setupStore();
@@ -666,7 +666,7 @@ describe('deepLinking saga — Group H: handleVoipAcceptFailed recovery path', (
 		expect(call.item.name).toBe('bob');
 	});
 
-	it('H4: navigate throws inside handleVoipAcceptFailed → caught by try/catch, no re-throw', async () => {
+	it('navigate throws inside handleVoipAcceptFailed → caught by try/catch, no re-throw', async () => {
 		jest.mocked(waitForNavigationReady).mockRejectedValue(new Error('nav not ready'));
 
 		const store = setupStore();
@@ -681,12 +681,12 @@ describe('deepLinking saga — Group H: handleVoipAcceptFailed recovery path', (
 	});
 });
 
-// ─── Group F2 — Unknown server getServerInfo fail + voipAcceptFailed=true ────
+// ─── Unknown server getServerInfo fail + voipAcceptFailed=true ───────────────
 //
 // host present, user/serverRecord absent → getServerInfo fails → voipAcceptFailed=true
-// → handleVoipAcceptFailed is invoked from the F2 fallback branch (not the C1 no-host branch).
+// → handleVoipAcceptFailed is invoked from the fallback branch (not the no-host branch).
 
-describe('deepLinking saga — F2: unknown server getServerInfo fail with voipAcceptFailed', () => {
+describe('deepLinking saga — unknown server getServerInfo fail with voipAcceptFailed', () => {
 	let interactionSpy: jest.SpyInstance;
 
 	beforeEach(() => {
@@ -726,7 +726,7 @@ describe('deepLinking saga — F2: unknown server getServerInfo fail with voipAc
 		jest.useRealTimers();
 	});
 
-	it('F2: getServerInfo fails + voipAcceptFailed=true → handleVoipAcceptFailed invoked (not fallbackNavigation)', async () => {
+	it('getServerInfo fails + voipAcceptFailed=true → handleVoipAcceptFailed invoked (not fallbackNavigation)', async () => {
 		const store = setupStore();
 
 		store.dispatch(deepLinkingOpen({ host: HOST, voipAcceptFailed: true, callId: 'call-f2', username: 'charlie' }));
