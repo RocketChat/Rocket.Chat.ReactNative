@@ -96,10 +96,6 @@ jobs:
     uses: ./.github/workflows/e2e-build-android.yml
     needs: [e2e-hold]
     secrets: inherit
-    strategy:
-      matrix:
-        shard: [14]
-      fail-fast: false
     with:
       DISABLE_KEYBOARD_NAVIGATION: false 
 
@@ -109,7 +105,12 @@ jobs:
     uses: ./.github/workflows/maestro-android.yml
     needs: [e2e-build-android-keyboard-navigation]
     secrets: inherit
+    strategy:
+      matrix:
+        shard: [14]
+      fail-fast: false
     with:
+      shard: ${{ matrix.shard }}
       DISABLE_KEYBOARD_NAVIGATION: false
     
   e2e-build-ios:
