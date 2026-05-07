@@ -6,11 +6,9 @@ on:
       shard:
         required: false
         type: string
-        default: '1'
       keyboardNavigation:
         required: false
         type: boolean
-        default: false
 
 jobs:
   android-test:
