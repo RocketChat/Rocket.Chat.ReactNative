@@ -7,6 +7,7 @@ import AudioPlayer from '../../../AudioPlayer';
 import Markdown from '../../../markdown';
 import MessageContext from '../../Context';
 import { useMediaAutoDownload } from '../../hooks/useMediaAutoDownload';
+import AudioTranscribe from './AudioTranscribe';
 
 interface IMessageAudioProps {
 	file: IAttachment;
@@ -25,6 +26,7 @@ const MessageAudio = ({ file, getCustomEmoji, author, msg }: IMessageAudioProps)
 		<View style={{ gap: 4 }}>
 			{msg ? <Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} /> : null}
 			<AudioPlayer msgId={id} fileUri={url} downloadState={status} onPlayButtonPress={onPress} rid={rid} />
+			<AudioTranscribe uri={url} enabled={status === 'downloaded'} />
 		</View>
 	);
 };

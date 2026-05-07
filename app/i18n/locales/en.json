@@ -917,6 +917,8 @@
   "topic": "topic",
   "totp-invalid": "Code or password invalid",
   "Translate": "Translate",
+  "Translating": "Translating…",
+  "Translation_failed": "Translation failed",
   "Travel_and_places": "Travel and places",
   "Troubleshooting": "Troubleshooting",
   "Try_again": "Try again",

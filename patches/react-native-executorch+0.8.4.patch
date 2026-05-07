@@ -1,0 +1,89 @@
+diff --git a/node_modules/react-native-executorch/lib/module/utils/ResourceFetcherUtils.js b/node_modules/react-native-executorch/lib/module/utils/ResourceFetcherUtils.js
+index 96806dc..1c38a76 100644
+--- a/node_modules/react-native-executorch/lib/module/utils/ResourceFetcherUtils.js
++++ b/node_modules/react-native-executorch/lib/module/utils/ResourceFetcherUtils.js
+@@ -108,14 +108,8 @@ export let ResourceFetcherUtils;
+     };
+   }
+   _ResourceFetcherUtils.calculateDownloadProgress = calculateDownloadProgress;
+-  async function triggerHuggingFaceDownloadCounter(uri) {
+-    const url = new URL(uri);
+-    if (url.host === 'huggingface.co' && url.pathname.startsWith('/software-mansion/')) {
+-      const baseUrl = `${url.protocol}//${url.host}${url.pathname.split('resolve')[0]}`;
+-      fetch(`${baseUrl}resolve/main/config.json`, {
+-        method: 'HEAD'
+-      });
+-    }
++  async function triggerHuggingFaceDownloadCounter(_uri) {
++    // Patched out by Rocket.Chat: see SECURITY_REVIEW_REACT_NATIVE_EXECUTORCH.md §4.3 / §11.2.
+   }
+   _ResourceFetcherUtils.triggerHuggingFaceDownloadCounter = triggerHuggingFaceDownloadCounter;
+   function getCountryCode() {
+@@ -146,21 +140,8 @@ export let ResourceFetcherUtils;
+    * Sends a download event to the analytics endpoint.
+    * @param uri - The URI of the downloaded resource.
+    */
+-  function triggerDownloadEvent(uri) {
+-    try {
+-      fetch(DOWNLOAD_EVENT_ENDPOINT, {
+-        method: 'POST',
+-        headers: {
+-          'Content-Type': 'application/json'
+-        },
+-        body: JSON.stringify({
+-          modelName: getModelNameFromUri(uri),
+-          countryCode: getCountryCode(),
+-          isEmulator: isEmulator(),
+-          libVersion: LIB_VERSION
+-        })
+-      });
+-    } catch (e) {}
++  function triggerDownloadEvent(_uri) {
++    // Patched out by Rocket.Chat: see SECURITY_REVIEW_REACT_NATIVE_EXECUTORCH.md §4.2 / §11.2 / §13.
+   }
+   _ResourceFetcherUtils.triggerDownloadEvent = triggerDownloadEvent;
+   function getFilenameFromUri(uri) {
+diff --git a/node_modules/react-native-executorch/src/utils/ResourceFetcherUtils.ts b/node_modules/react-native-executorch/src/utils/ResourceFetcherUtils.ts
+index ced27a0..bcb60aa 100644
+--- a/node_modules/react-native-executorch/src/utils/ResourceFetcherUtils.ts
++++ b/node_modules/react-native-executorch/src/utils/ResourceFetcherUtils.ts
+@@ -187,15 +187,8 @@ export namespace ResourceFetcherUtils {
+    * More information: https://huggingface.co/docs/hub/models-download-stats
+    * @param uri - The URI of the file being downloaded.
+    */
+-  export async function triggerHuggingFaceDownloadCounter(uri: string) {
+-    const url = new URL(uri);
+-    if (
+-      url.host === 'huggingface.co' &&
+-      url.pathname.startsWith('/software-mansion/')
+-    ) {
+-      const baseUrl = `${url.protocol}//${url.host}${url.pathname.split('resolve')[0]}`;
+-      fetch(`${baseUrl}resolve/main/config.json`, { method: 'HEAD' });
+-    }
++  export async function triggerHuggingFaceDownloadCounter(_uri: string) {
++    // Patched out by Rocket.Chat: see SECURITY_REVIEW_REACT_NATIVE_EXECUTORCH.md §4.3 / §11.2.
+   }
+ 
+   function getCountryCode(): string {
+@@ -227,19 +220,8 @@ export namespace ResourceFetcherUtils {
+    * Sends a download event to the analytics endpoint.
+    * @param uri - The URI of the downloaded resource.
+    */
+-  export function triggerDownloadEvent(uri: string) {
+-    try {
+-      fetch(DOWNLOAD_EVENT_ENDPOINT, {
+-        method: 'POST',
+-        headers: { 'Content-Type': 'application/json' },
+-        body: JSON.stringify({
+-          modelName: getModelNameFromUri(uri),
+-          countryCode: getCountryCode(),
+-          isEmulator: isEmulator(),
+-          libVersion: LIB_VERSION,
+-        }),
+-      });
+-    } catch (e) {}
++  export function triggerDownloadEvent(_uri: string) {
++    // Patched out by Rocket.Chat: see SECURITY_REVIEW_REACT_NATIVE_EXECUTORCH.md §4.2 / §11.2 / §13.
+   }
+ 
+   /**
