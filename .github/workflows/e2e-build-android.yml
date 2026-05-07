@@ -3,7 +3,7 @@ name: E2E Build Android
 on:
   workflow_call:
     inputs:
-      KEYBOARD_NAVIGATION:
+      DISABLE_KEYBOARD_NAVIGATION:
         required: true
     secrets:
       EXPERIMENTAL_KEYSTORE_BASE64:
@@ -92,17 +92,17 @@ jobs:
         run: ./gradlew assembleExperimentalRelease --build-cache --parallel --max-workers=4 --no-daemon --stacktrace
         env:
           RUNNING_E2E_TESTS: true
-          KEYBOARD_NAVIGATION_ENABLED: ${{ inputs.KEYBOARD_NAVIGATION }}
+          DISABLE_KEYBOARD_NAVIGATION_ENABLED: ${{ inputs.DISABLE_KEYBOARD_NAVIGATION }}
 
       - name: Upload APK
-        if: ${{ inputs.KEYBOARD_NAVIGATION == 'false' }}
+        if: ${{ inputs.DISABLE_KEYBOARD_NAVIGATION == 'true' }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: Android Experimental APK
           path: android/app/build/outputs/apk/experimental/release/app-experimental-release.apk
 
       - name: Upload APK with Keyboard Navigation
-        if: ${{ inputs.KEYBOARD_NAVIGATION == 'true' }}
+        if: ${{ inputs.DISABLE_KEYBOARD_NAVIGATION == 'false' }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: Android Experimental APK with Keyboard Navigation
