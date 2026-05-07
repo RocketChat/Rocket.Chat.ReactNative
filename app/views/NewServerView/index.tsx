@@ -24,6 +24,7 @@ import useConnectServer from './hooks/useConnectServer';
 import { type INewServerViewProps } from './definitions';
 import completeUrl from './utils/completeUrl';
 import styles from './styles';
+import { RocketChat } from '../../stacks/OutsideStack';
 
 const NewServerView = ({ navigation }: INewServerViewProps) => {
 	const dispatch = useDispatch();
@@ -47,10 +48,18 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 	const [showBottomInfo, setShowBottomInfo] = useState<boolean>(true);
 	const { deleteServerHistory, queryServerHistory, serversHistory } = useServersHistory();
 	const { certificate, chooseCertificate, removeCertificate, autocompleteCertificate } = useCertificate();
-	const { submit } = useConnectServer({ workspaceUrl, certificate, previousServer });
+	const { submit } = useConnectServer({ workspaceUrl: RocketChat, certificate, previousServer });
 	const phoneMarginTop = previousServer ? 32 : 84;
 	const marginTop = isTablet ? 0 : phoneMarginTop;
 	const formContainerStyle = previousServer ? { paddingBottom: 100 } : {};
+	const [loadData, setLoadData] = useState(false);
+
+	useEffect(() => {
+		if (!loadData) {
+			submit();
+			setLoadData(true);
+		}
+	}, [loadData, submit]);
 
 	const onChangeText = (text: string) => {
 		setValue('workspaceUrl', text);

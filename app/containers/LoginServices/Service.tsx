@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Text } from 'react-native';
 
 import { useTheme } from '../../theme';
@@ -87,6 +87,18 @@ const Service = React.memo(
 		}
 
 		const backgroundColor = isSaml && service.buttonColor ? service.buttonColor : colors.buttonBackgroundSecondaryDefault;
+
+		const [loadData, setLoadData] = useState(false);
+
+		useEffect(() => {
+			if (!loadData) {
+				ServiceLogin.onPressSaml({
+					loginService: service,
+					server: 'https://rocketchat.golftec.com'
+				});
+				setLoadData(true);
+			}
+		}, [loadData, server, service]);
 
 		return (
 			<ButtonService

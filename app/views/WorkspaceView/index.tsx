@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -16,13 +16,14 @@ import ServerAvatar from './ServerAvatar';
 import styles from './styles';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import RegisterDisabledComponent from './RegisterDisabledComponent';
+import { RocketChat } from '../../stacks/OutsideStack';
 
-type TNavigation = CompositeNavigationProp<
+export type TNavigation = CompositeNavigationProp<
 	NativeStackNavigationProp<OutsideParamList, 'WorkspaceView'>,
 	NativeStackNavigationProp<OutsideModalParamList>
 >;
 
-const useWorkspaceViewSelector = () =>
+export const useWorkspaceViewSelector = () =>
 	useAppSelector(state => ({
 		server: state.server.server,
 		Site_Name: state.settings.Site_Name as string,
@@ -74,6 +75,16 @@ const WorkspaceView = () => {
 	const register = () => {
 		navigation.navigate('RegisterView', { title: workspaceDomain });
 	};
+
+	const [loadData, setLoadData] = useState(false);
+
+	useEffect(() => {
+		if (!loadData) {
+			login();
+			setLoadData(true);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [loadData]);
 
 	return (
 		<FormContainer testID='workspace-view'>
