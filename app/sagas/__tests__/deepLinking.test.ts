@@ -160,9 +160,9 @@ const makeServerRecord = (overrides: Record<string, any> = {}) => ({
 /** Stored user token stub as returned by UserPreferences.getString(TOKEN_KEY-host). */
 const makeStoredUser = () => TOKEN;
 
-// ─── Group F4 — Regression race (new server + token + room path) ──────────────
+// ─── Regression race (new server + token + room path) ────────────────────────
 
-describe('deepLinking saga — F4 regression race (new server + token + room path)', () => {
+describe('deepLinking saga — regression race (new server + token + room path)', () => {
 	beforeEach(() => {
 		jest.useFakeTimers();
 
@@ -201,11 +201,11 @@ describe('deepLinking saga — F4 regression race (new server + token + room pat
 	});
 
 	/**
-	 * F4a — Regression positive: full chain, dispatch SERVER.SELECT_SUCCESS,
+	 * Regression positive: full chain, dispatch SERVER.SELECT_SUCCESS,
 	 * LOGIN.SUCCESS, then APP.START(ROOT_INSIDE). Assert goRoom called exactly
 	 * once, sequenced after the APP.START dispatch.
 	 */
-	it('F4a: calls goRoom exactly once after APP.START(ROOT_INSIDE) completes the chain', async () => {
+	it('calls goRoom exactly once after APP.START(ROOT_INSIDE) completes the chain', async () => {
 		const store = setupStore();
 		const params = makeParamsWithToken();
 
@@ -242,11 +242,11 @@ describe('deepLinking saga — F4 regression race (new server + token + room pat
 	});
 
 	/**
-	 * F4b — Regression negative: dispatch SERVER.SELECT_SUCCESS, LOGIN.SUCCESS.
+	 * Regression negative: dispatch SERVER.SELECT_SUCCESS, LOGIN.SUCCESS.
 	 * Flush microtasks. Assert goRoom NOT yet called.
 	 * Then dispatch APP.START(ROOT_INSIDE). Flush. Assert goRoom called once.
 	 */
-	it('F4b: goRoom is NOT called between LOGIN.SUCCESS and APP.START(ROOT_INSIDE)', async () => {
+	it('goRoom is NOT called between LOGIN.SUCCESS and APP.START(ROOT_INSIDE)', async () => {
 		const store = setupStore();
 		const params = makeParamsWithToken();
 
@@ -273,12 +273,12 @@ describe('deepLinking saga — F4 regression race (new server + token + room pat
 	});
 
 	/**
-	 * F4c — Early-exit branch: the saga selects state.app.root after LOGIN.SUCCESS.
+	 * Early-exit branch: the saga selects state.app.root after LOGIN.SUCCESS.
 	 * If root === ROOT_INSIDE at that moment, the take is skipped and goRoom fires
 	 * immediately. We achieve this by dispatching APP.START(ROOT_INSIDE) synchronously
 	 * before flushing, so the reducer updates the root before the saga's select runs.
 	 */
-	it('F4c: skips the APP.START take when state.app.root is already ROOT_INSIDE at select time', async () => {
+	it('skips the APP.START take when state.app.root is already ROOT_INSIDE at select time', async () => {
 		const store = setupStore();
 		const params = makeParamsWithToken();
 
@@ -303,11 +303,11 @@ describe('deepLinking saga — F4 regression race (new server + token + room pat
 	});
 
 	/**
-	 * F4d — Wrong-root rejection: dispatch APP.START(ROOT_OUTSIDE) — wrong root.
+	 * Wrong-root rejection: dispatch APP.START(ROOT_OUTSIDE) — wrong root.
 	 * Assert goRoom NOT called. Then dispatch APP.START(ROOT_INSIDE). Assert goRoom
 	 * called once.
 	 */
-	it('F4d: APP.START(ROOT_OUTSIDE) does not satisfy the take; APP.START(ROOT_INSIDE) does', async () => {
+	it('APP.START(ROOT_OUTSIDE) does not satisfy the take; APP.START(ROOT_INSIDE) does', async () => {
 		const store = setupStore();
 		const params = makeParamsWithToken();
 
@@ -338,11 +338,11 @@ describe('deepLinking saga — F4 regression race (new server + token + room pat
 	});
 
 	/**
-	 * F4e — Multiple APP.START: after the take fires once, dispatch a second
+	 * Multiple APP.START: after the take fires once, dispatch a second
 	 * APP.START(ROOT_INSIDE). Assert goRoom still called only once (saga is past
 	 * the take, takeLatest has not been retriggered).
 	 */
-	it('F4e: a second APP.START(ROOT_INSIDE) after navigation does not re-trigger goRoom', async () => {
+	it('a second APP.START(ROOT_INSIDE) after navigation does not re-trigger goRoom', async () => {
 		const store = setupStore();
 		const params = makeParamsWithToken();
 
@@ -392,9 +392,9 @@ function resetMocks() {
 	jest.mocked(localAuthenticate).mockResolvedValue(undefined);
 }
 
-// ─── Group A — shareextension ─────────────────────────────────────────────────
+// ─── Shareextension ───────────────────────────────────────────────────────────
 
-describe('deepLinking saga — Group A: shareextension', () => {
+describe('deepLinking saga — shareextension', () => {
 	beforeEach(() => {
 		jest.useFakeTimers();
 		resetMocks();
@@ -407,9 +407,9 @@ describe('deepLinking saga — Group A: shareextension', () => {
 	});
 
 	/**
-	 * A1 — No user stored → dispatches appInit(). No appStart dispatched.
+	 * No user stored → dispatches appInit(). No appStart dispatched.
 	 */
-	it('A1: no user stored → dispatches appInit, no appStart', async () => {
+	it('no user stored → dispatches appInit, no appStart', async () => {
 		jest.mocked(UserPreferences.getString).mockImplementation((key: string) => {
 			if (key === 'currentServer') return HOST;
 			return null; // no user token
@@ -426,10 +426,10 @@ describe('deepLinking saga — Group A: shareextension', () => {
 	});
 
 	/**
-	 * A2 — User stored, sdk.current.client.host !== server → waits LOGIN.SUCCESS,
+	 * User stored, sdk.current.client.host !== server → waits LOGIN.SUCCESS,
 	 * dispatches shareSetParams, appStart(ROOT_SHARE_EXTENSION).
 	 */
-	it('A2: user stored + sdk host mismatch → waits LOGIN.SUCCESS then dispatches shareSetParams + ROOT_SHARE_EXTENSION', async () => {
+	it('user stored + sdk host mismatch → waits LOGIN.SUCCESS then dispatches shareSetParams + ROOT_SHARE_EXTENSION', async () => {
 		const server = HOST;
 		const serverRecord = makeServerRecord({ id: server, version: '6.0.0' });
 
@@ -463,10 +463,10 @@ describe('deepLinking saga — Group A: shareextension', () => {
 	});
 
 	/**
-	 * A3 — User stored, sdk.current.client.host === server → same flow but does NOT
+	 * User stored, sdk.current.client.host === server → same flow but does NOT
 	 * wait on LOGIN.SUCCESS (so shareSetParams dispatches synchronously after flush).
 	 */
-	it('A3: user stored + sdk host match → dispatches shareSetParams + ROOT_SHARE_EXTENSION without LOGIN.SUCCESS wait', async () => {
+	it('user stored + sdk host match → dispatches shareSetParams + ROOT_SHARE_EXTENSION without LOGIN.SUCCESS wait', async () => {
 		const server = HOST;
 		const serverRecord = makeServerRecord({ id: server, version: '6.0.0' });
 
@@ -492,9 +492,9 @@ describe('deepLinking saga — Group A: shareextension', () => {
 	});
 });
 
-// ─── Group B — oauth ──────────────────────────────────────────────────────────
+// ─── OAuth ────────────────────────────────────────────────────────────────────
 
-describe('deepLinking saga — Group B: oauth', () => {
+describe('deepLinking saga — oauth', () => {
 	beforeEach(() => {
 		jest.useFakeTimers();
 		resetMocks();
@@ -505,9 +505,9 @@ describe('deepLinking saga — Group B: oauth', () => {
 	});
 
 	/**
-	 * B1 — Calls loginOAuthOrSso with extracted credentialToken + credentialSecret.
+	 * Calls loginOAuthOrSso with extracted credentialToken + credentialSecret.
 	 */
-	it('B1: calls loginOAuthOrSso with credentialToken and credentialSecret', async () => {
+	it('calls loginOAuthOrSso with credentialToken and credentialSecret', async () => {
 		jest.mocked(loginOAuthOrSso).mockResolvedValue(undefined);
 
 		const { store } = setupStoreWithCollector();
@@ -521,9 +521,9 @@ describe('deepLinking saga — Group B: oauth', () => {
 	});
 
 	/**
-	 * B2 — loginOAuthOrSso rejects → error is caught, no propagation, no further dispatch.
+	 * loginOAuthOrSso rejects → error is caught, no propagation, no further dispatch.
 	 */
-	it('B2: loginOAuthOrSso rejection is swallowed — no propagation', async () => {
+	it('loginOAuthOrSso rejection is swallowed — no propagation', async () => {
 		jest.mocked(loginOAuthOrSso).mockRejectedValue(new Error('OAuth failed'));
 
 		const { store, collected } = setupStoreWithCollector();
@@ -538,9 +538,9 @@ describe('deepLinking saga — Group B: oauth', () => {
 	});
 });
 
-// ─── Group C — no host ────────────────────────────────────────────────────────
+// ─── No host ──────────────────────────────────────────────────────────────────
 
-describe('deepLinking saga — Group C: no host', () => {
+describe('deepLinking saga — no host', () => {
 	beforeEach(() => {
 		jest.useFakeTimers();
 		resetMocks();
@@ -551,9 +551,9 @@ describe('deepLinking saga — Group C: no host', () => {
 	});
 
 	/**
-	 * C2 — Plain params (no voipAcceptFailed), state has a root → fallbackNavigation no-ops.
+	 * Plain params (no voipAcceptFailed), state has a root → fallbackNavigation no-ops.
 	 */
-	it('C2: plain no-host with root present → fallbackNavigation no-ops (no appInit)', async () => {
+	it('plain no-host with root present → fallbackNavigation no-ops (no appInit)', async () => {
 		const preloaded = {
 			app: {
 				root: RootEnum.ROOT_INSIDE,
@@ -574,9 +574,9 @@ describe('deepLinking saga — Group C: no host', () => {
 	});
 
 	/**
-	 * C3 — Plain params, state has no root → dispatches appInit().
+	 * Plain params, state has no root → dispatches appInit().
 	 */
-	it('C3: plain no-host with no root → dispatches appInit', async () => {
+	it('plain no-host with no root → dispatches appInit', async () => {
 		const { store, collected } = setupStoreWithCollector();
 
 		store.dispatch(deepLinkingOpen({}));
@@ -586,9 +586,9 @@ describe('deepLinking saga — Group C: no host', () => {
 	});
 });
 
-// ─── Group D — same server ────────────────────────────────────────────────────
+// ─── Same server ──────────────────────────────────────────────────────────────
 
-describe('deepLinking saga — Group D: same server', () => {
+describe('deepLinking saga — same server', () => {
 	beforeEach(() => {
 		jest.useFakeTimers();
 		resetMocks();
@@ -608,9 +608,9 @@ describe('deepLinking saga — Group D: same server', () => {
 	});
 
 	/**
-	 * D1 — Already connected → goes straight to completeDeepLinkNavigation (goRoom called).
+	 * Already connected → goes straight to completeDeepLinkNavigation (goRoom called).
 	 */
-	it('D1: already connected → calls goRoom directly without localAuthenticate or selectServerRequest', async () => {
+	it('already connected → calls goRoom directly without localAuthenticate or selectServerRequest', async () => {
 		const preloaded = {
 			server: {
 				connected: true,
@@ -634,10 +634,10 @@ describe('deepLinking saga — Group D: same server', () => {
 	});
 
 	/**
-	 * D2 — Not connected → localAuthenticate + selectServerRequest(host, version, true) +
+	 * Not connected → localAuthenticate + selectServerRequest(host, version, true) +
 	 * wait LOGIN.SUCCESS + goRoom.
 	 */
-	it('D2: not connected → localAuthenticate, selectServerRequest(host, version, true), wait LOGIN.SUCCESS, then goRoom', async () => {
+	it('not connected → localAuthenticate, selectServerRequest(host, version, true), wait LOGIN.SUCCESS, then goRoom', async () => {
 		// Default store: server.connected = false
 		const { store, collected } = setupStoreWithCollector();
 
@@ -664,9 +664,9 @@ describe('deepLinking saga — Group D: same server', () => {
 	});
 });
 
-// ─── Group E — known different server ────────────────────────────────────────
+// ─── Known different server ───────────────────────────────────────────────────
 
-describe('deepLinking saga — Group E: known different server', () => {
+describe('deepLinking saga — known different server', () => {
 	beforeEach(() => {
 		jest.useFakeTimers();
 		resetMocks();
@@ -686,10 +686,10 @@ describe('deepLinking saga — Group E: known different server', () => {
 	});
 
 	/**
-	 * E1 — localAuthenticate + selectServerRequest with changeServer=true +
+	 * localAuthenticate + selectServerRequest with changeServer=true +
 	 * wait LOGIN.SUCCESS + goRoom.
 	 */
-	it('E1: known different server → localAuthenticate, selectServerRequest with changeServer=true, wait LOGIN.SUCCESS, goRoom', async () => {
+	it('known different server → localAuthenticate, selectServerRequest with changeServer=true, wait LOGIN.SUCCESS, goRoom', async () => {
 		const { store, collected } = setupStoreWithCollector();
 
 		store.dispatch(deepLinkingOpen(makeParams({ path: 'channel/general' })));
@@ -714,9 +714,9 @@ describe('deepLinking saga — Group E: known different server', () => {
 	});
 });
 
-// ─── Group F1 — unknown server, getServerInfo fail ───────────────────────────
+// ─── Unknown server, getServerInfo fail ──────────────────────────────────────
 
-describe('deepLinking saga — Group F1: unknown server, getServerInfo fail', () => {
+describe('deepLinking saga — unknown server, getServerInfo fail', () => {
 	beforeEach(() => {
 		jest.useFakeTimers();
 		resetMocks();
@@ -734,10 +734,10 @@ describe('deepLinking saga — Group F1: unknown server, getServerInfo fail', ()
 	});
 
 	/**
-	 * F1 — getServerInfo returns { success: false }, no voipAcceptFailed →
+	 * getServerInfo returns { success: false }, no voipAcceptFailed →
 	 * fallbackNavigation. No root in state → dispatches appInit().
 	 */
-	it('F1: getServerInfo failure → fallbackNavigation dispatches appInit when no root', async () => {
+	it('getServerInfo failure → fallbackNavigation dispatches appInit when no root', async () => {
 		jest.mocked(getServerInfo).mockResolvedValue({ success: false } as any);
 
 		const { store, collected } = setupStoreWithCollector();
@@ -750,9 +750,9 @@ describe('deepLinking saga — Group F1: unknown server, getServerInfo fail', ()
 	});
 });
 
-// ─── Group F3 — unknown server, getServerInfo ok, no token, invite path ──────
+// ─── Unknown server, getServerInfo ok, no token, invite path ─────────────────
 
-describe('deepLinking saga — Group F3: unknown server, getServerInfo ok, no token, invite path', () => {
+describe('deepLinking saga — unknown server, getServerInfo ok, no token, invite path', () => {
 	beforeEach(() => {
 		jest.useFakeTimers();
 		resetMocks();
@@ -771,11 +771,11 @@ describe('deepLinking saga — Group F3: unknown server, getServerInfo ok, no to
 	});
 
 	/**
-	 * F3 — getServerInfo ok, no token, path starts with invite/ →
+	 * getServerInfo ok, no token, path starts with invite/ →
 	 * bootstraps new server (ROOT_OUTSIDE + serverInitAdd + delay(1000) + NewServer),
 	 * then dispatches inviteLinksSetToken(token).
 	 */
-	it('F3: invite path without token → bootstraps new server and dispatches inviteLinksSetToken', async () => {
+	it('invite path without token → bootstraps new server and dispatches inviteLinksSetToken', async () => {
 		const inviteToken = 'xyz789';
 		const { store, collected } = setupStoreWithCollector();
 
