@@ -228,7 +228,7 @@ tags:
     direction: UP
 - scrollUntilVisible:
     element:
-      text: 'Pin'
+      text: Pin
     timeout: 60000
 - tapOn:
     text: Pin
