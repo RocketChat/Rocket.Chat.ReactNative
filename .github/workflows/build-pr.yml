@@ -74,7 +74,7 @@ jobs:
     needs: [e2e-hold]
     secrets: inherit
     with:
-      keyboardNavigation: false
+      KEYBOARD_NAVIGATION: false
 
   e2e-run-android:
     name: E2E Run Android
@@ -88,7 +88,7 @@ jobs:
       fail-fast: false
     with:
       shard: ${{ matrix.shard }}
-      keyboardNavigation: false
+      KEYBOARD_NAVIGATION: false
 
   e2e-build-android-keyboard-navigation:
     name: E2E Build Android Keyboard Navigation
@@ -97,7 +97,7 @@ jobs:
     needs: [e2e-hold]
     secrets: inherit
     with:
-      keyboardNavigation: true 
+      KEYBOARD_NAVIGATION: true 
 
   e2e-run-android-keyboard-navigation:
     name: E2E Run Android Keyboard Navigation
@@ -106,7 +106,7 @@ jobs:
     needs: [e2e-build-android-keyboard-navigation]
     secrets: inherit
     with:
-      keyboardNavigation: true
+      KEYBOARD_NAVIGATION: true
     
   e2e-build-ios:
     name: E2E Build iOS

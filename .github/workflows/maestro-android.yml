@@ -6,7 +6,7 @@ on:
       shard:
         required: false
         type: string
-      keyboardNavigation:
+      KEYBOARD_NAVIGATION:
         required: false
         type: boolean
 
@@ -43,13 +43,13 @@ jobs:
           key: maestro-${{ runner.os }}-${{ env.MAESTRO_VERSION }}
 
       - name: Download APK
-        if: ${{ inputs.keyboardNavigation == 'false' }}
+        if: ${{ inputs.KEYBOARD_NAVIGATION == 'false' }}
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           name: Android Experimental APK
 
       - name: Download Keyboard Navigation APK
-        if: ${{ inputs.keyboardNavigation == 'true' }}
+        if: ${{ inputs.KEYBOARD_NAVIGATION == 'true' }}
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           name: Android Experimental APK with Keyboard Navigation
@@ -79,7 +79,7 @@ jobs:
         run: chmod +x .github/scripts/run-maestro.sh
 
       - name: Create Keyboard-enabled AVD
-        if: ${{ inputs.keyboardNavigation == 'true' }}
+        if: ${{ inputs.KEYBOARD_NAVIGATION == 'true' }}
         run: |
           set -eux
 
@@ -134,7 +134,7 @@ jobs:
           echo "$AVD_NAME created with physical keyboard support"
 
       - name: Start Android Emulator and Run Maestro Tests (keyboard AVD)
-        if: ${{ inputs.keyboardNavigation == 'true' }}
+        if: ${{ inputs.KEYBOARD_NAVIGATION == 'true' }}
         uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a # v2.37.0
         timeout-minutes: 60
         with:
@@ -152,7 +152,7 @@ jobs:
           script: ./.github/scripts/run-maestro.sh android ${{ inputs.shard }}
 
       - name: Start Android Emulator and Run Maestro Tests (default)
-        if: ${{ inputs.keyboardNavigation == 'false' }}
+        if: ${{ inputs.KEYBOARD_NAVIGATION == 'false' }}
         uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a # v2.37.0
         timeout-minutes: 60
         with:
