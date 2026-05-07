@@ -21,6 +21,17 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
+      - name: Free disk space
+        uses: jlumbroso/free-disk-space@54081f138730dfa15788a46383842cd2f914a1be # v1.3.1
+        with:
+          tool-cache: false
+          android: false
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: true
+          swap-storage: true
+
       - name: Setup Java
         uses: actions/setup-java@c1e323688fd81a25caa38c78aa6df2d33d3e20d9 # v4.8.0
         with:
@@ -28,6 +39,7 @@ jobs:
           java-version: 17
 
       - name: Cache Android AVD
+        id: avd-cache
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: |
@@ -136,12 +148,33 @@ jobs:
           target: google_apis
           avd-name: Pixel_API_34_Keyboard
           cores: 4
-          ram-size: 4096M
+          ram-size: 6144M
           force-avd-creation: false
           disable-animations: true
           emulator-boot-timeout: 900
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -accel on
           script: ./.github/scripts/run-maestro.sh android ${{ inputs.shard }}
+
+      # Cache miss → boot the default AVD once with no test payload so reactivecircus saves a snapshot to ~/.android/avd
+      # which the AVD cache step then persists. Subsequent runs hit cache and the test step below replays the snapshot
+      # instead of cold-booting (cuts ~60–90s and avoids the system_server hiccup window).
+      - name: Generate AVD snapshot for cache (default profile, cache miss only)
+        if: ${{ inputs.shard != '14' && steps.avd-cache.outputs.cache-hit != 'true' }}
+        uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a # v2.37.0
+        timeout-minutes: 30
+        with:
+          api-level: 34
+          disk-size: 4096M
+          arch: x86_64
+          target: google_apis
+          profile: pixel_7_pro
+          cores: 4
+          ram-size: 6144M
+          force-avd-creation: true
+          disable-animations: true
+          emulator-boot-timeout: 900
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -accel on
+          script: echo "AVD snapshot generated for cache"
 
       - name: Start Android Emulator and Run Maestro Tests (default)
         if: ${{ inputs.shard != '14' }}
@@ -154,11 +187,11 @@ jobs:
           target: google_apis
           profile: pixel_7_pro
           cores: 4
-          ram-size: 4096M
+          ram-size: 6144M
           force-avd-creation: false
           disable-animations: true
           emulator-boot-timeout: 900
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -accel on
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -accel on
           script: ./.github/scripts/run-maestro.sh android ${{ inputs.shard }}
 
       - name: Android Maestro Logs
