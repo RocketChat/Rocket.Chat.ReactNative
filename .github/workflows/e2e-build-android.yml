@@ -2,6 +2,9 @@ name: E2E Build Android
 
 on:
   workflow_call:
+    inputs:
+      KEYBOARD_NAVIGATION:
+        required: true
     secrets:
       EXPERIMENTAL_KEYSTORE_BASE64:
         required: true
@@ -12,8 +15,6 @@ on:
       EXPERIMENTAL_KEY_PASSWORD:
         required: true
       BUGSNAG_KEY:
-        required: true
-      KEYBOARD_NAVIGATION:
         required: true
 
 jobs:
