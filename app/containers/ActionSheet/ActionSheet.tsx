@@ -8,7 +8,7 @@ import {
 	type LayoutChangeEvent,
 	Platform,
 	useWindowDimensions,
-	View
+	type View
 } from 'react-native';
 import { TrueSheet } from '@lodev09/react-native-true-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -28,7 +28,7 @@ const ActionSheet = React.memo(
 		const { colors } = useTheme();
 		const { height: windowHeight, width: windowWidth, fontScale } = useWindowDimensions();
 		const sheetRef = useRef<TrueSheet>(null);
-		const firstFocusableRef = useRef<View>(null);
+		const handleRef = useRef<View>(null);
 		const [data, setData] = useState<TActionSheetOptions>({} as TActionSheetOptions);
 		const [isVisible, setIsVisible] = useState(false);
 		const [contentHeight, setContentHeight] = useState(0);
@@ -71,17 +71,26 @@ const ActionSheet = React.memo(
 			hideActionSheet: hide
 		}));
 
-		const onDidPresent = () => {
-			const node = findNodeHandle(firstFocusableRef.current);
+		const focusHandle = () => {
+			const node = findNodeHandle(handleRef.current);
 			if (node) AccessibilityInfo.setAccessibilityFocus(node);
+		};
+
+		const onDidPresent = () => {
+			// On Android the bottom sheet is hosted in a separate window; TalkBack
+			// needs a moment after the present animation before it can target nodes
+			// inside it, so defer the focus call slightly.
+			if (isAndroid) {
+				setTimeout(focusHandle, 300);
+				return;
+			}
+			focusHandle();
 		};
 
 		const renderHeader = () => (
 			<GestureHandlerRootView style={{ flex: 0 }}>
-				<View ref={firstFocusableRef} collapsable={false}>
-					<Handle onPress={hide} />
-					{isValidElement(data?.customHeader) ? data.customHeader : null}
-				</View>
+				<Handle ref={handleRef} onPress={hide} />
+				{isValidElement(data?.customHeader) ? data.customHeader : null}
 			</GestureHandlerRootView>
 		);
 
