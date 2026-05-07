@@ -70,7 +70,7 @@ export const MicOrSendButton = (): React.ReactElement | null => {
 				onPress={startRecording}
 				testID='message-composer-send-audio'
 				accessibilityLabel='Record_audio_message'
-				icon='microphone'
+				icon='mic'
 			/>
 		);
 	}
