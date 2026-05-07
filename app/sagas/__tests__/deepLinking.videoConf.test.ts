@@ -168,9 +168,9 @@ const makeRoom = (overrides: Record<string, any> = {}) => ({
 	...overrides
 });
 
-// ─── Group A — no host short-circuit ─────────────────────────────────────────
+// ─── no host short-circuit ────────────────────────────────────────────────────
 
-describe('handleClickCallPush — Group A: no host', () => {
+describe('handleClickCallPush — no host', () => {
 	beforeEach(() => {
 		jest.mocked(UserPreferences.getString).mockReset();
 		jest.mocked(getServerById).mockReset();
@@ -181,7 +181,7 @@ describe('handleClickCallPush — Group A: no host', () => {
 		mockSubsCollection.find.mockReset();
 	});
 
-	it('A1: returns immediately when params.host is empty — no dispatch, no nav, no videoConfJoin', async () => {
+	it('returns immediately when params.host is empty — no dispatch, no nav, no videoConfJoin', async () => {
 		const { store, dispatched } = setupStore();
 		store.dispatch(deepLinkingClickCallPush({ host: '', rid: RID, callId: CALL_ID, caller: CALLER, event: 'accept' }));
 		await flushSagaMicrotasks();
@@ -195,9 +195,9 @@ describe('handleClickCallPush — Group A: no host', () => {
 	});
 });
 
-// ─── Group B — same server ───────────────────────────────────────────────────
+// ─── same server ─────────────────────────────────────────────────────────────
 
-describe('handleClickCallPush — Group B: same server', () => {
+describe('handleClickCallPush — same server', () => {
 	beforeEach(() => {
 		jest.useFakeTimers();
 		jest.mocked(UserPreferences.getString).mockReset();
@@ -225,7 +225,7 @@ describe('handleClickCallPush — Group B: same server', () => {
 		jest.useRealTimers();
 	});
 
-	it('B1: already connected → goes straight to handleNavigateCallRoom without localAuthenticate', async () => {
+	it('already connected → goes straight to handleNavigateCallRoom without localAuthenticate', async () => {
 		// Pre-seed state with connected=true
 		const preloadedState = {
 			server: { connected: true }
@@ -243,7 +243,7 @@ describe('handleClickCallPush — Group B: same server', () => {
 		expect(jest.mocked(navigateToRoom)).toHaveBeenCalledTimes(1);
 	});
 
-	it('B2: not connected → localAuthenticate, selectServerRequest, waits LOGIN.SUCCESS, then navigateToRoom', async () => {
+	it('not connected → localAuthenticate, selectServerRequest, waits LOGIN.SUCCESS, then navigateToRoom', async () => {
 		// Pre-seed state with connected=false (default)
 		mockSubsCollection.find.mockResolvedValueOnce(makeRoom());
 
@@ -272,9 +272,9 @@ describe('handleClickCallPush — Group B: same server', () => {
 	});
 });
 
-// ─── Group C — known different server ────────────────────────────────────────
+// ─── known different server ───────────────────────────────────────────────────
 
-describe('handleClickCallPush — Group C: known different server', () => {
+describe('handleClickCallPush — known different server', () => {
 	beforeEach(() => {
 		jest.useFakeTimers();
 		jest.mocked(UserPreferences.getString).mockReset();
@@ -301,7 +301,7 @@ describe('handleClickCallPush — Group C: known different server', () => {
 		jest.useRealTimers();
 	});
 
-	it('C1: localAuthenticate, selectServerRequest with changeServer=true, waits LOGIN.SUCCESS, then navigateToRoom', async () => {
+	it('localAuthenticate, selectServerRequest with changeServer=true, waits LOGIN.SUCCESS, then navigateToRoom', async () => {
 		mockSubsCollection.find.mockResolvedValueOnce(makeRoom());
 
 		const { store, dispatched } = setupStore();
@@ -329,9 +329,9 @@ describe('handleClickCallPush — Group C: known different server', () => {
 	});
 });
 
-// ─── Group D — unknown server ─────────────────────────────────────────────────
+// ─── unknown server ────────────────────────────────────────────────────────────
 
-describe('handleClickCallPush — Group D: unknown server', () => {
+describe('handleClickCallPush — unknown server', () => {
 	beforeEach(() => {
 		jest.useFakeTimers();
 		jest.mocked(UserPreferences.getString).mockReset();
@@ -358,7 +358,7 @@ describe('handleClickCallPush — Group D: unknown server', () => {
 		jest.useRealTimers();
 	});
 
-	it('D1: getServerInfo fails → fallbackNavigation, no appStart(ROOT_OUTSIDE)', async () => {
+	it('getServerInfo fails → fallbackNavigation, no appStart(ROOT_OUTSIDE)', async () => {
 		jest.mocked(getServerInfo).mockResolvedValue({ success: false } as any);
 
 		const { store, dispatched } = setupStore();
@@ -377,7 +377,7 @@ describe('handleClickCallPush — Group D: unknown server', () => {
 		expect(jest.mocked(videoConfJoin)).not.toHaveBeenCalled();
 	});
 
-	it('D2: getServerInfo ok + token → appStart(ROOT_OUTSIDE), serverInitAdd, delay(1000), NewServer emit, waits SELECT_SUCCESS, loginRequest, waits LOGIN.SUCCESS, then navigateToRoom', async () => {
+	it('getServerInfo ok + token → appStart(ROOT_OUTSIDE), serverInitAdd, delay(1000), NewServer emit, waits SELECT_SUCCESS, loginRequest, waits LOGIN.SUCCESS, then navigateToRoom', async () => {
 		jest.mocked(getServerInfo).mockResolvedValue({ success: true, version: '6.0.0' } as any);
 		// Override: token exists
 		jest.mocked(UserPreferences.getString).mockImplementation((key: string) => {
@@ -426,7 +426,7 @@ describe('handleClickCallPush — Group D: unknown server', () => {
 		expect(jest.mocked(navigateToRoom)).toHaveBeenCalledTimes(1);
 	});
 
-	it('D3: getServerInfo ok + no token → no further action after NewServer emit', async () => {
+	it('getServerInfo ok + no token → no further action after NewServer emit', async () => {
 		jest.mocked(getServerInfo).mockResolvedValue({ success: true, version: '6.0.0' } as any);
 
 		const { store, dispatched } = setupStore();
@@ -450,9 +450,9 @@ describe('handleClickCallPush — Group D: unknown server', () => {
 	});
 });
 
-// ─── Group E — handleNavigateCallRoom downstream ─────────────────────────────
+// ─── handleNavigateCallRoom downstream ───────────────────────────────────────
 
-describe('handleClickCallPush — Group E: handleNavigateCallRoom downstream', () => {
+describe('handleClickCallPush — handleNavigateCallRoom downstream', () => {
 	beforeEach(() => {
 		jest.useFakeTimers();
 		jest.mocked(UserPreferences.getString).mockReset();
@@ -479,7 +479,7 @@ describe('handleClickCallPush — Group E: handleNavigateCallRoom downstream', (
 		jest.useRealTimers();
 	});
 
-	it('E1: always dispatches appStart(ROOT_INSIDE) before subscription lookup', async () => {
+	it('always dispatches appStart(ROOT_INSIDE) before subscription lookup', async () => {
 		mockSubsCollection.find.mockResolvedValueOnce(makeRoom());
 		const preloadedState = { server: { connected: true } } as PreloadedState;
 		const { store, dispatched } = setupStore(preloadedState);
@@ -498,7 +498,7 @@ describe('handleClickCallPush — Group E: handleNavigateCallRoom downstream', (
 		expect(jest.mocked(navigateToRoom)).toHaveBeenCalledTimes(1);
 	});
 
-	it('E2: event=accept → notifyUser(accepted) AND videoConfJoin called', async () => {
+	it('event=accept → notifyUser(accepted) AND videoConfJoin called', async () => {
 		mockSubsCollection.find.mockResolvedValueOnce(makeRoom());
 		const preloadedState = { server: { connected: true } } as PreloadedState;
 		const { store } = setupStore(preloadedState);
@@ -516,7 +516,7 @@ describe('handleClickCallPush — Group E: handleNavigateCallRoom downstream', (
 		expect(jest.mocked(videoConfJoin)).toHaveBeenCalledWith(CALL_ID, true, false, true);
 	});
 
-	it('E3: event=decline → notifyUser(rejected) but NO videoConfJoin', async () => {
+	it('event=decline → notifyUser(rejected) but NO videoConfJoin', async () => {
 		mockSubsCollection.find.mockResolvedValueOnce(makeRoom());
 		const preloadedState = { server: { connected: true } } as PreloadedState;
 		const { store } = setupStore(preloadedState);
@@ -533,7 +533,7 @@ describe('handleClickCallPush — Group E: handleNavigateCallRoom downstream', (
 		expect(jest.mocked(videoConfJoin)).not.toHaveBeenCalled();
 	});
 
-	it('E4: isMasterDetail=true → navigateToRoom called with isMasterDetail: true', async () => {
+	it('isMasterDetail=true → navigateToRoom called with isMasterDetail: true', async () => {
 		mockSubsCollection.find.mockResolvedValueOnce(makeRoom());
 		const preloadedState = {
 			server: { connected: true },
@@ -550,7 +550,7 @@ describe('handleClickCallPush — Group E: handleNavigateCallRoom downstream', (
 		expect(callArgs[0]).toMatchObject({ isMasterDetail: true });
 	});
 
-	it('E5: subscription not found → caught; appStart(ROOT_INSIDE) still dispatched, no navigateToRoom/notifyUser/videoConfJoin', async () => {
+	it('subscription not found → caught; appStart(ROOT_INSIDE) still dispatched, no navigateToRoom/notifyUser/videoConfJoin', async () => {
 		// mockSubsCollection.find rejects
 		mockSubsCollection.find.mockRejectedValueOnce(new Error('record not found'));
 		const preloadedState = { server: { connected: true } } as PreloadedState;
