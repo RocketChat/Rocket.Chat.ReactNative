@@ -71,7 +71,7 @@ const Preview = ({ attachment }: { attachment: IShareAttachment }) => {
 	return (
 		<View style={[styles.preview, { backgroundColor: colors.surfaceNeutral }]}>
 			<CustomIcon
-				name={attachment.mime?.startsWith('video/') ? 'camera' : 'attach'}
+				name={attachment.mime?.startsWith('video/') ? 'video' : 'attach'}
 				size={40}
 				color={colors.badgeBackgroundLevel2}
 			/>

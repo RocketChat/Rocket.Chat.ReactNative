@@ -55,7 +55,7 @@ const ThumbContent = ({ path, mime }: { path: string; mime?: string }) => {
 
 	return (
 		<View style={[styles.thumb, { borderColor: colors.strokeLight, backgroundColor: colors.surfaceNeutral }]}>
-			<CustomIcon name={mime?.startsWith('video/') ? 'camera' : 'attach'} size={28} color={colors.badgeBackgroundLevel2} />
+			<CustomIcon name={mime?.startsWith('video/') ? 'video' : 'attach'} size={28} color={colors.badgeBackgroundLevel2} />
 		</View>
 	);
 };
