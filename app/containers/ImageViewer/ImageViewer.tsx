@@ -18,6 +18,7 @@ interface ImageViewerProps {
 	width: number;
 	height: number;
 	onLoadEnd?: () => void;
+	altText?: string;
 }
 
 const styles = StyleSheet.create({
@@ -34,7 +35,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const ImageViewer = ({ uri = '', width, height, ...props }: ImageViewerProps): React.ReactElement => {
+export const ImageViewer = ({ uri = '', width, height, altText, ...props }: ImageViewerProps): React.ReactElement => {
 	const [autoplayGifs] = useUserPreferences<boolean>(AUTOPLAY_GIFS_PREFERENCES_KEY, true);
 	const [isPlaying, setIsPlaying] = useState<boolean>(!!autoplayGifs);
 	const expoImageRef = useRef<Image>(null);
@@ -132,7 +133,11 @@ export const ImageViewer = ({ uri = '', width, height, ...props }: ImageViewerPr
 	const { colors } = useTheme();
 
 	return (
-		<View style={[styles.container, { width, height, backgroundColor: colors.surfaceNeutral }]}>
+		<View
+			accessible={!!altText}
+			accessibilityLabel={altText}
+			accessibilityRole='image'
+			style={[styles.container, { width, height, backgroundColor: colors.surfaceNeutral }]}>
 			<GestureDetector gesture={gesture}>
 				<Animated.View onLayout={onLayout} style={[styles.flex, style]}>
 					<Touch onPress={handleGifPlayback} style={styles.flex} rectButtonStyle={styles.flex}>

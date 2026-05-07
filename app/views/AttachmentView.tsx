@@ -27,10 +27,12 @@ import { LOCAL_DOCUMENT_DIRECTORY, getFilename } from '../lib/methods/handleMedi
 
 const RenderContent = ({
 	setLoading,
-	attachment
+	attachment,
+	altText
 }: {
 	setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 	attachment: IAttachment;
+	altText?: string;
 }) => {
 	const videoRef = React.useRef<Video>(null);
 	const insets = useSafeAreaInsets();
@@ -65,6 +67,7 @@ const RenderContent = ({
 				onLoadEnd={() => setLoading(false)}
 				width={width}
 				height={height - insets.top - insets.bottom - (headerHeight || 0)}
+				altText={altText}
 			/>
 		);
 	}
@@ -196,7 +199,7 @@ const AttachmentView = (): React.ReactElement => {
 
 	return (
 		<View style={{ backgroundColor: colors.surfaceRoom, flex: 1 }}>
-			<RenderContent attachment={attachment} setLoading={setLoading} />
+			<RenderContent attachment={attachment} setLoading={setLoading} altText={altText} />
 			<View style={{ position: 'absolute', bottom: 20, left: 0, right: 0 }}>
 				{altText ? <AltTextLabel testID='attachment-view-alt-text-label' altText={altText} /> : null}
 			</View>
