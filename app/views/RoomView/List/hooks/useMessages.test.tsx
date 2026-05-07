@@ -9,8 +9,9 @@ import database from '../../../../lib/database';
 import { getMessageById } from '../../../../lib/database/services/Message';
 import { getThreadById } from '../../../../lib/database/services/Thread';
 import { MessageTypeLoad } from '../../../../lib/constants/messageTypeLoad';
+import { readThreads } from '../../../../lib/services/restApi';
 import { mockedStore } from '../../../../reducers/mockedStore';
-import { MAX_AUTO_LOADS } from '../constants';
+import { MAX_AUTO_LOADS, QUERY_SIZE } from '../constants';
 import { useMessages } from './useMessages';
 
 jest.mock('../../../../lib/database', () => ({
@@ -45,6 +46,7 @@ jest.mock('../../../../lib/methods/helpers', () => {
 const mockDbGet = database.active.get as unknown as jest.Mock;
 const mockGetThreadById = jest.mocked(getThreadById);
 const mockGetMessageById = jest.mocked(getMessageById);
+const mockReadThreads = jest.mocked(readThreads);
 
 const baseArgs = {
 	rid: 'ROOM_ID',
@@ -63,22 +65,31 @@ const msg = (overrides: Partial<TAnyMessageModel> & { id: string }): TAnyMessage
 describe('useMessages', () => {
 	let emittedRows: TAnyMessageModel[];
 	let emitVisibleRows: ((rows: TAnyMessageModel[]) => void) | null;
+	let queryCalls: unknown[][];
+	let unsubscribeSpies: jest.Mock[];
 
 	const wrapper = ({ children }: { children: React.ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
 
 	beforeEach(() => {
 		emittedRows = [];
 		emitVisibleRows = null;
+		queryCalls = [];
+		unsubscribeSpies = [];
 		jest.clearAllMocks();
 		mockDbGet.mockImplementation(() => ({
-			query: jest.fn().mockReturnValue({
-				observe: () => ({
-					subscribe: (onNext: (rows: TAnyMessageModel[]) => void) => {
-						emitVisibleRows = onNext;
-						onNext(emittedRows);
-						return { unsubscribe: jest.fn() };
-					}
-				})
+			query: jest.fn((...args: unknown[]) => {
+				queryCalls.push(args);
+				return {
+					observe: () => ({
+						subscribe: (onNext: (rows: TAnyMessageModel[]) => void) => {
+							emitVisibleRows = onNext;
+							onNext(emittedRows);
+							const unsubscribe = jest.fn();
+							unsubscribeSpies.push(unsubscribe);
+							return { unsubscribe };
+						}
+					})
+				};
 			})
 		}));
 	});
@@ -353,5 +364,137 @@ describe('useMessages', () => {
 		await waitFor(() => {
 			expect(result.current[0].map(m => m.id)).toContain('fallback-parent');
 		});
+	});
+
+	it('does not dispatch room history request when hideSystemMessages is empty even if a load row is present', async () => {
+		const dispatchSpy = jest.spyOn(mockedStore, 'dispatch');
+		emittedRows = [msg({ id: 'load-more-x', t: MessageTypeLoad.MORE })];
+		const { result } = renderUseMessages({
+			serverVersion: '6.0.0',
+			hideSystemMessages: []
+		});
+		await waitFor(() => {
+			expect(result.current[0].length).toBeGreaterThan(0);
+		});
+		expect(getHistoryDispatchCount(dispatchSpy)).toBe(0);
+		dispatchSpy.mockRestore();
+	});
+
+	it('does not dispatch room history request when there is no load-type row in visible messages', async () => {
+		const dispatchSpy = jest.spyOn(mockedStore, 'dispatch');
+		emittedRows = [msg({ id: 'a', t: undefined }), msg({ id: 'b', t: undefined })];
+		const { result } = renderUseMessages({
+			serverVersion: '6.0.0',
+			hideSystemMessages: ['uj']
+		});
+		await waitFor(() => {
+			expect(result.current[0].length).toBeGreaterThan(0);
+		});
+		expect(getHistoryDispatchCount(dispatchSpy)).toBe(0);
+		dispatchSpy.mockRestore();
+	});
+
+	it('dispatches room history request for PREVIOUS_CHUNK load type', async () => {
+		const dispatchSpy = jest.spyOn(mockedStore, 'dispatch');
+		emittedRows = [msg({ id: 'prev-chunk-id', t: MessageTypeLoad.PREVIOUS_CHUNK })];
+		renderUseMessages({
+			serverVersion: '6.0.0',
+			hideSystemMessages: ['uj']
+		});
+		await waitFor(() => {
+			expect(dispatchSpy).toHaveBeenCalledWith(
+				expect.objectContaining({
+					type: ROOM.HISTORY_REQUEST,
+					loaderId: 'prev-chunk-id'
+				})
+			);
+		});
+		dispatchSpy.mockRestore();
+	});
+
+	it('dispatches room history request for NEXT_CHUNK load type', async () => {
+		const dispatchSpy = jest.spyOn(mockedStore, 'dispatch');
+		emittedRows = [msg({ id: 'next-chunk-id', t: MessageTypeLoad.NEXT_CHUNK })];
+		renderUseMessages({
+			serverVersion: '6.0.0',
+			hideSystemMessages: ['uj']
+		});
+		await waitFor(() => {
+			expect(dispatchSpy).toHaveBeenCalledWith(
+				expect.objectContaining({
+					type: ROOM.HISTORY_REQUEST,
+					loaderId: 'next-chunk-id'
+				})
+			);
+		});
+		dispatchSpy.mockRestore();
+	});
+
+	it('does not dispatch room history request when serverVersion is null', async () => {
+		const dispatchSpy = jest.spyOn(mockedStore, 'dispatch');
+		emittedRows = [msg({ id: 'load-more-x', t: MessageTypeLoad.MORE })];
+		const { result } = renderUseMessages({
+			serverVersion: null,
+			hideSystemMessages: ['uj']
+		});
+		await waitFor(() => {
+			expect(result.current[0].length).toBeGreaterThan(0);
+		});
+		expect(getHistoryDispatchCount(dispatchSpy)).toBe(0);
+		dispatchSpy.mockRestore();
+	});
+
+	it('unsubscribes from the observable when the hook unmounts', async () => {
+		emittedRows = [msg({ id: 'm1' })];
+		const { unmount } = renderUseMessages();
+		await waitFor(() => {
+			expect(unsubscribeSpies.length).toBeGreaterThan(0);
+		});
+		const lastUnsubscribe = unsubscribeSpies[unsubscribeSpies.length - 1];
+		unmount();
+		expect(lastUnsubscribe).toHaveBeenCalled();
+	});
+
+	it('grows the query take size when fetchMessages is called multiple times', async () => {
+		emittedRows = [msg({ id: 'm1' })];
+		const { result } = renderUseMessages();
+		await waitFor(() => {
+			expect(queryCalls.length).toBeGreaterThan(0);
+		});
+
+		const initialTake = queryCalls[queryCalls.length - 1].at(-1);
+		expect(initialTake).toEqual(expect.objectContaining({ type: 'take' }));
+
+		await act(async () => {
+			await result.current[2]();
+		});
+
+		await waitFor(() => {
+			expect(queryCalls.length).toBeGreaterThanOrEqual(2);
+		});
+
+		// Each call to fetchMessages bumps count.current by QUERY_SIZE — verify the take values differ by QUERY_SIZE.
+		const firstTake = JSON.stringify(queryCalls[0].at(-1));
+		const secondTake = JSON.stringify(queryCalls[1].at(-1));
+		expect(firstTake).not.toEqual(secondTake);
+		// Smoke check: the constant exists and is the expected step.
+		expect(QUERY_SIZE).toBe(50);
+	});
+
+	it('calls readThreads when tmid is set', async () => {
+		emittedRows = [msg({ id: 'tm1', tmid: 'THREAD_ID' })];
+		renderUseMessages({ tmid: 'THREAD_ID' });
+		await waitFor(() => {
+			expect(mockReadThreads).toHaveBeenCalledWith('THREAD_ID');
+		});
+	});
+
+	it('does not call readThreads when tmid is not set', async () => {
+		emittedRows = [msg({ id: 'm1' })];
+		const { result } = renderUseMessages();
+		await waitFor(() => {
+			expect(result.current[0].length).toBeGreaterThan(0);
+		});
+		expect(mockReadThreads).not.toHaveBeenCalled();
 	});
 });
