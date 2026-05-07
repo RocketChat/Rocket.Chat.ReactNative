@@ -73,6 +73,8 @@ jobs:
     uses: ./.github/workflows/e2e-build-android.yml
     needs: [e2e-hold]
     secrets: inherit
+    with:
+      keyboardNavigation: false
 
   e2e-run-android:
     name: E2E Run Android
@@ -86,6 +88,25 @@ jobs:
       fail-fast: false
     with:
       shard: ${{ matrix.shard }}
+      keyboardNavigation: false
+
+  e2e-build-android-keyboard-navigation:
+    name: E2E Build Android Keyboard Navigation
+    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    uses: ./.github/workflows/e2e-build-android.yml
+    needs: [e2e-hold]
+    secrets: inherit
+    with:
+      keyboardNavigation: true 
+
+  e2e-run-android-keyboard-navigation:
+    name: E2E Run Android Keyboard Navigation
+    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    uses: ./.github/workflows/maestro-android.yml
+    needs: [e2e-build-android-keyboard-navigation]
+    secrets: inherit
+    with:
+      keyboardNavigation: true
     
   e2e-build-ios:
     name: E2E Build iOS
