@@ -14,8 +14,7 @@ on:
       BUGSNAG_KEY:
         required: true
       keyboardNavigation:
-        required: false
-        default: false
+        required: true
 
 jobs:
   android-build:
