@@ -162,7 +162,7 @@ jobs:
           disk-size: 4096M
           arch: x86_64
           target: google_apis
-          avd-name: Pixel_API_34
+          profile: pixel_7_pro
           cores: 4
           ram-size: 4096M
           force-avd-creation: false
