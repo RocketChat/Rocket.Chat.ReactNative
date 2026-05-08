@@ -40,7 +40,36 @@ jest.mock('react-native-file-viewer', () => ({
 	open: jest.fn(() => null)
 }));
 
-jest.mock('expo-haptics', () => jest.fn(() => null));
+jest.mock('react-native-incall-manager', () => ({
+	start: jest.fn(),
+	stop: jest.fn(),
+	setForceSpeakerphoneOn: jest.fn(() => Promise.resolve())
+}));
+
+jest.mock('expo-haptics', () => ({
+	impactAsync: jest.fn(),
+	ImpactFeedbackStyle: {
+		Light: 'light',
+		Medium: 'medium',
+		Heavy: 'heavy'
+	}
+}));
+
+jest.mock('react-native-gesture-handler', () => {
+	const React = require('react');
+	const { View } = require('react-native');
+	const GestureHandlerRootView = React.forwardRef(({ children, ...props }, ref) => (
+		<View ref={ref} {...props}>
+			{children}
+		</View>
+	));
+	GestureHandlerRootView.displayName = 'GestureHandlerRootView';
+	return {
+		...jest.requireActual('react-native-gesture-handler'),
+		GestureHandlerRootView,
+		gestureHandlerRootHOC: Component => Component
+	};
+});
 
 jest.mock('expo-font', () => ({
 	isLoaded: jest.fn(() => true),
@@ -286,6 +315,10 @@ jest.mock('react-native-math-view', () => {
 });
 
 jest.mock('react-native-keyboard-controller');
+
+jest.mock('./app/lib/methods/helpers/externalInput', () => ({
+	isExternalKeyboardConnected: jest.fn(() => false)
+}));
 
 jest.mock('react-native-webview', () => {
 	const React = require('react');

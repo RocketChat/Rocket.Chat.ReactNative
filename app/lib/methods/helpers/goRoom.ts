@@ -10,7 +10,7 @@ import {
 	type ISubscription
 } from '../../../definitions';
 import { getRoomTitle, getUidDirectMessage } from './helpers';
-import { createDirectMessage } from '../../services/restApi';
+import { createDirectMessage } from '../createDirectMessage';
 import { emitErrorCreateDirectMessage } from './emitErrorCreateDirectMessage';
 
 interface IGoRoomItem {

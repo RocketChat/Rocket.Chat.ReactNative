@@ -28,7 +28,7 @@ const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.E
 
 	useEffect(() => {
 		navigation.setOptions({
-			title: I18n.t('Push_Troubleshooting')
+			title: I18n.t('Troubleshooting')
 		});
 	}, [navigation]);
 

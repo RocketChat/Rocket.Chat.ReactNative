@@ -12,15 +12,17 @@ interface IPasscodeButton {
 	disabled?: boolean;
 	onPress?: Function;
 	style?: StyleProp<ViewStyle>;
+	testID?: string;
 }
 
-const Button = React.memo(({ style, text, disabled, onPress, icon }: IPasscodeButton) => {
+const Button = React.memo(({ style, text, disabled, onPress, icon, testID }: IPasscodeButton) => {
 	const { colors } = useTheme();
 
 	const press = () => onPress && onPress(text);
 
 	return (
 		<Touch
+			testID={testID}
 			style={[styles.buttonView, { backgroundColor: 'transparent' }, style]}
 			underlayColor={colors.buttonBackgroundSecondaryDefault}
 			rippleColor={colors.buttonBackgroundSecondaryPress}

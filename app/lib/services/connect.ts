@@ -11,6 +11,7 @@ import { twoFactor } from './twoFactor';
 import { store } from '../store/auxStore';
 import { loginRequest, logout, setLoginServices, setUser } from '../../actions/login';
 import sdk from './sdk';
+import { mediaSessionInstance } from './voip/MediaSessionInstance';
 import I18n from '../../i18n';
 import { type ICredentials, type ILoggedUser, STATUSES } from '../../definitions';
 import { connectRequest, connectSuccess, disconnect as disconnectAction } from '../../actions/connect';
@@ -406,8 +407,40 @@ function checkAndReopen() {
 	return sdk.current.checkAndReopen();
 }
 
+/**
+ * Resolves when the current session is fully logged in (or `timeoutMs` elapses).
+ * Trusts redux state rather than `ddp.loggedIn`, which isn't cleared on socket
+ * close and can read true for a stale session. Redux resets to
+ * `isAuthenticated=false` on `LOGIN.REQUEST` (dispatched by the connectedListener)
+ * and back to true on `LOGIN.SUCCESS`; `meteor.connected` covers the handshake.
+ */
+async function awaitDdpLoggedIn(timeoutMs: number = 5000): Promise<void> {
+	const isReady = () => {
+		const s = store.getState();
+		return s.login.isAuthenticated && s.meteor.connected;
+	};
+	if (isReady()) {
+		return;
+	}
+	await new Promise<void>(resolve => {
+		const unsub = store.subscribe(() => {
+			if (isReady()) {
+				clearTimeout(timer);
+				unsub();
+				resolve();
+			}
+		});
+		const timer = setTimeout(() => {
+			unsub();
+			resolve();
+		}, timeoutMs);
+	});
+}
+
 function disconnect() {
-	return sdk.disconnect();
+	const result = sdk.disconnect();
+	mediaSessionInstance.reset();
+	return result;
 }
 
 async function getWebsocketInfo({
@@ -496,6 +529,7 @@ export {
 	loginWithPassword,
 	loginOAuthOrSso,
 	checkAndReopen,
+	awaitDdpLoggedIn,
 	abort,
 	connect,
 	disconnect,

@@ -1,5 +1,6 @@
 import { InteractionManager } from 'react-native';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import { Q } from '@nozbe/watermelondb';
 
 import { type IActiveUsers } from '../../reducers/activeUsers';
 import { store as reduxStore } from '../store/auxStore';
@@ -9,6 +10,7 @@ import database from '../database';
 import { type IUser } from '../../definitions';
 import sdk from '../services/sdk';
 import { compareServerVersion } from './helpers';
+import log from './helpers/log';
 import userPreferences from './userPreferences';
 import { NOTIFICATION_PRESENCE_CAP } from '../constants/notifications';
 import { setNotificationPresenceCap } from '../../actions/app';
@@ -44,6 +46,12 @@ let usersBatch: string[] = [];
 export async function getUsersPresence(usersParams: string[]) {
 	const serverVersion = reduxStore.getState().server.version as string;
 	const { user: loggedUser } = reduxStore.getState().login;
+	const { Presence_broadcast_disabled: presenceBroadcastDisabled } = reduxStore.getState().settings;
+
+	// Skip presence fetch if broadcasting is disabled on the server
+	if (presenceBroadcastDisabled) {
+		return;
+	}
 
 	// if server is greather than or equal 1.1.0
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '1.1.0')) {
@@ -138,5 +146,34 @@ export const setPresenceCap = async (enabled: boolean) => {
 	} else {
 		userPreferences.removeItem(NOTIFICATION_PRESENCE_CAP);
 		reduxStore.dispatch(setNotificationPresenceCap(false));
+	}
+};
+
+export const getDirectMessageUserIds = async (): Promise<string[]> => {
+	try {
+		const db = database.active;
+		const loggedUserId = reduxStore.getState().login.user?.id;
+		const subscriptionsCollection = db.get('subscriptions');
+		const subscriptions = await subscriptionsCollection
+			.query(Q.where('t', 'd'), Q.where('open', true), Q.where('archived', false))
+			.fetch();
+		const userIds = subscriptions
+			.flatMap((sub: { uids?: string[] }) => sub.uids || [])
+			.filter((uid): uid is string => Boolean(uid) && uid !== loggedUserId);
+		return [...new Set(userIds)];
+	} catch (e) {
+		log(e);
+		return [];
+	}
+};
+
+export const refreshDmUsersPresence = async (): Promise<void> => {
+	try {
+		const userIds = await getDirectMessageUserIds();
+		if (userIds.length > 0) {
+			await getUsersPresence(userIds);
+		}
+	} catch (e) {
+		log(e);
 	}
 };

@@ -20,9 +20,6 @@ import ButtonCreate from './ButtonCreate';
 const styles = StyleSheet.create({
 	container: {
 		paddingTop: 16
-	},
-	buttonContainer: {
-		paddingBottom: 16
 	}
 });
 
@@ -73,38 +70,36 @@ const HeaderNewMessage = ({ maxUsers, onChangeText }: { maxUsers: number; onChan
 
 	return (
 		<>
-			<View style={[styles.container, { backgroundColor: themes[theme].surfaceHover }]}>
-				<View style={styles.buttonContainer}>
-					{createPublicChannelPermission || createPrivateChannelPermission ? (
-						<ButtonCreate
-							onPress={createChannel}
-							title={'Channel'}
-							icon={'channel-public'}
-							testID={'new-message-view-create-channel'}
-						/>
-					) : null}
-					{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.13.0') && createTeamPermission ? (
-						<ButtonCreate onPress={createTeam} title={'Team'} icon={'teams'} testID={'new-message-view-create-team'} />
-					) : null}
-					{maxUsers > 2 && createDirectMessagePermission ? (
-						<ButtonCreate
-							onPress={createGroupChat}
-							title={'Direct_message'}
-							icon={'message'}
-							testID={'new-message-view-create-direct-message'}
-						/>
-					) : null}
-					{createDiscussionPermission ? (
-						<ButtonCreate
-							onPress={createDiscussion}
-							title={'Discussion'}
-							icon={'discussions'}
-							testID={'new-message-view-create-discussion'}
-						/>
-					) : null}
-				</View>
+			<View style={[styles.container, { backgroundColor: themes[theme].surfaceTint }]}>
+				{createPublicChannelPermission || createPrivateChannelPermission ? (
+					<ButtonCreate
+						onPress={createChannel}
+						title={'Channel'}
+						icon={'channel-public'}
+						testID={'new-message-view-create-channel'}
+					/>
+				) : null}
+				{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.13.0') && createTeamPermission ? (
+					<ButtonCreate onPress={createTeam} title={'Team'} icon={'teams'} testID={'new-message-view-create-team'} />
+				) : null}
+				{maxUsers > 2 && createDirectMessagePermission ? (
+					<ButtonCreate
+						onPress={createGroupChat}
+						title={'Direct_message'}
+						icon={'message'}
+						testID={'new-message-view-create-direct-message'}
+					/>
+				) : null}
+				{createDiscussionPermission ? (
+					<ButtonCreate
+						onPress={createDiscussion}
+						title={'Discussion'}
+						icon={'discussions'}
+						testID={'new-message-view-create-discussion'}
+					/>
+				) : null}
+				<SearchBox onChangeText={(text: string) => onChangeText(text)} testID='new-message-view-search' />
 			</View>
-			<SearchBox onChangeText={(text: string) => onChangeText(text)} testID='new-message-view-search' />
 		</>
 	);
 };
