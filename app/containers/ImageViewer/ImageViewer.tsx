@@ -133,15 +133,17 @@ export const ImageViewer = ({ uri = '', width, height, altText, ...props }: Imag
 	const { colors } = useTheme();
 
 	return (
-		<View
-			accessible={!!altText}
-			accessibilityLabel={altText}
-			accessibilityRole='image'
-			style={[styles.container, { width, height, backgroundColor: colors.surfaceNeutral }]}>
+		<View importantForAccessibility='no' style={[styles.container, { width, height, backgroundColor: colors.surfaceNeutral }]}>
 			<GestureDetector gesture={gesture}>
-				<Animated.View onLayout={onLayout} style={[styles.flex, style]}>
-					<Touch onPress={handleGifPlayback} style={styles.flex} rectButtonStyle={styles.flex}>
-						<Image style={styles.image} contentFit='contain' source={{ uri }} ref={expoImageRef} {...props} />
+				<Animated.View accessible={false} onLayout={onLayout} style={[styles.flex, style]}>
+					<Touch
+						accessible={!!altText}
+						accessibilityLabel={altText}
+						accessibilityRole='image'
+						onPress={handleGifPlayback}
+						style={styles.flex}
+						rectButtonStyle={styles.flex}>
+						<Image accessible={false} style={styles.image} contentFit='contain' source={{ uri }} ref={expoImageRef} {...props} />
 					</Touch>
 				</Animated.View>
 			</GestureDetector>
