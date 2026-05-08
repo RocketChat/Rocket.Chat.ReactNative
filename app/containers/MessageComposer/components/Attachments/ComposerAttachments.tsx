@@ -93,7 +93,8 @@ export const ComposerAttachments = memo(() => {
 								children: (
 									<AttachmentActionSheet attachment={item} onSave={attachment => updateAttachment(item.path, attachment)} />
 								),
-								snaps: ['85%']
+								snaps: ['85%'],
+								fullContainer: true
 							})
 						}
 						testID={`message-composer-attachment-${index}`}>
