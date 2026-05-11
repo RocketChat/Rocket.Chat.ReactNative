@@ -87,6 +87,7 @@ const Touch = React.forwardRef<View, ITouchProps>(
 		return (
 			<KeyboardComponent
 				ref={ref}
+				// Library types componentRef as RefObject<View>, but useRef<View>(null) yields RefObject<View | null>. The lib only reads .current with a null check, so the cast is safe.
 				componentRef={componentRef as React.RefObject<View>}
 				onPress={onPress}
 				accessible={accessible}
