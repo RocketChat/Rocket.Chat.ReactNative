@@ -9,6 +9,8 @@ ios/
 patches/
 scripts/
 
+.worktrees/
+
 .bettercodehub.yml
 .buckconfig
 .gitattributes

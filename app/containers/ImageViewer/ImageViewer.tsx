@@ -21,11 +21,16 @@ interface ImageViewerProps {
 }
 
 const styles = StyleSheet.create({
-	flex: {
+	container: {
 		flex: 1
 	},
+	flex: {
+		width: '100%',
+		height: '100%'
+	},
 	image: {
-		flex: 1
+		width: '100%',
+		height: '100%'
 	}
 });
 
@@ -127,18 +132,11 @@ export const ImageViewer = ({ uri = '', width, height, ...props }: ImageViewerPr
 	const { colors } = useTheme();
 
 	return (
-		<View style={[styles.flex, { width, height, backgroundColor: colors.surfaceNeutral }]}>
+		<View style={[styles.container, { width, height, backgroundColor: colors.surfaceNeutral }]}>
 			<GestureDetector gesture={gesture}>
 				<Animated.View onLayout={onLayout} style={[styles.flex, style]}>
 					<Touch onPress={handleGifPlayback} style={styles.flex} rectButtonStyle={styles.flex}>
-						<Image
-							// @ts-ignore
-							style={styles.image}
-							contentFit='contain'
-							source={{ uri }}
-							ref={expoImageRef}
-							{...props}
-						/>
+						<Image style={styles.image} contentFit='contain' source={{ uri }} ref={expoImageRef} {...props} />
 					</Touch>
 				</Animated.View>
 			</GestureDetector>

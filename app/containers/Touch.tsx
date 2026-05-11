@@ -8,6 +8,7 @@ import {
 	type AccessibilityActionEvent,
 	type AccessibilityActionInfo
 } from 'react-native';
+import { withKeyboardFocus } from 'react-native-external-keyboard';
 
 import { useTheme } from '../theme';
 
@@ -23,7 +24,9 @@ export interface ITouchProps extends RectButtonProps {
 	disabled?: boolean;
 }
 
-const Touch = React.forwardRef<React.ElementRef<typeof RectButton>, ITouchProps>(
+const KeyboardRectButton = withKeyboardFocus(RectButton);
+
+const Touch = React.forwardRef<any, ITouchProps>(
 	(
 		{
 			children,
@@ -73,12 +76,14 @@ const Touch = React.forwardRef<React.ElementRef<typeof RectButton>, ITouchProps>
 			marginTop
 		};
 		return (
-			<RectButton
+			<KeyboardRectButton
 				ref={ref}
 				onPress={onPress}
 				activeOpacity={1}
 				underlayColor={underlayColor || colors.surfaceNeutral}
 				rippleColor={colors.surfaceNeutral}
+				focusable={!disabled}
+				canBeFocused={!disabled}
 				style={[rectButtonStyle, marginStyles, { backgroundColor, borderRadius }]}
 				{...props}
 				enabled={!disabled}>
@@ -92,7 +97,7 @@ const Touch = React.forwardRef<React.ElementRef<typeof RectButton>, ITouchProps>
 					style={viewStyle}>
 					{children}
 				</View>
-			</RectButton>
+			</KeyboardRectButton>
 		);
 	}
 );

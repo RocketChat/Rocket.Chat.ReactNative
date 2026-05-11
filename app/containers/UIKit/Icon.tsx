@@ -6,7 +6,11 @@ import { useTheme } from '../../theme';
 import { type IIcon } from './interfaces';
 
 const iconAliases: Record<string, string> = {
-	'phone-end': 'phone-off'
+	'phone-end': 'phone-off',
+	microphone: 'mic',
+	'microphone-disabled': 'mic-off',
+	audio: 'volume',
+	'audio-disabled': 'volume-off'
 };
 
 const styles = StyleSheet.create({

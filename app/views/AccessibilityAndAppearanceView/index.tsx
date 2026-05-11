@@ -89,6 +89,8 @@ const AccessibilityAndAppearanceView = () => {
 						right={renderAutoplayGifs}
 						onPress={toggleAutoplayGifs}
 						accessibilityRole='switch'
+						additionalAccessibilityLabel={autoplayGifs}
+						additionalAccessibilityLabelCheck
 					/>
 					<List.Separator />
 					<List.Item
@@ -97,6 +99,8 @@ const AccessibilityAndAppearanceView = () => {
 						right={renderMentionsWithAtSymbolSwitch}
 						onPress={toggleMentionsWithAtSymbol}
 						accessibilityRole='switch'
+						additionalAccessibilityLabel={mentionsWithAtSymbol}
+						additionalAccessibilityLabelCheck
 					/>
 					<List.Separator />
 					<List.Item
@@ -105,6 +109,8 @@ const AccessibilityAndAppearanceView = () => {
 						right={renderRoomsWithHashTagSwitch}
 						onPress={toggleRoomsWithHashTag}
 						accessibilityRole='switch'
+						additionalAccessibilityLabel={roomsWithHashTagSymbol}
+						additionalAccessibilityLabelCheck
 					/>
 					<List.Separator />
 				</List.Section>

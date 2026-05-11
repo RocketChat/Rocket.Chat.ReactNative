@@ -27,6 +27,7 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 	const serverVersion = useAppSelector(state => state.server.version);
 	const dispatch = useDispatch();
 	const convertAsciiEmoji = settings?.preferences?.convertAsciiEmoji;
+	const enableMobileRinging = settings?.preferences?.enableMobileRinging;
 
 	useEffect(() => {
 		navigation.setOptions({
@@ -53,6 +54,15 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 		try {
 			dispatch(setUser({ settings: { ...settings, preferences: { convertAsciiEmoji: value } } } as Partial<IUser>));
 			await saveUserPreferences({ convertAsciiEmoji: value });
+		} catch (e) {
+			log(e);
+		}
+	};
+
+	const toggleEnableMobileRinging = async (value: boolean) => {
+		try {
+			dispatch(setUser({ settings: { ...settings, preferences: { enableMobileRinging: value } } } as Partial<IUser>));
+			await saveUserPreferences({ enableMobileRinging: value });
 		} catch (e) {
 			log(e);
 		}
@@ -86,8 +96,13 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 						<List.Separator />
 						<List.Item
 							title='Enable_Message_Parser'
-							testID='preferences-view-enable-message-parser'
-							right={() => <Switch value={enableMessageParserEarlyAdoption} onValueChange={toggleMessageParser} />}
+							right={() => (
+								<Switch
+									value={enableMessageParserEarlyAdoption}
+									onValueChange={toggleMessageParser}
+									testID='preferences-view-enable-message-parser'
+								/>
+							)}
 						/>
 						<List.Separator />
 					</List.Section>
@@ -110,11 +125,32 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 					<List.Separator />
 					<List.Item
 						title='Convert_ASCII_to_emoji'
-						testID='preferences-view-convert-ascii-to-emoji'
-						right={() => <Switch value={convertAsciiEmoji} onValueChange={toggleConvertAsciiToEmoji} />}
+						right={() => (
+							<Switch
+								value={convertAsciiEmoji}
+								onValueChange={toggleConvertAsciiToEmoji}
+								testID='preferences-view-convert-ascii-to-emoji'
+							/>
+						)}
 						onPress={() => toggleConvertAsciiToEmoji(!convertAsciiEmoji)}
 					/>
 					<List.Separator />
+					{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.10.0') ? (
+						<>
+							<List.Item
+								title='Enable_Mobile_Ringing'
+								right={() => (
+									<Switch
+										value={enableMobileRinging}
+										onValueChange={toggleEnableMobileRinging}
+										testID='preferences-view-enable-mobile-ringing'
+									/>
+								)}
+								onPress={() => toggleEnableMobileRinging(!enableMobileRinging)}
+							/>
+							<List.Separator />
+						</>
+					) : null}
 				</List.Section>
 			</List.Container>
 		</SafeAreaView>

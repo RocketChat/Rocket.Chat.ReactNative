@@ -1,5 +1,6 @@
 import { random } from 'lodash';
 import { type Image as ImageType, type ImageOrVideo as ImageOrVideoType } from 'react-native-image-crop-picker';
+import * as FileSystem from 'expo-file-system/legacy';
 
 export type Image = ImageType;
 export type ImageOrVideo = ImageOrVideoType;
@@ -29,14 +30,31 @@ const image = {
 	creationDate: '1679327100'
 };
 
-export function openPicker(options: any): Promise<any> {
-	const mockImageRocketBase64 = options?.multiple ? [image] : image;
-	return Promise.resolve(mockImageRocketBase64);
+const createMockImage = async () => {
+	if (!FileSystem.cacheDirectory) {
+		return image;
+	}
+
+	const filePath = `${FileSystem.cacheDirectory}e2e-avatar-${random(1000000)}.jpg`;
+	await FileSystem.writeAsStringAsync(filePath, mockImageRocketBase64, {
+		encoding: FileSystem.EncodingType.Base64
+	});
+
+	return {
+		...image,
+		path: filePath,
+		sourceURL: filePath
+	};
+};
+
+export async function openPicker(options: any): Promise<any> {
+	const mockedImage = await createMockImage();
+	return options?.multiple ? [mockedImage] : mockedImage;
 }
 
-export function openCamera(options: any): Promise<any> {
-	const mockImageRocketBase64 = options?.multiple ? [image] : image;
-	return Promise.resolve(mockImageRocketBase64);
+export async function openCamera(options: any): Promise<any> {
+	const mockedImage = await createMockImage();
+	return options?.multiple ? [mockedImage] : mockedImage;
 }
 
 export default {

@@ -12,6 +12,7 @@ import { EmojiSearchbar } from './EmojiSearchbar';
 import { Toolbar } from './Toolbar';
 import { Quotes } from './Quotes';
 import { ComposerInput } from './ComposerInput';
+import { MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID } from '../../../lib/constants/accessibility';
 
 interface MessageComposerContentProps {
 	recordingAudio: boolean;
@@ -35,6 +36,7 @@ export const MessageComposerContent = memo<MessageComposerContentProps>(
 
 		return (
 			<View
+				nativeID={MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID}
 				style={[styles.container, { backgroundColor, borderTopColor: colors.strokeLight }]}
 				testID='message-composer'
 				onLayout={onLayout}>

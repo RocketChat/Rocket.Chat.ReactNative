@@ -113,37 +113,37 @@ const Base = forwardRef<IBase, IPasscodeBase>(
 					<Row style={[styles.row, heightButtonRow]}>
 						{range(1, 4).map(i => (
 							<Col key={i} style={[styles.colButton, heightButtonRow]}>
-								<Button style={heightButtonRow} text={i.toString()} onPress={onPressNumber} />
+								<Button testID={`passcode-button-${i}`} style={heightButtonRow} text={i.toString()} onPress={onPressNumber} />
 							</Col>
 						))}
 					</Row>
 					<Row style={[styles.row, heightButtonRow]}>
 						{range(4, 7).map(i => (
 							<Col key={i} style={[styles.colButton, heightButtonRow]}>
-								<Button style={heightButtonRow} text={i.toString()} onPress={onPressNumber} />
+								<Button testID={`passcode-button-${i}`} style={heightButtonRow} text={i.toString()} onPress={onPressNumber} />
 							</Col>
 						))}
 					</Row>
 					<Row style={[styles.row, heightButtonRow]}>
 						{range(7, 10).map(i => (
 							<Col key={i} style={[styles.colButton, heightButtonRow]}>
-								<Button style={heightButtonRow} text={i.toString()} onPress={onPressNumber} />
+								<Button testID={`passcode-button-${i}`} style={heightButtonRow} text={i.toString()} onPress={onPressNumber} />
 							</Col>
 						))}
 					</Row>
 					<Row style={[styles.row, heightButtonRow]}>
 						{showBiometry ? (
 							<Col style={[styles.colButton, heightButtonRow]}>
-								<Button style={heightButtonRow} icon='fingerprint' onPress={onBiometryPress} />
+								<Button testID='biometry-button' style={heightButtonRow} icon='fingerprint' onPress={onBiometryPress} />
 							</Col>
 						) : (
 							<Col style={[styles.colButton, heightButtonRow]} />
 						)}
 						<Col style={[styles.colButton, heightButtonRow]}>
-							<Button style={heightButtonRow} text='0' onPress={onPressNumber} />
+							<Button testID='passcode-button-0' style={heightButtonRow} text='0' onPress={onPressNumber} />
 						</Col>
 						<Col style={[styles.colButton, heightButtonRow]}>
-							<Button style={heightButtonRow} icon='backspace' onPress={onPressDelete} />
+							<Button testID='passcode-button-backspace' style={heightButtonRow} icon='backspace' onPress={onPressDelete} />
 						</Col>
 					</Row>
 				</Grid>

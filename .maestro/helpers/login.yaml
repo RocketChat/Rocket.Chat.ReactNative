@@ -20,6 +20,7 @@ onFlowStart:
 - inputText: ${USERNAME || output.createdUser.email}
 - tapOn:
     text: '.*Username or email.*'
+- pressKey: enter
 - tapOn:
     id: login-view-password
 - inputText: ${PASSWORD || output.createdUser.password}
