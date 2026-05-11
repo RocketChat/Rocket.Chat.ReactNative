@@ -17,7 +17,7 @@
                  rootPath:(nullable NSString *)rootPath {
     self = [super init];
     if (self) {
-        // 1. Initialize MMKV path globally if provided (e.g., for App Groups)
+        // Initialize MMKV if needed
         if (rootPath) {
             [MMKV initializeMMKV:nil groupDir:rootPath logLevel:MMKVLogInfo];
         }

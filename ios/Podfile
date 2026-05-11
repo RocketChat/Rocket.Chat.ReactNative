@@ -46,7 +46,7 @@ pre_install do |installer|
         def pod.build_type;
         Pod::BuildType.static_library # >= 1.9
       end
-      if ['MMKV', 'MMKVCore', 'react-native-mmkv', 'react-native-nitro-modules'].include?(pod.name)
+      if ['MMKV', 'MMKVCore', 'NitroMmkv', 'NitroModules'].include?(pod.name)
         def pod.build_type;
           Pod::BuildType.dynamic_framework
         end
