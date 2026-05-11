@@ -7,7 +7,7 @@
 #import <MMKV/MMKV.h>
 
 @interface MMKVBridge ()
-@property (nonatomic, strong) MMKV *mmkv;
+@property (nonatomic, strong) MMKV *mmkvInstance;
 @end
 
 @implementation MMKVBridge
@@ -25,47 +25,47 @@
         // 2. Open instance with MMKVMultiProcess mode
         // This allows the Main App and Notification Service to share data safely.
         if (cryptKey && cryptKey.length > 0) {
-            _mmkv = [MMKV mmkvWithID:mmapID cryptKey:cryptKey mode:MMKVMultiProcess];
+            _mmkvInstance = [MMKV mmkvWithID:mmapID cryptKey:cryptKey mode:MMKVMultiProcess];
         } else {
-            _mmkv = [MMKV mmkvWithID:mmapID mode:MMKVMultiProcess];
+            _mmkvInstance = [MMKV mmkvWithID:mmapID mode:MMKVMultiProcess];
         }
     }
     return self;
 }
 
 - (nullable NSString *)stringForKey:(NSString *)key {
-    if (!_mmkv) return nil;
-    return [_mmkv getStringForKey:key];
+    if (!_mmkvInstance) return nil;
+    return [_mmkvInstance getStringForKey:key];
 }
 
 - (BOOL)setString:(NSString *)value forKey:(NSString *)key {
-    if (!_mmkv) return NO;
-    return [_mmkv setString:value forKey:key];
+    if (!_mmkvInstance) return NO;
+    return [_mmkvInstance setString:value forKey:key];
 }
 
 - (nullable NSData *)dataForKey:(NSString *)key {
-    if (!_mmkv) return nil;
-    return [_mmkv getDataForKey:key];
+    if (!_mmkvInstance) return nil;
+    return [_mmkvInstance getDataForKey:key];
 }
 
 - (BOOL)setData:(NSData *)value forKey:(NSString *)key {
-    if (!_mmkv) return NO;
-    return [_mmkv setData:value forKey:key];
+    if (!_mmkvInstance) return NO;
+    return [_mmkvInstance setData:value forKey:key];
 }
 
 - (void)removeValueForKey:(NSString *)key {
-    if (!_mmkv) return;
-    [_mmkv removeValueForKey:key];
+    if (!_mmkvInstance) return;
+    [_mmkvInstance removeValueForKey:key];
 }
 
 - (NSArray<NSString *> *)allKeys {
-    if (!_mmkv) return @[];
-    return [_mmkv allKeys];
+    if (!_mmkvInstance) return @[];
+    return [_mmkvInstance allKeys];
 }
 
 - (NSUInteger)count {
-    if (!_mmkv) return 0;
-    return _mmkv.count;
+    if (!_mmkvInstance) return 0;
+    return _mmkvInstance.count;
 }
 
 @end

@@ -9,6 +9,7 @@
 
 #import "MMKVKeyManager.h"
 #import "SecureStorage.h"
+#import "../Shared/RocketChat/MMKVBridge.h"
 #import <MMKV/MMKV.h>
 
 static NSString *toHex(NSString *str) {
@@ -63,10 +64,12 @@ static void Logger(NSString *format, ...) {
         NSData *cryptKey = [password dataUsingEncoding:NSUTF8StringEncoding];
 
         // Ensure we use MMKVMultiProcess to match the JS side
-        MMKV *mmkv = [MMKV mmkvWithID:@"default" cryptKey:cryptKey mode:MMKVMultiProcess];
+        MMKVBridge *mmkv = [[MMKVBridge alloc] initWithID:@"default"
+                                                cryptKey:cryptKey
+                                                rootPath:mmkvPath];
 
         if (mmkv) {
-            Logger(@"MMKV initialized successfully. Keys: %lu", (unsigned long)[[mmkv allKeys] count]);
+            Logger(@"MMKV initialized successfully. Keys: %lu", (unsigned long)[mmkv count]);
         }
     } @catch (NSException *exception) {
         Logger(@"MMKV initialization error: %@ - %@", exception.name, exception.reason);
@@ -74,8 +77,7 @@ static void Logger(NSString *format, ...) {
 }
 
 + (NSString *)initializeMMKV {
-    NSString *appGroup = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroupIdentifier"] 
-                         ?: [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"];
+    NSString *appGroup = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroupIdentifier"];
     
     if (!appGroup) return nil;
 
