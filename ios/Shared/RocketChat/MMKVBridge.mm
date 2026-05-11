@@ -17,12 +17,7 @@
                  rootPath:(nullable NSString *)rootPath {
     self = [super init];
     if (self) {
-        // Initialize MMKV if needed
-        if (rootPath) {
-            [MMKV initializeMMKV:nil groupDir:rootPath logLevel:MMKVLogInfo];
-        }
-        
-        // 2. Open instance with MMKVMultiProcess mode
+        // Open instance with MMKVMultiProcess mode
         // This allows the Main App and Notification Service to share data safely.
         if (cryptKey && cryptKey.length > 0) {
             _mmkvInstance = [MMKV mmkvWithID:mmapID cryptKey:cryptKey mode:MMKVMultiProcess];
