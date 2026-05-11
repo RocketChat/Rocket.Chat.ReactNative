@@ -266,12 +266,19 @@ tags:
     timeout: 60000
 - tapOn:
     id: emoji-picker-tab-emoji
-- scrollUntilVisible:
-    element:
-      id: emoji-pregnant_woman
-    direction: DOWN
-    timeout: 60000
-    visibilityPercentage: 100
+- waitForAnimationToEnd:
+    timeout: 1000
+- repeat:
+    while:
+      notVisible:
+        id: emoji-pregnant_woman
+    commands:
+      - swipe:
+          from:
+            id: emoji-grinning
+          direction: UP
+      - waitForAnimationToEnd:
+          timeout: 500
 - tapOn:
     id: emoji-pregnant_woman
 - extendedWaitUntil:
