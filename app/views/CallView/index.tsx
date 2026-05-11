@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Audio, InterruptionModeIOS } from 'expo-av';
+import { setAudioModeAsync } from 'expo-audio';
 
 import { useCallStore } from '../../lib/services/voip/useCallStore';
 import CallerInfo from './components/CallerInfo';
@@ -22,12 +22,11 @@ const CallView = (): React.ReactElement | null => {
 	useEffect(() => {
 		const configureAudio = async () => {
 			try {
-				await Audio.setAudioModeAsync({
-					playsInSilentModeIOS: true,
-					allowsRecordingIOS: true,
-					interruptionModeIOS: InterruptionModeIOS.DoNotMix,
-					staysActiveInBackground: false,
-					shouldDuckAndroid: false
+				await setAudioModeAsync({
+					playsInSilentMode: true,
+					allowsRecording: true,
+					interruptionMode: 'doNotMix',
+					shouldPlayInBackground: false
 				});
 			} catch (error) {
 				console.error('[VoIP] Failed to configure audio mode for CallView:', error);
@@ -36,12 +35,11 @@ const CallView = (): React.ReactElement | null => {
 		configureAudio();
 
 		return () => {
-			Audio.setAudioModeAsync({
-				playsInSilentModeIOS: false,
-				allowsRecordingIOS: false,
-				interruptionModeIOS: InterruptionModeIOS.DoNotMix,
-				staysActiveInBackground: false,
-				shouldDuckAndroid: false
+			setAudioModeAsync({
+				playsInSilentMode: false,
+				allowsRecording: false,
+				interruptionMode: 'doNotMix',
+				shouldPlayInBackground: false
 			}).catch(() => {
 				// Ignore errors on teardown
 			});
