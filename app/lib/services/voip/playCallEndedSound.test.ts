@@ -52,11 +52,14 @@ describe('playCallEndedSound', () => {
 	it('does not remove when didJustFinish is false', () => {
 		playCallEndedSound();
 
-		const addListenerCalls = mockPlayer.addListener.mock.calls;
-		const statusCallback = addListenerCalls.find(([event]: [string, unknown]) => event === 'playbackStatusUpdate')?.[1];
+		const actualPlayer = mockCreateAudioPlayer.mock.results[0].value;
+		const addListenerCalls = actualPlayer.addListener.mock.calls;
+		const statusCallback = addListenerCalls.find(
+			([event]: [string, unknown]) => event === 'playbackStatusUpdate'
+		)?.[1];
 		statusCallback?.({ isLoaded: true, didJustFinish: false });
 
-		expect(mockPlayer.release).not.toHaveBeenCalled();
+		expect(actualPlayer.release).not.toHaveBeenCalled();
 	});
 
 	it('double-invocation while first is in flight does not produce overlapping playback', () => {
@@ -75,8 +78,11 @@ describe('playCallEndedSound', () => {
 		playCallEndedSound();
 
 		// Simulate completion
-		const addListenerCalls = mockPlayer.addListener.mock.calls;
-		const statusCallback = addListenerCalls.find(([event]: [string, unknown]) => event === 'playbackStatusUpdate')?.[1];
+		const actualPlayer = mockCreateAudioPlayer.mock.results[0].value;
+		const addListenerCalls = actualPlayer.addListener.mock.calls;
+		const statusCallback = addListenerCalls.find(
+			([event]: [string, unknown]) => event === 'playbackStatusUpdate'
+		)?.[1];
 		statusCallback?.({ isLoaded: true, didJustFinish: true });
 
 		// Reset mocks to count fresh calls
