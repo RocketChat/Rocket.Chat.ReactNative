@@ -167,6 +167,7 @@ platform :ios do
       destination: "generic/platform=iOS Simulator",
       skip_package_ipa: true,
       skip_codesigning: true,
+      output_name: "Rocket.Chat",
       output_directory: "./fastlane/output",
       build_path: "./fastlane/build",
       configuration: "Release",
