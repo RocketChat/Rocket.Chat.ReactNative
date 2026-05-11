@@ -10,13 +10,13 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
   testID="searchbox"
 >
   <A11yOrderView
-    orderKey=":r4:"
+    orderKey="«r4»"
   >
     <A11yIndexView
       importantForAccessibility="yes"
       orderFocusType={0}
       orderIndex={1}
-      orderKey=":r4:"
+      orderKey="«r4»"
     >
       <View
         style={
@@ -26,8 +26,9 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
               "marginBottom": 10,
             },
             {
-              "margin": 16,
               "marginBottom": 16,
+              "marginHorizontal": 12,
+              "marginTop": 16,
             },
           ]
         }

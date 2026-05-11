@@ -189,7 +189,7 @@ exports[`Story Snapshots: ChipText should match snapshot 1`] = `
       >
         <ViewManagerAdapter_ExpoImage
           borderRadius={4}
-          containerViewRef={"[React.ref]"}
+          containerViewRef={{"current":"Object"}}
           contentFit="cover"
           contentPosition={
             {
@@ -198,7 +198,7 @@ exports[`Story Snapshots: ChipText should match snapshot 1`] = `
             }
           }
           height={28}
-          nativeViewRef={"[React.ref]"}
+          nativeViewRef={{"current":"NativeComponent"}}
           onError={[Function]}
           onLoad={[Function]}
           onLoadStart={[Function]}
@@ -372,7 +372,7 @@ exports[`Story Snapshots: ChipWithShortText should match snapshot 1`] = `
       >
         <ViewManagerAdapter_ExpoImage
           borderRadius={4}
-          containerViewRef={"[React.ref]"}
+          containerViewRef={{"current":"Object"}}
           contentFit="cover"
           contentPosition={
             {
@@ -381,7 +381,7 @@ exports[`Story Snapshots: ChipWithShortText should match snapshot 1`] = `
             }
           }
           height={28}
-          nativeViewRef={"[React.ref]"}
+          nativeViewRef={{"current":"NativeComponent"}}
           onError={[Function]}
           onLoad={[Function]}
           onLoadStart={[Function]}
@@ -785,7 +785,7 @@ exports[`Story Snapshots: ChipWithoutIcon should match snapshot 1`] = `
       >
         <ViewManagerAdapter_ExpoImage
           borderRadius={4}
-          containerViewRef={"[React.ref]"}
+          containerViewRef={{"current":"Object"}}
           contentFit="cover"
           contentPosition={
             {
@@ -794,7 +794,7 @@ exports[`Story Snapshots: ChipWithoutIcon should match snapshot 1`] = `
             }
           }
           height={28}
-          nativeViewRef={"[React.ref]"}
+          nativeViewRef={{"current":"NativeComponent"}}
           onError={[Function]}
           onLoad={[Function]}
           onLoadStart={[Function]}

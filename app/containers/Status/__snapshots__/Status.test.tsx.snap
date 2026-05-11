@@ -18,6 +18,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
           [
             {
               "height": 32,
+              "textAlign": "center",
               "textAlignVertical": "center",
               "width": 32,
             },
@@ -51,6 +52,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
           [
             {
               "height": 32,
+              "textAlign": "center",
               "textAlignVertical": "center",
               "width": 32,
             },
@@ -84,6 +86,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
           [
             {
               "height": 32,
+              "textAlign": "center",
               "textAlignVertical": "center",
               "width": 32,
             },
@@ -117,6 +120,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
           [
             {
               "height": 32,
+              "textAlign": "center",
               "textAlignVertical": "center",
               "width": 32,
             },
@@ -150,6 +154,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
           [
             {
               "height": 32,
+              "textAlign": "center",
               "textAlignVertical": "center",
               "width": 32,
             },
@@ -183,6 +188,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
           [
             {
               "height": 32,
+              "textAlign": "center",
               "textAlignVertical": "center",
               "width": 32,
             },
@@ -216,6 +222,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
           [
             {
               "height": 32,
+              "textAlign": "center",
               "textAlignVertical": "center",
               "width": 32,
             },
@@ -249,6 +256,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
           [
             {
               "height": 60,
+              "textAlign": "center",
               "textAlignVertical": "center",
               "width": 60,
             },

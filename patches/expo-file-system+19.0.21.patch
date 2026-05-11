@@ -1,0 +1,26 @@
+diff --git a/node_modules/expo-file-system/android/src/main/java/expo/modules/filesystem/legacy/FileSystemLegacyModule.kt b/node_modules/expo-file-system/android/src/main/java/expo/modules/filesystem/legacy/FileSystemLegacyModule.kt
+index f6d43bf..197bebf 100644
+--- a/node_modules/expo-file-system/android/src/main/java/expo/modules/filesystem/legacy/FileSystemLegacyModule.kt
++++ b/node_modules/expo-file-system/android/src/main/java/expo/modules/filesystem/legacy/FileSystemLegacyModule.kt
+@@ -80,11 +80,20 @@ fun slashifyFilePath(path: String?): String? {
+ open class FileSystemLegacyModule : Module() {
+   private val context: Context
+     get() = appContext.reactContext ?: throw Exceptions.AppContextLost()
+-  private var client: OkHttpClient? = null
+   private var dirPermissionsRequest: Promise? = null
+   private val taskHandlers: MutableMap<String, TaskHandler> = HashMap()
+   private val moduleCoroutineScope = CoroutineScope(Dispatchers.Default)
+ 
++  companion object {
++    @JvmStatic
++    var client: OkHttpClient? = null
++
++    @JvmStatic
++    fun setOkHttpClient(okHttpClient: OkHttpClient) {
++      client = okHttpClient
++    }
++  }
++
+   @SuppressLint("WrongConstant", "DiscouragedApi")
+   override fun definition() = ModuleDefinition {
+     Name("ExponentFileSystem")

@@ -28,9 +28,22 @@ const author = {
 	username: 'diego.mello'
 };
 
+const shortNameAuthor = {
+	_id: 'userid1',
+	username: 'jd',
+	name: 'JD'
+};
+
+const mediumNameAuthor = {
+	_id: 'userid2',
+	username: 'john.doe',
+	name: 'John Doe'
+};
+
 const longNameAuthor = {
-	_id: 'userid',
-	username: 'Long name user looooong name user'
+	_id: 'userid3',
+	username: 'johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername',
+	name: 'John Doe With An Extremely Long Display Name That Should Definitely Be Truncated In Any Reasonable User Interface Layout'
 };
 
 const baseUrl = 'https://open.rocket.chat';
@@ -387,6 +400,91 @@ export const FullNameLargeFont = () => (
 		}}
 		useRealName
 	/>
+);
+
+export const Names = () => (
+	<>
+		<Message msg='Small name (2 chars)' author={shortNameAuthor} useRealName />
+		<Message
+			msg='Small name with icons'
+			author={shortNameAuthor}
+			useRealName
+			isEdited
+			isTranslated
+			pinned
+			type={E2E_MESSAGE_TYPE}
+			hasError
+			isReadReceiptEnabled
+			read
+		/>
+		<Message msg='Medium name (8 chars)' author={mediumNameAuthor} useRealName />
+		<Message
+			msg='Medium name with icons'
+			author={mediumNameAuthor}
+			useRealName
+			isEdited
+			isTranslated
+			pinned
+			type={E2E_MESSAGE_TYPE}
+			hasError
+			isReadReceiptEnabled
+			read
+		/>
+		<Message msg='Long name (22 chars) - should truncate' author={longNameAuthor} useRealName />
+		<Message
+			msg='Long name with icons - timestamp visible'
+			author={longNameAuthor}
+			useRealName
+			isEdited
+			isTranslated
+			pinned
+			type={E2E_MESSAGE_TYPE}
+			hasError
+			isReadReceiptEnabled
+			read
+		/>
+	</>
+);
+
+export const Usernames = () => (
+	<>
+		<Message msg='Small username (2 chars)' author={shortNameAuthor} />
+		<Message
+			msg='Small username with icons'
+			author={shortNameAuthor}
+			isEdited
+			isTranslated
+			pinned
+			type={E2E_MESSAGE_TYPE}
+			hasError
+			isReadReceiptEnabled
+			read
+		/>
+		<Message msg='Medium username (8 chars)' author={mediumNameAuthor} />
+		<Message
+			msg='Medium username with icons'
+			author={mediumNameAuthor}
+			isEdited
+			isTranslated
+			pinned
+			type={E2E_MESSAGE_TYPE}
+			hasError
+			isReadReceiptEnabled
+			read
+		/>
+		<Message msg='Long username (22 chars) - should truncate' author={longNameAuthor} />
+		<Message
+			msg='Long username with icons - timestamp visible'
+			author={longNameAuthor}
+			isEdited
+			isTranslated
+			pinned
+			type={E2E_MESSAGE_TYPE}
+			hasError
+			isReadReceiptEnabled
+			read
+		/>
+	</>
 );
 
 const msgMentions = '@rocket.cat @diego.mello @all @here #general @team';

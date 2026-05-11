@@ -61,7 +61,7 @@ export const ActionsButton = () => {
 				},
 				{
 					title: I18n.t('Take_a_video'),
-					icon: 'camera',
+					icon: 'video',
 					onPress: () => {
 						hideActionSheet();
 						// This is necessary because the action sheet does not close properly on Android

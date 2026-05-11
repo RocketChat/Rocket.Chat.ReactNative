@@ -20,6 +20,7 @@ import { type ILivechatTag } from '../../definitions/ILivechatTag';
 import i18n from '../../i18n';
 import database from '../../lib/database';
 import { hasPermission, showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers';
+import { getUidDirectMessage } from '../../lib/methods/helpers/helpers';
 import { closeLivechat as closeLivechatService } from '../../lib/methods/helpers/closeLivechat';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import { getDepartmentInfo, getTagsList, onHoldLivechat, returnLivechat } from '../../lib/services/restApi';
@@ -68,6 +69,7 @@ interface IRigthButtonsState {
 	tunreadUser: string[];
 	tunreadGroup: string[];
 	canToggleEncryption: boolean;
+	isSelfDm: boolean;
 }
 
 class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsState> {
@@ -82,7 +84,8 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			tunread: [],
 			tunreadUser: [],
 			tunreadGroup: [],
-			canToggleEncryption: false
+			canToggleEncryption: false,
+			isSelfDm: false
 		};
 	}
 
@@ -112,7 +115,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 	}
 
 	shouldComponentUpdate(nextProps: IRightButtonsProps, nextState: IRigthButtonsState) {
-		const { isFollowingThread, tunread, tunreadUser, tunreadGroup, canToggleEncryption } = this.state;
+		const { isFollowingThread, tunread, tunreadUser, tunreadGroup, canToggleEncryption, isSelfDm } = this.state;
 		const {
 			teamId,
 			status,
@@ -137,6 +140,9 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			return true;
 		}
 		if (nextState.canToggleEncryption !== canToggleEncryption) {
+			return true;
+		}
+		if (nextState.isSelfDm !== isSelfDm) {
 			return true;
 		}
 		if (nextState.isFollowingThread !== isFollowingThread) {
@@ -210,10 +216,13 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 	};
 
 	updateSubscription = (sub: TSubscriptionModel) => {
+		const { userId } = this.props;
+		const isSelfDm = sub?.t === 'd' && !!userId && getUidDirectMessage(sub) === userId;
 		this.setState({
 			tunread: sub?.tunread ?? [],
 			tunreadUser: sub?.tunreadUser ?? [],
-			tunreadGroup: sub?.tunreadGroup ?? []
+			tunreadGroup: sub?.tunreadGroup ?? [],
+			isSelfDm
 		});
 	};
 
@@ -454,7 +463,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 	};
 
 	render() {
-		const { isFollowingThread, tunread, tunreadUser, tunreadGroup, canToggleEncryption } = this.state;
+		const { isFollowingThread, tunread, tunreadUser, tunreadGroup, canToggleEncryption, isSelfDm } = this.state;
 		const {
 			t,
 			tmid,
@@ -524,11 +533,13 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 						disabled={hasE2EEWarning}
 					/>
 				) : null}
-				<HeaderCallButton
-					accessibilityLabel={i18n.t('Call_room_name', { roomName: accessibilityRoomName })}
-					rid={rid}
-					disabled={hasE2EEWarning}
-				/>
+				{!isSelfDm ? (
+					<HeaderCallButton
+						accessibilityLabel={i18n.t('Call_room_name', { roomName: accessibilityRoomName })}
+						rid={rid}
+						disabled={hasE2EEWarning}
+					/>
+				) : null}
 				{threadsEnabled ? (
 					<HeaderButton.Item
 						accessibilityLabel={this.threadsAccessibilityLabel()}

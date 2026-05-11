@@ -31,10 +31,10 @@ import {
 	markAsUnread,
 	toggleStarMessage,
 	togglePinMessage,
-	createDirectMessage,
 	translateMessage,
 	reportMessage
 } from '../../lib/services/restApi';
+import { createDirectMessage } from '../../lib/methods/createDirectMessage';
 
 export interface IMessageActionsProps {
 	room: TSubscriptionModel;
