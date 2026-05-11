@@ -54,9 +54,7 @@ describe('playCallEndedSound', () => {
 
 		const actualPlayer = mockCreateAudioPlayer.mock.results[0].value;
 		const addListenerCalls = actualPlayer.addListener.mock.calls;
-		const statusCallback = addListenerCalls.find(
-			([event]: [string, unknown]) => event === 'playbackStatusUpdate'
-		)?.[1];
+		const statusCallback = addListenerCalls.find(([event]: [string, unknown]) => event === 'playbackStatusUpdate')?.[1];
 		statusCallback?.({ isLoaded: true, didJustFinish: false });
 
 		expect(actualPlayer.release).not.toHaveBeenCalled();
@@ -80,9 +78,7 @@ describe('playCallEndedSound', () => {
 		// Simulate completion
 		const actualPlayer = mockCreateAudioPlayer.mock.results[0].value;
 		const addListenerCalls = actualPlayer.addListener.mock.calls;
-		const statusCallback = addListenerCalls.find(
-			([event]: [string, unknown]) => event === 'playbackStatusUpdate'
-		)?.[1];
+		const statusCallback = addListenerCalls.find(([event]: [string, unknown]) => event === 'playbackStatusUpdate')?.[1];
 		statusCallback?.({ isLoaded: true, didJustFinish: true });
 
 		// Reset mocks to count fresh calls
@@ -100,13 +96,15 @@ describe('playCallEndedSound', () => {
 		jest.useFakeTimers();
 		try {
 			playCallEndedSound();
+
+			const actualPlayer = mockCreateAudioPlayer.mock.results[0].value;
 			// didJustFinish never fires; lock would be permanent without the watchdog.
-			expect(mockPlayer.release).not.toHaveBeenCalled();
+			expect(actualPlayer.release).not.toHaveBeenCalled();
 
 			jest.advanceTimersByTime(5000);
 
 			// Watchdog forces remove + lock release.
-			expect(mockPlayer.release).toHaveBeenCalledTimes(1);
+			expect(actualPlayer.release).toHaveBeenCalledTimes(1);
 
 			// Subsequent invocation is allowed (lock cleared).
 			mockCreateAudioPlayer.mockClear();
@@ -124,14 +122,15 @@ describe('playCallEndedSound', () => {
 		try {
 			playCallEndedSound();
 
-			const addListenerCalls = mockPlayer.addListener.mock.calls;
+			const actualPlayer = mockCreateAudioPlayer.mock.results[0].value;
+			const addListenerCalls = actualPlayer.addListener.mock.calls;
 			const statusCallback = addListenerCalls.find(([event]: [string, unknown]) => event === 'playbackStatusUpdate')?.[1];
 			statusCallback?.({ isLoaded: true, didJustFinish: true });
-			expect(mockPlayer.release).toHaveBeenCalledTimes(1);
+			expect(actualPlayer.release).toHaveBeenCalledTimes(1);
 
 			// Watchdog must not fire after natural completion.
 			jest.advanceTimersByTime(10000);
-			expect(mockPlayer.release).toHaveBeenCalledTimes(1);
+			expect(actualPlayer.release).toHaveBeenCalledTimes(1);
 		} finally {
 			jest.useRealTimers();
 		}
