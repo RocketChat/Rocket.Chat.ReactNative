@@ -54,9 +54,7 @@ describe('playCallEndedSound', () => {
 
 		const actualPlayer = mockCreateAudioPlayer.mock.results[0].value;
 		const addListenerCalls = actualPlayer.addListener.mock.calls;
-		const statusCallback = addListenerCalls.find(
-			([event]: [string, unknown]) => event === 'playbackStatusUpdate'
-		)?.[1];
+		const statusCallback = addListenerCalls.find(([event]: [string, unknown]) => event === 'playbackStatusUpdate')?.[1];
 		statusCallback?.({ isLoaded: true, didJustFinish: false });
 
 		expect(actualPlayer.release).not.toHaveBeenCalled();
@@ -80,9 +78,7 @@ describe('playCallEndedSound', () => {
 		// Simulate completion
 		const actualPlayer = mockCreateAudioPlayer.mock.results[0].value;
 		const addListenerCalls = actualPlayer.addListener.mock.calls;
-		const statusCallback = addListenerCalls.find(
-			([event]: [string, unknown]) => event === 'playbackStatusUpdate'
-		)?.[1];
+		const statusCallback = addListenerCalls.find(([event]: [string, unknown]) => event === 'playbackStatusUpdate')?.[1];
 		statusCallback?.({ isLoaded: true, didJustFinish: true });
 
 		// Reset mocks to count fresh calls
