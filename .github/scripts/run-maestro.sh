@@ -9,6 +9,12 @@ MAX_RERUN_ROUNDS="${MAX_RERUN_ROUNDS:-3}"
 RERUN_REPORT_PREFIX="maestro-rerun"
 export MAESTRO_DRIVER_STARTUP_TIMEOUT="${MAESTRO_DRIVER_STARTUP_TIMEOUT:-120000}"
 
+if [ "$PLATFORM" = "android" ]; then
+  APP_ID="chat.rocket.android"
+else
+  APP_ID="chat.rocket.ios"
+fi
+
 if ! command -v maestro >/dev/null 2>&1; then
   echo "ERROR: maestro not found in PATH"
   exit 2
@@ -65,12 +71,13 @@ printf '  %s\n' "${FLOW_FILES[@]}"
 
 if [ "$PLATFORM" = "android" ]; then
   adb shell settings put system show_touches 1 || true
-  adb install -r "app-experimental-release.apk" || true
-  adb shell monkey -p "chat.rocket.reactnative" -c android.intent.category.LAUNCHER 1 || true
+  adb install -r "app-official-release.apk" || true
+  adb shell monkey -p "$APP_ID" -c android.intent.category.LAUNCHER 1 || true
   sleep 6
-  adb shell am force-stop "chat.rocket.reactnative" || true
+  adb shell am force-stop "$APP_ID" || true
 
   maestro test "${FLOW_FILES[@]}" \
+    -e APP_ID="$APP_ID" \
     --exclude-tags=util \
     --include-tags="test-${SHARD}" \
     --format junit \
@@ -78,6 +85,7 @@ if [ "$PLATFORM" = "android" ]; then
 
 else
   maestro test "${FLOW_FILES[@]}" \
+    -e APP_ID="$APP_ID" \
     --exclude-tags=util \
     --include-tags="test-${SHARD}" \
     --exclude-tags=android-only \
@@ -139,12 +147,14 @@ while [ ${#CURRENT_FAILS[@]} -gt 0 ] && [ "$ROUND" -le "$MAX_RERUN_ROUNDS" ]; do
 
   if [ "$PLATFORM" = "android" ]; then
     maestro test "${CURRENT_FAILS[@]}" \
+      -e APP_ID="$APP_ID" \
       --exclude-tags=util \
       --include-tags="test-${SHARD}" \
       --format junit \
       --output "$RPT" || true
   else
     maestro test "${CURRENT_FAILS[@]}" \
+      -e APP_ID="$APP_ID" \
       --exclude-tags=util \
       --include-tags="test-${SHARD}" \
       --exclude-tags=android-only \
