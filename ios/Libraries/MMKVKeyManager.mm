@@ -55,9 +55,12 @@ static void Logger(NSString *format, ...) {
         NSString *password = [secureStorage getSecureKey:alias];
 
         if (!password || password.length == 0) {
+            // Fresh install - generate a new key
             password = [[NSUUID UUID] UUIDString];
             [secureStorage setSecureKey:alias value:password options:nil];
             Logger(@"Generated new MMKV encryption key");
+        } else {
+            Logger(@"Existing MMKV encryption key found");
         }
 
         // Verify MMKV can be opened with this key
@@ -70,6 +73,8 @@ static void Logger(NSString *format, ...) {
 
         if (mmkv) {
             Logger(@"MMKV initialized successfully. Keys: %lu", (unsigned long)[mmkv count]);
+        } else {
+            Logger(@"MMKV instance is nil after initialization");
         }
     } @catch (NSException *exception) {
         Logger(@"MMKV initialization error: %@ - %@", exception.name, exception.reason);

@@ -6,7 +6,7 @@
 #import "MMKVBridge.h"
 #import <MMKV/MMKV.h>
 
-@interface MMKVBridge ()
+@interface MMKVBridge()
 @property (nonatomic, strong) MMKV *mmkvInstance;
 @end
 
