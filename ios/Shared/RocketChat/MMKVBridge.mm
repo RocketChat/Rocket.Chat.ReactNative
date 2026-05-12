@@ -17,6 +17,11 @@
                  rootPath:(nullable NSString *)rootPath {
     self = [super init];
     if (self) {
+        // Initialize MMKV root directory if custom path provided (App Group storage)
+        if (rootPath) {
+            [MMKV initializeMMKV:nil groupDir:rootPath logLevel:MMKVLogInfo];
+        }
+
         // Open instance with MMKVMultiProcess mode
         // This allows the Main App and Notification Service to share data safely.
         if (cryptKey && cryptKey.length > 0) {
