@@ -31,7 +31,7 @@
   NSString *rootPath = nil;
   if (appGroup) {
     NSURL *groupURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:appGroup];
-    rootPath = [[groupURL path] stringByAppendingPathComponent:@"mmkv"];
+    rootPath = [groupURL path];
   }
 
   MMKVBridge *mmkvBridge = [[MMKVBridge alloc] initWithID:@"default" cryptKey:cryptKey rootPath:rootPath];
