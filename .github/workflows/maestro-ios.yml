@@ -11,8 +11,9 @@ jobs:
   ios-test:
     runs-on: macos-14
     env:
-      # 2.5.0 switched gRPC to dadb direct ADB socket — eliminates flaky TCP forwarding.
-      # https://github.com/mobile-dev-inc/maestro/releases/tag/cli-2.5.0
+      # Pinned alongside the Android workflow so both platforms run the same
+      # Maestro CLI. See cli-2.5.1 release notes for driver improvements.
+      # https://github.com/mobile-dev-inc/maestro/releases/tag/cli-2.5.1
       MAESTRO_VERSION: 2.5.1
 
     steps:
