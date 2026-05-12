@@ -30,7 +30,10 @@ jobs:
           haskell: true
           large-packages: true
           docker-images: true
-          swap-storage: true
+          # ubuntu-latest has ~6.8 GiB RAM; emulator guest is ram-size: 6144M.
+          # Keep the ~4 GiB swapfile so host OS, ADB, Gradle, JVM, and the CI
+          # process have an OOM buffer instead of being squeezed into ~800 MB.
+          swap-storage: false
 
       - name: Setup Java
         uses: actions/setup-java@c1e323688fd81a25caa38c78aa6df2d33d3e20d9 # v4.8.0
@@ -38,7 +41,12 @@ jobs:
           distribution: temurin
           java-version: 17
 
+      # Shard 14 builds a custom keyboard-enabled AVD (Pixel_API_34_Keyboard)
+      # under the same path. Skip cache here so it can't race-save its AVD
+      # under the shared default-profile key and starve the other shards of
+      # the pixel_7_pro snapshot.
       - name: Cache Android AVD
+        if: ${{ inputs.shard != '14' }}
         id: avd-cache
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
