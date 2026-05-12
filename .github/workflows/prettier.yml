@@ -27,7 +27,7 @@ jobs:
         run: pnpm exec prettier --write .
 
       - name: Run ESLint
-        run: npx eslint . --fix
+        run: pnpm exec eslint . --fix
         
       - name: Check for changes
         id: changes
