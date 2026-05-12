@@ -10,16 +10,11 @@ import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { isIOS } from '../../lib/methods/helpers/deviceInfo';
 import { isOfficial } from '../../lib/constants/environment';
 import log from '../../lib/methods/helpers/log';
+import i18n from '../../i18n';
 import styles from './styles';
 
 const OFFICIAL_APP_STORE_URL = 'https://apps.apple.com/us/app/rocket-chat/id1148741252';
 const OFFICIAL_PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=chat.rocket.android';
-
-const TITLE = 'Rocket.Chat Experimental is being retired';
-const BODY =
-	'Please install the official Rocket.Chat app and sign back in to your workspace. This Experimental build will stop receiving updates.';
-const CONTINUE_LABEL = 'Continue to app';
-const URL_LABEL = 'Or open this link manually:';
 
 const DeprecationModal = React.memo(() => {
 	const { colors } = useTheme();
@@ -31,7 +26,9 @@ const DeprecationModal = React.memo(() => {
 	}
 
 	const storeUrl = isIOS ? OFFICIAL_APP_STORE_URL : OFFICIAL_PLAY_STORE_URL;
-	const storeButtonLabel = isIOS ? 'Open App Store' : 'Open Play Store';
+	const storeButtonLabel = isIOS
+		? i18n.t('Experimental_retirement_open_app_store')
+		: i18n.t('Experimental_retirement_open_play_store');
 
 	const onOpenStore = async () => {
 		try {
@@ -61,9 +58,9 @@ const DeprecationModal = React.memo(() => {
 						isMasterDetail && [sharedStyles.modalFormSheet, styles.tablet],
 						{ backgroundColor: colors.surfaceTint }
 					]}>
-					<Text style={[styles.title, { color }]}>{TITLE}</Text>
-					<Text style={[styles.body, { color }]}>{BODY}</Text>
-					<Text style={[styles.urlLabel, { color }]}>{URL_LABEL}</Text>
+					<Text style={[styles.title, { color }]}>{i18n.t('Experimental_retirement_title')}</Text>
+					<Text style={[styles.body, { color }]}>{i18n.t('Experimental_retirement_description')}</Text>
+					<Text style={[styles.urlLabel, { color }]}>{i18n.t('Experimental_retirement_or_open_manually')}</Text>
 					<Text selectable style={[styles.url, { color: colors.fontInfo }]}>
 						{storeUrl}
 					</Text>
@@ -76,7 +73,7 @@ const DeprecationModal = React.memo(() => {
 							testID='deprecation-modal-open-store'
 						/>
 						<Button
-							title={CONTINUE_LABEL}
+							title={i18n.t('Experimental_retirement_continue')}
 							type='secondary'
 							style={styles.button}
 							onPress={onDismiss}
