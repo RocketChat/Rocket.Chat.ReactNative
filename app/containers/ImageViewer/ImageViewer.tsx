@@ -8,6 +8,7 @@ import Touch from '../Touch';
 import { useUserPreferences } from '../../lib/methods/userPreferences';
 import { AUTOPLAY_GIFS_PREFERENCES_KEY } from '../../lib/constants/keys';
 import { useTheme } from '../../theme';
+import I18n from '../../i18n';
 
 interface ImageViewerProps {
 	style?: StyleProp<ImageStyle>;
@@ -19,6 +20,7 @@ interface ImageViewerProps {
 	height: number;
 	onLoadEnd?: () => void;
 	altText?: string;
+	isAnimated?: boolean;
 }
 
 const styles = StyleSheet.create({
@@ -35,7 +37,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const ImageViewer = ({ uri = '', width, height, altText, ...props }: ImageViewerProps): React.ReactElement => {
+export const ImageViewer = ({ uri = '', width, height, altText, isAnimated, ...props }: ImageViewerProps): React.ReactElement => {
 	const [autoplayGifs] = useUserPreferences<boolean>(AUTOPLAY_GIFS_PREFERENCES_KEY, true);
 	const [isPlaying, setIsPlaying] = useState<boolean>(!!autoplayGifs);
 	const expoImageRef = useRef<Image>(null);
@@ -139,7 +141,8 @@ export const ImageViewer = ({ uri = '', width, height, altText, ...props }: Imag
 					<Touch
 						accessible={!!altText}
 						accessibilityLabel={altText}
-						accessibilityRole='image'
+						accessibilityRole={isAnimated && altText ? 'button' : 'image'}
+						accessibilityHint={isAnimated && altText ? I18n.t('A11y_image_viewer_gif_hint') : undefined}
 						onPress={handleGifPlayback}
 						style={styles.flex}
 						rectButtonStyle={styles.flex}>

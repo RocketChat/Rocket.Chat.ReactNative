@@ -61,6 +61,7 @@ const RenderContent = ({
 	if (attachment.image_url) {
 		const url = formatAttachmentUrl(attachment.title_link || attachment.image_url, user.id, user.token, baseUrl);
 		const uri = encodeURI(url);
+		const isAnimated = attachment.image_type === 'image/gif' || /\.gif(\?|$)/i.test(url);
 		return (
 			<ImageViewer
 				uri={uri}
@@ -68,6 +69,7 @@ const RenderContent = ({
 				width={width}
 				height={height - insets.top - insets.bottom - (headerHeight || 0)}
 				altText={altText}
+				isAnimated={isAnimated}
 			/>
 		);
 	}
