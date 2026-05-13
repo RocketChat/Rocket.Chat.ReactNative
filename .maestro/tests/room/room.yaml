@@ -275,7 +275,15 @@ tags:
     commands:
       - swipe:
           from:
-            id: emoji-grinning
+            id: action-sheet
+          direction: UP
+      - swipe:
+          from:
+            id: action-sheet
+          direction: UP
+      - swipe:
+          from:
+            id: action-sheet
           direction: UP
       - waitForAnimationToEnd:
           timeout: 500
