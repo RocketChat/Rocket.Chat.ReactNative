@@ -107,10 +107,10 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 	const getImageDescriptionLabel = () => {
 		const imageAltText = props.attachments
 			?.filter(attachment => attachment.image_url)
-			.map(attachment => attachment.altText ?? attachment.description)
-			.find(Boolean);
+			.map(attachment => (attachment.altText ?? attachment.description)?.trim())
+			.find(text => !!text);
 
-		if (!imageAltText || imageAltText === props.msg) {
+		if (!imageAltText || imageAltText === props.msg?.trim()) {
 			return '';
 		}
 
