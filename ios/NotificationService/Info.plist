@@ -31,18 +31,18 @@
 		<key>NSExtensionPrincipalClass</key>
 		<string>$(PRODUCT_MODULE_NAME).NotificationService</string>
 	</dict>
-	<key>RCTNewArchEnabled</key>
-	<true/>
+	<key>NSExtensionAttributes</key>
+	<dict>
+		<key>IntentsSupported</key>
+		<array>
+			<string>INSendMessageIntent</string>
+		</array>
+	</dict>
 	<key>NSUserActivityTypes</key>
 	<array>
 		<string>INSendMessageIntent</string>
 	</array>
-	<key>NSExtensionAttributes</key>
-    <dict>
-        <key>IntentsSupported</key>
-        <array>
-            <string>INSendMessageIntent</string>
-        </array>
-    </dict>
+	<key>RCTNewArchEnabled</key>
+	<true/>
 </dict>
 </plist>

@@ -68,8 +68,6 @@ platform :ios do
 
   desc "Build Official app"
   lane :build_official do
-    sh "../../scripts/prepare_ios_official.sh"
-
     match(
       type: "appstore",
       platform: "ios",
@@ -120,7 +118,6 @@ platform :ios do
 
   desc "Build Official app for Simulator"
   lane :build_official_simulator do
-    sh "../../scripts/prepare_ios_official.sh"
     gym(
       scheme: "RocketChat",
       workspace: "RocketChatRN.xcworkspace",
