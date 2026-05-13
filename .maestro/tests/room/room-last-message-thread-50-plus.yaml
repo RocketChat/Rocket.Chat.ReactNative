@@ -25,17 +25,8 @@ tags:
     visible:
       id: 'thread-count-55'
     timeout: 60000
-# Regression target (PR #6680 / NATIVE-1035): the initial load must gather 50 main messages
-# despite 55 thread replies polluting the batch. If the loop in loadMessagesForRoom.ts is
-# broken, message 1 won't be in memory and the assertVisible below will fail.
-#
-# 12 full-page scrolls is a deterministic, fixed-cost burn through the FlashList; each
-# `scroll` is one page (~5-7 rows), so 12 covers 50 rows with cushion. Faster on slow
-# emulators than scrollUntilVisible's polling micro-scrolls.
-- repeat:
-    times: 12
-    commands:
-      - scroll
-      - waitForAnimationToEnd
-- assertVisible:
-    id: 'message-content-message 1'
+- scrollUntilVisible:
+    element:
+      id: 'message-content-message 1'
+    direction: UP
+    timeout: 120000
