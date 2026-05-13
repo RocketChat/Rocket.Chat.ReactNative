@@ -21,21 +21,21 @@ or alternatively using `brew install fastlane`
 fastlane ios beta
 ```
 Submit a new Beta Build to Apple TestFlight
-### ios release
-```
-fastlane ios release
-```
-Build Experimental app
-### ios build_fork
-```
-fastlane ios build_fork
-```
-Build fork app
 ### ios build_official
 ```
 fastlane ios build_official
 ```
 Build Official app
+### ios build_fork
+```
+fastlane ios build_fork
+```
+Build fork app
+### ios build_official_simulator
+```
+fastlane ios build_official_simulator
+```
+Build Official app for Simulator
 
 ----
 
