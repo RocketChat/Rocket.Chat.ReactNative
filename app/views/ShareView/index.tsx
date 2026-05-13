@@ -34,7 +34,7 @@ import {
 	type TSubscriptionModel,
 	type TThreadModel
 } from '../../definitions';
-import { sendFileMessage } from '../../lib/methods/sendFileMessage';
+import { sendAttachments } from '../../lib/methods/sendFileMessage/sendAttachments';
 import { sendMessage } from '../../lib/methods/sendMessage';
 import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '../../lib/methods/helpers';
 import { RoomContext } from '../RoomView/context';
@@ -271,39 +271,16 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		try {
 			// Send attachment
 			if (attachments.length) {
-				await Promise.all(
-					attachments.map(({ filename: name, mime: type, description, altText, size, path, canUpload, height, width, exif }) => {
-						if (!canUpload) {
-							return Promise.resolve();
-						}
-
-						if (exif?.Orientation && ['5', '6', '7', '8'].includes(exif?.Orientation)) {
-							[width, height] = [height, width];
-						}
-
-						// On server >= 8.4, description = alt text; caption moves to msg
-						const fileDescription = useAltText ? altText : description;
-						const fileMsg = useAltText ? description || msg : msg;
-
-						return sendFileMessage(
-							room.rid,
-							{
-								rid: room.rid,
-								name,
-								description: fileDescription,
-								size,
-								type,
-								path,
-								msg: fileMsg,
-								height,
-								width
-							},
-							this.getThreadId(thread),
-							server,
-							{ id: user.id, token: user.token }
-						);
-					})
-				);
+				// On server >= 8.4, description = alt text; caption moves to msg
+				await sendAttachments({
+					attachments,
+					rid: room.rid,
+					tmid: this.getThreadId(thread),
+					server,
+					user: { id: user.id, token: user.token },
+					altTextSupported: useAltText,
+					getMsg: ({ description }) => (useAltText ? description || msg : msg)
+				});
 
 				// Send text message
 			} else if (text.length) {

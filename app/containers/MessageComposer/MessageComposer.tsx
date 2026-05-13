@@ -31,7 +31,7 @@ import { MessageComposerContent } from './components/MessageComposerContent';
 import { useTheme } from '../../theme';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { getUserSelector } from '../../selectors/login';
-import { sendFileMessage } from '../../lib/methods/sendFileMessage';
+import { sendAttachments } from '../../lib/methods/sendFileMessage/sendAttachments';
 import { useAltTextSupported } from '../../lib/hooks/useAltTextSupported';
 
 export const MessageComposer = ({
@@ -127,40 +127,15 @@ export const MessageComposer = ({
 			}
 
 			try {
-				await Promise.all(
-					attachments.map(
-						({ filename: name, mime: type, description, altText, size, path, canUpload, height, width, exif }, index) => {
-							if (!canUpload) {
-								return Promise.resolve();
-							}
-
-							if (exif?.Orientation && ['5', '6', '7', '8'].includes(exif.Orientation)) {
-								[width, height] = [height, width];
-							}
-
-							const fileDescription = altTextSupported ? altText : description;
-							const fileMsg = index === 0 ? description || quotedMessage || textFromInput : description;
-
-							return sendFileMessage(
-								rid,
-								{
-									rid,
-									name,
-									description: fileDescription,
-									size,
-									type,
-									path,
-									msg: fileMsg,
-									height,
-									width
-								},
-								tmid,
-								server,
-								{ id: user.id, token: user.token }
-							);
-						}
-					)
-				);
+				await sendAttachments({
+					attachments,
+					rid,
+					tmid,
+					server,
+					user: { id: user.id, token: user.token },
+					altTextSupported,
+					getMsg: ({ description }, index) => (index === 0 ? description || quotedMessage || textFromInput : description)
+				});
 				clearAttachments();
 				setQuotesAndText?.('', []);
 				return;
