@@ -45,9 +45,8 @@ static void Logger(NSString *format, ...) {
             return;
         }
 
-        // --- CRITICAL CHANGE ---
-        // In v4, for App Groups, you must set the 2nd parameter (groupDir).
-        // Signature: initializeMMKV:(NSString*)rootDir groupDir:(NSString*)groupDir logLevel:(MMKVLogLevel)logLevel
+        // Initialize MMKV against the App Group container so the main app and
+        // NotificationService share the same storage.
         [MMKV initializeMMKV:nil groupDir:mmkvPath logLevel:MMKVLogInfo];
 
         SecureStorage *secureStorage = [[SecureStorage alloc] init];
