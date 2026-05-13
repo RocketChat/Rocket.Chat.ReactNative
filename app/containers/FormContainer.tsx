@@ -1,9 +1,9 @@
 import React from 'react';
-import { ScrollView, type ScrollViewProps, StyleSheet, View } from 'react-native';
+import { type ScrollViewProps, StyleSheet, View } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
 import sharedStyles from '../views/Styles';
 import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
-import KeyboardView from './KeyboardView';
 import { useTheme } from '../theme';
 import AppVersion from './AppVersion';
 import { isTablet } from '../lib/methods/helpers';
@@ -37,18 +37,17 @@ const FormContainer = ({ children, testID, showAppVersion = true, ...props }: IF
 	const { colors } = useTheme();
 
 	return (
-		<KeyboardView>
-			<ScrollView
-				style={sharedStyles.container}
-				contentContainerStyle={[sharedStyles.containerScrollView, styles.scrollView]}
-				{...scrollPersistTaps}
-				{...props}>
-				<SafeAreaView testID={testID} style={{ backgroundColor: colors.surfaceRoom }}>
-					{children}
-					<>{showAppVersion && <AppVersion />}</>
-				</SafeAreaView>
-			</ScrollView>
-		</KeyboardView>
+		<KeyboardAwareScrollView
+			style={[sharedStyles.container, { backgroundColor: colors.surfaceRoom }]}
+			contentContainerStyle={[sharedStyles.containerScrollView, styles.scrollView]}
+			bottomOffset={20}
+			{...scrollPersistTaps}
+			{...props}>
+			<SafeAreaView testID={testID} style={{ backgroundColor: colors.surfaceRoom }}>
+				{children}
+				<>{showAppVersion && <AppVersion />}</>
+			</SafeAreaView>
+		</KeyboardAwareScrollView>
 	);
 };
 
