@@ -266,7 +266,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			msg = await prepareQuoteMessage('', selectedMessages);
 		}
 
-		const useAltText = compareServerVersion(this.effectiveServerVersion, 'greaterThanOrEqualTo', '8.4.0');
+		const { isAltTextSupported } = this;
 
 		try {
 			// Send attachment
@@ -278,8 +278,8 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 					tmid: this.getThreadId(thread),
 					server,
 					user: { id: user.id, token: user.token },
-					altTextSupported: useAltText,
-					getMsg: ({ description }) => (useAltText ? description || msg : msg)
+					altTextSupported: isAltTextSupported,
+					getMsg: ({ description }) => (isAltTextSupported ? description || msg : msg)
 				});
 
 				// Send text message
@@ -359,6 +359,10 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			: serverVersion || (this.serverInfo as any)?.version;
 	}
 
+	private get isAltTextSupported(): boolean {
+		return compareServerVersion(this.effectiveServerVersion, 'greaterThanOrEqualTo', '8.4.0');
+	}
+
 	onRemoveQuoteMessage = (messageId: string) => {
 		const { selectedMessages } = this.state;
 		const newSelectedMessages = selectedMessages.filter(item => item !== messageId);
@@ -369,8 +373,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		const { attachments, selected, altText, text, room, thread, selectedMessages } = this.state;
 		const { theme, route } = this.props;
 
-		const showAltTextInput =
-			compareServerVersion(this.effectiveServerVersion, 'greaterThanOrEqualTo', '8.4.0') && selected?.mime?.startsWith('image/');
+		const showAltTextInput = this.isAltTextSupported && selected?.mime?.startsWith('image/');
 
 		if (attachments.length) {
 			return (
