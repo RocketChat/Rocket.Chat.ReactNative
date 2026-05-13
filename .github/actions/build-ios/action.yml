@@ -1,17 +1,11 @@
 name: 'Build iOS'
 description: 'Build iOS app'
 inputs:
-  type:
-    description: 'Build type: official or experimental'
-    required: true
   BUILD_VERSION:
     description: 'Build version'
     required: true
   APP_STORE_CONNECT_API_KEY_BASE64:
     description: 'Base64 encoded App Store Connect API Key'
-    required: true
-  BUGSNAG_KEY:
-    description: 'Bugsnag API Key'
     required: true
   MATCH_KEYCHAIN_NAME:
     description: 'Match Keychain Name'
@@ -36,9 +30,6 @@ inputs:
     required: true
   GOOGLE_SERVICES_IOS:
     description: 'Google service file for official version'
-    required: true
-  GOOGLE_SERVICES_IOS_EXPERIMENTAL:
-    description: 'Google service file for experimental version'
     required: true
 
 runs:
@@ -71,7 +62,7 @@ runs:
         restore-keys: |
           pods-v1-
 
-    - name: pod install 
+    - name: pod install
       run: |
         yarn pod-install
       shell: bash
@@ -85,43 +76,24 @@ runs:
       working-directory: ios
       run: |
         agvtool new-version -all ${{ inputs.BUILD_VERSION }}
-        if [[ ${{ inputs.type }} == "official" ]]; then
-          /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ inputs.BUGSNAG_KEY_OFFICIAL }}" ./RocketChatRN/Info.plist
-          /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ inputs.BUGSNAG_KEY_OFFICIAL }}" ./ShareRocketChatRN/Info.plist
-          /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./RocketChatRN/Info.plist
-          /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./ShareRocketChatRN/Info.plist
-          /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./NotificationService/Info.plist
-        fi
-        if [[ ${{ inputs.type }} == "experimental" ]]; then
-          /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ inputs.BUGSNAG_KEY }}" ./RocketChatRN/Info.plist
-          /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ inputs.BUGSNAG_KEY }}" ./ShareRocketChatRN/Info.plist
-          /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./RocketChatRN/Info.plist
-          /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./ShareRocketChatRN/Info.plist
-          /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./NotificationService/Info.plist
-        fi
+        /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ inputs.BUGSNAG_KEY_OFFICIAL }}" ./RocketChatRN/Info.plist
+        /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ inputs.BUGSNAG_KEY_OFFICIAL }}" ./ShareRocketChatRN/Info.plist
+        /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./RocketChatRN/Info.plist
+        /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./ShareRocketChatRN/Info.plist
+        /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./NotificationService/Info.plist
       shell: bash
 
     - name: Set Google Services
       working-directory: ios
       run: |
         if [[ $APP_STORE_CONNECT_API_KEY_BASE64 ]]; then
-          if [[ ${{ inputs.type }}  == "official" ]]; then
-            echo ${{ inputs.GOOGLE_SERVICES_IOS }} | base64 --decode > GoogleService-Info.plist
-          else 
-            echo ${{ inputs.GOOGLE_SERVICES_IOS_EXPERIMENTAL }} | base64 --decode > GoogleService-Info.plist
-          fi
+          echo ${{ inputs.GOOGLE_SERVICES_IOS }} | base64 --decode > GoogleService-Info.plist
         fi
       shell: bash
 
     - name: Build iOS app
       working-directory: ios
-      run: |
-        if [[ ${{ inputs.type }} == "official" ]]; then
-          bundle exec fastlane ios build_official
-        fi
-        if [[ ${{ inputs.type }} == "experimental" ]]; then
-          bundle exec fastlane ios build_experimental
-        fi
+      run: bundle exec fastlane ios build_official
       env:
         MATCH_KEYCHAIN_NAME: ${{ inputs.MATCH_KEYCHAIN_NAME }}
         MATCH_KEYCHAIN_PASSWORD: ${{ inputs.MATCH_KEYCHAIN_PASSWORD }}
@@ -133,42 +105,18 @@ runs:
 
     - name: Upload IPA artifact
       uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-      if: ${{ inputs.type == 'experimental' }}
-      with:
-        name: ios-build-experimental
-        path: ios/Rocket.Chat.ipa
-
-    - name: Upload IPA artifact
-      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-      if: ${{ inputs.type == 'official' }}
       with:
         name: ios-build-official
         path: ios/Rocket.Chat.ipa
 
     - name: Upload Rocket.Chat.app.dSYM.zip
       uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-      if: ${{ inputs.type == 'experimental' }}
-      with:
-        name: ios-build-experimental-dSYM
-        path: ios/Rocket.Chat.app.dSYM.zip
-
-    - name: Upload Rocket.Chat.app.dSYM.zip
-      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-      if: ${{ inputs.type == 'official' }}
       with:
         name: ios-build-official-dSYM
         path: ios/Rocket.Chat.app.dSYM.zip
 
     - name: Upload RocketChatRN/Info.plist
       uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-      if: ${{ inputs.type == 'experimental' }}
-      with:
-        name: ios-build-experimental-info-plist
-        path: ios/RocketChatRN/Info.plist
-
-    - name: Upload RocketChatRN/Info.plist
-      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-      if: ${{ inputs.type == 'official' }}
       with:
         name: ios-build-official-info-plist
         path: ios/RocketChatRN/Info.plist
