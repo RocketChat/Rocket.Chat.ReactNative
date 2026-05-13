@@ -124,11 +124,6 @@ android {
     productFlavors {
         official {
             dimension = "app"
-            buildConfigField "boolean", "IS_OFFICIAL", "true"
-        }
-        experimental {
-            dimension = "app"
-            buildConfigField "boolean", "IS_OFFICIAL", "false"
         }
     }
 }
