@@ -29,4 +29,4 @@ tags:
     element:
       id: 'message-content-message 1'
     direction: UP
-    timeout: 120000
+    timeout: 60000
