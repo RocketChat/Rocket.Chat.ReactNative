@@ -10,7 +10,6 @@
 #import "MMKVKeyManager.h"
 #import "SecureStorage.h"
 #import "../Shared/RocketChat/MMKVBridge.h"
-#import <MMKV/MMKV.h>
 
 static NSString *toHex(NSString *str) {
     if (!str) return @"";
@@ -36,18 +35,12 @@ static void Logger(NSString *format, ...) {
 @implementation MMKVKeyManager
 
 + (void)initialize {
-    if (self != [MMKVKeyManager class]) return;
-
     @try {
         NSString *mmkvPath = [self initializeMMKV];
         if (!mmkvPath) {
             Logger(@"Failed to initialize MMKV path");
             return;
         }
-
-        // Initialize MMKV against the App Group container so the main app and
-        // NotificationService share the same storage.
-        [MMKV initializeMMKV:nil groupDir:mmkvPath logLevel:MMKVLogInfo];
 
         SecureStorage *secureStorage = [[SecureStorage alloc] init];
         NSString *alias = toHex(@"com.MMKV.default");
@@ -65,13 +58,13 @@ static void Logger(NSString *format, ...) {
         // Verify MMKV can be opened with this key
         NSData *cryptKey = [password dataUsingEncoding:NSUTF8StringEncoding];
 
-        // Ensure we use MMKVMultiProcess to match the JS side
         MMKVBridge *mmkv = [[MMKVBridge alloc] initWithID:@"default"
                                                 cryptKey:cryptKey
                                                 rootPath:mmkvPath];
 
         if (mmkv) {
-            Logger(@"MMKV initialized successfully. Keys: %lu", (unsigned long)[mmkv count]);
+            NSUInteger keyCount = [mmkv count];
+            Logger(@"MMKV initialized with encryption, %lu keys found", (unsigned long)keyCount);
         } else {
             Logger(@"MMKV instance is nil after initialization");
         }
