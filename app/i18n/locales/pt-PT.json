@@ -9,6 +9,7 @@
   "A11y_in_app_notification": "Nova mensagem de {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Dispensar",
   "A11y_incoming_call_swipe_down_to_view_options": "Deslize para baixo para ver as opções.",
+  "A11y_press_to_view_thread": "Pressione para exibir thread",
   "ABAC_disabled_action_reason": "Não disponível em salas geridas por ABAC",
   "ABAC_managed": "Gerido por ABAC",
   "ABAC_managed_description": "Apenas utilizadores compatíveis têm acesso a salas controladas por acesso baseado em atributos. Atributos determinam o acesso à sala.",

@@ -9,6 +9,7 @@
   "A11y_in_app_notification": "来自{{name}}的新消息：{{message}}",
   "A11y_incoming_call_dismiss": "关闭",
   "A11y_incoming_call_swipe_down_to_view_options": "向下滑动以查看选项",
+  "A11y_press_to_view_thread": "按下查看线程",
   "ABAC_disabled_action_reason": "在ABAC管理的房间中不可用",
   "ABAC_managed": "ABAC 管理",
   "ABAC_managed_description": "只有符合条件的用户才能访问基于属性的访问控制房间。属性决定房间访问权限。",

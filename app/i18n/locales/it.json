@@ -13,6 +13,7 @@
   "A11y_in_app_notification": "Nuovo messaggio da {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Ignora",
   "A11y_incoming_call_swipe_down_to_view_options": "Scorri verso il basso per visualizzare le opzioni",
+  "A11y_press_to_view_thread": "Premi per visualizzare il thread",
   "ABAC_disabled_action_reason": "Non disponibile nelle stanze gestite da ABAC",
   "ABAC_managed": "Gestito da ABAC",
   "ABAC_managed_description": "Solo gli utenti conformi hanno accesso alle stanze controllate da accesso basato su attributi. Gli attributi determinano l'accesso alla stanza.",

@@ -9,6 +9,7 @@
   "A11y_in_app_notification": "Nieuw bericht van {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Afwijzen",
   "A11y_incoming_call_swipe_down_to_view_options": "Veeg omlaag om opties te bekijken",
+  "A11y_press_to_view_thread": "Druk om thread te bekijken",
   "ABAC_disabled_action_reason": "Niet beschikbaar in ABAC-beheerde kamers",
   "ABAC_managed": "ABAC beheerd",
   "ABAC_managed_description": "Alleen conforme gebruikers hebben toegang tot op attributen gebaseerde toegangsgecontroleerde kamers. Attributen bepalen de toegang tot de kamer.",

@@ -9,6 +9,7 @@
   "A11y_in_app_notification": "Nuevo mensaje de {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Descartar",
   "A11y_incoming_call_swipe_down_to_view_options": "Desliza hacia abajo para ver opciones",
+  "A11y_press_to_view_thread": "Pulsa para ver el hilo",
   "ABAC_disabled_action_reason": "No disponible en salas gestionadas por ABAC",
   "ABAC_managed": "Gestionado por ABAC",
   "ABAC_managed_description": "Solo los usuarios compatibles tienen acceso a las salas controladas por acceso basado en atributos. Los atributos determinan el acceso a la sala.",

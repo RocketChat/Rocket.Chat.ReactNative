@@ -14,6 +14,7 @@
   "A11y_in_app_notification": "New message from {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Dismiss",
   "A11y_incoming_call_swipe_down_to_view_options": "Swipe down to view options",
+  "A11y_press_to_view_thread": "Press to view thread",
   "ABAC_disabled_action_reason": "Not available in ABAC-managed rooms",
   "ABAC_managed": "ABAC managed",
   "ABAC_managed_description": "Only compliant users have access to attribute-based access controlled rooms. Attributes determine room access.",

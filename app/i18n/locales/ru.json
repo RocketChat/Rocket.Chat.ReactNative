@@ -13,6 +13,7 @@
   "A11y_in_app_notification": "Новое сообщение от {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Отклонить",
   "A11y_incoming_call_swipe_down_to_view_options": "Проведите вниз, чтобы просмотреть варианты действий",
+  "A11y_press_to_view_thread": "Нажмите, чтобы посмотреть тему",
   "ABAC_disabled_action_reason": "Недоступно в комнатах, управляемых ABAC",
   "ABAC_managed": "Управляется ABAC",
   "ABAC_managed_description": "Только соответствующие пользователи имеют доступ к комнатам с атрибутивным контролем доступа. Атрибуты определяют доступ к комнате.",

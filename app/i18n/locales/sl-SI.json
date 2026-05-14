@@ -13,6 +13,7 @@
   "A11y_in_app_notification": "Novo sporočilo od {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Opusti",
   "A11y_incoming_call_swipe_down_to_view_options": "Podrsnite navzdol za ogled možnosti",
+  "A11y_press_to_view_thread": "Pritisnite za ogled niti",
   "ABAC_disabled_action_reason": "Ni na voljo v sobah, ki jih upravlja ABAC",
   "ABAC_managed": "ABAC upravljano",
   "ABAC_managed_description": "Samo skladni uporabniki imajo dostop do sob z nadzorom dostopa na podlagi atributov. Atributi določajo dostop do sobe.",

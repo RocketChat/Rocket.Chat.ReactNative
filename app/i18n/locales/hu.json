@@ -13,6 +13,7 @@
   "A11y_in_app_notification": "Új üzenet érkezett {{name}}-tól: {{message}}",
   "A11y_incoming_call_dismiss": "Elutasítás",
   "A11y_incoming_call_swipe_down_to_view_options": "Húzza lefelé az opciók megtekintéséhez",
+  "A11y_press_to_view_thread": "Nyomja meg a szál megtekintéséhez",
   "ABAC_disabled_action_reason": "Nem érhető el ABAC által kezelt szobákban",
   "ABAC_managed": "ABAC által kezelt",
   "ABAC_managed_description": "Csak a megfelelő felhasználók férhetnek hozzá az attribútum alapú hozzáférés-vezérelt szobákhoz. Az attribútumok határozzák meg a szoba hozzáférését.",

@@ -97,6 +97,33 @@ describe('useMessageAccessibilityLabel', () => {
 		expect(result.current).toContain('joined the channel');
 	});
 
+	it('appends "Press to view thread" hint when message is a thread reply', () => {
+		const { result } = renderHook(() => useMessageAccessibilityLabel({ ...baseProps, isThreadReply: true }));
+		expect(result.current).toContain('Press to view thread');
+	});
+
+	it('appends "Press to view thread" hint when message has thread replies (tcount)', () => {
+		const { result } = renderHook(() => useMessageAccessibilityLabel({ ...baseProps, tcount: 3 }));
+		expect(result.current).toContain('Press to view thread');
+	});
+
+	it('appends "Press to view thread" hint when message has a tmid', () => {
+		const { result } = renderHook(() => useMessageAccessibilityLabel({ ...baseProps, tmid: 'tmid123' }));
+		expect(result.current).toContain('Press to view thread');
+	});
+
+	it('does not append the thread hint for plain non-thread messages', () => {
+		const { result } = renderHook(() => useMessageAccessibilityLabel({ ...baseProps }));
+		expect(result.current).not.toContain('Press to view thread');
+	});
+
+	it('does not append the thread hint on info messages', () => {
+		const { result } = renderHook(() =>
+			useMessageAccessibilityLabel({ ...baseProps, isInfo: true, type: 'uj', tmid: 'tmid123' })
+		);
+		expect(result.current).not.toContain('Press to view thread');
+	});
+
 	it('omits read receipt for info messages even when receipt is enabled', () => {
 		const { result } = renderHook(() =>
 			useMessageAccessibilityLabel({

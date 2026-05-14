@@ -13,6 +13,7 @@
   "A11y_in_app_notification": "Nytt meddelande från {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Avvisa",
   "A11y_incoming_call_swipe_down_to_view_options": "Svep nedåt för att se alternativ",
+  "A11y_press_to_view_thread": "Tryck för att visa tråd",
   "ABAC_disabled_action_reason": "Inte tillgängligt i ABAC-hanterade rum",
   "ABAC_managed": "ABAC-hanterat",
   "ABAC_managed_description": "Endast kompatibla användare har åtkomst till attributbaserat åtkomstskyddade rum. Attributen avgör tillgången till rummet.",

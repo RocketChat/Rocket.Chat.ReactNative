@@ -13,6 +13,7 @@
   "A11y_in_app_notification": "Nová zpráva od {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Zavřít",
   "A11y_incoming_call_swipe_down_to_view_options": "Přejetím dolů zobrazíte možnosti",
+  "A11y_press_to_view_thread": "Stiskněte pro zobrazení vlákna",
   "ABAC_disabled_action_reason": "Není k dispozici v místnostech spravovaných systémem ABAC",
   "ABAC_managed": "Spravováno ABAC",
   "ABAC_managed_description": "Pouze vyhovující uživatelé mají přístup k místnostem řízeným přístupem na základě atributů. Atributy určují přístup k místnosti.",

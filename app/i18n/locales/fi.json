@@ -13,6 +13,7 @@
   "A11y_in_app_notification": "Uusi viesti {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Hylkää",
   "A11y_incoming_call_swipe_down_to_view_options": "Pyyhkäise alas nähdäksesi vaihtoehdot",
+  "A11y_press_to_view_thread": "Paina katsellaksesi säiettä",
   "ABAC_disabled_action_reason": "Ei saatavilla ABAC-hallituissa huoneissa",
   "ABAC_managed": "ABAC-hallittu",
   "ABAC_managed_description": "Vain yhteensopivilla käyttäjillä on pääsy attribuuttipohjaisesti hallittuihin huoneisiin. Attribuutit määrittävät huoneen pääsyn.",

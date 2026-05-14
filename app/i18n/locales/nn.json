@@ -8,6 +8,7 @@
   "A11y_in_app_notification": "Ny melding frå {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Avslå",
   "A11y_incoming_call_swipe_down_to_view_options": "Sveip ned for å sjå alternativa",
+  "A11y_press_to_view_thread": "Trykk for å sjå tråden",
   "ABAC_disabled_action_reason": "Ikkje tilgjengeleg i ABAC-administrerte rom",
   "ABAC_managed": "ABAC-administrert",
   "ABAC_managed_description": "Berre kompatible brukarar har tilgang til attributtbaserte tilgangskontrollerte rom. Attributta bestemmer romtilgangen.",

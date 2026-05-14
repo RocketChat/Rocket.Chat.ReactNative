@@ -46,9 +46,11 @@ export const buildMessageAccessibilityLabel = (props: Params): string => {
 	const encryptedMessageLabel = props.isEncrypted ? i18n.t('Encrypted_message') : '';
 	const translatedLanguage = translationLanguages[props?.autoTranslateLanguage || 'en'];
 	const translated = props.isTranslated ? i18n.t('Message_translated_into_idiom', { idiom: translatedLanguage }) : '';
+	const isThread = !props.isInfo && !!(props.tmid || props.tcount || props.isThreadReply || props.isThreadSequential);
+	const threadHint = isThread ? `. ${i18n.t('A11y_press_to_view_thread')}` : '';
 	return props.isTranslated
-		? `${user} ${hour} ${translated}`
-		: `${user} ${hour} ${translated} ${label}. ${encryptedMessageLabel} ${readReceipt}`;
+		? `${user} ${hour} ${translated}${threadHint}`
+		: `${user} ${hour} ${translated} ${label}. ${encryptedMessageLabel} ${readReceipt}${threadHint}`;
 };
 
 export const useMessageAccessibilityLabel = (props: Params): string => {
