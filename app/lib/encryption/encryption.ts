@@ -527,6 +527,13 @@ class Encryption {
 		const db = database.active;
 		const subCollection = db.get('subscriptions');
 
+		// If workspace-level E2E is disabled, send the message unencrypted regardless of
+		// any stale `encrypted: true` flag on the local subscription record.
+		const e2eeEnabled = store.getState().settings.E2E_Enable;
+		if (!e2eeEnabled) {
+			return message;
+		}
+
 		try {
 			// Find the subscription
 			const subRecord = await subCollection.find(rid);
