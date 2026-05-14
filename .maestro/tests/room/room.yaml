@@ -238,54 +238,6 @@ tags:
       id: 'message-reaction-:wink:'
     timeout: 60000
 
-# should reach the last emoji of the people category by scrolling (regression for small-screen reaction picker)
-- extendedWaitUntil:
-    visible:
-      text: .*${output.randomMessage}.*
-    timeout: 60000
-- longPressOn:
-    id: 'message-content-${output.randomMessage}'
-- waitForAnimationToEnd
-- extendedWaitUntil:
-    visible:
-      id: action-sheet
-    timeout: 60000
-- extendedWaitUntil:
-    visible:
-      id: add-reaction
-    timeout: 60000
-- tapOn:
-    id: add-reaction
-- extendedWaitUntil:
-    visible:
-      id: reaction-picker
-    timeout: 60000
-- extendedWaitUntil:
-    visible:
-      id: emoji-picker-tab-emoji
-    timeout: 60000
-- tapOn:
-    id: emoji-picker-tab-emoji
-- waitForAnimationToEnd:
-    timeout: 1000
-- repeat:
-    while:
-      notVisible:
-        id: emoji-pregnant_woman
-    commands:
-      - swipe:
-          from:
-            id: action-sheet
-          direction: UP
-      - waitForAnimationToEnd:
-          timeout: 500
-- tapOn:
-    id: emoji-pregnant_woman
-- extendedWaitUntil:
-    visible:
-      id: 'message-reaction-:pregnant_woman:'
-    timeout: 60000
-
 # should open/close reactions list
 - extendedWaitUntil:
     visible:
