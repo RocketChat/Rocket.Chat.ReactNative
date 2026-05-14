@@ -42262,7 +42262,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message Thread reply encrypted.  "
+            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message Thread reply encrypted.  . Press to view thread"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -42318,7 +42318,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message Thread reply encrypted.  "
+              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message Thread reply encrypted.  . Press to view thread"
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
@@ -42458,9 +42458,6 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message Thread reply encrypted.  "
-                  accessible={true}
-                  onAccessibilityAction={[Function]}
                   style={
                     [
                       {
@@ -47045,7 +47042,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message Thread reply encrypted.  "
+            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message Thread reply encrypted.  . Press to view thread"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -47101,7 +47098,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message Thread reply encrypted.  "
+              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message Thread reply encrypted.  . Press to view thread"
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
@@ -47241,9 +47238,6 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message Thread reply encrypted.  "
-                  accessible={true}
-                  onAccessibilityAction={[Function]}
                   style={
                     [
                       {
@@ -62837,9 +62831,6 @@ exports[`Story Snapshots: Ignored should match snapshot 1`] = `
                 }
               >
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  undefined.  "
-                  accessible={true}
-                  onAccessibilityAction={[Function]}
                   style={
                     [
                       {
@@ -63179,9 +63170,6 @@ exports[`Story Snapshots: IgnoredLargeFont should match snapshot 1`] = `
                 }
               >
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  undefined.  "
-                  accessible={true}
-                  onAccessibilityAction={[Function]}
                   style={
                     [
                       {
@@ -98151,7 +98139,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  How are you?.  "
+            accessibilityLabel="diego.mello 10:00:00 AM  How are you?.  . Press to view thread"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -98207,7 +98195,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  How are you?.  "
+              accessibilityLabel="diego.mello 10:00:00 AM  How are you?.  . Press to view thread"
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
@@ -98969,7 +98957,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  "
+            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  . Press to view thread"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -99025,7 +99013,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  "
+              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  . Press to view thread"
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
@@ -99165,9 +99153,6 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  "
-                  accessible={true}
-                  onAccessibilityAction={[Function]}
                   style={
                     [
                       {
@@ -99419,7 +99404,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  "
+            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  . Press to view thread"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -99475,7 +99460,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  "
+              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  . Press to view thread"
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
@@ -99615,9 +99600,6 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  "
-                  accessible={true}
-                  onAccessibilityAction={[Function]}
                   style={
                     [
                       {
@@ -99869,7 +99851,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  "
+            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  . Press to view thread"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -99925,7 +99907,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  "
+              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  . Press to view thread"
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
@@ -100065,9 +100047,6 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  "
-                  accessible={true}
-                  onAccessibilityAction={[Function]}
                   style={
                     [
                       {
@@ -100319,7 +100298,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  "
+            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  . Press to view thread"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -100375,7 +100354,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  "
+              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  . Press to view thread"
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
@@ -100515,9 +100494,6 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  "
-                  accessible={true}
-                  onAccessibilityAction={[Function]}
                   style={
                     [
                       {
@@ -100769,7 +100745,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  "
+            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  . Press to view thread"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -100825,7 +100801,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  "
+              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  . Press to view thread"
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
@@ -100965,9 +100941,6 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  "
-                  accessible={true}
-                  onAccessibilityAction={[Function]}
                   style={
                     [
                       {
@@ -101219,7 +101192,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message undefined.  "
+            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message undefined.  . Press to view thread"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -101275,7 +101248,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message undefined.  "
+              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message undefined.  . Press to view thread"
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
@@ -101415,9 +101388,6 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message undefined.  "
-                  accessible={true}
-                  onAccessibilityAction={[Function]}
                   style={
                     [
                       {
@@ -101658,7 +101628,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  How are you?.  "
+            accessibilityLabel="diego.mello 10:00:00 AM  How are you?.  . Press to view thread"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -101714,7 +101684,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  How are you?.  "
+              accessibilityLabel="diego.mello 10:00:00 AM  How are you?.  . Press to view thread"
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
@@ -102476,7 +102446,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  "
+            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  . Press to view thread"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -102532,7 +102502,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  "
+              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  . Press to view thread"
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
@@ -102672,9 +102642,6 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  "
-                  accessible={true}
-                  onAccessibilityAction={[Function]}
                   style={
                     [
                       {
@@ -102926,7 +102893,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  "
+            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  . Press to view thread"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -102982,7 +102949,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  "
+              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  . Press to view thread"
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
@@ -103122,9 +103089,6 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  "
-                  accessible={true}
-                  onAccessibilityAction={[Function]}
                   style={
                     [
                       {
@@ -103376,7 +103340,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  "
+            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  . Press to view thread"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -103432,7 +103396,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  "
+              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  . Press to view thread"
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
@@ -103572,9 +103536,6 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  "
-                  accessible={true}
-                  onAccessibilityAction={[Function]}
                   style={
                     [
                       {
@@ -103826,7 +103787,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  "
+            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  . Press to view thread"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -103882,7 +103843,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  "
+              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  . Press to view thread"
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
@@ -104022,9 +103983,6 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  "
-                  accessible={true}
-                  onAccessibilityAction={[Function]}
                   style={
                     [
                       {
@@ -104276,7 +104234,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  "
+            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  . Press to view thread"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -104332,7 +104290,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  "
+              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  . Press to view thread"
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
@@ -104472,9 +104430,6 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  "
-                  accessible={true}
-                  onAccessibilityAction={[Function]}
                   style={
                     [
                       {
@@ -104726,7 +104681,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message undefined.  "
+            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message undefined.  . Press to view thread"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -104782,7 +104737,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message undefined.  "
+              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message undefined.  . Press to view thread"
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
@@ -104922,9 +104877,6 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message undefined.  "
-                  accessible={true}
-                  onAccessibilityAction={[Function]}
                   style={
                     [
                       {
@@ -115045,7 +114997,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  How are you?.  "
+            accessibilityLabel="diego.mello 10:00:00 AM  How are you?.  . Press to view thread"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -115101,7 +115053,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  How are you?.  "
+              accessibilityLabel="diego.mello 10:00:00 AM  How are you?.  . Press to view thread"
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
@@ -115863,7 +115815,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  thread message I'm fine!.  "
+            accessibilityLabel="diego.mello 10:00:00 AM  thread message I'm fine!.  . Press to view thread"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -115919,7 +115871,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  thread message I'm fine!.  "
+              accessibilityLabel="diego.mello 10:00:00 AM  thread message I'm fine!.  . Press to view thread"
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
@@ -115942,9 +115894,6 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
                 }
               >
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  thread message I'm fine!.  "
-                  accessible={true}
-                  onAccessibilityAction={[Function]}
                   style={
                     [
                       {
@@ -116196,7 +116145,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  "
+            accessibilityLabel="diego.mello 10:00:00 AM  thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  . Press to view thread"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -116252,7 +116201,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  "
+              accessibilityLabel="diego.mello 10:00:00 AM  thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  . Press to view thread"
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
@@ -116275,9 +116224,6 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
                 }
               >
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  "
-                  accessible={true}
-                  onAccessibilityAction={[Function]}
                   style={
                     [
                       {
@@ -116529,7 +116475,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  thread message undefined.  "
+            accessibilityLabel="diego.mello 10:00:00 AM  thread message undefined.  . Press to view thread"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -116585,7 +116531,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  thread message undefined.  "
+              accessibilityLabel="diego.mello 10:00:00 AM  thread message undefined.  . Press to view thread"
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
@@ -116608,9 +116554,6 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
                 }
               >
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  thread message undefined.  "
-                  accessible={true}
-                  onAccessibilityAction={[Function]}
                   style={
                     [
                       {
@@ -116851,7 +116794,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  How are you?.  "
+            accessibilityLabel="diego.mello 10:00:00 AM  How are you?.  . Press to view thread"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -116907,7 +116850,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  How are you?.  "
+              accessibilityLabel="diego.mello 10:00:00 AM  How are you?.  . Press to view thread"
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
@@ -117669,7 +117612,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  thread message I'm fine!.  "
+            accessibilityLabel="diego.mello 10:00:00 AM  thread message I'm fine!.  . Press to view thread"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -117725,7 +117668,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  thread message I'm fine!.  "
+              accessibilityLabel="diego.mello 10:00:00 AM  thread message I'm fine!.  . Press to view thread"
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
@@ -117748,9 +117691,6 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
                 }
               >
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  thread message I'm fine!.  "
-                  accessible={true}
-                  onAccessibilityAction={[Function]}
                   style={
                     [
                       {
@@ -118002,7 +117942,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  "
+            accessibilityLabel="diego.mello 10:00:00 AM  thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  . Press to view thread"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -118058,7 +117998,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  "
+              accessibilityLabel="diego.mello 10:00:00 AM  thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  . Press to view thread"
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
@@ -118081,9 +118021,6 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
                 }
               >
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  "
-                  accessible={true}
-                  onAccessibilityAction={[Function]}
                   style={
                     [
                       {
@@ -118335,7 +118272,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  thread message undefined.  "
+            accessibilityLabel="diego.mello 10:00:00 AM  thread message undefined.  . Press to view thread"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -118391,7 +118328,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  thread message undefined.  "
+              accessibilityLabel="diego.mello 10:00:00 AM  thread message undefined.  . Press to view thread"
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
@@ -118414,9 +118351,6 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
                 }
               >
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  thread message undefined.  "
-                  accessible={true}
-                  onAccessibilityAction={[Function]}
                   style={
                     [
                       {
@@ -118657,7 +118591,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  "
+            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  . Press to view thread"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -118713,7 +118647,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  "
+              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  . Press to view thread"
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
@@ -118853,9 +118787,6 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  "
-                  accessible={true}
-                  onAccessibilityAction={[Function]}
                   style={
                     [
                       {
@@ -119107,7 +119038,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  thread message Cool!.  "
+            accessibilityLabel="diego.mello 10:00:00 AM  thread message Cool!.  . Press to view thread"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -119163,7 +119094,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  thread message Cool!.  "
+              accessibilityLabel="diego.mello 10:00:00 AM  thread message Cool!.  . Press to view thread"
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
@@ -119186,9 +119117,6 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                 }
               >
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  thread message Cool!.  "
-                  accessible={true}
-                  onAccessibilityAction={[Function]}
                   style={
                     [
                       {
@@ -119440,7 +119368,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  "
+            accessibilityLabel="diego.mello 10:00:00 AM  thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  . Press to view thread"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -119496,7 +119424,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  "
+              accessibilityLabel="diego.mello 10:00:00 AM  thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  . Press to view thread"
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
@@ -119519,9 +119447,6 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                 }
               >
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  "
-                  accessible={true}
-                  onAccessibilityAction={[Function]}
                   style={
                     [
                       {
@@ -119773,7 +119698,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  thread message undefined.  "
+            accessibilityLabel="diego.mello 10:00:00 AM  thread message undefined.  . Press to view thread"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -119829,7 +119754,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  thread message undefined.  "
+              accessibilityLabel="diego.mello 10:00:00 AM  thread message undefined.  . Press to view thread"
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
@@ -119852,9 +119777,6 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                 }
               >
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  thread message undefined.  "
-                  accessible={true}
-                  onAccessibilityAction={[Function]}
                   style={
                     [
                       {
@@ -120095,7 +120017,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  "
+            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  . Press to view thread"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -120151,7 +120073,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  "
+              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  . Press to view thread"
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
@@ -120291,9 +120213,6 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  "
-                  accessible={true}
-                  onAccessibilityAction={[Function]}
                   style={
                     [
                       {
@@ -120545,7 +120464,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  thread message Cool!.  "
+            accessibilityLabel="diego.mello 10:00:00 AM  thread message Cool!.  . Press to view thread"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -120601,7 +120520,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  thread message Cool!.  "
+              accessibilityLabel="diego.mello 10:00:00 AM  thread message Cool!.  . Press to view thread"
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
@@ -120624,9 +120543,6 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
                 }
               >
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  thread message Cool!.  "
-                  accessible={true}
-                  onAccessibilityAction={[Function]}
                   style={
                     [
                       {
@@ -120878,7 +120794,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  "
+            accessibilityLabel="diego.mello 10:00:00 AM  thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  . Press to view thread"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -120934,7 +120850,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  "
+              accessibilityLabel="diego.mello 10:00:00 AM  thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  . Press to view thread"
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
@@ -120957,9 +120873,6 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
                 }
               >
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  "
-                  accessible={true}
-                  onAccessibilityAction={[Function]}
                   style={
                     [
                       {
@@ -121211,7 +121124,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  thread message undefined.  "
+            accessibilityLabel="diego.mello 10:00:00 AM  thread message undefined.  . Press to view thread"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -121267,7 +121180,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  thread message undefined.  "
+              accessibilityLabel="diego.mello 10:00:00 AM  thread message undefined.  . Press to view thread"
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
@@ -121290,9 +121203,6 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
                 }
               >
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  thread message undefined.  "
-                  accessible={true}
-                  onAccessibilityAction={[Function]}
                   style={
                     [
                       {
@@ -125005,9 +124915,6 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  message removed.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -125251,9 +125158,6 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  joined the channel.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -125497,9 +125401,6 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  Pinned a message:.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -125746,9 +125647,6 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  left the channel.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -125992,9 +125890,6 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  removed rocket.cat.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -126238,9 +126133,6 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  added rocket.cat.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -126484,9 +126376,6 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  muted rocket.cat.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -126730,9 +126619,6 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  unmuted rocket.cat.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -126976,9 +126862,6 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  defined rocket.cat as admin.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -127222,9 +127105,6 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  removed rocket.cat as admin.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -127468,9 +127348,6 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  changed room name to: New name.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -127714,9 +127591,6 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  changed room description to: new description.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -127960,9 +127834,6 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  changed room announcement to: new announcement.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -128206,9 +128077,6 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  changed room topic to: new topic.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -128452,9 +128320,6 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  changed room to public.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -128698,9 +128563,6 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  disabled E2E encryption for this room.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -128944,9 +128806,6 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  enabled E2E encryption for this room.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -129190,9 +129049,6 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  removed @rocket.cat from this team.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -129436,9 +129292,6 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  added @rocket.cat to this team.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -129682,9 +129535,6 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  added #channel-name to this team.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -129928,9 +129778,6 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  converted #channel-name to a team.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -130174,9 +130021,6 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  converted #channel-name to channel.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -130420,9 +130264,6 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  deleted #channel-name.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -130666,9 +130507,6 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  removed #channel-name from this team.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -130912,9 +130750,6 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  was removed by ABAC.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -131158,9 +130993,6 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  Unsupported system message.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -131395,9 +131227,6 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  message removed.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -131641,9 +131470,6 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  joined the channel.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -131887,9 +131713,6 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  Pinned a message:.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -132136,9 +131959,6 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  left the channel.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -132382,9 +132202,6 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  removed rocket.cat.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -132628,9 +132445,6 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  added rocket.cat.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -132874,9 +132688,6 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  muted rocket.cat.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -133120,9 +132931,6 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  unmuted rocket.cat.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -133366,9 +133174,6 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  defined rocket.cat as admin.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -133612,9 +133417,6 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  removed rocket.cat as admin.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -133858,9 +133660,6 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  changed room name to: New name.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -134104,9 +133903,6 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  changed room description to: new description.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -134350,9 +134146,6 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  changed room announcement to: new announcement.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -134596,9 +134389,6 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  changed room topic to: new topic.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -134842,9 +134632,6 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  changed room to public.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -135088,9 +134875,6 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  disabled E2E encryption for this room.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -135334,9 +135118,6 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  enabled E2E encryption for this room.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -135580,9 +135361,6 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  removed @rocket.cat from this team.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -135826,9 +135604,6 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  added @rocket.cat to this team.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -136072,9 +135847,6 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  added #channel-name to this team.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -136318,9 +136090,6 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  converted #channel-name to a team.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -136564,9 +136333,6 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  converted #channel-name to channel.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -136810,9 +136576,6 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  deleted #channel-name.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -137056,9 +136819,6 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  removed #channel-name from this team.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -137302,9 +137062,6 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  was removed by ABAC.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
@@ -137548,9 +137305,6 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  Unsupported system message.  "
-          accessible={true}
-          onAccessibilityAction={[Function]}
           style={
             [
               {
