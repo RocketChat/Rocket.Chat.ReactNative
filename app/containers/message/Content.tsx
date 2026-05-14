@@ -106,6 +106,15 @@ const Content = React.memo(
 		if (prevProps.isIgnored !== nextProps.isIgnored) {
 			return false;
 		}
+		if (prevProps.tmid !== nextProps.tmid) {
+			return false;
+		}
+		if (prevProps.isThreadRoom !== nextProps.isThreadRoom) {
+			return false;
+		}
+		if (prevProps.autoTranslateLanguage !== nextProps.autoTranslateLanguage) {
+			return false;
+		}
 		if (!dequal(prevProps.md, nextProps.md)) {
 			return false;
 		}
@@ -113,6 +122,9 @@ const Content = React.memo(
 			return false;
 		}
 		if (!dequal(prevProps.channels, nextProps.channels)) {
+			return false;
+		}
+		if (!dequal(prevProps.attachments, nextProps.attachments)) {
 			return false;
 		}
 		return true;

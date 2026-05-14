@@ -46,6 +46,18 @@ const renderContent = (overrides: Partial<IMessageContent> & { attachments?: any
 		</Provider>
 	);
 
+const tree = (overrides: Partial<IMessageContent> & { attachments?: any[]; autoTranslateLanguage?: string }) => (
+	<Provider store={mockedStore}>
+		<MessageContext.Provider
+			value={{
+				user: { username: 'john' },
+				onLinkPress: jest.fn()
+			}}>
+			<Content {...(baseProps as IMessageContent)} {...(overrides as IMessageContent)} />
+		</MessageContext.Provider>
+	</Provider>
+);
+
 describe('Content preview branch — Thread Message Attachment fallback', () => {
 	test('renders the Attachment title as a preview line when msg is empty and an image-type Attachment has only a title', () => {
 		const { getByText } = renderContent({
@@ -129,5 +141,21 @@ describe('Content preview branch — Thread Message Attachment fallback', () => 
 		});
 		expect(getByText('first.png')).toBeTruthy();
 		expect(queryByText('second.png')).toBeNull();
+	});
+
+	test('re-renders the preview when an Attachment arrives after mount (no msg change)', () => {
+		const { queryByText, rerender } = render(tree({ tmid: '1', msg: '', attachments: [] }));
+		expect(queryByText('late.png')).toBeNull();
+		rerender(tree({ tmid: '1', msg: '', attachments: [{ title: 'late.png' }] }));
+		expect(queryByText('late.png')).toBeTruthy();
+	});
+
+	test('re-renders the preview when autoTranslateLanguage changes (no msg change)', () => {
+		const attachments = [{ title: 'photo.png', description: 'A nice photo', translations: { 'pt-BR': 'Uma bela foto' } }];
+		const { getByText, queryByText, rerender } = render(tree({ tmid: '1', msg: '', attachments }));
+		expect(getByText('A nice photo')).toBeTruthy();
+		rerender(tree({ tmid: '1', msg: '', attachments, autoTranslateLanguage: 'pt-BR' }));
+		expect(getByText('Uma bela foto')).toBeTruthy();
+		expect(queryByText('A nice photo')).toBeNull();
 	});
 });
