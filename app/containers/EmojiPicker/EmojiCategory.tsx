@@ -12,12 +12,12 @@ import { useFrequentlyUsedEmoji } from '../../lib/hooks/useFrequentlyUsedEmoji';
 import { type IEmojiCategoryProps, type TEmojiCategory } from './interfaces';
 
 // Minimum visible space below the last emoji row when the picker is rendered
-// inside a bottom sheet: one emoji row + the inter-row gap, so the last row
+// inside a bottom sheet: one emoji row + a small offset, so the last row
 // clears the sheet's bottom interaction area. The container's
 // `marginBottom: safeAreaBottom` already supplies part of this on devices with
 // a home indicator; the FlatList only tops up whatever is missing.
-const BOTTOM_SHEET_ROW_GAP = 24;
-const MIN_BOTTOM_SHEET_BREATHING_ROOM = EMOJI_BUTTON_SIZE + BOTTOM_SHEET_ROW_GAP;
+const BOTTOM_SHEET_EXTRA_OFFSET = 24;
+const MIN_BOTTOM_SHEET_BREATHING_ROOM = EMOJI_BUTTON_SIZE + BOTTOM_SHEET_EXTRA_OFFSET;
 
 const useEmojis = (category?: TEmojiCategory) => {
 	const { frequentlyUsed, loaded } = useFrequentlyUsedEmoji();
