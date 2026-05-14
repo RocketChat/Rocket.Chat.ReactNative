@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from 'react';
+import React, { useContext } from 'react';
 import { View, type ViewStyle, type AccessibilityActionEvent, type AccessibilityActionInfo } from 'react-native';
 import { A11y } from 'react-native-a11y-order';
 
@@ -184,8 +184,7 @@ Message.displayName = 'Message';
 const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 	const { onPress, onLongPress } = useContext(MessageContext);
 	const { colors } = useTheme();
-	const touchRef = useRef<View>(null);
-	const lastFocusedMessageRef = useLastFocusedMessageRef();
+	const { ref: touchRef, markAsLastFocused } = useLastFocusedMessageRef();
 	const accessibilityLabelValue = useMessageAccessibilityLabel(props);
 	const isDisabled =
 		(props.isInfo && !props.isThreadReply) || props.archived || props.isTemp || props.type === 'jitsi_call_started';
@@ -208,7 +207,7 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 	}
 
 	const handleLongPress = () => {
-		lastFocusedMessageRef.set(touchRef);
+		markAsLastFocused();
 		onLongPress();
 	};
 

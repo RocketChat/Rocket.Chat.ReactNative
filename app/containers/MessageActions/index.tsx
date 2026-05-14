@@ -113,7 +113,7 @@ const MessageActions = React.memo(
 				hasCreateDiscussionOtherUserPermission: false
 			};
 			const { showActionSheet, hideActionSheet } = useActionSheet();
-			const lastFocusedMessageRef = useLastFocusedMessageRef();
+			const { get: getLastFocusedMessageRef, clear: clearLastFocusedMessageRef } = useLastFocusedMessageRef();
 
 			const getPermissions = async () => {
 				try {
@@ -582,10 +582,10 @@ const MessageActions = React.memo(
 			const showMessageActions = async (message: TAnyMessageModel) => {
 				logEvent(events.ROOM_SHOW_MSG_ACTIONS);
 				await getPermissions();
-				const focusRef = lastFocusedMessageRef.get();
+				const focusRef = getLastFocusedMessageRef();
 				const onClose = focusRef
 					? () => {
-							lastFocusedMessageRef.clear();
+							clearLastFocusedMessageRef();
 							setTimeout(() => {
 								const node = findNodeHandle(focusRef.current);
 								if (node) AccessibilityInfo.setAccessibilityFocus(node);
