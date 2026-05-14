@@ -31,6 +31,7 @@ class Database {
 
     func getDatabasePath(name: String) -> String? {
         let groupDir = FileManager.default.groupDir()
+        guard !groupDir.isEmpty else { return nil }
         return "\(groupDir)/\(name).db"
     }
 

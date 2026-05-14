@@ -123,13 +123,12 @@ platform :ios do
       workspace: "RocketChatRN.xcworkspace",
       destination: "generic/platform=iOS Simulator",
       skip_package_ipa: true,
-      skip_codesigning: true,
       output_name: "Rocket.Chat",
       output_directory: "./fastlane/output",
       build_path: "./fastlane/build",
       configuration: "Release",
       derived_data_path: "./fastlane/derived_data",
-      xcargs: "-parallelizeTargets -jobs 4 ARCHS=arm64 CODE_SIGNING_ALLOWED=NO"
+      xcargs: "-parallelizeTargets -jobs 4 ARCHS=arm64"
     )
   end
 
