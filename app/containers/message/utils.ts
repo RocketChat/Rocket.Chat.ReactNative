@@ -211,3 +211,13 @@ export const getMessageFromAttachment = (attachment: IAttachment, translateLangu
 	}
 	return msg;
 };
+
+export const getPreviewMessageFromAttachment = (attachment: IAttachment, translateLanguage?: string): string | undefined => {
+	if (translateLanguage) {
+		const translated = attachment.translations?.[translateLanguage];
+		if (translated) {
+			return translated;
+		}
+	}
+	return attachment.description ?? attachment.title;
+};
