@@ -17,18 +17,23 @@
                  rootPath:(nullable NSString *)rootPath {
     self = [super init];
     if (self) {
-        // Initialize MMKV root directory if custom path provided (App Group storage)
-        if (rootPath) {
-            [MMKV initializeMMKV:nil groupDir:rootPath logLevel:MMKVLogInfo];
+        // Idempotent safety net; react-native-mmkv usually initializes MMKV first from JS.
+        [MMKV initializeMMKV:nil logLevel:MMKVLogInfo];
+
+        // Normalize: callers may pass either the App Group container path or
+        // <container>/mmkv. We always resolve to <container>/mmkv so the file
+        // matches the relativePath react-native-mmkv writes from JS.
+        NSString *resolvedRootPath = rootPath;
+        if (resolvedRootPath.length > 0 && ![resolvedRootPath.lastPathComponent isEqualToString:@"mmkv"]) {
+            resolvedRootPath = [resolvedRootPath stringByAppendingPathComponent:@"mmkv"];
         }
 
-        // Open instance with MMKVMultiProcess mode
-        // This allows the Main App and Notification Service to share data safely.
-        if (cryptKey && cryptKey.length > 0) {
-            _mmkvInstance = [MMKV mmkvWithID:mmapID cryptKey:cryptKey mode:MMKVMultiProcess];
-        } else {
-            _mmkvInstance = [MMKV mmkvWithID:mmapID mode:MMKVMultiProcess];
-        }
+        NSData *finalCryptKey = (cryptKey.length > 0) ? cryptKey : nil;
+        _mmkvInstance = [MMKV mmkvWithID:mmapID
+                                cryptKey:finalCryptKey
+                                rootPath:resolvedRootPath
+                                    mode:MMKVMultiProcess
+                        expectedCapacity:0];
     }
     return self;
 }
