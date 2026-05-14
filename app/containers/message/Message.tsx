@@ -20,14 +20,13 @@ import { type IMessage, type IMessageInner, type IMessageTouchable } from './int
 import { useTheme } from '../../theme';
 import RightIcons from './Components/RightIcons';
 import { WidthAwareView } from './Components/WidthAwareView';
-import i18n from '../../i18n';
-import { getInfoMessage } from './utils';
 import MessageTime from './Time';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import Quote from './Components/Attachments/Quote';
-import translationLanguages from '../../lib/constants/translationLanguages';
 import Touch from './Touch';
 import { useLastFocusedMessageRef } from '../../lib/a11y/useLastFocusedMessageRef';
+import { useMessageAccessibilityLabel } from '../../lib/a11y/useMessageAccessibilityLabel';
+import { useMessageAccessibilityActions } from '../../lib/a11y/useMessageAccessibilityActions';
 
 const MessageInner = React.memo((props: IMessageInner) => {
 	const { isLargeFontScale } = useResponsiveLayout();
@@ -110,63 +109,8 @@ interface IMessageA11y {
 	handleLongPress?: () => void;
 }
 
-const getMessageAccessibilityLabel = (props: IMessageTouchable & IMessage & IMessageA11y) => {
-	const handleMentionsOnAccessibilityLabel = (label: string) => {
-		const { mentions = [], channels = [] } = props;
-
-		mentions.forEach(item => {
-			if (item?.username) {
-				label = label.replaceAll(`@${item.username}`, item.username);
-			}
-		});
-
-		channels.forEach(item => {
-			if (item?.name) {
-				label = label.replaceAll(`#${item.name}`, item.name);
-			}
-		});
-
-		return label;
-	};
-
-	let label = '';
-	label = props.isInfo ? (props.msg as string) : `${props.tmid ? `thread message ${props.msg}` : props.msg}`;
-	if (props.isThreadReply) {
-		label = `replying to ${props.tmid ? `thread message ${props.msg}` : props}`;
-	}
-	if (props.isThreadSequential) {
-		label = `thread message ${props.msg}`;
-	}
-	if (props.isEncrypted) {
-		label = i18n.t('Encrypted_message');
-	}
-	if (props.isInfo) {
-		// @ts-ignore
-		label = getInfoMessage({ ...props });
-	}
-	label = handleMentionsOnAccessibilityLabel(label);
-
-	const hour = props.ts ? new Date(props.ts).toLocaleTimeString() : '';
-	const user = props.useRealName ? props.author?.name : props.author?.username || '';
-	const readOrUnreadLabel = !props.unread && props.unread !== null ? i18n.t('Message_was_read') : i18n.t('Message_was_not_read');
-	const readReceipt = props.isReadReceiptEnabled && !props.isInfo ? readOrUnreadLabel : '';
-	const encryptedMessageLabel = props.isEncrypted ? i18n.t('Encrypted_message') : '';
-	const translatedLanguage = translationLanguages[props?.autoTranslateLanguage || 'en'];
-	const translated = props.isTranslated ? i18n.t('Message_translated_into_idiom', { idiom: translatedLanguage }) : '';
-	return props.isTranslated
-		? `${user} ${hour} ${translated}`
-		: `${user} ${hour} ${translated} ${label}. ${encryptedMessageLabel} ${readReceipt}`;
-};
-
-const getMessageAccessibilityActions = (isDisabled: boolean): AccessibilityActionInfo[] | undefined => {
-	if (isDisabled) {
-		return undefined;
-	}
-	return [{ name: 'showActions', label: i18n.t('Show_message_actions') }];
-};
-
 const Message = React.memo((props: IMessageTouchable & IMessage & IMessageA11y) => {
-	const accessibilityLabelValue = getMessageAccessibilityLabel(props);
+	const accessibilityLabelValue = useMessageAccessibilityLabel(props);
 
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo || props.isIgnored) {
 		const thread = props.isThreadReply ? <RepliedThread {...props} /> : null;
@@ -242,7 +186,10 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 	const { colors } = useTheme();
 	const touchRef = useRef<View>(null);
 	const lastFocusedMessageRef = useLastFocusedMessageRef();
-	const accessibilityLabelValue = getMessageAccessibilityLabel(props);
+	const accessibilityLabelValue = useMessageAccessibilityLabel(props);
+	const isDisabled =
+		(props.isInfo && !props.isThreadReply) || props.archived || props.isTemp || props.type === 'jitsi_call_started';
+	const accessibilityActions = useMessageAccessibilityActions(isDisabled);
 
 	let backgroundColor = undefined;
 	if (props.isBeingEdited) {
@@ -260,15 +207,10 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 		);
 	}
 
-	const isDisabled =
-		(props.isInfo && !props.isThreadReply) || props.archived || props.isTemp || props.type === 'jitsi_call_started';
-
 	const handleLongPress = () => {
 		lastFocusedMessageRef.set(touchRef);
 		onLongPress();
 	};
-
-	const accessibilityActions = getMessageAccessibilityActions(isDisabled);
 
 	return (
 		<A11y.Order>
