@@ -9,6 +9,7 @@
   "A11y_appearance_show_alerts_as": "Mostra avvisi come",
   "A11y_appearance_toast_dismissed_automatically": "Ignorato automaticamente",
   "A11y_appearance_toasts": "Notifiche toast",
+  "A11y_close_action_sheet": "Chiudi il menu azioni",
   "A11y_in_app_notification": "Nuovo messaggio da {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Ignora",
   "A11y_incoming_call_swipe_down_to_view_options": "Scorri verso il basso per visualizzare le opzioni",

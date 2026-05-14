@@ -9,6 +9,7 @@
   "A11y_appearance_show_alerts_as": "Показывать уведомления как",
   "A11y_appearance_toast_dismissed_automatically": "Отклонено автоматически",
   "A11y_appearance_toasts": "Тосты",
+  "A11y_close_action_sheet": "Закрыть меню действий",
   "A11y_in_app_notification": "Новое сообщение от {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Отклонить",
   "A11y_incoming_call_swipe_down_to_view_options": "Проведите вниз, чтобы просмотреть варианты действий",

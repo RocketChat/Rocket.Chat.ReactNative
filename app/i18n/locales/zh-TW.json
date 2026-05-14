@@ -5,6 +5,7 @@
   "A11y_appearance_show_alerts_as": "顯示警報為",
   "A11y_appearance_toast_dismissed_automatically": "自動駁回",
   "A11y_appearance_toasts": "快顯通知 (Toast)",
+  "A11y_close_action_sheet": "關閉操作表",
   "A11y_in_app_notification": "來自 {{name}} 的新訊息：{{message}}",
   "A11y_incoming_call_dismiss": "關閉",
   "A11y_incoming_call_swipe_down_to_view_options": "向下滑動以查看選項",

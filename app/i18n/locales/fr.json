@@ -5,6 +5,7 @@
   "A11y_appearance_show_alerts_as": "Afficher les alertes sous forme de",
   "A11y_appearance_toast_dismissed_automatically": "Rejeté automatiquement",
   "A11y_appearance_toasts": "Toasts",
+  "A11y_close_action_sheet": "Fermer le menu d'actions",
   "A11y_in_app_notification": "Nouveau message de {{name}} : {{message}}",
   "A11y_incoming_call_dismiss": "Ignorer",
   "A11y_incoming_call_swipe_down_to_view_options": "Faites glisser vers le bas pour voir les options",
