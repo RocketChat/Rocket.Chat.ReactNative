@@ -6,7 +6,7 @@ import I18n from '../../i18n';
 import styles from './styles';
 import Markdown, { MarkdownPreview } from '../markdown';
 import User from './User';
-import { messageHaveAuthorName, getInfoMessage } from './utils';
+import { messageHaveAuthorName, getInfoMessage, getPreviewMessageFromAttachment } from './utils';
 import MessageContext from './Context';
 import { type IMessageContent } from './interfaces';
 import { useTheme } from '../../theme';
@@ -53,7 +53,12 @@ const Content = React.memo(
 				</Text>
 			);
 		} else if (isPreview) {
-			content = <MarkdownPreview testID={`message-preview-${props.msg}`} msg={props.msg} />;
+			const previewMsg =
+				props.msg ||
+				(props.attachments?.length
+					? getPreviewMessageFromAttachment(props.attachments[0], props.autoTranslateLanguage)
+					: undefined);
+			content = previewMsg ? <MarkdownPreview testID={`message-preview-${previewMsg}`} msg={previewMsg} /> : null;
 		} else if (props.msg) {
 			content = (
 				<Markdown
