@@ -57,7 +57,6 @@ static void Logger(NSString *format, ...) {
 
         // Verify MMKV can be opened with this key
         NSData *cryptKey = [password dataUsingEncoding:NSUTF8StringEncoding];
-
         MMKVBridge *mmkv = [[MMKVBridge alloc] initWithID:@"default"
                                                 cryptKey:cryptKey
                                                 rootPath:mmkvPath];
