@@ -101631,6 +101631,16 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
           }
         >
           <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Show message actions",
+                  "name": "showActions",
+                },
+              ]
+            }
+            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message undefined.  . Press to view thread"
+            accessibilityRole="button"
             accessibilityState={
               {
                 "busy": undefined,
@@ -101651,6 +101661,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
             accessible={true}
             collapsable={false}
             focusable={true}
+            onAccessibilityAction={[Function]}
             onClick={[Function]}
             onResponderGrant={[Function]}
             onResponderMove={[Function]}
@@ -101676,6 +101687,18 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
             }
           >
             <View
+              accessibilityActions={
+                [
+                  {
+                    "label": "Show message actions",
+                    "name": "showActions",
+                  },
+                ]
+              }
+              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message undefined.  . Press to view thread"
+              accessibilityRole="button"
+              accessible={true}
+              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -101812,8 +101835,6 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message undefined.  "
-                  accessible={true}
                   style={
                     [
                       {
@@ -102057,6 +102078,16 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
           }
         >
           <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Show message actions",
+                  "name": "showActions",
+                },
+              ]
+            }
+            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message undefined.  . Press to view thread"
+            accessibilityRole="button"
             accessibilityState={
               {
                 "busy": undefined,
@@ -102077,6 +102108,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
             accessible={true}
             collapsable={false}
             focusable={true}
+            onAccessibilityAction={[Function]}
             onClick={[Function]}
             onResponderGrant={[Function]}
             onResponderMove={[Function]}
@@ -102102,6 +102134,18 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
             }
           >
             <View
+              accessibilityActions={
+                [
+                  {
+                    "label": "Show message actions",
+                    "name": "showActions",
+                  },
+                ]
+              }
+              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message undefined.  . Press to view thread"
+              accessibilityRole="button"
+              accessible={true}
+              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -102238,8 +102282,6 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message undefined.  "
-                  accessible={true}
                   style={
                     [
                       {
@@ -102483,6 +102525,16 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
           }
         >
           <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Show message actions",
+                  "name": "showActions",
+                },
+              ]
+            }
+            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message undefined.  . Press to view thread"
+            accessibilityRole="button"
             accessibilityState={
               {
                 "busy": undefined,
@@ -102503,6 +102555,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
             accessible={true}
             collapsable={false}
             focusable={true}
+            onAccessibilityAction={[Function]}
             onClick={[Function]}
             onResponderGrant={[Function]}
             onResponderMove={[Function]}
@@ -102528,6 +102581,18 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
             }
           >
             <View
+              accessibilityActions={
+                [
+                  {
+                    "label": "Show message actions",
+                    "name": "showActions",
+                  },
+                ]
+              }
+              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message undefined.  . Press to view thread"
+              accessibilityRole="button"
+              accessible={true}
+              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -102664,8 +102729,6 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message undefined.  "
-                  accessible={true}
                   style={
                     [
                       {
@@ -106422,6 +106485,16 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
           }
         >
           <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Show message actions",
+                  "name": "showActions",
+                },
+              ]
+            }
+            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message undefined.  . Press to view thread"
+            accessibilityRole="button"
             accessibilityState={
               {
                 "busy": undefined,
@@ -106442,6 +106515,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
             accessible={true}
             collapsable={false}
             focusable={true}
+            onAccessibilityAction={[Function]}
             onClick={[Function]}
             onResponderGrant={[Function]}
             onResponderMove={[Function]}
@@ -106467,6 +106541,18 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
             }
           >
             <View
+              accessibilityActions={
+                [
+                  {
+                    "label": "Show message actions",
+                    "name": "showActions",
+                  },
+                ]
+              }
+              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message undefined.  . Press to view thread"
+              accessibilityRole="button"
+              accessible={true}
+              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -106603,8 +106689,6 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message undefined.  "
-                  accessible={true}
                   style={
                     [
                       {
@@ -106848,6 +106932,16 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
           }
         >
           <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Show message actions",
+                  "name": "showActions",
+                },
+              ]
+            }
+            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message undefined.  . Press to view thread"
+            accessibilityRole="button"
             accessibilityState={
               {
                 "busy": undefined,
@@ -106868,6 +106962,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
             accessible={true}
             collapsable={false}
             focusable={true}
+            onAccessibilityAction={[Function]}
             onClick={[Function]}
             onResponderGrant={[Function]}
             onResponderMove={[Function]}
@@ -106893,6 +106988,18 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
             }
           >
             <View
+              accessibilityActions={
+                [
+                  {
+                    "label": "Show message actions",
+                    "name": "showActions",
+                  },
+                ]
+              }
+              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message undefined.  . Press to view thread"
+              accessibilityRole="button"
+              accessible={true}
+              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -107029,8 +107136,6 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message undefined.  "
-                  accessible={true}
                   style={
                     [
                       {
@@ -107274,6 +107379,16 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
           }
         >
           <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Show message actions",
+                  "name": "showActions",
+                },
+              ]
+            }
+            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message undefined.  . Press to view thread"
+            accessibilityRole="button"
             accessibilityState={
               {
                 "busy": undefined,
@@ -107294,6 +107409,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
             accessible={true}
             collapsable={false}
             focusable={true}
+            onAccessibilityAction={[Function]}
             onClick={[Function]}
             onResponderGrant={[Function]}
             onResponderMove={[Function]}
@@ -107319,6 +107435,18 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
             }
           >
             <View
+              accessibilityActions={
+                [
+                  {
+                    "label": "Show message actions",
+                    "name": "showActions",
+                  },
+                ]
+              }
+              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message undefined.  . Press to view thread"
+              accessibilityRole="button"
+              accessible={true}
+              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -107455,8 +107583,6 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message undefined.  "
-                  accessible={true}
                   style={
                     [
                       {
@@ -120479,2095 +120605,6 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
                     importantForAccessibility="yes"
                     orderFocusType={0}
                     orderIndex={2}
-<<<<<<< HEAD
-                    orderKey="«r6k»"
-                    style={
-                      {
-                        "flex": 1,
-                      }
-                    }
-                  >
-                    <View
-                      style={
-                        {
-                          "flex": 1,
-                          "marginLeft": 10,
-                        }
-                      }
-                    >
-                      <View
-                        testID="message-content-I'm fine!"
-                      >
-                        <Text
-                          accessibilityLabel="I'm fine!"
-                          numberOfLines={1}
-                          style={
-                            [
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontSize": 16,
-                                "fontWeight": "400",
-                                "lineHeight": 22,
-                                "textAlign": "left",
-                              },
-                              {
-                                "color": "#2F343D",
-                                "lineHeight": undefined,
-                              },
-                            ]
-                          }
-                          testID="message-preview-I'm fine!"
-                        >
-                          I'm fine!
-                        </Text>
-                      </View>
-                    </View>
-                  </A11yIndexView>
-                </View>
-              </View>
-            </View>
-          </View>
-        </ExternalKeyboardView>
-      </A11yIndexView>
-    </A11yOrderView>
-    <A11yOrderView
-      orderKey="«r6l»"
-    >
-      <A11yIndexView
-        importantForAccessibility="yes"
-        orderFocusType={0}
-        orderIndex={1}
-        orderKey="«r6l»"
-      >
-        <ExternalKeyboardView
-          canBeFocused={true}
-          enableA11yFocus={false}
-          enableContextMenu={true}
-          group={false}
-          haloEffect={true}
-          hasKeyDownPress={false}
-          hasKeyUpPress={true}
-          hasOnFocusChanged={true}
-          lockFocus={0}
-          onContextMenuPress={[Function]}
-          onFocusChange={[Function]}
-          onKeyUpPress={[Function]}
-          orderIndex={-1}
-          screenAutoA11yFocusDelay={300}
-          style={
-            [
-              undefined,
-              undefined,
-            ]
-          }
-        >
-          <View
-            accessibilityActions={
-              [
-                {
-                  "label": "Show message actions",
-                  "name": "showActions",
-                },
-              ]
-            }
-            accessibilityLabel="diego.mello 10:00:00 AM  thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  . Press to view thread"
-            accessibilityRole="button"
-            accessibilityState={
-              {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": false,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={true}
-            onAccessibilityAction={[Function]}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              {
-                "backgroundColor": undefined,
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-                "opacity": 1,
-              }
-            }
-          >
-            <View
-              accessibilityActions={
-                [
-                  {
-                    "label": "Show message actions",
-                    "name": "showActions",
-                  },
-                ]
-              }
-              accessibilityLabel="diego.mello 10:00:00 AM  thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  . Press to view thread"
-              accessibilityRole="button"
-              accessible={true}
-              onAccessibilityAction={[Function]}
-              style={{}}
-            >
-              <View
-                style={
-                  [
-                    {
-                      "flexDirection": "column",
-                      "gap": 8,
-                      "paddingHorizontal": 12,
-                      "paddingVertical": 4,
-                      "width": "100%",
-                    },
-                    {
-                      "marginTop": 4,
-                    },
-                  ]
-                }
-              >
-                <View
-                  style={
-                    [
-                      {
-                        "flexDirection": "row",
-                      },
-                      {},
-                    ]
-                  }
-                >
-                  <View
-                    style={
-                      {
-                        "alignItems": "flex-end",
-                        "width": 46.800000000000004,
-                      }
-                    }
-                  >
-                    <View
-                      accessible={true}
-                      style={
-                        [
-                          {
-                            "borderRadius": 4,
-                            "height": 26,
-                            "width": 26,
-                          },
-                          undefined,
-                        ]
-                      }
-                      testID="avatar"
-                    >
-                      <ExternalKeyboardView
-                        canBeFocused={true}
-                        enableA11yFocus={false}
-                        enableContextMenu={false}
-                        group={false}
-                        haloEffect={true}
-                        hasKeyDownPress={false}
-                        hasKeyUpPress={true}
-                        hasOnFocusChanged={true}
-                        lockFocus={0}
-                        onContextMenuPress={[Function]}
-                        onFocusChange={[Function]}
-                        onKeyUpPress={[Function]}
-                        orderIndex={-1}
-                        screenAutoA11yFocusDelay={300}
-                        style={
-                          [
-                            undefined,
-                            undefined,
-                          ]
-                        }
-                      >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
-                          collapsable={false}
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={-1}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#E4E7EA"
-                          style={
-                            [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
-                            ]
-                          }
-                          underlayColor="#E4E7EA"
-                        >
-                          <View
-                            collapsable={false}
-                            style={
-                              {
-                                "backgroundColor": "#E4E7EA",
-                                "borderBottomLeftRadius": undefined,
-                                "borderBottomRightRadius": undefined,
-                                "borderRadius": undefined,
-                                "borderTopLeftRadius": undefined,
-                                "borderTopRightRadius": undefined,
-                                "bottom": 0,
-                                "left": 0,
-                                "opacity": 0,
-                                "position": "absolute",
-                                "right": 0,
-                                "top": 0,
-                              }
-                            }
-                          />
-                          <View
-                            accessibilityLabel="diego.mello's avatar"
-                            accessible={true}
-                            style={{}}
-                          >
-                            <ViewManagerAdapter_ExpoImage
-                              borderRadius={4}
-                              containerViewRef={{"current":"Object"}}
-                              contentFit="cover"
-                              contentPosition={
-                                {
-                                  "left": "50%",
-                                  "top": "50%",
-                                }
-                              }
-                              height={26}
-                              nativeViewRef={{"current":"NativeComponent"}}
-                              onError={[Function]}
-                              onLoad={[Function]}
-                              onLoadStart={[Function]}
-                              onProgress={[Function]}
-                              placeholder={[]}
-                              priority="high"
-                              source={
-                                [
-                                  {
-                                    "headers": {
-                                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                                    },
-                                    "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=52",
-                                  },
-                                ]
-                              }
-                              style={
-                                {
-                                  "borderRadius": 4,
-                                  "height": 26,
-                                  "width": 26,
-                                }
-                              }
-                              transition={null}
-                              width={26}
-                            />
-                          </View>
-                        </RNGestureHandlerButton>
-                      </ExternalKeyboardView>
-                    </View>
-                  </View>
-                  <A11yIndexView
-                    accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-                    importantForAccessibility="yes"
-                    orderFocusType={0}
-                    orderIndex={2}
-                    orderKey="«r6l»"
-                    style={
-                      {
-                        "flex": 1,
-                      }
-                    }
-                  >
-                    <View
-                      style={
-                        {
-                          "flex": 1,
-                          "marginLeft": 10,
-                        }
-                      }
-                    >
-                      <View
-                        testID="message-content-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-                      >
-                        <Text
-                          accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-                          numberOfLines={1}
-                          style={
-                            [
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontSize": 16,
-                                "fontWeight": "400",
-                                "lineHeight": 22,
-                                "textAlign": "left",
-                              },
-                              {
-                                "color": "#2F343D",
-                                "lineHeight": undefined,
-                              },
-                            ]
-                          }
-                          testID="message-preview-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-                        >
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                        </Text>
-                      </View>
-                    </View>
-                  </A11yIndexView>
-                </View>
-              </View>
-            </View>
-          </View>
-        </ExternalKeyboardView>
-      </A11yIndexView>
-    </A11yOrderView>
-    <A11yOrderView
-      orderKey="«r6m»"
-    >
-      <A11yIndexView
-        importantForAccessibility="yes"
-        orderFocusType={0}
-        orderIndex={1}
-        orderKey="«r6m»"
-      >
-        <ExternalKeyboardView
-          canBeFocused={true}
-          enableA11yFocus={false}
-          enableContextMenu={true}
-          group={false}
-          haloEffect={true}
-          hasKeyDownPress={false}
-          hasKeyUpPress={true}
-          hasOnFocusChanged={true}
-          lockFocus={0}
-          onContextMenuPress={[Function]}
-          onFocusChange={[Function]}
-          onKeyUpPress={[Function]}
-          orderIndex={-1}
-          screenAutoA11yFocusDelay={300}
-          style={
-            [
-              undefined,
-              undefined,
-            ]
-          }
-        >
-          <View
-            accessibilityActions={
-              [
-                {
-                  "label": "Show message actions",
-                  "name": "showActions",
-                },
-              ]
-            }
-            accessibilityLabel="diego.mello 10:00:00 AM  thread message undefined.  . Press to view thread"
-            accessibilityRole="button"
-            accessibilityState={
-              {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": false,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={true}
-            onAccessibilityAction={[Function]}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              {
-                "backgroundColor": undefined,
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-                "opacity": 1,
-              }
-            }
-          >
-            <View
-              accessibilityActions={
-                [
-                  {
-                    "label": "Show message actions",
-                    "name": "showActions",
-                  },
-                ]
-              }
-              accessibilityLabel="diego.mello 10:00:00 AM  thread message undefined.  . Press to view thread"
-              accessibilityRole="button"
-              accessible={true}
-              onAccessibilityAction={[Function]}
-              style={{}}
-            >
-              <View
-                style={
-                  [
-                    {
-                      "flexDirection": "column",
-                      "gap": 8,
-                      "paddingHorizontal": 12,
-                      "paddingVertical": 4,
-                      "width": "100%",
-                    },
-                    {
-                      "marginTop": 4,
-                    },
-                  ]
-                }
-              >
-                <View
-                  style={
-                    [
-                      {
-                        "flexDirection": "row",
-                      },
-                      {},
-                    ]
-                  }
-                >
-                  <View
-                    style={
-                      {
-                        "alignItems": "flex-end",
-                        "width": 46.800000000000004,
-                      }
-                    }
-                  >
-                    <View
-                      accessible={true}
-                      style={
-                        [
-                          {
-                            "borderRadius": 4,
-                            "height": 26,
-                            "width": 26,
-                          },
-                          undefined,
-                        ]
-                      }
-                      testID="avatar"
-                    >
-                      <ExternalKeyboardView
-                        canBeFocused={true}
-                        enableA11yFocus={false}
-                        enableContextMenu={false}
-                        group={false}
-                        haloEffect={true}
-                        hasKeyDownPress={false}
-                        hasKeyUpPress={true}
-                        hasOnFocusChanged={true}
-                        lockFocus={0}
-                        onContextMenuPress={[Function]}
-                        onFocusChange={[Function]}
-                        onKeyUpPress={[Function]}
-                        orderIndex={-1}
-                        screenAutoA11yFocusDelay={300}
-                        style={
-                          [
-                            undefined,
-                            undefined,
-                          ]
-                        }
-                      >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
-                          collapsable={false}
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={-1}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#E4E7EA"
-                          style={
-                            [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
-                            ]
-                          }
-                          underlayColor="#E4E7EA"
-                        >
-                          <View
-                            collapsable={false}
-                            style={
-                              {
-                                "backgroundColor": "#E4E7EA",
-                                "borderBottomLeftRadius": undefined,
-                                "borderBottomRightRadius": undefined,
-                                "borderRadius": undefined,
-                                "borderTopLeftRadius": undefined,
-                                "borderTopRightRadius": undefined,
-                                "bottom": 0,
-                                "left": 0,
-                                "opacity": 0,
-                                "position": "absolute",
-                                "right": 0,
-                                "top": 0,
-                              }
-                            }
-                          />
-                          <View
-                            accessibilityLabel="diego.mello's avatar"
-                            accessible={true}
-                            style={{}}
-                          >
-                            <ViewManagerAdapter_ExpoImage
-                              borderRadius={4}
-                              containerViewRef={{"current":"Object"}}
-                              contentFit="cover"
-                              contentPosition={
-                                {
-                                  "left": "50%",
-                                  "top": "50%",
-                                }
-                              }
-                              height={26}
-                              nativeViewRef={{"current":"NativeComponent"}}
-                              onError={[Function]}
-                              onLoad={[Function]}
-                              onLoadStart={[Function]}
-                              onProgress={[Function]}
-                              placeholder={[]}
-                              priority="high"
-                              source={
-                                [
-                                  {
-                                    "headers": {
-                                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                                    },
-                                    "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=52",
-                                  },
-                                ]
-                              }
-                              style={
-                                {
-                                  "borderRadius": 4,
-                                  "height": 26,
-                                  "width": 26,
-                                }
-                              }
-                              transition={null}
-                              width={26}
-                            />
-                          </View>
-                        </RNGestureHandlerButton>
-                      </ExternalKeyboardView>
-                    </View>
-                  </View>
-                  <A11yIndexView
-                    accessibilityLabel=""
-                    importantForAccessibility="yes"
-                    orderFocusType={0}
-                    orderIndex={2}
-                    orderKey="«r6m»"
-                    style={
-                      {
-                        "flex": 1,
-                      }
-                    }
-                  >
-                    <View
-                      style={
-                        {
-                          "flex": 1,
-                          "marginLeft": 10,
-                        }
-                      }
-                    >
-                      <View
-                        testID="message-content-"
-                      />
-                    </View>
-                  </A11yIndexView>
-                </View>
-              </View>
-            </View>
-          </View>
-        </ExternalKeyboardView>
-      </A11yIndexView>
-    </A11yOrderView>
-  </View>
-</RCTScrollView>
-`;
-
-exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should match snapshot 1`] = `
-<RCTScrollView
-  style={
-    {
-      "backgroundColor": "#FFFFFF",
-    }
-  }
->
-  <View>
-    <A11yOrderView
-      orderKey="«r6n»"
-    >
-      <A11yIndexView
-        importantForAccessibility="yes"
-        orderFocusType={0}
-        orderIndex={1}
-        orderKey="«r6n»"
-      >
-        <ExternalKeyboardView
-          canBeFocused={true}
-          enableA11yFocus={false}
-          enableContextMenu={true}
-          group={false}
-          haloEffect={true}
-          hasKeyDownPress={false}
-          hasKeyUpPress={true}
-          hasOnFocusChanged={true}
-          lockFocus={0}
-          onContextMenuPress={[Function]}
-          onFocusChange={[Function]}
-          onKeyUpPress={[Function]}
-          orderIndex={-1}
-          screenAutoA11yFocusDelay={300}
-          style={
-            [
-              undefined,
-              undefined,
-            ]
-          }
-        >
-          <View
-            accessibilityActions={
-              [
-                {
-                  "label": "Show message actions",
-                  "name": "showActions",
-                },
-              ]
-            }
-            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  . Press to view thread"
-            accessibilityRole="button"
-            accessibilityState={
-              {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": false,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={true}
-            onAccessibilityAction={[Function]}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              {
-                "backgroundColor": undefined,
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-                "opacity": 1,
-              }
-            }
-          >
-            <View
-              accessibilityActions={
-                [
-                  {
-                    "label": "Show message actions",
-                    "name": "showActions",
-                  },
-                ]
-              }
-              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  . Press to view thread"
-              accessibilityRole="button"
-              accessible={true}
-              onAccessibilityAction={[Function]}
-              style={{}}
-            >
-              <View
-                style={
-                  [
-                    {
-                      "flexDirection": "column",
-                      "gap": 8,
-                      "paddingHorizontal": 12,
-                      "paddingVertical": 4,
-                      "width": "100%",
-                    },
-                    {
-                      "marginTop": 4,
-                    },
-                  ]
-                }
-              >
-                <View
-                  style={
-                    {
-                      "alignItems": "center",
-                      "flexDirection": "row",
-                      "gap": 10,
-                    }
-                  }
-                  testID="message-thread-replied-on-How are you?"
-                >
-                  <View
-                    style={
-                      {
-                        "alignItems": "flex-end",
-                        "width": 36,
-                      }
-                    }
-                  >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
-                      style={
-                        [
-                          {
-                            "color": "#095AD2",
-                            "fontSize": 20,
-                          },
-                          [
-                            {
-                              "lineHeight": 20,
-                            },
-                            undefined,
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
-                        ]
-                      }
-                    >
-                      
-                    </Text>
-                  </View>
-                  <Text
-                    accessibilityLabel="How are you?"
-                    numberOfLines={1}
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                          "lineHeight": 22,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#2F343D",
-                          "lineHeight": undefined,
-                        },
-                        {
-                          "backgroundColor": "transparent",
-                          "flex": 1,
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#095AD2",
-                        },
-                      ]
-                    }
-                    testID="markdown-preview-How are you?"
-                  >
-                    How are you?
-                  </Text>
-                  <View
-                    style={
-                      {
-                        "alignItems": "center",
-                        "justifyContent": "center",
-                        "marginLeft": 4,
-                        "marginRight": 4,
-                      }
-                    }
-                  >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
-                      style={
-                        [
-                          {
-                            "color": "#6C727A",
-                            "fontSize": 20,
-                          },
-                          [
-                            {
-                              "lineHeight": 20,
-                            },
-                            undefined,
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
-                        ]
-                      }
-                    >
-                      
-                    </Text>
-                  </View>
-                </View>
-                <View
-                  style={
-                    [
-                      {
-                        "flexDirection": "row",
-                      },
-                      {},
-                    ]
-                  }
-                >
-                  <View
-                    style={
-                      {
-                        "alignItems": "flex-end",
-                        "width": 36,
-                      }
-                    }
-                  >
-                    <View
-                      accessible={true}
-                      style={
-                        [
-                          {
-                            "borderRadius": 4,
-                            "height": 20,
-                            "width": 20,
-                          },
-                          undefined,
-                        ]
-                      }
-                      testID="avatar"
-                    >
-                      <ExternalKeyboardView
-                        canBeFocused={true}
-                        enableA11yFocus={false}
-                        enableContextMenu={false}
-                        group={false}
-                        haloEffect={true}
-                        hasKeyDownPress={false}
-                        hasKeyUpPress={true}
-                        hasOnFocusChanged={true}
-                        lockFocus={0}
-                        onContextMenuPress={[Function]}
-                        onFocusChange={[Function]}
-                        onKeyUpPress={[Function]}
-                        orderIndex={-1}
-                        screenAutoA11yFocusDelay={300}
-                        style={
-                          [
-                            undefined,
-                            undefined,
-                          ]
-                        }
-                      >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
-                          collapsable={false}
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={-1}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#E4E7EA"
-                          style={
-                            [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
-                            ]
-                          }
-                          underlayColor="#E4E7EA"
-                        >
-                          <View
-                            collapsable={false}
-                            style={
-                              {
-                                "backgroundColor": "#E4E7EA",
-                                "borderBottomLeftRadius": undefined,
-                                "borderBottomRightRadius": undefined,
-                                "borderRadius": undefined,
-                                "borderTopLeftRadius": undefined,
-                                "borderTopRightRadius": undefined,
-                                "bottom": 0,
-                                "left": 0,
-                                "opacity": 0,
-                                "position": "absolute",
-                                "right": 0,
-                                "top": 0,
-                              }
-                            }
-                          />
-                          <View
-                            accessibilityLabel="diego.mello's avatar"
-                            accessible={true}
-                            style={{}}
-                          >
-                            <ViewManagerAdapter_ExpoImage
-                              borderRadius={4}
-                              containerViewRef={{"current":"Object"}}
-                              contentFit="cover"
-                              contentPosition={
-                                {
-                                  "left": "50%",
-                                  "top": "50%",
-                                }
-                              }
-                              height={20}
-                              nativeViewRef={{"current":"NativeComponent"}}
-                              onError={[Function]}
-                              onLoad={[Function]}
-                              onLoadStart={[Function]}
-                              onProgress={[Function]}
-                              placeholder={[]}
-                              priority="high"
-                              source={
-                                [
-                                  {
-                                    "headers": {
-                                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                                    },
-                                    "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=40",
-                                  },
-                                ]
-                              }
-                              style={
-                                {
-                                  "borderRadius": 4,
-                                  "height": 20,
-                                  "width": 20,
-                                }
-                              }
-                              transition={null}
-                              width={20}
-                            />
-                          </View>
-                        </RNGestureHandlerButton>
-                      </ExternalKeyboardView>
-                    </View>
-                  </View>
-                  <A11yIndexView
-                    accessibilityLabel="I'm fine!"
-                    importantForAccessibility="yes"
-                    orderFocusType={0}
-                    orderIndex={2}
-                    orderKey="«r6n»"
-                    style={
-                      {
-                        "flex": 1,
-                      }
-                    }
-                  >
-                    <View
-                      style={
-                        {
-                          "flex": 1,
-                          "marginLeft": 10,
-                        }
-                      }
-                    >
-                      <View
-                        testID="message-content-I'm fine!"
-                      >
-                        <Text
-                          accessibilityLabel="I'm fine!"
-                          numberOfLines={1}
-                          style={
-                            [
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontSize": 16,
-                                "fontWeight": "400",
-                                "lineHeight": 22,
-                                "textAlign": "left",
-                              },
-                              {
-                                "color": "#2F343D",
-                                "lineHeight": undefined,
-                              },
-                            ]
-                          }
-                          testID="message-preview-I'm fine!"
-                        >
-                          I'm fine!
-                        </Text>
-                      </View>
-                    </View>
-                  </A11yIndexView>
-                </View>
-              </View>
-            </View>
-          </View>
-        </ExternalKeyboardView>
-      </A11yIndexView>
-    </A11yOrderView>
-    <A11yOrderView
-      orderKey="«r6o»"
-    >
-      <A11yIndexView
-        importantForAccessibility="yes"
-        orderFocusType={0}
-        orderIndex={1}
-        orderKey="«r6o»"
-      >
-        <ExternalKeyboardView
-          canBeFocused={true}
-          enableA11yFocus={false}
-          enableContextMenu={true}
-          group={false}
-          haloEffect={true}
-          hasKeyDownPress={false}
-          hasKeyUpPress={true}
-          hasOnFocusChanged={true}
-          lockFocus={0}
-          onContextMenuPress={[Function]}
-          onFocusChange={[Function]}
-          onKeyUpPress={[Function]}
-          orderIndex={-1}
-          screenAutoA11yFocusDelay={300}
-          style={
-            [
-              undefined,
-              undefined,
-            ]
-          }
-        >
-          <View
-            accessibilityActions={
-              [
-                {
-                  "label": "Show message actions",
-                  "name": "showActions",
-                },
-              ]
-            }
-            accessibilityLabel="diego.mello 10:00:00 AM  thread message Cool!.  . Press to view thread"
-            accessibilityRole="button"
-            accessibilityState={
-              {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": false,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={true}
-            onAccessibilityAction={[Function]}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              {
-                "backgroundColor": undefined,
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-                "opacity": 1,
-              }
-            }
-          >
-            <View
-              accessibilityActions={
-                [
-                  {
-                    "label": "Show message actions",
-                    "name": "showActions",
-                  },
-                ]
-              }
-              accessibilityLabel="diego.mello 10:00:00 AM  thread message Cool!.  . Press to view thread"
-              accessibilityRole="button"
-              accessible={true}
-              onAccessibilityAction={[Function]}
-              style={{}}
-            >
-              <View
-                style={
-                  [
-                    {
-                      "flexDirection": "column",
-                      "gap": 8,
-                      "paddingHorizontal": 12,
-                      "paddingVertical": 4,
-                      "width": "100%",
-                    },
-                    {
-                      "marginTop": 4,
-                    },
-                  ]
-                }
-              >
-                <View
-                  style={
-                    [
-                      {
-                        "flexDirection": "row",
-                      },
-                      {},
-                    ]
-                  }
-                >
-                  <View
-                    style={
-                      {
-                        "alignItems": "flex-end",
-                        "width": 36,
-                      }
-                    }
-                  >
-                    <View
-                      accessible={true}
-                      style={
-                        [
-                          {
-                            "borderRadius": 4,
-                            "height": 20,
-                            "width": 20,
-                          },
-                          undefined,
-                        ]
-                      }
-                      testID="avatar"
-                    >
-                      <ExternalKeyboardView
-                        canBeFocused={true}
-                        enableA11yFocus={false}
-                        enableContextMenu={false}
-                        group={false}
-                        haloEffect={true}
-                        hasKeyDownPress={false}
-                        hasKeyUpPress={true}
-                        hasOnFocusChanged={true}
-                        lockFocus={0}
-                        onContextMenuPress={[Function]}
-                        onFocusChange={[Function]}
-                        onKeyUpPress={[Function]}
-                        orderIndex={-1}
-                        screenAutoA11yFocusDelay={300}
-                        style={
-                          [
-                            undefined,
-                            undefined,
-                          ]
-                        }
-                      >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
-                          collapsable={false}
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={-1}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#E4E7EA"
-                          style={
-                            [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
-                            ]
-                          }
-                          underlayColor="#E4E7EA"
-                        >
-                          <View
-                            collapsable={false}
-                            style={
-                              {
-                                "backgroundColor": "#E4E7EA",
-                                "borderBottomLeftRadius": undefined,
-                                "borderBottomRightRadius": undefined,
-                                "borderRadius": undefined,
-                                "borderTopLeftRadius": undefined,
-                                "borderTopRightRadius": undefined,
-                                "bottom": 0,
-                                "left": 0,
-                                "opacity": 0,
-                                "position": "absolute",
-                                "right": 0,
-                                "top": 0,
-                              }
-                            }
-                          />
-                          <View
-                            accessibilityLabel="diego.mello's avatar"
-                            accessible={true}
-                            style={{}}
-                          >
-                            <ViewManagerAdapter_ExpoImage
-                              borderRadius={4}
-                              containerViewRef={{"current":"Object"}}
-                              contentFit="cover"
-                              contentPosition={
-                                {
-                                  "left": "50%",
-                                  "top": "50%",
-                                }
-                              }
-                              height={20}
-                              nativeViewRef={{"current":"NativeComponent"}}
-                              onError={[Function]}
-                              onLoad={[Function]}
-                              onLoadStart={[Function]}
-                              onProgress={[Function]}
-                              placeholder={[]}
-                              priority="high"
-                              source={
-                                [
-                                  {
-                                    "headers": {
-                                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                                    },
-                                    "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=40",
-                                  },
-                                ]
-                              }
-                              style={
-                                {
-                                  "borderRadius": 4,
-                                  "height": 20,
-                                  "width": 20,
-                                }
-                              }
-                              transition={null}
-                              width={20}
-                            />
-                          </View>
-                        </RNGestureHandlerButton>
-                      </ExternalKeyboardView>
-                    </View>
-                  </View>
-                  <A11yIndexView
-                    accessibilityLabel="Cool!"
-                    importantForAccessibility="yes"
-                    orderFocusType={0}
-                    orderIndex={2}
-                    orderKey="«r6o»"
-                    style={
-                      {
-                        "flex": 1,
-                      }
-                    }
-                  >
-                    <View
-                      style={
-                        {
-                          "flex": 1,
-                          "marginLeft": 10,
-                        }
-                      }
-                    >
-                      <View
-                        testID="message-content-Cool!"
-                      >
-                        <Text
-                          accessibilityLabel="Cool!"
-                          numberOfLines={1}
-                          style={
-                            [
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontSize": 16,
-                                "fontWeight": "400",
-                                "lineHeight": 22,
-                                "textAlign": "left",
-                              },
-                              {
-                                "color": "#2F343D",
-                                "lineHeight": undefined,
-                              },
-                            ]
-                          }
-                          testID="message-preview-Cool!"
-                        >
-                          Cool!
-                        </Text>
-                      </View>
-                    </View>
-                  </A11yIndexView>
-                </View>
-              </View>
-            </View>
-          </View>
-        </ExternalKeyboardView>
-      </A11yIndexView>
-    </A11yOrderView>
-    <A11yOrderView
-      orderKey="«r6p»"
-    >
-      <A11yIndexView
-        importantForAccessibility="yes"
-        orderFocusType={0}
-        orderIndex={1}
-        orderKey="«r6p»"
-      >
-        <ExternalKeyboardView
-          canBeFocused={true}
-          enableA11yFocus={false}
-          enableContextMenu={true}
-          group={false}
-          haloEffect={true}
-          hasKeyDownPress={false}
-          hasKeyUpPress={true}
-          hasOnFocusChanged={true}
-          lockFocus={0}
-          onContextMenuPress={[Function]}
-          onFocusChange={[Function]}
-          onKeyUpPress={[Function]}
-          orderIndex={-1}
-          screenAutoA11yFocusDelay={300}
-          style={
-            [
-              undefined,
-              undefined,
-            ]
-          }
-        >
-          <View
-            accessibilityActions={
-              [
-                {
-                  "label": "Show message actions",
-                  "name": "showActions",
-                },
-              ]
-            }
-            accessibilityLabel="diego.mello 10:00:00 AM  thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  . Press to view thread"
-            accessibilityRole="button"
-            accessibilityState={
-              {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": false,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={true}
-            onAccessibilityAction={[Function]}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              {
-                "backgroundColor": undefined,
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-                "opacity": 1,
-              }
-            }
-          >
-            <View
-              accessibilityActions={
-                [
-                  {
-                    "label": "Show message actions",
-                    "name": "showActions",
-                  },
-                ]
-              }
-              accessibilityLabel="diego.mello 10:00:00 AM  thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  . Press to view thread"
-              accessibilityRole="button"
-              accessible={true}
-              onAccessibilityAction={[Function]}
-              style={{}}
-            >
-              <View
-                style={
-                  [
-                    {
-                      "flexDirection": "column",
-                      "gap": 8,
-                      "paddingHorizontal": 12,
-                      "paddingVertical": 4,
-                      "width": "100%",
-                    },
-                    {
-                      "marginTop": 4,
-                    },
-                  ]
-                }
-              >
-                <View
-                  style={
-                    [
-                      {
-                        "flexDirection": "row",
-                      },
-                      {},
-                    ]
-                  }
-                >
-                  <View
-                    style={
-                      {
-                        "alignItems": "flex-end",
-                        "width": 36,
-                      }
-                    }
-                  >
-                    <View
-                      accessible={true}
-                      style={
-                        [
-                          {
-                            "borderRadius": 4,
-                            "height": 20,
-                            "width": 20,
-                          },
-                          undefined,
-                        ]
-                      }
-                      testID="avatar"
-                    >
-                      <ExternalKeyboardView
-                        canBeFocused={true}
-                        enableA11yFocus={false}
-                        enableContextMenu={false}
-                        group={false}
-                        haloEffect={true}
-                        hasKeyDownPress={false}
-                        hasKeyUpPress={true}
-                        hasOnFocusChanged={true}
-                        lockFocus={0}
-                        onContextMenuPress={[Function]}
-                        onFocusChange={[Function]}
-                        onKeyUpPress={[Function]}
-                        orderIndex={-1}
-                        screenAutoA11yFocusDelay={300}
-                        style={
-                          [
-                            undefined,
-                            undefined,
-                          ]
-                        }
-                      >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
-                          collapsable={false}
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={-1}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#E4E7EA"
-                          style={
-                            [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
-                            ]
-                          }
-                          underlayColor="#E4E7EA"
-                        >
-                          <View
-                            collapsable={false}
-                            style={
-                              {
-                                "backgroundColor": "#E4E7EA",
-                                "borderBottomLeftRadius": undefined,
-                                "borderBottomRightRadius": undefined,
-                                "borderRadius": undefined,
-                                "borderTopLeftRadius": undefined,
-                                "borderTopRightRadius": undefined,
-                                "bottom": 0,
-                                "left": 0,
-                                "opacity": 0,
-                                "position": "absolute",
-                                "right": 0,
-                                "top": 0,
-                              }
-                            }
-                          />
-                          <View
-                            accessibilityLabel="diego.mello's avatar"
-                            accessible={true}
-                            style={{}}
-                          >
-                            <ViewManagerAdapter_ExpoImage
-                              borderRadius={4}
-                              containerViewRef={{"current":"Object"}}
-                              contentFit="cover"
-                              contentPosition={
-                                {
-                                  "left": "50%",
-                                  "top": "50%",
-                                }
-                              }
-                              height={20}
-                              nativeViewRef={{"current":"NativeComponent"}}
-                              onError={[Function]}
-                              onLoad={[Function]}
-                              onLoadStart={[Function]}
-                              onProgress={[Function]}
-                              placeholder={[]}
-                              priority="high"
-                              source={
-                                [
-                                  {
-                                    "headers": {
-                                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                                    },
-                                    "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=40",
-                                  },
-                                ]
-                              }
-                              style={
-                                {
-                                  "borderRadius": 4,
-                                  "height": 20,
-                                  "width": 20,
-                                }
-                              }
-                              transition={null}
-                              width={20}
-                            />
-                          </View>
-                        </RNGestureHandlerButton>
-                      </ExternalKeyboardView>
-                    </View>
-                  </View>
-                  <A11yIndexView
-                    accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-                    importantForAccessibility="yes"
-                    orderFocusType={0}
-                    orderIndex={2}
-                    orderKey="«r6p»"
-                    style={
-                      {
-                        "flex": 1,
-                      }
-                    }
-                  >
-                    <View
-                      style={
-                        {
-                          "flex": 1,
-                          "marginLeft": 10,
-                        }
-                      }
-                    >
-                      <View
-                        testID="message-content-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-                      >
-                        <Text
-                          accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-                          numberOfLines={1}
-                          style={
-                            [
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontSize": 16,
-                                "fontWeight": "400",
-                                "lineHeight": 22,
-                                "textAlign": "left",
-                              },
-                              {
-                                "color": "#2F343D",
-                                "lineHeight": undefined,
-                              },
-                            ]
-                          }
-                          testID="message-preview-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-                        >
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                        </Text>
-                      </View>
-                    </View>
-                  </A11yIndexView>
-                </View>
-              </View>
-            </View>
-          </View>
-        </ExternalKeyboardView>
-      </A11yIndexView>
-    </A11yOrderView>
-    <A11yOrderView
-      orderKey="«r6q»"
-    >
-      <A11yIndexView
-        importantForAccessibility="yes"
-        orderFocusType={0}
-        orderIndex={1}
-        orderKey="«r6q»"
-      >
-        <ExternalKeyboardView
-          canBeFocused={true}
-          enableA11yFocus={false}
-          enableContextMenu={true}
-          group={false}
-          haloEffect={true}
-          hasKeyDownPress={false}
-          hasKeyUpPress={true}
-          hasOnFocusChanged={true}
-          lockFocus={0}
-          onContextMenuPress={[Function]}
-          onFocusChange={[Function]}
-          onKeyUpPress={[Function]}
-          orderIndex={-1}
-          screenAutoA11yFocusDelay={300}
-          style={
-            [
-              undefined,
-              undefined,
-            ]
-          }
-        >
-          <View
-            accessibilityActions={
-              [
-                {
-                  "label": "Show message actions",
-                  "name": "showActions",
-                },
-              ]
-            }
-            accessibilityLabel="diego.mello 10:00:00 AM  thread message undefined.  . Press to view thread"
-            accessibilityRole="button"
-            accessibilityState={
-              {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": false,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={true}
-            onAccessibilityAction={[Function]}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              {
-                "backgroundColor": undefined,
-                "borderRadius": undefined,
-                "margin": undefined,
-                "marginBottom": undefined,
-                "marginEnd": undefined,
-                "marginHorizontal": undefined,
-                "marginLeft": undefined,
-                "marginRight": undefined,
-                "marginStart": undefined,
-                "marginTop": undefined,
-                "marginVertical": undefined,
-                "opacity": 1,
-              }
-            }
-          >
-            <View
-              accessibilityActions={
-                [
-                  {
-                    "label": "Show message actions",
-                    "name": "showActions",
-                  },
-                ]
-              }
-              accessibilityLabel="diego.mello 10:00:00 AM  thread message undefined.  . Press to view thread"
-              accessibilityRole="button"
-              accessible={true}
-              onAccessibilityAction={[Function]}
-              style={{}}
-            >
-              <View
-                style={
-                  [
-                    {
-                      "flexDirection": "column",
-                      "gap": 8,
-                      "paddingHorizontal": 12,
-                      "paddingVertical": 4,
-                      "width": "100%",
-                    },
-                    {
-                      "marginTop": 4,
-                    },
-                  ]
-                }
-              >
-                <View
-                  style={
-                    [
-                      {
-                        "flexDirection": "row",
-                      },
-                      {},
-                    ]
-                  }
-                >
-                  <View
-                    style={
-                      {
-                        "alignItems": "flex-end",
-                        "width": 36,
-                      }
-                    }
-                  >
-                    <View
-                      accessible={true}
-                      style={
-                        [
-                          {
-                            "borderRadius": 4,
-                            "height": 20,
-                            "width": 20,
-                          },
-                          undefined,
-                        ]
-                      }
-                      testID="avatar"
-                    >
-                      <ExternalKeyboardView
-                        canBeFocused={true}
-                        enableA11yFocus={false}
-                        enableContextMenu={false}
-                        group={false}
-                        haloEffect={true}
-                        hasKeyDownPress={false}
-                        hasKeyUpPress={true}
-                        hasOnFocusChanged={true}
-                        lockFocus={0}
-                        onContextMenuPress={[Function]}
-                        onFocusChange={[Function]}
-                        onKeyUpPress={[Function]}
-                        orderIndex={-1}
-                        screenAutoA11yFocusDelay={300}
-                        style={
-                          [
-                            undefined,
-                            undefined,
-                          ]
-                        }
-                      >
-                        <RNGestureHandlerButton
-                          activeOpacity={1}
-                          collapsable={false}
-                          delayLongPress={600}
-                          enabled={true}
-                          handlerTag={-1}
-                          handlerType="NativeViewGestureHandler"
-                          innerRef={null}
-                          onActiveStateChange={[Function]}
-                          onGestureHandlerEvent={[Function]}
-                          onGestureHandlerStateChange={[Function]}
-                          onPress={[Function]}
-                          rippleColor="#E4E7EA"
-                          style={
-                            [
-                              {
-                                "backgroundColor": undefined,
-                                "borderRadius": undefined,
-                                "margin": undefined,
-                                "marginBottom": undefined,
-                                "marginEnd": undefined,
-                                "marginHorizontal": undefined,
-                                "marginLeft": undefined,
-                                "marginRight": undefined,
-                                "marginStart": undefined,
-                                "marginTop": undefined,
-                                "marginVertical": undefined,
-                              },
-                              {
-                                "cursor": undefined,
-                              },
-                            ]
-                          }
-                          underlayColor="#E4E7EA"
-                        >
-                          <View
-                            collapsable={false}
-                            style={
-                              {
-                                "backgroundColor": "#E4E7EA",
-                                "borderBottomLeftRadius": undefined,
-                                "borderBottomRightRadius": undefined,
-                                "borderRadius": undefined,
-                                "borderTopLeftRadius": undefined,
-                                "borderTopRightRadius": undefined,
-                                "bottom": 0,
-                                "left": 0,
-                                "opacity": 0,
-                                "position": "absolute",
-                                "right": 0,
-                                "top": 0,
-                              }
-                            }
-                          />
-                          <View
-                            accessibilityLabel="diego.mello's avatar"
-                            accessible={true}
-                            style={{}}
-                          >
-                            <ViewManagerAdapter_ExpoImage
-                              borderRadius={4}
-                              containerViewRef={{"current":"Object"}}
-                              contentFit="cover"
-                              contentPosition={
-                                {
-                                  "left": "50%",
-                                  "top": "50%",
-                                }
-                              }
-                              height={20}
-                              nativeViewRef={{"current":"NativeComponent"}}
-                              onError={[Function]}
-                              onLoad={[Function]}
-                              onLoadStart={[Function]}
-                              onProgress={[Function]}
-                              placeholder={[]}
-                              priority="high"
-                              source={
-                                [
-                                  {
-                                    "headers": {
-                                      "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                                    },
-                                    "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=40",
-                                  },
-                                ]
-                              }
-                              style={
-                                {
-                                  "borderRadius": 4,
-                                  "height": 20,
-                                  "width": 20,
-                                }
-                              }
-                              transition={null}
-                              width={20}
-                            />
-                          </View>
-                        </RNGestureHandlerButton>
-                      </ExternalKeyboardView>
-                    </View>
-                  </View>
-                  <A11yIndexView
-                    accessibilityLabel=""
-                    importantForAccessibility="yes"
-                    orderFocusType={0}
-                    orderIndex={2}
-=======
->>>>>>> develop
                     orderKey="«r6q»"
                     style={
                       {
@@ -122659,7 +120696,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  . Press to view thread"
+            accessibilityLabel="diego.mello 10:00:00 AM  thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  . Press to view thread"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -122715,7 +120752,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  . Press to view thread"
+              accessibilityLabel="diego.mello 10:00:00 AM  thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  . Press to view thread"
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
@@ -122738,128 +120775,6 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                 }
               >
                 <View
-<<<<<<< HEAD
-                  style={
-                    {
-                      "alignItems": "center",
-                      "flexDirection": "row",
-                      "gap": 10,
-                    }
-                  }
-                  testID="message-thread-replied-on-How are you?"
-                >
-                  <View
-                    style={
-                      {
-                        "alignItems": "flex-end",
-                        "width": 46.800000000000004,
-                      }
-                    }
-                  >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
-                      style={
-                        [
-                          {
-                            "color": "#095AD2",
-                            "fontSize": 26,
-                          },
-                          [
-                            {
-                              "lineHeight": 26,
-                            },
-                            undefined,
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
-                        ]
-                      }
-                    >
-                      
-                    </Text>
-                  </View>
-                  <Text
-                    accessibilityLabel="How are you?"
-                    numberOfLines={1}
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                          "lineHeight": 22,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#2F343D",
-                          "lineHeight": undefined,
-                        },
-                        {
-                          "backgroundColor": "transparent",
-                          "flex": 1,
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#095AD2",
-                        },
-                      ]
-                    }
-                    testID="markdown-preview-How are you?"
-                  >
-                    How are you?
-                  </Text>
-                  <View
-                    style={
-                      {
-                        "alignItems": "center",
-                        "justifyContent": "center",
-                        "marginLeft": 4,
-                        "marginRight": 4,
-                      }
-                    }
-                  >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
-                      style={
-                        [
-                          {
-                            "color": "#6C727A",
-                            "fontSize": 26,
-                          },
-                          [
-                            {
-                              "lineHeight": 26,
-                            },
-                            undefined,
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
-                        ]
-                      }
-                    >
-                      
-                    </Text>
-                  </View>
-                </View>
-                <View
-=======
-                  accessibilityLabel="diego.mello 10:00:00 AM  thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  "
-                  accessible={true}
->>>>>>> develop
                   style={
                     [
                       {
@@ -123111,7 +121026,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  thread message Cool!.  . Press to view thread"
+            accessibilityLabel="diego.mello 10:00:00 AM  thread message undefined.  . Press to view thread"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -123167,7 +121082,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  thread message Cool!.  . Press to view thread"
+              accessibilityLabel="diego.mello 10:00:00 AM  thread message undefined.  . Press to view thread"
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
@@ -123190,10 +121105,6 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                 }
               >
                 <View
-<<<<<<< HEAD
-=======
-                  accessibilityLabel="diego.mello 10:00:00 AM  thread message undefined.  "
-                  accessible={true}
                   style={
                     [
                       {
@@ -123450,6 +121361,16 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
           }
         >
           <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Show message actions",
+                  "name": "showActions",
+                },
+              ]
+            }
+            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  . Press to view thread"
+            accessibilityRole="button"
             accessibilityState={
               {
                 "busy": undefined,
@@ -123470,6 +121391,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
             accessible={true}
             collapsable={false}
             focusable={true}
+            onAccessibilityAction={[Function]}
             onClick={[Function]}
             onResponderGrant={[Function]}
             onResponderMove={[Function]}
@@ -123495,6 +121417,18 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
             }
           >
             <View
+              accessibilityActions={
+                [
+                  {
+                    "label": "Show message actions",
+                    "name": "showActions",
+                  },
+                ]
+              }
+              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  . Press to view thread"
+              accessibilityRole="button"
+              accessible={true}
+              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -123631,8 +121565,6 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  "
-                  accessible={true}
                   style={
                     [
                       {
@@ -123876,6 +121808,16 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
           }
         >
           <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Show message actions",
+                  "name": "showActions",
+                },
+              ]
+            }
+            accessibilityLabel="diego.mello 10:00:00 AM  thread message Cool!.  . Press to view thread"
+            accessibilityRole="button"
             accessibilityState={
               {
                 "busy": undefined,
@@ -123896,6 +121838,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
             accessible={true}
             collapsable={false}
             focusable={true}
+            onAccessibilityAction={[Function]}
             onClick={[Function]}
             onResponderGrant={[Function]}
             onResponderMove={[Function]}
@@ -123921,6 +121864,18 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
             }
           >
             <View
+              accessibilityActions={
+                [
+                  {
+                    "label": "Show message actions",
+                    "name": "showActions",
+                  },
+                ]
+              }
+              accessibilityLabel="diego.mello 10:00:00 AM  thread message Cool!.  . Press to view thread"
+              accessibilityRole="button"
+              accessible={true}
+              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -123940,8 +121895,6 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                 }
               >
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  thread message Cool!.  "
-                  accessible={true}
                   style={
                     [
                       {
@@ -124185,6 +122138,16 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
           }
         >
           <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Show message actions",
+                  "name": "showActions",
+                },
+              ]
+            }
+            accessibilityLabel="diego.mello 10:00:00 AM  thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  . Press to view thread"
+            accessibilityRole="button"
             accessibilityState={
               {
                 "busy": undefined,
@@ -124205,6 +122168,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
             accessible={true}
             collapsable={false}
             focusable={true}
+            onAccessibilityAction={[Function]}
             onClick={[Function]}
             onResponderGrant={[Function]}
             onResponderMove={[Function]}
@@ -124230,6 +122194,18 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
             }
           >
             <View
+              accessibilityActions={
+                [
+                  {
+                    "label": "Show message actions",
+                    "name": "showActions",
+                  },
+                ]
+              }
+              accessibilityLabel="diego.mello 10:00:00 AM  thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  . Press to view thread"
+              accessibilityRole="button"
+              accessible={true}
+              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -124249,8 +122225,6 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                 }
               >
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  "
-                  accessible={true}
                   style={
                     [
                       {
@@ -124494,6 +122468,16 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
           }
         >
           <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Show message actions",
+                  "name": "showActions",
+                },
+              ]
+            }
+            accessibilityLabel="diego.mello 10:00:00 AM  thread message undefined.  . Press to view thread"
+            accessibilityRole="button"
             accessibilityState={
               {
                 "busy": undefined,
@@ -124514,6 +122498,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
             accessible={true}
             collapsable={false}
             focusable={true}
+            onAccessibilityAction={[Function]}
             onClick={[Function]}
             onResponderGrant={[Function]}
             onResponderMove={[Function]}
@@ -124539,6 +122524,18 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
             }
           >
             <View
+              accessibilityActions={
+                [
+                  {
+                    "label": "Show message actions",
+                    "name": "showActions",
+                  },
+                ]
+              }
+              accessibilityLabel="diego.mello 10:00:00 AM  thread message undefined.  . Press to view thread"
+              accessibilityRole="button"
+              accessible={true}
+              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -124558,8 +122555,6 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                 }
               >
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  thread message undefined.  "
-                  accessible={true}
                   style={
                     [
                       {
@@ -124816,6 +122811,16 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
           }
         >
           <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Show message actions",
+                  "name": "showActions",
+                },
+              ]
+            }
+            accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  . Press to view thread"
+            accessibilityRole="button"
             accessibilityState={
               {
                 "busy": undefined,
@@ -124836,6 +122841,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
             accessible={true}
             collapsable={false}
             focusable={true}
+            onAccessibilityAction={[Function]}
             onClick={[Function]}
             onResponderGrant={[Function]}
             onResponderMove={[Function]}
@@ -124861,6 +122867,18 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
             }
           >
             <View
+              accessibilityActions={
+                [
+                  {
+                    "label": "Show message actions",
+                    "name": "showActions",
+                  },
+                ]
+              }
+              accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  . Press to view thread"
+              accessibilityRole="button"
+              accessible={true}
+              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -124997,8 +123015,6 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  "
-                  accessible={true}
                   style={
                     [
                       {
@@ -125242,6 +123258,16 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
           }
         >
           <View
+            accessibilityActions={
+              [
+                {
+                  "label": "Show message actions",
+                  "name": "showActions",
+                },
+              ]
+            }
+            accessibilityLabel="diego.mello 10:00:00 AM  thread message Cool!.  . Press to view thread"
+            accessibilityRole="button"
             accessibilityState={
               {
                 "busy": undefined,
@@ -125262,6 +123288,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
             accessible={true}
             collapsable={false}
             focusable={true}
+            onAccessibilityAction={[Function]}
             onClick={[Function]}
             onResponderGrant={[Function]}
             onResponderMove={[Function]}
@@ -125287,6 +123314,18 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
             }
           >
             <View
+              accessibilityActions={
+                [
+                  {
+                    "label": "Show message actions",
+                    "name": "showActions",
+                  },
+                ]
+              }
+              accessibilityLabel="diego.mello 10:00:00 AM  thread message Cool!.  . Press to view thread"
+              accessibilityRole="button"
+              accessible={true}
+              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -125306,9 +123345,6 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
                 }
               >
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  thread message Cool!.  "
-                  accessible={true}
->>>>>>> develop
                   style={
                     [
                       {
