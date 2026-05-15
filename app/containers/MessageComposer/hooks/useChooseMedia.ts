@@ -41,64 +41,6 @@ export const useChooseMedia = ({
 		loadingLabelText: I18n.t('Processing')
 	};
 
-	const prepareAttachments = (attachments: IShareAttachment[]) => {
-		const items = attachments.map(item => {
-			const normalizedItem = normalizeAttachment(item);
-			const { success: canUpload, error } = canUploadFile({
-				file: normalizedItem as IShareAttachment,
-				allowList,
-				maxFileSize,
-				permissionToUploadFile: permissionToUpload
-			});
-
-			return {
-				...normalizedItem,
-				canUpload,
-				error
-			};
-		});
-
-		addAttachments(items as IShareAttachment[]);
-	};
-
-	const startShareView = () => {
-		const text = getText?.() || '';
-		return {
-			selectedMessages,
-			text
-		};
-	};
-
-	const finishShareView = (text = '', quotes = []) => setQuotesAndText?.(text, quotes);
-
-	const openShareView = async (attachments: IShareAttachment[]) => {
-		if (!rid) return;
-		const room = await getSubscriptionByRoomId(rid);
-		let thread;
-		if (tmid) {
-			thread = await getThreadById(tmid);
-		}
-		if (room) {
-			Navigation.navigate('ShareView', {
-				room,
-				thread: thread || tmid,
-				attachments,
-				action,
-				finishShareView,
-				startShareView
-			});
-		}
-	};
-
-	const handlePickedAttachments = async (attachments: IShareAttachment[]) => {
-		if (altTextSupported) {
-			prepareAttachments(attachments);
-			return;
-		}
-
-		await openShareView(attachments.map(item => normalizeAttachment(item)) as IShareAttachment[]);
-	};
-
 	const takePhoto = async () => {
 		try {
 			let image = await ImagePicker.openCamera({ ...IMAGE_PICKER_CONFIG, ...libPickerLabels });
@@ -148,6 +90,64 @@ export const useChooseMedia = ({
 		} catch (e) {
 			log(e);
 		}
+	};
+
+	const startShareView = () => {
+		const text = getText?.() || '';
+		return {
+			selectedMessages,
+			text
+		};
+	};
+
+	const finishShareView = (text = '', quotes = []) => setQuotesAndText?.(text, quotes);
+
+	const openShareView = async (attachments: IShareAttachment[]) => {
+		if (!rid) return;
+		const room = await getSubscriptionByRoomId(rid);
+		let thread;
+		if (tmid) {
+			thread = await getThreadById(tmid);
+		}
+		if (room) {
+			Navigation.navigate('ShareView', {
+				room,
+				thread: thread || tmid,
+				attachments,
+				action,
+				finishShareView,
+				startShareView
+			});
+		}
+	};
+
+	const prepareAttachments = (attachments: IShareAttachment[]) => {
+		const items = attachments.map(item => {
+			const normalizedItem = normalizeAttachment(item);
+			const { success: canUpload, error } = canUploadFile({
+				file: normalizedItem as IShareAttachment,
+				allowList,
+				maxFileSize,
+				permissionToUploadFile: permissionToUpload
+			});
+
+			return {
+				...normalizedItem,
+				canUpload,
+				error
+			};
+		});
+
+		addAttachments(items as IShareAttachment[]);
+	};
+
+	const handlePickedAttachments = async (attachments: IShareAttachment[]) => {
+		if (altTextSupported) {
+			prepareAttachments(attachments);
+			return;
+		}
+
+		await openShareView(attachments.map(item => normalizeAttachment(item)) as IShareAttachment[]);
 	};
 
 	return {
