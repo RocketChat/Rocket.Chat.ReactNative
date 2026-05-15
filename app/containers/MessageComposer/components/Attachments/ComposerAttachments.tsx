@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, Image, Pressable, StyleSheet, View } from 'react-native';
+import { FlatList, Image, type ListRenderItem, Pressable, StyleSheet, View } from 'react-native';
 
 import { BUTTON_HIT_SLOP } from '../../../message/utils';
 import { useComposerAttachments, useMessageComposerApi } from '../../context';
@@ -7,6 +7,7 @@ import { useTheme } from '../../../../theme';
 import { useActionSheet } from '../../../ActionSheet';
 import { CustomIcon } from '../../../CustomIcon';
 import I18n from '../../../../i18n';
+import { type IShareAttachment } from '../../../../definitions';
 import { AttachmentActionSheet } from './AttachmentActionSheet';
 
 const THUMB_SIZE = 64;
@@ -60,11 +61,64 @@ const ThumbContent = ({ path, mime }: { path: string; mime?: string }) => {
 	);
 };
 
-export const ComposerAttachments = () => {
-	const attachments = useComposerAttachments();
+const AttachmentItem = ({ item, index }: { item: IShareAttachment; index: number }) => {
+	'use memo';
+
 	const { removeAttachment, updateAttachment } = useMessageComposerApi();
 	const { colors } = useTheme();
 	const { showActionSheet } = useActionSheet();
+
+	const onPress = () =>
+		showActionSheet({
+			children: <AttachmentActionSheet attachment={item} onSave={attachment => updateAttachment(item.path, attachment)} />,
+			snaps: ['85%'],
+			fullContainer: true
+		});
+
+	const onRemove = () => removeAttachment(item.path);
+
+	return (
+		<View style={styles.item}>
+			<Pressable
+				style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }]}
+				accessible
+				accessibilityRole='button'
+				accessibilityLabel={item.filename}
+				accessibilityHint={I18n.t('Edit_attachment_options')}
+				onPress={onPress}
+				testID={`message-composer-attachment-${index}`}>
+				<ThumbContent path={item.path} mime={item.mime} />
+			</Pressable>
+			<Pressable
+				accessible
+				accessibilityRole='button'
+				accessibilityLabel={I18n.t('Remove_attachment')}
+				hitSlop={BUTTON_HIT_SLOP}
+				style={({ pressed }) => [
+					styles.removeButton,
+					{
+						backgroundColor: colors.fontDefault,
+						borderColor: colors.surfaceRoom,
+						opacity: pressed ? 0.7 : 1
+					}
+				]}
+				onPress={onRemove}
+				testID={`message-composer-remove-attachment-${index}`}>
+				<CustomIcon name='close' color={colors.surfaceRoom} size={14} />
+			</Pressable>
+			{!item.canUpload ? (
+				<CustomIcon name='warning' size={18} color={colors.buttonBackgroundDangerDefault} style={styles.warningIcon} />
+			) : null}
+		</View>
+	);
+};
+
+const renderItem: ListRenderItem<IShareAttachment> = ({ item, index }) => <AttachmentItem item={item} index={index} />;
+
+const keyExtractor = (item: IShareAttachment) => item.path;
+
+export const ComposerAttachments = () => {
+	const attachments = useComposerAttachments();
 
 	if (!attachments.length) {
 		return null;
@@ -74,52 +128,11 @@ export const ComposerAttachments = () => {
 		<FlatList
 			horizontal
 			data={attachments}
-			keyExtractor={item => item.path}
+			keyExtractor={keyExtractor}
 			contentContainerStyle={styles.list}
 			showsHorizontalScrollIndicator={false}
 			testID='message-composer-attachments'
-			renderItem={({ item, index }) => (
-				<View style={styles.item}>
-					<Pressable
-						style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }]}
-						accessible
-						accessibilityRole='button'
-						accessibilityLabel={item.filename}
-						accessibilityHint={I18n.t('Edit_attachment_options')}
-						onPress={() =>
-							showActionSheet({
-								children: (
-									<AttachmentActionSheet attachment={item} onSave={attachment => updateAttachment(item.path, attachment)} />
-								),
-								snaps: ['85%'],
-								fullContainer: true
-							})
-						}
-						testID={`message-composer-attachment-${index}`}>
-						<ThumbContent path={item.path} mime={item.mime} />
-					</Pressable>
-					<Pressable
-						accessible
-						accessibilityRole='button'
-						accessibilityLabel={I18n.t('Remove_attachment')}
-						hitSlop={BUTTON_HIT_SLOP}
-						style={({ pressed }) => [
-							styles.removeButton,
-							{
-								backgroundColor: colors.fontDefault,
-								borderColor: colors.surfaceRoom,
-								opacity: pressed ? 0.7 : 1
-							}
-						]}
-						onPress={() => removeAttachment(item.path)}
-						testID={`message-composer-remove-attachment-${index}`}>
-						<CustomIcon name='close' color={colors.surfaceRoom} size={14} />
-					</Pressable>
-					{!item.canUpload ? (
-						<CustomIcon name='warning' size={18} color={colors.buttonBackgroundDangerDefault} style={styles.warningIcon} />
-					) : null}
-				</View>
-			)}
+			renderItem={renderItem}
 		/>
 	);
 };

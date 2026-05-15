@@ -15,6 +15,9 @@ import ImagePicker, { type ImageOrVideo } from '../../../lib/methods/helpers/Ima
 import { useMessageComposerApi } from '../context';
 import { useAltTextSupported } from '../../../lib/hooks/useAltTextSupported';
 
+const normalizeAttachment = (item: IShareAttachment) =>
+	item.filename ? item : { ...item, filename: item.path ? item.path.split('/').pop() : undefined };
+
 export const useChooseMedia = ({
 	rid,
 	tmid,
@@ -37,9 +40,6 @@ export const useChooseMedia = ({
 		cropperCancelText: I18n.t('Cancel'),
 		loadingLabelText: I18n.t('Processing')
 	};
-
-	const normalizeAttachment = (item: IShareAttachment) =>
-		item.filename ? item : { ...item, filename: item.path ? item.path.split('/').pop() : undefined };
 
 	const prepareAttachments = (attachments: IShareAttachment[]) => {
 		const items = attachments.map(item => {
