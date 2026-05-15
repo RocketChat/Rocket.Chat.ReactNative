@@ -116802,132 +116802,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
                 }
               >
                 <View
-<<<<<<< HEAD
-<<<<<<< HEAD
-                  style={
-                    {
-                      "alignItems": "center",
-                      "flexDirection": "row",
-                      "gap": 10,
-                    }
-                  }
-                  testID="message-thread-replied-on-How are you?"
-                >
-                  <View
-                    style={
-                      {
-                        "alignItems": "flex-end",
-                        "width": 46.800000000000004,
-                      }
-                    }
-                  >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
-                      style={
-                        [
-                          {
-                            "color": "#095AD2",
-                            "fontSize": 26,
-                          },
-                          [
-                            {
-                              "lineHeight": 26,
-                            },
-                            undefined,
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
-                        ]
-                      }
-                    >
-                      
-                    </Text>
-                  </View>
-                  <Text
-                    accessibilityLabel="How are you?"
-                    numberOfLines={1}
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                          "lineHeight": 22,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#2F343D",
-                          "lineHeight": undefined,
-                        },
-                        {
-                          "backgroundColor": "transparent",
-                          "flex": 1,
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#095AD2",
-                        },
-                      ]
-                    }
-                    testID="markdown-preview-How are you?"
-                  >
-                    How are you?
-                  </Text>
-                  <View
-                    style={
-                      {
-                        "alignItems": "center",
-                        "justifyContent": "center",
-                        "marginLeft": 4,
-                        "marginRight": 4,
-                      }
-                    }
-                  >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
-                      style={
-                        [
-                          {
-                            "color": "#6C727A",
-                            "fontSize": 26,
-                          },
-                          [
-                            {
-                              "lineHeight": 26,
-                            },
-                            undefined,
-                          ],
-                          {
-                            "fontFamily": "custom",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
-                        ]
-                      }
-                    >
-                      
-                    </Text>
-                  </View>
-                </View>
-                <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.   "
-=======
-                  accessibilityLabel="diego.mello 10:00:00 AM  thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  "
->>>>>>> d4604488c (fix: render Attachment file name in Thread Message preview when body is empty (#7323))
-=======
                   accessibilityLabel="diego.mello 10:00:00 AM thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.."
->>>>>>> d4f3ff407 (fix: snapshot test)
                   accessible={true}
                   style={
                     [
@@ -117236,11 +117111,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
                 }
               >
                 <View
-<<<<<<< HEAD
-                  accessibilityLabel="diego.mello 10:00:00 AM  thread message undefined.  "
-=======
                   accessibilityLabel="diego.mello 10:00:00 AM thread message undefined."
->>>>>>> d4f3ff407 (fix: snapshot test)
                   accessible={true}
                   style={
                     [
@@ -119354,11 +119225,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
                 }
               >
                 <View
-<<<<<<< HEAD
-                  accessibilityLabel="diego.mello 10:00:00 AM  thread message Cool!.  "
-=======
                   accessibilityLabel="diego.mello 10:00:00 AM thread message Cool!."
->>>>>>> d4f3ff407 (fix: snapshot test)
                   accessible={true}
                   style={
                     [
