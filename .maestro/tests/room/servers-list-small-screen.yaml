@@ -1,0 +1,47 @@
+appId: chat.rocket.reactnative
+name: Servers List Small Screen
+jsEngine: graaljs
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-14
+  - ios-only
+
+---
+- evalScript: ${output.user = output.utils.createUser()}
+
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+
+# should fully render the Workspaces action sheet on small screens
+# (regression for small-screen ServersList — the Add Server button was cut off on iPhone SE)
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-header-servers-list-button'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-header-servers-list-button'
+- waitForAnimationToEnd
+- extendedWaitUntil:
+    visible:
+      id: 'action-sheet'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-header-servers-list'
+    timeout: 60000
+- assertVisible:
+    id: 'rooms-list-header-server-add'
+
+# tap the Add Server button — would fail if it were clipped by the sheet bottom
+- tapOn:
+    id: 'rooms-list-header-server-add'
+- extendedWaitUntil:
+    visible:
+      id: 'new-server-view'
+    timeout: 60000
