@@ -102,7 +102,7 @@ export const useChooseMedia = ({
 
 	const finishShareView = (text = '', quotes = []) => setQuotesAndText?.(text, quotes);
 
-	const openShareView = async (attachments: IShareAttachment[]) => {
+	const openShareView = async (attachments: any) => {
 		if (!rid) return;
 		const room = await getSubscriptionByRoomId(rid);
 		let thread;
@@ -110,6 +110,7 @@ export const useChooseMedia = ({
 			thread = await getThreadById(tmid);
 		}
 		if (room) {
+			// FIXME: use useNavigation
 			Navigation.navigate('ShareView', {
 				room,
 				thread: thread || tmid,
