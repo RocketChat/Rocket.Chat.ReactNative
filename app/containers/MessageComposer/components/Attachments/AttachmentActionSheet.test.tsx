@@ -3,6 +3,8 @@ import { fireEvent, render, screen } from '@testing-library/react-native';
 
 import { AttachmentActionSheet } from './AttachmentActionSheet';
 import { type IShareAttachment } from '../../../../definitions';
+import { generateSnapshots } from '../../../../../.rnstorybook/generateSnapshots';
+import * as stories from './AttachmentActionSheet.stories';
 
 jest.mock('react-native-keyboard-controller', () => {
 	const { View } = require('react-native');
@@ -96,3 +98,5 @@ describe('AttachmentActionSheet', () => {
 		expect(hideActionSheet).toHaveBeenCalledTimes(1);
 	});
 });
+
+generateSnapshots(stories);
