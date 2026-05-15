@@ -152,9 +152,12 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 		const encryptedMessageLabel = props.isEncrypted ? i18n.t('Encrypted_message') : '';
 		const translatedLanguage = translationLanguages[props?.autoTranslateLanguage || 'en'];
 		const translated = props.isTranslated ? i18n.t('Message_translated_into_idiom', { idiom: translatedLanguage }) : '';
-		return props.isTranslated
-			? `${user} ${hour} ${translated}`
-			: `${user} ${hour} ${translated} ${label}. ${imageDescriptionLabel} ${encryptedMessageLabel} ${readReceipt}`;
+		if (props.isTranslated) {
+			return [user, hour, translated].filter(Boolean).join(' ');
+		}
+		const prefix = [user, hour, translated, label].filter(Boolean).join(' ');
+		const suffix = [imageDescriptionLabel, encryptedMessageLabel, readReceipt].filter(Boolean).join(' ');
+		return suffix ? `${prefix}. ${suffix}` : `${prefix}.`;
 	};
 
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo || props.isIgnored) {
