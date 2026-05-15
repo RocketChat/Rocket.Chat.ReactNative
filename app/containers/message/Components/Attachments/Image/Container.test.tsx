@@ -25,6 +25,11 @@ jest.mock('./Image', () => ({
 	MessageImage: () => null
 }));
 
+const mockUseAltTextSupported = jest.fn();
+jest.mock('../../../../../lib/hooks/useAltTextSupported', () => ({
+	useAltTextSupported: () => mockUseAltTextSupported()
+}));
+
 const renderImageContainer = (props?: Partial<ComponentProps<typeof ImageContainer>>) =>
 	render(
 		<A11y.Order>
@@ -42,9 +47,13 @@ const renderImageContainer = (props?: Partial<ComponentProps<typeof ImageContain
 	);
 
 describe('ImageContainer', () => {
+	beforeEach(() => {
+		mockUseAltTextSupported.mockReset();
+	});
+
 	it('sets the accessibility label on the pressable when alt text is supported', () => {
+		mockUseAltTextSupported.mockReturnValue(true);
 		const { getByRole } = renderImageContainer({
-			isAltTextSupported: true,
 			msg: 'A wavy orange and black pattern'
 		});
 
@@ -55,6 +64,7 @@ describe('ImageContainer', () => {
 	});
 
 	it('does not set the accessibility label on the pressable when alt text is not supported', () => {
+		mockUseAltTextSupported.mockReturnValue(false);
 		const { getByRole } = renderImageContainer();
 
 		const button = getByRole('imagebutton');

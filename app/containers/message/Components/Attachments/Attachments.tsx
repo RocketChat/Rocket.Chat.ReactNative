@@ -11,7 +11,6 @@ import Reply from './Reply';
 import MessageContext from '../../Context';
 import { type IMessageAttachments } from '../../interfaces';
 import { type IAttachment } from '../../../../definitions';
-import { useAltTextSupported } from '../../../../lib/hooks/useAltTextSupported';
 import { getMessageFromAttachment } from '../../utils';
 
 const removeQuote = (file?: IAttachment) =>
@@ -27,7 +26,6 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 		'use memo';
 
 		const { translateLanguage } = useContext(MessageContext);
-		const altTextSupported = useAltTextSupported();
 
 		const nonQuoteAttachments = attachments?.filter(removeQuote);
 
@@ -49,7 +47,6 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 						msg={msg}
 						imagePreview={file.image_preview}
 						imageType={file.image_type}
-						isAltTextSupported={altTextSupported}
 					/>
 				);
 			}

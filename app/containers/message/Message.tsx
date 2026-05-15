@@ -24,6 +24,7 @@ import i18n from '../../i18n';
 import { getInfoMessage } from './utils';
 import MessageTime from './Time';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { useImageDescriptionLabel } from '../../lib/hooks/useImageDescriptionLabel';
 import Quote from './Components/Attachments/Quote';
 import translationLanguages from '../../lib/constants/translationLanguages';
 import Touch from './Touch';
@@ -104,18 +105,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 MessageInner.displayName = 'MessageInner';
 
 const Message = React.memo((props: IMessageTouchable & IMessage) => {
-	const getImageDescriptionLabel = () => {
-		const imageAltText = props.attachments
-			?.filter(attachment => attachment.image_url)
-			.map(attachment => (attachment.altText ?? attachment.description)?.trim())
-			.find(text => !!text);
-
-		if (!imageAltText || imageAltText === props.msg?.trim()) {
-			return '';
-		}
-
-		return `${i18n.t('Image_description')}: ${imageAltText}`;
-	};
+	const imageDescriptionLabel = useImageDescriptionLabel(props.attachments, props.msg);
 
 	const handleMentionsOnAccessibilityLabel = (label: string) => {
 		const { mentions = [], channels = [] } = props;
@@ -162,7 +152,6 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 		const encryptedMessageLabel = props.isEncrypted ? i18n.t('Encrypted_message') : '';
 		const translatedLanguage = translationLanguages[props?.autoTranslateLanguage || 'en'];
 		const translated = props.isTranslated ? i18n.t('Message_translated_into_idiom', { idiom: translatedLanguage }) : '';
-		const imageDescriptionLabel = getImageDescriptionLabel();
 		return props.isTranslated
 			? `${user} ${hour} ${translated}`
 			: `${user} ${hour} ${translated} ${label}. ${imageDescriptionLabel} ${encryptedMessageLabel} ${readReceipt}`;

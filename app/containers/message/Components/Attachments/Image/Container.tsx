@@ -9,6 +9,7 @@ import AltTextLabel from './AltTextLabel';
 import { type IImageContainer } from './definitions';
 import MessageContext from '../../../Context';
 import { WidthAwareView } from '../../WidthAwareView';
+import { useAltTextSupported } from '../../../../../lib/hooks/useAltTextSupported';
 
 const ImageContainer = ({
 	file,
@@ -17,13 +18,13 @@ const ImageContainer = ({
 	author,
 	msg,
 	imagePreview,
-	imageType,
-	isAltTextSupported = false
+	imageType
 }: IImageContainer): React.ReactElement | null => {
 	'use memo';
 
 	const { user } = useContext(MessageContext);
 	const { status, onPress, url, isEncrypted } = useMediaAutoDownload({ file, author, showAttachment });
+	const isAltTextSupported = useAltTextSupported();
 	const altText = isAltTextSupported ? msg : undefined;
 
 	const image = (
