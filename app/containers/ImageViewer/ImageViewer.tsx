@@ -135,17 +135,16 @@ export const ImageViewer = ({ uri = '', width, height, altText, isAnimated, ...p
 	const { colors } = useTheme();
 
 	const trimmedAltText = altText?.trim();
-	const hasAltText = !!trimmedAltText;
 
 	return (
 		<View importantForAccessibility='no' style={[styles.container, { width, height, backgroundColor: colors.surfaceNeutral }]}>
 			<GestureDetector gesture={gesture}>
 				<Animated.View accessible={false} onLayout={onLayout} style={[styles.flex, style]}>
 					<Touch
-						accessible={hasAltText}
-						accessibilityLabel={trimmedAltText}
-						accessibilityRole={isAnimated && hasAltText ? 'button' : 'image'}
-						accessibilityHint={isAnimated && hasAltText ? I18n.t('A11y_image_viewer_gif_hint') : undefined}
+						accessible
+						accessibilityLabel={trimmedAltText ?? I18n.t('A11y_image_no_description')}
+						accessibilityRole={isAnimated ? 'button' : 'image'}
+						accessibilityHint={isAnimated ? I18n.t('A11y_image_viewer_gif_hint') : undefined}
 						onPress={handleGifPlayback}
 						style={styles.flex}
 						rectButtonStyle={styles.flex}>

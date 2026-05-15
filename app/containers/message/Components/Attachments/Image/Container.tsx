@@ -10,6 +10,7 @@ import { type IImageContainer } from './definitions';
 import MessageContext from '../../../Context';
 import { WidthAwareView } from '../../WidthAwareView';
 import { useAltTextSupported } from '../../../../../lib/hooks/useAltTextSupported';
+import I18n from '../../../../../i18n';
 
 const ImageContainer = ({
 	file,
@@ -26,9 +27,11 @@ const ImageContainer = ({
 	const { status, onPress, url, isEncrypted } = useMediaAutoDownload({ file, author, showAttachment });
 	const isAltTextSupported = useAltTextSupported();
 	const altText = isAltTextSupported ? msg : undefined;
+	// When no description and no caption above, fall back to a generic label so screen readers don't announce just "image button".
+	const accessibilityLabel = altText ?? (msg ? undefined : I18n.t('A11y_image_no_description'));
 
 	const image = (
-		<Button accessibilityLabel={altText} onPress={onPress}>
+		<Button accessibilityLabel={accessibilityLabel} onPress={onPress}>
 			<WidthAwareView>
 				<MessageImage uri={url} status={status} encrypted={isEncrypted} imagePreview={imagePreview} imageType={imageType} />
 			</WidthAwareView>

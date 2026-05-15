@@ -9,6 +9,7 @@
   "A11y_appearance_show_alerts_as": "Exibir alertas como",
   "A11y_appearance_toast_dismissed_automatically": "Dispensado automaticamente",
   "A11y_appearance_toasts": "Toasts",
+  "A11y_image_no_description": "Image without description",
   "A11y_image_viewer_gif_hint": "Toque duas vezes para reproduzir ou pausar",
   "A11y_in_app_notification": "Nova mensagem de {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Dispensar",

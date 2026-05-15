@@ -9,6 +9,7 @@
   "A11y_appearance_show_alerts_as": "Zobrazit upozornění jako",
   "A11y_appearance_toast_dismissed_automatically": "Automaticky odmítnuto",
   "A11y_appearance_toasts": "Toast upozornění",
+  "A11y_image_no_description": "Image without description",
   "A11y_image_viewer_gif_hint": "Dvojitým klepnutím přehrajete nebo pozastavíte",
   "A11y_in_app_notification": "Nová zpráva od {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Zavřít",

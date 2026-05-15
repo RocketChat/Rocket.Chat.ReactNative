@@ -5,6 +5,7 @@
   "A11y_appearance_show_alerts_as": "Mostrar alertas como",
   "A11y_appearance_toast_dismissed_automatically": "Se cierra automáticamente",
   "A11y_appearance_toasts": "Toasts",
+  "A11y_image_no_description": "Image without description",
   "A11y_image_viewer_gif_hint": "Toca dos veces para reproducir o pausar",
   "A11y_in_app_notification": "Nuevo mensaje de {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Descartar",

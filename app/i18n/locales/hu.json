@@ -9,6 +9,7 @@
   "A11y_appearance_show_alerts_as": "Figyelmeztetések megjelenítése így:",
   "A11y_appearance_toast_dismissed_automatically": "Automatikusan bezáródik",
   "A11y_appearance_toasts": "Rövid értesítések (toast)",
+  "A11y_image_no_description": "Image without description",
   "A11y_image_viewer_gif_hint": "Koppintson duplán a lejátszáshoz vagy szüneteltetéshez",
   "A11y_in_app_notification": "Új üzenet érkezett {{name}}-tól: {{message}}",
   "A11y_incoming_call_dismiss": "Elutasítás",

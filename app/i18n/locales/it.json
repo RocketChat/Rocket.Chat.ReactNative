@@ -9,6 +9,7 @@
   "A11y_appearance_show_alerts_as": "Mostra avvisi come",
   "A11y_appearance_toast_dismissed_automatically": "Ignorato automaticamente",
   "A11y_appearance_toasts": "Notifiche toast",
+  "A11y_image_no_description": "Image without description",
   "A11y_image_viewer_gif_hint": "Tocca due volte per riprodurre o mettere in pausa",
   "A11y_in_app_notification": "Nuovo messaggio da {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Ignora",

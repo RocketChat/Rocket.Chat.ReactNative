@@ -9,6 +9,7 @@
   "A11y_appearance_show_alerts_as": "Näytä hälytykset seuraavasti",
   "A11y_appearance_toast_dismissed_automatically": "Sulkeutuu automaattisesti",
   "A11y_appearance_toasts": "Toasts",
+  "A11y_image_no_description": "Image without description",
   "A11y_image_viewer_gif_hint": "Toista tai keskeytä kaksoisnapauttamalla",
   "A11y_in_app_notification": "Uusi viesti {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Hylkää",

@@ -9,6 +9,7 @@
   "A11y_appearance_show_alerts_as": "அறிவிப்புகளை இவ்வாறு காட்டு:",
   "A11y_appearance_toast_dismissed_automatically": "தானாகவே தள்ளுபடி செய்யப்பட்டது",
   "A11y_appearance_toasts": "டோஸ்ட்‌ஸ்",
+  "A11y_image_no_description": "Image without description",
   "A11y_image_viewer_gif_hint": "இயக்க அல்லது இடைநிறுத்த இருமுறை தட்டவும்",
   "A11y_in_app_notification": "{{name}}-இருந்து புதிய செய்தி: {{message}}",
   "A11y_incoming_call_dismiss": "தள்ளு",

@@ -5,6 +5,7 @@
   "A11y_appearance_show_alerts_as": "Uyarıları şu şekilde göster",
   "A11y_appearance_toast_dismissed_automatically": "Otomatik olarak kapatılır",
   "A11y_appearance_toasts": "Toast bildirimleri",
+  "A11y_image_no_description": "Image without description",
   "A11y_image_viewer_gif_hint": "Oynatmak veya duraklatmak için çift dokunun",
   "A11y_in_app_notification": "Yeni mesaj {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Dismiss et.",

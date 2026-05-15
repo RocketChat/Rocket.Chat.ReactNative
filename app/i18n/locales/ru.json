@@ -9,6 +9,7 @@
   "A11y_appearance_show_alerts_as": "Показывать уведомления как",
   "A11y_appearance_toast_dismissed_automatically": "Отклонено автоматически",
   "A11y_appearance_toasts": "Тосты",
+  "A11y_image_no_description": "Image without description",
   "A11y_image_viewer_gif_hint": "Дважды нажмите, чтобы воспроизвести или поставить на паузу",
   "A11y_in_app_notification": "Новое сообщение от {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Отклонить",
