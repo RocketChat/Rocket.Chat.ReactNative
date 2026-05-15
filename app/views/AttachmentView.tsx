@@ -1,7 +1,7 @@
 import { CameraRoll } from '@react-native-camera-roll/camera-roll';
 import { useHeaderHeight } from '@react-navigation/elements';
 import { ResizeMode, Video } from 'expo-av';
-import React from 'react';
+import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { PermissionsAndroid, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
@@ -34,7 +34,7 @@ const RenderContent = ({
 	attachment: IAttachment;
 	altText?: string;
 }) => {
-	const videoRef = React.useRef<Video>(null);
+	const videoRef = useRef<Video>(null);
 	const insets = useSafeAreaInsets();
 	const { width, height } = useWindowDimensions();
 	const headerHeight = useHeaderHeight();
@@ -47,7 +47,7 @@ const RenderContent = ({
 		shallowEqual
 	);
 
-	React.useLayoutEffect(() => {
+	useLayoutEffect(() => {
 		const blurSub = navigation.addListener('blur', () => {
 			if (videoRef.current && videoRef.current.stopAsync) {
 				videoRef.current.stopAsync();
@@ -104,7 +104,7 @@ const AttachmentView = (): React.ReactElement => {
 	const {
 		params: { attachment }
 	} = useAppRoute<TNavigation, 'AttachmentView'>();
-	const [loading, setLoading] = React.useState(true);
+	const [loading, setLoading] = useState(true);
 	const { colors } = useTheme();
 	const isAltTextSupported = useAltTextSupported();
 	const altText = isAltTextSupported && attachment.image_url ? attachment.description ?? attachment.altText : undefined;
@@ -118,7 +118,7 @@ const AttachmentView = (): React.ReactElement => {
 		shallowEqual
 	);
 
-	const getTitle = React.useCallback(() => {
+	const getTitle = useCallback(() => {
 		const { image_url, video_url, title_link, title } = attachment;
 
 		if (title) {
@@ -136,7 +136,7 @@ const AttachmentView = (): React.ReactElement => {
 		return parts.at(-1);
 	}, [attachment]);
 
-	const handleSave = React.useCallback(async () => {
+	const handleSave = useCallback(async () => {
 		const { title_link, image_url, image_type, video_url, video_type } = attachment;
 		// When the attachment is a video, the video_url refers to local file and the title_link to the link
 		const url = video_url || title_link || image_url;
@@ -180,7 +180,7 @@ const AttachmentView = (): React.ReactElement => {
 		setLoading(false);
 	}, [attachment, baseUrl, user.id, user.token]);
 
-	React.useLayoutEffect(() => {
+	useLayoutEffect(() => {
 		const title = getTitle();
 		navigation.setOptions({
 			title: title || '',

@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { useState } from 'react';
 import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -92,9 +92,7 @@ interface AttachmentActionSheetProps {
 	onSave: (attachment: Partial<IShareAttachment>) => void;
 }
 
-export const AttachmentActionSheet = memo(({ attachment, onSave }: AttachmentActionSheetProps) => {
-	'use memo';
-
+export const AttachmentActionSheet = ({ attachment, onSave }: AttachmentActionSheetProps) => {
 	const { colors } = useTheme();
 	const { hideActionSheet } = useActionSheet();
 	const altTextSupported = useAltTextSupported();
@@ -153,6 +151,4 @@ export const AttachmentActionSheet = memo(({ attachment, onSave }: AttachmentAct
 			/>
 		</KeyboardAwareScrollView>
 	);
-});
-
-AttachmentActionSheet.displayName = 'AttachmentActionSheet';
+};

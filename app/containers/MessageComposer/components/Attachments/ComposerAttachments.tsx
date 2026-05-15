@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { FlatList, Image, Pressable, StyleSheet, View } from 'react-native';
 
 import { BUTTON_HIT_SLOP } from '../../../message/utils';
@@ -60,9 +60,7 @@ const ThumbContent = ({ path, mime }: { path: string; mime?: string }) => {
 	);
 };
 
-export const ComposerAttachments = memo(() => {
-	'use memo';
-
+export const ComposerAttachments = () => {
 	const attachments = useComposerAttachments();
 	const { removeAttachment, updateAttachment } = useMessageComposerApi();
 	const { colors } = useTheme();
@@ -124,6 +122,4 @@ export const ComposerAttachments = memo(() => {
 			)}
 		/>
 	);
-});
-
-ComposerAttachments.displayName = 'ComposerAttachments';
+};
