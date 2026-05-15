@@ -89,7 +89,7 @@ exports[`Story Snapshots: Archived should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  This message is inside an archived room.   "
+                accessibilityLabel="diego.mello 10:00:00 AM This message is inside an archived room."
                 accessible={true}
                 style={
                   {
@@ -551,7 +551,7 @@ exports[`Story Snapshots: ArchivedLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  This message is inside an archived room.   "
+                accessibilityLabel="diego.mello 10:00:00 AM This message is inside an archived room."
                 accessible={true}
                 style={
                   {
@@ -1013,7 +1013,7 @@ exports[`Story Snapshots: AttachmentWithTextAndLink should match snapshot 1`] = 
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  undefined.   "
+                accessibilityLabel="diego.mello 10:00:00 AM undefined."
                 accessible={true}
                 style={
                   {
@@ -1511,6 +1511,7 @@ exports[`Story Snapshots: AttachmentWithTextAndLink should match snapshot 1`] = 
                             }
                           >
                             <View
+                              accessibilityLabel="Image without description"
                               accessibilityRole="imagebutton"
                               accessibilityState={
                                 {
@@ -1775,7 +1776,7 @@ exports[`Story Snapshots: AttachmentWithTextAndLinkLargeFont should match snapsh
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  undefined.   "
+                accessibilityLabel="diego.mello 10:00:00 AM undefined."
                 accessible={true}
                 style={
                   {
@@ -2273,6 +2274,7 @@ exports[`Story Snapshots: AttachmentWithTextAndLinkLargeFont should match snapsh
                             }
                           >
                             <View
+                              accessibilityLabel="Image without description"
                               accessibilityRole="imagebutton"
                               accessibilityState={
                                 {
@@ -2537,7 +2539,7 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="no.avatar 10:00:00 AM  This message has no avatar..   "
+                accessibilityLabel="no.avatar 10:00:00 AM This message has no avatar.."
                 accessible={true}
                 style={
                   {
@@ -2986,7 +2988,7 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  This message uses the user's profile picture as the avatar..   "
+                accessibilityLabel="diego.mello 10:00:00 AM This message uses the user's profile picture as the avatar.."
                 accessible={true}
                 style={
                   {
@@ -3435,7 +3437,7 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  This message uses a Unicode emoji as the avatar..   "
+                accessibilityLabel="diego.mello 10:00:00 AM This message uses a Unicode emoji as the avatar.."
                 accessible={true}
                 style={
                   {
@@ -3876,7 +3878,7 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  This message uses a custom animated emoji as the avatar..   "
+                accessibilityLabel="diego.mello 10:00:00 AM This message uses a custom animated emoji as the avatar.."
                 accessible={true}
                 style={
                   {
@@ -4333,7 +4335,7 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  This message uses a custom static emoji as the avatar..   "
+                accessibilityLabel="diego.mello 10:00:00 AM This message uses a custom static emoji as the avatar.."
                 accessible={true}
                 style={
                   {
@@ -4803,7 +4805,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Message.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Message."
                 accessible={true}
                 style={
                   {
@@ -5252,7 +5254,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..   "
+                accessibilityLabel="diego.mello 10:00:00 AM Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.."
                 accessible={true}
                 style={
                   {
@@ -5714,7 +5716,7 @@ exports[`Story Snapshots: BasicLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Message.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Message."
                 accessible={true}
                 style={
                   {
@@ -6163,7 +6165,7 @@ exports[`Story Snapshots: BasicLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..   "
+                accessibilityLabel="diego.mello 10:00:00 AM Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.."
                 accessible={true}
                 style={
                   {
@@ -6625,7 +6627,7 @@ exports[`Story Snapshots: BlockQuote should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  > Testing block quote.   "
+                accessibilityLabel="diego.mello 10:00:00 AM > Testing block quote."
                 accessible={true}
                 style={
                   {
@@ -7105,8 +7107,8 @@ exports[`Story Snapshots: BlockQuote should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  > Testing block quote
-Testing block quote.   "
+                accessibilityLabel="diego.mello 10:00:00 AM > Testing block quote
+Testing block quote."
                 accessible={true}
                 style={
                   {
@@ -7648,7 +7650,7 @@ exports[`Story Snapshots: BlockQuoteLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  > Testing block quote.   "
+                accessibilityLabel="diego.mello 10:00:00 AM > Testing block quote."
                 accessible={true}
                 style={
                   {
@@ -8128,8 +8130,8 @@ exports[`Story Snapshots: BlockQuoteLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  > Testing block quote
-Testing block quote.   "
+                accessibilityLabel="diego.mello 10:00:00 AM > Testing block quote
+Testing block quote."
                 accessible={true}
                 style={
                   {
@@ -8671,7 +8673,7 @@ exports[`Story Snapshots: Broadcast should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Broadcasted message.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Broadcasted message."
                 accessible={true}
                 style={
                   {
@@ -9253,7 +9255,7 @@ exports[`Story Snapshots: BroadcastLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Broadcasted message.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Broadcasted message."
                 accessible={true}
                 style={
                   {
@@ -9835,7 +9837,7 @@ exports[`Story Snapshots: CollapsedAttachments should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Message.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Message."
                 accessible={true}
                 style={
                   {
@@ -10436,7 +10438,7 @@ exports[`Story Snapshots: CollapsedAttachments should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Message.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Message."
                 accessible={true}
                 style={
                   {
@@ -11252,7 +11254,7 @@ exports[`Story Snapshots: CollapsedAttachmentsLargeFont should match snapshot 1`
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Message.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Message."
                 accessible={true}
                 style={
                   {
@@ -11853,7 +11855,7 @@ exports[`Story Snapshots: CollapsedAttachmentsLargeFont should match snapshot 1`
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Message.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Message."
                 accessible={true}
                 style={
                   {
@@ -12669,7 +12671,7 @@ exports[`Story Snapshots: CollapsibleAttachmentWithText should match snapshot 1`
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  This is the main message body..   "
+                accessibilityLabel="diego.mello 10:00:00 AM This is the main message body.."
                 accessible={true}
                 style={
                   {
@@ -13272,7 +13274,7 @@ exports[`Story Snapshots: CollapsibleAttachmentWithText should match snapshot 1`
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  This is the main message body..   "
+                accessibilityLabel="diego.mello 10:00:00 AM This is the main message body.."
                 accessible={true}
                 style={
                   {
@@ -14229,7 +14231,7 @@ exports[`Story Snapshots: CollapsibleAttachmentWithTextLargeFont should match sn
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  This is the main message body..   "
+                accessibilityLabel="diego.mello 10:00:00 AM This is the main message body.."
                 accessible={true}
                 style={
                   {
@@ -14832,7 +14834,7 @@ exports[`Story Snapshots: CollapsibleAttachmentWithTextLargeFont should match sn
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  This is the main message body..   "
+                accessibilityLabel="diego.mello 10:00:00 AM This is the main message body.."
                 accessible={true}
                 style={
                   {
@@ -15789,7 +15791,7 @@ exports[`Story Snapshots: ColoredAttachments should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  undefined.   "
+                accessibilityLabel="diego.mello 10:00:00 AM undefined."
                 accessible={true}
                 style={
                   {
@@ -17013,7 +17015,7 @@ exports[`Story Snapshots: ColoredAttachmentsLargeFont should match snapshot 1`] 
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  undefined.   "
+                accessibilityLabel="diego.mello 10:00:00 AM undefined."
                 accessible={true}
                 style={
                   {
@@ -18237,7 +18239,7 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Message.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Message."
                 accessible={true}
                 style={
                   {
@@ -19041,7 +19043,7 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Message.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Message."
                 accessible={true}
                 style={
                   {
@@ -20116,7 +20118,7 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Message.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Message."
                 accessible={true}
                 style={
                   {
@@ -20920,7 +20922,7 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Message.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Message."
                 accessible={true}
                 style={
                   {
@@ -21995,7 +21997,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="rocket.cat 10:00:00 AM  Fourth message.   "
+                accessibilityLabel="rocket.cat 10:00:00 AM Fourth message."
                 accessible={true}
                 style={
                   {
@@ -22506,7 +22508,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Third message.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Third message."
                 accessible={true}
                 style={
                   {
@@ -22999,7 +23001,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="rocket.cat 10:00:00 AM  Second message.   "
+                accessibilityLabel="rocket.cat 10:00:00 AM Second message."
                 accessible={true}
                 style={
                   {
@@ -23215,7 +23217,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="rocket.cat 10:00:00 AM  Second message.   "
+                accessibilityLabel="rocket.cat 10:00:00 AM Second message."
                 accessible={true}
                 style={
                   {
@@ -23721,7 +23723,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  First message.   "
+                accessibilityLabel="diego.mello 10:00:00 AM First message."
                 accessible={true}
                 style={
                   {
@@ -24183,7 +24185,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
               style={{}}
             >
               <View
-                accessibilityLabel="rocket.cat 10:00:00 AM  Fourth message.   "
+                accessibilityLabel="rocket.cat 10:00:00 AM Fourth message."
                 accessible={true}
                 style={
                   {
@@ -24694,7 +24696,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Third message.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Third message."
                 accessible={true}
                 style={
                   {
@@ -25187,7 +25189,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
               style={{}}
             >
               <View
-                accessibilityLabel="rocket.cat 10:00:00 AM  Second message.   "
+                accessibilityLabel="rocket.cat 10:00:00 AM Second message."
                 accessible={true}
                 style={
                   {
@@ -25403,7 +25405,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
               style={{}}
             >
               <View
-                accessibilityLabel="rocket.cat 10:00:00 AM  Second message.   "
+                accessibilityLabel="rocket.cat 10:00:00 AM Second message."
                 accessible={true}
                 style={
                   {
@@ -25909,7 +25911,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  First message.   "
+                accessibilityLabel="diego.mello 10:00:00 AM First message."
                 accessible={true}
                 style={
                   {
@@ -26371,7 +26373,7 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  This is a discussion.   "
+                accessibilityLabel="diego.mello 10:00:00 AM This is a discussion."
                 accessible={true}
                 style={
                   {
@@ -26941,7 +26943,7 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  This is a discussion.   "
+                accessibilityLabel="diego.mello 10:00:00 AM This is a discussion."
                 accessible={true}
                 style={
                   {
@@ -27513,7 +27515,7 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..   "
+                accessibilityLabel="diego.mello 10:00:00 AM Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.."
                 accessible={true}
                 style={
                   {
@@ -28085,7 +28087,7 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  This is a discussion.   "
+                accessibilityLabel="diego.mello 10:00:00 AM This is a discussion."
                 accessible={true}
                 style={
                   {
@@ -28670,7 +28672,7 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  This is a discussion.   "
+                accessibilityLabel="diego.mello 10:00:00 AM This is a discussion."
                 accessible={true}
                 style={
                   {
@@ -29240,7 +29242,7 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  This is a discussion.   "
+                accessibilityLabel="diego.mello 10:00:00 AM This is a discussion."
                 accessible={true}
                 style={
                   {
@@ -29812,7 +29814,7 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..   "
+                accessibilityLabel="diego.mello 10:00:00 AM Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.."
                 accessible={true}
                 style={
                   {
@@ -30384,7 +30386,7 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  This is a discussion.   "
+                accessibilityLabel="diego.mello 10:00:00 AM This is a discussion."
                 accessible={true}
                 style={
                   {
@@ -30969,7 +30971,7 @@ exports[`Story Snapshots: Edited should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Message header.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Message header."
                 accessible={true}
                 style={
                   {
@@ -31454,7 +31456,7 @@ exports[`Story Snapshots: Edited should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Message without header.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Message without header."
                 accessible={true}
                 style={
                   {
@@ -31719,7 +31721,7 @@ exports[`Story Snapshots: EditedLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Message header.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Message header."
                 accessible={true}
                 style={
                   {
@@ -32204,7 +32206,7 @@ exports[`Story Snapshots: EditedLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Message without header.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Message without header."
                 accessible={true}
                 style={
                   {
@@ -32469,7 +32471,7 @@ exports[`Story Snapshots: Editing should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Message being edited.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Message being edited."
                 accessible={true}
                 style={
                   {
@@ -32931,7 +32933,7 @@ exports[`Story Snapshots: EditingLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Message being edited.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Message being edited."
                 accessible={true}
                 style={
                   {
@@ -33393,7 +33395,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  👊🤙👏.   "
+                accessibilityLabel="diego.mello 10:00:00 AM 👊🤙👏."
                 accessible={true}
                 style={
                   {
@@ -33841,7 +33843,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  👏.   "
+                accessibilityLabel="diego.mello 10:00:00 AM 👏."
                 accessible={true}
                 style={
                   {
@@ -34270,7 +34272,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  :react_rocket: :nyan_rocket: :marioparty:.   "
+                accessibilityLabel="diego.mello 10:00:00 AM :react_rocket: :nyan_rocket: :marioparty:."
                 accessible={true}
                 style={
                   {
@@ -34812,7 +34814,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  :react_rocket:.   "
+                accessibilityLabel="diego.mello 10:00:00 AM :react_rocket:."
                 accessible={true}
                 style={
                   {
@@ -35266,7 +35268,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  🤙:react_rocket:.   "
+                accessibilityLabel="diego.mello 10:00:00 AM 🤙:react_rocket:."
                 accessible={true}
                 style={
                   {
@@ -35739,7 +35741,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  🤙:react_rocket:🤙🤙.   "
+                accessibilityLabel="diego.mello 10:00:00 AM 🤙:react_rocket:🤙🤙."
                 accessible={true}
                 style={
                   {
@@ -36258,7 +36260,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  👊🤙👏.   "
+                accessibilityLabel="diego.mello 10:00:00 AM 👊🤙👏."
                 accessible={true}
                 style={
                   {
@@ -36706,7 +36708,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  👏.   "
+                accessibilityLabel="diego.mello 10:00:00 AM 👏."
                 accessible={true}
                 style={
                   {
@@ -37135,7 +37137,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  :react_rocket: :nyan_rocket: :marioparty:.   "
+                accessibilityLabel="diego.mello 10:00:00 AM :react_rocket: :nyan_rocket: :marioparty:."
                 accessible={true}
                 style={
                   {
@@ -37677,7 +37679,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  :react_rocket:.   "
+                accessibilityLabel="diego.mello 10:00:00 AM :react_rocket:."
                 accessible={true}
                 style={
                   {
@@ -38131,7 +38133,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  🤙:react_rocket:.   "
+                accessibilityLabel="diego.mello 10:00:00 AM 🤙:react_rocket:."
                 accessible={true}
                 style={
                   {
@@ -38604,7 +38606,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  🤙:react_rocket:🤙🤙.   "
+                accessibilityLabel="diego.mello 10:00:00 AM 🤙:react_rocket:🤙🤙."
                 accessible={true}
                 style={
                   {
@@ -39123,7 +39125,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Message.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Message."
                 accessible={true}
                 style={
                   {
@@ -39644,7 +39646,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Message Encrypted without Header.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Message Encrypted without Header."
                 accessible={true}
                 style={
                   {
@@ -39932,7 +39934,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Message Encrypted with Reactions.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Message Encrypted with Reactions."
                 accessible={true}
                 style={
                   {
@@ -41027,7 +41029,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message Thread reply encrypted.   "
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message Thread reply encrypted."
                   accessible={true}
                   style={
                     [
@@ -41320,7 +41322,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Temp message encrypted.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Temp message encrypted."
                 accessible={true}
                 style={
                   {
@@ -41846,7 +41848,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Message Edited encrypted.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Message Edited encrypted."
                 accessible={true}
                 style={
                   {
@@ -42291,7 +42293,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
       orderKey="«r2b»"
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM  This message has error and is encrypted.   "
+        accessibilityLabel="diego.mello 10:00:00 AM This message has error and is encrypted."
         accessible={true}
         style={
           {
@@ -42879,7 +42881,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Read Receipt encrypted with Header.   Message was read"
+                accessibilityLabel="diego.mello 10:00:00 AM Read Receipt encrypted with Header. Message was read"
                 accessible={true}
                 style={
                   {
@@ -43430,7 +43432,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Read Receipt encrypted without Header.   Message was read"
+                accessibilityLabel="diego.mello 10:00:00 AM Read Receipt encrypted without Header. Message was read"
                 accessible={true}
                 style={
                   {
@@ -43761,7 +43763,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Message.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Message."
                 accessible={true}
                 style={
                   {
@@ -44282,7 +44284,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Message Encrypted without Header.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Message Encrypted without Header."
                 accessible={true}
                 style={
                   {
@@ -44570,7 +44572,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Message Encrypted with Reactions.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Message Encrypted with Reactions."
                 accessible={true}
                 style={
                   {
@@ -45665,7 +45667,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message Thread reply encrypted.   "
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message Thread reply encrypted."
                   accessible={true}
                   style={
                     [
@@ -45958,7 +45960,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Temp message encrypted.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Temp message encrypted."
                 accessible={true}
                 style={
                   {
@@ -46484,7 +46486,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Message Edited encrypted.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Message Edited encrypted."
                 accessible={true}
                 style={
                   {
@@ -46929,7 +46931,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
       orderKey="«r2k»"
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM  This message has error and is encrypted.   "
+        accessibilityLabel="diego.mello 10:00:00 AM This message has error and is encrypted."
         accessible={true}
         style={
           {
@@ -47517,7 +47519,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Read Receipt encrypted with Header.   Message was read"
+                accessibilityLabel="diego.mello 10:00:00 AM Read Receipt encrypted with Header. Message was read"
                 accessible={true}
                 style={
                   {
@@ -48068,7 +48070,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Read Receipt encrypted without Header.   Message was read"
+                accessibilityLabel="diego.mello 10:00:00 AM Read Receipt encrypted without Header. Message was read"
                 accessible={true}
                 style={
                   {
@@ -48323,7 +48325,7 @@ exports[`Story Snapshots: Error should match snapshot 1`] = `
       orderKey="«r2n»"
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM  This message has error.   "
+        accessibilityLabel="diego.mello 10:00:00 AM This message has error."
         accessible={true}
         style={
           {
@@ -48764,7 +48766,7 @@ exports[`Story Snapshots: Error should match snapshot 1`] = `
       orderKey="«r2o»"
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM  This message has error too.   "
+        accessibilityLabel="diego.mello 10:00:00 AM This message has error too."
         accessible={true}
         style={
           {
@@ -48985,7 +48987,7 @@ exports[`Story Snapshots: ErrorLargeFont should match snapshot 1`] = `
       orderKey="«r2p»"
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM  This message has error.   "
+        accessibilityLabel="diego.mello 10:00:00 AM This message has error."
         accessible={true}
         style={
           {
@@ -49426,7 +49428,7 @@ exports[`Story Snapshots: ErrorLargeFont should match snapshot 1`] = `
       orderKey="«r2q»"
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM  This message has error too.   "
+        accessibilityLabel="diego.mello 10:00:00 AM This message has error too."
         accessible={true}
         style={
           {
@@ -49723,7 +49725,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Check out this Python file.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Check out this Python file."
                 accessible={true}
                 style={
                   {
@@ -50311,7 +50313,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  TypeScript component.   "
+                accessibilityLabel="diego.mello 10:00:00 AM TypeScript component."
                 accessible={true}
                 style={
                   {
@@ -50899,7 +50901,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Configuration file.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Configuration file."
                 accessible={true}
                 style={
                   {
@@ -51487,7 +51489,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  File with description.   "
+                accessibilityLabel="diego.mello 10:00:00 AM File with description."
                 accessible={true}
                 style={
                   {
@@ -52152,7 +52154,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  undefined.   "
+                accessibilityLabel="diego.mello 10:00:00 AM undefined."
                 accessible={true}
                 style={
                   {
@@ -52592,7 +52594,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Check out this Python file.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Check out this Python file."
                 accessible={true}
                 style={
                   {
@@ -53180,7 +53182,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  TypeScript component.   "
+                accessibilityLabel="diego.mello 10:00:00 AM TypeScript component."
                 accessible={true}
                 style={
                   {
@@ -53768,7 +53770,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Configuration file.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Configuration file."
                 accessible={true}
                 style={
                   {
@@ -54356,7 +54358,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  File with description.   "
+                accessibilityLabel="diego.mello 10:00:00 AM File with description."
                 accessible={true}
                 style={
                   {
@@ -55021,7 +55023,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  undefined.   "
+                accessibilityLabel="diego.mello 10:00:00 AM undefined."
                 accessible={true}
                 style={
                   {
@@ -55448,7 +55450,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  multi file.   "
+                accessibilityLabel="diego.mello 10:00:00 AM multi file."
                 accessible={true}
                 style={
                   {
@@ -56204,7 +56206,7 @@ exports[`Story Snapshots: FullName should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="Diego Mello 10:00:00 AM  Message.   "
+                accessibilityLabel="Diego Mello 10:00:00 AM Message."
                 accessible={true}
                 style={
                   {
@@ -56666,7 +56668,7 @@ exports[`Story Snapshots: FullNameLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="Diego Mello 10:00:00 AM  Message.   "
+                accessibilityLabel="Diego Mello 10:00:00 AM Message."
                 accessible={true}
                 style={
                   {
@@ -57128,7 +57130,7 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  ....   "
+                accessibilityLabel="diego.mello 10:00:00 AM ...."
                 accessible={true}
                 style={
                   {
@@ -57577,7 +57579,7 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 10:00:00 AM  Different user.   "
+                accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 10:00:00 AM Different user."
                 accessible={true}
                 style={
                   {
@@ -58026,7 +58028,7 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  This is the third message.   "
+                accessibilityLabel="diego.mello 10:00:00 AM This is the third message."
                 accessible={true}
                 style={
                   {
@@ -58242,7 +58244,7 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  This is the second message.   "
+                accessibilityLabel="diego.mello 10:00:00 AM This is the second message."
                 accessible={true}
                 style={
                   {
@@ -58458,7 +58460,7 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  This is the first message.   "
+                accessibilityLabel="diego.mello 10:00:00 AM This is the first message."
                 accessible={true}
                 style={
                   {
@@ -58920,7 +58922,7 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  ....   "
+                accessibilityLabel="diego.mello 10:00:00 AM ...."
                 accessible={true}
                 style={
                   {
@@ -59369,7 +59371,7 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 10:00:00 AM  Different user.   "
+                accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 10:00:00 AM Different user."
                 accessible={true}
                 style={
                   {
@@ -59818,7 +59820,7 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  This is the third message.   "
+                accessibilityLabel="diego.mello 10:00:00 AM This is the third message."
                 accessible={true}
                 style={
                   {
@@ -60034,7 +60036,7 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  This is the second message.   "
+                accessibilityLabel="diego.mello 10:00:00 AM This is the second message."
                 accessible={true}
                 style={
                   {
@@ -60250,7 +60252,7 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  This is the first message.   "
+                accessibilityLabel="diego.mello 10:00:00 AM This is the first message."
                 accessible={true}
                 style={
                   {
@@ -60728,7 +60730,7 @@ exports[`Story Snapshots: Ignored should match snapshot 1`] = `
                 }
               >
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  undefined.   "
+                  accessibilityLabel="diego.mello 10:00:00 AM undefined."
                   accessible={true}
                   style={
                     [
@@ -61046,7 +61048,7 @@ exports[`Story Snapshots: IgnoredLargeFont should match snapshot 1`] = `
                 }
               >
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  undefined.   "
+                  accessibilityLabel="diego.mello 10:00:00 AM undefined."
                   accessible={true}
                   style={
                     [
@@ -61348,7 +61350,7 @@ exports[`Story Snapshots: InlineKatex should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  \\(xˆ2 + yˆ2 - zˆ2\\).   "
+                accessibilityLabel="diego.mello 10:00:00 AM \\(xˆ2 + yˆ2 - zˆ2\\)."
                 accessible={true}
                 style={
                   {
@@ -61796,7 +61798,7 @@ exports[`Story Snapshots: InlineKatexLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  \\(xˆ2 + yˆ2 - zˆ2\\).   "
+                accessibilityLabel="diego.mello 10:00:00 AM \\(xˆ2 + yˆ2 - zˆ2\\)."
                 accessible={true}
                 style={
                   {
@@ -62244,7 +62246,7 @@ exports[`Story Snapshots: Katex should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  \\[ \\color{black} \\colorbox{white}{ \\boxed{ \\begin{matrix} \\;\\;\\;\\; \\overlinesegment {\\underlinesegment{ \\Huge Test\\; Test \\; in \\; Test} } & \\\\ \\;\\;\\textit{develop}\\end{matrix} } }\\].   "
+                accessibilityLabel="diego.mello 10:00:00 AM \\[ \\color{black} \\colorbox{white}{ \\boxed{ \\begin{matrix} \\;\\;\\;\\; \\overlinesegment {\\underlinesegment{ \\Huge Test\\; Test \\; in \\; Test} } & \\\\ \\;\\;\\textit{develop}\\end{matrix} } }\\]."
                 accessible={true}
                 style={
                   {
@@ -62660,7 +62662,7 @@ exports[`Story Snapshots: KatexArray should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  \\begin{array}{|c|c|c|c|c|c|} \\hline \\text{...} & \\text{...} \\\\ \\hline \\end{array}.   "
+                accessibilityLabel="diego.mello 10:00:00 AM \\begin{array}{|c|c|c|c|c|c|} \\hline \\text{...} & \\text{...} \\\\ \\hline \\end{array}."
                 accessible={true}
                 style={
                   {
@@ -63076,7 +63078,7 @@ exports[`Story Snapshots: KatexArrayLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  \\begin{array}{|c|c|c|c|c|c|} \\hline \\text{...} & \\text{...} \\\\ \\hline \\end{array}.   "
+                accessibilityLabel="diego.mello 10:00:00 AM \\begin{array}{|c|c|c|c|c|c|} \\hline \\text{...} & \\text{...} \\\\ \\hline \\end{array}."
                 accessible={true}
                 style={
                   {
@@ -63492,7 +63494,7 @@ exports[`Story Snapshots: KatexLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  \\[ \\color{black} \\colorbox{white}{ \\boxed{ \\begin{matrix} \\;\\;\\;\\; \\overlinesegment {\\underlinesegment{ \\Huge Test\\; Test \\; in \\; Test} } & \\\\ \\;\\;\\textit{develop}\\end{matrix} } }\\].   "
+                accessibilityLabel="diego.mello 10:00:00 AM \\[ \\color{black} \\colorbox{white}{ \\boxed{ \\begin{matrix} \\;\\;\\;\\; \\overlinesegment {\\underlinesegment{ \\Huge Test\\; Test \\; in \\; Test} } & \\\\ \\;\\;\\textit{develop}\\end{matrix} } }\\]."
                 accessible={true}
                 style={
                   {
@@ -63908,9 +63910,9 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  * Dogs
+                accessibilityLabel="diego.mello 10:00:00 AM * Dogs
 * cats
-- cats.   "
+- cats."
                 accessible={true}
                 style={
                   {
@@ -64539,8 +64541,8 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  1. Dogs 
-2. Cats.   "
+                accessibilityLabel="diego.mello 10:00:00 AM 1. Dogs 
+2. Cats."
                 accessible={true}
                 style={
                   {
@@ -65120,7 +65122,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  1. Dogs.   "
+                accessibilityLabel="diego.mello 10:00:00 AM 1. Dogs."
                 accessible={true}
                 style={
                   {
@@ -65611,7 +65613,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  2. Cats.   "
+                accessibilityLabel="diego.mello 10:00:00 AM 2. Cats."
                 accessible={true}
                 style={
                   {
@@ -65882,9 +65884,9 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  * Dogs
+                accessibilityLabel="diego.mello 10:00:00 AM * Dogs
 * cats
-- cats.   "
+- cats."
                 accessible={true}
                 style={
                   {
@@ -66513,8 +66515,8 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  1. Dogs 
-2. Cats.   "
+                accessibilityLabel="diego.mello 10:00:00 AM 1. Dogs 
+2. Cats."
                 accessible={true}
                 style={
                   {
@@ -67094,7 +67096,7 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  1. Dogs.   "
+                accessibilityLabel="diego.mello 10:00:00 AM 1. Dogs."
                 accessible={true}
                 style={
                   {
@@ -67585,7 +67587,7 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  2. Cats.   "
+                accessibilityLabel="diego.mello 10:00:00 AM 2. Cats."
                 accessible={true}
                 style={
                   {
@@ -67856,7 +67858,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM  this is a normal message.   "
+                accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM this is a normal message."
                 accessible={true}
                 style={
                   {
@@ -68305,7 +68307,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM  Edited message.   "
+                accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Edited message."
                 accessible={true}
                 style={
                   {
@@ -69275,7 +69277,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM  Encrypted message.   "
+                accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Encrypted message."
                 accessible={true}
                 style={
                   {
@@ -69720,7 +69722,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
       orderKey="«r46»"
     >
       <View
-        accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM  Error message.   "
+        accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Error message."
         accessible={true}
         style={
           {
@@ -70237,7 +70239,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM  Message with read receipt.   Message was read"
+                accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Message with read receipt. Message was read"
                 accessible={true}
                 style={
                   {
@@ -70717,7 +70719,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM  Message with read receipt.   Message was read"
+                accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Message with read receipt. Message was read"
                 accessible={true}
                 style={
                   {
@@ -72651,7 +72653,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM  this is a normal message.   "
+                accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM this is a normal message."
                 accessible={true}
                 style={
                   {
@@ -73100,7 +73102,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM  Edited message.   "
+                accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Edited message."
                 accessible={true}
                 style={
                   {
@@ -74070,7 +74072,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM  Encrypted message.   "
+                accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Encrypted message."
                 accessible={true}
                 style={
                   {
@@ -74515,7 +74517,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
       orderKey="«r4g»"
     >
       <View
-        accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM  Error message.   "
+        accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Error message."
         accessible={true}
         style={
           {
@@ -75032,7 +75034,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM  Message with read receipt.   Message was read"
+                accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Message with read receipt. Message was read"
                 accessible={true}
                 style={
                   {
@@ -75512,7 +75514,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM  Message with read receipt.   Message was read"
+                accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Message with read receipt. Message was read"
                 accessible={true}
                 style={
                   {
@@ -77446,7 +77448,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  rocket.cat diego.mello all here general @team.   "
+                accessibilityLabel="diego.mello 10:00:00 AM rocket.cat diego.mello all here general @team."
                 accessible={true}
                 style={
                   {
@@ -78074,7 +78076,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  rocket.cat Lorem ipsum dolor diego.mello sit amet, all consectetur adipiscing here elit, sed do eiusmod tempor general incididunt ut labore et dolore magna aliqua..   "
+                accessibilityLabel="diego.mello 10:00:00 AM rocket.cat Lorem ipsum dolor diego.mello sit amet, all consectetur adipiscing here elit, sed do eiusmod tempor general incididunt ut labore et dolore magna aliqua.."
                 accessible={true}
                 style={
                   {
@@ -78697,7 +78699,7 @@ exports[`Story Snapshots: MentionsLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  rocket.cat diego.mello all here general @team.   "
+                accessibilityLabel="diego.mello 10:00:00 AM rocket.cat diego.mello all here general @team."
                 accessible={true}
                 style={
                   {
@@ -79325,7 +79327,7 @@ exports[`Story Snapshots: MentionsLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  rocket.cat Lorem ipsum dolor diego.mello sit amet, all consectetur adipiscing here elit, sed do eiusmod tempor general incididunt ut labore et dolore magna aliqua..   "
+                accessibilityLabel="diego.mello 10:00:00 AM rocket.cat Lorem ipsum dolor diego.mello sit amet, all consectetur adipiscing here elit, sed do eiusmod tempor general incididunt ut labore et dolore magna aliqua.."
                 accessible={true}
                 style={
                   {
@@ -79948,7 +79950,7 @@ exports[`Story Snapshots: Message should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  undefined.   "
+                accessibilityLabel="diego.mello 10:00:00 AM undefined."
                 accessible={true}
                 style={
                   {
@@ -80350,7 +80352,7 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Forwarded message with file inside.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Forwarded message with file inside."
                 accessible={true}
                 style={
                   {
@@ -80935,7 +80937,7 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Forwarded message with nested image.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Forwarded message with nested image."
                 accessible={true}
                 style={
                   {
@@ -81745,7 +81747,7 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  I'm fine!.   Message was not read"
+                accessibilityLabel="diego.mello 10:00:00 AM I'm fine!. Message was not read"
                 accessible={true}
                 style={
                   {
@@ -82225,7 +82227,7 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  I'm fine!.   Message was not read"
+                accessibilityLabel="diego.mello 10:00:00 AM I'm fine!. Message was not read"
                 accessible={true}
                 style={
                   {
@@ -82472,7 +82474,7 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  I'm fine!.   Message was read"
+                accessibilityLabel="diego.mello 10:00:00 AM I'm fine!. Message was read"
                 accessible={true}
                 style={
                   {
@@ -82952,7 +82954,7 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  I'm fine!.   Message was read"
+                accessibilityLabel="diego.mello 10:00:00 AM I'm fine!. Message was read"
                 accessible={true}
                 style={
                   {
@@ -83212,7 +83214,7 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  I'm fine!.   Message was not read"
+                accessibilityLabel="diego.mello 10:00:00 AM I'm fine!. Message was not read"
                 accessible={true}
                 style={
                   {
@@ -83692,7 +83694,7 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  I'm fine!.   Message was not read"
+                accessibilityLabel="diego.mello 10:00:00 AM I'm fine!. Message was not read"
                 accessible={true}
                 style={
                   {
@@ -83939,7 +83941,7 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  I'm fine!.   Message was read"
+                accessibilityLabel="diego.mello 10:00:00 AM I'm fine!. Message was read"
                 accessible={true}
                 style={
                   {
@@ -84419,7 +84421,7 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  I'm fine!.   Message was read"
+                accessibilityLabel="diego.mello 10:00:00 AM I'm fine!. Message was read"
                 accessible={true}
                 style={
                   {
@@ -84679,7 +84681,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  I'm fine!.   "
+                accessibilityLabel="diego.mello 10:00:00 AM I'm fine!."
                 accessible={true}
                 style={
                   {
@@ -85300,7 +85302,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  I'm fine!.   "
+                accessibilityLabel="diego.mello 10:00:00 AM I'm fine!."
                 accessible={true}
                 style={
                   {
@@ -86228,7 +86230,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Looks cool!.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Looks cool!."
                 accessible={true}
                 style={
                   {
@@ -87025,7 +87027,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Yes, I am.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Yes, I am."
                 accessible={true}
                 style={
                   {
@@ -87896,7 +87898,7 @@ exports[`Story Snapshots: MessageWithReplyAndFile should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Here is the file.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Here is the file."
                 accessible={true}
                 style={
                   {
@@ -88504,7 +88506,7 @@ exports[`Story Snapshots: MessageWithReplyAndFile should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Got it!.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Got it!."
                 accessible={true}
                 style={
                   {
@@ -89189,7 +89191,7 @@ exports[`Story Snapshots: MessageWithReplyAndFile should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Multiple files.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Multiple files."
                 accessible={true}
                 style={
                   {
@@ -89961,7 +89963,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Here is the file.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Here is the file."
                 accessible={true}
                 style={
                   {
@@ -90569,7 +90571,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Got it!.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Got it!."
                 accessible={true}
                 style={
                   {
@@ -91254,7 +91256,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Multiple files.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Multiple files."
                 accessible={true}
                 style={
                   {
@@ -92026,7 +92028,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  I'm fine!.   "
+                accessibilityLabel="diego.mello 10:00:00 AM I'm fine!."
                 accessible={true}
                 style={
                   {
@@ -92647,7 +92649,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  I'm fine!.   "
+                accessibilityLabel="diego.mello 10:00:00 AM I'm fine!."
                 accessible={true}
                 style={
                   {
@@ -93312,7 +93314,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Looks cool!.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Looks cool!."
                 accessible={true}
                 style={
                   {
@@ -94109,7 +94111,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Yes, I am.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Yes, I am."
                 accessible={true}
                 style={
                   {
@@ -94980,7 +94982,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  How are you?.   "
+                accessibilityLabel="diego.mello 10:00:00 AM How are you?."
                 accessible={true}
                 style={
                   {
@@ -95911,7 +95913,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.   "
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message I'm fine!."
                   accessible={true}
                   style={
                     [
@@ -96337,7 +96339,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.   "
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message I'm fine!."
                   accessible={true}
                   style={
                     [
@@ -96763,7 +96765,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.   "
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message I'm fine!."
                   accessible={true}
                   style={
                     [
@@ -97189,7 +97191,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..   "
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.."
                   accessible={true}
                   style={
                     [
@@ -97615,7 +97617,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..   "
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.."
                   accessible={true}
                   style={
                     [
@@ -98041,7 +98043,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message undefined.   "
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message undefined."
                   accessible={true}
                   style={
                     [
@@ -98467,7 +98469,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message undefined.  "
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message undefined."
                   accessible={true}
                   style={
                     [
@@ -98893,7 +98895,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message undefined.  "
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message undefined."
                   accessible={true}
                   style={
                     [
@@ -99319,7 +99321,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message undefined.  "
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message undefined."
                   accessible={true}
                   style={
                     [
@@ -99625,7 +99627,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  How are you?.   "
+                accessibilityLabel="diego.mello 10:00:00 AM How are you?."
                 accessible={true}
                 style={
                   {
@@ -100556,7 +100558,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.   "
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message I'm fine!."
                   accessible={true}
                   style={
                     [
@@ -100982,7 +100984,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.   "
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message I'm fine!."
                   accessible={true}
                   style={
                     [
@@ -101408,7 +101410,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.   "
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message I'm fine!."
                   accessible={true}
                   style={
                     [
@@ -101834,7 +101836,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..   "
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.."
                   accessible={true}
                   style={
                     [
@@ -102260,7 +102262,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..   "
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.."
                   accessible={true}
                   style={
                     [
@@ -102686,7 +102688,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message undefined.   "
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message undefined."
                   accessible={true}
                   style={
                     [
@@ -103112,7 +103114,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message undefined.  "
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message undefined."
                   accessible={true}
                   style={
                     [
@@ -103538,7 +103540,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message undefined.  "
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message undefined."
                   accessible={true}
                   style={
                     [
@@ -103964,7 +103966,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message undefined.  "
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message undefined."
                   accessible={true}
                   style={
                     [
@@ -104270,7 +104272,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="JD 10:00:00 AM  Small name (2 chars).   "
+                accessibilityLabel="JD 10:00:00 AM Small name (2 chars)."
                 accessible={true}
                 style={
                   {
@@ -105360,7 +105362,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="John Doe 10:00:00 AM  Medium name (8 chars).   "
+                accessibilityLabel="John Doe 10:00:00 AM Medium name (8 chars)."
                 accessible={true}
                 style={
                   {
@@ -106450,7 +106452,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="John Doe With An Extremely Long Display Name That Should Definitely Be Truncated In Any Reasonable User Interface Layout 10:00:00 AM  Long name (22 chars) - should truncate.   "
+                accessibilityLabel="John Doe With An Extremely Long Display Name That Should Definitely Be Truncated In Any Reasonable User Interface Layout 10:00:00 AM Long name (22 chars) - should truncate."
                 accessible={true}
                 style={
                   {
@@ -107553,7 +107555,7 @@ exports[`Story Snapshots: Pinned should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Message header.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Message header."
                 accessible={true}
                 style={
                   {
@@ -108032,7 +108034,7 @@ exports[`Story Snapshots: Pinned should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Message without header.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Message without header."
                 accessible={true}
                 style={
                   {
@@ -108291,7 +108293,7 @@ exports[`Story Snapshots: PinnedLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Message header.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Message header."
                 accessible={true}
                 style={
                   {
@@ -108770,7 +108772,7 @@ exports[`Story Snapshots: PinnedLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Message without header.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Message without header."
                 accessible={true}
                 style={
                   {
@@ -109029,7 +109031,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Reactions.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Reactions."
                 accessible={true}
                 style={
                   {
@@ -110022,7 +110024,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Multiple Reactions.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Multiple Reactions."
                 accessible={true}
                 style={
                   {
@@ -111484,7 +111486,7 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Reactions.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Reactions."
                 accessible={true}
                 style={
                   {
@@ -112477,7 +112479,7 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Multiple Reactions.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Multiple Reactions."
                 accessible={true}
                 style={
                   {
@@ -113939,7 +113941,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  How are you?.   "
+                accessibilityLabel="diego.mello 10:00:00 AM How are you?."
                 accessible={true}
                 style={
                   {
@@ -114753,7 +114755,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
                 }
               >
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  thread message I'm fine!.   "
+                  accessibilityLabel="diego.mello 10:00:00 AM thread message I'm fine!."
                   accessible={true}
                   style={
                     [
@@ -115062,7 +115064,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
                 }
               >
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..   "
+                  accessibilityLabel="diego.mello 10:00:00 AM thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.."
                   accessible={true}
                   style={
                     [
@@ -115371,7 +115373,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
                 }
               >
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  thread message undefined.   "
+                  accessibilityLabel="diego.mello 10:00:00 AM thread message undefined."
                   accessible={true}
                   style={
                     [
@@ -115677,7 +115679,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  How are you?.   "
+                accessibilityLabel="diego.mello 10:00:00 AM How are you?."
                 accessible={true}
                 style={
                   {
@@ -116491,7 +116493,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
                 }
               >
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  thread message I'm fine!.   "
+                  accessibilityLabel="diego.mello 10:00:00 AM thread message I'm fine!."
                   accessible={true}
                   style={
                     [
@@ -116801,6 +116803,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
               >
                 <View
 <<<<<<< HEAD
+<<<<<<< HEAD
                   style={
                     {
                       "alignItems": "center",
@@ -116922,6 +116925,9 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
 =======
                   accessibilityLabel="diego.mello 10:00:00 AM  thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  "
 >>>>>>> d4604488c (fix: render Attachment file name in Thread Message preview when body is empty (#7323))
+=======
+                  accessibilityLabel="diego.mello 10:00:00 AM thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.."
+>>>>>>> d4f3ff407 (fix: snapshot test)
                   accessible={true}
                   style={
                     [
@@ -117230,7 +117236,11 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
                 }
               >
                 <View
+<<<<<<< HEAD
                   accessibilityLabel="diego.mello 10:00:00 AM  thread message undefined.  "
+=======
+                  accessibilityLabel="diego.mello 10:00:00 AM thread message undefined."
+>>>>>>> d4f3ff407 (fix: snapshot test)
                   accessible={true}
                   style={
                     [
@@ -117669,7 +117679,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  "
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message I'm fine!."
                   accessible={true}
                   style={
                     [
@@ -117978,7 +117988,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                 }
               >
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  thread message Cool!.  "
+                  accessibilityLabel="diego.mello 10:00:00 AM thread message Cool!."
                   accessible={true}
                   style={
                     [
@@ -118287,7 +118297,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                 }
               >
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  "
+                  accessibilityLabel="diego.mello 10:00:00 AM thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.."
                   accessible={true}
                   style={
                     [
@@ -118596,7 +118606,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                 }
               >
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  thread message undefined.  "
+                  accessibilityLabel="diego.mello 10:00:00 AM thread message undefined."
                   accessible={true}
                   style={
                     [
@@ -119035,7 +119045,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  replying to thread message I'm fine!.  "
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message I'm fine!."
                   accessible={true}
                   style={
                     [
@@ -119344,7 +119354,11 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
                 }
               >
                 <View
+<<<<<<< HEAD
                   accessibilityLabel="diego.mello 10:00:00 AM  thread message Cool!.  "
+=======
+                  accessibilityLabel="diego.mello 10:00:00 AM thread message Cool!."
+>>>>>>> d4f3ff407 (fix: snapshot test)
                   accessible={true}
                   style={
                     [
@@ -119653,7 +119667,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
                 }
               >
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..   "
+                  accessibilityLabel="diego.mello 10:00:00 AM thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.."
                   accessible={true}
                   style={
                     [
@@ -119962,7 +119976,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
                 }
               >
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM  thread message undefined.   "
+                  accessibilityLabel="diego.mello 10:00:00 AM thread message undefined."
                   accessible={true}
                   style={
                     [
@@ -120268,7 +120282,7 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  undefined.   "
+                accessibilityLabel="diego.mello 10:00:00 AM undefined."
                 accessible={true}
                 style={
                   {
@@ -120791,7 +120805,7 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  undefined.   "
+                accessibilityLabel="diego.mello 10:00:00 AM undefined."
                 accessible={true}
                 style={
                   {
@@ -121492,7 +121506,7 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  undefined.   "
+                accessibilityLabel="diego.mello 10:00:00 AM undefined."
                 accessible={true}
                 style={
                   {
@@ -122015,7 +122029,7 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  undefined.   "
+                accessibilityLabel="diego.mello 10:00:00 AM undefined."
                 accessible={true}
                 style={
                   {
@@ -122716,7 +122730,7 @@ exports[`Story Snapshots: StaticAvatar should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Message.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Message."
                 accessible={true}
                 style={
                   {
@@ -123178,7 +123192,7 @@ exports[`Story Snapshots: StaticAvatarLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Message.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Message."
                 accessible={true}
                 style={
                   {
@@ -123580,7 +123594,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  message removed.   "
+          accessibilityLabel="diego.mello 10:00:00 AM message removed."
           accessible={true}
           style={
             [
@@ -123825,7 +123839,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  joined the channel.   "
+          accessibilityLabel="diego.mello 10:00:00 AM joined the channel."
           accessible={true}
           style={
             [
@@ -124070,7 +124084,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  Pinned a message:.   "
+          accessibilityLabel="diego.mello 10:00:00 AM Pinned a message:."
           accessible={true}
           style={
             [
@@ -124318,7 +124332,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  left the channel.   "
+          accessibilityLabel="diego.mello 10:00:00 AM left the channel."
           accessible={true}
           style={
             [
@@ -124563,7 +124577,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  removed rocket.cat.   "
+          accessibilityLabel="diego.mello 10:00:00 AM removed rocket.cat."
           accessible={true}
           style={
             [
@@ -124808,7 +124822,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  added rocket.cat.   "
+          accessibilityLabel="diego.mello 10:00:00 AM added rocket.cat."
           accessible={true}
           style={
             [
@@ -125053,7 +125067,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  muted rocket.cat.   "
+          accessibilityLabel="diego.mello 10:00:00 AM muted rocket.cat."
           accessible={true}
           style={
             [
@@ -125298,7 +125312,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  unmuted rocket.cat.   "
+          accessibilityLabel="diego.mello 10:00:00 AM unmuted rocket.cat."
           accessible={true}
           style={
             [
@@ -125543,7 +125557,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  defined rocket.cat as admin.   "
+          accessibilityLabel="diego.mello 10:00:00 AM defined rocket.cat as admin."
           accessible={true}
           style={
             [
@@ -125788,7 +125802,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  removed rocket.cat as admin.   "
+          accessibilityLabel="diego.mello 10:00:00 AM removed rocket.cat as admin."
           accessible={true}
           style={
             [
@@ -126033,7 +126047,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  changed room name to: New name.   "
+          accessibilityLabel="diego.mello 10:00:00 AM changed room name to: New name."
           accessible={true}
           style={
             [
@@ -126278,7 +126292,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  changed room description to: new description.   "
+          accessibilityLabel="diego.mello 10:00:00 AM changed room description to: new description."
           accessible={true}
           style={
             [
@@ -126523,7 +126537,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  changed room announcement to: new announcement.   "
+          accessibilityLabel="diego.mello 10:00:00 AM changed room announcement to: new announcement."
           accessible={true}
           style={
             [
@@ -126768,7 +126782,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  changed room topic to: new topic.   "
+          accessibilityLabel="diego.mello 10:00:00 AM changed room topic to: new topic."
           accessible={true}
           style={
             [
@@ -127013,7 +127027,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  changed room to public.   "
+          accessibilityLabel="diego.mello 10:00:00 AM changed room to public."
           accessible={true}
           style={
             [
@@ -127258,7 +127272,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  disabled E2E encryption for this room.   "
+          accessibilityLabel="diego.mello 10:00:00 AM disabled E2E encryption for this room."
           accessible={true}
           style={
             [
@@ -127503,7 +127517,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  enabled E2E encryption for this room.   "
+          accessibilityLabel="diego.mello 10:00:00 AM enabled E2E encryption for this room."
           accessible={true}
           style={
             [
@@ -127748,7 +127762,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  removed @rocket.cat from this team.   "
+          accessibilityLabel="diego.mello 10:00:00 AM removed @rocket.cat from this team."
           accessible={true}
           style={
             [
@@ -127993,7 +128007,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  added @rocket.cat to this team.   "
+          accessibilityLabel="diego.mello 10:00:00 AM added @rocket.cat to this team."
           accessible={true}
           style={
             [
@@ -128238,7 +128252,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  added #channel-name to this team.   "
+          accessibilityLabel="diego.mello 10:00:00 AM added #channel-name to this team."
           accessible={true}
           style={
             [
@@ -128483,7 +128497,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  converted #channel-name to a team.   "
+          accessibilityLabel="diego.mello 10:00:00 AM converted #channel-name to a team."
           accessible={true}
           style={
             [
@@ -128728,7 +128742,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  converted #channel-name to channel.   "
+          accessibilityLabel="diego.mello 10:00:00 AM converted #channel-name to channel."
           accessible={true}
           style={
             [
@@ -128973,7 +128987,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  deleted #channel-name.   "
+          accessibilityLabel="diego.mello 10:00:00 AM deleted #channel-name."
           accessible={true}
           style={
             [
@@ -129218,7 +129232,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  removed #channel-name from this team.   "
+          accessibilityLabel="diego.mello 10:00:00 AM removed #channel-name from this team."
           accessible={true}
           style={
             [
@@ -129463,7 +129477,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  was removed by ABAC.   "
+          accessibilityLabel="diego.mello 10:00:00 AM was removed by ABAC."
           accessible={true}
           style={
             [
@@ -129708,7 +129722,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  Unsupported system message.   "
+          accessibilityLabel="diego.mello 10:00:00 AM Unsupported system message."
           accessible={true}
           style={
             [
@@ -129944,7 +129958,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  message removed.   "
+          accessibilityLabel="diego.mello 10:00:00 AM message removed."
           accessible={true}
           style={
             [
@@ -130189,7 +130203,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  joined the channel.   "
+          accessibilityLabel="diego.mello 10:00:00 AM joined the channel."
           accessible={true}
           style={
             [
@@ -130434,7 +130448,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  Pinned a message:.   "
+          accessibilityLabel="diego.mello 10:00:00 AM Pinned a message:."
           accessible={true}
           style={
             [
@@ -130682,7 +130696,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  left the channel.   "
+          accessibilityLabel="diego.mello 10:00:00 AM left the channel."
           accessible={true}
           style={
             [
@@ -130927,7 +130941,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  removed rocket.cat.   "
+          accessibilityLabel="diego.mello 10:00:00 AM removed rocket.cat."
           accessible={true}
           style={
             [
@@ -131172,7 +131186,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  added rocket.cat.   "
+          accessibilityLabel="diego.mello 10:00:00 AM added rocket.cat."
           accessible={true}
           style={
             [
@@ -131417,7 +131431,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  muted rocket.cat.   "
+          accessibilityLabel="diego.mello 10:00:00 AM muted rocket.cat."
           accessible={true}
           style={
             [
@@ -131662,7 +131676,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  unmuted rocket.cat.   "
+          accessibilityLabel="diego.mello 10:00:00 AM unmuted rocket.cat."
           accessible={true}
           style={
             [
@@ -131907,7 +131921,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  defined rocket.cat as admin.   "
+          accessibilityLabel="diego.mello 10:00:00 AM defined rocket.cat as admin."
           accessible={true}
           style={
             [
@@ -132152,7 +132166,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  removed rocket.cat as admin.   "
+          accessibilityLabel="diego.mello 10:00:00 AM removed rocket.cat as admin."
           accessible={true}
           style={
             [
@@ -132397,7 +132411,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  changed room name to: New name.   "
+          accessibilityLabel="diego.mello 10:00:00 AM changed room name to: New name."
           accessible={true}
           style={
             [
@@ -132642,7 +132656,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  changed room description to: new description.   "
+          accessibilityLabel="diego.mello 10:00:00 AM changed room description to: new description."
           accessible={true}
           style={
             [
@@ -132887,7 +132901,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  changed room announcement to: new announcement.   "
+          accessibilityLabel="diego.mello 10:00:00 AM changed room announcement to: new announcement."
           accessible={true}
           style={
             [
@@ -133132,7 +133146,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  changed room topic to: new topic.   "
+          accessibilityLabel="diego.mello 10:00:00 AM changed room topic to: new topic."
           accessible={true}
           style={
             [
@@ -133377,7 +133391,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  changed room to public.   "
+          accessibilityLabel="diego.mello 10:00:00 AM changed room to public."
           accessible={true}
           style={
             [
@@ -133622,7 +133636,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  disabled E2E encryption for this room.   "
+          accessibilityLabel="diego.mello 10:00:00 AM disabled E2E encryption for this room."
           accessible={true}
           style={
             [
@@ -133867,7 +133881,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  enabled E2E encryption for this room.   "
+          accessibilityLabel="diego.mello 10:00:00 AM enabled E2E encryption for this room."
           accessible={true}
           style={
             [
@@ -134112,7 +134126,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  removed @rocket.cat from this team.   "
+          accessibilityLabel="diego.mello 10:00:00 AM removed @rocket.cat from this team."
           accessible={true}
           style={
             [
@@ -134357,7 +134371,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  added @rocket.cat to this team.   "
+          accessibilityLabel="diego.mello 10:00:00 AM added @rocket.cat to this team."
           accessible={true}
           style={
             [
@@ -134602,7 +134616,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  added #channel-name to this team.   "
+          accessibilityLabel="diego.mello 10:00:00 AM added #channel-name to this team."
           accessible={true}
           style={
             [
@@ -134847,7 +134861,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  converted #channel-name to a team.   "
+          accessibilityLabel="diego.mello 10:00:00 AM converted #channel-name to a team."
           accessible={true}
           style={
             [
@@ -135092,7 +135106,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  converted #channel-name to channel.   "
+          accessibilityLabel="diego.mello 10:00:00 AM converted #channel-name to channel."
           accessible={true}
           style={
             [
@@ -135337,7 +135351,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  deleted #channel-name.   "
+          accessibilityLabel="diego.mello 10:00:00 AM deleted #channel-name."
           accessible={true}
           style={
             [
@@ -135582,7 +135596,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  removed #channel-name from this team.   "
+          accessibilityLabel="diego.mello 10:00:00 AM removed #channel-name from this team."
           accessible={true}
           style={
             [
@@ -135827,7 +135841,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  was removed by ABAC.   "
+          accessibilityLabel="diego.mello 10:00:00 AM was removed by ABAC."
           accessible={true}
           style={
             [
@@ -136072,7 +136086,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityLabel="diego.mello 10:00:00 AM  Unsupported system message.   "
+          accessibilityLabel="diego.mello 10:00:00 AM Unsupported system message."
           accessible={true}
           style={
             [
@@ -136368,7 +136382,7 @@ exports[`Story Snapshots: Temp should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Temp message.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Temp message."
                 accessible={true}
                 style={
                   {
@@ -136835,7 +136849,7 @@ exports[`Story Snapshots: TempLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Temp message.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Temp message."
                 accessible={true}
                 style={
                   {
@@ -137302,7 +137316,7 @@ exports[`Story Snapshots: ThumbnailFromServer should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  this is a thumbnail.   "
+                accessibilityLabel="diego.mello 10:00:00 AM this is a thumbnail."
                 accessible={true}
                 style={
                   {
@@ -137975,7 +137989,7 @@ exports[`Story Snapshots: ThumbnailFromServerLargeFont should match snapshot 1`]
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  this is a thumbnail.   "
+                accessibilityLabel="diego.mello 10:00:00 AM this is a thumbnail."
                 accessible={true}
                 style={
                   {
@@ -138648,7 +138662,7 @@ exports[`Story Snapshots: TimeFormat should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Testing.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Testing."
                 accessible={true}
                 style={
                   {
@@ -139110,7 +139124,7 @@ exports[`Story Snapshots: TimeFormatLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Testing.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Testing."
                 accessible={true}
                 style={
                   {
@@ -140568,7 +140582,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Message.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Message."
                 accessible={true}
                 style={
                   {
@@ -141746,7 +141760,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdownLargeFont should match
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Message.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Message."
                 accessible={true}
                 style={
                   {
@@ -142924,7 +142938,7 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  undefined.   "
+                accessibilityLabel="diego.mello 10:00:00 AM undefined."
                 accessible={true}
                 style={
                   {
@@ -143510,7 +143524,7 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Message :nyan_rocket:.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Message :nyan_rocket:."
                 accessible={true}
                 style={
                   {
@@ -144101,7 +144115,7 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  undefined.   "
+                accessibilityLabel="diego.mello 10:00:00 AM undefined."
                 accessible={true}
                 style={
                   {
@@ -144369,7 +144383,7 @@ exports[`Story Snapshots: URLImagePreview should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  undefined.   "
+                accessibilityLabel="diego.mello 10:00:00 AM undefined."
                 accessible={true}
                 style={
                   {
@@ -144857,7 +144871,7 @@ exports[`Story Snapshots: URLImagePreview should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  undefined.   "
+                accessibilityLabel="diego.mello 10:00:00 AM undefined."
                 accessible={true}
                 style={
                   {
@@ -145301,7 +145315,7 @@ exports[`Story Snapshots: URLImagePreviewLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  undefined.   "
+                accessibilityLabel="diego.mello 10:00:00 AM undefined."
                 accessible={true}
                 style={
                   {
@@ -145789,7 +145803,7 @@ exports[`Story Snapshots: URLImagePreviewLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  undefined.   "
+                accessibilityLabel="diego.mello 10:00:00 AM undefined."
                 accessible={true}
                 style={
                   {
@@ -146233,7 +146247,7 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  undefined.   "
+                accessibilityLabel="diego.mello 10:00:00 AM undefined."
                 accessible={true}
                 style={
                   {
@@ -146819,7 +146833,7 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Message :nyan_rocket:.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Message :nyan_rocket:."
                 accessible={true}
                 style={
                   {
@@ -147410,7 +147424,7 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  undefined.   "
+                accessibilityLabel="diego.mello 10:00:00 AM undefined."
                 accessible={true}
                 style={
                   {
@@ -147678,7 +147692,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="jd 10:00:00 AM  Small username (2 chars).   "
+                accessibilityLabel="jd 10:00:00 AM Small username (2 chars)."
                 accessible={true}
                 style={
                   {
@@ -148768,7 +148782,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="john.doe 10:00:00 AM  Medium username (8 chars).   "
+                accessibilityLabel="john.doe 10:00:00 AM Medium username (8 chars)."
                 accessible={true}
                 style={
                   {
@@ -149858,7 +149872,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM  Long username (22 chars) - should truncate.   "
+                accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Long username (22 chars) - should truncate."
                 accessible={true}
                 style={
                   {
@@ -150961,7 +150975,7 @@ exports[`Story Snapshots: WithAlias should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Message.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Message."
                 accessible={true}
                 style={
                   {
@@ -151429,7 +151443,7 @@ exports[`Story Snapshots: WithAlias should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 10:00:00 AM  Message.   "
+                accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 10:00:00 AM Message."
                 accessible={true}
                 style={
                   {
@@ -151910,7 +151924,7 @@ exports[`Story Snapshots: WithAliasLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Message.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Message."
                 accessible={true}
                 style={
                   {
@@ -152378,7 +152392,7 @@ exports[`Story Snapshots: WithAliasLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 10:00:00 AM  Message.   "
+                accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 10:00:00 AM Message."
                 accessible={true}
                 style={
                   {
@@ -152859,7 +152873,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  undefined.   "
+                accessibilityLabel="diego.mello 10:00:00 AM undefined."
                 accessible={true}
                 style={
                   {
@@ -153591,7 +153605,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  undefined.   "
+                accessibilityLabel="diego.mello 10:00:00 AM undefined."
                 accessible={true}
                 style={
                   {
@@ -154046,7 +154060,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  multi file.   "
+                accessibilityLabel="diego.mello 10:00:00 AM multi file."
                 accessible={true}
                 style={
                   {
@@ -154740,7 +154754,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  undefined.   "
+                accessibilityLabel="diego.mello 10:00:00 AM undefined."
                 accessible={true}
                 style={
                   {
@@ -155722,7 +155736,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  undefined.   "
+                accessibilityLabel="diego.mello 10:00:00 AM undefined."
                 accessible={true}
                 style={
                   {
@@ -156454,7 +156468,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  First message.   "
+                accessibilityLabel="diego.mello 10:00:00 AM First message."
                 accessible={true}
                 style={
                   {
@@ -156670,7 +156684,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  undefined.   "
+                accessibilityLabel="diego.mello 10:00:00 AM undefined."
                 accessible={true}
                 style={
                   {
@@ -157125,7 +157139,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  undefined.   "
+                accessibilityLabel="diego.mello 10:00:00 AM undefined."
                 accessible={true}
                 style={
                   {
@@ -157525,7 +157539,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  multi file.   "
+                accessibilityLabel="diego.mello 10:00:00 AM multi file."
                 accessible={true}
                 style={
                   {
@@ -158566,7 +158580,7 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  undefined.   "
+                accessibilityLabel="diego.mello 10:00:00 AM undefined."
                 accessible={true}
                 style={
                   {
@@ -159206,7 +159220,7 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  undefined.   "
+                accessibilityLabel="diego.mello 10:00:00 AM undefined."
                 accessible={true}
                 style={
                   {
@@ -159868,7 +159882,7 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  undefined.   "
+                accessibilityLabel="diego.mello 10:00:00 AM undefined."
                 accessible={true}
                 style={
                   {
@@ -160508,7 +160522,7 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  undefined.   "
+                accessibilityLabel="diego.mello 10:00:00 AM undefined."
                 accessible={true}
                 style={
                   {
@@ -160928,7 +160942,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  undefined. Image description: This is a description :nyan_rocket:  "
+                accessibilityLabel="diego.mello 10:00:00 AM undefined. Image description: This is a description :nyan_rocket:"
                 accessible={true}
                 style={
                   {
@@ -161593,7 +161607,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Message, not description. Image description: This is a description :nyan_rocket:  "
+                accessibilityLabel="diego.mello 10:00:00 AM Message, not description. Image description: This is a description :nyan_rocket:"
                 accessible={true}
                 style={
                   {
@@ -162493,6 +162507,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                               </View>
                             </View>
                             <View
+                              accessibilityLabel="Image without description"
                               accessibilityRole="imagebutton"
                               accessibilityState={
                                 {
@@ -162744,7 +162759,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  multi file.   "
+                accessibilityLabel="diego.mello 10:00:00 AM multi file."
                 accessible={true}
                 style={
                   {
@@ -163110,6 +163125,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                             }
                           >
                             <View
+                              accessibilityLabel="Image without description"
                               accessibilityRole="imagebutton"
                               accessibilityState={
                                 {
@@ -163270,6 +163286,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                               </View>
                             </View>
                             <View
+                              accessibilityLabel="Image without description"
                               accessibilityRole="imagebutton"
                               accessibilityState={
                                 {
@@ -163521,7 +163538,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  undefined. Image description: This is a description for Base64 Attachment :nyan_rocket:  "
+                accessibilityLabel="diego.mello 10:00:00 AM undefined. Image description: This is a description for Base64 Attachment :nyan_rocket:"
                 accessible={true}
                 style={
                   {
@@ -164186,7 +164203,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  undefined. Image description: This is a description  "
+                accessibilityLabel="diego.mello 10:00:00 AM undefined. Image description: This is a description"
                 accessible={true}
                 style={
                   {
@@ -164807,7 +164824,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  undefined. Image description: Header false  "
+                accessibilityLabel="diego.mello 10:00:00 AM undefined. Image description: Header false"
                 accessible={true}
                 style={
                   {
@@ -165195,7 +165212,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  multi file.   "
+                accessibilityLabel="diego.mello 10:00:00 AM multi file."
                 accessible={true}
                 style={
                   {
@@ -165561,6 +165578,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                             }
                           >
                             <View
+                              accessibilityLabel="Image without description"
                               accessibilityRole="imagebutton"
                               accessibilityState={
                                 {
@@ -165721,6 +165739,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                               </View>
                             </View>
                             <View
+                              accessibilityLabel="Image without description"
                               accessibilityRole="imagebutton"
                               accessibilityState={
                                 {
@@ -165972,7 +165991,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  undefined. Image description: This is a description for Base64 Attachment :nyan_rocket:  "
+                accessibilityLabel="diego.mello 10:00:00 AM undefined. Image description: This is a description for Base64 Attachment :nyan_rocket:"
                 accessible={true}
                 style={
                   {
@@ -166637,7 +166656,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  undefined.   "
+                accessibilityLabel="diego.mello 10:00:00 AM undefined."
                 accessible={true}
                 style={
                   {
@@ -167261,7 +167280,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  undefined.   "
+                accessibilityLabel="diego.mello 10:00:00 AM undefined."
                 accessible={true}
                 style={
                   {
@@ -167608,7 +167627,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  multi file.   "
+                accessibilityLabel="diego.mello 10:00:00 AM multi file."
                 accessible={true}
                 style={
                   {
@@ -168332,7 +168351,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  undefined.   "
+                accessibilityLabel="diego.mello 10:00:00 AM undefined."
                 accessible={true}
                 style={
                   {
@@ -168956,7 +168975,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  undefined.   "
+                accessibilityLabel="diego.mello 10:00:00 AM undefined."
                 accessible={true}
                 style={
                   {
@@ -169481,7 +169500,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  multi file.   "
+                accessibilityLabel="diego.mello 10:00:00 AM multi file."
                 accessible={true}
                 style={
                   {
@@ -170205,7 +170224,7 @@ exports[`Story Snapshots: WithoutHeader should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Message.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Message."
                 accessible={true}
                 style={
                   {
@@ -170434,7 +170453,7 @@ exports[`Story Snapshots: WithoutHeaderLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM  Message.   "
+                accessibilityLabel="diego.mello 10:00:00 AM Message."
                 accessible={true}
                 style={
                   {
