@@ -32,7 +32,7 @@ jobs:
       - name: Fetch supported versions from Cloud
         uses: ./.github/actions/fetch-supported-versions
         with:
-          build_name: 'ios-official'
+          build_name: 'ios'
 
       - name: Generate Build Version
         id: version

@@ -8,19 +8,19 @@ inputs:
     description: 'Google services JSON'
     required: true
   BUGSNAG_KEY_OFFICIAL:
-    description: 'Bugsnag API key for official build'
+    description: 'Bugsnag API key'
     required: true
   KEYSTORE_OFFICIAL_BASE64:
-    description: 'Base64 encoded keystore for official build'
+    description: 'Base64 encoded keystore'
     required: true
   KEYSTORE_OFFICIAL:
-    description: 'Keystore file name for official build'
+    description: 'Keystore file name'
     required: true
   KEYSTORE_OFFICIAL_PASSWORD:
-    description: 'Keystore password for official build'
+    description: 'Keystore password'
     required: true
   KEYSTORE_OFFICIAL_ALIAS:
-    description: 'Keystore alias for official build'
+    description: 'Keystore alias'
     required: true
 
 runs:
@@ -81,17 +81,17 @@ runs:
 
     - name: Build Android Release AAB
       working-directory: android
-      run: ./gradlew bundleOfficialRelease
+      run: ./gradlew bundleRelease
       shell: bash
 
     - name: Upload sourcemaps/NDK symbols to Bugsnag
       run: |
-        pnpm bugsnag:upload-android --variant officialRelease --app-manifest android/app/build/intermediates/merged_manifests/officialRelease/processOfficialReleaseManifest/AndroidManifest.xml
-        pnpm exec bugsnag-cli upload android-aab android/app/build/outputs/bundle/officialRelease/app-official-release.aab
+        pnpm bugsnag:upload-android --variant release --app-manifest android/app/build/intermediates/merged_manifests/release/processReleaseManifest/AndroidManifest.xml
+        pnpm exec bugsnag-cli upload android-aab android/app/build/outputs/bundle/release/app-release.aab
       shell: bash
 
-    - name: Upload Official AAB
+    - name: Upload AAB
       uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
       with:
-        name: android-aab-official
-        path: android/app/build/outputs/bundle/officialRelease/app-official-release.aab
+        name: android-aab
+        path: android/app/build/outputs/bundle/release/app-release.aab
