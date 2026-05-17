@@ -110,6 +110,12 @@ export const merge = (
 		if (room && 'federation' in room) {
 			mergedSubscription.federation = room.federation;
 		}
+		if (room && 'audioNotificationValue' in room) {
+			mergedSubscription.audioNotificationValue = room.audioNotificationValue;
+		}
+		if (room && 'audioNotificationsValue' in room) {
+			mergedSubscription.audioNotificationValue = room.audioNotificationsValue;
+		}
 	}
 
 	if (!mergedSubscription.name) {

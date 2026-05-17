@@ -247,6 +247,7 @@ export interface IRoomNotifications {
 	muteGroupMentions?: boolean;
 	hideUnreadStatus?: boolean;
 	audioNotificationsValue?: string;
+	audioNotificationValue?: string;
 	desktopNotifications?: TNotifications;
 	mobilePushNotifications?: TNotifications;
 	emailNotifications?: TNotifications;

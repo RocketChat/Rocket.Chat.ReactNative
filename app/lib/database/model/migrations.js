@@ -345,6 +345,15 @@ export default schemaMigrations({
 					]
 				})
 			]
+		},
+		{
+			toVersion: 29,
+			steps: [
+				addColumns({
+					table: 'subscriptions',
+					columns: [{ name: 'audio_notification_value', type: 'string', isOptional: true }]
+				})
+			]
 		}
 	]
 });

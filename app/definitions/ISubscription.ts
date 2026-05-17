@@ -179,7 +179,7 @@ export interface IServerSubscription extends IRocketChatRecord {
 
 	code?: unknown;
 	archived?: unknown;
-	audioNotificationValue?: unknown;
+	audioNotificationValue?: string;
 	desktopNotifications?: unknown;
 	mobilePushNotifications?: unknown;
 	emailNotifications?: unknown;
