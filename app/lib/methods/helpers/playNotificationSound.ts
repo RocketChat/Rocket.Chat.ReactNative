@@ -1,59 +1,67 @@
 import { Audio } from 'expo-av';
 
-import log from './log';
+const RINGTONE_SOUND = require('../../../containers/Ringer/ringtone.mp3');
+const CALL_ENDED_SOUND = require('../../../containers/Ringer/call-ended.mp3');
 
 const sounds: Record<string, any> = {
-	'beep Beep': require('../../containers/Ringer/call-ended.mp3'),
-	'ding Ding': require('../../containers/Ringer/call-ended.mp3'),
-	'chelle Chelle': require('../../containers/Ringer/call-ended.mp3'),
-	'droplet Droplet': require('../../containers/Ringer/call-ended.mp3'),
-	'highbell Highbell': require('../../containers/Ringer/call-ended.mp3'),
-	'seasons Seasons': require('../../containers/Ringer/call-ended.mp3')
+	0: CALL_ENDED_SOUND,
+	default: CALL_ENDED_SOUND,
+	beep: RINGTONE_SOUND,
+	ding: CALL_ENDED_SOUND,
+	chelle: RINGTONE_SOUND,
+	droplet: CALL_ENDED_SOUND,
+	highbell: RINGTONE_SOUND,
+	seasons: RINGTONE_SOUND
 };
 
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const DEFAULT_SOUND = require('../../containers/Ringer/call-ended.mp3');
+const DEFAULT_SOUND = CALL_ENDED_SOUND;
 
-// Watchdog prevents memory leaks if didJustFinish never fires (rare OS preemption).
 const WATCHDOG_MS = 5000;
 
+const normalizeSoundName = (soundName: string) => soundName.trim().split(' ')[0].toLowerCase();
+
 export const playNotificationSound = async (soundName: string): Promise<void> => {
-	if (!soundName || soundName === 'none' || soundName === 'none None') {
+	if (!soundName) {
+		return;
+	}
+
+	const normalized = normalizeSoundName(soundName);
+
+	if (!normalized || normalized === 'none') {
 		return;
 	}
 
 	try {
-		const asset = sounds[soundName] || DEFAULT_SOUND;
+		const asset = sounds[normalized] || DEFAULT_SOUND;
 		const { sound } = await Audio.Sound.createAsync(asset);
 
+		let unloaded = false;
 		let watchdog: ReturnType<typeof setTimeout> | null = null;
 
-		const cleanup = () => {
+		const unload = () => {
+			if (unloaded) {
+				return;
+			}
+			unloaded = true;
 			if (watchdog) {
 				clearTimeout(watchdog);
 				watchdog = null;
 			}
+			sound.unloadAsync().catch(() => {
+				// best-effort unload
+			});
 		};
 
 		sound.setOnPlaybackStatusUpdate(status => {
 			if (status.isLoaded && status.didJustFinish) {
-				cleanup();
-				sound.unloadAsync().catch(() => {
-					// best-effort unload
-				});
+				unload();
 			}
 		});
 
 		await sound.playAsync();
 
-		// Watchdog releases sound if didJustFinish never fires (e.g., OS interruption).
-		watchdog = setTimeout(() => {
-			cleanup();
-			sound.unloadAsync().catch(() => {
-				// best-effort unload
-			});
-		}, WATCHDOG_MS);
-	} catch (error) {
-		log(error);
+		watchdog = setTimeout(unload, WATCHDOG_MS);
+	} catch {
+		// best-effort notification sound
 	}
 };
