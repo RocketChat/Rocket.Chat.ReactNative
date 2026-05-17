@@ -48,7 +48,8 @@ const InAppNotification = memo(() => {
 
 			const sub = payload?.rid ? await getSubscriptionByRoomId(payload.rid) : null;
 			if (sub?.audioNotificationValue) {
-				playNotificationSound(sub.audioNotificationValue);
+				// eslint-disable-next-line no-void
+				void playNotificationSound(sub.audioNotificationValue);
 			}
 
 			if (payload?.name && payload?.message) {

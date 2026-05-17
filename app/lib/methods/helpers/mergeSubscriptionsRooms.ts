@@ -112,8 +112,7 @@ export const merge = (
 		}
 		if (room && 'audioNotificationValue' in room) {
 			mergedSubscription.audioNotificationValue = room.audioNotificationValue;
-		}
-		if (room && 'audioNotificationsValue' in room) {
+		} else if (room && 'audioNotificationsValue' in room) {
 			mergedSubscription.audioNotificationValue = room.audioNotificationsValue;
 		}
 	}

@@ -31,26 +31,27 @@ export const playNotificationSound = async (soundName: string): Promise<void> =>
 		return;
 	}
 
+	let sound: Audio.Sound | undefined;
+	let unloaded = false;
+	let watchdog: ReturnType<typeof setTimeout> | null = null;
+
+	const unload = () => {
+		if (unloaded || !sound) {
+			return;
+		}
+		unloaded = true;
+		if (watchdog) {
+			clearTimeout(watchdog);
+			watchdog = null;
+		}
+		sound.unloadAsync().catch(() => {
+			// best-effort unload
+		});
+	};
+
 	try {
 		const asset = sounds[normalized] || DEFAULT_SOUND;
-		const { sound } = await Audio.Sound.createAsync(asset);
-
-		let unloaded = false;
-		let watchdog: ReturnType<typeof setTimeout> | null = null;
-
-		const unload = () => {
-			if (unloaded) {
-				return;
-			}
-			unloaded = true;
-			if (watchdog) {
-				clearTimeout(watchdog);
-				watchdog = null;
-			}
-			sound.unloadAsync().catch(() => {
-				// best-effort unload
-			});
-		};
+		({ sound } = await Audio.Sound.createAsync(asset));
 
 		sound.setOnPlaybackStatusUpdate(status => {
 			if (status.isLoaded && status.didJustFinish) {
@@ -62,6 +63,7 @@ export const playNotificationSound = async (soundName: string): Promise<void> =>
 
 		watchdog = setTimeout(unload, WATCHDOG_MS);
 	} catch {
+		unload();
 		// best-effort notification sound
 	}
 };
