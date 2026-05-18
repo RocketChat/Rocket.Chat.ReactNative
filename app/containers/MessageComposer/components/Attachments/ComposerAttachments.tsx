@@ -1,12 +1,9 @@
 import React from 'react';
-import { FlatList, type ListRenderItem, Pressable, StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 
-import { BUTTON_HIT_SLOP } from '../../../message/utils';
 import { useComposerAttachments, useMessageComposerApi } from '../../context';
-import { useTheme } from '../../../../theme';
 import { useActionSheet } from '../../../ActionSheet';
-import { CustomIcon } from '../../../CustomIcon';
-import { AttachmentThumb } from '../../../AttachmentThumb';
+import { AttachmentThumbs } from '../../../AttachmentThumbs';
 import I18n from '../../../../i18n';
 import { type IShareAttachment } from '../../../../definitions';
 import { AttachmentActionSheet } from './AttachmentActionSheet';
@@ -15,100 +12,39 @@ const styles = StyleSheet.create({
 	list: {
 		paddingTop: 8,
 		paddingBottom: 4
-	},
-	item: {
-		marginRight: 16
-	},
-	removeButton: {
-		position: 'absolute',
-		top: -8,
-		right: -8,
-		width: 28,
-		height: 28,
-		borderWidth: 2,
-		borderRadius: 14,
-		alignItems: 'center',
-		justifyContent: 'center'
-	},
-	warningIcon: {
-		position: 'absolute',
-		right: 4,
-		bottom: 4
 	}
 });
 
-const AttachmentItem = ({ item, index }: { item: IShareAttachment; index: number }) => {
-	'use memo';
+const getItemTestID = (_item: IShareAttachment, index: number) => `message-composer-attachment-${index}`;
+const getRemoveTestID = (_item: IShareAttachment, index: number) => `message-composer-remove-attachment-${index}`;
 
+export const ComposerAttachments = () => {
+	const attachments = useComposerAttachments();
 	const { removeAttachment, updateAttachment } = useMessageComposerApi();
-	const { colors } = useTheme();
 	const { showActionSheet } = useActionSheet();
 
-	const onPress = () =>
+	if (!attachments.length) {
+		return null;
+	}
+
+	const onPress = (item: IShareAttachment) =>
 		showActionSheet({
 			children: <AttachmentActionSheet attachment={item} onSave={attachment => updateAttachment(item.path, attachment)} />,
 			snaps: ['85%'],
 			fullContainer: true
 		});
 
-	const onRemove = () => removeAttachment(item.path);
-
 	return (
-		<View style={styles.item}>
-			<Pressable
-				style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }]}
-				accessible
-				accessibilityRole='button'
-				accessibilityLabel={item.filename}
-				accessibilityHint={I18n.t('Edit_attachment_options')}
-				onPress={onPress}
-				testID={`message-composer-attachment-${index}`}>
-				<AttachmentThumb path={item.path} mime={item.mime} />
-			</Pressable>
-			<Pressable
-				accessible
-				accessibilityRole='button'
-				accessibilityLabel={I18n.t('Remove_attachment')}
-				hitSlop={BUTTON_HIT_SLOP}
-				style={({ pressed }) => [
-					styles.removeButton,
-					{
-						backgroundColor: colors.fontDefault,
-						borderColor: colors.surfaceRoom,
-						opacity: pressed ? 0.7 : 1
-					}
-				]}
-				onPress={onRemove}
-				testID={`message-composer-remove-attachment-${index}`}>
-				<CustomIcon name='close' color={colors.surfaceRoom} size={14} />
-			</Pressable>
-			{!item.canUpload ? (
-				<CustomIcon name='warning' size={18} color={colors.buttonBackgroundDangerDefault} style={styles.warningIcon} />
-			) : null}
-		</View>
-	);
-};
-
-const renderItem: ListRenderItem<IShareAttachment> = ({ item, index }) => <AttachmentItem item={item} index={index} />;
-
-const keyExtractor = (item: IShareAttachment) => item.path;
-
-export const ComposerAttachments = () => {
-	const attachments = useComposerAttachments();
-
-	if (!attachments.length) {
-		return null;
-	}
-
-	return (
-		<FlatList
-			horizontal
-			data={attachments}
-			keyExtractor={keyExtractor}
-			contentContainerStyle={styles.list}
-			showsHorizontalScrollIndicator={false}
+		<AttachmentThumbs
+			attachments={attachments}
+			onPress={onPress}
+			onRemove={item => removeAttachment(item.path)}
+			getItemAccessibilityHint={() => I18n.t('Edit_attachment_options')}
+			removeAccessibilityLabel={I18n.t('Remove_attachment')}
+			getItemTestID={getItemTestID}
+			getRemoveTestID={getRemoveTestID}
 			testID='message-composer-attachments'
-			renderItem={renderItem}
+			contentContainerStyle={styles.list}
 		/>
 	);
 };

@@ -23,7 +23,7 @@ jest.mock('../../containers/MessageComposer', () => {
 });
 
 jest.mock('./Preview', () => () => null);
-jest.mock('./Thumbs', () => () => null);
+jest.mock('../../containers/AttachmentThumbs', () => ({ AttachmentThumbs: () => null }));
 
 const makeInstance = ({
 	mime,
