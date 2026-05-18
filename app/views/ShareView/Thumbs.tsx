@@ -1,16 +1,15 @@
 import React from 'react';
-import { FlatList, Image, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 
 import { BUTTON_HIT_SLOP } from '../../containers/message/utils';
 import { themes } from '../../lib/constants/colors';
 import { CustomIcon } from '../../containers/CustomIcon';
+import { AttachmentThumb } from '../../containers/AttachmentThumb';
 import { THUMBS_HEIGHT } from './constants';
 import { type TSupportedThemes } from '../../theme';
 import { type IShareAttachment } from '../../definitions';
 import Touch from '../../containers/Touch';
-
-const THUMB_SIZE = 64;
 
 const styles = StyleSheet.create({
 	list: {
@@ -41,27 +40,15 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	},
 	item: {
-		paddingTop: 8
-	},
-	thumb: {
-		width: THUMB_SIZE,
-		height: THUMB_SIZE,
-		borderRadius: 4,
-		marginRight: 16,
-		overflow: 'hidden',
-		alignItems: 'center',
-		justifyContent: 'center',
-		borderWidth: 1
+		paddingTop: 8,
+		marginRight: 16
 	}
 });
 
-interface IThumbContent {
+interface IThumb {
 	item: IShareAttachment;
 	theme: TSupportedThemes;
 	isShareExtension: boolean;
-}
-
-interface IThumb extends IThumbContent {
 	onPress(item: IShareAttachment): void;
 	onRemove(item: IShareAttachment): void;
 }
@@ -70,32 +57,10 @@ interface IThumbs extends Omit<IThumb, 'item'> {
 	attachments: IShareAttachment[];
 }
 
-const ThumbContent = React.memo(({ item, theme }: IThumbContent) => {
-	const type = item?.mime;
-
-	if (type?.match(/image/)) {
-		return <Image source={{ uri: item.path }} style={[styles.thumb, { borderColor: themes[theme].strokeLight }]} />;
-	}
-
-	if (type?.match(/video/)) {
-		return (
-			<View style={[styles.thumb, { borderColor: themes[theme].strokeLight }]}>
-				<CustomIcon name='camera-photo' size={30} color={themes[theme].badgeBackgroundLevel2} />
-			</View>
-		);
-	}
-
-	return (
-		<View style={[styles.thumb, { borderColor: themes[theme].strokeLight }]}>
-			<CustomIcon name='attach' size={30} color={themes[theme].badgeBackgroundLevel2} />
-		</View>
-	);
-});
-
-const Thumb = ({ item, theme, isShareExtension, onPress, onRemove }: IThumb) => (
+const Thumb = ({ item, theme, onPress, onRemove }: IThumb) => (
 	<Touch style={styles.item} onPress={() => onPress(item)} activeOpacity={0.7}>
 		<>
-			<ThumbContent item={item} theme={theme} isShareExtension={isShareExtension} />
+			<AttachmentThumb path={item.path} mime={item.mime} />
 			<RectButton
 				hitSlop={BUTTON_HIT_SLOP}
 				style={[styles.removeButton, { backgroundColor: themes[theme].fontDefault, borderColor: themes[theme].surfaceHover }]}

@@ -1,16 +1,15 @@
 import React from 'react';
-import { FlatList, Image, type ListRenderItem, Pressable, StyleSheet, View } from 'react-native';
+import { FlatList, type ListRenderItem, Pressable, StyleSheet, View } from 'react-native';
 
 import { BUTTON_HIT_SLOP } from '../../../message/utils';
 import { useComposerAttachments, useMessageComposerApi } from '../../context';
 import { useTheme } from '../../../../theme';
 import { useActionSheet } from '../../../ActionSheet';
 import { CustomIcon } from '../../../CustomIcon';
+import { AttachmentThumb } from '../../../AttachmentThumb';
 import I18n from '../../../../i18n';
 import { type IShareAttachment } from '../../../../definitions';
 import { AttachmentActionSheet } from './AttachmentActionSheet';
-
-const THUMB_SIZE = 64;
 
 const styles = StyleSheet.create({
 	list: {
@@ -19,15 +18,6 @@ const styles = StyleSheet.create({
 	},
 	item: {
 		marginRight: 16
-	},
-	thumb: {
-		width: THUMB_SIZE,
-		height: THUMB_SIZE,
-		borderRadius: 4,
-		overflow: 'hidden',
-		alignItems: 'center',
-		justifyContent: 'center',
-		borderWidth: 1
 	},
 	removeButton: {
 		position: 'absolute',
@@ -46,20 +36,6 @@ const styles = StyleSheet.create({
 		bottom: 4
 	}
 });
-
-const ThumbContent = ({ path, mime }: { path: string; mime?: string }) => {
-	const { colors } = useTheme();
-
-	if (mime?.startsWith('image/')) {
-		return <Image source={{ uri: path }} style={[styles.thumb, { borderColor: colors.strokeLight }]} />;
-	}
-
-	return (
-		<View style={[styles.thumb, { borderColor: colors.strokeLight, backgroundColor: colors.surfaceNeutral }]}>
-			<CustomIcon name={mime?.startsWith('video/') ? 'video' : 'attach'} size={28} color={colors.badgeBackgroundLevel2} />
-		</View>
-	);
-};
 
 const AttachmentItem = ({ item, index }: { item: IShareAttachment; index: number }) => {
 	'use memo';
@@ -87,7 +63,7 @@ const AttachmentItem = ({ item, index }: { item: IShareAttachment; index: number
 				accessibilityHint={I18n.t('Edit_attachment_options')}
 				onPress={onPress}
 				testID={`message-composer-attachment-${index}`}>
-				<ThumbContent path={item.path} mime={item.mime} />
+				<AttachmentThumb path={item.path} mime={item.mime} />
 			</Pressable>
 			<Pressable
 				accessible
