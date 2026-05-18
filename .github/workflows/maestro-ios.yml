@@ -9,7 +9,7 @@ on:
 
 jobs:
   ios-test:
-    runs-on: macos-14
+    runs-on: macos-26
     env:
       # Pinned alongside the Android workflow so both platforms run the same
       # Maestro CLI. See cli-2.5.1 release notes for driver improvements.
@@ -19,6 +19,13 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Set up Xcode
+        # Match e2e-build-ios.yml so the artifact built against the iOS 26 SDK
+        # is exercised on an iOS 26 simulator runtime (avoids SDK/runtime drift).
+        uses: maxim-lobanov/setup-xcode@ed7a3b1fda3918c0306d1b724322adc0b8cc0a90 # v1.7.0
+        with:
+          xcode-version: '26.2.0'
 
       - name: Setup Java
         uses: actions/setup-java@c1e323688fd81a25caa38c78aa6df2d33d3e20d9 # v4.8.0
