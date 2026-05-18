@@ -1,5 +1,4 @@
 export * from './Autocomplete';
-export * from './Attachments';
 export * from './Buttons';
 export * from './ComposerInput';
 export * from './EmojiSearchbar';

@@ -9,7 +9,7 @@ import { CustomIcon, type TIconsName } from '../../containers/CustomIcon';
 import { ImageViewer } from '../../containers/ImageViewer';
 import sharedStyles from '../Styles';
 import I18n from '../../i18n';
-import { THUMBS_HEIGHT } from './constants';
+import { THUMBS_HEIGHT } from '../../containers/Thumbs';
 import { type TSupportedThemes } from '../../theme';
 import { themes } from '../../lib/constants/colors';
 import { type IShareAttachment } from '../../definitions';

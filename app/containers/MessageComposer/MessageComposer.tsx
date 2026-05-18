@@ -39,7 +39,7 @@ export const MessageComposer = ({
 	children
 }: {
 	forwardedRef: Ref<IMessageComposerRef>;
-	children?: ReactElement;
+	children?: ReactElement | null;
 }): ReactElement | null => {
 	'use memo';
 

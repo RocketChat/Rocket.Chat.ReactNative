@@ -19,8 +19,7 @@ import { FormTextInput } from '../../containers/TextInput';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { getUserSelector } from '../../selectors/login';
 import database from '../../lib/database';
-import { AttachmentThumbs } from '../../containers/AttachmentThumbs';
-import { THUMBS_HEIGHT } from './constants';
+import Thumbs from '../../containers/Thumbs';
 import Preview from './Preview';
 import Header from './Header';
 import AltTextInput from './AltTextInput';
@@ -401,14 +400,8 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 						{showAltTextInput ? <AltTextInput value={altText} onChangeText={this.onChangeAltText} theme={theme} /> : null}
 						<MessageComposerContainer ref={this.messageComposerRef}>
 							{attachments.length > 1 ? (
-								<AttachmentThumbs
-									attachments={attachments}
-									onPress={this.selectFile}
-									onRemove={this.removeFile}
-									style={{ height: THUMBS_HEIGHT, backgroundColor: themes[theme].surfaceLight }}
-									contentContainerStyle={styles.thumbsContent}
-								/>
-							) : undefined}
+								<Thumbs attachments={attachments} onPress={this.selectFile} onRemove={this.removeFile} />
+							) : null}
 						</MessageComposerContainer>
 					</View>
 				</RoomContext.Provider>

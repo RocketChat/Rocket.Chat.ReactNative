@@ -12,7 +12,12 @@ import { EmojiSearchbar } from './EmojiSearchbar';
 import { Toolbar } from './Toolbar';
 import { Quotes } from './Quotes';
 import { ComposerInput } from './ComposerInput';
-import { ComposerAttachments } from './Attachments';
+import Thumbs from '../../Thumbs';
+import { AttachmentActionSheet } from './Attachments/AttachmentActionSheet';
+import { useComposerAttachments, useMessageComposerApi } from '../context';
+import { useActionSheet } from '../../ActionSheet';
+import I18n from '../../../i18n';
+import { type IShareAttachment } from '../../../definitions';
 import { MESSAGE_COMPOSER_EXIT_FOCUS_NATIVE_ID } from '../../../lib/constants/accessibility';
 
 interface MessageComposerContentProps {
@@ -20,7 +25,7 @@ interface MessageComposerContentProps {
 	action: TMessageAction | undefined;
 	composerInputComponentRef: RefObject<IComposerInput>;
 	composerInputRef: RefObject<any>;
-	children?: ReactElement;
+	children?: ReactElement | null;
 	onLayout: (event: LayoutChangeEvent) => void;
 }
 
@@ -29,11 +34,25 @@ export const MessageComposerContent = memo<MessageComposerContentProps>(
 		'use memo';
 
 		const { colors } = useTheme();
+		const attachments = useComposerAttachments();
+		const { removeAttachment, updateAttachment } = useMessageComposerApi();
+		const { showActionSheet } = useActionSheet();
 		const backgroundColor = action === 'edit' ? colors.statusBackgroundWarning2 : colors.surfaceLight;
 
 		if (recordingAudio) {
 			return <RecordAudio />;
 		}
+
+		const onPressAttachment = (attachment: IShareAttachment) =>
+			showActionSheet({
+				children: (
+					<AttachmentActionSheet attachment={attachment} onSave={updated => updateAttachment(attachment.path, updated)} />
+				),
+				snaps: ['85%'],
+				fullContainer: true
+			});
+
+		const onRemoveAttachment = (attachment: IShareAttachment) => removeAttachment(attachment.path);
 
 		return (
 			<View
@@ -46,7 +65,21 @@ export const MessageComposerContent = memo<MessageComposerContentProps>(
 					<ComposerInput ref={composerInputComponentRef} inputRef={composerInputRef} />
 					<Right />
 				</View>
-				<ComposerAttachments />
+				{attachments.length ? (
+					<Thumbs
+						attachments={attachments}
+						onPress={onPressAttachment}
+						onRemove={onRemoveAttachment}
+						style={styles.attachmentsList}
+						contentContainerStyle={styles.attachmentsContent}
+						testID='message-composer-attachments'
+						getAccessibilityLabel={item => item.filename}
+						getAccessibilityHint={() => I18n.t('Edit_attachment_options')}
+						getTestID={(_, index) => `message-composer-attachment-${index}`}
+						getRemoveAccessibilityLabel={() => I18n.t('Remove_attachment')}
+						getRemoveTestID={(_, index) => `message-composer-remove-attachment-${index}`}
+					/>
+				) : null}
 				<Quotes />
 				<Toolbar />
 				<EmojiSearchbar />
@@ -65,5 +98,11 @@ const styles = StyleSheet.create({
 	},
 	input: {
 		flexDirection: 'row'
+	},
+	attachmentsList: {
+		backgroundColor: 'transparent'
+	},
+	attachmentsContent: {
+		paddingBottom: 4
 	}
 });
