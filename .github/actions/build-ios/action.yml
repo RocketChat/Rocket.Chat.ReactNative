@@ -71,9 +71,9 @@ runs:
         restore-keys: |
           pods-v1-
 
-    - name: pod install 
+    - name: pod install
       run: |
-        yarn pod-install
+        pnpm pod-install
       shell: bash
 
     - name: Decode p8
