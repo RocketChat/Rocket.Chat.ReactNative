@@ -43,7 +43,7 @@ const ImageContainer = ({
 		return (
 			<View style={{ gap: 4 }}>
 				{image}
-				<AltTextLabel altText={altText || ''} />
+				<AltTextLabel altText={altText} />
 			</View>
 		);
 	}

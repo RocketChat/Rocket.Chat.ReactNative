@@ -52,7 +52,7 @@ const AltTextActionSheetContent = ({ altText }: { altText: string }) => {
 };
 
 type TAltTextLabelProps = {
-	altText: string;
+	altText?: string;
 	testID?: string;
 };
 
@@ -62,15 +62,15 @@ const AltTextLabel = ({ altText, testID }: TAltTextLabelProps) => {
 	const { colors } = useTheme();
 	const { showActionSheet } = useActionSheet();
 
-	const handleOpenAltText = React.useCallback(() => {
-		if (!altText) {
-			return;
-		}
+	if (!altText) {
+		return null;
+	}
 
+	const handleOpenAltText = () => {
 		showActionSheet({
 			children: <AltTextActionSheetContent altText={altText} />
 		});
-	}, [altText, showActionSheet]);
+	};
 
 	return (
 		<Pressable
