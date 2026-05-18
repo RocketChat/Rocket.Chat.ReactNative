@@ -202,9 +202,12 @@ const AttachmentView = (): React.ReactElement => {
 	return (
 		<View style={{ backgroundColor: colors.surfaceRoom, flex: 1 }}>
 			<RenderContent attachment={attachment} setLoading={setLoading} altText={altText} />
-			<View style={{ position: 'absolute', bottom: 20, left: 0, right: 0 }}>
-				{altText ? <AltTextLabel testID='attachment-view-alt-text-label' altText={altText} /> : null}
-			</View>
+
+			{altText ? (
+				<View style={{ position: 'absolute', bottom: 20, left: 0, right: 0 }}>
+					<AltTextLabel testID='attachment-view-alt-text-label' altText={altText} />{' '}
+				</View>
+			) : null}
 			{loading ? <RCActivityIndicator absolute size='large' /> : null}
 		</View>
 	);
