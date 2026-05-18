@@ -59,15 +59,15 @@ const onAskMeLaterButton = { text: I18n.t('Review_app_later'), onPress: onAskMeL
 const onCancelButton = { text: I18n.t('Review_app_no'), onPress: onCancelPress };
 
 const askReview = () => {
-	// Alert.alert(
-	// 	I18n.t('Review_app_title'),
-	// 	I18n.t('Review_app_desc', { store }),
-	// 	isIOS ? [onReviewButton, onAskMeLaterButton, onCancelButton] : [onAskMeLaterButton, onCancelButton, onReviewButton],
-	// 	{
-	// 		cancelable: true,
-	// 		onDismiss: onAskMeLaterPress
-	// 	}
-	// );
+	Alert.alert(
+		I18n.t('Review_app_title'),
+		I18n.t('Review_app_desc', { store }),
+		isIOS ? [onReviewButton, onAskMeLaterButton, onCancelButton] : [onAskMeLaterButton, onCancelButton, onReviewButton],
+		{
+			cancelable: true,
+			onDismiss: onAskMeLaterPress
+		}
+	);
 };
 
 const tryReview = async () => {

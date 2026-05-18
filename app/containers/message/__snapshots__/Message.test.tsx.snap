@@ -68792,7 +68792,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Message translated into English"
+                accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Message translated into English."
                 accessible={true}
                 style={
                   {
@@ -71194,7 +71194,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
       orderKey="«r49»"
     >
       <View
-        accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Message translated into English"
+        accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Message translated into English. Message was read"
         accessible={true}
         style={
           {
@@ -71806,7 +71806,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
       orderKey="«r4a»"
     >
       <View
-        accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Message translated into English"
+        accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Message translated into English. Message was read"
         accessible={true}
         style={
           {
@@ -72185,7 +72185,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
       orderKey="«r4b»"
     >
       <View
-        accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Message translated into English"
+        accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Message translated into English. Message was read"
         accessible={true}
         style={
           {
@@ -73587,7 +73587,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Message translated into English"
+                accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Message translated into English."
                 accessible={true}
                 style={
                   {
@@ -75989,7 +75989,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
       orderKey="«r4j»"
     >
       <View
-        accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Message translated into English"
+        accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Message translated into English. Message was read"
         accessible={true}
         style={
           {
@@ -76601,7 +76601,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
       orderKey="«r4k»"
     >
       <View
-        accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Message translated into English"
+        accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Message translated into English. Message was read"
         accessible={true}
         style={
           {
@@ -76980,7 +76980,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
       orderKey="«r4l»"
     >
       <View
-        accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Message translated into English"
+        accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Message translated into English. Message was read"
         accessible={true}
         style={
           {
@@ -104645,7 +104645,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
       orderKey="«r68»"
     >
       <View
-        accessibilityLabel="JD 10:00:00 AM Message translated into English"
+        accessibilityLabel="JD 10:00:00 AM Message translated into English. Message was read"
         accessible={true}
         style={
           {
@@ -105735,7 +105735,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
       orderKey="«r6a»"
     >
       <View
-        accessibilityLabel="John Doe 10:00:00 AM Message translated into English"
+        accessibilityLabel="John Doe 10:00:00 AM Message translated into English. Message was read"
         accessible={true}
         style={
           {
@@ -106825,7 +106825,7 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
       orderKey="«r6c»"
     >
       <View
-        accessibilityLabel="John Doe With An Extremely Long Display Name That Should Definitely Be Truncated In Any Reasonable User Interface Layout 10:00:00 AM Message translated into English"
+        accessibilityLabel="John Doe With An Extremely Long Display Name That Should Definitely Be Truncated In Any Reasonable User Interface Layout 10:00:00 AM Message translated into English. Message was read"
         accessible={true}
         style={
           {
@@ -139453,7 +139453,7 @@ exports[`Story Snapshots: Translated should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM Message translated into English"
+                accessibilityLabel="diego.mello 10:00:00 AM Message translated into English."
                 accessible={true}
                 style={
                   {
@@ -139951,7 +139951,7 @@ exports[`Story Snapshots: TranslatedLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM Message translated into English"
+                accessibilityLabel="diego.mello 10:00:00 AM Message translated into English."
                 accessible={true}
                 style={
                   {
@@ -147932,7 +147932,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
       orderKey="«r9k»"
     >
       <View
-        accessibilityLabel="jd 10:00:00 AM Message translated into English"
+        accessibilityLabel="jd 10:00:00 AM Message translated into English. Message was read"
         accessible={true}
         style={
           {
@@ -149022,7 +149022,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
       orderKey="«r9m»"
     >
       <View
-        accessibilityLabel="john.doe 10:00:00 AM Message translated into English"
+        accessibilityLabel="john.doe 10:00:00 AM Message translated into English. Message was read"
         accessible={true}
         style={
           {
@@ -150112,7 +150112,7 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
       orderKey="«r9o»"
     >
       <View
-        accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Message translated into English"
+        accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Message translated into English. Message was read"
         accessible={true}
         style={
           {

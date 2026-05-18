@@ -22,7 +22,7 @@ const buildProps = (overrides: Partial<TProps> = {}): TProps =>
 		unread: false,
 		useRealName: false,
 		...overrides
-	}) as TProps;
+	} as TProps);
 
 describe('useMessageAccessibilityLabel', () => {
 	it('builds the default label with user, hour and message', () => {
@@ -79,16 +79,12 @@ describe('useMessageAccessibilityLabel', () => {
 	});
 
 	it('appends "Message was read" when read receipts are enabled and the message is read', () => {
-		const { result } = renderHook(() =>
-			useMessageAccessibilityLabel(buildProps({ isReadReceiptEnabled: true, unread: false }))
-		);
+		const { result } = renderHook(() => useMessageAccessibilityLabel(buildProps({ isReadReceiptEnabled: true, unread: false })));
 		expect(result.current).toBe(`alice ${HOUR} hello world. Message was read`);
 	});
 
 	it('appends "Message was not read" when read receipts are enabled and the message is unread', () => {
-		const { result } = renderHook(() =>
-			useMessageAccessibilityLabel(buildProps({ isReadReceiptEnabled: true, unread: true }))
-		);
+		const { result } = renderHook(() => useMessageAccessibilityLabel(buildProps({ isReadReceiptEnabled: true, unread: true })));
 		expect(result.current).toBe(`alice ${HOUR} hello world. Message was not read`);
 	});
 
