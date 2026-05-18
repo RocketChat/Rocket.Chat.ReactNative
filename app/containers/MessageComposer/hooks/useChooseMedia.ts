@@ -45,7 +45,7 @@ export const useChooseMedia = ({
 		try {
 			let image = await ImagePicker.openCamera({ ...IMAGE_PICKER_CONFIG, ...libPickerLabels });
 			image = forceJpgExtension(image);
-			await handlePickedAttachments([image as IShareAttachment]);
+			await handleSelectedAttachments([image as IShareAttachment]);
 		} catch (e) {
 			log(e);
 		}
@@ -54,7 +54,7 @@ export const useChooseMedia = ({
 	const takeVideo = async () => {
 		try {
 			const video = await ImagePicker.openCamera({ ...VIDEO_PICKER_CONFIG, ...libPickerLabels });
-			await handlePickedAttachments([video as IShareAttachment]);
+			await handleSelectedAttachments([video as IShareAttachment]);
 		} catch (e) {
 			log(e);
 		}
@@ -68,7 +68,7 @@ export const useChooseMedia = ({
 				...libPickerLabels
 			})) as unknown as ImageOrVideo[]; // FIXME: type this
 			attachments = attachments.map(att => forceJpgExtension(att));
-			await handlePickedAttachments(attachments as IShareAttachment[]);
+			await handleSelectedAttachments(attachments as IShareAttachment[]);
 		} catch (e) {
 			log(e);
 		}
@@ -85,7 +85,7 @@ export const useChooseMedia = ({
 					mime: asset.mimeType,
 					path: asset.uri
 				} as IShareAttachment;
-				await handlePickedAttachments([file]);
+				await handleSelectedAttachments([file]);
 			}
 		} catch (e) {
 			log(e);
@@ -142,7 +142,7 @@ export const useChooseMedia = ({
 		addAttachments(items as IShareAttachment[]);
 	};
 
-	const handlePickedAttachments = async (attachments: IShareAttachment[]) => {
+	const handleSelectedAttachments = async (attachments: IShareAttachment[]) => {
 		if (altTextSupported) {
 			prepareAttachments(attachments);
 			return;
