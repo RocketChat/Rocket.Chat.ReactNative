@@ -99,7 +99,16 @@ const Preview = React.memo(({ item, theme, length }: IPreview) => {
 
 		if (type?.match(/image/)) {
 			const imageViewerWidth = width - insets.left - insets.right;
-			return <ImageViewer uri={item.path} width={imageViewerWidth} height={calculatedHeight} />;
+			const isAnimated = item.mime === 'image/gif' || /\.gif(\?|$)/i.test(item.path);
+			return (
+				<ImageViewer
+					uri={item.path}
+					width={imageViewerWidth}
+					height={calculatedHeight}
+					altText={item.altText}
+					isAnimated={isAnimated}
+				/>
+			);
 		}
 
 		return (
