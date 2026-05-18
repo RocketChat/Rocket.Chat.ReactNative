@@ -78,7 +78,7 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 			if (file.attachments?.length) {
 				return (
 					<Reply
-						key={index}
+						key={file.title_link || file.message_link || `reply-${index}`}
 						attachment={file}
 						timeFormat={timeFormat}
 						getCustomEmoji={getCustomEmoji}
