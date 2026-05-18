@@ -71,13 +71,20 @@ jobs:
       - name: Boot Simulator
         timeout-minutes: 15
         run: |
-          if [ "${{ inputs.shard }}" = "14" ]; then
-            SIM_NAME="iPhone SE (3rd generation)"
-          else
-            SIM_NAME="iPhone 16 Pro"
+          # macos-26 catalogs different iPhone names per Xcode release; pick the
+          # highest-numbered "iPhone N Pro" present in the installed runtimes
+          # so we are not pinned to a name that disappears on image rotation.
+          SIM_NAME=$(xcrun simctl list devices available --json \
+            | jq -r '[.devices | to_entries[] | .value[] | select(.name | test("^iPhone [0-9]+ Pro$"))] | sort_by(.name | capture("(?<n>[0-9]+)").n | tonumber) | last | .name')
+
+          if [[ -z "$SIM_NAME" || "$SIM_NAME" == "null" ]]; then
+            echo "::error::No iPhone N Pro simulator available"
+            xcrun simctl list devices available
+            exit 1
           fi
 
           echo "Booting simulator: $SIM_NAME"
+          echo "SIM_NAME=$SIM_NAME" >> "$GITHUB_ENV"
 
           xcrun simctl boot "$SIM_NAME" || true
           xcrun simctl bootstatus "$SIM_NAME" -b
