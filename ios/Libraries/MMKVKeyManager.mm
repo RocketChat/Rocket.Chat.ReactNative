@@ -62,8 +62,7 @@ static void Logger(NSString *format, ...) {
                                                 rootPath:mmkvPath];
 
         if (mmkv) {
-            NSUInteger keyCount = [mmkv count];
-            Logger(@"MMKV initialized with encryption, %lu keys found", (unsigned long)keyCount);
+            Logger(@"MMKV initialized successfully. Keys: %lu", (unsigned long)[mmkv count]);
         } else {
             Logger(@"MMKV instance is nil after initialization");
         }
