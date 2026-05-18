@@ -70,7 +70,7 @@ describe('useMessageAccessibilityLabel', () => {
 			useMessageAccessibilityLabel(
 				buildProps({
 					msg: 'hey @alice check #general',
-					mentions: [{ _id: 'u1', username: 'alice', name: 'Alice' }],
+					mentions: [{ _id: 'u1', username: 'alice', name: 'Alice', type: 'user' }],
 					channels: [{ _id: 'c1', name: 'general' }]
 				})
 			)
