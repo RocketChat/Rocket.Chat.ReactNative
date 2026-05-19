@@ -142,7 +142,7 @@ export const ImageViewer = ({ uri = '', width, height, altText, isAnimated, ...p
 				<Animated.View accessible={false} onLayout={onLayout} style={[styles.flex, style]}>
 					<Touch
 						accessible
-						accessibilityLabel={trimmedAltText ?? I18n.t('A11y_image_no_description')}
+						accessibilityLabel={trimmedAltText || I18n.t('A11y_image_no_description')}
 						accessibilityRole={isAnimated ? 'button' : 'image'}
 						accessibilityHint={isAnimated ? I18n.t('A11y_image_viewer_gif_hint') : undefined}
 						onPress={handleGifPlayback}
