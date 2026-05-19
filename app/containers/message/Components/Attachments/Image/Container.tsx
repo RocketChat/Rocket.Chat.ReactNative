@@ -5,7 +5,7 @@ import Markdown from '../../../../markdown';
 import { useMediaAutoDownload } from '../../../hooks/useMediaAutoDownload';
 import { Button } from './Button';
 import { MessageImage } from './Image';
-import AltTextLabel from './AltTextLabel';
+import AltTextLabel from '../../../../AltTextLabel';
 import { type IImageContainer } from './definitions';
 import MessageContext from '../../../Context';
 import { WidthAwareView } from '../../WidthAwareView';

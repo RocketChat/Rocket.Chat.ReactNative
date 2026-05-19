@@ -1,10 +1,10 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { useActionSheet } from '../../../../ActionSheet';
-import I18n from '../../../../../i18n';
-import sharedStyles from '../../../../../views/Styles';
-import { useTheme } from '../../../../../theme';
+import { useActionSheet } from './ActionSheet';
+import I18n from '../i18n';
+import sharedStyles from '../views/Styles';
+import { useTheme } from '../theme';
 
 const styles = StyleSheet.create({
 	container: {

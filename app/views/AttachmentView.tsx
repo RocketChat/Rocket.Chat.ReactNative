@@ -9,7 +9,7 @@ import * as FileSystem from 'expo-file-system/legacy';
 
 import { isImageBase64 } from '../lib/methods/isImageBase64';
 import RCActivityIndicator from '../containers/ActivityIndicator';
-import AltTextLabel from '../containers/message/Components/Attachments/Image/AltTextLabel';
+import AltTextLabel from '../containers/AltTextLabel';
 import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import { ImageViewer } from '../containers/ImageViewer';
 import { LISTENER } from '../containers/Toast';
@@ -205,7 +205,7 @@ const AttachmentView = (): React.ReactElement => {
 
 			{altText ? (
 				<View style={{ position: 'absolute', bottom: 20, left: 0, right: 0 }}>
-					<AltTextLabel testID='attachment-view-alt-text-label' altText={altText} />{' '}
+					<AltTextLabel testID='attachment-view-alt-text-label' altText={altText} />
 				</View>
 			) : null}
 			{loading ? <RCActivityIndicator absolute size='large' /> : null}
