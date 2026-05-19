@@ -397,7 +397,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 							length={attachments.length}
 							theme={theme}
 						/>
-						{showAltTextInput ? <AltTextInput value={altText} onChangeText={this.onChangeAltText} theme={theme} /> : null}
+						{showAltTextInput ? <AltTextInput value={altText} onChangeText={this.onChangeAltText} /> : null}
 						<MessageComposerContainer ref={this.messageComposerRef}>
 							{attachments.length > 1 ? (
 								<Thumbs attachments={attachments} onPress={this.selectFile} onRemove={this.removeFile} />
