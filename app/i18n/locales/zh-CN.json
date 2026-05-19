@@ -5,7 +5,7 @@
   "A11y_appearance_show_alerts_as": "将警报显示为",
   "A11y_appearance_toast_dismissed_automatically": "自动消失",
   "A11y_appearance_toasts": "Toast",
-  "A11y_image_no_description": "Image without description",
+  "A11y_image_no_description": "无描述的图片",
   "A11y_image_viewer_gif_hint": "双击即可播放或暂停",
   "A11y_in_app_notification": "来自{{name}}的新消息：{{message}}",
   "A11y_incoming_call_dismiss": "关闭",

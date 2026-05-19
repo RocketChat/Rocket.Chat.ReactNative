@@ -5,7 +5,7 @@
   "A11y_appearance_show_alerts_as": "アラートを表示する方法",
   "A11y_appearance_toast_dismissed_automatically": "自動で却下されました",
   "A11y_appearance_toasts": "トースト",
-  "A11y_image_no_description": "Image without description",
+  "A11y_image_no_description": "説明のない画像",
   "A11y_image_viewer_gif_hint": "ダブルタップで再生または一時停止",
   "A11y_in_app_notification": "{{name}} からの新しいメッセージ: {{message}}",
   "A11y_incoming_call_dismiss": "閉じる",

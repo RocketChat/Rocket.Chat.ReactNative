@@ -9,7 +9,7 @@
   "A11y_appearance_show_alerts_as": "अलर्ट्स को इस रूप में दिखाएं:",
   "A11y_appearance_toast_dismissed_automatically": "स्वतः खारिज कर दिया गया",
   "A11y_appearance_toasts": "टोस्ट्स",
-  "A11y_image_no_description": "Image without description",
+  "A11y_image_no_description": "बिना विवरण वाली छवि",
   "A11y_image_viewer_gif_hint": "चलाने या रोकने के लिए दो बार टैप करें",
   "A11y_in_app_notification": "{{name}} से नया संदेश: {{message}}",
   "A11y_incoming_call_dismiss": "खारिज करें",

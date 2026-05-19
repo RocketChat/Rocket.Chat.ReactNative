@@ -5,7 +5,7 @@
   "A11y_appearance_show_alerts_as": "عرض التنبيهات كـ",
   "A11y_appearance_toast_dismissed_automatically": "تم رفضه تلقائيًا",
   "A11y_appearance_toasts": "إشعارات منبثقة (Toast)",
-  "A11y_image_no_description": "Image without description",
+  "A11y_image_no_description": "صورة بدون وصف",
   "A11y_image_viewer_gif_hint": "انقر نقرًا مزدوجًا للتشغيل أو الإيقاف المؤقت",
   "A11y_in_app_notification": "رسالة جديدة من {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "تجاهل",
