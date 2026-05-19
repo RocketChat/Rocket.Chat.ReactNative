@@ -1,0 +1,78 @@
+appId: chat.rocket.reactnative
+name: Reaction Picker Small Screen
+jsEngine: graaljs
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-14
+  - ios-only
+
+---
+- evalScript: ${output.user = output.utils.createUser()}
+- evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password)}
+- evalScript: ${output.randomMessage = 'random-message'}
+
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+- runFlow:
+    file: '../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: ${output.room.name}
+
+- runFlow:
+    file: '../../helpers/send-message.yaml'
+    env:
+      message: ${output.randomMessage}
+
+# should reach the last emoji of the people category by scrolling (regression for small-screen reaction picker)
+- extendedWaitUntil:
+    visible:
+      text: .*${output.randomMessage}.*
+    timeout: 60000
+- longPressOn:
+    id: 'message-content-${output.randomMessage}'
+- waitForAnimationToEnd
+- extendedWaitUntil:
+    visible:
+      id: action-sheet
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: add-reaction
+    timeout: 60000
+- tapOn:
+    id: add-reaction
+- extendedWaitUntil:
+    visible:
+      id: reaction-picker
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: emoji-picker-tab-emoji
+    timeout: 60000
+- tapOn:
+    id: emoji-picker-tab-emoji
+- waitForAnimationToEnd:
+    timeout: 1000
+- repeat:
+    while:
+      notVisible:
+        id: emoji-pregnant_woman
+    commands:
+      - swipe:
+          from:
+            id: action-sheet
+          direction: UP
+      - waitForAnimationToEnd:
+          timeout: 500
+- tapOn:
+    id: emoji-pregnant_woman
+- extendedWaitUntil:
+    visible:
+      id: 'message-reaction-:pregnant_woman:'
+    timeout: 60000
