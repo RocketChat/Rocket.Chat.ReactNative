@@ -106,7 +106,7 @@ class UserPreferences {
 
 	getBool(key: string): boolean | null {
 		try {
-			return this.mmkv.getBoolean(key) || null;
+			return this.mmkv.getBoolean(key) ?? null;
 		} catch {
 			return null;
 		}
@@ -135,7 +135,7 @@ class UserPreferences {
 
 	getNumber(key: string): number | null {
 		try {
-			return this.mmkv.getNumber(key) || null;
+			return this.mmkv.getNumber(key) ?? null;
 		} catch {
 			return null;
 		}
