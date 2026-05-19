@@ -134,22 +134,42 @@ export const ImageViewer = ({ uri = '', width, height, altText, isAnimated, ...p
 
 	const { colors } = useTheme();
 
-	const trimmedAltText = altText?.trim();
+	const accessibilityLabel = altText?.trim() || I18n.t('A11y_image_no_description');
 
 	return (
 		<View importantForAccessibility='no' style={[styles.container, { width, height, backgroundColor: colors.surfaceNeutral }]}>
 			<GestureDetector gesture={gesture}>
 				<Animated.View accessible={false} onLayout={onLayout} style={[styles.flex, style]}>
-					<Touch
-						accessible
-						accessibilityLabel={trimmedAltText || I18n.t('A11y_image_no_description')}
-						accessibilityRole={isAnimated ? 'button' : 'image'}
-						accessibilityHint={isAnimated ? I18n.t('A11y_image_viewer_gif_hint') : undefined}
-						onPress={handleGifPlayback}
-						style={styles.flex}
-						rectButtonStyle={styles.flex}>
-						<Image accessible={false} style={styles.image} contentFit='contain' source={{ uri }} ref={expoImageRef} {...props} />
-					</Touch>
+					{isAnimated ? (
+						<Touch
+							accessible
+							accessibilityLabel={accessibilityLabel}
+							accessibilityRole='button'
+							accessibilityHint={I18n.t('A11y_image_viewer_gif_hint')}
+							onPress={handleGifPlayback}
+							style={styles.flex}
+							rectButtonStyle={styles.flex}>
+							<Image
+								accessible={false}
+								style={styles.image}
+								contentFit='contain'
+								source={{ uri }}
+								ref={expoImageRef}
+								{...props}
+							/>
+						</Touch>
+					) : (
+						<Image
+							accessible
+							accessibilityLabel={accessibilityLabel}
+							accessibilityRole='image'
+							style={styles.image}
+							contentFit='contain'
+							source={{ uri }}
+							ref={expoImageRef}
+							{...props}
+						/>
+					)}
 				</Animated.View>
 			</GestureDetector>
 		</View>
