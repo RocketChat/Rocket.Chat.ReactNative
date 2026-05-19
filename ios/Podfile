@@ -46,10 +46,6 @@ pre_install do |installer|
         def pod.build_type;
         Pod::BuildType.static_library # >= 1.9
       end
-      elsif ['MMKV', 'MMKVCore', 'NitroMmkv', 'NitroModules'].include?(pod.name)
-        def pod.build_type
-          Pod::BuildType.dynamic_framework
-        end
     end
   end
 end
