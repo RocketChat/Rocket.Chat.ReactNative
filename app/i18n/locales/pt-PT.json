@@ -512,6 +512,8 @@
   "This_room_is_blocked": "Esta sala está bloqueada",
   "This_room_is_read_only": "Esta sala é apenas de leitura",
   "Threads_dm_unread": "Threads, {{unread}} não lidas, menção direta",
+  "Thread_message": "mensagem do tópico {{msg}}",
+  "Thread_reply": "a responder a {{msg}}",
   "Threads_group_unread": "Threads, {{unread}} não lidas, menção em grupo",
   "Threads_unread": "Threads, {{unread}} por ler",
   "Timezone": "Fuso Horário",

@@ -529,6 +529,8 @@
   "This_room_is_read_only": "このルームは読み取り専用です。",
   "This_will_clear_all_your_offline_data": "オフラインデータをすべて削除します。",
   "Thread": "スレッド",
+  "Thread_message": "スレッドメッセージ {{msg}}",
+  "Thread_reply": "{{msg}} への返信",
   "Threads": "スレッド",
   "Threads_dm_unread": "スレッド、{{unread}} 件の未読、直接メンション",
   "Threads_group_unread": "スレッド、{{unread}}件の未読、グループメンション",

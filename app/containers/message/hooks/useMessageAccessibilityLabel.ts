@@ -22,12 +22,13 @@ const stripMentions = (label: string, mentions: IMessage['mentions'] = [], chann
 export const useMessageAccessibilityLabel = (props: IMessage & IMessageTouchable): string => {
 	const imageDescriptionLabel = useImageDescriptionLabel(props.attachments, props.msg);
 
-	let label = props.isInfo ? (props.msg as string) : `${props.tmid ? `thread message ${props.msg}` : props.msg}`;
+	const threadMessageLabel = i18n.t('Thread_message', { msg: props.msg });
+	let label = props.isInfo ? (props.msg as string) : `${props.tmid ? threadMessageLabel : props.msg}`;
 	if (props.isThreadReply) {
-		label = `replying to ${props.tmid ? `thread message ${props.msg}` : props.msg}`;
+		label = i18n.t('Thread_reply', { msg: props.tmid ? threadMessageLabel : props.msg });
 	}
 	if (props.isThreadSequential) {
-		label = `thread message ${props.msg}`;
+		label = threadMessageLabel;
 	}
 	if (props.isEncrypted) {
 		label = i18n.t('Encrypted_message');
