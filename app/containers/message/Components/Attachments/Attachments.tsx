@@ -39,7 +39,7 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 			if (file.image_url) {
 				return (
 					<Image
-						key={file.image_url || `image-${index}`}
+						key={file.image_url}
 						file={file}
 						showAttachment={showAttachment}
 						getCustomEmoji={getCustomEmoji}
@@ -69,10 +69,23 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 			}
 
 			if (file.actions && file.actions.length > 0) {
-				return <AttachedActions key={index} attachment={file} getCustomEmoji={getCustomEmoji} />;
+				return (
+					<AttachedActions
+						key={file.title_link || file.message_link || `actions-${index}`}
+						attachment={file}
+						getCustomEmoji={getCustomEmoji}
+					/>
+				);
 			}
 			if (typeof file.collapsed === 'boolean') {
-				return <CollapsibleQuote key={index} attachment={file} timeFormat={timeFormat} getCustomEmoji={getCustomEmoji} />;
+				return (
+					<CollapsibleQuote
+						key={file.title_link || file.message_link || `collapsible-${index}`}
+						attachment={file}
+						timeFormat={timeFormat}
+						getCustomEmoji={getCustomEmoji}
+					/>
+				);
 			}
 
 			if (file.attachments?.length) {

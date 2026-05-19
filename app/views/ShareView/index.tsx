@@ -71,11 +71,13 @@ interface IShareViewProps {
 	dispatch: Dispatch;
 }
 
+type TShareServerInfo = Partial<Pick<IServer, 'version' | 'FileUpload_MaxFileSize' | 'FileUpload_MediaTypeWhiteList'>>;
+
 class ShareView extends Component<IShareViewProps, IShareViewState> {
 	private messageComposerRef: React.RefObject<IMessageComposerRef | null>;
 	private files: any[];
 	private isShareExtension: boolean;
-	private serverInfo: IServer;
+	private serverInfo: TShareServerInfo;
 	private finishShareView: (text?: string, selectedMessages?: string[]) => void;
 	private sentMessage: boolean;
 
@@ -354,9 +356,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 	private get effectiveServerVersion(): string | undefined {
 		const { serverVersion } = this.props;
 		// Share extension targets a specific workspace; prefer its version over the Redux-connected server
-		return this.isShareExtension
-			? (this.serverInfo as any)?.version || serverVersion
-			: serverVersion || (this.serverInfo as any)?.version;
+		return this.isShareExtension ? this.serverInfo.version || serverVersion : serverVersion || this.serverInfo.version;
 	}
 
 	private get isAltTextSupported(): boolean {
