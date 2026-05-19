@@ -3,6 +3,10 @@ import { renderHook } from '@testing-library/react-native';
 import { useMessageAccessibilityLabel } from './useMessageAccessibilityLabel';
 import { type IMessage, type IMessageTouchable } from '../interfaces';
 
+jest.mock('../../../lib/hooks/useAltTextSupported', () => ({
+	useAltTextSupported: () => false
+}));
+
 type TProps = IMessage & IMessageTouchable;
 
 const FIXED_TS = new Date('2024-01-15T12:34:56Z');
@@ -107,6 +111,18 @@ describe('useMessageAccessibilityLabel', () => {
 			)
 		);
 		expect(result.current).toBe(`alice ${HOUR} caption. Image description: A wavy pattern`);
+	});
+
+	it('does not announce "undefined" for attachment-only messages', () => {
+		const { result } = renderHook(() =>
+			useMessageAccessibilityLabel(
+				buildProps({
+					msg: undefined,
+					attachments: [{ image_url: 'https://example.com/img.png', altText: 'A wavy pattern' }]
+				})
+			)
+		);
+		expect(result.current).toBe(`alice ${HOUR}. Image description: A wavy pattern`);
 	});
 
 	it('builds a translated message with only user, hour and translated marker as prefix', () => {
