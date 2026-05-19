@@ -28,7 +28,7 @@ const ImageContainer = ({
 	const isAltTextSupported = useAltTextSupported();
 	const altText = file.altText || (isAltTextSupported ? msg : undefined);
 	// When no description and no caption above, fall back to a generic label so screen readers don't announce just "image button".
-	const accessibilityLabel = altText ?? (msg ? undefined : I18n.t('A11y_image_no_description'));
+	const accessibilityLabel = altText?.trim() || I18n.t('A11y_image_no_description');
 
 	const image = (
 		<Button accessibilityLabel={accessibilityLabel} onPress={onPress}>
