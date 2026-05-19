@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react-native';
 
 import { useImageDescriptionLabel } from './useImageDescriptionLabel';
-import { type IAttachment } from '../../definitions';
+import { type IAttachment } from '../../../definitions';
 
 describe('useImageDescriptionLabel', () => {
 	it('returns an empty string when there are no attachments', () => {

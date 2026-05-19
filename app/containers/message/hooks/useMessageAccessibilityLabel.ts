@@ -1,6 +1,6 @@
 import i18n from '../../../i18n';
 import translationLanguages from '../../../lib/constants/translationLanguages';
-import { useImageDescriptionLabel } from '../../../lib/hooks/useImageDescriptionLabel';
+import { useImageDescriptionLabel } from './useImageDescriptionLabel';
 import { type IMessage, type IMessageTouchable } from '../interfaces';
 import { getInfoMessage } from '../utils';
 
