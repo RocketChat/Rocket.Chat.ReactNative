@@ -16,14 +16,16 @@ const styles = StyleSheet.create({
 	}
 });
 
+const getAccessibilityLabel = (item: IShareAttachment) => item.filename;
+const getAccessibilityHint = () => I18n.t('Edit_attachment_options');
+const getTestID = (_: IShareAttachment, index: number) => `message-composer-attachment-${index}`;
+const getRemoveAccessibilityLabel = () => I18n.t('Remove_attachment');
+const getRemoveTestID = (_: IShareAttachment, index: number) => `message-composer-remove-attachment-${index}`;
+
 export const ComposerAttachments = () => {
 	const attachments = useComposerAttachments();
 	const { removeAttachment, updateAttachment } = useMessageComposerApi();
 	const { showActionSheet } = useActionSheet();
-
-	if (!attachments.length) {
-		return null;
-	}
 
 	const onPress = (attachment: IShareAttachment) =>
 		showActionSheet({
@@ -34,6 +36,10 @@ export const ComposerAttachments = () => {
 
 	const onRemove = (attachment: IShareAttachment) => removeAttachment(attachment.path);
 
+	if (!attachments.length) {
+		return null;
+	}
+
 	return (
 		<Thumbs
 			attachments={attachments}
@@ -42,11 +48,11 @@ export const ComposerAttachments = () => {
 			style={styles.list}
 			contentContainerStyle={styles.content}
 			testID='message-composer-attachments'
-			getAccessibilityLabel={item => item.filename}
-			getAccessibilityHint={() => I18n.t('Edit_attachment_options')}
-			getTestID={(_, index) => `message-composer-attachment-${index}`}
-			getRemoveAccessibilityLabel={() => I18n.t('Remove_attachment')}
-			getRemoveTestID={(_, index) => `message-composer-remove-attachment-${index}`}
+			getAccessibilityLabel={getAccessibilityLabel}
+			getAccessibilityHint={getAccessibilityHint}
+			getTestID={getTestID}
+			getRemoveAccessibilityLabel={getRemoveAccessibilityLabel}
+			getRemoveTestID={getRemoveTestID}
 		/>
 	);
 };
