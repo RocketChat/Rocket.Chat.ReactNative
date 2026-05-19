@@ -58,7 +58,7 @@ const onReviewButton = { text: I18n.t('Review_app_yes'), onPress: onReviewPress 
 const onAskMeLaterButton = { text: I18n.t('Review_app_later'), onPress: onAskMeLaterPress };
 const onCancelButton = { text: I18n.t('Review_app_no'), onPress: onCancelPress };
 
-const askReview = () => {
+const askReview = () =>
 	Alert.alert(
 		I18n.t('Review_app_title'),
 		I18n.t('Review_app_desc', { store }),
@@ -68,7 +68,6 @@ const askReview = () => {
 			onDismiss: onAskMeLaterPress
 		}
 	);
-};
 
 const tryReview = async () => {
 	const data = (await AsyncStorage.getItem(reviewKey)) || '{}';
