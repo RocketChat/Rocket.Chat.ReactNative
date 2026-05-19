@@ -33,6 +33,9 @@ onFlowStart:
     visible:
       id: rooms-list-view
     timeout: 60000
+# iOS 26 surfaces a system "Save Password?" prompt after a successful login
+# submit. It overlays the rooms list and blocks XCUITest hit-testing for
+# elements underneath, so subsequent `enabled: true` assertions never resolve.
 - runFlow:
     when:
       platform: iOS
