@@ -3,6 +3,7 @@ import { act, render, screen, fireEvent, waitFor, userEvent } from '@testing-lib
 import { Provider } from 'react-redux';
 
 import { MessageComposerContainer } from './MessageComposerContainer';
+import { ComposerAttachments } from './components/Attachments/ComposerAttachments';
 import { setPermissions } from '../../actions/permissions';
 import { addSettings } from '../../actions/settings';
 import { selectServerRequest } from '../../actions/server';
@@ -119,7 +120,12 @@ const initialContext = {
 const Render = ({ context, children }: { context?: Partial<IRoomContext>; children?: React.ReactElement }) => (
 	<Provider store={mockedStore}>
 		<RoomContext.Provider value={{ ...initialContext, ...context }}>
-			<MessageComposerContainer>{children || <></>}</MessageComposerContainer>
+			<MessageComposerContainer>
+				<>
+					<ComposerAttachments />
+					{children}
+				</>
+			</MessageComposerContainer>
 		</RoomContext.Provider>
 	</Provider>
 );

@@ -1,15 +1,16 @@
 import React from 'react';
-import { FlatList, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
+import { FlatList, Image, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 
 import { BUTTON_HIT_SLOP } from './message/utils';
 import { CustomIcon } from './CustomIcon';
-import { AttachmentThumb } from './AttachmentThumb';
 import { useTheme } from '../theme';
 import { type IShareAttachment } from '../definitions';
 import Touch from './Touch';
 
 export const THUMBS_HEIGHT = 74;
+
+const THUMB_SIZE = 64;
 
 const styles = StyleSheet.create({
 	list: {
@@ -42,7 +43,30 @@ const styles = StyleSheet.create({
 	item: {
 		paddingTop: 8,
 		marginRight: 16
+	},
+	thumb: {
+		width: THUMB_SIZE,
+		height: THUMB_SIZE,
+		borderRadius: 4,
+		overflow: 'hidden',
+		alignItems: 'center',
+		justifyContent: 'center',
+		borderWidth: 1
 	}
+});
+
+const ThumbContent = React.memo(({ path, mime }: { path: string; mime?: string }) => {
+	const { colors } = useTheme();
+
+	if (mime?.startsWith('image/')) {
+		return <Image source={{ uri: path }} style={[styles.thumb, { borderColor: colors.strokeLight }]} />;
+	}
+
+	return (
+		<View style={[styles.thumb, { borderColor: colors.strokeLight, backgroundColor: colors.surfaceNeutral }]}>
+			<CustomIcon name={mime?.startsWith('video/') ? 'video' : 'attach'} size={28} color={colors.badgeBackgroundLevel2} />
+		</View>
+	);
 });
 
 interface IThumb {
@@ -95,7 +119,7 @@ const Thumb = ({
 			accessibilityHint={accessibilityHint}
 			testID={testID}>
 			<>
-				<AttachmentThumb path={item.path} mime={item.mime} />
+				<ThumbContent path={item.path} mime={item.mime} />
 				<RectButton
 					hitSlop={BUTTON_HIT_SLOP}
 					style={[styles.removeButton, { backgroundColor: colors.fontDefault, borderColor: colors.surfaceHover }]}

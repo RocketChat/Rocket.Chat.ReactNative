@@ -96,7 +96,7 @@ import {
 } from '../../lib/methods/helpers';
 import { withActionSheet } from '../../containers/ActionSheet';
 import { goRoom, type TGoRoomItem } from '../../lib/methods/helpers/goRoom';
-import { type IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
+import { ComposerAttachments, type IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
 import { RoomContext } from './context';
 import AudioManager from '../../lib/methods/AudioManager';
 import { type IListContainerRef, type TListRef } from './List/definitions';
@@ -1610,7 +1610,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			}
 		}
 
-		return <MessageComposerContainer ref={this.messageComposerRef} />;
+		return (
+			<MessageComposerContainer ref={this.messageComposerRef}>
+				<ComposerAttachments />
+			</MessageComposerContainer>
+		);
 	};
 
 	renderActions = () => {
