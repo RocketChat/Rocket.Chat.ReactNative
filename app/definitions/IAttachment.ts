@@ -78,6 +78,12 @@ export interface IServerAttachment {
 	content?: EncryptedContent;
 }
 
+export interface IMessageEditAttachment {
+	description: string;
+	fileId?: string;
+	filename?: string;
+}
+
 export interface IShareAttachment {
 	filename: string;
 	description?: string;

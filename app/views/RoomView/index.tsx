@@ -63,6 +63,7 @@ import {
 	type IApplicationState,
 	type IAttachment,
 	type IMessage,
+	type IMessageEditAttachment,
 	type IOmnichannelSource,
 	type ISubscription,
 	type IVisitor,
@@ -814,7 +815,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	onEditRequest = async (
 		message: Pick<IMessage, 'id' | 'msg' | 'rid'> & {
-			attachments?: { description: string; fileId?: string; filename?: string }[];
+			attachments?: IMessageEditAttachment[];
 		}
 	) => {
 		try {
@@ -822,7 +823,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			const { serverVersion } = this.props;
 			const supportsMediaEdit = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.4.0');
 			const mediaAttachments = message.attachments?.filter(
-				(a): a is { description: string; fileId: string; filename: string } => !!a.fileId && !!a.filename
+				(a): a is Required<IMessageEditAttachment> => !!a.fileId && !!a.filename
 			);
 			if (supportsMediaEdit && mediaAttachments?.length) {
 				const mediaEditResults = await Promise.allSettled(
