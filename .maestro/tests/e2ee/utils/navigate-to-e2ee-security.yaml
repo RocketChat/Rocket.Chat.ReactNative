@@ -18,7 +18,6 @@ tags:
       visible: 'Enter E2EE password'
     commands:
       - assertVisible: Enter E2EE password
-- runFlow: '../../../helpers/dismiss-save-password.yaml'
 - extendedWaitUntil:
     visible:
       id: rooms-list-view-sidebar
