@@ -18,6 +18,15 @@ tags:
       visible: 'Enter E2EE password'
     commands:
       - assertVisible: Enter E2EE password
+# Defensive: iOS 26 may land the system "Save Password?" prompt here rather
+# than right after submit, depending on e2ee saga timing. Dismiss before
+# relying on hamburger hit-testing.
+- runFlow:
+    when:
+      visible: 'Securely store your password'
+      platform: iOS
+    commands:
+      - tapOn: 'Not Now'
 - extendedWaitUntil:
     visible:
       id: rooms-list-view-sidebar
