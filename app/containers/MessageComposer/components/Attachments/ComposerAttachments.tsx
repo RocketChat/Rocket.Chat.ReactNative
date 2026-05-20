@@ -23,6 +23,8 @@ const getRemoveAccessibilityLabel = () => I18n.t('Remove_attachment');
 const getRemoveTestID = (_: IShareAttachment, index: number) => `message-composer-remove-attachment-${index}`;
 
 export const ComposerAttachments = () => {
+	'use memo';
+
 	const attachments = useComposerAttachments();
 	const { removeAttachment, updateAttachment } = useMessageComposerApi();
 	const { showActionSheet } = useActionSheet();
