@@ -12,6 +12,8 @@ import SafeAreaView from '../containers/SafeAreaView';
 import * as List from '../containers/List';
 import { type ShareInsideStackParamList } from '../definitions/navigationTypes';
 import { type TServerModel } from '../definitions';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { selectServerRequest } from '../actions/server';
 
@@ -21,6 +23,7 @@ const keyExtractor = (item: TServerModel) => item.id;
 const SelectServerView = () => {
 	const [servers, setServers] = React.useState<TServerModel[]>([]);
 	const dispatch = useDispatch();
+	const { bottom } = useSafeAreaInsets();
 
 	const server = useAppSelector(state => state.server.server);
 	const navigation = useNavigation<NativeStackNavigationProp<ShareInsideStackParamList, 'SelectServerView'>>();
@@ -58,7 +61,7 @@ const SelectServerView = () => {
 				keyExtractor={keyExtractor}
 				getItemLayout={getItemLayout} // Refactor row_height
 				ItemSeparatorComponent={List.Separator}
-				contentContainerStyle={List.styles.contentContainerStyleFlatList}
+				contentContainerStyle={[List.styles.contentContainerStyleFlatList, { paddingBottom: bottom }]}
 				ListHeaderComponent={List.Separator}
 				ListFooterComponent={List.Separator}
 				removeClippedSubviews

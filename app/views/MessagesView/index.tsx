@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type CompositeNavigationProp, type RouteProp } from '@react-navigation/core';
+import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { type MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import Message from '../../containers/message';
@@ -54,6 +55,7 @@ interface IMessagesViewProps {
 	showActionSheet: (params: { options: string[]; hasCancel: boolean }) => void;
 	useRealName: boolean;
 	isMasterDetail: boolean;
+	insets: EdgeInsets;
 }
 
 interface IMessagesViewState {
@@ -357,7 +359,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 
 	render() {
 		const { messages, loading } = this.state;
-		const { theme } = this.props;
+		const { theme, insets } = this.props;
 
 		if (!loading && messages.length === 0) {
 			return this.renderEmpty();
@@ -371,6 +373,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 					style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
 					keyExtractor={item => item._id}
 					onEndReached={this.load}
+					contentContainerStyle={{ paddingBottom: insets.bottom }}
 					ListFooterComponent={loading ? <ActivityIndicator /> : null}
 				/>
 			</SafeAreaView>
@@ -386,4 +389,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	isMasterDetail: state.app.isMasterDetail
 });
 
-export default connect(mapStateToProps)(withTheme(withActionSheet(MessagesView)));
+export default connect(mapStateToProps)(withTheme(withActionSheet(withSafeAreaInsets(MessagesView))));
