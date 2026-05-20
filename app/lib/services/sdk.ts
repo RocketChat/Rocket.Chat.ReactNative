@@ -26,10 +26,22 @@ async function normalizeResponseError(response: Response): Promise<{ status: num
 	}
 }
 
+/**
+ * Preserve the old-SDK call shape `sdk.current?.subscribeNotifyUser?.()` by
+ * declaring the method on `DDPSDK`. The implementation lives on our `Sdk`
+ * wrapper; `initialize()` glues it onto the DDPSDK instance at runtime.
+ */
+declare module '@rocket.chat/ddp-client' {
+	interface DDPSDK {
+		subscribeNotifyUser?: () => ReturnType<Sdk['subscribeNotifyUser']>;
+	}
+}
+
 class Sdk {
 	private sdk: DDPSDK | undefined;
 	private serverUrl: string | undefined;
 	private code: any = null;
+	private reopenInFlight: Promise<boolean> | null = null;
 	private headers: Record<string, string> = {
 		'User-Agent': `RC Mobile; ${
 			Platform.OS
@@ -38,6 +50,7 @@ class Sdk {
 
 	initialize(server: string): DDPSDK {
 		this.sdk = DDPSDK.create(server);
+		this.sdk.subscribeNotifyUser = () => this.subscribeNotifyUser();
 		this.serverUrl = server;
 		this.loadBasicAuth();
 		this.sdk.rest.handleTwoFactorChallenge(this.twoFactorHandler);
@@ -66,6 +79,66 @@ class Sdk {
 		}
 		this.serverUrl = undefined;
 		return null;
+	}
+
+	/**
+	 * Active liveness check: sends a raw DDP `ping` and resolves true if `pong`
+	 * arrives within `timeoutMs`. Bypasses the request pipeline so a zombie
+	 * socket can't make us wait indefinitely. Reaches into the private
+	 * `MinimalDDPClient` because ddp-client doesn't expose `pong` at the
+	 * `ClientStream` layer.
+	 */
+	probe(timeoutMs = 2000): Promise<boolean> {
+		return new Promise<boolean>(resolve => {
+			const ddp = (this.current?.client as unknown as { ddp?: { ping?: (id?: string) => void; on?: (e: 'pong', cb: () => void) => () => void } } | undefined)?.ddp;
+			if (!ddp?.ping || !ddp?.on) {
+				resolve(false);
+				return;
+			}
+			let settled = false;
+			let off: (() => void) | undefined;
+			const finish = (alive: boolean) => {
+				if (settled) return;
+				settled = true;
+				clearTimeout(timer);
+				off?.();
+				resolve(alive);
+			};
+			const timer = setTimeout(() => finish(false), timeoutMs);
+			try {
+				off = ddp.on('pong', () => finish(true));
+				ddp.ping();
+			} catch {
+				finish(false);
+			}
+		});
+	}
+
+	/**
+	 * Tear down the current socket and rebuild from scratch. Concurrent callers
+	 * share one in-flight promise so parallel warm-accepts don't race each other.
+	 * Resolves true once the new socket is connected; false on failure or when
+	 * there is no current SDK.
+	 */
+	forceReopen(): Promise<boolean> {
+		if (this.reopenInFlight) return this.reopenInFlight;
+		const current = this.current;
+		if (!current) return Promise.resolve(false);
+		try {
+			current.connection.close();
+		} catch {
+			// ignore — we're rebuilding anyway
+		}
+		const p = current.connection
+			.reconnect()
+			.then(v => Boolean(v))
+			.catch(() => false);
+		this.reopenInFlight = p;
+		const clear = () => {
+			if (this.reopenInFlight === p) this.reopenInFlight = null;
+		};
+		p.then(clear, clear);
+		return p;
 	}
 
 	private loadBasicAuth(): void {
@@ -366,6 +439,37 @@ class Sdk {
 
 	subscribeRaw(...args: Parameters<ClientStream['subscribe']>) {
 		return this.current?.client.subscribe(...args);
+	}
+
+	/**
+	 * Re-subscribe to the per-user `stream-notify-user` channels needed for VoIP,
+	 * notifications, and presence. Used after `forceReopen()` — once the socket
+	 * is rebuilt, any prior subscriptions are server-side stale and must be
+	 * re-established or the user receives no signals (incoming call answers,
+	 * messages, etc.) until the next full saga re-run.
+	 *
+	 * Ports the old SDK's `subscribeNotifyUser()` helper. Returns an empty array
+	 * when there is no current SDK or no logged-in user.
+	 */
+	subscribeNotifyUser(userId?: string) {
+		const client = this.current?.client;
+		const uid = userId ?? this.current?.account.user?.id;
+		if (!client || !uid) {
+			return [];
+		}
+		const events = [
+			'message',
+			'notification',
+			'rooms-changed',
+			'subscriptions-changed',
+			'uiInteraction',
+			'e2ekeyRequest',
+			'userData',
+			'video-conference',
+			'media-signal',
+			'media-calls'
+		];
+		return events.map(event => client.subscribe('stream-notify-user', `${uid}/${event}`));
 	}
 
 	get currentLogin() {

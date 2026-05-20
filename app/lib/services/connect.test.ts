@@ -1,5 +1,29 @@
-import { determineAuthType, disconnect } from './connect';
+import { checkAndReopen, determineAuthType, disconnect } from './connect';
 import { mediaSessionInstance } from './voip/MediaSessionInstance';
+
+jest.mock('./sdk', () => {
+	const state: { current: any } = { current: undefined };
+	return {
+		__esModule: true,
+		default: {
+			get current() {
+				return state.current;
+			},
+			disconnect: jest.fn(),
+			probe: jest.fn().mockResolvedValue(true),
+			forceReopen: jest.fn().mockResolvedValue(true)
+		},
+		__setCurrent: (value: any) => {
+			state.current = value;
+		}
+	};
+});
+
+const sdkMock = jest.requireMock('./sdk') as {
+	default: { probe: jest.Mock; forceReopen: jest.Mock };
+	__setCurrent: (v: any) => void;
+};
+const setSdkCurrent = (value: any) => sdkMock.__setCurrent(value);
 
 jest.mock('./voip/MediaSessionInstance', () => ({
 	mediaSessionInstance: { reset: jest.fn() }
@@ -310,6 +334,58 @@ describe('VoIP media session lifecycle (disconnect)', () => {
 	it('calls mediaSessionInstance.reset when disconnect runs', () => {
 		disconnect();
 		expect(mediaSessionInstance.reset).toHaveBeenCalledTimes(1);
+	});
+});
+
+describe('checkAndReopen', () => {
+	beforeEach(() => {
+		sdkMock.default.probe.mockReset().mockResolvedValue(true);
+		sdkMock.default.forceReopen.mockReset().mockResolvedValue(true);
+	});
+
+	afterEach(() => {
+		setSdkCurrent(undefined);
+	});
+
+	it('resolves false when sdk.current is undefined', async () => {
+		setSdkCurrent(undefined);
+		await expect(checkAndReopen()).resolves.toBe(false);
+		expect(sdkMock.default.probe).not.toHaveBeenCalled();
+		expect(sdkMock.default.forceReopen).not.toHaveBeenCalled();
+	});
+
+	it.each(['disconnected', 'closed', 'reconnecting', 'idle', 'failed'])(
+		'calls forceReopen without probing when status is %s',
+		async status => {
+			setSdkCurrent({ connection: { status } });
+			await expect(checkAndReopen()).resolves.toBe(true);
+			expect(sdkMock.default.probe).not.toHaveBeenCalled();
+			expect(sdkMock.default.forceReopen).toHaveBeenCalledTimes(1);
+		}
+	);
+
+	it('probes when status is connected and returns true without reopening on live socket', async () => {
+		sdkMock.default.probe.mockResolvedValue(true);
+		setSdkCurrent({ connection: { status: 'connected' } });
+		await expect(checkAndReopen()).resolves.toBe(true);
+		expect(sdkMock.default.probe).toHaveBeenCalledTimes(1);
+		expect(sdkMock.default.forceReopen).not.toHaveBeenCalled();
+	});
+
+	it('probes when status is connected and forces reopen on zombie socket', async () => {
+		sdkMock.default.probe.mockResolvedValue(false);
+		sdkMock.default.forceReopen.mockResolvedValue(true);
+		setSdkCurrent({ connection: { status: 'connected' } });
+		await expect(checkAndReopen()).resolves.toBe(true);
+		expect(sdkMock.default.probe).toHaveBeenCalledTimes(1);
+		expect(sdkMock.default.forceReopen).toHaveBeenCalledTimes(1);
+	});
+
+	it('forwards forceReopen failure (resolves false, does not throw) when probe fails too', async () => {
+		sdkMock.default.probe.mockResolvedValue(false);
+		sdkMock.default.forceReopen.mockResolvedValue(false);
+		setSdkCurrent({ connection: { status: 'connected' } });
+		await expect(checkAndReopen()).resolves.toBe(false);
 	});
 });
 

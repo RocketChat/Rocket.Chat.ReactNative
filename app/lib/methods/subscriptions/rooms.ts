@@ -462,7 +462,9 @@ export default function subscribeRooms() {
 			'uiInteraction',
 			'e2ekeyRequest',
 			'userData',
-			'video-conference'
+			'video-conference',
+			'media-signal',
+			'media-calls'
 		].forEach(event => {
 			const handle = sdk.subscribeRaw('stream-notify-user', `${userId}/${event}`);
 			if (handle) {

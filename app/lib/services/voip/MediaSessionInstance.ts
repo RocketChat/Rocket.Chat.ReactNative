@@ -110,7 +110,7 @@ class MediaSessionInstance {
 			this.instance = mediaSessionStore.getInstance(userId);
 		});
 
-		this.mediaSignalListener = sdk.onStreamData('stream-notify-user', async (ddpMessage: IDDPMessage) => {
+		this.mediaSignalListener = await sdk.onStreamData('stream-notify-user', async (ddpMessage: IDDPMessage) => {
 			if (!this.instance) {
 				return;
 			}

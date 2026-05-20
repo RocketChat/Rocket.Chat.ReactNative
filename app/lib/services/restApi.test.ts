@@ -160,7 +160,7 @@ describe('registerPushToken', () => {
 
 		expect(mockSdkPost).toHaveBeenCalledTimes(1);
 		expect(mockSdkPost).toHaveBeenCalledWith(
-			'push.token',
+			'/v1/push.token',
 			expect.objectContaining({
 				id: 'unique-device-id',
 				value: 'apns-token',
@@ -181,7 +181,7 @@ describe('registerPushToken', () => {
 
 		expect(mockSdkPost).toHaveBeenCalledTimes(1);
 		expect(mockSdkPost).toHaveBeenCalledWith(
-			'push.token',
+			'/v1/push.token',
 			expect.objectContaining({
 				id: 'unique-device-id',
 				value: 'fcm-token',
@@ -212,7 +212,7 @@ describe('registerPushToken', () => {
 		await registerPushToken();
 
 		expect(mockSdkPost).toHaveBeenCalledWith(
-			'push.token',
+			'/v1/push.token',
 			expect.objectContaining({
 				id: 'unique-device-id',
 				value: 'apns-token',
@@ -252,7 +252,7 @@ describe('registerPushToken', () => {
 		await registerPushToken();
 
 		expect(mockSdkPost).toHaveBeenCalledWith(
-			'push.token',
+			'/v1/push.token',
 			expect.objectContaining({
 				id: 'unique-device-id'
 			})
