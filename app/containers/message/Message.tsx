@@ -26,7 +26,8 @@ import Quote from './Components/Attachments/Quote';
 import Touch from './Touch';
 import { useLastFocusedMessageRef } from '../../lib/a11y/useLastFocusedMessageRef';
 import { useMessageAccessibilityLabel } from './hooks/useMessageAccessibilityLabel';
-import { useMessageAccessibilityActions } from '../../lib/a11y/useMessageAccessibilityActions';
+import { useMessageAccessibilityActions } from './hooks/useMessageAccessibilityActions';
+import { useMessageAccessibilityHint } from './hooks/useMessageAccessibilityHint';
 
 const MessageInner = React.memo((props: IMessageInner) => {
 	const { isLargeFontScale } = useResponsiveLayout();
@@ -179,6 +180,7 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 	const isDisabled =
 		(props.isInfo && !props.isThreadReply) || props.archived || props.isTemp || props.type === 'jitsi_call_started';
 	const accessibilityActions = useMessageAccessibilityActions(isDisabled);
+	const accessibilityHint = useMessageAccessibilityHint(props);
 
 	let backgroundColor = undefined;
 	if (props.isBeingEdited) {
@@ -213,6 +215,7 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 					accessible
 					accessibilityRole='button'
 					accessibilityLabel={accessibilityLabelValue}
+					accessibilityHint={accessibilityHint}
 					accessibilityActions={accessibilityActions}
 					onAccessibilityAction={e => {
 						if (e.nativeEvent.actionName === 'showActions') handleLongPress();
