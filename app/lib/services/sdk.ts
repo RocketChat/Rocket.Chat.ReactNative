@@ -103,7 +103,13 @@ class Sdk {
 	 */
 	probe(timeoutMs = 2000): Promise<boolean> {
 		return new Promise<boolean>(resolve => {
-			const ddp = (this.current?.client as unknown as { ddp?: { ping?: (id?: string) => void; on?: (e: 'pong', cb: () => void) => () => void } } | undefined)?.ddp;
+			const ddp = (
+				this.current?.client as unknown as
+					| {
+							ddp?: { ping?: (id?: string) => void; on?: (e: 'pong', cb: () => void) => () => void };
+					  }
+					| undefined
+			)?.ddp;
 			if (!ddp?.ping || !ddp?.on) {
 				resolve(false);
 				return;
@@ -135,7 +141,7 @@ class Sdk {
 	 */
 	forceReopen(): Promise<boolean> {
 		if (this.reopenInFlight) return this.reopenInFlight;
-		const current = this.current;
+		const { current } = this;
 		if (!current) return Promise.resolve(false);
 		try {
 			current.connection.close();
