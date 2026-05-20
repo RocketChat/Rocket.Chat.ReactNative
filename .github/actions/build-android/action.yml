@@ -86,8 +86,8 @@ runs:
 
     - name: Upload sourcemaps/NDK symbols to Bugsnag
       run: |
-        yarn bugsnag:upload-android --variant officialRelease --app-manifest android/app/build/intermediates/merged_manifests/officialRelease/processOfficialReleaseManifest/AndroidManifest.xml
-        yarn bugsnag-cli upload android-aab android/app/build/outputs/bundle/officialRelease/app-official-release.aab
+        pnpm bugsnag:upload-android --variant officialRelease --app-manifest android/app/build/intermediates/merged_manifests/officialRelease/processOfficialReleaseManifest/AndroidManifest.xml
+        pnpm exec bugsnag-cli upload android-aab android/app/build/outputs/bundle/officialRelease/app-official-release.aab
       shell: bash
 
     - name: Upload Official AAB

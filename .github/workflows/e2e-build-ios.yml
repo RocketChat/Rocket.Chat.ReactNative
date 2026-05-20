@@ -64,17 +64,20 @@ jobs:
 
       - name: pod install
         run: |
-          yarn pod-install
+          pnpm pod-install
 
       - name: Decode p8
         run: |
           echo ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }} | base64 --decode > ./ios/fastlane/app_store_connect_api_key.p8
 
-      - name: Set bugsnag key
+      - name: Set bugsnag key and IS_OFFICIAL
         run: |
           cd ios
           /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ secrets.BUGSNAG_KEY}}" ./RocketChatRN/Info.plist
           /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ secrets.BUGSNAG_KEY}}" ./ShareRocketChatRN/Info.plist
+          /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./RocketChatRN/Info.plist
+          /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./ShareRocketChatRN/Info.plist
+          /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./NotificationService/Info.plist
 
       - name: Build iOS app
         run: |

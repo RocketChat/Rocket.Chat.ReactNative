@@ -80,6 +80,7 @@ if [ "$PLATFORM" = "android" ]; then
     -e APP_ID="$APP_ID" \
     --exclude-tags=util \
     --include-tags="test-${SHARD}" \
+    --exclude-tags=ios-only \
     --format junit \
     --output "$MAIN_REPORT" || true
 
@@ -150,6 +151,7 @@ while [ ${#CURRENT_FAILS[@]} -gt 0 ] && [ "$ROUND" -le "$MAX_RERUN_ROUNDS" ]; do
       -e APP_ID="$APP_ID" \
       --exclude-tags=util \
       --include-tags="test-${SHARD}" \
+      --exclude-tags=ios-only \
       --format junit \
       --output "$RPT" || true
   else
