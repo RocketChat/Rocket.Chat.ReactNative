@@ -1,4 +1,4 @@
-appId: chat.rocket.reactnative
+appId: ${APP_ID}
 name: Create Account (Email Already Used)
 onFlowStart:
   - runFlow: '../../../helpers/setup.yaml'
