@@ -50,6 +50,19 @@ class Sdk {
 
 	initialize(server: string): DDPSDK {
 		this.sdk = DDPSDK.create(server);
+
+		// ddp-client's TimeoutControl (60s passive heartbeat) stops resetting after
+		// the first background close because it lacks a connection.on('connected')
+		// listener in its create() setup. This causes a reconnect loop on foreground:
+		// timeout fires → closes socket → reconnect → timeout fires immediately again.
+		// Monkey-patch reconnect() to re-arm the timeout on every successful reconnect.
+		const origReconnect = this.sdk.connection.reconnect.bind(this.sdk.connection);
+		this.sdk.connection.reconnect = () =>
+			origReconnect().then((r: boolean) => {
+				this.sdk?.timeoutControl?.reset();
+				return r;
+			}) as Promise<boolean>;
+
 		this.sdk.subscribeNotifyUser = () => this.subscribeNotifyUser();
 		this.serverUrl = server;
 		this.loadBasicAuth();
