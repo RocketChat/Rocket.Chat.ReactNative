@@ -1,4 +1,4 @@
-appId: chat.rocket.reactnative
+appId: ${APP_ID}
 name: In App Notification
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
