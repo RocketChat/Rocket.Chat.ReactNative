@@ -96,6 +96,11 @@ exports[`Story Snapshots: Archived should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM This message is inside an archived room."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -562,6 +567,11 @@ exports[`Story Snapshots: ArchivedLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM This message is inside an archived room."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -1044,6 +1054,11 @@ exports[`Story Snapshots: AttachmentWithTextAndLink should match snapshot 1`] = 
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -1539,6 +1554,8 @@ exports[`Story Snapshots: AttachmentWithTextAndLink should match snapshot 1`] = 
                             }
                           >
                             <View
+                              accessibilityLabel="Image without description"
+                              accessibilityRole="imagebutton"
                               accessibilityState={
                                 {
                                   "busy": undefined,
@@ -1825,6 +1842,11 @@ exports[`Story Snapshots: AttachmentWithTextAndLinkLargeFont should match snapsh
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -2320,6 +2342,8 @@ exports[`Story Snapshots: AttachmentWithTextAndLinkLargeFont should match snapsh
                             }
                           >
                             <View
+                              accessibilityLabel="Image without description"
+                              accessibilityRole="imagebutton"
                               accessibilityState={
                                 {
                                   "busy": undefined,
@@ -2606,6 +2630,11 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="no.avatar 10:00:00 AM This message has no avatar.."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -3075,6 +3104,11 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM This message uses the user's profile picture as the avatar.."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -3544,6 +3578,11 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM This message uses a Unicode emoji as the avatar.."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -4005,6 +4044,11 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM This message uses a custom animated emoji as the avatar.."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -4482,6 +4526,11 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM This message uses a custom static emoji as the avatar.."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -4972,6 +5021,11 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -5441,6 +5495,11 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -5923,6 +5982,11 @@ exports[`Story Snapshots: BasicLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -6392,6 +6456,11 @@ exports[`Story Snapshots: BasicLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -6874,6 +6943,11 @@ exports[`Story Snapshots: BlockQuote should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM > Testing block quote."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -7376,6 +7450,12 @@ Testing block quote.  "
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM > Testing block quote
+Testing block quote."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -7938,6 +8018,11 @@ exports[`Story Snapshots: BlockQuoteLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM > Testing block quote."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -8440,6 +8525,12 @@ Testing block quote.  "
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM > Testing block quote
+Testing block quote."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -9002,6 +9093,11 @@ exports[`Story Snapshots: Broadcast should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Broadcasted message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -9604,6 +9700,11 @@ exports[`Story Snapshots: BroadcastLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Broadcasted message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -10206,6 +10307,11 @@ exports[`Story Snapshots: CollapsedAttachments should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -10827,6 +10933,11 @@ exports[`Story Snapshots: CollapsedAttachments should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -11663,6 +11774,11 @@ exports[`Story Snapshots: CollapsedAttachmentsLargeFont should match snapshot 1`
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -12284,6 +12400,11 @@ exports[`Story Snapshots: CollapsedAttachmentsLargeFont should match snapshot 1`
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -13120,6 +13241,11 @@ exports[`Story Snapshots: CollapsibleAttachmentWithText should match snapshot 1`
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM This is the main message body.."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -13743,6 +13869,11 @@ exports[`Story Snapshots: CollapsibleAttachmentWithText should match snapshot 1`
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM This is the main message body.."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -14720,6 +14851,11 @@ exports[`Story Snapshots: CollapsibleAttachmentWithTextLargeFont should match sn
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM This is the main message body.."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -15343,6 +15479,11 @@ exports[`Story Snapshots: CollapsibleAttachmentWithTextLargeFont should match sn
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM This is the main message body.."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -16320,6 +16461,11 @@ exports[`Story Snapshots: ColoredAttachments should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -17564,6 +17710,11 @@ exports[`Story Snapshots: ColoredAttachmentsLargeFont should match snapshot 1`] 
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -18808,6 +18959,11 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -19632,6 +19788,11 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -20727,6 +20888,11 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -21551,6 +21717,11 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -22646,6 +22817,11 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="rocket.cat 10:00:00 AM Fourth message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -23177,6 +23353,11 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Third message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -23690,6 +23871,11 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="rocket.cat 10:00:00 AM Second message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -23926,6 +24112,11 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="rocket.cat 10:00:00 AM Second message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -24452,6 +24643,11 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM First message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -24934,6 +25130,11 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="rocket.cat 10:00:00 AM Fourth message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -25465,6 +25666,11 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Third message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -25978,6 +26184,11 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="rocket.cat 10:00:00 AM Second message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -26214,6 +26425,11 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="rocket.cat 10:00:00 AM Second message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -26740,6 +26956,11 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM First message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -27222,6 +27443,11 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM This is a discussion."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -27812,6 +28038,11 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM This is a discussion."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -28404,6 +28635,11 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -28996,6 +29232,11 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM This is a discussion."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -29601,6 +29842,11 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM This is a discussion."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -30191,6 +30437,11 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM This is a discussion."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -30783,6 +31034,11 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -31375,6 +31631,11 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM This is a discussion."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -31980,6 +32241,11 @@ exports[`Story Snapshots: Edited should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message header."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -32485,6 +32751,11 @@ exports[`Story Snapshots: Edited should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message without header."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -32770,6 +33041,11 @@ exports[`Story Snapshots: EditedLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message header."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -33275,6 +33551,11 @@ exports[`Story Snapshots: EditedLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message without header."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -33560,6 +33841,11 @@ exports[`Story Snapshots: Editing should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message being edited."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -34042,6 +34328,11 @@ exports[`Story Snapshots: EditingLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message being edited."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -34524,6 +34815,11 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM 👊🤙👏."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -34992,6 +35288,11 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM 👏."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -35441,6 +35742,11 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM :react_rocket: :nyan_rocket: :marioparty:."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -36003,6 +36309,11 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM :react_rocket:."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -36477,6 +36788,11 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM 🤙:react_rocket:."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -36970,6 +37286,11 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM 🤙:react_rocket:🤙🤙."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -37509,6 +37830,11 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM 👊🤙👏."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -37977,6 +38303,11 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM 👏."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -38426,6 +38757,11 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM :react_rocket: :nyan_rocket: :marioparty:."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -38988,6 +39324,11 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM :react_rocket:."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -39462,6 +39803,11 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM 🤙:react_rocket:."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -39955,6 +40301,11 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM 🤙:react_rocket:🤙🤙."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -40494,6 +40845,11 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -41035,6 +41391,11 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message Encrypted without Header."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -41343,6 +41704,11 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message Encrypted with Reactions."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -42458,6 +42824,11 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                   </View>
                 </View>
                 <View
+<<<<<<< HEAD
+=======
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message Thread reply encrypted."
+                  accessible={true}
+>>>>>>> develop
                   style={
                     [
                       {
@@ -42756,6 +43127,11 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Temp message encrypted."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -43302,6 +43678,11 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message Edited encrypted."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -43744,6 +44125,11 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
       orderKey="«r2b»"
     >
       <View
+<<<<<<< HEAD
+=======
+        accessibilityLabel="diego.mello 10:00:00 AM This message has error and is encrypted."
+        accessible={true}
+>>>>>>> develop
         style={
           {
             "flexDirection": "column",
@@ -44352,6 +44738,11 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Read Receipt encrypted with Header. Message was read"
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -44923,6 +45314,11 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Read Receipt encrypted without Header. Message was read"
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -45274,6 +45670,11 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -45815,6 +46216,11 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message Encrypted without Header."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -46123,6 +46529,11 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message Encrypted with Reactions."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -47238,6 +47649,11 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                   </View>
                 </View>
                 <View
+<<<<<<< HEAD
+=======
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message Thread reply encrypted."
+                  accessible={true}
+>>>>>>> develop
                   style={
                     [
                       {
@@ -47536,6 +47952,11 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Temp message encrypted."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -48082,6 +48503,11 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message Edited encrypted."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -48524,6 +48950,11 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
       orderKey="«r2k»"
     >
       <View
+<<<<<<< HEAD
+=======
+        accessibilityLabel="diego.mello 10:00:00 AM This message has error and is encrypted."
+        accessible={true}
+>>>>>>> develop
         style={
           {
             "flexDirection": "column",
@@ -49132,6 +49563,11 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Read Receipt encrypted with Header. Message was read"
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -49703,6 +50139,11 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Read Receipt encrypted without Header. Message was read"
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -49955,6 +50396,11 @@ exports[`Story Snapshots: Error should match snapshot 1`] = `
       orderKey="«r2n»"
     >
       <View
+<<<<<<< HEAD
+=======
+        accessibilityLabel="diego.mello 10:00:00 AM This message has error."
+        accessible={true}
+>>>>>>> develop
         style={
           {
             "flexDirection": "column",
@@ -50393,6 +50839,11 @@ exports[`Story Snapshots: Error should match snapshot 1`] = `
       orderKey="«r2o»"
     >
       <View
+<<<<<<< HEAD
+=======
+        accessibilityLabel="diego.mello 10:00:00 AM This message has error too."
+        accessible={true}
+>>>>>>> develop
         style={
           {
             "flexDirection": "column",
@@ -50611,6 +51062,11 @@ exports[`Story Snapshots: ErrorLargeFont should match snapshot 1`] = `
       orderKey="«r2p»"
     >
       <View
+<<<<<<< HEAD
+=======
+        accessibilityLabel="diego.mello 10:00:00 AM This message has error."
+        accessible={true}
+>>>>>>> develop
         style={
           {
             "flexDirection": "column",
@@ -51049,6 +51505,11 @@ exports[`Story Snapshots: ErrorLargeFont should match snapshot 1`] = `
       orderKey="«r2q»"
     >
       <View
+<<<<<<< HEAD
+=======
+        accessibilityLabel="diego.mello 10:00:00 AM This message has error too."
+        accessible={true}
+>>>>>>> develop
         style={
           {
             "flexDirection": "column",
@@ -51366,6 +51827,11 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Check out this Python file."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -51974,6 +52440,11 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM TypeScript component."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -52582,6 +53053,11 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Configuration file."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -53190,6 +53666,11 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM File with description."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -53875,6 +54356,11 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -54335,6 +54821,11 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Check out this Python file."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -54943,6 +55434,11 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM TypeScript component."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -55551,6 +56047,11 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Configuration file."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -56159,6 +56660,11 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM File with description."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -56844,6 +57350,11 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -57291,6 +57802,11 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM multi file."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -58067,6 +58583,11 @@ exports[`Story Snapshots: FullName should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="Diego Mello 10:00:00 AM Message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -58549,6 +59070,11 @@ exports[`Story Snapshots: FullNameLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="Diego Mello 10:00:00 AM Message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -59031,6 +59557,11 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM ...."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -59500,6 +60031,11 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 10:00:00 AM Different user."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -59969,6 +60505,11 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM This is the third message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -60205,6 +60746,11 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM This is the second message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -60441,6 +60987,11 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM This is the first message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -60923,6 +61474,11 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM ...."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -61392,6 +61948,11 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 10:00:00 AM Different user."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -61861,6 +62422,11 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM This is the third message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -62097,6 +62663,11 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM This is the second message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -62333,6 +62904,11 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM This is the first message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -62831,6 +63407,11 @@ exports[`Story Snapshots: Ignored should match snapshot 1`] = `
                 }
               >
                 <View
+<<<<<<< HEAD
+=======
+                  accessibilityLabel="diego.mello 10:00:00 AM."
+                  accessible={true}
+>>>>>>> develop
                   style={
                     [
                       {
@@ -63170,6 +63751,11 @@ exports[`Story Snapshots: IgnoredLargeFont should match snapshot 1`] = `
                 }
               >
                 <View
+<<<<<<< HEAD
+=======
+                  accessibilityLabel="diego.mello 10:00:00 AM."
+                  accessible={true}
+>>>>>>> develop
                   style={
                     [
                       {
@@ -63493,6 +64079,11 @@ exports[`Story Snapshots: InlineKatex should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM \\(xˆ2 + yˆ2 - zˆ2\\)."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -63961,6 +64552,11 @@ exports[`Story Snapshots: InlineKatexLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM \\(xˆ2 + yˆ2 - zˆ2\\)."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -64429,6 +65025,11 @@ exports[`Story Snapshots: Katex should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM \\[ \\color{black} \\colorbox{white}{ \\boxed{ \\begin{matrix} \\;\\;\\;\\; \\overlinesegment {\\underlinesegment{ \\Huge Test\\; Test \\; in \\; Test} } & \\\\ \\;\\;\\textit{develop}\\end{matrix} } }\\]."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -64865,6 +65466,11 @@ exports[`Story Snapshots: KatexArray should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM \\begin{array}{|c|c|c|c|c|c|} \\hline \\text{...} & \\text{...} \\\\ \\hline \\end{array}."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -65301,6 +65907,11 @@ exports[`Story Snapshots: KatexArrayLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM \\begin{array}{|c|c|c|c|c|c|} \\hline \\text{...} & \\text{...} \\\\ \\hline \\end{array}."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -65737,6 +66348,11 @@ exports[`Story Snapshots: KatexLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM \\[ \\color{black} \\colorbox{white}{ \\boxed{ \\begin{matrix} \\;\\;\\;\\; \\overlinesegment {\\underlinesegment{ \\Huge Test\\; Test \\; in \\; Test} } & \\\\ \\;\\;\\textit{develop}\\end{matrix} } }\\]."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -66177,6 +66793,13 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM * Dogs
+* cats
+- cats."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -66828,6 +67451,12 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM 1. Dogs 
+2. Cats."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -67428,6 +68057,11 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM 1. Dogs."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -67939,6 +68573,11 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM 2. Cats."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -68234,6 +68873,13 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM * Dogs
+* cats
+- cats."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -68885,6 +69531,12 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM 1. Dogs 
+2. Cats."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -69485,6 +70137,11 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM 1. Dogs."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -69996,6 +70653,11 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM 2. Cats."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -70287,6 +70949,11 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM this is a normal message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -70756,6 +71423,11 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Edited message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -71261,6 +71933,11 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Message translated into English."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -71766,6 +72443,11 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Encrypted message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -72208,6 +72890,11 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
       orderKey="«r46»"
     >
       <View
+<<<<<<< HEAD
+=======
+        accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Error message."
+        accessible={true}
+>>>>>>> develop
         style={
           {
             "flexDirection": "column",
@@ -72745,6 +73432,11 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Message with read receipt. Message was read"
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -73245,6 +73937,11 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Message with read receipt. Message was read"
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -73717,6 +74414,11 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
       orderKey="«r49»"
     >
       <View
+<<<<<<< HEAD
+=======
+        accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Message translated into English. Message was read"
+        accessible={true}
+>>>>>>> develop
         style={
           {
             "flexDirection": "column",
@@ -74326,6 +75028,11 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
       orderKey="«r4a»"
     >
       <View
+<<<<<<< HEAD
+=======
+        accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Message translated into English. Message was read"
+        accessible={true}
+>>>>>>> develop
         style={
           {
             "flexDirection": "column",
@@ -74702,6 +75409,11 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
       orderKey="«r4b»"
     >
       <View
+<<<<<<< HEAD
+=======
+        accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Message translated into English. Message was read"
+        accessible={true}
+>>>>>>> develop
         style={
           {
             "flexDirection": "column",
@@ -75190,6 +75902,11 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM this is a normal message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -75659,6 +76376,11 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Edited message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -76164,6 +76886,11 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Message translated into English."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -76669,6 +77396,11 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Encrypted message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -77111,6 +77843,11 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
       orderKey="«r4g»"
     >
       <View
+<<<<<<< HEAD
+=======
+        accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Error message."
+        accessible={true}
+>>>>>>> develop
         style={
           {
             "flexDirection": "column",
@@ -77648,6 +78385,11 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Message with read receipt. Message was read"
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -78148,6 +78890,11 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Message with read receipt. Message was read"
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -78620,6 +79367,11 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
       orderKey="«r4j»"
     >
       <View
+<<<<<<< HEAD
+=======
+        accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Message translated into English. Message was read"
+        accessible={true}
+>>>>>>> develop
         style={
           {
             "flexDirection": "column",
@@ -79229,6 +79981,11 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
       orderKey="«r4k»"
     >
       <View
+<<<<<<< HEAD
+=======
+        accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Message translated into English. Message was read"
+        accessible={true}
+>>>>>>> develop
         style={
           {
             "flexDirection": "column",
@@ -79605,6 +80362,11 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
       orderKey="«r4l»"
     >
       <View
+<<<<<<< HEAD
+=======
+        accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Message translated into English. Message was read"
+        accessible={true}
+>>>>>>> develop
         style={
           {
             "flexDirection": "column",
@@ -80093,6 +80855,11 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM rocket.cat diego.mello all here general @team."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -80741,6 +81508,11 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM rocket.cat Lorem ipsum dolor diego.mello sit amet, all consectetur adipiscing here elit, sed do eiusmod tempor general incididunt ut labore et dolore magna aliqua.."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -81384,6 +82156,11 @@ exports[`Story Snapshots: MentionsLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM rocket.cat diego.mello all here general @team."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -82032,6 +82809,11 @@ exports[`Story Snapshots: MentionsLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM rocket.cat Lorem ipsum dolor diego.mello sit amet, all consectetur adipiscing here elit, sed do eiusmod tempor general incididunt ut labore et dolore magna aliqua.."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -82675,6 +83457,11 @@ exports[`Story Snapshots: Message should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -83097,6 +83884,11 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Forwarded message with file inside."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -83702,6 +84494,11 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Forwarded message with nested image."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -84239,6 +85036,8 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                                           </Text>
                                         </View>
                                         <View
+                                          accessibilityLabel="Image without description"
+                                          accessibilityRole="imagebutton"
                                           accessibilityState={
                                             {
                                               "busy": undefined,
@@ -84531,6 +85330,11 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM I'm fine!. Message was not read"
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -85031,6 +85835,11 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM I'm fine!. Message was not read"
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -85298,6 +86107,11 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM I'm fine!. Message was read"
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -85798,6 +86612,11 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM I'm fine!. Message was read"
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -86078,6 +86897,11 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM I'm fine!. Message was not read"
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -86578,6 +87402,11 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM I'm fine!. Message was not read"
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -86845,6 +87674,11 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM I'm fine!. Message was read"
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -87345,6 +88179,11 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM I'm fine!. Message was read"
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -87625,6 +88464,11 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM I'm fine!."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -88266,6 +89110,11 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM I'm fine!."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -89214,6 +90063,11 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Looks cool!."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -89751,6 +90605,8 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                                           </Text>
                                         </View>
                                         <View
+                                          accessibilityLabel="Image without description"
+                                          accessibilityRole="imagebutton"
                                           accessibilityState={
                                             {
                                               "busy": undefined,
@@ -90030,6 +90886,11 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Yes, I am."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -90628,6 +91489,8 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                                           </Text>
                                         </View>
                                         <View
+                                          accessibilityLabel="Image without description"
+                                          accessibilityRole="imagebutton"
                                           accessibilityState={
                                             {
                                               "busy": undefined,
@@ -90920,6 +91783,11 @@ exports[`Story Snapshots: MessageWithReplyAndFile should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Here is the file."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -91548,6 +92416,11 @@ exports[`Story Snapshots: MessageWithReplyAndFile should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Got it!."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -92253,6 +93126,11 @@ exports[`Story Snapshots: MessageWithReplyAndFile should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Multiple files."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -93045,6 +93923,11 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Here is the file."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -93673,6 +94556,11 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Got it!."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -94378,6 +95266,11 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Multiple files."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -95170,6 +96063,11 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM I'm fine!."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -95811,6 +96709,11 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM I'm fine!."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -96496,6 +97399,11 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Looks cool!."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -97033,6 +97941,8 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                                           </Text>
                                         </View>
                                         <View
+                                          accessibilityLabel="Image without description"
+                                          accessibilityRole="imagebutton"
                                           accessibilityState={
                                             {
                                               "busy": undefined,
@@ -97312,6 +98222,11 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Yes, I am."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -97910,6 +98825,8 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                                           </Text>
                                         </View>
                                         <View
+                                          accessibilityLabel="Image without description"
+                                          accessibilityRole="imagebutton"
                                           accessibilityState={
                                             {
                                               "busy": undefined,
@@ -98202,6 +99119,11 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM How are you?."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -99153,6 +100075,11 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                   </View>
                 </View>
                 <View
+<<<<<<< HEAD
+=======
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message I'm fine!."
+                  accessible={true}
+>>>>>>> develop
                   style={
                     [
                       {
@@ -99600,6 +100527,11 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                   </View>
                 </View>
                 <View
+<<<<<<< HEAD
+=======
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message I'm fine!."
+                  accessible={true}
+>>>>>>> develop
                   style={
                     [
                       {
@@ -100047,6 +100979,11 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                   </View>
                 </View>
                 <View
+<<<<<<< HEAD
+=======
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message I'm fine!."
+                  accessible={true}
+>>>>>>> develop
                   style={
                     [
                       {
@@ -100494,6 +101431,11 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                   </View>
                 </View>
                 <View
+<<<<<<< HEAD
+=======
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.."
+                  accessible={true}
+>>>>>>> develop
                   style={
                     [
                       {
@@ -100941,6 +101883,11 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                   </View>
                 </View>
                 <View
+<<<<<<< HEAD
+=======
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.."
+                  accessible={true}
+>>>>>>> develop
                   style={
                     [
                       {
@@ -101388,6 +102335,11 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                   </View>
                 </View>
                 <View
+<<<<<<< HEAD
+=======
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message ."
+                  accessible={true}
+>>>>>>> develop
                   style={
                     [
                       {
@@ -101835,6 +102787,11 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                   </View>
                 </View>
                 <View
+<<<<<<< HEAD
+=======
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message ."
+                  accessible={true}
+>>>>>>> develop
                   style={
                     [
                       {
@@ -102282,6 +103239,11 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                   </View>
                 </View>
                 <View
+<<<<<<< HEAD
+=======
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message ."
+                  accessible={true}
+>>>>>>> develop
                   style={
                     [
                       {
@@ -102729,6 +103691,11 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                   </View>
                 </View>
                 <View
+<<<<<<< HEAD
+=======
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message ."
+                  accessible={true}
+>>>>>>> develop
                   style={
                     [
                       {
@@ -103056,6 +104023,11 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM How are you?."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -104007,6 +104979,11 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                   </View>
                 </View>
                 <View
+<<<<<<< HEAD
+=======
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message I'm fine!."
+                  accessible={true}
+>>>>>>> develop
                   style={
                     [
                       {
@@ -104454,6 +105431,11 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                   </View>
                 </View>
                 <View
+<<<<<<< HEAD
+=======
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message I'm fine!."
+                  accessible={true}
+>>>>>>> develop
                   style={
                     [
                       {
@@ -104901,6 +105883,11 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                   </View>
                 </View>
                 <View
+<<<<<<< HEAD
+=======
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message I'm fine!."
+                  accessible={true}
+>>>>>>> develop
                   style={
                     [
                       {
@@ -105348,6 +106335,11 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                   </View>
                 </View>
                 <View
+<<<<<<< HEAD
+=======
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.."
+                  accessible={true}
+>>>>>>> develop
                   style={
                     [
                       {
@@ -105795,6 +106787,11 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                   </View>
                 </View>
                 <View
+<<<<<<< HEAD
+=======
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.."
+                  accessible={true}
+>>>>>>> develop
                   style={
                     [
                       {
@@ -106242,6 +107239,11 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                   </View>
                 </View>
                 <View
+<<<<<<< HEAD
+=======
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message ."
+                  accessible={true}
+>>>>>>> develop
                   style={
                     [
                       {
@@ -106689,6 +107691,11 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                   </View>
                 </View>
                 <View
+<<<<<<< HEAD
+=======
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message ."
+                  accessible={true}
+>>>>>>> develop
                   style={
                     [
                       {
@@ -107136,6 +108143,11 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                   </View>
                 </View>
                 <View
+<<<<<<< HEAD
+=======
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message ."
+                  accessible={true}
+>>>>>>> develop
                   style={
                     [
                       {
@@ -107583,6 +108595,11 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                   </View>
                 </View>
                 <View
+<<<<<<< HEAD
+=======
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message ."
+                  accessible={true}
+>>>>>>> develop
                   style={
                     [
                       {
@@ -107910,6 +108927,11 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="JD 10:00:00 AM Small name (2 chars)."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -108280,6 +109302,11 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
       orderKey="«r68»"
     >
       <View
+<<<<<<< HEAD
+=======
+        accessibilityLabel="JD 10:00:00 AM Message translated into English. Message was read"
+        accessible={true}
+>>>>>>> develop
         style={
           {
             "flexDirection": "column",
@@ -109017,6 +110044,11 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="John Doe 10:00:00 AM Medium name (8 chars)."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -109387,6 +110419,11 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
       orderKey="«r6a»"
     >
       <View
+<<<<<<< HEAD
+=======
+        accessibilityLabel="John Doe 10:00:00 AM Message translated into English. Message was read"
+        accessible={true}
+>>>>>>> develop
         style={
           {
             "flexDirection": "column",
@@ -110124,6 +111161,11 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="John Doe With An Extremely Long Display Name That Should Definitely Be Truncated In Any Reasonable User Interface Layout 10:00:00 AM Long name (22 chars) - should truncate."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -110494,6 +111536,11 @@ exports[`Story Snapshots: Names should match snapshot 1`] = `
       orderKey="«r6c»"
     >
       <View
+<<<<<<< HEAD
+=======
+        accessibilityLabel="John Doe With An Extremely Long Display Name That Should Definitely Be Truncated In Any Reasonable User Interface Layout 10:00:00 AM Message translated into English. Message was read"
+        accessible={true}
+>>>>>>> develop
         style={
           {
             "flexDirection": "column",
@@ -111244,6 +112291,11 @@ exports[`Story Snapshots: Pinned should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message header."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -111743,6 +112795,11 @@ exports[`Story Snapshots: Pinned should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message without header."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -112022,6 +113079,11 @@ exports[`Story Snapshots: PinnedLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message header."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -112521,6 +113583,11 @@ exports[`Story Snapshots: PinnedLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message without header."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -112800,6 +113867,11 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Reactions."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -113813,6 +114885,11 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Multiple Reactions."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -115295,6 +116372,11 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Reactions."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -116308,6 +117390,11 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Multiple Reactions."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -117790,6 +118877,11 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM How are you?."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -118624,6 +119716,11 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
                 }
               >
                 <View
+<<<<<<< HEAD
+=======
+                  accessibilityLabel="diego.mello 10:00:00 AM thread message I'm fine!."
+                  accessible={true}
+>>>>>>> develop
                   style={
                     [
                       {
@@ -118954,6 +120051,11 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
                 }
               >
                 <View
+<<<<<<< HEAD
+=======
+                  accessibilityLabel="diego.mello 10:00:00 AM thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.."
+                  accessible={true}
+>>>>>>> develop
                   style={
                     [
                       {
@@ -119284,6 +120386,11 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
                 }
               >
                 <View
+<<<<<<< HEAD
+=======
+                  accessibilityLabel="diego.mello 10:00:00 AM thread message ."
+                  accessible={true}
+>>>>>>> develop
                   style={
                     [
                       {
@@ -119611,6 +120718,11 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM How are you?."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -120445,6 +121557,11 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
                 }
               >
                 <View
+<<<<<<< HEAD
+=======
+                  accessibilityLabel="diego.mello 10:00:00 AM thread message I'm fine!."
+                  accessible={true}
+>>>>>>> develop
                   style={
                     [
                       {
@@ -120775,6 +121892,11 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
                 }
               >
                 <View
+<<<<<<< HEAD
+=======
+                  accessibilityLabel="diego.mello 10:00:00 AM thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.."
+                  accessible={true}
+>>>>>>> develop
                   style={
                     [
                       {
@@ -121105,6 +122227,11 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
                 }
               >
                 <View
+<<<<<<< HEAD
+=======
+                  accessibilityLabel="diego.mello 10:00:00 AM thread message ."
+                  accessible={true}
+>>>>>>> develop
                   style={
                     [
                       {
@@ -121565,6 +122692,11 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                   </View>
                 </View>
                 <View
+<<<<<<< HEAD
+=======
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message I'm fine!."
+                  accessible={true}
+>>>>>>> develop
                   style={
                     [
                       {
@@ -121895,6 +123027,11 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                 }
               >
                 <View
+<<<<<<< HEAD
+=======
+                  accessibilityLabel="diego.mello 10:00:00 AM thread message Cool!."
+                  accessible={true}
+>>>>>>> develop
                   style={
                     [
                       {
@@ -122225,6 +123362,11 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                 }
               >
                 <View
+<<<<<<< HEAD
+=======
+                  accessibilityLabel="diego.mello 10:00:00 AM thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.."
+                  accessible={true}
+>>>>>>> develop
                   style={
                     [
                       {
@@ -122555,6 +123697,11 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                 }
               >
                 <View
+<<<<<<< HEAD
+=======
+                  accessibilityLabel="diego.mello 10:00:00 AM thread message ."
+                  accessible={true}
+>>>>>>> develop
                   style={
                     [
                       {
@@ -123015,6 +124162,11 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
                   </View>
                 </View>
                 <View
+<<<<<<< HEAD
+=======
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message I'm fine!."
+                  accessible={true}
+>>>>>>> develop
                   style={
                     [
                       {
@@ -123345,6 +124497,11 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
                 }
               >
                 <View
+<<<<<<< HEAD
+=======
+                  accessibilityLabel="diego.mello 10:00:00 AM thread message Cool!."
+                  accessible={true}
+>>>>>>> develop
                   style={
                     [
                       {
@@ -123675,6 +124832,11 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
                 }
               >
                 <View
+<<<<<<< HEAD
+=======
+                  accessibilityLabel="diego.mello 10:00:00 AM thread message Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.."
+                  accessible={true}
+>>>>>>> develop
                   style={
                     [
                       {
@@ -124005,6 +125167,11 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
                 }
               >
                 <View
+<<<<<<< HEAD
+=======
+                  accessibilityLabel="diego.mello 10:00:00 AM thread message ."
+                  accessible={true}
+>>>>>>> develop
                   style={
                     [
                       {
@@ -124332,6 +125499,11 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -124875,6 +126047,11 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -125596,6 +126773,11 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -126139,6 +127321,11 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -126860,6 +128047,11 @@ exports[`Story Snapshots: StaticAvatar should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -127342,6 +128534,11 @@ exports[`Story Snapshots: StaticAvatarLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -127741,6 +128938,11 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM message removed."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -127984,6 +129186,11 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM joined the channel."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -128227,6 +129434,11 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM Pinned a message:."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -128473,6 +129685,11 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM left the channel."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -128716,6 +129933,11 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM removed rocket.cat."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -128959,6 +130181,11 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM added rocket.cat."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -129202,6 +130429,11 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM muted rocket.cat."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -129445,6 +130677,11 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM unmuted rocket.cat."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -129688,6 +130925,11 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM defined rocket.cat as admin."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -129931,6 +131173,11 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM removed rocket.cat as admin."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -130174,6 +131421,11 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM changed room name to: New name."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -130417,6 +131669,11 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM changed room description to: new description."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -130660,6 +131917,11 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM changed room announcement to: new announcement."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -130903,6 +132165,11 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM changed room topic to: new topic."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -131146,6 +132413,11 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM changed room to public."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -131389,6 +132661,11 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM disabled E2E encryption for this room."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -131632,6 +132909,11 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM enabled E2E encryption for this room."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -131875,6 +133157,11 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM removed @rocket.cat from this team."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -132118,6 +133405,11 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM added @rocket.cat to this team."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -132361,6 +133653,11 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM added #channel-name to this team."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -132604,6 +133901,11 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM converted #channel-name to a team."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -132847,6 +134149,11 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM converted #channel-name to channel."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -133090,6 +134397,11 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM deleted #channel-name."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -133333,6 +134645,11 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM removed #channel-name from this team."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -133576,6 +134893,11 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM was removed by ABAC."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -133819,6 +135141,11 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM Unsupported system message."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -134053,6 +135380,11 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM message removed."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -134296,6 +135628,11 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM joined the channel."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -134539,6 +135876,11 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM Pinned a message:."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -134785,6 +136127,11 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM left the channel."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -135028,6 +136375,11 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM removed rocket.cat."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -135271,6 +136623,11 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM added rocket.cat."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -135514,6 +136871,11 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM muted rocket.cat."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -135757,6 +137119,11 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM unmuted rocket.cat."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -136000,6 +137367,11 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM defined rocket.cat as admin."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -136243,6 +137615,11 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM removed rocket.cat as admin."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -136486,6 +137863,11 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM changed room name to: New name."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -136729,6 +138111,11 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM changed room description to: new description."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -136972,6 +138359,11 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM changed room announcement to: new announcement."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -137215,6 +138607,11 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM changed room topic to: new topic."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -137458,6 +138855,11 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM changed room to public."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -137701,6 +139103,11 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM disabled E2E encryption for this room."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -137944,6 +139351,11 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM enabled E2E encryption for this room."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -138187,6 +139599,11 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM removed @rocket.cat from this team."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -138430,6 +139847,11 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM added @rocket.cat to this team."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -138673,6 +140095,11 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM added #channel-name to this team."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -138916,6 +140343,11 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM converted #channel-name to a team."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -139159,6 +140591,11 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM converted #channel-name to channel."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -139402,6 +140839,11 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM deleted #channel-name."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -139645,6 +141087,11 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM removed #channel-name from this team."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -139888,6 +141335,11 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM was removed by ABAC."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -140131,6 +141583,11 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
         }
       >
         <View
+<<<<<<< HEAD
+=======
+          accessibilityLabel="diego.mello 10:00:00 AM Unsupported system message."
+          accessible={true}
+>>>>>>> develop
           style={
             [
               {
@@ -140432,6 +141889,11 @@ exports[`Story Snapshots: Temp should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Temp message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -140903,6 +142365,11 @@ exports[`Story Snapshots: TempLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Temp message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -141390,6 +142857,11 @@ exports[`Story Snapshots: ThumbnailFromServer should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM this is a thumbnail."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -142083,6 +143555,11 @@ exports[`Story Snapshots: ThumbnailFromServerLargeFont should match snapshot 1`]
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM this is a thumbnail."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -142776,6 +144253,11 @@ exports[`Story Snapshots: TimeFormat should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Testing."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -143258,6 +144740,11 @@ exports[`Story Snapshots: TimeFormatLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Testing."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -143740,6 +145227,11 @@ exports[`Story Snapshots: Translated should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message translated into English."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -144258,6 +145750,11 @@ exports[`Story Snapshots: TranslatedLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message translated into English."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -144776,6 +146273,11 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -145974,6 +147476,11 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdownLargeFont should match
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -147172,6 +148679,11 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -147778,6 +149290,11 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message :nyan_rocket:."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -148389,6 +149906,11 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -148677,6 +150199,11 @@ exports[`Story Snapshots: URLImagePreview should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -149185,6 +150712,11 @@ exports[`Story Snapshots: URLImagePreview should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -149649,6 +151181,11 @@ exports[`Story Snapshots: URLImagePreviewLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -150157,6 +151694,11 @@ exports[`Story Snapshots: URLImagePreviewLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -150621,6 +152163,11 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -151227,6 +152774,11 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message :nyan_rocket:."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -151838,6 +153390,11 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -152126,6 +153683,11 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="jd 10:00:00 AM Small username (2 chars)."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -152496,6 +154058,11 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
       orderKey="«r9k»"
     >
       <View
+<<<<<<< HEAD
+=======
+        accessibilityLabel="jd 10:00:00 AM Message translated into English. Message was read"
+        accessible={true}
+>>>>>>> develop
         style={
           {
             "flexDirection": "column",
@@ -153233,6 +154800,11 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="john.doe 10:00:00 AM Medium username (8 chars)."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -153603,6 +155175,11 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
       orderKey="«r9m»"
     >
       <View
+<<<<<<< HEAD
+=======
+        accessibilityLabel="john.doe 10:00:00 AM Message translated into English. Message was read"
+        accessible={true}
+>>>>>>> develop
         style={
           {
             "flexDirection": "column",
@@ -154340,6 +155917,11 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Long username (22 chars) - should truncate."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -154710,6 +156292,11 @@ exports[`Story Snapshots: Usernames should match snapshot 1`] = `
       orderKey="«r9o»"
     >
       <View
+<<<<<<< HEAD
+=======
+        accessibilityLabel="johndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusernamejohndoeverylongusername 10:00:00 AM Message translated into English. Message was read"
+        accessible={true}
+>>>>>>> develop
         style={
           {
             "flexDirection": "column",
@@ -155460,6 +157047,11 @@ exports[`Story Snapshots: WithAlias should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -155948,6 +157540,11 @@ exports[`Story Snapshots: WithAlias should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 10:00:00 AM Message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -156449,6 +158046,11 @@ exports[`Story Snapshots: WithAliasLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -156937,6 +158539,11 @@ exports[`Story Snapshots: WithAliasLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 10:00:00 AM Message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -157438,6 +159045,11 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -158190,6 +159802,11 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -158665,6 +160282,11 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM multi file."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -159379,6 +161001,11 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -160381,6 +162008,11 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -161133,6 +162765,11 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM First message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -161369,6 +163006,11 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -161844,6 +163486,11 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -162264,6 +163911,11 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM multi file."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -163325,6 +164977,11 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -163985,6 +165642,11 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -164667,6 +166329,11 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -165327,6 +166994,11 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -165767,6 +167439,11 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM. Image description: This is a description :nyan_rocket:"
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -166177,6 +167854,8 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                                 </Text>
                               </View>
                               <View
+                                accessibilityLabel="Image without description"
+                                accessibilityRole="imagebutton"
                                 accessibilityState={
                                   {
                                     "busy": undefined,
@@ -166451,6 +168130,11 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message, not description. Image description: This is a description :nyan_rocket:"
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -166920,6 +168604,8 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                                 </Text>
                               </View>
                               <View
+                                accessibilityLabel="Image without description"
+                                accessibilityRole="imagebutton"
                                 accessibilityState={
                                   {
                                     "busy": undefined,
@@ -167186,6 +168872,8 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                                 </Text>
                               </View>
                               <View
+                                accessibilityLabel="Image without description"
+                                accessibilityRole="imagebutton"
                                 accessibilityState={
                                   {
                                     "busy": undefined,
@@ -167346,6 +169034,8 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                               </View>
                             </View>
                             <View
+                              accessibilityLabel="Image without description"
+                              accessibilityRole="imagebutton"
                               accessibilityState={
                                 {
                                   "busy": undefined,
@@ -167619,6 +169309,11 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM multi file."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -167982,6 +169677,8 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                             }
                           >
                             <View
+                              accessibilityLabel="Image without description"
+                              accessibilityRole="imagebutton"
                               accessibilityState={
                                 {
                                   "busy": undefined,
@@ -168141,6 +169838,8 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                               </View>
                             </View>
                             <View
+                              accessibilityLabel="Image without description"
+                              accessibilityRole="imagebutton"
                               accessibilityState={
                                 {
                                   "busy": undefined,
@@ -168414,6 +170113,11 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM. Image description: This is a description for Base64 Attachment :nyan_rocket:"
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -168824,6 +170528,8 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                                 </Text>
                               </View>
                               <View
+                                accessibilityLabel="Image without description"
+                                accessibilityRole="imagebutton"
                                 accessibilityState={
                                   {
                                     "busy": undefined,
@@ -169098,6 +170804,11 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM. Image description: This is a description"
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -169464,6 +171175,8 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                                 </Text>
                               </View>
                               <View
+                                accessibilityLabel="Image without description"
+                                accessibilityRole="imagebutton"
                                 accessibilityState={
                                   {
                                     "busy": undefined,
@@ -169738,6 +171451,11 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM. Image description: Header false"
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -169864,6 +171582,8 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                                 </Text>
                               </View>
                               <View
+                                accessibilityLabel="Image without description"
+                                accessibilityRole="imagebutton"
                                 accessibilityState={
                                   {
                                     "busy": undefined,
@@ -170145,6 +171865,11 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM multi file."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -170508,6 +172233,8 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                             }
                           >
                             <View
+                              accessibilityLabel="Image without description"
+                              accessibilityRole="imagebutton"
                               accessibilityState={
                                 {
                                   "busy": undefined,
@@ -170667,6 +172394,8 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                               </View>
                             </View>
                             <View
+                              accessibilityLabel="Image without description"
+                              accessibilityRole="imagebutton"
                               accessibilityState={
                                 {
                                   "busy": undefined,
@@ -170940,6 +172669,11 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM. Image description: This is a description for Base64 Attachment :nyan_rocket:"
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -171350,6 +173084,8 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                                 </Text>
                               </View>
                               <View
+                                accessibilityLabel="Image without description"
+                                accessibilityRole="imagebutton"
                                 accessibilityState={
                                   {
                                     "busy": undefined,
@@ -171624,6 +173360,11 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -172268,6 +174009,11 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -172635,6 +174381,11 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM multi file."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -173379,6 +175130,11 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -174023,6 +175779,11 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -174568,6 +176329,11 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM multi file."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -175312,6 +177078,11 @@ exports[`Story Snapshots: WithoutHeader should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -175561,6 +177332,11 @@ exports[`Story Snapshots: WithoutHeaderLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
+<<<<<<< HEAD
+=======
+                accessibilityLabel="diego.mello 10:00:00 AM Message."
+                accessible={true}
+>>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",

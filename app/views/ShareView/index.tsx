@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
 import { type Dispatch } from 'redux';
 
+import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
 import { type IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
 import { type InsideStackParamList } from '../../stacks/types';
 import { themes } from '../../lib/constants/colors';
@@ -18,7 +19,9 @@ import { FormTextInput } from '../../containers/TextInput';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { getUserSelector } from '../../selectors/login';
 import database from '../../lib/database';
-import Thumbs from './Thumbs';
+import Thumbs from '../../containers/Thumbs';
+import { showActionSheetRef } from '../../containers/ActionSheet';
+import { AttachmentActionSheet } from '../../containers/MessageComposer/components/Attachments/AttachmentActionSheet';
 import Preview from './Preview';
 import Header from './Header';
 import styles from './styles';
@@ -32,7 +35,7 @@ import {
 	type TSubscriptionModel,
 	type TThreadModel
 } from '../../definitions';
-import { sendFileMessage } from '../../lib/methods/sendFileMessage';
+import { sendAttachments } from '../../lib/methods/sendFileMessage/sendAttachments';
 import { sendMessage } from '../../lib/methods/sendMessage';
 import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '../../lib/methods/helpers';
 import { RoomContext } from '../RoomView/context';
@@ -62,16 +65,19 @@ interface IShareViewProps {
 		token: string;
 	};
 	server: string;
+	serverVersion?: string;
 	FileUpload_MediaTypeWhiteList?: string;
 	FileUpload_MaxFileSize?: number;
 	dispatch: Dispatch;
 }
 
+type TShareServerInfo = Partial<Pick<IServer, 'version' | 'FileUpload_MaxFileSize' | 'FileUpload_MediaTypeWhiteList'>>;
+
 class ShareView extends Component<IShareViewProps, IShareViewState> {
 	private messageComposerRef: React.RefObject<IMessageComposerRef | null>;
 	private files: any[];
 	private isShareExtension: boolean;
-	private serverInfo: IServer;
+	private serverInfo: TShareServerInfo;
 	private finishShareView: (text?: string, selectedMessages?: string[]) => void;
 	private sentMessage: boolean;
 
@@ -239,10 +245,10 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 		Keyboard.dismiss();
 
-		const { attachments, room, text, thread, action, selected, selectedMessages } = this.state;
+		const { attachments, room, text, thread, action, selectedMessages } = this.state;
 		const { navigation, server, user, dispatch } = this.props;
-		// update state
-		await this.selectFile(selected);
+		// flush the composer caption into the selected attachment before sending
+		this.saveSelectedDescription();
 
 		// if it's share extension this should show loading
 		if (this.isShareExtension) {
@@ -261,38 +267,21 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			msg = await prepareQuoteMessage('', selectedMessages);
 		}
 
+		const { isAltTextSupported } = this;
+
 		try {
 			// Send attachment
 			if (attachments.length) {
-				await Promise.all(
-					attachments.map(({ filename: name, mime: type, description, size, path, canUpload, height, width, exif }) => {
-						if (!canUpload) {
-							return Promise.resolve();
-						}
-
-						if (exif?.Orientation && ['5', '6', '7', '8'].includes(exif?.Orientation)) {
-							[width, height] = [height, width];
-						}
-
-						return sendFileMessage(
-							room.rid,
-							{
-								rid: room.rid,
-								name,
-								description,
-								size,
-								type,
-								path,
-								msg,
-								height,
-								width
-							},
-							this.getThreadId(thread),
-							server,
-							{ id: user.id, token: user.token }
-						);
-					})
-				);
+				// On server >= 8.4, description = alt text; caption moves to msg
+				await sendAttachments({
+					attachments,
+					rid: room.rid,
+					tmid: this.getThreadId(thread),
+					server,
+					user: { id: user.id, token: user.token },
+					altTextSupported: isAltTextSupported,
+					getMsg: ({ description }) => (isAltTextSupported ? description || msg : msg)
+				});
 
 				// Send text message
 			} else if (text.length) {
@@ -315,18 +304,40 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		}
 	};
 
-	selectFile = (item: IShareAttachment) => {
+	// Persist the composer caption into the currently selected attachment's description
+	saveSelectedDescription = () => {
 		const { attachments, selected } = this.state;
+		const text = this.messageComposerRef.current?.getText();
+		attachments.forEach(att => {
+			if (att.path === selected.path) {
+				att.description = text;
+			}
+		});
+	};
+
+	updateAttachment = (path: string, updated: Partial<IShareAttachment>) => {
+		this.setState(({ attachments }) => ({
+			attachments: attachments.map(att => (att.path === path ? { ...att, ...updated } : att))
+		}));
+	};
+
+	openAltTextSheet = (attachment: IShareAttachment) => {
+		showActionSheetRef({
+			children: (
+				<AttachmentActionSheet attachment={attachment} onSave={updated => this.updateAttachment(attachment.path, updated)} />
+			),
+			snaps: ['85%'],
+			fullContainer: true
+		});
+	};
+
+	selectFile = (item: IShareAttachment) => {
+		const { attachments } = this.state;
 		if (attachments.length > 0) {
-			const text = this.messageComposerRef.current?.getText();
-			const newAttachments = attachments.map(att => {
-				if (att.path === selected.path) {
-					att.description = text;
-				}
-				return att;
-			});
-			this.setState({ attachments: newAttachments, selected: item });
+			this.saveSelectedDescription();
+			this.setState({ selected: item });
 			this.messageComposerRef.current?.setInput(item.description || '');
+			this.openAltTextSheet(item);
 		}
 	};
 
@@ -342,14 +353,30 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			} else {
 				newSelected = attachments[selectedIndex - 1] || {};
 			}
+			this.setState({
+				attachments: attachments.filter(att => att.path !== item.path),
+				selected: newSelected
+			});
+			this.messageComposerRef.current?.setInput(newSelected.description || '');
+			return;
 		}
-		this.setState({ attachments: attachments.filter(att => att.path !== item.path), selected: newSelected ?? selected });
+		this.setState({ attachments: attachments.filter(att => att.path !== item.path), selected: newSelected });
 		this.messageComposerRef.current?.setInput(newSelected.description || '');
 	};
 
 	onChangeText = (text: string) => {
 		this.setState({ text });
 	};
+
+	private get effectiveServerVersion(): string | undefined {
+		const { serverVersion } = this.props;
+		// Share extension targets a specific workspace; prefer its version over the Redux-connected server
+		return this.isShareExtension ? this.serverInfo.version || serverVersion : serverVersion || this.serverInfo.version;
+	}
+
+	private get isAltTextSupported(): boolean {
+		return compareServerVersion(this.effectiveServerVersion, 'greaterThanOrEqualTo', '8.4.0');
+	}
 
 	onRemoveQuoteMessage = (messageId: string) => {
 		const { selectedMessages } = this.state;
@@ -384,13 +411,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 							theme={theme}
 						/>
 						<MessageComposerContainer ref={this.messageComposerRef}>
-							<Thumbs
-								attachments={attachments}
-								theme={theme}
-								isShareExtension={this.isShareExtension}
-								onPress={this.selectFile}
-								onRemove={this.removeFile}
-							/>
+							<Thumbs attachments={attachments} onPress={this.selectFile} onRemove={this.removeFile} />
 						</MessageComposerContainer>
 					</View>
 				</RoomContext.Provider>
@@ -436,8 +457,10 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 const mapStateToProps = (state: IApplicationState) => ({
 	user: getUserSelector(state),
 	server: state.server.server,
+	serverVersion: state.server.version,
 	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList as string,
 	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize as number
 });
 
+export { ShareView };
 export default connect(mapStateToProps)(withTheme(ShareView));

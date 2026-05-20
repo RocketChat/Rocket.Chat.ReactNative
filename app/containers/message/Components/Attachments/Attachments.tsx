@@ -33,9 +33,10 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 			return null;
 		}
 
-		const attachmentsElements = nonQuoteAttachments.map((file: IAttachment, index: number) => {
+		const attachmentsElements = nonQuoteAttachments.map((file, index) => {
 			const msg = getMessageFromAttachment(file, translateLanguage);
-			if (file && file.image_url) {
+
+			if (file.image_url) {
 				return (
 					<Image
 						key={file.image_url}
@@ -50,7 +51,7 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 				);
 			}
 
-			if (file && file.audio_url) {
+			if (file.audio_url) {
 				return <Audio key={file.audio_url} file={file} getCustomEmoji={getCustomEmoji} author={author} msg={msg} />;
 			}
 
@@ -67,17 +68,30 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 				);
 			}
 
-			if (file && file.actions && file.actions.length > 0) {
-				return <AttachedActions attachment={file} getCustomEmoji={getCustomEmoji} />;
+			if (file.actions && file.actions.length > 0) {
+				return (
+					<AttachedActions
+						key={file.title_link || file.message_link || `actions-${index}`}
+						attachment={file}
+						getCustomEmoji={getCustomEmoji}
+					/>
+				);
 			}
 			if (typeof file.collapsed === 'boolean') {
-				return <CollapsibleQuote key={index} attachment={file} timeFormat={timeFormat} getCustomEmoji={getCustomEmoji} />;
+				return (
+					<CollapsibleQuote
+						key={file.title_link || file.message_link || `collapsible-${index}`}
+						attachment={file}
+						timeFormat={timeFormat}
+						getCustomEmoji={getCustomEmoji}
+					/>
+				);
 			}
 
 			if (file.attachments?.length) {
 				return (
 					<Reply
-						key={index}
+						key={file.title_link || file.message_link || `reply-${index}`}
 						attachment={file}
 						timeFormat={timeFormat}
 						getCustomEmoji={getCustomEmoji}
@@ -89,6 +103,7 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 
 			return null;
 		});
+
 		return <View style={{ gap: 4 }}>{attachmentsElements}</View>;
 	},
 	(prevProps, nextProps) => dequal(prevProps.attachments, nextProps.attachments)

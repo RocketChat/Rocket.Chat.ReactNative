@@ -19,7 +19,7 @@ interface MessageComposerContentProps {
 	action: TMessageAction | undefined;
 	composerInputComponentRef: RefObject<IComposerInput>;
 	composerInputRef: RefObject<any>;
-	children?: ReactElement;
+	children?: ReactElement | null;
 	onLayout: (event: LayoutChangeEvent) => void;
 }
 

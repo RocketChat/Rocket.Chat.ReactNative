@@ -25,7 +25,7 @@ import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResp
 import Quote from './Components/Attachments/Quote';
 import Touch from './Touch';
 import { useLastFocusedMessageRef } from '../../lib/a11y/useLastFocusedMessageRef';
-import { useMessageAccessibilityLabel } from '../../lib/a11y/useMessageAccessibilityLabel';
+import { useMessageAccessibilityLabel } from './hooks/useMessageAccessibilityLabel';
 import { useMessageAccessibilityActions } from '../../lib/a11y/useMessageAccessibilityActions';
 
 const MessageInner = React.memo((props: IMessageInner) => {
@@ -108,8 +108,9 @@ interface IMessageA11y {
 	onAccessibilityAction?: (event: AccessibilityActionEvent) => void;
 	handleLongPress?: () => void;
 }
-
 const Message = React.memo((props: IMessageTouchable & IMessage & IMessageA11y) => {
+	const accessibilityLabel = useMessageAccessibilityLabel(props);
+
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo || props.isIgnored) {
 		const thread = props.isThreadReply ? <RepliedThread {...props} /> : null;
 		// Prevent misalignment of info when the font size is increased.
@@ -117,7 +118,7 @@ const Message = React.memo((props: IMessageTouchable & IMessage & IMessageA11y) 
 		return (
 			<View style={[styles.container, { marginTop: 4 }]}>
 				{thread}
-				<View style={[styles.flex, infoStyle]}>
+				<View accessible accessibilityLabel={accessibilityLabel} style={[styles.flex, infoStyle]}>
 					<MessageAvatar small {...props} />
 					<A11y.Index
 						accessible={props.isTranslated}

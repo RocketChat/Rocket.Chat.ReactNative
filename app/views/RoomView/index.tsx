@@ -61,6 +61,7 @@ import {
 	type IApplicationState,
 	type IAttachment,
 	type IMessage,
+	type IMessageEditAttachment,
 	type IOmnichannelSource,
 	type ISubscription,
 	type IVisitor,
@@ -94,7 +95,7 @@ import {
 } from '../../lib/methods/helpers';
 import { withActionSheet } from '../../containers/ActionSheet';
 import { goRoom, type TGoRoomItem } from '../../lib/methods/helpers/goRoom';
-import { type IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
+import { ComposerAttachments, type IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
 import { RoomContext } from './context';
 import AudioManager from '../../lib/methods/AudioManager';
 import { type IListContainerRef, type TListRef } from './List/definitions';
@@ -810,7 +811,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.resetAction();
 	};
 
-	onEditRequest = async (message: Pick<IMessage, 'id' | 'msg' | 'rid'>) => {
+	onEditRequest = async (
+		message: Pick<IMessage, 'id' | 'msg' | 'rid'> & {
+			attachments?: IMessageEditAttachment[];
+		}
+	) => {
 		try {
 			this.resetAction();
 			await editMessage(message);
@@ -1582,7 +1587,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			}
 		}
 
-		return <MessageComposerContainer ref={this.messageComposerRef} />;
+		return (
+			<MessageComposerContainer ref={this.messageComposerRef}>
+				<ComposerAttachments />
+			</MessageComposerContainer>
+		);
 	};
 
 	renderActions = () => {
