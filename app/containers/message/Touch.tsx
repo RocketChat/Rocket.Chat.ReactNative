@@ -102,16 +102,10 @@ const Touch = React.forwardRef<View, ITouchProps>(
 				disabled={!enabled}
 				focusable={enabled}
 				canBeFocused={enabled}>
-				<View
-					accessible={accessible}
-					accessibilityRole={props.accessibilityRole}
-					accessibilityLabel={accessibilityLabel}
-					accessibilityHint={accessibilityHint}
-					accessibilityActions={accessibilityActions}
-					onAccessibilityAction={onAccessibilityAction}
-					style={viewStyle}>
-					{children}
-				</View>
+				{/* The accessibility props live on the focusable Touchable above. The inner View is a
+				    layout-only container; marking it accessible would create a second sibling node with
+				    the same label, causing double VoiceOver announcements and confusing TalkBack swipe nav. */}
+				<View style={viewStyle}>{children}</View>
 			</KeyboardComponent>
 		);
 	}

@@ -617,18 +617,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             }
           >
             <View
-              accessibilityActions={
-                [
-                  {
-                    "label": "Show message actions",
-                    "name": "showActions",
-                  },
-                ]
-              }
-              accessibilityLabel="diego.mello 10:00:00 AM Hey!."
-              accessibilityRole="button"
-              accessible={true}
-              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -1086,18 +1074,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             }
           >
             <View
-              accessibilityActions={
-                [
-                  {
-                    "label": "Show message actions",
-                    "name": "showActions",
-                  },
-                ]
-              }
-              accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
-              accessibilityRole="button"
-              accessible={true}
-              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -1322,18 +1298,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             }
           >
             <View
-              accessibilityActions={
-                [
-                  {
-                    "label": "Show message actions",
-                    "name": "showActions",
-                  },
-                ]
-              }
-              accessibilityLabel="diego.mello 10:00:00 AM Older message."
-              accessibilityRole="button"
-              accessible={true}
-              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -1770,18 +1734,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             }
           >
             <View
-              accessibilityActions={
-                [
-                  {
-                    "label": "Show message actions",
-                    "name": "showActions",
-                  },
-                ]
-              }
-              accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
-              accessibilityRole="button"
-              accessible={true}
-              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -2239,18 +2191,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             }
           >
             <View
-              accessibilityActions={
-                [
-                  {
-                    "label": "Show message actions",
-                    "name": "showActions",
-                  },
-                ]
-              }
-              accessibilityLabel="diego.mello 10:00:00 AM This is the third message."
-              accessibilityRole="button"
-              accessible={true}
-              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -2475,18 +2415,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             }
           >
             <View
-              accessibilityActions={
-                [
-                  {
-                    "label": "Show message actions",
-                    "name": "showActions",
-                  },
-                ]
-              }
-              accessibilityLabel="diego.mello 10:00:00 AM This is the second message."
-              accessibilityRole="button"
-              accessible={true}
-              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -2711,18 +2639,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             }
           >
             <View
-              accessibilityActions={
-                [
-                  {
-                    "label": "Show message actions",
-                    "name": "showActions",
-                  },
-                ]
-              }
-              accessibilityLabel="diego.mello 10:00:00 AM This is the first message."
-              accessibilityRole="button"
-              accessible={true}
-              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -3299,18 +3215,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             }
           >
             <View
-              accessibilityActions={
-                [
-                  {
-                    "label": "Show message actions",
-                    "name": "showActions",
-                  },
-                ]
-              }
-              accessibilityLabel="diego.mello 10:00:00 AM Hey!."
-              accessibilityRole="button"
-              accessible={true}
-              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -3768,18 +3672,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             }
           >
             <View
-              accessibilityActions={
-                [
-                  {
-                    "label": "Show message actions",
-                    "name": "showActions",
-                  },
-                ]
-              }
-              accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
-              accessibilityRole="button"
-              accessible={true}
-              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -4004,18 +3896,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             }
           >
             <View
-              accessibilityActions={
-                [
-                  {
-                    "label": "Show message actions",
-                    "name": "showActions",
-                  },
-                ]
-              }
-              accessibilityLabel="diego.mello 10:00:00 AM Older message."
-              accessibilityRole="button"
-              accessible={true}
-              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -4452,18 +4332,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             }
           >
             <View
-              accessibilityActions={
-                [
-                  {
-                    "label": "Show message actions",
-                    "name": "showActions",
-                  },
-                ]
-              }
-              accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
-              accessibilityRole="button"
-              accessible={true}
-              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -4921,18 +4789,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             }
           >
             <View
-              accessibilityActions={
-                [
-                  {
-                    "label": "Show message actions",
-                    "name": "showActions",
-                  },
-                ]
-              }
-              accessibilityLabel="diego.mello 10:00:00 AM This is the third message."
-              accessibilityRole="button"
-              accessible={true}
-              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -5157,18 +5013,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             }
           >
             <View
-              accessibilityActions={
-                [
-                  {
-                    "label": "Show message actions",
-                    "name": "showActions",
-                  },
-                ]
-              }
-              accessibilityLabel="diego.mello 10:00:00 AM This is the second message."
-              accessibilityRole="button"
-              accessible={true}
-              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -5393,18 +5237,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             }
           >
             <View
-              accessibilityActions={
-                [
-                  {
-                    "label": "Show message actions",
-                    "name": "showActions",
-                  },
-                ]
-              }
-              accessibilityLabel="diego.mello 10:00:00 AM This is the first message."
-              accessibilityRole="button"
-              accessible={true}
-              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -5981,18 +5813,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             }
           >
             <View
-              accessibilityActions={
-                [
-                  {
-                    "label": "Show message actions",
-                    "name": "showActions",
-                  },
-                ]
-              }
-              accessibilityLabel="diego.mello 10:00:00 AM Hey!."
-              accessibilityRole="button"
-              accessible={true}
-              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -6450,18 +6270,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             }
           >
             <View
-              accessibilityActions={
-                [
-                  {
-                    "label": "Show message actions",
-                    "name": "showActions",
-                  },
-                ]
-              }
-              accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
-              accessibilityRole="button"
-              accessible={true}
-              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -6686,18 +6494,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             }
           >
             <View
-              accessibilityActions={
-                [
-                  {
-                    "label": "Show message actions",
-                    "name": "showActions",
-                  },
-                ]
-              }
-              accessibilityLabel="diego.mello 10:00:00 AM Older message."
-              accessibilityRole="button"
-              accessible={true}
-              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -7134,18 +6930,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             }
           >
             <View
-              accessibilityActions={
-                [
-                  {
-                    "label": "Show message actions",
-                    "name": "showActions",
-                  },
-                ]
-              }
-              accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
-              accessibilityRole="button"
-              accessible={true}
-              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -7603,18 +7387,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             }
           >
             <View
-              accessibilityActions={
-                [
-                  {
-                    "label": "Show message actions",
-                    "name": "showActions",
-                  },
-                ]
-              }
-              accessibilityLabel="diego.mello 10:00:00 AM This is the third message."
-              accessibilityRole="button"
-              accessible={true}
-              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -7839,18 +7611,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             }
           >
             <View
-              accessibilityActions={
-                [
-                  {
-                    "label": "Show message actions",
-                    "name": "showActions",
-                  },
-                ]
-              }
-              accessibilityLabel="diego.mello 10:00:00 AM This is the second message."
-              accessibilityRole="button"
-              accessible={true}
-              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
@@ -8075,18 +7835,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             }
           >
             <View
-              accessibilityActions={
-                [
-                  {
-                    "label": "Show message actions",
-                    "name": "showActions",
-                  },
-                ]
-              }
-              accessibilityLabel="diego.mello 10:00:00 AM This is the first message."
-              accessibilityRole="button"
-              accessible={true}
-              onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
