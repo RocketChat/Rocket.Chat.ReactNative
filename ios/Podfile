@@ -8,7 +8,8 @@ prepare_react_native_project!
 
 def all_pods
   pod 'simdjson', path: '../node_modules/@nozbe/simdjson', modular_headers: true
-  pod 'react-native-mmkv', path: '../node_modules/react-native-mmkv', modular_headers: true
+  pod 'MMKV', :modular_headers => true
+  pod 'MMKVCore', :modular_headers => true
   $RNFirebaseAnalyticsWithoutAdIdSupport = true
 
   use_expo_modules!
@@ -70,24 +71,6 @@ post_install do |installer|
       if target.name == 'react-native-webview'
         config.build_settings['HEADER_SEARCH_PATHS'] ||= ['$(inherited)']
         config.build_settings['HEADER_SEARCH_PATHS'] << '$(SRCROOT)/..'
-      end
-      
-      # Add FORCE_POSIX for MMKV to expose C++ API properly
-      if target.name == 'react-native-mmkv'
-        config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
-        config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FORCE_POSIX=1'
-      end
-    end
-  end
-  
-  # Add FORCE_POSIX to main project targets that use MMKV C++ API
-  installer.aggregate_targets.each do |aggregate_target|
-    aggregate_target.user_project.targets.each do |target|
-      if ['NotificationService', 'RocketChatRN', 'Rocket.Chat'].include?(target.name)
-        target.build_configurations.each do |config|
-          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
-          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FORCE_POSIX=1' unless config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'].include?('FORCE_POSIX=1')
-        end
       end
     end
   end
