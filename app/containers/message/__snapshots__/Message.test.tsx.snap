@@ -1013,7 +1013,7 @@ exports[`Story Snapshots: AttachmentWithTextAndLink should match snapshot 1`] = 
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM undefined."
+                accessibilityLabel="diego.mello 10:00:00 AM."
                 accessible={true}
                 style={
                   {
@@ -1776,7 +1776,7 @@ exports[`Story Snapshots: AttachmentWithTextAndLinkLargeFont should match snapsh
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM undefined."
+                accessibilityLabel="diego.mello 10:00:00 AM."
                 accessible={true}
                 style={
                   {
@@ -15791,7 +15791,7 @@ exports[`Story Snapshots: ColoredAttachments should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM undefined."
+                accessibilityLabel="diego.mello 10:00:00 AM."
                 accessible={true}
                 style={
                   {
@@ -17015,7 +17015,7 @@ exports[`Story Snapshots: ColoredAttachmentsLargeFont should match snapshot 1`] 
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM undefined."
+                accessibilityLabel="diego.mello 10:00:00 AM."
                 accessible={true}
                 style={
                   {
@@ -52154,7 +52154,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM undefined."
+                accessibilityLabel="diego.mello 10:00:00 AM."
                 accessible={true}
                 style={
                   {
@@ -55023,7 +55023,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM undefined."
+                accessibilityLabel="diego.mello 10:00:00 AM."
                 accessible={true}
                 style={
                   {
@@ -60730,7 +60730,7 @@ exports[`Story Snapshots: Ignored should match snapshot 1`] = `
                 }
               >
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM undefined."
+                  accessibilityLabel="diego.mello 10:00:00 AM."
                   accessible={true}
                   style={
                     [
@@ -61048,7 +61048,7 @@ exports[`Story Snapshots: IgnoredLargeFont should match snapshot 1`] = `
                 }
               >
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM undefined."
+                  accessibilityLabel="diego.mello 10:00:00 AM."
                   accessible={true}
                   style={
                     [
@@ -79950,7 +79950,7 @@ exports[`Story Snapshots: Message should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM undefined."
+                accessibilityLabel="diego.mello 10:00:00 AM."
                 accessible={true}
                 style={
                   {
@@ -81477,6 +81477,7 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                                           </Text>
                                         </View>
                                         <View
+                                          accessibilityLabel="Image without description"
                                           accessibilityRole="imagebutton"
                                           accessibilityState={
                                             {
@@ -86770,6 +86771,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                                           </Text>
                                         </View>
                                         <View
+                                          accessibilityLabel="Image without description"
                                           accessibilityRole="imagebutton"
                                           accessibilityState={
                                             {
@@ -87628,6 +87630,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                                           </Text>
                                         </View>
                                         <View
+                                          accessibilityLabel="Image without description"
                                           accessibilityRole="imagebutton"
                                           accessibilityState={
                                             {
@@ -93854,6 +93857,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                                           </Text>
                                         </View>
                                         <View
+                                          accessibilityLabel="Image without description"
                                           accessibilityRole="imagebutton"
                                           accessibilityState={
                                             {
@@ -94712,6 +94716,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                                           </Text>
                                         </View>
                                         <View
+                                          accessibilityLabel="Image without description"
                                           accessibilityRole="imagebutton"
                                           accessibilityState={
                                             {
@@ -98043,7 +98048,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message undefined."
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message ."
                   accessible={true}
                   style={
                     [
@@ -98469,7 +98474,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message undefined."
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message ."
                   accessible={true}
                   style={
                     [
@@ -98895,7 +98900,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message undefined."
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message ."
                   accessible={true}
                   style={
                     [
@@ -99321,7 +99326,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message undefined."
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message ."
                   accessible={true}
                   style={
                     [
@@ -102688,7 +102693,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message undefined."
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message ."
                   accessible={true}
                   style={
                     [
@@ -103114,7 +103119,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message undefined."
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message ."
                   accessible={true}
                   style={
                     [
@@ -103540,7 +103545,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message undefined."
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message ."
                   accessible={true}
                   style={
                     [
@@ -103966,7 +103971,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                   </View>
                 </View>
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message undefined."
+                  accessibilityLabel="diego.mello 10:00:00 AM replying to thread message ."
                   accessible={true}
                   style={
                     [
@@ -115373,7 +115378,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
                 }
               >
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM thread message undefined."
+                  accessibilityLabel="diego.mello 10:00:00 AM thread message ."
                   accessible={true}
                   style={
                     [
@@ -117111,7 +117116,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
                 }
               >
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM thread message undefined."
+                  accessibilityLabel="diego.mello 10:00:00 AM thread message ."
                   accessible={true}
                   style={
                     [
@@ -118477,7 +118482,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
                 }
               >
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM thread message undefined."
+                  accessibilityLabel="diego.mello 10:00:00 AM thread message ."
                   accessible={true}
                   style={
                     [
@@ -119843,7 +119848,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
                 }
               >
                 <View
-                  accessibilityLabel="diego.mello 10:00:00 AM thread message undefined."
+                  accessibilityLabel="diego.mello 10:00:00 AM thread message ."
                   accessible={true}
                   style={
                     [
@@ -120149,7 +120154,7 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM undefined."
+                accessibilityLabel="diego.mello 10:00:00 AM."
                 accessible={true}
                 style={
                   {
@@ -120672,7 +120677,7 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM undefined."
+                accessibilityLabel="diego.mello 10:00:00 AM."
                 accessible={true}
                 style={
                   {
@@ -121373,7 +121378,7 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM undefined."
+                accessibilityLabel="diego.mello 10:00:00 AM."
                 accessible={true}
                 style={
                   {
@@ -121896,7 +121901,7 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM undefined."
+                accessibilityLabel="diego.mello 10:00:00 AM."
                 accessible={true}
                 style={
                   {
@@ -142805,7 +142810,7 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM undefined."
+                accessibilityLabel="diego.mello 10:00:00 AM."
                 accessible={true}
                 style={
                   {
@@ -143982,7 +143987,7 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM undefined."
+                accessibilityLabel="diego.mello 10:00:00 AM."
                 accessible={true}
                 style={
                   {
@@ -144250,7 +144255,7 @@ exports[`Story Snapshots: URLImagePreview should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM undefined."
+                accessibilityLabel="diego.mello 10:00:00 AM."
                 accessible={true}
                 style={
                   {
@@ -144738,7 +144743,7 @@ exports[`Story Snapshots: URLImagePreview should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM undefined."
+                accessibilityLabel="diego.mello 10:00:00 AM."
                 accessible={true}
                 style={
                   {
@@ -145182,7 +145187,7 @@ exports[`Story Snapshots: URLImagePreviewLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM undefined."
+                accessibilityLabel="diego.mello 10:00:00 AM."
                 accessible={true}
                 style={
                   {
@@ -145670,7 +145675,7 @@ exports[`Story Snapshots: URLImagePreviewLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM undefined."
+                accessibilityLabel="diego.mello 10:00:00 AM."
                 accessible={true}
                 style={
                   {
@@ -146114,7 +146119,7 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM undefined."
+                accessibilityLabel="diego.mello 10:00:00 AM."
                 accessible={true}
                 style={
                   {
@@ -147291,7 +147296,7 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM undefined."
+                accessibilityLabel="diego.mello 10:00:00 AM."
                 accessible={true}
                 style={
                   {
@@ -152740,7 +152745,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM undefined."
+                accessibilityLabel="diego.mello 10:00:00 AM."
                 accessible={true}
                 style={
                   {
@@ -153472,7 +153477,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM undefined."
+                accessibilityLabel="diego.mello 10:00:00 AM."
                 accessible={true}
                 style={
                   {
@@ -154621,7 +154626,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM undefined."
+                accessibilityLabel="diego.mello 10:00:00 AM."
                 accessible={true}
                 style={
                   {
@@ -155603,7 +155608,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM undefined."
+                accessibilityLabel="diego.mello 10:00:00 AM."
                 accessible={true}
                 style={
                   {
@@ -156551,7 +156556,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM undefined."
+                accessibilityLabel="diego.mello 10:00:00 AM."
                 accessible={true}
                 style={
                   {
@@ -157006,7 +157011,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM undefined."
+                accessibilityLabel="diego.mello 10:00:00 AM."
                 accessible={true}
                 style={
                   {
@@ -158447,7 +158452,7 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM undefined."
+                accessibilityLabel="diego.mello 10:00:00 AM."
                 accessible={true}
                 style={
                   {
@@ -159087,7 +159092,7 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM undefined."
+                accessibilityLabel="diego.mello 10:00:00 AM."
                 accessible={true}
                 style={
                   {
@@ -159749,7 +159754,7 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM undefined."
+                accessibilityLabel="diego.mello 10:00:00 AM."
                 accessible={true}
                 style={
                   {
@@ -160389,7 +160394,7 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM undefined."
+                accessibilityLabel="diego.mello 10:00:00 AM."
                 accessible={true}
                 style={
                   {
@@ -160809,7 +160814,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM undefined. Image description: This is a description :nyan_rocket:"
+                accessibilityLabel="diego.mello 10:00:00 AM. Image description: This is a description :nyan_rocket:"
                 accessible={true}
                 style={
                   {
@@ -161222,6 +161227,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                                 </Text>
                               </View>
                               <View
+                                accessibilityLabel="Image without description"
                                 accessibilityRole="imagebutton"
                                 accessibilityState={
                                   {
@@ -161946,6 +161952,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                                 </Text>
                               </View>
                               <View
+                                accessibilityLabel="Image without description"
                                 accessibilityRole="imagebutton"
                                 accessibilityState={
                                   {
@@ -162213,6 +162220,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                                 </Text>
                               </View>
                               <View
+                                accessibilityLabel="Image without description"
                                 accessibilityRole="imagebutton"
                                 accessibilityState={
                                   {
@@ -163405,7 +163413,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM undefined. Image description: This is a description for Base64 Attachment :nyan_rocket:"
+                accessibilityLabel="diego.mello 10:00:00 AM. Image description: This is a description for Base64 Attachment :nyan_rocket:"
                 accessible={true}
                 style={
                   {
@@ -163818,6 +163826,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                                 </Text>
                               </View>
                               <View
+                                accessibilityLabel="Image without description"
                                 accessibilityRole="imagebutton"
                                 accessibilityState={
                                   {
@@ -164070,7 +164079,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM undefined. Image description: This is a description"
+                accessibilityLabel="diego.mello 10:00:00 AM. Image description: This is a description"
                 accessible={true}
                 style={
                   {
@@ -164439,6 +164448,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                                 </Text>
                               </View>
                               <View
+                                accessibilityLabel="Image without description"
                                 accessibilityRole="imagebutton"
                                 accessibilityState={
                                   {
@@ -164691,7 +164701,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM undefined. Image description: Header false"
+                accessibilityLabel="diego.mello 10:00:00 AM. Image description: Header false"
                 accessible={true}
                 style={
                   {
@@ -164820,6 +164830,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                                 </Text>
                               </View>
                               <View
+                                accessibilityLabel="Image without description"
                                 accessibilityRole="imagebutton"
                                 accessibilityState={
                                   {
@@ -165858,7 +165869,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM undefined. Image description: This is a description for Base64 Attachment :nyan_rocket:"
+                accessibilityLabel="diego.mello 10:00:00 AM. Image description: This is a description for Base64 Attachment :nyan_rocket:"
                 accessible={true}
                 style={
                   {
@@ -166271,6 +166282,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                                 </Text>
                               </View>
                               <View
+                                accessibilityLabel="Image without description"
                                 accessibilityRole="imagebutton"
                                 accessibilityState={
                                   {
@@ -166523,7 +166535,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM undefined."
+                accessibilityLabel="diego.mello 10:00:00 AM."
                 accessible={true}
                 style={
                   {
@@ -167147,7 +167159,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM undefined."
+                accessibilityLabel="diego.mello 10:00:00 AM."
                 accessible={true}
                 style={
                   {
@@ -168218,7 +168230,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM undefined."
+                accessibilityLabel="diego.mello 10:00:00 AM."
                 accessible={true}
                 style={
                   {
@@ -168842,7 +168854,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
               style={{}}
             >
               <View
-                accessibilityLabel="diego.mello 10:00:00 AM undefined."
+                accessibilityLabel="diego.mello 10:00:00 AM."
                 accessible={true}
                 style={
                   {

@@ -63,13 +63,13 @@ describe('ImageContainer', () => {
 		expect(button.props.accessibilityRole).toBe('imagebutton');
 	});
 
-	it('does not set the accessibility label on the pressable when alt text is not supported and a caption is present', () => {
+	it('falls back to the generic accessibility label when alt text is not supported and a caption is present', () => {
 		mockUseAltTextSupported.mockReturnValue(false);
 		const { getByRole } = renderImageContainer({ msg: 'A wavy orange and black pattern' });
 
 		const button = getByRole('imagebutton');
 
-		expect(button.props.accessibilityLabel).toBeUndefined();
+		expect(button.props.accessibilityLabel).toBe('Image without description');
 		expect(button.props.accessibilityRole).toBe('imagebutton');
 	});
 

@@ -3,6 +3,10 @@ import { renderHook } from '@testing-library/react-native';
 import { useImageDescriptionLabel } from './useImageDescriptionLabel';
 import { type IAttachment } from '../../../definitions';
 
+jest.mock('../../../lib/hooks/useAltTextSupported', () => ({
+	useAltTextSupported: () => false
+}));
+
 describe('useImageDescriptionLabel', () => {
 	it('returns an empty string when there are no attachments', () => {
 		const { result } = renderHook(() => useImageDescriptionLabel(undefined, 'hello'));

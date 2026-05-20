@@ -23,9 +23,9 @@ export const useMessageAccessibilityLabel = (props: IMessage & IMessageTouchable
 	const imageDescriptionLabel = useImageDescriptionLabel(props.attachments, props.msg);
 	const msg = props?.msg || '';
 	const threadMessageLabel = i18n.t('Thread_message', { msg });
-	let label = props.isInfo ? (props.msg as string) : `${props.tmid ? threadMessageLabel : props.msg}`;
+	let label = props.isInfo ? msg : `${props.tmid ? threadMessageLabel : msg}`;
 	if (props.isThreadReply) {
-		label = i18n.t('Thread_reply', { msg: props.tmid ? threadMessageLabel : props.msg });
+		label = i18n.t('Thread_reply', { msg: props.tmid ? threadMessageLabel : msg });
 	}
 	if (props.isThreadSequential) {
 		label = threadMessageLabel;

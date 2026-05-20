@@ -1,12 +1,10 @@
 import { type ReactNode } from 'react';
 import { render } from '@testing-library/react-native';
 
-import { ShareView } from './index';
-
 jest.mock('../../lib/database', () => ({
 	servers: {
 		get: jest.fn(() => ({
-			find: jest.fn(() => Promise.resolve(undefined))
+			find: jest.fn(() => Promise.resolve({}))
 		}))
 	}
 }));
@@ -23,7 +21,12 @@ jest.mock('../../containers/MessageComposer', () => {
 });
 
 jest.mock('./Preview', () => () => null);
-jest.mock('../../containers/AttachmentThumbs', () => ({ AttachmentThumbs: () => null }));
+jest.mock('../../containers/Thumbs', () => () => null);
+jest.mock('../../lib/methods/sendMessage', () => ({
+	sendMessage: jest.fn()
+}));
+
+const { ShareView } = require('./index');
 
 const makeInstance = ({
 	mime,
@@ -59,6 +62,18 @@ const makeInstance = ({
 		serverVersion,
 		dispatch: jest.fn()
 	} as any);
+	(shareView as any).setState = (
+		update: Record<string, unknown> | ((state: unknown) => Record<string, unknown>),
+		callback?: () => void
+	) => {
+		const nextState = typeof update === 'function' ? update(shareView.state) : update;
+		shareView.state = {
+			...shareView.state,
+			...nextState
+		};
+		callback?.();
+	};
+	(shareView as any).serverInfo = (shareView as any).serverInfo || {};
 
 	shareView.state = {
 		selected: {
@@ -151,7 +166,12 @@ describe('ShareView', () => {
 	});
 
 	it('send() passes caption as msg and altText as description on server >= 8.4.0', async () => {
-		const shareView = makeInstance({ mime: 'image/jpeg', serverVersion: '8.5.0' });
+		const shareView = makeInstance({
+			mime: 'image/jpeg',
+			serverVersion: '8.5.0',
+			serverInfoVersion: '8.5.0',
+			isShareExtension: true
+		});
 		shareView.state.attachments[0].description = 'my caption';
 		shareView.state.attachments[0].altText = 'a cat on a mat';
 		shareView.state.attachments[0].canUpload = true;
@@ -160,9 +180,6 @@ describe('ShareView', () => {
 			selected: shareView.state.attachments[0]
 		};
 
-		// Wire up share-extension path so send() can complete without navigation
-		(shareView as any).isShareExtension = true;
-		(shareView as any).finishShareView = jest.fn();
 		shareView.selectFile = jest.fn().mockResolvedValue(undefined) as any;
 
 		const sendFileMessageMod = require('../../lib/methods/sendFileMessage');
