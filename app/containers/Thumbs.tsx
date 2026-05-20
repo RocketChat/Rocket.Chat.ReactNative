@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 	},
 	removeButton: {
 		position: 'absolute',
-		right: 6,
+		right: -5,
 		width: 28,
 		height: 28,
 		borderWidth: 2,

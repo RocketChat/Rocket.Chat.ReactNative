@@ -16,12 +16,10 @@ import {
 	getRoutingConfig,
 	getUserInfo,
 	editMessage,
-	editMediaMessage,
 	setReaction,
 	joinRoom,
 	toggleFollowMessage
 } from '../../lib/services/restApi';
-import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
 import Touch from '../../containers/Touch';
 import { replyBroadcast } from '../../actions/messages';
 import database from '../../lib/database';
@@ -820,30 +818,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	) => {
 		try {
 			this.resetAction();
-			const { serverVersion } = this.props;
-			const supportsMediaEdit = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.4.0');
-			const mediaAttachments = message.attachments?.filter(
-				(a): a is Required<IMessageEditAttachment> => !!a.fileId && !!a.filename
-			);
-			if (supportsMediaEdit && mediaAttachments?.length) {
-				const mediaEditResults = await Promise.allSettled(
-					mediaAttachments.map((att, index) =>
-						editMediaMessage(message.rid, att.fileId, {
-							description: att.description,
-							filename: att.filename,
-							// Avoid duplicate message updates when multiple attachments are edited.
-							msg: index === 0 ? message.msg : undefined
-						})
-					)
-				);
-
-				mediaEditResults.forEach(result => {
-					if (result.status === 'rejected') {
-						log(result.reason);
-					}
-				});
-				return;
-			}
 			await editMessage(message);
 		} catch (e) {
 			log(e);
