@@ -52,11 +52,66 @@ jobs:
     needs: [e2e-hold]
     secrets: inherit
 
+  # Pre-populates the AVD snapshot cache before the matrix fans out. Without
+  # this, all 14 shards check actions/cache at the same instant — nobody has
+  # written yet, so every shard misses and runs its own snapshot-generation
+  # step. With this seed job, the shards' cache restore is guaranteed to hit.
+  e2e-seed-android-avd:
+    name: E2E Seed Android AVD Cache
+    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    runs-on: ubuntu-latest
+    needs: [e2e-hold]
+    env:
+      ANDROID_AVD_HOME: /home/runner/.android/avd
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Setup Java
+        uses: actions/setup-java@c1e323688fd81a25caa38c78aa6df2d33d3e20d9 # v4.8.0
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Cache Android AVD
+        id: avd-cache
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-${{ runner.os }}-api34
+
+      - name: Enable KVM group permissions
+        if: steps.avd-cache.outputs.cache-hit != 'true'
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Generate AVD snapshot (cache miss only)
+        if: steps.avd-cache.outputs.cache-hit != 'true'
+        uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a # v2.37.0
+        timeout-minutes: 45
+        with:
+          api-level: 34
+          disk-size: 4096M
+          arch: x86_64
+          target: google_apis
+          profile: pixel_7_pro
+          cores: 4
+          ram-size: 6144M
+          force-avd-creation: true
+          disable-animations: true
+          emulator-boot-timeout: 900
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -accel on
+          script: echo "AVD snapshot generated for cache"
+
   e2e-run-android:
     name: E2E Run Android
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
     uses: ./.github/workflows/maestro-android.yml
-    needs: [e2e-build-android]
+    needs: [e2e-build-android, e2e-seed-android-avd]
     secrets: inherit
     strategy:
       matrix:
