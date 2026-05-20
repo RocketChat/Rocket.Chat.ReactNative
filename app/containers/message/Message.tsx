@@ -110,8 +110,6 @@ interface IMessageA11y {
 	handleLongPress?: () => void;
 }
 const Message = React.memo((props: IMessageTouchable & IMessage & IMessageA11y) => {
-	const accessibilityLabel = useMessageAccessibilityLabel(props);
-
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo || props.isIgnored) {
 		const thread = props.isThreadReply ? <RepliedThread {...props} /> : null;
 		// Prevent misalignment of info when the font size is increased.
@@ -119,7 +117,7 @@ const Message = React.memo((props: IMessageTouchable & IMessage & IMessageA11y) 
 		return (
 			<View style={[styles.container, { marginTop: 4 }]}>
 				{thread}
-				<View accessible accessibilityLabel={accessibilityLabel} style={[styles.flex, infoStyle]}>
+				<View style={[styles.flex, infoStyle]}>
 					<MessageAvatar small {...props} />
 					<A11y.Index
 						accessible={props.isTranslated}
