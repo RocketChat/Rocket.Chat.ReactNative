@@ -569,7 +569,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  Hey!.  "
+            accessibilityLabel="diego.mello 10:00:00 AM Hey!."
             accessibilityRole="button"
             accessibilityState={
               {
@@ -625,18 +625,13 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  Hey!.  "
+              accessibilityLabel="diego.mello 10:00:00 AM Hey!."
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
-<<<<<<< HEAD
-=======
-                accessibilityLabel="diego.mello 10:00:00 AM Hey!."
-                accessible={true}
->>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -1043,7 +1038,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.  "
+            accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
             accessibilityRole="button"
             accessibilityState={
               {
@@ -1099,18 +1094,13 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.  "
+              accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
-<<<<<<< HEAD
-=======
-                accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
-                accessible={true}
->>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -1284,7 +1274,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  Older message.  "
+            accessibilityLabel="diego.mello 10:00:00 AM Older message."
             accessibilityRole="button"
             accessibilityState={
               {
@@ -1340,18 +1330,13 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  Older message.  "
+              accessibilityLabel="diego.mello 10:00:00 AM Older message."
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
-<<<<<<< HEAD
-=======
-                accessibilityLabel="diego.mello 10:00:00 AM Older message."
-                accessible={true}
->>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -1737,7 +1722,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.  "
+            accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
             accessibilityRole="button"
             accessibilityState={
               {
@@ -1793,18 +1778,13 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.  "
+              accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
-<<<<<<< HEAD
-=======
-                accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
-                accessible={true}
->>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -2211,7 +2191,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  This is the third message.  "
+            accessibilityLabel="diego.mello 10:00:00 AM This is the third message."
             accessibilityRole="button"
             accessibilityState={
               {
@@ -2267,18 +2247,13 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  This is the third message.  "
+              accessibilityLabel="diego.mello 10:00:00 AM This is the third message."
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
-<<<<<<< HEAD
-=======
-                accessibilityLabel="diego.mello 10:00:00 AM This is the third message."
-                accessible={true}
->>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -2452,7 +2427,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  This is the second message.  "
+            accessibilityLabel="diego.mello 10:00:00 AM This is the second message."
             accessibilityRole="button"
             accessibilityState={
               {
@@ -2508,18 +2483,13 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  This is the second message.  "
+              accessibilityLabel="diego.mello 10:00:00 AM This is the second message."
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
-<<<<<<< HEAD
-=======
-                accessibilityLabel="diego.mello 10:00:00 AM This is the second message."
-                accessible={true}
->>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -2693,7 +2663,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  This is the first message.  "
+            accessibilityLabel="diego.mello 10:00:00 AM This is the first message."
             accessibilityRole="button"
             accessibilityState={
               {
@@ -2749,18 +2719,13 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  This is the first message.  "
+              accessibilityLabel="diego.mello 10:00:00 AM This is the first message."
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
-<<<<<<< HEAD
-=======
-                accessibilityLabel="diego.mello 10:00:00 AM This is the first message."
-                accessible={true}
->>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -3286,7 +3251,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  Hey!.  "
+            accessibilityLabel="diego.mello 10:00:00 AM Hey!."
             accessibilityRole="button"
             accessibilityState={
               {
@@ -3342,18 +3307,13 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  Hey!.  "
+              accessibilityLabel="diego.mello 10:00:00 AM Hey!."
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
-<<<<<<< HEAD
-=======
-                accessibilityLabel="diego.mello 10:00:00 AM Hey!."
-                accessible={true}
->>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -3760,7 +3720,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.  "
+            accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
             accessibilityRole="button"
             accessibilityState={
               {
@@ -3816,18 +3776,13 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.  "
+              accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
-<<<<<<< HEAD
-=======
-                accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
-                accessible={true}
->>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -4001,7 +3956,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  Older message.  "
+            accessibilityLabel="diego.mello 10:00:00 AM Older message."
             accessibilityRole="button"
             accessibilityState={
               {
@@ -4057,18 +4012,13 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  Older message.  "
+              accessibilityLabel="diego.mello 10:00:00 AM Older message."
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
-<<<<<<< HEAD
-=======
-                accessibilityLabel="diego.mello 10:00:00 AM Older message."
-                accessible={true}
->>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -4454,7 +4404,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.  "
+            accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
             accessibilityRole="button"
             accessibilityState={
               {
@@ -4510,18 +4460,13 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.  "
+              accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
-<<<<<<< HEAD
-=======
-                accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
-                accessible={true}
->>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -4928,7 +4873,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  This is the third message.  "
+            accessibilityLabel="diego.mello 10:00:00 AM This is the third message."
             accessibilityRole="button"
             accessibilityState={
               {
@@ -4984,18 +4929,13 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  This is the third message.  "
+              accessibilityLabel="diego.mello 10:00:00 AM This is the third message."
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
-<<<<<<< HEAD
-=======
-                accessibilityLabel="diego.mello 10:00:00 AM This is the third message."
-                accessible={true}
->>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -5169,7 +5109,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  This is the second message.  "
+            accessibilityLabel="diego.mello 10:00:00 AM This is the second message."
             accessibilityRole="button"
             accessibilityState={
               {
@@ -5225,18 +5165,13 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  This is the second message.  "
+              accessibilityLabel="diego.mello 10:00:00 AM This is the second message."
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
-<<<<<<< HEAD
-=======
-                accessibilityLabel="diego.mello 10:00:00 AM This is the second message."
-                accessible={true}
->>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -5410,7 +5345,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  This is the first message.  "
+            accessibilityLabel="diego.mello 10:00:00 AM This is the first message."
             accessibilityRole="button"
             accessibilityState={
               {
@@ -5466,18 +5401,13 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  This is the first message.  "
+              accessibilityLabel="diego.mello 10:00:00 AM This is the first message."
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
-<<<<<<< HEAD
-=======
-                accessibilityLabel="diego.mello 10:00:00 AM This is the first message."
-                accessible={true}
->>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -6003,7 +5933,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  Hey!.  "
+            accessibilityLabel="diego.mello 10:00:00 AM Hey!."
             accessibilityRole="button"
             accessibilityState={
               {
@@ -6059,18 +5989,13 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  Hey!.  "
+              accessibilityLabel="diego.mello 10:00:00 AM Hey!."
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
-<<<<<<< HEAD
-=======
-                accessibilityLabel="diego.mello 10:00:00 AM Hey!."
-                accessible={true}
->>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -6477,7 +6402,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.  "
+            accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
             accessibilityRole="button"
             accessibilityState={
               {
@@ -6533,18 +6458,13 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.  "
+              accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
-<<<<<<< HEAD
-=======
-                accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
-                accessible={true}
->>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -6718,7 +6638,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  Older message.  "
+            accessibilityLabel="diego.mello 10:00:00 AM Older message."
             accessibilityRole="button"
             accessibilityState={
               {
@@ -6774,18 +6694,13 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  Older message.  "
+              accessibilityLabel="diego.mello 10:00:00 AM Older message."
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
-<<<<<<< HEAD
-=======
-                accessibilityLabel="diego.mello 10:00:00 AM Older message."
-                accessible={true}
->>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -7171,7 +7086,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.  "
+            accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
             accessibilityRole="button"
             accessibilityState={
               {
@@ -7227,18 +7142,13 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.  "
+              accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
-<<<<<<< HEAD
-=======
-                accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
-                accessible={true}
->>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -7645,7 +7555,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  This is the third message.  "
+            accessibilityLabel="diego.mello 10:00:00 AM This is the third message."
             accessibilityRole="button"
             accessibilityState={
               {
@@ -7701,18 +7611,13 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  This is the third message.  "
+              accessibilityLabel="diego.mello 10:00:00 AM This is the third message."
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
-<<<<<<< HEAD
-=======
-                accessibilityLabel="diego.mello 10:00:00 AM This is the third message."
-                accessible={true}
->>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -7886,7 +7791,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  This is the second message.  "
+            accessibilityLabel="diego.mello 10:00:00 AM This is the second message."
             accessibilityRole="button"
             accessibilityState={
               {
@@ -7942,18 +7847,13 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  This is the second message.  "
+              accessibilityLabel="diego.mello 10:00:00 AM This is the second message."
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
-<<<<<<< HEAD
-=======
-                accessibilityLabel="diego.mello 10:00:00 AM This is the second message."
-                accessible={true}
->>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
@@ -8127,7 +8027,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                 },
               ]
             }
-            accessibilityLabel="diego.mello 10:00:00 AM  This is the first message.  "
+            accessibilityLabel="diego.mello 10:00:00 AM This is the first message."
             accessibilityRole="button"
             accessibilityState={
               {
@@ -8183,18 +8083,13 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                   },
                 ]
               }
-              accessibilityLabel="diego.mello 10:00:00 AM  This is the first message.  "
+              accessibilityLabel="diego.mello 10:00:00 AM This is the first message."
               accessibilityRole="button"
               accessible={true}
               onAccessibilityAction={[Function]}
               style={{}}
             >
               <View
-<<<<<<< HEAD
-=======
-                accessibilityLabel="diego.mello 10:00:00 AM This is the first message."
-                accessible={true}
->>>>>>> develop
                 style={
                   {
                     "flexDirection": "column",
