@@ -127,12 +127,13 @@ export const FormTextInput = ({
 	const showClearInput = onClearInput && value && value.length > 0;
 	const inputError = getInputError(error);
 	// iOS 26 surfaces a system "Save Password?" sheet asynchronously after any
-	// secureTextEntry field submit. It overlays the app and blocks XCUITest
-	// hit-testing, breaking Maestro flows that interact with the screen
-	// underneath. Force the native secureTextEntry off under RUNNING_E2E_TESTS
-	// on iOS so iOS does not classify the field as a credential field and
-	// never offers to save it. The visual mask + show/hide eye icon stay
-	// driven by the original `secureTextEntry` prop.
+	// credential-classified field submit. It overlays the app and blocks
+	// XCUITest hit-testing, breaking Maestro flows that interact with the
+	// screen underneath. iOS classifies a field as a credential via any of
+	// `secureTextEntry`, `textContentType` in {password, newPassword, ...},
+	// or `autoComplete` in {password, password-new, ...} — so we must suppress
+	// all three under RUNNING_E2E_TESTS on iOS. Visual masking and the
+	// show/hide eye icon stay driven by the original `secureTextEntry` prop.
 	const suppressIOSCredentialOffer = isIOS && process.env.RUNNING_E2E_TESTS === 'true';
 	const accessibilityLabelText = useMemo(() => {
 		const baseLabel = `${accessibilityLabel || label || ''}`;
@@ -188,6 +189,7 @@ export const FormTextInput = ({
 							value={value}
 							placeholderTextColor={colors.fontAnnotation}
 							{...inputProps}
+							{...(suppressIOSCredentialOffer && { textContentType: 'none', autoComplete: 'off' })}
 						/>
 
 						{iconLeft ? (
