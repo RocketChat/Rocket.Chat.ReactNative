@@ -1,5 +1,5 @@
 import React, { forwardRef, useImperativeHandle } from 'react';
-import { AccessibilityInfo, Alert, findNodeHandle, Share } from 'react-native';
+import { Alert, Share } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { connect } from 'react-redux';
 
@@ -36,6 +36,10 @@ import {
 	reportMessage
 } from '../../lib/services/restApi';
 import { createDirectMessage } from '../../lib/methods/createDirectMessage';
+
+// Extra delay on top of the action sheet animation so accessibility focus is restored
+// only after the sheet is fully dismissed.
+const REFOCUS_BUFFER = 50;
 
 export interface IMessageActionsProps {
 	room: TSubscriptionModel;
@@ -113,7 +117,7 @@ const MessageActions = React.memo(
 				hasCreateDiscussionOtherUserPermission: false
 			};
 			const { showActionSheet, hideActionSheet } = useActionSheet();
-			const { get: getLastFocusedMessageRef, clear: clearLastFocusedMessageRef } = useLastFocusedMessageRef();
+			const { restoreFocusOnClose } = useLastFocusedMessageRef();
 
 			const getPermissions = async () => {
 				try {
@@ -582,16 +586,8 @@ const MessageActions = React.memo(
 			const showMessageActions = async (message: TAnyMessageModel) => {
 				logEvent(events.ROOM_SHOW_MSG_ACTIONS);
 				await getPermissions();
-				const focusRef = getLastFocusedMessageRef();
-				const onClose = focusRef
-					? () => {
-							clearLastFocusedMessageRef();
-							setTimeout(() => {
-								const node = findNodeHandle(focusRef.current);
-								if (node) AccessibilityInfo.setAccessibilityFocus(node);
-							}, ACTION_SHEET_ANIMATION_DURATION + 50);
-					  }
-					: undefined;
+				// Buffer so focus lands after the action sheet is fully dismissed, not mid-animation.
+				const onClose = restoreFocusOnClose(ACTION_SHEET_ANIMATION_DURATION + REFOCUS_BUFFER);
 				showActionSheet({
 					options: getOptions(message),
 					headerHeight: HEADER_HEIGHT,
