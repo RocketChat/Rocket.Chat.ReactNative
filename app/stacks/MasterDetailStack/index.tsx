@@ -54,6 +54,7 @@ import E2EEncryptionSecurityView from '../../views/E2EEncryptionSecurityView';
 import AttachmentView from '../../views/AttachmentView';
 import ModalBlockView from '../../views/ModalBlockView';
 import JitsiMeetView from '../../views/JitsiMeetView';
+import CallView from '../../views/CallView';
 import StatusView from '../../views/StatusView';
 import CreateDiscussionView from '../../views/CreateDiscussionView';
 import E2ESaveYourPasswordView from '../../views/E2ESaveYourPasswordView';
@@ -234,6 +235,7 @@ const InsideStackNavigator = React.memo(() => {
 			/>
 			{/* @ts-ignore */}
 			<InsideStack.Screen name='ShareView' component={ShareView} />
+			<InsideStack.Screen name='CallView' component={CallView} options={{ headerShown: false }} />
 		</InsideStack.Navigator>
 	);
 });

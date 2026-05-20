@@ -5,6 +5,7 @@ import { getDeviceToken } from '../notifications';
 import { BASIC_AUTH_KEY } from './helpers/fetch';
 import database, { getDatabase } from '../database';
 import log from './helpers/log';
+import { disconnect } from '../services/connect';
 import sdk from '../services/sdk';
 import { CURRENT_SERVER, E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY, TOKEN_KEY } from '../constants/keys';
 import UserPreferences from './userPreferences';
@@ -120,7 +121,7 @@ export async function logout({ server }: { server: string }): Promise<void> {
 	}
 
 	if (sdk.current) {
-		sdk.disconnect();
+		disconnect();
 	}
 
 	await removeServerData({ server });

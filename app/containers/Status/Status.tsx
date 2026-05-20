@@ -20,7 +20,8 @@ const Status = React.memo(({ style, status = 'offline', size = 32, ...props }: I
 		{
 			width: size * fontScale,
 			height: size * fontScale,
-			textAlignVertical: 'center'
+			textAlignVertical: 'center',
+			textAlign: 'center'
 		},
 		style
 	];
