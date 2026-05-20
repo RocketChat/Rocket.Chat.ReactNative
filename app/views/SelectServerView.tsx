@@ -4,6 +4,7 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Q } from '@nozbe/watermelondb';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import I18n from '../i18n';
 import ServerItem, { ROW_HEIGHT } from '../containers/ServerItem';
@@ -12,8 +13,6 @@ import SafeAreaView from '../containers/SafeAreaView';
 import * as List from '../containers/List';
 import { type ShareInsideStackParamList } from '../definitions/navigationTypes';
 import { type TServerModel } from '../definitions';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { selectServerRequest } from '../actions/server';
 

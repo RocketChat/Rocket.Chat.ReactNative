@@ -1,6 +1,5 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, type TextInputProps } from 'react-native';
-
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { textInputDebounceTime } from '../lib/constants/debounceConfig';
