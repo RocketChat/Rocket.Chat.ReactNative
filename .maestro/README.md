@@ -82,9 +82,9 @@ bundle exec fastlane build_experimental_simulator
 
 Start the app in development mode:
 ```bash
-yarn android  # for Android
+pnpm android  # for Android
 
-yarn ios      # for iOS
+pnpm ios      # for iOS
 ```
 
 ## Running Maestro Tests

@@ -103,10 +103,10 @@ runs:
       run: |
         echo ${{ inputs.APP_STORE_CONNECT_API_KEY_BASE64 }} | base64 --decode > ./ios/fastlane/app_store_connect_api_key.p8
       shell: bash
-    
+
     - name: Pod install
       run: |
-        yarn pod-install
+        pnpm pod-install
       shell: bash
 
     - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0

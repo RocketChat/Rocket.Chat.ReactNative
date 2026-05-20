@@ -61,7 +61,11 @@ jobs:
       - name: Boot Simulator
         timeout-minutes: 15
         run: |
-          SIM_NAME="iPhone 16 Pro"
+          if [ "${{ inputs.shard }}" = "14" ]; then
+            SIM_NAME="iPhone SE (3rd generation)"
+          else
+            SIM_NAME="iPhone 16 Pro"
+          fi
 
           echo "Booting simulator: $SIM_NAME"
 
