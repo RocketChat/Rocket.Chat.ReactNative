@@ -169,7 +169,11 @@ jobs:
       - name: Generate AVD snapshot for cache (default profile, cache miss only)
         if: ${{ inputs.shard != '14' && steps.avd-cache.outputs.cache-hit != 'true' }}
         uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a # v2.37.0
-        timeout-minutes: 30
+        # Cold-boot + AVD recreate after the RAM 4G→6G bump can push past the
+        # tight 30-min cap (emulator-boot-timeout is 15 min and the runner may
+        # retry the boot). Give it a real margin so a one-time cache repopulate
+        # succeeds and lets every subsequent run hit the cache.
+        timeout-minutes: 45
         with:
           api-level: 34
           disk-size: 4096M

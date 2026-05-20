@@ -114,7 +114,10 @@ jobs:
         run: chmod +x .github/scripts/run-maestro.sh
 
       - name: Run Maestro Tests
-        timeout-minutes: 30
+        # Slowest passing shard is ~27 min; with up to 2 internal rerun rounds
+        # we need headroom above that. nick-fields/retry previously gave 60 min
+        # (2 × 30); 45 min is a closer single-step equivalent without overshoot.
+        timeout-minutes: 45
         run: ./.github/scripts/run-maestro.sh ios ${{ inputs.shard }}
 
       - name: Upload Maestro Logs
