@@ -1,5 +1,4 @@
 import { type ReactNode } from 'react';
-import { render } from '@testing-library/react-native';
 
 jest.mock('../../lib/database', () => ({
 	servers: {
@@ -22,10 +21,18 @@ jest.mock('../../containers/MessageComposer', () => {
 
 jest.mock('./Preview', () => () => null);
 jest.mock('../../containers/Thumbs', () => () => null);
+jest.mock('../../containers/ActionSheet', () => ({
+	showActionSheetRef: jest.fn()
+}));
+jest.mock('../../containers/MessageComposer/components/Attachments/AttachmentActionSheet', () => ({
+	AttachmentActionSheet: () => null
+}));
 jest.mock('../../lib/methods/sendMessage', () => ({
 	sendMessage: jest.fn()
 }));
 
+const { showActionSheetRef } = require('../../containers/ActionSheet');
+const { AttachmentActionSheet } = require('../../containers/MessageComposer/components/Attachments/AttachmentActionSheet');
 const { ShareView } = require('./index');
 
 const makeInstance = ({
@@ -98,8 +105,7 @@ const makeInstance = ({
 		maxFileSize: undefined,
 		mediaAllowList: undefined,
 		selectedMessages: [],
-		action: null,
-		altText: ''
+		action: null
 	};
 
 	if (serverInfoVersion) {
@@ -111,58 +117,36 @@ const makeInstance = ({
 };
 
 describe('ShareView', () => {
-	it('renders the alt text field for image uploads on supported servers', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+	});
+
+	it('selectFile selects the attachment and opens the alt text action sheet', () => {
 		const shareView = makeInstance({ mime: 'image/jpeg', serverVersion: '8.5.0' });
-		const { queryByTestId } = render(shareView.renderContent());
+		const setInput = jest.fn();
+		(shareView as any).messageComposerRef = { current: { getText: () => '', setInput } };
 
-		expect(queryByTestId('share-view-alt-text')).toBeTruthy();
+		const target = { filename: 'second.jpg', path: '/tmp/second.jpg', size: 1, mime: 'image/jpeg', description: 'caption' };
+		shareView.state.attachments.push(target as any);
+
+		shareView.selectFile(target as any);
+
+		expect(shareView.state.selected).toBe(target);
+		expect(setInput).toHaveBeenCalledWith('caption');
+		expect(showActionSheetRef).toHaveBeenCalledTimes(1);
+		const arg = (showActionSheetRef as jest.Mock).mock.calls[0][0];
+		expect(arg.snaps).toEqual(['85%']);
+		expect(arg.fullContainer).toBe(true);
+		expect(arg.children.type).toBe(AttachmentActionSheet);
+		expect(arg.children.props.attachment).toBe(target);
 	});
 
-	it('renders the alt text field on exactly 8.4.0', () => {
-		const shareView = makeInstance({ mime: 'image/jpeg', serverVersion: '8.4.0' });
-		const { queryByTestId } = render(shareView.renderContent());
+	it('updateAttachment persists alt text onto the matching attachment', () => {
+		const shareView = makeInstance({ mime: 'image/jpeg', serverVersion: '8.5.0' });
 
-		expect(queryByTestId('share-view-alt-text')).toBeTruthy();
-	});
+		shareView.updateAttachment('/tmp/image.jpg', { altText: 'a cat on a mat' });
 
-	it('does not render the alt text field on servers below 8.4.0', () => {
-		const shareView = makeInstance({ mime: 'image/jpeg', serverVersion: '8.3.0' });
-		const { queryByTestId } = render(shareView.renderContent());
-
-		expect(queryByTestId('share-view-alt-text')).toBeNull();
-	});
-
-	it('does not render the alt text field for non-image attachments', () => {
-		const shareView = makeInstance({ mime: 'video/mp4', serverVersion: '8.5.0' });
-		const { queryByTestId } = render(shareView.renderContent());
-
-		expect(queryByTestId('share-view-alt-text')).toBeNull();
-	});
-
-	it('share extension uses serverInfo version, not Redux serverVersion', () => {
-		// Redux reports an old server, but the target workspace is >= 8.4.0
-		const shareView = makeInstance({
-			mime: 'image/jpeg',
-			serverVersion: '8.3.0',
-			serverInfoVersion: '8.5.0',
-			isShareExtension: true
-		});
-		const { queryByTestId } = render(shareView.renderContent());
-
-		expect(queryByTestId('share-view-alt-text')).toBeTruthy();
-	});
-
-	it('share extension hides alt text field when serverInfo version is below 8.4.0', () => {
-		// Redux reports a new server, but the target workspace is old
-		const shareView = makeInstance({
-			mime: 'image/jpeg',
-			serverVersion: '8.5.0',
-			serverInfoVersion: '8.3.0',
-			isShareExtension: true
-		});
-		const { queryByTestId } = render(shareView.renderContent());
-
-		expect(queryByTestId('share-view-alt-text')).toBeNull();
+		expect(shareView.state.attachments[0].altText).toBe('a cat on a mat');
 	});
 
 	it('send() passes caption as msg and altText as description on server >= 8.4.0', async () => {
@@ -180,7 +164,8 @@ describe('ShareView', () => {
 			selected: shareView.state.attachments[0]
 		};
 
-		shareView.selectFile = jest.fn().mockResolvedValue(undefined) as any;
+		// the composer ref isn't mounted here; don't let the caption flush clobber the fixture
+		shareView.saveSelectedDescription = jest.fn() as any;
 
 		const sendFileMessageMod = require('../../lib/methods/sendFileMessage');
 		const spy = jest.spyOn(sendFileMessageMod, 'sendFileMessage').mockResolvedValue(undefined);
