@@ -1,9 +1,10 @@
 import React from 'react';
-import { AccessibilityInfo, findNodeHandle, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { KeyboardFocusView, type KeyboardFocus } from 'react-native-external-keyboard';
+import { KeyboardFocusView } from 'react-native-external-keyboard';
 
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { useIsAccessibilityNavigationEnabled } from '../../lib/hooks/useIsAccessibilityNavigationEnabled';
 import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
 import { MarkdownPreview } from '../markdown';
@@ -84,13 +85,7 @@ interface IRoomHeader {
 	abacAttributes?: ISubscription['abacAttributes'];
 }
 
-type IRoomHeaderProps = IRoomHeader & {
-	ref?: React.Ref<IRoomHeaderRef>;
-};
-
-export interface IRoomHeaderRef {
-	focus: () => void;
-}
+type IRoomHeaderProps = IRoomHeader;
 
 const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, scale }: TRoomHeaderSubTitle) => {
 	const { colors } = useTheme();
@@ -158,28 +153,9 @@ const Header = ({
 	usersTyping = [],
 	sourceType,
 	disabled,
-	abacAttributes,
-	ref
+	abacAttributes
 }: IRoomHeaderProps) => {
 	'use memo';
-
-	const headerRef = React.useRef<View>(null);
-	const keyboardFocusRef = React.useRef<KeyboardFocus>(null);
-	React.useImperativeHandle(
-		ref,
-		() => ({
-			focus: () => {
-				// Move physical keyboard / D-pad focus to the header.
-				keyboardFocusRef.current?.focus();
-				// Move screen-reader focus too (no-op when no screen reader is active).
-				const nodeHandle = headerRef.current ? findNodeHandle(headerRef.current) : null;
-				if (nodeHandle) {
-					AccessibilityInfo.setAccessibilityFocus(nodeHandle);
-				}
-			}
-		}),
-		[]
-	);
 
 	const statusAccessibilityLabel = useStatusAccessibilityLabel({
 		isGroupChat,
@@ -194,6 +170,9 @@ const Header = ({
 	const portrait = height > width;
 	let scale = 1;
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+	// Only move focus to the header for accessibility navigation (screen reader or physical
+	// keyboard); regular touch users shouldn't have focus yanked onto the header on room open.
+	const autoFocusHeader = useIsAccessibilityNavigationEnabled();
 	const subtitleAccessibilityLabel = tmid ? parentTitle : subtitle;
 	const accessibilityLabel = `${statusAccessibilityLabel} ${title} ${subtitleAccessibilityLabel || ''}.`;
 
@@ -226,13 +205,11 @@ const Header = ({
 
 	return (
 		<KeyboardFocusView
-			ref={keyboardFocusRef}
-			viewRef={headerRef as React.RefObject<View>}
-			// In master-detail the room list and the room share the screen, so when a room
-			// opens the keyboard/D-pad focus stays on the room item. autoFocus grabs focus
-			// natively as soon as the header mounts, which is more reliable than focusing
-			// imperatively after the JS interaction queue drains.
-			autoFocus={isMasterDetail}
+			// Grab focus natively as soon as the header mounts. This handles master-detail,
+			// where the room list and room share the screen and focus would otherwise stay on
+			// the room item, as well as moving screen-reader focus via enableA11yFocus.
+			autoFocus={autoFocusHeader}
+			enableA11yFocus={autoFocusHeader}
 			focusable={!disabled}
 			canBeFocused={!disabled}
 			style={[styles.container, { opacity: disabled ? 0.5 : 1, height: 36.9 * fontScale }]}

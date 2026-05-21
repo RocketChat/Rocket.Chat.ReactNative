@@ -29,7 +29,7 @@ import MessageErrorActions, { type IMessageErrorActions } from '../../containers
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
-import RoomHeader, { type IRoomHeaderRef } from '../../containers/RoomHeader';
+import RoomHeader from '../../containers/RoomHeader';
 import ReactionsList from '../../containers/ReactionsList';
 import { LISTENER } from '../../containers/Toast';
 import { getBadgeColor, isBlocked, makeThreadName } from '../../lib/methods/helpers/room';
@@ -119,7 +119,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private jumpToMessageId?: string;
 	private jumpToThreadId?: string;
 	private messageComposerRef: React.RefObject<IMessageComposerRef | null>;
-	private roomHeaderRef: React.RefObject<IRoomHeaderRef | null>;
 	private joinCode: React.RefObject<IJoinCode | null>;
 	// ListContainer component
 	private list: React.RefObject<IListContainerRef | null>;
@@ -140,7 +139,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 	private sub?: RoomClass;
 	private unsubscribeBlur?: () => void;
-	private unsubscribeFocus?: () => void;
 
 	constructor(props: IRoomViewProps) {
 		super(props);
@@ -204,7 +202,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.updateE2EEState();
 
 		this.messageComposerRef = React.createRef();
-		this.roomHeaderRef = React.createRef();
 		this.list = React.createRef();
 		this.flatList = React.createRef();
 		this.joinCode = React.createRef();
@@ -256,11 +253,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		EventEmitter.addEventListener('ROOM_REMOVED', this.handleRoomRemoved);
 		this.unsubscribeBlur = navigation.addListener('blur', () => {
 			AudioManager.pauseAudio();
-		});
-		this.unsubscribeFocus = navigation.addListener('focus', () => {
-			InteractionManager.runAfterInteractions(() => {
-				this.roomHeaderRef.current?.focus();
-			});
 		});
 	}
 
@@ -385,9 +377,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 		if (this.unsubscribeBlur) {
 			this.unsubscribeBlur();
-		}
-		if (this.unsubscribeFocus) {
-			this.unsubscribeFocus();
 		}
 		EventEmitter.removeListener('connected', this.handleConnected);
 		EventEmitter.removeListener('ROOM_REMOVED', this.handleRoomRemoved);
@@ -543,7 +532,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			),
 			headerTitle: () => (
 				<RoomHeader
-					ref={this.roomHeaderRef}
 					prid={prid}
 					tmid={tmid}
 					title={title}
