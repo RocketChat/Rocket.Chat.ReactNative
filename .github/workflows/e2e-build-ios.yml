@@ -80,7 +80,7 @@ jobs:
         run: |
           cd ios
           export RUNNING_E2E_TESTS=true
-          bundle exec fastlane ios build_experimental_simulator \
+          bundle exec fastlane ios build_official_simulator \
             disable_xcpretty:false \
             skip_package_ipa:true \
             skip_archive:true
@@ -104,4 +104,4 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: ios-simulator-app
-          path: ${{ steps.find_xcarchive.outputs.archive_path }}/Products/Applications/Rocket.Chat Experimental.app
+          path: ${{ steps.find_xcarchive.outputs.archive_path }}/Products/Applications/Rocket.Chat.app

@@ -1,4 +1,4 @@
-appId: chat.rocket.reactnative
+appId: ${APP_ID}
 name: Open room with last message as thread with more than 50 messages
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'

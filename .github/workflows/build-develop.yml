@@ -23,16 +23,6 @@ jobs:
     needs: [run-eslint-and-test]
     uses: ./.github/workflows/generate-changelog.yml
 
-  android-build-experimental-store:
-    name: Build Android Experimental
-    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
-    uses: ./.github/workflows/build-android.yml
-    needs: [run-eslint-and-test, generate-changelog]
-    secrets: inherit
-    with:
-      type: experimental
-      trigger: develop
-
   android-build-official-store:
     name: Build Android Official
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
@@ -40,19 +30,8 @@ jobs:
     needs: [run-eslint-and-test, generate-changelog]
     secrets: inherit
     with:
-      type: official
       trigger: develop
 
-  ios-build-experimental-store:
-    name: Build iOS Experimental
-    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
-    uses: ./.github/workflows/build-ios.yml
-    needs: [run-eslint-and-test, generate-changelog]
-    secrets: inherit
-    with:
-      type: experimental
-      trigger: develop
-      
   ios-build-official-store:
     name: Build iOS Official
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
@@ -60,5 +39,4 @@ jobs:
     needs: [run-eslint-and-test, generate-changelog]
     secrets: inherit
     with:
-      type: official
       trigger: develop
