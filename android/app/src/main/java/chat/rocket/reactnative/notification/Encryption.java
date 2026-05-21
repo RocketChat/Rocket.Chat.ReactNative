@@ -14,7 +14,6 @@ import chat.rocket.mobilecrypto.algorithms.RSACrypto;
 import chat.rocket.mobilecrypto.algorithms.CryptoUtils;
 import com.nozbe.watermelondb.WMDatabase;
 
-import java.lang.reflect.Field;
 import java.security.SecureRandom;
 import java.util.Arrays;
 
@@ -215,23 +214,8 @@ class Encryption {
     }
 
     private String getDatabaseName(String serverUrl, Context context) {
-        int resId = context.getResources().getIdentifier("rn_config_reader_custom_package", "string", context.getPackageName());
-        String className = context.getString(resId);
-        Boolean isOfficial = false;
-
-        try {
-            Class<?> clazz = Class.forName(className + ".BuildConfig");
-            Field IS_OFFICIAL = clazz.getField("IS_OFFICIAL");
-            isOfficial = (Boolean) IS_OFFICIAL.get(null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        // Match JS WatermelonDB naming: strip scheme, replace '/' with '.', add '-experimental' when needed, and append one ".db".
+        // Match JS WatermelonDB naming: strip scheme, replace '/' with '.', and append one ".db".
         String name = serverUrl.replaceFirst("^(\\w+:)?//", "").replace("/", ".");
-        if (!isOfficial) {
-            name += "-experimental";
-        }
         name += ".db";
 
         // Important: return just the name (not an absolute path). WMDatabase will resolve and append its own ".db" internally,

@@ -11,7 +11,6 @@ import AppContainer from './AppContainer';
 import { appInit, appInitLocalSettings, setMasterDetail as setMasterDetailAction } from './actions/app';
 import { deepLinkingOpen } from './actions/deepLinking';
 import { ActionSheetProvider } from './containers/ActionSheet';
-import DeprecationModal from './containers/DeprecationModal';
 import InAppNotification from './containers/InAppNotification';
 import Loading from './containers/Loading';
 import Toast from './containers/Toast';
@@ -268,7 +267,6 @@ export default class Root extends React.Component<{}, IState> {
 											<InAppNotification />
 											<Toast />
 											<Loading />
-											<DeprecationModal />
 										</ActionSheetProvider>
 									</KeyboardProvider>
 								</GestureHandlerRootView>

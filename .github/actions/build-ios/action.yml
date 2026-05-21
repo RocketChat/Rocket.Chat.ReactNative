@@ -78,9 +78,6 @@ runs:
         agvtool new-version -all ${{ inputs.BUILD_VERSION }}
         /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ inputs.BUGSNAG_KEY_OFFICIAL }}" ./RocketChatRN/Info.plist
         /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ inputs.BUGSNAG_KEY_OFFICIAL }}" ./ShareRocketChatRN/Info.plist
-        /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./RocketChatRN/Info.plist
-        /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./ShareRocketChatRN/Info.plist
-        /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./NotificationService/Info.plist
       shell: bash
 
     - name: Set Google Services
