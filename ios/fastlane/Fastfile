@@ -66,8 +66,8 @@ platform :ios do
     )
   end
 
-  desc "Build Official app"
-  lane :build_official do
+  desc "Build app"
+  lane :build do
     match(
       type: "appstore",
       platform: "ios",
@@ -116,8 +116,8 @@ platform :ios do
     gym(scheme: "RocketChatRN", workspace: "RocketChatRN.xcworkspace", skip_codesigning: true, skip_archive: true)
   end
 
-  desc "Build Official app for Simulator"
-  lane :build_official_simulator do
+  desc "Build app for Simulator"
+  lane :build_simulator do
     gym(
       scheme: "RocketChat",
       workspace: "RocketChatRN.xcworkspace",

@@ -36,19 +36,19 @@ runs:
     - name: Download iOS build
       uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
       with:
-        name: ios-build-official
+        name: ios-build
         path: ios/
 
     - name: Download dSYM
       uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
       with:
-        name: ios-build-official-dSYM
+        name: ios-build-dSYM
         path: ios/
 
     - name: Download Info.plist
       uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
       with:
-        name: ios-build-official-info-plist
+        name: ios-build-info-plist
         path: ios/RocketChatRN/
 
     - name: Pod Cache
@@ -91,7 +91,7 @@ runs:
     - name: Fastlane Submit to TestFlight
       working-directory: ios
       run: |
-        echo "Submitting to TestFlight as Official"
+        echo "Submitting to TestFlight"
         bundle exec fastlane ios beta
       env:
         MATCH_KEYCHAIN_NAME: ${{ inputs.MATCH_KEYCHAIN_NAME }}

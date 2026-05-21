@@ -71,7 +71,7 @@ printf '  %s\n' "${FLOW_FILES[@]}"
 
 if [ "$PLATFORM" = "android" ]; then
   adb shell settings put system show_touches 1 || true
-  adb install -r "app-official-release.apk" || true
+  adb install -r "app-release.apk" || true
   adb shell monkey -p "$APP_ID" -c android.intent.category.LAUNCHER 1 || true
   sleep 6
   adb shell am force-stop "$APP_ID" || true
