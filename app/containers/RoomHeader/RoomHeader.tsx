@@ -1,6 +1,7 @@
 import React from 'react';
 import { AccessibilityInfo, findNodeHandle, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { KeyboardFocusView, type KeyboardFocus } from 'react-native-external-keyboard';
 
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import I18n from '../../i18n';
@@ -162,11 +163,15 @@ const Header = ({
 }: IRoomHeaderProps) => {
 	'use memo';
 
-	const headerRef = React.useRef<View | null>(null);
+	const headerRef = React.useRef<View>(null);
+	const keyboardFocusRef = React.useRef<KeyboardFocus>(null);
 	React.useImperativeHandle(
 		ref,
 		() => ({
 			focus: () => {
+				// Move physical keyboard / D-pad focus to the header.
+				keyboardFocusRef.current?.focus();
+				// Move screen-reader focus too (no-op when no screen reader is active).
 				const nodeHandle = headerRef.current ? findNodeHandle(headerRef.current) : null;
 				if (nodeHandle) {
 					AccessibilityInfo.setAccessibilityFocus(nodeHandle);
@@ -220,8 +225,16 @@ const Header = ({
 	const handleOnPress = () => onPress();
 
 	return (
-		<View
-			ref={headerRef}
+		<KeyboardFocusView
+			ref={keyboardFocusRef}
+			viewRef={headerRef as React.RefObject<View>}
+			// In master-detail the room list and the room share the screen, so when a room
+			// opens the keyboard/D-pad focus stays on the room item. autoFocus grabs focus
+			// natively as soon as the header mounts, which is more reliable than focusing
+			// imperatively after the JS interaction queue drains.
+			autoFocus={isMasterDetail}
+			focusable={!disabled}
+			canBeFocused={!disabled}
 			style={[styles.container, { opacity: disabled ? 0.5 : 1, height: 36.9 * fontScale }]}
 			accessible
 			accessibilityLabel={accessibilityLabel}
@@ -243,7 +256,7 @@ const Header = ({
 				</View>
 				<SubTitle usersTyping={tmid ? [] : usersTyping} subtitle={subtitle} renderFunc={renderFunc} scale={scale} />
 			</TouchableOpacity>
-		</View>
+		</KeyboardFocusView>
 	);
 };
 

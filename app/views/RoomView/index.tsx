@@ -226,15 +226,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		dispatch(clearInAppFeedback());
 		this.mounted = true;
 		this.didMountInteraction = InteractionManager.runAfterInteractions(() => {
-			const { isAuthenticated, isMasterDetail } = this.props;
+			const { isAuthenticated } = this.props;
 			this.setHeader();
-			// In master-detail, navigating to a room resets the detail stack, so the
-			// RoomView is already the focused route by the time the 'focus' listener
-			// below is registered and that listener never fires for the initial open.
-			// Focus the header here so keyboard navigation starts on it.
-			if (isMasterDetail) {
-				this.roomHeaderRef.current?.focus();
-			}
 			if (this.rid) {
 				try {
 					this.sub?.subscribe?.();
