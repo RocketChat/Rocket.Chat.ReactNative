@@ -111,7 +111,6 @@ import { type IRoomFederated, isRoomFederated, isRoomNativeFederated } from '../
 import { InvitedRoom } from './components/InvitedRoom';
 import { getInvitationData } from '../../lib/methods/getInvitationData';
 import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
-import { isExternalKeyboardConnected } from '../../lib/methods/helpers/externalInput';
 
 class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private rid?: string;
@@ -227,8 +226,15 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		dispatch(clearInAppFeedback());
 		this.mounted = true;
 		this.didMountInteraction = InteractionManager.runAfterInteractions(() => {
-			const { isAuthenticated } = this.props;
+			const { isAuthenticated, isMasterDetail } = this.props;
 			this.setHeader();
+			// In master-detail, navigating to a room resets the detail stack, so the
+			// RoomView is already the focused route by the time the 'focus' listener
+			// below is registered and that listener never fires for the initial open.
+			// Focus the header here so keyboard navigation starts on it.
+			if (isMasterDetail) {
+				this.roomHeaderRef.current?.focus();
+			}
 			if (this.rid) {
 				try {
 					this.sub?.subscribe?.();
@@ -260,19 +266,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		});
 		this.unsubscribeFocus = navigation.addListener('focus', () => {
 			InteractionManager.runAfterInteractions(() => {
-				if (this.props.isMasterDetail) {
-					this.roomHeaderRef.current?.focus();
-					return;
-				}
-				// Skip autofocus in development because simulators always report a keyboard as connected,
-				// which would force the composer to open on every focus while debugging.
-				if (__DEV__) {
-					return;
-				}
-				const hasExternalKeyboard = isExternalKeyboardConnected();
-				if (hasExternalKeyboard) {
-					this.messageComposerRef.current?.focus?.();
-				}
+				this.roomHeaderRef.current?.focus();
 			});
 		});
 	}
