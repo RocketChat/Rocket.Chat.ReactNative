@@ -13,7 +13,7 @@ jobs:
     name: Hold
     runs-on: ubuntu-latest
     if: ${{ inputs.trigger == 'pr' }}
-    environment: official_android_build
+    environment: android_build
     steps:
       - run: echo "Waiting for manual approval..."
 
@@ -58,7 +58,7 @@ jobs:
     name: Upload Hold
     runs-on: ubuntu-latest
     if: ${{ inputs.trigger == 'pr' }}
-    environment: upload_official_android
+    environment: upload_android
     needs: [build-android]
     outputs:
       BUILD_VERSION: ${{ needs.build-android.outputs.BUILD_VERSION }}
