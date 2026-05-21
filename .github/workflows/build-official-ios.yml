@@ -3,9 +3,6 @@ name: Build iOS And Upload
 on:
   workflow_call:
     inputs:
-      type:
-        type: string
-        required: true
       trigger:
         type: string
         required: false
@@ -24,7 +21,7 @@ jobs:
     name: Build
     runs-on: macos-26
     needs: [build-hold]
-    if: ${{ inputs.type == 'official' && (always() && (needs.build-hold.result == 'success' || needs.build-hold.result == 'skipped')) }}
+    if: ${{ always() && (needs.build-hold.result == 'success' || needs.build-hold.result == 'skipped') }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
@@ -47,18 +44,15 @@ jobs:
         uses: ./.github/actions/build-ios
         timeout-minutes: 60
         with:
-          type: official
           MATCH_KEYCHAIN_NAME: ${{ secrets.MATCH_KEYCHAIN_NAME }}
           MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
           APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
           FASTLANE_REPO_PAT: ${{ secrets.FASTLANE_REPO_PAT }}
-          BUGSNAG_KEY: ${{ secrets.BUGSNAG_KEY_OFFICIAL }}
           BUGSNAG_KEY_OFFICIAL: ${{ secrets.BUGSNAG_KEY_OFFICIAL }}
           APP_STORE_CONNECT_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
           GOOGLE_SERVICES_IOS: ${{ secrets.GOOGLE_SERVICES_IOS }}
-          GOOGLE_SERVICES_IOS_EXPERIMENTAL: ${{ secrets.GOOGLE_SERVICES_IOS_EXPERIMENTAL }}
           BUILD_VERSION: ${{ steps.version.outputs.BUILD_VERSION }}
 
   upload-hold:
@@ -74,7 +68,7 @@ jobs:
     name: Upload
     runs-on: macos-26
     needs: [upload-hold]
-    if: ${{ inputs.type == 'official' && (always() && (needs.upload-hold.result == 'success' || needs.upload-hold.result == 'skipped')) }}
+    if: ${{ always() && (needs.upload-hold.result == 'success' || needs.upload-hold.result == 'skipped') }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
@@ -85,7 +79,6 @@ jobs:
       - name: Upload iOS
         uses: ./.github/actions/upload-ios
         with:
-          type: official
           trigger: ${{ inputs.trigger }}
           MATCH_KEYCHAIN_NAME: ${{ secrets.MATCH_KEYCHAIN_NAME }}
           MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }}
