@@ -122,7 +122,7 @@
 		1ED038CA2B50A58400C007D4 /* ServersLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED038C92B50A58400C007D4 /* ServersLoader.swift */; };
 		1ED1EC892B867E2400F6620C /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED1EC882B867E2400F6620C /* ExtensionDelegate.swift */; };
 		1ED1ECE42B8699E900F6620C /* Rocket.Chat Watch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 1ED0388E2B507B4B00C007D4 /* Rocket.Chat Watch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		1ED1ECEA2B869A4A00F6620C /* Official.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A14FCF3257FEB59005BDCD4 /* Official.xcassets */; };
+		1ED1ECEA2B869A4A00F6620C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A14FCF3257FEB59005BDCD4 /* Assets.xcassets */; };
 		1EDB30F22B5B453A00532C7E /* LoggedInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EDB30F12B5B453A00532C7E /* LoggedInView.swift */; };
 		1EDFD0FA2B589B8F002FEE5F /* MessagesLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EDFD0F92B589B8F002FEE5F /* MessagesLoader.swift */; };
 		1EDFD1062B58A66E002FEE5F /* CancelBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EDFD1052B58A66E002FEE5F /* CancelBag.swift */; };
@@ -152,7 +152,7 @@
 		7A0129D42C6E8EC800F84A97 /* ShareRocketChatRN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0129D22C6E8B5900F84A97 /* ShareRocketChatRN.swift */; };
 		7A0129D62C6E8F0700F84A97 /* ShareRocketChatRN.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 1EC6AD6022CBA20C00A41C61 /* ShareRocketChatRN.entitlements */; };
 		7A0129EA2C6E921600F84A97 /* MainInterface.storyboard in Sources */ = {isa = PBXBuildFile; fileRef = 1EC6ACB522CB9FC300A41C61 /* MainInterface.storyboard */; };
-		7A14FCF4257FEB59005BDCD4 /* Official.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A14FCF3257FEB59005BDCD4 /* Official.xcassets */; };
+		7A14FCF4257FEB59005BDCD4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A14FCF3257FEB59005BDCD4 /* Assets.xcassets */; };
 		7A1B58412F5F58FF002A6BDE /* VoipPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1B58402F5F58FF002A6BDE /* VoipPayload.swift */; };
 		7A1B58452F5F63DB002A6BDE /* AppDelegate+Voip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1B58432F5F63DB002A6BDE /* AppDelegate+Voip.swift */; };
 		7A3704572F7DB36E009085FC /* VoipPerCallDdpRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3704552F7DB36E009085FC /* VoipPerCallDdpRegistry.swift */; };
@@ -435,7 +435,7 @@
 		7A006F13229C83B600803143 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7A0129D22C6E8B5900F84A97 /* ShareRocketChatRN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareRocketChatRN.swift; sourceTree = "<group>"; };
 		7A0D62D1242AB187006D5C06 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
-		7A14FCF3257FEB59005BDCD4 /* Official.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Official.xcassets; sourceTree = "<group>"; };
+		7A14FCF3257FEB59005BDCD4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7A1B58402F5F58FF002A6BDE /* VoipPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoipPayload.swift; sourceTree = "<group>"; };
 		7A1B58432F5F63DB002A6BDE /* AppDelegate+Voip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Voip.swift"; sourceTree = "<group>"; };
 		7A3704552F7DB36E009085FC /* VoipPerCallDdpRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoipPerCallDdpRegistry.swift; sourceTree = "<group>"; };
@@ -526,7 +526,7 @@
 				60B2A6A31FC4588700BD58E5 /* RocketChatRN.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
-				7A14FCF3257FEB59005BDCD4 /* Official.xcassets */,
+				7A14FCF3257FEB59005BDCD4 /* Assets.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				7AAA749C23043B1D00F1ADE9 /* RocketChatRN-Bridging-Header.h */,
 				7A0D62D1242AB187006D5C06 /* LaunchScreen.storyboard */,
@@ -1195,7 +1195,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1ED1ECEA2B869A4A00F6620C /* Official.xcassets in Resources */,
+				1ED1ECEA2B869A4A00F6620C /* Assets.xcassets in Resources */,
 				1ED038982B507B4D00C007D4 /* Preview Assets.xcassets in Resources */,
 				1E044F992B92798E00BCA2FD /* Localizable.xcstrings in Resources */,
 				65AD383B2BFBDF4A00271B39 /* PrivacyInfo.xcprivacy in Resources */,
@@ -1226,7 +1226,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				65B9A71B2AFC24190088956F /* ringtone.mp3 in Resources */,
-				7A14FCF4257FEB59005BDCD4 /* Official.xcassets in Resources */,
+				7A14FCF4257FEB59005BDCD4 /* Assets.xcassets in Resources */,
 				7A610CD527ECE38100B8ABDD /* custom.ttf in Resources */,
 				7AAB3E42257E6A6E00707CF6 /* Images.xcassets in Resources */,
 				7AE10C0828A59530003593CB /* Inter.ttf in Resources */,

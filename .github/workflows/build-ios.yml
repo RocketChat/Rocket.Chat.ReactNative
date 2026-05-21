@@ -13,7 +13,7 @@ jobs:
     name: Hold
     runs-on: ubuntu-latest
     if: ${{ inputs.trigger == 'pr' }}
-    environment: official_ios_build
+    environment: ios_build
     steps:
       - run: echo "Waiting for manual approval..."
 
@@ -32,7 +32,7 @@ jobs:
       - name: Fetch supported versions from Cloud
         uses: ./.github/actions/fetch-supported-versions
         with:
-          build_name: 'ios-official'
+          build_name: 'ios'
 
       - name: Generate Build Version
         id: version
@@ -59,7 +59,7 @@ jobs:
     name: Upload Hold
     runs-on: ubuntu-latest
     if: ${{ inputs.trigger == 'pr' }}
-    environment: upload_official_ios
+    environment: upload_ios
     needs: [build-ios]
     steps:
       - run: echo "Waiting for manual approval..."

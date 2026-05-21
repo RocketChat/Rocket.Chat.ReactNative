@@ -26,10 +26,10 @@ inputs:
     description: 'Fastlane Repo PAT'
     required: true
   BUGSNAG_KEY_OFFICIAL:
-    description: 'Bugsnag API Key Official'
+    description: 'Bugsnag API Key'
     required: true
   GOOGLE_SERVICES_IOS:
-    description: 'Google service file for official version'
+    description: 'Google service file'
     required: true
 
 runs:
@@ -90,7 +90,7 @@ runs:
 
     - name: Build iOS app
       working-directory: ios
-      run: bundle exec fastlane ios build_official
+      run: bundle exec fastlane ios build
       env:
         MATCH_KEYCHAIN_NAME: ${{ inputs.MATCH_KEYCHAIN_NAME }}
         MATCH_KEYCHAIN_PASSWORD: ${{ inputs.MATCH_KEYCHAIN_PASSWORD }}
@@ -103,17 +103,17 @@ runs:
     - name: Upload IPA artifact
       uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
       with:
-        name: ios-build-official
+        name: ios-build
         path: ios/Rocket.Chat.ipa
 
     - name: Upload Rocket.Chat.app.dSYM.zip
       uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
       with:
-        name: ios-build-official-dSYM
+        name: ios-build-dSYM
         path: ios/Rocket.Chat.app.dSYM.zip
 
     - name: Upload RocketChatRN/Info.plist
       uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
       with:
-        name: ios-build-official-info-plist
+        name: ios-build-info-plist
         path: ios/RocketChatRN/Info.plist
