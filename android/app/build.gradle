@@ -119,13 +119,6 @@ android {
             }
         }
     }
-
-    flavorDimensions "app"
-    productFlavors {
-        official {
-            dimension = "app"
-        }
-    }
 }
 
 dependencies {
