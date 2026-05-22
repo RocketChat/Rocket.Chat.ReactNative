@@ -1552,6 +1552,37 @@ export const MessageWithThread = () => (
 			]}
 			isThreadReply
 		/>
+		<Message
+			tmid='1'
+			tmsg='Thread with image attachment'
+			attachments={[
+				{
+					title: 'example.png',
+					image_url: '/file-upload/c4wcNhrbXJLBvAJtN/example.png'
+				}
+			]}
+			isThreadReply
+		/>
+		<Message
+			tmid='1'
+			tmsg='Thread with file attachment'
+			attachments={[
+				{
+					title: 'presentation.pptx',
+					title_link: '/file-upload/c4wcNhrbXJLBvAJtN/presentation.pptx'
+				}
+			]}
+			isThreadReply
+		/>
+		<Message
+			tmid='1'
+			tmsg='Thread with multiple attachments'
+			attachments={[
+				{ title: 'first-file.pdf', title_link: '/file-upload/c4wcNhrbXJLBvAJtN/first-file.pdf' },
+				{ title: 'second-file.pdf', title_link: '/file-upload/c4wcNhrbXJLBvAJtN/second-file.pdf' }
+			]}
+			isThreadReply
+		/>
 	</>
 );
 
@@ -1572,6 +1603,37 @@ export const MessageWithThreadLargeFont = () => (
 					description: 'This is a description :nyan_rocket:',
 					audio_url: '/file-upload/c4wcNhrbXJLBvAJtN/1535569819516.aac'
 				}
+			]}
+			isThreadReply
+		/>
+		<MessageLargeFont
+			tmid='1'
+			tmsg='Thread with image attachment'
+			attachments={[
+				{
+					title: 'example.png',
+					image_url: '/file-upload/c4wcNhrbXJLBvAJtN/example.png'
+				}
+			]}
+			isThreadReply
+		/>
+		<MessageLargeFont
+			tmid='1'
+			tmsg='Thread with file attachment'
+			attachments={[
+				{
+					title: 'presentation.pptx',
+					title_link: '/file-upload/c4wcNhrbXJLBvAJtN/presentation.pptx'
+				}
+			]}
+			isThreadReply
+		/>
+		<MessageLargeFont
+			tmid='1'
+			tmsg='Thread with multiple attachments'
+			attachments={[
+				{ title: 'first-file.pdf', title_link: '/file-upload/c4wcNhrbXJLBvAJtN/first-file.pdf' },
+				{ title: 'second-file.pdf', title_link: '/file-upload/c4wcNhrbXJLBvAJtN/second-file.pdf' }
 			]}
 			isThreadReply
 		/>

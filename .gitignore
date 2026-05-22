@@ -92,6 +92,6 @@ e2e/e2e_account.ts
 skills-lock.json
 CLAUDE.local.md
 AGENTS.md
-docs/
+/docs/
 .superset/
 .jest-cache/

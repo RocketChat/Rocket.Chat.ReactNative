@@ -73,7 +73,8 @@ static void Logger(NSString *format, ...) {
 }
 
 + (NSString *)initializeMMKV {
-    NSString *appGroup = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"];
+    NSString *appGroup = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroupIdentifier"];
+    
     if (!appGroup) return nil;
 
     NSURL *groupURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:appGroup];

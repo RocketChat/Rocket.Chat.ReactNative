@@ -38,6 +38,7 @@ import { generateTriggerId } from '../../../lib/methods/actions';
 import { executeCommandPreview } from '../../../lib/services/restApi';
 import log from '../../../lib/methods/helpers/log';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
+import { useAltTextSupported } from '../../../lib/hooks/useAltTextSupported';
 import { usePrevious } from '../../../lib/hooks/usePrevious';
 import { type ChatsStackParamList } from '../../../stacks/types';
 import { loadDraftMessage } from '../../../lib/methods/draftMessage';
@@ -58,6 +59,7 @@ export const ComposerInput = memo(
 		const selectionRef = React.useRef<IInputSelection>(defaultSelection);
 		const dispatch = useDispatch();
 		const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+		const altTextSupported = useAltTextSupported();
 		let placeholder = tmid ? I18n.t('Add_thread_reply') : '';
 		if (room && !tmid) {
 			placeholder = I18n.t('Message_roomname', { roomName: (room.t === 'd' ? '@' : '#') + getRoomTitle(room) });
@@ -103,7 +105,7 @@ export const ComposerInput = memo(
 			const fetchMessageAndSetInput = async () => {
 				const message = await getMessageById(selectedMessages[0]);
 				if (message) {
-					setInput(message?.msg || message?.attachments?.[0]?.description || '');
+					setInput(message?.msg || (altTextSupported ? '' : message?.attachments?.[0]?.description || ''));
 				}
 			};
 
