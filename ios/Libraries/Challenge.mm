@@ -25,7 +25,16 @@
   NSString *key = [secureStorage getSecureKey:hexKey];
 
   NSData *cryptKey = (key && [key length] > 0) ? [key dataUsingEncoding:NSUTF8StringEncoding] : nil;
-  MMKVBridge *mmkvBridge = [[MMKVBridge alloc] initWithID:@"default" cryptKey:cryptKey rootPath:nil];
+
+  // Use same App Group path as MMKVKeyManager.mm to access shared SSL certificates
+  NSString *appGroup = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroupIdentifier"];
+  NSString *rootPath = nil;
+  if (appGroup) {
+    NSURL *groupURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:appGroup];
+    rootPath = [groupURL path];
+  }
+
+  MMKVBridge *mmkvBridge = [[MMKVBridge alloc] initWithID:@"default" cryptKey:cryptKey rootPath:rootPath];
 
   return mmkvBridge;
 }

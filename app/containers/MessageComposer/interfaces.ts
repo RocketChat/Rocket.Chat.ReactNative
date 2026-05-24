@@ -10,7 +10,7 @@ export interface IMessageComposerRef {
 }
 
 export interface IMessageComposerContainerProps {
-	children?: ReactElement;
+	children?: ReactElement | null;
 }
 
 export interface IInputSelection {
