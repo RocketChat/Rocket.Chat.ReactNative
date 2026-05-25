@@ -112,9 +112,13 @@ jest.mock('react-native-device-info', () => ({
 	getReadableVersion: jest.fn(() => '1.0.0')
 }));
 
+const mockStartVoipCallService = jest.fn();
 jest.mock('../../native/NativeVoip', () => ({
 	__esModule: true,
-	default: { stopNativeDDPClient: jest.fn() }
+	default: {
+		stopNativeDDPClient: jest.fn(),
+		startVoipCallService: (callId: string) => mockStartVoipCallService(callId)
+	}
 }));
 
 jest.mock('../../navigation/appNavigation', () => ({
@@ -410,6 +414,44 @@ describe('MediaSessionInstance', () => {
 			expect(outgoing.reject).not.toHaveBeenCalled();
 			expect(mockSetCall).toHaveBeenCalledWith(outgoing);
 			expect(Navigation.navigate).toHaveBeenCalledWith('CallView');
+		});
+
+		// NATIVE-1178: outgoing calls don't go through VoipNotification, so JS must start the FGS
+		// itself; otherwise mic capture is revoked ~5s after the user backgrounds the app.
+		it('starts VoipCallService for outgoing (caller) newCall on Android', async () => {
+			mockUseCallStoreGetState.mockReturnValue({
+				reset: mockCallStoreReset,
+				setCall: jest.fn(),
+				setRoomId: mockSetRoomId,
+				setDirection: mockSetDirection,
+				resetNativeCallId: jest.fn(),
+				call: null,
+				callId: null,
+				nativeAcceptedCallId: null,
+				roomId: null
+			});
+			await mediaSessionInstance.init('user-1');
+			const outgoing = buildClientMediaCall({ callId: 'out-fgs', role: 'caller' });
+			getNewCallHandler()({ call: outgoing });
+			expect(mockStartVoipCallService).toHaveBeenCalledWith('out-fgs');
+		});
+
+		it('does not start VoipCallService for incoming (callee) newCall', async () => {
+			mockUseCallStoreGetState.mockReturnValue({
+				reset: mockCallStoreReset,
+				setCall: jest.fn(),
+				setRoomId: mockSetRoomId,
+				setDirection: mockSetDirection,
+				resetNativeCallId: jest.fn(),
+				call: null,
+				callId: null,
+				nativeAcceptedCallId: null,
+				roomId: null
+			});
+			await mediaSessionInstance.init('user-1');
+			const incoming = buildClientMediaCall({ callId: 'in-fgs', role: 'callee' });
+			getNewCallHandler()({ call: incoming });
+			expect(mockStartVoipCallService).not.toHaveBeenCalled();
 		});
 	});
 

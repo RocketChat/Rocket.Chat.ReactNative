@@ -100,10 +100,17 @@ class VoipCallService : Service() {
         val notification = buildNotification(callId)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            // microphone keeps RECORD_AUDIO authorised once the app is no longer in the foreground
+            // (background mic is governed by FGS type, not by audio focus or Telecom state alone).
+            // phoneCall is what satisfies FGS-start eligibility on the incoming-accept path, where
+            // the only foreground signal is the active self-managed Telecom connection. Both paths
+            // (outgoing start from a visible activity, incoming start after connection.onAnswer())
+            // are in a while-in-use eligible state at startForeground() time, so the combined
+            // bitmask is safe to start.
             startForeground(
                 NOTIFICATION_ID,
                 notification,
-                ServiceInfo.FOREGROUND_SERVICE_TYPE_PHONE_CALL
+                ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE or ServiceInfo.FOREGROUND_SERVICE_TYPE_PHONE_CALL
             )
         } else {
             startForeground(NOTIFICATION_ID, notification)

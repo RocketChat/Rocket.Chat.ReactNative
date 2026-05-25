@@ -8,11 +8,13 @@ import {
 	type ServerMediaSignal,
 	type WebRTCProcessorConfig
 } from '@rocket.chat/media-signaling';
+import { Platform } from 'react-native';
 import RNCallKeep from 'react-native-callkeep';
 import { registerGlobals } from 'react-native-webrtc';
 import { getUniqueIdSync } from 'react-native-device-info';
 import { dequal } from 'dequal';
 
+import NativeVoipModule from '../../native/NativeVoip';
 import { mediaSessionStore } from './MediaSessionStore';
 import { pendingHangups } from './pendingHangups';
 import { terminateNativeCall } from './terminateNativeCall';
@@ -129,6 +131,18 @@ class MediaSessionInstance {
 				if (call.localParticipant.role === 'caller') {
 					useCallStore.getState().setCall(call);
 					useCallStore.getState().setDirection('outgoing');
+					// Outgoing calls don't go through VoipNotification, so the FGS that the incoming
+					// path starts after Telecom-accept doesn't exist here. Start it now (we're on the
+					// JS thread that ran startCall, the initiating activity is still visible) so the
+					// while-in-use microphone permission survives the user backgrounding the app
+					// while the call is in progress (NATIVE-1178).
+					if (Platform.OS === 'android') {
+						try {
+							NativeVoipModule.startVoipCallService(call.callId);
+						} catch (error) {
+							log(error);
+						}
+					}
 					Navigation.navigate('CallView');
 					if (useCallStore.getState().roomId == null) {
 						this.resolveRoomIdFromContact(call.remoteParticipants[0]?.contact).catch(error => {
