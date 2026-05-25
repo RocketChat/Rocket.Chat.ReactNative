@@ -53,6 +53,11 @@ const AuthenticationWebView = () => {
 		params: { authType, url, ssoToken }
 	} = useRoute<RouteProp<OutsideModalParamList, 'AuthenticationWebView'>>();
 
+	// Reset redirect guard when auth params change (e.g., user logs out and retries)
+	useLayoutEffect(() => {
+		redirectHandledRef.current = false;
+	}, [url, authType, ssoToken]);
+
 	const { Accounts_Iframe_api_method, Accounts_Iframe_api_url, server } = useAppSelector(state => ({
 		server: state.server.server,
 		Accounts_Iframe_api_url: state.settings.Accounts_Iframe_api_url as string,
