@@ -30,8 +30,6 @@ tags:
     timeout: 60000
 - pressKey: Remote Dpad Down
 - pressKey: Remote Dpad Down
-- pressKey: Remote Dpad Right
-- pressKey: Remote Dpad Right
 - pressKey: enter
 # Submit: ComposerInput wires onSubmitEditing -> send when soft keyboard is hidden (TV / physical keyboard)
 - extendedWaitUntil:
