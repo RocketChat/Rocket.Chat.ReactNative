@@ -75,6 +75,7 @@ const AuthenticationWebView = () => {
 		} catch (e) {
 			console.warn(e);
 		} finally {
+			loggingRef.current = false;
 			navigation.pop();
 		}
 	};
