@@ -1,7 +1,7 @@
 import { type RouteProp } from '@react-navigation/core';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import { WebView, type WebViewNavigation } from 'react-native-webview';
 import { type WebViewMessage } from 'react-native-webview/lib/WebViewTypes';
 import parse from 'url-parse';
@@ -43,9 +43,10 @@ window.addEventListener('popstate', function() {
 const SSO_AUTH_TYPES = ['saml', 'cas', 'iframe'];
 
 const AuthenticationWebView = () => {
-	const [logging, setLogging] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [headerTitle, setHeaderTitle] = useState<string | null>(null);
+	const loggingRef = useRef(false);
+	const redirectHandledRef = useRef(false);
 
 	const navigation = useNavigation<NativeStackNavigationProp<OutsideModalParamList, 'AuthenticationWebView'>>();
 	const {
@@ -64,18 +65,18 @@ const AuthenticationWebView = () => {
 	// Force 3s delay so the server has time to evaluate the token
 	const debouncedLogin = useDebounce((params: ICredentials) => login(params), 3000);
 
-	const login = (params: ICredentials) => {
-		if (logging) {
+	const login = async (params: ICredentials) => {
+		if (loggingRef.current) {
 			return;
 		}
-		setLogging(true);
+		loggingRef.current = true;
 		try {
-			loginOAuthOrSso(params);
+			await loginOAuthOrSso(params);
 		} catch (e) {
 			console.warn(e);
+		} finally {
+			navigation.pop();
 		}
-		setLogging(false);
-		navigation.pop();
 	};
 
 	const tryLogin = useDebounce(
@@ -92,6 +93,24 @@ const AuthenticationWebView = () => {
 		{ leading: true }
 	);
 
+	const handleSamlOrCasRedirect = (url: string): boolean => {
+		const parsedUrl = parse(url, true);
+		const isSaml = authType === 'saml' && parsedUrl.query?.saml_idp_credentialToken;
+		const isCas = authType === 'cas' && (parsedUrl.pathname?.includes('validate') || parsedUrl.query?.ticket);
+		if (!isSaml && !isCas) return false;
+		if (redirectHandledRef.current) return true;
+		redirectHandledRef.current = true;
+		let payload: ICredentials;
+		if (isSaml) {
+			const token = parsedUrl.query?.saml_idp_credentialToken || ssoToken;
+			payload = { credentialToken: token, saml: true };
+		} else {
+			payload = { cas: { credentialToken: ssoToken } };
+		}
+		login(payload);
+		return true;
+	};
+
 	const onNavigationStateChange = (webViewState: WebViewNavigation | WebViewMessage) => {
 		const url = decodeURIComponent(webViewState.url);
 
@@ -104,19 +123,8 @@ const AuthenticationWebView = () => {
 			}
 		}
 		if (authType === 'saml' || authType === 'cas') {
-			const parsedUrl = parse(url, true);
-			// ticket -> cas / validate & saml_idp_credentialToken -> saml
-			if (parsedUrl.pathname?.includes('validate') || parsedUrl.query?.ticket || parsedUrl.query?.saml_idp_credentialToken) {
-				let payload: ICredentials;
-				if (authType === 'saml') {
-					const token = parsedUrl.query?.saml_idp_credentialToken || ssoToken;
-					const credentialToken = { credentialToken: token };
-					payload = { ...credentialToken, saml: true };
-				} else {
-					payload = { cas: { credentialToken: ssoToken } };
-				}
-				debouncedLogin(payload);
-			}
+			handleSamlOrCasRedirect(url);
+			return;
 		}
 
 		if (authType === 'oauth') {
@@ -166,6 +174,12 @@ const AuthenticationWebView = () => {
 				// https://github.com/react-native-community/react-native-webview/issues/24#issuecomment-540130141
 				onMessage={({ nativeEvent }) => onNavigationStateChange(nativeEvent)}
 				onNavigationStateChange={onNavigationStateChange}
+				onShouldStartLoadWithRequest={req => {
+					if (authType === 'saml' || authType === 'cas') {
+						return !handleSamlOrCasRedirect(req.url);
+					}
+					return true;
+				}}
 				injectedJavaScript={isIframe ? injectedJavaScript : undefined}
 				onLoadStart={() => setLoading(true)}
 				onLoadEnd={() => setLoading(false)}
