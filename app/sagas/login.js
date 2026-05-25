@@ -479,17 +479,11 @@ const root = function* root() {
 	while (true) {
 		const params = yield take(types.LOGIN.SUCCESS);
 		const loginSuccessTask = yield fork(handleLoginSuccess, params);
-		// Only cancel handleLoginSuccess if a workspace switch interrupts it.
-		// Cancelling on the 2s timeout would rip the saga before it reaches
-		// appStart(ROOT_INSIDE), stranding users on the login screen when
-		// permissions/enterprise fetches run long (issue #7333).
-		const { selectRequest } = yield race({
+		yield race({
 			selectRequest: take(types.SERVER.SELECT_REQUEST),
 			timeout: delay(2000)
 		});
-		if (selectRequest) {
-			yield cancel(loginSuccessTask);
-		}
+		yield cancel(loginSuccessTask);
 	}
 };
 export default root;
