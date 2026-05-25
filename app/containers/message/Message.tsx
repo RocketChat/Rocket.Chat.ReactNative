@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, type ViewStyle } from 'react-native';
+import { View, type ViewStyle, type AccessibilityActionEvent, type AccessibilityActionInfo } from 'react-native';
 import { A11y } from 'react-native-a11y-order';
 
 import MessageContext from './Context';
@@ -22,9 +22,12 @@ import RightIcons from './Components/RightIcons';
 import { WidthAwareView } from './Components/WidthAwareView';
 import MessageTime from './Time';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
-import { useMessageAccessibilityLabel } from './hooks/useMessageAccessibilityLabel';
 import Quote from './Components/Attachments/Quote';
 import Touch from './Touch';
+import { useLastFocusedMessageRef } from '../../lib/a11y/useLastFocusedMessageRef';
+import { useMessageAccessibilityLabel } from './hooks/useMessageAccessibilityLabel';
+import { useMessageAccessibilityActions } from './hooks/useMessageAccessibilityActions';
+import { useMessageAccessibilityHint } from './hooks/useMessageAccessibilityHint';
 
 const MessageInner = React.memo((props: IMessageInner) => {
 	const { isLargeFontScale } = useResponsiveLayout();
@@ -101,9 +104,12 @@ const MessageInner = React.memo((props: IMessageInner) => {
 });
 MessageInner.displayName = 'MessageInner';
 
-const Message = React.memo((props: IMessageTouchable & IMessage) => {
-	const accessibilityLabel = useMessageAccessibilityLabel(props);
-
+interface IMessageA11y {
+	accessibilityActions?: AccessibilityActionInfo[];
+	onAccessibilityAction?: (event: AccessibilityActionEvent) => void;
+	handleLongPress?: () => void;
+}
+const Message = React.memo((props: IMessageTouchable & IMessage & IMessageA11y) => {
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo || props.isIgnored) {
 		const thread = props.isThreadReply ? <RepliedThread {...props} /> : null;
 		// Prevent misalignment of info when the font size is increased.
@@ -111,7 +117,7 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 		return (
 			<View style={[styles.container, { marginTop: 4 }]}>
 				{thread}
-				<View accessible accessibilityLabel={accessibilityLabel} style={[styles.flex, infoStyle]}>
+				<View style={[styles.flex, infoStyle]}>
 					<MessageAvatar small {...props} />
 					<A11y.Index
 						accessible={props.isTranslated}
@@ -134,13 +140,13 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 	}
 
 	return (
-		<View testID={`message-${props.id}`} accessible accessibilityLabel={accessibilityLabel} style={styles.container}>
+		<View testID={`message-${props.id}`} style={styles.container}>
 			<A11y.Index
 				accessible={props.isTranslated}
 				accessibilityLabel={props?.msg || ''}
 				accessibilityLanguage={props.autoTranslateLanguage}
 				index={2}>
-				<View accessible style={styles.flex}>
+				<View style={styles.flex}>
 					<MessageAvatar {...props} />
 					<View style={styles.messageContent}>
 						<MessageInner {...props} />
@@ -167,6 +173,12 @@ Message.displayName = 'Message';
 const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 	const { onPress, onLongPress } = useContext(MessageContext);
 	const { colors } = useTheme();
+	const { ref: touchRef, markAsLastFocused } = useLastFocusedMessageRef();
+	const accessibilityLabelValue = useMessageAccessibilityLabel(props);
+	const isDisabled =
+		(props.isInfo && !props.isThreadReply) || props.archived || props.isTemp || props.type === 'jitsi_call_started';
+	const accessibilityActions = useMessageAccessibilityActions(isDisabled);
+	const accessibilityHint = useMessageAccessibilityHint(props);
 
 	let backgroundColor = undefined;
 	if (props.isBeingEdited) {
@@ -184,17 +196,29 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 		);
 	}
 
+	const handleLongPress = () => {
+		markAsLastFocused();
+		onLongPress();
+	};
+
 	return (
 		<A11y.Order>
 			<A11y.Index index={1}>
 				<Touch
-					onLongPress={onLongPress}
+					componentRef={touchRef}
+					onLongPress={handleLongPress}
 					onPress={onPress}
-					disabled={
-						(props.isInfo && !props.isThreadReply) || props.archived || props.isTemp || props.type === 'jitsi_call_started'
-					}
-					style={{ backgroundColor }}>
-					<Message {...props} />
+					disabled={isDisabled}
+					style={{ backgroundColor }}
+					accessible
+					accessibilityRole='button'
+					accessibilityLabel={accessibilityLabelValue}
+					accessibilityHint={accessibilityHint}
+					accessibilityActions={accessibilityActions}
+					onAccessibilityAction={e => {
+						if (e.nativeEvent.actionName === 'showActions') handleLongPress();
+					}}>
+					<Message {...props} handleLongPress={!isDisabled ? handleLongPress : undefined} />
 				</Touch>
 			</A11y.Index>
 		</A11y.Order>
