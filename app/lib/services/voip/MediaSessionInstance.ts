@@ -229,13 +229,7 @@ class MediaSessionInstance {
 
 		if (mainCall && mainCall.callId === callId) {
 			// Record before dispatching so a hangup written into a dead socket is replayed on reconnect.
-			// The lib's `'ended'` event clears the intent once the server confirms termination.
 			pendingHangups.record(callId);
-			const clearOnEnded = () => {
-				pendingHangups.remove(callId);
-				mainCall.emitter.off('ended', clearOnEnded);
-			};
-			mainCall.emitter.on('ended', clearOnEnded);
 
 			if (mainCall.state === 'ringing') {
 				mainCall.reject();

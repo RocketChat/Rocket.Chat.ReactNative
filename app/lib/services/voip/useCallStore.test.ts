@@ -544,7 +544,7 @@ describe('useCallStore log helper — InCallManager error paths', () => {
 	});
 });
 
-describe('useCallStore endCall — pendingHangups intent lifecycle', () => {
+describe('useCallStore endCall — pendingHangups recording', () => {
 	beforeEach(() => {
 		pendingHangups.clear();
 		useCallStore.getState().resetNativeCallId();
@@ -557,27 +557,6 @@ describe('useCallStore endCall — pendingHangups intent lifecycle', () => {
 
 		useCallStore.getState().endCall();
 
-		expect(pendingHangups.size).toBe(1);
 		expect(pendingHangups.drainAll()).toEqual(['end-record']);
-	});
-
-	it("clears the pending hangup when the lib emits 'ended' (server-confirmed termination)", () => {
-		const { call, emit } = createMockCall('end-clear');
-		useCallStore.getState().setCall(call);
-
-		useCallStore.getState().endCall();
-		emit('ended');
-
-		expect(pendingHangups.size).toBe(0);
-	});
-
-	it("retains the pending hangup when 'ended' never fires (flap path)", () => {
-		const { call } = createMockCall('end-flap');
-		useCallStore.getState().setCall(call);
-
-		useCallStore.getState().endCall();
-		// no emit('ended') — simulates a flap where the server never confirms
-
-		expect(pendingHangups.drainAll()).toEqual(['end-flap']);
 	});
 });

@@ -304,15 +304,9 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		// UUID for the native call UI layer (react-native-callkeep on iOS and Android).
 		const callUuid = callId ?? nativeAcceptedCallId;
 
-		if (callId && call) {
+		if (callId) {
 			// Record before dispatching so a hangup written into a dead socket is replayed on reconnect.
-			// The lib's `'ended'` event clears the intent once the server confirms termination.
 			pendingHangups.record(callId);
-			const clearOnEnded = () => {
-				pendingHangups.remove(callId);
-				call.emitter.off('ended', clearOnEnded);
-			};
-			call.emitter.on('ended', clearOnEnded);
 		}
 
 		if (call) {
