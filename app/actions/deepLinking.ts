@@ -10,6 +10,9 @@ interface IParams {
 	fullURL: string;
 	type: string;
 	token: string;
+	callId?: string;
+	username?: string;
+	voipAcceptFailed?: boolean;
 }
 
 interface IDeepLinkingOpen extends Action {

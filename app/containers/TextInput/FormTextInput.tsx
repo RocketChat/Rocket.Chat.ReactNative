@@ -193,15 +193,16 @@ export const FormTextInput = ({
 						) : null}
 
 						{showClearInput ? (
-							<Touch
-								testID='clear-text-input'
-								onPress={() => onClearInput?.()}
-								accessible
-								accessibilityLabel={i18n.t('Clear_input')}
-								rectButtonStyle={[styles.iconContainer, styles.iconRight]}
-								style={styles.clearInputIcon}>
-								<CustomIcon name='input-clear' size={20} color={colors.fontDefault} />
-							</Touch>
+							<View style={[styles.iconContainer, styles.iconRight]}>
+								<Touch
+									testID='clear-text-input'
+									onPress={() => onClearInput?.()}
+									accessible
+									accessibilityLabel={i18n.t('Clear_input')}
+									style={styles.clearInputIcon}>
+									<CustomIcon name='input-clear' size={20} color={colors.fontDefault} />
+								</Touch>
+							</View>
 						) : null}
 
 						{iconRight && !showClearInput ? (
