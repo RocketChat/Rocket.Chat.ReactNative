@@ -993,4 +993,54 @@ describe('MediaSessionInstance', () => {
 			await waitFor(() => expect(mockLog).toHaveBeenCalledWith(expect.any(Error)));
 		});
 	});
+
+	describe('drainPendingHangups', () => {
+		const { pendingHangups } = jest.requireActual('./pendingHangups');
+
+		beforeEach(() => {
+			pendingHangups.clear();
+		});
+
+		it('redispatches every recorded hangup through the lib transporter and empties the notebook', async () => {
+			await mediaSessionInstance.init('user-1');
+			const session = createdSessions[0] as MockMediaSignalingSession & { transporter: { hangup: jest.Mock } };
+			session.transporter = { hangup: jest.fn() };
+
+			pendingHangups.record('call-a');
+			pendingHangups.record('call-b');
+
+			mediaSessionInstance.drainPendingHangups();
+
+			expect(session.transporter.hangup).toHaveBeenCalledTimes(2);
+			expect(session.transporter.hangup).toHaveBeenNthCalledWith(1, 'call-a', 'normal');
+			expect(session.transporter.hangup).toHaveBeenNthCalledWith(2, 'call-b', 'normal');
+			expect(pendingHangups.size).toBe(0);
+		});
+
+		it('is a no-op when the session is not initialized', () => {
+			pendingHangups.record('call-a');
+			mediaSessionInstance.reset();
+
+			expect(() => mediaSessionInstance.drainPendingHangups()).not.toThrow();
+		});
+
+		it('keeps draining when one transporter.hangup throws', async () => {
+			await mediaSessionInstance.init('user-1');
+			const session = createdSessions[0] as MockMediaSignalingSession & { transporter: { hangup: jest.Mock } };
+			const thrown = new Error('boom');
+			session.transporter = {
+				hangup: jest.fn().mockImplementationOnce(() => {
+					throw thrown;
+				})
+			};
+
+			pendingHangups.record('call-a');
+			pendingHangups.record('call-b');
+
+			mediaSessionInstance.drainPendingHangups();
+
+			expect(session.transporter.hangup).toHaveBeenCalledTimes(2);
+			expect(mockLog).toHaveBeenCalledWith(thrown);
+		});
+	});
 });

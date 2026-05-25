@@ -4,6 +4,7 @@ import RNCallKeep from 'react-native-callkeep';
 import InCallManager from 'react-native-incall-manager';
 
 import NativeVoipModule from '../../native/NativeVoip';
+import { pendingHangups } from './pendingHangups';
 import { useCallStore } from './useCallStore';
 
 const mockLog = jest.fn();
@@ -540,5 +541,43 @@ describe('useCallStore log helper — InCallManager error paths', () => {
 		});
 		useCallStore.getState().reset();
 		expect(mockLog).toHaveBeenCalledWith(expect.any(Error));
+	});
+});
+
+describe('useCallStore endCall — pendingHangups intent lifecycle', () => {
+	beforeEach(() => {
+		pendingHangups.clear();
+		useCallStore.getState().resetNativeCallId();
+		useCallStore.getState().reset();
+	});
+
+	it('records a pending hangup when endCall is invoked', () => {
+		const { call } = createMockCall('end-record');
+		useCallStore.getState().setCall(call);
+
+		useCallStore.getState().endCall();
+
+		expect(pendingHangups.size).toBe(1);
+		expect(pendingHangups.drainAll()).toEqual(['end-record']);
+	});
+
+	it("clears the pending hangup when the lib emits 'ended' (server-confirmed termination)", () => {
+		const { call, emit } = createMockCall('end-clear');
+		useCallStore.getState().setCall(call);
+
+		useCallStore.getState().endCall();
+		emit('ended');
+
+		expect(pendingHangups.size).toBe(0);
+	});
+
+	it("retains the pending hangup when 'ended' never fires (flap path)", () => {
+		const { call } = createMockCall('end-flap');
+		useCallStore.getState().setCall(call);
+
+		useCallStore.getState().endCall();
+		// no emit('ended') — simulates a flap where the server never confirms
+
+		expect(pendingHangups.drainAll()).toEqual(['end-flap']);
 	});
 });

@@ -14,6 +14,7 @@ import { getUniqueIdSync } from 'react-native-device-info';
 import { dequal } from 'dequal';
 
 import { mediaSessionStore } from './MediaSessionStore';
+import { pendingHangups } from './pendingHangups';
 import { terminateNativeCall } from './terminateNativeCall';
 import { useCallStore } from './useCallStore';
 import { MediaCallLogger } from './MediaCallLogger';
@@ -227,6 +228,15 @@ class MediaSessionInstance {
 		const mainCall = this.instance?.getCallData(callId);
 
 		if (mainCall && mainCall.callId === callId) {
+			// Record before dispatching so a hangup written into a dead socket is replayed on reconnect.
+			// The lib's `'ended'` event clears the intent once the server confirms termination.
+			pendingHangups.record(callId);
+			const clearOnEnded = () => {
+				pendingHangups.remove(callId);
+				mainCall.emitter.off('ended', clearOnEnded);
+			};
+			mainCall.emitter.on('ended', clearOnEnded);
+
 			if (mainCall.state === 'ringing') {
 				mainCall.reject();
 			} else {
@@ -239,6 +249,25 @@ class MediaSessionInstance {
 		useCallStore.getState().resetNativeCallId();
 		useCallStore.getState().reset();
 	};
+
+	/**
+	 * Re-dispatch hangup signals for calls the user ended while the WebSocket was unhealthy.
+	 * `Session.transporter` is declared `private` in the lib's `.d.ts`; routing the replay through
+	 * `MediaSignalTransportWrapper.hangup` keeps the wire shape consistent with the happy path.
+	 */
+	public drainPendingHangups(): void {
+		if (this.instance == null) {
+			return;
+		}
+		const ids = pendingHangups.drainAll();
+		for (const id of ids) {
+			try {
+				(this.instance as any).transporter.hangup(id, 'normal');
+			} catch (error) {
+				log(error);
+			}
+		}
+	}
 
 	private async resolveRoomIdFromContact(contact: CallContact | undefined): Promise<void> {
 		if (!contact) {
@@ -299,6 +328,7 @@ class MediaSessionInstance {
 		}
 		mediaSessionStore.dispose();
 		this.instance = null;
+		pendingHangups.clear();
 		useCallStore.getState().reset();
 	}
 }
