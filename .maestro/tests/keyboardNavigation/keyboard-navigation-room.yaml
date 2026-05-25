@@ -28,6 +28,8 @@ tags:
     visible:
       text: 'Save your encryption password'
     timeout: 60000
+- pressKey: Remote Dpad Down
+- pressKey: Remote Dpad Down
 - pressKey: Remote Dpad Right
 - pressKey: Remote Dpad Right
 - pressKey: enter
