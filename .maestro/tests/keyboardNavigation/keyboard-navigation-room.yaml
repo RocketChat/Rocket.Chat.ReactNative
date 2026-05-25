@@ -30,14 +30,15 @@ tags:
     timeout: 60000
 - pressKey: Remote Dpad Right
 - pressKey: Remote Dpad Right
-- pressKey: Remote Dpad Down
-- pressKey: Remote Dpad Down
 - pressKey: enter
 # Submit: ComposerInput wires onSubmitEditing -> send when soft keyboard is hidden (TV / physical keyboard)
 - extendedWaitUntil:
     visible:
       id: message-composer-input
     timeout: 60000
+- pressKey: Remote Dpad Down
+- pressKey: Remote Dpad Down
+- pressKey: Remote Dpad Down
 - inputText: ${output.keyboardMessage}
 - pressKey: Remote Dpad Down
 - pressKey: Remote Dpad Right
@@ -53,8 +54,6 @@ tags:
 - pressKey: enter
 
 # Open category emoji
-- pressKey: Remote Dpad Down
-- pressKey: Remote Dpad Down
 - pressKey: Remote Dpad Down
 - pressKey: Remote Dpad Down
 - pressKey: Remote Dpad Down
