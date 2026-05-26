@@ -208,8 +208,8 @@ const Header = ({
 			// Grab focus natively as soon as the header mounts. This handles master-detail,
 			// where the room list and room share the screen and focus would otherwise stay on
 			// the room item, as well as moving screen-reader focus via enableA11yFocus.
-			autoFocus={autoFocusHeader}
-			enableA11yFocus={autoFocusHeader}
+			autoFocus={autoFocusHeader && !disabled}
+			enableA11yFocus={autoFocusHeader && !disabled}
 			focusable={!disabled}
 			canBeFocused={!disabled}
 			style={[styles.container, { opacity: disabled ? 0.5 : 1, height: 36.9 * fontScale }]}
