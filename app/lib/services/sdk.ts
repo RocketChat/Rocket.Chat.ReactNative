@@ -16,7 +16,7 @@ import {
 	type PathFor,
 	type ResultFor
 } from '../../definitions/rest/helpers';
- 
+
 async function normalizeResponseError(response: Response): Promise<{ status: number; data: any }> {
 	try {
 		const data = await response.clone().json();
