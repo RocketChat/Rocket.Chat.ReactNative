@@ -1043,4 +1043,34 @@ describe('MediaSessionInstance', () => {
 			expect(mockLog).toHaveBeenCalledWith(thrown);
 		});
 	});
+
+	describe('endCall — recording guards', () => {
+		const { pendingHangups } = jest.requireActual('./pendingHangups');
+
+		beforeEach(() => {
+			pendingHangups.clear();
+		});
+
+		it('does not record a pending hangup when the session is not initialized', () => {
+			mediaSessionInstance.reset();
+
+			mediaSessionInstance.endCall('call-a');
+
+			expect(pendingHangups.size).toBe(0);
+		});
+
+		it('does not record or dispatch when getCallData returns a call with a different callId', async () => {
+			await mediaSessionInstance.init('user-1');
+			const session = createdSessions[0];
+			const reject = jest.fn();
+			const hangup = jest.fn();
+			session.getCallData.mockReturnValue({ callId: 'other', state: 'connected', reject, hangup });
+
+			mediaSessionInstance.endCall('expected');
+
+			expect(pendingHangups.size).toBe(0);
+			expect(reject).not.toHaveBeenCalled();
+			expect(hangup).not.toHaveBeenCalled();
+		});
+	});
 });

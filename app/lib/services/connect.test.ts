@@ -1,8 +1,9 @@
-import { determineAuthType, disconnect } from './connect';
+import { connect, determineAuthType, disconnect } from './connect';
 import { mediaSessionInstance } from './voip/MediaSessionInstance';
+import { pendingHangups } from './voip/pendingHangups';
 
 jest.mock('./voip/MediaSessionInstance', () => ({
-	mediaSessionInstance: { reset: jest.fn() }
+	mediaSessionInstance: { reset: jest.fn(), drainPendingHangups: jest.fn() }
 }));
 
 // Mock the isIOS helper
@@ -10,6 +11,84 @@ jest.mock('../methods/helpers/deviceInfo', () => ({
 	...jest.requireActual('../methods/helpers/deviceInfo'),
 	isIOS: false
 }));
+
+const mockOnStreamDataStops: jest.Mock[] = [];
+const mockOnStreamData = jest.fn((_event: string, _cb: (...args: any[]) => void) => {
+	const stop = jest.fn();
+	mockOnStreamDataStops.push(stop);
+	return Promise.resolve({ stop });
+});
+const mockSdkConnect = jest.fn(() => Promise.resolve());
+const mockSdkAbort = jest.fn();
+const mockSdkDisconnect = jest.fn();
+const mockSdkInitialize = jest.fn();
+const mockSdkCurrent = {
+	onStreamData: (...args: Parameters<typeof mockOnStreamData>) => mockOnStreamData(...args),
+	connect: (...args: Parameters<typeof mockSdkConnect>) => mockSdkConnect(...args),
+	abort: (...args: Parameters<typeof mockSdkAbort>) => mockSdkAbort(...args)
+};
+jest.mock('./sdk', () => ({
+	__esModule: true,
+	default: {
+		initialize: (...args: unknown[]) => mockSdkInitialize(...args),
+		disconnect: (...args: unknown[]) => mockSdkDisconnect(...args),
+		get current() {
+			return mockSdkCurrent;
+		}
+	}
+}));
+
+const mockStoreGetState = jest.fn(() => ({
+	meteor: { connected: false },
+	login: { user: null, isAuthenticated: false },
+	settings: {}
+}));
+const mockStoreDispatch = jest.fn();
+const mockStoreSubscribe = jest.fn(() => jest.fn());
+jest.mock('../store/auxStore', () => ({
+	store: {
+		getState: (...args: unknown[]) => mockStoreGetState(...(args as [])),
+		dispatch: (...args: unknown[]) => mockStoreDispatch(...args),
+		subscribe: (cb: () => void) => mockStoreSubscribe(cb)
+	}
+}));
+
+jest.mock('../database', () => ({
+	__esModule: true,
+	default: {
+		setActiveDB: jest.fn(),
+		active: { get: jest.fn() }
+	}
+}));
+
+jest.mock('../methods/subscribeRooms', () => ({
+	unsubscribeRooms: jest.fn()
+}));
+
+jest.mock('../methods/getSettings', () => ({
+	getSettings: jest.fn()
+}));
+
+jest.mock('../methods/helpers/events', () => ({
+	__esModule: true,
+	default: { emit: jest.fn(), on: jest.fn(), removeListener: jest.fn() }
+}));
+
+const mockLog = jest.fn();
+jest.mock('../methods/helpers/log', () => ({
+	__esModule: true,
+	default: (...args: unknown[]) => mockLog(...args)
+}));
+
+const flushMicrotasks = async (): Promise<void> => {
+	for (let i = 0; i < 5; i += 1) {
+		// eslint-disable-next-line no-await-in-loop
+		await Promise.resolve();
+	}
+};
+
+const getHandlersByEvent = (event: string): Array<(...args: unknown[]) => void> =>
+	mockOnStreamData.mock.calls.filter(([e]) => e === event).map(([, cb]) => cb);
 
 interface IServices {
 	[index: string]: string | boolean;
@@ -310,6 +389,90 @@ describe('VoIP media session lifecycle (disconnect)', () => {
 	it('calls mediaSessionInstance.reset when disconnect runs', () => {
 		disconnect();
 		expect(mediaSessionInstance.reset).toHaveBeenCalledTimes(1);
+	});
+});
+
+describe('connect — pendingHangups drain on reconnect', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+		mockOnStreamDataStops.length = 0;
+		pendingHangups.clear();
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: false },
+			login: { user: null, isAuthenticated: false },
+			settings: {}
+		});
+	});
+
+	it('drains pendingHangups via mediaSessionInstance after close → connected', async () => {
+		pendingHangups.record('call-a');
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: true },
+			login: { user: null, isAuthenticated: true },
+			settings: {}
+		});
+
+		await connect({ server: 'https://example.com' });
+
+		const connectedHandlers = getHandlersByEvent('connected');
+		const closeHandlers = getHandlersByEvent('close');
+		const drainHandler = connectedHandlers[1];
+		const closeHandler = closeHandlers[0];
+
+		closeHandler();
+		drainHandler();
+		await flushMicrotasks();
+
+		expect(mediaSessionInstance.drainPendingHangups).toHaveBeenCalledTimes(1);
+	});
+
+	it('does not drain when "connected" fires without a prior "close"', async () => {
+		pendingHangups.record('call-a');
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: true },
+			login: { user: null, isAuthenticated: true },
+			settings: {}
+		});
+
+		await connect({ server: 'https://example.com' });
+
+		const drainHandler = getHandlersByEvent('connected')[1];
+
+		drainHandler();
+		await flushMicrotasks();
+
+		expect(mediaSessionInstance.drainPendingHangups).not.toHaveBeenCalled();
+	});
+
+	it('skips drainPendingHangups when pendingHangups is empty', async () => {
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: true },
+			login: { user: null, isAuthenticated: true },
+			settings: {}
+		});
+
+		await connect({ server: 'https://example.com' });
+
+		const drainHandler = getHandlersByEvent('connected')[1];
+		const closeHandler = getHandlersByEvent('close')[0];
+
+		closeHandler();
+		drainHandler();
+		await flushMicrotasks();
+
+		expect(mediaSessionInstance.drainPendingHangups).not.toHaveBeenCalled();
+	});
+
+	it('stops the previous pendingHangups connected listener when connect runs again', async () => {
+		await connect({ server: 'https://example.com' });
+		// onStreamData call order: 'connecting', 'connected', 'close', 'connected' (drain), ...
+		// pendingHangupsConnectedListener is the second 'connected' registration — index 3.
+		const firstDrainStop = mockOnStreamDataStops[3];
+
+		await connect({ server: 'https://example.com' });
+		await flushMicrotasks();
+
+		expect(firstDrainStop).toHaveBeenCalled();
 	});
 });
 
