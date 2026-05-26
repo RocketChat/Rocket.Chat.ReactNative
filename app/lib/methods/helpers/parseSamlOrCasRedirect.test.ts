@@ -1,4 +1,4 @@
-import { parseSamlOrCasRedirect } from './AuthenticationWebView.helpers';
+import { parseSamlOrCasRedirect } from './parseSamlOrCasRedirect';
 
 describe('parseSamlOrCasRedirect', () => {
 	describe('SAML', () => {

@@ -1,6 +1,6 @@
 import parse from 'url-parse';
 
-import { type ICredentials } from '../definitions';
+import { type ICredentials } from '../../../definitions';
 
 export type SamlOrCasRedirect = { kind: 'saml'; payload: ICredentials } | { kind: 'cas'; payload: ICredentials } | null;
 

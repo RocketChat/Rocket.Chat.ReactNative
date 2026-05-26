@@ -15,7 +15,7 @@ import { useDebounce } from '../lib/methods/helpers';
 import { loginOAuthOrSso } from '../lib/services/connect';
 import { type OutsideModalParamList } from '../stacks/types';
 import fetch, { type TMethods } from '../lib/methods/helpers/fetch';
-import { parseSamlOrCasRedirect } from './AuthenticationWebView.helpers';
+import { parseSamlOrCasRedirect } from '../lib/methods/helpers/parseSamlOrCasRedirect';
 
 // iframe uses a postMessage to send the token to the client
 // We'll handle this sending the token to the hash of the window.location
