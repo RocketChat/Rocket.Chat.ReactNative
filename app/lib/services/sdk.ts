@@ -3,7 +3,7 @@ import isEmpty from 'lodash/isEmpty';
 import { type ClientStream, DDPSDK } from '@rocket.chat/ddp-client';
 import { Platform } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
- 
+
 import { twoFactor } from './twoFactor';
 import { store as reduxStore } from '../store/auxStore';
 import { compareServerVersion, random } from '../methods/helpers';
