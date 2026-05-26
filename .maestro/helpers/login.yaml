@@ -1,4 +1,4 @@
-appId: chat.rocket.reactnative
+appId: ${APP_ID}
 name: Login
 tags:
   - 'util'
@@ -33,3 +33,9 @@ onFlowStart:
     visible:
       id: rooms-list-view
     timeout: 60000
+- runFlow:
+    when:
+      platform: iOS
+      visible: 'Not Now'
+    commands:
+      - tapOn: 'Not Now'

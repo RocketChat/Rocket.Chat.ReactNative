@@ -119,18 +119,6 @@ android {
             }
         }
     }
-
-    flavorDimensions "app"
-    productFlavors {
-        official {
-            dimension = "app"
-            buildConfigField "boolean", "IS_OFFICIAL", "true"
-        }
-        experimental {
-            dimension = "app"
-            buildConfigField "boolean", "IS_OFFICIAL", "false"
-        }
-    }
 }
 
 dependencies {
@@ -147,7 +135,7 @@ dependencies {
     implementation project(':watermelondb-jsi')
 
     implementation "com.google.code.gson:gson:2.8.9"
-    implementation "com.tencent:mmkv-static:1.2.10"
+    implementation "io.github.zhongwuzw:mmkv:2.2.4"
     implementation "com.github.bumptech.glide:glide:${rootProject.ext.glideVersion}"
     implementation 'com.facebook.soloader:soloader:0.10.4'
     
