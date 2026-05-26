@@ -15,6 +15,7 @@ import { useDebounce } from '../lib/methods/helpers';
 import { loginOAuthOrSso } from '../lib/services/connect';
 import { type OutsideModalParamList } from '../stacks/types';
 import fetch, { type TMethods } from '../lib/methods/helpers/fetch';
+import { parseSamlOrCasRedirect } from './AuthenticationWebView.helpers';
 
 // iframe uses a postMessage to send the token to the client
 // We'll handle this sending the token to the hash of the window.location
@@ -100,20 +101,14 @@ const AuthenticationWebView = () => {
 	);
 
 	const handleSamlOrCasRedirect = (url: string): boolean => {
-		const parsedUrl = parse(url, true);
-		const isSaml = authType === 'saml' && parsedUrl.query?.saml_idp_credentialToken;
-		const isCas = authType === 'cas' && (parsedUrl.pathname?.includes('validate') || parsedUrl.query?.ticket);
-		if (!isSaml && !isCas) return false;
+		const result = parseSamlOrCasRedirect(url, authType, ssoToken);
+		if (!result) return false;
 		if (redirectHandledRef.current) return true;
 		redirectHandledRef.current = true;
-		let payload: ICredentials;
-		if (isSaml) {
-			const token = parsedUrl.query?.saml_idp_credentialToken || ssoToken;
-			payload = { credentialToken: token, saml: true };
-			login(payload);
+		if (result.kind === 'saml') {
+			login(result.payload);
 		} else {
-			payload = { cas: { credentialToken: ssoToken } };
-			debouncedLogin(payload);
+			debouncedLogin(result.payload);
 		}
 		return true;
 	};
