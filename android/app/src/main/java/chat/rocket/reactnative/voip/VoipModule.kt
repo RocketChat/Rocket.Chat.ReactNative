@@ -171,7 +171,7 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
         }
     }
 
-    override fun startVoipCallService(callId: String) {
+    override fun startVoipCallService(callId: String, promise: Promise) {
         // Only valid for outgoing calls initiated from a visible activity. The incoming-accept
         // path starts the service from native (VoipNotification.handleAcceptAction) after Telecom
         // is active, and must NOT call this — it would race the JS bridge.
@@ -180,8 +180,12 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
             if (BuildConfig.DEBUG) {
                 Log.d(TAG, "startVoipCallService: service started for callId=$callId")
             }
+            promise.resolve(null)
         } catch (e: Exception) {
+            // Reject so JS can tear down the call rather than continue with a degraded one
+            // (no FGS means RECORD_AUDIO drops ~5s after the user backgrounds the app).
             Log.e(TAG, "startVoipCallService: failed to start service for callId=$callId", e)
+            promise.reject("E_VOIP_FGS_START", e.message, e)
         }
     }
 

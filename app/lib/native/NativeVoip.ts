@@ -37,13 +37,14 @@ export interface Spec extends TurboModule {
 
 	/**
 	 * Starts the VoIP foreground call service for an outgoing call.
-	 * iOS: No-op.
+	 * iOS: No-op (resolves).
 	 * Android: Starts VoipCallService (microphone|phoneCall FGS) so RECORD_AUDIO keeps working
-	 *   when the app is backgrounded. The incoming-accept path starts the service from native
-	 *   after Telecom is active; callers must only invoke this from JS for the outgoing path,
-	 *   while the initiating activity is still visible.
+	 *   when the app is backgrounded. Rejects if the start is refused — typically
+	 *   ForegroundServiceStartNotAllowedException when the activity is no longer in a
+	 *   while-in-use eligible state. Callers should tear the outgoing call down on rejection,
+	 *   otherwise mic capture will be revoked ~5s after backgrounding.
 	 */
-	startVoipCallService(callId: string): void;
+	startVoipCallService(callId: string): Promise<void>;
 
 	/**
 	 * Stops the VoIP foreground call service.
@@ -100,7 +101,7 @@ const NativeVoipModule =
 		clearInitialEvents: () => undefined,
 		getLastVoipToken: () => '',
 		stopNativeDDPClient: () => undefined,
-		startVoipCallService: () => undefined,
+		startVoipCallService: () => Promise.resolve(),
 		stopVoipCallService: () => undefined,
 		setSpeakerOn: () => Promise.resolve(false),
 		startAudioRouteSync: () => Promise.resolve(),

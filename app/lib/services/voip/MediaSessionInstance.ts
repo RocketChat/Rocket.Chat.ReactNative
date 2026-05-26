@@ -135,13 +135,15 @@ class MediaSessionInstance {
 					// path starts after Telecom-accept doesn't exist here. Start it now (we're on the
 					// JS thread that ran startCall, the initiating activity is still visible) so the
 					// while-in-use microphone permission survives the user backgrounding the app
-					// while the call is in progress (NATIVE-1178).
+					// while the call is in progress.
+					// On rejection, tear the call down — continuing without an FGS reproduces the
+					// silent mic-drop bug this start exists to prevent.
 					if (Platform.OS === 'android') {
-						try {
-							NativeVoipModule.startVoipCallService(call.callId);
-						} catch (error) {
+						NativeVoipModule.startVoipCallService(call.callId).catch(error => {
 							log(error);
-						}
+							showErrorAlert(I18n.t('VoIP_Call_Issue'), I18n.t('Oops'));
+							this.endCall(call.callId);
+						});
 					}
 					Navigation.navigate('CallView');
 					if (useCallStore.getState().roomId == null) {

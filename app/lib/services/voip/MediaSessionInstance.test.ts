@@ -112,12 +112,14 @@ jest.mock('react-native-device-info', () => ({
 	getReadableVersion: jest.fn(() => '1.0.0')
 }));
 
-const mockStartVoipCallService = jest.fn();
+const mockStartVoipCallService = jest.fn().mockResolvedValue(undefined);
+const mockStopVoipCallService = jest.fn();
 jest.mock('../../native/NativeVoip', () => ({
 	__esModule: true,
 	default: {
 		stopNativeDDPClient: jest.fn(),
-		startVoipCallService: (callId: string) => mockStartVoipCallService(callId)
+		startVoipCallService: (callId: string) => mockStartVoipCallService(callId),
+		stopVoipCallService: () => mockStopVoipCallService()
 	}
 }));
 
@@ -239,6 +241,7 @@ function buildClientMediaCall(options: {
 describe('MediaSessionInstance', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
+		mockStartVoipCallService.mockResolvedValue(undefined);
 		mockMediaCallsStateSignals.mockResolvedValue({ signals: [], success: true });
 		mockRequestVoipCallPermissions.mockResolvedValue(true);
 		createdSessions.length = 0;
@@ -452,6 +455,22 @@ describe('MediaSessionInstance', () => {
 			const incoming = buildClientMediaCall({ callId: 'in-fgs', role: 'callee' });
 			getNewCallHandler()({ call: incoming });
 			expect(mockStartVoipCallService).not.toHaveBeenCalled();
+		});
+
+		// If the FGS fails to start (e.g. ForegroundServiceStartNotAllowedException on a race),
+		// continuing with the call reproduces the silent mic-drop bug. Tear it down instead.
+		it('tears down the outgoing call when startVoipCallService rejects', async () => {
+			mockStartVoipCallService.mockRejectedValueOnce(new Error('start denied'));
+			await mediaSessionInstance.init('user-1');
+			const outgoing = buildClientMediaCall({ callId: 'out-fail', role: 'caller' });
+			getNewCallHandler()({ call: outgoing });
+
+			// Flush the .catch microtask chain.
+			await new Promise(resolve => setImmediate(resolve));
+
+			expect(mockShowErrorAlert).toHaveBeenCalledWith('VoIP_Call_Issue', 'Oops');
+			expect(mockTerminateNativeCall).toHaveBeenCalledWith('out-fail');
+			expect(mockCallStoreReset).toHaveBeenCalled();
 		});
 	});
 
