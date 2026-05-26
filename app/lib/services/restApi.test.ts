@@ -29,6 +29,10 @@ jest.mock('../native/NativeVoip', () => ({
 	}
 }));
 
+jest.mock('../methods/subscribeRooms', () => ({
+	unsubscribeRooms: jest.fn()
+}));
+
 jest.mock('react-native-device-info', () => {
 	const mock = require('react-native-device-info/jest/react-native-device-info-mock');
 	const getUniqueId = jest.fn(() => Promise.resolve('unique-device-id'));
