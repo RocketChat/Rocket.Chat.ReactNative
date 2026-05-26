@@ -89,6 +89,7 @@
 | **Native Accept**           | An incoming VOIP call answered by native code (CallKit on iOS, Telecom on Android) before the JS runtime is available; native issues the REST accept and JS reconciles state on launch via initial events | JS accept, app accept      |
 | **Per-call DDP**            | A short-lived DDP client opened by native code per incoming VOIP call so accept and signaling land before JS boots; separate from the main app DDP session                                                | Native socket, side socket |
 | **Media Signal**            | A typed event on the `@rocket.chat/media-signaling` wire protocol (offer, answer, ICE candidate, state update) carried over DDP `stream-notify-user` and replayable via REST `media-calls.stateSignals`   | Signal, RTC event          |
+| **Pending Hangup**          | A VOIP call id recorded in-memory when the user taps End while the WebSocket is unhealthy, so the hangup Media Signal can be replayed through the lib's transporter on the next post-login reconnect     | Hangup intent, deferred hangup |
 
 ## Server & Connection
 
