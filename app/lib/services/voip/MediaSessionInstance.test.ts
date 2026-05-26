@@ -416,6 +416,8 @@ describe('MediaSessionInstance', () => {
 			getNewCallHandler()({ call: outgoing });
 			expect(outgoing.reject).not.toHaveBeenCalled();
 			expect(mockSetCall).toHaveBeenCalledWith(outgoing);
+			// Flush the FGS-start `.then` so Navigation runs.
+			await new Promise(resolve => setImmediate(resolve));
 			expect(Navigation.navigate).toHaveBeenCalledWith('CallView');
 		});
 
@@ -471,6 +473,10 @@ describe('MediaSessionInstance', () => {
 			expect(mockShowErrorAlert).toHaveBeenCalledWith('VoIP_Call_Issue', 'Oops');
 			expect(mockTerminateNativeCall).toHaveBeenCalledWith('out-fail');
 			expect(mockCallStoreReset).toHaveBeenCalled();
+			// Navigation must not happen on FGS-rejection: `endCall` → `useCallStore.reset()` detaches
+			// the `'ended'` listener before async `hangup()` could fire `Navigation.back()`, so a
+			// `CallView` here would render null and strand the user.
+			expect(Navigation.navigate).not.toHaveBeenCalled();
 		});
 	});
 

@@ -71,10 +71,22 @@ class VoipCallService : Service() {
         // action may be null or unrecognised.  Calling startForeground here then immediately calling
         // stopSelf is safe: the system will promote the service to foreground and then tear it down
         // gracefully, which avoids the ANR-style crash.
+        //
+        // The result is reported back to the JS startVoipCallService promise so async failures
+        // (ForegroundServiceTypeNotAllowedException, SecurityException at startForeground time) no
+        // longer slip past the synchronous catch in VoipModule.startVoipCallService.
         val callId = intent?.getStringExtra(EXTRA_CALL_ID) ?: "unknown"
-        startForegroundWithNotification(callId)
+        val action = intent?.action
 
-        when (intent?.action) {
+        val fgsError: Exception? = try {
+            startForegroundWithNotification(callId)
+            null
+        } catch (e: Exception) {
+            Log.e(TAG, "startForeground failed for callId=$callId action=$action", e)
+            e
+        }
+
+        when (action) {
             ACTION_STOP -> {
                 isRunning = false
                 Log.d(TAG, "Stopping VoipCallService")
@@ -82,14 +94,20 @@ class VoipCallService : Service() {
                 return START_NOT_STICKY
             }
             ACTION_START -> {
+                if (fgsError != null) {
+                    VoipModule.notifyFgsFailed(callId, fgsError)
+                    stopSelf(startId)
+                    return START_NOT_STICKY
+                }
                 if (BuildConfig.DEBUG) {
                     Log.d(TAG, "Starting VoipCallService for callId: $callId")
                 }
                 isRunning = true
+                VoipModule.notifyFgsStarted(callId)
                 return START_NOT_STICKY
             }
             else -> {
-                Log.w(TAG, "Unknown action: ${intent?.action} — entered foreground then stopping")
+                Log.w(TAG, "Unknown action: $action — entered foreground then stopping")
                 stopSelf(startId)
                 return START_NOT_STICKY
             }

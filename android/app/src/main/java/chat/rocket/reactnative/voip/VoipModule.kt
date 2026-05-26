@@ -6,6 +6,8 @@ import android.media.AudioDeviceInfo
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import chat.rocket.reactnative.BuildConfig
 import chat.rocket.reactnative.R
@@ -16,6 +18,7 @@ import com.facebook.react.bridge.Arguments
 import com.facebook.react.modules.core.DeviceEventManagerModule
 import chat.rocket.reactnative.networking.NativeVoipSpec
 import java.lang.ref.WeakReference
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicReference
 
 /**
@@ -103,6 +106,31 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
                 Log.e(TAG, "Error clearing initial events", e)
             }
         }
+
+        // Outstanding FGS-start promises keyed by callId. VoipCallService.onStartCommand resolves or
+        // rejects these via notifyFgsStarted / notifyFgsFailed once startForeground actually returns,
+        // so JS sees async failures (ForegroundServiceDidNotStartInTimeException,
+        // ForegroundServiceTypeNotAllowedException) instead of a misleading resolve.
+        private const val FGS_START_TIMEOUT_MS = 7_000L
+        private val pendingFgsStarts = ConcurrentHashMap<String, FgsStartPending>()
+        private val fgsHandler = Handler(Looper.getMainLooper())
+
+        private class FgsStartPending(val promise: Promise, val timeoutRunnable: Runnable)
+
+        @JvmStatic
+        fun notifyFgsStarted(callId: String) {
+            val pending = pendingFgsStarts.remove(callId) ?: return
+            fgsHandler.removeCallbacks(pending.timeoutRunnable)
+            pending.promise.resolve(null)
+        }
+
+        @JvmStatic
+        fun notifyFgsFailed(callId: String, throwable: Throwable) {
+            val pending = pendingFgsStarts.remove(callId) ?: return
+            fgsHandler.removeCallbacks(pending.timeoutRunnable)
+            val cause = throwable as? Exception ?: Exception(throwable)
+            pending.promise.reject("E_VOIP_FGS_START", throwable.message, cause)
+        }
     }
 
     private var communicationDeviceListener: AudioManager.OnCommunicationDeviceChangedListener? = null
@@ -175,16 +203,37 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
         // Only valid for outgoing calls initiated from a visible activity. The incoming-accept
         // path starts the service from native (VoipNotification.handleAcceptAction) after Telecom
         // is active, and must NOT call this — it would race the JS bridge.
+        //
+        // The promise is held until VoipCallService.onStartCommand reports back via
+        // notifyFgsStarted / notifyFgsFailed; resolving on the synchronous return of
+        // startForegroundService would hide the async ForegroundServiceDidNotStartInTimeException
+        // and ForegroundServiceTypeNotAllowedException paths that NATIVE-1178 also produces.
+        pendingFgsStarts.remove(callId)?.let { stale ->
+            fgsHandler.removeCallbacks(stale.timeoutRunnable)
+            stale.promise.reject("E_VOIP_FGS_SUPERSEDED", "Another start was requested for $callId")
+        }
+
+        val timeoutRunnable = Runnable {
+            val pending = pendingFgsStarts.remove(callId) ?: return@Runnable
+            Log.e(TAG, "startVoipCallService: no foreground signal within ${FGS_START_TIMEOUT_MS}ms for callId=$callId")
+            pending.promise.reject(
+                "E_VOIP_FGS_TIMEOUT",
+                "VoipCallService did not signal foreground within ${FGS_START_TIMEOUT_MS}ms"
+            )
+        }
+        pendingFgsStarts[callId] = FgsStartPending(promise, timeoutRunnable)
+        fgsHandler.postDelayed(timeoutRunnable, FGS_START_TIMEOUT_MS)
+
         try {
             VoipCallService.startService(reactApplicationContext, callId)
             if (BuildConfig.DEBUG) {
-                Log.d(TAG, "startVoipCallService: service started for callId=$callId")
+                Log.d(TAG, "startVoipCallService: dispatched for callId=$callId; awaiting foreground signal")
             }
-            promise.resolve(null)
         } catch (e: Exception) {
-            // Reject so JS can tear down the call rather than continue with a degraded one
-            // (no FGS means RECORD_AUDIO drops ~5s after the user backgrounds the app).
-            Log.e(TAG, "startVoipCallService: failed to start service for callId=$callId", e)
+            // Synchronous failure from startForegroundService (e.g. ForegroundServiceStartNotAllowedException
+            // on Android 12+). The service never received the start, so it can't signal back.
+            Log.e(TAG, "startVoipCallService: failed to dispatch start for callId=$callId", e)
+            pendingFgsStarts.remove(callId)?.let { fgsHandler.removeCallbacks(it.timeoutRunnable) }
             promise.reject("E_VOIP_FGS_START", e.message, e)
         }
     }

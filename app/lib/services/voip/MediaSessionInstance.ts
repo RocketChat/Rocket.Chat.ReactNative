@@ -136,16 +136,20 @@ class MediaSessionInstance {
 					// JS thread that ran startCall, the initiating activity is still visible) so the
 					// while-in-use microphone permission survives the user backgrounding the app
 					// while the call is in progress.
-					// On rejection, tear the call down — continuing without an FGS reproduces the
-					// silent mic-drop bug this start exists to prevent.
+					// Navigation is gated on the FGS resolving so a rejection doesn't strand the user
+					// on a `CallView` whose `'ended'` listener has already been detached by `endCall` →
+					// `useCallStore.reset()` before the async `hangup()` could fire `Navigation.back()`.
 					if (Platform.OS === 'android') {
-						NativeVoipModule.startVoipCallService(call.callId).catch(error => {
-							log(error);
-							showErrorAlert(I18n.t('VoIP_Call_Issue'), I18n.t('Oops'));
-							this.endCall(call.callId);
-						});
+						NativeVoipModule.startVoipCallService(call.callId)
+							.then(() => Navigation.navigate('CallView'))
+							.catch(error => {
+								log(error);
+								showErrorAlert(I18n.t('VoIP_Call_Issue'), I18n.t('Oops'));
+								this.endCall(call.callId);
+							});
+					} else {
+						Navigation.navigate('CallView');
 					}
-					Navigation.navigate('CallView');
 					if (useCallStore.getState().roomId == null) {
 						this.resolveRoomIdFromContact(call.remoteParticipants[0]?.contact).catch(error => {
 							log(error);
