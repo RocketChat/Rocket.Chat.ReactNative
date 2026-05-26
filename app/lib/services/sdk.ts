@@ -473,7 +473,6 @@ class Sdk {
 			await Promise.race([this.current.account.logout(), new Promise<void>(resolve => setTimeout(resolve, 5000))]);
 		}
 	}
-
 }
 
 const sdk = new Sdk();
