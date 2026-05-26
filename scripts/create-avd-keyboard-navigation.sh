@@ -11,9 +11,9 @@ fi
 
 export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator:$PATH"
 
-API_LEVEL="${API_LEVEL:-34}"
-TARGET="${TARGET:-google_apis}"
-DEVICE_PROFILE="${DEVICE_PROFILE:-pixel_7_pro}"
+API_LEVEL="${API_LEVEL:-31}"
+TARGET="${TARGET:-default}"
+DEVICE_PROFILE="${DEVICE_PROFILE:-pixel}"
 
 HOST_ARCH="$(uname -m)"
 if [[ "$HOST_ARCH" == "arm64" || "$HOST_ARCH" == "aarch64" ]]; then
@@ -22,7 +22,7 @@ else
 	ABI="${ABI:-x86_64}"
 fi
 
-AVD_NAME="${AVD_NAME:-Pixel_API_${API_LEVEL}_Keyboard}"
+AVD_NAME="${AVD_NAME:-Pixel_API_${API_LEVEL}_AOSP_Keyboard}"
 IMAGE="system-images;android-${API_LEVEL};${TARGET};${ABI}"
 CONFIG="$HOME/.android/avd/${AVD_NAME}.avd/config.ini"
 
