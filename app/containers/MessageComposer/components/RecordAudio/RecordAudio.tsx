@@ -101,13 +101,13 @@ export const RecordAudio = (): ReactElement | null => {
 		try {
 			if (!rid) return;
 			setRecordingAudio(false);
-			const fileData = await getInfoAsync(recorderState.url as string);
+			const fileData = await getInfoAsync(audioRecorder.uri as string);
 			const fileInfo = {
 				name: `${Date.now()}${RECORDING_EXTENSION}`,
 				mime: 'audio/aac',
 				type: 'audio/aac',
 				store: 'Uploads',
-				path: recorderState.url,
+				path: audioRecorder.uri,
 				size: fileData.exists ? fileData.size : null
 			} as IUpload;
 

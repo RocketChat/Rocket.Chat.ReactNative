@@ -7,6 +7,7 @@ import database from '../database';
 import { getFilePathAudio } from './getFilePathAudio';
 import { type TMessageModel } from '../../definitions';
 import { emitter } from './helpers';
+import log from './helpers/log';
 
 function createAudioManager() {
 	const audioQueue: { [audioKey: string]: AudioPlayer } = {};
@@ -68,9 +69,13 @@ function createAudioManager() {
 			}
 		}
 
-		audioQueue[audioKey]?.play();
-		audioPlaying = audioKey;
-		emitter.emit('audioFocused', audioKey);
+		try {
+			audioQueue[audioKey]?.play();
+			audioPlaying = audioKey;
+			emitter.emit('audioFocused', audioKey);
+		} catch {
+			// Ignore playback start errors
+		}
 	}
 
 	function pauseAudio() {
@@ -186,7 +191,7 @@ function createAudioManager() {
 		try {
 			await Promise.all(roomAudiosLoaded.map(audio => audio?.release()));
 		} catch (error) {
-			console.log(error);
+			log(error);
 		}
 		roomAudioKeysLoaded.forEach(key => {
 			audioSubscriptions[key]?.();
