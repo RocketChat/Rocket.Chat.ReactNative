@@ -1,4 +1,4 @@
-appId: chat.rocket.reactnative
+appId: ${APP_ID}
 name: Navigate to E2EE Security
 tags:
   - 'util'

@@ -1,4 +1,4 @@
-appId: chat.rocket.reactnative
+appId: ${APP_ID}
 name: Threads
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
@@ -198,10 +198,10 @@ tags:
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      id: 'message-thread-replied-on-thread'
+      id: 'message-content-navthreadname'
     timeout: 60000
 - tapOn:
-    id: 'message-thread-replied-on-thread'
+    id: 'message-content-navthreadname'
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-thread'

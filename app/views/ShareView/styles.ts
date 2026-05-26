@@ -28,5 +28,9 @@ export default StyleSheet.create({
 	send: {
 		...sharedStyles.textSemibold,
 		fontSize: 16
+	},
+	thumbsContent: {
+		paddingHorizontal: 8,
+		paddingTop: 8
 	}
 });
