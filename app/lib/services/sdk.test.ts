@@ -233,3 +233,48 @@ describe('Sdk.subscribeNotifyUser', () => {
 		expect(fake.__subscribe).not.toHaveBeenCalledWith('stream-notify-user', 'logged-in-user/message');
 	});
 });
+
+describe('Sdk.login', () => {
+	const buildFakeSdkWithLogin = (postResult: any, loginWithToken = jest.fn().mockResolvedValue(undefined)) => {
+		const post = jest.fn().mockResolvedValue(postResult);
+		return {
+			client: { ddp: buildFakeDdp() },
+			connection: buildFakeConnection(),
+			account: { loginWithToken },
+			rest: { post, handleTwoFactorChallenge: jest.fn() },
+			__post: post,
+			__loginWithToken: loginWithToken
+		};
+	};
+
+	it('rejects when sdk is not initialized', async () => {
+		setInternalSdk(undefined);
+		await expect(sdk.login({ user: 'test', password: 'test' })).rejects.toThrow();
+	});
+
+	it('calls loginWithToken with the authToken from the REST response', async () => {
+		const fake = buildFakeSdkWithLogin({
+			success: true,
+			data: { authToken: 'tok-abc', userId: 'uid-1', me: { username: 'john' } }
+		});
+		setInternalSdk(fake);
+		const result = await sdk.login({ user: 'john', password: 'secret' });
+		expect(fake.__loginWithToken).toHaveBeenCalledWith('tok-abc');
+		expect(result.authToken).toBe('tok-abc');
+	});
+
+	it('rejects when the REST response has success: false', async () => {
+		const fake = buildFakeSdkWithLogin({ success: false });
+		setInternalSdk(fake);
+		await expect(sdk.login({ user: 'john', password: 'wrong' })).rejects.toThrow('Invalid response from server');
+	});
+
+	it('rejects and normalizes a raw fetch Response error', async () => {
+		const fake = buildFakeSdkWithLogin(null);
+		fake.__post.mockRejectedValue(new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 }));
+		setInternalSdk(fake);
+		const err: any = await sdk.login({ user: 'john', password: 'bad' }).catch(e => e);
+		expect(err.status).toBe(401);
+		expect(err.data.error).toBe('Unauthorized');
+	});
+});

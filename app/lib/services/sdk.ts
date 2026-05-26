@@ -66,7 +66,7 @@ class Sdk {
 		this.sdk.subscribeNotifyUser = () => this.subscribeNotifyUser();
 		this.serverUrl = server;
 		this.loadBasicAuth();
-		this.sdk.rest.handleTwoFactorChallenge(this.twoFactorHandler);
+		this.sdk.rest.handleTwoFactorChallenge(this.twoFactorHandler.bind(this));
 		return this.sdk;
 	}
 
@@ -150,7 +150,7 @@ class Sdk {
 		}
 		const p = current.connection
 			.reconnect()
-			.then(v => Boolean(v))
+			.then((v: unknown) => Boolean(v))
 			.catch(() => false);
 		this.reopenInFlight = p;
 		const clear = () => {
@@ -192,44 +192,6 @@ class Sdk {
 		}
 	}
 
-	/*
-	get: DDPSDK['rest']['get'] = (...args: Parameters<DDPSDK['rest']['get']>) => {
-		const [endpoint, params, options] = args;
-		const sdk = this.ensureInitialized();
-		return sdk.rest.get(endpoint, params, {
-			...options,
-			headers: {
-				...this.headers,
-				...options?.headers
-			}
-		});
-	};
-
-	post: DDPSDK['rest']['post'] = (...args: Parameters<DDPSDK['rest']['post']>) => {
-		const [endpoint, params, options] = args;
-		const sdk = this.ensureInitialized();
-		return sdk.rest.post(endpoint, params, {
-			...options,
-			headers: {
-				...this.headers,
-				...options?.headers
-			}
-		});
-	};
-
-	delete: DDPSDK['rest']['delete'] = (...args: Parameters<DDPSDK['rest']['delete']>) => {
-		const [endpoint, params, options] = args;
-		const sdk = this.ensureInitialized();
-		return sdk.rest.delete(endpoint, params, {
-			...options,
-			headers: {
-				...this.headers,
-				...options?.headers
-			}
-		});
-	};
-	*/
-
 	async get<TPath extends PathFor<'GET'>>(
 		endpoint: TPath,
 		params: void extends OperationParams<'GET', MatchPathPattern<TPath>>
@@ -268,7 +230,7 @@ class Sdk {
 			try {
 				const sdk = this.ensureInitialized();
 				// @ts-ignore
-				const result = await sdk.rest.post(endpoint, params);
+				const result = await sdk.rest.post(endpoint, params, { headers: this.headers });
 
 				/**
 				 * if API_Use_REST_For_DDP_Calls is enabled and it's a method call,
@@ -512,37 +474,6 @@ class Sdk {
 		}
 	}
 
-	_stream(name: string, data: unknown, cb: (...data: any) => void) {
-		const [key, args] = Array.isArray(data) ? data : [data];
-
-		if (!this.current) {
-			return { stop: () => {} };
-		}
-
-		const subscription = this.current.client.subscribe(`stream-${name}`, key, { useCollection: false, args: [args] });
-
-		const stop = subscription.stop.bind(subscription);
-		const cancel = [
-			() => stop(),
-			this.current?.client.onCollection(`stream-${name}`, (data: any) => {
-				if (data.collection !== `stream-${name}`) {
-					return;
-				}
-				if (data.msg === 'added') {
-					return;
-				}
-				if (data.fields.eventName === key) {
-					cb(data);
-				}
-			})
-		];
-
-		return Object.assign(subscription, {
-			stop: () => {
-				cancel.forEach(fn => fn());
-			}
-		});
-	}
 }
 
 const sdk = new Sdk();

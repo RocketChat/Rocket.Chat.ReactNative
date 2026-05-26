@@ -1,4 +1,3 @@
-import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import { getUniqueId } from 'react-native-device-info';
 import type { ServerMediaSignal } from '@rocket.chat/media-signaling';
 
@@ -1049,7 +1048,7 @@ export const editMediaMessage = async (
 	const response = await fetch(`${server.server}/api/v1/rooms.mediaConfirm/${rid}/${fileId}`, {
 		method: 'POST',
 		headers: {
-			...RocketChatSettings.customHeaders,
+			...sdk.getHeaders(),
 			'Content-Type': 'application/json',
 			'X-Auth-Token': user.token,
 			'X-User-Id': user.id
