@@ -110,10 +110,11 @@ const AuthenticationWebView = () => {
 		if (isSaml) {
 			const token = parsedUrl.query?.saml_idp_credentialToken || ssoToken;
 			payload = { credentialToken: token, saml: true };
+			login(payload);
 		} else {
 			payload = { cas: { credentialToken: ssoToken } };
+			debouncedLogin(payload);
 		}
-		login(payload);
 		return true;
 	};
 
@@ -181,7 +182,7 @@ const AuthenticationWebView = () => {
 				onMessage={({ nativeEvent }) => onNavigationStateChange(nativeEvent)}
 				onNavigationStateChange={onNavigationStateChange}
 				onShouldStartLoadWithRequest={req => {
-					if (authType === 'saml' || authType === 'cas') {
+					if (authType === 'saml') {
 						return !handleSamlOrCasRedirect(req.url);
 					}
 					return true;
