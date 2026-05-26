@@ -13,42 +13,47 @@ jest.mock('../methods/helpers/deviceInfo', () => ({
 }));
 
 const mockOnStreamDataStops: jest.Mock[] = [];
-const mockOnStreamData = jest.fn((_event: string, _cb: (...args: any[]) => void) => {
+const mockOnStreamData = jest.fn<Promise<{ stop: jest.Mock }>, [string, (...args: any[]) => void]>(() => {
 	const stop = jest.fn();
 	mockOnStreamDataStops.push(stop);
 	return Promise.resolve({ stop });
 });
-const mockSdkConnect = jest.fn(() => Promise.resolve());
-const mockSdkAbort = jest.fn();
-const mockSdkDisconnect = jest.fn();
-const mockSdkInitialize = jest.fn();
+const mockSdkConnect = jest.fn<Promise<void>, []>(() => Promise.resolve());
+const mockSdkAbort = jest.fn<void, []>();
+const mockSdkDisconnect = jest.fn<void, []>();
+const mockSdkInitialize = jest.fn<void, [string]>();
 const mockSdkCurrent = {
-	onStreamData: (...args: Parameters<typeof mockOnStreamData>) => mockOnStreamData(...args),
-	connect: (...args: Parameters<typeof mockSdkConnect>) => mockSdkConnect(...args),
-	abort: (...args: Parameters<typeof mockSdkAbort>) => mockSdkAbort(...args)
+	onStreamData: (event: string, cb: (...args: any[]) => void) => mockOnStreamData(event, cb),
+	connect: () => mockSdkConnect(),
+	abort: () => mockSdkAbort()
 };
 jest.mock('./sdk', () => ({
 	__esModule: true,
 	default: {
-		initialize: (...args: unknown[]) => mockSdkInitialize(...args),
-		disconnect: (...args: unknown[]) => mockSdkDisconnect(...args),
+		initialize: (server: string) => mockSdkInitialize(server),
+		disconnect: () => mockSdkDisconnect(),
 		get current() {
 			return mockSdkCurrent;
 		}
 	}
 }));
 
-const mockStoreGetState = jest.fn(() => ({
+type MockStoreState = {
+	meteor: { connected: boolean };
+	login: { user: unknown; isAuthenticated: boolean };
+	settings: Record<string, unknown>;
+};
+const mockStoreGetState = jest.fn<MockStoreState, []>(() => ({
 	meteor: { connected: false },
 	login: { user: null, isAuthenticated: false },
 	settings: {}
 }));
-const mockStoreDispatch = jest.fn();
-const mockStoreSubscribe = jest.fn(() => jest.fn());
+const mockStoreDispatch = jest.fn<unknown, [unknown]>();
+const mockStoreSubscribe = jest.fn<() => void, [() => void]>(() => () => undefined);
 jest.mock('../store/auxStore', () => ({
 	store: {
-		getState: (...args: unknown[]) => mockStoreGetState(...(args as [])),
-		dispatch: (...args: unknown[]) => mockStoreDispatch(...args),
+		getState: () => mockStoreGetState(),
+		dispatch: (action: unknown) => mockStoreDispatch(action),
 		subscribe: (cb: () => void) => mockStoreSubscribe(cb)
 	}
 }));
@@ -74,7 +79,7 @@ jest.mock('../methods/helpers/events', () => ({
 	default: { emit: jest.fn(), on: jest.fn(), removeListener: jest.fn() }
 }));
 
-const mockLog = jest.fn();
+const mockLog = jest.fn<void, unknown[]>();
 jest.mock('../methods/helpers/log', () => ({
 	__esModule: true,
 	default: (...args: unknown[]) => mockLog(...args)
