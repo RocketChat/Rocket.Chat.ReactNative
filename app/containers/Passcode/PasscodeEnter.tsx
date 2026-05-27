@@ -36,9 +36,7 @@ const PasscodeEnter = ({
 	// biometry button immediately hides the button within the same modal session, without
 	// re-emitting LOCAL_AUTHENTICATE_EMITTER (which would orphan the upstream openModal promise).
 	const [hasBiometry, setHasBiometry] = useState<boolean>(initialHasBiometry);
-	// `reason` is held for slice 03's subtitle copy; _reason intentionally unused for now.
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const [_reason, setReason] = useState<BiometricInvalidationReason | undefined>(initialReason);
+	const [reason, setReason] = useState<BiometricInvalidationReason | undefined>(initialReason);
 	const { setItem: setAttempts } = useAsyncStorage(ATTEMPTS_KEY);
 	const { setItem: setLockedUntil } = useAsyncStorage(LOCKED_OUT_TIMER_KEY);
 
@@ -103,11 +101,14 @@ const PasscodeEnter = ({
 		return <Locked setStatus={setStatus} />;
 	}
 
+	const subtitle = reason === 'enrollmentChanged' ? I18n.t('Local_authentication_biometric_enrollment_changed') : null;
+
 	return (
 		<Base
 			ref={ref}
 			type={TYPE.ENTER}
 			title={I18n.t('Passcode_enter_title')}
+			subtitle={subtitle}
 			showBiometry={hasBiometry}
 			onEndProcess={onEndProcess}
 			onBiometryPress={biometry}

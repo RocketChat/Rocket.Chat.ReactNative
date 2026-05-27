@@ -92,3 +92,23 @@ describe('PasscodeEnter biometry button', () => {
 		expect(getByTestId('biometry-button')).toBeTruthy();
 	});
 });
+
+describe('PasscodeEnter enrollmentChanged subtitle', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+	});
+
+	it('renders explanatory subtitle when reason === "enrollmentChanged"', () => {
+		const { getByText } = render(
+			<PasscodeEnter hasBiometry={false} skipAutoBiometry reason='enrollmentChanged' finishProcess={jest.fn()} />
+		);
+
+		expect(getByText('Local_authentication_biometric_enrollment_changed')).toBeTruthy();
+	});
+
+	it('does not render subtitle when reason is undefined', () => {
+		const { queryByText } = render(<PasscodeEnter hasBiometry={false} skipAutoBiometry finishProcess={jest.fn()} />);
+
+		expect(queryByText('Local_authentication_biometric_enrollment_changed')).toBeNull();
+	});
+});
