@@ -111,46 +111,40 @@ async function load(args: {
 	return { messages: allMessages, lastBatchWasFull };
 }
 
-export function loadMessagesForRoom(args: {
+export async function loadMessagesForRoom(args: {
 	rid: string;
 	t: RoomTypes;
 	latest?: Date;
 	loaderItem?: TMessageModel;
 }): Promise<void> {
-	return new Promise(async (resolve, reject) => {
-		let uiLoaderId: string | null = null;
-		try {
-			const { messages, lastBatchWasFull } = await load({
-				...args,
-				onUiLoaderPushed: id => {
-					uiLoaderId = id;
-				}
-			});
-			const data = messages;
-			if (data?.length) {
-				const lastMessage = data[data.length - 1];
-				const lastMessageRecord = await getMessageById(lastMessage._id as string);
-				if (!lastMessageRecord && lastBatchWasFull) {
-					const loadMoreMessage = {
-						_id: generateLoadMoreId(lastMessage._id as string),
-						rid: lastMessage.rid,
-						ts: dayjs(lastMessage.ts).subtract(1, 'millisecond').toString(),
-						t: MessageTypeLoad.MORE,
-						msg: lastMessage.msg
-					} as IMessage;
-					data.push(loadMoreMessage);
-				}
-				await updateMessages({ rid: args.rid, update: data, loaderItem: args.loaderItem });
-				return resolve();
+	let uiLoaderId: string | null = null;
+	try {
+		const { messages, lastBatchWasFull } = await load({
+			...args,
+			onUiLoaderPushed: id => {
+				uiLoaderId = id;
 			}
-			return resolve();
-		} catch (e) {
-			log(e);
-			reject(e);
-		} finally {
-			if (uiLoaderId) {
-				store.dispatch(roomHistoryUiLoaderPop({ loaderId: uiLoaderId }));
+		});
+		if (messages?.length) {
+			const lastMessage = messages[messages.length - 1];
+			const lastMessageRecord = await getMessageById(lastMessage._id as string);
+			if (!lastMessageRecord && lastBatchWasFull) {
+				messages.push({
+					_id: generateLoadMoreId(lastMessage._id as string),
+					rid: lastMessage.rid,
+					ts: dayjs(lastMessage.ts).subtract(1, 'millisecond').toString(),
+					t: MessageTypeLoad.MORE,
+					msg: lastMessage.msg
+				} as IMessage);
 			}
+			await updateMessages({ rid: args.rid, update: messages, loaderItem: args.loaderItem });
 		}
-	});
+	} catch (e) {
+		log(e);
+		throw e;
+	} finally {
+		if (uiLoaderId) {
+			store.dispatch(roomHistoryUiLoaderPop({ loaderId: uiLoaderId }));
+		}
+	}
 }
