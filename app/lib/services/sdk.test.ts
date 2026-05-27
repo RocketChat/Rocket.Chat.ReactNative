@@ -1,4 +1,4 @@
-import sdk from './sdk';
+import sdk, { NOTIFY_USER_EVENTS } from './sdk';
 
 const setInternalSdk = (value: any) => {
 	(sdk as unknown as { sdk: any }).sdk = value;
@@ -175,19 +175,6 @@ describe('Sdk.forceReopen', () => {
 });
 
 describe('Sdk.subscribeNotifyUser', () => {
-	const EXPECTED_EVENTS = [
-		'message',
-		'notification',
-		'rooms-changed',
-		'subscriptions-changed',
-		'uiInteraction',
-		'e2ekeyRequest',
-		'userData',
-		'video-conference',
-		'media-signal',
-		'media-calls'
-	];
-
 	const buildFakeSdkWithSubscribe = (user: { id: string } | undefined) => {
 		const subscribe = jest.fn((_name: string, _key: string) => ({ id: `sub-${_key}`, stop: jest.fn() }));
 		return {
@@ -211,8 +198,8 @@ describe('Sdk.subscribeNotifyUser', () => {
 		const fake = buildFakeSdkWithSubscribe({ id: 'user-42' });
 		setInternalSdk(fake);
 		const handles = sdk.subscribeNotifyUser();
-		expect(handles).toHaveLength(EXPECTED_EVENTS.length);
-		EXPECTED_EVENTS.forEach(event => {
+		expect(handles).toHaveLength(NOTIFY_USER_EVENTS.length);
+		NOTIFY_USER_EVENTS.forEach(event => {
 			expect(fake.__subscribe).toHaveBeenCalledWith('stream-notify-user', `user-42/${event}`);
 		});
 	});

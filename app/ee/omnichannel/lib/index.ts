@@ -27,7 +27,7 @@ export const getInquiriesQueued = (serverVersion: string) => {
 // this inquiry is added to the db by the subscriptions stream
 // and will be removed by the queue stream
 // RC 2.4.0
-// @ts-ignore — legacy servers use sdk.methodCallWrapper() which lacks proper type definitions
+// @ts-ignore — endpoint '/v1/livechat/inquiries.take' not in SDK's typed path dictionary for older servers
 export const takeInquiry = (inquiryId: string, serverVersion: string) => {
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.11.0')) {
 		return sdk.post('/v1/livechat/inquiries.take', { inquiryId });

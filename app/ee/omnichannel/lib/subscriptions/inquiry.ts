@@ -30,6 +30,8 @@ let stopped = false;
 const streamTopic = 'stream-livechat-inquiry-queue-observer';
 
 export default function subscribeInquiry() {
+	stopped = false;
+
 	const handleConnection = () => {
 		store.dispatch(inquiryRequest());
 	};
