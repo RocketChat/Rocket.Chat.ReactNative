@@ -1,5 +1,4 @@
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { sha256 } from 'js-sha256';
 import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { Keyboard, ScrollView, View, type TextInput } from 'react-native';
 import { useDispatch } from 'react-redux';
@@ -39,6 +38,7 @@ import CustomFields from '../../containers/CustomFields';
 import ListSeparator from '../../containers/List/ListSeparator';
 import handleSaveUserProfileError from '../../lib/methods/helpers/handleSaveUserProfileError';
 import logoutOtherLocations from './methods/logoutOtherLocations';
+import buildProfileParams from './methods/buildProfileParams';
 import ConfirmEmailChangeActionSheetContent from './components/ConfirmEmailChangeActionSheetContent';
 
 // https://github.com/RocketChat/Rocket.Chat/blob/174c28d40b3d5a52023ee2dca2e81dd77ff33fa5/apps/meteor/app/lib/server/functions/saveUser.js#L24-L25
@@ -155,7 +155,79 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		showActionSheet({ children: <DeleteAccountActionSheetContent /> });
 	};
 
-	// TODO: function is too long, split it
+	const showConfirmEmailChangeActionSheet = () => {
+		showActionSheet({
+			children: (
+				<ConfirmEmailChangeActionSheetContent
+					onSubmit={p => {
+						hideActionSheet();
+						setValue('currentPassword', p as any);
+						submit();
+					}}
+				/>
+			)
+		});
+	};
+
+	const resetSavingState = () => {
+		setValue('saving', false);
+		setValue('currentPassword', null);
+		setTwoFactorCode(null);
+	};
+
+	const applySaveSuccess = (params: IProfileParams) => {
+		logEvent(events.PROFILE_SAVE_CHANGES);
+
+		if (customFields) {
+			dispatch(setUser({ customFields, ...params }));
+			setCustomFields(customFields);
+		} else {
+			dispatch(setUser({ ...params }));
+			const updatedValues = { ...getValues(), ...params };
+			Object.entries(updatedValues).forEach(([key, value]) => setValue(key as any, value));
+		}
+
+		const updatedUser = { ...user, ...params };
+
+		reset({
+			name: updatedUser.name || '',
+			username: updatedUser.username || '',
+			email: updatedUser.emails?.[0]?.address || updatedUser.email || '',
+			currentPassword: null,
+			bio: updatedUser.bio || '',
+			nickname: updatedUser.nickname || '',
+			saving: false
+		});
+		dispatch(setUser({ ...user, ...params, customFields }));
+		EventEmitter.emit(LISTENER, { message: I18n.t('Profile_saved_successfully') });
+	};
+
+	const setFieldErrorsFromResponse = (e: any, email: string | null) => {
+		if (e?.error === 'error-could-not-save-identity') {
+			setError('username', { message: I18n.t('Username_not_available'), type: 'validate' });
+		}
+
+		if (e?.message.startsWith(email) && e?.error === 'error-field-unavailable') {
+			setError('email', { message: I18n.t('Email_associated_with_another_user'), type: 'validate' });
+		}
+	};
+
+	// Returns true if a 2FA retry was issued and submit should yield to it.
+	const handleTwoFactorChallenge = async (e: any): Promise<boolean> => {
+		if (e?.error !== 'totp-invalid' || e?.details.method === TwoFactorMethods.PASSWORD) {
+			return false;
+		}
+		try {
+			const code = await twoFactor({ method: e.details.method, invalid: e?.error === 'totp-invalid' && !!twoFactorCode });
+			setTwoFactorCode(code as any);
+			await submit();
+			return true;
+		} catch {
+			// cancelled twoFactor modal
+			return false;
+		}
+	};
+
 	const submit = async (): Promise<void> => {
 		Keyboard.dismiss();
 
@@ -165,91 +237,30 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 
 		setValue('saving', true);
 
-		const { name, username, email, currentPassword, bio, nickname } = getValues();
-		const params = {} as IProfileParams;
-
-		if (user.name !== name) params.name = name;
-		if (user.username !== username) params.username = username;
-		if (user.emails?.[0].address !== email) params.email = email;
-		if (user.bio !== bio) params.bio = bio;
-		if (user.nickname !== nickname) params.nickname = nickname;
-		if (currentPassword) params.currentPassword = sha256(currentPassword);
-
+		const params = buildProfileParams(getValues(), user);
 		const requirePassword = !!params.email;
 
 		if (requirePassword && !params.currentPassword) {
 			setValue('saving', false);
-			showActionSheet({
-				children: (
-					<ConfirmEmailChangeActionSheetContent
-						onSubmit={p => {
-							hideActionSheet();
-							setValue('currentPassword', p as any);
-							submit();
-						}}
-					/>
-				)
-			});
+			showConfirmEmailChangeActionSheet();
 			return;
 		}
 
 		try {
 			const result = await saveUserProfile(params, customFields);
-
 			if (result) {
-				logEvent(events.PROFILE_SAVE_CHANGES);
-				if (customFields) {
-					dispatch(setUser({ customFields, ...params }));
-					setCustomFields(customFields);
-				} else {
-					dispatch(setUser({ ...params }));
-					const user = { ...getValues(), ...params };
-					Object.entries(user).forEach(([key, value]) => setValue(key as any, value));
-				}
-
-				const updatedUser = {
-					...user,
-					...params
-				};
-
-				reset({
-					name: updatedUser.name || '',
-					username: updatedUser.username || '',
-					email: updatedUser.emails?.[0]?.address || updatedUser.email || '',
-					currentPassword: null,
-					bio: updatedUser.bio || '',
-					nickname: updatedUser.nickname || '',
-					saving: false
-				});
-				dispatch(setUser({ ...user, ...params, customFields }));
-				EventEmitter.emit(LISTENER, { message: I18n.t('Profile_saved_successfully') });
+				applySaveSuccess(params);
 			}
-
-			setValue('saving', false);
-			setValue('currentPassword', null);
-			setTwoFactorCode(null);
+			resetSavingState();
 		} catch (e: any) {
-			if (e?.error === 'error-could-not-save-identity') {
-				setError('username', { message: I18n.t('Username_not_available'), type: 'validate' });
-			}
+			const { email } = getValues();
+			setFieldErrorsFromResponse(e, email);
 
-			if (e?.message.startsWith(email) && e?.error === 'error-field-unavailable') {
-				setError('email', { message: I18n.t('Email_associated_with_another_user'), type: 'validate' });
-			}
+			const retried = await handleTwoFactorChallenge(e);
+			if (retried) return;
 
-			if (e?.error === 'totp-invalid' && e?.details.method !== TwoFactorMethods.PASSWORD) {
-				try {
-					const code = await twoFactor({ method: e.details.method, invalid: e?.error === 'totp-invalid' && !!twoFactorCode });
-					setTwoFactorCode(code as any);
-					return submit();
-				} catch {
-					// cancelled twoFactor modal
-				}
-			}
 			logEvent(events.PROFILE_SAVE_CHANGES_F);
-			setValue('saving', false);
-			setValue('currentPassword', null);
-			setTwoFactorCode(null);
+			resetSavingState();
 			handleSaveUserProfileError(e, 'saving_profile');
 		}
 	};
