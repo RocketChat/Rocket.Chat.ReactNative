@@ -33,7 +33,7 @@ import { getDMSubscriptionByUsername } from '../../database/services/Subscriptio
 import { getUidDirectMessage } from '../../methods/helpers/helpers';
 import log from '../../methods/helpers/log';
 import { isInActiveVoipCall } from './isInActiveVoipCall';
-import { requestVoipCallPermissions } from '../../methods/voipCallPermissions';
+import { requestVoipCallPermissions, showVoipMicrophoneDeniedAlert } from '../../methods/voipCallPermissions';
 import I18n from '../../../i18n';
 import { showErrorAlert } from '../../methods/helpers/info';
 
@@ -173,6 +173,12 @@ class MediaSessionInstance {
 		const mainCall = this.instance?.getCallData(callId);
 
 		if (mainCall && mainCall.callId === callId) {
+			const permission = await requestVoipCallPermissions();
+			if (!permission.granted) {
+				this.endCall(callId);
+				showVoipMicrophoneDeniedAlert(permission.canAskAgain);
+				return;
+			}
 			try {
 				await mainCall.accept();
 			} catch (error) {
@@ -229,12 +235,9 @@ class MediaSessionInstance {
 			showErrorAlert(I18n.t('VoIP_Still_Connecting'), I18n.t('Oops'));
 			return;
 		}
-		const granted = await requestVoipCallPermissions();
-		if (!granted) {
-			showErrorAlert(
-				I18n.t('Go_to_your_device_settings_and_allow_microphone'),
-				I18n.t('Microphone_access_needed_to_record_audio')
-			);
+		const permission = await requestVoipCallPermissions();
+		if (!permission.granted) {
+			showVoipMicrophoneDeniedAlert(permission.canAskAgain);
 			return;
 		}
 		// Re-evaluate: an incoming call may have been accepted during the permission prompt.

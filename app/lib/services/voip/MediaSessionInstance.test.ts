@@ -129,9 +129,11 @@ jest.mock('../../navigation/appNavigation', () => ({
 	waitForNavigationReady: jest.fn().mockResolvedValue(undefined)
 }));
 
-const mockRequestVoipCallPermissions = jest.fn().mockResolvedValue(true);
+const mockRequestVoipCallPermissions = jest.fn().mockResolvedValue({ granted: true, canAskAgain: true });
+const mockShowVoipMicrophoneDeniedAlert = jest.fn();
 jest.mock('../../methods/voipCallPermissions', () => ({
-	requestVoipCallPermissions: () => mockRequestVoipCallPermissions()
+	requestVoipCallPermissions: () => mockRequestVoipCallPermissions(),
+	showVoipMicrophoneDeniedAlert: (...args: unknown[]) => mockShowVoipMicrophoneDeniedAlert(...args)
 }));
 
 jest.mock('react-native', () => ({
@@ -243,7 +245,7 @@ describe('MediaSessionInstance', () => {
 		jest.clearAllMocks();
 		mockStartVoipCallService.mockResolvedValue(undefined);
 		mockMediaCallsStateSignals.mockResolvedValue({ signals: [], success: true });
-		mockRequestVoipCallPermissions.mockResolvedValue(true);
+		mockRequestVoipCallPermissions.mockResolvedValue({ granted: true, canAskAgain: true });
 		createdSessions.length = 0;
 		mockGetUidDirectMessage.mockReturnValue('other-user-id');
 		mockGetDMSubscriptionByUsername.mockResolvedValue(null);
@@ -695,14 +697,15 @@ describe('MediaSessionInstance', () => {
 			expect(session.startCall).not.toHaveBeenCalled();
 		});
 
-		it('does not place call and shows error when permissions are denied', async () => {
+		it('does not place call and shows microphone denied alert when permissions are denied', async () => {
 			await mediaSessionInstance.init('user-1');
-			mockRequestVoipCallPermissions.mockResolvedValueOnce(false);
+			mockRequestVoipCallPermissions.mockResolvedValueOnce({ granted: false, canAskAgain: false });
 			const session = createdSessions[0];
 			await mediaSessionInstance.startCall('peer-2', 'user');
 			expect(mockRequestVoipCallPermissions).toHaveBeenCalled();
 			expect(session.startCall).not.toHaveBeenCalled();
-			expect(mockShowErrorAlert).toHaveBeenCalledTimes(1);
+			expect(mockShowVoipMicrophoneDeniedAlert).toHaveBeenCalledWith(false);
+			expect(mockShowErrorAlert).not.toHaveBeenCalled();
 		});
 
 		it('startCallByRoom shows alert when instance is null', async () => {
@@ -871,6 +874,46 @@ describe('MediaSessionInstance', () => {
 	});
 
 	describe('answerCall error recovery (B5)', () => {
+		it('requests permission before accepting an incoming call', async () => {
+			await mediaSessionInstance.init('user-1');
+			const session = createdSessions[0];
+			const mainCall = {
+				callId: 'call-perm-ok',
+				accept: jest.fn().mockResolvedValue(undefined),
+				remoteParticipants: [{ contact: { username: 'bob' } }]
+			};
+			session.getCallData.mockReturnValue(mainCall);
+
+			await mediaSessionInstance.answerCall('call-perm-ok');
+
+			expect(mockRequestVoipCallPermissions).toHaveBeenCalledTimes(1);
+			expect(mainCall.accept).toHaveBeenCalledTimes(1);
+		});
+
+		it('ends call and shows microphone denied alert when permission is denied', async () => {
+			await mediaSessionInstance.init('user-1');
+			const session = createdSessions[0];
+			const endCallSpy = jest.spyOn(mediaSessionInstance, 'endCall');
+			mockRequestVoipCallPermissions.mockResolvedValueOnce({ granted: false, canAskAgain: true });
+			const mainCall = {
+				callId: 'call-perm',
+				state: 'ringing',
+				accept: jest.fn().mockResolvedValue(undefined),
+				reject: jest.fn(),
+				hangup: jest.fn(),
+				remoteParticipants: [{ contact: { username: 'bob' } }]
+			};
+			session.getCallData.mockReturnValue(mainCall);
+
+			await mediaSessionInstance.answerCall('call-perm');
+
+			expect(endCallSpy).toHaveBeenCalledWith('call-perm');
+			expect(mainCall.accept).not.toHaveBeenCalled();
+			expect(mockShowVoipMicrophoneDeniedAlert).toHaveBeenCalledWith(true);
+			expect(Navigation.navigate).not.toHaveBeenCalled();
+			endCallSpy.mockRestore();
+		});
+
 		it('terminates native call and resets nativeAcceptedCallId when accept() rejects', async () => {
 			await mediaSessionInstance.init('user-1');
 			const session = createdSessions[0];
