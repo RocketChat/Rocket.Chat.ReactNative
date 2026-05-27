@@ -8,10 +8,13 @@ on:
         required: false
         default: pr
 
+permissions: {}
+
 jobs:
   build-hold:
     name: Hold
     runs-on: ubuntu-latest
+    permissions: {}
     if: ${{ inputs.trigger == 'pr' }}
     environment: ios_build
     steps:
@@ -20,6 +23,8 @@ jobs:
   build-ios:
     name: Build
     runs-on: macos-26
+    permissions:
+      contents: read
     needs: [build-hold]
     if: ${{ always() && (needs.build-hold.result == 'success' || needs.build-hold.result == 'skipped') }}
     steps:
@@ -58,6 +63,9 @@ jobs:
   upload-ios:
     name: Upload
     runs-on: macos-26
+    permissions:
+      contents: read
+      pull-requests: write
     needs: [build-ios]
     steps:
       - name: Checkout Repository

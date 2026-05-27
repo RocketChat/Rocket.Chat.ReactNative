@@ -7,10 +7,14 @@ on:
         required: true
         type: string
 
+permissions: {}
+
 jobs:
   android-test:
     name: 'Android Tests'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     env:
       MAESTRO_VERSION: 2.2.0
       ANDROID_AVD_HOME: /home/runner/.android/avd

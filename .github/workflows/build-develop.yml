@@ -1,8 +1,5 @@
 name: Build Develop
 
-permissions:
-  contents: read
-
 on:
   push:
     branches:
@@ -12,20 +9,28 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+permissions: {}
+
 jobs:
   run-eslint-and-test:
     name: ESLint and Test
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    permissions:
+      contents: read
     uses: ./.github/workflows/eslint.yml
 
   generate-changelog:
     name: Generate Release Changelog
     needs: [run-eslint-and-test]
+    permissions:
+      contents: read
     uses: ./.github/workflows/generate-changelog.yml
 
   android-build-store:
     name: Build Android
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    permissions:
+      contents: read
     uses: ./.github/workflows/build-android.yml
     needs: [run-eslint-and-test, generate-changelog]
     secrets: inherit
@@ -35,6 +40,8 @@ jobs:
   ios-build-store:
     name: Build iOS
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    permissions:
+      contents: read
     uses: ./.github/workflows/build-ios.yml
     needs: [run-eslint-and-test, generate-changelog]
     secrets: inherit

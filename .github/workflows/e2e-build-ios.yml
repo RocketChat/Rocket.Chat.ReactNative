@@ -20,9 +20,13 @@ on:
       FASTLANE_REPO_PAT:
         required: true
 
+permissions: {}
+
 jobs:
   ios-build:
     runs-on: macos-26
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout repository
