@@ -20,7 +20,7 @@ export type E2eEndpoints = {
 	};
 	'e2e.fetchUsersWaitingForGroupKey': {
 		GET: (params: { roomIds: string[] }) => {
-			usersWaitingForE2EKeys: any;
+			usersWaitingForE2EKeys: Record<string, { _id: string; public_key: string }[]>;
 		};
 	};
 	'e2e.provideUsersSuggestedGroupKeys': {
