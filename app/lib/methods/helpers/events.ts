@@ -11,6 +11,7 @@ type TEventEmitterEmmitArgs =
 	| { force: boolean }
 	| { hasBiometry: boolean }
 	| { skipAutoBiometry: boolean }
+	| { reason: 'enrollmentChanged' }
 	| { visible: boolean; onCancel?: null | Function }
 	| { cancel: () => void }
 	| { submit: (param: string) => void }

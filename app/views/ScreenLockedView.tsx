@@ -18,6 +18,7 @@ interface IData {
 	hasBiometry?: boolean;
 	force?: boolean;
 	skipAutoBiometry?: boolean;
+	reason?: 'enrollmentChanged';
 }
 
 const styles = StyleSheet.create({
@@ -82,6 +83,7 @@ const ScreenLockedView = (): JSX.Element => {
 				<PasscodeEnter
 					hasBiometry={!!data?.hasBiometry}
 					skipAutoBiometry={!!data?.skipAutoBiometry}
+					reason={data?.reason}
 					finishProcess={onSubmit}
 				/>
 				{data?.force ? (

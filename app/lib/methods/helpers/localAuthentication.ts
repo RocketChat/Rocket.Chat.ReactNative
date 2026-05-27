@@ -9,6 +9,7 @@ import { store } from '../../store/auxStore';
 import database from '../../database';
 import { getServerTimeSync } from '../../services/getServerTimeSync';
 import { biometricTrustStore, type TrustResult } from '../../biometricTrustStore';
+import { handleBiometricTrustResult } from '../../biometricTrustStore/handleResult';
 import {
 	ATTEMPTS_KEY,
 	BIOMETRY_ENABLED_KEY,
@@ -51,13 +52,14 @@ export const saveLastLocalAuthenticationSession = async (
 
 export const resetAttempts = (): Promise<void> => AsyncStorage.multiRemove([LOCKED_OUT_TIMER_KEY, ATTEMPTS_KEY]);
 
-const openModal = (hasBiometry: boolean, force?: boolean, skipAutoBiometry?: boolean) =>
+const openModal = (hasBiometry: boolean, force?: boolean, skipAutoBiometry?: boolean, reason?: 'enrollmentChanged') =>
 	new Promise<void>((resolve, reject) => {
 		EventEmitter.emit(LOCAL_AUTHENTICATE_EMITTER, {
 			submit: () => resolve(),
 			hasBiometry,
 			force,
 			skipAutoBiometry,
+			reason,
 			cancel: () => reject()
 		});
 	});
@@ -122,23 +124,13 @@ export const handleLocalAuthentication = async (canCloseModal = false) => {
 	}
 
 	const result = await biometricTrustStore.verify({ promptCopy: buildPromptCopy() });
+	const { unlocked, modal } = await handleBiometricTrustResult(result);
 
-	// success → unlocked, no modal
-	if (result.kind === 'success') {
+	if (unlocked) {
 		return;
 	}
 
-	// canceled / error → user dismissed or the OS prompt failed; keep biometry available on the
-	// modal but skip the auto-prompt so we don't immediately re-fire the same prompt the user
-	// just dismissed.
-	if (result.kind === 'canceled' || result.kind === 'error') {
-		await openModal(true, canCloseModal, true);
-		return;
-	}
-
-	// unavailable / enrollmentChanged → no usable sentinel; passcode-only modal. Slice 02 will
-	// add disenrol() + flag-clear + an explanatory reason for the enrollmentChanged case.
-	await openModal(false, canCloseModal);
+	await openModal(modal!.hasBiometry, canCloseModal, modal!.skipAutoBiometry, modal!.reason);
 };
 
 export const localAuthenticate = async (server: string): Promise<void> => {

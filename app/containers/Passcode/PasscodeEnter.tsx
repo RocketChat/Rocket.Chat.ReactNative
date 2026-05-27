@@ -9,6 +9,7 @@ import Locked from './Base/Locked';
 import { TYPE } from './constants';
 import { ATTEMPTS_KEY, LOCKED_OUT_TIMER_KEY, MAX_ATTEMPTS, PASSCODE_KEY } from '../../lib/constants/localAuthentication';
 import { biometryAuth, resetAttempts } from '../../lib/methods/helpers/localAuthentication';
+import { handleBiometricTrustResult, type BiometricInvalidationReason } from '../../lib/biometricTrustStore/handleResult';
 import { getDiff, getLockedUntil } from './utils';
 import { useUserPreferences } from '../../lib/methods/userPreferences';
 import I18n from '../../i18n';
@@ -16,24 +17,44 @@ import I18n from '../../i18n';
 interface IPasscodePasscodeEnter {
 	hasBiometry: boolean;
 	skipAutoBiometry?: boolean;
+	reason?: BiometricInvalidationReason;
 	finishProcess: Function;
 }
 
-const PasscodeEnter = ({ hasBiometry, skipAutoBiometry = false, finishProcess }: IPasscodePasscodeEnter) => {
+const PasscodeEnter = ({
+	hasBiometry: initialHasBiometry,
+	skipAutoBiometry = false,
+	reason: initialReason,
+	finishProcess
+}: IPasscodePasscodeEnter) => {
 	const ref = useRef<IBase>(null);
 	let attempts = 0;
 	let lockedUntil: any = false;
 	const [passcode] = useUserPreferences(PASSCODE_KEY);
 	const [status, setStatus] = useState<TYPE | null>(null);
+	// Mirror hasBiometry/reason locally so an enrolment-change invalidation triggered from the
+	// biometry button immediately hides the button within the same modal session, without
+	// re-emitting LOCAL_AUTHENTICATE_EMITTER (which would orphan the upstream openModal promise).
+	const [hasBiometry, setHasBiometry] = useState<boolean>(initialHasBiometry);
+	// `reason` is held for slice 03's subtitle copy; _reason intentionally unused for now.
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const [_reason, setReason] = useState<BiometricInvalidationReason | undefined>(initialReason);
 	const { setItem: setAttempts } = useAsyncStorage(ATTEMPTS_KEY);
 	const { setItem: setLockedUntil } = useAsyncStorage(LOCKED_OUT_TIMER_KEY);
 
 	const biometry = async () => {
-		if (hasBiometry && status === TYPE.ENTER) {
-			const result = await biometryAuth();
-			if (result.kind === 'success') {
-				finishProcess();
-			}
+		if (!hasBiometry || status !== TYPE.ENTER) {
+			return;
+		}
+		const result = await biometryAuth();
+		const { unlocked, modal } = await handleBiometricTrustResult(result);
+		if (unlocked) {
+			finishProcess();
+			return;
+		}
+		if (modal) {
+			setHasBiometry(modal.hasBiometry);
+			setReason(modal.reason);
 		}
 	};
 
