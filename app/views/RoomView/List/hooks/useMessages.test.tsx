@@ -76,6 +76,13 @@ describe('useMessages', () => {
 		queryCalls = [];
 		unsubscribeSpies = [];
 		jest.clearAllMocks();
+		// Reset historyLoaders so prior test dispatches don't trip the in-flight guard
+		mockedStore
+			.getState()
+			.room.historyLoaders.slice()
+			.forEach(loaderId => {
+				mockedStore.dispatch({ type: ROOM.HISTORY_FINISHED, loaderId });
+			});
 		mockDbGet.mockImplementation(() => ({
 			query: jest.fn((...args: unknown[]) => {
 				queryCalls.push(args);
@@ -427,6 +434,22 @@ describe('useMessages', () => {
 				})
 			);
 		});
+		dispatchSpy.mockRestore();
+	});
+
+	it('does not dispatch roomHistoryRequest when a fetch for the same loaderId is already in flight', async () => {
+		// Simulate loadMessagesForRoom having already pushed the UI loader before the DB subscription emits
+		mockedStore.dispatch({ type: ROOM.HISTORY_UI_LOADER_PUSH, loaderId: 'load-more-x' });
+		const dispatchSpy = jest.spyOn(mockedStore, 'dispatch');
+		emittedRows = [msg({ id: 'load-more-x', t: MessageTypeLoad.MORE })];
+		const { result } = renderUseMessages({
+			serverVersion: '6.0.0',
+			hideSystemMessages: ['uj']
+		});
+		await waitFor(() => {
+			expect(result.current[0].length).toBeGreaterThan(0);
+		});
+		expect(getHistoryDispatchCount(dispatchSpy)).toBe(0);
 		dispatchSpy.mockRestore();
 	});
 

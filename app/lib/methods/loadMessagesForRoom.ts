@@ -31,19 +31,19 @@ async function load(args: {
 	latest?: Date;
 	t: RoomTypes;
 	loaderItem?: TMessageModel;
-}): Promise<{ messages: IMessage[]; shouldAddLoader: boolean; uiLoaderId: string | null }> {
+	onUiLoaderPushed?: (loaderId: string) => void;
+}): Promise<{ messages: IMessage[]; lastBatchWasFull: boolean }> {
 	const roomId = args.rid;
 	const hideSystemMessages = await resolveHideSystemMessages(roomId);
 	const apiType = roomTypeToApiType(args.t);
 	if (!apiType) {
-		return { messages: [], shouldAddLoader: false, uiLoaderId: null };
+		return { messages: [], lastBatchWasFull: false };
 	}
 
 	const allMessages: IMessage[] = [];
 	let visibleMainMessagesCount = 0;
 	let batchesFetched = 0;
-	let shouldAddLoader = false;
-	let uiLoaderId: string | null = null;
+	let lastBatchWasFull = false;
 
 	async function fetchBatch(lastTs?: string): Promise<void> {
 		if (visibleMainMessagesCount >= COUNT || batchesFetched >= MAX_BATCHES) {
@@ -74,7 +74,7 @@ async function load(args: {
 
 		const batch = data.messages as IMessage[];
 		allMessages.push(...batch);
-		shouldAddLoader = batch.length === COUNT;
+		lastBatchWasFull = batch.length === COUNT;
 
 		const visibleMainMessagesInBatch = batch.filter(message => isVisibleMainRoomMessage(message, hideSystemMessages));
 		visibleMainMessagesCount += visibleMainMessagesInBatch.length;
@@ -99,7 +99,7 @@ async function load(args: {
 					loaderItem: args.loaderItem
 				});
 				store.dispatch(roomHistoryUiLoaderPush({ loaderId: loadMoreMessage._id }));
-				uiLoaderId = loadMoreMessage._id;
+				args.onUiLoaderPushed?.(loadMoreMessage._id);
 			}
 
 			await fetchBatch(lastMessage.ts as string);
@@ -107,15 +107,8 @@ async function load(args: {
 	}
 
 	const startTimestamp = args.latest ? new Date(args.latest).toISOString() : undefined;
-	try {
-		await fetchBatch(startTimestamp);
-		return { messages: allMessages, shouldAddLoader, uiLoaderId };
-	} catch (e) {
-		if (uiLoaderId) {
-			store.dispatch(roomHistoryUiLoaderPop({ loaderId: uiLoaderId }));
-		}
-		throw e;
-	}
+	await fetchBatch(startTimestamp);
+	return { messages: allMessages, lastBatchWasFull };
 }
 
 export function loadMessagesForRoom(args: {
@@ -127,13 +120,17 @@ export function loadMessagesForRoom(args: {
 	return new Promise(async (resolve, reject) => {
 		let uiLoaderId: string | null = null;
 		try {
-			const { messages, shouldAddLoader, uiLoaderId: pushedLoaderId } = await load(args);
-			uiLoaderId = pushedLoaderId;
+			const { messages, lastBatchWasFull } = await load({
+				...args,
+				onUiLoaderPushed: id => {
+					uiLoaderId = id;
+				}
+			});
 			const data = messages;
 			if (data?.length) {
 				const lastMessage = data[data.length - 1];
 				const lastMessageRecord = await getMessageById(lastMessage._id as string);
-				if (!lastMessageRecord && shouldAddLoader) {
+				if (!lastMessageRecord && lastBatchWasFull) {
 					const loadMoreMessage = {
 						_id: generateLoadMoreId(lastMessage._id as string),
 						rid: lastMessage.rid,
