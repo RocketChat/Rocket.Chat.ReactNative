@@ -2,6 +2,8 @@ import { Alert, PermissionsAndroid, Platform } from 'react-native';
 import { Audio } from 'expo-av';
 import { PermissionStatus } from 'expo-camera';
 
+import { requestVoipCallPermissions, showVoipMicrophoneDeniedAlert } from './voipCallPermissions';
+
 jest.mock('expo-av', () => ({
 	Audio: {
 		getPermissionsAsync: jest.fn(),
@@ -17,8 +19,6 @@ jest.mock('../../i18n', () => ({
 jest.mock('./helpers/openAppSettings', () => ({
 	openAppSettings: jest.fn()
 }));
-
-import { requestVoipCallPermissions, showVoipMicrophoneDeniedAlert } from './voipCallPermissions';
 
 describe('requestVoipCallPermissions', () => {
 	beforeEach(() => {
