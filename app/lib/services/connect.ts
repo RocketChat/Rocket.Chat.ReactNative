@@ -12,6 +12,7 @@ import { store } from '../store/auxStore';
 import { loginRequest, logout, setLoginServices, setUser } from '../../actions/login';
 import sdk from './sdk';
 import { mediaSessionInstance } from './voip/MediaSessionInstance';
+import { pendingHangups } from './voip/pendingHangups';
 import I18n from '../../i18n';
 import { type ICredentials, type ILoggedUser, STATUSES } from '../../definitions';
 import { connectRequest, connectSuccess, disconnect as disconnectAction } from '../../actions/connect';
@@ -51,11 +52,23 @@ async function connect({ server, logoutOnError = false }: { server: string; logo
 		await sdk.initialize(server);
 		await getSettings();
 
+		// Tracks a real disconnect so the next `'connected'` can drain hangups the user tapped while
+		// the WebSocket was unhealthy. Local to the closure so it resets per `connect()` call.
+		let pendingHangupsDrainArmed = false;
+
 		sdk.current?.connection.on('connection', status => {
 			if (['connecting', 'reconnecting'].includes(status)) {
 				store.dispatch(connectRequest());
 			}
 			if (status === 'connected') {
+				if (pendingHangupsDrainArmed) {
+					pendingHangupsDrainArmed = false;
+					if (pendingHangups.size > 0) {
+						awaitDdpLoggedIn(5000)
+							.then(() => mediaSessionInstance.drainPendingHangups())
+							.catch(error => log(error));
+					}
+				}
 				const { connected } = store.getState().meteor;
 				if (connected) {
 					return;
@@ -67,6 +80,7 @@ async function connect({ server, logoutOnError = false }: { server: string; logo
 				}
 			}
 			if (['disconnected', 'closed'].includes(status)) {
+				pendingHangupsDrainArmed = true;
 				store.dispatch(disconnectAction());
 			}
 		});
