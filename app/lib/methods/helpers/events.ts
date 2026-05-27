@@ -10,6 +10,7 @@ type TEventEmitterEmmitArgs =
 	| { invalid: boolean }
 	| { force: boolean }
 	| { hasBiometry: boolean }
+	| { skipAutoBiometry: boolean }
 	| { visible: boolean; onCancel?: null | Function }
 	| { cancel: () => void }
 	| { submit: (param: string) => void }

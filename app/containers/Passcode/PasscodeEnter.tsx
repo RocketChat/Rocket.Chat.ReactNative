@@ -15,10 +15,11 @@ import I18n from '../../i18n';
 
 interface IPasscodePasscodeEnter {
 	hasBiometry: boolean;
+	skipAutoBiometry?: boolean;
 	finishProcess: Function;
 }
 
-const PasscodeEnter = ({ hasBiometry, finishProcess }: IPasscodePasscodeEnter) => {
+const PasscodeEnter = ({ hasBiometry, skipAutoBiometry = false, finishProcess }: IPasscodePasscodeEnter) => {
 	const ref = useRef<IBase>(null);
 	let attempts = 0;
 	let lockedUntil: any = false;
@@ -30,7 +31,7 @@ const PasscodeEnter = ({ hasBiometry, finishProcess }: IPasscodePasscodeEnter) =
 	const biometry = async () => {
 		if (hasBiometry && status === TYPE.ENTER) {
 			const result = await biometryAuth();
-			if (result?.success) {
+			if (result.kind === 'success') {
 				finishProcess();
 			}
 		}
@@ -49,7 +50,9 @@ const PasscodeEnter = ({ hasBiometry, finishProcess }: IPasscodePasscodeEnter) =
 		} else {
 			setStatus(TYPE.ENTER);
 		}
-		biometry();
+		if (!skipAutoBiometry) {
+			biometry();
+		}
 	};
 
 	useEffect(() => {

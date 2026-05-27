@@ -13,6 +13,7 @@ import {
 	handleLocalAuthentication
 } from '../lib/methods/helpers/localAuthentication';
 import { BIOMETRY_ENABLED_KEY, DEFAULT_AUTO_LOCK } from '../lib/constants/localAuthentication';
+import { biometricTrustStore } from '../lib/biometricTrustStore';
 import { themes } from '../lib/constants/colors';
 import SafeAreaView from '../containers/SafeAreaView';
 import { events, logEvent } from '../lib/methods/helpers/log';
@@ -161,8 +162,13 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 		logEvent(events.SLC_TOGGLE_BIOMETRY);
 		this.setState(
 			({ biometry }) => ({ biometry: !biometry }),
-			() => {
+			async () => {
 				const { biometry } = this.state;
+				if (biometry) {
+					await biometricTrustStore.enrol();
+				} else {
+					await biometricTrustStore.disenrol();
+				}
 				userPreferences.setBool(BIOMETRY_ENABLED_KEY, biometry);
 			}
 		);

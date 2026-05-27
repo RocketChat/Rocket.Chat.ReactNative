@@ -17,6 +17,7 @@ interface IData {
 	cancel?: () => void;
 	hasBiometry?: boolean;
 	force?: boolean;
+	skipAutoBiometry?: boolean;
 }
 
 const styles = StyleSheet.create({
@@ -78,7 +79,11 @@ const ScreenLockedView = (): JSX.Element => {
 			animationIn='fadeIn'
 			animationOut='fadeOut'>
 			<GestureHandlerRootView style={styles.container}>
-				<PasscodeEnter hasBiometry={!!data?.hasBiometry} finishProcess={onSubmit} />
+				<PasscodeEnter
+					hasBiometry={!!data?.hasBiometry}
+					skipAutoBiometry={!!data?.skipAutoBiometry}
+					finishProcess={onSubmit}
+				/>
 				{data?.force ? (
 					<Touch onPress={onCancel} style={styles.close}>
 						<CustomIcon name='close' size={30} />

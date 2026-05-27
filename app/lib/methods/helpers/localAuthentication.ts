@@ -8,6 +8,7 @@ import UserPreferences from '../userPreferences';
 import { store } from '../../store/auxStore';
 import database from '../../database';
 import { getServerTimeSync } from '../../services/getServerTimeSync';
+import { biometricTrustStore, type TrustResult } from '../../biometricTrustStore';
 import {
 	ATTEMPTS_KEY,
 	BIOMETRY_ENABLED_KEY,
@@ -50,12 +51,13 @@ export const saveLastLocalAuthenticationSession = async (
 
 export const resetAttempts = (): Promise<void> => AsyncStorage.multiRemove([LOCKED_OUT_TIMER_KEY, ATTEMPTS_KEY]);
 
-const openModal = (hasBiometry: boolean, force?: boolean) =>
+const openModal = (hasBiometry: boolean, force?: boolean, skipAutoBiometry?: boolean) =>
 	new Promise<void>((resolve, reject) => {
 		EventEmitter.emit(LOCAL_AUTHENTICATE_EMITTER, {
 			submit: () => resolve(),
 			hasBiometry,
 			force,
+			skipAutoBiometry,
 			cancel: () => reject()
 		});
 	});
@@ -74,20 +76,21 @@ export const changePasscode = async ({ force = false }: { force: boolean }): Pro
 	UserPreferences.setString(PASSCODE_KEY, sha256(passcode));
 };
 
-export const biometryAuth = (force?: boolean): Promise<LocalAuthentication.LocalAuthenticationResult> =>
-	LocalAuthentication.authenticateAsync({
-		disableDeviceFallback: true,
-		cancelLabel: force ? I18n.t('Dont_activate') : I18n.t('Local_authentication_biometry_fallback'),
-		promptMessage: I18n.t('Local_authentication_biometry_title')
-	});
+const buildPromptCopy = (force?: boolean) => ({
+	title: I18n.t('Local_authentication_biometry_title'),
+	cancel: force ? I18n.t('Dont_activate') : I18n.t('Local_authentication_biometry_fallback')
+});
+
+export const biometryAuth = (force?: boolean): Promise<TrustResult> =>
+	biometricTrustStore.verify({ promptCopy: buildPromptCopy(force) });
 
 /*
  * It'll help us to get the permission to use FaceID
  * and enable/disable the biometry when user put their first passcode
  */
 const checkBiometry = async () => {
-	const result = await biometryAuth(true);
-	const isBiometryEnabled = !!result?.success;
+	const result = await biometricTrustStore.enrol();
+	const isBiometryEnabled = result.kind === 'success';
 	UserPreferences.setBool(BIOMETRY_ENABLED_KEY, isBiometryEnabled);
 	return isBiometryEnabled;
 };
@@ -111,17 +114,31 @@ const hideSplashScreen = async () => {
 };
 
 export const handleLocalAuthentication = async (canCloseModal = false) => {
-	// let hasBiometry = false;
-	let hasBiometry = UserPreferences.getBool(BIOMETRY_ENABLED_KEY) ?? false;
+	const biometryEnabled = UserPreferences.getBool(BIOMETRY_ENABLED_KEY) ?? false;
 
-	// if biometry is enabled on the app
-	if (hasBiometry) {
-		const isEnrolled = await LocalAuthentication.isEnrolledAsync();
-		hasBiometry = isEnrolled;
+	if (!biometryEnabled) {
+		await openModal(false, canCloseModal);
+		return;
 	}
 
-	// Authenticate
-	await openModal(hasBiometry, canCloseModal);
+	const result = await biometricTrustStore.verify({ promptCopy: buildPromptCopy() });
+
+	// success → unlocked, no modal
+	if (result.kind === 'success') {
+		return;
+	}
+
+	// canceled / error → user dismissed or the OS prompt failed; keep biometry available on the
+	// modal but skip the auto-prompt so we don't immediately re-fire the same prompt the user
+	// just dismissed.
+	if (result.kind === 'canceled' || result.kind === 'error') {
+		await openModal(true, canCloseModal, true);
+		return;
+	}
+
+	// unavailable / enrollmentChanged → no usable sentinel; passcode-only modal. Slice 02 will
+	// add disenrol() + flag-clear + an explanatory reason for the enrollmentChanged case.
+	await openModal(false, canCloseModal);
 };
 
 export const localAuthenticate = async (server: string): Promise<void> => {
