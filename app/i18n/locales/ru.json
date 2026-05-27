@@ -416,6 +416,7 @@
   "Local_authentication_auto_lock_3600": "Через 1 час",
   "Local_authentication_auto_lock_60": "Через 1 минуту",
   "Local_authentication_auto_lock_900": "Через 15 минут",
+  "Local_authentication_biometric_enrollment_changed": "Биометрические данные изменились, пожалуйста, используйте ваш Пароль",
   "Local_authentication_biometry_fallback": "Использовать пароль",
   "Local_authentication_biometry_title": "Аутентификация",
   "Local_authentication_change_passcode": "Изменить Пароль",

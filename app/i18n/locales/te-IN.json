@@ -450,6 +450,7 @@
   "Local_authentication_auto_lock_3600": "1 గంట తరువాత",
   "Local_authentication_auto_lock_60": "1 నిమిషాల తరువాత",
   "Local_authentication_auto_lock_900": "15 నిమిషాల తరువాత",
+  "Local_authentication_biometric_enrollment_changed": "బయోమెట్రిక్ నమోదు మారింది, దయచేసి మీ పాస్‌కోడ్‌ను ఉపయోగించండి",
   "Local_authentication_biometry_fallback": "పాస్‌కోడ్ ఉపయోగించండి",
   "Local_authentication_biometry_title": "ధ్యానం పెట్టినవారు",
   "Local_authentication_change_passcode": "పాస్‌కోడ్ను మార్చండి",

@@ -451,6 +451,7 @@
   "Local_authentication_auto_lock_3600": "1 மணி நேரத்திற்கு பிற",
   "Local_authentication_auto_lock_60": "1 நிமிடத்திற்கு பிற",
   "Local_authentication_auto_lock_900": "15 நிமிடத்திற்கு பிற",
+  "Local_authentication_biometric_enrollment_changed": "உயிர்முறை பதிவில் மாற்றம் ஏற்பட்டுள்ளது, தயவுசெய்து உங்கள் கடவுச்சொல்லைப் பயன்படுத்தவும்",
   "Local_authentication_biometry_fallback": "கடவுச்சொல் பயன்படுத்துக",
   "Local_authentication_biometry_title": "அங்கீகரிக்க",
   "Local_authentication_change_passcode": "கடவுச்சொல் மாற்று",

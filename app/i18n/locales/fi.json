@@ -426,6 +426,7 @@
   "Local_authentication_auto_lock_3600": "1 tunnin kuluttua",
   "Local_authentication_auto_lock_60": "1 minuutin kuluttua",
   "Local_authentication_auto_lock_900": "15 minuutin kuluttua",
+  "Local_authentication_biometric_enrollment_changed": "Biometriset tiedot ovat muuttuneet, käytä salasanaasi",
   "Local_authentication_biometry_fallback": "Käytä salasanaa",
   "Local_authentication_biometry_title": "Todenna",
   "Local_authentication_change_passcode": "Vaihda salasana",

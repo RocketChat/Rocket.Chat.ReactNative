@@ -401,6 +401,7 @@
   "Local_authentication_auto_lock_3600": "Po 1 uri",
   "Local_authentication_auto_lock_60": "Po 1 minuti",
   "Local_authentication_auto_lock_900": "Po 15 minutah",
+  "Local_authentication_biometric_enrollment_changed": "Biometrični podatki so se spremenili, uporabite svoje geslo",
   "Local_authentication_biometry_fallback": "Uporabite geslo",
   "Local_authentication_biometry_title": "Overiti",
   "Local_authentication_change_passcode": "Spremenite geslo",

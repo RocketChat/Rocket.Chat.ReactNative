@@ -391,6 +391,7 @@
   "Local_authentication_auto_lock_3600": "Après 1 heure",
   "Local_authentication_auto_lock_60": "Après 1 minute",
   "Local_authentication_auto_lock_900": "Après 15 minutes",
+  "Local_authentication_biometric_enrollment_changed": "Les données biométriques ont changé, veuillez utiliser votre code d'accès",
   "Local_authentication_biometry_fallback": "Utiliser le code d'accès",
   "Local_authentication_biometry_title": "Authentifier",
   "Local_authentication_change_passcode": "Changer le code d'accès",
