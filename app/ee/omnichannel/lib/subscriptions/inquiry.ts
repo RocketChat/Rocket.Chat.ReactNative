@@ -25,6 +25,7 @@ const removeListener = (listener: any) => listener.stop();
 let connectedListener: any;
 let queueListener: any;
 let departmentListeners: any[] = [];
+let stopped = false;
 
 const streamTopic = 'stream-livechat-inquiry-queue-observer';
 
@@ -63,6 +64,7 @@ export default function subscribeInquiry() {
 	};
 
 	const stop = () => {
+		stopped = true;
 		if (connectedListener) {
 			connectedListener.then(removeListener);
 			connectedListener = false;
@@ -93,6 +95,7 @@ export default function subscribeInquiry() {
 
 		getAgentDepartments(user.id)
 			.then(result => {
+				if (stopped) return;
 				if (result.success) {
 					const { departments } = result;
 

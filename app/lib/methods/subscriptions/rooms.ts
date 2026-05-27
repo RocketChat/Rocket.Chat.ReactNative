@@ -26,7 +26,7 @@ import {
 	type TThreadModel,
 	SubscriptionType
 } from '../../../definitions';
-import sdk from '../../services/sdk';
+import sdk, { NOTIFY_USER_EVENTS } from '../../services/sdk';
 import { type IDDPMessage } from '../../../definitions/IDDPMessage';
 import { getSubscriptionByRoomId } from '../../database/services/Subscription';
 import { getMessageById } from '../../database/services/Message';
@@ -454,18 +454,7 @@ export default function subscribeRooms() {
 		if (!userId) {
 			throw new Error('subscribeRooms: missing userId, cannot create stream-notify-user subscriptions');
 		}
-		[
-			'message',
-			'notification',
-			'rooms-changed',
-			'subscriptions-changed',
-			'uiInteraction',
-			'e2ekeyRequest',
-			'userData',
-			'video-conference',
-			'media-signal',
-			'media-calls'
-		].forEach(event => {
+		NOTIFY_USER_EVENTS.forEach(event => {
 			const handle = sdk.subscribeRaw('stream-notify-user', `${userId}/${event}`);
 			if (handle) {
 				rawSubscriptionHandles.push(handle);

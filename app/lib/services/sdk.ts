@@ -26,6 +26,19 @@ async function normalizeResponseError(response: Response): Promise<{ status: num
 	}
 }
 
+export const NOTIFY_USER_EVENTS = [
+	'message',
+	'notification',
+	'rooms-changed',
+	'subscriptions-changed',
+	'uiInteraction',
+	'e2ekeyRequest',
+	'userData',
+	'video-conference',
+	'media-signal',
+	'media-calls'
+] as const;
+
 /**
  * Preserve the old-SDK call shape `sdk.current?.subscribeNotifyUser?.()` by
  * declaring the method on `DDPSDK`. The implementation lives on our `Sdk`
@@ -438,19 +451,7 @@ class Sdk {
 		if (!client || !uid) {
 			return [];
 		}
-		const events = [
-			'message',
-			'notification',
-			'rooms-changed',
-			'subscriptions-changed',
-			'uiInteraction',
-			'e2ekeyRequest',
-			'userData',
-			'video-conference',
-			'media-signal',
-			'media-calls'
-		];
-		return events.map(event => client.subscribe('stream-notify-user', `${uid}/${event}`));
+		return NOTIFY_USER_EVENTS.map(event => client.subscribe('stream-notify-user', `${uid}/${event}`));
 	}
 
 	get currentLogin() {
