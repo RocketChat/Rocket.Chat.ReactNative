@@ -1,0 +1,44 @@
+appId: ${APP_ID}
+name: Servers History Small Screen
+jsEngine: graaljs
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-14
+  - ios-only
+
+---
+- evalScript: ${output.user = output.utils.createUser()}
+
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+- runFlow: '../../helpers/logout.yaml'
+
+# should fully render the Servers History action sheet on small screens
+# (regression for small-screen ServersHistoryActionSheetContent on iPhone SE)
+- extendedWaitUntil:
+    visible:
+      id: 'servers-history-button'
+    timeout: 60000
+- tapOn:
+    id: 'servers-history-button'
+- waitForAnimationToEnd
+- extendedWaitUntil:
+    visible:
+      id: 'action-sheet'
+    timeout: 60000
+- assertVisible:
+    id: 'servers-history-${output.data.server}'
+
+# tap the history item — would fail if it were clipped by the sheet bottom
+- tapOn:
+    id: 'servers-history-${output.data.server}'
+- extendedWaitUntil:
+    visible:
+      id: 'login-view-submit'
+    timeout: 60000
