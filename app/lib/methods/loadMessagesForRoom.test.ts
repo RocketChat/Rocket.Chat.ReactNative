@@ -137,12 +137,7 @@ describe('loadMessagesForRoom', () => {
 
 	it('stops fetching after MAX_BATCHES even when the visible page is still unfilled', async () => {
 		// Every batch is fully hidden, so visibleMainMessagesCount never reaches COUNT
-		mockedSdkGet.mockImplementation((_endpoint, params) => {
-			const batchIndex = (params as { latest?: string }).latest
-				? Number((params as { latest?: string }).latest!.slice(-3, -1))
-				: 0;
-			return Promise.resolve({ success: true, messages: buildHiddenBatch(`batch-${batchIndex}`, 50) } as any);
-		});
+		mockedSdkGet.mockResolvedValue({ success: true, messages: buildHiddenBatch('batch', 50) } as any);
 
 		await loadMessagesForRoom({ rid: 'ROOM_ID', t: 'c' });
 
