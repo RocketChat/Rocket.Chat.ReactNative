@@ -10,6 +10,8 @@ import { getActiveRoute } from '../../lib/methods/helpers/navigation';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { setInAppFeedback } from '../../actions/inAppFeedback';
 import I18n from '../../i18n';
+import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
+import { playNotificationSound } from '../../lib/methods/helpers/playNotificationSound';
 
 export const INAPP_NOTIFICATION_EMITTER = 'NotificationInApp';
 
@@ -21,7 +23,7 @@ const InAppNotification = memo(() => {
 
 	const dispatch = useDispatch();
 
-	const show = (
+	const show = async (
 		notification: INotifierComponent['notification'] & {
 			customComponent?: ElementType;
 			customTime?: number;
@@ -42,6 +44,12 @@ const InAppNotification = memo(() => {
 				const msgId = payload._id;
 				dispatch(setInAppFeedback(msgId));
 				return;
+			}
+
+			const sub = payload?.rid ? await getSubscriptionByRoomId(payload.rid) : null;
+			if (sub?.audioNotificationValue) {
+				// eslint-disable-next-line no-void
+				void playNotificationSound(sub.audioNotificationValue);
 			}
 
 			if (payload?.name && payload?.message) {

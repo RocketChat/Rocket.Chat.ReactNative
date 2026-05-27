@@ -62,6 +62,8 @@ export interface IRoom {
 	onHold?: boolean;
 	waitingResponse?: boolean;
 	federated?: boolean;
+	audioNotificationsValue?: string;
+	audioNotificationValue?: string;
 }
 
 export interface IRoomSettings {
@@ -238,6 +240,8 @@ export interface IServerRoom extends IRocketChatRecord {
 
 	isLastOwner?: boolean;
 	federated?: boolean;
+	audioNotificationsValue?: string;
+	audioNotificationValue?: string;
 	abacAttributes?: { key: string; values: string[] }[];
 }
 
@@ -247,6 +251,7 @@ export interface IRoomNotifications {
 	muteGroupMentions?: boolean;
 	hideUnreadStatus?: boolean;
 	audioNotificationsValue?: string;
+	audioNotificationValue?: string;
 	desktopNotifications?: TNotifications;
 	mobilePushNotifications?: TNotifications;
 	emailNotifications?: TNotifications;

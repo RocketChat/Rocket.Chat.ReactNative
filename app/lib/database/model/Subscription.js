@@ -161,6 +161,8 @@ export default class Subscription extends Model {
 
 	@json('inviter', sanitizer) inviter;
 
+	@field('audio_notification_value') audioNotificationValue;
+
 	asPlain() {
 		return {
 			_id: this._id,
@@ -231,7 +233,8 @@ export default class Subscription extends Model {
 			abacAttributes: this.abacAttributes,
 			federation: this.federation,
 			status: this.status,
-			inviter: this.inviter
+			inviter: this.inviter,
+			audioNotificationValue: this.audioNotificationValue
 		};
 	}
 }

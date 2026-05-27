@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export default appSchema({
-	version: 28,
+	version: 29,
 	tables: [
 		tableSchema({
 			name: 'subscriptions',
@@ -74,7 +74,8 @@ export default appSchema({
 				{ name: 'abac_attributes', type: 'string', isOptional: true },
 				{ name: 'federation', type: 'string', isOptional: true },
 				{ name: 'status', type: 'string', isOptional: true },
-				{ name: 'inviter', type: 'string', isOptional: true }
+				{ name: 'inviter', type: 'string', isOptional: true },
+				{ name: 'audio_notification_value', type: 'string', isOptional: true }
 			]
 		}),
 		tableSchema({
