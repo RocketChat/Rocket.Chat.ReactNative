@@ -10,6 +10,7 @@ import { APP } from '../actions/actionsTypes';
 import log from '../lib/methods/helpers/log';
 import database from '../lib/database';
 import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
+import { runBiometricTrustMigration } from '../lib/biometricTrustStore/migration';
 import { appReady, appStart } from '../actions/app';
 import { RootEnum } from '../definitions';
 import { getSortPreferences } from '../lib/methods/userPreferencesMethods';
@@ -23,6 +24,7 @@ export const initLocalSettings = function* initLocalSettings() {
 
 const restore = function* restore() {
 	try {
+		yield call(runBiometricTrustMigration);
 		const server = UserPreferences.getString(CURRENT_SERVER);
 		let userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
 
