@@ -37,6 +37,11 @@ tags:
 - tapOn:
     id: 'sidebar-settings'
 
+- scrollUntilVisible:
+    element:
+      id: 'settings-logout'
+    direction: DOWN
+
 - assertVisible:
     id: 'settings-logout'
 

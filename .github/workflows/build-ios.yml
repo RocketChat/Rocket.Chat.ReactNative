@@ -55,20 +55,11 @@ jobs:
           GOOGLE_SERVICES_IOS: ${{ secrets.GOOGLE_SERVICES_IOS }}
           BUILD_VERSION: ${{ steps.version.outputs.BUILD_VERSION }}
 
-  upload-hold:
-    name: Upload Hold
-    runs-on: ubuntu-latest
-    if: ${{ inputs.trigger == 'pr' }}
-    environment: upload_ios
-    needs: [build-ios]
-    steps:
-      - run: echo "Waiting for manual approval..."
-
   upload-ios:
     name: Upload
     runs-on: macos-26
-    needs: [upload-hold]
-    if: ${{ always() && (needs.upload-hold.result == 'success' || needs.upload-hold.result == 'skipped') }}
+    needs: [build-ios]
+    if: ${{ always() && needs.build-ios.result == 'success' }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
