@@ -142,7 +142,7 @@ class Sdk {
 		const sdk = this.ensureInitialized();
 		try {
 			// @ts-ignore
-			return await sdk.rest.get(endpoint, params, {
+			return sdk.rest.get(endpoint, params, {
 				headers: this.headers
 			});
 		} catch (e: any) {
@@ -218,7 +218,7 @@ class Sdk {
 		const sdk = this.ensureInitialized();
 		try {
 			// @ts-ignore
-			return await sdk.rest.delete(endpoint, params, {
+			return sdk.rest.delete(endpoint, params, {
 				headers: this.headers
 			});
 		} catch (e: any) {
