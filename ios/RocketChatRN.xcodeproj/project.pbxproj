@@ -135,6 +135,7 @@
 		1EED2D332BC1E09500832666 /* RoomInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EED2D322BC1E09500832666 /* RoomInfoView.swift */; };
 		1EF5FBD1250C109E00614FEA /* Encryption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF5FBD0250C109E00614FEA /* Encryption.swift */; };
 		1EFEB5982493B6640072EDC0 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EFEB5972493B6640072EDC0 /* NotificationService.swift */; };
+		3D1AC0D776C3D392E31F7514 /* libPods-Rocket.Chat.Watch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 26EC7976B082CC050A998BD1 /* libPods-Rocket.Chat.Watch.a */; };
 		3F56D232A9EBA1C9C749F15D /* SecureStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B215A42CFB843397273C7EA /* SecureStorage.m */; };
 		3F56D232A9EBA1C9C749F15E /* MMKVBridge.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9B215A44CFB843397273C7EC /* MMKVBridge.mm */; };
 		3F56D232A9EBA1C9C749F160 /* MMKVBridge.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9B215A44CFB843397273C7EC /* MMKVBridge.mm */; };
@@ -277,6 +278,7 @@
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file; path = main.jsbundle; sourceTree = "<group>"; };
 		06BB44DD4855498082A744AD /* libz.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		1238492C71CF27C87CB2E976 /* Pods-defaults-NotificationService.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-defaults-NotificationService.release.xcconfig"; path = "Target Support Files/Pods-defaults-NotificationService/Pods-defaults-NotificationService.release.xcconfig"; sourceTree = "<group>"; };
+		1257457F9EFE81CD759C2038 /* Pods-Rocket.Chat.Watch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rocket.Chat.Watch.debug.xcconfig"; path = "Target Support Files/Pods-Rocket.Chat.Watch/Pods-Rocket.Chat.Watch.debug.xcconfig"; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = RocketChatRN/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = RocketChatRN/Info.plist; sourceTree = "<group>"; };
 		16A2DDFA2F4B3F1700051F86 /* RCTWatchModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCTWatchModule.h; sourceTree = "<group>"; };
@@ -423,6 +425,7 @@
 		1EFEB5972493B6640072EDC0 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		1EFEB5992493B6640072EDC0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1EFEB5A12493B67D0072EDC0 /* NotificationService.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NotificationService.entitlements; sourceTree = "<group>"; };
+		26EC7976B082CC050A998BD1 /* libPods-Rocket.Chat.Watch.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Rocket.Chat.Watch.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CF16884F9353D83C6EFBE81 /* Pods-defaults-Rocket.Chat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-defaults-Rocket.Chat.release.xcconfig"; path = "Target Support Files/Pods-defaults-Rocket.Chat/Pods-defaults-Rocket.Chat.release.xcconfig"; sourceTree = "<group>"; };
 		391C4F7AA7023CD41EEBD106 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-defaults-Rocket.Chat/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		45AECABFC0DD015C46B1D029 /* Pods-defaults-RocketChatRN.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-defaults-RocketChatRN.debug.xcconfig"; path = "Target Support Files/Pods-defaults-RocketChatRN/Pods-defaults-RocketChatRN.debug.xcconfig"; sourceTree = "<group>"; };
@@ -471,6 +474,7 @@
 		B37C79D9BD0742CE936B6982 /* libc++.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		BA6E8FC7989FF1E93670E634 /* Pods_defaults_RocketChatRN.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_defaults_RocketChatRN.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BA7E862283664608B3894E34 /* libWatermelonDB.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libWatermelonDB.a; sourceTree = "<group>"; };
+		C8AA95D48B5BF6B48F84C3D9 /* Pods-Rocket.Chat.Watch.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rocket.Chat.Watch.release.xcconfig"; path = "Target Support Files/Pods-Rocket.Chat.Watch/Pods-Rocket.Chat.Watch.release.xcconfig"; sourceTree = "<group>"; };
 		D5152D3FEFAE1AF8F5E9CCCC /* Pods_defaults_NotificationService.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_defaults_NotificationService.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E604ABC16022AB0B4819037E /* Pods-defaults-Rocket.Chat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-defaults-Rocket.Chat.debug.xcconfig"; path = "Target Support Files/Pods-defaults-Rocket.Chat/Pods-defaults-Rocket.Chat.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -480,6 +484,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3D1AC0D776C3D392E31F7514 /* libPods-Rocket.Chat.Watch.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -968,6 +973,8 @@
 				2CF16884F9353D83C6EFBE81 /* Pods-defaults-Rocket.Chat.release.xcconfig */,
 				45AECABFC0DD015C46B1D029 /* Pods-defaults-RocketChatRN.debug.xcconfig */,
 				9F66BEF98C5CF2CFDD4B4C87 /* Pods-defaults-RocketChatRN.release.xcconfig */,
+				1257457F9EFE81CD759C2038 /* Pods-Rocket.Chat.Watch.debug.xcconfig */,
+				C8AA95D48B5BF6B48F84C3D9 /* Pods-Rocket.Chat.Watch.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -1059,6 +1066,7 @@
 				D5152D3FEFAE1AF8F5E9CCCC /* Pods_defaults_NotificationService.framework */,
 				88ED4E003393D3A9256F4EB3 /* Pods_defaults_Rocket_Chat.framework */,
 				BA6E8FC7989FF1E93670E634 /* Pods_defaults_RocketChatRN.framework */,
+				26EC7976B082CC050A998BD1 /* libPods-Rocket.Chat.Watch.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1086,6 +1094,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1ED0389F2B507B4F00C007D4 /* Build configuration list for PBXNativeTarget "Rocket.Chat.Watch" */;
 			buildPhases = (
+				6F988AB46CF439AC71125FB9 /* [CP] Check Pods Manifest.lock */,
 				1ED0388A2B507B4B00C007D4 /* Sources */,
 				1ED0388B2B507B4B00C007D4 /* Frameworks */,
 				1ED0388C2B507B4B00C007D4 /* Resources */,
@@ -1348,6 +1357,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-defaults-Rocket.Chat/Pods-defaults-Rocket.Chat-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6F988AB46CF439AC71125FB9 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Rocket.Chat.Watch-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		7A55BE3B2F11316900D8744D /* Bundle React Native code and images */ = {
@@ -1964,6 +1995,7 @@
 		};
 		1ED0389D2B507B4F00C007D4 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1257457F9EFE81CD759C2038 /* Pods-Rocket.Chat.Watch.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -2014,6 +2046,7 @@
 		};
 		1ED0389E2B507B4F00C007D4 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C8AA95D48B5BF6B48F84C3D9 /* Pods-Rocket.Chat.Watch.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;

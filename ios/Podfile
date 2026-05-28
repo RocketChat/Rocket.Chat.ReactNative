@@ -34,6 +34,9 @@ abstract_target 'defaults' do
   target 'NotificationService'
 end
 
+target 'Rocket.Chat.Watch' do
+end
+
 $static_framework = [ 
   'WatermelonDB',
   'simdjson'
