@@ -15,7 +15,7 @@ import {
 	type ResultFor
 } from '../../definitions/rest/helpers';
 
-async function normalizeResponseError(response: Response): Promise<{ status: number; data: any }> {
+export async function normalizeResponseError(response: Response): Promise<{ status: number; data: any }> {
 	try {
 		const data = await response.clone().json();
 		return { status: response.status, data };

@@ -1,4 +1,4 @@
-import sdk, { NOTIFY_USER_EVENTS } from './sdk';
+import sdk, { NOTIFY_USER_EVENTS, normalizeResponseError } from './sdk';
 
 const setInternalSdk = (value: any) => {
 	(sdk as unknown as { sdk: any }).sdk = value;
@@ -144,5 +144,26 @@ describe('Sdk.login', () => {
 		const err: any = await sdk.login({ user: 'john', password: 'bad' }).catch(e => e);
 		expect(err.status).toBe(401);
 		expect(err.data.error).toBe('Unauthorized');
+	});
+});
+
+describe('normalizeResponseError', () => {
+	it('parses a JSON body and returns { status, data }', async () => {
+		const response = new Response(JSON.stringify({ error: 'not-found' }), { status: 404 });
+		const result = await normalizeResponseError(response);
+		expect(result).toEqual({ status: 404, data: { error: 'not-found' } });
+	});
+
+	it('returns { status, data: {} } when the body is not valid JSON', async () => {
+		const response = new Response('plain text error', { status: 500 });
+		const result = await normalizeResponseError(response);
+		expect(result).toEqual({ status: 500, data: {} });
+	});
+
+	it('does not consume the original response (uses clone)', async () => {
+		const response = new Response(JSON.stringify({ ok: true }), { status: 200 });
+		await normalizeResponseError(response);
+		const bodyStillReadable = await response.text();
+		expect(bodyStillReadable).toBe(JSON.stringify({ ok: true }));
 	});
 });
