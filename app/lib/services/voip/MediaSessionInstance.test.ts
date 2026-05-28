@@ -112,9 +112,15 @@ jest.mock('react-native-device-info', () => ({
 	getReadableVersion: jest.fn(() => '1.0.0')
 }));
 
+const mockStartVoipCallService = jest.fn().mockResolvedValue(undefined);
+const mockStopVoipCallService = jest.fn();
 jest.mock('../../native/NativeVoip', () => ({
 	__esModule: true,
-	default: { stopNativeDDPClient: jest.fn() }
+	default: {
+		stopNativeDDPClient: jest.fn(),
+		startVoipCallService: (callId: string) => mockStartVoipCallService(callId),
+		stopVoipCallService: () => mockStopVoipCallService()
+	}
 }));
 
 jest.mock('../../navigation/appNavigation', () => ({
@@ -235,6 +241,7 @@ function buildClientMediaCall(options: {
 describe('MediaSessionInstance', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
+		mockStartVoipCallService.mockResolvedValue(undefined);
 		mockMediaCallsStateSignals.mockResolvedValue({ signals: [], success: true });
 		mockRequestVoipCallPermissions.mockResolvedValue(true);
 		createdSessions.length = 0;
@@ -409,7 +416,67 @@ describe('MediaSessionInstance', () => {
 			getNewCallHandler()({ call: outgoing });
 			expect(outgoing.reject).not.toHaveBeenCalled();
 			expect(mockSetCall).toHaveBeenCalledWith(outgoing);
+			// Flush the FGS-start `.then` so Navigation runs.
+			await new Promise(resolve => setImmediate(resolve));
 			expect(Navigation.navigate).toHaveBeenCalledWith('CallView');
+		});
+
+		// NATIVE-1178: outgoing calls don't go through VoipNotification, so JS must start the FGS
+		// itself; otherwise mic capture is revoked ~5s after the user backgrounds the app.
+		it('starts VoipCallService for outgoing (caller) newCall on Android', async () => {
+			mockUseCallStoreGetState.mockReturnValue({
+				reset: mockCallStoreReset,
+				setCall: jest.fn(),
+				setRoomId: mockSetRoomId,
+				setDirection: mockSetDirection,
+				resetNativeCallId: jest.fn(),
+				call: null,
+				callId: null,
+				nativeAcceptedCallId: null,
+				roomId: null
+			});
+			await mediaSessionInstance.init('user-1');
+			const outgoing = buildClientMediaCall({ callId: 'out-fgs', role: 'caller' });
+			getNewCallHandler()({ call: outgoing });
+			expect(mockStartVoipCallService).toHaveBeenCalledWith('out-fgs');
+		});
+
+		it('does not start VoipCallService for incoming (callee) newCall', async () => {
+			mockUseCallStoreGetState.mockReturnValue({
+				reset: mockCallStoreReset,
+				setCall: jest.fn(),
+				setRoomId: mockSetRoomId,
+				setDirection: mockSetDirection,
+				resetNativeCallId: jest.fn(),
+				call: null,
+				callId: null,
+				nativeAcceptedCallId: null,
+				roomId: null
+			});
+			await mediaSessionInstance.init('user-1');
+			const incoming = buildClientMediaCall({ callId: 'in-fgs', role: 'callee' });
+			getNewCallHandler()({ call: incoming });
+			expect(mockStartVoipCallService).not.toHaveBeenCalled();
+		});
+
+		// If the FGS fails to start (e.g. ForegroundServiceStartNotAllowedException on a race),
+		// continuing with the call reproduces the silent mic-drop bug. Tear it down instead.
+		it('tears down the outgoing call when startVoipCallService rejects', async () => {
+			mockStartVoipCallService.mockRejectedValueOnce(new Error('start denied'));
+			await mediaSessionInstance.init('user-1');
+			const outgoing = buildClientMediaCall({ callId: 'out-fail', role: 'caller' });
+			getNewCallHandler()({ call: outgoing });
+
+			// Flush the .catch microtask chain.
+			await new Promise(resolve => setImmediate(resolve));
+
+			expect(mockShowErrorAlert).toHaveBeenCalledWith('VoIP_Call_Issue', 'Oops');
+			expect(mockTerminateNativeCall).toHaveBeenCalledWith('out-fail');
+			expect(mockCallStoreReset).toHaveBeenCalled();
+			// Navigation must not happen on FGS-rejection: `endCall` → `useCallStore.reset()` detaches
+			// the `'ended'` listener before async `hangup()` could fire `Navigation.back()`, so a
+			// `CallView` here would render null and strand the user.
+			expect(Navigation.navigate).not.toHaveBeenCalled();
 		});
 	});
 
@@ -991,6 +1058,86 @@ describe('MediaSessionInstance', () => {
 			});
 
 			await waitFor(() => expect(mockLog).toHaveBeenCalledWith(expect.any(Error)));
+		});
+	});
+
+	describe('drainPendingHangups', () => {
+		const { pendingHangups } = jest.requireActual('./pendingHangups');
+
+		beforeEach(() => {
+			pendingHangups.clear();
+		});
+
+		it('redispatches every recorded hangup through the lib transporter and empties the notebook', async () => {
+			await mediaSessionInstance.init('user-1');
+			const session = createdSessions[0] as MockMediaSignalingSession & { transporter: { hangup: jest.Mock } };
+			session.transporter = { hangup: jest.fn() };
+
+			pendingHangups.record('call-a');
+			pendingHangups.record('call-b');
+
+			mediaSessionInstance.drainPendingHangups();
+
+			expect(session.transporter.hangup).toHaveBeenCalledTimes(2);
+			expect(session.transporter.hangup).toHaveBeenNthCalledWith(1, 'call-a', 'normal');
+			expect(session.transporter.hangup).toHaveBeenNthCalledWith(2, 'call-b', 'normal');
+			expect(pendingHangups.size).toBe(0);
+		});
+
+		it('is a no-op when the session is not initialized', () => {
+			pendingHangups.record('call-a');
+			mediaSessionInstance.reset();
+
+			expect(() => mediaSessionInstance.drainPendingHangups()).not.toThrow();
+		});
+
+		it('keeps draining when one transporter.hangup throws', async () => {
+			await mediaSessionInstance.init('user-1');
+			const session = createdSessions[0] as MockMediaSignalingSession & { transporter: { hangup: jest.Mock } };
+			const thrown = new Error('boom');
+			session.transporter = {
+				hangup: jest.fn().mockImplementationOnce(() => {
+					throw thrown;
+				})
+			};
+
+			pendingHangups.record('call-a');
+			pendingHangups.record('call-b');
+
+			mediaSessionInstance.drainPendingHangups();
+
+			expect(session.transporter.hangup).toHaveBeenCalledTimes(2);
+			expect(mockLog).toHaveBeenCalledWith(thrown);
+		});
+	});
+
+	describe('endCall — recording guards', () => {
+		const { pendingHangups } = jest.requireActual('./pendingHangups');
+
+		beforeEach(() => {
+			pendingHangups.clear();
+		});
+
+		it('does not record a pending hangup when the session is not initialized', () => {
+			mediaSessionInstance.reset();
+
+			mediaSessionInstance.endCall('call-a');
+
+			expect(pendingHangups.size).toBe(0);
+		});
+
+		it('does not record or dispatch when getCallData returns a call with a different callId', async () => {
+			await mediaSessionInstance.init('user-1');
+			const session = createdSessions[0];
+			const reject = jest.fn();
+			const hangup = jest.fn();
+			session.getCallData.mockReturnValue({ callId: 'other', state: 'connected', reject, hangup });
+
+			mediaSessionInstance.endCall('expected');
+
+			expect(pendingHangups.size).toBe(0);
+			expect(reject).not.toHaveBeenCalled();
+			expect(hangup).not.toHaveBeenCalled();
 		});
 	});
 });

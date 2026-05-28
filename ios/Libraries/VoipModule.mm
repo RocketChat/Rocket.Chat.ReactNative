@@ -117,6 +117,13 @@ RCT_EXPORT_MODULE()
     [VoipService stopDDPClient];
 }
 
+// Android-only foreground service. iOS keeps the call alive via CallKit + AVAudioSession.
+- (void)startVoipCallService:(NSString *)callId
+                     resolve:(RCTPromiseResolveBlock)resolve
+                      reject:(RCTPromiseRejectBlock)reject {
+    resolve(nil);
+}
+
 // iOS keeps using InCallManager.setForceSpeakerphoneOn from JS; this stub satisfies the codegen spec.
 - (void)setSpeakerOn:(BOOL)on
             resolve:(RCTPromiseResolveBlock)resolve

@@ -4,6 +4,7 @@ import RNCallKeep from 'react-native-callkeep';
 import InCallManager from 'react-native-incall-manager';
 
 import NativeVoipModule from '../../native/NativeVoip';
+import { pendingHangups } from './pendingHangups';
 import { useCallStore } from './useCallStore';
 
 const mockLog = jest.fn();
@@ -540,5 +541,22 @@ describe('useCallStore log helper — InCallManager error paths', () => {
 		});
 		useCallStore.getState().reset();
 		expect(mockLog).toHaveBeenCalledWith(expect.any(Error));
+	});
+});
+
+describe('useCallStore endCall — pendingHangups recording', () => {
+	beforeEach(() => {
+		pendingHangups.clear();
+		useCallStore.getState().resetNativeCallId();
+		useCallStore.getState().reset();
+	});
+
+	it('records a pending hangup when endCall is invoked', () => {
+		const { call } = createMockCall('end-record');
+		useCallStore.getState().setCall(call);
+
+		useCallStore.getState().endCall();
+
+		expect(pendingHangups.drainAll()).toEqual(['end-record']);
 	});
 });

@@ -36,6 +36,20 @@ export interface Spec extends TurboModule {
 	stopNativeDDPClient(): void;
 
 	/**
+	 * Starts the VoIP foreground call service for an outgoing call.
+	 * iOS: No-op (resolves).
+	 * Android: Starts VoipCallService (microphone|phoneCall FGS) so RECORD_AUDIO keeps working
+	 *   when the app is backgrounded. The promise stays pending until VoipCallService confirms
+	 *   `startForeground` succeeded — async failures (ForegroundServiceTypeNotAllowedException,
+	 *   SecurityException at startForeground time) reject with `E_VOIP_FGS_START`, sync
+	 *   refusals (ForegroundServiceStartNotAllowedException dispatched by the framework)
+	 *   reject with the same code, and no signal within ~7s rejects with `E_VOIP_FGS_TIMEOUT`.
+	 *   Callers should tear the outgoing call down on rejection, otherwise mic capture will be
+	 *   revoked ~5s after backgrounding.
+	 */
+	startVoipCallService(callId: string): Promise<void>;
+
+	/**
 	 * Stops the VoIP foreground call service.
 	 * iOS: No-op.
 	 * Android: Sends ACTION_STOP to VoipCallService, releasing the mic-type foreground hold.
@@ -90,6 +104,7 @@ const NativeVoipModule =
 		clearInitialEvents: () => undefined,
 		getLastVoipToken: () => '',
 		stopNativeDDPClient: () => undefined,
+		startVoipCallService: () => Promise.resolve(),
 		stopVoipCallService: () => undefined,
 		setSpeakerOn: () => Promise.resolve(false),
 		startAudioRouteSync: () => Promise.resolve(),
