@@ -22,7 +22,9 @@ export const ROOM = createRequestTypes('ROOM', [
 	'FORWARD',
 	'USER_TYPING',
 	'HISTORY_REQUEST',
-	'HISTORY_FINISHED'
+	'HISTORY_FINISHED',
+	'HISTORY_UI_LOADER_PUSH',
+	'HISTORY_UI_LOADER_POP'
 ]);
 export const INQUIRY = createRequestTypes('INQUIRY', [
 	...defaultTypes,
