@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 # You may use http://rbenv.org/ or https://rvm.io/ to install and use this version
-ruby '3.2.0'  # changed from 2.7.7
+ruby '2.7.7'
 
 # Exclude problematic versions of cocoapods and activesupport that causes build failures.
 gem 'cocoapods', '>= 1.13', '!= 1.15.1', '!= 1.15.0'
