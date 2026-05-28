@@ -101,7 +101,7 @@ describe('getSettings', () => {
 				})
 		});
 
-		it('writes the new server\'s settings into the redux settings slice', async () => {
+		it("writes the new server's settings into the redux settings slice", async () => {
 			mockedFetch.mockResolvedValueOnce(respondWithSiteName('Workspace A') as any);
 			mockedStore.dispatch(selectServerRequest('https://workspace-a.example', '7.0.0'));
 
