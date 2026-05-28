@@ -1,6 +1,6 @@
 --- a/node_modules/@rocket.chat/ddp-client/dist/Connection.d.ts
 +++ b/node_modules/@rocket.chat/ddp-client/dist/Connection.d.ts
-@@ -21,6 +21,19 @@
+@@ -21,6 +21,26 @@
      connect(): Promise<boolean>;
      reconnect(): Promise<boolean>;
      close(): void;
@@ -17,10 +17,17 @@
 +     * other. Resolves true once the new socket is connected; false on failure.
 +     */
 +    forceReopen(): Promise<boolean>;
++    /**
++     * Ensure the socket is usable. If `status !== 'connected'`, force-reopens.
++     * If status is `connected`, runs a `probe()` to detect zombie sockets; on
++     * a dead probe, force-reopens. Resolves true when the socket is healthy or
++     * was successfully reopened.
++     */
++    checkAndReopen(probeTimeoutMs?: number): Promise<boolean>;
  }
  interface WebSocketConstructor {
      new (url: string | URL, protocols?: string | string[]): WebSocket;
-@@ -43,11 +56,14 @@
+@@ -43,11 +63,15 @@
      ws: WebSocket | undefined;
      retryCount: number;
      queue: Set<string>;
@@ -32,6 +39,7 @@
      close(): void;
 +    probe(timeoutMs?: number): Promise<boolean>;
 +    forceReopen(): Promise<boolean>;
++    checkAndReopen(probeTimeoutMs?: number): Promise<boolean>;
      static create(url: string, webSocketImpl: WebSocketConstructor, client: DDPClient, retryOptions?: RetryOptions): ConnectionImpl;
  }
  export {};
@@ -45,7 +53,7 @@
          this.ssl = url.startsWith('https') || url.startsWith('wss');
          this.url = url.replace(/^https?:\/\//, '').replace(/^wss?:\/\//, '');
          this.client.onDispatchMessage((message) => {
-@@ -114,6 +115,50 @@
+@@ -114,6 +115,58 @@
          (_a = this.ws) === null || _a === void 0 ? void 0 : _a.close();
          this.emitStatus();
      }
@@ -92,6 +100,14 @@
 +        };
 +        p.then(clear, clear);
 +        return p;
++    }
++    async checkAndReopen(probeTimeoutMs = 2000) {
++        if (this.status !== 'connected') {
++            return this.forceReopen();
++        }
++        const alive = await this.probe(probeTimeoutMs);
++        if (alive) return true;
++        return this.forceReopen();
 +    }
      static create(url, webSocketImpl, client, retryOptions = { retryCount: 0, retryTime: 1000 }) {
          return new ConnectionImpl(url, webSocketImpl, client, retryOptions);

@@ -360,24 +360,8 @@ async function loginOAuthOrSso(params: ICredentials) {
 	store.dispatch(loginRequest({ resume: result.token }, false));
 }
 
-/**
- * Decide whether the socket needs reopening before warm-accept replays signals.
- *   - status !== 'connected'  → socket known dead, force reopen
- *   - status === 'connected'  → probe (2s ping/pong). Alive → no-op.
- *                               Dead (zombie socket, no `onclose` fired) → force reopen.
- * Status alone is not enough on mobile, where NAT timeouts leave the socket in
- * `connected` until the ddp-client's 60s passive heartbeat catches it. Probing
- * keeps the warm-accept budget bounded.
- */
-async function checkAndReopen(): Promise<boolean> {
-	const conn = sdk.current?.connection;
-	if (!conn) return false;
-	if (conn.status !== 'connected') {
-		return sdk.forceReopen();
-	}
-	const alive = await sdk.probe();
-	if (alive) return true;
-	return sdk.forceReopen();
+function checkAndReopen(): Promise<boolean> {
+	return sdk.current?.connection.checkAndReopen() ?? Promise.resolve(false);
 }
 
 /**

@@ -74,8 +74,7 @@ export async function removeServer({ server }: { server: string }): Promise<void
 
 				const token = getDeviceToken();
 				if (token) {
-					// @ts-ignore — endpoint not in DDPSDK's typed DELETE list
-					const result = (await tempSdk.rest.delete('/v1/push.token', { token })) as { success?: boolean } | undefined;
+					const result = await tempSdk.rest.delete('/v1/push.token', { token });
 					if (result?.success !== true) {
 						log(new Error('Failed to remove push token while removing server'));
 					}
