@@ -9,7 +9,7 @@
 		"test-update": "TZ=UTC jest --updateSnapshot",
 		"lint": "eslint . && tsc",
 		"prettier-lint": "prettier --write . && pnpm lint",
-		"ios": "npx react-native run-ios",
+		"ios": "npx react-native run-ios --scheme RocketChat",
 		"pod-install": "bundle exec pod install --project-directory=ios",
 		"android": "npx react-native run-android --main-activity chat.rocket.reactnative.MainActivity",
 		"android-whitelabel": "npx react-native run-android --main-activity chat.rocket.reactnative.MainActivity --appId",
