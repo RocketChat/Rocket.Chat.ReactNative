@@ -4,37 +4,14 @@ const setInternalSdk = (value: any) => {
 	(sdk as unknown as { sdk: any }).sdk = value;
 };
 
-const buildFakeDdp = () => {
-	const pongHandlers = new Set<() => void>();
-	const ping = jest.fn();
-	const on = jest.fn((event: string, cb: () => void) => {
-		if (event === 'pong') pongHandlers.add(cb);
-		return () => pongHandlers.delete(cb);
-	});
-	const emitPong = () => pongHandlers.forEach(cb => cb());
-	return { ping, on, emitPong, pongHandlers };
-};
-
-const buildFakeConnection = (overrides: Partial<{ close: jest.Mock; reconnect: jest.Mock }> = {}) => ({
-	close: jest.fn(),
-	reconnect: jest.fn().mockResolvedValue(true),
+const buildFakeConnection = (overrides: Partial<{ probe: jest.Mock; forceReopen: jest.Mock }> = {}) => ({
+	probe: jest.fn().mockResolvedValue(true),
+	forceReopen: jest.fn().mockResolvedValue(true),
 	...overrides
 });
 
-const buildFakeSdk = (opts: { ddp?: any; connection?: any } = {}) => {
-	const fakeDdp = opts.ddp ?? buildFakeDdp();
-	const fakeConnection = opts.connection ?? buildFakeConnection();
-	return {
-		client: { ddp: fakeDdp },
-		connection: fakeConnection,
-		__fakeDdp: fakeDdp,
-		__fakeConnection: fakeConnection
-	};
-};
-
 afterEach(() => {
 	setInternalSdk(undefined);
-	(sdk as unknown as { reopenInFlight: Promise<boolean> | null }).reopenInFlight = null;
 	jest.useRealTimers();
 });
 
@@ -44,56 +21,17 @@ describe('Sdk.probe', () => {
 		await expect(sdk.probe()).resolves.toBe(false);
 	});
 
-	it('returns false when inner ddp client lacks ping/on (defensive)', async () => {
-		setInternalSdk({ client: {}, connection: buildFakeConnection() });
+	it('delegates to connection.probe() and forwards the timeout', async () => {
+		const connection = buildFakeConnection();
+		setInternalSdk({ connection });
+		await expect(sdk.probe(1500)).resolves.toBe(true);
+		expect(connection.probe).toHaveBeenCalledWith(1500);
+	});
+
+	it('returns the result from connection.probe()', async () => {
+		const connection = buildFakeConnection({ probe: jest.fn().mockResolvedValue(false) });
+		setInternalSdk({ connection });
 		await expect(sdk.probe()).resolves.toBe(false);
-	});
-
-	it('resolves true when pong fires before the timeout', async () => {
-		const fake = buildFakeSdk();
-		setInternalSdk(fake);
-		const promise = sdk.probe(2000);
-		fake.__fakeDdp.emitPong();
-		await expect(promise).resolves.toBe(true);
-		expect(fake.__fakeDdp.ping).toHaveBeenCalledTimes(1);
-	});
-
-	it('resolves false when timeout elapses without pong', async () => {
-		jest.useFakeTimers();
-		const fake = buildFakeSdk();
-		setInternalSdk(fake);
-		const promise = sdk.probe(2000);
-		jest.advanceTimersByTime(2000);
-		await expect(promise).resolves.toBe(false);
-	});
-
-	it('resolves false when ping() throws', async () => {
-		const fake = buildFakeSdk();
-		fake.__fakeDdp.ping.mockImplementation(() => {
-			throw new Error('boom');
-		});
-		setInternalSdk(fake);
-		await expect(sdk.probe()).resolves.toBe(false);
-	});
-
-	it('removes the pong listener after settling so it does not leak', async () => {
-		const fake = buildFakeSdk();
-		setInternalSdk(fake);
-		const promise = sdk.probe(2000);
-		fake.__fakeDdp.emitPong();
-		await promise;
-		expect(fake.__fakeDdp.pongHandlers.size).toBe(0);
-	});
-
-	it('ignores a late pong after timeout (does not double-resolve)', async () => {
-		jest.useFakeTimers();
-		const fake = buildFakeSdk();
-		setInternalSdk(fake);
-		const promise = sdk.probe(2000);
-		jest.advanceTimersByTime(2000);
-		await expect(promise).resolves.toBe(false);
-		// Late pong arrives. With the listener cleaned up, this is a no-op.
-		expect(() => fake.__fakeDdp.emitPong()).not.toThrow();
 	});
 });
 
@@ -103,74 +41,17 @@ describe('Sdk.forceReopen', () => {
 		await expect(sdk.forceReopen()).resolves.toBe(false);
 	});
 
-	it('calls connection.close then connection.reconnect', async () => {
-		const fake = buildFakeSdk();
-		setInternalSdk(fake);
-		await sdk.forceReopen();
-		expect(fake.__fakeConnection.close).toHaveBeenCalledTimes(1);
-		expect(fake.__fakeConnection.reconnect).toHaveBeenCalledTimes(1);
-		// close before reconnect
-		const closeOrder = fake.__fakeConnection.close.mock.invocationCallOrder[0];
-		const reconnectOrder = fake.__fakeConnection.reconnect.mock.invocationCallOrder[0];
-		expect(closeOrder).toBeLessThan(reconnectOrder);
-	});
-
-	it('resolves true when reconnect resolves truthy', async () => {
-		const fake = buildFakeSdk();
-		setInternalSdk(fake);
+	it('delegates to connection.forceReopen()', async () => {
+		const connection = buildFakeConnection();
+		setInternalSdk({ connection });
 		await expect(sdk.forceReopen()).resolves.toBe(true);
+		expect(connection.forceReopen).toHaveBeenCalledTimes(1);
 	});
 
-	it('resolves false when reconnect rejects (does not throw)', async () => {
-		const fake = buildFakeSdk({
-			connection: buildFakeConnection({ reconnect: jest.fn().mockRejectedValue(new Error('conn in progress')) })
-		});
-		setInternalSdk(fake);
+	it('returns the result from connection.forceReopen()', async () => {
+		const connection = buildFakeConnection({ forceReopen: jest.fn().mockResolvedValue(false) });
+		setInternalSdk({ connection });
 		await expect(sdk.forceReopen()).resolves.toBe(false);
-	});
-
-	it('coalesces concurrent calls to the same in-flight promise', async () => {
-		let resolveReconnect: (v: boolean) => void = () => undefined;
-		const reconnect = jest.fn(
-			() =>
-				new Promise<boolean>(res => {
-					resolveReconnect = res;
-				})
-		);
-		const fake = buildFakeSdk({ connection: buildFakeConnection({ reconnect }) });
-		setInternalSdk(fake);
-
-		const a = sdk.forceReopen();
-		const b = sdk.forceReopen();
-
-		expect(a).toBe(b);
-		expect(reconnect).toHaveBeenCalledTimes(1);
-		expect(fake.__fakeConnection.close).toHaveBeenCalledTimes(1);
-
-		resolveReconnect(true);
-		await Promise.all([a, b]);
-	});
-
-	it('clears the in-flight slot after the reopen settles so the next call starts fresh', async () => {
-		const fake = buildFakeSdk();
-		setInternalSdk(fake);
-		await sdk.forceReopen();
-		await sdk.forceReopen();
-		expect(fake.__fakeConnection.reconnect).toHaveBeenCalledTimes(2);
-		expect(fake.__fakeConnection.close).toHaveBeenCalledTimes(2);
-	});
-
-	it('still proceeds when close() throws', async () => {
-		const fake = buildFakeSdk({
-			connection: buildFakeConnection({
-				close: jest.fn(() => {
-					throw new Error('already closed');
-				})
-			})
-		});
-		setInternalSdk(fake);
-		await expect(sdk.forceReopen()).resolves.toBe(true);
-		expect(fake.__fakeConnection.reconnect).toHaveBeenCalledTimes(1);
 	});
 });
 
@@ -225,7 +106,7 @@ describe('Sdk.login', () => {
 	const buildFakeSdkWithLogin = (postResult: any, loginWithToken = jest.fn().mockResolvedValue(undefined)) => {
 		const post = jest.fn().mockResolvedValue(postResult);
 		return {
-			client: { ddp: buildFakeDdp() },
+			client: { ddp: {} },
 			connection: buildFakeConnection(),
 			account: { loginWithToken },
 			rest: { post, handleTwoFactorChallenge: jest.fn() },

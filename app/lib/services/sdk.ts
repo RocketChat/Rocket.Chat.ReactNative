@@ -52,23 +52,10 @@ class Sdk {
 	private sdk: DDPSDK | undefined;
 	private serverUrl: string | undefined;
 	private code: any = null;
-	private reopenInFlight: Promise<boolean> | null = null;
 	private headers: Record<string, string> = { ...defaultHeaders } as Record<string, string>;
 
 	initialize(server: string): DDPSDK {
 		this.sdk = DDPSDK.create(server);
-
-		// ddp-client's TimeoutControl (60s passive heartbeat) stops resetting after
-		// the first background close because it lacks a connection.on('connected')
-		// listener in its create() setup. This causes a reconnect loop on foreground:
-		// timeout fires → closes socket → reconnect → timeout fires immediately again.
-		// Monkey-patch reconnect() to re-arm the timeout on every successful reconnect.
-		const origReconnect = this.sdk.connection.reconnect.bind(this.sdk.connection);
-		this.sdk.connection.reconnect = () =>
-			origReconnect().then((r: boolean) => {
-				this.sdk?.timeoutControl?.reset();
-				return r;
-			}) as Promise<boolean>;
 
 		this.sdk.subscribeNotifyUser = () => this.subscribeNotifyUser();
 		this.serverUrl = server;
@@ -101,70 +88,12 @@ class Sdk {
 		return null;
 	}
 
-	/**
-	 * Active liveness check: sends a raw DDP `ping` and resolves true if `pong`
-	 * arrives within `timeoutMs`. Bypasses the request pipeline so a zombie
-	 * socket can't make us wait indefinitely. Reaches into the private
-	 * `MinimalDDPClient` because ddp-client doesn't expose `pong` at the
-	 * `ClientStream` layer.
-	 */
 	probe(timeoutMs = 2000): Promise<boolean> {
-		return new Promise<boolean>(resolve => {
-			const ddp = (
-				this.current?.client as unknown as
-					| {
-							ddp?: { ping?: (id?: string) => void; on?: (e: 'pong', cb: () => void) => () => void };
-					  }
-					| undefined
-			)?.ddp;
-			if (!ddp?.ping || !ddp?.on) {
-				resolve(false);
-				return;
-			}
-			let settled = false;
-			let off: (() => void) | undefined;
-			const finish = (alive: boolean) => {
-				if (settled) return;
-				settled = true;
-				clearTimeout(timer);
-				off?.();
-				resolve(alive);
-			};
-			const timer = setTimeout(() => finish(false), timeoutMs);
-			try {
-				off = ddp.on('pong', () => finish(true));
-				ddp.ping();
-			} catch {
-				finish(false);
-			}
-		});
+		return this.current?.connection.probe(timeoutMs) ?? Promise.resolve(false);
 	}
 
-	/**
-	 * Tear down the current socket and rebuild from scratch. Concurrent callers
-	 * share one in-flight promise so parallel warm-accepts don't race each other.
-	 * Resolves true once the new socket is connected; false on failure or when
-	 * there is no current SDK.
-	 */
 	forceReopen(): Promise<boolean> {
-		if (this.reopenInFlight) return this.reopenInFlight;
-		const { current } = this;
-		if (!current) return Promise.resolve(false);
-		try {
-			current.connection.close();
-		} catch {
-			// ignore — we're rebuilding anyway
-		}
-		const p = current.connection
-			.reconnect()
-			.then((v: unknown) => Boolean(v))
-			.catch(() => false);
-		this.reopenInFlight = p;
-		const clear = () => {
-			if (this.reopenInFlight === p) this.reopenInFlight = null;
-		};
-		p.then(clear, clear);
-		return p;
+		return this.current?.connection.forceReopen() ?? Promise.resolve(false);
 	}
 
 	private loadBasicAuth(): void {
