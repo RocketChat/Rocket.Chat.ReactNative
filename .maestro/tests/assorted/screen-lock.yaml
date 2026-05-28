@@ -66,7 +66,7 @@ tags:
 # Confirm passcode 1234
 - extendedWaitUntil:
     visible:
-      text: "Confirm your new passcode"
+      text: 'Confirm your new passcode'
     timeout: 60000
 - tapOn:
     id: 'passcode-button-1'
@@ -130,7 +130,7 @@ tags:
 # Now the ChangePasscodeView (PasscodeChoose) opens; choose new passcode 5678
 - extendedWaitUntil:
     visible:
-      text: "Choose your new passcode"
+      text: 'Choose your new passcode'
     timeout: 60000
 - tapOn:
     id: 'passcode-button-5'
@@ -144,7 +144,7 @@ tags:
 # Confirm new passcode 5678
 - extendedWaitUntil:
     visible:
-      text: "Confirm your new passcode"
+      text: 'Confirm your new passcode'
     timeout: 60000
 - tapOn:
     id: 'passcode-button-5'
