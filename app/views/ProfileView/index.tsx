@@ -159,10 +159,10 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		showActionSheet({
 			children: (
 				<ConfirmEmailChangeActionSheetContent
-					onSubmit={p => {
+					onSubmit={async p => {
 						hideActionSheet();
 						setValue('currentPassword', p as any);
-						submit();
+						await submit();
 					}}
 				/>
 			)
@@ -177,15 +177,6 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 
 	const applySaveSuccess = (params: IProfileParams) => {
 		logEvent(events.PROFILE_SAVE_CHANGES);
-
-		if (customFields) {
-			dispatch(setUser({ customFields, ...params }));
-			setCustomFields(customFields);
-		} else {
-			dispatch(setUser({ ...params }));
-			const updatedValues = { ...getValues(), ...params };
-			Object.entries(updatedValues).forEach(([key, value]) => setValue(key as any, value));
-		}
 
 		const updatedUser = { ...user, ...params };
 
@@ -207,7 +198,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 			setError('username', { message: I18n.t('Username_not_available'), type: 'validate' });
 		}
 
-		if (e?.message.startsWith(email) && e?.error === 'error-field-unavailable') {
+		if (email && e?.message?.startsWith(email) && e?.error === 'error-field-unavailable') {
 			setError('email', { message: I18n.t('Email_associated_with_another_user'), type: 'validate' });
 		}
 	};
