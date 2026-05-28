@@ -82,7 +82,7 @@ async function load({
 	}
 	// RC 0.60.0
 	// @ts-ignore // this method dont have type
-	const { result } = await sdk.get('chat.syncMessages', { roomId, lastUpdate: lastOpenISOString });
+	const { result } = await sdk.get('/v1/chat.syncMessages', { roomId, lastUpdate: lastOpenISOString });
 	return result;
 }
 

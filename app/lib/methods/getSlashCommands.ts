@@ -11,8 +11,7 @@ export function getSlashCommands() {
 	return new Promise<void>(async resolve => {
 		try {
 			// RC 0.60.2
-			// @ts-ignore
-			const result = await sdk.get('commands.list');
+			const result = await sdk.get('/v1/commands.list');
 
 			if (!result.success) {
 				return resolve();

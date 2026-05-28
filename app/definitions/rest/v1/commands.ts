@@ -1,6 +1,12 @@
-import { type IPreviewItem } from '../../ISlashCommand';
+import { type IPreviewItem, type ISlashCommandResult } from '../../ISlashCommand';
 
 export type CommandsEndpoints = {
+	'commands.list': {
+		GET: (params?: { count?: number; offset?: number; sort?: string }) => {
+			commands: ISlashCommandResult[];
+			success: boolean;
+		};
+	};
 	'commands.preview': {
 		GET: (params: { command: string; params: string; roomId: string }) => {
 			preview?: {

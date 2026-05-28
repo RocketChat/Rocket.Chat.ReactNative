@@ -1,6 +1,7 @@
 import { type IAvatarSuggestion, type IProfileParams } from '../../IProfile';
 import type { ITeam } from '../../ITeam';
 import type { IUser, INotificationPreferences, IUserPreferences, IUserRegistered } from '../../IUser';
+import type { TUserStatus } from '../../TUserStatus';
 
 export type UsersEndpoints = {
 	'users.2fa.sendEmailCode': {
@@ -66,6 +67,21 @@ export type UsersEndpoints = {
 	'users.getPreferences': {
 		GET: (params: { userId: IUser['_id'] }) => {
 			preferences: INotificationPreferences;
+			success: boolean;
+		};
+	};
+	'users.presence': {
+		GET: (params?: { ids?: string; from?: string }) => {
+			users: {
+				_id: string;
+				name: string;
+				username: string;
+				status: TUserStatus;
+				utcOffset: number;
+				statusText?: string;
+				avatarETag?: string;
+			}[];
+			full: boolean;
 			success: boolean;
 		};
 	};
