@@ -1,0 +1,26 @@
+diff --git a/node_modules/@rocket.chat/rest-typings/dist/v1/push.d.ts b/node_modules/@rocket.chat/rest-typings/dist/v1/push.d.ts
+--- a/node_modules/@rocket.chat/rest-typings/dist/v1/push.d.ts
++++ b/node_modules/@rocket.chat/rest-typings/dist/v1/push.d.ts
+@@ -1,4 +1,4 @@
+-import type { IMessage, IPushNotificationConfig, IPushTokenTypes } from '@rocket.chat/core-typings';
++import type { IMessage, IPushNotificationConfig, IPushToken, IPushTokenTypes } from '@rocket.chat/core-typings';
+ type PushTokenProps = {
+     id?: string;
+     type: IPushTokenTypes;
+@@ -26,6 +26,16 @@
+             success: true;
+         };
+     };
++    '/v1/push.token': {
++        POST: (payload: PushTokenProps) => {
++            result: IPushToken;
++        };
++        DELETE: (payload: {
++            token: string;
++        }) => {
++            success: boolean;
++        };
++    };
+ };
+ export {};
+ //# sourceMappingURL=push.d.ts.map
