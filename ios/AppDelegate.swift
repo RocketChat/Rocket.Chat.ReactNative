@@ -45,6 +45,9 @@ public class AppDelegate: ExpoAppDelegate {
     reactNativeFactory = factory
     bindReactNativeFactory(factory)
 
+    // Initialize Watch Connection
+    watchConnection = WatchConnection(session: WCSession.default)
+      
 #if os(iOS) || os(tvOS)
     window = UIWindow(frame: UIScreen.main.bounds)
     factory.startReactNative(
@@ -62,9 +65,6 @@ public class AppDelegate: ExpoAppDelegate {
 
     // Initialize SSL Pinning
      SSLPinning().migrate()
-
-    // Initialize Watch Connection
-    watchConnection = WatchConnection(session: WCSession.default)
 
     return result
   }

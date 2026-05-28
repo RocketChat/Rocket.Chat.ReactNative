@@ -1,5 +1,6 @@
 #import "RCTWatchModule.h"
 #import "Shared/RocketChat/MMKVBridge.h"
+#import "SecureStorage.h"
 #import <React/RCTLog.h>
 #import <WatchConnectivity/WCSession.h>
 #import <stdexcept>
@@ -33,12 +34,36 @@ NSString *mmkvCurrentServerKey = @"currentServer";
     return @"WatchModule";
 }
 
+#pragma mark - helpers
++ (NSString *)stringToHex:(NSString *)string {
+    const char *utf8 = [string UTF8String];
+    NSMutableString *hex = [NSMutableString string];
+    while (*utf8) [hex appendFormat:@"%02X", *utf8++ & 0x00FF];
+    return [[NSString stringWithFormat:@"%@", hex] lowercaseString];
+}
+
 #pragma mark - mmkv
 - (MMKVBridge *)getMMKV {
-    MMKVBridge *mmkv = [[MMKVBridge alloc] initWithID:@"default"
-                                             cryptKey:nil
-                                             rootPath:nil];
-    return mmkv;
+    SecureStorage *secureStorage = [[SecureStorage alloc] init];
+    NSString *alias = [RCTWatchModule stringToHex:@"com.MMKV.default"];
+    NSString *password = [secureStorage getSecureKey:alias];
+
+    NSData *cryptKey = (password.length > 0)
+        ? [password dataUsingEncoding:NSUTF8StringEncoding]
+        : nil;
+
+    NSString *appGroup = [[NSBundle mainBundle]
+        objectForInfoDictionaryKey:@"AppGroupIdentifier"];
+    NSString *rootPath = nil;
+    if (appGroup) {
+        NSURL *groupURL = [[NSFileManager defaultManager]
+            containerURLForSecurityApplicationGroupIdentifier:appGroup];
+        rootPath = [[groupURL path] stringByAppendingPathComponent:@"mmkv"];
+    }
+
+    return [[MMKVBridge alloc] initWithID:@"default"
+                                 cryptKey:cryptKey
+                                 rootPath:rootPath];
 }
 
 - (NSString *)getValueFromMMKV:(NSString *)key {
