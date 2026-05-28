@@ -15,7 +15,7 @@ import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import ListPicker from './ListPicker';
 import Switch from '../../containers/Switch';
 import { type IUser } from '../../definitions';
-import { shouldShowWatchAppOptions, checkWatch } from '../../lib/methods/WatchOSQuickReplies/getWatchStatus';
+import { shouldShowWatchAppOptions } from '../../lib/methods/WatchOSQuickReplies/getWatchStatus';
 
 interface IUserPreferencesViewProps {
 	navigation: NativeStackNavigationProp<ProfileStackParamList, 'UserPreferencesView'>;
@@ -86,10 +86,6 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 			onError();
 		}
 	};
-
-	useEffect(() => {
-		console.log(checkWatch(), '========================vfdbvfd====================');
-	}, []);
 
 	return (
 		<SafeAreaView testID='preferences-view'>
