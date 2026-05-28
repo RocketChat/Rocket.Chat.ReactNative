@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
 import { connect } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -13,6 +12,7 @@ import { goRoom } from '../../lib/methods/helpers/goRoom';
 import { type IApplicationState, type ISubscription, type SubscriptionType } from '../../definitions';
 import { hideNotification } from '../../lib/methods/helpers/notifications';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import Touch from '../Touch';
 
 export interface INotifierComponent {
 	notification: {
@@ -34,20 +34,20 @@ const BUTTON_HIT_SLOP = { top: 12, right: 12, bottom: 12, left: 12 };
 const styles = StyleSheet.create({
 	container: {
 		paddingHorizontal: 14,
+		paddingRight: 30,
 		flexDirection: 'row',
 		alignItems: 'center',
-		justifyContent: 'space-between',
 		marginHorizontal: 10,
 		borderWidth: StyleSheet.hairlineWidth,
 		borderRadius: 4
 	},
 	content: {
-		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
 	inner: {
-		flex: 1
+		flex: 1,
+		marginRight: 10
 	},
 	avatar: {
 		marginRight: 10
@@ -61,9 +61,6 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		lineHeight: 17,
 		...sharedStyles.textRegular
-	},
-	close: {
-		marginLeft: 10
 	},
 	small: {
 		width: '50%',
@@ -99,6 +96,7 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifie
 
 	return (
 		<View
+			testID={`in-app-notification-${text}`}
 			style={[
 				styles.container,
 				isMasterDetail && styles.small,
@@ -109,27 +107,25 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifie
 					height: rowHeight
 				}
 			]}>
-			<Touchable
+			<Touch
 				style={styles.content}
+				rectButtonStyle={styles.content}
 				onPress={onPress}
 				hitSlop={BUTTON_HIT_SLOP}
-				background={Touchable.SelectableBackgroundBorderless()}
 				testID={`in-app-notification-${text}`}>
-				<>
-					<Avatar text={avatar} size={AVATAR_SIZE} type={type} rid={rid} style={styles.avatar} />
-					<View style={styles.inner}>
-						<Text style={[styles.roomName, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
-							{title}
-						</Text>
-						<Text style={[styles.message, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
-							{text}
-						</Text>
-					</View>
-				</>
-			</Touchable>
-			<Touchable onPress={hideNotification} hitSlop={BUTTON_HIT_SLOP} background={Touchable.SelectableBackgroundBorderless()}>
-				<CustomIcon name='close' size={20} style={styles.close} />
-			</Touchable>
+				<Avatar text={avatar} size={AVATAR_SIZE} type={type} rid={rid} style={styles.avatar} />
+				<View style={styles.inner}>
+					<Text style={[styles.roomName, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
+						{title}
+					</Text>
+					<Text style={[styles.message, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
+						{text}
+					</Text>
+				</View>
+			</Touch>
+			<Touch onPress={hideNotification} hitSlop={BUTTON_HIT_SLOP}>
+				<CustomIcon name='close' size={20} />
+			</Touch>
 		</View>
 	);
 });

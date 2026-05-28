@@ -95,14 +95,18 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 						title='Log_analytics_events'
 						testID='security-privacy-view-analytics-events'
 						right={() => <Switch value={analyticsEventsState} onValueChange={toggleAnalyticsEvents} />}
+						onPress={() => toggleAnalyticsEvents(!analyticsEventsState)}
 						additionalAccessibilityLabel={analyticsEventsState}
+						accessibilityRole='switch'
 					/>
 					<List.Separator />
 					<List.Item
 						title='Send_crash_report'
 						testID='security-privacy-view-crash-report'
 						right={() => <Switch value={crashReportState} onValueChange={toggleCrashReport} />}
-						additionalAccessibilityLabel={analyticsEventsState}
+						onPress={() => toggleCrashReport(!crashReportState)}
+						additionalAccessibilityLabel={crashReportState}
+						accessibilityRole='switch'
 					/>
 					<List.Separator />
 					<List.Info info='Crash_report_disclaimer' />

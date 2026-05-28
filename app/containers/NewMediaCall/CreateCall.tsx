@@ -1,0 +1,78 @@
+import React from 'react';
+import { Pressable, StyleSheet, Text } from 'react-native';
+
+import I18n from '../../i18n';
+import { useTheme } from '../../theme';
+import { CustomIcon } from '../CustomIcon';
+import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';
+import { mediaSessionInstance } from '../../lib/services/voip/MediaSessionInstance';
+import { useIsInActiveVoipCall } from '../../lib/services/voip/isInActiveVoipCall';
+import { isSelfUserId } from '../../lib/services/voip/isSelfUserId';
+import { hideActionSheetRef } from '../ActionSheet';
+import { showErrorAlert } from '../../lib/methods/helpers/info';
+import sharedStyles from '../../views/Styles';
+
+export const CreateCall = () => {
+	const { colors } = useTheme();
+
+	const selectedPeer = usePeerAutocompleteStore(state => state.selectedPeer);
+	const isInActiveCall = useIsInActiveVoipCall();
+
+	const handleCall = async () => {
+		if (!selectedPeer) {
+			return;
+		}
+
+		if (selectedPeer.type === 'user' && isSelfUserId(selectedPeer.value)) {
+			return;
+		}
+
+		try {
+			await mediaSessionInstance.startCall(selectedPeer.value, selectedPeer.type);
+			hideActionSheetRef();
+		} catch (e) {
+			const message = e instanceof Error && e.message ? e.message : I18n.t('VoIP_Call_Issue');
+			showErrorAlert(message, I18n.t('Oops'));
+		}
+	};
+
+	const isCallDisabled = !selectedPeer || isInActiveCall;
+
+	return (
+		<Pressable
+			style={[
+				styles.callButton,
+				{
+					backgroundColor: isCallDisabled ? colors.buttonBackgroundSuccessDisabled : colors.buttonBackgroundSuccessDefault
+				}
+			]}
+			disabled={isCallDisabled}
+			onPress={handleCall}
+			accessibilityRole='button'
+			accessibilityLabel={I18n.t('Call')}
+			testID='new-media-call-button'
+			android_ripple={{ color: colors.buttonBackgroundSuccessPress }}>
+			<CustomIcon name='phone' size={24} color={isCallDisabled ? colors.buttonPrimaryDisabled : colors.fontWhite} />
+			<Text style={[styles.callText, { color: isCallDisabled ? colors.buttonPrimaryDisabled : colors.fontWhite }]}>
+				{I18n.t('Call')}
+			</Text>
+		</Pressable>
+	);
+};
+
+const styles = StyleSheet.create({
+	callButton: {
+		height: 52,
+		marginTop: 32,
+		borderRadius: 4,
+		alignItems: 'center',
+		justifyContent: 'center',
+		flexDirection: 'row',
+		gap: 4
+	},
+	callText: {
+		fontSize: 16,
+		lineHeight: 24,
+		...sharedStyles.textMedium
+	}
+});

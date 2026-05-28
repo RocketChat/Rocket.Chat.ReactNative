@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         with:
           fetch-depth: 0
           
@@ -24,10 +24,10 @@ jobs:
         uses: ./.github/actions/setup-node
 
       - name: Run Prettier
-        run: yarn prettier --write .
+        run: pnpm exec prettier --write .
 
       - name: Run ESLint
-        run: npx eslint . --fix
+        run: pnpm exec eslint . --fix
         
       - name: Check for changes
         id: changes
@@ -46,5 +46,5 @@ jobs:
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
           git add .
-          git commit -m "chore: format code and fix lint issues [skip ci]"
+          git commit -m "chore: format code and fix lint issues"
           git push origin ${{ github.ref_name }}

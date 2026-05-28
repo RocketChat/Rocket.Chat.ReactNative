@@ -500,7 +500,7 @@ export default class EncryptionRoom {
 		return message;
 	};
 
-	encryptFile = async (rid: string, file: TSendFileMessageFileInfo): TEncryptFileResult => {
+	encryptFile = async (_rid: string, file: TSendFileMessageFileInfo): TEncryptFileResult => {
 		const { path } = file;
 		const vectorBuffer = b64ToBuffer(await randomBytes(16));
 		const keyBuffer = b64ToBuffer(await generateAESCTRKey());

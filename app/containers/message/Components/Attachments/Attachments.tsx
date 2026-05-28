@@ -7,13 +7,19 @@ import Audio from './Audio';
 import Video from './Video';
 import CollapsibleQuote from './CollapsibleQuote';
 import AttachedActions from './AttachedActions';
+import Reply from './Reply';
 import MessageContext from '../../Context';
 import { type IMessageAttachments } from '../../interfaces';
 import { type IAttachment } from '../../../../definitions';
 import { getMessageFromAttachment } from '../../utils';
 
 const removeQuote = (file?: IAttachment) =>
-	file?.image_url || file?.audio_url || file?.video_url || (file?.actions?.length || 0) > 0 || file?.collapsed;
+	file?.image_url ||
+	file?.audio_url ||
+	file?.video_url ||
+	file?.collapsed ||
+	(file?.actions?.length || 0) > 0 ||
+	(file?.attachments?.length || 0) > 0;
 
 const Attachments: React.FC<IMessageAttachments> = React.memo(
 	({ attachments, timeFormat, showAttachment, getCustomEmoji, author }: IMessageAttachments) => {
@@ -27,9 +33,10 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 			return null;
 		}
 
-		const attachmentsElements = nonQuoteAttachments.map((file: IAttachment, index: number) => {
+		const attachmentsElements = nonQuoteAttachments.map((file, index) => {
 			const msg = getMessageFromAttachment(file, translateLanguage);
-			if (file && file.image_url) {
+
+			if (file.image_url) {
 				return (
 					<Image
 						key={file.image_url}
@@ -44,7 +51,7 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 				);
 			}
 
-			if (file && file.audio_url) {
+			if (file.audio_url) {
 				return <Audio key={file.audio_url} file={file} getCustomEmoji={getCustomEmoji} author={author} msg={msg} />;
 			}
 
@@ -61,15 +68,42 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 				);
 			}
 
-			if (file && file.actions && file.actions.length > 0) {
-				return <AttachedActions attachment={file} getCustomEmoji={getCustomEmoji} />;
+			if (file.actions && file.actions.length > 0) {
+				return (
+					<AttachedActions
+						key={file.title_link || file.message_link || `actions-${index}`}
+						attachment={file}
+						getCustomEmoji={getCustomEmoji}
+					/>
+				);
 			}
 			if (typeof file.collapsed === 'boolean') {
-				return <CollapsibleQuote key={index} attachment={file} timeFormat={timeFormat} getCustomEmoji={getCustomEmoji} />;
+				return (
+					<CollapsibleQuote
+						key={file.title_link || file.message_link || `collapsible-${index}`}
+						attachment={file}
+						timeFormat={timeFormat}
+						getCustomEmoji={getCustomEmoji}
+					/>
+				);
+			}
+
+			if (file.attachments?.length) {
+				return (
+					<Reply
+						key={file.title_link || file.message_link || `reply-${index}`}
+						attachment={file}
+						timeFormat={timeFormat}
+						getCustomEmoji={getCustomEmoji}
+						showAttachment={showAttachment}
+						msg={msg}
+					/>
+				);
 			}
 
 			return null;
 		});
+
 		return <View style={{ gap: 4 }}>{attachmentsElements}</View>;
 	},
 	(prevProps, nextProps) => dequal(prevProps.attachments, nextProps.attachments)

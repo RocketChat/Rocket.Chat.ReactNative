@@ -20,6 +20,10 @@ import { CustomIcon } from '../CustomIcon';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { LISTENER } from '../Toast';
+import { isIOS } from '../../lib/methods/helpers';
+
+// Maestro fail to click on child component when we enable accessibility in parent component on iOS
+const shouldDisableAccessibility = process.env.RUNNING_E2E_TESTS === 'true' && isIOS;
 
 const styles = StyleSheet.create({
 	container: {
@@ -171,7 +175,7 @@ const Content = React.memo(
 			<View
 				style={[styles.container, disabled && styles.disabled, { height: (heightContainer || BASE_HEIGHT) * fontScale }]}
 				testID={testID}
-				accessible
+				accessible={!shouldDisableAccessibility}
 				accessibilityLabel={handleAcessibilityLabel}
 				accessibilityRole={accessibilityRole ?? 'button'}>
 				{left ? <View style={styles.leftContainer}>{left()}</View> : null}
@@ -211,6 +215,7 @@ const Content = React.memo(
 
 interface IListButtonPress extends IListItemButton {
 	onPress: Function;
+	style?: ViewStyle;
 }
 
 interface IListItemButton {
@@ -221,7 +226,7 @@ interface IListItemButton {
 	underlayColor?: string;
 }
 
-const Button = React.memo(({ onPress, backgroundColor, underlayColor, ...props }: IListButtonPress) => {
+const Button = React.memo(({ onPress, backgroundColor, underlayColor, style, ...props }: IListButtonPress) => {
 	'use memo';
 
 	const { colors } = useTheme();
@@ -237,7 +242,7 @@ const Button = React.memo(({ onPress, backgroundColor, underlayColor, ...props }
 	return (
 		<Touch
 			onPress={handlePress}
-			style={{ backgroundColor: backgroundColor || colors.surfaceRoom }}
+			style={[{ backgroundColor: backgroundColor || colors.surfaceRoom }, style]}
 			underlayColor={underlayColor}
 			enabled={!props.disabled || !!props.disabledReason}>
 			<Content {...props} />
@@ -248,6 +253,7 @@ const Button = React.memo(({ onPress, backgroundColor, underlayColor, ...props }
 export interface IListItem extends Omit<IListItemContent, 'theme'>, Omit<IListItemButton, 'theme'> {
 	backgroundColor?: string;
 	onPress?: Function;
+	style?: ViewStyle;
 }
 
 const ListItem = React.memo(({ ...props }: IListItem) => {

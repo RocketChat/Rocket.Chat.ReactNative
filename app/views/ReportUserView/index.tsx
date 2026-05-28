@@ -87,7 +87,7 @@ const ReportUserView = () => {
 	return (
 		<KeyboardView>
 			<SafeAreaView style={styles.containerView} testID='report-user-view'>
-				<ScrollView contentContainerStyle={styles.scroll}>
+				<ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps='always'>
 					<UserInfo username={username} name={name} />
 					<ControlledFormTextInput
 						name='description'

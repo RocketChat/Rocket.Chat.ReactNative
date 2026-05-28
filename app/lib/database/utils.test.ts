@@ -3,8 +3,6 @@ import * as utils from './utils';
 describe('sanitizeLikeStringTester', () => {
 	// example chars that shouldn't return
 	const disallowedChars = ',./;[]!@#$%^&*()_-=+~';
-	const sanitizeLikeStringTester = (str: string) =>
-		expect(utils.sanitizeLikeString(`${str}${disallowedChars}`)).toBe(`${str}${'_'.repeat(disallowedChars.length)}`);
 
 	test('render empty', () => {
 		expect(utils.sanitizeLikeString('')).toBe('');
@@ -12,24 +10,14 @@ describe('sanitizeLikeStringTester', () => {
 	});
 
 	// Testing a couple of different alphabets
-	test('render test (latin)', () => {
-		sanitizeLikeStringTester('test123');
-	});
-
-	test('render test (arabic)', () => {
-		sanitizeLikeStringTester('اختبار123');
-	});
-
-	test('render test (russian)', () => {
-		sanitizeLikeStringTester('тест123');
-	});
-
-	test('render test (chinese trad)', () => {
-		sanitizeLikeStringTester('測試123');
-	});
-
-	test('render test (japanese)', () => {
-		sanitizeLikeStringTester('テスト123');
+	test.each([
+		['latin', 'test123'],
+		['arabic', 'اختبار123'],
+		['russian', 'тест123'],
+		['chineseTrad', '測試123'],
+		['japanese', 'テスト123']
+	])('render test (%s)', (_, str) => {
+		expect(utils.sanitizeLikeString(`${str}${disallowedChars}`)).toBe(`${str}${'_'.repeat(disallowedChars.length)}`);
 	});
 });
 

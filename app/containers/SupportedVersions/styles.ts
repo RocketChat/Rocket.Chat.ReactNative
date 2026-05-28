@@ -4,7 +4,7 @@ import sharedStyles from '../../views/Styles';
 
 export const styles = StyleSheet.create({
 	container: {
-		flex: 1,
+		flex: 0,
 		padding: 16,
 		backgroundColor: '#fff'
 	},

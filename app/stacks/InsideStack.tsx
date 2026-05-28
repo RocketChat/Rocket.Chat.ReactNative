@@ -66,6 +66,7 @@ import ModalBlockView from '../views/ModalBlockView';
 import JitsiMeetView from '../views/JitsiMeetView';
 import StatusView from '../views/StatusView';
 import ShareView from '../views/ShareView';
+import CallView from '../views/CallView';
 import CreateDiscussionView from '../views/CreateDiscussionView';
 import ForwardMessageView from '../views/ForwardMessageView';
 import QueueListView from '../ee/omnichannel/views/QueueListView';
@@ -339,6 +340,7 @@ const InsideStackNavigator = () => {
 			<InsideStack.Screen name='ShareView' component={ShareView} />
 			{/* @ts-ignore */}
 			<InsideStack.Screen name='ModalBlockView' component={ModalBlockView} options={ModalBlockView.navigationOptions} />
+			<InsideStack.Screen name='CallView' component={CallView} options={{ headerShown: false }} />
 		</InsideStack.Navigator>
 	);
 };

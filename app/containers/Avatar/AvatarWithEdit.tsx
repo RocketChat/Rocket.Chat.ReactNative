@@ -61,12 +61,12 @@ const AvatarWithEdit = ({
 				size={120}
 				borderRadius={borderRadius}
 				type={type}
-				children={children}
 				onPress={onPress}
 				getCustomEmoji={getCustomEmoji}
 				isStatic={isStatic}
-				rid={rid}
-			/>
+				rid={rid}>
+				{children}
+			</AvatarContainer>
 			{handleEdit && serverVersion && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.6.0') ? (
 				<Button
 					accessibilityLabel={editAccessibilityLabel}

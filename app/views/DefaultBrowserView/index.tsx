@@ -92,7 +92,7 @@ const DefaultBrowserView = () => {
 						isSelected={(!browser && item.value === 'systemDefault:') || item.title === browser}
 						title={item.title}
 						value={item.value}
-						translateTitle={false}
+						translateTitle={['In_app', 'System_default'].includes(item.title)}
 						translateSubtitle={false}
 						onPress={changeDefaultBrowser}
 						testID={`default-browser-view-${item.value}`}

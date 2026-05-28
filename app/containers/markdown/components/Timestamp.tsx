@@ -14,44 +14,44 @@ interface ITimestampProps {
 const Timestamp = ({ value }: ITimestampProps): React.ReactElement => {
 	const { colors } = useTheme();
 
-	const formatDate = React.useMemo(() => {
-		const timestamp = parseInt(value.timestamp) * 1000;
+	const timestampMs = React.useMemo(() => parseInt(value.timestamp, 10) * 1000, [value.timestamp]);
 
+	const formatDate = React.useMemo(() => {
 		if (value.format === 't') {
-			return dayjs(timestamp).format('hh:mm A');
+			return dayjs(timestampMs).format('hh:mm A');
 		}
 
 		if (value.format === 'T') {
-			return dayjs(timestamp).format('hh:mm:ss A');
+			return dayjs(timestampMs).format('hh:mm:ss A');
 		}
 
 		if (value.format === 'd') {
-			return dayjs(timestamp).format('MM/DD/YYYY');
+			return dayjs(timestampMs).format('MM/DD/YYYY');
 		}
 
 		if (value.format === 'D') {
-			return dayjs(timestamp).format('dddd, MMM DD, YYYY');
+			return dayjs(timestampMs).format('dddd, MMM DD, YYYY');
 		}
 
 		if (value.format === 'f') {
-			return dayjs(timestamp).format('dddd, MMM DD, YYYY hh:mm A');
+			return dayjs(timestampMs).format('dddd, MMM DD, YYYY hh:mm A');
 		}
 
 		if (value.format === 'F') {
-			return dayjs(timestamp).format('dddd, MMM DD, YYYY hh:mm:ss A');
+			return dayjs(timestampMs).format('dddd, MMM DD, YYYY hh:mm:ss A');
 		}
 
 		if (value.format === 'R') {
-			return dayjs(timestamp).fromNow();
+			return dayjs(timestampMs).fromNow();
 		}
 
 		return 'Invalid Date';
-	}, [value]);
+	}, [timestampMs, value.format]);
 
 	const handlePress = React.useCallback(() => {
-		const message = dayjs(parseInt(value.timestamp) * 1000).format('dddd, MMM DD, YYYY hh:mm A');
+		const message = dayjs(timestampMs).format('dddd, MMM DD, YYYY hh:mm A');
 		EventEmitter.emit(LISTENER, { message });
-	}, [value.timestamp]);
+	}, [timestampMs]);
 
 	return (
 		<Text

@@ -1,6 +1,5 @@
 import { select, takeLatest } from 'redux-saga/effects';
 
-import Navigation from '../lib/navigation/appNavigation';
 import log from '../lib/methods/helpers/log';
 import { localAuthenticate, saveLastLocalAuthenticationSession } from '../lib/methods/helpers/localAuthentication';
 import { APP_STATE } from '../actions/actionsTypes';
@@ -9,28 +8,31 @@ import { checkAndReopen } from '../lib/services/connect';
 import { setUserPresenceOnline, setUserPresenceAway } from '../lib/services/restApi';
 import { checkPendingNotification } from '../lib/notifications';
 
+const isAuthAndConnected = function* isAuthAndConnected() {
+	const login = yield select(state => state.login);
+	const meteor = yield select(state => state.meteor);
+	return login.isAuthenticated && meteor.connected;
+};
+
 const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 	const appRoot = yield select(state => state.app.root);
-	if (appRoot === RootEnum.ROOT_OUTSIDE) {
+	if (appRoot !== RootEnum.ROOT_INSIDE) {
 		return;
 	}
 	const login = yield select(state => state.login);
-	const server = yield select(state => state.server);
-	if (
-		!login.isAuthenticated ||
-		login.isFetching ||
-		server.connecting ||
-		server.loading ||
-		server.changingServer ||
-		!Navigation.navigationRef.current
-	) {
+	if (!login.isAuthenticated) {
 		return;
 	}
 	try {
-		yield localAuthenticate(server.server);
-		checkAndReopen();
+		const server = yield select(state => state.server.server);
+		yield localAuthenticate(server);
+		// Always reconnect on foreground; gating on meteor.connected would skip
+		// the call precisely when the socket died silently in background.
+		checkAndReopen().catch(e => {
+			log('[state.js] checkAndReopen failed:', e);
+		});
 		// Check for pending notification when app comes to foreground (Android - notification tap while in background)
-		checkPendingNotification().catch((e) => {
+		checkPendingNotification().catch(e => {
 			log('[state.js] Error checking pending notification:', e);
 		});
 		return yield setUserPresenceOnline();
@@ -41,13 +43,16 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 
 const appHasComeBackToBackground = function* appHasComeBackToBackground() {
 	const appRoot = yield select(state => state.app.root);
-	if (appRoot === RootEnum.ROOT_OUTSIDE) {
+	if (appRoot !== RootEnum.ROOT_INSIDE) {
+		return;
+	}
+	const isReady = yield isAuthAndConnected();
+	if (!isReady) {
 		return;
 	}
 	try {
 		const server = yield select(state => state.server.server);
 		yield saveLastLocalAuthenticationSession(server);
-
 		yield setUserPresenceAway();
 	} catch (e) {
 		log(e);

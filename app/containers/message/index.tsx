@@ -441,6 +441,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 					onReactionPress: this.onReactionPress,
 					onEncryptedPress: this.onEncryptedPress,
 					onDiscussionPress: this.onDiscussionPress,
+					onThreadPress: this.onThreadPress,
 					onReactionLongPress: this.onReactionLongPress,
 					onLinkPress: this.onLinkPress,
 					onAnswerButtonPress: this.onAnswerButtonPress,

@@ -14,6 +14,7 @@ export interface IEmojiPickerProps {
 	isEmojiKeyboard?: boolean;
 	searching?: boolean;
 	searchedEmojis?: IEmoji[];
+	bottomSheet?: boolean;
 }
 
 export interface IFooterProps {
@@ -28,6 +29,7 @@ export interface IEmojiCategoryProps {
 	parentWidth: number;
 	category?: TEmojiCategory;
 	emojis?: IEmoji[];
+	bottomSheet?: boolean;
 }
 
 export interface IEmojiSearchBarProps {
