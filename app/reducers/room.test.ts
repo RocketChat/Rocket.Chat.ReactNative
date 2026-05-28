@@ -5,6 +5,8 @@ import {
 	removedRoom,
 	roomHistoryFinished,
 	roomHistoryRequest,
+	roomHistoryUiLoaderPop,
+	roomHistoryUiLoaderPush,
 	subscribeRoom,
 	unsubscribeRoom
 } from '../actions/room';
@@ -68,5 +70,16 @@ describe('test room reducer', () => {
 		mockedStore.dispatch(roomHistoryFinished({ loaderId: 'loader' }));
 		const { historyLoaders } = mockedStore.getState().room;
 		expect(historyLoaders).toEqual([]);
+	});
+
+	it('should append loader id after HISTORY_UI_LOADER_PUSH', () => {
+		mockedStore.dispatch(roomHistoryUiLoaderPush({ loaderId: 'ui-loader' }));
+		expect(mockedStore.getState().room.historyLoaders).toContain('ui-loader');
+	});
+
+	it('should remove loader id after HISTORY_UI_LOADER_POP', () => {
+		mockedStore.dispatch(roomHistoryUiLoaderPush({ loaderId: 'pop-me' }));
+		mockedStore.dispatch(roomHistoryUiLoaderPop({ loaderId: 'pop-me' }));
+		expect(mockedStore.getState().room.historyLoaders).not.toContain('pop-me');
 	});
 });
