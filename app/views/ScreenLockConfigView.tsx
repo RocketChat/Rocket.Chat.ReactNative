@@ -287,7 +287,11 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 						{autoLock ? (
 							<>
 								<List.Separator />
-								<List.Item title='Local_authentication_change_passcode' onPress={this.changePasscode} showActionIndicator />
+								<List.Item
+									title='Local_authentication_change_passcode'
+									onPress={() => this.changePasscode({ force: false })}
+									showActionIndicator
+								/>
 							</>
 						) : null}
 						<List.Separator />

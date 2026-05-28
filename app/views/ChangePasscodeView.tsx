@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import isEmpty from 'lodash/isEmpty';
@@ -35,6 +35,7 @@ interface IArgs {
 const ChangePasscodeView = React.memo(() => {
 	const [visible, setVisible] = useState(false);
 	const [data, setData] = useState<Partial<IArgs>>({});
+	const pendingResolve = useRef<(() => void) | null>(null);
 
 	useDeepCompareEffect(() => {
 		if (!isEmpty(data)) {
@@ -50,18 +51,19 @@ const ChangePasscodeView = React.memo(() => {
 
 	const onSubmit = (passcode: string) => {
 		const { submit } = data;
-		if (submit) {
-			submit(passcode);
-		}
+		pendingResolve.current = submit ? () => submit(passcode) : null;
 		setData({});
 	};
 
 	const onCancel = () => {
-		const { cancel } = data;
-		if (cancel) {
-			cancel();
-		}
+		pendingResolve.current = data.cancel ?? null;
 		setData({});
+	};
+
+	const onModalHide = () => {
+		const resolve = pendingResolve.current;
+		pendingResolve.current = null;
+		resolve?.();
 	};
 
 	useEffect(() => {
@@ -72,7 +74,7 @@ const ChangePasscodeView = React.memo(() => {
 	}, []);
 
 	return (
-		<Modal useNativeDriver isVisible={visible} hideModalContentWhileAnimating style={styles.modal}>
+		<Modal useNativeDriver isVisible={visible} hideModalContentWhileAnimating style={styles.modal} onModalHide={onModalHide}>
 			<GestureHandlerRootView style={styles.container}>
 				<PasscodeChoose finishProcess={onSubmit} force={data?.force} />
 				{!data?.force ? (

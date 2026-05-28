@@ -1,5 +1,5 @@
 import isEmpty from 'lodash/isEmpty';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import Modal from 'react-native-modal';
 import useDeepCompareEffect from 'use-deep-compare-effect';
@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
 const ScreenLockedView = (): JSX.Element => {
 	const [visible, setVisible] = useState(false);
 	const [data, setData] = useState<IData>({});
+	const pendingResolve = useRef<(() => void) | null>(null);
 
 	useDeepCompareEffect(() => {
 		if (!isEmpty(data)) {
@@ -56,19 +57,19 @@ const ScreenLockedView = (): JSX.Element => {
 	}, []);
 
 	const onSubmit = () => {
-		const { submit } = data;
-		if (submit) {
-			submit();
-		}
+		pendingResolve.current = data.submit ?? null;
 		setData({});
 	};
 
 	const onCancel = () => {
-		const { cancel } = data;
-		if (cancel) {
-			cancel();
-		}
+		pendingResolve.current = data.cancel ?? null;
 		setData({});
+	};
+
+	const onModalHide = () => {
+		const resolve = pendingResolve.current;
+		pendingResolve.current = null;
+		resolve?.();
 	};
 
 	return (
@@ -78,7 +79,8 @@ const ScreenLockedView = (): JSX.Element => {
 			hideModalContentWhileAnimating
 			style={{ margin: 0 }}
 			animationIn='fadeIn'
-			animationOut='fadeOut'>
+			animationOut='fadeOut'
+			onModalHide={onModalHide}>
 			<GestureHandlerRootView style={styles.container}>
 				<PasscodeEnter
 					hasBiometry={!!data?.hasBiometry}
