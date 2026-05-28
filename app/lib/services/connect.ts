@@ -24,7 +24,7 @@ import { compareServerVersion, isIOS } from '../methods/helpers';
 import { onRolesChanged } from '../methods/getRoles';
 import { getSettings } from '../methods/getSettings';
 import { setPresenceCap } from '../methods/getUsersPresence';
-import { _setUser, _activeUsers, _setUserTimer } from '../methods/setUser';
+import { _setUser, _activeUsers, _setUserTimer, type IActiveUsers } from '../methods/setUser';
 import { unsubscribeRooms } from '../methods/subscribeRooms';
 
 interface IServices {
@@ -166,8 +166,7 @@ async function connect({ server, logoutOnError = false }: { server: string; logo
 								store.dispatch(setActiveUsers(activeUsersBatch));
 							});
 							_setUserTimer.setUserTimer = null;
-							// @ts-ignore - fix me
-							_activeUsers.activeUsers = {};
+							_activeUsers.activeUsers = {} as IActiveUsers;
 							return null;
 						}, 10000);
 					}
@@ -244,7 +243,6 @@ function stopListener(listener: any): boolean {
 }
 
 async function login(credentials: ICredentials): Promise<ILoggedUser | undefined> {
-	// TODO: other login methods: ldap, saml, cas, apple, oauth, oauth_custom
 	const result = await sdk.login(credentials);
 	const { me } = result;
 	const serverVersion = store.getState().server.version;
@@ -262,7 +260,6 @@ async function login(credentials: ICredentials): Promise<ILoggedUser | undefined
 	}
 
 	if (loginUser) {
-		// TODO: review type
 		const user: ILoggedUser = {
 			id: loginUser.id,
 			token: loginUser.token as string,
@@ -358,9 +355,9 @@ function loginWithPassword({ user, password }: { user: string; password: string 
 	return loginTOTP(params, true);
 }
 
-async function loginOAuthOrSso(params: ICredentials, isFromWebView = true) {
+async function loginOAuthOrSso(params: ICredentials) {
 	const result = await loginTOTP(params, false);
-	store.dispatch(loginRequest({ resume: result.token }, false, isFromWebView));
+	store.dispatch(loginRequest({ resume: result.token }, false));
 }
 
 /**
@@ -469,11 +466,11 @@ async function getLoginServices(server: string) {
 }
 
 function determineAuthType(services: IServices) {
-	const { name, custom, showButton = true, service } = services;
+	const { name, custom, showButton, service } = services;
 
 	const authName = name || service;
 
-	if (custom && showButton) {
+	if (custom && showButton !== false) {
 		return 'oauth_custom';
 	}
 

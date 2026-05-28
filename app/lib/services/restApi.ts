@@ -77,7 +77,7 @@ export const e2eGetUsersOfRoomWithoutKey = (rid: string) =>
 
 export const e2eSetRoomKeyID = (rid: string, keyID: string) =>
 	// RC 0.70.0
-	sdk.methodCallWrapper('e2e.setRoomKeyID', rid, keyID);
+	sdk.post('/v1/e2e.setRoomKeyID', { rid, keyID });
 
 export const e2eUpdateGroupKey = (uid: string, rid: string, key: string): any =>
 	// RC 0.70.0
@@ -248,10 +248,16 @@ export const teamListRoomsOfUser = ({ teamId, userId }: { teamId: string; userId
 	sdk.get('/v1/teams.listRoomsOfUser', { teamId, userId });
 
 export const convertChannelToTeam = ({ rid, name, type }: { rid: string; name: string; type: 'c' | 'p' }) => {
+	const serverVersion = reduxStore.getState().server.version;
 	let params;
 	if (type === 'c') {
 		// https://github.com/RocketChat/Rocket.Chat/pull/25279
-		params = { channelId: rid };
+		params = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '4.8.0')
+			? { channelId: rid }
+			: {
+					channelId: rid,
+					channelName: name
+			  };
 	} else {
 		params = {
 			roomId: rid,

@@ -1,14 +1,12 @@
 import EJSON from 'ejson';
 import isEmpty from 'lodash/isEmpty';
 import { type ClientStream, DDPSDK } from '@rocket.chat/ddp-client';
-import { Platform } from 'react-native';
-import DeviceInfo from 'react-native-device-info';
 
 import { twoFactor } from './twoFactor';
 import { store as reduxStore } from '../store/auxStore';
 import { compareServerVersion, random } from '../methods/helpers';
 import UserPreferences from '../methods/userPreferences';
-import { BASIC_AUTH_KEY } from '../methods/helpers/fetch';
+import { BASIC_AUTH_KEY, headers as defaultHeaders } from '../methods/helpers/fetch';
 import {
 	type Serialized,
 	type MatchPathPattern,
@@ -55,11 +53,7 @@ class Sdk {
 	private serverUrl: string | undefined;
 	private code: any = null;
 	private reopenInFlight: Promise<boolean> | null = null;
-	private headers: Record<string, string> = {
-		'User-Agent': `RC Mobile; ${
-			Platform.OS
-		} ${DeviceInfo.getSystemVersion()}; v${DeviceInfo.getVersion()} (${DeviceInfo.getBuildNumber()})`
-	};
+	private headers: Record<string, string> = { ...defaultHeaders } as Record<string, string>;
 
 	initialize(server: string): DDPSDK {
 		this.sdk = DDPSDK.create(server);
@@ -305,7 +299,6 @@ class Sdk {
 
 	async twoFactorHandler({
 		method,
-		// emailOrUsername, TODO: what is this for?
 		invalidAttempt
 	}: {
 		method: 'totp' | 'email' | 'password';
@@ -362,12 +355,11 @@ class Sdk {
 		const { user } = reduxStore.getState().login;
 		if (API_Use_REST_For_DDP_Calls) {
 			const url = isEmpty(user) ? 'method.callAnon' : 'method.call';
-			// TODO: fix this type
-			// @ts-ignore
-			const result = (await this.post(`/v1/${url}/${method}` as any, {
+			const endpoint = `/v1/${url}/${method}` as PathFor<'POST'>;
+			const result = (await this.post(endpoint, {
 				message: EJSON.stringify({ msg: 'method', id: random(10), method, params })
-			})) as any;
-			const response = JSON.parse(result.message) as any;
+			} as any)) as unknown as { message: string };
+			const response = JSON.parse(result.message);
 			if (response?.error) {
 				throw response.error;
 			}
@@ -379,7 +371,6 @@ class Sdk {
 			}
 			return param;
 		});
-		// @ts-ignore
 		return this.methodCall(method, ...parsedParams);
 	}
 

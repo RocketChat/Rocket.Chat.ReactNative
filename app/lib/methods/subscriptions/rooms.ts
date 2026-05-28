@@ -26,7 +26,7 @@ import {
 	type TThreadModel,
 	SubscriptionType
 } from '../../../definitions';
-import sdk, { NOTIFY_USER_EVENTS } from '../../services/sdk';
+import sdk from '../../services/sdk';
 import { type IDDPMessage } from '../../../definitions/IDDPMessage';
 import { getSubscriptionByRoomId } from '../../database/services/Subscription';
 import { getMessageById } from '../../database/services/Message';
@@ -449,17 +449,7 @@ export default function subscribeRooms() {
 	try {
 		// set the server that started this task
 		subServer = sdk.current?.connection.url || '';
-		const { user } = store.getState().login;
-		const userId = user?.id;
-		if (!userId) {
-			throw new Error('subscribeRooms: missing userId, cannot create stream-notify-user subscriptions');
-		}
-		NOTIFY_USER_EVENTS.forEach(event => {
-			const handle = sdk.subscribeRaw('stream-notify-user', `${userId}/${event}`);
-			if (handle) {
-				rawSubscriptionHandles.push(handle);
-			}
-		});
+		rawSubscriptionHandles = sdk.subscribeNotifyUser();
 		roomsSubscription = { stop: () => stop() };
 		return null;
 	} catch (e) {
