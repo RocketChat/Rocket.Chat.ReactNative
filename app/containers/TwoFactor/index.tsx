@@ -7,6 +7,7 @@ import useDeepCompareEffect from 'use-deep-compare-effect';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { ControlledFormTextInput } from '../TextInput';
 import I18n from '../../i18n';
@@ -157,7 +158,7 @@ const TwoFactor = React.memo(() => {
 			useNativeDriver
 			isVisible={visible}
 			hideModalContentWhileAnimating>
-			<View style={styles.container} testID='two-factor'>
+			<GestureHandlerRootView style={styles.container} testID='two-factor'>
 				<View
 					style={[
 						styles.content,
@@ -198,7 +199,7 @@ const TwoFactor = React.memo(() => {
 					</View>
 				</View>
 				<Toast />
-			</View>
+			</GestureHandlerRootView>
 		</Modal>
 	);
 });

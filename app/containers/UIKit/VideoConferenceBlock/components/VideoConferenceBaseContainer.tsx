@@ -17,7 +17,7 @@ export const VideoConferenceBaseContainer = ({ variant, children }: VideoConfMes
 
 	const iconStyle: { [key: string]: { icon: TIconsName; color: string; backgroundColor: string; label: string } } = {
 		ended: {
-			icon: 'phone-end',
+			icon: 'phone-off',
 			color: colors.fontSecondaryInfo,
 			backgroundColor: colors.surfaceNeutral,
 			label: i18n.t('Call_ended')

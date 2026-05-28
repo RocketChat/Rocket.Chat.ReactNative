@@ -7,13 +7,14 @@ import { type IListContainerProps, type IListContainerRef, type IListProps } fro
 import { useMessages, useScroll } from './hooks';
 
 const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
-	({ rid, tmid, renderRow, showMessageInMainThread, serverVersion, hideSystemMessages, listRef }, ref) => {
+	({ rid, tmid, t, renderRow, showMessageInMainThread, hideSystemMessages, listRef, serverVersion }, ref) => {
 		const [messages, messagesIds, fetchMessages] = useMessages({
 			rid,
 			tmid,
 			showMessageInMainThread,
-			serverVersion,
-			hideSystemMessages
+			hideSystemMessages,
+			t,
+			serverVersion
 		});
 		const {
 			jumpToBottom,

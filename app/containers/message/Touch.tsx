@@ -6,10 +6,11 @@ import {
 	type StyleProp,
 	type AccessibilityActionEvent,
 	type AccessibilityActionInfo,
-	TouchableNativeFeedback,
 	TouchableOpacity,
+	TouchableHighlight,
 	type TouchableWithoutFeedbackProps
 } from 'react-native';
+import { withKeyboardFocus } from 'react-native-external-keyboard';
 
 import { useTheme } from '../../theme';
 import { isIOS } from '../../lib/methods/helpers';
@@ -25,9 +26,11 @@ export interface ITouchProps extends TouchableWithoutFeedbackProps {
 	rectButtonStyle?: StyleProp<ViewStyle>;
 	enabled?: boolean;
 	android_rippleColor?: string;
+	componentRef?: React.RefObject<View | null>;
 }
 
-const Component = isIOS ? TouchableOpacity : TouchableNativeFeedback;
+const Component = isIOS ? TouchableOpacity : TouchableHighlight;
+const KeyboardComponent = withKeyboardFocus(Component);
 
 const Touch = React.forwardRef<View, ITouchProps>(
 	(
@@ -43,6 +46,7 @@ const Touch = React.forwardRef<View, ITouchProps>(
 			style,
 			rectButtonStyle,
 			enabled = true,
+			componentRef,
 			...props
 		},
 		ref
@@ -78,29 +82,31 @@ const Touch = React.forwardRef<View, ITouchProps>(
 			marginStart,
 			marginTop
 		};
-		const touchableProps = isIOS
-			? {}
-			: { background: TouchableNativeFeedback.Ripple(android_rippleColor ?? colors.surfaceNeutral, false) };
+		const touchableProps = isIOS ? {} : { underlayColor: android_rippleColor ?? colors.surfaceNeutral, activeOpacity: 1 };
 
 		return (
-			<Component
+			<KeyboardComponent
 				ref={ref}
+				// Library types componentRef as RefObject<View>, but useRef<View>(null) yields RefObject<View | null>. The lib only reads .current with a null check, so the cast is safe.
+				componentRef={componentRef as React.RefObject<View>}
 				onPress={onPress}
+				accessible={accessible}
+				accessibilityRole={props.accessibilityRole}
+				accessibilityLabel={accessibilityLabel}
+				accessibilityHint={accessibilityHint}
+				accessibilityActions={accessibilityActions}
+				onAccessibilityAction={onAccessibilityAction}
 				style={[rectButtonStyle, marginStyles, { backgroundColor, borderRadius }]}
-				disabled={!enabled}
 				{...touchableProps}
-				{...props}>
-				<View
-					accessible={accessible}
-					accessibilityRole={props.accessibilityRole}
-					accessibilityLabel={accessibilityLabel}
-					accessibilityHint={accessibilityHint}
-					accessibilityActions={accessibilityActions}
-					onAccessibilityAction={onAccessibilityAction}
-					style={viewStyle}>
-					{children}
-				</View>
-			</Component>
+				{...props}
+				disabled={!enabled}
+				focusable={enabled}
+				canBeFocused={enabled}>
+				{/* The accessibility props live on the focusable Touchable above. The inner View is a
+				    layout-only container; marking it accessible would create a second sibling node with
+				    the same label, causing double VoiceOver announcements and confusing TalkBack swipe nav. */}
+				<View style={viewStyle}>{children}</View>
+			</KeyboardComponent>
 		);
 	}
 );

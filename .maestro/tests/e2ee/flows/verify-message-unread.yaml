@@ -1,4 +1,4 @@
-appId: chat.rocket.reactnative
+appId: ${APP_ID}
 name: Verify Message Unread
 tags:
   - 'flow'
@@ -13,7 +13,19 @@ tags:
     env:
       ROOM: ${ROOM}
 - runFlow: '../utils/enter-e2e-key.yaml'
-- extendedWaitUntil:
-    visible:
-      id: 'read-receipt-unread'
-    timeout: 60000
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - extendedWaitUntil:
+          visible:
+            id: 'read-receipt-unread'
+          timeout: 60000
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - extendedWaitUntil:
+          visible:
+            text: '.*Message was not read.*'
+          timeout: 60000

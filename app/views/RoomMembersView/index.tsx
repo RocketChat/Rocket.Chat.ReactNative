@@ -268,7 +268,8 @@ const RoomMembersView = (): React.ReactElement => {
 										right: () => <Radio check={allUsers} />,
 										testID: 'room-members-view-toggle-status-all'
 									}
-								]
+								],
+								enableContentPanningGesture: false
 							})
 						}
 						testID='room-members-view-filter'
@@ -339,7 +340,7 @@ const RoomMembersView = (): React.ReactElement => {
 		if (muteUserPermission) {
 			const { muted = [], ro: readOnly, unmuted = [] } = room;
 			let userIsMuted = !!muted.find?.(m => m === selectedUser.username);
-			let icon: TIconsName = userIsMuted ? 'audio' : 'audio-disabled';
+			let icon: TIconsName = userIsMuted ? 'mic' : 'mic-off';
 			let title = I18n.t(userIsMuted ? 'Unmute' : 'Mute');
 			if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.4.0')) {
 				if (readOnly) {

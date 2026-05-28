@@ -1,6 +1,6 @@
 import { type Model, Q } from '@nozbe/watermelondb';
 import EJSON from 'ejson';
-import { deleteAsync } from 'expo-file-system';
+import { deleteAsync } from 'expo-file-system/legacy';
 import {
 	pbkdf2Hash,
 	aesEncrypt,
@@ -526,6 +526,13 @@ class Encryption {
 		const { rid } = message;
 		const db = database.active;
 		const subCollection = db.get('subscriptions');
+
+		// If workspace-level E2E is disabled, send the message unencrypted regardless of
+		// any stale `encrypted: true` flag on the local subscription record.
+		const e2eeEnabled = store.getState().settings.E2E_Enable;
+		if (!e2eeEnabled) {
+			return message;
+		}
 
 		try {
 			// Find the subscription

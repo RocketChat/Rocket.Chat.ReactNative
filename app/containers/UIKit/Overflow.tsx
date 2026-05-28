@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FlatList, StyleSheet, Text } from 'react-native';
+import { FlatList, StyleSheet, Text, type View } from 'react-native';
 import Popover from 'react-native-popover-view';
 
 import { CustomIcon } from '../CustomIcon';
@@ -41,13 +41,19 @@ const Options = ({ options, onOptionPress, parser, theme }: IOptions) => (
 	/>
 );
 
-const touchable: { [key: string]: React.RefObject<any> | null } = {};
+const touchable: { [key: string]: React.RefObject<View | null> } = {};
 
 export const Overflow = ({ element, loading, action, parser }: IOverflow) => {
 	const { theme } = useTheme();
 	const options = element?.options || [];
 	const blockId = element?.blockId || '';
 	const [show, onShow] = useState(false);
+
+	if (!touchable[blockId]) {
+		touchable[blockId] = React.createRef();
+	}
+
+	const touchableRef = touchable[blockId] as React.RefObject<any>;
 
 	const onOptionPress = ({ value }: any) => {
 		onShow(false);
@@ -56,20 +62,14 @@ export const Overflow = ({ element, loading, action, parser }: IOverflow) => {
 
 	return (
 		<>
-			<Touch
-				ref={ref => {
-					touchable[blockId] = ref;
-				}}
-				onPress={() => onShow(!show)}
-				hitSlop={BUTTON_HIT_SLOP}
-				style={styles.menu}>
+			<Touch ref={touchableRef} onPress={() => onShow(!show)} hitSlop={BUTTON_HIT_SLOP} style={styles.menu}>
 				{!loading ? (
 					<CustomIcon size={18} name='kebab' color={themes[theme].fontDefault} />
 				) : (
 					<ActivityIndicator style={styles.loading} />
 				)}
 			</Touch>
-			<Popover isVisible={show} from={touchable[blockId]} onRequestClose={() => onShow(false)}>
+			<Popover isVisible={show} from={touchableRef} onRequestClose={() => onShow(false)}>
 				<Options options={options} onOptionPress={onOptionPress} parser={parser} theme={theme} />
 			</Popover>
 		</>

@@ -14,6 +14,7 @@ import { LISTENER } from '../Toast';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { showConfirmationAlert } from '../../lib/methods/helpers/info';
 import { type TActionSheetOptionsItem, useActionSheet, ACTION_SHEET_ANIMATION_DURATION } from '../ActionSheet';
+import { useLastFocusedMessageRef } from '../../lib/a11y/useLastFocusedMessageRef';
 import Header, { HEADER_HEIGHT, type IHeader } from './Header';
 import events from '../../lib/methods/helpers/log/events';
 import {
@@ -31,10 +32,14 @@ import {
 	markAsUnread,
 	toggleStarMessage,
 	togglePinMessage,
-	createDirectMessage,
 	translateMessage,
 	reportMessage
 } from '../../lib/services/restApi';
+import { createDirectMessage } from '../../lib/methods/createDirectMessage';
+
+// Extra delay on top of the action sheet animation so accessibility focus is restored
+// only after the sheet is fully dismissed.
+const REFOCUS_BUFFER = 50;
 
 export interface IMessageActionsProps {
 	room: TSubscriptionModel;
@@ -112,6 +117,7 @@ const MessageActions = React.memo(
 				hasCreateDiscussionOtherUserPermission: false
 			};
 			const { showActionSheet, hideActionSheet } = useActionSheet();
+			const { restoreFocusOnClose } = useLastFocusedMessageRef();
 
 			const getPermissions = async () => {
 				try {
@@ -404,7 +410,8 @@ const MessageActions = React.memo(
 						title: I18n.t('Edit'),
 						icon: 'edit',
 						onPress: () => handleEdit(message.id),
-						enabled: isEditAllowed
+						enabled: isEditAllowed,
+						testID: 'message-actions-edit'
 					});
 				}
 
@@ -414,7 +421,8 @@ const MessageActions = React.memo(
 					options.push({
 						title: I18n.t('Jump_to_message'),
 						icon: 'jump-to-message',
-						onPress: () => jumpToMessage(quoteMessageLink, true)
+						onPress: () => jumpToMessage(quoteMessageLink, true),
+						testID: 'message-actions-jump-to-message'
 					});
 				}
 
@@ -423,7 +431,8 @@ const MessageActions = React.memo(
 					options.push({
 						title: I18n.t('Quote'),
 						icon: 'quote',
-						onPress: () => handleQuote(message.id)
+						onPress: () => handleQuote(message.id),
+						testID: 'message-actions-quote'
 					});
 				}
 
@@ -432,7 +441,8 @@ const MessageActions = React.memo(
 					options.push({
 						title: I18n.t('Reply_in_Thread'),
 						icon: 'threads',
-						onPress: () => handleReply(message.id)
+						onPress: () => handleReply(message.id),
+						testID: 'message-actions-reply-in-thread'
 					});
 				}
 
@@ -443,7 +453,8 @@ const MessageActions = React.memo(
 						icon: 'arrow-back',
 						onPress: () => handleReplyInDM(message),
 						enabled: permissions.hasCreateDirectMessagePermission && !room.abacAttributes,
-						disabledReason: room.abacAttributes && I18n.t('ABAC_disabled_action_reason')
+						disabledReason: room.abacAttributes && I18n.t('ABAC_disabled_action_reason'),
+						testID: 'message-actions-reply-in-dm'
 					});
 				}
 
@@ -452,7 +463,8 @@ const MessageActions = React.memo(
 					title: I18n.t('Start_a_Discussion'),
 					icon: 'discussions',
 					onPress: () => handleCreateDiscussion(message),
-					enabled: permissions.hasCreateDiscussionOtherUserPermission
+					enabled: permissions.hasCreateDiscussionOtherUserPermission,
+					testID: 'message-actions-create-discussion'
 				});
 
 				// Forward
@@ -462,7 +474,8 @@ const MessageActions = React.memo(
 						icon: 'arrow-forward',
 						onPress: () => handleShareMessage(message),
 						enabled: !room.abacAttributes,
-						disabledReason: room.abacAttributes && I18n.t('ABAC_disabled_action_reason')
+						disabledReason: room.abacAttributes && I18n.t('ABAC_disabled_action_reason'),
+						testID: 'message-actions-forward'
 					});
 				}
 
@@ -472,7 +485,8 @@ const MessageActions = React.memo(
 					icon: 'link',
 					onPress: () => handlePermalink(message),
 					enabled: !room.abacAttributes,
-					disabledReason: room.abacAttributes && I18n.t('ABAC_disabled_action_reason')
+					disabledReason: room.abacAttributes && I18n.t('ABAC_disabled_action_reason'),
+					testID: 'message-actions-get-link'
 				});
 
 				// Copy
@@ -480,7 +494,8 @@ const MessageActions = React.memo(
 					options.push({
 						title: I18n.t('Copy'),
 						icon: 'copy',
-						onPress: () => handleCopy(message)
+						onPress: () => handleCopy(message),
+						testID: 'message-actions-copy'
 					});
 				}
 
@@ -488,7 +503,8 @@ const MessageActions = React.memo(
 				options.push({
 					title: I18n.t('Share'),
 					icon: 'share',
-					onPress: () => handleShare(message)
+					onPress: () => handleShare(message),
+					testID: 'message-actions-share'
 				});
 
 				// Pin
@@ -497,7 +513,8 @@ const MessageActions = React.memo(
 						title: I18n.t(message.pinned ? 'Unpin' : 'Pin'),
 						icon: 'pin',
 						onPress: () => handlePin(message),
-						enabled: permissions?.hasPinPermission
+						enabled: permissions?.hasPinPermission,
+						testID: `message-actions-${message.pinned ? 'unpin' : 'pin'}`
 					});
 				}
 
@@ -506,7 +523,8 @@ const MessageActions = React.memo(
 					options.push({
 						title: I18n.t(message.starred ? 'Unstar' : 'Star'),
 						icon: message.starred ? 'star-filled' : 'star',
-						onPress: () => handleStar(message.id, message.starred || false)
+						onPress: () => handleStar(message.id, message.starred || false),
+						testID: `message-actions-${message.starred ? 'unstar' : 'star'}`
 					});
 				}
 
@@ -515,7 +533,8 @@ const MessageActions = React.memo(
 					options.push({
 						title: I18n.t('Mark_unread'),
 						icon: 'flag',
-						onPress: () => handleUnread(message)
+						onPress: () => handleUnread(message),
+						testID: 'message-actions-mark-unread'
 					});
 				}
 
@@ -524,7 +543,8 @@ const MessageActions = React.memo(
 					options.push({
 						title: I18n.t('Read_Receipt'),
 						icon: 'info',
-						onPress: () => handleReadReceipt(message)
+						onPress: () => handleReadReceipt(message),
+						testID: 'message-actions-read-receipt'
 					});
 				}
 
@@ -533,7 +553,8 @@ const MessageActions = React.memo(
 					options.push({
 						title: I18n.t(message.autoTranslate !== false ? 'View_Original' : 'Translate'),
 						icon: 'language',
-						onPress: () => handleToggleTranslation(message)
+						onPress: () => handleToggleTranslation(message),
+						testID: 'message-actions-toggle-translation'
 					});
 				}
 
@@ -542,7 +563,8 @@ const MessageActions = React.memo(
 					title: I18n.t('Report'),
 					icon: 'warning',
 					danger: true,
-					onPress: () => handleReport(message)
+					onPress: () => handleReport(message),
+					testID: 'message-actions-report'
 				});
 
 				// Delete
@@ -553,7 +575,8 @@ const MessageActions = React.memo(
 						icon: 'delete',
 						danger: true,
 						onPress: () => handleDelete(message),
-						enabled: isDeleteAllowed
+						enabled: isDeleteAllowed,
+						testID: 'message-actions-delete'
 					});
 				}
 
@@ -563,6 +586,8 @@ const MessageActions = React.memo(
 			const showMessageActions = async (message: TAnyMessageModel) => {
 				logEvent(events.ROOM_SHOW_MSG_ACTIONS);
 				await getPermissions();
+				// Buffer so focus lands after the action sheet is fully dismissed, not mid-animation.
+				const onClose = restoreFocusOnClose(ACTION_SHEET_ANIMATION_DURATION + REFOCUS_BUFFER);
 				showActionSheet({
 					options: getOptions(message),
 					headerHeight: HEADER_HEIGHT,
@@ -572,7 +597,8 @@ const MessageActions = React.memo(
 								<Header handleReaction={handleReaction} isMasterDetail={isMasterDetail} message={message} />
 							) : null}
 						</>
-					)
+					),
+					onClose
 				});
 			};
 

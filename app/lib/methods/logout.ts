@@ -6,6 +6,7 @@ import { isSsl } from './helpers';
 import { BASIC_AUTH_KEY } from './helpers/fetch';
 import database, { getDatabase } from '../database';
 import log from './helpers/log';
+import { disconnect } from '../services/connect';
 import sdk from '../services/sdk';
 import {
 	CURRENT_SERVER,
@@ -119,7 +120,7 @@ export async function logout({ server }: { server: string }): Promise<void> {
 	}
 
 	if (sdk.current) {
-		sdk.disconnect();
+		disconnect();
 	}
 
 	await removeServerData({ server });
