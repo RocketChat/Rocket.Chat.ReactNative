@@ -12,7 +12,7 @@ jest.mock('./getUsersPresence', () => ({ setPresenceCap: jest.fn() }));
 jest.mock('../services/sdk', () => ({
 	__esModule: true,
 	default: { subscribe: jest.fn(), getHeaders: jest.fn(() => ({})), server: 'https://old-logged-in.example' }
-})); 
+}));
 jest.mock('../database', () => ({
 	__esModule: true,
 	default: {
