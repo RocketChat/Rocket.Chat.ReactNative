@@ -338,11 +338,6 @@ describe('VoIP media session lifecycle (disconnect)', () => {
 });
 
 describe('checkAndReopen', () => {
-	beforeEach(() => {
-		sdkMock.default.probe.mockReset().mockResolvedValue(true);
-		sdkMock.default.forceReopen.mockReset().mockResolvedValue(true);
-	});
-
 	afterEach(() => {
 		setSdkCurrent(undefined);
 	});
@@ -350,41 +345,18 @@ describe('checkAndReopen', () => {
 	it('resolves false when sdk.current is undefined', async () => {
 		setSdkCurrent(undefined);
 		await expect(checkAndReopen()).resolves.toBe(false);
-		expect(sdkMock.default.probe).not.toHaveBeenCalled();
-		expect(sdkMock.default.forceReopen).not.toHaveBeenCalled();
 	});
 
-	it.each(['disconnected', 'closed', 'reconnecting', 'idle', 'failed'])(
-		'calls forceReopen without probing when status is %s',
-		async status => {
-			setSdkCurrent({ connection: { status } });
-			await expect(checkAndReopen()).resolves.toBe(true);
-			expect(sdkMock.default.probe).not.toHaveBeenCalled();
-			expect(sdkMock.default.forceReopen).toHaveBeenCalledTimes(1);
-		}
-	);
-
-	it('probes when status is connected and returns true without reopening on live socket', async () => {
-		sdkMock.default.probe.mockResolvedValue(true);
-		setSdkCurrent({ connection: { status: 'connected' } });
+	it('delegates to connection.checkAndReopen() and returns its result', async () => {
+		const checkAndReopenMock = jest.fn().mockResolvedValue(true);
+		setSdkCurrent({ connection: { checkAndReopen: checkAndReopenMock } });
 		await expect(checkAndReopen()).resolves.toBe(true);
-		expect(sdkMock.default.probe).toHaveBeenCalledTimes(1);
-		expect(sdkMock.default.forceReopen).not.toHaveBeenCalled();
+		expect(checkAndReopenMock).toHaveBeenCalledTimes(1);
 	});
 
-	it('probes when status is connected and forces reopen on zombie socket', async () => {
-		sdkMock.default.probe.mockResolvedValue(false);
-		sdkMock.default.forceReopen.mockResolvedValue(true);
-		setSdkCurrent({ connection: { status: 'connected' } });
-		await expect(checkAndReopen()).resolves.toBe(true);
-		expect(sdkMock.default.probe).toHaveBeenCalledTimes(1);
-		expect(sdkMock.default.forceReopen).toHaveBeenCalledTimes(1);
-	});
-
-	it('forwards forceReopen failure (resolves false, does not throw) when probe fails too', async () => {
-		sdkMock.default.probe.mockResolvedValue(false);
-		sdkMock.default.forceReopen.mockResolvedValue(false);
-		setSdkCurrent({ connection: { status: 'connected' } });
+	it('forwards false when connection.checkAndReopen() resolves false', async () => {
+		const checkAndReopenMock = jest.fn().mockResolvedValue(false);
+		setSdkCurrent({ connection: { checkAndReopen: checkAndReopenMock } });
 		await expect(checkAndReopen()).resolves.toBe(false);
 	});
 });
