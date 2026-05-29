@@ -137,13 +137,6 @@ const DirectoryView = ({ navigation }: IDirectoryViewProps): React.ReactElement 
 		}
 	};
 
-	const renderHeader = () => (
-		<>
-			<SearchBox onChangeText={onSearchChangeText} onSubmitEditing={search} testID='directory-view-search' />
-			<List.Separator />
-		</>
-	);
-
 	const renderItem: ListRenderItem<IServerRoom> = ({ item, index }) => {
 		let style;
 		if (index === data.length - 1) {
@@ -198,13 +191,15 @@ const DirectoryView = ({ navigation }: IDirectoryViewProps): React.ReactElement 
 
 	return (
 		<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='directory-view'>
+			<SearchBox onChangeText={onSearchChangeText} onSubmitEditing={search} testID='directory-view-search' />
+			<List.Separator />
+
 			<FlatList
 				data={data}
 				style={styles.list}
 				contentContainerStyle={styles.listContainer}
 				extraData={type}
 				keyExtractor={item => item._id}
-				ListHeaderComponent={renderHeader}
 				renderItem={renderItem}
 				ItemSeparatorComponent={List.Separator}
 				keyboardShouldPersistTaps='always'

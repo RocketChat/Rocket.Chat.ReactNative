@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { type IServerRoom } from '../../../definitions';
 import { announceSearchResultsForAccessibility } from '../../../lib/methods/helpers/announceSearchResultsForAccessibility';
@@ -54,43 +54,37 @@ export const useDirectorySearch = (directoryDefaultView: string) => {
 		}
 	}, 200);
 
-	const search = useCallback(() => load({ newSearch: true }), [load]);
-	const loadMore = useCallback(() => load({}), [load]);
+	const search = () => load({ newSearch: true });
+	const loadMore = () => load({});
 
-	const onSearchChangeText = useCallback(
-		(newText: string) => {
-			setText(newText);
-			search();
-		},
-		[search]
-	);
+	const onSearchChangeText = (newText: string) => {
+		setText(newText);
+		search();
+	};
 
-	const changeType = useCallback(
-		(newType: string) => {
-			setType(newType);
+	const changeType = (newType: string) => {
+		setType(newType);
 
-			if (newType === 'users') {
-				logEvent(events.DIRECTORY_SEARCH_USERS);
-			} else if (newType === 'channels') {
-				logEvent(events.DIRECTORY_SEARCH_CHANNELS);
-			} else if (newType === 'teams') {
-				logEvent(events.DIRECTORY_SEARCH_TEAMS);
-			}
+		if (newType === 'users') {
+			logEvent(events.DIRECTORY_SEARCH_USERS);
+		} else if (newType === 'channels') {
+			logEvent(events.DIRECTORY_SEARCH_CHANNELS);
+		} else if (newType === 'teams') {
+			logEvent(events.DIRECTORY_SEARCH_TEAMS);
+		}
 
-			search();
-		},
-		[search]
-	);
+		search();
+	};
 
-	const toggleWorkspace = useCallback(() => {
+	const toggleWorkspace = () => {
 		setGlobalUsers(prev => !prev);
 		search();
-	}, [search]);
+	};
 
 	// Run the initial search when the hook mounts; `search` is stable, so this fires once
 	useEffect(() => {
 		search();
-	}, [search]);
+	}, []);
 
 	return {
 		data,
