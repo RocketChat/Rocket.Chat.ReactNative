@@ -167,11 +167,18 @@ tags:
 - tapOn:
     id: 'change-password-view-current-password'
 - inputText: ${output.user.password}
+# Dismiss the keyboard so the lower fields aren't clipped below the fold. With the
+# keyboard open, KeyboardView (behavior='padding') shrinks the scroll viewport until
+# only the title + current-password fit, pushing new-password out of the hierarchy.
+- runFlow:
+    file: '../../helpers/hide-keyboard.yaml'
 - assertVisible:
     id: 'change-password-view-new-password'
 - tapOn:
     id: 'change-password-view-new-password'
 - inputText: ${output.user.password + 'new'}
+- runFlow:
+    file: '../../helpers/hide-keyboard.yaml'
 - assertVisible:
     id: 'change-password-view-confirm-new-password'
 - tapOn:
