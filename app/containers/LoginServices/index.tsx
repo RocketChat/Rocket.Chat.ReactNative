@@ -1,18 +1,30 @@
 import { useState, type ReactElement } from 'react';
 import { shallowEqual } from 'react-redux';
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import { Linking } from 'react-native';
 
 import { type IServices } from '../../selectors/login';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import I18n from '../../i18n';
 import { type IItemService, type IServiceList } from './interfaces';
 import { SERVICES_COLLAPSED_HEIGHT, SERVICE_HEIGHT } from './styles';
 import ServicesSeparator from './ServicesSeparator';
 import Service from './Service';
+import Button from '../Button';
 
-const ServiceList = ({ services, CAS_enabled, CAS_login_url, Gitlab_URL, server, collapsed }: IServiceList) => (
+const ServiceList = ({
+	services,
+	CAS_enabled,
+	CAS_login_url,
+	Gitlab_URL,
+	server,
+	collapsed,
+	showLoginOnWeb
+}: IServiceList & { showLoginOnWeb: boolean }) => (
 	<>
 		{Object.values(services).map((service: IItemService, index: number) => {
 			if (index > 2 && collapsed) return null;
+
 			return (
 				<Service
 					key={service._id}
@@ -24,6 +36,14 @@ const ServiceList = ({ services, CAS_enabled, CAS_login_url, Gitlab_URL, server,
 				/>
 			);
 		})}
+		{showLoginOnWeb && (
+			<Button
+				title={I18n.t('Login_on_web')}
+				onPress={() => {
+					Linking.openURL(`${server}/home?loginClient=mobile`);
+				}}
+			/>
+		)}
 	</>
 );
 
@@ -40,7 +60,11 @@ const LoginServices = ({ separator }: { separator: boolean }): ReactElement => {
 	);
 	const server = useAppSelector(state => state.server.server);
 	const services = useAppSelector(state => state.login.services as IServices, shallowEqual);
-	const { length } = Object.values(services);
+	const showLoginOnWeb = Boolean(Object.values(services).find((service: IItemService) => service.hideButtonOnMobile === true));
+	const filteredServices = Object.fromEntries(
+		Object.entries(services).filter(([, service]) => !service.hideButtonOnMobile)
+	) as IServices;
+	const { length } = Object.values(filteredServices);
 
 	const heightButtons = useSharedValue(SERVICES_COLLAPSED_HEIGHT);
 
@@ -50,7 +74,7 @@ const LoginServices = ({ separator }: { separator: boolean }): ReactElement => {
 	}));
 
 	const onPressButtonSeparator = () => {
-		heightButtons.value = collapsed ? SERVICE_HEIGHT * length : SERVICES_COLLAPSED_HEIGHT;
+		heightButtons.value = collapsed ? SERVICE_HEIGHT * (length + (showLoginOnWeb ? 1 : 0)) : SERVICES_COLLAPSED_HEIGHT;
 		setCollapsed(prevState => !prevState);
 	};
 
@@ -59,29 +83,41 @@ const LoginServices = ({ separator }: { separator: boolean }): ReactElement => {
 			<>
 				<Animated.View style={animatedStyle}>
 					<ServiceList
-						services={services}
+						services={filteredServices}
 						CAS_enabled={CAS_enabled}
 						CAS_login_url={CAS_login_url}
 						Gitlab_URL={Gitlab_URL}
 						server={server}
 						collapsed={collapsed}
+						showLoginOnWeb={showLoginOnWeb}
 					/>
 				</Animated.View>
-				<ServicesSeparator services={services} separator={separator} collapsed={collapsed} onPress={onPressButtonSeparator} />
+				<ServicesSeparator
+					services={filteredServices}
+					separator={separator}
+					collapsed={collapsed}
+					onPress={onPressButtonSeparator}
+				/>
 			</>
 		);
 	}
 	return (
 		<>
 			<ServiceList
-				services={services}
+				services={filteredServices}
 				CAS_enabled={CAS_enabled}
 				CAS_login_url={CAS_login_url}
 				Gitlab_URL={Gitlab_URL}
 				server={server}
 				collapsed={collapsed}
+				showLoginOnWeb={showLoginOnWeb}
 			/>
-			<ServicesSeparator services={services} separator={separator} collapsed={collapsed} onPress={onPressButtonSeparator} />
+			<ServicesSeparator
+				services={filteredServices}
+				separator={separator}
+				collapsed={collapsed}
+				onPress={onPressButtonSeparator}
+			/>
 		</>
 	);
 };

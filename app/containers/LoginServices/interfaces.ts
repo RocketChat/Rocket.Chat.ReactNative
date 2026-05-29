@@ -24,6 +24,7 @@ export interface IItemService {
 	authorizePath: string;
 	clientId: string;
 	scope: string;
+	hideButtonOnMobile?: boolean;
 }
 
 export interface IServiceLogin {
