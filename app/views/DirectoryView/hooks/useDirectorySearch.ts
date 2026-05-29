@@ -41,7 +41,10 @@ export const useDirectorySearch = (directoryDefaultView: string) => {
 				setData(prev => [...(newSearch ? [] : prev), ...(directories.result as IServerRoom[])]);
 				setTotal(directories.total);
 				setLoading(false);
-				announceSearchResultsForAccessibility(directories.count);
+				// Announce the full total on a fresh search; loadMore pages shouldn't re-announce
+				if (newSearch) {
+					announceSearchResultsForAccessibility(directories.total);
+				}
 			} else {
 				setLoading(false);
 			}
