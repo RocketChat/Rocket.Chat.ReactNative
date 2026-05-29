@@ -94,8 +94,8 @@ tags:
     id: 'screen-lock-config-view-auto-lock-time-60'
 
 # Background the app, wait past the auto-lock interval, relaunch
-- stopApp: ${APP_ID}
-- evalScript: ${output.utils.sleep(65000)}
+- pressKey: Home
+- evalScript: ${output.utils.sleep(60000)}
 - launchApp:
     appId: ${APP_ID}
 
@@ -118,6 +118,34 @@ tags:
     id: 'passcode-button-6'
 
 # After unlock, we land back on Screen Lock config. Tap "Change passcode"
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-view-sidebar'
+- extendedWaitUntil:
+    visible:
+      id: 'sidebar-settings'
+    timeout: 60000
+- tapOn:
+    id: 'sidebar-settings'
+- extendedWaitUntil:
+    visible:
+      id: 'settings-view-security-privacy'
+    timeout: 60000
+- tapOn:
+    id: 'settings-view-security-privacy'
+- extendedWaitUntil:
+    visible:
+      id: 'security-privacy-view-screen-lock'
+    timeout: 60000
+- tapOn:
+    id: 'security-privacy-view-screen-lock'
+- extendedWaitUntil:
+    visible:
+      id: 'screen-lock-config-view'
+    timeout: 60000
 - extendedWaitUntil:
     visible:
       id: 'screen-lock-config-view-change-passcode'
@@ -186,3 +214,27 @@ tags:
     timeout: 60000
 - assertVisible:
     id: 'screen-lock-config-view-change-passcode'
+
+# Background the app, wait past the auto-lock interval, relaunch
+- pressKey: Home
+- evalScript: ${output.utils.sleep(60000)}
+- launchApp:
+    appId: ${APP_ID}
+
+# Screen Lock modal must appear; unlock with current passcode
+- extendedWaitUntil:
+    visible:
+      id: 'passcode-button-3'
+    timeout: 60000
+- tapOn:
+    id: 'passcode-button-3'
+- tapOn:
+    id: 'passcode-button-4'
+- tapOn:
+    id: 'passcode-button-5'
+- tapOn:
+    id: 'passcode-button-6'
+- tapOn:
+    id: 'passcode-button-7'
+- tapOn:
+    id: 'passcode-button-8'
