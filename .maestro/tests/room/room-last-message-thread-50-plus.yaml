@@ -13,10 +13,12 @@ tags:
       PASSWORD: ${output.account.adminPassword}
 
 # should open a room where the last message is a thread containing more than 50 messages.
-- runFlow:
-    file: '../../helpers/navigate-to-room.yaml'
-    env:
-      ROOM: 'maestro_test_load_threads'
+- tapOn:
+    id: 'rooms-list-view-item-maestro_test_load_threads'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-maestro_test_load_threads'
+    timeout: 60000
 - extendedWaitUntil:
     visible:
       text: '.*message 50.*'
