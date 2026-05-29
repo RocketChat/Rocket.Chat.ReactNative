@@ -353,7 +353,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 			}
 		} catch (e) {
 			log(e);
-			this.setState({ loading: false, end: false });
+			this.setState({ loading: false, end: true });
 		}
 	}, 300);
 

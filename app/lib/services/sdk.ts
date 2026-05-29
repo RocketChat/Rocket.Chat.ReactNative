@@ -55,6 +55,7 @@ class Sdk {
 	private headers: Record<string, string> = { ...defaultHeaders } as Record<string, string>;
 
 	initialize(server: string): DDPSDK {
+		this.code = null;
 		this.sdk = DDPSDK.create(server);
 
 		this.sdk.subscribeNotifyUser = () => this.subscribeNotifyUser();
