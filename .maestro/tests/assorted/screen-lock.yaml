@@ -53,7 +53,7 @@ tags:
       id: 'passcode-button-1'
     timeout: 60000
 
-# Choose passcode 1234
+# Choose passcode 123456
 - tapOn:
     id: 'passcode-button-1'
 - tapOn:
@@ -62,8 +62,12 @@ tags:
     id: 'passcode-button-3'
 - tapOn:
     id: 'passcode-button-4'
+- tapOn:
+    id: 'passcode-button-5'
+- tapOn:
+    id: 'passcode-button-6'
 
-# Confirm passcode 1234
+# Confirm passcode 123456
 - extendedWaitUntil:
     visible:
       text: 'Confirm your new passcode'
@@ -76,14 +80,18 @@ tags:
     id: 'passcode-button-3'
 - tapOn:
     id: 'passcode-button-4'
+- tapOn:
+    id: 'passcode-button-5'
+- tapOn:
+    id: 'passcode-button-6'
 
 # Back on Screen Lock config; choose "After 1 minute"
 - extendedWaitUntil:
     visible:
-      id: 'screen-lock-config-view-auto-lock-60'
+      id: 'screen-lock-config-view-auto-lock-time-60'
     timeout: 60000
 - tapOn:
-    id: 'screen-lock-config-view-auto-lock-60'
+    id: 'screen-lock-config-view-auto-lock-time-60'
 
 # Background the app, wait past the auto-lock interval, relaunch
 - stopApp: ${APP_ID}
@@ -104,6 +112,10 @@ tags:
     id: 'passcode-button-3'
 - tapOn:
     id: 'passcode-button-4'
+- tapOn:
+    id: 'passcode-button-5'
+- tapOn:
+    id: 'passcode-button-6'
 
 # After unlock, we land back on Screen Lock config. Tap "Change passcode"
 - extendedWaitUntil:
@@ -126,12 +138,20 @@ tags:
     id: 'passcode-button-3'
 - tapOn:
     id: 'passcode-button-4'
+- tapOn:
+    id: 'passcode-button-5'
+- tapOn:
+    id: 'passcode-button-6'
 
-# Now the ChangePasscodeView (PasscodeChoose) opens; choose new passcode 5678
+# Now the ChangePasscodeView (PasscodeChoose) opens; choose new passcode 3455678
 - extendedWaitUntil:
     visible:
       text: 'Choose your new passcode'
     timeout: 60000
+- tapOn:
+    id: 'passcode-button-3'
+- tapOn:
+    id: 'passcode-button-4'
 - tapOn:
     id: 'passcode-button-5'
 - tapOn:
@@ -141,11 +161,15 @@ tags:
 - tapOn:
     id: 'passcode-button-8'
 
-# Confirm new passcode 5678
+# Confirm new passcode 3455678
 - extendedWaitUntil:
     visible:
       text: 'Confirm your new passcode'
     timeout: 60000
+- tapOn:
+    id: 'passcode-button-3'
+- tapOn:
+    id: 'passcode-button-4'
 - tapOn:
     id: 'passcode-button-5'
 - tapOn:

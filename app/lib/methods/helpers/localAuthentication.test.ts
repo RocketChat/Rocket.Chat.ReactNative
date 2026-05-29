@@ -7,7 +7,7 @@ import { LOCAL_AUTHENTICATE_EMITTER, BIOMETRY_ENABLED_KEY } from '../../constant
 jest.mock('expo-local-authentication', () => ({
 	authenticateAsync: jest.fn(),
 	isEnrolledAsync: jest.fn(() => Promise.resolve(true)),
-	supportedAuthenticationTypesAsync: jest.fn(() => Promise.resolve([])),
+	supportedAuthenticationTypesAsync: jest.fn(() => Promise.resolve([2])),
 	AuthenticationType: { FINGERPRINT: 1, FACIAL_RECOGNITION: 2 }
 }));
 

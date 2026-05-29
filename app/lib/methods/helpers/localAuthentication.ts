@@ -116,9 +116,10 @@ const hideSplashScreen = async () => {
 };
 
 export const handleLocalAuthentication = async (canCloseModal = false) => {
-	const biometryEnabled = UserPreferences.getBool(BIOMETRY_ENABLED_KEY) ?? false;
+	const supportBiometryLabel = await supportedBiometryLabel();
 
-	if (!biometryEnabled) {
+	const biometryEnabled = UserPreferences.getBool(BIOMETRY_ENABLED_KEY) ?? false;
+	if (!biometryEnabled || !supportBiometryLabel) {
 		await openModal(false, canCloseModal);
 		return;
 	}

@@ -206,7 +206,7 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 					translateTitle={false}
 					additionalAccessibilityLabel={this.isSelected(value)}
 					additionalAccessibilityLabelCheck
-					testID={`screen-lock-config-view-auto-lock-${value}`}
+					testID={`screen-lock-config-view-auto-lock-time-${value}`}
 				/>
 				<List.Separator />
 			</>
@@ -216,14 +216,7 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 	renderAutoLockSwitch = () => {
 		const { autoLock } = this.state;
 		const { Force_Screen_Lock } = this.props;
-		return (
-			<Switch
-				testID='screen-lock-config-view-auto-lock'
-				value={autoLock}
-				onValueChange={this.toggleAutoLock}
-				disabled={Force_Screen_Lock}
-			/>
-		);
+		return <Switch value={autoLock} onValueChange={this.toggleAutoLock} disabled={Force_Screen_Lock} />;
 	};
 
 	renderBiometrySwitch = () => {
@@ -288,9 +281,12 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 					<List.Section>
 						<List.Separator />
 						<List.Item
+							testID='screen-lock-config-view-auto-lock'
 							title='Local_authentication_unlock_option'
 							right={() => this.renderAutoLockSwitch()}
 							additionalAccessibilityLabel={autoLock}
+							onPress={this.toggleAutoLock}
+							accessibilityRole='switch'
 						/>
 						{autoLock ? (
 							<>
