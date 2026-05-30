@@ -1,32 +1,9 @@
-import { checkAndReopen, determineAuthType, disconnect } from './connect';
+import { checkAndReopen, connect, determineAuthType, disconnect } from './connect';
 import { mediaSessionInstance } from './voip/MediaSessionInstance';
-
-jest.mock('./sdk', () => {
-	const state: { current: any } = { current: undefined };
-	return {
-		__esModule: true,
-		default: {
-			get current() {
-				return state.current;
-			},
-			disconnect: jest.fn(),
-			probe: jest.fn().mockResolvedValue(true),
-			forceReopen: jest.fn().mockResolvedValue(true)
-		},
-		__setCurrent: (value: any) => {
-			state.current = value;
-		}
-	};
-});
-
-const sdkMock = jest.requireMock('./sdk') as {
-	default: { probe: jest.Mock; forceReopen: jest.Mock };
-	__setCurrent: (v: any) => void;
-};
-const setSdkCurrent = (value: any) => sdkMock.__setCurrent(value);
+import { pendingHangups } from './voip/pendingHangups';
 
 jest.mock('./voip/MediaSessionInstance', () => ({
-	mediaSessionInstance: { reset: jest.fn() }
+	mediaSessionInstance: { reset: jest.fn(), drainPendingHangups: jest.fn() }
 }));
 
 // Mock the isIOS helper
@@ -34,6 +11,123 @@ jest.mock('../methods/helpers/deviceInfo', () => ({
 	...jest.requireActual('../methods/helpers/deviceInfo'),
 	isIOS: false
 }));
+
+// --- SDK mock ---
+// Captures the single 'connection' status listener registered by connect().
+// All event-driven tests invoke it directly with a status string.
+const mockConnectionOn = jest.fn();
+const mockConnectionConnect = jest.fn().mockResolvedValue(undefined);
+const mockConnectionCheckAndReopen = jest.fn().mockResolvedValue(true);
+const mockSdkInitialize = jest.fn().mockResolvedValue(undefined);
+const mockSdkOnCollection = jest.fn();
+const mockSdkDisconnect = jest.fn();
+
+jest.mock('./sdk', () => {
+	const state: { server: string | undefined; currentEnabled: boolean } = { server: undefined, currentEnabled: true };
+	return {
+		__esModule: true,
+		default: {
+			get server() {
+				return state.server;
+			},
+			disconnect: (...args: any[]) => mockSdkDisconnect(...args),
+			initialize: (s: string) => mockSdkInitialize(s),
+			onCollection: (...args: any[]) => mockSdkOnCollection(...args),
+			get current() {
+				if (!state.currentEnabled) return undefined;
+				return {
+					connection: {
+						on: (event: string, cb: any) => mockConnectionOn(event, cb),
+						connect: () => mockConnectionConnect(),
+						checkAndReopen: () => mockConnectionCheckAndReopen()
+					}
+				};
+			}
+		},
+		__setServer: (v: string | undefined) => {
+			state.server = v;
+		},
+		__setCurrentEnabled: (v: boolean) => {
+			state.currentEnabled = v;
+		}
+	};
+});
+
+const sdkMock = jest.requireMock('./sdk') as {
+	__setServer: (v: string | undefined) => void;
+	__setCurrentEnabled: (v: boolean) => void;
+};
+
+// --- Store mock ---
+type MockStoreState = {
+	meteor: { connected: boolean };
+	login: { user: unknown; isAuthenticated: boolean };
+	settings: Record<string, unknown>;
+	server: { version: string };
+};
+const mockStoreGetState = jest.fn<MockStoreState, []>(() => ({
+	meteor: { connected: false },
+	login: { user: null, isAuthenticated: false },
+	settings: {},
+	server: { version: '6.0.0' }
+}));
+const mockStoreDispatch = jest.fn<unknown, [unknown]>();
+const mockStoreSubscribe = jest.fn<() => void, [() => void]>(() => () => undefined);
+
+jest.mock('../store/auxStore', () => ({
+	store: {
+		getState: () => mockStoreGetState(),
+		dispatch: (action: unknown) => mockStoreDispatch(action),
+		subscribe: (cb: () => void) => mockStoreSubscribe(cb)
+	}
+}));
+
+jest.mock('../database', () => ({
+	__esModule: true,
+	default: { setActiveDB: jest.fn(), active: { get: jest.fn() } }
+}));
+
+jest.mock('../methods/subscribeRooms', () => ({ unsubscribeRooms: jest.fn() }));
+jest.mock('../methods/getSettings', () => ({ getSettings: jest.fn().mockResolvedValue(undefined) }));
+jest.mock('../methods/helpers/events', () => ({
+	__esModule: true,
+	default: { emit: jest.fn(), on: jest.fn(), removeListener: jest.fn() }
+}));
+jest.mock('../methods/helpers/protectedFunction', () => ({ __esModule: true, default: (fn: any) => fn }));
+jest.mock('../methods/helpers/log', () => ({ __esModule: true, default: jest.fn() }));
+jest.mock('../methods/setUser', () => ({ _setUser: jest.fn(), _activeUsers: { activeUsers: {} }, _setUserTimer: {} }));
+jest.mock('../methods/getRoles', () => ({ onRolesChanged: jest.fn() }));
+jest.mock('../methods/getUsersPresence', () => ({ setPresenceCap: jest.fn() }));
+
+jest.mock('../../actions/connect', () => ({
+	connectRequest: jest.fn().mockReturnValue({ type: 'CONNECT_REQUEST' }),
+	connectSuccess: jest.fn().mockReturnValue({ type: 'CONNECT_SUCCESS' }),
+	disconnect: jest.fn().mockReturnValue({ type: 'DISCONNECT' })
+}));
+jest.mock('../../actions/login', () => ({
+	loginRequest: jest.fn().mockReturnValue({ type: 'LOGIN_REQUEST' }),
+	logout: jest.fn().mockReturnValue({ type: 'LOGOUT' }),
+	setLoginServices: jest.fn().mockReturnValue({ type: 'SET_LOGIN_SERVICES' }),
+	setUser: jest.fn().mockReturnValue({ type: 'SET_USER' })
+}));
+jest.mock('../../actions/settings', () => ({ updateSettings: jest.fn().mockReturnValue({ type: 'UPDATE_SETTINGS' }) }));
+jest.mock('../../actions/permissions', () => ({ updatePermission: jest.fn().mockReturnValue({ type: 'UPDATE_PERMISSION' }) }));
+jest.mock('../../actions/activeUsers', () => ({ setActiveUsers: jest.fn().mockReturnValue({ type: 'SET_ACTIVE_USERS' }) }));
+
+// --- Helpers ---
+const flushMicrotasks = async (): Promise<void> => {
+	for (let i = 0; i < 5; i += 1) {
+		// eslint-disable-next-line no-await-in-loop
+		await Promise.resolve();
+	}
+};
+
+/** Returns the status-handler callback registered via connection.on('connection', cb). */
+const getCapturedConnectionListener = (): (status: string) => void => {
+	const call = mockConnectionOn.mock.calls.find(([event]) => event === 'connection');
+	if (!call) throw new Error('connection listener was never registered');
+	return call[1];
+};
 
 interface IServices {
 	[index: string]: string | boolean;
@@ -44,6 +138,7 @@ interface IServices {
 	service: string;
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
 describe('determineAuthType', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
@@ -86,7 +181,7 @@ describe('determineAuthType', () => {
 			};
 
 			const result = determineAuthType(services);
-			expect(result).toBe('saml'); // Should continue to next conditions
+			expect(result).toBe('saml');
 		});
 
 		it('should not return oauth_custom when custom is false', () => {
@@ -99,7 +194,7 @@ describe('determineAuthType', () => {
 			};
 
 			const result = determineAuthType(services);
-			expect(result).toBe('saml'); // Should continue to next conditions
+			expect(result).toBe('saml');
 		});
 	});
 
@@ -144,7 +239,7 @@ describe('determineAuthType', () => {
 			};
 
 			const result = determineAuthType(services);
-			expect(result).toBe('not_supported'); // Should fall through to not_supported since isIOS is mocked as false
+			expect(result).toBe('not_supported');
 		});
 
 		it('should return not_supported when service is apple and name is empty but isIOS is false', () => {
@@ -157,7 +252,7 @@ describe('determineAuthType', () => {
 			};
 
 			const result = determineAuthType(services);
-			expect(result).toBe('not_supported'); // Should fall through to not_supported since isIOS is mocked as false
+			expect(result).toBe('not_supported');
 		});
 	});
 
@@ -258,7 +353,7 @@ describe('determineAuthType', () => {
 			};
 
 			const result = determineAuthType(services);
-			expect(result).toBe('oauth'); // name 'github' should be used
+			expect(result).toBe('oauth');
 		});
 
 		it('should use service as authName when name is empty', () => {
@@ -271,7 +366,7 @@ describe('determineAuthType', () => {
 			};
 
 			const result = determineAuthType(services);
-			expect(result).toBe('oauth'); // service 'facebook' should be used
+			expect(result).toBe('oauth');
 		});
 
 		it('should use service as authName when name is null', () => {
@@ -284,14 +379,14 @@ describe('determineAuthType', () => {
 			};
 
 			const result = determineAuthType(services);
-			expect(result).toBe('oauth'); // service 'google' should be used
+			expect(result).toBe('oauth');
 		});
 	});
 
 	describe('priority order', () => {
 		it('should prioritize oauth_custom over other types', () => {
 			const services: IServices = {
-				name: 'github', // This would normally return 'oauth'
+				name: 'github',
 				custom: true,
 				showButton: true,
 				buttonLabelText: 'Custom GitHub',
@@ -299,12 +394,12 @@ describe('determineAuthType', () => {
 			};
 
 			const result = determineAuthType(services);
-			expect(result).toBe('oauth_custom'); // Should return oauth_custom first
+			expect(result).toBe('oauth_custom');
 		});
 
 		it('should prioritize saml over oauth', () => {
 			const services: IServices = {
-				name: 'github', // This would normally return 'oauth'
+				name: 'github',
 				custom: false,
 				showButton: true,
 				buttonLabelText: 'SAML GitHub',
@@ -312,12 +407,12 @@ describe('determineAuthType', () => {
 			};
 
 			const result = determineAuthType(services);
-			expect(result).toBe('saml'); // Should return saml before checking for oauth
+			expect(result).toBe('saml');
 		});
 
 		it('should prioritize cas over oauth', () => {
 			const services: IServices = {
-				name: 'github', // This would normally return 'oauth'
+				name: 'github',
 				custom: false,
 				showButton: true,
 				buttonLabelText: 'CAS GitHub',
@@ -325,11 +420,12 @@ describe('determineAuthType', () => {
 			};
 
 			const result = determineAuthType(services);
-			expect(result).toBe('cas'); // Should return cas before checking for oauth
+			expect(result).toBe('cas');
 		});
 	});
 });
 
+// ─────────────────────────────────────────────────────────────────────────────
 describe('VoIP media session lifecycle (disconnect)', () => {
 	it('calls mediaSessionInstance.reset when disconnect runs', () => {
 		disconnect();
@@ -337,26 +433,153 @@ describe('VoIP media session lifecycle (disconnect)', () => {
 	});
 });
 
+// ─────────────────────────────────────────────────────────────────────────────
+describe('connect — connection status handler', () => {
+	const SERVER = 'https://example.com';
+
+	beforeEach(() => {
+		jest.clearAllMocks();
+		sdkMock.__setServer(undefined);
+		pendingHangups.clear();
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: false },
+			login: { user: null, isAuthenticated: false },
+			settings: {},
+			server: { version: '6.0.0' }
+		});
+	});
+
+	it('returns early without initializing when server is already active', async () => {
+		sdkMock.__setServer(SERVER);
+		await connect({ server: SERVER });
+		expect(mockSdkInitialize).not.toHaveBeenCalled();
+	});
+
+	it('dispatches connectSuccess and loginRequest(resume) on reconnect when user has a token', async () => {
+		await connect({ server: SERVER });
+		const listener = getCapturedConnectionListener();
+		const connectSuccessMock = jest.requireMock('../../actions/connect').connectSuccess;
+		const loginRequestMock = jest.requireMock('../../actions/login').loginRequest;
+
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: false },
+			login: { user: { token: 'auth-token-123' }, isAuthenticated: false },
+			settings: {},
+			server: { version: '6.0.0' }
+		});
+
+		listener('connected');
+
+		expect(connectSuccessMock).toHaveBeenCalled();
+		expect(loginRequestMock).toHaveBeenCalledWith({ resume: 'auth-token-123' }, false);
+	});
+
+	it('does not dispatch connectSuccess when socket was already marked connected', async () => {
+		await connect({ server: SERVER });
+		const listener = getCapturedConnectionListener();
+		const connectSuccessMock = jest.requireMock('../../actions/connect').connectSuccess;
+
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: true },
+			login: { user: null, isAuthenticated: false },
+			settings: {},
+			server: { version: '6.0.0' }
+		});
+
+		listener('connected');
+
+		expect(connectSuccessMock).not.toHaveBeenCalled();
+	});
+
+	it('does not dispatch loginRequest when user has no token', async () => {
+		await connect({ server: SERVER });
+		const listener = getCapturedConnectionListener();
+		const loginRequestMock = jest.requireMock('../../actions/login').loginRequest;
+
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: false },
+			login: { user: { token: null }, isAuthenticated: false },
+			settings: {},
+			server: { version: '6.0.0' }
+		});
+
+		listener('connected');
+
+		expect(loginRequestMock).not.toHaveBeenCalled();
+	});
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+describe('connect — pendingHangups drain on reconnect', () => {
+	const SERVER = 'https://example.com';
+
+	beforeEach(() => {
+		jest.clearAllMocks();
+		sdkMock.__setServer(undefined);
+		pendingHangups.clear();
+		// isAuthenticated + connected = true so awaitDdpLoggedIn resolves immediately
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: true },
+			login: { user: null, isAuthenticated: true },
+			settings: {},
+			server: { version: '6.0.0' }
+		});
+	});
+
+	it('drains pendingHangups via mediaSessionInstance after disconnected → connected', async () => {
+		pendingHangups.record('call-a');
+		await connect({ server: SERVER });
+		const listener = getCapturedConnectionListener();
+
+		listener('disconnected');
+		listener('connected');
+		await flushMicrotasks();
+
+		expect(mediaSessionInstance.drainPendingHangups).toHaveBeenCalledTimes(1);
+	});
+
+	it('does not drain when connected fires without a prior disconnected', async () => {
+		pendingHangups.record('call-a');
+		await connect({ server: SERVER });
+		const listener = getCapturedConnectionListener();
+
+		listener('connected');
+		await flushMicrotasks();
+
+		expect(mediaSessionInstance.drainPendingHangups).not.toHaveBeenCalled();
+	});
+
+	it('skips drainPendingHangups when pendingHangups is empty', async () => {
+		await connect({ server: SERVER });
+		const listener = getCapturedConnectionListener();
+
+		listener('disconnected');
+		listener('connected');
+		await flushMicrotasks();
+
+		expect(mediaSessionInstance.drainPendingHangups).not.toHaveBeenCalled();
+	});
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
 describe('checkAndReopen', () => {
 	afterEach(() => {
-		setSdkCurrent(undefined);
+		sdkMock.__setCurrentEnabled(true);
 	});
 
 	it('resolves false when sdk.current is undefined', async () => {
-		setSdkCurrent(undefined);
+		sdkMock.__setCurrentEnabled(false);
 		await expect(checkAndReopen()).resolves.toBe(false);
 	});
 
 	it('delegates to connection.checkAndReopen() and returns its result', async () => {
-		const checkAndReopenMock = jest.fn().mockResolvedValue(true);
-		setSdkCurrent({ connection: { checkAndReopen: checkAndReopenMock } });
+		mockConnectionCheckAndReopen.mockResolvedValueOnce(true);
 		await expect(checkAndReopen()).resolves.toBe(true);
-		expect(checkAndReopenMock).toHaveBeenCalledTimes(1);
+		expect(mockConnectionCheckAndReopen).toHaveBeenCalledTimes(1);
 	});
 
 	it('forwards false when connection.checkAndReopen() resolves false', async () => {
-		const checkAndReopenMock = jest.fn().mockResolvedValue(false);
-		setSdkCurrent({ connection: { checkAndReopen: checkAndReopenMock } });
+		mockConnectionCheckAndReopen.mockResolvedValueOnce(false);
 		await expect(checkAndReopen()).resolves.toBe(false);
 	});
 });
