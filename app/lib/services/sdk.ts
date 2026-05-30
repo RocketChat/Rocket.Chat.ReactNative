@@ -6,7 +6,7 @@ import { twoFactor } from './twoFactor';
 import { store as reduxStore } from '../store/auxStore';
 import { compareServerVersion, random } from '../methods/helpers';
 import UserPreferences from '../methods/userPreferences';
-import { BASIC_AUTH_KEY, headers as defaultHeaders } from '../methods/helpers/fetch';
+import { BASIC_AUTH_KEY, headers as defaultHeaders } from '../methods/helpers/defaultHeaders';
 import {
 	type Serialized,
 	type MatchPathPattern,
@@ -56,6 +56,7 @@ class Sdk {
 
 	initialize(server: string): DDPSDK {
 		this.code = null;
+		this.headers = { ...defaultHeaders } as Record<string, string>;
 		this.sdk = DDPSDK.create(server);
 
 		this.sdk.subscribeNotifyUser = () => this.subscribeNotifyUser();
@@ -143,7 +144,7 @@ class Sdk {
 		const sdk = this.ensureInitialized();
 		try {
 			// @ts-ignore
-			return sdk.rest.get(endpoint, params, {
+			return await sdk.rest.get(endpoint, params, {
 				headers: this.headers
 			});
 		} catch (e: any) {
@@ -219,7 +220,7 @@ class Sdk {
 		const sdk = this.ensureInitialized();
 		try {
 			// @ts-ignore
-			return sdk.rest.delete(endpoint, params, {
+			return await sdk.rest.delete(endpoint, params, {
 				headers: this.headers
 			});
 		} catch (e: any) {
@@ -261,7 +262,7 @@ class Sdk {
 					throw new Error('SDK not initialized');
 				}
 				const [method, ...params] = args;
-				const result = await this.current.client.callAsyncWithOptions(method, {}, ...params, this.code || '');
+				const result = await this.current.client.callAsyncWithOptions(method, {}, ...params, ...(this.code ? [this.code] : []));
 				return resolve(result);
 			} catch (e: any) {
 				if (e.error && (e.error === 'totp-required' || e.error === 'totp-invalid')) {

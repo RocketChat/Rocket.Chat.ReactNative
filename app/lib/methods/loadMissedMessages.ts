@@ -109,7 +109,7 @@ export async function loadMissedMessages(args: {
 		await updateMessages({ rid: args.rid, update: updated, remove: deleted });
 
 		if (deletedNext || updatedNext) {
-			loadMissedMessages({
+			await loadMissedMessages({
 				rid: args.rid,
 				lastOpen: args.lastOpen,
 				updatedNext,
