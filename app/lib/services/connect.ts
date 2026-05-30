@@ -419,6 +419,8 @@ async function getWebsocketInfo({
 				message: I18n.t('Websocket_disabled', { contact: I18n.t('Contact_your_server_admin') })
 			};
 		}
+
+		return { success: true };
 	}
 }
 
