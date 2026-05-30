@@ -412,11 +412,13 @@ async function getWebsocketInfo({
 		return {
 			success: true
 		};
-	} catch {
-		return {
-			success: false,
-			message: I18n.t('Websocket_disabled', { contact: I18n.t('Contact_your_server_admin') })
-		};
+	} catch (err: any) {
+		if (err?.message?.includes('400')) {
+			return {
+				success: false,
+				message: I18n.t('Websocket_disabled', { contact: I18n.t('Contact_your_server_admin') })
+			};
+		}
 	}
 }
 
