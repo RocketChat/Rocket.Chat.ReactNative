@@ -549,13 +549,9 @@ export const leaveRoom = (roomId: string, t: RoomTypes) =>
 	// RC 0.48.0
 	sdk.post(`/v1/${roomTypeToApiType(t)}.leave`, { roomId });
 
-export const deleteRoom = (roomId: string, t: RoomTypes) => {
-	if (t === 'd') {
-		return sdk.post(`/v1/im.close`, { roomId });
-	}
-
-	return sdk.post(`/v1/${roomTypeToApiType(t)}.delete`, { roomId });
-};
+export const deleteRoom = (roomId: string, t: RoomTypes) =>
+	// RC 0.49.0
+	sdk.post(`/v1/${roomTypeToApiType(t)}.delete`, { roomId });
 
 export const toggleMuteUserInRoom = (rid: string, username: string, userId: string, mute: boolean) => {
 	const serverVersion = reduxStore.getState().server.version;
