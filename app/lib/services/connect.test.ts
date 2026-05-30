@@ -123,7 +123,7 @@ const flushMicrotasks = async (): Promise<void> => {
 };
 
 /** Returns the status-handler callback registered via connection.on('connection', cb). */
-const getCapturedConnectionListener = (): (status: string) => void => {
+const getCapturedConnectionListener = (): ((status: string) => void) => {
 	const call = mockConnectionOn.mock.calls.find(([event]) => event === 'connection');
 	if (!call) throw new Error('connection listener was never registered');
 	return call[1];
