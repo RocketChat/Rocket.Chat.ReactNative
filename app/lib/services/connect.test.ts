@@ -6,15 +6,14 @@ jest.mock('./voip/MediaSessionInstance', () => ({
 	mediaSessionInstance: { reset: jest.fn(), drainPendingHangups: jest.fn() }
 }));
 
-// Mock the isIOS helper
 jest.mock('../methods/helpers/deviceInfo', () => ({
 	...jest.requireActual('../methods/helpers/deviceInfo'),
 	isIOS: false
 }));
 
 // --- SDK mock ---
-// Captures the single 'connection' status listener registered by connect().
-// All event-driven tests invoke it directly with a status string.
+// The new DDP SDK registers a single connection.on('connection', cb) listener.
+// All event-driven tests invoke getCapturedConnectionListener() to drive it.
 const mockConnectionOn = jest.fn();
 const mockConnectionConnect = jest.fn().mockResolvedValue(undefined);
 const mockConnectionCheckAndReopen = jest.fn().mockResolvedValue(true);
@@ -440,7 +439,6 @@ describe('connect — connection status handler', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		sdkMock.__setServer(undefined);
-		pendingHangups.clear();
 		mockStoreGetState.mockReturnValue({
 			meteor: { connected: false },
 			login: { user: null, isAuthenticated: false },
@@ -526,19 +524,19 @@ describe('connect — pendingHangups drain on reconnect', () => {
 		});
 	});
 
-	it('drains pendingHangups via mediaSessionInstance after disconnected → connected', async () => {
+	it('drains pendingHangups via mediaSessionInstance after close → connected', async () => {
 		pendingHangups.record('call-a');
 		await connect({ server: SERVER });
 		const listener = getCapturedConnectionListener();
 
-		listener('disconnected');
+		listener('closed');
 		listener('connected');
 		await flushMicrotasks();
 
 		expect(mediaSessionInstance.drainPendingHangups).toHaveBeenCalledTimes(1);
 	});
 
-	it('does not drain when connected fires without a prior disconnected', async () => {
+	it('does not drain when "connected" fires without a prior "close"', async () => {
 		pendingHangups.record('call-a');
 		await connect({ server: SERVER });
 		const listener = getCapturedConnectionListener();
@@ -553,8 +551,28 @@ describe('connect — pendingHangups drain on reconnect', () => {
 		await connect({ server: SERVER });
 		const listener = getCapturedConnectionListener();
 
-		listener('disconnected');
+		listener('closed');
 		listener('connected');
+		await flushMicrotasks();
+
+		expect(mediaSessionInstance.drainPendingHangups).not.toHaveBeenCalled();
+	});
+
+	it('stops the previous pendingHangups connected listener when connect runs again', async () => {
+		// Arm the drain on the first connection
+		pendingHangups.record('call-a');
+		await connect({ server: SERVER });
+		const firstListener = getCapturedConnectionListener();
+		firstListener('closed');
+
+		// Reconnect to a new server — new closure resets pendingHangupsDrainArmed to false
+		sdkMock.__setServer(undefined);
+		mockConnectionOn.mockClear();
+		await connect({ server: 'https://other.example.com' });
+		const secondListener = getCapturedConnectionListener();
+
+		// Firing 'connected' on the new connection should NOT drain (armed state was not carried over)
+		secondListener('connected');
 		await flushMicrotasks();
 
 		expect(mediaSessionInstance.drainPendingHangups).not.toHaveBeenCalled();
