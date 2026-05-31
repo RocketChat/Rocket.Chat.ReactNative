@@ -771,7 +771,9 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                 source={
                                   [
                                     {
-                                      "headers": {},
+                                      "headers": {
+                                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                                      },
                                       "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
                                     },
                                   ]
@@ -1886,7 +1888,9 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                 source={
                                   [
                                     {
-                                      "headers": {},
+                                      "headers": {
+                                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                                      },
                                       "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
                                     },
                                   ]
@@ -2789,7 +2793,9 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                                 source={
                                   [
                                     {
-                                      "headers": {},
+                                      "headers": {
+                                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                                      },
                                       "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
                                     },
                                   ]
@@ -3363,7 +3369,9 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                 source={
                                   [
                                     {
-                                      "headers": {},
+                                      "headers": {
+                                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                                      },
                                       "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
                                     },
                                   ]
@@ -4478,7 +4486,9 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                 source={
                                   [
                                     {
-                                      "headers": {},
+                                      "headers": {
+                                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                                      },
                                       "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
                                     },
                                   ]
@@ -5381,7 +5391,9 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                                 source={
                                   [
                                     {
-                                      "headers": {},
+                                      "headers": {
+                                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                                      },
                                       "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
                                     },
                                   ]
@@ -5955,7 +5967,9 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                 source={
                                   [
                                     {
-                                      "headers": {},
+                                      "headers": {
+                                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                                      },
                                       "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
                                     },
                                   ]
@@ -7070,7 +7084,9 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                 source={
                                   [
                                     {
-                                      "headers": {},
+                                      "headers": {
+                                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                                      },
                                       "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
                                     },
                                   ]
@@ -7973,7 +7989,9 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                                 source={
                                   [
                                     {
-                                      "headers": {},
+                                      "headers": {
+                                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                                      },
                                       "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
                                     },
                                   ]
