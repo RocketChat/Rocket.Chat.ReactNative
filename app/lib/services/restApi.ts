@@ -1044,16 +1044,16 @@ export const editMediaMessage = async (
 	fileId: string,
 	body: { description?: string; filename: string; msg?: string }
 ) => {
-	const { login, server } = reduxStore.getState();
-	const { user } = login;
+	const { server } = reduxStore.getState();
+	const { authToken, userId } = sdk.currentLogin;
 	// RC 8.4.0
 	const response = await fetch(`${server.server}/api/v1/rooms.mediaConfirm/${rid}/${fileId}`, {
 		method: 'POST',
 		headers: {
 			...sdk.getHeaders(),
 			'Content-Type': 'application/json',
-			'X-Auth-Token': user.token,
-			'X-User-Id': user.id
+			'X-Auth-Token': authToken,
+			'X-User-Id': userId
 		},
 		body: JSON.stringify({
 			description: body.description,
