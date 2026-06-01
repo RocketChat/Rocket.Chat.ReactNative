@@ -200,7 +200,7 @@ class Sdk {
 						return resolve({} as any);
 					}
 				} else {
-					reject(e);
+					reject(normalized);
 				}
 			}
 		});
