@@ -215,7 +215,7 @@ describe('RoomSubscription', () => {
 	describe('handleNotifyRoomReceived — typing event', () => {
 		let capturedRoomHandler: (msg: any) => Promise<void>;
 
-		beforeEach(async () => {
+		beforeEach(() => {
 			(sdk.onStreamData as jest.Mock).mockImplementation((name: string, handler: any) => {
 				if (name === 'stream-notify-room') capturedRoomHandler = handler;
 				return Promise.resolve({ stop: stopMock });
@@ -277,7 +277,7 @@ describe('RoomSubscription', () => {
 	describe('handleNotifyRoomReceived — user-activity event', () => {
 		let capturedRoomHandler: (msg: any) => Promise<void>;
 
-		beforeEach(async () => {
+		beforeEach(() => {
 			(sdk.onStreamData as jest.Mock).mockImplementation((name: string, handler: any) => {
 				if (name === 'stream-notify-room') capturedRoomHandler = handler;
 				return Promise.resolve({ stop: stopMock });
@@ -315,7 +315,7 @@ describe('RoomSubscription', () => {
 		let mockWrite: jest.Mock;
 		let mockBatch: jest.Mock;
 
-		beforeEach(async () => {
+		beforeEach(() => {
 			mockFind = jest.fn().mockRejectedValue(new Error('not found'));
 			mockWrite = jest.fn((fn: any) => Promise.resolve(fn()));
 			mockBatch = jest.fn().mockResolvedValue(undefined);
