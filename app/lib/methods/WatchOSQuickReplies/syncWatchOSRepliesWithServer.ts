@@ -18,7 +18,7 @@ const syncWatchOSQuickRepliesWithServer = (state: IApplicationState): boolean =>
 		const quickRepliesMMKVKey = `${server}-${WATCHOS_QUICKREPLIES}`;
 
 		const replies = appleWatchReplies.split(',').map(reply => reply.trim());
-		UserPreferences.setArray(quickRepliesMMKVKey, replies);
+		UserPreferences.setString(quickRepliesMMKVKey, JSON.stringify(replies));
 	}
 	const result = syncWatchOSQuickReplies();
 	return result;

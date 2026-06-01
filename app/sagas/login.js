@@ -39,7 +39,6 @@ import { getServerById } from '../lib/database/services/Server';
 import appNavigation from '../lib/navigation/appNavigation';
 import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
-import { isIOS } from '../lib/methods/helpers';
 import syncWatchOSQuickRepliesWithServer from '../lib/methods/WatchOSQuickReplies/syncWatchOSRepliesWithServer';
 import { mediaSessionInstance } from '../lib/services/voip/MediaSessionInstance';
 import { hasPermission } from '../lib/methods/helpers/helpers';

@@ -1,4 +1,5 @@
 import NativeWatchModule from '../../native/NativeWatchModule';
+import log from '../helpers/log';
 import { shouldShowWatchAppOptions } from './getWatchStatus';
 
 export function syncWatchOSQuickReplies(): boolean {
@@ -6,7 +7,7 @@ export function syncWatchOSQuickReplies(): boolean {
 	try {
 		const result = NativeWatchModule?.syncQuickReplies();
 		if (result?.startsWith('[ERROR]')) {
-			console.error(result);
+			log(new Error(result));
 			return false;
 		}
 

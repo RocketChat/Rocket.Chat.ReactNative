@@ -52,7 +52,7 @@ const UserWatchOSQuickRepliesView = ({ navigation }: IUserWatchOSQuickRepliesVie
 	};
 
 	return (
-		<SafeAreaView testID='watchos-preferences-view'>
+		<SafeAreaView testID='watchos-quick-replies-view'>
 			<List.Container>
 				<List.Section title='WatchOS_Quick_Replies'>
 					<>
