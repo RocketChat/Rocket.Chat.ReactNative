@@ -20,7 +20,8 @@ import { updatePermission } from '../../actions/permissions';
 import EventEmitter from '../methods/helpers/events';
 import { updateSettings } from '../../actions/settings';
 import { defaultSettings } from '../constants/defaultSettings';
-import { compareServerVersion, isIOS } from '../methods/helpers';
+import { compareServerVersion, hasRole, isIOS } from '../methods/helpers';
+import { inquiryRequest } from '../../ee/omnichannel/actions/inquiry';
 import { onRolesChanged } from '../methods/getRoles';
 import { getSettings } from '../methods/getSettings';
 import { setPresenceCap } from '../methods/getUsersPresence';
@@ -77,6 +78,12 @@ async function connect({ server, logoutOnError = false }: { server: string; logo
 				const { user } = store.getState().login;
 				if (user?.token) {
 					store.dispatch(loginRequest({ resume: user.token }, logoutOnError));
+				}
+				// Omnichannel inquiry queue must be refreshed on (re)connect — the previous SDK had a
+				// `'connected'` event that inquiry.ts listened to; the new DDP client's `onCollection`
+				// doesn't fire for connection events, so the dispatch is centralized here.
+				if (hasRole('livechat-agent') || hasRole('livechat-manager')) {
+					store.dispatch(inquiryRequest());
 				}
 			}
 			if (['disconnected', 'closed'].includes(status)) {
@@ -420,7 +427,10 @@ async function getWebsocketInfo({
 			};
 		}
 
-		return { success: true };
+		return {
+			success: false,
+			message: I18n.t('Invalid_URL')
+		};
 	}
 }
 

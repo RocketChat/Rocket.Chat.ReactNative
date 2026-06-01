@@ -1,6 +1,6 @@
 import log from '../../../../lib/methods/helpers/log';
 import { store } from '../../../../lib/store/auxStore';
-import { inquiryQueueAdd, inquiryQueueRemove, inquiryQueueUpdate, inquiryRequest } from '../../actions/inquiry';
+import { inquiryQueueAdd, inquiryQueueRemove, inquiryQueueUpdate } from '../../actions/inquiry';
 import sdk from '../../../../lib/services/sdk';
 import { type IOmnichannelRoom } from '../../../../definitions';
 import { hasRole } from '../../../../lib/methods/helpers';
@@ -22,7 +22,6 @@ interface IDdpMessage {
 
 const removeListener = (listener: any) => listener.stop();
 
-let connectedListener: any;
 let queueListener: any;
 let departmentListeners: any[] = [];
 let stopped = false;
@@ -31,10 +30,6 @@ const streamTopic = 'stream-livechat-inquiry-queue-observer';
 
 export default function subscribeInquiry() {
 	stopped = false;
-
-	const handleConnection = () => {
-		store.dispatch(inquiryRequest());
-	};
 
 	const handleQueueMessageReceived = (ddpMessage: IDdpMessage) => {
 		const [{ type, ...sub }] = ddpMessage.fields.args;
@@ -67,10 +62,6 @@ export default function subscribeInquiry() {
 
 	const stop = () => {
 		stopped = true;
-		if (connectedListener) {
-			connectedListener.then(removeListener);
-			connectedListener = false;
-		}
 		if (queueListener) {
 			queueListener.then(removeListener);
 			queueListener = false;
@@ -85,7 +76,6 @@ export default function subscribeInquiry() {
 		departmentListeners = [];
 	};
 
-	connectedListener = sdk.onStreamData('connected', handleConnection);
 	queueListener = sdk.onStreamData(streamTopic, handleQueueMessageReceived);
 
 	try {

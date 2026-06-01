@@ -164,7 +164,7 @@ class Sdk {
 			: Serialized<OperationParams<'POST', MatchPathPattern<TPath>>>
 	): Promise<ResultFor<'POST', MatchPathPattern<TPath>>> {
 		return new Promise(async (resolve, reject) => {
-			const isMethodCall = endpoint?.startsWith('method.call/');
+			const isMethodCall = !!endpoint?.includes('/v1/method.call');
 			try {
 				const sdk = this.ensureInitialized();
 				// @ts-ignore
@@ -280,20 +280,15 @@ class Sdk {
 		});
 	}
 
-	async methodCallWrapper(method: string, ...params: any[]): Promise<any> {
+	methodCallWrapper(method: string, ...params: any[]): Promise<any> {
 		const { API_Use_REST_For_DDP_Calls } = reduxStore.getState().settings;
 		const { user } = reduxStore.getState().login;
 		if (API_Use_REST_For_DDP_Calls) {
 			const url = isEmpty(user) ? 'method.callAnon' : 'method.call';
 			const endpoint = `/v1/${url}/${method}` as PathFor<'POST'>;
-			const result = (await this.post(endpoint, {
+			return this.post(endpoint, {
 				message: EJSON.stringify({ msg: 'method', id: random(10), method, params })
-			} as any)) as unknown as { message: string };
-			const response = JSON.parse(result.message);
-			if (response?.error) {
-				throw response.error;
-			}
-			return response.result;
+			} as any);
 		}
 		const parsedParams = params.map(param => {
 			if (param instanceof Date) {

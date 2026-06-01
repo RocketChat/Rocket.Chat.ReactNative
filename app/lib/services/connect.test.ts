@@ -1,4 +1,4 @@
-import { checkAndReopen, connect, determineAuthType, disconnect } from './connect';
+import { checkAndReopen, connect, determineAuthType, disconnect, login, loginTOTP } from './connect';
 import { mediaSessionInstance } from './voip/MediaSessionInstance';
 import { pendingHangups } from './voip/pendingHangups';
 
@@ -21,6 +21,9 @@ const mockSdkInitialize = jest.fn().mockResolvedValue(undefined);
 const mockSdkOnCollection = jest.fn();
 const mockSdkDisconnect = jest.fn();
 
+const mockSdkLogin = jest.fn();
+const mockAccountUser: { value: any } = { value: undefined };
+
 jest.mock('./sdk', () => {
 	const state: { server: string | undefined; currentEnabled: boolean } = { server: undefined, currentEnabled: true };
 	return {
@@ -32,9 +35,11 @@ jest.mock('./sdk', () => {
 			disconnect: (...args: any[]) => mockSdkDisconnect(...args),
 			initialize: (s: string) => mockSdkInitialize(s),
 			onCollection: (...args: any[]) => mockSdkOnCollection(...args),
+			login: (...args: any[]) => mockSdkLogin(...args),
 			get current() {
 				if (!state.currentEnabled) return undefined;
 				return {
+					account: { user: mockAccountUser.value },
 					connection: {
 						on: (event: string, cb: any) => mockConnectionOn(event, cb),
 						connect: () => mockConnectionConnect(),
@@ -51,6 +56,15 @@ jest.mock('./sdk', () => {
 		}
 	};
 });
+
+const mockTwoFactor = jest.fn();
+jest.mock('./twoFactor', () => ({
+	twoFactor: (...args: any[]) => mockTwoFactor(...args)
+}));
+
+jest.mock('../../ee/omnichannel/actions/inquiry', () => ({
+	inquiryRequest: jest.fn().mockReturnValue({ type: 'INQUIRY_REQUEST' })
+}));
 
 const sdkMock = jest.requireMock('./sdk') as {
 	__setServer: (v: string | undefined) => void;
@@ -603,3 +617,192 @@ describe('checkAndReopen', () => {
 });
 
 // Note: Apple authentication when isIOS is true is tested in connect.ios.test.ts
+
+// ─────────────────────────────────────────────────────────────────────────────
+describe('login', () => {
+	beforeEach(() => {
+		mockSdkLogin.mockReset();
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: true },
+			login: { user: null, isAuthenticated: false },
+			settings: {},
+			server: { version: '6.0.0' }
+		});
+		mockAccountUser.value = undefined;
+	});
+
+	it('throws when sdk.login result has no me', async () => {
+		mockSdkLogin.mockResolvedValue({});
+		await expect(login({ user: 'u', password: 'p' } as any)).rejects.toThrow("Couldn't fetch user data");
+	});
+
+	it('throws when sdk.current.account.user is missing', async () => {
+		mockSdkLogin.mockResolvedValue({ me: { username: 'john' } });
+		mockAccountUser.value = undefined;
+		await expect(login({ user: 'u', password: 'p' } as any)).rejects.toThrow('Login failed: no user returned');
+	});
+
+	it('returns an ILoggedUser combining account.user + me', async () => {
+		mockAccountUser.value = { id: 'u-1', token: 'tok-1' };
+		mockSdkLogin.mockResolvedValue({
+			me: { username: 'john', name: 'John D', language: 'en', emails: [{ address: 'j@x.com' }] }
+		});
+		const result = await login({ user: 'john', password: 'p' } as any);
+		expect(result).toEqual(
+			expect.objectContaining({
+				id: 'u-1',
+				token: 'tok-1',
+				username: 'john',
+				name: 'John D',
+				language: 'en'
+			})
+		);
+	});
+
+	it('reads showMessageInMainThread / enableMessageParserEarlyAdoption from me on RC < 5.0', async () => {
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: true },
+			login: { user: null, isAuthenticated: false },
+			settings: {},
+			server: { version: '4.9.0' }
+		});
+		mockAccountUser.value = { id: 'u-1', token: 'tok-1' };
+		mockSdkLogin.mockResolvedValue({
+			me: {
+				username: 'john',
+				settings: { preferences: { enableMessageParserEarlyAdoption: false, showMessageInMainThread: true } }
+			}
+		});
+		const result = await login({ user: 'john', password: 'p' } as any);
+		expect(result?.enableMessageParserEarlyAdoption).toBe(false);
+		expect(result?.showMessageInMainThread).toBe(true);
+	});
+});
+
+describe('loginTOTP', () => {
+	beforeEach(() => {
+		mockSdkLogin.mockReset();
+		mockTwoFactor.mockReset();
+		mockStoreDispatch.mockReset();
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: true },
+			login: { user: null, isAuthenticated: false },
+			settings: {},
+			server: { version: '6.0.0' }
+		});
+		mockAccountUser.value = { id: 'u-1', token: 'tok-1' };
+	});
+
+	it('returns the login result when no 2FA challenge is raised', async () => {
+		mockSdkLogin.mockResolvedValue({ me: { username: 'john' } });
+		const result = await loginTOTP({ user: 'john', password: 'p' } as any);
+		expect(result.username).toBe('john');
+	});
+
+	it('prompts twoFactor with details.method and retries when totp-required', async () => {
+		mockSdkLogin
+			.mockRejectedValueOnce({ data: { error: 'totp-required', details: { method: 'totp' } } })
+			.mockResolvedValueOnce({ me: { username: 'john' } });
+		mockTwoFactor.mockResolvedValue({ twoFactorCode: '123456', twoFactorMethod: 'totp' });
+
+		const result = await loginTOTP({ user: 'john', password: 'p' } as any, true);
+		expect(mockTwoFactor).toHaveBeenCalledWith({ method: 'totp', invalid: false });
+		expect(result.username).toBe('john');
+	});
+
+	it('passes invalid:true when retrying after totp-invalid', async () => {
+		mockSdkLogin
+			.mockRejectedValueOnce({
+				data: { error: 'totp-invalid', details: { method: 'totp', error: 'totp-invalid' } }
+			})
+			.mockResolvedValueOnce({ me: { username: 'john' } });
+		mockTwoFactor.mockResolvedValue({ twoFactorCode: '999999', twoFactorMethod: 'totp' });
+		await loginTOTP({ user: 'john', password: 'p' } as any, true);
+		expect(mockTwoFactor).toHaveBeenCalledWith({ method: 'totp', invalid: true });
+	});
+
+	it('normalizes ldapPass to password on RC >= 3.9.0 before 2FA retry', async () => {
+		mockSdkLogin
+			.mockRejectedValueOnce({ data: { error: 'totp-required', details: { method: 'totp' } } })
+			.mockResolvedValueOnce({ me: { username: 'john' } });
+		mockTwoFactor.mockResolvedValue({ twoFactorCode: '111111', twoFactorMethod: 'totp' });
+		await loginTOTP({ username: 'john', ldapPass: 'secret-ldap' } as any, true);
+		const retryArgs = mockSdkLogin.mock.calls[1][0];
+		expect(retryArgs).toMatchObject({ user: 'john', password: 'secret-ldap', code: '111111' });
+		expect(retryArgs).not.toHaveProperty('ldapPass');
+	});
+
+	it('wraps the retry params in a totp envelope when loginEmailPassword is falsy', async () => {
+		mockSdkLogin
+			.mockRejectedValueOnce({ data: { error: 'totp-required', details: { method: 'totp' } } })
+			.mockResolvedValueOnce({ me: { username: 'service' } });
+		mockTwoFactor.mockResolvedValue({ twoFactorCode: '222222', twoFactorMethod: 'totp' });
+		await loginTOTP({ user: 'service', password: 'p' } as any);
+		const retryArgs = mockSdkLogin.mock.calls[1][0];
+		expect(retryArgs).toMatchObject({ totp: { login: expect.any(Object), code: '222222' } });
+	});
+
+	it('rejects when twoFactor is cancelled', async () => {
+		mockSdkLogin.mockRejectedValue({ data: { error: 'totp-required', details: { method: 'totp' } } });
+		mockTwoFactor.mockRejectedValue(new Error('cancelled'));
+		await expect(loginTOTP({ user: 'john', password: 'p' } as any, true)).rejects.toBeUndefined();
+	});
+
+	it('rejects non-2FA errors as-is', async () => {
+		mockSdkLogin.mockRejectedValue(new Error('500 server'));
+		await expect(loginTOTP({ user: 'john', password: 'p' } as any)).rejects.toThrow('500 server');
+	});
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Fix 4 regression — inquiry dispatch on reconnect
+describe('connection status handler (Fix 4 regression)', () => {
+	beforeEach(() => {
+		mockConnectionOn.mockReset();
+		mockStoreDispatch.mockReset();
+		sdkMock.__setServer(undefined);
+	});
+
+	const setLivechatRoles = (roles: string[]) => {
+		jest.resetModules();
+		jest.doMock('../methods/helpers', () => ({
+			...jest.requireActual('../methods/helpers'),
+			hasRole: jest.fn((r: string) => roles.includes(r))
+		}));
+	};
+
+	it('dispatches inquiryRequest on connected when user is a livechat-agent', async () => {
+		setLivechatRoles(['livechat-agent']);
+		const { connect: freshConnect } = require('./connect');
+		await freshConnect({ server: 'https://x.com' });
+		const listener = getCapturedConnectionListener();
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: false },
+			login: { user: { token: 't' }, isAuthenticated: true },
+			settings: {},
+			server: { version: '6.0.0' }
+		});
+		listener('connected');
+		await flushMicrotasks();
+		const actions = mockStoreDispatch.mock.calls.map(([action]) => (action as any).type);
+		expect(actions).toContain('INQUIRY_REQUEST');
+	});
+
+	it('does NOT dispatch inquiryRequest on connected when user has no livechat role', async () => {
+		setLivechatRoles([]);
+		const { connect: freshConnect } = require('./connect');
+		sdkMock.__setServer(undefined);
+		await freshConnect({ server: 'https://no-livechat.com' });
+		const listener = getCapturedConnectionListener();
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: false },
+			login: { user: { token: 't' }, isAuthenticated: true },
+			settings: {},
+			server: { version: '6.0.0' }
+		});
+		listener('connected');
+		await flushMicrotasks();
+		const actions = mockStoreDispatch.mock.calls.map(([action]) => (action as any).type);
+		expect(actions).not.toContain('INQUIRY_REQUEST');
+	});
+});
