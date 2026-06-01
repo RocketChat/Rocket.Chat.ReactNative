@@ -55,7 +55,7 @@ export interface IServiceList {
 }
 
 export interface IServicesSeparator {
-	services: IServices;
+	totalServices: number;
 	separator: boolean;
 	collapsed: boolean;
 	onPress(): void;

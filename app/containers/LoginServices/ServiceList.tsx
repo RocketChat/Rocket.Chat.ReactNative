@@ -13,35 +13,31 @@ const ServiceList = ({
 	server,
 	collapsed,
 	showLoginOnWebButton
-}: IServiceList & { showLoginOnWebButton: boolean }) => {
-	const enableLoginOnWebButton = showLoginOnWebButton && (!collapsed || Object.keys(services).length <= 2);
+}: IServiceList & { showLoginOnWebButton: boolean }) => (
+	<>
+		{showLoginOnWebButton && (
+			<Button
+				title={I18n.t('Login_on_web')}
+				onPress={() => {
+					Linking.openURL(`${server}/home?loginClient=mobile`);
+				}}
+			/>
+		)}
+		{Object.values(services).map((service: IItemService, index: number) => {
+			if (index > 2 && collapsed) return null;
 
-	return (
-		<>
-			{Object.values(services).map((service: IItemService, index: number) => {
-				if (index > 2 && collapsed) return null;
-
-				return (
-					<Service
-						key={service._id}
-						CAS_enabled={CAS_enabled}
-						CAS_login_url={CAS_login_url}
-						Gitlab_URL={Gitlab_URL}
-						server={server}
-						service={service}
-					/>
-				);
-			})}
-			{enableLoginOnWebButton && (
-				<Button
-					title={I18n.t('Login_on_web')}
-					onPress={() => {
-						Linking.openURL(`${server}/home?loginClient=mobile`);
-					}}
+			return (
+				<Service
+					key={service._id}
+					CAS_enabled={CAS_enabled}
+					CAS_login_url={CAS_login_url}
+					Gitlab_URL={Gitlab_URL}
+					server={server}
+					service={service}
 				/>
-			)}
-		</>
-	);
-};
+			);
+		})}
+	</>
+);
 
 export default ServiceList;

@@ -27,7 +27,7 @@ const LoginServices = ({ separator }: { separator: boolean }): ReactElement => {
 	const { length } = Object.values(filteredServices);
 	// If server returns any of the services with hideButtonOnMobile, we need to show login on web button
 	const enableLoginOnWebButton = Object.values(allServices).length > length;
-
+	const totalServices = length + Number(enableLoginOnWebButton);
 	const heightButtons = useSharedValue(SERVICES_COLLAPSED_HEIGHT);
 
 	const animatedStyle = useAnimatedStyle(() => ({
@@ -36,11 +36,11 @@ const LoginServices = ({ separator }: { separator: boolean }): ReactElement => {
 	}));
 
 	const onPressButtonSeparator = () => {
-		heightButtons.value = collapsed ? SERVICE_HEIGHT * (length + (enableLoginOnWebButton ? 1 : 0)) : SERVICES_COLLAPSED_HEIGHT;
+		heightButtons.value = collapsed ? SERVICE_HEIGHT * totalServices : SERVICES_COLLAPSED_HEIGHT;
 		setCollapsed(prevState => !prevState);
 	};
 
-	if (length > 3 && separator) {
+	if (totalServices > 3 && separator) {
 		return (
 			<>
 				<Animated.View style={animatedStyle}>
@@ -55,10 +55,10 @@ const LoginServices = ({ separator }: { separator: boolean }): ReactElement => {
 					/>
 				</Animated.View>
 				<ServicesSeparator
-					services={filteredServices}
 					separator={separator}
 					collapsed={collapsed}
 					onPress={onPressButtonSeparator}
+					totalServices={totalServices}
 				/>
 			</>
 		);
@@ -75,7 +75,7 @@ const LoginServices = ({ separator }: { separator: boolean }): ReactElement => {
 				showLoginOnWebButton={enableLoginOnWebButton}
 			/>
 			<ServicesSeparator
-				services={filteredServices}
+				totalServices={totalServices}
 				separator={separator}
 				collapsed={collapsed}
 				onPress={onPressButtonSeparator}
