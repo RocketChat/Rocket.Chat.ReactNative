@@ -1,9 +1,6 @@
 name: 'Upload Android'
 description: 'Downloads AAB + Manifest, uploads to Play Store'
 inputs:
-  type:
-    description: 'Build type: official or experimental'
-    required: true
   FASTLANE_GOOGLE_SERVICE_ACCOUNT:
     description: 'Google service account key for upload'
     required: true
@@ -21,19 +18,11 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Download Experimental AAB
-      if: ${{ inputs.type == 'experimental' }}
+    - name: Download AAB
       uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
       with:
-        name: android-aab-experimental
-        path: android/app/build/outputs/bundle/experimentalRelease/
-
-    - name: Download Official AAB
-      if: ${{ inputs.type == 'official' }}
-      uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
-      with:
-        name: android-aab-official
-        path: android/app/build/outputs/bundle/officialRelease/
+        name: android-aab
+        path: android/app/build/outputs/bundle/release/
 
     - name: Set up Ruby and Bundler
       uses: ruby/setup-ruby@7372622e62b60b3cb750dcd2b9e32c247ffec26a # v1.302.0
@@ -52,7 +41,7 @@ runs:
       working-directory: android
       run: |
         set -o pipefail
-        output=$(bundle exec fastlane android internal_app_sharing official:${{ inputs.type == 'official' }} 2>&1 | sed -r "s/\x1B\[[0-9;]*[mK]//g")
+        output=$(bundle exec fastlane android internal_app_sharing 2>&1 | sed -r "s/\x1B\[[0-9;]*[mK]//g")
 
         echo "$output"
 
@@ -78,7 +67,6 @@ runs:
       env:
         GH_TOKEN: ${{ inputs.GITHUB_TOKEN }}
         PR_NUMBER: ${{ github.event.pull_request.number }}
-        BUILD_TYPE: ${{ inputs.type }}
         BUILD_VERSION: ${{ inputs.BUILD_VERSION }}
       run: |
         if [[ -z "$INTERNAL_SHARING_URL" ]]; then
@@ -86,13 +74,7 @@ runs:
           exit 1
         fi
 
-        if [[ "$BUILD_TYPE" == "official" ]]; then
-          app_name="Rocket.Chat"
-        else
-          app_name="Rocket.Chat Experimental"
-        fi
-
-        version_info="$app_name $VERSION_NAME.$BUILD_VERSION"
+        version_info="Rocket.Chat $VERSION_NAME.$BUILD_VERSION"
 
         message="**Android Build Available**"$'\n\n'"$version_info"$'\n\n'"Internal App Sharing: $INTERNAL_SHARING_URL"
 

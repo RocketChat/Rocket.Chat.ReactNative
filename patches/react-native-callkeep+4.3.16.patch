@@ -2,7 +2,7 @@ diff --git a/node_modules/react-native-callkeep/android/src/main/java/io/wazo/ca
 index 025480a..6a66858 100644
 --- a/node_modules/react-native-callkeep/android/src/main/java/io/wazo/callkeep/RNCallKeepModule.java
 +++ b/node_modules/react-native-callkeep/android/src/main/java/io/wazo/callkeep/RNCallKeepModule.java
-@@ -221,7 +221,7 @@ public class RNCallKeepModule extends ReactContextBaseJavaModule implements Life
+@@ -221,7 +221,7 @@ public class RNCallKeepModule extends ReactContextBase
          ComponentName cName = new ComponentName(context, VoiceConnectionService.class);
          String appName = this.getApplicationName(context);
  
@@ -11,31 +11,65 @@ index 025480a..6a66858 100644
          telecomManager = (TelecomManager) context.getSystemService(Context.TELECOM_SERVICE);
      }
  
-@@ -434,11 +434,6 @@ public class RNCallKeepModule extends ReactContextBaseJavaModule implements Life
-         this.hasListeners = false;
-     }
+@@ -432,11 +432,6 @@ public class RNCallKeepModule extends ReactContextBase
+         Log.d(TAG, "[RNCallKeepModule] unregisterEvents");
  
+         this.hasListeners = false;
+-    }
+-
 -    @ReactMethod
 -    public void displayIncomingCall(String uuid, String number, String callerName) {
 -        this.displayIncomingCall(uuid, number, callerName, false, null);
--    }
--
-     @ReactMethod
-     public void displayIncomingCall(String uuid, String number, String callerName, boolean hasVideo) {
-         this.displayIncomingCall(uuid, number, callerName, hasVideo, null);
-@@ -483,11 +478,6 @@ public class RNCallKeepModule extends ReactContextBaseJavaModule implements Life
-         conn.onAnswer();
      }
  
--    @ReactMethod
+     @ReactMethod
+@@ -484,11 +479,6 @@ public class RNCallKeepModule extends ReactContextBase
+     }
+ 
+     @ReactMethod
 -    public void startCall(String uuid, String number, String callerName) {
 -        this.startCall(uuid, number, callerName, false, null);
 -    }
 -
-     @ReactMethod
+-    @ReactMethod
      public void startCall(String uuid, String number, String callerName, boolean hasVideo) {
          this.startCall(uuid, number, callerName, hasVideo, null);
-@@ -1196,9 +1186,14 @@ public class RNCallKeepModule extends ReactContextBaseJavaModule implements Life
+     }
+@@ -1125,6 +1115,18 @@ public class RNCallKeepModule extends ReactContextBase
+             Log.w(TAG, "[RNCallKeepModule][registerPhoneAccount] no react context found.");
+             return;
+         }
++
++        // Devices without android.software.telecom (e.g. Zebra TC21 and other
++        // rugged enterprise SKUs) ship without the Telecom subsystem. Calling
++        // telecomManager.registerPhoneAccount on them throws
++        // UnsupportedOperationException on the RN bridge thread and crashes
++        // the process. Skip registration on those devices — VoIP is not usable
++        // there anyway.
++        if (!context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELECOM)) {
++            Log.w(TAG, "[RNCallKeepModule] registerPhoneAccount skipped: device lacks FEATURE_TELECOM");
++            return;
++        }
++
+         String appName = this.getApplicationName(context);
+ 
+         PhoneAccount.Builder builder = new PhoneAccount.Builder(handle, appName);
+@@ -1145,7 +1147,13 @@ public class RNCallKeepModule extends ReactContextBase
+ 
+         telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+ 
+-        telecomManager.registerPhoneAccount(account);
++        try {
++            telecomManager.registerPhoneAccount(account);
++        } catch (UnsupportedOperationException e) {
++            Log.w(TAG, "[RNCallKeepModule] registerPhoneAccount: Telecom subsystem unavailable", e);
++        } catch (SecurityException e) {
++            Log.w(TAG, "[RNCallKeepModule] registerPhoneAccount: SecurityException registering PhoneAccount", e);
++        }
+     }
+ 
+     public void sendEventToJS(String eventName, @Nullable WritableMap params) {
+@@ -1196,9 +1204,14 @@ public class RNCallKeepModule extends ReactContextBase
              return true;
          }
  

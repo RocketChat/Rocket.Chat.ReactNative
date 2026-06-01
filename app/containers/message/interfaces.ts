@@ -71,6 +71,8 @@ export interface IMessageContent {
 	isHeader: boolean;
 	isTranslated: boolean;
 	pinned?: boolean;
+	attachments?: IAttachment[];
+	autoTranslateLanguage?: string;
 }
 
 export interface IMessageEmoji {
