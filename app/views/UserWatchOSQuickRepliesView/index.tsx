@@ -1,6 +1,7 @@
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
+import { StyleSheet } from 'react-native';
 
 import I18n from '../../i18n';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -11,6 +12,7 @@ import Chip from '../../containers/Chip';
 import userPreferences, { useUserPreferences } from '../../lib/methods/userPreferences';
 import { CURRENT_SERVER, WATCHOS_QUICKREPLIES } from '../../lib/constants/keys';
 import { syncWatchOSQuickReplies } from '../../lib/methods/WatchOSQuickReplies/syncReplies';
+import log from '../../lib/methods/helpers/log';
 
 interface IUserWatchOSQuickRepliesViewProps {
 	navigation: NativeStackNavigationProp<ProfileStackParamList, 'UserWatchOSQuickRepliesView'>;
@@ -29,7 +31,7 @@ const UserWatchOSQuickRepliesView = ({ navigation }: IUserWatchOSQuickRepliesVie
 
 	const removeQuickReply = (reply: string) => {
 		if (!currentServer) {
-			console.error('Error: cannot set quick replies, current server is undefined');
+			log(new Error('Error: cannot set quick replies, current server is undefined'));
 			return;
 		}
 		const newReplies = quickReplies?.filter(quickreply => quickreply !== reply);
@@ -50,14 +52,14 @@ const UserWatchOSQuickRepliesView = ({ navigation }: IUserWatchOSQuickRepliesVie
 	};
 
 	return (
-		<SafeAreaView testID='preferences-view'>
+		<SafeAreaView testID='watchos-preferences-view'>
 			<List.Container>
 				<List.Section title='WatchOS_Quick_Replies'>
 					<>
 						{quickReplies && quickReplies.length !== 0 && (
-							<ScrollView horizontal style={{ marginVertical: 8, paddingHorizontal: 4 }} showsHorizontalScrollIndicator={false}>
-								{quickReplies.map((reply, index) => (
-									<Chip key={index} text={reply} onPress={() => removeQuickReply(reply)} />
+							<ScrollView horizontal style={styles.chipContainer} showsHorizontalScrollIndicator={false}>
+								{quickReplies.map(reply => (
+									<Chip key={reply} text={reply} onPress={() => removeQuickReply(reply)} />
 								))}
 							</ScrollView>
 						)}
@@ -78,4 +80,7 @@ const UserWatchOSQuickRepliesView = ({ navigation }: IUserWatchOSQuickRepliesVie
 	);
 };
 
+const styles = StyleSheet.create({
+	chipContainer: { marginVertical: 8, paddingHorizontal: 4 }
+});
 export default UserWatchOSQuickRepliesView;
