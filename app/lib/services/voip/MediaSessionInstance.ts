@@ -47,6 +47,7 @@ class MediaSessionInstance {
 	private mediaSessionStoreChangeUnsubscribe: (() => void) | null = null;
 	private storeTimeoutUnsubscribe: (() => void) | null = null;
 	private storeIceServersUnsubscribe: (() => void) | null = null;
+	private answeringCallIds = new Set<string>();
 
 	private tryAnswerIfNativeAcceptedNotification(signal: ServerMediaSignal): void {
 		const { call, nativeAcceptedCallId } = useCallStore.getState();
@@ -169,43 +170,54 @@ class MediaSessionInstance {
 		if (existingCall != null && existingCall.callId === callId) {
 			return;
 		}
+		// `await requestVoipCallPermissions()` widens the window before the `setCall` anchor below, and
+		// both invocation paths (REST replay + live listener via `tryAnswerIfNativeAcceptedNotification`)
+		// are gated only on `call == null`. Without this an in-flight answer can be entered twice and
+		// double `accept()`/navigate (grant) or double `endCall`/alert (deny). Keep it idempotent.
+		if (this.answeringCallIds.has(callId)) {
+			return;
+		}
+		this.answeringCallIds.add(callId);
+		try {
+			const mainCall = this.instance?.getCallData(callId);
 
-		const mainCall = this.instance?.getCallData(callId);
-
-		if (mainCall && mainCall.callId === callId) {
-			const permission = await requestVoipCallPermissions();
-			if (!permission.granted) {
-				this.endCall(callId);
-				showVoipMicrophoneDeniedAlert(permission.canAskAgain);
-				return;
-			}
-			try {
-				await mainCall.accept();
-			} catch (error) {
-				log(error);
+			if (mainCall && mainCall.callId === callId) {
+				const permission = await requestVoipCallPermissions();
+				if (!permission.granted) {
+					this.endCall(callId);
+					showVoipMicrophoneDeniedAlert(permission.canAskAgain);
+					return;
+				}
+				try {
+					await mainCall.accept();
+				} catch (error) {
+					log(error);
+					terminateNativeCall(callId);
+					const st = useCallStore.getState();
+					if (st.nativeAcceptedCallId === callId) {
+						st.resetNativeCallId();
+					}
+					showErrorAlert(I18n.t('VoIP_Answer_Failed'), I18n.t('Oops'));
+					return;
+				}
+				RNCallKeep.setCurrentCallActive(callId);
+				useCallStore.getState().setCall(mainCall);
+				useCallStore.getState().setDirection('incoming');
+				await waitForNavigationReady();
+				Navigation.navigate('CallView');
+				this.resolveRoomIdFromContact(mainCall.remoteParticipants[0]?.contact).catch(error => {
+					log(error);
+				});
+			} else {
 				terminateNativeCall(callId);
 				const st = useCallStore.getState();
 				if (st.nativeAcceptedCallId === callId) {
 					st.resetNativeCallId();
 				}
-				showErrorAlert(I18n.t('VoIP_Answer_Failed'), I18n.t('Oops'));
-				return;
+				log(new Error(`[VoIP] Call not found after accept: ${callId}`));
 			}
-			RNCallKeep.setCurrentCallActive(callId);
-			useCallStore.getState().setCall(mainCall);
-			useCallStore.getState().setDirection('incoming');
-			await waitForNavigationReady();
-			Navigation.navigate('CallView');
-			this.resolveRoomIdFromContact(mainCall.remoteParticipants[0]?.contact).catch(error => {
-				log(error);
-			});
-		} else {
-			terminateNativeCall(callId);
-			const st = useCallStore.getState();
-			if (st.nativeAcceptedCallId === callId) {
-				st.resetNativeCallId();
-			}
-			log(new Error(`[VoIP] Call not found after accept: ${callId}`));
+		} finally {
+			this.answeringCallIds.delete(callId);
 		}
 	};
 

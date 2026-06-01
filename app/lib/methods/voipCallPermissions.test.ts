@@ -2,6 +2,7 @@ import { Alert, PermissionsAndroid, Platform } from 'react-native';
 import { Audio } from 'expo-av';
 import { PermissionStatus } from 'expo-camera';
 
+import log from './helpers/log';
 import { requestVoipCallPermissions, showVoipMicrophoneDeniedAlert } from './voipCallPermissions';
 
 jest.mock('expo-av', () => ({
@@ -9,6 +10,11 @@ jest.mock('expo-av', () => ({
 		getPermissionsAsync: jest.fn(),
 		requestPermissionsAsync: jest.fn()
 	}
+}));
+
+jest.mock('./helpers/log', () => ({
+	__esModule: true,
+	default: jest.fn()
 }));
 
 jest.mock('../../i18n', () => ({
@@ -23,7 +29,7 @@ jest.mock('./helpers/openAppSettings', () => ({
 describe('requestVoipCallPermissions', () => {
 	beforeEach(() => {
 		Platform.OS = 'ios';
-		jest.clearAllMocks();
+		jest.resetAllMocks();
 	});
 
 	afterEach(() => {
@@ -105,10 +111,50 @@ describe('requestVoipCallPermissions', () => {
 
 		expect(result).toEqual({ granted: false, canAskAgain: false });
 	});
+
+	it('resolves to denied without rejecting when the Android permission request throws', async () => {
+		Platform.OS = 'android';
+		jest.spyOn(PermissionsAndroid, 'request').mockRejectedValue(new Error('Not attached to an Activity'));
+
+		const result = await requestVoipCallPermissions();
+
+		expect(result).toEqual({ granted: false, canAskAgain: false });
+		expect(log).toHaveBeenCalledTimes(1);
+	});
+
+	it('resolves to denied without rejecting when the iOS permission check throws', async () => {
+		jest.mocked(Audio.getPermissionsAsync).mockRejectedValue(new Error('permission service unavailable'));
+
+		const result = await requestVoipCallPermissions();
+
+		expect(result).toEqual({ granted: false, canAskAgain: false });
+		expect(log).toHaveBeenCalledTimes(1);
+	});
+
+	it('returns denied on iOS when the live prompt is declined', async () => {
+		jest.mocked(Audio.getPermissionsAsync).mockResolvedValue({
+			granted: false,
+			status: PermissionStatus.UNDETERMINED,
+			canAskAgain: true,
+			expires: 'never'
+		});
+		jest.mocked(Audio.requestPermissionsAsync).mockResolvedValue({
+			granted: false,
+			status: PermissionStatus.DENIED,
+			canAskAgain: false,
+			expires: 'never'
+		});
+
+		const result = await requestVoipCallPermissions();
+
+		expect(Audio.requestPermissionsAsync).toHaveBeenCalledTimes(1);
+		expect(result).toEqual({ granted: false, canAskAgain: false });
+	});
 });
 
 describe('showVoipMicrophoneDeniedAlert', () => {
 	beforeEach(() => {
+		Platform.OS = 'ios';
 		jest.spyOn(Alert, 'alert').mockImplementation(() => {});
 	});
 

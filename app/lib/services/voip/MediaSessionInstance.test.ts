@@ -893,6 +893,18 @@ describe('MediaSessionInstance', () => {
 		it('ends call and shows microphone denied alert when permission is denied', async () => {
 			await mediaSessionInstance.init('user-1');
 			const session = createdSessions[0];
+			const mockResetNativeCallId = jest.fn();
+			mockUseCallStoreGetState.mockReturnValue({
+				reset: mockCallStoreReset,
+				setCall: jest.fn(),
+				setRoomId: mockSetRoomId,
+				setDirection: mockSetDirection,
+				resetNativeCallId: mockResetNativeCallId,
+				call: null,
+				callId: null,
+				nativeAcceptedCallId: 'call-perm',
+				roomId: null
+			});
 			const endCallSpy = jest.spyOn(mediaSessionInstance, 'endCall');
 			mockRequestVoipCallPermissions.mockResolvedValueOnce({ granted: false, canAskAgain: true });
 			const mainCall = {
@@ -909,6 +921,11 @@ describe('MediaSessionInstance', () => {
 
 			expect(endCallSpy).toHaveBeenCalledWith('call-perm');
 			expect(mainCall.accept).not.toHaveBeenCalled();
+			// accept() never ran, so the call is still 'ringing' — endCall must reject(), not hangup().
+			expect(mainCall.reject).toHaveBeenCalledTimes(1);
+			expect(mainCall.hangup).not.toHaveBeenCalled();
+			expect(mockTerminateNativeCall).toHaveBeenCalledWith('call-perm');
+			expect(mockResetNativeCallId).toHaveBeenCalled();
 			expect(mockShowVoipMicrophoneDeniedAlert).toHaveBeenCalledWith(true);
 			expect(Navigation.navigate).not.toHaveBeenCalled();
 			endCallSpy.mockRestore();
@@ -971,6 +988,63 @@ describe('MediaSessionInstance', () => {
 
 			expect(mockSetCall).not.toHaveBeenCalled();
 			expect(Navigation.navigate).not.toHaveBeenCalled();
+		});
+	});
+
+	describe('answerCall in-flight de-duplication', () => {
+		it('accepts and navigates only once for concurrent answerCall on the same callId', async () => {
+			await mediaSessionInstance.init('user-1');
+			const session = createdSessions[0];
+			const mainCall = {
+				callId: 'call-dup',
+				accept: jest.fn().mockResolvedValue(undefined),
+				remoteParticipants: [{ contact: { username: 'bob' } }]
+			};
+			session.getCallData.mockReturnValue(mainCall);
+
+			await Promise.all([mediaSessionInstance.answerCall('call-dup'), mediaSessionInstance.answerCall('call-dup')]);
+
+			expect(mainCall.accept).toHaveBeenCalledTimes(1);
+			expect(Navigation.navigate).toHaveBeenCalledTimes(1);
+		});
+
+		it('ends the call and alerts only once for concurrent denied answerCall on the same callId', async () => {
+			await mediaSessionInstance.init('user-1');
+			const session = createdSessions[0];
+			const endCallSpy = jest.spyOn(mediaSessionInstance, 'endCall').mockImplementation(() => {});
+			mockRequestVoipCallPermissions.mockResolvedValue({ granted: false, canAskAgain: true });
+			const mainCall = {
+				callId: 'call-dup-deny',
+				state: 'ringing',
+				accept: jest.fn(),
+				reject: jest.fn(),
+				hangup: jest.fn(),
+				remoteParticipants: [{ contact: { username: 'bob' } }]
+			};
+			session.getCallData.mockReturnValue(mainCall);
+
+			await Promise.all([mediaSessionInstance.answerCall('call-dup-deny'), mediaSessionInstance.answerCall('call-dup-deny')]);
+
+			expect(endCallSpy).toHaveBeenCalledTimes(1);
+			expect(mockShowVoipMicrophoneDeniedAlert).toHaveBeenCalledTimes(1);
+			expect(mainCall.accept).not.toHaveBeenCalled();
+			endCallSpy.mockRestore();
+		});
+
+		it('allows a fresh answer for the same callId after the previous attempt settles', async () => {
+			await mediaSessionInstance.init('user-1');
+			const session = createdSessions[0];
+			const mainCall = {
+				callId: 'call-retry',
+				accept: jest.fn().mockResolvedValue(undefined),
+				remoteParticipants: [{ contact: { username: 'bob' } }]
+			};
+			session.getCallData.mockReturnValue(mainCall);
+
+			await mediaSessionInstance.answerCall('call-retry');
+			await mediaSessionInstance.answerCall('call-retry');
+
+			expect(mainCall.accept).toHaveBeenCalledTimes(2);
 		});
 	});
 
