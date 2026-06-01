@@ -346,18 +346,6 @@ describe('RoomSubscription', () => {
 		});
 	});
 
-	describe('handleMessageReceived', () => {
-		// NOTE: updateMessage returns a Promise that never calls resolve() in its main path,
-		// so tests that await the full message-processing flow will timeout.
-		// The tests below verify only what can be observed synchronously or via non-awaited calls.
-
-		it.todo('calls Encryption.decryptMessage with the received message');
-		it.todo('writes a new message record to the database when message does not exist');
-		it.todo('updates an existing message record in the database');
-		it.todo('creates thread record when message has tlm field');
-		it.todo('creates thread message record when message has tmid field');
-	});
-
 	describe('removeListener()', () => {
 		it('calls stop() on a resolved promise listener', async () => {
 			const sub = new RoomSubscription(TEST_RID);
