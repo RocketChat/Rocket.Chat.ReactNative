@@ -25,6 +25,7 @@ const LoginServices = ({ separator }: { separator: boolean }): ReactElement => {
 		Object.entries(allServices).filter(([, service]) => !service.hideButtonOnMobile)
 	) as IServices;
 	const { length } = Object.values(filteredServices);
+	// If server returns any of the services with hideButtonOnMobile, we need to show login on web button
 	const enableLoginOnWebButton = Object.values(allServices).length > length;
 
 	const heightButtons = useSharedValue(SERVICES_COLLAPSED_HEIGHT);
