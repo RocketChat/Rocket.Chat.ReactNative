@@ -6,6 +6,7 @@ import InCallManager from 'react-native-incall-manager';
 import { isIOS } from '../../methods/helpers';
 import log from '../../methods/helpers/log';
 import NativeVoipModule from '../../native/NativeVoip';
+import { pendingHangups } from './pendingHangups';
 import { terminateNativeCall } from './terminateNativeCall';
 import { playCallEndedSound } from './playCallEndedSound';
 import Navigation from '../../navigation/appNavigation';
@@ -302,6 +303,11 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		const { call, callId, nativeAcceptedCallId } = get();
 		// UUID for the native call UI layer (react-native-callkeep on iOS and Android).
 		const callUuid = callId ?? nativeAcceptedCallId;
+
+		if (callId) {
+			// Record before dispatching so a hangup written into a dead socket is replayed on reconnect.
+			pendingHangups.record(callId);
+		}
 
 		if (call) {
 			call.hangup();

@@ -29,7 +29,7 @@ import MessageErrorActions, { type IMessageErrorActions } from '../../containers
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
-import RoomHeader, { type IRoomHeaderRef } from '../../containers/RoomHeader';
+import RoomHeader from '../../containers/RoomHeader';
 import ReactionsList from '../../containers/ReactionsList';
 import { LISTENER } from '../../containers/Toast';
 import { getBadgeColor, isBlocked, makeThreadName } from '../../lib/methods/helpers/room';
@@ -61,6 +61,7 @@ import {
 	type IApplicationState,
 	type IAttachment,
 	type IMessage,
+	type IMessageEditAttachment,
 	type IOmnichannelSource,
 	type ISubscription,
 	type IVisitor,
@@ -94,7 +95,7 @@ import {
 } from '../../lib/methods/helpers';
 import { withActionSheet } from '../../containers/ActionSheet';
 import { goRoom, type TGoRoomItem } from '../../lib/methods/helpers/goRoom';
-import { type IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
+import { ComposerAttachments, type IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
 import { RoomContext } from './context';
 import AudioManager from '../../lib/methods/AudioManager';
 import { type IListContainerRef, type TListRef } from './List/definitions';
@@ -110,7 +111,6 @@ import { type IRoomFederated, isRoomFederated, isRoomNativeFederated } from '../
 import { InvitedRoom } from './components/InvitedRoom';
 import { getInvitationData } from '../../lib/methods/getInvitationData';
 import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
-import { isExternalKeyboardConnected } from '../../lib/methods/helpers/externalInput';
 
 class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private rid?: string;
@@ -119,7 +119,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private jumpToMessageId?: string;
 	private jumpToThreadId?: string;
 	private messageComposerRef: React.RefObject<IMessageComposerRef | null>;
-	private roomHeaderRef: React.RefObject<IRoomHeaderRef | null>;
 	private joinCode: React.RefObject<IJoinCode | null>;
 	// ListContainer component
 	private list: React.RefObject<IListContainerRef | null>;
@@ -140,7 +139,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 	private sub?: RoomClass;
 	private unsubscribeBlur?: () => void;
-	private unsubscribeFocus?: () => void;
 
 	constructor(props: IRoomViewProps) {
 		super(props);
@@ -204,7 +202,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.updateE2EEState();
 
 		this.messageComposerRef = React.createRef();
-		this.roomHeaderRef = React.createRef();
 		this.list = React.createRef();
 		this.flatList = React.createRef();
 		this.joinCode = React.createRef();
@@ -256,23 +253,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		EventEmitter.addEventListener('ROOM_REMOVED', this.handleRoomRemoved);
 		this.unsubscribeBlur = navigation.addListener('blur', () => {
 			AudioManager.pauseAudio();
-		});
-		this.unsubscribeFocus = navigation.addListener('focus', () => {
-			InteractionManager.runAfterInteractions(() => {
-				if (this.props.isMasterDetail) {
-					this.roomHeaderRef.current?.focus();
-					return;
-				}
-				// Skip autofocus in development because simulators always report a keyboard as connected,
-				// which would force the composer to open on every focus while debugging.
-				if (__DEV__) {
-					return;
-				}
-				const hasExternalKeyboard = isExternalKeyboardConnected();
-				if (hasExternalKeyboard) {
-					this.messageComposerRef.current?.focus?.();
-				}
-			});
 		});
 	}
 
@@ -397,9 +377,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 		if (this.unsubscribeBlur) {
 			this.unsubscribeBlur();
-		}
-		if (this.unsubscribeFocus) {
-			this.unsubscribeFocus();
 		}
 		EventEmitter.removeListener('connected', this.handleConnected);
 		EventEmitter.removeListener('ROOM_REMOVED', this.handleRoomRemoved);
@@ -555,7 +532,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			),
 			headerTitle: () => (
 				<RoomHeader
-					ref={this.roomHeaderRef}
 					prid={prid}
 					tmid={tmid}
 					title={title}
@@ -810,7 +786,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.resetAction();
 	};
 
-	onEditRequest = async (message: Pick<IMessage, 'id' | 'msg' | 'rid'>) => {
+	onEditRequest = async (
+		message: Pick<IMessage, 'id' | 'msg' | 'rid'> & {
+			attachments?: IMessageEditAttachment[];
+		}
+	) => {
 		try {
 			this.resetAction();
 			await editMessage(message);
@@ -1582,7 +1562,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			}
 		}
 
-		return <MessageComposerContainer ref={this.messageComposerRef} />;
+		return (
+			<MessageComposerContainer ref={this.messageComposerRef}>
+				<ComposerAttachments />
+			</MessageComposerContainer>
+		);
 	};
 
 	renderActions = () => {

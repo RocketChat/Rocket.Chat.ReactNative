@@ -1,18 +1,18 @@
 {
 	"name": "rocket-chat-reactnative",
-	"version": "4.72.0",
+	"version": "4.73.0",
 	"private": true,
-	"packageManager": "yarn@1.22.22",
+	"packageManager": "pnpm@10.33.4",
 	"scripts": {
 		"start": "react-native start",
 		"test": "TZ=UTC jest",
 		"test-update": "TZ=UTC jest --updateSnapshot",
 		"lint": "eslint . && tsc",
-		"prettier-lint": "prettier --write . && yarn lint",
+		"prettier-lint": "prettier --write . && pnpm lint",
 		"ios": "npx react-native run-ios",
 		"pod-install": "bundle exec pod install --project-directory=ios",
-		"android": "npx react-native run-android --mode=experimentalDebug --main-activity chat.rocket.reactnative.MainActivity",
-		"android-whitelabel": "npx react-native run-android --main-activity chat.rocket.reactnative.MainActivity --mode=experimentalDebug --appId",
+		"android": "npx react-native run-android --main-activity chat.rocket.reactnative.MainActivity",
+		"android-whitelabel": "npx react-native run-android --main-activity chat.rocket.reactnative.MainActivity --appId",
 		"log-android": "react-native log-android",
 		"snyk-protect": "snyk protect",
 		"postinstall": "patch-package",
@@ -108,8 +108,9 @@
 		"react-native-localize": "2.1.1",
 		"react-native-math-view": "3.9.5",
 		"react-native-mime-types": "2.3.0",
-		"react-native-mmkv": "3.3.3",
+		"react-native-mmkv": "^4.1.2",
 		"react-native-modal": "13.0.1",
+		"react-native-nitro-modules": "^0.33.9",
 		"react-native-notifier": "1.6.1",
 		"react-native-picker-select": "9.0.1",
 		"react-native-popover-view": "5.1.7",
@@ -142,9 +143,20 @@
 		"yup": "0.32.11",
 		"zustand": "^5.0.10"
 	},
-	"resolutions": {
-		"ua-parser-js": "1.0.2",
-		"jpeg-js": "0.4.4"
+	"pnpm": {
+		"overrides": {
+			"ua-parser-js": "1.0.2",
+			"jpeg-js": "0.4.4"
+		},
+		"onlyBuiltDependencies": [
+			"@bugsnag/cli",
+			"@rocket.chat/mobile-crypto",
+			"core-js-pure",
+			"esbuild",
+			"protobufjs",
+			"sharp",
+			"unrs-resolver"
+		]
 	},
 	"devDependencies": {
 		"@babel/core": "~7.25.9",
@@ -221,7 +233,6 @@
 		}
 	},
 	"volta": {
-		"node": "24.13.1",
-		"yarn": "1.22.22"
+		"node": "24.13.1"
 	}
 }

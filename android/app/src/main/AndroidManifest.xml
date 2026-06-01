@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:sharedUserId="chat.rocket.android">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -152,12 +153,17 @@
 
         <service android:name="io.wazo.callkeep.RNCallKeepBackgroundMessagingService" />
 
-        <!-- VoIP foreground service for keeping audio calls alive in the background. -->
+        <!-- VoIP foreground service for keeping audio calls alive in the background.
+             microphone|phoneCall — phoneCall satisfies FGS-start eligibility via the self-managed
+             Telecom connection on the incoming-accept path; microphone is what actually authorises
+             RECORD_AUDIO capture once the app is no longer in the foreground. Both are needed:
+             phoneCall alone leaves mic capture subject to the while-in-use clock and is revoked
+             ~5s after backgrounding (NATIVE-1178). -->
         <service
             android:name="chat.rocket.reactnative.voip.VoipCallService"
             android:enabled="true"
             android:exported="false"
-            android:foregroundServiceType="phoneCall" />
+            android:foregroundServiceType="microphone|phoneCall" />
 
         <!-- react-native-webrtc ships MediaProjectionService (foregroundServiceType=mediaProjection)
              for screen sharing. We don't use screen sharing, and Android 15+ forbids starting
