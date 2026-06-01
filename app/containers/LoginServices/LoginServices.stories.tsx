@@ -7,6 +7,7 @@ import ServicesSeparator from './ServicesSeparator';
 import ButtonService from './ButtonService';
 import { type IServices } from '../../selectors/login';
 import { type TIconsName } from '../CustomIcon';
+import ServiceListTest from './ServiceList';
 
 const styles = StyleSheet.create({
 	serviceName: {
@@ -93,3 +94,31 @@ export const ServiceList = () => (
 		})}
 	</>
 );
+
+export const ServciceListCollapsed = () => {
+	return (
+		<ServiceListTest
+			services={services}
+			CAS_enabled={false}
+			CAS_login_url=''
+			Gitlab_URL=''
+			server='https://demo.rocket.chat'
+			collapsed={true}
+			showLoginOnWebButton={true}
+		/>
+	);
+};
+
+export const ServciceListUncollapsed = () => {
+	return (
+		<ServiceListTest
+			services={services}
+			CAS_enabled={false}
+			CAS_login_url=''
+			Gitlab_URL=''
+			server='https://demo.rocket.chat'
+			collapsed={false}
+			showLoginOnWebButton={true}
+		/>
+	);
+};
