@@ -14,6 +14,7 @@ import protectedFunction from './helpers/protectedFunction';
 import { parseSettings, _prepareSettings } from './parseSettings';
 import { setPresenceCap } from './getUsersPresence';
 import { compareServerVersion } from './helpers';
+import { SETTINGS } from '../../actions/actionsTypes';
 
 const serverInfoKeys = [
 	'Site_Name',
@@ -235,5 +236,7 @@ export async function getSettings(): Promise<void> {
 		});
 	} catch (e) {
 		log(e);
+	} finally {
+		reduxStore.dispatch({ type: SETTINGS.FETCH_COMPLETE });
 	}
 }

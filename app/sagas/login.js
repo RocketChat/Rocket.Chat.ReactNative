@@ -231,16 +231,11 @@ const fetchUsersRoles = function* fetchRoomsFork() {
 
 const fetchWatchReplies = function* fetchWatchRepliesFork() {
 	try {
-		// we are getting replies from server settings
-		const state = yield select(state => state);
-
-		if (!state.settings?.Apple_Watch_Quick_Actions) {
-			yield delay(1000);
-			const newState = yield select();
-			syncWatchOSQuickRepliesWithServer(newState);
-			return;
+		const settingsLoaded = yield select(s => Object.keys(s.settings).length > 0);
+		if (!settingsLoaded) {
+			yield take(types.SETTINGS.FETCH_COMPLETE);
 		}
-
+		const state = yield select(s => s);
 		syncWatchOSQuickRepliesWithServer(state);
 	} catch (e) {
 		log(e);
