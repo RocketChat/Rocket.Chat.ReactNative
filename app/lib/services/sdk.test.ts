@@ -429,6 +429,16 @@ describe('Sdk.methodCallWrapper', () => {
 		expect(methodCallSpy).toHaveBeenCalledWith('myMethod', { $date: ts });
 		methodCallSpy.mockRestore();
 	});
+
+	it('propagates rejection from post() when the REST method call errors', async () => {
+		(reduxStore.getState as jest.Mock).mockReturnValue({
+			settings: { API_Use_REST_For_DDP_Calls: true },
+			login: { user: { id: 'u1' } }
+		});
+		const postSpy = jest.spyOn(sdk as any, 'post').mockRejectedValue({ error: 'app-error' });
+		await expect((sdk as any).methodCallWrapper('myMethod')).rejects.toEqual({ error: 'app-error' });
+		postSpy.mockRestore();
+	});
 });
 
 describe('Sdk.get', () => {
