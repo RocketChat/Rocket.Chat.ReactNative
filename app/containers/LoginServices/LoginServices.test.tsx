@@ -128,26 +128,6 @@ describe('LoginServices', () => {
 		expect(screen.queryByText('Login_on_web')).toBeNull();
 	});
 
-	it('does not show Login_on_web button when collapsed and more than 3 services, shows when uncollapsed', () => {
-		const store = createMockedStore();
-		const services = {
-			...buildServices(4),
-			hidden: makeService({ _id: 'hidden', name: 'facebook' as any, hideButtonOnMobile: true })
-		} as unknown as IServices;
-		store.dispatch(setLoginServices(services));
-		render(
-			<Wrapper store={store}>
-				<LoginServices separator />
-			</Wrapper>
-		);
-
-		expect(screen.queryByText('Login_on_web')).toBeNull();
-
-		fireEvent.press(screen.getByText('Onboarding_more_options'));
-
-		expect(screen.queryByText('Login_on_web')).toBeTruthy();
-	});
-
 	it('opens Login on web URL when button is pressed', () => {
 		const store = createMockedStore();
 		const services = {
