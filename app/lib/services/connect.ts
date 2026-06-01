@@ -87,6 +87,7 @@ async function connect({ server, logoutOnError = false }: { server: string; logo
 				}
 			}
 			if (['disconnected', 'closed'].includes(status)) {
+				unsubscribeRooms();
 				pendingHangupsDrainArmed = true;
 				store.dispatch(disconnectAction());
 			}

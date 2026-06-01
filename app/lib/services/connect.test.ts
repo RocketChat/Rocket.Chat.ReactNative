@@ -1,6 +1,7 @@
 import { checkAndReopen, connect, determineAuthType, disconnect, login, loginTOTP } from './connect';
 import { mediaSessionInstance } from './voip/MediaSessionInstance';
 import { pendingHangups } from './voip/pendingHangups';
+import { unsubscribeRooms } from '../methods/subscribeRooms';
 
 jest.mock('./voip/MediaSessionInstance', () => ({
 	mediaSessionInstance: { reset: jest.fn(), drainPendingHangups: jest.fn() }
@@ -619,6 +620,36 @@ describe('checkAndReopen', () => {
 	it('forwards false when connection.checkAndReopen() resolves false', async () => {
 		mockConnectionCheckAndReopen.mockResolvedValueOnce(false);
 		await expect(checkAndReopen()).resolves.toBe(false);
+	});
+});
+
+describe('connect — rooms subscription guard reset on close', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: false },
+			login: { user: null, isAuthenticated: false },
+			settings: {},
+			server: { version: '6.0.0' }
+		});
+	});
+
+	// Regression: a long background marks the DDP socket stale, so foregrounding triggers
+	// `checkAndReopen` → `forceReopen`, which wipes the SDK subscriptions and emits 'close' while
+	// bypassing `connect()`. The rooms-list `stream-notify-user` feed only re-subscribes when the
+	// module-level guard in `subscribeRooms` is clear, and `unsubscribeRooms()` is what clears it.
+	// If the 'close' handler stops calling `unsubscribeRooms()`, the guard stays set after reconnect
+	// and the rooms list silently stops updating (subscriptions/favorites/reads).
+	it('calls unsubscribeRooms when the socket "close" fires', async () => {
+		await connect({ server: 'https://example.com' });
+
+		// connect() itself calls unsubscribeRooms() once while tearing down prior listeners; ignore it.
+		(unsubscribeRooms as jest.Mock).mockClear();
+
+		const listener = getCapturedConnectionListener();
+		listener('closed');
+
+		expect(unsubscribeRooms).toHaveBeenCalledTimes(1);
 	});
 });
 
