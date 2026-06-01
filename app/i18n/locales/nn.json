@@ -251,6 +251,7 @@
   "Logged_out_of_other_clients_successfully": "Logget ut av andre klienter",
   "Login": "Logg inn",
   "Login_has_been_temporarily_blocked_for_this_IP": "Innlogging er midlertidig blokkert for denne IP-adressen",
+  "Login_on_web": "Logg inn på nettet",
   "Logout": "Logg ut",
   "Mark_as_unread": "Vis teller",
   "Mark_as_unread_Info": "Vis antall uleste meldinger",
