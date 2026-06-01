@@ -112,6 +112,12 @@ jest.mock('../methods/setUser', () => ({ _setUser: jest.fn(), _activeUsers: { ac
 jest.mock('../methods/getRoles', () => ({ onRolesChanged: jest.fn() }));
 jest.mock('../methods/getUsersPresence', () => ({ setPresenceCap: jest.fn() }));
 
+const mockHasRole = jest.fn();
+jest.mock('../methods/helpers', () => ({
+	...jest.requireActual('../methods/helpers'),
+	hasRole: (...args: any[]) => mockHasRole(...args)
+}));
+
 jest.mock('../../actions/connect', () => ({
 	connectRequest: jest.fn().mockReturnValue({ type: 'CONNECT_REQUEST' }),
 	connectSuccess: jest.fn().mockReturnValue({ type: 'CONNECT_SUCCESS' }),
@@ -760,21 +766,13 @@ describe('connection status handler (Fix 4 regression)', () => {
 	beforeEach(() => {
 		mockConnectionOn.mockReset();
 		mockStoreDispatch.mockReset();
+		mockHasRole.mockReset();
 		sdkMock.__setServer(undefined);
 	});
 
-	const setLivechatRoles = (roles: string[]) => {
-		jest.resetModules();
-		jest.doMock('../methods/helpers', () => ({
-			...jest.requireActual('../methods/helpers'),
-			hasRole: jest.fn((r: string) => roles.includes(r))
-		}));
-	};
-
 	it('dispatches inquiryRequest on connected when user is a livechat-agent', async () => {
-		setLivechatRoles(['livechat-agent']);
-		const { connect: freshConnect } = require('./connect');
-		await freshConnect({ server: 'https://x.com' });
+		mockHasRole.mockImplementation((r: string) => r === 'livechat-agent');
+		await connect({ server: 'https://x.com' });
 		const listener = getCapturedConnectionListener();
 		mockStoreGetState.mockReturnValue({
 			meteor: { connected: false },
@@ -789,10 +787,8 @@ describe('connection status handler (Fix 4 regression)', () => {
 	});
 
 	it('does NOT dispatch inquiryRequest on connected when user has no livechat role', async () => {
-		setLivechatRoles([]);
-		const { connect: freshConnect } = require('./connect');
-		sdkMock.__setServer(undefined);
-		await freshConnect({ server: 'https://no-livechat.com' });
+		mockHasRole.mockReturnValue(false);
+		await connect({ server: 'https://no-livechat.com' });
 		const listener = getCapturedConnectionListener();
 		mockStoreGetState.mockReturnValue({
 			meteor: { connected: false },
