@@ -727,6 +727,18 @@ describe('loginTOTP', () => {
 		expect(mockTwoFactor).toHaveBeenCalledWith({ method: 'totp', invalid: true });
 	});
 
+	it('passes invalid:true when e.data.error is totp-invalid even if details.error is absent', async () => {
+		mockSdkLogin
+			.mockRejectedValueOnce({
+				// details.error is intentionally absent — only e.data.error is set
+				data: { error: 'totp-invalid', details: { method: 'totp' } }
+			})
+			.mockResolvedValueOnce({ me: { username: 'john' } });
+		mockTwoFactor.mockResolvedValue({ twoFactorCode: '777777', twoFactorMethod: 'totp' });
+		await loginTOTP({ user: 'john', password: 'p' } as any, true);
+		expect(mockTwoFactor).toHaveBeenCalledWith({ method: 'totp', invalid: true });
+	});
+
 	it('normalizes ldapPass to password on RC >= 3.9.0 before 2FA retry', async () => {
 		mockSdkLogin
 			.mockRejectedValueOnce({ data: { error: 'totp-required', details: { method: 'totp' } } })

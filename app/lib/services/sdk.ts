@@ -110,7 +110,7 @@ class Sdk {
 	}
 
 	getHeaders(): Record<string, string> {
-		return this.headers;
+		return { ...this.headers };
 	}
 
 	setBasicAuth(basicAuth: string | null): void {
@@ -187,20 +187,21 @@ class Sdk {
 				// @rocket.chat/api-client rejects with the raw fetch Response on REST errors.
 				// Normalize to { status, data } so callers can read e.data.*
 				const normalized = !isMethodCall && e instanceof Response ? await normalizeResponseError(e) : e;
-				if (isMethodCall) {
-					// DDP-over-REST errors arrive as EJSON objects (HTTP 200), not Response instances,
-					// so the api-client's handleTwoFactorChallenge never intercepts them.
-					const errorType = normalized?.error;
-					if (errorType === 'totp-required' || errorType === 'totp-invalid') {
-						try {
-							await twoFactor({ method: normalized?.details?.method, invalid: errorType === 'totp-invalid' });
-							return resolve(this.post(endpoint, params));
-						} catch {
-							return resolve({} as any);
-						}
+				const errorType = isMethodCall ? normalized?.error : normalized?.data?.errorType;
+				const totpInvalid = 'totp-invalid';
+				const totpRequired = 'totp-required';
+				if ([totpInvalid, totpRequired].includes(errorType)) {
+					const { details } = isMethodCall ? normalized : normalized?.data;
+					try {
+						await twoFactor({ method: details?.method, invalid: errorType === totpInvalid });
+						return resolve(this.post(endpoint, params));
+					} catch {
+						// twoFactor was canceled
+						return resolve({} as any);
 					}
+				} else {
+					reject(e);
 				}
-				reject(normalized);
 			}
 		});
 	}

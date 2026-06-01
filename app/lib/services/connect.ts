@@ -126,8 +126,6 @@ async function connect({ server, logoutOnError = false }: { server: string; logo
 						} catch (e) {
 							log(e);
 						}
-					} else {
-						console.warn(`Setting with _id '${_id}' is not present in defaultSettings.`);
 					}
 				}
 			})
@@ -303,7 +301,7 @@ function loginTOTP(params: ICredentials, loginEmailPassword?: boolean): Promise<
 			if (e.data?.error && (e.data.error === 'totp-required' || e.data.error === 'totp-invalid')) {
 				const { details } = e.data;
 				try {
-					const code = await twoFactor({ method: details?.method || 'totp', invalid: details?.error === 'totp-invalid' });
+					const code = await twoFactor({ method: details?.method || 'totp', invalid: e.data.error === 'totp-invalid' });
 
 					if (loginEmailPassword) {
 						store.dispatch(setUser({ username: params.user || params.username }));
@@ -412,10 +410,9 @@ async function getWebsocketInfo({
 }: {
 	server: string;
 }): Promise<{ success: true } | { success: false; message: string }> {
+	let probeSdk: DDPSDK | undefined;
 	try {
-		const sdk = await DDPSDK.createAndConnect(server);
-		sdk.connection.close();
-
+		probeSdk = await DDPSDK.createAndConnect(server);
 		return {
 			success: true
 		};
@@ -431,6 +428,8 @@ async function getWebsocketInfo({
 			success: false,
 			message: I18n.t('Invalid_URL')
 		};
+	} finally {
+		probeSdk?.connection.close();
 	}
 }
 

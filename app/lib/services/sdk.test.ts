@@ -314,6 +314,63 @@ describe('Sdk.post', () => {
 		const result = await (sdk as any).post('/v1/method.call/myMethod', { message: '{}' });
 		expect(result).toEqual({});
 	});
+
+	it('retries with 2FA when normal API returns totp-required', async () => {
+		const fake = buildFakeSdkWithRest();
+		fake.rest.post
+			.mockRejectedValueOnce(
+				new Response(JSON.stringify({ errorType: 'totp-required', details: { method: 'totp' } }), { status: 401 })
+			)
+			.mockResolvedValueOnce({ success: true });
+		(twoFactor as jest.Mock).mockResolvedValue({ twoFactorCode: '999888', twoFactorMethod: 'totp' });
+
+		setInternalSdk(fake);
+		const result = await (sdk as any).post('/v1/channels.create', { name: 'test' });
+
+		expect(fake.rest.post).toHaveBeenCalledTimes(2);
+		expect(twoFactor).toHaveBeenCalledWith({ method: 'totp', invalid: false });
+		expect(result).toEqual({ success: true });
+	});
+
+	it('passes invalid:true to twoFactor when normal API returns totp-invalid', async () => {
+		const fake = buildFakeSdkWithRest();
+		fake.rest.post
+			.mockRejectedValueOnce(
+				new Response(JSON.stringify({ errorType: 'totp-invalid', details: { method: 'email' } }), { status: 401 })
+			)
+			.mockResolvedValueOnce({ success: true });
+		(twoFactor as jest.Mock).mockResolvedValue({ twoFactorCode: '111222', twoFactorMethod: 'email' });
+
+		setInternalSdk(fake);
+		await (sdk as any).post('/v1/channels.create', { name: 'test' });
+
+		expect(twoFactor).toHaveBeenCalledWith({ method: 'email', invalid: true });
+		expect(fake.rest.post).toHaveBeenCalledTimes(2);
+	});
+
+	it('prompts twoFactor twice when first code is wrong and retries a third time', async () => {
+		const fake = buildFakeSdkWithRest();
+		fake.rest.post
+			.mockRejectedValueOnce(
+				new Response(JSON.stringify({ errorType: 'totp-required', details: { method: 'totp' } }), { status: 401 })
+			)
+			.mockRejectedValueOnce(
+				new Response(JSON.stringify({ errorType: 'totp-invalid', details: { method: 'totp' } }), { status: 401 })
+			)
+			.mockResolvedValueOnce({ success: true });
+		(twoFactor as jest.Mock)
+			.mockResolvedValueOnce({ twoFactorCode: '111111', twoFactorMethod: 'totp' })
+			.mockResolvedValueOnce({ twoFactorCode: '222222', twoFactorMethod: 'totp' });
+
+		setInternalSdk(fake);
+		const result = await (sdk as any).post('/v1/channels.create', { name: 'test' });
+
+		expect(fake.rest.post).toHaveBeenCalledTimes(3);
+		expect(twoFactor).toHaveBeenCalledTimes(2);
+		expect(twoFactor).toHaveBeenNthCalledWith(1, { method: 'totp', invalid: false });
+		expect(twoFactor).toHaveBeenNthCalledWith(2, { method: 'totp', invalid: true });
+		expect(result).toEqual({ success: true });
+	});
 });
 
 describe('Sdk.methodCall', () => {
@@ -360,6 +417,27 @@ describe('Sdk.methodCall', () => {
 		(twoFactor as jest.Mock).mockResolvedValue({ twoFactorCode: '999999', twoFactorMethod: 'totp' });
 		await (sdk as any).methodCall('myMethod');
 		expect(twoFactor).toHaveBeenCalledWith({ method: 'totp', invalid: true });
+	});
+
+	it('uses the second code — not the first — when the first TOTP attempt is invalid', async () => {
+		// Flow: totp-required → code '111111' stored → totp-invalid → code '222222' stored → 3rd call uses '222222'
+		const callAsync = jest
+			.fn()
+			.mockRejectedValueOnce({ error: 'totp-required', details: { method: 'totp' } })
+			.mockRejectedValueOnce({ error: 'totp-invalid', details: { method: 'totp' } })
+			.mockResolvedValueOnce({ result: 'ok' });
+		setInternalSdk(buildFakeSdkWithMethod(callAsync));
+		(twoFactor as jest.Mock)
+			.mockResolvedValueOnce({ twoFactorCode: '111111', twoFactorMethod: 'totp' })
+			.mockResolvedValueOnce({ twoFactorCode: '222222', twoFactorMethod: 'totp' });
+
+		await (sdk as any).methodCall('myMethod');
+
+		expect(callAsync).toHaveBeenCalledTimes(3);
+		// 2nd call carries the first code
+		expect(callAsync).toHaveBeenNthCalledWith(2, 'myMethod', {}, { twoFactorCode: '111111', twoFactorMethod: 'totp' });
+		// 3rd call must carry the NEW code, not the stale first one
+		expect(callAsync).toHaveBeenNthCalledWith(3, 'myMethod', {}, { twoFactorCode: '222222', twoFactorMethod: 'totp' });
 	});
 
 	it('returns {} when twoFactor is cancelled mid-retry', async () => {
@@ -514,6 +592,14 @@ describe('Sdk header lifecycle', () => {
 		sdk.setBasicAuth(null);
 		expect(sdk.getHeaders().Authorization).toBeUndefined();
 		expect(UserPreferences.removeItem).toHaveBeenCalledWith('BASIC_AUTH_KEY-https://example.com');
+	});
+
+	it('getHeaders returns a copy — mutating it does not affect internal headers', () => {
+		(sdk as any).serverUrl = 'https://example.com';
+		sdk.setBasicAuth('dXNlcjpwYXNz');
+		const headers = sdk.getHeaders();
+		delete (headers as any).Authorization; // mutate the returned copy
+		expect(sdk.getHeaders().Authorization).toBe('Basic dXNlcjpwYXNz');
 	});
 });
 
