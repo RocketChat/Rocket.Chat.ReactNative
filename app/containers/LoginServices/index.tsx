@@ -4,7 +4,6 @@ import Animated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from '
 
 import { type IServices } from '../../selectors/login';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { type IItemService } from './interfaces';
 import { SERVICES_COLLAPSED_HEIGHT, SERVICE_HEIGHT } from './styles';
 import ServicesSeparator from './ServicesSeparator';
 import ServiceList from './ServiceList';
@@ -27,8 +26,7 @@ const LoginServices = ({ separator }: { separator: boolean }): ReactElement => {
 	) as IServices;
 	const { length } = Object.values(filteredServices);
 	const enableLoginOnWebButton = Object.values(allServices).length > length;
-	console.log('filteredServices', filteredServices, 'enableLoginOnWebButton', enableLoginOnWebButton);
-	console.log('allServices', allServices);
+
 	const heightButtons = useSharedValue(SERVICES_COLLAPSED_HEIGHT);
 
 	const animatedStyle = useAnimatedStyle(() => ({
