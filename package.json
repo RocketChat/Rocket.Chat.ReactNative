@@ -11,7 +11,7 @@
 		"prettier-lint": "prettier --write . && pnpm lint",
 		"ios": "npx react-native run-ios",
 		"pod-install": "bundle exec pod install --project-directory=ios",
-		"android": "npx react-native run-android"
+		"android": "npx react-native run-android --appId=chat.rocket.android",
 		"log-android": "react-native log-android",
 		"snyk-protect": "snyk protect",
 		"postinstall": "patch-package",
