@@ -61,12 +61,12 @@ const ScreenLockedView = (): JSX.Element => {
 	}, []);
 
 	const onSubmit = () => {
-		pendingResolve.current = data.submit ?? null;
+		pendingResolve.current = data.submit || null;
 		setData({});
 	};
 
 	const onCancel = () => {
-		pendingResolve.current = data.cancel ?? null;
+		pendingResolve.current = data.cancel || null;
 		setData({});
 	};
 

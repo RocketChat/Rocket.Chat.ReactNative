@@ -10,7 +10,7 @@ This is a **security control**, not a UX convenience. Its whole reason to exist 
 | -------- | ------- |
 | [`ARCHITECTURE.md`](ARCHITECTURE.md) | Subsystem structure: files, the keychain sentinel, the trust-store API, the `TrustResult` union, the migration state machine, and the invariants that keep keychain state and the enabled flag in sync |
 | [`FLOWS.md`](FLOWS.md) | Sequence diagrams: enable/disable toggle, first-passcode opt-in, auto-unlock + enrollment-change detection, and the init-time migration |
-| [`PLATFORMS.md`](PLATFORMS.md) | iOS vs Android quirks: how each OS signals an enrolment change, the `unavailable`-vs-`enrollmentChanged` divergence, and backup/restore edge cases |
+| [`PLATFORMS.md`](PLATFORMS.md) | iOS vs Android quirks: how each OS signals an enrollment change, the `unavailable`-vs-`enrollmentChanged` divergence, and backup/restore edge cases |
 
 ## The subsystem at a glance
 

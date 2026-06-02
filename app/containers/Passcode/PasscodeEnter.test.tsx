@@ -12,10 +12,10 @@ jest.mock('../../lib/methods/helpers/localAuthentication', () => ({
 
 jest.mock('../../lib/biometricTrustStore', () => ({
 	biometricTrustStore: {
-		enrol: jest.fn(),
-		disenrol: jest.fn(() => Promise.resolve()),
+		enroll: jest.fn(),
+		disenroll: jest.fn(() => Promise.resolve()),
 		verify: jest.fn(),
-		hasEnrolment: jest.fn(),
+		hasEnrollment: jest.fn(),
 		isEnabled: jest.fn(),
 		setEnabled: jest.fn(),
 		setBiometryEnabled: jest.fn()
@@ -36,7 +36,7 @@ jest.mock('../../lib/methods/userPreferences', () => ({
 jest.mock('../../i18n', () => ({ t: (key: string) => key }));
 
 const mockedBiometryAuth = biometryAuth as jest.Mock;
-const mockedDisenrol = biometricTrustStore.disenrol as jest.Mock;
+const mockedDisenroll = biometricTrustStore.disenroll as jest.Mock;
 const mockedSetEnabled = biometricTrustStore.setEnabled as jest.Mock;
 
 // biometry() runs on mount (auto, from behind the modal) and on button press; both share the same
@@ -44,16 +44,16 @@ const mockedSetEnabled = biometricTrustStore.setEnabled as jest.Mock;
 describe('PasscodeEnter biometry', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
-		mockedDisenrol.mockResolvedValue(undefined);
+		mockedDisenroll.mockResolvedValue(undefined);
 	});
 
-	it('enrollmentChanged on mount → disenrols, clears flag, hides biometry button', async () => {
+	it('enrollmentChanged on mount → disenrolls, clears flag, hides biometry button', async () => {
 		mockedBiometryAuth.mockResolvedValueOnce({ kind: 'enrollmentChanged' });
 		const finishProcess = jest.fn();
 
 		const { queryByTestId } = render(<PasscodeEnter hasBiometry finishProcess={finishProcess} />);
 
-		await waitFor(() => expect(mockedDisenrol).toHaveBeenCalledTimes(1));
+		await waitFor(() => expect(mockedDisenroll).toHaveBeenCalledTimes(1));
 		expect(mockedSetEnabled).toHaveBeenCalledWith(false);
 		expect(finishProcess).not.toHaveBeenCalled();
 		await waitFor(() => expect(queryByTestId('biometry-button')).toBeNull());
@@ -66,7 +66,7 @@ describe('PasscodeEnter biometry', () => {
 		render(<PasscodeEnter hasBiometry finishProcess={finishProcess} />);
 
 		await waitFor(() => expect(finishProcess).toHaveBeenCalledTimes(1));
-		expect(mockedDisenrol).not.toHaveBeenCalled();
+		expect(mockedDisenroll).not.toHaveBeenCalled();
 		expect(mockedSetEnabled).not.toHaveBeenCalled();
 	});
 
@@ -77,7 +77,7 @@ describe('PasscodeEnter biometry', () => {
 		const { getByTestId } = render(<PasscodeEnter hasBiometry finishProcess={finishProcess} />);
 
 		await waitFor(() => expect(mockedBiometryAuth).toHaveBeenCalledTimes(1));
-		expect(mockedDisenrol).not.toHaveBeenCalled();
+		expect(mockedDisenroll).not.toHaveBeenCalled();
 		expect(mockedSetEnabled).not.toHaveBeenCalled();
 		expect(finishProcess).not.toHaveBeenCalled();
 		expect(getByTestId('biometry-button')).toBeTruthy();

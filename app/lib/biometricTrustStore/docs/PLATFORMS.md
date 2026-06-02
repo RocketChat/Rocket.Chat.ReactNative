@@ -2,18 +2,18 @@
 
 iOS- and Android-specific behaviour of the biometric trust store. The shared model (sentinel, `TrustResult` kinds, migration, invariants) lives in `ARCHITECTURE.md`; this file does not duplicate it.
 
-Both platforms share the same intent: an entry stored under `accessControl: BIOMETRY_CURRENT_SET` is invalidated by the OS when the biometric enrolment set changes. They differ in _how_ that invalidation surfaces, and the difference is load-bearing for the `unavailable`-vs-`enrollmentChanged` split in `verify()`.
+Both platforms share the same intent: an entry stored under `accessControl: BIOMETRY_CURRENT_SET` is invalidated by the OS when the biometric enrollment set changes. They differ in _how_ that invalidation surfaces, and the difference is load-bearing for the `unavailable`-vs-`enrollmentChanged` split in `verify()`.
 
 ## iOS
 
-### How an enrolment change surfaces
+### How an enrollment change surfaces
 
-On iOS, changing the Face ID / Touch ID enrolment **deletes** the keychain item bound to `BIOMETRY_CURRENT_SET`. The item is gone, not merely locked. This produces two distinct observations depending on _when_ the store looks:
+On iOS, changing the Face ID / Touch ID enrollment **deletes** the keychain item bound to `BIOMETRY_CURRENT_SET`. The item is gone, not merely locked. This produces two distinct observations depending on _when_ the store looks:
 
-1. **Before any prompt** — `verify()` calls `hasEnrolment()` first (`hasGenericPassword`, silent). The item is already gone, so this returns false and `verify()` returns **`unavailable`** — no biometric sheet is ever shown.
+1. **Before any prompt** — `verify()` calls `hasEnrollment()` first (`hasGenericPassword`, silent). The item is already gone, so this returns false and `verify()` returns **`unavailable`** — no biometric sheet is ever shown.
 2. **After a prompt** — if the item still appeared to exist and the read (`getGenericPassword`) raised `errSecItemNotFound` (`-25300`), `classifyError` maps it to **`enrollmentChanged`**.
 
-In practice on iOS the enrolment-change case usually lands as **`unavailable`** via path 1, because the deletion is observed by the silent existence check before the read path runs. `resolveBiometricTrust` treats both the same way at the security level — disenrol, clear the flag, hide the biometry button — but `unavailable` shows **no** "enrollment changed" subtitle, because it is not necessarily an enrolment change (see below).
+In practice on iOS the enrollment-change case usually lands as **`unavailable`** via path 1, because the deletion is observed by the silent existence check before the read path runs. `resolveBiometricTrust` treats both the same way at the security level — disenroll, clear the flag, hide the biometry button — but `unavailable` shows **no** "enrollment changed" subtitle, because it is not necessarily an enrollment change (see below).
 
 ### Why `unavailable` has no subtitle
 
@@ -22,7 +22,7 @@ A missing sentinel on iOS is not _always_ an attack signal. The sentinel is `WHE
 - restoring an app backup onto a new device (the item never transfers), or
 - any other benign loss of the keychain item.
 
-So `unavailable` clears biometric unlock defensively (fail closed — require the passcode) but does **not** accuse the user of an enrolment change. Only the explicit `enrollmentChanged` kind shows the subtitle copy.
+So `unavailable` clears biometric unlock defensively (fail closed — require the passcode) but does **not** accuse the user of an enrollment change. Only the explicit `enrollmentChanged` kind shows the subtitle copy.
 
 ### Prompt-behind-modal requirement
 
@@ -30,7 +30,7 @@ The OS biometric sheet must never appear with app content visible behind it, or 
 
 ## Android
 
-### How an enrolment change surfaces
+### How an enrollment change surfaces
 
 On Android the keystore key backing the item is **invalidated but not deleted**. Reading it raises `KeyPermanentlyInvalidatedException`, which `classifyError` maps to **`enrollmentChanged`**. So Android typically reaches the explicit `enrollmentChanged` kind (and its subtitle), where iOS more often reaches `unavailable`.
 
@@ -44,7 +44,7 @@ A dismissed prompt surfaces as an `AuthenticationCanceled`/`UserCancel`-style er
 
 |                                                 | iOS                                           | Android                                     |
 | ----------------------------------------------- | --------------------------------------------- | ------------------------------------------- |
-| Enrolment change on the item                    | item **deleted**                              | key **invalidated**, not deleted            |
+| Enrollment change on the item                    | item **deleted**                              | key **invalidated**, not deleted            |
 | Usual `verify()` kind after a change            | `unavailable` (silent existence check)        | `enrollmentChanged` (read raises exception) |
 | Native signal classified to `enrollmentChanged` | `errSecItemNotFound` / `-25300` (post-prompt) | `KeyPermanentlyInvalidatedException`        |
 | Cancel signal                                   | `errSecUserCancel` / `-128`                   | `AuthenticationCanceled` / `UserCancel`     |

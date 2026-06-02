@@ -27,7 +27,7 @@ sequenceDiagram
 
     User->>Settings: flip biometry switch ON
     Settings->>Store: setBiometryEnabled(true)
-    Store->>OS: enrol() — setGenericPassword (BIOMETRY_CURRENT_SET, silent)
+    Store->>OS: enroll() — setGenericPassword (BIOMETRY_CURRENT_SET, silent)
     alt write succeeds
         OS-->>Store: ok
         Store->>Store: set migration marker = true
@@ -42,7 +42,7 @@ sequenceDiagram
 
     User->>Settings: flip biometry switch OFF
     Settings->>Store: setBiometryEnabled(false)
-    Store->>OS: disenrol() — resetGenericPassword (best-effort)
+    Store->>OS: disenroll() — resetGenericPassword (best-effort)
     Store->>Store: setEnabled(false)
     Store-->>Settings: { kind: 'success' }
 ```
@@ -53,7 +53,7 @@ Note the enable path does **not** prompt for biometrics — writing the sentinel
 
 ## 2. First-passcode opt-in (`checkBiometry`)
 
-When the user sets their first passcode, screen lock asks whether to also enable biometric unlock. Because `enrol()` is silent, consent is captured with a **second** call — a `verify()` prompt — and the sentinel is torn down if the user declines.
+When the user sets their first passcode, screen lock asks whether to also enable biometric unlock. Because `enroll()` is silent, consent is captured with a **second** call — a `verify()` prompt — and the sentinel is torn down if the user declines.
 
 ```mermaid
 sequenceDiagram
@@ -64,11 +64,11 @@ sequenceDiagram
     participant User
 
     Note over LocalAuth: checkHasPasscode set a new passcode → checkBiometry()
-    LocalAuth->>Store: enrol() — write sentinel (silent)
-    alt enrol fails
+    LocalAuth->>Store: enroll() — write sentinel (silent)
+    alt enroll fails
         Store-->>LocalAuth: failure
         LocalAuth->>Store: setEnabled(false)
-    else enrol succeeds
+    else enroll succeeds
         Store->>Store: set migration marker = true
         Store-->>LocalAuth: success
         LocalAuth->>Store: verify({ cancel: "Don't activate" })
@@ -82,13 +82,13 @@ sequenceDiagram
         else user taps "Don't activate"
             User-->>OS: cancel
             Store-->>LocalAuth: { kind: 'canceled' }
-            LocalAuth->>Store: disenrol() — tear sentinel back down
+            LocalAuth->>Store: disenroll() — tear sentinel back down
             LocalAuth->>Store: setEnabled(false)
         end
     end
 ```
 
-The `verify()` here doubles as the consent prompt: succeeding means the user agreed _and_ proved the current enrolment works; declining opts out and cleans up.
+The `verify()` here doubles as the consent prompt: succeeding means the user agreed _and_ proved the current enrollment works; declining opts out and cleans up.
 
 ---
 
@@ -108,7 +108,7 @@ sequenceDiagram
     LocalAuth->>Passcode: openModal(hasBiometry) — modal now covers the app
     Note over Passcode: on mount, status === ENTER → auto-run biometry()
     Passcode->>Store: verify({ promptCopy })
-    Store->>OS: hasEnrolment()? (silent)
+    Store->>OS: hasEnrollment()? (silent)
     alt sentinel present
         OS-->>Store: yes
         Store->>OS: getGenericPassword → OS biometric sheet
@@ -135,7 +135,7 @@ sequenceDiagram
         Resolve-->>Passcode: { unlocked: true }
         Passcode->>LocalAuth: finishProcess() — app unlocks
     else enrollmentChanged / unavailable
-        Resolve->>Store: disenrol()
+        Resolve->>Store: disenroll()
         Resolve->>Store: setEnabled(false)
         Resolve-->>Passcode: { unlocked:false, modal:{ hasBiometry:false, reason? } }
         Note over Passcode: hide biometry button in-place;<br/>show enrollment-changed subtitle if reason set;<br/>user must enter passcode
@@ -160,11 +160,11 @@ flowchart TD
     B -- yes --> C{sentinel exists?}
     C -- yes --> Z
     C -- no --> D{marker set?}
-    D -- "no (pre-feature user)" --> E[enrol]
-    E --> F{enrol ok?}
+    D -- "no (pre-feature user)" --> E[enroll]
+    E --> F{enroll ok?}
     F -- yes --> G[set marker = true]
     F -- no --> H[leave marker & flag<br/>next boot retries; unlock asks passcode]
     D -- "yes (post-feature desync)" --> I[setEnabled false<br/>clear the flag]
 ```
 
-The grandfather branch (`marker = no`) is reachable only by users who enabled biometry before the sentinel feature existed. Every app-driven `enrol()` sets the marker, so post-feature users with a missing sentinel always reach the reconciliation branch instead — closing the silent re-bind.
+The grandfather branch (`marker = no`) is reachable only by users who enabled biometry before the sentinel feature existed. Every app-driven `enroll()` sets the marker, so post-feature users with a missing sentinel always reach the reconciliation branch instead — closing the silent re-bind.

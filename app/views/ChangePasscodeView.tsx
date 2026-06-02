@@ -61,7 +61,7 @@ const ChangePasscodeView = React.memo(() => {
 	};
 
 	const onCancel = () => {
-		pendingResolve.current = data.cancel ?? null;
+		pendingResolve.current = data.cancel || null;
 		setData({});
 	};
 

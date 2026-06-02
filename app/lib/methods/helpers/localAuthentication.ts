@@ -89,11 +89,11 @@ export const biometryAuth = (force?: boolean): Promise<TrustResult> =>
  * and enable/disable the biometry when user put their first passcode
  */
 const checkBiometry = async () => {
-	// Writing the sentinel is silent on both platforms, so it can't double as consent. Enrol, then
+	// Writing the sentinel is silent on both platforms, so it can't double as consent. Enroll, then
 	// prompt once to ask the user to opt in to biometric unlock — tapping "Don't activate" (the cancel
 	// label from buildPromptCopy(true)) opts out, and we tear the sentinel back down.
-	const enrolResult = await biometricTrustStore.enrol();
-	if (enrolResult.kind !== 'success') {
+	const enrollResult = await biometricTrustStore.enroll();
+	if (enrollResult.kind !== 'success') {
 		biometricTrustStore.setEnabled(false);
 		return false;
 	}
@@ -101,7 +101,7 @@ const checkBiometry = async () => {
 	const consent = await biometricTrustStore.verify({ promptCopy: buildPromptCopy(true) });
 	const isBiometryEnabled = consent.kind === 'success';
 	if (!isBiometryEnabled) {
-		await biometricTrustStore.disenrol();
+		await biometricTrustStore.disenroll();
 	}
 	biometricTrustStore.setEnabled(isBiometryEnabled);
 	return isBiometryEnabled;

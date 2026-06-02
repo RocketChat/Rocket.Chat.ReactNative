@@ -26,7 +26,7 @@ const PasscodeEnter = ({ hasBiometry: initialHasBiometry, reason: initialReason,
 	let lockedUntil: any = false;
 	const [passcode] = useUserPreferences(PASSCODE_KEY);
 	const [status, setStatus] = useState<TYPE | null>(null);
-	// Mirror hasBiometry/reason locally so an enrolment-change invalidation triggered from the
+	// Mirror hasBiometry/reason locally so an enrollment-change invalidation triggered from the
 	// biometry button immediately hides the button within the same modal session, without
 	// re-emitting LOCAL_AUTHENTICATE_EMITTER (which would orphan the upstream openModal promise).
 	const [hasBiometry, setHasBiometry] = useState<boolean>(initialHasBiometry);

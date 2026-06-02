@@ -31,9 +31,9 @@ jest.mock('../../../i18n', () => ({ t: (key: string) => key }));
 jest.mock('../../biometricTrustStore', () => ({
 	biometricTrustStore: {
 		verify: jest.fn(),
-		enrol: jest.fn(),
-		disenrol: jest.fn(),
-		hasEnrolment: jest.fn(),
+		enroll: jest.fn(),
+		disenroll: jest.fn(),
+		hasEnrollment: jest.fn(),
 		isEnabled: jest.fn(),
 		setEnabled: jest.fn(),
 		setBiometryEnabled: jest.fn()
@@ -47,8 +47,8 @@ jest.mock('./events', () => ({
 
 const mockedEmit = EventEmitter.emit as jest.Mock;
 const mockedVerify = biometricTrustStore.verify as jest.Mock;
-const mockedEnrol = biometricTrustStore.enrol as jest.Mock;
-const mockedDisenrol = biometricTrustStore.disenrol as jest.Mock;
+const mockedEnroll = biometricTrustStore.enroll as jest.Mock;
+const mockedDisenroll = biometricTrustStore.disenroll as jest.Mock;
 const mockedSetEnabled = biometricTrustStore.setEnabled as jest.Mock;
 const mockedIsEnabled = biometricTrustStore.isEnabled as jest.Mock;
 const mockedIsEnrolled = LocalAuthentication.isEnrolledAsync as jest.Mock;
@@ -102,12 +102,12 @@ describe('handleLocalAuthentication', () => {
 	});
 });
 
-// First-passcode setup must keep biometry opt-in: enrol writes the sentinel silently, then a single
+// First-passcode setup must keep biometry opt-in: enroll writes the sentinel silently, then a single
 // verify() prompt asks for consent. Declining tears the sentinel back down and leaves biometry off.
 describe('checkHasPasscode → biometry consent on first passcode', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
-		mockedDisenrol.mockResolvedValue(undefined);
+		mockedDisenroll.mockResolvedValue(undefined);
 		// No stored passcode → checkHasPasscode runs changePasscode then checkBiometry.
 		(LocalAuthentication.isEnrolledAsync as jest.Mock).mockResolvedValue(true);
 		mockedEmit.mockImplementation((event, payload) => {
@@ -117,36 +117,36 @@ describe('checkHasPasscode → biometry consent on first passcode', () => {
 		});
 	});
 
-	it('enrol succeeds and user consents → prompts once, biometry enabled, no disenrol', async () => {
-		mockedEnrol.mockResolvedValueOnce({ kind: 'success' });
+	it('enroll succeeds and user consents → prompts once, biometry enabled, no disenroll', async () => {
+		mockedEnroll.mockResolvedValueOnce({ kind: 'success' });
 		mockedVerify.mockResolvedValueOnce({ kind: 'success' });
 
 		await checkHasPasscode({});
 
-		expect(mockedEnrol).toHaveBeenCalledTimes(1);
+		expect(mockedEnroll).toHaveBeenCalledTimes(1);
 		expect(mockedVerify).toHaveBeenCalledTimes(1);
 		expect(mockedSetEnabled).toHaveBeenCalledWith(true);
-		expect(mockedDisenrol).not.toHaveBeenCalled();
+		expect(mockedDisenroll).not.toHaveBeenCalled();
 	});
 
-	it("user declines consent ('Don't activate') → disenrols and leaves biometry disabled", async () => {
-		mockedEnrol.mockResolvedValueOnce({ kind: 'success' });
+	it("user declines consent ('Don't activate') → disenrolls and leaves biometry disabled", async () => {
+		mockedEnroll.mockResolvedValueOnce({ kind: 'success' });
 		mockedVerify.mockResolvedValueOnce({ kind: 'canceled' });
 
 		await checkHasPasscode({});
 
 		expect(mockedVerify).toHaveBeenCalledTimes(1);
-		expect(mockedDisenrol).toHaveBeenCalledTimes(1);
+		expect(mockedDisenroll).toHaveBeenCalledTimes(1);
 		expect(mockedSetEnabled).toHaveBeenCalledWith(false);
 	});
 
-	it('enrol fails → biometry disabled, no consent prompt', async () => {
-		mockedEnrol.mockResolvedValueOnce({ kind: 'error', cause: new Error('keychain') });
+	it('enroll fails → biometry disabled, no consent prompt', async () => {
+		mockedEnroll.mockResolvedValueOnce({ kind: 'error', cause: new Error('keychain') });
 
 		await checkHasPasscode({});
 
 		expect(mockedVerify).not.toHaveBeenCalled();
-		expect(mockedDisenrol).not.toHaveBeenCalled();
+		expect(mockedDisenroll).not.toHaveBeenCalled();
 		expect(mockedSetEnabled).toHaveBeenCalledWith(false);
 	});
 });

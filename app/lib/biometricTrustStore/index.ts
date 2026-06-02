@@ -10,8 +10,8 @@ import {
 	BIOMETRY_ENABLED_KEY
 } from '../constants/localAuthentication';
 
-// BIOMETRY_CURRENT_SET binds the item to the *current* biometric enrolment on both platforms; iOS
-// invalidates the keychain entry when the enrolment set changes (errSecItemNotFound on read), and
+// BIOMETRY_CURRENT_SET binds the item to the *current* biometric enrollment on both platforms; iOS
+// invalidates the keychain entry when the enrollment set changes (errSecItemNotFound on read), and
 // Android raises KeyPermanentlyInvalidatedException. That invalidation signal is the security
 // primitive this whole module exists for.
 const writeOptions = (): Keychain.SetOptions => ({
@@ -52,11 +52,11 @@ export const classifyError = (e: unknown): TrustResult => {
 };
 
 export const biometricTrustStore: IBiometricTrustStore = {
-	async enrol() {
+	async enroll() {
 		try {
 			await Keychain.setGenericPassword(SENTINEL_USERNAME, SENTINEL_VALUE, writeOptions());
 			// Writing the sentinel means this install is trust-initialized, so persist the migration
-			// marker. Without it, an app-driven enrol (settings toggle or first-passcode setup) leaves
+			// marker. Without it, an app-driven enroll (settings toggle or first-passcode setup) leaves
 			// migrated=false; a later enrollment-change invalidation (flag set, sentinel gone) would then
 			// hit the migration's grandfather path and be silently re-bound to the new biometrics on the
 			// next launch instead of forcing the user to re-enable. See runBiometricTrustMigration.
@@ -67,7 +67,7 @@ export const biometricTrustStore: IBiometricTrustStore = {
 		}
 	},
 
-	async disenrol() {
+	async disenroll() {
 		try {
 			await Keychain.resetGenericPassword({ service: SENTINEL_SERVICE });
 		} catch {
@@ -76,7 +76,7 @@ export const biometricTrustStore: IBiometricTrustStore = {
 	},
 
 	async verify({ promptCopy }) {
-		const exists = await biometricTrustStore.hasEnrolment();
+		const exists = await biometricTrustStore.hasEnrollment();
 		if (!exists) {
 			return { kind: 'unavailable' };
 		}
@@ -92,7 +92,7 @@ export const biometricTrustStore: IBiometricTrustStore = {
 		}
 	},
 
-	async hasEnrolment() {
+	async hasEnrollment() {
 		try {
 			const result = await Keychain.hasGenericPassword({ service: SENTINEL_SERVICE });
 			return !!result;
@@ -111,13 +111,13 @@ export const biometricTrustStore: IBiometricTrustStore = {
 
 	async setBiometryEnabled(enabled: boolean) {
 		if (enabled) {
-			const result = await biometricTrustStore.enrol();
+			const result = await biometricTrustStore.enroll();
 			if (result.kind !== 'success') {
 				biometricTrustStore.setEnabled(false);
 				return result;
 			}
 		} else {
-			await biometricTrustStore.disenrol();
+			await biometricTrustStore.disenroll();
 		}
 		biometricTrustStore.setEnabled(enabled);
 		return { kind: 'success' };

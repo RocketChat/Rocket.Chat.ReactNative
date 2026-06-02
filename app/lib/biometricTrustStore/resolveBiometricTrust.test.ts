@@ -3,10 +3,10 @@ import { resolveBiometricTrust } from './resolveBiometricTrust';
 
 jest.mock('./index', () => ({
 	biometricTrustStore: {
-		enrol: jest.fn(),
-		disenrol: jest.fn(() => Promise.resolve()),
+		enroll: jest.fn(),
+		disenroll: jest.fn(() => Promise.resolve()),
 		verify: jest.fn(),
-		hasEnrolment: jest.fn(),
+		hasEnrollment: jest.fn(),
 		isEnabled: jest.fn(),
 		setEnabled: jest.fn(),
 		setBiometryEnabled: jest.fn()
@@ -14,7 +14,7 @@ jest.mock('./index', () => ({
 }));
 
 const mockedSetEnabled = biometricTrustStore.setEnabled as jest.Mock;
-const mockedDisenrol = biometricTrustStore.disenrol as jest.Mock;
+const mockedDisenroll = biometricTrustStore.disenroll as jest.Mock;
 
 describe('resolveBiometricTrust', () => {
 	beforeEach(() => {
@@ -25,14 +25,14 @@ describe('resolveBiometricTrust', () => {
 		const outcome = await resolveBiometricTrust({ kind: 'success' });
 
 		expect(outcome).toEqual({ unlocked: true });
-		expect(mockedDisenrol).not.toHaveBeenCalled();
+		expect(mockedDisenroll).not.toHaveBeenCalled();
 		expect(mockedSetEnabled).not.toHaveBeenCalled();
 	});
 
-	it('enrollmentChanged → disenrol() runs before biometry is disabled', async () => {
+	it('enrollmentChanged → disenroll() runs before biometry is disabled', async () => {
 		const order: string[] = [];
-		mockedDisenrol.mockImplementation(() => {
-			order.push('disenrol');
+		mockedDisenroll.mockImplementation(() => {
+			order.push('disenroll');
 			return Promise.resolve();
 		});
 		mockedSetEnabled.mockImplementation((value: boolean) => {
@@ -41,17 +41,17 @@ describe('resolveBiometricTrust', () => {
 
 		const outcome = await resolveBiometricTrust({ kind: 'enrollmentChanged' });
 
-		expect(order).toEqual(['disenrol', 'setEnabled:false']);
+		expect(order).toEqual(['disenroll', 'setEnabled:false']);
 		expect(outcome).toEqual({
 			unlocked: false,
 			modal: { hasBiometry: false, reason: 'enrollmentChanged' }
 		});
 	});
 
-	it('canceled → no disenrol, no flag clear, modal keeps biometry', async () => {
+	it('canceled → no disenroll, no flag clear, modal keeps biometry', async () => {
 		const outcome = await resolveBiometricTrust({ kind: 'canceled' });
 
-		expect(mockedDisenrol).not.toHaveBeenCalled();
+		expect(mockedDisenroll).not.toHaveBeenCalled();
 		expect(mockedSetEnabled).not.toHaveBeenCalled();
 		expect(outcome).toEqual({
 			unlocked: false,
@@ -59,10 +59,10 @@ describe('resolveBiometricTrust', () => {
 		});
 	});
 
-	it('error → no disenrol, no flag clear, modal keeps biometry', async () => {
+	it('error → no disenroll, no flag clear, modal keeps biometry', async () => {
 		const outcome = await resolveBiometricTrust({ kind: 'error', cause: new Error('boom') });
 
-		expect(mockedDisenrol).not.toHaveBeenCalled();
+		expect(mockedDisenroll).not.toHaveBeenCalled();
 		expect(mockedSetEnabled).not.toHaveBeenCalled();
 		expect(outcome).toEqual({
 			unlocked: false,
@@ -72,8 +72,8 @@ describe('resolveBiometricTrust', () => {
 
 	it('unavailable → clears the flag (sentinel gone) before disabling, passcode-only modal, no reason', async () => {
 		const order: string[] = [];
-		mockedDisenrol.mockImplementation(() => {
-			order.push('disenrol');
+		mockedDisenroll.mockImplementation(() => {
+			order.push('disenroll');
 			return Promise.resolve();
 		});
 		mockedSetEnabled.mockImplementation((value: boolean) => {
@@ -82,7 +82,7 @@ describe('resolveBiometricTrust', () => {
 
 		const outcome = await resolveBiometricTrust({ kind: 'unavailable' });
 
-		expect(order).toEqual(['disenrol', 'setEnabled:false']);
+		expect(order).toEqual(['disenroll', 'setEnabled:false']);
 		expect(outcome).toEqual({ unlocked: false, modal: { hasBiometry: false } });
 	});
 });

@@ -44,11 +44,11 @@ describe('biometricTrustStore', () => {
 		});
 	});
 
-	describe('enrol', () => {
+	describe('enroll', () => {
 		it('writes sentinel with BIOMETRY_CURRENT_SET and WHEN_UNLOCKED_THIS_DEVICE_ONLY', async () => {
 			mockedKeychain.setGenericPassword.mockResolvedValueOnce(true as any);
 
-			const result = await biometricTrustStore.enrol();
+			const result = await biometricTrustStore.enroll();
 
 			expect(result).toEqual({ kind: 'success' });
 			expect(mockedKeychain.setGenericPassword).toHaveBeenCalledTimes(1);
@@ -62,38 +62,38 @@ describe('biometricTrustStore', () => {
 		it('marks the install trust-initialized on success so the migration grandfather path cannot fire', async () => {
 			mockedKeychain.setGenericPassword.mockResolvedValueOnce(true as any);
 
-			await biometricTrustStore.enrol();
+			await biometricTrustStore.enroll();
 
 			expect(mockedSetBool).toHaveBeenCalledWith(BIOMETRIC_TRUST_MIGRATION_V1_DONE, true);
 		});
 
 		it('classifies setGenericPassword failures and leaves the marker untouched', async () => {
 			mockedKeychain.setGenericPassword.mockRejectedValueOnce(new Error('errSecUserCancel'));
-			expect(await biometricTrustStore.enrol()).toEqual({ kind: 'canceled' });
+			expect(await biometricTrustStore.enroll()).toEqual({ kind: 'canceled' });
 			expect(mockedSetBool).not.toHaveBeenCalledWith(BIOMETRIC_TRUST_MIGRATION_V1_DONE, true);
 		});
 	});
 
-	describe('disenrol', () => {
+	describe('disenroll', () => {
 		it('deletes the sentinel via resetGenericPassword', async () => {
 			mockedKeychain.resetGenericPassword.mockResolvedValueOnce(true as any);
 
-			await biometricTrustStore.disenrol();
+			await biometricTrustStore.disenroll();
 
 			expect(mockedKeychain.resetGenericPassword).toHaveBeenCalledTimes(1);
 		});
 
 		it('swallows errors so a missing sentinel is not fatal', async () => {
 			mockedKeychain.resetGenericPassword.mockRejectedValueOnce(new Error('not found'));
-			await expect(biometricTrustStore.disenrol()).resolves.toBeUndefined();
+			await expect(biometricTrustStore.disenroll()).resolves.toBeUndefined();
 		});
 	});
 
-	describe('hasEnrolment', () => {
+	describe('hasEnrollment', () => {
 		it('uses hasGenericPassword and does not prompt', async () => {
 			mockedKeychain.hasGenericPassword.mockResolvedValueOnce(true);
 
-			const exists = await biometricTrustStore.hasEnrolment();
+			const exists = await biometricTrustStore.hasEnrollment();
 
 			expect(exists).toBe(true);
 			expect(mockedKeychain.hasGenericPassword).toHaveBeenCalledTimes(1);
@@ -102,7 +102,7 @@ describe('biometricTrustStore', () => {
 
 		it('returns false when probe throws', async () => {
 			mockedKeychain.hasGenericPassword.mockRejectedValueOnce(new Error('broken'));
-			expect(await biometricTrustStore.hasEnrolment()).toBe(false);
+			expect(await biometricTrustStore.hasEnrollment()).toBe(false);
 		});
 	});
 
@@ -168,39 +168,39 @@ describe('biometricTrustStore', () => {
 	});
 
 	describe('setBiometryEnabled', () => {
-		it('enabling: enrols then persists the flag as enabled', async () => {
-			const enrol = jest.spyOn(biometricTrustStore, 'enrol').mockResolvedValueOnce({ kind: 'success' });
+		it('enabling: enrolls then persists the flag as enabled', async () => {
+			const enroll = jest.spyOn(biometricTrustStore, 'enroll').mockResolvedValueOnce({ kind: 'success' });
 			const setEnabled = jest.spyOn(biometricTrustStore, 'setEnabled').mockImplementation(() => {});
 
 			const result = await biometricTrustStore.setBiometryEnabled(true);
 
 			expect(result).toEqual({ kind: 'success' });
-			expect(enrol).toHaveBeenCalledTimes(1);
+			expect(enroll).toHaveBeenCalledTimes(1);
 			expect(setEnabled).toHaveBeenCalledWith(true);
 		});
 
-		it('enabling: enrol failure forces the flag off and returns the failure', async () => {
-			const enrol = jest.spyOn(biometricTrustStore, 'enrol').mockResolvedValueOnce({ kind: 'canceled' });
+		it('enabling: enroll failure forces the flag off and returns the failure', async () => {
+			const enroll = jest.spyOn(biometricTrustStore, 'enroll').mockResolvedValueOnce({ kind: 'canceled' });
 			const setEnabled = jest.spyOn(biometricTrustStore, 'setEnabled').mockImplementation(() => {});
 
 			const result = await biometricTrustStore.setBiometryEnabled(true);
 
 			expect(result).toEqual({ kind: 'canceled' });
-			expect(enrol).toHaveBeenCalledTimes(1);
+			expect(enroll).toHaveBeenCalledTimes(1);
 			expect(setEnabled).toHaveBeenCalledWith(false);
 			expect(setEnabled).toHaveBeenCalledTimes(1);
 		});
 
-		it('disabling: disenrols then persists the flag as disabled', async () => {
-			const enrol = jest.spyOn(biometricTrustStore, 'enrol');
-			const disenrol = jest.spyOn(biometricTrustStore, 'disenrol').mockResolvedValueOnce();
+		it('disabling: disenrolls then persists the flag as disabled', async () => {
+			const enroll = jest.spyOn(biometricTrustStore, 'enroll');
+			const disenroll = jest.spyOn(biometricTrustStore, 'disenroll').mockResolvedValueOnce();
 			const setEnabled = jest.spyOn(biometricTrustStore, 'setEnabled').mockImplementation(() => {});
 
 			const result = await biometricTrustStore.setBiometryEnabled(false);
 
 			expect(result).toEqual({ kind: 'success' });
-			expect(enrol).not.toHaveBeenCalled();
-			expect(disenrol).toHaveBeenCalledTimes(1);
+			expect(enroll).not.toHaveBeenCalled();
+			expect(disenroll).toHaveBeenCalledTimes(1);
 			expect(setEnabled).toHaveBeenCalledWith(false);
 		});
 	});
