@@ -520,4 +520,97 @@ describe('useMessages', () => {
 		});
 		expect(mockReadThreads).not.toHaveBeenCalled();
 	});
+
+	const findBoundClause = (clauses: unknown[]) =>
+		clauses.find(
+			(clause): clause is { type: 'where'; left: string; comparison: { operator: string; right: { value: number } } } =>
+				!!clause &&
+				typeof clause === 'object' &&
+				(clause as { type?: string }).type === 'where' &&
+				(clause as { left?: string }).left === 'ts' &&
+				(clause as { comparison?: { operator?: string } }).comparison?.operator === 'lte'
+		);
+
+	it('does not apply an upper-bound ts clause when highTs is null (default Live Window)', async () => {
+		emittedRows = [msg({ id: 'm1' })];
+		renderUseMessages();
+		await waitFor(() => {
+			expect(queryCalls.length).toBeGreaterThan(0);
+		});
+		expect(findBoundClause(queryCalls[queryCalls.length - 1])).toBeUndefined();
+	});
+
+	it('applies the upper-bound ts clause only after an anchor is set, with take still last', async () => {
+		emittedRows = [msg({ id: 'm1' })];
+		const { result } = renderUseMessages();
+		await waitFor(() => {
+			expect(queryCalls.length).toBeGreaterThan(0);
+		});
+
+		// Default Live Window: no bound clause.
+		expect(findBoundClause(queryCalls[queryCalls.length - 1])).toBeUndefined();
+
+		act(() => {
+			result.current[3].setHighTs(1500);
+		});
+
+		await waitFor(() => {
+			const lastCall = queryCalls[queryCalls.length - 1];
+			expect(findBoundClause(lastCall)).toBeDefined();
+		});
+
+		const lastCall = queryCalls[queryCalls.length - 1];
+		const bound = findBoundClause(lastCall);
+		expect(bound?.comparison.right.value).toBe(1500);
+		// take must remain the last clause so the existing pagination test stays valid.
+		expect(lastCall.at(-1)).toEqual(expect.objectContaining({ type: 'take' }));
+	});
+
+	it('seeds the window to a single page (QUERY_SIZE) when an anchor is set rather than growing', async () => {
+		emittedRows = [msg({ id: 'm1' })];
+		const { result } = renderUseMessages();
+		await waitFor(() => {
+			expect(queryCalls.length).toBeGreaterThan(0);
+		});
+
+		// Grow the Live Window a couple of pages first.
+		await act(async () => {
+			await result.current[2]();
+		});
+		await act(async () => {
+			await result.current[2]();
+		});
+
+		act(() => {
+			result.current[3].setHighTs(1500);
+		});
+
+		await waitFor(() => {
+			expect(findBoundClause(queryCalls[queryCalls.length - 1])).toBeDefined();
+		});
+
+		const take = queryCalls[queryCalls.length - 1].find(
+			(clause): clause is { type: 'take'; count: number } =>
+				!!clause && typeof clause === 'object' && (clause as { type?: string }).type === 'take'
+		);
+		expect(take?.count).toBe(QUERY_SIZE);
+	});
+
+	it('exposes highTs and setHighTs as the 4th tuple element', async () => {
+		emittedRows = [msg({ id: 'm1' })];
+		const { result } = renderUseMessages();
+		await waitFor(() => {
+			expect(queryCalls.length).toBeGreaterThan(0);
+		});
+		expect(result.current[3].highTs).toBeNull();
+		expect(typeof result.current[3].setHighTs).toBe('function');
+
+		act(() => {
+			result.current[3].setHighTs(1500);
+		});
+
+		await waitFor(() => {
+			expect(result.current[3].highTs).toBe(1500);
+		});
+	});
 });

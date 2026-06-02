@@ -30,6 +30,9 @@ export const useMessages = ({
 	t: RoomType;
 }) => {
 	const [rawMessages, setRawMessages] = useState<TAnyMessageModel[]>([]);
+	// Optional UPPER ts bound for the Message Window. null => Live Window (newest-first, follows the
+	// Live Tail). A finite number (ms since epoch) => Anchored Window pinned below the Live Tail.
+	const [highTs, setHighTsState] = useState<number | null>(null);
 	const thread = useRef<TAnyMessageModel | null>(null);
 	const count = useRef(0);
 	const subscription = useRef<Subscription | null>(null);
@@ -79,6 +82,10 @@ export const useMessages = ({
 				.query(
 					Q.where('rid', tmid),
 					...(visibleSystemClause ? [visibleSystemClause] : []),
+					// Anchored Window upper bound. NOTE: ordering stays ts-only here, which has a tie /
+					// clock-skew weakness (equal-ts rows can straddle the bound); the deferred fix is a
+					// composite ts + _id ordering (see the ADR consequences).
+					...(highTs != null ? [Q.where('ts', Q.lte(highTs))] : []),
 					Q.sortBy('ts', Q.desc),
 					Q.skip(0),
 					Q.take(count.current)
@@ -88,6 +95,10 @@ export const useMessages = ({
 			const whereClause: Q.Clause[] = [
 				Q.where('rid', rid),
 				...(visibleSystemClause ? [visibleSystemClause] : []),
+				// Anchored Window upper bound. NOTE: ordering stays ts-only here, which has a tie /
+				// clock-skew weakness (equal-ts rows can straddle the bound); the deferred fix is a
+				// composite ts + _id ordering (see the ADR consequences).
+				...(highTs != null ? [Q.where('ts', Q.lte(highTs))] : []),
 				Q.sortBy('ts', Q.desc),
 				Q.skip(0),
 				Q.take(count.current)
@@ -112,7 +123,16 @@ export const useMessages = ({
 			setRawMessages(newMessages);
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps -- readThread is omitted intentionally: useDebouncedCallback stores func in a ref so changes propagate without recreating fetchMessages; hideSystemMessages must stay so the DB re-queries for proper pagination
-	}, [rid, tmid, showMessageInMainThread, hideSystemMessages, unsubscribe]);
+	}, [rid, tmid, showMessageInMainThread, hideSystemMessages, highTs, unsubscribe]);
+
+	// Setting an anchor re-seeds the window to a single standard page (QUERY_SIZE) instead of
+	// continuing to grow: reset count, then change the bound. highTs is a fetchMessages dependency,
+	// so the observation re-subscribes and fetchMessages' `count.current += QUERY_SIZE` lands it at
+	// exactly QUERY_SIZE. Passing null releases the Anchored Window back to a Live Window.
+	const setHighTs = useCallback((next: number | null) => {
+		count.current = 0;
+		setHighTsState(next);
+	}, []);
 
 	useLayoutEffect(() => {
 		fetchMessages();
@@ -173,5 +193,5 @@ export const useMessages = ({
 		}
 	}, [serverVersion, rid, t, hideSystemMessages, visibleMessages, dispatch, store]);
 
-	return [visibleMessages, messagesIds, fetchMessages] as const;
+	return [visibleMessages, messagesIds, fetchMessages, { highTs, setHighTs }] as const;
 };
