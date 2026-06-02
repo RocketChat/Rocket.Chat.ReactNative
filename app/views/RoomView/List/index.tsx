@@ -8,7 +8,7 @@ import { useMessages, useScroll } from './hooks';
 
 const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 	({ rid, tmid, t, renderRow, showMessageInMainThread, hideSystemMessages, listRef, serverVersion }, ref) => {
-		const [messages, messagesIds, fetchMessages] = useMessages({
+		const [messages, messagesIds, fetchMessages, { setHighTs }] = useMessages({
 			rid,
 			tmid,
 			showMessageInMainThread,
@@ -23,7 +23,7 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 			viewabilityConfigCallbackPairs,
 			handleScrollToIndexFailed,
 			highlightedMessageId
-		} = useScroll({ listRef, messagesIds });
+		} = useScroll({ listRef, messages, messagesIds, setHighTs });
 
 		const onEndReached = useDebounce(() => {
 			fetchMessages();

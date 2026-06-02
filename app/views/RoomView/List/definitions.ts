@@ -14,7 +14,9 @@ export interface IListProps extends FlatListProps<TAnyMessageModel> {
 }
 
 export interface IListContainerRef {
-	jumpToMessage: (messageId: string) => Promise<void>;
+	// highTs is the upper ts bound (ms) for an Anchored Window centered on the target's Chunk, or
+	// null/undefined to keep a Live Window (contiguous / thread / local targets).
+	jumpToMessage: (messageId: string, highTs?: number | null) => Promise<void>;
 	cancelJumpToMessage: () => void;
 }
 

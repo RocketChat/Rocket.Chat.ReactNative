@@ -99,6 +99,7 @@ import { ComposerAttachments, type IMessageComposerRef, MessageComposerContainer
 import { RoomContext } from './context';
 import AudioManager from '../../lib/methods/AudioManager';
 import { type IListContainerRef, type TListRef } from './List/definitions';
+import { anchorForTarget, type AnchorMessage } from './List/hooks/anchorResolver';
 import { getMessageById } from '../../lib/database/services/Message';
 import { getThreadById } from '../../lib/database/services/Thread';
 import { isE2EEDisabledEncryptedRoom, isMissingRoomE2EEKey } from '../../lib/encryption/utils';
@@ -1027,14 +1028,31 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 				/**
 				 * if it's from server, we don't have it saved locally and so we fetch surroundings
 				 * we test if it's not from threads because we're fetching from threads currently with `loadThreadMessages`
+				 *
+				 * The fetched Chunk lets us re-anchor the Message Window onto the target in ONE step: if a
+				 * Newer Loader brackets the target's Chunk it is non-contiguous with the Live Tail, so we
+				 * derive a finite upper ts bound (highTs) for an Anchored Window centered on it. A
+				 * contiguous target resolves to null and stays a Live Window. Thread/local targets are
+				 * never anchored.
 				 */
+				let highTs: number | null = null;
 				if (message.fromServer && !message.tmid && this.rid) {
-					await loadSurroundingMessages({ messageId, rid: this.rid });
+					const chunk = (await loadSurroundingMessages({ messageId, rid: this.rid })) as IMessage[];
+					if (Array.isArray(chunk) && chunk.length) {
+						const anchorMessages: AnchorMessage[] = chunk.map(m => ({
+							id: m._id,
+							t: m.t,
+							ts: m.ts instanceof Date ? m.ts : new Date(m.ts)
+						}));
+						highTs = anchorForTarget(anchorMessages, message.id);
+					}
 				}
 				// Synchronization needed for Fabric to work
 				await new Promise(res => setTimeout(res, 100));
-				await Promise.race([this.list.current?.jumpToMessage(message.id), new Promise(res => setTimeout(res, 5000))]);
-				this.cancelJumpToMessage();
+				// The list hook resolves on real completion (or via its own safety net), so we no longer
+				// race a 5s timeout that could yank a valid in-flight scroll.
+				await this.list.current?.jumpToMessage(message.id, highTs);
+				sendLoadingEvent({ visible: false });
 			}
 		} catch (error: any) {
 			if (isFromReply && error.data?.errorType === 'error-not-allowed') {
