@@ -1,6 +1,6 @@
 import UserPreferences from '../methods/userPreferences';
 import log from '../methods/helpers/log';
-import { BIOMETRIC_TRUST_MIGRATION_V1_DONE, BIOMETRY_ENABLED_KEY } from '../constants/localAuthentication';
+import { BIOMETRIC_TRUST_MIGRATION_V1_DONE } from '../constants/localAuthentication';
 import { biometricTrustStore } from './index';
 
 // One-shot upgrade migration for users who had biometry enabled before the trust-store sentinel
@@ -19,7 +19,7 @@ import { biometricTrustStore } from './index';
 // left as-is so the next unlock falls into the `unavailable` branch and asks for the passcode.
 export const runBiometricTrustMigration = async (): Promise<void> => {
 	try {
-		const biometryEnabled = UserPreferences.getBool(BIOMETRY_ENABLED_KEY) ?? false;
+		const biometryEnabled = biometricTrustStore.isEnabled();
 		if (!biometryEnabled) {
 			return;
 		}
@@ -41,7 +41,7 @@ export const runBiometricTrustMigration = async (): Promise<void> => {
 			return;
 		}
 
-		UserPreferences.setBool(BIOMETRY_ENABLED_KEY, false);
+		biometricTrustStore.setEnabled(false);
 	} catch (e) {
 		log(e);
 	}

@@ -4,8 +4,6 @@ import { fireEvent, render, waitFor } from '@testing-library/react-native';
 import PasscodeEnter from './PasscodeEnter';
 import { biometryAuth } from '../../lib/methods/helpers/localAuthentication';
 import { biometricTrustStore } from '../../lib/biometricTrustStore';
-import UserPreferences from '../../lib/methods/userPreferences';
-import { BIOMETRY_ENABLED_KEY } from '../../lib/constants/localAuthentication';
 
 jest.mock('../../lib/methods/helpers/localAuthentication', () => ({
 	biometryAuth: jest.fn(),
@@ -17,7 +15,9 @@ jest.mock('../../lib/biometricTrustStore', () => ({
 		enrol: jest.fn(),
 		disenrol: jest.fn(() => Promise.resolve()),
 		verify: jest.fn(),
-		probeExists: jest.fn()
+		probeExists: jest.fn(),
+		isEnabled: jest.fn(),
+		setEnabled: jest.fn()
 	}
 }));
 
@@ -36,7 +36,7 @@ jest.mock('../../i18n', () => ({ t: (key: string) => key }));
 
 const mockedBiometryAuth = biometryAuth as jest.Mock;
 const mockedDisenrol = biometricTrustStore.disenrol as jest.Mock;
-const mockedSetBool = UserPreferences.setBool as jest.Mock;
+const mockedSetEnabled = biometricTrustStore.setEnabled as jest.Mock;
 
 describe('PasscodeEnter biometry button', () => {
 	beforeEach(() => {
@@ -55,7 +55,7 @@ describe('PasscodeEnter biometry button', () => {
 		fireEvent.press(getByTestId('biometry-button'));
 
 		await waitFor(() => expect(mockedDisenrol).toHaveBeenCalledTimes(1));
-		expect(mockedSetBool).toHaveBeenCalledWith(BIOMETRY_ENABLED_KEY, false);
+		expect(mockedSetEnabled).toHaveBeenCalledWith(false);
 		expect(finishProcess).not.toHaveBeenCalled();
 		await waitFor(() => expect(queryByTestId('biometry-button')).toBeNull());
 	});
@@ -72,7 +72,7 @@ describe('PasscodeEnter biometry button', () => {
 
 		await waitFor(() => expect(finishProcess).toHaveBeenCalledTimes(1));
 		expect(mockedDisenrol).not.toHaveBeenCalled();
-		expect(mockedSetBool).not.toHaveBeenCalled();
+		expect(mockedSetEnabled).not.toHaveBeenCalled();
 	});
 
 	it('canceled from button press → flag untouched, biometry button stays', async () => {
@@ -87,7 +87,7 @@ describe('PasscodeEnter biometry button', () => {
 
 		await waitFor(() => expect(mockedBiometryAuth).toHaveBeenCalled());
 		expect(mockedDisenrol).not.toHaveBeenCalled();
-		expect(mockedSetBool).not.toHaveBeenCalled();
+		expect(mockedSetEnabled).not.toHaveBeenCalled();
 		expect(finishProcess).not.toHaveBeenCalled();
 		expect(getByTestId('biometry-button')).toBeTruthy();
 	});

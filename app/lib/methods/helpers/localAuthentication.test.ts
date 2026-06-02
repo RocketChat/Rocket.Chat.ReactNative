@@ -1,8 +1,7 @@
 import EventEmitter from './events';
 import { handleLocalAuthentication } from './localAuthentication';
-import UserPreferences from '../userPreferences';
 import { biometricTrustStore } from '../../biometricTrustStore';
-import { LOCAL_AUTHENTICATE_EMITTER, BIOMETRY_ENABLED_KEY } from '../../constants/localAuthentication';
+import { LOCAL_AUTHENTICATE_EMITTER } from '../../constants/localAuthentication';
 
 jest.mock('expo-local-authentication', () => ({
 	authenticateAsync: jest.fn(),
@@ -32,7 +31,9 @@ jest.mock('../../biometricTrustStore', () => ({
 		verify: jest.fn(),
 		enrol: jest.fn(),
 		disenrol: jest.fn(),
-		probeExists: jest.fn()
+		probeExists: jest.fn(),
+		isEnabled: jest.fn(),
+		setEnabled: jest.fn()
 	}
 }));
 
@@ -42,10 +43,10 @@ jest.mock('./events', () => ({
 }));
 
 const mockedEmit = EventEmitter.emit as jest.Mock;
-const mockedGetBool = UserPreferences.getBool as jest.Mock;
-const mockedSetBool = UserPreferences.setBool as jest.Mock;
 const mockedVerify = biometricTrustStore.verify as jest.Mock;
 const mockedDisenrol = biometricTrustStore.disenrol as jest.Mock;
+const mockedIsEnabled = biometricTrustStore.isEnabled as jest.Mock;
+const mockedSetEnabled = biometricTrustStore.setEnabled as jest.Mock;
 
 const lastEmitPayload = () => {
 	const calls = mockedEmit.mock.calls.filter(([event]) => event === LOCAL_AUTHENTICATE_EMITTER);
@@ -64,7 +65,7 @@ describe('handleLocalAuthentication (Option C)', () => {
 	});
 
 	it('biometry disabled → opens modal with hasBiometry: false (no verify call)', async () => {
-		mockedGetBool.mockImplementation((key: string) => (key === BIOMETRY_ENABLED_KEY ? false : undefined));
+		mockedIsEnabled.mockReturnValue(false);
 
 		await handleLocalAuthentication();
 
@@ -75,40 +76,40 @@ describe('handleLocalAuthentication (Option C)', () => {
 	});
 
 	it('verify success → does NOT open passcode modal, no invalidation', async () => {
-		mockedGetBool.mockImplementation((key: string) => (key === BIOMETRY_ENABLED_KEY ? true : undefined));
+		mockedIsEnabled.mockReturnValue(true);
 		mockedVerify.mockResolvedValueOnce({ kind: 'success' });
 
 		await handleLocalAuthentication();
 
 		expect(mockedEmit).not.toHaveBeenCalledWith(LOCAL_AUTHENTICATE_EMITTER, expect.anything());
 		expect(mockedDisenrol).not.toHaveBeenCalled();
-		expect(mockedSetBool).not.toHaveBeenCalled();
+		expect(mockedSetEnabled).not.toHaveBeenCalled();
 	});
 
 	it('verify canceled → flag untouched, modal with hasBiometry: true and skipAutoBiometry: true', async () => {
-		mockedGetBool.mockImplementation((key: string) => (key === BIOMETRY_ENABLED_KEY ? true : undefined));
+		mockedIsEnabled.mockReturnValue(true);
 		mockedVerify.mockResolvedValueOnce({ kind: 'canceled' });
 
 		await handleLocalAuthentication();
 
 		expect(lastEmitPayload()).toMatchObject({ hasBiometry: true, skipAutoBiometry: true });
 		expect(mockedDisenrol).not.toHaveBeenCalled();
-		expect(mockedSetBool).not.toHaveBeenCalled();
+		expect(mockedSetEnabled).not.toHaveBeenCalled();
 	});
 
 	it('verify error → flag untouched, modal with hasBiometry: true and skipAutoBiometry: true', async () => {
-		mockedGetBool.mockImplementation((key: string) => (key === BIOMETRY_ENABLED_KEY ? true : undefined));
+		mockedIsEnabled.mockReturnValue(true);
 		mockedVerify.mockResolvedValueOnce({ kind: 'error', cause: new Error('boom') });
 
 		await handleLocalAuthentication();
 
 		expect(lastEmitPayload()).toMatchObject({ hasBiometry: true, skipAutoBiometry: true });
 		expect(mockedDisenrol).not.toHaveBeenCalled();
-		expect(mockedSetBool).not.toHaveBeenCalled();
+		expect(mockedSetEnabled).not.toHaveBeenCalled();
 	});
 
 	it('verify unavailable → opens modal with hasBiometry: false', async () => {
-		mockedGetBool.mockImplementation((key: string) => (key === BIOMETRY_ENABLED_KEY ? true : undefined));
+		mockedIsEnabled.mockReturnValue(true);
 		mockedVerify.mockResolvedValueOnce({ kind: 'unavailable' });
 
 		await handleLocalAuthentication();
@@ -119,7 +120,7 @@ describe('handleLocalAuthentication (Option C)', () => {
 	});
 
 	it('verify enrollmentChanged → disenrol() before flag clear before modal emit', async () => {
-		mockedGetBool.mockImplementation((key: string) => (key === BIOMETRY_ENABLED_KEY ? true : undefined));
+		mockedIsEnabled.mockReturnValue(true);
 		mockedVerify.mockResolvedValueOnce({ kind: 'enrollmentChanged' });
 
 		const order: string[] = [];
@@ -127,8 +128,8 @@ describe('handleLocalAuthentication (Option C)', () => {
 			order.push('disenrol');
 			return Promise.resolve();
 		});
-		mockedSetBool.mockImplementationOnce((key: string, value: boolean) => {
-			order.push(`setBool:${key}=${value}`);
+		mockedSetEnabled.mockImplementationOnce((value: boolean) => {
+			order.push(`setEnabled:${value}`);
 		});
 		mockedEmit.mockImplementation((event, payload) => {
 			if (event === LOCAL_AUTHENTICATE_EMITTER) {
@@ -141,7 +142,7 @@ describe('handleLocalAuthentication (Option C)', () => {
 
 		await handleLocalAuthentication();
 
-		expect(order).toEqual(['disenrol', `setBool:${BIOMETRY_ENABLED_KEY}=false`, 'emit']);
+		expect(order).toEqual(['disenrol', 'setEnabled:false', 'emit']);
 		const payload = lastEmitPayload();
 		expect(payload).toMatchObject({ hasBiometry: false, reason: 'enrollmentChanged' });
 		expect(payload.skipAutoBiometry).toBeFalsy();

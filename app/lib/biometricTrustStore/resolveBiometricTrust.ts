@@ -1,6 +1,4 @@
-import UserPreferences from '../methods/userPreferences';
 import { type TrustResult } from '../../definitions';
-import { BIOMETRY_ENABLED_KEY } from '../constants/localAuthentication';
 import { biometricTrustStore } from './index';
 
 export type BiometricInvalidationReason = 'enrollmentChanged';
@@ -20,16 +18,16 @@ export type BiometricTrustOutcome = {
 // - handleLocalAuthentication (upstream verify() preflight)
 // - PasscodeEnter biometry button retry
 //
-// On enrollmentChanged we MUST disenrol() before clearing BIOMETRY_ENABLED_KEY so a crash between
-// the two leaves the app in a state slice 04's reconciliation can still clean up — a flipped flag
-// with a live sentinel would otherwise look like a healthy enrolment.
+// On enrollmentChanged we MUST disenrol() before disabling biometry so a crash between the two
+// leaves the app in a state slice 04's reconciliation can still clean up — a flipped flag with a
+// live sentinel would otherwise look like a healthy enrolment.
 export const resolveBiometricTrust = async (result: TrustResult): Promise<BiometricTrustOutcome> => {
 	switch (result.kind) {
 		case 'success':
 			return { unlocked: true };
 		case 'enrollmentChanged':
 			await biometricTrustStore.disenrol();
-			UserPreferences.setBool(BIOMETRY_ENABLED_KEY, false);
+			biometricTrustStore.setEnabled(false);
 			return { unlocked: false, modal: { hasBiometry: false, reason: 'enrollmentChanged' } };
 		case 'unavailable':
 			return { unlocked: false, modal: { hasBiometry: false } };

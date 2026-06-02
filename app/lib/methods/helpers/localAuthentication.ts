@@ -12,7 +12,6 @@ import { biometricTrustStore } from '../../biometricTrustStore';
 import { resolveBiometricTrust } from '../../biometricTrustStore/resolveBiometricTrust';
 import {
 	ATTEMPTS_KEY,
-	BIOMETRY_ENABLED_KEY,
 	CHANGE_PASSCODE_EMITTER,
 	E2E_AUTO_LOCK_TIME,
 	LOCAL_AUTHENTICATE_EMITTER,
@@ -94,7 +93,7 @@ export const biometryAuth = (force?: boolean): Promise<TrustResult> =>
 const checkBiometry = async () => {
 	const result = await biometricTrustStore.enrol();
 	const isBiometryEnabled = result.kind === 'success';
-	UserPreferences.setBool(BIOMETRY_ENABLED_KEY, isBiometryEnabled);
+	biometricTrustStore.setEnabled(isBiometryEnabled);
 	return isBiometryEnabled;
 };
 
@@ -119,7 +118,7 @@ const hideSplashScreen = async () => {
 export const handleLocalAuthentication = async (canCloseModal = false) => {
 	const supportBiometryLabel = await supportedBiometryLabel();
 
-	const biometryEnabled = UserPreferences.getBool(BIOMETRY_ENABLED_KEY) ?? false;
+	const biometryEnabled = biometricTrustStore.isEnabled();
 	if (!biometryEnabled || !supportBiometryLabel) {
 		await openModal(false, canCloseModal);
 		return;

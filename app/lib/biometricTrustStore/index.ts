@@ -1,10 +1,12 @@
 import * as Keychain from 'react-native-keychain';
 
 import { type IBiometricTrustStore, type TrustResult } from '../../definitions';
+import UserPreferences from '../methods/userPreferences';
 import {
 	BIOMETRIC_TRUST_SENTINEL_SERVICE as SENTINEL_SERVICE,
 	BIOMETRIC_TRUST_SENTINEL_USERNAME as SENTINEL_USERNAME,
-	BIOMETRIC_TRUST_SENTINEL_VALUE as SENTINEL_VALUE
+	BIOMETRIC_TRUST_SENTINEL_VALUE as SENTINEL_VALUE,
+	BIOMETRY_ENABLED_KEY
 } from '../constants/localAuthentication';
 
 // BIOMETRY_CURRENT_SET binds the item to the *current* biometric enrolment on both platforms; iOS
@@ -90,6 +92,14 @@ export const biometricTrustStore: IBiometricTrustStore = {
 		} catch {
 			return false;
 		}
+	},
+
+	isEnabled() {
+		return UserPreferences.getBool(BIOMETRY_ENABLED_KEY) ?? false;
+	},
+
+	setEnabled(enabled: boolean) {
+		UserPreferences.setBool(BIOMETRY_ENABLED_KEY, enabled);
 	}
 };
 

@@ -12,12 +12,11 @@ import {
 	supportedBiometryLabel,
 	handleLocalAuthentication
 } from '../lib/methods/helpers/localAuthentication';
-import { BIOMETRY_ENABLED_KEY, DEFAULT_AUTO_LOCK } from '../lib/constants/localAuthentication';
+import { DEFAULT_AUTO_LOCK } from '../lib/constants/localAuthentication';
 import { biometricTrustStore } from '../lib/biometricTrustStore';
 import { themes } from '../lib/constants/colors';
 import SafeAreaView from '../containers/SafeAreaView';
 import { events, logEvent } from '../lib/methods/helpers/log';
-import userPreferences from '../lib/methods/userPreferences';
 import { type IApplicationState, type TServerModel } from '../definitions';
 import Switch from '../containers/Switch';
 
@@ -126,7 +125,7 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 	};
 
 	hasBiometry = () => {
-		const biometry = userPreferences.getBool(BIOMETRY_ENABLED_KEY) ?? DEFAULT_BIOMETRY;
+		const biometry = biometricTrustStore.isEnabled();
 		this.setState({ biometry });
 	};
 
@@ -168,13 +167,13 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 					const result = await biometricTrustStore.enrol();
 					if (result.kind !== 'success') {
 						this.setState({ biometry: false });
-						userPreferences.setBool(BIOMETRY_ENABLED_KEY, false);
+						biometricTrustStore.setEnabled(false);
 						return;
 					}
 				} else {
 					await biometricTrustStore.disenrol();
 				}
-				userPreferences.setBool(BIOMETRY_ENABLED_KEY, biometry);
+				biometricTrustStore.setEnabled(biometry);
 			}
 		);
 	};

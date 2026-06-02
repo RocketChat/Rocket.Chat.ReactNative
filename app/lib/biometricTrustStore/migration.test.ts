@@ -1,6 +1,6 @@
 import UserPreferences from '../methods/userPreferences';
 import log from '../methods/helpers/log';
-import { BIOMETRIC_TRUST_MIGRATION_V1_DONE, BIOMETRY_ENABLED_KEY } from '../constants/localAuthentication';
+import { BIOMETRIC_TRUST_MIGRATION_V1_DONE } from '../constants/localAuthentication';
 import { biometricTrustStore } from './index';
 import { runBiometricTrustMigration } from './migration';
 
@@ -21,7 +21,9 @@ jest.mock('./index', () => ({
 		enrol: jest.fn(),
 		disenrol: jest.fn(),
 		verify: jest.fn(),
-		probeExists: jest.fn()
+		probeExists: jest.fn(),
+		isEnabled: jest.fn(),
+		setEnabled: jest.fn()
 	}
 }));
 
@@ -29,13 +31,15 @@ const mockedGetBool = UserPreferences.getBool as jest.Mock;
 const mockedSetBool = UserPreferences.setBool as jest.Mock;
 const mockedEnrol = biometricTrustStore.enrol as jest.Mock;
 const mockedProbeExists = biometricTrustStore.probeExists as jest.Mock;
+const mockedIsEnabled = biometricTrustStore.isEnabled as jest.Mock;
+const mockedSetEnabled = biometricTrustStore.setEnabled as jest.Mock;
 const mockedLog = log as unknown as jest.Mock;
 
-// Drives the mocked UserPreferences with the values the migration needs to see for the
+// Drives the biometry-enabled flag and migration marker the migration needs to see for the
 // branch under test, so each test reads like a state machine input row.
 const setPrefs = ({ biometryEnabled, migrated }: { biometryEnabled: boolean; migrated: boolean }) => {
+	mockedIsEnabled.mockReturnValue(biometryEnabled);
 	mockedGetBool.mockImplementation((key: string) => {
-		if (key === BIOMETRY_ENABLED_KEY) return biometryEnabled;
 		if (key === BIOMETRIC_TRUST_MIGRATION_V1_DONE) return migrated;
 		return undefined;
 	});
@@ -55,7 +59,7 @@ describe('runBiometricTrustMigration', () => {
 
 		expect(mockedEnrol).toHaveBeenCalledTimes(1);
 		expect(mockedSetBool).toHaveBeenCalledWith(BIOMETRIC_TRUST_MIGRATION_V1_DONE, true);
-		expect(mockedSetBool).not.toHaveBeenCalledWith(BIOMETRY_ENABLED_KEY, false);
+		expect(mockedSetEnabled).not.toHaveBeenCalled();
 	});
 
 	it('reconciliation path: migrated && flag && !sentinel → clear flag, no enrol()', async () => {
@@ -65,7 +69,7 @@ describe('runBiometricTrustMigration', () => {
 		await runBiometricTrustMigration();
 
 		expect(mockedEnrol).not.toHaveBeenCalled();
-		expect(mockedSetBool).toHaveBeenCalledWith(BIOMETRY_ENABLED_KEY, false);
+		expect(mockedSetEnabled).toHaveBeenCalledWith(false);
 		expect(mockedSetBool).not.toHaveBeenCalledWith(BIOMETRIC_TRUST_MIGRATION_V1_DONE, expect.anything());
 	});
 
@@ -77,6 +81,7 @@ describe('runBiometricTrustMigration', () => {
 		expect(mockedProbeExists).not.toHaveBeenCalled();
 		expect(mockedEnrol).not.toHaveBeenCalled();
 		expect(mockedSetBool).not.toHaveBeenCalled();
+		expect(mockedSetEnabled).not.toHaveBeenCalled();
 	});
 
 	it('flag=true && sentinel exists → no-op (no enrol, no flag clear)', async () => {
@@ -87,6 +92,7 @@ describe('runBiometricTrustMigration', () => {
 
 		expect(mockedEnrol).not.toHaveBeenCalled();
 		expect(mockedSetBool).not.toHaveBeenCalled();
+		expect(mockedSetEnabled).not.toHaveBeenCalled();
 	});
 
 	it('idempotent: after successful migration, second run is a no-op', async () => {
@@ -106,6 +112,7 @@ describe('runBiometricTrustMigration', () => {
 
 		expect(mockedEnrol).not.toHaveBeenCalled();
 		expect(mockedSetBool).not.toHaveBeenCalled();
+		expect(mockedSetEnabled).not.toHaveBeenCalled();
 	});
 
 	it('enrol() error → logged, flag untouched, marker NOT set so next boot retries', async () => {
@@ -118,7 +125,7 @@ describe('runBiometricTrustMigration', () => {
 
 		expect(mockedLog).toHaveBeenCalledWith(cause);
 		expect(mockedSetBool).not.toHaveBeenCalledWith(BIOMETRIC_TRUST_MIGRATION_V1_DONE, expect.anything());
-		expect(mockedSetBool).not.toHaveBeenCalledWith(BIOMETRY_ENABLED_KEY, false);
+		expect(mockedSetEnabled).not.toHaveBeenCalled();
 	});
 
 	it('probeExists throws → swallowed, logged, no enrol(), no flag mutation', async () => {
@@ -131,5 +138,6 @@ describe('runBiometricTrustMigration', () => {
 		expect(mockedLog).toHaveBeenCalledWith(boom);
 		expect(mockedEnrol).not.toHaveBeenCalled();
 		expect(mockedSetBool).not.toHaveBeenCalled();
+		expect(mockedSetEnabled).not.toHaveBeenCalled();
 	});
 });
