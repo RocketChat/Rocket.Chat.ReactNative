@@ -44,7 +44,7 @@ A dismissed prompt surfaces as an `AuthenticationCanceled`/`UserCancel`-style er
 
 |                                                 | iOS                                           | Android                                     |
 | ----------------------------------------------- | --------------------------------------------- | ------------------------------------------- |
-| Enrollment change on the item                    | item **deleted**                              | key **invalidated**, not deleted            |
+| Enrollment change on the item                   | item **deleted**                              | key **invalidated**, not deleted            |
 | Usual `verify()` kind after a change            | `unavailable` (silent existence check)        | `enrollmentChanged` (read raises exception) |
 | Native signal classified to `enrollmentChanged` | `errSecItemNotFound` / `-25300` (post-prompt) | `KeyPermanentlyInvalidatedException`        |
 | Cancel signal                                   | `errSecUserCancel` / `-128`                   | `AuthenticationCanceled` / `UserCancel`     |

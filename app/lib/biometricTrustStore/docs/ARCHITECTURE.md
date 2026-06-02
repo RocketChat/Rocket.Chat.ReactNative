@@ -63,13 +63,13 @@ The `unavailable` kind is **not** produced by `classifyError`. It is returned by
 
 The `biometricTrustStore` singleton (`index.ts`) implements:
 
-| Method                          | Prompts?        | Purpose                                                                                                                                                                        |
-| ------------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `enroll()`                       | no              | Write the sentinel. On success also sets the migration marker (see below). Returns `TrustResult`.                                                                              |
-| `disenroll()`                    | no              | Delete the sentinel. Best-effort; swallows errors (item may already be gone).                                                                                                  |
-| `verify({ promptCopy })`        | **yes**         | Probe the sentinel; if present, read it back behind the OS biometric sheet. Returns `TrustResult`.                                                                             |
-| `hasEnrollment()`                | no              | Silent existence check for the sentinel.                                                                                                                                       |
-| `isEnabled()` / `setEnabled(b)` | no              | Own the persisted `BIOMETRY_ENABLED_KEY` flag so callers never touch `UserPreferences` directly.                                                                               |
+| Method                          | Prompts?        | Purpose                                                                                                                                                                           |
+| ------------------------------- | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `enroll()`                      | no              | Write the sentinel. On success also sets the migration marker (see below). Returns `TrustResult`.                                                                                 |
+| `disenroll()`                   | no              | Delete the sentinel. Best-effort; swallows errors (item may already be gone).                                                                                                     |
+| `verify({ promptCopy })`        | **yes**         | Probe the sentinel; if present, read it back behind the OS biometric sheet. Returns `TrustResult`.                                                                                |
+| `hasEnrollment()`               | no              | Silent existence check for the sentinel.                                                                                                                                          |
+| `isEnabled()` / `setEnabled(b)` | no              | Own the persisted `BIOMETRY_ENABLED_KEY` flag so callers never touch `UserPreferences` directly.                                                                                  |
 | `setBiometryEnabled(b)`         | yes if enabling | One-shot toggle: enroll+enable or disenroll+disable, keeping keychain state and the flag in sync. Returns the enroll `TrustResult` so the caller can roll back its UI on failure. |
 
 ### Two pieces of persisted state
@@ -93,10 +93,10 @@ The sentinel (keychain) is the third piece of state. The interplay between flag,
 
 It is a pure function of three inputs: **flag** (`isEnabled()`), **sentinel** (`hasEnrollment()`), **marker** (the migration bool).
 
-| flag  | sentinel |  marker   | Action                        | Why                                                      |
-| :---: | :------: | :-------: | ----------------------------- | -------------------------------------------------------- |
-| false |    —     |     —     | no-op                         | biometry not enabled; nothing to reconcile               |
-| true  | present  |     —     | no-op                         | healthy: flag and sentinel agree                         |
+| flag  | sentinel |  marker   | Action                         | Why                                                      |
+| :---: | :------: | :-------: | ------------------------------ | -------------------------------------------------------- |
+| false |    —     |     —     | no-op                          | biometry not enabled; nothing to reconcile               |
+| true  | present  |     —     | no-op                          | healthy: flag and sentinel agree                         |
 | true  |  absent  | **false** | `enroll()`, set marker         | **grandfather**: pre-feature user, bind a sentinel once  |
 | true  |  absent  | **true**  | `setEnabled(false)`, no enroll | **reconciliation**: flag/sentinel desync, clear the flag |
 
@@ -122,12 +122,12 @@ type BiometricTrustOutcome =
 	| { unlocked: false; modal: { hasBiometry: boolean; reason?: 'enrollmentChanged' } };
 ```
 
-| `verify()` kind      | Side effects                       | Outcome                                                                            |
-| -------------------- | ---------------------------------- | ---------------------------------------------------------------------------------- |
-| `success`            | —                                  | `{ unlocked: true }`                                                               |
+| `verify()` kind      | Side effects                        | Outcome                                                                            |
+| -------------------- | ----------------------------------- | ---------------------------------------------------------------------------------- |
+| `success`            | —                                   | `{ unlocked: true }`                                                               |
 | `enrollmentChanged`  | `disenroll()` → `setEnabled(false)` | locked; modal hides biometry, shows the enrollment-changed subtitle                |
 | `unavailable`        | `disenroll()` → `setEnabled(false)` | locked; modal hides biometry, **no** subtitle (can be benign — see `PLATFORMS.md`) |
-| `canceled` / `error` | none                               | locked; modal **keeps** the biometry button so the user can retry                  |
+| `canceled` / `error` | none                                | locked; modal **keeps** the biometry button so the user can retry                  |
 
 ### The disenroll-before-clear ordering invariant
 
