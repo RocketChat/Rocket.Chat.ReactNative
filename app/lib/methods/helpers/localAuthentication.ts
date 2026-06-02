@@ -125,13 +125,14 @@ export const handleLocalAuthentication = async (canCloseModal = false) => {
 	}
 
 	const result = await biometricTrustStore.verify({ promptCopy: buildPromptCopy() });
-	const { unlocked, modal } = await resolveBiometricTrust(result);
+	const outcome = await resolveBiometricTrust(result);
 
-	if (unlocked) {
+	if (outcome.unlocked) {
 		return;
 	}
 
-	await openModal(modal!.hasBiometry, canCloseModal, modal!.skipAutoBiometry, modal!.reason);
+	const { modal } = outcome;
+	await openModal(modal.hasBiometry, canCloseModal, modal.skipAutoBiometry, modal.reason);
 };
 
 export const localAuthenticate = async (server: string): Promise<void> => {

@@ -45,15 +45,14 @@ const PasscodeEnter = ({
 			return;
 		}
 		const result = await biometryAuth();
-		const { unlocked, modal } = await resolveBiometricTrust(result);
-		if (unlocked) {
+		const outcome = await resolveBiometricTrust(result);
+		if (outcome.unlocked) {
 			finishProcess();
 			return;
 		}
-		if (modal) {
-			setHasBiometry(modal.hasBiometry);
-			setReason(modal.reason);
-		}
+		const { modal } = outcome;
+		setHasBiometry(modal.hasBiometry);
+		setReason(modal.reason);
 	};
 
 	const readStorage = async () => {

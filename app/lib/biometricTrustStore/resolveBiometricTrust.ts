@@ -9,10 +9,9 @@ export type BiometricModalRequest = {
 	reason?: BiometricInvalidationReason;
 };
 
-export type BiometricTrustOutcome = {
-	unlocked: boolean;
-	modal?: BiometricModalRequest;
-};
+// Discriminated on `unlocked`: a locked outcome always carries the modal config to show next, an
+// unlocked one never does. Narrowing on `unlocked` (without destructuring) makes `modal` present.
+export type BiometricTrustOutcome = { unlocked: true } | { unlocked: false; modal: BiometricModalRequest };
 
 // Shared invalidation + modal-config resolution for both Option C call sites:
 // - handleLocalAuthentication (upstream verify() preflight)
