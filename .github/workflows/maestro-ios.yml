@@ -50,13 +50,6 @@ jobs:
           path: ~/.maestro
           key: maestro-${{ runner.os }}-${{ env.MAESTRO_VERSION }}
 
-      - name: Install Maestro + idb
-        run: |
-          brew tap facebook/fb
-          brew install facebook/fb/idb-companion
-          curl -fsSL "https://get.maestro.mobile.dev" | bash
-          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
-
       - name: Configure Simulator
         run: |
           defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false
@@ -68,8 +61,10 @@ jobs:
           defaults write com.apple.iphonesimulator ShowChrome -bool false
           defaults write com.apple.iphonesimulator DeviceFramebufferOnly -bool true
 
-      - name: Boot Simulator
-        timeout-minutes: 15
+      # Kick off the cold boot asynchronously so the iOS runtime boots in the
+      # background while Maestro + idb install. We block on it afterwards in
+      # "Wait for Simulator Ready".
+      - name: Start Simulator Boot
         run: |
           # macos-26 catalogs different iPhone names per Xcode release; pick the
           # highest-numbered "iPhone N Pro" present in the installed runtimes
@@ -83,10 +78,22 @@ jobs:
             exit 1
           fi
 
-          echo "Booting simulator: $SIM_NAME"
+          echo "Starting boot for simulator: $SIM_NAME"
           echo "SIM_NAME=$SIM_NAME" >> "$GITHUB_ENV"
 
           xcrun simctl boot "$SIM_NAME" || true
+
+      - name: Install Maestro + idb
+        run: |
+          brew tap facebook/fb
+          brew install facebook/fb/idb-companion
+          curl -fsSL "https://get.maestro.mobile.dev" | bash
+          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+
+      - name: Wait for Simulator Ready
+        timeout-minutes: 15
+        run: |
+          echo "Waiting for simulator to finish booting: $SIM_NAME"
           xcrun simctl bootstatus "$SIM_NAME" -b
 
           echo "Disabling animations"
@@ -94,7 +101,7 @@ jobs:
 
           echo "Warming SpringBoard"
           xcrun simctl launch booted com.apple.springboard
-          sleep 15
+          sleep 5
 
           echo "Booted devices:"
           xcrun simctl list devices | grep Booted
