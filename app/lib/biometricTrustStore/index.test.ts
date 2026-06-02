@@ -1,8 +1,16 @@
 import * as Keychain from 'react-native-keychain';
 
 import { biometricTrustStore, classifyError } from './index';
+import UserPreferences from '../methods/userPreferences';
+import { BIOMETRIC_TRUST_MIGRATION_V1_DONE } from '../constants/localAuthentication';
+
+jest.mock('../methods/userPreferences', () => ({
+	__esModule: true,
+	default: { getBool: jest.fn(), setBool: jest.fn(), getString: jest.fn(), setString: jest.fn() }
+}));
 
 const mockedKeychain = Keychain as jest.Mocked<typeof Keychain>;
+const mockedSetBool = UserPreferences.setBool as jest.Mock;
 
 const promptCopy = { title: 'Authenticate', cancel: 'Cancel' };
 
@@ -51,9 +59,18 @@ describe('biometricTrustStore', () => {
 			});
 		});
 
-		it('classifies setGenericPassword failures', async () => {
+		it('marks the install trust-initialized on success so the migration grandfather path cannot fire', async () => {
+			mockedKeychain.setGenericPassword.mockResolvedValueOnce(true as any);
+
+			await biometricTrustStore.enrol();
+
+			expect(mockedSetBool).toHaveBeenCalledWith(BIOMETRIC_TRUST_MIGRATION_V1_DONE, true);
+		});
+
+		it('classifies setGenericPassword failures and leaves the marker untouched', async () => {
 			mockedKeychain.setGenericPassword.mockRejectedValueOnce(new Error('errSecUserCancel'));
 			expect(await biometricTrustStore.enrol()).toEqual({ kind: 'canceled' });
+			expect(mockedSetBool).not.toHaveBeenCalledWith(BIOMETRIC_TRUST_MIGRATION_V1_DONE, true);
 		});
 	});
 

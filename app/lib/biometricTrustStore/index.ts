@@ -3,6 +3,7 @@ import * as Keychain from 'react-native-keychain';
 import { type IBiometricTrustStore, type TrustResult } from '../../definitions';
 import UserPreferences from '../methods/userPreferences';
 import {
+	BIOMETRIC_TRUST_MIGRATION_V1_DONE,
 	BIOMETRIC_TRUST_SENTINEL_SERVICE as SENTINEL_SERVICE,
 	BIOMETRIC_TRUST_SENTINEL_USERNAME as SENTINEL_USERNAME,
 	BIOMETRIC_TRUST_SENTINEL_VALUE as SENTINEL_VALUE,
@@ -54,6 +55,12 @@ export const biometricTrustStore: IBiometricTrustStore = {
 	async enrol() {
 		try {
 			await Keychain.setGenericPassword(SENTINEL_USERNAME, SENTINEL_VALUE, writeOptions());
+			// Writing the sentinel means this install is trust-initialized, so persist the migration
+			// marker. Without it, an app-driven enrol (settings toggle or first-passcode setup) leaves
+			// migrated=false; a later enrollment-change invalidation (flag set, sentinel gone) would then
+			// hit the migration's grandfather path and be silently re-bound to the new biometrics on the
+			// next launch instead of forcing the user to re-enable. See runBiometricTrustMigration.
+			UserPreferences.setBool(BIOMETRIC_TRUST_MIGRATION_V1_DONE, true);
 			return { kind: 'success' };
 		} catch (e) {
 			return classifyError(e);
