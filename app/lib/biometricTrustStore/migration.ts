@@ -24,7 +24,7 @@ export const runBiometricTrustMigration = async (): Promise<void> => {
 			return;
 		}
 
-		const sentinelExists = await biometricTrustStore.probeExists();
+		const sentinelExists = await biometricTrustStore.hasEnrolment();
 		if (sentinelExists) {
 			return;
 		}

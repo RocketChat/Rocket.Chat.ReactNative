@@ -69,7 +69,7 @@ export const biometricTrustStore: IBiometricTrustStore = {
 	},
 
 	async verify({ promptCopy }) {
-		const exists = await biometricTrustStore.probeExists();
+		const exists = await biometricTrustStore.hasEnrolment();
 		if (!exists) {
 			return { kind: 'unavailable' };
 		}
@@ -85,7 +85,7 @@ export const biometricTrustStore: IBiometricTrustStore = {
 		}
 	},
 
-	async probeExists() {
+	async hasEnrolment() {
 		try {
 			const result = await Keychain.hasGenericPassword({ service: SENTINEL_SERVICE });
 			return !!result;
@@ -100,6 +100,20 @@ export const biometricTrustStore: IBiometricTrustStore = {
 
 	setEnabled(enabled: boolean) {
 		UserPreferences.setBool(BIOMETRY_ENABLED_KEY, enabled);
+	},
+
+	async setBiometryEnabled(enabled: boolean) {
+		if (enabled) {
+			const result = await biometricTrustStore.enrol();
+			if (result.kind !== 'success') {
+				biometricTrustStore.setEnabled(false);
+				return result;
+			}
+		} else {
+			await biometricTrustStore.disenrol();
+		}
+		biometricTrustStore.setEnabled(enabled);
+		return { kind: 'success' };
 	}
 };
 

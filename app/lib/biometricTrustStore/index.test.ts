@@ -72,11 +72,11 @@ describe('biometricTrustStore', () => {
 		});
 	});
 
-	describe('probeExists', () => {
+	describe('hasEnrolment', () => {
 		it('uses hasGenericPassword and does not prompt', async () => {
 			mockedKeychain.hasGenericPassword.mockResolvedValueOnce(true);
 
-			const exists = await biometricTrustStore.probeExists();
+			const exists = await biometricTrustStore.hasEnrolment();
 
 			expect(exists).toBe(true);
 			expect(mockedKeychain.hasGenericPassword).toHaveBeenCalledTimes(1);
@@ -85,7 +85,7 @@ describe('biometricTrustStore', () => {
 
 		it('returns false when probe throws', async () => {
 			mockedKeychain.hasGenericPassword.mockRejectedValueOnce(new Error('broken'));
-			expect(await biometricTrustStore.probeExists()).toBe(false);
+			expect(await biometricTrustStore.hasEnrolment()).toBe(false);
 		});
 	});
 
@@ -147,6 +147,44 @@ describe('biometricTrustStore', () => {
 
 			const [options] = mockedKeychain.getGenericPassword.mock.calls[0];
 			expect(options).toMatchObject({ authenticationPrompt: { title: 'Authenticate', cancel: 'Cancel' } });
+		});
+	});
+
+	describe('setBiometryEnabled', () => {
+		it('enabling: enrols then persists the flag as enabled', async () => {
+			const enrol = jest.spyOn(biometricTrustStore, 'enrol').mockResolvedValueOnce({ kind: 'success' });
+			const setEnabled = jest.spyOn(biometricTrustStore, 'setEnabled').mockImplementation(() => {});
+
+			const result = await biometricTrustStore.setBiometryEnabled(true);
+
+			expect(result).toEqual({ kind: 'success' });
+			expect(enrol).toHaveBeenCalledTimes(1);
+			expect(setEnabled).toHaveBeenCalledWith(true);
+		});
+
+		it('enabling: enrol failure forces the flag off and returns the failure', async () => {
+			const enrol = jest.spyOn(biometricTrustStore, 'enrol').mockResolvedValueOnce({ kind: 'canceled' });
+			const setEnabled = jest.spyOn(biometricTrustStore, 'setEnabled').mockImplementation(() => {});
+
+			const result = await biometricTrustStore.setBiometryEnabled(true);
+
+			expect(result).toEqual({ kind: 'canceled' });
+			expect(enrol).toHaveBeenCalledTimes(1);
+			expect(setEnabled).toHaveBeenCalledWith(false);
+			expect(setEnabled).toHaveBeenCalledTimes(1);
+		});
+
+		it('disabling: disenrols then persists the flag as disabled', async () => {
+			const enrol = jest.spyOn(biometricTrustStore, 'enrol');
+			const disenrol = jest.spyOn(biometricTrustStore, 'disenrol').mockResolvedValueOnce();
+			const setEnabled = jest.spyOn(biometricTrustStore, 'setEnabled').mockImplementation(() => {});
+
+			const result = await biometricTrustStore.setBiometryEnabled(false);
+
+			expect(result).toEqual({ kind: 'success' });
+			expect(enrol).not.toHaveBeenCalled();
+			expect(disenrol).toHaveBeenCalledTimes(1);
+			expect(setEnabled).toHaveBeenCalledWith(false);
 		});
 	});
 });

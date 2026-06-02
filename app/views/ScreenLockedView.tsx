@@ -46,6 +46,11 @@ const ScreenLockedView = (): JSX.Element => {
 	}, [data]);
 
 	const showScreenLock = (args: IData) => {
+		// A new request can arrive while the previous modal is still animating out, before
+		// onModalHide consumed its resolve. Flush it now so the previous caller isn't left hanging.
+		const pending = pendingResolve.current;
+		pendingResolve.current = null;
+		pending?.();
 		setData(args);
 	};
 

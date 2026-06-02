@@ -163,17 +163,10 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 			({ biometry }) => ({ biometry: !biometry }),
 			async () => {
 				const { biometry } = this.state;
-				if (biometry) {
-					const result = await biometricTrustStore.enrol();
-					if (result.kind !== 'success') {
-						this.setState({ biometry: false });
-						biometricTrustStore.setEnabled(false);
-						return;
-					}
-				} else {
-					await biometricTrustStore.disenrol();
+				const result = await biometricTrustStore.setBiometryEnabled(biometry);
+				if (result.kind !== 'success') {
+					this.setState({ biometry: false });
 				}
-				biometricTrustStore.setEnabled(biometry);
 			}
 		);
 	};

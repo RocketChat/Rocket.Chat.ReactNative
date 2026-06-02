@@ -21,16 +21,17 @@ jest.mock('./index', () => ({
 		enrol: jest.fn(),
 		disenrol: jest.fn(),
 		verify: jest.fn(),
-		probeExists: jest.fn(),
+		hasEnrolment: jest.fn(),
 		isEnabled: jest.fn(),
-		setEnabled: jest.fn()
+		setEnabled: jest.fn(),
+		setBiometryEnabled: jest.fn()
 	}
 }));
 
 const mockedGetBool = UserPreferences.getBool as jest.Mock;
 const mockedSetBool = UserPreferences.setBool as jest.Mock;
 const mockedEnrol = biometricTrustStore.enrol as jest.Mock;
-const mockedProbeExists = biometricTrustStore.probeExists as jest.Mock;
+const mockedHasEnrolment = biometricTrustStore.hasEnrolment as jest.Mock;
 const mockedIsEnabled = biometricTrustStore.isEnabled as jest.Mock;
 const mockedSetEnabled = biometricTrustStore.setEnabled as jest.Mock;
 const mockedLog = log as unknown as jest.Mock;
@@ -52,7 +53,7 @@ describe('runBiometricTrustMigration', () => {
 
 	it('upgrade path: !migrated && flag && !sentinel → enrol() once and mark migrated', async () => {
 		setPrefs({ biometryEnabled: true, migrated: false });
-		mockedProbeExists.mockResolvedValueOnce(false);
+		mockedHasEnrolment.mockResolvedValueOnce(false);
 		mockedEnrol.mockResolvedValueOnce({ kind: 'success' });
 
 		await runBiometricTrustMigration();
@@ -64,7 +65,7 @@ describe('runBiometricTrustMigration', () => {
 
 	it('reconciliation path: migrated && flag && !sentinel → clear flag, no enrol()', async () => {
 		setPrefs({ biometryEnabled: true, migrated: true });
-		mockedProbeExists.mockResolvedValueOnce(false);
+		mockedHasEnrolment.mockResolvedValueOnce(false);
 
 		await runBiometricTrustMigration();
 
@@ -78,7 +79,7 @@ describe('runBiometricTrustMigration', () => {
 
 		await runBiometricTrustMigration();
 
-		expect(mockedProbeExists).not.toHaveBeenCalled();
+		expect(mockedHasEnrolment).not.toHaveBeenCalled();
 		expect(mockedEnrol).not.toHaveBeenCalled();
 		expect(mockedSetBool).not.toHaveBeenCalled();
 		expect(mockedSetEnabled).not.toHaveBeenCalled();
@@ -86,7 +87,7 @@ describe('runBiometricTrustMigration', () => {
 
 	it('flag=true && sentinel exists → no-op (no enrol, no flag clear)', async () => {
 		setPrefs({ biometryEnabled: true, migrated: false });
-		mockedProbeExists.mockResolvedValueOnce(true);
+		mockedHasEnrolment.mockResolvedValueOnce(true);
 
 		await runBiometricTrustMigration();
 
@@ -98,7 +99,7 @@ describe('runBiometricTrustMigration', () => {
 	it('idempotent: after successful migration, second run is a no-op', async () => {
 		// first run: upgrade path
 		setPrefs({ biometryEnabled: true, migrated: false });
-		mockedProbeExists.mockResolvedValueOnce(false);
+		mockedHasEnrolment.mockResolvedValueOnce(false);
 		mockedEnrol.mockResolvedValueOnce({ kind: 'success' });
 		await runBiometricTrustMigration();
 		expect(mockedEnrol).toHaveBeenCalledTimes(1);
@@ -106,7 +107,7 @@ describe('runBiometricTrustMigration', () => {
 		// second run: sentinel now exists AND marker is set
 		jest.clearAllMocks();
 		setPrefs({ biometryEnabled: true, migrated: true });
-		mockedProbeExists.mockResolvedValueOnce(true);
+		mockedHasEnrolment.mockResolvedValueOnce(true);
 
 		await runBiometricTrustMigration();
 
@@ -117,7 +118,7 @@ describe('runBiometricTrustMigration', () => {
 
 	it('enrol() error → logged, flag untouched, marker NOT set so next boot retries', async () => {
 		setPrefs({ biometryEnabled: true, migrated: false });
-		mockedProbeExists.mockResolvedValueOnce(false);
+		mockedHasEnrolment.mockResolvedValueOnce(false);
 		const cause = new Error('keychain unavailable');
 		mockedEnrol.mockResolvedValueOnce({ kind: 'error', cause });
 
@@ -128,10 +129,10 @@ describe('runBiometricTrustMigration', () => {
 		expect(mockedSetEnabled).not.toHaveBeenCalled();
 	});
 
-	it('probeExists throws → swallowed, logged, no enrol(), no flag mutation', async () => {
+	it('hasEnrolment throws → swallowed, logged, no enrol(), no flag mutation', async () => {
 		setPrefs({ biometryEnabled: true, migrated: false });
 		const boom = new Error('probe failed');
-		mockedProbeExists.mockRejectedValueOnce(boom);
+		mockedHasEnrolment.mockRejectedValueOnce(boom);
 
 		await runBiometricTrustMigration();
 

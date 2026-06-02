@@ -31,9 +31,10 @@ jest.mock('../../biometricTrustStore', () => ({
 		verify: jest.fn(),
 		enrol: jest.fn(),
 		disenrol: jest.fn(),
-		probeExists: jest.fn(),
+		hasEnrolment: jest.fn(),
 		isEnabled: jest.fn(),
-		setEnabled: jest.fn()
+		setEnabled: jest.fn(),
+		setBiometryEnabled: jest.fn()
 	}
 }));
 

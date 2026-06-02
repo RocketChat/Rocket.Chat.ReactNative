@@ -6,9 +6,10 @@ jest.mock('./index', () => ({
 		enrol: jest.fn(),
 		disenrol: jest.fn(() => Promise.resolve()),
 		verify: jest.fn(),
-		probeExists: jest.fn(),
+		hasEnrolment: jest.fn(),
 		isEnabled: jest.fn(),
-		setEnabled: jest.fn()
+		setEnabled: jest.fn(),
+		setBiometryEnabled: jest.fn()
 	}
 }));
 
