@@ -87,6 +87,7 @@ import createSagaMiddleware from 'redux-saga';
 import { deepLinkingOpen } from '../../actions/deepLinking';
 import { loginSuccess } from '../../actions/login';
 import { selectServerSuccess } from '../../actions/server';
+import { connectSuccess } from '../../actions/connect';
 import { appStart } from '../../actions/app';
 import { RootEnum } from '../../definitions';
 import reducers from '../../reducers';
@@ -204,6 +205,11 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
 		await flushSagaMicrotasks();
 
+		// Fix B: the saga now waits for METEOR.SUCCESS ('connected') before dispatching
+		// loginRequest, so it never logs in on a still-connecting socket.
+		store.dispatch(connectSuccess());
+		await flushSagaMicrotasks();
+
 		// Saga is now waiting for LOGIN.SUCCESS
 		expect(jest.mocked(goRoom)).not.toHaveBeenCalled();
 
@@ -240,6 +246,11 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
 		await flushSagaMicrotasks();
 
+		// Fix B: the saga now waits for METEOR.SUCCESS ('connected') before dispatching
+		// loginRequest, so it never logs in on a still-connecting socket.
+		store.dispatch(connectSuccess());
+		await flushSagaMicrotasks();
+
 		store.dispatch(loginSuccess({ id: 'user-1', token: makeStoredUser() } as any));
 		await flushSagaMicrotasks();
 
@@ -272,6 +283,11 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
 		await flushSagaMicrotasks();
 
+		// Fix B: the saga now waits for METEOR.SUCCESS ('connected') before dispatching
+		// loginRequest, so it never logs in on a still-connecting socket.
+		store.dispatch(connectSuccess());
+		await flushSagaMicrotasks();
+
 		// Dispatch LOGIN.SUCCESS AND APP.START(ROOT_INSIDE) synchronously before any flush.
 		// The reducer processes both dispatches before the saga's select runs,
 		// so the select sees ROOT_INSIDE and skips the take.
@@ -299,6 +315,11 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		await flushSagaMicrotasks();
 
 		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
+		await flushSagaMicrotasks();
+
+		// Fix B: the saga now waits for METEOR.SUCCESS ('connected') before dispatching
+		// loginRequest, so it never logs in on a still-connecting socket.
+		store.dispatch(connectSuccess());
 		await flushSagaMicrotasks();
 
 		store.dispatch(loginSuccess({ id: 'user-1', token: makeStoredUser() } as any));
@@ -334,6 +355,11 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		await flushSagaMicrotasks();
 
 		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
+		await flushSagaMicrotasks();
+
+		// Fix B: the saga now waits for METEOR.SUCCESS ('connected') before dispatching
+		// loginRequest, so it never logs in on a still-connecting socket.
+		store.dispatch(connectSuccess());
 		await flushSagaMicrotasks();
 
 		store.dispatch(loginSuccess({ id: 'user-1', token: makeStoredUser() } as any));
