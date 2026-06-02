@@ -9,10 +9,13 @@ import { getMessageById } from '../../../../lib/database/services/Message';
 import { getThreadById } from '../../../../lib/database/services/Thread';
 import { compareServerVersion, useDebounce } from '../../../../lib/methods/helpers';
 import { readThreads } from '../../../../lib/services/restApi';
-import { MESSAGE_TYPE_ANY_LOAD, type MessageTypeLoad } from '../../../../lib/constants/messageTypeLoad';
+import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '../../../../lib/constants/messageTypeLoad';
 import { MAX_AUTO_LOADS, QUERY_SIZE } from '../constants';
 import { buildVisibleSystemTypesClause } from './buildVisibleSystemTypesClause';
 import { roomHistoryRequest } from '../../../../actions/room';
+import { raiseOrRelease, type AnchorMessage } from './anchorResolver';
+
+const toMs = (ts: string | Date | number): number => (ts instanceof Date ? ts.getTime() : new Date(ts).getTime());
 
 export const useMessages = ({
 	rid,
@@ -39,6 +42,10 @@ export const useMessages = ({
 	const messagesIds = useRef<string[]>([]);
 	const lastDispatchedLoaderId = useRef<string | null>(null);
 	const autoLoadCount = useRef(0);
+	// Tracks whether the boundary Newer Loader of the current Anchored Window (t === NEXT_CHUNK,
+	// ts === highTs) was present in the PREVIOUS emit. When it flips present → absent, loadNextMessages
+	// has consumed it → that is the rejoin signal. Reset whenever the anchor (highTs) changes.
+	const boundaryLoaderPresent = useRef(false);
 	const dispatch = useDispatch();
 	const store = useStore<IApplicationState>();
 
@@ -55,6 +62,46 @@ export const useMessages = ({
 			}
 		}
 	}, 1000);
+
+	// Rejoin the Live Tail from an Anchored Window. Called on each emit while anchored: when the
+	// boundary Newer Loader (ts === highTs) flips present → absent, loadNextMessages has consumed it
+	// and written the next batch + a new loader ABOVE the current bound — which the bounded
+	// observation (ts <= highTs) cannot see. So read that region directly and let the pure resolver
+	// decide whether to RAISE the bound (climb toward live) or RELEASE to a Live Window (Gap closed).
+	const raiseOrReleaseAnchor = useCallback(
+		async (observed: TAnyMessageModel[], currentHighTs: number) => {
+			const wasPresent = boundaryLoaderPresent.current;
+			const isPresent = observed.some(m => m.t === MessageTypeLoad.NEXT_CHUNK && toMs(m.ts) === currentHighTs);
+			boundaryLoaderPresent.current = isPresent;
+
+			// Only a present → absent transition is a consume. Anything else (still present, or never
+			// present) leaves the anchor untouched.
+			if (!wasPresent || isPresent) {
+				return;
+			}
+
+			// Targeted one-shot read of the region above the current bound that the bounded observation
+			// cannot see (the newly-written batch + any new Newer Loader).
+			const rows = (await database.active
+				.get('messages')
+				.query(Q.where('rid', rid), Q.where('ts', Q.gt(currentHighTs)), Q.sortBy('ts', Q.asc), Q.take(QUERY_SIZE + 1))
+				.fetch()) as TAnyMessageModel[];
+
+			const next = raiseOrRelease(rows as unknown as AnchorMessage[], currentHighTs);
+			if (next === null) {
+				// Gap closed: release to a Live Window that follows new messages again.
+				setHighTsState(null);
+				return;
+			}
+			// RAISE: climb the bound toward the Live Tail. We deliberately do NOT re-seed count here (the
+			// public setHighTs would): leaving count intact lets fetchMessages' own `count += QUERY_SIZE`
+			// GROW the window by one page on re-subscribe, so the original Chunk stays visible alongside
+			// the newly-revealed batch and the user's reading position is preserved. The re-subscription's
+			// first emit re-derives boundaryLoaderPresent from the new bound.
+			setHighTsState(next);
+		},
+		[rid]
+	);
 
 	const fetchMessages = useCallback(async () => {
 		unsubscribe();
@@ -119,11 +166,17 @@ export const useMessages = ({
 				newMessages.push(thread.current);
 			}
 
+			// Thread / local windows are never anchored, so rejoin only applies to the bounded main room.
+			if (!tmid && highTs != null) {
+				// Best-effort: the targeted read may reject; never let that break the emit.
+				raiseOrReleaseAnchor(result as TAnyMessageModel[], highTs).catch(() => {});
+			}
+
 			readThread();
 			setRawMessages(newMessages);
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps -- readThread is omitted intentionally: useDebouncedCallback stores func in a ref so changes propagate without recreating fetchMessages; hideSystemMessages must stay so the DB re-queries for proper pagination
-	}, [rid, tmid, showMessageInMainThread, hideSystemMessages, highTs, unsubscribe]);
+	}, [rid, tmid, showMessageInMainThread, hideSystemMessages, highTs, unsubscribe, raiseOrReleaseAnchor]);
 
 	// Setting an anchor re-seeds the window to a single standard page (QUERY_SIZE) instead of
 	// continuing to grow: reset count, then change the bound. highTs is a fetchMessages dependency,
@@ -131,6 +184,9 @@ export const useMessages = ({
 	// exactly QUERY_SIZE. Passing null releases the Anchored Window back to a Live Window.
 	const setHighTs = useCallback((next: number | null) => {
 		count.current = 0;
+		// Fresh anchor (jump / jump-to-bottom): clear the boundary-loader tracking so the first emit of
+		// the new bound cannot be mistaken for a consume (its wasPresent baseline starts false).
+		boundaryLoaderPresent.current = false;
 		setHighTsState(next);
 	}, []);
 

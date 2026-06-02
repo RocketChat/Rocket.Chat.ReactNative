@@ -141,6 +141,20 @@ describe('useScroll', () => {
 		expect(scrollToIndex).not.toHaveBeenCalled();
 	});
 
+	it('jump-to-bottom releases the anchor to a Live Window, then scrolls back to live', () => {
+		const setHighTs = jest.fn();
+		const { result, scrollToOffset } = renderUseScroll([{ id: 'a' }, { id: 'b' }], setHighTs);
+
+		act(() => {
+			result.current.jumpToBottom();
+		});
+
+		// Release the Anchored Window first (public setter re-seeds to one page — correct for a snap to live),
+		// then scroll back to the Live Tail.
+		expect(setHighTs).toHaveBeenCalledWith(null);
+		expect(scrollToOffset).toHaveBeenCalledWith({ offset: -100 });
+	});
+
 	it('performs a single scroll for a contiguous target already present (no anchor)', async () => {
 		const setHighTs = jest.fn();
 		// Target is already in the rows; contiguous case passes highTs = null (Live Window).

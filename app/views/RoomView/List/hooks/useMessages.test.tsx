@@ -67,6 +67,10 @@ describe('useMessages', () => {
 	let emitVisibleRows: ((rows: TAnyMessageModel[]) => void) | null;
 	let queryCalls: unknown[][];
 	let unsubscribeSpies: jest.Mock[];
+	// Rows served to the targeted one-shot read used by the rejoin raise (the region above the current
+	// bound that the bounded observation cannot see). Each call to query(...).fetch() captures its clauses.
+	let fetchRows: TAnyMessageModel[];
+	let fetchCalls: unknown[][];
 
 	const wrapper = ({ children }: { children: ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
 
@@ -75,6 +79,8 @@ describe('useMessages', () => {
 		emitVisibleRows = null;
 		queryCalls = [];
 		unsubscribeSpies = [];
+		fetchRows = [];
+		fetchCalls = [];
 		jest.clearAllMocks();
 		// Reset historyLoaders so prior test dispatches don't trip the in-flight guard
 		mockedStore
@@ -95,6 +101,11 @@ describe('useMessages', () => {
 							unsubscribeSpies.push(unsubscribe);
 							return { unsubscribe };
 						}
+					}),
+					// Targeted one-shot read for the rejoin raise (region above the current bound).
+					fetch: jest.fn(() => {
+						fetchCalls.push(args);
+						return Promise.resolve(fetchRows);
 					})
 				};
 			})
@@ -612,5 +623,96 @@ describe('useMessages', () => {
 		await waitFor(() => {
 			expect(result.current[3].highTs).toBe(1500);
 		});
+	});
+
+	const findTakeClause = (clauses: unknown[]) =>
+		clauses.find(
+			(clause): clause is { type: 'take'; count: number } =>
+				!!clause && typeof clause === 'object' && (clause as { type?: string }).type === 'take'
+		);
+
+	// ms-since-epoch as the model's Date ts. Anchor bounds (highTs) are compared in ms, so a Date
+	// whose getTime() equals the chosen ms keeps `ts === highTs` boundary detection exact.
+	const at = (ms: number) => new Date(ms);
+	// Boundary Newer Loader of the Anchored Window: the row that sits exactly on the bound (ts === highTs).
+	const newerLoaderAt = (id: string, ms: number) => msg({ id, t: MessageTypeLoad.NEXT_CHUNK, ts: at(ms) });
+
+	it('raises the bound and GROWS the window when the boundary Newer Loader is consumed and another remains above', async () => {
+		emittedRows = [msg({ id: 'm1', ts: at(1000) }), newerLoaderAt('loader-H', 1500)];
+		const { result } = renderUseMessages();
+
+		// Anchor the window at the boundary loader's ts.
+		act(() => {
+			result.current[3].setHighTs(1500);
+		});
+		await waitFor(() => {
+			expect(findBoundClause(queryCalls[queryCalls.length - 1])?.comparison.right.value).toBe(1500);
+		});
+		const takeBeforeRaise = findTakeClause(queryCalls[queryCalls.length - 1])?.count;
+		expect(takeBeforeRaise).toBe(QUERY_SIZE);
+
+		// The targeted read above the bound reveals the next batch plus a NEW Newer Loader at ts 1900.
+		fetchRows = [msg({ id: 'm2', ts: at(1700) }), newerLoaderAt('loader-H2', 1900)];
+
+		// loadNextMessages REMOVED the boundary loader: re-emit WITHOUT it (still under the old bound).
+		emitRows([msg({ id: 'm1', ts: at(1000) })]);
+
+		// Rejoin RAISE: bound climbs to the surviving loader's ts (1900) AND the window grows by a page.
+		await waitFor(() => {
+			expect(result.current[3].highTs).toBe(1900);
+		});
+		const lastCall = queryCalls[queryCalls.length - 1];
+		expect(findBoundClause(lastCall)?.comparison.right.value).toBe(1900);
+		expect(findTakeClause(lastCall)?.count).toBe(QUERY_SIZE * 2);
+	});
+
+	it('releases the anchor to a Live Window when the boundary Newer Loader is consumed and the Gap has closed', async () => {
+		emittedRows = [msg({ id: 'm1', ts: at(1000) }), newerLoaderAt('loader-H', 1500)];
+		const { result } = renderUseMessages();
+
+		act(() => {
+			result.current[3].setHighTs(1500);
+		});
+		await waitFor(() => {
+			expect(findBoundClause(queryCalls[queryCalls.length - 1])?.comparison.right.value).toBe(1500);
+		});
+
+		// The targeted read reveals the next batch but NO new Newer Loader: the Gap to the Live Tail closed.
+		fetchRows = [msg({ id: 'm2', ts: at(1700) }), msg({ id: 'm3', ts: at(1800) })];
+
+		// loadNextMessages consumed the boundary loader: re-emit WITHOUT it.
+		emitRows([msg({ id: 'm1', ts: at(1000) })]);
+
+		// Rejoin RELEASE: bound becomes null → Live Window. The captured query drops the Q.lte clause.
+		await waitFor(() => {
+			expect(result.current[3].highTs).toBeNull();
+		});
+		expect(findBoundClause(queryCalls[queryCalls.length - 1])).toBeUndefined();
+	});
+
+	it('never releases across an open Gap: keeps highTs finite while a Newer Loader survives above the bound', async () => {
+		emittedRows = [msg({ id: 'm1', ts: at(1000) }), newerLoaderAt('loader-H', 1500)];
+		const { result } = renderUseMessages();
+
+		act(() => {
+			result.current[3].setHighTs(1500);
+		});
+		await waitFor(() => {
+			expect(findBoundClause(queryCalls[queryCalls.length - 1])?.comparison.right.value).toBe(1500);
+		});
+
+		// The targeted read still shows a Newer Loader above the bound — the Gap is NOT closed.
+		fetchRows = [msg({ id: 'm2', ts: at(1700) }), newerLoaderAt('loader-H2', 1900)];
+
+		// Consume the boundary loader.
+		emitRows([msg({ id: 'm1', ts: at(1000) })]);
+
+		// The Gap is still open, so the window must NOT release to a Live Window: highTs stays finite
+		// (it climbs to the surviving loader instead of becoming null), and the upper bound persists.
+		await waitFor(() => {
+			expect(result.current[3].highTs).toBe(1900);
+		});
+		expect(result.current[3].highTs).not.toBeNull();
+		expect(findBoundClause(queryCalls[queryCalls.length - 1])).toBeDefined();
 	});
 });

@@ -54,9 +54,12 @@ export const useScroll = ({
 		[]
 	);
 
+	// Snap straight back to live: release any Anchored Window first (the public setter re-seeds to one
+	// page, which is correct here), then scroll to the Live Tail.
 	const jumpToBottom = useCallback(() => {
+		setHighTs(null);
 		listRef.current?.scrollToOffset({ offset: -100 });
-	}, [listRef]);
+	}, [listRef, setHighTs]);
 
 	const onViewableItemsChanged: IListProps['onViewableItemsChanged'] = ({ viewableItems: vi }) => {
 		viewableItems.current = vi;
