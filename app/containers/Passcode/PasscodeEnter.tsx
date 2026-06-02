@@ -9,7 +9,7 @@ import Locked from './Base/Locked';
 import { TYPE } from './constants';
 import { ATTEMPTS_KEY, LOCKED_OUT_TIMER_KEY, MAX_ATTEMPTS, PASSCODE_KEY } from '../../lib/constants/localAuthentication';
 import { biometryAuth, resetAttempts } from '../../lib/methods/helpers/localAuthentication';
-import { handleBiometricTrustResult, type BiometricInvalidationReason } from '../../lib/biometricTrustStore/handleResult';
+import { resolveBiometricTrust, type BiometricInvalidationReason } from '../../lib/biometricTrustStore/resolveBiometricTrust';
 import { getDiff, getLockedUntil } from './utils';
 import { useUserPreferences } from '../../lib/methods/userPreferences';
 import I18n from '../../i18n';
@@ -45,7 +45,7 @@ const PasscodeEnter = ({
 			return;
 		}
 		const result = await biometryAuth();
-		const { unlocked, modal } = await handleBiometricTrustResult(result);
+		const { unlocked, modal } = await resolveBiometricTrust(result);
 		if (unlocked) {
 			finishProcess();
 			return;

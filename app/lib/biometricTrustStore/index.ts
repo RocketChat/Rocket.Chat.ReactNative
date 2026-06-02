@@ -1,22 +1,11 @@
 import * as Keychain from 'react-native-keychain';
 
-export type TrustResult =
-	| { kind: 'success' }
-	| { kind: 'canceled' }
-	| { kind: 'enrollmentChanged' }
-	| { kind: 'unavailable' }
-	| { kind: 'error'; cause: unknown };
-
-export interface IBiometricTrustStore {
-	enrol(): Promise<TrustResult>;
-	disenrol(): Promise<void>;
-	verify(opts: { promptCopy: { title: string; cancel: string } }): Promise<TrustResult>;
-	probeExists(): Promise<boolean>;
-}
-
-const SENTINEL_SERVICE = 'chat.rocket.reactnative.biometric-trust';
-const SENTINEL_USERNAME = 'biometric-trust';
-const SENTINEL_VALUE = 'v1';
+import { type IBiometricTrustStore, type TrustResult } from '../../definitions';
+import {
+	BIOMETRIC_TRUST_SENTINEL_SERVICE as SENTINEL_SERVICE,
+	BIOMETRIC_TRUST_SENTINEL_USERNAME as SENTINEL_USERNAME,
+	BIOMETRIC_TRUST_SENTINEL_VALUE as SENTINEL_VALUE
+} from '../constants/localAuthentication';
 
 // BIOMETRY_CURRENT_SET binds the item to the *current* biometric enrolment on both platforms; iOS
 // invalidates the keychain entry when the enrolment set changes (errSecItemNotFound on read), and

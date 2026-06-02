@@ -8,19 +8,20 @@ import UserPreferences from '../userPreferences';
 import { store } from '../../store/auxStore';
 import database from '../../database';
 import { getServerTimeSync } from '../../services/getServerTimeSync';
-import { biometricTrustStore, type TrustResult } from '../../biometricTrustStore';
-import { handleBiometricTrustResult } from '../../biometricTrustStore/handleResult';
+import { biometricTrustStore } from '../../biometricTrustStore';
+import { resolveBiometricTrust } from '../../biometricTrustStore/resolveBiometricTrust';
 import {
 	ATTEMPTS_KEY,
 	BIOMETRY_ENABLED_KEY,
 	CHANGE_PASSCODE_EMITTER,
+	E2E_AUTO_LOCK_TIME,
 	LOCAL_AUTHENTICATE_EMITTER,
 	LOCKED_OUT_TIMER_KEY,
 	PASSCODE_KEY
 } from '../../constants/localAuthentication';
 import I18n from '../../../i18n';
 import { setLocalAuthenticated } from '../../../actions/login';
-import { type TServerModel } from '../../../definitions';
+import { type TServerModel, type TrustResult } from '../../../definitions';
 import EventEmitter from './events';
 import { isIOS } from './deviceInfo';
 
@@ -125,7 +126,7 @@ export const handleLocalAuthentication = async (canCloseModal = false) => {
 	}
 
 	const result = await biometricTrustStore.verify({ promptCopy: buildPromptCopy() });
-	const { unlocked, modal } = await handleBiometricTrustResult(result);
+	const { unlocked, modal } = await resolveBiometricTrust(result);
 
 	if (unlocked) {
 		return;
@@ -158,8 +159,11 @@ export const localAuthenticate = async (server: string): Promise<void> => {
 			// diff to last authenticated session
 			const diffToLastSession = dayjs(timesync).diff(serverRecord?.lastLocalAuthenticatedSession, 'seconds');
 
+			// During E2E runs we use a shorter threshold so tests don't have to wait past the smallest user-facing option (60s)
+			const autoLockTime = process.env.RUNNING_E2E_TESTS === 'true' ? E2E_AUTO_LOCK_TIME : serverRecord?.autoLockTime;
+
 			// if it was not possible to get `timesync` from server or the last authenticated session is older than the configured auto lock time, authentication is required
-			if (!timesync || (serverRecord?.autoLockTime && diffToLastSession >= serverRecord.autoLockTime)) {
+			if (!timesync || (autoLockTime && diffToLastSession >= autoLockTime)) {
 				await hideSplashScreen();
 
 				// set isLocalAuthenticated to false

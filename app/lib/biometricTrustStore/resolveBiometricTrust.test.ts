@@ -1,7 +1,7 @@
 import UserPreferences from '../methods/userPreferences';
 import { BIOMETRY_ENABLED_KEY } from '../constants/localAuthentication';
 import { biometricTrustStore } from './index';
-import { handleBiometricTrustResult } from './handleResult';
+import { resolveBiometricTrust } from './resolveBiometricTrust';
 
 jest.mock('../methods/userPreferences', () => ({
 	__esModule: true,
@@ -25,13 +25,13 @@ jest.mock('./index', () => ({
 const mockedSetBool = UserPreferences.setBool as jest.Mock;
 const mockedDisenrol = biometricTrustStore.disenrol as jest.Mock;
 
-describe('handleBiometricTrustResult', () => {
+describe('resolveBiometricTrust', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 	});
 
 	it('success → unlocked, no modal, no invalidation', async () => {
-		const outcome = await handleBiometricTrustResult({ kind: 'success' });
+		const outcome = await resolveBiometricTrust({ kind: 'success' });
 
 		expect(outcome).toEqual({ unlocked: true });
 		expect(mockedDisenrol).not.toHaveBeenCalled();
@@ -48,7 +48,7 @@ describe('handleBiometricTrustResult', () => {
 			order.push(`setBool:${key}=${value}`);
 		});
 
-		const outcome = await handleBiometricTrustResult({ kind: 'enrollmentChanged' });
+		const outcome = await resolveBiometricTrust({ kind: 'enrollmentChanged' });
 
 		expect(order).toEqual(['disenrol', `setBool:${BIOMETRY_ENABLED_KEY}=false`]);
 		expect(outcome).toEqual({
@@ -58,7 +58,7 @@ describe('handleBiometricTrustResult', () => {
 	});
 
 	it('canceled → no disenrol, no flag clear, modal keeps biometry with skipAutoBiometry', async () => {
-		const outcome = await handleBiometricTrustResult({ kind: 'canceled' });
+		const outcome = await resolveBiometricTrust({ kind: 'canceled' });
 
 		expect(mockedDisenrol).not.toHaveBeenCalled();
 		expect(mockedSetBool).not.toHaveBeenCalled();
@@ -69,7 +69,7 @@ describe('handleBiometricTrustResult', () => {
 	});
 
 	it('error → no disenrol, no flag clear, modal keeps biometry with skipAutoBiometry', async () => {
-		const outcome = await handleBiometricTrustResult({ kind: 'error', cause: new Error('boom') });
+		const outcome = await resolveBiometricTrust({ kind: 'error', cause: new Error('boom') });
 
 		expect(mockedDisenrol).not.toHaveBeenCalled();
 		expect(mockedSetBool).not.toHaveBeenCalled();
@@ -80,7 +80,7 @@ describe('handleBiometricTrustResult', () => {
 	});
 
 	it('unavailable → passcode-only modal, no invalidation', async () => {
-		const outcome = await handleBiometricTrustResult({ kind: 'unavailable' });
+		const outcome = await resolveBiometricTrust({ kind: 'unavailable' });
 
 		expect(mockedDisenrol).not.toHaveBeenCalled();
 		expect(mockedSetBool).not.toHaveBeenCalled();
