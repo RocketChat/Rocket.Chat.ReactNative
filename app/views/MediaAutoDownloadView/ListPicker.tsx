@@ -74,17 +74,21 @@ const ListPicker = ({
 
 	const getOptions = () => (
 		<View style={{ backgroundColor: colors.surfaceRoom, marginBottom: insets.bottom }}>
+			<List.Separator />
 			{OPTIONS.map(i => (
-				<List.Radio
-					onPress={() => {
-						hideActionSheet();
-						onChangeValue(i.value);
-					}}
-					title={i.label}
-					value={i.value}
-					isSelected={option.value === i.value}
-					style={styles.pickerItem}
-				/>
+				<React.Fragment>
+					<List.Radio
+						onPress={() => {
+							hideActionSheet();
+							onChangeValue(i.value);
+						}}
+						title={i.label}
+						value={i.value}
+						isSelected={option.value === i.value}
+						style={styles.pickerItem}
+					/>
+					<List.Separator />
+				</React.Fragment>
 			))}
 		</View>
 	);
