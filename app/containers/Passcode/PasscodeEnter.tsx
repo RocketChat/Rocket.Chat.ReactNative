@@ -62,6 +62,9 @@ const PasscodeEnter = ({ hasBiometry: initialHasBiometry, reason: initialReason,
 		} else {
 			setStatus(TYPE.ENTER);
 		}
+		// Auto-prompt biometry from behind this modal so the app content stays covered during the OS
+		// prompt. biometry() no-ops unless hasBiometry and status === ENTER.
+		biometry();
 	};
 
 	useEffect(() => {

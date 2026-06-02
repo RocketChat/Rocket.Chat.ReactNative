@@ -1,3 +1,5 @@
+import * as LocalAuthentication from 'expo-local-authentication';
+
 import EventEmitter from './events';
 import { handleLocalAuthentication } from './localAuthentication';
 import { biometricTrustStore } from '../../biometricTrustStore';
@@ -45,19 +47,22 @@ jest.mock('./events', () => ({
 
 const mockedEmit = EventEmitter.emit as jest.Mock;
 const mockedVerify = biometricTrustStore.verify as jest.Mock;
-const mockedDisenrol = biometricTrustStore.disenrol as jest.Mock;
 const mockedIsEnabled = biometricTrustStore.isEnabled as jest.Mock;
-const mockedSetEnabled = biometricTrustStore.setEnabled as jest.Mock;
+const mockedIsEnrolled = LocalAuthentication.isEnrolledAsync as jest.Mock;
 
 const lastEmitPayload = () => {
 	const calls = mockedEmit.mock.calls.filter(([event]) => event === LOCAL_AUTHENTICATE_EMITTER);
 	return calls.length ? calls[calls.length - 1][1] : null;
 };
 
-describe('handleLocalAuthentication (Option C)', () => {
+// handleLocalAuthentication opens the passcode modal and computes whether to show the biometry
+// button. It does NOT prompt biometry itself — that happens from behind the modal in PasscodeEnter,
+// so the OS prompt never appears over uncovered app content. The verify()/invalidation flow is
+// exercised in PasscodeEnter.test.tsx and resolveBiometricTrust.test.ts.
+describe('handleLocalAuthentication', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
-		mockedDisenrol.mockResolvedValue(undefined);
+		mockedIsEnrolled.mockResolvedValue(true);
 		mockedEmit.mockImplementation((event, payload) => {
 			if (event === LOCAL_AUTHENTICATE_EMITTER && payload?.submit) {
 				setImmediate(() => payload.submit());
@@ -65,84 +70,31 @@ describe('handleLocalAuthentication (Option C)', () => {
 		});
 	});
 
-	it('biometry disabled → opens modal with hasBiometry: false (no verify call)', async () => {
+	it('biometry disabled → opens modal with hasBiometry: false, no upstream prompt', async () => {
 		mockedIsEnabled.mockReturnValue(false);
 
 		await handleLocalAuthentication();
 
-		const payload = lastEmitPayload();
-		expect(payload).toMatchObject({ hasBiometry: false });
+		expect(lastEmitPayload()).toMatchObject({ hasBiometry: false });
 		expect(mockedVerify).not.toHaveBeenCalled();
 	});
 
-	it('verify success → does NOT open passcode modal, no invalidation', async () => {
+	it('biometry enabled and supported → opens modal with hasBiometry: true, no upstream prompt', async () => {
 		mockedIsEnabled.mockReturnValue(true);
-		mockedVerify.mockResolvedValueOnce({ kind: 'success' });
-
-		await handleLocalAuthentication();
-
-		expect(mockedEmit).not.toHaveBeenCalledWith(LOCAL_AUTHENTICATE_EMITTER, expect.anything());
-		expect(mockedDisenrol).not.toHaveBeenCalled();
-		expect(mockedSetEnabled).not.toHaveBeenCalled();
-	});
-
-	it('verify canceled → flag untouched, modal with hasBiometry: true', async () => {
-		mockedIsEnabled.mockReturnValue(true);
-		mockedVerify.mockResolvedValueOnce({ kind: 'canceled' });
 
 		await handleLocalAuthentication();
 
 		expect(lastEmitPayload()).toMatchObject({ hasBiometry: true });
-		expect(mockedDisenrol).not.toHaveBeenCalled();
-		expect(mockedSetEnabled).not.toHaveBeenCalled();
+		expect(mockedVerify).not.toHaveBeenCalled();
 	});
 
-	it('verify error → flag untouched, modal with hasBiometry: true', async () => {
+	it('biometry enabled but device not enrolled → opens modal with hasBiometry: false', async () => {
 		mockedIsEnabled.mockReturnValue(true);
-		mockedVerify.mockResolvedValueOnce({ kind: 'error', cause: new Error('boom') });
+		mockedIsEnrolled.mockResolvedValueOnce(false);
 
 		await handleLocalAuthentication();
 
-		expect(lastEmitPayload()).toMatchObject({ hasBiometry: true });
-		expect(mockedDisenrol).not.toHaveBeenCalled();
-		expect(mockedSetEnabled).not.toHaveBeenCalled();
-	});
-
-	it('verify unavailable → opens modal with hasBiometry: false', async () => {
-		mockedIsEnabled.mockReturnValue(true);
-		mockedVerify.mockResolvedValueOnce({ kind: 'unavailable' });
-
-		await handleLocalAuthentication();
-
-		const payload = lastEmitPayload();
-		expect(payload).toMatchObject({ hasBiometry: false });
-	});
-
-	it('verify enrollmentChanged → disenrol() before flag clear before modal emit', async () => {
-		mockedIsEnabled.mockReturnValue(true);
-		mockedVerify.mockResolvedValueOnce({ kind: 'enrollmentChanged' });
-
-		const order: string[] = [];
-		mockedDisenrol.mockImplementationOnce(() => {
-			order.push('disenrol');
-			return Promise.resolve();
-		});
-		mockedSetEnabled.mockImplementationOnce((value: boolean) => {
-			order.push(`setEnabled:${value}`);
-		});
-		mockedEmit.mockImplementation((event, payload) => {
-			if (event === LOCAL_AUTHENTICATE_EMITTER) {
-				order.push('emit');
-				if (payload?.submit) {
-					setImmediate(() => payload.submit());
-				}
-			}
-		});
-
-		await handleLocalAuthentication();
-
-		expect(order).toEqual(['disenrol', 'setEnabled:false', 'emit']);
-		const payload = lastEmitPayload();
-		expect(payload).toMatchObject({ hasBiometry: false, reason: 'enrollmentChanged' });
+		expect(lastEmitPayload()).toMatchObject({ hasBiometry: false });
+		expect(mockedVerify).not.toHaveBeenCalled();
 	});
 });

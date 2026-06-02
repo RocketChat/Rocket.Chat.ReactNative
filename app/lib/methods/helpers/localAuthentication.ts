@@ -9,7 +9,6 @@ import { store } from '../../store/auxStore';
 import database from '../../database';
 import { getServerTimeSync } from '../../services/getServerTimeSync';
 import { biometricTrustStore } from '../../biometricTrustStore';
-import { resolveBiometricTrust } from '../../biometricTrustStore/resolveBiometricTrust';
 import {
 	ATTEMPTS_KEY,
 	CHANGE_PASSCODE_EMITTER,
@@ -116,22 +115,14 @@ const hideSplashScreen = async () => {
 
 export const handleLocalAuthentication = async (canCloseModal = false) => {
 	const supportBiometryLabel = await supportedBiometryLabel();
-
 	const biometryEnabled = biometricTrustStore.isEnabled();
-	if (!biometryEnabled || !supportBiometryLabel) {
-		await openModal(false, canCloseModal);
-		return;
-	}
+	const hasBiometry = biometryEnabled && !!supportBiometryLabel;
 
-	const result = await biometricTrustStore.verify({ promptCopy: buildPromptCopy() });
-	const outcome = await resolveBiometricTrust(result);
-
-	if (outcome.unlocked) {
-		return;
-	}
-
-	const { modal } = outcome;
-	await openModal(modal.hasBiometry, canCloseModal, modal.reason);
+	// Open the passcode modal first so it covers the app, then let PasscodeEnter prompt biometry from
+	// behind it (its mount-time auto-biometry). Prompting here as an upstream preflight would fire the
+	// OS biometric sheet with the app content still visible underneath, defeating screen lock — so the
+	// verify()/invalidation flow lives in PasscodeEnter's biometry() for both the auto and button paths.
+	await openModal(hasBiometry, canCloseModal);
 };
 
 export const localAuthenticate = async (server: string): Promise<void> => {
