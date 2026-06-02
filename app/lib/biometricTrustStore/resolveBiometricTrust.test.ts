@@ -70,11 +70,19 @@ describe('resolveBiometricTrust', () => {
 		});
 	});
 
-	it('unavailable → passcode-only modal, no invalidation', async () => {
+	it('unavailable → clears the flag (sentinel gone) before disabling, passcode-only modal, no reason', async () => {
+		const order: string[] = [];
+		mockedDisenrol.mockImplementation(() => {
+			order.push('disenrol');
+			return Promise.resolve();
+		});
+		mockedSetEnabled.mockImplementation((value: boolean) => {
+			order.push(`setEnabled:${value}`);
+		});
+
 		const outcome = await resolveBiometricTrust({ kind: 'unavailable' });
 
-		expect(mockedDisenrol).not.toHaveBeenCalled();
-		expect(mockedSetEnabled).not.toHaveBeenCalled();
+		expect(order).toEqual(['disenrol', 'setEnabled:false']);
 		expect(outcome).toEqual({ unlocked: false, modal: { hasBiometry: false } });
 	});
 });

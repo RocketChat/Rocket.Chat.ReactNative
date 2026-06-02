@@ -10,7 +10,7 @@ import { biometricTrustStore } from './index';
 //   !migrated && flag && !sentinel → silent enrol(), mark migrated.   (grandfather upgrade path)
 //    migrated && flag && !sentinel → clear flag, do NOT enrol().      (reconciliation, e.g. crash
 //                                                                      between disenrol() and the
-//                                                                      flag-clear during slice 02
+//                                                                      flag-clear during an
 //                                                                      invalidation)
 //    flag && sentinel               → no-op.
 //   !flag                           → no-op.
