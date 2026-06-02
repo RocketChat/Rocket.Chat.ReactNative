@@ -7,13 +7,14 @@ import ThreadDetails from '../ThreadDetails';
 import I18n from '../../i18n';
 import { type IMessageThread } from './interfaces';
 import { useTheme } from '../../theme';
+import Touchable from './Touchable';
 
 const Thread = React.memo(
 	({ msg, tcount, tlm, isThreadRoom, id }: IMessageThread) => {
 		'use memo';
 
 		const { theme, colors } = useTheme();
-		const { threadBadgeColor, toggleFollowThread, user, replies } = useContext(MessageContext);
+		const { threadBadgeColor, toggleFollowThread, user, replies, onThreadPress } = useContext(MessageContext);
 
 		const backgroundColor = threadBadgeColor ? colors.badgeBackgroundLevel2 : colors.buttonBackgroundSecondaryDefault;
 		const textColor = threadBadgeColor || theme !== 'light' ? colors.fontWhite : colors.fontPureBlack;
@@ -24,9 +25,14 @@ const Thread = React.memo(
 
 		return (
 			<View style={styles.buttonContainer}>
-				<View style={[styles.button, { backgroundColor }]} testID={`message-thread-button-${msg}`}>
+				<Touchable
+					onPress={onThreadPress}
+					accessibilityRole='button'
+					accessibilityLabel={I18n.t('View_Thread')}
+					style={[styles.button, { backgroundColor }]}
+					testID={`message-thread-button-${msg}`}>
 					<Text style={[styles.buttonText, { color: textColor }]}>{I18n.t('View_Thread')}</Text>
-				</View>
+				</Touchable>
 				<ThreadDetails
 					item={{
 						tcount,

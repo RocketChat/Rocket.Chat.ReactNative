@@ -1,6 +1,6 @@
 import React, { type ReactElement } from 'react';
 import { FlatList, type ViewStyle } from 'react-native';
-import Animated from 'react-native-reanimated';
+import Animated, { type AnimatedStyle } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useAutocompleteParams } from '../../context';
@@ -17,7 +17,7 @@ export const Autocomplete = ({
 	accessibilityFocusOnInput
 }: {
 	onPress: IAutocompleteItemProps['onPress'];
-	style: ViewStyle;
+	style: AnimatedStyle<ViewStyle>;
 	accessibilityFocusOnInput: () => void;
 }): ReactElement | null => {
 	'use memo';
