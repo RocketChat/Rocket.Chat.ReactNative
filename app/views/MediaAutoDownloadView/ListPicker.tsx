@@ -76,7 +76,7 @@ const ListPicker = ({
 		<View style={{ backgroundColor: colors.surfaceRoom, marginBottom: insets.bottom }}>
 			<List.Separator />
 			{OPTIONS.map(i => (
-				<React.Fragment>
+				<>
 					<List.Radio
 						onPress={() => {
 							hideActionSheet();
@@ -88,7 +88,7 @@ const ListPicker = ({
 						style={styles.pickerItem}
 					/>
 					<List.Separator />
-				</React.Fragment>
+				</>
 			))}
 		</View>
 	);
