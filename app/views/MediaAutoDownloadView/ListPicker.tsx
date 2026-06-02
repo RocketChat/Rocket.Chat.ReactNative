@@ -32,6 +32,9 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'flex-end'
+	},
+	pickerItem: {
+		height: 48
 	}
 });
 
@@ -80,6 +83,7 @@ const ListPicker = ({
 					title={i.label}
 					value={i.value}
 					isSelected={option.value === i.value}
+					style={styles.pickerItem}
 				/>
 			))}
 		</View>
