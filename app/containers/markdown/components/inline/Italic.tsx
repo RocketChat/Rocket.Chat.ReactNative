@@ -15,20 +15,23 @@ const styles = StyleSheet.create({
 	}
 });
 
+type TItalicWithID<T> = T & { _id: string };
+
 const Italic = ({ value }: IItalicProps) => (
 	<Text style={styles.text}>
-		{value.map(block => {
+		{value.map(b => {
+			const block = b as TItalicWithID<typeof b>;
 			switch (block.type) {
 				case 'LINK':
-					return <Link value={block.value} />;
+					return <Link key={block._id} value={block.value} />;
 				case 'PLAIN_TEXT':
-					return <Plain value={block.value} />;
+					return <Plain key={block._id} value={block.value} />;
 				case 'STRIKE':
-					return <Strike value={block.value} />;
+					return <Strike key={block._id} value={block.value} />;
 				case 'BOLD':
-					return <Bold value={block.value} />;
+					return <Bold key={block._id} value={block.value} />;
 				case 'MENTION_CHANNEL':
-					return <Plain value={`#${block.value.value}`} />;
+					return <Plain key={block._id} value={`#${block.value.value}`} />;
 				default:
 					return null;
 			}
