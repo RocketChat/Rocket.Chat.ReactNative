@@ -49,7 +49,7 @@ describe('PasscodeEnter biometry button', () => {
 		mockedBiometryAuth.mockResolvedValueOnce({ kind: 'enrollmentChanged' });
 		const finishProcess = jest.fn();
 
-		const { getByTestId, queryByTestId } = render(<PasscodeEnter hasBiometry skipAutoBiometry finishProcess={finishProcess} />);
+		const { getByTestId, queryByTestId } = render(<PasscodeEnter hasBiometry finishProcess={finishProcess} />);
 
 		await waitFor(() => expect(getByTestId('biometry-button')).toBeTruthy());
 
@@ -65,7 +65,7 @@ describe('PasscodeEnter biometry button', () => {
 		mockedBiometryAuth.mockResolvedValueOnce({ kind: 'success' });
 		const finishProcess = jest.fn();
 
-		const { getByTestId } = render(<PasscodeEnter hasBiometry skipAutoBiometry finishProcess={finishProcess} />);
+		const { getByTestId } = render(<PasscodeEnter hasBiometry finishProcess={finishProcess} />);
 
 		await waitFor(() => expect(getByTestId('biometry-button')).toBeTruthy());
 
@@ -80,7 +80,7 @@ describe('PasscodeEnter biometry button', () => {
 		mockedBiometryAuth.mockResolvedValueOnce({ kind: 'canceled' });
 		const finishProcess = jest.fn();
 
-		const { getByTestId } = render(<PasscodeEnter hasBiometry skipAutoBiometry finishProcess={finishProcess} />);
+		const { getByTestId } = render(<PasscodeEnter hasBiometry finishProcess={finishProcess} />);
 
 		await waitFor(() => expect(getByTestId('biometry-button')).toBeTruthy());
 
@@ -92,6 +92,18 @@ describe('PasscodeEnter biometry button', () => {
 		expect(finishProcess).not.toHaveBeenCalled();
 		expect(getByTestId('biometry-button')).toBeTruthy();
 	});
+
+	it('mounting does not auto-trigger biometry; only the button press does', async () => {
+		mockedBiometryAuth.mockResolvedValue({ kind: 'canceled' });
+
+		const { getByTestId } = render(<PasscodeEnter hasBiometry finishProcess={jest.fn()} />);
+
+		await waitFor(() => expect(getByTestId('biometry-button')).toBeTruthy());
+		expect(mockedBiometryAuth).not.toHaveBeenCalled();
+
+		fireEvent.press(getByTestId('biometry-button'));
+		await waitFor(() => expect(mockedBiometryAuth).toHaveBeenCalledTimes(1));
+	});
 });
 
 describe('PasscodeEnter enrollmentChanged subtitle', () => {
@@ -101,14 +113,14 @@ describe('PasscodeEnter enrollmentChanged subtitle', () => {
 
 	it('renders explanatory subtitle when reason === "enrollmentChanged"', () => {
 		const { getByText } = render(
-			<PasscodeEnter hasBiometry={false} skipAutoBiometry reason='enrollmentChanged' finishProcess={jest.fn()} />
+			<PasscodeEnter hasBiometry={false} reason='enrollmentChanged' finishProcess={jest.fn()} />
 		);
 
 		expect(getByText('Local_authentication_biometric_enrollment_changed')).toBeTruthy();
 	});
 
 	it('does not render subtitle when reason is undefined', () => {
-		const { queryByText } = render(<PasscodeEnter hasBiometry={false} skipAutoBiometry finishProcess={jest.fn()} />);
+		const { queryByText } = render(<PasscodeEnter hasBiometry={false} finishProcess={jest.fn()} />);
 
 		expect(queryByText('Local_authentication_biometric_enrollment_changed')).toBeNull();
 	});

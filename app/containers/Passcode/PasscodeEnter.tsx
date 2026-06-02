@@ -16,17 +16,11 @@ import I18n from '../../i18n';
 
 interface IPasscodePasscodeEnter {
 	hasBiometry: boolean;
-	skipAutoBiometry?: boolean;
 	reason?: BiometricInvalidationReason;
 	finishProcess: Function;
 }
 
-const PasscodeEnter = ({
-	hasBiometry: initialHasBiometry,
-	skipAutoBiometry = false,
-	reason: initialReason,
-	finishProcess
-}: IPasscodePasscodeEnter) => {
+const PasscodeEnter = ({ hasBiometry: initialHasBiometry, reason: initialReason, finishProcess }: IPasscodePasscodeEnter) => {
 	const ref = useRef<IBase>(null);
 	let attempts = 0;
 	let lockedUntil: any = false;
@@ -67,9 +61,6 @@ const PasscodeEnter = ({
 			}
 		} else {
 			setStatus(TYPE.ENTER);
-		}
-		if (!skipAutoBiometry) {
-			biometry();
 		}
 	};
 

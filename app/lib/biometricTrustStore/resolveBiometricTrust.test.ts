@@ -48,25 +48,25 @@ describe('resolveBiometricTrust', () => {
 		});
 	});
 
-	it('canceled → no disenrol, no flag clear, modal keeps biometry with skipAutoBiometry', async () => {
+	it('canceled → no disenrol, no flag clear, modal keeps biometry', async () => {
 		const outcome = await resolveBiometricTrust({ kind: 'canceled' });
 
 		expect(mockedDisenrol).not.toHaveBeenCalled();
 		expect(mockedSetEnabled).not.toHaveBeenCalled();
 		expect(outcome).toEqual({
 			unlocked: false,
-			modal: { hasBiometry: true, skipAutoBiometry: true }
+			modal: { hasBiometry: true }
 		});
 	});
 
-	it('error → no disenrol, no flag clear, modal keeps biometry with skipAutoBiometry', async () => {
+	it('error → no disenrol, no flag clear, modal keeps biometry', async () => {
 		const outcome = await resolveBiometricTrust({ kind: 'error', cause: new Error('boom') });
 
 		expect(mockedDisenrol).not.toHaveBeenCalled();
 		expect(mockedSetEnabled).not.toHaveBeenCalled();
 		expect(outcome).toEqual({
 			unlocked: false,
-			modal: { hasBiometry: true, skipAutoBiometry: true }
+			modal: { hasBiometry: true }
 		});
 	});
 

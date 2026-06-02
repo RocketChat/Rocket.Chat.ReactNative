@@ -5,7 +5,6 @@ export type BiometricInvalidationReason = 'enrollmentChanged';
 
 export type BiometricModalRequest = {
 	hasBiometry: boolean;
-	skipAutoBiometry?: boolean;
 	reason?: BiometricInvalidationReason;
 };
 
@@ -33,6 +32,8 @@ export const resolveBiometricTrust = async (result: TrustResult): Promise<Biomet
 		case 'canceled':
 		case 'error':
 		default:
-			return { unlocked: false, modal: { hasBiometry: true, skipAutoBiometry: true } };
+			// Keep the biometry button so the user can retry manually; the upstream verify() already
+			// prompted, so there's no auto-prompt to suppress here.
+			return { unlocked: false, modal: { hasBiometry: true } };
 	}
 };

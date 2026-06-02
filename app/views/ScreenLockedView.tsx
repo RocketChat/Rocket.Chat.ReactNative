@@ -17,7 +17,6 @@ interface IData {
 	cancel?: () => void;
 	hasBiometry?: boolean;
 	force?: boolean;
-	skipAutoBiometry?: boolean;
 	reason?: 'enrollmentChanged';
 }
 
@@ -87,12 +86,7 @@ const ScreenLockedView = (): JSX.Element => {
 			animationOut='fadeOut'
 			onModalHide={onModalHide}>
 			<GestureHandlerRootView style={styles.container}>
-				<PasscodeEnter
-					hasBiometry={!!data?.hasBiometry}
-					skipAutoBiometry={!!data?.skipAutoBiometry}
-					reason={data?.reason}
-					finishProcess={onSubmit}
-				/>
+				<PasscodeEnter hasBiometry={!!data?.hasBiometry} reason={data?.reason} finishProcess={onSubmit} />
 				{data?.force ? (
 					<Touch onPress={onCancel} style={styles.close}>
 						<CustomIcon name='close' size={30} />

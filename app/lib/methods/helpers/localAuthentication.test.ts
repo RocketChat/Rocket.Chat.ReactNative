@@ -72,7 +72,6 @@ describe('handleLocalAuthentication (Option C)', () => {
 
 		const payload = lastEmitPayload();
 		expect(payload).toMatchObject({ hasBiometry: false });
-		expect(payload.skipAutoBiometry).toBeFalsy();
 		expect(mockedVerify).not.toHaveBeenCalled();
 	});
 
@@ -87,24 +86,24 @@ describe('handleLocalAuthentication (Option C)', () => {
 		expect(mockedSetEnabled).not.toHaveBeenCalled();
 	});
 
-	it('verify canceled → flag untouched, modal with hasBiometry: true and skipAutoBiometry: true', async () => {
+	it('verify canceled → flag untouched, modal with hasBiometry: true', async () => {
 		mockedIsEnabled.mockReturnValue(true);
 		mockedVerify.mockResolvedValueOnce({ kind: 'canceled' });
 
 		await handleLocalAuthentication();
 
-		expect(lastEmitPayload()).toMatchObject({ hasBiometry: true, skipAutoBiometry: true });
+		expect(lastEmitPayload()).toMatchObject({ hasBiometry: true });
 		expect(mockedDisenrol).not.toHaveBeenCalled();
 		expect(mockedSetEnabled).not.toHaveBeenCalled();
 	});
 
-	it('verify error → flag untouched, modal with hasBiometry: true and skipAutoBiometry: true', async () => {
+	it('verify error → flag untouched, modal with hasBiometry: true', async () => {
 		mockedIsEnabled.mockReturnValue(true);
 		mockedVerify.mockResolvedValueOnce({ kind: 'error', cause: new Error('boom') });
 
 		await handleLocalAuthentication();
 
-		expect(lastEmitPayload()).toMatchObject({ hasBiometry: true, skipAutoBiometry: true });
+		expect(lastEmitPayload()).toMatchObject({ hasBiometry: true });
 		expect(mockedDisenrol).not.toHaveBeenCalled();
 		expect(mockedSetEnabled).not.toHaveBeenCalled();
 	});
@@ -117,7 +116,6 @@ describe('handleLocalAuthentication (Option C)', () => {
 
 		const payload = lastEmitPayload();
 		expect(payload).toMatchObject({ hasBiometry: false });
-		expect(payload.skipAutoBiometry).toBeFalsy();
 	});
 
 	it('verify enrollmentChanged → disenrol() before flag clear before modal emit', async () => {
@@ -146,6 +144,5 @@ describe('handleLocalAuthentication (Option C)', () => {
 		expect(order).toEqual(['disenrol', 'setEnabled:false', 'emit']);
 		const payload = lastEmitPayload();
 		expect(payload).toMatchObject({ hasBiometry: false, reason: 'enrollmentChanged' });
-		expect(payload.skipAutoBiometry).toBeFalsy();
 	});
 });

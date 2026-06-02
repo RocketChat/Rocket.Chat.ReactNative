@@ -52,13 +52,12 @@ export const saveLastLocalAuthenticationSession = async (
 
 export const resetAttempts = (): Promise<void> => AsyncStorage.multiRemove([LOCKED_OUT_TIMER_KEY, ATTEMPTS_KEY]);
 
-const openModal = (hasBiometry: boolean, force?: boolean, skipAutoBiometry?: boolean, reason?: 'enrollmentChanged') =>
+const openModal = (hasBiometry: boolean, force?: boolean, reason?: 'enrollmentChanged') =>
 	new Promise<void>((resolve, reject) => {
 		EventEmitter.emit(LOCAL_AUTHENTICATE_EMITTER, {
 			submit: () => resolve(),
 			hasBiometry,
 			force,
-			skipAutoBiometry,
 			reason,
 			cancel: () => reject()
 		});
@@ -132,7 +131,7 @@ export const handleLocalAuthentication = async (canCloseModal = false) => {
 	}
 
 	const { modal } = outcome;
-	await openModal(modal.hasBiometry, canCloseModal, modal.skipAutoBiometry, modal.reason);
+	await openModal(modal.hasBiometry, canCloseModal, modal.reason);
 };
 
 export const localAuthenticate = async (server: string): Promise<void> => {
