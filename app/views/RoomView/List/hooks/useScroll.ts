@@ -34,6 +34,10 @@ export const useScroll = ({
 	messagesIds: TMessagesIdsRef;
 	setHighTs: (next: number | null) => void;
 }) => {
+	// NOT migrated to the React Compiler ('use memo'): babel-plugin-react-compiler (rc) silently skips
+	// any function whose body contains a react-hooks/exhaustive-deps suppression, and this hook keeps an
+	// intentional incomplete effect-dep array (see the disable below). Annotating it would no-op, so the
+	// manual useCallback here are load-bearing and must stay.
 	const [highlightedMessageId, setHighlightedMessageId] = useState<string | null>(null);
 	const viewableItems = useRef<ViewToken[] | null>(null);
 	const highlightTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
