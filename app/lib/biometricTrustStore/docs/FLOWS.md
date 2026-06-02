@@ -88,13 +88,13 @@ sequenceDiagram
     end
 ```
 
-The `verify()` here doubles as the consent prompt: succeeding means the user agreed *and* proved the current enrolment works; declining opts out and cleans up.
+The `verify()` here doubles as the consent prompt: succeeding means the user agreed _and_ proved the current enrolment works; declining opts out and cleans up.
 
 ---
 
 ## 3. Auto-unlock and enrollment-change detection
 
-The most security-sensitive flow. When auto-lock fires, `handleLocalAuthentication` opens the passcode modal **first** so the app content is covered, then `PasscodeEnter` prompts biometry from *behind* the modal. Prompting before the modal exists would flash the app content under the OS sheet and defeat screen lock.
+The most security-sensitive flow. When auto-lock fires, `handleLocalAuthentication` opens the passcode modal **first** so the app content is covered, then `PasscodeEnter` prompts biometry from _behind_ the modal. Prompting before the modal exists would flash the app content under the OS sheet and defeat screen lock.
 
 ```mermaid
 sequenceDiagram
