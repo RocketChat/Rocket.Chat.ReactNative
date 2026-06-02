@@ -12,6 +12,7 @@
 		"ios": "npx react-native run-ios",
 		"pod-install": "bundle exec pod install --project-directory=ios",
 		"android": "npx react-native run-android --appId=chat.rocket.android",
+		"android-whitelabel": "npx react-native run-android --appId",
 		"log-android": "react-native log-android",
 		"snyk-protect": "snyk protect",
 		"postinstall": "patch-package",
