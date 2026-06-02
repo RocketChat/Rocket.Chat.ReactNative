@@ -1,4 +1,4 @@
-import { addColumns, createTable, schemaMigrations } from '@nozbe/watermelondb/Schema/migrations';
+import { addColumns, createTable, schemaMigrations, unsafeExecuteSql } from '@nozbe/watermelondb/Schema/migrations';
 
 export default schemaMigrations({
 	migrations: [
@@ -344,6 +344,17 @@ export default schemaMigrations({
 						{ name: 'inviter', type: 'string', isOptional: true }
 					]
 				})
+			]
+		},
+		{
+			toVersion: 29,
+			steps: [
+				// NATIVE-1192: legacy rows used the emoji content / custom-emoji name as the
+				// record id. Non-ASCII ids (CJK, ZWJ sequences, ...) corrupt across the native
+				// SQLite/JSI bridge and crash every frequently-used emoji read. Drop only the
+				// rows whose id contains a non-printable-ASCII character; they regenerate
+				// naturally on next use. ASCII shortname ids (e.g. heart_eyes) are kept.
+				unsafeExecuteSql("DELETE FROM frequently_used_emojis WHERE id GLOB '*[^ -~]*';")
 			]
 		}
 	]
