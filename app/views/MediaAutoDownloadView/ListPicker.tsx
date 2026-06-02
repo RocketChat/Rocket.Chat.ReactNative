@@ -63,20 +63,22 @@ interface IBaseParams {
 const ListPicker = ({
 	value,
 	title,
+	testID,
 	onChangeValue
 }: {
 	title: string;
+	testID: string;
 } & IBaseParams) => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
 	const insets = useSafeAreaInsets();
 	const option = OPTIONS.find(option => option.value === value) || OPTIONS[2];
 
-	const getOptions = () => (
+	const getOptions = (): React.ReactElement => (
 		<View style={{ backgroundColor: colors.surfaceRoom, marginBottom: insets.bottom }}>
 			<List.Separator />
 			{OPTIONS.map(i => (
-				<React.Fragment>
+				<React.Fragment key={i.value}>
 					<List.Radio
 						onPress={() => {
 							hideActionSheet();
@@ -86,6 +88,7 @@ const ListPicker = ({
 						value={i.value}
 						isSelected={option.value === i.value}
 						style={styles.pickerItem}
+						testID={`${testID}-${i.value}`}
 					/>
 					<List.Separator />
 				</React.Fragment>
@@ -98,6 +101,7 @@ const ListPicker = ({
 
 	return (
 		<List.Item
+			testID={testID}
 			onPress={() => showActionSheet({ children: getOptions() })}
 			title={() => (
 				<View style={styles.leftTitleContainer}>
