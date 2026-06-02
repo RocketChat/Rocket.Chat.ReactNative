@@ -8,14 +8,8 @@ import { DEFAULT_EMOJIS, emojis } from '../constants/emojis';
 
 const FREQUENTLY_USED_TABLE = 'frequently_used_emojis';
 
-// A frequently-used emoji is uniquely identified by its content + whether it is custom.
-// We deliberately do NOT use the emoji content / custom-emoji name as the WatermelonDB
-// record id: that content can be non-ASCII (CJK, ZWJ sequences, ...) and non-ASCII record
-// ids do not round-trip across the native SQLite/JSI bridge. A mangled id desyncs the
-// adapter's cached-id set from the JS RecordCache, making the entire .fetch() throw
-// "Record ID ... was sent over the bridge, but it's not cached" and crashing every emoji
-// surface (NATIVE-1192). Querying by the content field instead keeps content as a plain
-// column value (which round-trips fine) and lets WatermelonDB own a safe, ASCII record id.
+// Looked up by content, never used as the record id: emoji content / custom names can be
+// non-ASCII and corrupt across the native SQLite bridge when used as WatermelonDB ids.
 const getEmojiContent = (emoji: IEmoji) => (typeof emoji === 'string' ? emoji : emoji.name);
 
 export const addFrequentlyUsed = async (emoji: IEmoji) => {
@@ -37,7 +31,6 @@ export const addFrequentlyUsed = async (emoji: IEmoji) => {
 			} else {
 				await freqEmojiCollection.create(f => {
 					const record = f as TFrequentlyUsedEmojiModel;
-					// No record.id assignment: WatermelonDB generates a safe ASCII id.
 					record.content = content;
 					record.isCustom = isCustom;
 					if (isCustom) {
@@ -71,9 +64,7 @@ export const getFrequentlyUsedEmojis = async (withDefaultEmojis = false): Promis
 
 		return frequentlyUsedEmojis;
 	} catch (e) {
-		// A legacy non-ASCII record id can still desync the native bridge and reject the
-		// whole fetch. Frequently-used emojis are a non-critical convenience cache, so we
-		// log and degrade gracefully instead of crashing every emoji surface (NATIVE-1192).
+		// A legacy non-ASCII id can still reject the fetch; degrade rather than crash the emoji UI.
 		log(e);
 		return withDefaultEmojis ? [...DEFAULT_EMOJIS] : [];
 	}

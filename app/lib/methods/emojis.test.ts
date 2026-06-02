@@ -32,20 +32,15 @@ beforeEach(() => {
 });
 
 describe('addFrequentlyUsed', () => {
-	// NATIVE-1192: the emoji content / custom-emoji name must never become the WatermelonDB
-	// record id. It can be non-ASCII and corrupt across the native bridge. We look up existing
-	// rows by the content field and let WatermelonDB own a safe, ASCII record id.
 	it('creates a new row by querying content + is_custom and never sets the emoji as the id', async () => {
 		mockFetch.mockResolvedValue([]);
 
 		await addFrequentlyUsed({ name: '大丈夫', extension: 'png' });
 
-		// dedup is a field query (two Q.where clauses), not a find-by-id on the content
 		expect(mockQuery).toHaveBeenCalledTimes(1);
 		expect(mockQuery.mock.calls[0]).toHaveLength(2);
 		expect(mockCreate).toHaveBeenCalledTimes(1);
 
-		// run the create builder and confirm it sets fields but no content-derived id / _raw
 		const record: any = {};
 		mockCreate.mock.calls[0][0](record);
 		expect(record.content).toBe('大丈夫');
@@ -94,9 +89,6 @@ describe('getFrequentlyUsedEmojis', () => {
 		expect(result).toEqual(['grinning', { name: 'rocketchat', extension: 'png' }]);
 	});
 
-	// NATIVE-1192 crash consequence: a single legacy non-ASCII id desyncs the native bridge
-	// and rejects the whole fetch. The read path must degrade gracefully, never crash the
-	// emoji picker / composer search / reaction bar.
 	it('returns an empty list instead of throwing when the native bridge desyncs', async () => {
 		mockFetch.mockRejectedValue(
 			new Error("Record ID frequently_used_emojis#大丈夫 was sent over the bridge, but it's not cached")
@@ -114,7 +106,7 @@ describe('getFrequentlyUsedEmojis', () => {
 	});
 });
 
-describe('frequently_used_emojis migration (NATIVE-1192)', () => {
+describe('frequently_used_emojis migration', () => {
 	it('bumps the schema to v29 with a matching migration', () => {
 		expect(appSchema.version).toBe(29);
 		expect((migrations as any).maxVersion).toBe(29);
