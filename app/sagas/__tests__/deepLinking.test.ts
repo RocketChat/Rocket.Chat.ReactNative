@@ -97,6 +97,8 @@ import { canOpenRoom } from '../../lib/methods/canOpenRoom';
 import { getServerInfo } from '../../lib/methods/getServerInfo';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 import { waitForNavigationReady } from '../../lib/navigation/appNavigation';
+import sdk from '../../lib/services/sdk';
+import EventEmitter from '../../lib/methods/helpers/events';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -351,5 +353,101 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 
 		// Still exactly once
 		expect(jest.mocked(goRoom)).toHaveBeenCalledTimes(1);
+	});
+});
+
+/**
+ * Scenario: The user opens the app for the first time on a workspace that the
+ * SDK websocket is already connected to (e.g. they registered a server), then
+ * a deeplink with an auth token arrives for that same host.
+ */
+describe('deepLinking saga — server already connected, should skip changing server', () => {
+	beforeEach(() => {
+		jest.useFakeTimers();
+
+		jest.mocked(UserPreferences.getString).mockReset();
+		jest.mocked(getServerById).mockReset();
+		jest.mocked(canOpenRoom).mockReset();
+		jest.mocked(getServerInfo).mockReset();
+		jest.mocked(goRoom).mockReset();
+		jest.mocked(waitForNavigationReady).mockReset();
+
+		// A different server is currently set; no stored credentials for HOST.
+		// This ensures we reach the else-branch (different server path) and then
+		// fall through to the getServerInfo / hostAlreadyConnected check.
+		jest.mocked(UserPreferences.getString).mockImplementation((key: string) => {
+			if (key === 'currentServer') return 'https://other.server.com';
+			return null;
+		});
+		jest.mocked(getServerById).mockResolvedValue(null);
+		jest.mocked(getServerInfo).mockResolvedValue({ success: true, version: '6.0.0' } as any);
+		jest.mocked(canOpenRoom).mockResolvedValue({ rid: 'room-1', name: 'general', t: 'c' } as any);
+		jest.mocked(waitForNavigationReady).mockResolvedValue(undefined);
+		jest.mocked(goRoom).mockResolvedValue(undefined);
+
+		// Key setup: SDK websocket is already open to HOST
+		(sdk.current as any).client.host = HOST;
+	});
+
+	afterEach(() => {
+		jest.useRealTimers();
+		// Reset so other describe blocks see the default empty host
+		(sdk.current as any).client.host = '';
+	});
+
+	/**
+	 * Regression positive: the full chain completes without SERVER.SELECT_SUCCESS.
+	 * Before the fix this would hang because selectServer dispatches SELECT_CANCEL
+	 * (not SELECT_SUCCESS) when the server is already connected.
+	 */
+	it('calls goRoom after LOGIN.SUCCESS + APP.START(ROOT_INSIDE) without needing SERVER.SELECT_SUCCESS', async () => {
+		const store = setupStore();
+
+		store.dispatch(deepLinkingOpen(makeParamsWithToken()));
+		// Two flushes drain the getServerById and getServerInfo promise microtasks.
+		// No jest.advanceTimersByTimeAsync needed — delay(1000) is skipped when
+		// hostAlreadyConnected is true.
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		// Saga must be parked at take(LOGIN.SUCCESS), not take(SERVER.SELECT_SUCCESS)
+		expect(jest.mocked(goRoom)).not.toHaveBeenCalled();
+
+		// Drive the rest of the chain WITHOUT dispatching selectServerSuccess
+		store.dispatch(loginSuccess({ id: 'user-1', token: makeStoredUser() } as any));
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(goRoom)).not.toHaveBeenCalled();
+
+		store.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(goRoom)).toHaveBeenCalledTimes(1);
+	});
+
+	/**
+	 * Side-effect guard: the saga must NOT emit a 'NewServer' event when the
+	 * SDK is already connected — doing so would trigger the selectServer saga,
+	 * which would dispatch SELECT_CANCEL and leave deeplink auth stuck.
+	 */
+	it('does not emit NewServer when the SDK is already connected to the deeplink host', async () => {
+		const emitSpy = jest.spyOn(EventEmitter, 'emit');
+
+		const store = setupStore();
+		store.dispatch(deepLinkingOpen(makeParamsWithToken()));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(emitSpy).not.toHaveBeenCalledWith('NewServer', expect.anything());
+
+		// Complete the flow to confirm the saga finishes correctly
+		store.dispatch(loginSuccess({ id: 'user-1', token: makeStoredUser() } as any));
+		store.dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(goRoom)).toHaveBeenCalledTimes(1);
+		emitSpy.mockRestore();
 	});
 });
