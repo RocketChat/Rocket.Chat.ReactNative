@@ -1,6 +1,7 @@
 import i18n from '../../../i18n';
 import translationLanguages from '../../../lib/constants/translationLanguages';
 import { useImageDescriptionLabel } from './useImageDescriptionLabel';
+import { useQuoteDescriptionLabel } from './useQuoteDescriptionLabel';
 import { type IMessage, type IMessageTouchable } from '../interfaces';
 import { getInfoMessage } from '../utils';
 
@@ -21,6 +22,7 @@ const stripMentions = (label: string, mentions: IMessage['mentions'] = [], chann
 
 export const useMessageAccessibilityLabel = (props: IMessage & IMessageTouchable): string => {
 	const imageDescriptionLabel = useImageDescriptionLabel(props.attachments, props.msg);
+	const quoteDescriptionLabel = useQuoteDescriptionLabel(props.attachments);
 	const msg = props?.msg || '';
 	const threadMessageLabel = i18n.t('Thread_message', { msg });
 	let label = props.isInfo ? msg : `${props.tmid ? threadMessageLabel : msg}`;
@@ -47,10 +49,10 @@ export const useMessageAccessibilityLabel = (props: IMessage & IMessageTouchable
 	const translatedLanguage = translationLanguages[props?.autoTranslateLanguage || 'en'];
 	const translated = props.isTranslated ? i18n.t('Message_translated_into_idiom', { idiom: translatedLanguage }) : '';
 	// For translated messages, the translated body is announced by the inner A11y.Index node, so the outer label
-	// only carries the metadata (user, hour, translated marker) and the suffix (image description, encryption, read receipt).
+	// only carries the metadata (user, hour, translated marker) and the suffix (quoted text, image description, encryption, read receipt).
 	const prefix = props.isTranslated
 		? [user, hour, translated].filter(Boolean).join(' ')
 		: [user, hour, translated, label].filter(Boolean).join(' ');
-	const suffix = [imageDescriptionLabel, encryptedMessageLabel, readReceipt].filter(Boolean).join(' ');
+	const suffix = [quoteDescriptionLabel, imageDescriptionLabel, encryptedMessageLabel, readReceipt].filter(Boolean).join(' ');
 	return suffix ? `${prefix}. ${suffix}` : `${prefix}.`;
 };

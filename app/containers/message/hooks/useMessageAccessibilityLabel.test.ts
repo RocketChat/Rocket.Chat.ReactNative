@@ -113,6 +113,36 @@ describe('useMessageAccessibilityLabel', () => {
 		expect(result.current).toBe(`alice ${HOUR} caption. Image description: A wavy pattern`);
 	});
 
+	it('appends the quoted message text to the suffix', () => {
+		const { result } = renderHook(() =>
+			useMessageAccessibilityLabel(
+				buildProps({
+					msg: 'Go to a thread from another room',
+					attachments: [
+						{
+							message_link: 'https://example.com/group/jumping?msg=abc',
+							author_name: 'diego.mello',
+							text: "Go to jumping-thread's thread"
+						}
+					]
+				})
+			)
+		);
+		expect(result.current).toBe(`alice ${HOUR} Go to a thread from another room. Quote: Go to jumping-thread's thread`);
+	});
+
+	it('announces the quote even when the message has no body of its own', () => {
+		const { result } = renderHook(() =>
+			useMessageAccessibilityLabel(
+				buildProps({
+					msg: undefined,
+					attachments: [{ message_link: 'https://example.com/group/jumping?msg=abc', text: 'quoted body' }]
+				})
+			)
+		);
+		expect(result.current).toBe(`alice ${HOUR}. Quote: quoted body`);
+	});
+
 	it('does not announce "undefined" for attachment-only messages', () => {
 		const { result } = renderHook(() =>
 			useMessageAccessibilityLabel(
