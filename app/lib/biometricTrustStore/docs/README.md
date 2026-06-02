@@ -1,8 +1,8 @@
 # Biometric Trust Store Documentation
 
-Entry point for documentation of the biometric trust store — the subsystem that lets screen lock detect when a device's biometric enrolment has changed and refuse to auto-unlock with it.
+Entry point for documentation of the biometric trust store — the subsystem that lets screen lock detect when a device's biometric enrollment has changed and refuse to auto-unlock with it.
 
-This is a **security control**, not a UX convenience. Its whole reason to exist is to defend against an *authentication-bypass-via-biometric-enrollment-change* attack: someone who knows the device passcode adds their own face/fingerprint, then expects to unlock the app with it. The trust store turns that enrolment change into a forced re-authentication.
+This is a **security control**, not a UX convenience. Its whole reason to exist is to defend against an *authentication-bypass-via-biometric-enrollment-change* attack: someone who knows the device passcode adds their own face/fingerprint, then expects to unlock the app with it. The trust store turns that enrollment change into a forced re-authentication.
 
 ## Index
 
