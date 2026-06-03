@@ -223,8 +223,9 @@ const handleOpen = function* handleOpen({ params }) {
 				yield completeDeepLinkNavigation(params);
 				return;
 			}
-		} catch (e) {
-			// do nothing?
+		} catch {
+			// Unlock canceled or superseded by another lock request — drop the deep link.
+			return;
 		}
 		// if deep link is from a different server
 		const result = yield getServerInfo(host);

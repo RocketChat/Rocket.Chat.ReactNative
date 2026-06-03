@@ -102,6 +102,7 @@ import { connectSuccess } from '../../actions/connect';
 import { appStart } from '../../actions/app';
 import { LOGIN } from '../../actions/actionsTypes';
 import { RootEnum } from '../../definitions';
+import { TOKEN_KEY } from '../../lib/constants/keys';
 import reducers from '../../reducers';
 import deepLinkingRoot from '../deepLinking';
 import UserPreferences from '../../lib/methods/userPreferences';
@@ -109,6 +110,7 @@ import { getServerById } from '../../lib/database/services/Server';
 import { canOpenRoom } from '../../lib/methods/canOpenRoom';
 import { getServerInfo } from '../../lib/methods/getServerInfo';
 import { goRoom, navigateToRoom } from '../../lib/methods/helpers/goRoom';
+import { localAuthenticate } from '../../lib/methods/helpers/localAuthentication';
 import { waitForNavigationReady } from '../../lib/navigation/appNavigation';
 import sdk from '../../lib/services/sdk';
 import EventEmitter from '../../lib/methods/helpers/events';
@@ -180,6 +182,7 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		jest.mocked(getServerById).mockReset();
 		jest.mocked(canOpenRoom).mockReset();
 		jest.mocked(getServerInfo).mockReset();
+		jest.mocked(localAuthenticate).mockReset();
 		jest.mocked(goRoom).mockReset();
 		jest.mocked(waitForNavigationReady).mockReset();
 
@@ -194,6 +197,7 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 
 		// getServerInfo succeeds → unknown-server-with-token path
 		jest.mocked(getServerInfo).mockResolvedValue({ success: true, version: '6.0.0' } as any);
+		jest.mocked(localAuthenticate).mockResolvedValue(undefined);
 
 		// canOpenRoom returns a room object
 		jest.mocked(canOpenRoom).mockResolvedValue({ rid: 'room-1', name: 'general', t: 'c' } as any);
@@ -471,6 +475,7 @@ describe('deepLinking saga — server already connected, should skip changing se
 		jest.mocked(getServerById).mockReset();
 		jest.mocked(canOpenRoom).mockReset();
 		jest.mocked(getServerInfo).mockReset();
+		jest.mocked(localAuthenticate).mockReset();
 		jest.mocked(goRoom).mockReset();
 		jest.mocked(waitForNavigationReady).mockReset();
 
@@ -483,6 +488,7 @@ describe('deepLinking saga — server already connected, should skip changing se
 		});
 		jest.mocked(getServerById).mockResolvedValue(null);
 		jest.mocked(getServerInfo).mockResolvedValue({ success: true, version: '6.0.0' } as any);
+		jest.mocked(localAuthenticate).mockResolvedValue(undefined);
 		jest.mocked(canOpenRoom).mockResolvedValue({ rid: 'room-1', name: 'general', t: 'c' } as any);
 		jest.mocked(waitForNavigationReady).mockResolvedValue(undefined);
 		jest.mocked(goRoom).mockResolvedValue(undefined);
@@ -552,6 +558,31 @@ describe('deepLinking saga — server already connected, should skip changing se
 		expect(jest.mocked(goRoom)).toHaveBeenCalledTimes(1);
 		emitSpy.mockRestore();
 	});
+
+	it('drops the deep link when unlock is canceled for an existing secondary server', async () => {
+		const emitSpy = jest.spyOn(EventEmitter, 'emit');
+		const { store, actions } = setupRecordingStore();
+
+		jest.mocked(UserPreferences.getString).mockImplementation((key: string) => {
+			if (key === 'currentServer') return 'https://other.server.com';
+			if (key === `${TOKEN_KEY}-${HOST}`) return makeStoredUser();
+			return null;
+		});
+		jest.mocked(getServerById).mockResolvedValue(makeServerRecord() as any);
+		jest.mocked(localAuthenticate).mockRejectedValue(new Error('unlock canceled'));
+
+		store.dispatch(deepLinkingOpen(makeParams({ path: 'channel/general' })));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(localAuthenticate)).toHaveBeenCalledWith(HOST);
+		expect(jest.mocked(getServerInfo)).not.toHaveBeenCalled();
+		expect(actions).not.toEqual(expect.arrayContaining([expect.objectContaining({ type: 'SERVER.SELECT_REQUEST' })]));
+		expect(emitSpy).not.toHaveBeenCalledWith('NewServer', expect.anything());
+		expect(jest.mocked(goRoom)).not.toHaveBeenCalled();
+
+		emitSpy.mockRestore();
+	});
 });
 
 // ─── handleClickCallPush (OPEN_VIDEO_CONF) — new server + token ──────────────────
@@ -566,6 +597,7 @@ describe('deepLinking saga — handleClickCallPush (new server + token + call ro
 		jest.mocked(UserPreferences.getString).mockReset();
 		jest.mocked(getServerById).mockReset();
 		jest.mocked(getServerInfo).mockReset();
+		jest.mocked(localAuthenticate).mockReset();
 		jest.mocked(navigateToRoom).mockReset();
 		jest.mocked(database.active.get).mockReset();
 
@@ -576,6 +608,7 @@ describe('deepLinking saga — handleClickCallPush (new server + token + call ro
 		});
 		jest.mocked(getServerById).mockResolvedValue(null);
 		jest.mocked(getServerInfo).mockResolvedValue({ success: true, version: '6.0.0' } as any);
+		jest.mocked(localAuthenticate).mockResolvedValue(undefined);
 
 		// handleNavigateCallRoom resolves the subscription for params.rid.
 		jest.mocked(database.active.get).mockReturnValue({

@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
 const ScreenLockedView = (): JSX.Element => {
 	const [visible, setVisible] = useState(false);
 	const [data, setData] = useState<IData>({});
+	const [requestId, setRequestId] = useState(0);
 	const { onShow, defer, onModalHide } = useDeferredModalSettle<IData>();
 
 	useDeepCompareEffect(() => {
@@ -48,6 +49,7 @@ const ScreenLockedView = (): JSX.Element => {
 
 	const showScreenLock = (args: IData) => {
 		onShow(args);
+		setRequestId(current => current + 1);
 		setData(args);
 	};
 
@@ -78,7 +80,7 @@ const ScreenLockedView = (): JSX.Element => {
 			animationOut='fadeOut'
 			onModalHide={onModalHide}>
 			<GestureHandlerRootView style={styles.container}>
-				<PasscodeEnter hasBiometry={!!data?.hasBiometry} reason={data?.reason} finishProcess={onSubmit} />
+				<PasscodeEnter key={requestId} hasBiometry={!!data?.hasBiometry} reason={data?.reason} finishProcess={onSubmit} />
 				{data?.force ? (
 					<Touch onPress={onCancel} style={styles.close}>
 						<CustomIcon name='close' size={30} />

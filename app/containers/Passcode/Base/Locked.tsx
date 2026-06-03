@@ -31,17 +31,50 @@ const Timer = React.memo(({ time, setStatus }: IPasscodeTimer) => {
 	const [timeLeft, setTimeLeft] = useState(calcTimeLeft());
 
 	useEffect(() => {
-		setTimeout(async () => {
-			setTimeLeft(calcTimeLeft());
-			if (timeLeft && timeLeft <= 1) {
+		const unlock = async () => {
+			try {
 				// Await the storage clear before flipping status: PasscodeEnter's readStorage re-seeds
 				// the attempts counter from ATTEMPTS_KEY on the status change, so the key must already
 				// be gone or the user would re-lock after a single wrong attempt.
 				await resetAttempts();
+			} catch (e) {
+				console.warn('[Passcode/Locked] Failed to reset attempts after lock expiration:', e);
+			} finally {
 				setStatus(TYPE.ENTER);
 			}
+		};
+
+		if (!time) {
+			setTimeLeft(undefined);
+			return;
+		}
+
+		const syncTimeLeft = () => {
+			const nextTimeLeft = calcTimeLeft();
+			setTimeLeft(nextTimeLeft);
+
+			if (nextTimeLeft !== undefined) {
+				return false;
+			}
+
+			unlock().catch(e => {
+				console.warn('[Passcode/Locked] Unexpected unlock failure:', e);
+			});
+			return true;
+		};
+
+		if (syncTimeLeft()) {
+			return;
+		}
+
+		const intervalId = setInterval(() => {
+			if (syncTimeLeft()) {
+				clearInterval(intervalId);
+			}
 		}, 1000);
-	});
+
+		return () => clearInterval(intervalId);
+	}, [time, setStatus]);
 
 	if (!timeLeft) {
 		return null;
