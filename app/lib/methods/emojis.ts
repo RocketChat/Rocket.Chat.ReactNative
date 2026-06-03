@@ -18,10 +18,10 @@ export const addFrequentlyUsed = async (emoji: IEmoji) => {
 	const content = getEmojiContent(emoji);
 	const isCustom = typeof emoji !== 'string';
 	try {
-		const [existing] = (await freqEmojiCollection
-			.query(Q.where('content', content), Q.where('is_custom', isCustom))
-			.fetch()) as TFrequentlyUsedEmojiModel[];
 		await db.write(async () => {
+			const [existing] = (await freqEmojiCollection
+				.query(Q.where('content', content), Q.where('is_custom', isCustom))
+				.fetch()) as TFrequentlyUsedEmojiModel[];
 			if (existing) {
 				await existing.update(f => {
 					if (f.count) {

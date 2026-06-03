@@ -75,6 +75,16 @@ describe('addFrequentlyUsed', () => {
 		expect(existing.update).toHaveBeenCalledTimes(1);
 		expect(existing.count).toBe(4);
 	});
+
+	it('runs the existing-row lookup inside the serialized write so concurrent calls cannot both create', async () => {
+		mockWrite.mockImplementation(() => Promise.resolve());
+
+		await addFrequentlyUsed('grinning');
+
+		expect(mockWrite).toHaveBeenCalledTimes(1);
+		expect(mockQuery).not.toHaveBeenCalled();
+		expect(mockFetch).not.toHaveBeenCalled();
+	});
 });
 
 describe('getFrequentlyUsedEmojis', () => {
