@@ -10,16 +10,8 @@ import AttachedActions from './AttachedActions';
 import Reply from './Reply';
 import MessageContext from '../../Context';
 import { type IMessageAttachments } from '../../interfaces';
-import { type IAttachment } from '../../../../definitions';
 import { getMessageFromAttachment } from '../../utils';
-
-const removeQuote = (file?: IAttachment) =>
-	file?.image_url ||
-	file?.audio_url ||
-	file?.video_url ||
-	file?.collapsed ||
-	(file?.actions?.length || 0) > 0 ||
-	(file?.attachments?.length || 0) > 0;
+import { isContentAttachment } from './utils';
 
 const Attachments: React.FC<IMessageAttachments> = React.memo(
 	({ attachments, timeFormat, showAttachment, getCustomEmoji, author }: IMessageAttachments) => {
@@ -27,7 +19,7 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 
 		const { translateLanguage } = useContext(MessageContext);
 
-		const nonQuoteAttachments = attachments?.filter(removeQuote);
+		const nonQuoteAttachments = attachments?.filter(isContentAttachment);
 
 		if (!nonQuoteAttachments || nonQuoteAttachments.length === 0) {
 			return null;
