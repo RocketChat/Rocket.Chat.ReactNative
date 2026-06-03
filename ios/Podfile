@@ -1,6 +1,13 @@
 require File.join(File.dirname(`node --print "require.resolve('expo/package.json')"`), "scripts/autolinking")
 require File.join(File.dirname(`node --print "require.resolve('react-native/package.json')"`), "scripts/react_native_pods")
 
+# RNRepo: substitute supported libraries with prebuilt xcframeworks
+require Pod::Executable.execute_command('node', ['-p',
+  'require.resolve(
+  "@rnrepo/build-tools/cocoapods-plugin/lib/plugin.rb",
+  {paths: [process.argv[1]]},
+)', __dir__]).strip
+
 platform :ios, '15.1'
 install! 'cocoapods', :deterministic_uuids => false
 
@@ -57,6 +64,9 @@ post_install do |installer|
     # :mac_catalyst_enabled => false,
     # :ccache_enabled => true
   )
+
+  # RNRepo: link prebuilt xcframeworks for substituted libraries
+  rnrepo_post_install(installer)
 
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|

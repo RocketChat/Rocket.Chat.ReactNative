@@ -1,0 +1,18 @@
+{
+  "denyList": {
+    "android": [
+      "@lodev09/react-native-true-sheet",
+      "expo-asset",
+      "expo-file-system",
+      "expo-font",
+      "react-native-callkeep",
+      "react-native-webview"
+    ],
+    "ios": [
+      "react-native-callkeep",
+      "react-native-config-reader",
+      "react-native-gesture-handler",
+      "react-native-webview"
+    ]
+  }
+}

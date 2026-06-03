@@ -22,6 +22,14 @@ buildscript {
         classpath("com.android.tools.build:gradle")
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
+        // RNRepo: substitute supported libraries with prebuilt artifacts
+        def rnrepoDir = new File(
+            providers.exec {
+                workingDir(rootDir)
+                commandLine("node", "--print", "require.resolve('@rnrepo/build-tools/package.json')")
+            }.standardOutput.asText.get().trim()
+        ).getParentFile().absolutePath
+        classpath fileTree(dir: "${rnrepoDir}/gradle-plugin/build/libs", include: ["prebuilds-plugin.jar"])
     }
 }
 

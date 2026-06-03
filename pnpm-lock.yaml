@@ -81,6 +81,9 @@ importers:
       '@react-navigation/native-stack':
         specifier: ^7.3.23
         version: 7.9.0(09d99ebaa1204db714736993fde8843e)
+      '@rnrepo/build-tools':
+        specifier: ^0.1.4
+        version: 0.1.4
       '@rocket.chat/media-signaling':
         specifier: 1.0.0-rc.1
         version: 1.0.0-rc.1
@@ -2433,6 +2436,9 @@ packages:
 
   '@redux-saga/types@1.3.1':
     resolution: {integrity: sha512-YRCrJdhQLobGIQ8Cj1sta3nn6DrZDTSUnrIYhS2e5V590BmfVDleKoAquclAiKSBKWJwmuXTb+b4BL6rSHnahw==}
+
+  '@rnrepo/build-tools@0.1.4':
+    resolution: {integrity: sha512-N2l7BtlBSLkLeBQXFzV71C4oOk0/M/mvJOxxXvmZ4cz+gXCs8vlK5o3J6g8BgiUlgd9ltLS54DZgjLCCJB13lQ==}
 
   '@rocket.chat/emitter@0.32.0':
     resolution: {integrity: sha512-QCXNGDm5xjJPePMeP9GknMAZne5xhNmLLD/ZVVqNgOyeWdfQKddwBUqtMiWDaFCRq1bC22kNf3WQLqt89CO6fg==}
@@ -10454,6 +10460,8 @@ snapshots:
   '@redux-saga/symbols@1.2.1': {}
 
   '@redux-saga/types@1.3.1': {}
+
+  '@rnrepo/build-tools@0.1.4': {}
 
   '@rocket.chat/emitter@0.32.0': {}
 

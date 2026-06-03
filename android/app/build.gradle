@@ -1,6 +1,7 @@
 apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
+apply plugin: "org.rnrepo.tools.prebuilds-plugin"
 
 apply plugin: 'com.google.firebase.crashlytics'
 
