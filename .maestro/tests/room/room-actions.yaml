@@ -171,8 +171,12 @@ tags:
     from:
       id: action-sheet-handle
     direction: UP
-- extendedWaitUntil:
-    visible:
+# Mirror the Star step above: a single swipe doesn't always fully expand the
+# action sheet, so 'Unstar' can sit below the fold. scrollUntilVisible scrolls
+# the sheet until it's on screen instead of asserting after one swipe (the
+# flaky "Assertion is false: 'Unstar' is visible" shard failure).
+- scrollUntilVisible:
+    element:
       text: 'Unstar'
     timeout: 60000
 - tapOn:
