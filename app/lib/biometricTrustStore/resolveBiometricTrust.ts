@@ -1,8 +1,6 @@
 import { type BiometricInvalidationReason, type TrustResult } from '../../definitions';
 import { biometricTrustStore } from './index';
 
-export { type BiometricInvalidationReason };
-
 export type BiometricModalRequest = {
 	hasBiometry: boolean;
 	reason?: BiometricInvalidationReason;

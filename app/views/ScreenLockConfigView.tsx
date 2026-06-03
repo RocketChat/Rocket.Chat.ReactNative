@@ -10,13 +10,14 @@ import {
 	changePasscode,
 	checkHasPasscode,
 	supportedBiometryLabel,
-	handleLocalAuthentication
+	handleLocalAuthentication,
+	UserCanceledError
 } from '../lib/methods/helpers/localAuthentication';
 import { DEFAULT_AUTO_LOCK } from '../lib/constants/localAuthentication';
 import { biometricTrustStore } from '../lib/biometricTrustStore';
 import { themes } from '../lib/constants/colors';
 import SafeAreaView from '../containers/SafeAreaView';
-import { events, logEvent } from '../lib/methods/helpers/log';
+import log, { events, logEvent } from '../lib/methods/helpers/log';
 import { type IApplicationState, type TServerModel } from '../definitions';
 import Switch from '../containers/Switch';
 
@@ -142,15 +143,20 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 		logEvent(events.SLC_CHANGE_PASSCODE);
 		try {
 			await changePasscode({ force });
-		} catch {
-			// User dismissed the change-passcode modal.
+		} catch (e) {
+			// A dismissed modal is benign; anything else (e.g. persisting the new passcode failed)
+			// must not be silently swallowed as if it were a cancel.
+			if (!(e instanceof UserCanceledError)) {
+				log(e);
+			}
 		}
 	};
 
-	// Accepts the Switch's target value so the row onPress (no arg → flip) and the Switch's
-	// onValueChange converge on the same target; the updater guard makes a double fire from a single
-	// tap (row press + switch value-change) a no-op instead of toggling back, and skips the side
-	// effects (checkHasPasscode/save) for the discarded duplicate.
+	// Accepts the Switch's target value so the row onPress (List.Item passes the title string —
+	// any non-boolean arg → flip) and the Switch's onValueChange converge on the same target; the
+	// updater guard makes a double fire from a single tap (row press + switch value-change) a no-op
+	// instead of toggling back, and skips the side effects (checkHasPasscode/save) for the
+	// discarded duplicate.
 	toggleAutoLock = (value?: boolean) => {
 		const target = typeof value === 'boolean' ? value : !this.state.autoLock;
 		let applied = false;
@@ -173,7 +179,10 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 						await checkHasPasscode({ force: false });
 						this.hasBiometry();
 					} catch {
+						// Revert the toggle; its own callback persists the reverted state, so skip the
+						// save() below — otherwise one canceled toggle issues two writes.
 						this.toggleAutoLock();
+						return;
 					}
 				}
 				this.save();
@@ -189,9 +198,10 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 				const { biometry } = this.state;
 				const result = await biometricTrustStore.setBiometryEnabled(biometry);
 				if (result.kind !== 'success') {
-					// Revert to the pre-toggle value; setBiometryEnabled has already forced the persisted
-					// flag off on failure, so only the optimistic UI flip needs undoing.
-					this.setState(({ biometry: current }) => ({ biometry: !current }));
+					// setBiometryEnabled only fails on the enable path and always forces the persisted
+					// flag off, so the correct UI state is unconditionally `false` — a relative flip
+					// could land on `true` if another toggle interleaved during the await.
+					this.setState({ biometry: false });
 				}
 			}
 		);

@@ -9,7 +9,8 @@ import Locked from './Base/Locked';
 import { TYPE } from './constants';
 import { ATTEMPTS_KEY, LOCKED_OUT_TIMER_KEY, MAX_ATTEMPTS, PASSCODE_KEY } from '../../lib/constants/localAuthentication';
 import { biometryAuth, resetAttempts } from '../../lib/methods/helpers/localAuthentication';
-import { resolveBiometricTrust, type BiometricInvalidationReason } from '../../lib/biometricTrustStore/resolveBiometricTrust';
+import { resolveBiometricTrust } from '../../lib/biometricTrustStore/resolveBiometricTrust';
+import { type BiometricInvalidationReason } from '../../definitions';
 import { getDiff, getLockedUntil } from './utils';
 import { useUserPreferences } from '../../lib/methods/userPreferences';
 import I18n from '../../i18n';
@@ -22,10 +23,10 @@ interface IPasscodePasscodeEnter {
 
 const PasscodeEnter = ({ hasBiometry: initialHasBiometry, reason: initialReason, finishProcess }: IPasscodePasscodeEnter) => {
 	const ref = useRef<IBase>(null);
-	// Refs, not per-render locals: any state update re-renders the component, and a plain `let`
-	// would silently reset the failed-attempts counter mid-session, defeating the MAX_ATTEMPTS lockout.
+	// A ref, not a per-render local: any state update re-renders the component, and a plain `let`
+	// would silently reset the failed-attempts counter mid-session, defeating the MAX_ATTEMPTS
+	// lockout. Refs don't survive remounts, so readStorage also seeds it from ATTEMPTS_KEY.
 	const attempts = useRef(0);
-	const lockedUntil = useRef<Date | null>(null);
 	const [passcode] = useUserPreferences(PASSCODE_KEY);
 	const [status, setStatus] = useState<TYPE | null>(null);
 	// Mirror hasBiometry/reason locally so an enrollment-change invalidation triggered from the
@@ -33,7 +34,7 @@ const PasscodeEnter = ({ hasBiometry: initialHasBiometry, reason: initialReason,
 	// re-emitting LOCAL_AUTHENTICATE_EMITTER (which would orphan the upstream openModal promise).
 	const [hasBiometry, setHasBiometry] = useState<boolean>(initialHasBiometry);
 	const [reason, setReason] = useState<BiometricInvalidationReason | undefined>(initialReason);
-	const { setItem: setAttempts } = useAsyncStorage(ATTEMPTS_KEY);
+	const { getItem: getAttempts, setItem: setAttempts } = useAsyncStorage(ATTEMPTS_KEY);
 	const { setItem: setLockedUntil } = useAsyncStorage(LOCKED_OUT_TIMER_KEY);
 
 	const biometry = async () => {
@@ -52,9 +53,14 @@ const PasscodeEnter = ({ hasBiometry: initialHasBiometry, reason: initialReason,
 	};
 
 	const readStorage = async () => {
-		lockedUntil.current = await getLockedUntil();
-		if (lockedUntil.current) {
-			const diff = getDiff(lockedUntil.current);
+		// Seed the counter from storage: a remount mid-session must not grant a fresh attempt
+		// budget, and a lockout expiry (Locked awaits resetAttempts(), clearing the key, before
+		// flipping status back to ENTER) must land here as 0.
+		const storedAttempts = await getAttempts();
+		attempts.current = storedAttempts ? parseInt(storedAttempts, 10) : 0;
+		const lockedUntil = await getLockedUntil();
+		if (lockedUntil) {
+			const diff = getDiff(lockedUntil);
 			if (diff <= 1) {
 				await resetAttempts();
 				attempts.current = 0;

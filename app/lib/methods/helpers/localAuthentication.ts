@@ -51,6 +51,15 @@ export const saveLastLocalAuthenticationSession = async (
 
 export const resetAttempts = (): Promise<void> => AsyncStorage.multiRemove([LOCKED_OUT_TIMER_KEY, ATTEMPTS_KEY]);
 
+// Typed rejection reason for the modal promises so catch blocks can tell a benign user-cancel
+// (or a request superseded by a newer one) apart from a real failure like a storage write throwing.
+export class UserCanceledError extends Error {
+	constructor() {
+		super('User canceled local authentication');
+		this.name = 'UserCanceledError';
+	}
+}
+
 const openModal = (hasBiometry: boolean, force?: boolean, reason?: BiometricInvalidationReason) =>
 	new Promise<void>((resolve, reject) => {
 		EventEmitter.emit(LOCAL_AUTHENTICATE_EMITTER, {
@@ -58,7 +67,7 @@ const openModal = (hasBiometry: boolean, force?: boolean, reason?: BiometricInva
 			hasBiometry,
 			force,
 			reason,
-			cancel: () => reject()
+			cancel: () => reject(new UserCanceledError())
 		});
 	});
 
@@ -66,7 +75,7 @@ const openChangePasscodeModal = ({ force }: { force: boolean }) =>
 	new Promise<string>((resolve, reject) => {
 		EventEmitter.emit(CHANGE_PASSCODE_EMITTER, {
 			submit: (passcode: string) => resolve(passcode),
-			cancel: () => reject(),
+			cancel: () => reject(new UserCanceledError()),
 			force
 		});
 	});

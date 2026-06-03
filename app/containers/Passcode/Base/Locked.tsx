@@ -31,10 +31,13 @@ const Timer = React.memo(({ time, setStatus }: IPasscodeTimer) => {
 	const [timeLeft, setTimeLeft] = useState(calcTimeLeft());
 
 	useEffect(() => {
-		setTimeout(() => {
+		setTimeout(async () => {
 			setTimeLeft(calcTimeLeft());
 			if (timeLeft && timeLeft <= 1) {
-				resetAttempts();
+				// Await the storage clear before flipping status: PasscodeEnter's readStorage re-seeds
+				// the attempts counter from ATTEMPTS_KEY on the status change, so the key must already
+				// be gone or the user would re-lock after a single wrong attempt.
+				await resetAttempts();
 				setStatus(TYPE.ENTER);
 			}
 		}, 1000);

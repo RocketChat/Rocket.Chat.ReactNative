@@ -146,7 +146,14 @@ const handleShareExtension = function* handleOpen({ params }) {
 	}
 
 	yield put(appStart({ root: RootEnum.ROOT_LOADING_SHARE_EXTENSION }));
-	yield localAuthenticate(server);
+	try {
+		yield localAuthenticate(server);
+	} catch {
+		// Unlock canceled or superseded by another lock request — restart the normal flow instead
+		// of leaving the share extension stuck on the loading root.
+		yield put(appInit());
+		return;
+	}
 	const serverRecord = yield getServerById(server);
 	if (!serverRecord) {
 		return;
@@ -196,7 +203,12 @@ const handleOpen = function* handleOpen({ params }) {
 	if (server === host && user && serverRecord) {
 		const connected = yield select(state => state.server.connected);
 		if (!connected) {
-			yield localAuthenticate(host);
+			try {
+				yield localAuthenticate(host);
+			} catch {
+				// Unlock canceled or superseded by another lock request — drop the deep link.
+				return;
+			}
 			yield put(selectServerRequest(host, serverRecord.version, true));
 			yield take(types.LOGIN.SUCCESS);
 		}
@@ -311,14 +323,24 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 	if (server === host && user && serverRecord) {
 		const connected = yield select(state => state.server.connected);
 		if (!connected) {
-			yield localAuthenticate(host);
+			try {
+				yield localAuthenticate(host);
+			} catch {
+				// Unlock canceled or superseded by another lock request — drop the call navigation.
+				return;
+			}
 			yield put(selectServerRequest(host, serverRecord.version, true));
 			yield take(types.LOGIN.SUCCESS);
 		}
 		yield handleNavigateCallRoom({ params });
 	} else {
 		if (user && serverRecord) {
-			yield localAuthenticate(host);
+			try {
+				yield localAuthenticate(host);
+			} catch {
+				// Unlock canceled or superseded by another lock request — drop the call navigation.
+				return;
+			}
 			yield put(selectServerRequest(host, serverRecord.version, true, true));
 			yield take(types.LOGIN.SUCCESS);
 			yield handleNavigateCallRoom({ params });
