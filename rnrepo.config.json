@@ -12,6 +12,7 @@
       "react-native-callkeep",
       "react-native-config-reader",
       "react-native-gesture-handler",
+      "react-native-nitro-modules",
       "react-native-webview"
     ]
   }
