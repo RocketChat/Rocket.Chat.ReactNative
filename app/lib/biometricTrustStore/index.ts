@@ -79,11 +79,11 @@ export const biometricTrustStore: IBiometricTrustStore = {
 	},
 
 	async verify({ promptCopy }) {
-		const exists = await biometricTrustStore.hasEnrollment();
-		if (!exists) {
-			return { kind: 'unavailable' };
-		}
 		try {
+			const exists = await biometricTrustStore.hasEnrollment();
+			if (!exists) {
+				return { kind: 'unavailable' };
+			}
 			const result = await Keychain.getGenericPassword(readOptions(promptCopy));
 			if (result && result.password === SENTINEL_VALUE) {
 				return { kind: 'success' };
@@ -96,12 +96,8 @@ export const biometricTrustStore: IBiometricTrustStore = {
 	},
 
 	async hasEnrollment() {
-		try {
-			const result = await Keychain.hasGenericPassword({ service: SENTINEL_SERVICE });
-			return !!result;
-		} catch {
-			return false;
-		}
+		const result = await Keychain.hasGenericPassword({ service: SENTINEL_SERVICE });
+		return !!result;
 	},
 
 	isEnabled() {

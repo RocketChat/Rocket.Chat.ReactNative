@@ -134,11 +134,19 @@ const hideSplashScreen = async () => {
 	}
 };
 
+const hasSupportedBiometry = async (): Promise<boolean> => {
+	try {
+		return await LocalAuthentication.isEnrolledAsync();
+	} catch {
+		return false;
+	}
+};
+
 export const handleLocalAuthentication = async (canCloseModal = false) => {
-	// Check the cheap persisted flag first; supportedBiometryLabel() costs two native calls, so
-	// passcode-only users shouldn't pay for it on every lock event.
+	// Check the cheap persisted flag first; passcode-only users shouldn't pay the native capability
+	// check on every lock event.
 	const biometryEnabled = biometricTrustStore.isEnabled();
-	const hasBiometry = biometryEnabled && !!(await supportedBiometryLabel());
+	const hasBiometry = biometryEnabled && (await hasSupportedBiometry());
 
 	// Open the passcode modal first so it covers the app, then let PasscodeEnter prompt biometry from
 	// behind it (its mount-time auto-biometry). Prompting here as an upstream preflight would fire the
@@ -195,7 +203,7 @@ export const localAuthenticate = async (server: string): Promise<void> => {
 
 export const supportedBiometryLabel = async (): Promise<string | null> => {
 	try {
-		const enrolled = await LocalAuthentication.isEnrolledAsync();
+		const enrolled = await hasSupportedBiometry();
 
 		if (!enrolled) {
 			return null;

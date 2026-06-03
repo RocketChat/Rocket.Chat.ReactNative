@@ -158,6 +158,9 @@ class ScreenLockConfigView extends Component<IScreenLockConfigViewProps, IScreen
 	// instead of toggling back, and skips the side effects (checkHasPasscode/save) for the
 	// discarded duplicate.
 	toggleAutoLock = (value?: boolean) => {
+		if (this.props.Force_Screen_Lock) {
+			return;
+		}
 		const target = typeof value === 'boolean' ? value : !this.state.autoLock;
 		let applied = false;
 		this.setState(
@@ -303,6 +306,7 @@ class ScreenLockConfigView extends Component<IScreenLockConfigViewProps, IScreen
 
 	render() {
 		const { autoLock } = this.state;
+		const { Force_Screen_Lock } = this.props;
 		return (
 			<SafeAreaView testID='screen-lock-config-view'>
 				<List.Container>
@@ -313,7 +317,8 @@ class ScreenLockConfigView extends Component<IScreenLockConfigViewProps, IScreen
 							title='Local_authentication_unlock_option'
 							right={() => this.renderAutoLockSwitch()}
 							additionalAccessibilityLabel={autoLock}
-							onPress={this.toggleAutoLock}
+							onPress={Force_Screen_Lock ? undefined : this.toggleAutoLock}
+							disabled={Force_Screen_Lock}
 							accessibilityRole='switch'
 						/>
 						{autoLock ? (

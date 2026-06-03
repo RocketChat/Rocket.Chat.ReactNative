@@ -109,9 +109,9 @@ describe('biometricTrustStore', () => {
 			expect(mockedKeychain.getGenericPassword).not.toHaveBeenCalled();
 		});
 
-		it('returns false when probe throws', async () => {
+		it('rejects when the silent probe throws', async () => {
 			mockedKeychain.hasGenericPassword.mockRejectedValueOnce(new Error('broken'));
-			expect(await biometricTrustStore.hasEnrollment()).toBe(false);
+			await expect(biometricTrustStore.hasEnrollment()).rejects.toThrow('broken');
 		});
 	});
 
@@ -158,6 +158,14 @@ describe('biometricTrustStore', () => {
 			mockedKeychain.getGenericPassword.mockRejectedValueOnce({ message: 'errSecUserCancel' });
 
 			expect(await biometricTrustStore.verify({ promptCopy })).toEqual({ kind: 'canceled' });
+		});
+
+		it('returns error when the silent probe throws', async () => {
+			const cause = new Error('broken');
+			mockedKeychain.hasGenericPassword.mockRejectedValueOnce(cause);
+
+			expect(await biometricTrustStore.verify({ promptCopy })).toEqual({ kind: 'error', cause });
+			expect(mockedKeychain.getGenericPassword).not.toHaveBeenCalled();
 		});
 
 		it('forwards the prompt copy to keychain', async () => {

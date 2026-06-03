@@ -9,7 +9,7 @@ jest.mock('expo-local-authentication', () => ({
 	authenticateAsync: jest.fn(),
 	isEnrolledAsync: jest.fn(() => Promise.resolve(true)),
 	supportedAuthenticationTypesAsync: jest.fn(() => Promise.resolve([2])),
-	AuthenticationType: { FINGERPRINT: 1, FACIAL_RECOGNITION: 2 }
+	AuthenticationType: { FINGERPRINT: 1, FACIAL_RECOGNITION: 2, IRIS: 3 }
 }));
 
 jest.mock('react-native-bootsplash', () => ({ hide: jest.fn(() => Promise.resolve()) }));
@@ -84,6 +84,18 @@ describe('handleLocalAuthentication', () => {
 
 	it('biometry enabled and supported → opens modal with hasBiometry: true, no upstream prompt', async () => {
 		mockedIsEnabled.mockReturnValue(true);
+
+		await handleLocalAuthentication();
+
+		expect(lastEmitPayload()).toMatchObject({ hasBiometry: true });
+		expect(mockedVerify).not.toHaveBeenCalled();
+	});
+
+	it('biometry enabled with an enrolled unlabeled biometric type → still opens modal with hasBiometry: true', async () => {
+		mockedIsEnabled.mockReturnValue(true);
+		(LocalAuthentication.supportedAuthenticationTypesAsync as jest.Mock).mockResolvedValueOnce([
+			LocalAuthentication.AuthenticationType.IRIS
+		]);
 
 		await handleLocalAuthentication();
 
