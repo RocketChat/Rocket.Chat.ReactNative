@@ -237,12 +237,11 @@ const handleOpen = function* handleOpen({ params }) {
 		if (params.token) {
 			if (!hostAlreadyConnected) {
 				yield take(types.SERVER.SELECT_SUCCESS);
-				// Wait for the socket to reach 'connected' (METEOR.SUCCESS) before logging in.
-				// Dispatching loginRequest while the socket is still CONNECTING makes the SDK
-				// login-guard open a second, orphaned socket whose later close clobbers Redux
-				// and falsely shows "Waiting for network". When the host is already connected we
-				// skip this — the socket is live, so there's no race (and METEOR.SUCCESS won't refire).
-				yield take(types.METEOR.SUCCESS);
+				// SERVER.SELECT_SUCCESS doesn't mean 'connected'; skip the take if it already is.
+				const connected = yield select(state => state.meteor.connected);
+				if (!connected) {
+					yield take(types.METEOR.SUCCESS);
+				}
 			}
 			yield put(loginRequest({ resume: params.token }, true));
 			yield take(types.LOGIN.SUCCESS);
@@ -338,11 +337,11 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 		EventEmitter.emit('NewServer', { server: host });
 		if (params.token) {
 			yield take(types.SERVER.SELECT_SUCCESS);
-			// Wait for the socket to reach 'connected' (METEOR.SUCCESS) before logging in.
-			// Dispatching loginRequest while the socket is still CONNECTING makes the SDK
-			// login-guard open a second, orphaned socket whose later close clobbers Redux
-			// and falsely shows "Waiting for network".
-			yield take(types.METEOR.SUCCESS);
+			// SERVER.SELECT_SUCCESS doesn't mean 'connected'; skip the take if it already is.
+			const connected = yield select(state => state.meteor.connected);
+			if (!connected) {
+				yield take(types.METEOR.SUCCESS);
+			}
 			yield put(loginRequest({ resume: params.token }, true));
 			yield take(types.LOGIN.SUCCESS);
 			yield handleNavigateCallRoom({ params });
