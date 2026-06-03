@@ -8,6 +8,9 @@ const codeFontFamily = Platform.select({
 });
 
 export default StyleSheet.create({
+	blocks: {
+		gap: 2
+	},
 	container: {
 		alignItems: 'flex-start',
 		flexDirection: 'row'

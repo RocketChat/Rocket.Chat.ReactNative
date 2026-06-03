@@ -1081,15 +1081,16 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 	render() {
 		const { room, membersCount, canViewMembers, joined, canAutoTranslate, hasE2EEWarning } = this.state;
-		const { isMasterDetail, navigation } = this.props;
+		const { isMasterDetail, navigation, userId } = this.props;
 		const { rid, t, prid, teamId } = room;
 		const isGroupChatHandler = isGroupChat(room);
+		const itsMe = t === SubscriptionType.DIRECT && !isGroupChatHandler && !!userId && getUidDirectMessage(room) === userId;
 
 		return (
 			<SafeAreaView testID='room-actions-view'>
 				<List.Container testID='room-actions-scrollview'>
 					{this.renderRoomInfo()}
-					<CallSection rid={rid} disabled={hasE2EEWarning} />
+					<CallSection room={room} disabled={hasE2EEWarning} itsMe={itsMe} />
 					{this.renderE2EEncryption()}
 					<List.Section>
 						<List.Separator />

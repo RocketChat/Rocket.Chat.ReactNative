@@ -11,7 +11,10 @@ export interface IAttachment {
 	title?: string;
 	type?: string;
 	size?: number;
+	// For server >= 8.4 this field is also used as the image alt text
 	description?: string;
+	/** Alt text when provided separately from `description` (e.g. some API payloads). */
+	altText?: string;
 	title_link?: string;
 	image_url?: string;
 	image_type?: string;
@@ -75,9 +78,16 @@ export interface IServerAttachment {
 	content?: EncryptedContent;
 }
 
+export interface IMessageEditAttachment {
+	description: string;
+	fileId?: string;
+	filename?: string;
+}
+
 export interface IShareAttachment {
 	filename: string;
 	description?: string;
+	altText?: string;
 	size: number;
 	mime?: string;
 	path: string;
@@ -89,4 +99,5 @@ export interface IShareAttachment {
 		Orientation: string;
 	};
 	base64?: string | null;
+	fileId?: string;
 }

@@ -1,15 +1,15 @@
-appId: chat.rocket.reactnative
+appId: ${APP_ID}
 name: Login with Deeplink
 tags:
   - 'util'
 
 ---
-- stopApp: chat.rocket.reactnative
+- stopApp: ${APP_ID}
 - runFlow:
     when:
       true: CLEAR_STATE
     commands:
-      - clearState: chat.rocket.reactnative
+      - clearState: ${APP_ID}
 - setPermissions:
     permissions:
       all: allow
