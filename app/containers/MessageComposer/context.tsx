@@ -25,14 +25,11 @@ type State = {
 	recordingAudio: boolean;
 	autocompleteParams: IAutocompleteBase;
 	attachments: IShareAttachment[];
-	// Built once when the store is created and never replaced by a setter, so this reference stays stable for
-	// the lifetime of the store. Selecting it gives consumers a stable api bag (the old `useMemo([])` guarantee).
+	// Built once, never replaced by a setter — stays a stable ref for consumers.
 	actions: TMessageComposerContextApi;
 };
 
-// One store per MessageComposerProvider instance — two composers (e.g. channel + open thread) are mounted at
-// once, so each needs its own isolated state. The store is the source of truth; the hooks below are thin
-// single-slice selectors, which keeps re-renders scoped to the slice that actually changed.
+// One store per provider instance: channel + thread composers can be mounted at once, each needs isolated state.
 const createComposerStore = () =>
 	createStore<State>()(set => ({
 		focused: false,
