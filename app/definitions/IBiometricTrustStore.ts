@@ -5,6 +5,10 @@ export type TrustResult =
 	| { kind: 'unavailable' }
 	| { kind: 'error'; cause: unknown };
 
+// Why a passcode-only modal is being forced; flows from resolveBiometricTrust through the
+// LOCAL_AUTHENTICATE_EMITTER payload into PasscodeEnter's subtitle.
+export type BiometricInvalidationReason = 'enrollmentChanged';
+
 export interface IBiometricTrustStore {
 	enroll(): Promise<TrustResult>;
 	disenroll(): Promise<void>;

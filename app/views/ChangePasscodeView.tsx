@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import isEmpty from 'lodash/isEmpty';
@@ -10,6 +10,7 @@ import { PasscodeChoose } from '../containers/Passcode';
 import EventEmitter from '../lib/methods/helpers/events';
 import { CustomIcon } from '../containers/CustomIcon';
 import { CHANGE_PASSCODE_EMITTER } from '../lib/constants/localAuthentication';
+import { useDeferredModalSettle } from '../lib/hooks/useDeferredModalSettle';
 import Touch from '../containers/Touch';
 
 const styles = StyleSheet.create({
@@ -35,7 +36,7 @@ interface IArgs {
 const ChangePasscodeView = React.memo(() => {
 	const [visible, setVisible] = useState(false);
 	const [data, setData] = useState<Partial<IArgs>>({});
-	const pendingResolve = useRef<(() => void) | null>(null);
+	const { onShow, defer, onModalHide } = useDeferredModalSettle<Partial<IArgs>>();
 
 	useDeepCompareEffect(() => {
 		if (!isEmpty(data)) {
@@ -46,29 +47,19 @@ const ChangePasscodeView = React.memo(() => {
 	}, [data]);
 
 	const showChangePasscode = (args: IArgs) => {
-		// A new request can arrive while the previous modal is still animating out, before
-		// onModalHide consumed its resolve. Flush it now so the previous caller isn't left hanging.
-		const pending = pendingResolve.current;
-		pendingResolve.current = null;
-		pending?.();
+		onShow(args);
 		setData(args);
 	};
 
 	const onSubmit = (passcode: string) => {
 		const { submit } = data;
-		pendingResolve.current = submit ? () => submit(passcode) : null;
+		defer(submit ? () => submit(passcode) : null);
 		setData({});
 	};
 
 	const onCancel = () => {
-		pendingResolve.current = data.cancel || null;
+		defer(data.cancel || null);
 		setData({});
-	};
-
-	const onModalHide = () => {
-		const resolve = pendingResolve.current;
-		pendingResolve.current = null;
-		resolve?.();
 	};
 
 	useEffect(() => {

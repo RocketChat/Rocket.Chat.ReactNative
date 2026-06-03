@@ -22,8 +22,10 @@ interface IPasscodePasscodeEnter {
 
 const PasscodeEnter = ({ hasBiometry: initialHasBiometry, reason: initialReason, finishProcess }: IPasscodePasscodeEnter) => {
 	const ref = useRef<IBase>(null);
-	let attempts = 0;
-	let lockedUntil: any = false;
+	// Refs, not per-render locals: any state update re-renders the component, and a plain `let`
+	// would silently reset the failed-attempts counter mid-session, defeating the MAX_ATTEMPTS lockout.
+	const attempts = useRef(0);
+	const lockedUntil = useRef<Date | null>(null);
 	const [passcode] = useUserPreferences(PASSCODE_KEY);
 	const [status, setStatus] = useState<TYPE | null>(null);
 	// Mirror hasBiometry/reason locally so an enrollment-change invalidation triggered from the
@@ -50,11 +52,12 @@ const PasscodeEnter = ({ hasBiometry: initialHasBiometry, reason: initialReason,
 	};
 
 	const readStorage = async () => {
-		lockedUntil = await getLockedUntil();
-		if (lockedUntil) {
-			const diff = getDiff(lockedUntil);
+		lockedUntil.current = await getLockedUntil();
+		if (lockedUntil.current) {
+			const diff = getDiff(lockedUntil.current);
 			if (diff <= 1) {
 				await resetAttempts();
+				attempts.current = 0;
 				setStatus(TYPE.ENTER);
 			} else {
 				setStatus(TYPE.LOCKED);
@@ -76,14 +79,14 @@ const PasscodeEnter = ({ hasBiometry: initialHasBiometry, reason: initialReason,
 			if (sha256(p) === passcode) {
 				finishProcess();
 			} else {
-				attempts += 1;
-				if (attempts >= MAX_ATTEMPTS) {
+				attempts.current += 1;
+				if (attempts.current >= MAX_ATTEMPTS) {
 					setStatus(TYPE.LOCKED);
 					setLockedUntil(new Date().toISOString());
 					Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
 				} else {
 					ref?.current?.wrongPasscode();
-					setAttempts(attempts?.toString());
+					setAttempts(attempts.current.toString());
 					Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
 				}
 			}

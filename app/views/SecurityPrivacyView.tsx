@@ -59,7 +59,12 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 
 	const navigateToScreenLockConfigView = async () => {
 		if (server?.autoLock) {
-			await handleLocalAuthentication(true);
+			try {
+				await handleLocalAuthentication(true);
+			} catch {
+				// User dismissed the unlock modal — stay on this screen.
+				return;
+			}
 		}
 		navigateToScreen('ScreenLockConfigView');
 	};

@@ -19,7 +19,7 @@ import {
 } from '../../constants/localAuthentication';
 import I18n from '../../../i18n';
 import { setLocalAuthenticated } from '../../../actions/login';
-import { type TServerModel, type TrustResult } from '../../../definitions';
+import { type BiometricInvalidationReason, type TServerModel, type TrustResult } from '../../../definitions';
 import EventEmitter from './events';
 import { isIOS } from './deviceInfo';
 
@@ -51,7 +51,7 @@ export const saveLastLocalAuthenticationSession = async (
 
 export const resetAttempts = (): Promise<void> => AsyncStorage.multiRemove([LOCKED_OUT_TIMER_KEY, ATTEMPTS_KEY]);
 
-const openModal = (hasBiometry: boolean, force?: boolean, reason?: 'enrollmentChanged') =>
+const openModal = (hasBiometry: boolean, force?: boolean, reason?: BiometricInvalidationReason) =>
 	new Promise<void>((resolve, reject) => {
 		EventEmitter.emit(LOCAL_AUTHENTICATE_EMITTER, {
 			submit: () => resolve(),
@@ -126,9 +126,10 @@ const hideSplashScreen = async () => {
 };
 
 export const handleLocalAuthentication = async (canCloseModal = false) => {
-	const supportBiometryLabel = await supportedBiometryLabel();
+	// Check the cheap persisted flag first; supportedBiometryLabel() costs two native calls, so
+	// passcode-only users shouldn't pay for it on every lock event.
 	const biometryEnabled = biometricTrustStore.isEnabled();
-	const hasBiometry = biometryEnabled && !!supportBiometryLabel;
+	const hasBiometry = biometryEnabled && !!(await supportedBiometryLabel());
 
 	// Open the passcode modal first so it covers the app, then let PasscodeEnter prompt biometry from
 	// behind it (its mount-time auto-biometry). Prompting here as an upstream preflight would fire the

@@ -1,5 +1,5 @@
 import isEmpty from 'lodash/isEmpty';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import Modal from 'react-native-modal';
 import useDeepCompareEffect from 'use-deep-compare-effect';
@@ -10,6 +10,8 @@ import { LOCAL_AUTHENTICATE_EMITTER } from '../lib/constants/localAuthentication
 import { CustomIcon } from '../containers/CustomIcon';
 import { hasNotch } from '../lib/methods/helpers';
 import EventEmitter from '../lib/methods/helpers/events';
+import { useDeferredModalSettle } from '../lib/hooks/useDeferredModalSettle';
+import { type BiometricInvalidationReason } from '../definitions';
 import Touch from '../containers/Touch';
 
 interface IData {
@@ -17,7 +19,7 @@ interface IData {
 	cancel?: () => void;
 	hasBiometry?: boolean;
 	force?: boolean;
-	reason?: 'enrollmentChanged';
+	reason?: BiometricInvalidationReason;
 }
 
 const styles = StyleSheet.create({
@@ -34,7 +36,7 @@ const styles = StyleSheet.create({
 const ScreenLockedView = (): JSX.Element => {
 	const [visible, setVisible] = useState(false);
 	const [data, setData] = useState<IData>({});
-	const pendingResolve = useRef<(() => void) | null>(null);
+	const { onShow, defer, onModalHide } = useDeferredModalSettle<IData>();
 
 	useDeepCompareEffect(() => {
 		if (!isEmpty(data)) {
@@ -45,11 +47,7 @@ const ScreenLockedView = (): JSX.Element => {
 	}, [data]);
 
 	const showScreenLock = (args: IData) => {
-		// A new request can arrive while the previous modal is still animating out, before
-		// onModalHide consumed its resolve. Flush it now so the previous caller isn't left hanging.
-		const pending = pendingResolve.current;
-		pendingResolve.current = null;
-		pending?.();
+		onShow(args);
 		setData(args);
 	};
 
@@ -61,19 +59,13 @@ const ScreenLockedView = (): JSX.Element => {
 	}, []);
 
 	const onSubmit = () => {
-		pendingResolve.current = data.submit || null;
+		defer(data.submit || null);
 		setData({});
 	};
 
 	const onCancel = () => {
-		pendingResolve.current = data.cancel || null;
+		defer(data.cancel || null);
 		setData({});
-	};
-
-	const onModalHide = () => {
-		const resolve = pendingResolve.current;
-		pendingResolve.current = null;
-		resolve?.();
 	};
 
 	return (

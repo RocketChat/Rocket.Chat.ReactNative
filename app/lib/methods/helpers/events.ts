@@ -1,4 +1,4 @@
-import { type ICredentials } from '../../../definitions';
+import { type BiometricInvalidationReason, type ICredentials } from '../../../definitions';
 import { type IEmitUserInteraction } from '../../../containers/UIKit/interfaces';
 import log from './log';
 
@@ -10,7 +10,7 @@ type TEventEmitterEmmitArgs =
 	| { invalid: boolean }
 	| { force: boolean }
 	| { hasBiometry: boolean }
-	| { reason: 'enrollmentChanged' }
+	| { reason: BiometricInvalidationReason }
 	| { visible: boolean; onCancel?: null | Function }
 	| { cancel: () => void }
 	| { submit: (param: string) => void }

@@ -38,6 +38,15 @@ describe('biometricTrustStore', () => {
 			expect(classifyError({ message: 'AuthenticationCanceled' })).toEqual({ kind: 'canceled' });
 		});
 
+		it('maps errSecUserCanceled code -128 to canceled', () => {
+			expect(classifyError({ code: -128, message: 'The operation was aborted' })).toEqual({ kind: 'canceled' });
+		});
+
+		it('does not classify unrelated errors mentioning -128 in the message as canceled', () => {
+			const cause = { code: '-34018', message: 'keychain failed with status -128 in payload' };
+			expect(classifyError(cause)).toEqual({ kind: 'error', cause });
+		});
+
 		it('falls back to error with original cause for unknown failures', () => {
 			const cause = new Error('boom');
 			expect(classifyError(cause)).toEqual({ kind: 'error', cause });

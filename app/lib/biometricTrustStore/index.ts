@@ -39,7 +39,10 @@ export const classifyError = (e: unknown): TrustResult => {
 	const message = err?.message ?? '';
 	const blob = `${code} ${name} ${message}`;
 
-	if (/errSecUserCancel|UserCancel|user.?cancel|AuthenticationCanceled|-128\b/i.test(blob)) {
+	// -128 (errSecUserCanceled) is matched against the code only — testing it against the whole blob
+	// would misclassify any unrelated failure that happens to mention "-128" in its message as a
+	// benign cancel.
+	if (code === '-128' || /errSecUserCancel|UserCancel|user.?cancel|AuthenticationCanceled/i.test(blob)) {
 		return { kind: 'canceled' };
 	}
 	if (/KeyPermanentlyInvalidatedException/i.test(blob)) {

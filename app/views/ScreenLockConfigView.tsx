@@ -132,17 +132,41 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 	changePasscode = async ({ force }: { force: boolean }) => {
 		const { autoLock } = this.state;
 		if (autoLock) {
-			await handleLocalAuthentication(true);
+			try {
+				await handleLocalAuthentication(true);
+			} catch {
+				// User dismissed the unlock modal — abort the passcode change.
+				return;
+			}
 		}
 		logEvent(events.SLC_CHANGE_PASSCODE);
-		await changePasscode({ force });
+		try {
+			await changePasscode({ force });
+		} catch {
+			// User dismissed the change-passcode modal.
+		}
 	};
 
-	toggleAutoLock = () => {
-		logEvent(events.SLC_TOGGLE_AUTOLOCK);
+	// Accepts the Switch's target value so the row onPress (no arg → flip) and the Switch's
+	// onValueChange converge on the same target; the updater guard makes a double fire from a single
+	// tap (row press + switch value-change) a no-op instead of toggling back, and skips the side
+	// effects (checkHasPasscode/save) for the discarded duplicate.
+	toggleAutoLock = (value?: boolean) => {
+		const target = typeof value === 'boolean' ? value : !this.state.autoLock;
+		let applied = false;
 		this.setState(
-			({ autoLock }) => ({ autoLock: !autoLock, autoLockTime: DEFAULT_AUTO_LOCK }),
+			({ autoLock }) => {
+				if (autoLock === target) {
+					return null;
+				}
+				applied = true;
+				return { autoLock: target, autoLockTime: DEFAULT_AUTO_LOCK };
+			},
 			async () => {
+				if (!applied) {
+					return;
+				}
+				logEvent(events.SLC_TOGGLE_AUTOLOCK);
 				const { autoLock } = this.state;
 				if (autoLock) {
 					try {
@@ -165,7 +189,9 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 				const { biometry } = this.state;
 				const result = await biometricTrustStore.setBiometryEnabled(biometry);
 				if (result.kind !== 'success') {
-					this.setState({ biometry: false });
+					// Revert to the pre-toggle value; setBiometryEnabled has already forced the persisted
+					// flag off on failure, so only the optimistic UI flip needs undoing.
+					this.setState(({ biometry: current }) => ({ biometry: !current }));
 				}
 			}
 		);
