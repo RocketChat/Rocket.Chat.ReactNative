@@ -205,7 +205,7 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
 		await flushSagaMicrotasks();
 
-		// Fix B: the saga now waits for METEOR.SUCCESS ('connected') before dispatching
+		// The saga waits for METEOR.SUCCESS ('connected') before dispatching
 		// loginRequest, so it never logs in on a still-connecting socket.
 		store.dispatch(connectSuccess());
 		await flushSagaMicrotasks();
@@ -246,7 +246,7 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
 		await flushSagaMicrotasks();
 
-		// Fix B: the saga now waits for METEOR.SUCCESS ('connected') before dispatching
+		// The saga waits for METEOR.SUCCESS ('connected') before dispatching
 		// loginRequest, so it never logs in on a still-connecting socket.
 		store.dispatch(connectSuccess());
 		await flushSagaMicrotasks();
@@ -283,7 +283,7 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
 		await flushSagaMicrotasks();
 
-		// Fix B: the saga now waits for METEOR.SUCCESS ('connected') before dispatching
+		// The saga waits for METEOR.SUCCESS ('connected') before dispatching
 		// loginRequest, so it never logs in on a still-connecting socket.
 		store.dispatch(connectSuccess());
 		await flushSagaMicrotasks();
@@ -317,7 +317,7 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
 		await flushSagaMicrotasks();
 
-		// Fix B: the saga now waits for METEOR.SUCCESS ('connected') before dispatching
+		// The saga waits for METEOR.SUCCESS ('connected') before dispatching
 		// loginRequest, so it never logs in on a still-connecting socket.
 		store.dispatch(connectSuccess());
 		await flushSagaMicrotasks();
@@ -357,7 +357,7 @@ describe('deepLinking saga — Regression race (new server + token + room path)'
 		store.dispatch(selectServerSuccess({ ...makeServerRecord(), name: 'open.rocket.chat', server: HOST }));
 		await flushSagaMicrotasks();
 
-		// Fix B: the saga now waits for METEOR.SUCCESS ('connected') before dispatching
+		// The saga waits for METEOR.SUCCESS ('connected') before dispatching
 		// loginRequest, so it never logs in on a still-connecting socket.
 		store.dispatch(connectSuccess());
 		await flushSagaMicrotasks();

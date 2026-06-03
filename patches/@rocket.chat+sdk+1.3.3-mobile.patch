@@ -6,7 +6,7 @@ index 19d31ae..07bda5f 100644
          this.logger.error(err)
          return reject(err)
        }
-+      // FIX A (defense): tear down the previous connection before replacing it.
++      // Tear down the previous connection before replacing it.
 +      // The `this.connected` early-return above means we only reach here when the
 +      // existing socket isn't healthy, so detaching its handlers and closing it stops
 +      // a stale or still-connecting socket from later firing onClose and clobbering the
@@ -35,7 +35,7 @@ index 19d31ae..07bda5f 100644
    /** Emit close event so it can be used for promise resolve in close() */
 -  onClose = (e: any) => {
 +  onClose = (e: any, closedConnection?: WebSocket) => {
-+    // FIX A (primary): ignore close events from a socket we've already replaced (an
++    // Ignore close events from a socket we've already replaced (an
 +    // orphan). Only the current connection's close should flip app state or trigger a
 +    // reopen; otherwise a zombie socket's late close clobbers the live connection and
 +    // the app falsely shows "Waiting for network".
