@@ -32,6 +32,23 @@ else
   fi
 fi
 
+# E2E server preflight. Every flow is driven by REST calls (login, users.create, …)
+# that .maestro/scripts/data-setup.js makes to this server from the runner host. If
+# the server is down the flow fails deep inside an evalScript as an opaque
+# "[Failed] <flow>" with no reason in the job log — you'd have to download the
+# Maestro artifact to learn it was an HTTP error. Probe it up front so a server
+# outage surfaces as a single red annotation on the job (and, when the whole server
+# is down, the same annotation on every shard) instead of mystery flow failures.
+E2E_SERVER="$(sed -n "s/^[[:space:]]*server:[[:space:]]*'\([^']*\)'.*/\1/p" .maestro/scripts/data.js | head -1)"
+E2E_SERVER="${E2E_SERVER:-https://mobile.qa.rocket.chat}"
+echo "Preflight: checking E2E server ${E2E_SERVER} ..."
+PREFLIGHT_CODE="$(curl -s -o /dev/null -w '%{http_code}' --max-time 25 --retry 3 --retry-all-errors --retry-delay 5 "${E2E_SERVER}/api/info" || true)"
+if [ "$PREFLIGHT_CODE" != "200" ]; then
+  echo "::error title=E2E server unreachable::${E2E_SERVER}/api/info returned HTTP ${PREFLIGHT_CODE:-000} — the test server is likely down. This is an environment failure, not an app or test regression."
+  exit 3
+fi
+echo "Preflight OK: ${E2E_SERVER}/api/info -> 200"
+
 MAPFILE="$(mktemp)"
 trap 'rm -f "$MAPFILE"' EXIT
 
@@ -206,4 +223,14 @@ done
 
 echo "Retry strategy finished with remaining failures:"
 printf '%s\n' "${CURRENT_FAILS[@]}"
+
+# The server can also blip after preflight (e.g. a 404 on users.create mid-flow).
+# data-setup.js's retryRequest records that as "Non-retryable error <code>" in the
+# local Maestro logs. Scan them (already on disk — no artifact download) so an
+# environment-caused failure is annotated as such instead of reading like an app bug.
+SERVER_ERR="$(grep -rhoE "Non-retryable error [0-9]{3}|Connection refused|Failed to connect|UnknownHostException|ConnectException|Read timed out" "$HOME/.maestro/tests/" 2>/dev/null | sort -u | head -5 | paste -sd '; ' - || true)"
+if [ -n "$SERVER_ERR" ]; then
+  echo "::error title=E2E server error during run::A test-setup REST call to ${E2E_SERVER:-the test server} failed mid-run (${SERVER_ERR}). The shard failure is likely a server/environment flake, not an app or test regression."
+fi
+
 exit 1
