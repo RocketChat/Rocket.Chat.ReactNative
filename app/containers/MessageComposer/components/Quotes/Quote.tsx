@@ -49,7 +49,7 @@ export const Quote = ({ messageId }: { messageId: string }) => {
 					testID={`composer-quote-remove-${message.id}`}
 				/>
 			</View>
-			<MarkdownPreview style={[styles.message]} numberOfLines={1} msg={msg} />
+			<MarkdownPreview style={styles.message} numberOfLines={1} msg={msg} />
 		</View>
 	);
 };

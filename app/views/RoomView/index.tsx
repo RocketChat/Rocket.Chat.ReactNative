@@ -61,6 +61,7 @@ import {
 	type IApplicationState,
 	type IAttachment,
 	type IMessage,
+	type IMessageEditAttachment,
 	type IOmnichannelSource,
 	type ISubscription,
 	type IVisitor,
@@ -77,6 +78,7 @@ import { themes } from '../../lib/constants/colors';
 import { NOTIFICATION_IN_APP_VIBRATION } from '../../lib/constants/notifications';
 import { type ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import { callJitsi } from '../../lib/methods/callJitsi';
+import { isInActiveVoipCall } from '../../lib/services/voip/isInActiveVoipCall';
 import { loadSurroundingMessages } from '../../lib/methods/loadSurroundingMessages';
 import { loadThreadMessages } from '../../lib/methods/loadThreadMessages';
 import { readMessages } from '../../lib/methods/readMessages';
@@ -93,7 +95,7 @@ import {
 } from '../../lib/methods/helpers';
 import { withActionSheet } from '../../containers/ActionSheet';
 import { goRoom, type TGoRoomItem } from '../../lib/methods/helpers/goRoom';
-import { type IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
+import { ComposerAttachments, type IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
 import { RoomContext } from './context';
 import AudioManager from '../../lib/methods/AudioManager';
 import { type IListContainerRef, type TListRef } from './List/definitions';
@@ -137,7 +139,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 	private sub?: RoomClass;
 	private unsubscribeBlur?: () => void;
-	private unsubscribeFocus?: () => void;
 
 	constructor(props: IRoomViewProps) {
 		super(props);
@@ -377,9 +378,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if (this.unsubscribeBlur) {
 			this.unsubscribeBlur();
 		}
-		if (this.unsubscribeFocus) {
-			this.unsubscribeFocus();
-		}
 		EventEmitter.removeListener('connected', this.handleConnected);
 		EventEmitter.removeListener('ROOM_REMOVED', this.handleRoomRemoved);
 		if (!this.tmid) {
@@ -580,6 +578,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const { room, member, joined, canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold } = this.state;
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
+			// @ts-ignore — navigation types expect a literal screen name
 			navigation.navigate('ModalStackNavigator', {
 				screen: screen ?? 'RoomActionsView',
 				params: {
@@ -787,7 +786,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.resetAction();
 	};
 
-	onEditRequest = async (message: Pick<IMessage, 'id' | 'msg' | 'rid'>) => {
+	onEditRequest = async (
+		message: Pick<IMessage, 'id' | 'msg' | 'rid'> & {
+			attachments?: IMessageEditAttachment[];
+		}
+	) => {
 		try {
 			this.resetAction();
 			await editMessage(message);
@@ -855,9 +858,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				),
 				snaps: ['50%'],
 				enableContentPanningGesture: false,
-				onClose: this.resetAction
+				onClose: this.resetAction,
+				fullContainer: true
 			});
-		}, 100);
+		}, 300);
 	};
 
 	onReactionInit = (messageId: string) => {
@@ -913,7 +917,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.handleCloseEmoji(showActionSheet, {
 			children: <ReactionsList reactions={message?.reactions} getCustomEmoji={this.getCustomEmoji} />,
 			snaps: ['50%'],
-			enableContentPanningGesture: false
+			enableContentPanningGesture: false,
+			fullContainer: true
 		});
 	};
 
@@ -1262,6 +1267,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	// OLD METHOD - support versions before 5.0.0
 	handleEnterCall = () => {
+		if (isInActiveVoipCall()) return;
 		const { room } = this.state;
 		if ('id' in room) {
 			const { jitsiTimeout } = room;
@@ -1555,7 +1561,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			}
 		}
 
-		return <MessageComposerContainer ref={this.messageComposerRef} />;
+		return (
+			<MessageComposerContainer ref={this.messageComposerRef}>
+				<ComposerAttachments />
+			</MessageComposerContainer>
+		);
 	};
 
 	renderActions = () => {
@@ -1668,6 +1678,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 						ref={this.list}
 						listRef={this.flatList}
 						rid={rid}
+						t={t as RoomType}
 						tmid={this.tmid}
 						renderRow={this.renderItem}
 						hideSystemMessages={this.hideSystemMessages}

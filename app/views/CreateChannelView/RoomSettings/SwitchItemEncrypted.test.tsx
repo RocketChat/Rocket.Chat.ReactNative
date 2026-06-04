@@ -56,11 +56,9 @@ describe('SwitchItemEncrypted', () => {
 				type={testEncrypted.type}
 			/>
 		);
-		const component = screen.queryByTestId(testEncrypted.testSwitchID);
-		if (component) {
-			fireEvent(component, 'valueChange', { value: true });
-			expect(onPressMock).toHaveReturnedWith({ value: !testEncrypted.encrypted });
-		}
+		const component = screen.getByTestId(testEncrypted.testSwitchID);
+		fireEvent(component, 'valueChange', { value: true });
+		expect(onPressMock).toHaveReturnedWith({ value: !testEncrypted.encrypted });
 	});
 
 	it('label when encrypted and isTeam are true and is a private team', () => {

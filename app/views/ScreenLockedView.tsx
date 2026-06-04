@@ -2,14 +2,15 @@ import isEmpty from 'lodash/isEmpty';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import Modal from 'react-native-modal';
-import Touchable from 'react-native-platform-touchable';
 import useDeepCompareEffect from 'use-deep-compare-effect';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { PasscodeEnter } from '../containers/Passcode';
 import { LOCAL_AUTHENTICATE_EMITTER } from '../lib/constants/localAuthentication';
 import { CustomIcon } from '../containers/CustomIcon';
 import { hasNotch } from '../lib/methods/helpers';
 import EventEmitter from '../lib/methods/helpers/events';
+import Touch from '../containers/Touch';
 
 interface IData {
 	submit?: () => void;
@@ -19,6 +20,9 @@ interface IData {
 }
 
 const styles = StyleSheet.create({
+	container: {
+		flex: 1
+	},
 	close: {
 		position: 'absolute',
 		top: hasNotch ? 50 : 30,
@@ -73,12 +77,14 @@ const ScreenLockedView = (): JSX.Element => {
 			style={{ margin: 0 }}
 			animationIn='fadeIn'
 			animationOut='fadeOut'>
-			<PasscodeEnter hasBiometry={!!data?.hasBiometry} finishProcess={onSubmit} />
-			{data?.force ? (
-				<Touchable onPress={onCancel} style={styles.close}>
-					<CustomIcon name='close' size={30} />
-				</Touchable>
-			) : null}
+			<GestureHandlerRootView style={styles.container}>
+				<PasscodeEnter hasBiometry={!!data?.hasBiometry} finishProcess={onSubmit} />
+				{data?.force ? (
+					<Touch onPress={onCancel} style={styles.close}>
+						<CustomIcon name='close' size={30} />
+					</Touch>
+				) : null}
+			</GestureHandlerRootView>
 		</Modal>
 	);
 };

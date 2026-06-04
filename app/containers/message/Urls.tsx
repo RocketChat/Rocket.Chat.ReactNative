@@ -177,8 +177,7 @@ const Url = ({ url }: { url: IUrl }) => {
 					borderWidth: 1,
 					overflow: 'hidden'
 				}
-			]}
-			background={Touchable.Ripple(colors.surfaceNeutral)}>
+			]}>
 			<>
 				{imageUrl ? <UrlImage image={imageUrl} hasContent={hasContent} /> : null}
 				{hasContent ? <UrlContent title={url.title} description={url.description} /> : null}

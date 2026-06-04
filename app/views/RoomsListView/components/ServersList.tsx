@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef, useState } from 'react';
+import React, { memo, useLayoutEffect, useRef, useState } from 'react';
 import { FlatList, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { batch, useDispatch } from 'react-redux';
@@ -39,10 +39,10 @@ const ServersList = () => {
 	const { colors } = useTheme();
 	const insets = useSafeAreaInsets();
 
-	useEffect(() => {
-		const init = async () => {
+	useLayoutEffect(() => {
+		const init = () => {
 			const serversDB = database.servers;
-			const observable = await serversDB.get('servers').query().observeWithColumns(['name']);
+			const observable = serversDB.get('servers').query().observeWithColumns(['name']);
 
 			subscription.current = observable.subscribe(data => {
 				setServers(data);

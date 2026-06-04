@@ -2,7 +2,7 @@ import { type RefObject } from 'react';
 import { type FlatListProps } from 'react-native';
 import { type FlatList } from 'react-native-gesture-handler';
 
-import { type TAnyMessageModel } from '../../../definitions';
+import { type RoomType, type TAnyMessageModel } from '../../../definitions';
 
 export type TListRef = RefObject<FlatList<TAnyMessageModel> | null>;
 
@@ -21,6 +21,7 @@ export interface IListContainerRef {
 export interface IListContainerProps {
 	renderRow: Function;
 	rid: string;
+	t: RoomType;
 	tmid?: string;
 	listRef: TListRef;
 	hideSystemMessages: string[];

@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Text, useWindowDimensions, View } from 'react-native';
 
+import I18n from '../../i18n';
 import Touchable from './Touchable';
 import { CustomIcon } from '../CustomIcon';
 import styles from './styles';
@@ -39,9 +40,11 @@ const AddReaction = React.memo(({ theme }: { theme: TSupportedThemes }) => {
 			onPress={reactionInit}
 			key='message-add-reaction'
 			testID='message-add-reaction'
+			accessibilityRole='button'
+			accessibilityLabel={I18n.t('Add_reaction')}
 			style={[styles.reactionButton, { backgroundColor: themes[theme].surfaceRoom }]}
-			background={Touchable.Ripple(themes[theme].surfaceNeutral)}
-			hitSlop={BUTTON_HIT_SLOP}>
+			hitSlop={BUTTON_HIT_SLOP}
+			android_ripple={{ color: themes[theme].strokeLight }}>
 			<View style={[styles.reactionContainer, { borderColor: themes[theme].strokeLight, height }]}>
 				<CustomIcon name='reaction-add' size={20} color={themes[theme].badgeBackgroundLevel2} />
 			</View>
@@ -62,9 +65,12 @@ const Reaction = React.memo(({ reaction, getCustomEmoji, theme }: IMessageReacti
 			onLongPress={onReactionLongPress}
 			key={reaction.emoji}
 			testID={`message-reaction-${reaction.emoji}`}
+			accessibilityRole='button'
+			accessibilityLabel={`${reaction.emoji}, ${reaction.usernames.length}`}
+			accessibilityState={{ selected: reacted }}
 			style={[styles.reactionButton, { backgroundColor: reacted ? themes[theme].surfaceNeutral : themes[theme].surfaceRoom }]}
-			background={Touchable.Ripple(themes[theme].surfaceNeutral)}
-			hitSlop={BUTTON_HIT_SLOP}>
+			hitSlop={BUTTON_HIT_SLOP}
+			android_ripple={{ color: themes[theme].strokeLight }}>
 			<View
 				style={[
 					styles.reactionContainer,

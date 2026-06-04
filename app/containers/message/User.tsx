@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { type MessageType, type MessageTypesValues, SubscriptionType } from '../../definitions';
 import { useTheme } from '../../theme';
@@ -116,12 +116,12 @@ const User = React.memo(
 
 			return (
 				<View style={styles.container}>
-					<TouchableOpacity testID={`username-header-${username}`} style={styles.titleContainer} onPress={onUserPress}>
+					<Pressable testID={`username-header-${username}`} style={styles.titleContainer} onPress={onUserPress}>
 						<Text style={[styles.username, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
 							{textContent}
 						</Text>
 						{isLargeFontScale ? null : <MessageTime timeFormat={timeFormat} ts={ts} />}
-					</TouchableOpacity>
+					</Pressable>
 					<RightIcons
 						type={type}
 						isEdited={isEdited}

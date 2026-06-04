@@ -56,18 +56,18 @@ export const ActionsButton = () => {
 						// This is necessary because the action sheet does not close properly on Android
 						setTimeout(() => {
 							takePhoto();
-						}, 250);
+						}, 550);
 					}
 				},
 				{
 					title: I18n.t('Take_a_video'),
-					icon: 'camera',
+					icon: 'video',
 					onPress: () => {
 						hideActionSheet();
 						// This is necessary because the action sheet does not close properly on Android
 						setTimeout(() => {
 							takeVideo();
-						}, 250);
+						}, 550);
 					}
 				},
 				{
@@ -78,7 +78,7 @@ export const ActionsButton = () => {
 						// This is necessary because the action sheet does not close properly on Android
 						setTimeout(() => {
 							chooseFromLibrary();
-						}, 250);
+						}, 550);
 					}
 				},
 				{

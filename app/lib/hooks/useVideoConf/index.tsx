@@ -1,4 +1,4 @@
-import { useCameraPermissions } from 'expo-camera';
+import { Camera } from 'expo-camera';
 import React, { useMemo } from 'react';
 
 import { useActionSheet } from '../../../containers/ActionSheet';
@@ -31,10 +31,8 @@ export const useVideoConf = (
 ): { showInitCallActionSheet: () => Promise<void>; callEnabled: boolean; disabledTooltip?: boolean } => {
 	const user = useAppSelector(state => getUserSelector(state));
 	const serverVersion = useAppSelector(state => state.server.version);
-
 	const { callEnabled, disabledTooltip, roomType } = useVideoConfCall(rid);
 
-	const [permission, requestPermission] = useCameraPermissions();
 	const { showActionSheet } = useActionSheet();
 
 	const isServer5OrNewer = useMemo(() => compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.0.0'), [serverVersion]);
@@ -61,12 +59,16 @@ export const useVideoConf = (
 			if (canInit) {
 				showActionSheet({
 					children: <StartACallActionSheet rid={rid} roomType={roomType} />,
-					snaps: [480]
+					portraitSnaps: ['60%'],
+					landscapeSnaps: ['90%'],
+					enableContentPanningGesture: false,
+					fullContainer: true
 				});
 
+				const permission = await Camera.getCameraPermissionsAsync();
 				if (!permission?.granted) {
 					try {
-						await requestPermission();
+						await Camera.requestCameraPermissionsAsync();
 						handleAndroidBltPermission();
 					} catch (error) {
 						log(error);

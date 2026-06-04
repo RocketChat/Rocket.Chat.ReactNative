@@ -1,12 +1,10 @@
-appId: chat.rocket.reactnative
+appId: ${APP_ID}
 tags:
   - 'util'
 
 ---
-- swipe:
-    from:
-      id: action-sheet-handle
-    direction: DOWN
+- tapOn:
+    id: action-sheet-handle
 - extendedWaitUntil:
     notVisible:
       id: action-sheet-handle

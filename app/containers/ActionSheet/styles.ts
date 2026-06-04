@@ -4,9 +4,7 @@ import sharedStyles from '../../views/Styles';
 
 export default StyleSheet.create({
 	container: {
-		overflow: 'hidden',
-		borderTopLeftRadius: 16,
-		borderTopRightRadius: 16
+		overflow: 'hidden'
 	},
 	item: {
 		paddingHorizontal: 16,
@@ -43,10 +41,6 @@ export default StyleSheet.create({
 	backdrop: {
 		...StyleSheet.absoluteFillObject
 	},
-	bottomSheet: {
-		width: '50%',
-		marginHorizontal: '25%'
-	},
 	button: {
 		marginHorizontal: 16,
 		paddingHorizontal: 14,
@@ -70,6 +64,11 @@ export default StyleSheet.create({
 		marginRight: 8
 	},
 	contentContainer: {
-		flex: 1
+		flex: 0
+	},
+	fullContainer: {
+		width: '100%',
+		height: '100%',
+		flex: 0
 	}
 });

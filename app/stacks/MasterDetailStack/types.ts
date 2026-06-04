@@ -225,4 +225,5 @@ export type MasterDetailInsideStackParamList = {
 	AttachmentView: {
 		attachment: IAttachment;
 	};
+	CallView: undefined;
 };

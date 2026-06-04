@@ -1,4 +1,4 @@
-appId: chat.rocket.reactnative
+appId: ${APP_ID}
 name: Room Actions
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
@@ -121,8 +121,8 @@ tags:
     from:
       id: action-sheet-handle
     direction: UP
-- extendedWaitUntil:
-    visible:
+- scrollUntilVisible:
+    element:
       text: 'Star'
     timeout: 60000
 - tapOn:

@@ -1,10 +1,12 @@
-appId: chat.rocket.reactnative
+appId: ${APP_ID}
 name: Search room
 tags:
   - 'util'
 ---
 - assertVisible:
     id: 'rooms-list-view'
+- waitForAnimationToEnd:
+    timeout: 5000
 - tapOn:
     id: 'rooms-list-view-search'
 - tapOn:

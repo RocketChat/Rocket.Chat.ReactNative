@@ -1,6 +1,16 @@
+import { type JSX } from 'react';
+import { ScrollView, View } from 'react-native';
+
 import MessageContext from '../message/Context';
 import { UiKitMessage } from '.';
-import { themes } from '../../lib/constants/colors';
+import { themes, colors } from '../../lib/constants/colors';
+import { longText } from '../../../.rnstorybook/utils';
+import {
+	BASE_ROW_HEIGHT,
+	BASE_ROW_HEIGHT_CONDENSED,
+	ResponsiveLayoutContext
+} from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { ThemeContext, type TSupportedThemes } from '../../theme';
 
 const user = {
 	id: 'y8bd77ptZswPj3EW8',
@@ -14,22 +24,33 @@ export default {
 	title: 'UIKit/UiKitMessage',
 	decorators: [
 		(Story: any) => (
-			<MessageContext.Provider
+			<ResponsiveLayoutContext.Provider
 				value={{
-					user,
-					baseUrl,
-					onPress: () => {},
-					onLongPress: () => {},
-					reactionInit: () => {},
-					onErrorPress: () => {},
-					replyBroadcast: () => {},
-					onReactionPress: () => {},
-					onDiscussionPress: () => {},
-					onReactionLongPress: () => {},
-					threadBadgeColor: themes.light.fontInfo
+					fontScale: 1,
+					fontScaleLimited: 1,
+					isLargeFontScale: false,
+					rowHeight: BASE_ROW_HEIGHT,
+					rowHeightCondensed: BASE_ROW_HEIGHT_CONDENSED,
+					width: 350,
+					height: 800
 				}}>
-				<Story />
-			</MessageContext.Provider>
+				<MessageContext.Provider
+					value={{
+						user,
+						baseUrl,
+						onPress: () => {},
+						onLongPress: () => {},
+						reactionInit: () => {},
+						onErrorPress: () => {},
+						replyBroadcast: () => {},
+						onReactionPress: () => {},
+						onDiscussionPress: () => {},
+						onReactionLongPress: () => {},
+						threadBadgeColor: themes.light.fontInfo
+					}}>
+					<Story />
+				</MessageContext.Provider>
+			</ResponsiveLayoutContext.Provider>
 		)
 	]
 };
@@ -513,3 +534,206 @@ export const ActionSelect = () =>
 		}
 	]);
 ActionSelect.storyName = 'Action - Select';
+
+const getInfoCardAction = ({
+	appId,
+	blockId,
+	icon,
+	label
+}: {
+	appId?: string;
+	blockId?: string;
+	icon: string;
+	label?: string;
+}) => ({
+	type: 'icon_button',
+	actionId: 'open-history',
+	...(appId ? { appId } : {}),
+	...(blockId ? { blockId } : {}),
+	label: label ?? 'Call history',
+	icon: {
+		type: 'icon',
+		icon,
+		variant: 'default'
+	}
+});
+
+const ThemedStory = ({ theme, story }: { theme: TSupportedThemes; story: () => JSX.Element }) => (
+	<ThemeContext.Provider value={{ theme, colors: colors[theme] }}>
+		<View style={{ padding: 10, gap: 10, backgroundColor: colors[theme].surfaceTint }}>{story()}</View>
+	</ThemeContext.Provider>
+);
+
+const ThemedStoryInfoCardList = () => (
+	<>
+		{UiKitMessage([
+			{
+				type: 'info_card',
+				appId: 'media-call-core',
+				blockId: 'ended-call',
+				rows: [
+					{
+						background: 'default',
+						elements: [
+							{ type: 'icon', icon: 'phone-off', framed: true, variant: 'secondary' },
+							{ type: 'mrkdwn', text: 'Call ended', i18n: { key: 'Call_ended_bold' } }
+						],
+						action: getInfoCardAction({ appId: 'media-call-core', blockId: 'ended-call', icon: 'info' })
+					},
+					{
+						background: 'secondary',
+						elements: [{ type: 'mrkdwn', text: '*00:06*' }]
+					}
+				]
+			}
+		])}
+		{UiKitMessage([
+			{
+				type: 'info_card',
+				appId: 'media-call-core',
+				blockId: 'transferred-call',
+				rows: [
+					{
+						background: 'default',
+						elements: [
+							{ type: 'icon', icon: 'arrow-forward', framed: true, variant: 'secondary' },
+							{ type: 'mrkdwn', text: 'Call transferred', i18n: { key: 'Call_transferred_bold' } }
+						]
+					},
+					{
+						background: 'secondary',
+						elements: [{ type: 'mrkdwn', text: '*00:06*' }]
+					}
+				]
+			}
+		])}
+		{UiKitMessage([
+			{
+				type: 'info_card',
+				appId: 'media-call-core',
+				blockId: 'not-answered-call',
+				rows: [
+					{
+						background: 'default',
+						elements: [
+							{ type: 'icon', icon: 'phone-question-mark', framed: true, variant: 'warning' },
+							{ type: 'mrkdwn', text: 'Call not answered', i18n: { key: 'Call_not_answered_bold' } }
+						],
+						action: getInfoCardAction({ appId: 'media-call-core', blockId: 'not-answered-call', icon: 'info' })
+					}
+				]
+			}
+		])}
+		{UiKitMessage([
+			{
+				type: 'info_card',
+				appId: 'media-call-core',
+				blockId: 'failed-call',
+				rows: [
+					{
+						background: 'default',
+						elements: [
+							{ type: 'icon', icon: 'phone-issue', framed: true, variant: 'danger' },
+							{ type: 'mrkdwn', text: 'Call failed', i18n: { key: 'Call_failed_bold' } }
+						]
+					}
+				]
+			}
+		])}
+	</>
+);
+export const InfoCard = () => (
+	<ScrollView>
+		<ThemedStory theme={'light'} story={ThemedStoryInfoCardList} />
+		<ThemedStory theme={'dark'} story={ThemedStoryInfoCardList} />
+		<ThemedStory theme={'black'} story={ThemedStoryInfoCardList} />
+	</ScrollView>
+);
+
+InfoCard.storyName = 'UIKit/UiKitMessage/Info Card';
+
+export const InfoCardIcons = () =>
+	UiKitMessage([
+		{
+			type: 'info_card',
+			blockId: 'multiple-icons',
+			rows: [
+				{
+					background: 'default',
+					elements: [
+						{ type: 'plain_text', text: 'Framed icons' },
+						{ type: 'icon', icon: 'phone-off', variant: 'default', framed: true },
+						{ type: 'icon', icon: 'clock', variant: 'warning', framed: true },
+						{ type: 'icon', icon: 'phone-question-mark', variant: 'warning', framed: true },
+						{ type: 'icon', icon: 'phone-issue', variant: 'danger', framed: true }
+					]
+				},
+				{
+					background: 'secondary',
+					elements: [
+						{ type: 'plain_text', text: 'Icons' },
+						{ type: 'icon', icon: 'phone-off', variant: 'default' },
+						{ type: 'icon', icon: 'clock', variant: 'warning' },
+						{ type: 'icon', icon: 'phone-question-mark', variant: 'warning' },
+						{ type: 'icon', icon: 'phone-issue', variant: 'danger' },
+						{ type: 'icon', icon: 'info', variant: 'secondary' }
+					]
+				}
+			]
+		}
+	]);
+InfoCardIcons.storyName = 'Info Card - Icons';
+
+export const InfoCardI18n = () =>
+	UiKitMessage([
+		{
+			type: 'info_card',
+			blockId: 'i18n-keys',
+			rows: [
+				{
+					background: 'default',
+					elements: [{ type: 'mrkdwn', text: 'Call ended', i18n: { key: 'Call_ended_bold' } }]
+				},
+				{
+					background: 'default',
+					elements: [{ type: 'mrkdwn', text: 'Call failed', i18n: { key: 'Call_failed_bold' } }]
+				},
+				{
+					background: 'default',
+					elements: [{ type: 'mrkdwn', text: 'Call not answered', i18n: { key: 'Call_not_answered_bold' } }]
+				},
+				{
+					background: 'default',
+					elements: [{ type: 'mrkdwn', text: 'Call transferred', i18n: { key: 'Call_transferred_bold' } }]
+				}
+			]
+		}
+	]);
+InfoCardI18n.storyName = 'Info Card - i18n';
+
+export const InfoCardLongText = () =>
+	UiKitMessage([
+		{
+			type: 'info_card',
+			appId: 'media-call-core',
+			blockId: 'edge-action-no-ids',
+			rows: [
+				{
+					background: 'default',
+					elements: [
+						{ type: 'icon', icon: 'phone-question-mark', variant: 'warning' },
+						{
+							type: 'plain_text',
+							text: longText
+						}
+					],
+					action: getInfoCardAction({ icon: 'info', label: 'Details' })
+				},
+				{
+					background: 'secondary',
+					elements: [{ type: 'plain_text', text: longText }]
+				}
+			]
+		}
+	]);
+InfoCardLongText.storyName = 'Info Card - Long text';

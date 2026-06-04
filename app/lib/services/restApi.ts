@@ -1,3 +1,7 @@
+import { settings as RocketChatSettings } from '@rocket.chat/sdk';
+import { getUniqueId } from 'react-native-device-info';
+import type { ServerMediaSignal } from '@rocket.chat/media-signaling';
+
 import {
 	type IAvatarSuggestion,
 	type IMessage,
@@ -20,12 +24,15 @@ import { type OperationParams, type ResultFor } from '../../definitions/rest/hel
 import { type SubscriptionsEndpoints } from '../../definitions/rest/v1/subscriptions';
 import { Encryption } from '../encryption';
 import { type RoomTypes, roomTypeToApiType } from '../methods/roomTypeToApiType';
+import { uploadUserAvatarMultipart } from '../methods/uploadAvatar/uploadAvatar';
 import { unsubscribeRooms } from '../methods/subscribeRooms';
 import { compareServerVersion, getBundleId, isIOS } from '../methods/helpers';
 import { getDeviceToken } from '../notifications';
+import NativeVoipModule from '../native/NativeVoip';
 import { store as reduxStore } from '../store/auxStore';
 import sdk from './sdk';
 import fetch from '../methods/helpers/fetch';
+import log from '../methods/helpers/log';
 
 export const createChannel = ({
 	name,
@@ -106,8 +113,14 @@ export const forgotPassword = (email: string) =>
 	// RC 0.64.0
 	sdk.post('users.forgotPassword', { email });
 
-export const sendConfirmationEmail = (email: string): Promise<{ message: string; success: boolean }> =>
-	sdk.methodCallWrapper('sendConfirmationEmail', email);
+export const sendConfirmationEmail = (email: string): Promise<{ success: boolean }> => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.0.0')) {
+		return sdk.post('users.sendConfirmationEmail', { email });
+	}
+
+	return sdk.methodCallWrapper('sendConfirmationEmail', email);
+};
 
 export const spotlight = (
 	search: string,
@@ -411,10 +424,14 @@ export const getTeamListRoom = ({
 };
 
 export const closeLivechat = (rid: string, comment?: string, tags?: string[]) => {
+	const serverVersion = reduxStore.getState().server.version;
 	// RC 3.2.0
 	let params;
 	if (tags && tags?.length) {
 		params = { tags };
+	}
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.0.0')) {
+		return sdk.post('livechat/room.closeByUser', { rid, comment, ...params });
 	}
 	// RC 0.29.0
 	return sdk.methodCallWrapper('livechat:closeRoom', rid, comment, { clientAction: true, ...params });
@@ -443,9 +460,14 @@ export const returnLivechat = (rid: string, departmentId?: string): Promise<any>
 
 export const onHoldLivechat = (roomId: string) => sdk.post('livechat/room.onHold', { roomId });
 
-export const forwardLivechat = (transferData: any) =>
+export const forwardLivechat = (transferData: any) => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.0.0')) {
+		return sdk.post('livechat/room.forward', transferData);
+	}
 	// RC 0.36.0
-	sdk.methodCallWrapper('livechat:transfer', transferData);
+	return sdk.methodCallWrapper('livechat:transfer', transferData);
+};
 
 export const getDepartmentInfo = (departmentId: string) =>
 	// RC 2.2.0
@@ -489,9 +511,18 @@ export const getRoutingConfig = async (): Promise<{
 	return sdk.methodCallWrapper('livechat:getRoutingConfig');
 };
 
-export const getTagsList = (): Promise<ILivechatTag[]> =>
+export const getTagsList = async (): Promise<ILivechatTag[]> => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.0.0')) {
+		const result = await sdk.get('livechat/tags');
+		if (result.success) {
+			return result.tags || [];
+		}
+		return [];
+	}
 	// RC 2.0.0
-	sdk.methodCallWrapper('livechat:getTagsList');
+	return sdk.methodCallWrapper('livechat:getTagsList');
+};
 
 export const getAgentDepartments = (uid: string) =>
 	// RC 2.4.0
@@ -697,17 +728,49 @@ export const resetAvatar = (userId: string) =>
 	// RC 0.55.0
 	sdk.post('users.resetAvatar', { userId });
 
-export const setAvatarFromService = ({
+const isHttpAvatarUrl = (value: string | undefined): value is string =>
+	typeof value === 'string' && (value.startsWith('http://') || value.startsWith('https://'));
+
+export const setAvatarFromService = async ({
 	data,
 	contentType = '',
-	service = null
+	service = null,
+	url
 }: {
 	data: any;
 	contentType?: string;
 	service?: string | null;
-}): Promise<void> =>
-	// RC 0.51.0
-	sdk.methodCallWrapper('setAvatarFromService', data, contentType, service);
+	url?: string;
+}): Promise<void> => {
+	const serverVersion = reduxStore.getState().server.version;
+	const isHttpUrl = isHttpAvatarUrl(url);
+	// In ChangeAvatarView, `url` can be:
+	// - a remote http(s) URL from "Fetch image from URL"
+	// - a local filesystem URI/path from camera/gallery upload (`response.path`)
+	// Only remote URLs should be sent as `avatarUrl`; local paths must go through multipart upload.
+	// RC 0.51.0 — keep DDP + payload shape unchanged below 8.0.0
+	if (compareServerVersion(serverVersion, 'lowerThan', '8.0.0')) {
+		return sdk.methodCallWrapper('setAvatarFromService', data, contentType, service);
+	}
+
+	// RC 8.0.0 — REST users.setAvatar (multipart image or JSON avatarUrl)
+	if (service === 'url' && typeof data === 'string') {
+		await sdk.post('users.setAvatar', { avatarUrl: data });
+		return;
+	}
+
+	if (service === 'upload' && url && !isHttpUrl) {
+		await uploadUserAvatarMultipart(url, contentType || 'image/jpeg', 'avatar.jpg');
+		return;
+	}
+
+	if (isHttpUrl) {
+		await sdk.post('users.setAvatar', { avatarUrl: url });
+		return;
+	}
+
+	throw new Error('Invalid avatar payload');
+};
 
 export const getUsernameSuggestion = () =>
 	// RC 0.65.0
@@ -987,6 +1050,43 @@ export function e2eResetRoomKey(rid: string, e2eKey: string, e2eKeyId: string): 
 	return sdk.post('e2e.resetRoomKey', { rid, e2eKey, e2eKeyId });
 }
 
+export const editMediaMessage = async (
+	rid: string,
+	fileId: string,
+	body: { description?: string; filename: string; msg?: string }
+) => {
+	const { login, server } = reduxStore.getState();
+	const { user } = login;
+	// RC 8.4.0
+	const response = await fetch(`${server.server}/api/v1/rooms.mediaConfirm/${rid}/${fileId}`, {
+		method: 'POST',
+		headers: {
+			...RocketChatSettings.customHeaders,
+			'Content-Type': 'application/json',
+			'X-Auth-Token': user.token,
+			'X-User-Id': user.id
+		},
+		body: JSON.stringify({
+			description: body.description,
+			filename: body.filename,
+			msg: body.msg || ''
+		})
+	});
+
+	if (!response.ok) {
+		let errorReason = `${response.status} ${response.statusText}`;
+		try {
+			const errorBody = await response.json();
+			errorReason = errorBody?.error || errorBody?.message || errorReason;
+		} catch {
+			// Best effort only: keep default HTTP reason when body is not JSON.
+		}
+		throw new Error(`Failed to edit media message: ${errorReason}`);
+	}
+
+	return response.json();
+};
+
 export const editMessage = async (message: Pick<IMessage, 'id' | 'msg' | 'rid' | 'content'>) => {
 	const result = await Encryption.encryptMessage(message as IMessage);
 	if (!result) {
@@ -1010,29 +1110,74 @@ export const editMessage = async (message: Pick<IMessage, 'id' | 'msg' | 'rid' |
 	});
 };
 
-export const registerPushToken = () =>
-	new Promise<void>(async resolve => {
-		const token = getDeviceToken();
-		if (token) {
-			const type = isIOS ? 'apn' : 'gcm';
-			const data = {
-				value: token,
-				type,
-				appName: getBundleId
-			};
-			try {
-				// RC 0.60.0
-				await sdk.post('push.token', data);
-			} catch (error) {
-				console.log(error);
-			}
-		}
-		return resolve();
-	});
+let lastToken = '';
+let lastVoipToken = '';
 
+type TRegisterPushTokenData = {
+	id?: string;
+	value: string;
+	type: string;
+	appName: string;
+	voipToken?: string;
+};
+export const registerPushToken = async (): Promise<void> => {
+	const token = getDeviceToken();
+	// Always returns an empty string on Android
+	const voipToken = NativeVoipModule.getLastVoipToken();
+
+	if (!token) {
+		return;
+	}
+
+	if (token === lastToken && voipToken === lastVoipToken) {
+		return;
+	}
+
+	// SDK is initialized on connect() only after a server is selected and the user is logged in.
+	// On a fresh-install cold-start, FCM/APNS and iOS PushKit can deliver tokens before that
+	// happens; bail without recording lastToken/lastVoipToken so registerPushTokenFork retries
+	// after login (and a later VoipPushTokenRegistered emission can still re-fire this path).
+	if (!sdk.current) {
+		return;
+	}
+
+	const serverVersion = reduxStore.getState().server.version;
+	let data: TRegisterPushTokenData = {
+		value: '',
+		type: '',
+		appName: getBundleId
+	};
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.0.0')) {
+		data.id = await getUniqueId();
+	}
+	if (token) {
+		const type = isIOS ? 'apn' : 'gcm';
+		data = {
+			...data,
+			value: token,
+			type
+		};
+	}
+	if (voipToken && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.4.0')) {
+		data.voipToken = voipToken;
+	}
+
+	try {
+		// RC 0.60.0
+		await sdk.post('push.token', data);
+		lastToken = token;
+		lastVoipToken = voipToken;
+	} catch (e) {
+		log(e);
+	}
+};
+
+// TODO: add voip token removal
 export const removePushToken = (): Promise<boolean | void> => {
 	const token = getDeviceToken();
 	if (token) {
+		lastToken = '';
+		lastVoipToken = '';
 		// RC 0.60.0
 		return sdk.current.del('push.token', { token });
 	}
@@ -1148,3 +1293,14 @@ export const getUsersRoles = async (): Promise<boolean | IRoleUser[]> => {
 
 export const getSupportedVersionsCloud = (uniqueId?: string, domain?: string) =>
 	fetch(`https://releases.rocket.chat/v2/server/supportedVersions?uniqueId=${uniqueId}&domain=${domain}&source=mobile`);
+
+export const mediaCallsStateSignals = async (contractId: string): Promise<{ signals: ServerMediaSignal[]; success: boolean }> => {
+	try {
+		const result = await (
+			sdk.get as unknown as (path: string, params?: object) => Promise<{ signals: ServerMediaSignal[]; success: boolean }>
+		)('media-calls.stateSignals', { contractId });
+		return result;
+	} catch {
+		return { signals: [], success: false };
+	}
+};

@@ -1,4 +1,5 @@
 import React from 'react';
+import { type StyleProp, type TextStyle } from 'react-native';
 
 import { type IUserMention, type IUserChannel } from '../interfaces';
 
@@ -10,6 +11,7 @@ interface IMarkdownContext {
 	navToRoomInfo?: Function;
 	getCustomEmoji?: Function;
 	onLinkPress?: Function;
+	textStyle?: StyleProp<TextStyle>;
 }
 
 const defaultState = {
@@ -17,7 +19,8 @@ const defaultState = {
 	channels: [],
 	useRealName: false,
 	username: '',
-	navToRoomInfo: () => {}
+	navToRoomInfo: () => {},
+	textStyle: undefined
 };
 
 const MarkdownContext = React.createContext<IMarkdownContext>(defaultState);
