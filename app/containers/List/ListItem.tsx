@@ -215,6 +215,7 @@ const Content = React.memo(
 
 interface IListButtonPress extends IListItemButton {
 	onPress: Function;
+	style?: ViewStyle;
 }
 
 interface IListItemButton {
@@ -225,7 +226,7 @@ interface IListItemButton {
 	underlayColor?: string;
 }
 
-const Button = React.memo(({ onPress, backgroundColor, underlayColor, ...props }: IListButtonPress) => {
+const Button = React.memo(({ onPress, backgroundColor, underlayColor, style, ...props }: IListButtonPress) => {
 	'use memo';
 
 	const { colors } = useTheme();
@@ -241,7 +242,7 @@ const Button = React.memo(({ onPress, backgroundColor, underlayColor, ...props }
 	return (
 		<Touch
 			onPress={handlePress}
-			style={{ backgroundColor: backgroundColor || colors.surfaceRoom }}
+			style={[{ backgroundColor: backgroundColor || colors.surfaceRoom }, style]}
 			underlayColor={underlayColor}
 			enabled={!props.disabled || !!props.disabledReason}>
 			<Content {...props} />
@@ -252,6 +253,7 @@ const Button = React.memo(({ onPress, backgroundColor, underlayColor, ...props }
 export interface IListItem extends Omit<IListItemContent, 'theme'>, Omit<IListItemButton, 'theme'> {
 	backgroundColor?: string;
 	onPress?: Function;
+	style?: ViewStyle;
 }
 
 const ListItem = React.memo(({ ...props }: IListItem) => {

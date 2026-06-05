@@ -78,7 +78,7 @@ export function useActionSheetDetents({
 				detents = [heightToDetent(Math.round(measuredHeight), windowHeight)];
 			}
 		} else if (contentHeight > 0) {
-			const rawContentDetent = (contentHeight + bottomInset) / windowHeight;
+			const rawContentDetent = (contentHeight + bottomInset + HANDLE_HEIGHT) / windowHeight;
 			const contentDetent = Math.min(
 				ACTION_SHEET_MAX_HEIGHT_FRACTION,
 				Math.max(ACTION_SHEET_MIN_HEIGHT_FRACTION, rawContentDetent)

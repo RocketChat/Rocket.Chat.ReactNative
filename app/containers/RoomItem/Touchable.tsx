@@ -217,6 +217,7 @@ const Touchable = ({
 				<Animated.View style={animatedStyles}>
 					<Touch
 						onPress={handlePress}
+						onLongPress={handleLongPress}
 						testID={testID}
 						style={{
 							backgroundColor: isFocused ? colors.surfaceTint : colors.surfaceRoom

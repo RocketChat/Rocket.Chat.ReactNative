@@ -11,20 +11,37 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
       }
     }
   >
-    <View
+    <ExternalKeyboardView
       accessibilityLabel="private channel private channel ."
       accessibilityRole="header"
       accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
       style={
         [
-          {
-            "flex": 1,
-            "justifyContent": "center",
-          },
-          {
-            "height": 36.9,
-            "opacity": 1,
-          },
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
         ]
       }
     >
@@ -130,7 +147,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           </View>
         </View>
       </RNGestureHandlerButton>
-    </View>
+    </ExternalKeyboardView>
   </View>,
   <View
     style={
@@ -141,20 +158,37 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
       }
     }
   >
-    <View
+    <ExternalKeyboardView
       accessibilityLabel="public channel public channel ."
       accessibilityRole="header"
       accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
       style={
         [
-          {
-            "flex": 1,
-            "justifyContent": "center",
-          },
-          {
-            "height": 36.9,
-            "opacity": 1,
-          },
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
         ]
       }
     >
@@ -260,7 +294,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           </View>
         </View>
       </RNGestureHandlerButton>
-    </View>
+    </ExternalKeyboardView>
   </View>,
   <View
     style={
@@ -271,20 +305,37 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
       }
     }
   >
-    <View
+    <ExternalKeyboardView
       accessibilityLabel="Discussion discussion ."
       accessibilityRole="header"
       accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
       style={
         [
-          {
-            "flex": 1,
-            "justifyContent": "center",
-          },
-          {
-            "height": 36.9,
-            "opacity": 1,
-          },
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
         ]
       }
     >
@@ -403,7 +454,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           </View>
         </View>
       </RNGestureHandlerButton>
-    </View>
+    </ExternalKeyboardView>
   </View>,
   <View
     style={
@@ -414,20 +465,37 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
       }
     }
   >
-    <View
+    <ExternalKeyboardView
       accessibilityLabel="Omnichannel omnichannel ."
       accessibilityRole="header"
       accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
       style={
         [
-          {
-            "flex": 1,
-            "justifyContent": "center",
-          },
-          {
-            "height": 36.9,
-            "opacity": 1,
-          },
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
         ]
       }
     >
@@ -533,7 +601,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           </View>
         </View>
       </RNGestureHandlerButton>
-    </View>
+    </ExternalKeyboardView>
   </View>,
   <View
     style={
@@ -544,20 +612,37 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
       }
     }
   >
-    <View
+    <ExternalKeyboardView
       accessibilityLabel="private team private team ."
       accessibilityRole="header"
       accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
       style={
         [
-          {
-            "flex": 1,
-            "justifyContent": "center",
-          },
-          {
-            "height": 36.9,
-            "opacity": 1,
-          },
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
         ]
       }
     >
@@ -663,7 +748,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           </View>
         </View>
       </RNGestureHandlerButton>
-    </View>
+    </ExternalKeyboardView>
   </View>,
   <View
     style={
@@ -674,20 +759,37 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
       }
     }
   >
-    <View
+    <ExternalKeyboardView
       accessibilityLabel="Team public team ."
       accessibilityRole="header"
       accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
       style={
         [
-          {
-            "flex": 1,
-            "justifyContent": "center",
-          },
-          {
-            "height": 36.9,
-            "opacity": 1,
-          },
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
         ]
       }
     >
@@ -793,7 +895,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           </View>
         </View>
       </RNGestureHandlerButton>
-    </View>
+    </ExternalKeyboardView>
   </View>,
   <View
     style={
@@ -804,20 +906,37 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
       }
     }
   >
-    <View
+    <ExternalKeyboardView
       accessibilityLabel="Message group dm ."
       accessibilityRole="header"
       accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
       style={
         [
-          {
-            "flex": 1,
-            "justifyContent": "center",
-          },
-          {
-            "height": 36.9,
-            "opacity": 1,
-          },
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
         ]
       }
     >
@@ -923,7 +1042,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           </View>
         </View>
       </RNGestureHandlerButton>
-    </View>
+    </ExternalKeyboardView>
   </View>,
   <View
     style={
@@ -934,20 +1053,37 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
       }
     }
   >
-    <View
+    <ExternalKeyboardView
       accessibilityLabel="private channel online dm ."
       accessibilityRole="header"
       accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
       style={
         [
-          {
-            "flex": 1,
-            "justifyContent": "center",
-          },
-          {
-            "height": 36.9,
-            "opacity": 1,
-          },
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
         ]
       }
     >
@@ -1053,7 +1189,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           </View>
         </View>
       </RNGestureHandlerButton>
-    </View>
+    </ExternalKeyboardView>
   </View>,
   <View
     style={
@@ -1064,20 +1200,37 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
       }
     }
   >
-    <View
+    <ExternalKeyboardView
       accessibilityLabel="private channel away dm ."
       accessibilityRole="header"
       accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
       style={
         [
-          {
-            "flex": 1,
-            "justifyContent": "center",
-          },
-          {
-            "height": 36.9,
-            "opacity": 1,
-          },
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
         ]
       }
     >
@@ -1183,7 +1336,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           </View>
         </View>
       </RNGestureHandlerButton>
-    </View>
+    </ExternalKeyboardView>
   </View>,
   <View
     style={
@@ -1194,20 +1347,37 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
       }
     }
   >
-    <View
+    <ExternalKeyboardView
       accessibilityLabel="private channel busy dm ."
       accessibilityRole="header"
       accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
       style={
         [
-          {
-            "flex": 1,
-            "justifyContent": "center",
-          },
-          {
-            "height": 36.9,
-            "opacity": 1,
-          },
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
         ]
       }
     >
@@ -1313,7 +1483,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           </View>
         </View>
       </RNGestureHandlerButton>
-    </View>
+    </ExternalKeyboardView>
   </View>,
   <View
     style={
@@ -1324,20 +1494,37 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
       }
     }
   >
-    <View
+    <ExternalKeyboardView
       accessibilityLabel="private channel loading dm ."
       accessibilityRole="header"
       accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
       style={
         [
-          {
-            "flex": 1,
-            "justifyContent": "center",
-          },
-          {
-            "height": 36.9,
-            "opacity": 1,
-          },
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
         ]
       }
     >
@@ -1443,7 +1630,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           </View>
         </View>
       </RNGestureHandlerButton>
-    </View>
+    </ExternalKeyboardView>
   </View>,
   <View
     style={
@@ -1454,20 +1641,37 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
       }
     }
   >
-    <View
+    <ExternalKeyboardView
       accessibilityLabel="private channel offline dm ."
       accessibilityRole="header"
       accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
       style={
         [
-          {
-            "flex": 1,
-            "justifyContent": "center",
-          },
-          {
-            "height": 36.9,
-            "opacity": 1,
-          },
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
         ]
       }
     >
@@ -1573,7 +1777,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           </View>
         </View>
       </RNGestureHandlerButton>
-    </View>
+    </ExternalKeyboardView>
   </View>,
   <View
     style={
@@ -1584,20 +1788,37 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
       }
     }
   >
-    <View
+    <ExternalKeyboardView
       accessibilityLabel="private channel classified ."
       accessibilityRole="header"
       accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
       style={
         [
-          {
-            "flex": 1,
-            "justifyContent": "center",
-          },
-          {
-            "height": 36.9,
-            "opacity": 1,
-          },
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
         ]
       }
     >
@@ -1703,7 +1924,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           </View>
         </View>
       </RNGestureHandlerButton>
-    </View>
+    </ExternalKeyboardView>
   </View>,
   <View
     style={
@@ -1714,20 +1935,37 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
       }
     }
   >
-    <View
+    <ExternalKeyboardView
       accessibilityLabel="private team classified ."
       accessibilityRole="header"
       accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
       style={
         [
-          {
-            "flex": 1,
-            "justifyContent": "center",
-          },
-          {
-            "height": 36.9,
-            "opacity": 1,
-          },
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
         ]
       }
     >
@@ -1833,7 +2071,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           </View>
         </View>
       </RNGestureHandlerButton>
-    </View>
+    </ExternalKeyboardView>
   </View>,
 ]
 `;
@@ -1849,20 +2087,37 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
       }
     }
   >
-    <View
+    <ExternalKeyboardView
       accessibilityLabel="private channel title subtitle."
       accessibilityRole="header"
       accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
       style={
         [
-          {
-            "flex": 1,
-            "justifyContent": "center",
-          },
-          {
-            "height": 36.9,
-            "opacity": 1,
-          },
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
         ]
       }
     >
@@ -2001,7 +2256,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           </Text>
         </View>
       </RNGestureHandlerButton>
-    </View>
+    </ExternalKeyboardView>
   </View>,
   <View
     style={
@@ -2012,20 +2267,37 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
       }
     }
   >
-    <View
+    <ExternalKeyboardView
       accessibilityLabel="private channel title subtitle."
       accessibilityRole="header"
       accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
       style={
         [
-          {
-            "flex": 1,
-            "justifyContent": "center",
-          },
-          {
-            "height": 36.9,
-            "opacity": 1,
-          },
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
         ]
       }
     >
@@ -2142,7 +2414,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   "textAlign": "left",
                 },
                 {
-                  "color": "#E4E7EA",
+                  "color": "#C1C7D0",
                   "lineHeight": undefined,
                 },
                 {
@@ -2164,7 +2436,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           </Text>
         </View>
       </RNGestureHandlerButton>
-    </View>
+    </ExternalKeyboardView>
   </View>,
   <View
     style={
@@ -2175,20 +2447,37 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
       }
     }
   >
-    <View
+    <ExternalKeyboardView
       accessibilityLabel="private channel title subtitle."
       accessibilityRole="header"
       accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
       style={
         [
-          {
-            "flex": 1,
-            "justifyContent": "center",
-          },
-          {
-            "height": 36.9,
-            "opacity": 1,
-          },
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
         ]
       }
     >
@@ -2327,7 +2616,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           </Text>
         </View>
       </RNGestureHandlerButton>
-    </View>
+    </ExternalKeyboardView>
   </View>,
 ]
 `;
@@ -2343,20 +2632,37 @@ exports[`Story Snapshots: Thread should match snapshot 1`] = `
       }
     }
   >
-    <View
+    <ExternalKeyboardView
       accessibilityLabel="private channel title parent title."
       accessibilityRole="header"
       accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
       style={
         [
-          {
-            "flex": 1,
-            "justifyContent": "center",
-          },
-          {
-            "height": 36.9,
-            "opacity": 1,
-          },
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
         ]
       }
     >
@@ -2503,7 +2809,7 @@ exports[`Story Snapshots: Thread should match snapshot 1`] = `
           </View>
         </View>
       </RNGestureHandlerButton>
-    </View>
+    </ExternalKeyboardView>
   </View>,
   <View
     style={
@@ -2514,7 +2820,7 @@ exports[`Story Snapshots: Thread should match snapshot 1`] = `
       }
     }
   >
-    <View
+    <ExternalKeyboardView
       accessibilityLabel="private channel markdown
 preview
 #3
@@ -2522,16 +2828,33 @@ preview
 5 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
       accessibilityRole="header"
       accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
       style={
         [
-          {
-            "flex": 1,
-            "justifyContent": "center",
-          },
-          {
-            "height": 36.9,
-            "opacity": 1,
-          },
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
         ]
       }
     >
@@ -2682,7 +3005,7 @@ preview
           </View>
         </View>
       </RNGestureHandlerButton>
-    </View>
+    </ExternalKeyboardView>
   </View>,
 ]
 `;
@@ -2698,20 +3021,37 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
       }
     }
   >
-    <View
+    <ExternalKeyboardView
       accessibilityLabel="private channel title ."
       accessibilityRole="header"
       accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
       style={
         [
-          {
-            "flex": 1,
-            "justifyContent": "center",
-          },
-          {
-            "height": 36.9,
-            "opacity": 1,
-          },
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
         ]
       }
     >
@@ -2817,7 +3157,7 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
           </View>
         </View>
       </RNGestureHandlerButton>
-    </View>
+    </ExternalKeyboardView>
   </View>,
   <View
     style={
@@ -2828,20 +3168,37 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
       }
     }
   >
-    <View
+    <ExternalKeyboardView
       accessibilityLabel="private channel Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries ."
       accessibilityRole="header"
       accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
       style={
         [
-          {
-            "flex": 1,
-            "justifyContent": "center",
-          },
-          {
-            "height": 36.9,
-            "opacity": 1,
-          },
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
         ]
       }
     >
@@ -2947,7 +3304,7 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
           </View>
         </View>
       </RNGestureHandlerButton>
-    </View>
+    </ExternalKeyboardView>
   </View>,
   <View
     style={
@@ -2958,20 +3315,37 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
       }
     }
   >
-    <View
+    <ExternalKeyboardView
       accessibilityLabel="private channel title subtitle."
       accessibilityRole="header"
       accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
       style={
         [
-          {
-            "flex": 1,
-            "justifyContent": "center",
-          },
-          {
-            "height": 36.9,
-            "opacity": 1,
-          },
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
         ]
       }
     >
@@ -3110,7 +3484,7 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
           </Text>
         </View>
       </RNGestureHandlerButton>
-    </View>
+    </ExternalKeyboardView>
   </View>,
   <View
     style={
@@ -3121,20 +3495,37 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
       }
     }
   >
-    <View
+    <ExternalKeyboardView
       accessibilityLabel="private channel title Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
       accessibilityRole="header"
       accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
       style={
         [
-          {
-            "flex": 1,
-            "justifyContent": "center",
-          },
-          {
-            "height": 36.9,
-            "opacity": 1,
-          },
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
         ]
       }
     >
@@ -3273,7 +3664,7 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
           </Text>
         </View>
       </RNGestureHandlerButton>
-    </View>
+    </ExternalKeyboardView>
   </View>,
   <View
     style={
@@ -3284,20 +3675,37 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
       }
     }
   >
-    <View
+    <ExternalKeyboardView
       accessibilityLabel="private channel Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
       accessibilityRole="header"
       accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
       style={
         [
-          {
-            "flex": 1,
-            "justifyContent": "center",
-          },
-          {
-            "height": 36.9,
-            "opacity": 1,
-          },
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
         ]
       }
     >
@@ -3437,7 +3845,7 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
           </Text>
         </View>
       </RNGestureHandlerButton>
-    </View>
+    </ExternalKeyboardView>
   </View>,
 ]
 `;
@@ -3453,20 +3861,37 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
       }
     }
   >
-    <View
+    <ExternalKeyboardView
       accessibilityLabel="private channel title ."
       accessibilityRole="header"
       accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
       style={
         [
-          {
-            "flex": 1,
-            "justifyContent": "center",
-          },
-          {
-            "height": 36.9,
-            "opacity": 1,
-          },
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
         ]
       }
     >
@@ -3605,7 +4030,7 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
           </Text>
         </View>
       </RNGestureHandlerButton>
-    </View>
+    </ExternalKeyboardView>
   </View>,
   <View
     style={
@@ -3616,20 +4041,37 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
       }
     }
   >
-    <View
+    <ExternalKeyboardView
       accessibilityLabel="private channel title ."
       accessibilityRole="header"
       accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
       style={
         [
-          {
-            "flex": 1,
-            "justifyContent": "center",
-          },
-          {
-            "height": 36.9,
-            "opacity": 1,
-          },
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
         ]
       }
     >
@@ -3768,7 +4210,7 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
           </Text>
         </View>
       </RNGestureHandlerButton>
-    </View>
+    </ExternalKeyboardView>
   </View>,
   <View
     style={
@@ -3779,20 +4221,37 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
       }
     }
   >
-    <View
+    <ExternalKeyboardView
       accessibilityLabel="private channel title ."
       accessibilityRole="header"
       accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
       style={
         [
-          {
-            "flex": 1,
-            "justifyContent": "center",
-          },
-          {
-            "height": 36.9,
-            "opacity": 1,
-          },
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
         ]
       }
     >
@@ -3931,7 +4390,7 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
           </Text>
         </View>
       </RNGestureHandlerButton>
-    </View>
+    </ExternalKeyboardView>
   </View>,
 ]
 `;

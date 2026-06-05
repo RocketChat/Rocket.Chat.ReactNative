@@ -1,4 +1,4 @@
-appId: chat.rocket.reactnative
+appId: ${APP_ID}
 name: E2E Encryption
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
