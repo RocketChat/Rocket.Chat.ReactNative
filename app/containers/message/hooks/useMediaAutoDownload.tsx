@@ -62,6 +62,7 @@ export const useMediaAutoDownload = ({
 	const fileType = getFileType(file) ?? 'image';
 	const { id, baseUrl, user } = useContext(MessageContext);
 	const [status, setStatus] = useState<TDownloadState>('to-download');
+	const [localUri, setLocalUri] = useState<string | null>(null);
 	const [currentFile, setCurrentFile] = useFile(file, id);
 	const originalUrl = getOriginalURL(file);
 	const url = formatAttachmentUrl(
@@ -139,6 +140,7 @@ export const useMediaAutoDownload = ({
 		setCurrentFile({
 			title_link: uri
 		});
+		setLocalUri(uri);
 		setStatus('downloaded');
 	};
 
@@ -181,6 +183,7 @@ export const useMediaAutoDownload = ({
 	return {
 		status,
 		url,
+		localUri,
 		onPress,
 		currentFile,
 		isEncrypted
