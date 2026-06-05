@@ -96,6 +96,8 @@ import { goRoom } from '../../lib/methods/helpers/goRoom';
 import { waitForNavigationReady } from '../../lib/navigation/appNavigation';
 import sdk from '../../lib/services/sdk';
 import EventEmitter from '../../lib/methods/helpers/events';
+import { localAuthenticate } from '../../lib/methods/helpers/localAuthentication';
+import { CURRENT_SERVER, TOKEN_KEY } from '../../lib/constants/keys';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -446,5 +448,63 @@ describe('deepLinking saga — server already connected, should skip changing se
 
 		expect(jest.mocked(goRoom)).toHaveBeenCalledTimes(1);
 		emitSpy.mockRestore();
+	});
+});
+
+describe('deepLinking saga — handleShareExtension server-already-connected guard', () => {
+	const SERVER = 'https://my.server.com';
+	const USER_TOKEN = 'user-token-123';
+
+	beforeEach(() => {
+		jest.mocked(UserPreferences.getString).mockImplementation((key: string) => {
+			if (key === CURRENT_SERVER) return SERVER;
+			if (key === `${TOKEN_KEY}-${SERVER}`) return USER_TOKEN;
+			return null;
+		});
+		jest.mocked(getServerById).mockResolvedValue({ id: SERVER, version: '6.0.0' } as any);
+		jest.mocked(localAuthenticate).mockResolvedValue(undefined);
+		(sdk as any).server = undefined;
+	});
+
+	afterEach(() => {
+		(sdk as any).server = undefined;
+	});
+
+	/**
+	 * Critical regression: when the SDK is already connected to the server,
+	 * selectServer short-circuits without emitting LOGIN.SUCCESS.
+	 * The saga MUST NOT block on take(LOGIN.SUCCESS) in that case.
+	 */
+	it('navigates to ROOT_SHARE_EXTENSION without waiting for LOGIN.SUCCESS when sdk.server === server', async () => {
+		(sdk as any).server = SERVER; // already connected
+		const store = setupStore();
+
+		store.dispatch(deepLinkingOpen({ type: 'shareextension' } as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(store.getState().app.root).toBe(RootEnum.ROOT_SHARE_EXTENSION);
+	});
+
+	/**
+	 * Normal path: SDK is connected to a different server. The saga must
+	 * wait for LOGIN.SUCCESS before navigating to ROOT_SHARE_EXTENSION.
+	 */
+	it('blocks on take(LOGIN.SUCCESS) then navigates when sdk.server !== server', async () => {
+		(sdk as any).server = 'https://other.server.com'; // different server
+		const store = setupStore();
+
+		store.dispatch(deepLinkingOpen({ type: 'shareextension' } as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		// Still blocked — LOGIN.SUCCESS not yet dispatched
+		expect(store.getState().app.root).not.toBe(RootEnum.ROOT_SHARE_EXTENSION);
+
+		store.dispatch(loginSuccess({ id: 'u1', token: USER_TOKEN } as any));
+		await flushSagaMicrotasks();
+
+		expect(store.getState().app.root).toBe(RootEnum.ROOT_SHARE_EXTENSION);
 	});
 });
