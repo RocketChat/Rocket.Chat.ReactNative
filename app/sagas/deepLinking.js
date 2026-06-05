@@ -237,6 +237,11 @@ const handleOpen = function* handleOpen({ params }) {
 		if (params.token) {
 			if (!hostAlreadyConnected) {
 				yield take(types.SERVER.SELECT_SUCCESS);
+				// SERVER.SELECT_SUCCESS doesn't mean 'connected'; skip the take if it already is.
+				const connected = yield select(state => state.meteor.connected);
+				if (!connected) {
+					yield take(types.METEOR.SUCCESS);
+				}
 			}
 			yield put(loginRequest({ resume: params.token }, true));
 			yield take(types.LOGIN.SUCCESS);
@@ -332,6 +337,11 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 		EventEmitter.emit('NewServer', { server: host });
 		if (params.token) {
 			yield take(types.SERVER.SELECT_SUCCESS);
+			// SERVER.SELECT_SUCCESS doesn't mean 'connected'; skip the take if it already is.
+			const connected = yield select(state => state.meteor.connected);
+			if (!connected) {
+				yield take(types.METEOR.SUCCESS);
+			}
 			yield put(loginRequest({ resume: params.token }, true));
 			yield take(types.LOGIN.SUCCESS);
 			yield handleNavigateCallRoom({ params });

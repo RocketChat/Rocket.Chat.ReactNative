@@ -53,8 +53,40 @@
          this.ssl = url.startsWith('https') || url.startsWith('wss');
          this.url = url.replace(/^https?:\/\//, '').replace(/^wss?:\/\//, '');
          this.client.onDispatchMessage((message) => {
-@@ -114,6 +115,58 @@
-         (_a = this.ws) === null || _a === void 0 ? void 0 : _a.close();
+@@ -91,6 +92,12 @@
+                 });
+             };
+             ws.onclose = () => {
++                // Ignore close events from a socket we've already replaced.
++                // Without this, a zombie socket's late onclose clobbers the live
++                // connection's status and may trigger a spurious reconnect.
++                if (ws !== this.ws) {
++                    return;
++                }
+                 clearTimeout(this.retryOptions.retryTimer);
+                 if (this.status === 'closed') {
+                     return;
+@@ -109,11 +116,75 @@
+         });
+     }
+     close() {
+-        var _a;
+         this.status = 'closed';
+-        (_a = this.ws) === null || _a === void 0 ? void 0 : _a.close();
++        if (this.ws) {
++            // Sever all handlers before closing so the dying socket cannot
++            // deliver late messages or fire onclose on the live connection.
++            try {
++                this.ws.onopen = null;
++                this.ws.onmessage = null;
++                this.ws.onerror = null;
++                this.ws.onclose = null;
++            }
++            catch (_) {
++                // some WebSocket impls throw on null assignment — safe to ignore
++            }
++            this.ws.close();
++        }
          this.emitStatus();
      }
 +    probe(timeoutMs = 2000) {
