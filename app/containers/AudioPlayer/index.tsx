@@ -117,11 +117,16 @@ const AudioPlayer = ({
 
 	useEffect(() => {
 		if (fileUri && isDownloaded) {
-			InteractionManager.runAfterInteractions(async () => {
-				audioUri.current = await AudioManager.loadAudio({ msgId, rid, uri: fileUri });
-				AudioManager.setOnPlaybackStatusUpdate(audioUri.current, onPlaybackStatusUpdate);
-				AudioManager.setRateAsync(audioUri.current, playbackSpeed);
+			const task = InteractionManager.runAfterInteractions(async () => {
+				try {
+					audioUri.current = await AudioManager.loadAudio({ msgId, rid, uri: fileUri });
+					AudioManager.setOnPlaybackStatusUpdate(audioUri.current, onPlaybackStatusUpdate);
+					AudioManager.setRateAsync(audioUri.current, playbackSpeed);
+				} catch {
+					// do nothing
+				}
 			});
+			return () => task.cancel();
 		}
 	}, [fileUri, isDownloaded]);
 
