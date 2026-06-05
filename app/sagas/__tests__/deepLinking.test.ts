@@ -35,11 +35,8 @@ jest.mock('../../lib/services/connect', () => ({
 jest.mock('../../lib/services/sdk', () => ({
 	__esModule: true,
 	default: {
-		current: {
-			client: {
-				host: ''
-			}
-		}
+		server: undefined,
+		current: undefined
 	}
 }));
 
@@ -386,13 +383,13 @@ describe('deepLinking saga — server already connected, should skip changing se
 		jest.mocked(goRoom).mockResolvedValue(undefined);
 
 		// Key setup: SDK websocket is already open to HOST
-		(sdk.current as any).client.host = HOST;
+		(sdk as any).server = HOST;
 	});
 
 	afterEach(() => {
 		jest.useRealTimers();
 		// Reset so other describe blocks see the default empty host
-		(sdk.current as any).client.host = '';
+		(sdk as any).server = undefined;
 	});
 
 	/**
