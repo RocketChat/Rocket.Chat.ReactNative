@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Image } from 'expo-image';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 import { isTablet } from '../../lib/methods/helpers';
 import { useTheme } from '../../theme';
@@ -26,16 +27,21 @@ const styles = StyleSheet.create({
 
 interface IServerAvatar {
 	url: string;
-	image: string;
+	image?: string;
 }
 
-// TODO: missing skeleton
 const ServerAvatar = React.memo(({ url, image }: IServerAvatar) => {
 	const { colors } = useTheme();
 
 	return (
 		<View style={styles.container}>
-			{image && <Image style={[styles.image, { borderColor: colors.strokeLight }]} source={{ uri: `${url}/${image}` }} />}
+			{image ? (
+				<Image style={[styles.image, { borderColor: colors.strokeLight }]} source={{ uri: `${url}/${image}` }} />
+			) : (
+				<SkeletonPlaceholder backgroundColor={colors.surfaceNeutral} borderRadius={BORDER_RADIUS}>
+					<SkeletonPlaceholder.Item width={SIZE} height={SIZE} />
+				</SkeletonPlaceholder>
+			)}
 		</View>
 	);
 });
