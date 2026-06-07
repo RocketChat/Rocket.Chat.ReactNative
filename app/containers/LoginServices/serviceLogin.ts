@@ -1,14 +1,23 @@
 import * as AppleAuthentication from 'expo-apple-authentication';
+import * as WebBrowser from 'expo-web-browser';
 import { Linking } from 'react-native';
 import { Base64 } from 'js-base64';
 
+import { deepLinkingOpen } from '../../actions/deepLinking';
 import Navigation from '../../lib/navigation/appNavigation';
 import { type IItemService, type IOpenOAuth, type IServiceLogin } from './interfaces';
 import { random } from '../../lib/methods/helpers';
+import parseDeepLinking from '../../lib/methods/helpers/parseDeepLinking';
 import { loginOAuthOrSso } from '../../lib/services/connect';
-import { events, logEvent } from '../../lib/methods/helpers/log';
+import log, { events, logEvent } from '../../lib/methods/helpers/log';
+import { store } from '../../lib/store/auxStore';
 
 type TLoginStyle = 'popup' | 'redirect';
+
+// The Rocket.Chat server hard-codes 'rocketchat://auth' as the mobile redirect URL
+// for the 'redirect' OAuth login style; the native auth session uses the same value
+// as its callback so the redirect closes the session and returns the credentials.
+const OAUTH_REDIRECT_URL = 'rocketchat://auth';
 
 export const onPressFacebook = ({ service, server }: IServiceLogin) => {
 	logEvent(events.ENTER_WITH_FACEBOOK);
@@ -98,7 +107,9 @@ export const onPressCustomOAuth = ({ loginService, server }: { loginService: IIt
 	logEvent(events.ENTER_WITH_CUSTOM_OAUTH);
 	const { serverURL, authorizePath, clientId, scope, service } = loginService;
 	const redirectUri = `${server}/_oauth/${service}`;
-	const state = getOAuthState();
+	// 'redirect' style opens the provider in a native browser session (instead of the
+	// in-app WebView) so WebAuthn/passkey authenticators are available to the user.
+	const state = getOAuthState('redirect');
 	const separator = authorizePath.indexOf('?') !== -1 ? '&' : '?';
 	const params = `${separator}client_id=${clientId}&redirect_uri=${encodeURIComponent(
 		redirectUri
@@ -106,7 +117,7 @@ export const onPressCustomOAuth = ({ loginService, server }: { loginService: IIt
 	const domain = `${serverURL}`;
 	const absolutePath = `${authorizePath}${params}`;
 	const url = absolutePath.includes(domain) ? absolutePath : domain + absolutePath;
-	openOAuth({ url });
+	openOAuthSession(url);
 };
 
 export const onPressSaml = ({ loginService, server }: { loginService: IItemService; server: string }) => {
@@ -151,7 +162,7 @@ const getOAuthState = (loginStyle: TLoginStyle = 'popup') => {
 	if (loginStyle === 'redirect') {
 		obj = {
 			...obj,
-			redirectUrl: 'rocketchat://auth'
+			redirectUrl: OAUTH_REDIRECT_URL
 		};
 	}
 	return Base64.encodeURI(JSON.stringify(obj));
@@ -159,4 +170,23 @@ const getOAuthState = (loginStyle: TLoginStyle = 'popup') => {
 
 const openOAuth = ({ url, ssoToken, authType = 'oauth' }: IOpenOAuth) => {
 	Navigation.navigate('AuthenticationWebView', { url, authType, ssoToken });
+};
+
+// Opens the OAuth provider in a native browser session — ASWebAuthenticationSession on
+// iOS, Chrome Custom Tabs on Android — which, unlike the in-app WebView, can run WebAuthn
+// (passkeys/security keys). The server redirects to OAUTH_REDIRECT_URL when done, which
+// closes the session and resolves with that URL; we route it through the deep-linking
+// saga (type 'oauth') to complete the login, exactly as a redirect deep link would.
+const openOAuthSession = async (url: string) => {
+	try {
+		const result = await WebBrowser.openAuthSessionAsync(url, OAUTH_REDIRECT_URL);
+		if (result.type === 'success' && 'url' in result && result.url) {
+			const parsed = parseDeepLinking(result.url);
+			if (parsed) {
+				store.dispatch(deepLinkingOpen(parsed));
+			}
+		}
+	} catch (e) {
+		log(e);
+	}
 };
