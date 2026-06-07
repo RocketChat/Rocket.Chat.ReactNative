@@ -68,14 +68,7 @@ Create a release version APK or IPA file and install it on your device/simulator
 #### Android Production Build
 
 ```bash
-./gradlew bundleOfficialRelease
-```
-
-#### iOS Production Build (Simulator)
-
-Build Experimental app for Simulator:
-```bash
-bundle exec fastlane build_experimental_simulator
+./gradlew bundleRelease
 ```
 
 ### Option 2: Development Build

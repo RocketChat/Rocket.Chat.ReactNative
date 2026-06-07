@@ -12,6 +12,7 @@ import { store } from '../store/auxStore';
 import { loginRequest, logout, setLoginServices, setUser } from '../../actions/login';
 import sdk from './sdk';
 import { mediaSessionInstance } from './voip/MediaSessionInstance';
+import { pendingHangups } from './voip/pendingHangups';
 import I18n from '../../i18n';
 import { type ICredentials, type ILoggedUser, STATUSES } from '../../definitions';
 import { connectRequest, connectSuccess, disconnect as disconnectAction } from '../../actions/connect';
@@ -41,6 +42,7 @@ interface IServices {
 let connectingListener: any;
 let connectedListener: any;
 let closeListener: any;
+let pendingHangupsConnectedListener: any;
 let usersListener: any;
 let notifyAllListener: any;
 let rolesListener: any;
@@ -67,6 +69,10 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 
 		if (closeListener) {
 			closeListener.then(stopListener);
+		}
+
+		if (pendingHangupsConnectedListener) {
+			pendingHangupsConnectedListener.then(stopListener);
 		}
 
 		if (usersListener) {
@@ -121,8 +127,27 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			}
 		});
 
+		// Tracks a real disconnect so the next `'connected'` can drain hangups the user tapped while
+		// the WebSocket was unhealthy. Local to the closure so it resets per `connect()` call.
+		let pendingHangupsDrainArmed = false;
+
 		closeListener = sdk.current.onStreamData('close', () => {
+			// Reset the rooms-subscription guard on every socket close. `forceReopen` (triggered by
+			// `checkAndReopen` after a long background) wipes the SDK subscriptions and emits 'close'
+			// but bypasses `connect()`, so without this the guard in `subscribeRooms` stays set and
+			// `stream-notify-user` is never re-subscribed — the rooms list silently stops updating.
+			unsubscribeRooms();
+			pendingHangupsDrainArmed = true;
 			store.dispatch(disconnectAction());
+		});
+
+		pendingHangupsConnectedListener = sdk.current.onStreamData('connected', () => {
+			if (!pendingHangupsDrainArmed) return;
+			pendingHangupsDrainArmed = false;
+			if (pendingHangups.size === 0) return;
+			awaitDdpLoggedIn(5000)
+				.then(() => mediaSessionInstance.drainPendingHangups())
+				.catch(error => log(error));
 		});
 
 		usersListener = sdk.current.onStreamData(

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { shallowEqual } from 'react-redux';
 
 import { SubscriptionType } from '../../../definitions';
 import { getUserSelector } from '../../../selectors/login';
@@ -8,7 +9,6 @@ import { compareServerVersion } from '../../methods/helpers/compareServerVersion
 import { isReadOnly } from '../../methods/helpers/isReadOnly';
 import { useAppSelector } from '../useAppSelector';
 import { usePermissions } from '../usePermissions';
-import { useSetting } from '../useSetting';
 
 export const useVideoConfCall = (
 	rid: string
@@ -17,18 +17,31 @@ export const useVideoConfCall = (
 	const [disabledTooltip, setDisabledTooltip] = useState(false);
 	const [roomType, setRoomType] = useState<SubscriptionType>();
 
+	// Read all call-related settings in a single subscription instead of one useSetting per key.
+	const settings = useAppSelector(
+		state => ({
+			jitsiEnabled: state.settings.Jitsi_Enabled,
+			jitsiEnableTeams: state.settings.Jitsi_Enable_Teams,
+			jitsiEnableChannels: state.settings.Jitsi_Enable_Channels,
+			videoConfEnableDMs: state.settings.VideoConf_Enable_DMs,
+			videoConfEnableChannels: state.settings.VideoConf_Enable_Channels,
+			videoConfEnableTeams: state.settings.VideoConf_Enable_Teams,
+			videoConfEnableGroups: state.settings.VideoConf_Enable_Groups,
+			omnichannelCallProvider: state.settings.Omnichannel_call_provider
+		}),
+		shallowEqual
+	);
+
 	// OLD SETTINGS
-	const jitsiEnabled = useSetting('Jitsi_Enabled');
-	const jitsiEnableTeams = useSetting('Jitsi_Enable_Teams');
-	const jitsiEnableChannels = useSetting('Jitsi_Enable_Channels');
+	const { jitsiEnabled, jitsiEnableTeams, jitsiEnableChannels } = settings;
 
 	// NEW SETTINGS
 	// Only disable video conf if the settings are explicitly FALSE - any falsy value counts as true
-	const enabledDMs = useSetting('VideoConf_Enable_DMs') !== false;
-	const enabledChannel = useSetting('VideoConf_Enable_Channels') !== false;
-	const enabledTeams = useSetting('VideoConf_Enable_Teams') !== false;
-	const enabledGroups = useSetting('VideoConf_Enable_Groups') !== false;
-	const enabledLiveChat = useSetting('Omnichannel_call_provider') === 'default-provider';
+	const enabledDMs = settings.videoConfEnableDMs !== false;
+	const enabledChannel = settings.videoConfEnableChannels !== false;
+	const enabledTeams = settings.videoConfEnableTeams !== false;
+	const enabledGroups = settings.videoConfEnableGroups !== false;
+	const enabledLiveChat = settings.omnichannelCallProvider === 'default-provider';
 
 	const serverVersion = useAppSelector(state => state.server.version);
 	const isServer5OrNewer = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.0.0');

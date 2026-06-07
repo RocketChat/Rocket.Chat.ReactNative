@@ -3031,7 +3031,7 @@ PODS:
     - Yoga
   - RNConfigReader (1.0.0):
     - React
-  - RNCPicker (2.11.1):
+  - RNCPicker (2.11.4):
     - boost
     - DoubleConversion
     - fast_float
@@ -4116,7 +4116,7 @@ SPEC CHECKSUMS:
   RNCClipboard: e560338bf6cc4656a09ff90610b62ddc0dbdad65
   RNCMaskedView: d707a83784c67099b54b37d056ababb2767ce15e
   RNConfigReader: 27bab37cca5e6b87766ffd73b8b8818ee46e3416
-  RNCPicker: 70fd0622147f0ca1b9c5e1be2069a4fb2e8ec461
+  RNCPicker: 35fc66f352403cdfe99d53b541f5180482ca2bc5
   RNDateTimePicker: ca1dc7e24d0b4839877f0ab619e7bca5db715289
   RNDeviceInfo: 900bd20e1fd3bfd894e7384cc4a83880c0341bd3
   RNFBAnalytics: 2e8b8ffcd2bb3d59a43ecbe09571c73c56edef7a
@@ -4142,6 +4142,6 @@ SPEC CHECKSUMS:
   Yoga: 1e91d83a5286cfd3b725eade59274c92270540d4
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
-PODFILE CHECKSUM: 02cbfc92458eddfe5b3aa3acd6023cbc9c5ee22f
+PODFILE CHECKSUM: d05b9b865205e9c845b4e7c288577d4b4ae403ab
 
 COCOAPODS: 1.15.2
