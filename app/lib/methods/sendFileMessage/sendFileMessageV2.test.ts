@@ -153,9 +153,7 @@ describe('sendFileMessageV2', () => {
 		const { persistUploadError, uploadQueue } = require('./utils');
 		uploadQueue['upload-path-1'] = {};
 
-		await expect(
-			sendFileMessageV2('rid1', baseFile, undefined, 'https://server.com')
-		).rejects.toThrow('upload failed');
+		await expect(sendFileMessageV2('rid1', baseFile, undefined, 'https://server.com')).rejects.toThrow('upload failed');
 
 		expect(persistUploadError).toHaveBeenCalledWith(baseFile.path, 'rid1');
 	});
