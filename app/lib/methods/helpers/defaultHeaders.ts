@@ -15,5 +15,3 @@ export const headers: CustomHeaders = {
 		Platform.OS
 	} ${DeviceInfo.getSystemVersion()}; v${DeviceInfo.getVersion()} (${DeviceInfo.getBuildNumber()})`
 };
-
-export const BASIC_AUTH_KEY = 'BASIC_AUTH_KEY';
