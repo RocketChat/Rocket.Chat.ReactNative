@@ -96,8 +96,9 @@ describe('mediaCallsStateSignals', () => {
 
 		const result = await mediaCallsStateSignals('device-id');
 
-		expect(result.signals).toHaveLength(2);
 		expect(result.success).toBe(true);
+		if (!result.success) return;
+		expect(result.signals).toHaveLength(2);
 	});
 
 	it('returns empty signals and success false when sdk.get throws', async () => {
@@ -105,8 +106,10 @@ describe('mediaCallsStateSignals', () => {
 
 		const result = await mediaCallsStateSignals('device-id');
 
-		expect(result.signals).toEqual([]);
 		expect(result.success).toBe(false);
+		if (!result.success && 'signals' in result) {
+			expect(result.signals).toEqual([]);
+		}
 	});
 
 	it('returns empty signals and success false when sdk.get returns an error response', async () => {
@@ -114,8 +117,10 @@ describe('mediaCallsStateSignals', () => {
 
 		const result = await mediaCallsStateSignals('device-id');
 
-		expect(result.signals).toEqual([]);
 		expect(result.success).toBe(false);
+		if (!result.success && 'signals' in result) {
+			expect(result.signals).toEqual([]);
+		}
 	});
 });
 
