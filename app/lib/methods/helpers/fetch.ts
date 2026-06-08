@@ -1,10 +1,10 @@
 import sdk from '../../services/sdk';
-import { type CustomHeaders, headers } from './defaultHeaders';
+import { type DefaultHeaders, headers } from './defaultHeaders';
 
 export type TMethods = 'POST' | 'GET' | 'DELETE' | 'PUT' | 'post' | 'get' | 'delete' | 'put';
 
 interface IOptions {
-	headers?: CustomHeaders;
+	headers?: DefaultHeaders;
 	signal?: AbortSignal;
 	method?: TMethods;
 	body?: any;
