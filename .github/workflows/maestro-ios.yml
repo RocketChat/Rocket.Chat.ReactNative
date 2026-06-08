@@ -45,6 +45,7 @@ jobs:
           E2E_ACCOUNT: ${{ secrets.E2E_ACCOUNT }}
 
       - name: Cache Maestro
+        id: cache-maestro
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: ~/.maestro
@@ -62,7 +63,7 @@ jobs:
           defaults write com.apple.iphonesimulator DeviceFramebufferOnly -bool true
 
       # Kick off the cold boot asynchronously so the iOS runtime boots in the
-      # background while Maestro + idb install. We block on it afterwards in
+      # background while Maestro installs. We block on it afterwards in
       # "Wait for Simulator Ready".
       - name: Start Simulator Boot
         run: |
@@ -83,12 +84,21 @@ jobs:
 
           xcrun simctl boot "$SIM_NAME" || true
 
-      - name: Install Maestro + idb
-        run: |
-          brew tap facebook/fb
-          brew install facebook/fb/idb-companion
-          curl -fsSL "https://get.maestro.mobile.dev" | bash
-          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+      # idb-companion is intentionally not installed: Maestro's iOS driver has
+      # used XCUITest since 1.18.0 and no longer needs idb to drive the simulator
+      # (verified on Maestro 2.5.1 + iOS 26 — launch, tap, hierarchy read and
+      # screenshot all work with idb absent). Dropping the `brew tap facebook/fb`
+      # + idb install removes ~110s/shard — the tap triggers a full Homebrew
+      # auto-update. MAESTRO_VERSION is read from the job env to pin the release.
+      - name: Install Maestro
+        # The install script wipes and re-downloads ~/.maestro on every run (it
+        # has no "already installed" check), so gate it on a cache miss —
+        # otherwise the Cache Maestro restore above is overwritten and wasted.
+        if: steps.cache-maestro.outputs.cache-hit != 'true'
+        run: curl -fsSL "https://get.maestro.mobile.dev" | bash
+
+      - name: Add Maestro to PATH
+        run: echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
 
       - name: Wait for Simulator Ready
         timeout-minutes: 15

@@ -89,6 +89,7 @@ jobs:
           exit 1
 
       - name: Cache Maestro
+        id: cache-maestro
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: ~/.maestro
@@ -105,9 +106,14 @@ jobs:
           E2E_ACCOUNT: ${{ secrets.E2E_ACCOUNT }}
 
       - name: Install Maestro
-        run: |
-          curl -Ls "https://get.maestro.mobile.dev" | bash
-          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+        # Gate on cache miss: the install script wipes and re-downloads ~/.maestro
+        # on every run (no "already installed" check), so without this guard the
+        # Cache Maestro restore above is overwritten and wasted (~70s/shard).
+        if: steps.cache-maestro.outputs.cache-hit != 'true'
+        run: curl -Ls "https://get.maestro.mobile.dev" | bash
+
+      - name: Add Maestro to PATH
+        run: echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
 
       - name: Enable KVM group permissions
         run: |
