@@ -126,64 +126,30 @@ describe('sendFileMessage router', () => {
 		(store.getState as jest.Mock).mockReturnValue({ server: { version: '6.9.0' } });
 		const { compareServerVersion } = require('../helpers');
 		(compareServerVersion as jest.Mock).mockReturnValueOnce(true);
-		await sendFileMessage('rid', { name: 'a', type: 't', path: '/p', size: 1 } as any, undefined, 'https://x.com', {
-			id: 'u',
-			token: 't'
-		});
-		// V1 hits /v1/rooms.upload
+		await sendFileMessage('rid', { name: 'a', type: 't', path: '/p', size: 1 } as any, undefined, 'https://x.com');
 		expect(mockState.url).toBe('https://x.com/api/v1/rooms.upload/rid');
 	});
 
 	it('routes to V2 for RC >= 6.10.0', async () => {
 		const { compareServerVersion } = require('../helpers');
 		(compareServerVersion as jest.Mock).mockReturnValueOnce(false);
-		await sendFileMessage('rid', { name: 'a', type: 't', path: '/p', size: 1 } as any, undefined, 'https://x.com', {
-			id: 'u',
-			token: 't'
-		});
+		await sendFileMessage('rid', { name: 'a', type: 't', path: '/p', size: 1 } as any, undefined, 'https://x.com');
 		expect(mockState.url).toBe('https://x.com/api/v1/rooms.media/rid');
 	});
 });
 
 describe('sendFileMessage V1 headers', () => {
-	it('spreads sdk.getHeaders() + Content-Type + auth headers when user has token + id', async () => {
+	it('spreads sdk.getHeaders() + Content-Type', async () => {
 		await sendFileMessageV1(
 			'rid',
 			{ name: 'a', type: 't', path: '/p', size: 1, store: 'Uploads', description: '' } as any,
 			undefined,
-			'https://x.com',
-			{ id: 'u-1', token: 'tok-1' }
+			'https://x.com'
 		);
 		expect(mockState.headers).toMatchObject({
 			'User-Agent': 'RC Mobile test',
-			'Content-Type': 'multipart/form-data',
-			'X-Auth-Token': 'tok-1',
-			'X-User-Id': 'u-1'
+			'Content-Type': 'multipart/form-data'
 		});
-	});
-
-	it('omits X-Auth-Token when user.token is undefined', async () => {
-		await sendFileMessageV1(
-			'rid',
-			{ name: 'a', type: 't', path: '/p', size: 1, store: 'Uploads', description: '' } as any,
-			undefined,
-			'https://x.com',
-			{ id: 'u-1' }
-		);
-		expect(mockState.headers['X-Auth-Token']).toBeUndefined();
-		expect(mockState.headers['X-User-Id']).toBe('u-1');
-	});
-
-	it('omits X-User-Id when user.id is undefined', async () => {
-		await sendFileMessageV1(
-			'rid',
-			{ name: 'a', type: 't', path: '/p', size: 1, store: 'Uploads', description: '' } as any,
-			undefined,
-			'https://x.com',
-			{ token: 'tok-1' }
-		);
-		expect(mockState.headers['X-User-Id']).toBeUndefined();
-		expect(mockState.headers['X-Auth-Token']).toBe('tok-1');
 	});
 
 	it('progress callback updates upload record progress field', async () => {
@@ -191,8 +157,7 @@ describe('sendFileMessage V1 headers', () => {
 			'rid',
 			{ name: 'a', type: 't', path: '/p', size: 1, store: 'Uploads', description: '' } as any,
 			undefined,
-			'https://x.com',
-			{ id: 'u-1', token: 'tok-1' }
+			'https://x.com'
 		);
 		const dbMod = require('../../database');
 		await mockState.progressCb!(50, 100);
@@ -209,23 +174,21 @@ describe('sendFileMessage V2', () => {
 	const baseFile = { name: 'a', type: 't', path: '/p', size: 1 } as any;
 
 	it('invokes Encryption.encryptFile with (rid, fileInfo)', async () => {
-		await sendFileMessageV2('rid', baseFile, undefined, 'https://x.com', { id: 'u-1', token: 'tok-1' });
+		await sendFileMessageV2('rid', baseFile, undefined, 'https://x.com');
 		expect(mockEncryptFile).toHaveBeenCalledWith('rid', baseFile);
 	});
 
 	it('uploads to /v1/rooms.media/{rid} with merged headers', async () => {
-		await sendFileMessageV2('rid', baseFile, undefined, 'https://x.com', { id: 'u-1', token: 'tok-1' });
+		await sendFileMessageV2('rid', baseFile, undefined, 'https://x.com');
 		expect(mockState.url).toBe('https://x.com/api/v1/rooms.media/rid');
 		expect(mockState.headers).toMatchObject({
 			'User-Agent': 'RC Mobile test',
-			'Content-Type': 'multipart/form-data',
-			'X-Auth-Token': 'tok-1',
-			'X-User-Id': 'u-1'
+			'Content-Type': 'multipart/form-data'
 		});
 	});
 
 	it('confirms via /v1/rooms.mediaConfirm with JSON Content-Type override', async () => {
-		await sendFileMessageV2('rid', baseFile, undefined, 'https://x.com', { id: 'u-1', token: 'tok-1' });
+		await sendFileMessageV2('rid', baseFile, undefined, 'https://x.com');
 		expect(fetch).toHaveBeenCalledWith(
 			'https://x.com/api/v1/rooms.mediaConfirm/rid/f1',
 			expect.objectContaining({
@@ -236,15 +199,9 @@ describe('sendFileMessage V2', () => {
 	});
 
 	it('includes a content form-data entry when Encryption returns fileContent', async () => {
-		await sendFileMessageV2('rid', baseFile, undefined, 'https://x.com', { id: 'u-1', token: 'tok-1' });
+		await sendFileMessageV2('rid', baseFile, undefined, 'https://x.com');
 		const contentField = mockState.formData.find((e: any) => e.name === 'content');
 		expect(contentField).toBeDefined();
 		expect(JSON.parse(contentField.data)).toEqual({ algorithm: 'a' });
-	});
-
-	it('omits X-Auth-Token / X-User-Id when user has neither', async () => {
-		await sendFileMessageV2('rid', baseFile, undefined, 'https://x.com', {});
-		expect(mockState.headers['X-Auth-Token']).toBeUndefined();
-		expect(mockState.headers['X-User-Id']).toBeUndefined();
 	});
 });

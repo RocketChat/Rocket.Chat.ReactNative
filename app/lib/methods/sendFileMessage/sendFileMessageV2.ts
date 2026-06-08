@@ -1,4 +1,4 @@
-import { type TSendFileMessageFileInfo, type IUser, type TUploadModel } from '../../../definitions';
+import { type TSendFileMessageFileInfo, type TUploadModel } from '../../../definitions';
 import database from '../../database';
 import { Encryption } from '../../encryption';
 import { copyFileToCacheDirectoryIfNeeded, createUploadRecord, persistUploadError, uploadQueue } from './utils';
@@ -12,18 +12,14 @@ export async function sendFileMessageV2(
 	fileInfo: TSendFileMessageFileInfo,
 	tmid: string | undefined,
 	server: string,
-	user: Partial<Pick<IUser, 'id' | 'token'>>,
 	isForceTryAgain?: boolean
 ): Promise<void> {
 	let uploadPath: string | null = '';
 	let uploadRecord: TUploadModel | null;
 	try {
-		const { id, token } = user;
 		const headers: Record<string, string> = {
 			...sdk.getHeaders(),
-			'Content-Type': 'multipart/form-data',
-			...(token ? { 'X-Auth-Token': token } : {}),
-			...(id ? { 'X-User-Id': id } : {})
+			'Content-Type': 'multipart/form-data'
 		};
 		const db = database.active;
 

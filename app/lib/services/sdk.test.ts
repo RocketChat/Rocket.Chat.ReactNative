@@ -157,12 +157,16 @@ describe('Sdk.subscribeNotifyUser', () => {
 });
 
 describe('Sdk.login', () => {
-	const buildFakeSdkWithLogin = (postResult: any, loginWithToken = jest.fn().mockResolvedValue(undefined)) => {
+	const buildFakeSdkWithLogin = (
+		postResult: any,
+		loginWithToken = jest.fn().mockResolvedValue(undefined),
+		logout = jest.fn().mockResolvedValue(undefined)
+	) => {
 		const post = jest.fn().mockResolvedValue(postResult);
 		return {
 			client: { ddp: {} },
 			connection: buildFakeConnection(),
-			account: { loginWithToken },
+			account: { loginWithToken, logout },
 			rest: { post, handleTwoFactorChallenge: jest.fn() },
 			__post: post,
 			__loginWithToken: loginWithToken
@@ -198,6 +202,31 @@ describe('Sdk.login', () => {
 		const err: any = await sdk.login({ user: 'john', password: 'bad' }).catch(e => e);
 		expect(err.status).toBe(401);
 		expect(err.data.error).toBe('Unauthorized');
+	});
+
+	it('sets X-Auth-Token and X-User-Id in getHeaders after successful login', async () => {
+		const fake = buildFakeSdkWithLogin({
+			success: true,
+			data: { authToken: 'tok-abc', userId: 'uid-1', me: { username: 'john' } }
+		});
+		setInternalSdk(fake);
+		await sdk.login({ user: 'john', password: 'secret' });
+		const headers = sdk.getHeaders();
+		expect(headers['X-Auth-Token']).toBe('tok-abc');
+		expect(headers['X-User-Id']).toBe('uid-1');
+	});
+
+	it('clears X-Auth-Token and X-User-Id from getHeaders after logout', async () => {
+		const fake = buildFakeSdkWithLogin({
+			success: true,
+			data: { authToken: 'tok-abc', userId: 'uid-1', me: { username: 'john' } }
+		});
+		setInternalSdk(fake);
+		await sdk.login({ user: 'john', password: 'secret' });
+		await sdk.logout();
+		const headers = sdk.getHeaders();
+		expect(headers['X-Auth-Token']).toBe('');
+		expect(headers['X-User-Id']).toBe('');
 	});
 });
 

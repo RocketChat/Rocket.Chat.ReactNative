@@ -245,6 +245,12 @@ class Sdk {
 				return Promise.reject(new Error('Invalid response from server'));
 			}
 			await this.current?.account.loginWithToken(loginResult.data.authToken);
+
+			this.setHeaders({
+				'X-Auth-Token': loginResult.data.authToken,
+				'X-User-Id': loginResult.data.userId
+			});
+
 			return loginResult.data;
 		} catch (e: any) {
 			if (e instanceof Response) {
@@ -389,6 +395,10 @@ class Sdk {
 		if (this.current?.account) {
 			await Promise.race([this.current.account.logout(), new Promise<void>(resolve => setTimeout(resolve, 5000))]);
 		}
+		this.setHeaders({
+			'X-Auth-Token': '',
+			'X-User-Id': ''
+		});
 	}
 }
 

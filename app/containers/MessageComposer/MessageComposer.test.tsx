@@ -789,8 +789,7 @@ describe('MessageComposer', () => {
 						type: 'image/png'
 					}),
 					undefined,
-					'https://open.rocket.chat',
-					expect.objectContaining({ id: 'abc' })
+					'https://open.rocket.chat'
 				)
 			);
 			expect(onSendMessage).not.toHaveBeenCalled();

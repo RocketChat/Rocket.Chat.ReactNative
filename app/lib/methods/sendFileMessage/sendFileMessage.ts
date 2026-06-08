@@ -1,7 +1,7 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Alert } from 'react-native';
 
-import { type IUser, type TSendFileMessageFileInfo, type TUploadModel } from '../../../definitions';
+import { type TSendFileMessageFileInfo, type TUploadModel } from '../../../definitions';
 import i18n from '../../../i18n';
 import database from '../../database';
 import FileUpload from '../helpers/fileUpload';
@@ -15,12 +15,10 @@ export async function sendFileMessage(
 	fileInfo: TSendFileMessageFileInfo,
 	tmid: string | undefined,
 	server: string,
-	user: Partial<Pick<IUser, 'id' | 'token'>>,
 	isForceTryAgain?: boolean
 ): Promise<void> {
 	let uploadPath: string | null = '';
 	try {
-		const { id, token } = user;
 		const uploadUrl = `${server}/api/v1/rooms.upload/${rid}`;
 		fileInfo.rid = rid;
 
@@ -83,11 +81,9 @@ export async function sendFileMessage(
 			});
 		}
 
-		const headers: Record<string, string> = {
+		const headers = {
 			...sdk.getHeaders(),
-			'Content-Type': 'multipart/form-data',
-			...(token ? { 'X-Auth-Token': token } : {}),
-			...(id ? { 'X-User-Id': id } : {})
+			'Content-Type': 'multipart/form-data'
 		};
 
 		uploadQueue[uploadPath] = new FileUpload(uploadUrl, headers, formData, async (loaded, total) => {

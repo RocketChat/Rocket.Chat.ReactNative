@@ -111,7 +111,7 @@ beforeEach(() => {
 
 describe('sendFileMessageV2', () => {
 	it('builds form data with correct file fields', async () => {
-		await sendFileMessageV2('rid1', baseFile, undefined, 'https://server.com', { id: 'u1', token: 'tok1' });
+		await sendFileMessageV2('rid1', baseFile, undefined, 'https://server.com');
 
 		expect(mockState.formData).toEqual(
 			expect.arrayContaining([
@@ -125,14 +125,12 @@ describe('sendFileMessageV2', () => {
 		);
 	});
 
-	it('includes auth headers from sdk.getHeaders()', async () => {
-		await sendFileMessageV2('rid1', baseFile, undefined, 'https://server.com', { id: 'u1', token: 'tok1' });
+	it('includes headers from sdk.getHeaders()', async () => {
+		await sendFileMessageV2('rid1', baseFile, undefined, 'https://server.com');
 
 		expect(mockState.headers).toMatchObject({
 			'User-Agent': 'RC Mobile test',
-			'Content-Type': 'multipart/form-data',
-			'X-Auth-Token': 'tok1',
-			'X-User-Id': 'u1'
+			'Content-Type': 'multipart/form-data'
 		});
 	});
 
@@ -143,7 +141,7 @@ describe('sendFileMessageV2', () => {
 			fileContent: { algorithm: 'rc4' }
 		});
 
-		await sendFileMessageV2('rid1', baseFile, undefined, 'https://server.com', { id: 'u1', token: 'tok1' });
+		await sendFileMessageV2('rid1', baseFile, undefined, 'https://server.com');
 
 		const contentField = mockState.formData?.find((e: any) => e.name === 'content');
 		expect(contentField).toBeDefined();
@@ -153,18 +151,17 @@ describe('sendFileMessageV2', () => {
 	it('throws and calls persistUploadError on upload failure', async () => {
 		mockSend.mockRejectedValue(new Error('upload failed'));
 		const { persistUploadError, uploadQueue } = require('./utils');
-		// ensure uploadQueue has the path entry so the error path triggers persistUploadError
 		uploadQueue['upload-path-1'] = {};
 
 		await expect(
-			sendFileMessageV2('rid1', baseFile, undefined, 'https://server.com', { id: 'u1', token: 'tok1' })
+			sendFileMessageV2('rid1', baseFile, undefined, 'https://server.com')
 		).rejects.toThrow('upload failed');
 
 		expect(persistUploadError).toHaveBeenCalledWith(baseFile.path, 'rid1');
 	});
 
 	it('confirms upload via POST to /v1/rooms.mediaConfirm', async () => {
-		await sendFileMessageV2('rid1', baseFile, undefined, 'https://server.com', { id: 'u1', token: 'tok1' });
+		await sendFileMessageV2('rid1', baseFile, undefined, 'https://server.com');
 
 		expect(fetch).toHaveBeenCalledWith(
 			'https://server.com/api/v1/rooms.mediaConfirm/rid1/file1',

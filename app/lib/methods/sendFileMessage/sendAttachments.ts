@@ -8,7 +8,6 @@ export const sendAttachments = ({
 	rid,
 	tmid,
 	server,
-	user,
 	altTextSupported,
 	getMsg
 }: {
@@ -47,8 +46,7 @@ export const sendAttachments = ({
 					width
 				},
 				tmid,
-				server,
-				user
+				server
 			);
 		})
 	);
