@@ -155020,6 +155020,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                                       "width": 32,
                                     }
                                   }
+                                  testID="play-button"
                                 >
                                   <Text
                                     allowFontScaling={false}
@@ -155476,6 +155477,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                                       "width": 32,
                                     }
                                   }
+                                  testID="play-button"
                                 >
                                   <Text
                                     allowFontScaling={false}
@@ -155943,6 +155945,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                                       "width": 32,
                                     }
                                   }
+                                  testID="play-button"
                                 >
                                   <Text
                                     allowFontScaling={false}
@@ -156178,6 +156181,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                                       "width": 32,
                                     }
                                   }
+                                  testID="play-button"
                                 >
                                   <Text
                                     allowFontScaling={false}
@@ -156586,6 +156590,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                                       "width": 32,
                                     }
                                   }
+                                  testID="play-button"
                                 >
                                   <Text
                                     allowFontScaling={false}
@@ -156920,6 +156925,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                                       "width": 32,
                                     }
                                   }
+                                  testID="play-button"
                                 >
                                   <Text
                                     allowFontScaling={false}
@@ -157155,6 +157161,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                                       "width": 32,
                                     }
                                   }
+                                  testID="play-button"
                                 >
                                   <Text
                                     allowFontScaling={false}
@@ -157915,6 +157922,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                                       "width": 32,
                                     }
                                   }
+                                  testID="play-button"
                                 >
                                   <Text
                                     allowFontScaling={false}
@@ -158595,6 +158603,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                                       "width": 32,
                                     }
                                   }
+                                  testID="play-button"
                                 >
                                   <Text
                                     allowFontScaling={false}
@@ -159003,6 +159012,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                                       "width": 32,
                                     }
                                   }
+                                  testID="play-button"
                                 >
                                   <Text
                                     allowFontScaling={false}
@@ -159470,6 +159480,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                                       "width": 32,
                                     }
                                   }
+                                  testID="play-button"
                                 >
                                   <Text
                                     allowFontScaling={false}
@@ -159804,6 +159815,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                                       "width": 32,
                                     }
                                   }
+                                  testID="play-button"
                                 >
                                   <Text
                                     allowFontScaling={false}
@@ -160039,6 +160051,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                                       "width": 32,
                                     }
                                   }
+                                  testID="play-button"
                                 >
                                   <Text
                                     allowFontScaling={false}
