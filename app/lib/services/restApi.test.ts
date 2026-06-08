@@ -83,7 +83,7 @@ describe('mediaCallsStateSignals', () => {
 
 		const result = await mediaCallsStateSignals('device-contract-id-123');
 
-		expect(mockSdkGet).toHaveBeenCalledWith('media-calls.stateSignals', { contractId: 'device-contract-id-123' });
+		expect(mockSdkGet).toHaveBeenCalledWith('/v1/media-calls.stateSignals', { contractId: 'device-contract-id-123' });
 		expect(result).toEqual({ signals: [], success: true });
 	});
 

@@ -72,8 +72,11 @@ class MediaSessionInstance {
 			return;
 		}
 		try {
-			const { signals } = await mediaCallsStateSignals(getUniqueIdSync());
-			for (const signal of signals) {
+			const res = await mediaCallsStateSignals(getUniqueIdSync());
+			if (!res.success) {
+				throw new Error('Failed to fetch media calls state signals');
+			}
+			for (const signal of res.signals) {
 				// Sequential replay: signals depend on prior state mutations.
 				// eslint-disable-next-line no-await-in-loop
 				await this.instance.processSignal(signal);

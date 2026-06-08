@@ -21,6 +21,7 @@ import { type CommandsEndpoints } from './commands';
 import { type PushEndpoints } from './push';
 import { type DirectoryEndpoint } from './directory';
 import { type AutoTranslateEndpoints } from './autotranslate';
+import { type MediaCallsEndpoints } from './mediaCalls';
 import { type ModerationEndpoints } from './moderation';
 
 export type Endpoints = AuthEndpoints &
@@ -32,6 +33,7 @@ export type Endpoints = AuthEndpoints &
 	GroupsEndpoints &
 	ImEndpoints &
 	InvitesEndpoints &
+	MediaCallsEndpoints &
 	OmnichannelEndpoints &
 	PermissionsEndpoints &
 	RolesEndpoints &
