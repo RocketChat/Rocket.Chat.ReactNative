@@ -69,7 +69,7 @@ describe('AudioPlayer', () => {
 
 		jest.spyOn(InteractionManager, 'runAfterInteractions').mockImplementation((cb: any) => {
 			cb();
-			return { cancel: mockTaskCancel };
+			return { cancel: mockTaskCancel, then: jest.fn(), done: jest.fn() };
 		});
 
 		(AudioManager.loadAudio as jest.Mock).mockResolvedValue('mock-audio-key');
