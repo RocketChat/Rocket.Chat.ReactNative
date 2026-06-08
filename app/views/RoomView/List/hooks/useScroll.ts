@@ -11,6 +11,12 @@ import { VIEWABILITY_CONFIG } from '../constants';
 const JUMP_SAFETY_TIMEOUT = 5000;
 const HIGHLIGHT_TIMEOUT = 5000;
 
+// onScrollToIndexFailed retry budget. VirtualizedList re-invokes onScrollToIndexFailed SYNCHRONOUSLY
+// after a failed scrollToIndex, so we defer each retry one frame to break the recursion and cap the
+// number of attempts so an unreachable/unmeasurable target terminates instead of spinning forever.
+const SCROLL_TO_INDEX_RETRY_DELAY = 50;
+const MAX_SCROLL_TO_INDEX_RETRIES = 5;
+
 // A Jump to Message in flight: we re-anchor the Message Window, wait for the observation to re-emit
 // with the target present, then scroll exactly once.
 interface IPendingJump {
@@ -45,6 +51,8 @@ export const useScroll = ({
 	// The most recent jump target. FlatList may fire onScrollToIndexFailed AFTER completeJump has
 	// already cleared pendingJump, so the retry handler reads this to recompute the actual target index.
 	const lastJumpTargetId = useRef<string | null>(null);
+	// Bounds the onScrollToIndexFailed retry chain per jump (reset when a new jump starts).
+	const scrollFailRetries = useRef(0);
 
 	useEffect(
 		() => () => {
@@ -131,14 +139,25 @@ export const useScroll = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps -- keyed on messages so it re-runs on every re-observe; messagesIds is a ref read at run time
 	}, [messages]);
 
-	// scroll-to-index-failed: the inverted list could not measure the target's frame yet (a
-	// mid-window target can sit far past the initially-rendered rows). Retry toward the ACTUAL
-	// target index computed from the current ids — not just highestMeasuredFrameIndex.
+	// scroll-to-index-failed: the inverted list could not measure the target's frame yet (a mid-window
+	// target can sit far past the initially-rendered rows). We still want to land on the ACTUAL target
+	// index, but VirtualizedList re-fires onScrollToIndexFailed SYNCHRONOUSLY after a failed scrollToIndex
+	// when there is no getItemLayout — retrying inline recurses until the stack overflows. So defer the
+	// retry one frame (letting the list render & measure more rows first) and cap the attempts so an
+	// unmeasurable target gives up gracefully instead of spinning forever.
 	const handleScrollToIndexFailed: IListProps['onScrollToIndexFailed'] = params => {
-		const targetId = pendingJump.current?.messageId ?? lastJumpTargetId.current;
-		const targetIndex = targetId ? messagesIds.current?.findIndex(id => id === targetId) ?? -1 : -1;
-		const index = targetIndex !== -1 ? targetIndex : params.highestMeasuredFrameIndex;
-		listRef.current?.scrollToIndex({ index, animated: false });
+		if (scrollFailRetries.current >= MAX_SCROLL_TO_INDEX_RETRIES) {
+			scrollFailRetries.current = 0;
+			return;
+		}
+		scrollFailRetries.current += 1;
+		setTimeout(() => {
+			// Re-read the target at fire time so a retry queued by a previous jump cannot scroll to a stale index.
+			const targetId = pendingJump.current?.messageId ?? lastJumpTargetId.current;
+			const targetIndex = targetId ? messagesIds.current?.findIndex(id => id === targetId) ?? -1 : -1;
+			const index = targetIndex !== -1 ? targetIndex : params.highestMeasuredFrameIndex;
+			listRef.current?.scrollToIndex({ index, animated: false });
+		}, SCROLL_TO_INDEX_RETRY_DELAY);
 	};
 
 	const jumpToMessage: IListContainerRef['jumpToMessage'] = (messageId, highTs) =>
@@ -154,7 +173,11 @@ export const useScroll = ({
 			}
 
 			lastJumpTargetId.current = messageId;
+			scrollFailRetries.current = 0;
 			const anchored = typeof highTs === 'number' && Number.isFinite(highTs);
+			// [JUMP-DBG] NATIVE-1229 #3: track the jump target for reading-position checks. Remove before commit.
+			(globalThis as any).__JUMP_TARGET = messageId;
+			((globalThis as any).__JUMP_DBG ||= []).push({ t: Date.now(), ev: 'jump-start', messageId, highTs, anchored });
 			const jump: IPendingJump = {
 				messageId,
 				anchored,

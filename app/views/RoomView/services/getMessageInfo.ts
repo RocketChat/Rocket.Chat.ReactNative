@@ -10,7 +10,9 @@ const getMessageInfo = async (messageId: string): Promise<TMessageModel | TThrea
 			id: message.id,
 			rid: message?.subscription?.id,
 			tmid: message.tmid,
-			msg: message.msg
+			msg: message.msg,
+			// ts lets a locally-cached but out-of-window target derive its own Anchored Window bound.
+			ts: message.ts
 		};
 	}
 
@@ -20,7 +22,8 @@ const getMessageInfo = async (messageId: string): Promise<TMessageModel | TThrea
 			id: threadMessage.id,
 			rid: threadMessage?.subscription?.id,
 			tmid: threadMessage.rid,
-			msg: threadMessage.msg
+			msg: threadMessage.msg,
+			ts: threadMessage.ts
 		};
 	}
 
@@ -31,6 +34,7 @@ const getMessageInfo = async (messageId: string): Promise<TMessageModel | TThrea
 			rid: singleMessage.rid,
 			tmid: singleMessage.tmid,
 			msg: singleMessage.msg,
+			ts: singleMessage.ts,
 			fromServer: true
 		};
 	}

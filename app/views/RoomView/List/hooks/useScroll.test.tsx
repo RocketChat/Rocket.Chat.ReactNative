@@ -110,9 +110,62 @@ describe('useScroll', () => {
 			});
 		});
 
-		// It must retry toward the ACTUAL target index (3), not highestMeasuredFrameIndex (1).
+		// The retry is deferred one frame to break the synchronous onScrollToIndexFailed recursion, so
+		// nothing scrolls within this stack frame.
+		expect(scrollToIndex).not.toHaveBeenCalled();
+
+		// Once the frame elapses it must retry toward the ACTUAL target index (3), not
+		// highestMeasuredFrameIndex (1).
+		act(() => {
+			jest.advanceTimersByTime(100);
+		});
 		expect(scrollToIndex).toHaveBeenCalledTimes(1);
 		expect(scrollToIndex).toHaveBeenCalledWith(expect.objectContaining({ index: 3 }));
+	});
+
+	it('defers a scroll-to-index-failed retry and caps it so an unmeasurable target cannot recurse into a stack overflow', () => {
+		const setHighTs = jest.fn();
+		const { result, rerender, scrollToIndex } = renderUseScroll([{ id: 'live-1' }, { id: 'live-2' }], setHighTs);
+
+		act(() => {
+			result.current.jumpToMessage('target', 1500);
+		});
+
+		// Target sits at a mid-window index whose frame the inverted list cannot measure yet.
+		const rows = [{ id: 'm0' }, { id: 'm1' }, { id: 'm2' }, { id: 'target' }, { id: 'm4' }];
+		act(() => {
+			rerender({ rows });
+		});
+		scrollToIndex.mockClear();
+
+		// Model a real VirtualizedList: a scrollToIndex toward an unmeasurable frame re-invokes
+		// onScrollToIndexFailed. A synchronous retry would recurse until the call stack overflows; the
+		// mock caps its own re-entry so a regression reports a bounded count instead of crashing the worker.
+		const info = { index: 3, highestMeasuredFrameIndex: 1, averageItemLength: 50 };
+		let reentry = 0;
+		scrollToIndex.mockImplementation(() => {
+			reentry += 1;
+			if (reentry > 100) {
+				return;
+			}
+			result.current.handleScrollToIndexFailed(info);
+		});
+
+		// One failure from the list. The fix must defer the retry, so NOTHING scrolls in this stack frame
+		// (a synchronous retry would have already recursed here).
+		act(() => {
+			result.current.handleScrollToIndexFailed(info);
+		});
+		expect(scrollToIndex).not.toHaveBeenCalled();
+
+		// Drain the deferred retries: each tick may schedule at most one more, and the retry cap guarantees
+		// the chain terminates well below the mock's runaway-recursion ceiling.
+		for (let i = 0; i < 20; i++) {
+			act(() => {
+				jest.runOnlyPendingTimers();
+			});
+		}
+		expect(scrollToIndex.mock.calls.length).toBeLessThan(50);
 	});
 
 	it('aborts cleanly and releases the anchor when the target never re-observes within the safety window', async () => {

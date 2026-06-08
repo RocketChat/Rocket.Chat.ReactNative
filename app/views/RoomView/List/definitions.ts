@@ -11,6 +11,10 @@ export type TMessagesIdsRef = RefObject<string[]>;
 export interface IListProps extends FlatListProps<TAnyMessageModel> {
 	listRef: TListRef;
 	jumpToBottom: () => void;
+	// True while the Message Window is an Anchored (historical) Window. The bottom edge of the loaded
+	// rows is NOT the Live Tail there, so the scroll-offset heuristic alone would hide the jump-to-bottom
+	// FAB exactly where the user needs it. Keep it visible whenever anchored so "back to live" is one tap.
+	isAnchored?: boolean;
 }
 
 export interface IListContainerRef {
@@ -18,6 +22,10 @@ export interface IListContainerRef {
 	// null/undefined to keep a Live Window (contiguous / thread / local targets).
 	jumpToMessage: (messageId: string, highTs?: number | null) => Promise<void>;
 	cancelJumpToMessage: () => void;
+	// True when messageId is in the currently-rendered Message Window. Lets the jump orchestration skip
+	// re-anchoring (and the visible re-seed) for an already-visible target, so a quoted reply to a nearby
+	// message still scrolls in place and the Live Tail is left intact.
+	isMessageInWindow: (messageId: string) => boolean;
 }
 
 export interface IListContainerProps {

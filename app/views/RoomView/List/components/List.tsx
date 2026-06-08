@@ -23,18 +23,23 @@ const styles = StyleSheet.create({
 	}
 });
 
-const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
-	const [visible, setVisible] = useState(false);
+const List = ({ listRef, jumpToBottom, isAnchored, ...props }: IListProps) => {
+	const [scrolledPastLimit, setScrolledPastLimit] = useState(false);
 	const { isAutocompleteVisible } = useRoomContext();
 	const scrollHandler = useAnimatedScrollHandler({
 		onScroll: event => {
 			if (event.contentOffset.y > SCROLL_LIMIT) {
-				scheduleOnRN(setVisible, true);
+				scheduleOnRN(setScrolledPastLimit, true);
 			} else {
-				scheduleOnRN(setVisible, false);
+				scheduleOnRN(setScrolledPastLimit, false);
 			}
 		}
 	});
+
+	// In a Live Window the FAB tracks scroll distance from the Live Tail. In an Anchored (historical)
+	// Window the loaded rows' bottom edge is NOT the Live Tail, so offset alone would hide the FAB right
+	// at the "Load newer" boundary — leaving no one-tap way back to live. Force it visible while anchored.
+	const visible = scrolledPastLimit || !!isAnchored;
 
 	const isScreenReaderEnabled = useIsScreenReaderEnabled();
 

@@ -10,7 +10,7 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 	({ rid, tmid, t, renderRow, showMessageInMainThread, hideSystemMessages, listRef, serverVersion }, ref) => {
 		'use memo';
 
-		const [messages, messagesIds, fetchMessages, { setHighTs }] = useMessages({
+		const [messages, messagesIds, fetchMessages, { highTs, setHighTs }] = useMessages({
 			rid,
 			tmid,
 			showMessageInMainThread,
@@ -31,10 +31,17 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 			fetchMessages();
 		}, 300);
 
-		useImperativeHandle(ref, () => ({
-			jumpToMessage,
-			cancelJumpToMessage
-		}));
+		useImperativeHandle(ref, () => {
+			const handle = {
+				jumpToMessage,
+				cancelJumpToMessage,
+				isMessageInWindow: (messageId: string) => messagesIds.current?.includes(messageId) ?? false
+			};
+			// [JUMP-DBG] NATIVE-1229 #3: expose a deterministic jump driver for the debugger. Remove before commit.
+			(globalThis as any).__listJump = handle.jumpToMessage;
+			(globalThis as any).__listInWindow = handle.isMessageInWindow;
+			return handle;
+		});
 
 		const renderItem: IListProps['renderItem'] = ({ item, index }) => renderRow(item, messages[index + 1], highlightedMessageId);
 
@@ -49,6 +56,7 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 					onScrollToIndexFailed={handleScrollToIndexFailed}
 					viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
 					jumpToBottom={jumpToBottom}
+					isAnchored={highTs != null}
 					maintainVisibleContentPosition={{
 						minIndexForVisible: 0,
 						autoscrollToTopThreshold: 0

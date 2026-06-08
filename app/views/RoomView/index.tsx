@@ -240,6 +240,9 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 			}
 			if (this.jumpToMessageId) {
 				this.jumpToMessage(this.jumpToMessageId);
+				// Consume the one-shot jump param (see componentDidUpdate) so a later Search for this same
+				// id is seen as a change and re-fires, rather than matching the stale param and no-opping.
+				this.props.navigation.setParams({ jumpToMessageId: undefined });
 			}
 			if (this.jumpToThreadId && !this.jumpToMessageId) {
 				this.navToThread({ tmid: this.jumpToThreadId });
@@ -307,6 +310,12 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 
 		if (route?.params?.jumpToMessageId && route?.params?.jumpToMessageId !== prevProps.route?.params?.jumpToMessageId) {
 			this.jumpToMessage(route?.params?.jumpToMessageId);
+			// Consume the one-shot jump param. Search delivers the target via Navigation.setParams with the
+			// message id; re-selecting the SAME message sets an identical value, which this change guard
+			// would otherwise treat as "no change" and skip. Clearing it means the next setParams is always
+			// an edge (undefined -> id), so jumping to a message, returning to the Live Tail, then searching
+			// that same message again re-fires the jump instead of silently no-opping.
+			this.props.navigation.setParams({ jumpToMessageId: undefined });
 		}
 
 		if (route?.params?.jumpToThreadId && route?.params?.jumpToThreadId !== prevProps.route?.params?.jumpToThreadId) {
@@ -1036,15 +1045,36 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 				 * never anchored.
 				 */
 				let highTs: number | null = null;
-				if (message.fromServer && !message.tmid && this.rid) {
-					const chunk = (await loadSurroundingMessages({ messageId, rid: this.rid })) as IMessage[];
-					if (Array.isArray(chunk) && chunk.length) {
-						const anchorMessages: AnchorMessage[] = chunk.map(m => ({
-							id: m._id,
-							t: m.t,
-							ts: m.ts instanceof Date ? m.ts : new Date(m.ts)
-						}));
-						highTs = anchorForTarget(anchorMessages, message.id);
+				// Anchor the Message Window onto the target only when it is NOT already in the rendered
+				// window. An in-window target (e.g. a quoted reply to a nearby message) scrolls in place
+				// with no re-seed, preserving the fast path and keeping the Live Tail intact. Gating on
+				// window membership (not message.fromServer) is what fixes locally-cached out-of-window
+				// targets, which previously skipped anchoring entirely and silently aborted the jump.
+				const inWindow = this.list.current?.isMessageInWindow(message.id) ?? false;
+				if (!message.tmid && this.rid && !inWindow) {
+					if (message.fromServer) {
+						// Not cached locally: fetch one Chunk around the target so a Newer Loader can bracket it.
+						const chunk = (await loadSurroundingMessages({ messageId, rid: this.rid })) as IMessage[];
+						if (Array.isArray(chunk) && chunk.length) {
+							const anchorMessages: AnchorMessage[] = chunk.map(m => ({
+								id: m._id,
+								t: m.t,
+								ts: m.ts instanceof Date ? m.ts : new Date(m.ts)
+							}));
+							highTs = anchorForTarget(anchorMessages, message.id);
+						}
+					} else {
+						// Cached locally but out of window: reuse the Newer Loader already bracketing the
+						// target's Chunk (a gappy island from a prior jump) so the re-seeded page still
+						// exposes "Load newer" and can rejoin the Live Tail.
+						highTs = await RoomServices.getLocalAnchorTs(this.rid, message.ts);
+					}
+					// No bracketing Loader (contiguous cached region, or a server Chunk that returned none):
+					// anchor at the target's own ts so the window still re-seeds onto it. Without this a local
+					// out-of-window target never re-observes and the jump silently aborts after the safety
+					// timeout, dropping the user back to the Live Tail (which is then reachable via the FAB).
+					if (highTs == null && message.ts) {
+						highTs = message.ts instanceof Date ? message.ts.getTime() : new Date(message.ts).getTime();
 					}
 				}
 				// Synchronization needed for Fabric to work

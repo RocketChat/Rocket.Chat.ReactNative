@@ -71,6 +71,8 @@ describe('useMessages', () => {
 	// bound that the bounded observation cannot see). Each call to query(...).fetch() captures its clauses.
 	let fetchRows: TAnyMessageModel[];
 	let fetchCalls: unknown[][];
+	// Count returned by the release path's fetchCount() (number of cached rows above the old bound).
+	let fetchCountValue: number;
 
 	const wrapper = ({ children }: { children: ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
 
@@ -81,6 +83,7 @@ describe('useMessages', () => {
 		unsubscribeSpies = [];
 		fetchRows = [];
 		fetchCalls = [];
+		fetchCountValue = 0;
 		jest.clearAllMocks();
 		// Reset historyLoaders so prior test dispatches don't trip the in-flight guard
 		mockedStore
@@ -106,7 +109,9 @@ describe('useMessages', () => {
 					fetch: jest.fn(() => {
 						fetchCalls.push(args);
 						return Promise.resolve(fetchRows);
-					})
+					}),
+					// Count of cached rows above the old bound, read by the release path to size the Live Window.
+					fetchCount: jest.fn(() => Promise.resolve(fetchCountValue))
 				};
 			})
 		}));
@@ -688,6 +693,38 @@ describe('useMessages', () => {
 			expect(result.current[3].highTs).toBeNull();
 		});
 		expect(findBoundClause(queryCalls[queryCalls.length - 1])).toBeUndefined();
+	});
+
+	it('grows the released Live Window to preserve the reading position instead of snapping to the Live Tail', async () => {
+		// Anchored deep below a large cached newer island. When the Gap closes and the window releases,
+		// take(count) must span from the Live Tail down past the original target — otherwise the target is
+		// evicted and the list snaps to the tail (NATIVE-1229 #3 reading-position loss).
+		emittedRows = [msg({ id: 'm1', ts: at(1000) }), newerLoaderAt('loader-H', 1500)];
+		const { result } = renderUseMessages();
+
+		act(() => {
+			result.current[3].setHighTs(1500);
+		});
+		await waitFor(() => {
+			expect(findBoundClause(queryCalls[queryCalls.length - 1])?.comparison.right.value).toBe(1500);
+		});
+		const anchoredTake = findTakeClause(queryCalls[queryCalls.length - 1])?.count ?? 0;
+
+		// Gap closed (no Newer Loader above the bound), but 120 messages sit above it (the cached island).
+		fetchRows = [msg({ id: 'm2', ts: at(1700) }), msg({ id: 'm3', ts: at(1800) })];
+		fetchCountValue = 120;
+
+		// loadNextMessages consumed the boundary loader: re-emit without it.
+		emitRows([msg({ id: 'm1', ts: at(1000) })]);
+
+		await waitFor(() => {
+			expect(result.current[3].highTs).toBeNull();
+		});
+
+		// The released Live Window's take spans the anchored window PLUS the 120 messages above it, so the
+		// deep target survives the release rather than falling outside take(count).
+		const releasedTake = findTakeClause(queryCalls[queryCalls.length - 1])?.count ?? 0;
+		expect(releasedTake).toBeGreaterThanOrEqual(anchoredTake + 120);
 	});
 
 	it('never releases across an open Gap: keeps highTs finite while a Newer Loader survives above the bound', async () => {

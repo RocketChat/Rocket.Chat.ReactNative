@@ -17,6 +17,19 @@ import { raiseOrRelease, type AnchorMessage } from './anchorResolver';
 
 const toMs = (ts: string | Date | number): number => (ts instanceof Date ? ts.getTime() : new Date(ts).getTime());
 
+// [JUMP-DBG] NATIVE-1229 criterion #3 validation. Lossless in-runtime event buffer + DB expose.
+// Remove before commit (grep '[JUMP-DBG]').
+const jdbg = (ev: string, data?: Record<string, unknown>) => {
+	const g = globalThis as any;
+	if (!Array.isArray(g.__JUMP_DBG)) g.__JUMP_DBG = [];
+	g.__JUMP_DBG.push({ t: Date.now(), ev, ...data });
+	if (g.__JUMP_DBG.length > 600) g.__JUMP_DBG.shift();
+};
+// [JUMP-DBG] expose DB primitives for differential queries from the debugger console.
+(globalThis as any).__db = () => database.active;
+(globalThis as any).__Q = Q;
+(globalThis as any).__MTL = MessageTypeLoad;
+
 export const useMessages = ({
 	rid,
 	tmid,
@@ -52,6 +65,12 @@ export const useMessages = ({
 	const boundaryLoaderPresent = useRef(false);
 	const dispatch = useDispatch();
 	const store = useStore<IApplicationState>();
+	// [JUMP-DBG] NATIVE-1229 #3: deterministic climb driver. Loads the current boundary Newer Loader
+	// (or any loaderId) the same way LoadMore/auto-loader do. Remove before commit.
+	if (!tmid) {
+		(globalThis as any).__loadNewer = (loaderId: string) => dispatch(roomHistoryRequest({ rid, t, loaderId }));
+		(globalThis as any).__hsm = hideSystemMessages;
+	}
 
 	const unsubscribe = useCallback(() => {
 		subscription.current?.unsubscribe();
@@ -81,6 +100,7 @@ export const useMessages = ({
 			// Only a present → absent transition is a consume. Anything else (still present, or never
 			// present) leaves the anchor untouched.
 			if (!wasPresent || isPresent) {
+				jdbg('rr-skip', { currentHighTs, wasPresent, isPresent }); // [JUMP-DBG]
 				return;
 			}
 
@@ -91,9 +111,41 @@ export const useMessages = ({
 				.query(Q.where('rid', rid), Q.where('ts', Q.gt(currentHighTs)), Q.sortBy('ts', Q.asc), Q.take(QUERY_SIZE + 1))
 				.fetch()) as TAnyMessageModel[];
 
+			// [JUMP-DBG] diagnostic: count ALL Newer Loaders above the bound (unbounded), to detect a
+			// premature RELEASE where the take(51) window missed a loader sitting beyond row 51.
+			const allLoadersAbove = (await database.active
+				.get('messages')
+				.query(Q.where('rid', rid), Q.where('t', MessageTypeLoad.NEXT_CHUNK), Q.where('ts', Q.gt(currentHighTs)))
+				.fetch()) as TAnyMessageModel[];
+
 			const next = raiseOrRelease(rows as unknown as AnchorMessage[], currentHighTs);
+			jdbg('rr', { // [JUMP-DBG]
+				currentHighTs,
+				rowsAbove: rows.length,
+				loadersInWindow: rows.filter(r => r.t === MessageTypeLoad.NEXT_CHUNK).map(r => toMs(r.ts)),
+				allLoadersAboveCount: allLoadersAbove.length,
+				allLoadersAboveTs: allLoadersAbove.map(r => toMs(r.ts)).sort((a, b) => a - b),
+				next,
+				decision: next === null ? 'RELEASE' : 'RAISE',
+				premature: next === null && allLoadersAbove.length > 0
+			});
+
 			if (next === null) {
-				// Gap closed: release to a Live Window that follows new messages again.
+				// Gap closed → release to a Live Window. First grow count by the number of messages now
+				// above the old bound (contiguous to the Live Tail, all cached): otherwise the released
+				// take(count) re-anchors at the tail and evicts the deep target the user is reading,
+				// snapping the list to live. Over-counting rows the visible window filters out (system /
+				// thread rows) only adds harmless margin; a failed count still releases, just without growth.
+				let aboveCount = 0;
+				try {
+					aboveCount = await database.active
+						.get('messages')
+						.query(Q.where('rid', rid), Q.where('ts', Q.gt(currentHighTs)))
+						.fetchCount();
+				} catch {
+					// Best-effort: fall back to releasing without growth rather than getting stuck anchored.
+				}
+				count.current += aboveCount;
 				setHighTsState(null);
 				return;
 			}
@@ -164,6 +216,16 @@ export const useMessages = ({
 		}
 
 		subscription.current = observable.subscribe(result => {
+			jdbg('emit', { // [JUMP-DBG]
+				highTs,
+				len: result.length,
+				count: count.current,
+				firstTs: result.length ? toMs(result[0].ts) : null,
+				lastTs: result.length ? toMs(result[result.length - 1].ts) : null,
+				boundaryPresent: highTs != null && result.some(m => m.t === MessageTypeLoad.NEXT_CHUNK && toMs(m.ts) === highTs),
+				topT: result.length ? result[0].t || 'msg' : null,
+				targetIn: result.some(m => m.id === (globalThis as any).__JUMP_TARGET)
+			});
 			const newMessages: TAnyMessageModel[] = [...result];
 
 			if (tmid && thread.current) {
@@ -187,6 +249,7 @@ export const useMessages = ({
 	// so the observation re-subscribes and fetchMessages' `count.current += QUERY_SIZE` lands it at
 	// exactly QUERY_SIZE. Passing null releases the Anchored Window back to a Live Window.
 	const setHighTs = useCallback((next: number | null) => {
+		jdbg('setHighTs', { next }); // [JUMP-DBG]
 		count.current = 0;
 		// Fresh anchor (jump / jump-to-bottom): clear the boundary-loader tracking so the first emit of
 		// the new bound cannot be mistaken for a consume (its wasPresent baseline starts false).
@@ -249,6 +312,7 @@ export const useMessages = ({
 			}
 			lastDispatchedLoaderId.current = loaderId;
 			autoLoadCount.current += 1;
+			jdbg('autoload', { loaderId, loaderT: visibleMessages.find(m => m.id === loaderId)?.t, autoLoadCount: autoLoadCount.current, highTs }); // [JUMP-DBG]
 			dispatch(roomHistoryRequest({ rid, t, loaderId }));
 		}
 	}, [serverVersion, rid, t, hideSystemMessages, visibleMessages, dispatch, store]);
