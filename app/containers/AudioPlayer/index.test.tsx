@@ -44,7 +44,6 @@ jest.mock('@react-navigation/native', () => ({
 	useNavigation: jest.fn()
 }));
 
-
 const mockTaskCancel = jest.fn();
 let capturedFocusCb: Function | undefined;
 let capturedBlurCb: Function | undefined;
@@ -194,7 +193,7 @@ describe('AudioPlayer', () => {
 	});
 
 	describe('InteractionManager task cleanup', () => {
-		it('cancels the InteractionManager task when the component unmounts', async () => {
+		it('cancels the InteractionManager task when the component unmounts', () => {
 			const { unmount } = render(<AudioPlayer {...defaultProps} />);
 
 			act(() => unmount());
@@ -202,7 +201,7 @@ describe('AudioPlayer', () => {
 			expect(mockTaskCancel).toHaveBeenCalled();
 		});
 
-		it('does not create a task (and therefore never cancels) when conditions are not met', async () => {
+		it('does not create a task (and therefore never cancels) when conditions are not met', () => {
 			const { unmount } = render(<AudioPlayer {...defaultProps} fileUri='' />);
 
 			act(() => unmount());
@@ -406,7 +405,7 @@ describe('AudioPlayer', () => {
 		it('registers focus and blur listeners on mount', () => {
 			render(<AudioPlayer {...defaultProps} />);
 
-			const addListener = (useNavigation as jest.Mock).mock.results[0].value.addListener;
+			const { addListener } = (useNavigation as jest.Mock).mock.results[0].value;
 			expect(addListener).toHaveBeenCalledWith('focus', expect.any(Function));
 			expect(addListener).toHaveBeenCalledWith('blur', expect.any(Function));
 		});
