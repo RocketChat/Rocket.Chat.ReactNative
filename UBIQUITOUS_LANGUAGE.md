@@ -38,19 +38,19 @@
 
 ## Message Loading
 
-| Term                | Definition                                                                                                                          | Aliases to avoid       |
-| ------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
-| **Message Window**  | The contiguous range of Messages the Room view currently observes and renders (distinct from what is synced to the database)        | Page, feed             |
-| **Live Tail**       | The newest end of a Room's Messages; a Message Window at the Live Tail receives new Messages automatically                          | Bottom, latest         |
-| **Live Window**     | A Message Window whose newest edge is the Live Tail — grows older as you scroll up and follows new Messages at the bottom            | —                      |
-| **Anchored Window** | A Message Window pinned around a Jump to Message target instead of the Live Tail; deliberately does not follow new Messages          | —                      |
-| **Chunk**           | A contiguous run of Messages synced from the server into the local database, bracketed by Loader Rows where more exists             | Batch, page            |
-| **Gap**             | A region between two Chunks where Messages exist on the server but not yet locally; represented by a Loader Row                     | Hole                   |
+| Term                | Definition                                                                                                                         | Aliases to avoid       |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
+| **Message Window**  | The contiguous range of Messages the Room view currently observes and renders (distinct from what is synced to the database)       | Page, feed             |
+| **Live Tail**       | The newest end of a Room's Messages; a Message Window at the Live Tail receives new Messages automatically                         | Bottom, latest         |
+| **Live Window**     | A Message Window whose newest edge is the Live Tail — grows older as you scroll up and follows new Messages at the bottom          | —                      |
+| **Anchored Window** | A Message Window pinned around a Jump to Message target instead of the Live Tail; deliberately does not follow new Messages        | —                      |
+| **Chunk**           | A contiguous run of Messages synced from the server into the local database, bracketed by Loader Rows where more exists            | Batch, page            |
+| **Gap**             | A region between two Chunks where Messages exist on the server but not yet locally; represented by a Loader Row                    | Hole                   |
 | **Loader Row**      | A placeholder Message record marking a Gap; becoming visible triggers a server fetch                                               | Load-more, spinner row |
-| **Older Loader**    | A Loader Row marking older Messages (types `MORE`, `PREVIOUS_CHUNK`) — resolving it fetches Messages before it                      | Load previous          |
-| **Newer Loader**    | A Loader Row marking newer Messages (type `NEXT_CHUNK`) — resolving it fetches Messages after it                                    | Load next              |
-| **Room History**    | Older Messages of a Room fetched on demand from the server (distinct from **Server History**)                                       | Message history        |
-| **Jump to Message** | Re-position the Room view onto a target Message that may be far from the Live Tail or not yet synced — fetches a surrounding Chunk   | Scroll to message      |
+| **Older Loader**    | A Loader Row marking older Messages (types `MORE`, `PREVIOUS_CHUNK`) — resolving it fetches Messages before it                     | Load previous          |
+| **Newer Loader**    | A Loader Row marking newer Messages (type `NEXT_CHUNK`) — resolving it fetches Messages after it                                   | Load next              |
+| **Room History**    | Older Messages of a Room fetched on demand from the server (distinct from **Server History**)                                      | Message history        |
+| **Jump to Message** | Re-position the Room view onto a target Message that may be far from the Live Tail or not yet synced — fetches a surrounding Chunk | Scroll to message      |
 
 ## Users & Roles
 

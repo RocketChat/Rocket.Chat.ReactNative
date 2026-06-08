@@ -22,7 +22,7 @@ slow devices.
   drops interaction events for Fabric children). A large, risky change for behavior we can add
   without it.
 - **Bounded `ts` window on the existing inverted list (chosen).** The only new capability a
-  centered jump needs is an *upper* bound; the existing growing `take(count)` already handles
+  centered jump needs is an _upper_ bound; the existing growing `take(count)` already handles
   the lower extent, loader rows, `MAX_AUTO_LOADS`, and the `hideSystemMessages` clause.
 
 ## Decision
