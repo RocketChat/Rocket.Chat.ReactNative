@@ -486,19 +486,16 @@ class VoipNotification(private val context: Context) {
         }
 
         /**
-         * Rejects an incoming call because the user is already on another call.
+         * Rejects an incoming call over REST without presenting any UI.
          *
          * Uses [MediaCallsAnswerRequest] over REST to send the reject signal.
          * Unlike [startListeningForCallEnd] (used by the normal incoming-call path), this
          * does NOT subscribe to `stream-notify-user` or install a collection-message
          * handler, because no incoming-call UI was ever shown and there is nothing
-         * to dismiss if the caller hangs up or another device answers.
+         * to dismiss if the caller hangs up or another device answers. Shared by the
+         * busy and microphone-denied reject paths; callers log their own distinct reason.
          */
-        @JvmStatic
-        fun rejectBusyCall(context: Context, payload: VoipPayload) {
-            if (BuildConfig.DEBUG) {
-                Log.d(TAG, "Rejected busy call ${payload.callId} — user already on a call")
-            }
+        private fun rejectIncomingCallSilently(context: Context, payload: VoipPayload) {
             cancelTimeout(payload.callId)
             MediaCallsAnswerRequest.fetch(
                 context = context,
@@ -508,6 +505,30 @@ class VoipNotification(private val context: Context) {
                 answer = "reject",
                 supportedFeatures = null
             ) { _ -> }
+        }
+
+        /**
+         * Rejects an incoming call because the user is already on another call.
+         */
+        @JvmStatic
+        fun rejectBusyCall(context: Context, payload: VoipPayload) {
+            if (BuildConfig.DEBUG) {
+                Log.d(TAG, "Rejected busy call ${payload.callId} — user already on a call")
+            }
+            rejectIncomingCallSilently(context, payload)
+        }
+
+        /**
+         * Rejects an incoming call at the push layer because the OS microphone permission
+         * (`RECORD_AUDIO`) is not granted — the call could never carry audio, so the device
+         * is never rung (no Telecom registration, no notification). See adr/0002.
+         */
+        @JvmStatic
+        fun rejectNoMicPermissionCall(context: Context, payload: VoipPayload) {
+            if (BuildConfig.DEBUG) {
+                Log.d(TAG, "Rejected incoming call ${payload.callId} — microphone permission denied")
+            }
+            rejectIncomingCallSilently(context, payload)
         }
 
         // -- Native DDP Listener (Call End Detection) --
@@ -665,7 +686,11 @@ class VoipNotification(private val context: Context) {
             voipPayload.isVoipIncomingCall() -> {
                 val isValidForIncoming =
                     voipPayload.getRemainingLifetimeMs() != null && !voipPayload.isExpired()
-                when (decideIncomingVoipPushAction(isValidForIncoming, hasActiveCall(context))) {
+                val hasMicPermission = ContextCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.RECORD_AUDIO
+                ) == PackageManager.PERMISSION_GRANTED
+                when (decideIncomingVoipPushAction(isValidForIncoming, hasActiveCall(context), hasMicPermission)) {
                     VoipIncomingPushAction.STALE -> {
                         if (voipPayload.getRemainingLifetimeMs() == null) {
                             if (BuildConfig.DEBUG) {
@@ -680,6 +705,7 @@ class VoipNotification(private val context: Context) {
                             }
                         }
                     }
+                    VoipIncomingPushAction.REJECT_NO_PERMISSION -> rejectNoMicPermissionCall(context, voipPayload)
                     VoipIncomingPushAction.REJECT_BUSY -> rejectBusyCall(context, voipPayload)
                     VoipIncomingPushAction.SHOW_INCOMING -> showIncomingCall(voipPayload)
                 }
