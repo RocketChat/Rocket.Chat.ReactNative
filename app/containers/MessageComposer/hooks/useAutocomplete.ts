@@ -175,9 +175,6 @@ export const useAutocomplete = ({
 							updateAutocompleteVisible(true);
 							accessibilityFocusOnInput();
 						}
-					} else {
-						setItems([]);
-						updateAutocompleteVisible(false);
 					}
 				}
 				if (type === '!') {
@@ -206,9 +203,6 @@ export const useAutocomplete = ({
 							updateAutocompleteVisible(true);
 							accessibilityFocusOnInput();
 						}
-					} else {
-						setItems([]);
-						updateAutocompleteVisible(false);
 					}
 				}
 			} catch (e) {
