@@ -175,9 +175,6 @@ export const useScroll = ({
 			lastJumpTargetId.current = messageId;
 			scrollFailRetries.current = 0;
 			const anchored = typeof highTs === 'number' && Number.isFinite(highTs);
-			// [JUMP-DBG] NATIVE-1229 #3: track the jump target for reading-position checks. Remove before commit.
-			(globalThis as any).__JUMP_TARGET = messageId;
-			((globalThis as any).__JUMP_DBG ||= []).push({ t: Date.now(), ev: 'jump-start', messageId, highTs, anchored });
 			const jump: IPendingJump = {
 				messageId,
 				anchored,

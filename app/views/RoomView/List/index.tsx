@@ -31,17 +31,11 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 			fetchMessages();
 		}, 300);
 
-		useImperativeHandle(ref, () => {
-			const handle = {
-				jumpToMessage,
-				cancelJumpToMessage,
-				isMessageInWindow: (messageId: string) => messagesIds.current?.includes(messageId) ?? false
-			};
-			// [JUMP-DBG] NATIVE-1229 #3: expose a deterministic jump driver for the debugger. Remove before commit.
-			(globalThis as any).__listJump = handle.jumpToMessage;
-			(globalThis as any).__listInWindow = handle.isMessageInWindow;
-			return handle;
-		});
+		useImperativeHandle(ref, () => ({
+			jumpToMessage,
+			cancelJumpToMessage,
+			isMessageInWindow: (messageId: string) => messagesIds.current?.includes(messageId) ?? false
+		}));
 
 		const renderItem: IListProps['renderItem'] = ({ item, index }) => renderRow(item, messages[index + 1], highlightedMessageId);
 
