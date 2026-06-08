@@ -22,4 +22,3 @@ export default (url: string, options: IOptions = {}): Promise<Response> => {
 	const customOptions = { ...options, headers: { ...sdk.getHeaders(), ...(options.headers || {}) } };
 	return fetch(url, customOptions);
 };
-
