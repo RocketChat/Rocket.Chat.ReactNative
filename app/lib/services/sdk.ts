@@ -203,7 +203,7 @@ class Sdk {
 				throw normalized;
 			}
 		}
-	};
+	}
 
 	async delete<TPath extends PathFor<'DELETE'>>(
 		endpoint: TPath,
