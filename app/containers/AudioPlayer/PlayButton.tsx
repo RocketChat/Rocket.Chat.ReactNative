@@ -46,6 +46,7 @@ const PlayButton = ({ onPress, disabled = false, audioState }: IButton): React.R
 
 	return (
 		<NativeButton
+			testID='play-button'
 			accessible
 			accessibilityLabel={getPlayButtonAccessibilityLabel(audioState)}
 			style={[styles.playPauseButton, { backgroundColor: colors.buttonBackgroundPrimaryDefault }]}
