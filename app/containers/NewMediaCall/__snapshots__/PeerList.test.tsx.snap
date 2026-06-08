@@ -315,7 +315,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                     [
                       {
                         "headers": {
-                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                          "User-Agent": "RC Mobile; ios 14.0; v1.0.0 (1)",
                         },
                         "uri": "https://open.rocket.chat/avatar/alice.johnson?format=png&size=56",
                       },
@@ -520,7 +520,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                     [
                       {
                         "headers": {
-                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                          "User-Agent": "RC Mobile; ios 14.0; v1.0.0 (1)",
                         },
                         "uri": "https://open.rocket.chat/avatar/very.long.username?format=png&size=56",
                       },
@@ -725,7 +725,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
                     [
                       {
                         "headers": {
-                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                          "User-Agent": "RC Mobile; ios 14.0; v1.0.0 (1)",
                         },
                         "uri": "https://open.rocket.chat/avatar/bob.smith?format=png&size=56",
                       },

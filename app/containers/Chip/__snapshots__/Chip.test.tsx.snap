@@ -209,7 +209,7 @@ exports[`Story Snapshots: ChipText should match snapshot 1`] = `
             [
               {
                 "headers": {
-                  "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  "User-Agent": "RC Mobile; ios 14.0; v1.0.0 (1)",
                 },
                 "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=56",
               },
@@ -394,7 +394,7 @@ exports[`Story Snapshots: ChipWithShortText should match snapshot 1`] = `
             [
               {
                 "headers": {
-                  "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  "User-Agent": "RC Mobile; ios 14.0; v1.0.0 (1)",
                 },
                 "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=56",
               },
@@ -809,7 +809,7 @@ exports[`Story Snapshots: ChipWithoutIcon should match snapshot 1`] = `
             [
               {
                 "headers": {
-                  "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  "User-Agent": "RC Mobile; ios 14.0; v1.0.0 (1)",
                 },
                 "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=56",
               },
