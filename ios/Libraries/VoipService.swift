@@ -1,3 +1,4 @@
+import AVFoundation
 import CallKit
 import Foundation
 import PushKit
@@ -164,6 +165,18 @@ public final class VoipService: NSObject {
     public static func hasActiveCall() -> Bool {
         configureCallObserverIfNeeded()
         return callObserver.calls.contains { !$0.hasEnded }
+    }
+
+    /// True only when the OS microphone permission is currently `granted`. `denied` and
+    /// `undetermined` both count as not-granted (matching the Android/JS gate), so an incoming
+    /// call is never rung when audio could not be captured. Uses `AVAudioApplication` on iOS 17+
+    /// and the deprecated `AVAudioSession` API on earlier supported iOS. See the push-layer gate ADR.
+    public static func hasMicrophonePermission() -> Bool {
+        if #available(iOS 17.0, *) {
+            return AVAudioApplication.shared.recordPermission == .granted
+        } else {
+            return AVAudioSession.sharedInstance().recordPermission == .granted
+        }
     }
 
     /// Prepares DDP listener and timeout for an incoming VoIP push. When `storeEventsForJs` is false
@@ -559,6 +572,17 @@ public final class VoipService: NSObject {
         #if DEBUG
         print("[\(TAG)] Rejected busy call \(payload.callId) — user already on a call")
         #endif
+    }
+
+    /// Public entry point for the incoming-push microphone gate (see ADR-0002): declines a call
+    /// over REST `reject` because the OS microphone permission is denied. Unlike `rejectBusyCall`
+    /// this does NOT touch CallKit — the PushKit handler reports a placeholder and ends it (PushKit
+    /// mandates a report) — and nothing was stashed for JS because `prepareIncomingCall` is skipped.
+    public static func rejectNoMicPermissionCall(_ payload: VoipPayload) {
+        #if DEBUG
+        print("[\(TAG)] Rejected incoming call \(payload.callId) — microphone permission denied")
+        #endif
+        reject(payload: payload)
     }
 
     private static func reject(payload: VoipPayload) {

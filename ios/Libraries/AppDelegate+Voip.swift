@@ -80,6 +80,19 @@ extension AppDelegate: PKPushRegistryDelegate {
     }
 
     if !VoipRegion.isChina() {
+      // Incoming-push microphone gate (ADR-0002): if the OS microphone permission is denied the
+      // call could never carry audio, so decline it over REST and report only a momentary
+      // CallKit placeholder (PushKit mandates a report before `completion()`). Skip
+      // `prepareIncomingCall` so nothing is stashed for JS — opening the app cannot resurrect it.
+      guard VoipService.hasMicrophonePermission() else {
+        #if DEBUG
+        print("[\(voipAppDelegateLogTag)] Microphone permission denied — rejecting incoming call \(callId) without ringing")
+        #endif
+        VoipService.rejectNoMicPermissionCall(voipPayload)
+        reportPlaceholderCallAndEnd(callId, caller)
+        return
+      }
+
       VoipService.prepareIncomingCall(voipPayload, storeEventsForJs: true)
 
       reportVoipIncomingCallToCallKit(
