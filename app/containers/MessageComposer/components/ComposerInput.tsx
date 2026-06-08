@@ -1,5 +1,5 @@
 import React, { forwardRef, memo, useCallback, useEffect, useImperativeHandle } from 'react';
-import { TextInput, StyleSheet, type TextInputProps, InteractionManager } from 'react-native';
+import { TextInput, StyleSheet, type TextInputProps, InteractionManager, Platform } from 'react-native';
 import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
 import { type RouteProp, useFocusEffect, useRoute } from '@react-navigation/native';
@@ -43,7 +43,7 @@ import { usePrevious } from '../../../lib/hooks/usePrevious';
 import { type ChatsStackParamList } from '../../../stacks/types';
 import { loadDraftMessage } from '../../../lib/methods/draftMessage';
 import useIOSBackSwipeHandler from '../hooks/useIOSBackSwipeHandler';
-import { isExternalKeyboardConnected } from '../../../lib/methods/helpers/externalInput';
+import { isExternalKeyboardConnected, shouldForceSoftKeyboard, showSoftInput } from '../../../lib/methods/helpers/externalInput';
 
 const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
@@ -210,6 +210,12 @@ export const ComposerInput = memo(
 
 		const onFocus: TextInputProps['onFocus'] = () => {
 			setFocused(true);
+			// On devices the OS misreports as having a hardware keyboard (e.g. Zebra handhelds)
+			// the soft IME is suppressed on focus, so explicitly request it. Genuine external
+			// keyboards are excluded by shouldForceSoftKeyboard so they keep the native behavior.
+			if (Platform.OS === 'android' && shouldForceSoftKeyboard()) {
+				requestAnimationFrame(() => showSoftInput());
+			}
 		};
 
 		const onTouchStart: TextInputProps['onTouchStart'] = () => {
