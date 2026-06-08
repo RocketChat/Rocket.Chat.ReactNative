@@ -6,7 +6,8 @@ import { twoFactor } from './twoFactor';
 import { store as reduxStore } from '../store/auxStore';
 import { compareServerVersion, random } from '../methods/helpers';
 import UserPreferences from '../methods/userPreferences';
-import { BASIC_AUTH_KEY, headers as defaultHeaders } from '../methods/helpers/defaultHeaders';
+import { headers as defaultHeaders } from '../methods/helpers/defaultHeaders';
+import { BASIC_AUTH_KEY } from '../methods/helpers/fetch';
 import {
 	type Serialized,
 	type MatchPathPattern,
@@ -152,7 +153,7 @@ class Sdk {
 		}
 	}
 
-	post<TPath extends PathFor<'POST'>>(
+	async post<TPath extends PathFor<'POST'>>(
 		endpoint: TPath,
 		params: void extends OperationParams<'POST', MatchPathPattern<TPath>>
 			? void
@@ -163,48 +164,46 @@ class Sdk {
 			? void
 			: Serialized<OperationParams<'POST', MatchPathPattern<TPath>>>
 	): Promise<ResultFor<'POST', MatchPathPattern<TPath>>> {
-		return new Promise(async (resolve, reject) => {
-			const isMethodCall = !!endpoint?.includes('/v1/method.call');
-			try {
-				const sdk = this.ensureInitialized();
-				// @ts-ignore
-				const result = await sdk.rest.post(endpoint, params, { headers: this.headers });
+		const isMethodCall = !!endpoint?.includes('/v1/method.call');
+		try {
+			const sdk = this.ensureInitialized();
+			// @ts-ignore
+			const result = await sdk.rest.post(endpoint, params, { headers: this.headers });
 
-				/**
-				 * if API_Use_REST_For_DDP_Calls is enabled and it's a method call,
-				 * responses have a different object structure
-				 */
-				if (isMethodCall) {
-					// @ts-ignore
-					const response = JSON.parse(result.message);
-					if (response?.error) {
-						throw response.error;
-					}
-					return resolve(response.result);
+			/**
+			 * if API_Use_REST_For_DDP_Calls is enabled and it's a method call,
+			 * responses have a different object structure
+			 */
+			if (isMethodCall) {
+				// @ts-ignore
+				const response = JSON.parse(result.message);
+				if (response?.error) {
+					throw response.error;
 				}
-				return resolve(result);
-			} catch (e: any) {
-				// @rocket.chat/api-client rejects with the raw fetch Response on REST errors.
-				// Normalize to { status, data } so callers can read e.data.*
-				const normalized = !isMethodCall && e instanceof Response ? await normalizeResponseError(e) : e;
-				const errorType = isMethodCall ? normalized?.error : normalized?.data?.errorType;
-				const totpInvalid = 'totp-invalid';
-				const totpRequired = 'totp-required';
-				if ([totpInvalid, totpRequired].includes(errorType)) {
-					const { details } = isMethodCall ? normalized : normalized?.data;
-					try {
-						await twoFactor({ method: details?.method, invalid: errorType === totpInvalid });
-						return resolve(this.post(endpoint, params));
-					} catch {
-						// twoFactor was canceled
-						return resolve({} as any);
-					}
-				} else {
-					reject(normalized);
-				}
+				return response.result;
 			}
-		});
-	}
+			return result;
+		} catch (e: any) {
+			// @rocket.chat/api-client rejects with the raw fetch Response on REST errors.
+			// Normalize to { status, data } so callers can read e.data.*
+			const normalized = !isMethodCall && e instanceof Response ? await normalizeResponseError(e) : e;
+			const errorType = isMethodCall ? normalized?.error : normalized?.data?.errorType;
+			const totpInvalid = 'totp-invalid';
+			const totpRequired = 'totp-required';
+			if ([totpInvalid, totpRequired].includes(errorType)) {
+				const { details } = isMethodCall ? normalized : normalized?.data;
+				try {
+					await twoFactor({ method: details?.method, invalid: errorType === totpInvalid });
+					return this.post(endpoint, params);
+				} catch {
+					// twoFactor was canceled
+					return {} as ResultFor<'POST', MatchPathPattern<TPath>>;
+				}
+			} else {
+				throw normalized;
+			}
+		}
+	};
 
 	async delete<TPath extends PathFor<'DELETE'>>(
 		endpoint: TPath,
