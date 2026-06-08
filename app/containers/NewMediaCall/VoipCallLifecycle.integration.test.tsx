@@ -161,6 +161,10 @@ jest.mock('../../lib/services/voip/navigateToCallRoom', () => ({
 jest.mock('../../lib/services/voip/playCallEndedSound', () => ({
 	playCallEndedSound: jest.fn()
 }));
+// mediaCallsStateSignals → restApi → API call. Mock to prevent network requests in tests.
+jest.mock('../../lib/services/restApi', () => ({
+	mediaCallsStateSignals: () => Promise.resolve({ signals: [], success: true })
+}));
 
 const mockHideActionSheet = jest.fn();
 jest.mock('../ActionSheet', () => ({
