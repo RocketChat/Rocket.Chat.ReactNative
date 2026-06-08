@@ -49,7 +49,7 @@ sequenceDiagram
     JS->>JS: clear call store (preserving native-accepted id)
 ```
 
-_Last verified: cd2faa00a_
+_Last verified: c4771ae02_
 
 ---
 
@@ -156,7 +156,7 @@ sequenceDiagram
     Note over Server,JS: Concurrent path — DDP notification/accepted may arrive first, matcher gates by mobileDeviceId and triggers the same answerCall (idempotent).
 ```
 
-_Last verified: cd2faa00a_
+_Last verified: c4771ae02_
 
 ---
 
