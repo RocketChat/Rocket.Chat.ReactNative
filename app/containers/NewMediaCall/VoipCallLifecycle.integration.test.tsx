@@ -139,7 +139,8 @@ jest.mock('../../lib/native/NativeVoip', () => ({
 	default: { stopNativeDDPClient: jest.fn() }
 }));
 jest.mock('../../lib/methods/voipCallPermissions', () => ({
-	requestVoipCallPermissions: jest.fn().mockResolvedValue({ granted: true, canAskAgain: true })
+	requestVoipCallPermissions: jest.fn().mockResolvedValue({ granted: true, canAskAgain: true, prompted: false }),
+	hasVoipCallPermission: jest.fn().mockResolvedValue(true)
 }));
 jest.mock('../../lib/hooks/useIsScreenReaderEnabled', () => ({
 	useIsScreenReaderEnabled: jest.fn(() => false)

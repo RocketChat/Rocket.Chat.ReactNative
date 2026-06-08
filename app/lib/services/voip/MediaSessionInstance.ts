@@ -33,7 +33,11 @@ import { getDMSubscriptionByUsername } from '../../database/services/Subscriptio
 import { getUidDirectMessage } from '../../methods/helpers/helpers';
 import log from '../../methods/helpers/log';
 import { isInActiveVoipCall } from './isInActiveVoipCall';
-import { requestVoipCallPermissions, showVoipMicrophoneDeniedAlert } from '../../methods/voipCallPermissions';
+import {
+	hasVoipCallPermission,
+	requestVoipCallPermissions,
+	showVoipMicrophoneDeniedAlert
+} from '../../methods/voipCallPermissions';
 import I18n from '../../../i18n';
 import { showErrorAlert } from '../../methods/helpers/info';
 
@@ -170,10 +174,10 @@ class MediaSessionInstance {
 		if (existingCall != null && existingCall.callId === callId) {
 			return;
 		}
-		// `await requestVoipCallPermissions()` widens the window before the `setCall` anchor below, and
+		// The `await hasVoipCallPermission()` below widens the window before the `setCall` anchor, and
 		// both invocation paths (REST replay + live listener via `tryAnswerIfNativeAcceptedNotification`)
 		// are gated only on `call == null`. Without this an in-flight answer can be entered twice and
-		// double `accept()`/navigate (grant) or double `endCall`/alert (deny). Keep it idempotent.
+		// double `accept()`/navigate (granted) or double `endCall` (not granted). Keep it idempotent.
 		if (this.answeringCallIds.has(callId)) {
 			return;
 		}
@@ -182,10 +186,12 @@ class MediaSessionInstance {
 			const mainCall = this.instance?.getCallData(callId);
 
 			if (mainCall && mainCall.callId === callId) {
-				const permission = await requestVoipCallPermissions();
-				if (!permission.granted) {
+				// Check-only gate — never prompt. The mic is pre-acquired at session init; at answer
+				// time the app may be locked/backgrounded where a dialog is impossible. Not granted →
+				// reject the call silently (an alert would be invisible/confusing on the lock screen).
+				const granted = await hasVoipCallPermission();
+				if (!granted) {
 					this.endCall(callId);
-					showVoipMicrophoneDeniedAlert(permission.canAskAgain);
 					return;
 				}
 				try {

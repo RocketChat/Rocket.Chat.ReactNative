@@ -52,6 +52,10 @@ Native code on iOS and Android can accept an incoming call before the JS app is 
 
 `isInActiveVoipCall()` returns true when either `call` or `nativeAcceptedCallId` is non-null. It gates new outgoing calls, suppresses incoming VideoConf invitations (`voipBlocksIncomingVideoconf`), and is re-evaluated **after** the OS microphone permission prompt resolves (an incoming call may have arrived during the prompt).
 
+### Microphone permission
+
+The OS microphone permission is **pre-acquired at session init** (`login` → `checkVoipPermission` → `preAcquireVoipMicPermission`, fire-and-forget and suppressed while a call is active), because an incoming call on a locked/backgrounded device cannot present a permission dialog. The incoming **answer gate** (`answerCall` → `hasVoipCallPermission`) is therefore **check-only**: it never prompts and rejects the call silently when the mic is not currently granted. Outgoing (`startCall`) still requests in-context and alerts on denial; the alert uses the voice-call-specific `Microphone_access_needed_for_voice_calls` string, separate from the voice-message recorder. See `CONTEXT.md` for the vocabulary and `adr/0001-pre-acquire-microphone-at-login.md` for the rationale and rejected alternatives.
+
 ### Self-call guard
 
 `isSelfUserId(userId)` compares against `login.user?.id` (not `username`, because `username` may be undefined in stale Redux state). `startCall` short-circuits silently for the self case, and the autocomplete UI filters self out. See PR #7236.

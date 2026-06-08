@@ -130,9 +130,11 @@ jest.mock('../../navigation/appNavigation', () => ({
 }));
 
 const mockRequestVoipCallPermissions = jest.fn().mockResolvedValue({ granted: true, canAskAgain: true });
+const mockHasVoipCallPermission = jest.fn().mockResolvedValue(true);
 const mockShowVoipMicrophoneDeniedAlert = jest.fn();
 jest.mock('../../methods/voipCallPermissions', () => ({
 	requestVoipCallPermissions: () => mockRequestVoipCallPermissions(),
+	hasVoipCallPermission: () => mockHasVoipCallPermission(),
 	showVoipMicrophoneDeniedAlert: (...args: unknown[]) => mockShowVoipMicrophoneDeniedAlert(...args)
 }));
 
@@ -246,6 +248,7 @@ describe('MediaSessionInstance', () => {
 		mockStartVoipCallService.mockResolvedValue(undefined);
 		mockMediaCallsStateSignals.mockResolvedValue({ signals: [], success: true });
 		mockRequestVoipCallPermissions.mockResolvedValue({ granted: true, canAskAgain: true });
+		mockHasVoipCallPermission.mockResolvedValue(true);
 		createdSessions.length = 0;
 		mockGetUidDirectMessage.mockReturnValue('other-user-id');
 		mockGetDMSubscriptionByUsername.mockResolvedValue(null);
@@ -874,7 +877,7 @@ describe('MediaSessionInstance', () => {
 	});
 
 	describe('answerCall error recovery (B5)', () => {
-		it('requests permission before accepting an incoming call', async () => {
+		it('checks microphone permission (without prompting) before accepting an incoming call', async () => {
 			await mediaSessionInstance.init('user-1');
 			const session = createdSessions[0];
 			const mainCall = {
@@ -886,11 +889,13 @@ describe('MediaSessionInstance', () => {
 
 			await mediaSessionInstance.answerCall('call-perm-ok');
 
-			expect(mockRequestVoipCallPermissions).toHaveBeenCalledTimes(1);
+			expect(mockHasVoipCallPermission).toHaveBeenCalledTimes(1);
+			// The answer path must never request/prompt — that is the pre-acquire-at-init job.
+			expect(mockRequestVoipCallPermissions).not.toHaveBeenCalled();
 			expect(mainCall.accept).toHaveBeenCalledTimes(1);
 		});
 
-		it('ends call and shows microphone denied alert when permission is denied', async () => {
+		it('rejects the call silently (no alert) when the microphone is not granted', async () => {
 			await mediaSessionInstance.init('user-1');
 			const session = createdSessions[0];
 			const mockResetNativeCallId = jest.fn();
@@ -906,7 +911,7 @@ describe('MediaSessionInstance', () => {
 				roomId: null
 			});
 			const endCallSpy = jest.spyOn(mediaSessionInstance, 'endCall');
-			mockRequestVoipCallPermissions.mockResolvedValueOnce({ granted: false, canAskAgain: true });
+			mockHasVoipCallPermission.mockResolvedValueOnce(false);
 			const mainCall = {
 				callId: 'call-perm',
 				state: 'ringing',
@@ -926,7 +931,8 @@ describe('MediaSessionInstance', () => {
 			expect(mainCall.hangup).not.toHaveBeenCalled();
 			expect(mockTerminateNativeCall).toHaveBeenCalledWith('call-perm');
 			expect(mockResetNativeCallId).toHaveBeenCalled();
-			expect(mockShowVoipMicrophoneDeniedAlert).toHaveBeenCalledWith(true);
+			// The app may be locked/backgrounded here — an alert would be invisible/confusing. Stay silent.
+			expect(mockShowVoipMicrophoneDeniedAlert).not.toHaveBeenCalled();
 			expect(Navigation.navigate).not.toHaveBeenCalled();
 			endCallSpy.mockRestore();
 		});
@@ -1008,11 +1014,11 @@ describe('MediaSessionInstance', () => {
 			expect(Navigation.navigate).toHaveBeenCalledTimes(1);
 		});
 
-		it('ends the call and alerts only once for concurrent denied answerCall on the same callId', async () => {
+		it('ends the call only once for concurrent denied answerCall on the same callId', async () => {
 			await mediaSessionInstance.init('user-1');
 			const session = createdSessions[0];
 			const endCallSpy = jest.spyOn(mediaSessionInstance, 'endCall').mockImplementation(() => {});
-			mockRequestVoipCallPermissions.mockResolvedValue({ granted: false, canAskAgain: true });
+			mockHasVoipCallPermission.mockResolvedValue(false);
 			const mainCall = {
 				callId: 'call-dup-deny',
 				state: 'ringing',
@@ -1026,7 +1032,7 @@ describe('MediaSessionInstance', () => {
 			await Promise.all([mediaSessionInstance.answerCall('call-dup-deny'), mediaSessionInstance.answerCall('call-dup-deny')]);
 
 			expect(endCallSpy).toHaveBeenCalledTimes(1);
-			expect(mockShowVoipMicrophoneDeniedAlert).toHaveBeenCalledTimes(1);
+			expect(mockShowVoipMicrophoneDeniedAlert).not.toHaveBeenCalled();
 			expect(mainCall.accept).not.toHaveBeenCalled();
 			endCallSpy.mockRestore();
 		});

@@ -6,7 +6,7 @@ Cross-runtime sequence diagrams for the handshakes that span TypeScript, Swift, 
 
 ## 1. Init and teardown
 
-Login establishes the singleton; logout or server switch tears it down. The DDP listener and Redux subscriptions live for the duration of the session.
+Login establishes the singleton; logout or server switch tears it down. The DDP listener and Redux subscriptions live for the duration of the session. Immediately after init, JS pre-acquires the OS microphone permission (fire-and-forget, suppressed if a call is already active) so a later incoming call on a locked/backgrounded device — where no dialog can be shown — can still be answered. See `CONTEXT.md` and `adr/0001-pre-acquire-microphone-at-login.md`.
 
 ```mermaid
 sequenceDiagram
@@ -37,6 +37,7 @@ sequenceDiagram
     JS->>Sig: subscribe newCall events
     Native->>JS: VoipPushTokenRegistered (iOS only)
     JS->>Server: register push token
+    Note over JS: Pre-acquire microphone permission (fire-and-forget); skipped if a call is already active.
 
     Note over User,Native: Session ready. Outgoing and incoming calls can now bind.
 
@@ -107,7 +108,7 @@ _Last verified: cd2faa00a_
 
 ## 3. Incoming call — warm (app foreground)
 
-The signaling session sees the call first via DDP. Native still owns the system call UI and still issues the REST accept, but JS is alive throughout, so the warm path converges quickly. `answerCall` is idempotent; the DDP `notification/accepted` and the REST replay race harmlessly.
+The signaling session sees the call first via DDP. Native still owns the system call UI and still issues the REST accept, but JS is alive throughout, so the warm path converges quickly. `answerCall` is idempotent; the DDP `notification/accepted` and the REST replay race harmlessly. Before binding, `answerCall` runs a **check-only** microphone gate — it never prompts (the device may be locked/backgrounded) and rejects the call silently if the mic is not currently granted. The permission is pre-acquired at init (flow 1).
 
 ```mermaid
 sequenceDiagram
@@ -130,6 +131,7 @@ sequenceDiagram
 
     User->>OS: Accept
     OS->>Native: accept action
+    Note over JS: Check-only mic gate (no prompt). Not granted → reject the call silently.
     Native->>Server: REST media-calls.answer (per-call DDP)
     Server-->>Native: ok
     Native->>Events: VoipAcceptSucceeded
