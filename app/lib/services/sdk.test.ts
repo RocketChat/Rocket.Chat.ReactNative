@@ -228,6 +228,82 @@ describe('Sdk.login', () => {
 		expect(headers['X-Auth-Token']).toBe('');
 		expect(headers['X-User-Id']).toBe('');
 	});
+
+	it('sets the auth headers from a resume-token (deep link) login response', async () => {
+		// Deep link logins reach sdk.login with `{ resume }` instead of `{ user, password }`,
+		// but the header centralization reads authToken/userId from the same /v1/login response.
+		const fake = buildFakeSdkWithLogin({
+			success: true,
+			data: { authToken: 'tok-deep', userId: 'uid-deep', me: { username: 'jane' } }
+		});
+		setInternalSdk(fake);
+		await sdk.login({ resume: 'resume-token-xyz' });
+		expect(fake.__post).toHaveBeenCalledWith(
+			'/v1/login',
+			{ resume: 'resume-token-xyz' },
+			expect.objectContaining({ headers: expect.any(Object) })
+		);
+		const headers = sdk.getHeaders();
+		expect(headers['X-Auth-Token']).toBe('tok-deep');
+		expect(headers['X-User-Id']).toBe('uid-deep');
+	});
+
+	it('uses each server own token/user after switching servers', async () => {
+		// Switching servers goes through initialize(), which resets headers to defaults.
+		// Login on server1 → token1/user1; re-initialize for server2 → headers cleared;
+		// login on server2 → token2/user2 (server1 credentials never leak).
+		const server1Sdk = buildFakeSdkWithLogin({
+			success: true,
+			data: { authToken: 'tok-1', userId: 'uid-1', me: { username: 'user1' } }
+		});
+		(DDPSDK.create as jest.Mock).mockReturnValueOnce(server1Sdk);
+		sdk.initialize('https://server1.com');
+		await sdk.login({ user: 'user1', password: 'pass1' });
+		expect(sdk.getHeaders()['X-Auth-Token']).toBe('tok-1');
+		expect(sdk.getHeaders()['X-User-Id']).toBe('uid-1');
+
+		const server2Sdk = buildFakeSdkWithLogin({
+			success: true,
+			data: { authToken: 'tok-2', userId: 'uid-2', me: { username: 'user2' } }
+		});
+		(DDPSDK.create as jest.Mock).mockReturnValueOnce(server2Sdk);
+		sdk.initialize('https://server2.com');
+		// initialize() must wipe server1 credentials before the new login.
+		expect(sdk.getHeaders()['X-Auth-Token']).toBeUndefined();
+		expect(sdk.getHeaders()['X-User-Id']).toBeUndefined();
+
+		await sdk.login({ user: 'user2', password: 'pass2' });
+		expect(sdk.getHeaders()['X-Auth-Token']).toBe('tok-2');
+		expect(sdk.getHeaders()['X-User-Id']).toBe('uid-2');
+	});
+
+	it('switches to the deep link server credentials when already logged in on another server', async () => {
+		// Already authenticated on server1.
+		const server1Sdk = buildFakeSdkWithLogin({
+			success: true,
+			data: { authToken: 'tok-1', userId: 'uid-1', me: { username: 'user1' } }
+		});
+		(DDPSDK.create as jest.Mock).mockReturnValueOnce(server1Sdk);
+		sdk.initialize('https://server1.com');
+		await sdk.login({ user: 'user1', password: 'pass1' });
+		expect(sdk.getHeaders()['X-Auth-Token']).toBe('tok-1');
+
+		// A deep link targeting server2 re-initializes on the new host, then logs in with the resume token.
+		const server2Sdk = buildFakeSdkWithLogin({
+			success: true,
+			data: { authToken: 'tok-2', userId: 'uid-2', me: { username: 'user2' } }
+		});
+		(DDPSDK.create as jest.Mock).mockReturnValueOnce(server2Sdk);
+		sdk.initialize('https://server2.com');
+		await sdk.login({ resume: 'deeplink-resume-token' });
+
+		const headers = sdk.getHeaders();
+		expect(headers['X-Auth-Token']).toBe('tok-2');
+		expect(headers['X-User-Id']).toBe('uid-2');
+		// server1 credentials must not survive the deep link switch.
+		expect(headers['X-Auth-Token']).not.toBe('tok-1');
+		expect(headers['X-User-Id']).not.toBe('uid-1');
+	});
 });
 
 describe('normalizeResponseError', () => {
