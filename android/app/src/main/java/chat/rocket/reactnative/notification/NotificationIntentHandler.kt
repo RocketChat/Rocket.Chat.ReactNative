@@ -170,3 +170,4 @@ class NotificationIntentHandler {
         }
     }
 }
+
