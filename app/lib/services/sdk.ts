@@ -260,30 +260,28 @@ class Sdk {
 		}
 	}
 
-	methodCall(...args: any[]): Promise<any> {
-		return new Promise(async (resolve, reject) => {
-			try {
-				if (!this.current || !this.current.client) {
-					throw new Error('SDK not initialized');
-				}
-				const [method, ...params] = args;
-				const result = await this.current.client.callAsyncWithOptions(method, {}, ...params, ...(this.code ? [this.code] : []));
-				return resolve(result);
-			} catch (e: any) {
-				if (e.error && (e.error === 'totp-required' || e.error === 'totp-invalid')) {
-					const { details } = e;
-					try {
-						this.code = await twoFactor({ method: details?.method, invalid: e.error === 'totp-invalid' });
-						return resolve(this.methodCall(...args));
-					} catch {
-						// twoFactor was canceled
-						return resolve({});
-					}
-				} else {
-					reject(e);
-				}
+	async methodCall(...args: any[]): Promise<any> {
+		try {
+			if (!this.current || !this.current.client) {
+				throw new Error('SDK not initialized');
 			}
-		});
+			const [method, ...params] = args;
+			const result = await this.current.client.callAsyncWithOptions(method, {}, ...params, ...(this.code ? [this.code] : []));
+			return result;
+		} catch (e: any) {
+			if (e.error && (e.error === 'totp-required' || e.error === 'totp-invalid')) {
+				const { details } = e;
+				try {
+					this.code = await twoFactor({ method: details?.method, invalid: e.error === 'totp-invalid' });
+					return this.methodCall(...args);
+				} catch {
+					// twoFactor was canceled
+					return {};
+				}
+			} else {
+				return Promise.reject(e);
+			}
+		}
 	}
 
 	methodCallWrapper(method: string, ...params: any[]): Promise<any> {
