@@ -123,6 +123,37 @@ describe('useScroll', () => {
 		expect(scrollToIndex).toHaveBeenCalledWith(expect.objectContaining({ index: 3 }));
 	});
 
+	it('keeps the header-clearing view offset on a scroll-to-index-failed retry so the target is not hidden behind the header', async () => {
+		const setHighTs = jest.fn();
+		const { result, rerender, scrollToIndex } = renderUseScroll([{ id: 'live-1' }, { id: 'live-2' }], setHighTs);
+
+		act(() => {
+			result.current.jumpToMessage('target', 1500);
+		});
+
+		const rows = [{ id: 'm0' }, { id: 'm1' }, { id: 'm2' }, { id: 'target' }, { id: 'm4' }, { id: 'm5' }];
+		act(() => {
+			rerender({ rows });
+		});
+		// The reactive scroll already landed once, centered and clear of the header.
+		await waitFor(() => expect(scrollToIndex).toHaveBeenCalledTimes(1));
+		expect(scrollToIndex).toHaveBeenLastCalledWith(expect.objectContaining({ viewPosition: 0.5, viewOffset: 100 }));
+		scrollToIndex.mockClear();
+
+		// The inverted list could not measure the target's frame on that first attempt.
+		act(() => {
+			result.current.handleScrollToIndexFailed({ index: 3, highestMeasuredFrameIndex: 1, averageItemLength: 50 });
+		});
+		act(() => {
+			jest.advanceTimersByTime(100);
+		});
+
+		// The retry must re-apply the same centering + header-clearing offset; otherwise the target lands
+		// flush at the top edge and sits hidden behind the room header.
+		expect(scrollToIndex).toHaveBeenCalledTimes(1);
+		expect(scrollToIndex).toHaveBeenCalledWith(expect.objectContaining({ index: 3, viewPosition: 0.5, viewOffset: 100 }));
+	});
+
 	it('defers a scroll-to-index-failed retry and caps it so an unmeasurable target cannot recurse into a stack overflow', () => {
 		const setHighTs = jest.fn();
 		const { result, rerender, scrollToIndex } = renderUseScroll([{ id: 'live-1' }, { id: 'live-2' }], setHighTs);

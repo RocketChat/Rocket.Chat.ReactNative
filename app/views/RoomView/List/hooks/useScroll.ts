@@ -17,6 +17,11 @@ const HIGHLIGHT_TIMEOUT = 5000;
 const SCROLL_TO_INDEX_RETRY_DELAY = 50;
 const MAX_SCROLL_TO_INDEX_RETRIES = 5;
 
+// Where a jumped-to message lands: centered, then pushed clear of the sticky room header so it is never
+// hidden behind it. Shared by EVERY scrollToIndex in the jump path (initial scroll AND the
+// onScrollToIndexFailed retry) so the landing position cannot drift between them.
+const JUMP_SCROLL_POSITION = { viewPosition: 0.5, viewOffset: 100 } as const;
+
 // A Jump to Message in flight: we re-anchor the Message Window, wait for the observation to re-emit
 // with the target present, then scroll exactly once.
 interface IPendingJump {
@@ -134,7 +139,7 @@ export const useScroll = ({
 			return;
 		}
 		jump.scrolled = true;
-		listRef.current?.scrollToIndex({ index, viewPosition: 0.5, viewOffset: 100 });
+		listRef.current?.scrollToIndex({ index, ...JUMP_SCROLL_POSITION });
 		completeJump(jump);
 		// eslint-disable-next-line react-hooks/exhaustive-deps -- keyed on messages so it re-runs on every re-observe; messagesIds is a ref read at run time
 	}, [messages]);
@@ -156,7 +161,7 @@ export const useScroll = ({
 			const targetId = pendingJump.current?.messageId ?? lastJumpTargetId.current;
 			const targetIndex = targetId ? messagesIds.current?.findIndex(id => id === targetId) ?? -1 : -1;
 			const index = targetIndex !== -1 ? targetIndex : params.highestMeasuredFrameIndex;
-			listRef.current?.scrollToIndex({ index, animated: false });
+			listRef.current?.scrollToIndex({ index, animated: false, ...JUMP_SCROLL_POSITION });
 		}, SCROLL_TO_INDEX_RETRY_DELAY);
 	};
 
@@ -203,7 +208,7 @@ export const useScroll = ({
 			const index = messagesIds.current?.findIndex(id => id === messageId) ?? -1;
 			if (index !== -1 && !anchored) {
 				jump.scrolled = true;
-				listRef.current?.scrollToIndex({ index, viewPosition: 0.5, viewOffset: 100 });
+				listRef.current?.scrollToIndex({ index, ...JUMP_SCROLL_POSITION });
 				completeJump(jump);
 			}
 		});
