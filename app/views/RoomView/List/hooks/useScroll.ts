@@ -136,6 +136,23 @@ export const useScroll = ({
 		[setHighTs]
 	);
 
+	// A jump scroll on the inverted list uses an ESTIMATED offset — there is no getItemLayout for these
+	// variable-height messages — so it can undershoot while the target's row is still unmeasured (fresh
+	// jump), landing the target above the viewport. The first scroll renders the row; once it has been
+	// measured a second scroll lands precisely. Re-read the index in case the window shifted a row between.
+	const scrollToTarget = useCallback(
+		(messageId: string, index: number) => {
+			listRef.current?.scrollToIndex({ index, ...JUMP_SCROLL_POSITION });
+			setTimeout(() => {
+				const settled = messagesIds.current?.findIndex(id => id === messageId) ?? -1;
+				if (settled !== -1) {
+					listRef.current?.scrollToIndex({ index: settled, ...JUMP_SCROLL_POSITION });
+				}
+			}, SCROLL_TO_INDEX_RETRY_DELAY);
+		},
+		[listRef, messagesIds]
+	);
+
 	// Reactive await-re-observe: every time the rendered rows change, check whether the pending
 	// target has appeared. The first time it has, scroll once and complete. This replaces the old
 	// recursive scroll-until-present loop.
@@ -155,7 +172,7 @@ export const useScroll = ({
 			return;
 		}
 		jump.scrolled = true;
-		listRef.current?.scrollToIndex({ index, ...JUMP_SCROLL_POSITION });
+		scrollToTarget(jump.messageId, index);
 		completeJump(jump);
 		// eslint-disable-next-line react-hooks/exhaustive-deps -- keyed on messages so it re-runs on every re-observe; messagesIds is a ref read at run time; fetchMessages is a stable trigger, not a dependency
 	}, [messages]);
@@ -226,7 +243,7 @@ export const useScroll = ({
 			const index = messagesIds.current?.findIndex(id => id === messageId) ?? -1;
 			if (index !== -1 && !anchored) {
 				jump.scrolled = true;
-				listRef.current?.scrollToIndex({ index, ...JUMP_SCROLL_POSITION });
+				scrollToTarget(messageId, index);
 				completeJump(jump);
 			}
 		});

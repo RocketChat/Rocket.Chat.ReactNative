@@ -85,6 +85,30 @@ describe('useScroll', () => {
 		await waitFor(() => expect(jumpResolved).toBe(true));
 	});
 
+	it('re-scrolls to the target after measurement so an undershot estimate cannot leave it hidden', async () => {
+		const setHighTs = jest.fn();
+		const { result, rerender, scrollToIndex } = renderUseScroll([{ id: 'live-1' }, { id: 'live-2' }], setHighTs);
+
+		act(() => {
+			result.current.jumpToMessage('target', 1500);
+		});
+		act(() => {
+			rerender({ rows: [{ id: 'older' }, { id: 'target' }, { id: 'newer' }] });
+		});
+
+		// First pass: a single scroll toward the target on an ESTIMATED offset (inverted list, no getItemLayout).
+		await waitFor(() => expect(scrollToIndex).toHaveBeenCalledTimes(1));
+		expect(scrollToIndex).toHaveBeenLastCalledWith(expect.objectContaining({ index: 1, viewPosition: 0.5, viewOffset: 100 }));
+
+		// Second pass: once the row has been measured, a corrective scroll re-centers it to the same spot so an
+		// undershooting estimate cannot leave the target hidden above the viewport.
+		act(() => {
+			jest.advanceTimersByTime(100);
+		});
+		expect(scrollToIndex).toHaveBeenCalledTimes(2);
+		expect(scrollToIndex).toHaveBeenLastCalledWith(expect.objectContaining({ index: 1, viewPosition: 0.5, viewOffset: 100 }));
+	});
+
 	it('grows the window (bounded) for a deep anchored target, then scrolls once it appears', async () => {
 		const setHighTs = jest.fn();
 		const fetchMessages = jest.fn();
@@ -181,6 +205,10 @@ describe('useScroll', () => {
 		});
 		// The reactive scroll already fired once toward index 3.
 		await waitFor(() => expect(scrollToIndex).toHaveBeenCalledTimes(1));
+		// It also schedules a corrective re-scroll (undershoot fix); drain it so the failure-retry below is isolated.
+		act(() => {
+			jest.runOnlyPendingTimers();
+		});
 		scrollToIndex.mockClear();
 
 		// Simulate the inverted list failing to measure the target's frame: it only measured up to index 1.
@@ -220,6 +248,10 @@ describe('useScroll', () => {
 		// The reactive scroll already landed once, centered and clear of the header.
 		await waitFor(() => expect(scrollToIndex).toHaveBeenCalledTimes(1));
 		expect(scrollToIndex).toHaveBeenLastCalledWith(expect.objectContaining({ viewPosition: 0.5, viewOffset: 100 }));
+		// Drain the corrective re-scroll the reactive effect schedules (undershoot fix) so the retry below stands alone.
+		act(() => {
+			jest.runOnlyPendingTimers();
+		});
 		scrollToIndex.mockClear();
 
 		// The inverted list could not measure the target's frame on that first attempt.
