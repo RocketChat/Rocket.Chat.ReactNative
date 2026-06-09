@@ -64,29 +64,12 @@ jobs:
       # android-emulator-runner's internal sdkmanager install AND shard 14's
       # keyboard-AVD create both download the system image in a SINGLE attempt
       # with no retry, so a truncated/corrupt archive fails the shard outright
-      # ("Error on ZipFile unknown archive"). Mirror the seed job: serialized,
-      # 3× retried install that clears partial downloads between tries. Runs
-      # before any emulator boot, so on a cache hit the later installs are no-ops.
+      # ("Error on ZipFile unknown archive"). The composite action does a
+      # serialized, 3× retried install that clears partial downloads between
+      # tries. Runs before any emulator boot, so on a cache hit it is a no-op.
       - name: Pre-install Android SDK packages (cache miss only)
         if: steps.sdk-cache.outputs.cache-hit != 'true'
-        run: |
-          set -u
-          SDK="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}}"
-          SDKMANAGER="$SDK/cmdline-tools/latest/bin/sdkmanager"
-          IMAGE="system-images;android-34;google_apis;x86_64"
-          yes | "$SDKMANAGER" --licenses >/dev/null 2>&1 || true
-          for attempt in 1 2 3; do
-            echo "sdkmanager install attempt $attempt"
-            if "$SDKMANAGER" --install "emulator" "$IMAGE" --channel=0; then
-              echo "SDK packages installed on attempt $attempt"
-              exit 0
-            fi
-            echo "Install failed (attempt $attempt); clearing partial downloads and retrying"
-            rm -rf "$SDK/emulator" "$SDK/system-images/android-34/google_apis/x86_64"
-            sleep 10
-          done
-          echo "sdkmanager failed to install emulator + system image after 3 attempts"
-          exit 1
+        uses: ./.github/actions/preinstall-android-sdk
 
       - name: Cache Maestro
         id: cache-maestro
@@ -202,31 +185,11 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -accel on
           script: ./.github/scripts/run-maestro.sh android ${{ inputs.shard }}
 
-      # Cache miss → boot the default AVD once with no test payload so reactivecircus saves a snapshot to ~/.android/avd
-      # which the AVD cache step then persists. Subsequent runs hit cache and the test step below replays the snapshot
-      # instead of cold-booting (cuts ~60–90s and avoids the system_server hiccup window).
-      - name: Generate AVD snapshot for cache (default profile, cache miss only)
-        if: ${{ inputs.shard != '14' && steps.avd-cache.outputs.cache-hit != 'true' }}
-        uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a # v2.37.0
-        # Cold-boot + AVD recreate after the RAM 4G→6G bump can push past the
-        # tight 30-min cap (emulator-boot-timeout is 15 min and the runner may
-        # retry the boot). Give it a real margin so a one-time cache repopulate
-        # succeeds and lets every subsequent run hit the cache.
-        timeout-minutes: 45
-        with:
-          api-level: 34
-          disk-size: 4096M
-          arch: x86_64
-          target: google_apis
-          profile: pixel_7_pro
-          cores: 4
-          ram-size: 6144M
-          force-avd-creation: true
-          disable-animations: true
-          emulator-boot-timeout: 900
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -accel on
-          script: echo "AVD snapshot generated for cache"
-
+      # No per-shard AVD snapshot generation: e2e-seed-android-avd is a hard
+      # `needs:` of this workflow and the single writer of the avd-<os>-api34
+      # cache, so the "Restore Android AVD" step above always hits by the time a
+      # shard runs. On the rare miss (eviction mid-run) the test step below
+      # cold-boots and android-emulator-runner creates the AVD on the fly.
       - name: Start Android Emulator and Run Maestro Tests (default)
         if: ${{ inputs.shard != '14' }}
         uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a # v2.37.0

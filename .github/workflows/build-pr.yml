@@ -103,24 +103,7 @@ jobs:
       # own sdkmanager install finds the packages already present (a no-op).
       - name: Pre-install Android SDK packages (cache miss only)
         if: steps.sdk-cache.outputs.cache-hit != 'true'
-        run: |
-          set -u
-          SDK="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}}"
-          SDKMANAGER="$SDK/cmdline-tools/latest/bin/sdkmanager"
-          IMAGE="system-images;android-34;google_apis;x86_64"
-          yes | "$SDKMANAGER" --licenses >/dev/null 2>&1 || true
-          for attempt in 1 2 3; do
-            echo "sdkmanager install attempt $attempt"
-            if "$SDKMANAGER" --install "emulator" "$IMAGE" --channel=0; then
-              echo "SDK packages installed on attempt $attempt"
-              exit 0
-            fi
-            echo "Install failed (attempt $attempt); clearing partial downloads and retrying"
-            rm -rf "$SDK/emulator" "$SDK/system-images/android-34/google_apis/x86_64"
-            sleep 10
-          done
-          echo "sdkmanager failed to install emulator + system image after 3 attempts"
-          exit 1
+        uses: ./.github/actions/preinstall-android-sdk
 
       - name: Enable KVM group permissions
         if: steps.avd-cache.outputs.cache-hit != 'true'

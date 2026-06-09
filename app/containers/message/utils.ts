@@ -221,3 +221,7 @@ export const getPreviewMessageFromAttachment = (attachment: IAttachment, transla
 	}
 	return attachment.description ?? attachment.title;
 };
+
+// The displayed body of a quote/reply attachment: its text, falling back to the title.
+// Single source of truth so the rendered quote (Reply) and its accessibility label stay in sync.
+export const getAttachmentText = (attachment: IAttachment): string | undefined => attachment.text || attachment.title;

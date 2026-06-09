@@ -17,6 +17,7 @@ import MessageContext from '../../Context';
 import Touchable from '../../Touchable';
 import messageStyles from '../../styles';
 import dayjs from '../../../../lib/dayjs';
+import { getAttachmentText } from '../../utils';
 
 const styles = StyleSheet.create({
 	button: {
@@ -123,7 +124,7 @@ const Description = React.memo(
 		'use memo';
 
 		const { user } = useContext(MessageContext);
-		const text = attachment.text || attachment.title;
+		const text = getAttachmentText(attachment);
 
 		if (!text) {
 			return null;

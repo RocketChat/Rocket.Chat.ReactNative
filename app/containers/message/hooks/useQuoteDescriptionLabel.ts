@@ -1,5 +1,6 @@
 import i18n from '../../../i18n';
 import { type IAttachment } from '../../../definitions';
+import { getAttachmentText } from '../utils';
 
 // A quoted reply renders its text via a nested <Markdown> inside the message's single accessible
 // Touchable. On iOS that subtree is merged into the parent accessibility element, so the quoted
@@ -8,7 +9,7 @@ import { type IAttachment } from '../../../definitions';
 export const useQuoteDescriptionLabel = (attachments: IAttachment[] | undefined): string => {
 	const quotedText = attachments
 		?.filter(attachment => !!attachment.message_link)
-		.map(attachment => (attachment.text || attachment.title)?.trim())
+		.map(attachment => getAttachmentText(attachment)?.trim())
 		.find(text => !!text);
 
 	if (!quotedText) {
