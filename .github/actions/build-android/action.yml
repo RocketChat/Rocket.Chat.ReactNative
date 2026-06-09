@@ -22,6 +22,10 @@ inputs:
   KEYSTORE_OFFICIAL_ALIAS:
     description: 'Keystore alias'
     required: true
+  trigger:
+    description: 'Build trigger context: "develop" writes the native build cache; any other value (e.g. "pr") restores it read-only'
+    required: false
+    default: pr
 
 runs:
   using: "composite"
@@ -33,18 +37,27 @@ runs:
         bundler-cache: true
         working-directory: android
 
+    # setup-gradle owns the ~/.gradle cache (write on the default branch, read-only on PRs),
+    # so the previous manual actions/cache for ~/.gradle is intentionally removed — stacking
+    # the two is redundant and Gradle warns it can interfere.
     - name: Set up Gradle
       uses: gradle/actions/setup-gradle@ed408507eac070d1f99cc633dbcf757c94c7933a # v4.4.3
 
-    - name: Cache Gradle
-      uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+    # Restore the native build outputs (CMake/externalNativeBuild object files, Gradle
+    # incremental state, packaged intermediates) so warm builds skip recompiling C++ for
+    # every ABI. Always restore; the cache is only written on develop (see "Save" step
+    # below), so PRs read the latest develop cache via the restore-keys prefix fallback.
+    # Distinct "android-store-" namespace keeps this separate from the single-ABI E2E cache.
+    - name: Restore Android native build cache
+      uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
       with:
         path: |
-          ~/.gradle
           android/.gradle
-        key: gradle-${{ hashFiles('android/**.gradle*', 'android/**/gradle-wrapper.properties') }}
+          android/app/build
+          android/app/.cxx
+        key: android-store-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml', '**/*.gradle*', '.github/actions/build-android/action.yml') }}
         restore-keys: |
-          gradle-
+          android-store-${{ runner.os }}-
 
     - name: Decode Keystore
       working-directory: android/app
@@ -57,6 +70,8 @@ runs:
       run: |
         echo "" > ./gradle.properties
         echo -e "org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g -Dfile.encoding=UTF-8" >> ./gradle.properties
+        echo -e "org.gradle.parallel=true" >> ./gradle.properties
+        echo -e "org.gradle.caching=true" >> ./gradle.properties
         echo -e "android.useAndroidX=true" >> ./gradle.properties
         echo -e "android.enableJetifier=true" >> ./gradle.properties
         echo -e "reactNativeArchitectures=armeabi-v7a,arm64-v8a,x86,x86_64" >> ./gradle.properties
@@ -81,7 +96,78 @@ runs:
 
     - name: Build Android Release AAB
       working-directory: android
-      run: ./gradlew bundleRelease
+      run: |
+        build_start=$(date +%s)
+        ./gradlew bundleRelease --build-cache --parallel --max-workers=4
+        build_end=$(date +%s)
+        echo "BUILD_DURATION_SECONDS=$((build_end - build_start))" >> "$GITHUB_ENV"
+      shell: bash
+
+    # Hard gate: a cache-poisoning bug or a silently-dropped ABI must fail the build loudly
+    # rather than ship a defective signed release bundle.
+    - name: Verify AAB contains all target ABIs
+      working-directory: android
+      run: |
+        AAB=app/build/outputs/bundle/release/app-release.aab
+        echo "Inspecting native libraries in $AAB"
+        missing=0
+        for abi in armeabi-v7a arm64-v8a x86 x86_64; do
+          if unzip -l "$AAB" | grep -q "base/lib/$abi/"; then
+            echo "  found: $abi"
+          else
+            echo "  MISSING: $abi"
+            missing=1
+          fi
+        done
+        if [ "$missing" -ne 0 ]; then
+          echo "::error::AAB is missing one or more target ABIs — refusing to ship an incomplete release bundle."
+          exit 1
+        fi
+      shell: bash
+
+    # Hard gate: confirm the AAB is signed with the official keystore certificate.
+    - name: Verify AAB signing certificate
+      working-directory: android
+      run: |
+        AAB=app/build/outputs/bundle/release/app-release.aab
+        aab_fp=$(keytool -printcert -jarfile "$AAB" 2>/dev/null | grep -m1 'SHA256:' | tr -d '[:space:]')
+        ks_fp=$(keytool -list -v -keystore "app/${{ inputs.KEYSTORE_OFFICIAL }}" -alias "${{ inputs.KEYSTORE_OFFICIAL_ALIAS }}" -storepass "${{ inputs.KEYSTORE_OFFICIAL_PASSWORD }}" 2>/dev/null | grep -m1 'SHA256:' | tr -d '[:space:]')
+        echo "AAB signer:    ${aab_fp:-<none>}"
+        echo "Keystore cert: ${ks_fp:-<none>}"
+        if [ -z "$aab_fp" ] || [ -z "$ks_fp" ]; then
+          echo "::error::Could not read a SHA-256 fingerprint from the AAB or the keystore."
+          exit 1
+        fi
+        if [ "$aab_fp" != "$ks_fp" ]; then
+          echo "::error::AAB signing certificate does not match the official keystore."
+          exit 1
+        fi
+        echo "Signing certificate verified against the official keystore."
+      shell: bash
+
+    # Write the native build cache only on develop (the default branch); PRs restore it
+    # read-only. Runs after the gates so a poisoned/incomplete build is never cached.
+    - name: Save Android native build cache
+      if: ${{ inputs.trigger == 'develop' }}
+      uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+      with:
+        path: |
+          android/.gradle
+          android/app/build
+          android/app/.cxx
+        key: android-store-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml', '**/*.gradle*', '.github/actions/build-android/action.yml') }}
+
+    - name: Report build time
+      if: ${{ always() && env.BUILD_DURATION_SECONDS != '' }}
+      run: |
+        mins=$((BUILD_DURATION_SECONDS / 60))
+        secs=$((BUILD_DURATION_SECONDS % 60))
+        {
+          echo "### Android store build (bundleRelease)"
+          echo ""
+          echo "- Wall time: **${mins}m ${secs}s**"
+          echo "- Trigger: \`${{ inputs.trigger }}\` (native cache: ${{ inputs.trigger == 'develop' && 'write' || 'read-only' }})"
+        } >> "$GITHUB_STEP_SUMMARY"
       shell: bash
 
     - name: Upload sourcemaps/NDK symbols to Bugsnag
