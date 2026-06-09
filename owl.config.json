@@ -4,6 +4,7 @@
 		"scheme": "RocketChat",
 		"configuration": "Release",
 		"device": "iPhone 16 Pro",
+		"buildCommand": "ios/owl-build.sh",
 		"quiet": true
 	},
 	"android": {

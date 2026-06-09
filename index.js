@@ -10,7 +10,7 @@ if (process.env.USE_OWL) {
 	AppRegistry.registerComponent(appName, () => {
 		const OwlRoot = require('./app/owls/OwlRoot').default;
 
-		return () => <OwlRoot fixture={process.env.OWL_FIXTURE} />;
+		return () => <OwlRoot />;
 	});
 } else if (process.env.USE_STORYBOOK) {
 	AppRegistry.registerComponent(appName, () => require('./.rnstorybook/index').default);
