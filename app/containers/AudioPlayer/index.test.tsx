@@ -40,10 +40,6 @@ jest.mock('../../theme', () => ({
 	useTheme: () => ({ theme: 'light', colors: { surfaceLight: '#ffffff', strokeExtraLight: '#eeeeee' } })
 }));
 
-jest.mock('@react-navigation/native', () => ({
-	useNavigation: jest.fn()
-}));
-
 const mockTaskCancel = jest.fn();
 let capturedFocusCb: Function | undefined;
 let capturedBlurCb: Function | undefined;
@@ -60,13 +56,6 @@ const defaultProps = {
 describe('AudioPlayer', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
-
-		(useSharedValue as jest.Mock).mockImplementation((init: any) => {
-			const { useRef } = require('react');
-			const ref = useRef({ value: init });
-			return ref.current;
-		});
-
 		jest.spyOn(InteractionManager, 'runAfterInteractions').mockImplementation((cb: any) => {
 			cb();
 			return { cancel: mockTaskCancel, then: jest.fn(), done: jest.fn() };
