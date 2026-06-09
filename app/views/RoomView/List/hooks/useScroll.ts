@@ -11,6 +11,12 @@ import { VIEWABILITY_CONFIG } from '../constants';
 const JUMP_SAFETY_TIMEOUT = 5000;
 const HIGHLIGHT_TIMEOUT = 5000;
 
+// Bounded growth for an Anchored Window jump: the anchor re-seeds to one page, but a target deeper than
+// that first page (large Chunk / filtered rows between the bound and the target) is not in it yet. Each
+// retry grows the window by one page (fetchMessages) to pull the target down into the rendered rows.
+// Capped so a target that never materialises terminates into the safety-net abort instead of looping.
+const MAX_JUMP_GROWTH_RETRIES = 5;
+
 // onScrollToIndexFailed retry budget. VirtualizedList re-invokes onScrollToIndexFailed SYNCHRONOUSLY
 // after a failed scrollToIndex, so we defer each retry one frame to break the recursion and cap the
 // number of attempts so an unreachable/unmeasurable target terminates instead of spinning forever.
@@ -38,12 +44,14 @@ export const useScroll = ({
 	listRef,
 	messages,
 	messagesIds,
-	setHighTs
+	setHighTs,
+	fetchMessages
 }: {
 	listRef: TListRef;
 	messages: TAnyMessageModel[];
 	messagesIds: TMessagesIdsRef;
 	setHighTs: (next: number | null) => void;
+	fetchMessages: () => Promise<void>;
 }) => {
 	// NOT migrated to the React Compiler ('use memo'): babel-plugin-react-compiler (rc) silently skips
 	// any function whose body contains a react-hooks/exhaustive-deps suppression, and this hook keeps an
@@ -58,6 +66,8 @@ export const useScroll = ({
 	const lastJumpTargetId = useRef<string | null>(null);
 	// Bounds the onScrollToIndexFailed retry chain per jump (reset when a new jump starts).
 	const scrollFailRetries = useRef(0);
+	// Bounds the window-growth retries while waiting for a deep Anchored target to re-observe (reset per jump).
+	const jumpGrowthRetries = useRef(0);
 
 	useEffect(
 		() => () => {
@@ -136,12 +146,18 @@ export const useScroll = ({
 		}
 		const index = messagesIds.current?.findIndex(id => id === jump.messageId) ?? -1;
 		if (index === -1) {
+			// Anchored target deeper than the current window: grow by one page (bounded) to pull it in.
+			// The safety net still aborts if it never materialises after the cap.
+			if (jump.anchored && jumpGrowthRetries.current < MAX_JUMP_GROWTH_RETRIES) {
+				jumpGrowthRetries.current += 1;
+				fetchMessages();
+			}
 			return;
 		}
 		jump.scrolled = true;
 		listRef.current?.scrollToIndex({ index, ...JUMP_SCROLL_POSITION });
 		completeJump(jump);
-		// eslint-disable-next-line react-hooks/exhaustive-deps -- keyed on messages so it re-runs on every re-observe; messagesIds is a ref read at run time
+		// eslint-disable-next-line react-hooks/exhaustive-deps -- keyed on messages so it re-runs on every re-observe; messagesIds is a ref read at run time; fetchMessages is a stable trigger, not a dependency
 	}, [messages]);
 
 	// scroll-to-index-failed: the inverted list could not measure the target's frame yet (a mid-window
@@ -151,8 +167,9 @@ export const useScroll = ({
 	// retry one frame (letting the list render & measure more rows first) and cap the attempts so an
 	// unmeasurable target gives up gracefully instead of spinning forever.
 	const handleScrollToIndexFailed: IListProps['onScrollToIndexFailed'] = params => {
+		// Per-jump cap: once hit, stay capped for the rest of this jump. The only reset is at jump start
+		// (jumpToMessage); resetting here would let a later failure restart the chain and defeat the cap.
 		if (scrollFailRetries.current >= MAX_SCROLL_TO_INDEX_RETRIES) {
-			scrollFailRetries.current = 0;
 			return;
 		}
 		scrollFailRetries.current += 1;
@@ -179,6 +196,7 @@ export const useScroll = ({
 
 			lastJumpTargetId.current = messageId;
 			scrollFailRetries.current = 0;
+			jumpGrowthRetries.current = 0;
 			const anchored = typeof highTs === 'number' && Number.isFinite(highTs);
 			const jump: IPendingJump = {
 				messageId,

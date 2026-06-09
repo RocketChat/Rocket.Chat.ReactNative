@@ -16,7 +16,7 @@ const makeListRef = () => {
 
 const makeMessagesIdsRef = (ids: string[]): TMessagesIdsRef => ({ current: ids });
 
-const renderUseScroll = (initialRows: Row[], setHighTs = jest.fn()) => {
+const renderUseScroll = (initialRows: Row[], setHighTs = jest.fn(), fetchMessages = jest.fn()) => {
 	const { listRef, scrollToIndex, scrollToOffset, scrollToEnd } = makeListRef();
 	const idsRef = makeMessagesIdsRef(initialRows.map(r => r.id));
 
@@ -28,13 +28,14 @@ const renderUseScroll = (initialRows: Row[], setHighTs = jest.fn()) => {
 				listRef,
 				messages: rows as unknown as TAnyMessageModel[],
 				messagesIds: idsRef,
-				setHighTs
+				setHighTs,
+				fetchMessages
 			});
 		},
 		{ initialProps: { rows: initialRows } }
 	);
 
-	return { ...utils, listRef, scrollToIndex, scrollToOffset, scrollToEnd, idsRef, setHighTs };
+	return { ...utils, listRef, scrollToIndex, scrollToOffset, scrollToEnd, idsRef, setHighTs, fetchMessages };
 };
 
 describe('useScroll', () => {
@@ -82,6 +83,87 @@ describe('useScroll', () => {
 			await Promise.resolve();
 		});
 		await waitFor(() => expect(jumpResolved).toBe(true));
+	});
+
+	it('grows the window (bounded) for a deep anchored target, then scrolls once it appears', async () => {
+		const setHighTs = jest.fn();
+		const fetchMessages = jest.fn();
+		const { result, rerender, scrollToIndex } = renderUseScroll([{ id: 'live-1' }, { id: 'live-2' }], setHighTs, fetchMessages);
+
+		act(() => {
+			result.current.jumpToMessage('target', 1500);
+		});
+		expect(setHighTs).toHaveBeenCalledWith(1500);
+
+		// First re-observe: the anchored window's first page does not reach the target yet → grow one page.
+		act(() => {
+			rerender({ rows: [{ id: 'p1-a' }, { id: 'p1-b' }] });
+		});
+		expect(fetchMessages).toHaveBeenCalledTimes(1);
+		expect(scrollToIndex).not.toHaveBeenCalled();
+
+		// Still absent after the first growth → grow again.
+		act(() => {
+			rerender({ rows: [{ id: 'p2-a' }, { id: 'p2-b' }, { id: 'p2-c' }] });
+		});
+		expect(fetchMessages).toHaveBeenCalledTimes(2);
+		expect(scrollToIndex).not.toHaveBeenCalled();
+
+		// The grown window finally includes the target → scroll exactly once, no further growth.
+		act(() => {
+			rerender({ rows: [{ id: 'older' }, { id: 'target' }, { id: 'newer' }] });
+		});
+		await waitFor(() => expect(scrollToIndex).toHaveBeenCalledTimes(1));
+		expect(scrollToIndex).toHaveBeenCalledWith(expect.objectContaining({ index: 1 }));
+		expect(fetchMessages).toHaveBeenCalledTimes(2);
+	});
+
+	it('caps anchored window growth so a never-materialising target stops growing and the safety net aborts', async () => {
+		const setHighTs = jest.fn();
+		const fetchMessages = jest.fn();
+		const { result, rerender, scrollToIndex } = renderUseScroll([{ id: 'live-1' }], setHighTs, fetchMessages);
+
+		let jumpResolved = false;
+		act(() => {
+			result.current.jumpToMessage('ghost', 1500).then(() => {
+				jumpResolved = true;
+			});
+		});
+
+		// The target never appears. Each re-observe grows the window, but only up to the cap (5).
+		for (let i = 0; i < 8; i++) {
+			act(() => {
+				rerender({ rows: [{ id: `pass-${i}` }] });
+			});
+		}
+		expect(fetchMessages).toHaveBeenCalledTimes(5);
+		expect(scrollToIndex).not.toHaveBeenCalled();
+
+		// Growth exhausted → the safety net releases the anchor back to the Live Tail and resolves (never stuck).
+		setHighTs.mockClear();
+		await act(async () => {
+			jest.advanceTimersByTime(5000);
+			await Promise.resolve();
+		});
+		await waitFor(() => expect(jumpResolved).toBe(true));
+		expect(setHighTs).toHaveBeenCalledWith(null);
+	});
+
+	it('does not grow the window for a non-anchored (contiguous) target that is not yet present', () => {
+		const setHighTs = jest.fn();
+		const fetchMessages = jest.fn();
+		const { result, rerender } = renderUseScroll([{ id: 'live-1' }, { id: 'live-2' }], setHighTs, fetchMessages);
+
+		// Contiguous jump passes highTs = null: there is no Anchored Window to grow, so a missing target
+		// must simply wait (or hit the safety net) — never trigger window growth.
+		act(() => {
+			result.current.jumpToMessage('target', null);
+		});
+		act(() => {
+			rerender({ rows: [{ id: 'live-1' }, { id: 'live-2' }, { id: 'live-3' }] });
+		});
+
+		expect(fetchMessages).not.toHaveBeenCalled();
 	});
 
 	it('scroll-to-index-failed retries toward the actual target index, not highestMeasuredFrameIndex', async () => {

@@ -25,7 +25,7 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 			viewabilityConfigCallbackPairs,
 			handleScrollToIndexFailed,
 			highlightedMessageId
-		} = useScroll({ listRef, messages, messagesIds, setHighTs });
+		} = useScroll({ listRef, messages, messagesIds, setHighTs, fetchMessages });
 
 		const onEndReached = useDebounce(() => {
 			fetchMessages();

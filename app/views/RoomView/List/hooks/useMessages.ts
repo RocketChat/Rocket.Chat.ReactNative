@@ -84,12 +84,21 @@ export const useMessages = ({
 				return;
 			}
 
+			// Pin to the subscription that fired this emit. fetchMessages reassigns subscription.current on
+			// every re-subscribe (room switch, another raise); if that happens during the awaits below, this
+			// invocation is stale and must not mutate count / highTs for the new window.
+			const sub = subscription.current;
+
 			// Targeted one-shot read of the region above the current bound that the bounded observation
 			// cannot see (the newly-written batch + any new Newer Loader).
 			const rows = (await database.active
 				.get('messages')
 				.query(Q.where('rid', rid), Q.where('ts', Q.gt(currentHighTs)), Q.sortBy('ts', Q.asc), Q.take(QUERY_SIZE + 1))
 				.fetch()) as TAnyMessageModel[];
+
+			if (subscription.current !== sub) {
+				return;
+			}
 
 			const next = raiseOrRelease(rows as unknown as AnchorMessage[], currentHighTs);
 
@@ -107,6 +116,9 @@ export const useMessages = ({
 						.fetchCount();
 				} catch {
 					// Best-effort: fall back to releasing without growth rather than getting stuck anchored.
+				}
+				if (subscription.current !== sub) {
+					return;
 				}
 				count.current += aboveCount;
 				setHighTsState(null);
