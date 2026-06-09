@@ -1,0 +1,15 @@
+{
+	"ios": {
+		"workspace": "ios/RocketChatRN.xcworkspace",
+		"scheme": "RocketChat",
+		"configuration": "Release",
+		"device": "iPhone 16 Pro",
+		"quiet": true
+	},
+	"android": {
+		"packageName": "chat.rocket.reactnative",
+		"buildType": "Release",
+		"quiet": true
+	},
+	"report": true
+}

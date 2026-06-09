@@ -1,0 +1,120 @@
+name: Visual Regression iOS
+
+on:
+  workflow_dispatch:
+    inputs:
+      update_baseline:
+        description: 'Generate fresh baseline images instead of comparing against committed ones'
+        required: false
+        type: boolean
+        default: false
+      test_path_pattern:
+        description: 'Optional Owl testPathPattern'
+        required: false
+        type: string
+      test_name_pattern:
+        description: 'Optional Owl testNamePattern'
+        required: false
+        type: string
+  pull_request:
+    paths:
+      - '.github/workflows/visual-regression-ios.yml'
+      - 'app/owls/**'
+      - 'tests/owl/**'
+      - '.owl/baseline/**'
+      - 'owl.config.json'
+      - 'index.js'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  visual-regression-ios:
+    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    runs-on: macos-26
+    timeout-minutes: 60
+    env:
+      USE_OWL: true
+      RUNNING_E2E_TESTS: true
+      OWL_DEVICE: iPhone 16 Pro
+      UPDATE_BASELINE: ${{ github.event_name == 'workflow_dispatch' && inputs.update_baseline || 'false' }}
+      TEST_PATH_PATTERN: ${{ github.event_name == 'workflow_dispatch' && inputs.test_path_pattern || '' }}
+      TEST_NAME_PATTERN: ${{ github.event_name == 'workflow_dispatch' && inputs.test_name_pattern || '' }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Checkout and Setup Node
+        uses: ./.github/actions/setup-node
+
+      - name: Set up Xcode
+        uses: maxim-lobanov/setup-xcode@ed7a3b1fda3918c0306d1b724322adc0b8cc0a90 # v1.7.0
+        with:
+          xcode-version: '26.2.0'
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@7372622e62b60b3cb750dcd2b9e32c247ffec26a # v1.302.0
+        with:
+          ruby-version: 2.7.7
+          bundler-cache: true
+
+      - name: Cache CocoaPods and derived data
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: |
+            ios/Pods
+            ~/Library/Caches/CocoaPods
+            ~/.cocoapods/repos
+            ~/Library/Developer/Xcode/DerivedData
+          key: visual-regression-ios-${{ runner.os }}-${{ hashFiles('ios/Podfile.lock', 'ios/Podfile') }}
+          restore-keys: |
+            visual-regression-ios-${{ runner.os }}-
+
+      - name: Install CocoaPods
+        run: pnpm pod-install
+
+      - name: Boot simulator
+        run: |
+          xcrun simctl boot "$OWL_DEVICE" || true
+          xcrun simctl bootstatus "$OWL_DEVICE" -b
+          xcrun simctl spawn booted defaults write -g UIAnimationDragCoefficient -float 10
+
+      - name: Require committed baselines for compare mode
+        if: env.UPDATE_BASELINE != 'true'
+        run: |
+          test -d .owl/baseline/ios
+          find .owl/baseline/ios -name '*.png' -print -quit | grep -q .
+
+      - name: Build Owl app
+        run: pnpm owl:build:ios
+
+      - name: Run Owl tests
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          args=()
+          if [[ -n "$TEST_PATH_PATTERN" ]]; then
+            args+=(--testPathPattern "$TEST_PATH_PATTERN")
+          fi
+          if [[ -n "$TEST_NAME_PATTERN" ]]; then
+            args+=(--testNamePattern "$TEST_NAME_PATTERN")
+          fi
+
+          if [[ "$UPDATE_BASELINE" == "true" ]]; then
+            pnpm owl:test:update:ios -- "${args[@]}"
+          else
+            pnpm owl:test:ios -- "${args[@]}"
+          fi
+
+      - name: Upload Owl artifacts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: owl-ios-results
+          path: .owl
+          retention-days: 7

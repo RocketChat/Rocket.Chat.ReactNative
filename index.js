@@ -6,7 +6,13 @@ import DeviceInfo from 'react-native-device-info';
 
 import { name as appName } from './app.json';
 
-if (process.env.USE_STORYBOOK) {
+if (process.env.USE_OWL) {
+	AppRegistry.registerComponent(appName, () => {
+		const OwlRoot = require('./app/owls/OwlRoot').default;
+
+		return () => <OwlRoot fixture={process.env.OWL_FIXTURE} />;
+	});
+} else if (process.env.USE_STORYBOOK) {
 	AppRegistry.registerComponent(appName, () => require('./.rnstorybook/index').default);
 } else {
 	if (!__DEV__) {
