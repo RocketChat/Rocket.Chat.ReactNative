@@ -125,46 +125,43 @@ runs:
         fi
       shell: bash
 
-    # Signing check: confirm the AAB carries the official keystore's certificate.
-    # This must NEVER abort the build on an unreadable signature — `bundleRelease`
-    # already signs with the wired-in signingConfig and Play rejects a wrongly-signed
-    # upload — so an empty/unreadable read is a warning and only a positively-read
-    # fingerprint MISMATCH is a hard failure. Note: app/build.gradle sets
-    # `v1SigningEnabled false`, and `keytool -printcert -jarfile` reads only the v1/JAR
-    # signature, so this may legitimately have no fingerprint to compare; the full
-    # keytool output is printed so the AAB's actual signing scheme is visible in the log.
+    # Hard gate: the AAB must be signed with the official upload certificate.
+    # The keystore password is read via keytool's `-storepass:env` rather than a
+    # shell-quoted argument — the secret contains shell-special characters (the same
+    # reason the gradle.properties step above single-quotes the password lines), so
+    # interpolating it into `-storepass "…"` mangles it and the read silently fails.
+    # Captures use `|| true` so an empty read never trips `set -e -o pipefail`; the
+    # full keytool output is printed only on failure so a problem is self-explaining.
     - name: Verify AAB signing certificate
       working-directory: android
+      env:
+        KS_FILE: ${{ inputs.KEYSTORE_OFFICIAL }}
+        KS_ALIAS: ${{ inputs.KEYSTORE_OFFICIAL_ALIAS }}
+        KS_PASS: ${{ inputs.KEYSTORE_OFFICIAL_PASSWORD }}
       run: |
         AAB=app/build/outputs/bundle/release/app-release.aab
 
-        # Capture without letting a failed/empty read trip `set -e -o pipefail`.
-        aab_certs=$(keytool -printcert -jarfile "$AAB" 2>&1 || true)
-        ks_certs=$(keytool -list -v \
-          -keystore "app/${{ inputs.KEYSTORE_OFFICIAL }}" \
-          -alias "${{ inputs.KEYSTORE_OFFICIAL_ALIAS }}" \
-          -storepass "${{ inputs.KEYSTORE_OFFICIAL_PASSWORD }}" 2>&1 || true)
+        aab_out=$(keytool -printcert -jarfile "$AAB" 2>&1 || true)
+        ks_out=$(keytool -list -v -keystore "app/$KS_FILE" -alias "$KS_ALIAS" -storepass:env KS_PASS 2>&1 || true)
 
-        echo "----- keytool -printcert -jarfile (AAB) -----"
-        echo "$aab_certs"
-        echo "----- keystore certificate (SHA fingerprints) -----"
-        printf '%s\n' "$ks_certs" | grep -E 'SHA(1|256):' || true
+        aab_fp=$(printf '%s\n' "$aab_out" | grep -m1 'SHA256:' | tr -d '[:space:]' || true)
+        ks_fp=$(printf '%s\n' "$ks_out" | grep -m1 'SHA256:' | tr -d '[:space:]' || true)
 
-        aab_fp=$(printf '%s\n' "$aab_certs" | grep -m1 'SHA256:' | tr -d '[:space:]' || true)
-        ks_fp=$(printf '%s\n' "$ks_certs" | grep -m1 'SHA256:' | tr -d '[:space:]' || true)
+        echo "AAB signer SHA-256:    ${aab_fp:-<none>}"
+        echo "Keystore cert SHA-256: ${ks_fp:-<none>}"
 
         if [ -z "$aab_fp" ]; then
-          echo "::warning::No v1/JAR SHA-256 fingerprint readable from the AAB (expected: app/build.gradle has v1SigningEnabled=false). Skipping fingerprint comparison; relying on the ABI gate and Play's upload-key verification."
-          exit 0
+          printf '%s\n' "$aab_out"
+          echo "::error::AAB is not signed (no SHA-256 readable) — refusing to ship an unsigned release bundle."
+          exit 1
         fi
         if [ -z "$ks_fp" ]; then
-          echo "::warning::Could not read a SHA-256 fingerprint from the keystore; skipping comparison."
-          exit 0
+          printf '%s\n' "$ks_out"
+          echo "::error::Could not read the official keystore certificate (keytool output above)."
+          exit 1
         fi
         if [ "$aab_fp" != "$ks_fp" ]; then
-          echo "AAB signer:    $aab_fp"
-          echo "Keystore cert: $ks_fp"
-          echo "::error::AAB signing certificate does not match the official keystore."
+          echo "::error::AAB signing certificate ($aab_fp) does not match the official keystore ($ks_fp)."
           exit 1
         fi
         echo "Signing certificate verified against the official keystore ($aab_fp)."
