@@ -43,7 +43,7 @@ const ListPicker = ({
 	const insets = useSafeAreaInsets();
 
 	const getOptions = (): React.ReactElement => (
-		<View style={{ backgroundColor: colors.surfaceRoom, marginBottom: insets.bottom }}>
+		<View style={{ backgroundColor: colors.surfaceRoom, paddingBottom: insets.bottom }}>
 			<List.Separator />
 			{OPTIONS[preference].map(i => (
 				<React.Fragment key={i.value}>

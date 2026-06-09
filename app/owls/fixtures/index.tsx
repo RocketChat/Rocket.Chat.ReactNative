@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { colors } from '../../lib/constants/colors';
+import ActionSheetsFixture from './ActionSheetsFixture';
 import SmokeFixture from './SmokeFixture';
 
 const styles = StyleSheet.create({
@@ -28,7 +29,8 @@ const styles = StyleSheet.create({
 });
 
 const fixtures = {
-	smoke: SmokeFixture
+	smoke: SmokeFixture,
+	'action-sheets': ActionSheetsFixture
 };
 
 const UnknownFixture = ({ fixture }: { fixture: string }) => (
