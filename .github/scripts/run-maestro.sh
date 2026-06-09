@@ -6,6 +6,9 @@ SHARD="${2:-${SHARD:-default}}"
 FLOWS_DIR=".maestro/tests"
 MAIN_REPORT="maestro-report.xml"
 MAX_RERUN_ROUNDS="${MAX_RERUN_ROUNDS:-2}"
+# Whole-suite retries for a session/driver-startup failure (no report produced),
+# distinct from MAX_RERUN_ROUNDS which retries individual failed flows.
+MAX_STARTUP_RETRIES="${MAX_STARTUP_RETRIES:-1}"
 RERUN_REPORT_PREFIX="maestro-rerun"
 export MAESTRO_DRIVER_STARTUP_TIMEOUT="${MAESTRO_DRIVER_STARTUP_TIMEOUT:-120000}"
 
@@ -86,32 +89,50 @@ done < "$MAPFILE"
 echo "Main run will execute:"
 printf '  %s\n' "${FLOW_FILES[@]}"
 
-if [ "$PLATFORM" = "android" ]; then
-  adb shell settings put system show_touches 1 || true
-  adb install -r "app-release.apk" || true
+run_main_suite() {
+  rm -f "$MAIN_REPORT"
+  if [ "$PLATFORM" = "android" ]; then
+    adb shell settings put system show_touches 1 || true
+    adb install -r "app-release.apk" || true
 
-  maestro test "${FLOW_FILES[@]}" \
-    -e APP_ID="$APP_ID" \
-    --exclude-tags=util \
-    --include-tags="test-${SHARD}" \
-    --exclude-tags=ios-only \
-    --format junit \
-    --output "$MAIN_REPORT" || true
+    maestro test "${FLOW_FILES[@]}" \
+      -e APP_ID="$APP_ID" \
+      --exclude-tags=util \
+      --include-tags="test-${SHARD}" \
+      --exclude-tags=ios-only \
+      --format junit \
+      --output "$MAIN_REPORT" || true
+  else
+    maestro test "${FLOW_FILES[@]}" \
+      -e APP_ID="$APP_ID" \
+      --exclude-tags=util \
+      --include-tags="test-${SHARD}" \
+      --exclude-tags=android-only \
+      --format junit \
+      --output "$MAIN_REPORT" || true
+  fi
+}
 
-else
-  maestro test "${FLOW_FILES[@]}" \
-    -e APP_ID="$APP_ID" \
-    --exclude-tags=util \
-    --include-tags="test-${SHARD}" \
-    --exclude-tags=android-only \
-    --format junit \
-    --output "$MAIN_REPORT" || true
-fi
-
-if [ ! -f "$MAIN_REPORT" ]; then
-  echo "Main report not found"
-  exit 1
-fi
+# A missing main report means the run aborted before producing any JUnit output —
+# a session/driver-startup failure (e.g. the iOS XCUITest runner not attaching
+# within MAESTRO_DRIVER_STARTUP_TIMEOUT), not a flow failure. That class is
+# transient and the per-flow rerun loop below can't see it (it needs a report to
+# know which flows to retry), so the whole suite is retried here up to
+# MAX_STARTUP_RETRIES times. A report that exists WITH failures is left to the
+# rerun loop unchanged.
+STARTUP_ATTEMPT=0
+while : ; do
+  run_main_suite
+  if [ -f "$MAIN_REPORT" ]; then
+    break
+  fi
+  if [ "$STARTUP_ATTEMPT" -ge "$MAX_STARTUP_RETRIES" ]; then
+    echo "::error title=Maestro driver/session failed to start::No main report after $((STARTUP_ATTEMPT + 1)) attempt(s) — the Maestro session never produced JUnit output (driver/session-startup failure, e.g. the iOS XCUITest runner not attaching). This is an environment failure, not an app or test regression."
+    exit 1
+  fi
+  STARTUP_ATTEMPT=$((STARTUP_ATTEMPT + 1))
+  echo "Main report not found; session/driver likely failed to start. Retrying whole suite (startup retry ${STARTUP_ATTEMPT}/${MAX_STARTUP_RETRIES})"
+done
 
 FAILED_NAMES="$(python3 - <<PY
 import sys,xml.etree.ElementTree as ET
