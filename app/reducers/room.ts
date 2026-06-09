@@ -68,6 +68,18 @@ export default function (state = initialState, action: TActionsRoom): IRoom {
 				...state,
 				historyLoaders: state.historyLoaders.filter(loaderId => loaderId !== action.loaderId)
 			};
+		case ROOM.HISTORY_UI_LOADER_PUSH:
+			return {
+				...state,
+				historyLoaders: state.historyLoaders.includes(action.loaderId)
+					? state.historyLoaders
+					: [...state.historyLoaders, action.loaderId]
+			};
+		case ROOM.HISTORY_UI_LOADER_POP:
+			return {
+				...state,
+				historyLoaders: state.historyLoaders.filter(loaderId => loaderId !== action.loaderId)
+			};
 		default:
 			return state;
 	}

@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Q } from '@nozbe/watermelondb';
 import { type Subscription } from 'rxjs';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useStore } from 'react-redux';
 
-import { type RoomType, type TAnyMessageModel } from '../../../../definitions';
+import { type IApplicationState, type RoomType, type TAnyMessageModel } from '../../../../definitions';
 import database from '../../../../lib/database';
 import { getMessageById } from '../../../../lib/database/services/Message';
 import { getThreadById } from '../../../../lib/database/services/Thread';
@@ -37,6 +37,7 @@ export const useMessages = ({
 	const lastDispatchedLoaderId = useRef<string | null>(null);
 	const autoLoadCount = useRef(0);
 	const dispatch = useDispatch();
+	const store = useStore<IApplicationState>();
 
 	const unsubscribe = useCallback(() => {
 		subscription.current?.unsubscribe();
@@ -162,11 +163,15 @@ export const useMessages = ({
 		const loaderId = visibleMessages.find(m => m.t && MESSAGE_TYPE_ANY_LOAD.includes(m.t as MessageTypeLoad))?.id;
 
 		if (loaderId && loaderId !== lastDispatchedLoaderId.current) {
+			// Skip if a fetch for this loader is already in flight (push happens before the DB subscription emits)
+			if (store.getState().room.historyLoaders.includes(loaderId)) {
+				return;
+			}
 			lastDispatchedLoaderId.current = loaderId;
 			autoLoadCount.current += 1;
 			dispatch(roomHistoryRequest({ rid, t, loaderId }));
 		}
-	}, [serverVersion, rid, t, hideSystemMessages, visibleMessages, dispatch]);
+	}, [serverVersion, rid, t, hideSystemMessages, visibleMessages, dispatch, store]);
 
 	return [visibleMessages, messagesIds, fetchMessages] as const;
 };
