@@ -8,6 +8,7 @@ import Button from '../../containers/Button';
 import * as List from '../../containers/List';
 import I18n from '../../i18n';
 import { isAndroid } from '../../lib/methods/helpers';
+import dayjs from '../../lib/dayjs';
 import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
 
@@ -22,9 +23,9 @@ const CLEAR_AFTER_OPTIONS: { value: ClearAfterValue; labelKey: string }[] = [
 
 export const computeExpiresAt = (value: ClearAfterValue, customDate: Date | null): string | null | undefined => {
 	if (value === '') return null;
-	if (value === '30') return new Date(Date.now() + 30 * 60_000).toISOString();
-	if (value === '60') return new Date(Date.now() + 60 * 60_000).toISOString();
-	if (value === 'custom' && customDate) return customDate.toISOString();
+	if (value === '30') return dayjs().add(30, 'minute').toISOString();
+	if (value === '60') return dayjs().add(1, 'hour').toISOString();
+	if (value === 'custom' && customDate) return dayjs(customDate).toISOString();
 	return undefined;
 };
 
