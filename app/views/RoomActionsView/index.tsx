@@ -23,7 +23,8 @@ import {
 	type ISubscription,
 	type IUser,
 	SubscriptionType,
-	type TSubscriptionModel
+	type TSubscriptionModel,
+	STATUS_I18N_KEYS
 } from '../../definitions';
 import { type IActiveUsers } from '../../reducers/activeUsers';
 import { withDimensions } from '../../dimensions';
@@ -768,9 +769,11 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		const isGroupChatHandler = isGroupChat(room);
 		const roomUserId = !isGroupChatHandler && t === 'd' ? getUidDirectMessage(room) : undefined;
 		const activeUserStatus = roomUserId ? activeUsers[roomUserId] : undefined;
+		const userStatus = activeUserStatus?.status || member.status;
 		const statusText = activeUserStatus?.statusText || member.statusText;
 		const statusExpiresAt = activeUserStatus?.statusExpiresAt || member.statusExpiresAt;
 		const formattedStatusExpiry = statusExpiresAt ? formatStatusExpiry(statusExpiresAt as string) : undefined;
+		const presenceLabel = !statusText && userStatus ? STATUS_I18N_KEYS[userStatus] : undefined;
 
 		return (
 			<List.Section>
@@ -820,11 +823,19 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 							/>
 							{t === 'd' && !!statusText && (
 								<View style={styles.statusRow}>
-									{member._id && <Status size={12} id={member._id} />}
+									{roomUserId && <Status size={12} id={roomUserId} />}
 									<MarkdownPreview
 										msg={statusText}
 										style={[styles.roomDescription, { color: themes[theme].fontSecondaryInfo }]}
 									/>
+								</View>
+							)}
+							{t === 'd' && !!presenceLabel && !statusText && (
+								<View style={styles.statusRow}>
+									{roomUserId && <Status size={12} id={roomUserId} />}
+									<Text style={[styles.roomDescription, { color: themes[theme].fontSecondaryInfo }]}>
+										{I18n.t(presenceLabel)}
+									</Text>
 								</View>
 							)}
 							{t === 'd' && !!formattedStatusExpiry && (

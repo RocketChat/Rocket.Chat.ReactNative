@@ -2,6 +2,7 @@ import React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 
 import type { IApplicationState, TUserStatus, IOmnichannelSource, IVisitor, ISubscription } from '../../definitions';
+import { STATUS_I18N_KEYS } from '../../definitions';
 import I18n from '../../i18n';
 import RoomHeader from './RoomHeader';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
@@ -66,8 +67,13 @@ const RoomHeaderContainer = React.memo(
 
 		if (connected) {
 			if ((type === 'd' || (tmid && roomUserId)) && activeUser) {
-				const { statusText: statusTextActiveUser, statusExpiresAt: statusExpiresAtActiveUser } = activeUser;
-				statusText = statusTextActiveUser;
+				const {
+					statusText: statusTextActiveUser,
+					statusExpiresAt: statusExpiresAtActiveUser,
+					status: statusActiveUser
+				} = activeUser;
+				const presenceLabel = statusActiveUser ? I18n.t(STATUS_I18N_KEYS[statusActiveUser]!) : undefined;
+				statusText = statusTextActiveUser || presenceLabel;
 				statusExpiresAt = statusExpiresAtActiveUser;
 			} else if (type === 'l' && visitor?.status) {
 				({ status: statusVisitor } = visitor);

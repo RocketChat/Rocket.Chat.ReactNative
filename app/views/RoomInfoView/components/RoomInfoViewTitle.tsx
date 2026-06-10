@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 
-import { type ISubscription, type TUserStatus, SubscriptionType } from '../../../definitions';
+import { type ISubscription, type TUserStatus, SubscriptionType, STATUS_I18N_KEYS } from '../../../definitions';
 import styles from '../styles';
 import { useTheme } from '../../../theme';
 import RoomTypeIcon from '../../../containers/RoomTypeIcon';
@@ -14,14 +14,6 @@ import Status from '../../../containers/Status';
 import EventEmitter from '../../../lib/methods/helpers/events';
 import { LISTENER } from '../../../containers/Toast';
 import I18n from '../../../i18n';
-
-const STATUS_I18N_KEYS: Partial<Record<TUserStatus, string>> = {
-	online: 'Online',
-	away: 'Away',
-	busy: 'Busy',
-	offline: 'Offline'
-};
-
 interface IRoomInfoViewTitle {
 	room?: ISubscription;
 	name?: string;
