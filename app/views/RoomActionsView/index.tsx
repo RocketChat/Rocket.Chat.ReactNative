@@ -480,9 +480,9 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 					this.setState({
 						member: {
 							...user,
-							...(activeUserStatus?.statusText && { statusText: activeUserStatus.statusText }),
-							...(activeUserStatus?.statusExpiresAt && { statusExpiresAt: activeUserStatus.statusExpiresAt }),
-							...(activeUserStatus?.statusSource && { statusSource: activeUserStatus.statusSource })
+							...(activeUserStatus?.statusText != null && { statusText: activeUserStatus.statusText }),
+							...(activeUserStatus?.statusExpiresAt != null && { statusExpiresAt: activeUserStatus.statusExpiresAt }),
+							...(activeUserStatus?.statusSource != null && { statusSource: activeUserStatus.statusSource })
 						}
 					});
 				}
@@ -769,9 +769,9 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		const isGroupChatHandler = isGroupChat(room);
 		const roomUserId = !isGroupChatHandler && t === 'd' ? getUidDirectMessage(room) : undefined;
 		const activeUserStatus = roomUserId ? activeUsers[roomUserId] : undefined;
-		const userStatus = activeUserStatus?.status || member.status;
-		const statusText = activeUserStatus?.statusText || member.statusText;
-		const statusExpiresAt = activeUserStatus?.statusExpiresAt || member.statusExpiresAt;
+		const userStatus = activeUserStatus?.status != null ? activeUserStatus.status : member.status;
+		const statusText = activeUserStatus?.statusText != null ? activeUserStatus.statusText : member.statusText;
+		const statusExpiresAt = activeUserStatus?.statusExpiresAt != null ? activeUserStatus.statusExpiresAt : member.statusExpiresAt;
 		const formattedStatusExpiry = statusExpiresAt ? formatStatusExpiry(statusExpiresAt as string) : undefined;
 		const presenceLabel = !statusText && userStatus ? STATUS_I18N_KEYS[userStatus] : undefined;
 
