@@ -153,8 +153,11 @@ runs:
       shell: bash
 
     # Write the cache only on develop; runs after the gates so a bad build is never cached.
+    # TEMP (NATIVE-1251 benchmark) — REVERT BEFORE MERGE: the `|| github.head_ref ==` clause
+    # lets this PR branch seed the cache so we can measure a cold→warm delta. Restore to
+    # `if: ${{ inputs.trigger == 'develop' }}` before merging.
     - name: Save Android native build cache
-      if: ${{ inputs.trigger == 'develop' }}
+      if: ${{ inputs.trigger == 'develop' || github.head_ref == 'native-1251-android-ci-build-time' }}
       uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
       with:
         path: |
