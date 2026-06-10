@@ -132,8 +132,10 @@ export const FormTextInput = ({
 	// screen underneath. iOS classifies a field as a credential via any of
 	// `secureTextEntry`, `textContentType` in {password, newPassword, ...},
 	// or `autoComplete` in {password, password-new, ...} — so we must suppress
-	// all three under RUNNING_E2E_TESTS on iOS. Visual masking and the
-	// show/hide eye icon stay driven by the original `secureTextEntry` prop.
+	// all three under RUNNING_E2E_TESTS on iOS. Since `secureTextEntry` is itself
+	// a credential trigger, masking is necessarily disabled under E2E on iOS —
+	// only throwaway test users are affected. The eye icon still renders (driven
+	// by the original prop) but is a no-op while suppression is active.
 	const suppressIOSCredentialOffer = isIOS && process.env.RUNNING_E2E_TESTS === 'true';
 	const accessibilityLabelText = useMemo(() => {
 		const baseLabel = `${accessibilityLabel || label || ''}`;

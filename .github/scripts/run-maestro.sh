@@ -6,11 +6,32 @@ SHARD="${2:-${SHARD:-default}}"
 FLOWS_DIR=".maestro/tests"
 MAIN_REPORT="maestro-report.xml"
 MAX_RERUN_ROUNDS="${MAX_RERUN_ROUNDS:-2}"
-# Whole-suite retries for a session/driver-startup failure (no report produced),
-# distinct from MAX_RERUN_ROUNDS which retries individual failed flows.
-MAX_STARTUP_RETRIES="${MAX_STARTUP_RETRIES:-1}"
 RERUN_REPORT_PREFIX="maestro-rerun"
 export MAESTRO_DRIVER_STARTUP_TIMEOUT="${MAESTRO_DRIVER_STARTUP_TIMEOUT:-120000}"
+
+# Bounds each `maestro test`: a child wedged on simctl/devicectl/networksetup/kill
+# (CoreSimulator wedge) can otherwise hang past any in-script logic. -k SIGKILLs
+# 30s after the 35m soft bound so even an unkillable child is reaped. Exit 124 =
+# soft timeout, 137 = SIGKILL after grace; annotate so the red is explained.
+run_maestro_test() {
+  local rc=0
+  timeout -k 30s 35m maestro test "$@" || rc=$?
+  if [ "$rc" -eq 124 ] || [ "$rc" -eq 137 ]; then
+    echo "::error title=Maestro run timed out::A 'maestro test' invocation exceeded 35m and was terminated (likely a wedged CoreSimulator). This is an environment failure, not an app or test regression."
+  fi
+  return 0
+}
+
+# The login-with-deeplink flow logs its deeplink URL, leaking a live session token
+# as `&token=<authToken>` into Maestro's command logs — which the job uploads as a
+# public artifact. Scrub it in place before upload. perl -i is portable across the
+# Linux (Android) and macOS (iOS) runners, unlike sed's split -i syntax.
+redact_uploaded_logs() {
+  local logs_dir="$HOME/.maestro/tests"
+  [ -d "$logs_dir" ] || return 0
+  find "$logs_dir" -type f -print0 \
+    | xargs -0 perl -pi -e 's/&token=[A-Za-z0-9_-]+/&token=***REDACTED***/g' 2>/dev/null || true
+}
 
 if [ "$PLATFORM" = "android" ]; then
   APP_ID="chat.rocket.android"
@@ -42,8 +63,13 @@ fi
 # Maestro artifact to learn it was an HTTP error. Probe it up front so a server
 # outage surfaces as a single red annotation on the job (and, when the whole server
 # is down, the same annotation on every shard) instead of mystery flow failures.
-E2E_SERVER="$(sed -n "s/^[[:space:]]*server:[[:space:]]*'\([^']*\)'.*/\1/p" .maestro/scripts/data.js | head -1)"
-E2E_SERVER="${E2E_SERVER:-https://mobile.qa.rocket.chat}"
+# data.js is the single source of truth for the server URL; accept either quote
+# style so a reformat doesn't silently break the scrape.
+E2E_SERVER="$(sed -n "s/^[[:space:]]*server:[[:space:]]*['\"]\([^'\"]*\)['\"].*/\1/p" .maestro/scripts/data.js | head -1)"
+if [ -z "$E2E_SERVER" ]; then
+  echo "::error title=E2E server URL not found::Could not scrape 'server' from .maestro/scripts/data.js — its format may have changed. This is a CI config failure, not an app or test regression."
+  exit 3
+fi
 echo "Preflight: checking E2E server ${E2E_SERVER} ..."
 PREFLIGHT_CODE="$(curl -s -o /dev/null -w '%{http_code}' --max-time 25 --retry 3 --retry-all-errors --retry-delay 5 "${E2E_SERVER}/api/info" || true)"
 if [ "$PREFLIGHT_CODE" != "200" ]; then
@@ -53,7 +79,9 @@ fi
 echo "Preflight OK: ${E2E_SERVER}/api/info -> 200"
 
 MAPFILE="$(mktemp)"
-trap 'rm -f "$MAPFILE"' EXIT
+# Redact on EXIT so the token is scrubbed regardless of which exit path the script
+# takes, before the always() upload step reads the logs.
+trap 'rm -f "$MAPFILE"; redact_uploaded_logs' EXIT
 
 while IFS= read -r -d '' file; do
   if grep -qE "^[[:space:]]*-[[:space:]]*['\"]?test-${SHARD}['\"]?([[:space:]]*$|[[:space:]]*,|[[:space:]]*\\])" "$file"; then
@@ -95,44 +123,33 @@ run_main_suite() {
     adb shell settings put system show_touches 1 || true
     adb install -r "app-release.apk" || true
 
-    maestro test "${FLOW_FILES[@]}" \
+    run_maestro_test "${FLOW_FILES[@]}" \
       -e APP_ID="$APP_ID" \
       --exclude-tags=util \
       --include-tags="test-${SHARD}" \
       --exclude-tags=ios-only \
       --format junit \
-      --output "$MAIN_REPORT" || true
+      --output "$MAIN_REPORT"
   else
-    maestro test "${FLOW_FILES[@]}" \
+    run_maestro_test "${FLOW_FILES[@]}" \
       -e APP_ID="$APP_ID" \
       --exclude-tags=util \
       --include-tags="test-${SHARD}" \
       --exclude-tags=android-only \
       --format junit \
-      --output "$MAIN_REPORT" || true
+      --output "$MAIN_REPORT"
   fi
 }
 
-# A missing main report means the run aborted before producing any JUnit output —
-# a session/driver-startup failure (e.g. the iOS XCUITest runner not attaching
-# within MAESTRO_DRIVER_STARTUP_TIMEOUT), not a flow failure. That class is
-# transient and the per-flow rerun loop below can't see it (it needs a report to
-# know which flows to retry), so the whole suite is retried here up to
-# MAX_STARTUP_RETRIES times. A report that exists WITH failures is left to the
-# rerun loop unchanged.
-STARTUP_ATTEMPT=0
-while : ; do
-  run_main_suite
-  if [ -f "$MAIN_REPORT" ]; then
-    break
-  fi
-  if [ "$STARTUP_ATTEMPT" -ge "$MAX_STARTUP_RETRIES" ]; then
-    echo "::error title=Maestro driver/session failed to start::No main report after $((STARTUP_ATTEMPT + 1)) attempt(s) — the Maestro session never produced JUnit output (driver/session-startup failure, e.g. the iOS XCUITest runner not attaching). This is an environment failure, not an app or test regression."
-    exit 1
-  fi
-  STARTUP_ATTEMPT=$((STARTUP_ATTEMPT + 1))
-  echo "Main report not found; session/driver likely failed to start. Retrying whole suite (startup retry ${STARTUP_ATTEMPT}/${MAX_STARTUP_RETRIES})"
-done
+run_main_suite
+
+# No main report means the run aborted before producing JUnit output — a genuine
+# session/driver-startup failure. Let it go red so a human can use "Re-run failed
+# jobs"; auto-retrying here would hide real startup breakage.
+if [ ! -f "$MAIN_REPORT" ]; then
+  echo "::error title=Maestro session produced no report::The Maestro run produced no JUnit output (session/driver-startup failure or a timeout — see the annotation above). Re-run the failed job if this looks transient."
+  exit 1
+fi
 
 FAILED_NAMES="$(python3 - <<PY
 import sys,xml.etree.ElementTree as ET
@@ -182,21 +199,21 @@ while [ ${#CURRENT_FAILS[@]} -gt 0 ] && [ "$ROUND" -le "$MAX_RERUN_ROUNDS" ]; do
   RPT="${RERUN_REPORT_PREFIX}-round-${ROUND}.xml"
 
   if [ "$PLATFORM" = "android" ]; then
-    maestro test "${CURRENT_FAILS[@]}" \
+    run_maestro_test "${CURRENT_FAILS[@]}" \
       -e APP_ID="$APP_ID" \
       --exclude-tags=util \
       --include-tags="test-${SHARD}" \
       --exclude-tags=ios-only \
       --format junit \
-      --output "$RPT" || true
+      --output "$RPT"
   else
-    maestro test "${CURRENT_FAILS[@]}" \
+    run_maestro_test "${CURRENT_FAILS[@]}" \
       -e APP_ID="$APP_ID" \
       --exclude-tags=util \
       --include-tags="test-${SHARD}" \
       --exclude-tags=android-only \
       --format junit \
-      --output "$RPT" || true
+      --output "$RPT"
   fi
 
   if [ ! -f "$RPT" ]; then

@@ -11,6 +11,9 @@ jobs:
   android-test:
     name: 'Android Tests'
     runs-on: ubuntu-latest
+    # Slowest passing shard ~27 min; bounds a wedged session above the in-script
+    # timeout -k wrap so a hang fails the job instead of burning the full 6h cap.
+    timeout-minutes: 40
     env:
       # 2.5.0 switched gRPC to dadb direct ADB socket — eliminates flaky TCP forwarding (Broken pipe at install).
       # https://github.com/mobile-dev-inc/maestro/releases/tag/cli-2.5.0
@@ -27,13 +30,16 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      # Restore-only: the seed job (e2e-seed-android-avd, and post-merge the
-      # build-develop refresh) is the SINGLE writer of this AVD snapshot. Shards
-      # never save it, so 13 shards × N open PRs no longer each persist a ~3 GB
-      # AVD under this key — that per-PR duplication was pushing the repo past
-      # the 10 GB Actions cache cap and LRU-evicting the SDK system-image cache,
-      # which forced cold-boot re-downloads (the "Error on ZipFile unknown
-      # archive" shard failures). Shard 14 builds its own keyboard AVD, so skip.
+      # Restore-only: build-develop.yml's seed-android-avd job is the SINGLE
+      # writer of this AVD snapshot. GitHub scopes a PR-written cache to that
+      # PR's merge ref, so a per-PR writer can't be shared across PRs; a
+      # develop-branch cache is restorable by every PR. Shards never save it, so
+      # 13 shards × N open PRs no longer each persist a ~3 GB AVD under this key
+      # — that per-PR duplication pushed the repo past the 10 GB Actions cache
+      # cap and LRU-evicted the SDK system-image cache, forcing cold-boot
+      # re-downloads (the "Error on ZipFile unknown archive" shard failures). On
+      # a miss (develop hasn't seeded this key yet, or it was evicted) the shard
+      # cold-boots below. Shard 14 builds its own keyboard AVD, so skip.
       - name: Restore Android AVD
         if: ${{ inputs.shard != '14' }}
         id: avd-cache
@@ -44,13 +50,14 @@ jobs:
             ~/.android/adb*
           key: avd-${{ runner.os }}-api34
 
-      # Restore the emulator + api-34 system image pre-installed by the
-      # e2e-seed-android-avd seed job. With these present, android-emulator-runner's
-      # internal sdkmanager install (and shard 14's keyboard-AVD script) become a
-      # no-op, so the shards no longer each re-download ~1 GB from dl.google.com —
-      # the source of the random "unknown archive" shard failures. Restore-only:
-      # the seed job is the single writer, so the shards never race to save it.
-      # Applies to all shards, including 14 (it installs the same system image).
+      # Restore the emulator + api-34 system image written on develop by
+      # build-develop.yml's seed-android-avd job. With these present,
+      # android-emulator-runner's internal sdkmanager install (and shard 14's
+      # keyboard-AVD script) become a no-op, so the shards no longer each
+      # re-download ~1 GB from dl.google.com — the source of the random "unknown
+      # archive" shard failures. Restore-only: develop is the single writer, so
+      # the shards never race to save it. On a miss the preinstall step below
+      # backfills. Applies to all shards, including 14 (same system image).
       - name: Restore Android SDK packages (emulator + system image)
         id: sdk-cache
         uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
@@ -71,11 +78,18 @@ jobs:
         if: steps.sdk-cache.outputs.cache-hit != 'true'
         uses: ./.github/actions/preinstall-android-sdk
 
+      # Cache only the Maestro install dirs — never run data. A later step greps
+      # ~/.maestro/tests for SERVER_ERR to classify server-flake vs real
+      # regression; caching tests/ + run logs would restore another shard's stale
+      # logs and mislabel a genuine failure as a flake.
       - name: Cache Maestro
         id: cache-maestro
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
-          path: ~/.maestro
+          path: |
+            ~/.maestro/bin
+            ~/.maestro/lib
+            ~/.maestro/deps
           key: maestro-${{ runner.os }}-${{ env.MAESTRO_VERSION }}
 
       - name: Download APK
@@ -185,11 +199,13 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -accel on
           script: ./.github/scripts/run-maestro.sh android ${{ inputs.shard }}
 
-      # No per-shard AVD snapshot generation: e2e-seed-android-avd is a hard
-      # `needs:` of this workflow and the single writer of the avd-<os>-api34
-      # cache, so the "Restore Android AVD" step above always hits by the time a
-      # shard runs. On the rare miss (eviction mid-run) the test step below
-      # cold-boots and android-emulator-runner creates the AVD on the fly.
+      # No per-shard AVD snapshot generation and no save: the avd-<os>-api34
+      # cache is written only on develop (build-develop.yml's seed-android-avd),
+      # never by a PR. When the "Restore Android AVD" step hits, the emulator
+      # boots from that snapshot; on a miss (develop hasn't seeded this key yet,
+      # or it was evicted) android-emulator-runner creates the AVD and cold-boots
+      # on the fly. -no-snapshot-save keeps the shard from persisting its own
+      # copy, so PRs stay restore-only.
       - name: Start Android Emulator and Run Maestro Tests (default)
         if: ${{ inputs.shard != '14' }}
         uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a # v2.37.0

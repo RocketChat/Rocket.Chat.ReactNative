@@ -52,93 +52,37 @@ jobs:
     needs: [e2e-hold]
     secrets: inherit
 
-  # Pre-populates the AVD snapshot cache before the matrix fans out. Without
-  # this, all 14 shards check actions/cache at the same instant — nobody has
-  # written yet, so every shard misses and runs its own snapshot-generation
-  # step. With this seed job, the shards' cache restore is guaranteed to hit.
-  e2e-seed-android-avd:
-    name: E2E Seed Android AVD Cache
+  # Single source of the shard list both platforms fan out over, and the guard
+  # that keeps it honest: it asserts every flow under .maestro/tests is tagged
+  # test-<N> within the declared range and every shard in the range has a flow,
+  # then emits the list as JSON for the matrices below. A flow tagged outside
+  # the range, or a gap in the range, fails here instead of letting that flow
+  # silently never run. No AVD seeding happens on PRs — the avd/sdk caches are
+  # written only on develop (build-develop.yml's seed-android-avd); shards
+  # restore them read-only and cold-boot on a miss.
+  e2e-shards:
+    name: E2E Shard Preflight
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
     runs-on: ubuntu-latest
-    needs: [e2e-hold]
-    env:
-      ANDROID_AVD_HOME: /home/runner/.android/avd
+    outputs:
+      shards: ${{ steps.shards.outputs.shards }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
-      - name: Setup Java
-        uses: actions/setup-java@c1e323688fd81a25caa38c78aa6df2d33d3e20d9 # v4.8.0
-        with:
-          distribution: temurin
-          java-version: 17
-
-      - name: Cache Android AVD
-        id: avd-cache
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
-        with:
-          path: |
-            ~/.android/avd/*
-            ~/.android/adb*
-          key: avd-${{ runner.os }}-api34
-
-      # The emulator binary and the api-34 system image are NOT in the AVD cache
-      # above (that only holds the AVD instance under ~/.android/avd). Cache them
-      # separately here so the shards can restore them instead of each pulling
-      # ~1 GB from dl.google.com — the concurrent re-downloads are what trigger
-      # the random "Error on ZipFile unknown archive" failures. This seed job is
-      # the single writer for this cache; the shards restore it read-only.
-      - name: Cache Android SDK packages (emulator + system image)
-        id: sdk-cache
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
-        with:
-          path: |
-            /usr/local/lib/android/sdk/emulator
-            /usr/local/lib/android/sdk/system-images/android-34/google_apis/x86_64
-          key: android-sdk-emu-${{ runner.os }}-api34
-
-      # Single serialized, retried download of the emulator + system image so a
-      # corrupt/truncated archive self-heals instead of failing 13 parallel
-      # shards. Runs before the snapshot step below so android-emulator-runner's
-      # own sdkmanager install finds the packages already present (a no-op).
-      - name: Pre-install Android SDK packages (cache miss only)
-        if: steps.sdk-cache.outputs.cache-hit != 'true'
-        uses: ./.github/actions/preinstall-android-sdk
-
-      - name: Enable KVM group permissions
-        if: steps.avd-cache.outputs.cache-hit != 'true'
-        run: |
-          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
-          sudo udevadm control --reload-rules
-          sudo udevadm trigger --name-match=kvm
-
-      - name: Generate AVD snapshot (cache miss only)
-        if: steps.avd-cache.outputs.cache-hit != 'true'
-        uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a # v2.37.0
-        timeout-minutes: 45
-        with:
-          api-level: 34
-          disk-size: 4096M
-          arch: x86_64
-          target: google_apis
-          profile: pixel_7_pro
-          cores: 4
-          ram-size: 6144M
-          force-avd-creation: true
-          disable-animations: true
-          emulator-boot-timeout: 900
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -accel on
-          script: echo "AVD snapshot generated for cache"
+      - name: Assert Maestro shard coverage
+        id: shards
+        run: bash .github/scripts/assert-maestro-shards.sh
 
   e2e-run-android:
     name: E2E Run Android
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
     uses: ./.github/workflows/maestro-android.yml
-    needs: [e2e-build-android, e2e-seed-android-avd]
+    needs: [e2e-build-android, e2e-shards]
     secrets: inherit
     strategy:
       matrix:
-        shard: [1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14]
+        shard: ${{ fromJSON(needs.e2e-shards.outputs.shards) }}
       fail-fast: false
     with:
       shard: ${{ matrix.shard }}
@@ -154,11 +98,11 @@ jobs:
     name: E2E Run iOS
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
     uses: ./.github/workflows/maestro-ios.yml
-    needs: [e2e-build-ios]
+    needs: [e2e-build-ios, e2e-shards]
     secrets: inherit
     strategy:
       matrix:
-        shard: [1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14]
+        shard: ${{ fromJSON(needs.e2e-shards.outputs.shards) }}
       fail-fast: false
     with:
       shard: ${{ matrix.shard }}
