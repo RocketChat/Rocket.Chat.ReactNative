@@ -109,7 +109,9 @@ export const DM_Status = () => (
 		<HeaderExample title={() => <RoomHeader title='John Doe' type='d' roomUserId='user1' subtitle='Online' status='online' />} />
 		<HeaderExample title={() => <RoomHeader title='John Doe' type='d' roomUserId='user2' subtitle='Away' status='away' />} />
 		<HeaderExample title={() => <RoomHeader title='John Doe' type='d' roomUserId='user3' subtitle='Busy' status='busy' />} />
-		<HeaderExample title={() => <RoomHeader title='John Doe' type='d' roomUserId='user4' subtitle='Offline' status='offline' />} />
+		<HeaderExample
+			title={() => <RoomHeader title='John Doe' type='d' roomUserId='user4' subtitle='Offline' status='offline' />}
+		/>
 		<HeaderExample
 			title={() => <RoomHeader title='John Doe' type='d' roomUserId='user5' subtitle='In a meeting' status='online' />}
 		/>
@@ -125,8 +127,6 @@ export const DM_Status = () => (
 				/>
 			)}
 		/>
-		<HeaderExample
-			title={() => <RoomHeader title='Jane Smith' type='d' roomUserId='user7' subtitle='On call' status='busy' />}
-		/>
+		<HeaderExample title={() => <RoomHeader title='Jane Smith' type='d' roomUserId='user7' subtitle='On call' status='busy' />} />
 	</>
 );

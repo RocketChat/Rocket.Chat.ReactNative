@@ -14,6 +14,7 @@ import Status from '../../../containers/Status';
 import EventEmitter from '../../../lib/methods/helpers/events';
 import { LISTENER } from '../../../containers/Toast';
 import I18n from '../../../i18n';
+
 interface IRoomInfoViewTitle {
 	room?: ISubscription;
 	name?: string;
