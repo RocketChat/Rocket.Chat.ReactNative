@@ -480,6 +480,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 					this.setState({
 						member: {
 							...user,
+							...(activeUserStatus?.status != null && { status: activeUserStatus.status }),
 							...(activeUserStatus?.statusText != null && { statusText: activeUserStatus.statusText }),
 							...(activeUserStatus?.statusExpiresAt != null && { statusExpiresAt: activeUserStatus.statusExpiresAt }),
 							...(activeUserStatus?.statusSource != null && { statusSource: activeUserStatus.statusSource })

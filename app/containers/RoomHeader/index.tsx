@@ -72,7 +72,8 @@ const RoomHeaderContainer = React.memo(
 					statusExpiresAt: statusExpiresAtActiveUser,
 					status: statusActiveUser
 				} = activeUser;
-				const presenceLabel = statusActiveUser ? I18n.t(STATUS_I18N_KEYS[statusActiveUser]!) : undefined;
+				const presenceKey = statusActiveUser ? STATUS_I18N_KEYS[statusActiveUser] : undefined;
+				const presenceLabel = presenceKey ? I18n.t(presenceKey) : undefined;
 				statusText = statusTextActiveUser || presenceLabel;
 				statusExpiresAt = statusExpiresAtActiveUser;
 			} else if (type === 'l' && visitor?.status) {
