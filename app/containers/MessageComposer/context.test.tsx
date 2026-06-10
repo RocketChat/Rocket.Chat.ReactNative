@@ -16,10 +16,10 @@ import {
 
 type Api = ReturnType<typeof useMessageComposerApi>;
 
-// Characterization tests for the composer store, pinning the public hook/provider contract so the
-// split-context → zustand swap stays behaviour-identical. Non-obvious constraint: the `actions` bag must stay a
-// stable reference — a selector returning a fresh object each render trips zustand v5's snapshot-equality loop.
-// Renders are counted with jest.fn spies, not an outer counter (a spy call in render is pure; mutation isn't).
+// Tests for the composer store's public hook/provider contract and its per-slice re-render granularity.
+// Non-obvious constraint: the `actions` bag must stay a stable reference — a selector returning a fresh object
+// each render trips zustand v5's snapshot-equality loop. Renders are counted with jest.fn spies, not an outer
+// counter (a spy call in render is pure; mutation isn't).
 
 // One probe per `probes` entry (name -> hook) plus an api probe; returns the stable api and per-probe render/value readers.
 const renderComposer = (probes: Record<string, () => unknown>) => {
