@@ -60,7 +60,13 @@ const DatePickerSheetContent = ({ initialDate, onConfirm }: IDatePickerSheetCont
 	const insets = useSafeAreaInsets();
 
 	return (
-		<View style={{ backgroundColor: colors.surfaceRoom, marginBottom: insets.bottom, justifyContent: 'center', alignItems: 'center' }}>
+		<View
+			style={{
+				backgroundColor: colors.surfaceRoom,
+				marginBottom: insets.bottom,
+				justifyContent: 'center',
+				alignItems: 'center'
+			}}>
 			<DateTimePicker
 				mode='datetime'
 				display='inline'

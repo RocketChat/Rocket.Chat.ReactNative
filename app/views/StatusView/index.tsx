@@ -143,7 +143,8 @@ const StatusView = (): React.ReactElement => {
 		const { status } = inputValues;
 		logEvent(events.STATUS_DONE);
 		if (statusText !== user.statusText || status !== user.status || clearAfterTouched.current) {
-			const expiresAt = clearAfterTouched.current && supportsStatusExpiry ? computeExpiresAt(clearAfter, clearAfterDate) : undefined;
+			const expiresAt =
+				clearAfterTouched.current && supportsStatusExpiry ? computeExpiresAt(clearAfter, clearAfterDate) : undefined;
 			await setCustomStatus(status, statusText, expiresAt);
 		}
 		goBack();

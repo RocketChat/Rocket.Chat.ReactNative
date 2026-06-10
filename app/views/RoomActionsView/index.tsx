@@ -810,17 +810,14 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 									/>
 								</View>
 							)}
-							{t === 'd' && !!member.statusExpiresAt && (() => {
-								const expiry = formatStatusExpiry(member.statusExpiresAt);
-								return !!expiry && (
-									<View style={styles.statusRow}>
-										<CustomIcon name='clock' size={14} color={themes[theme].fontSecondaryInfo} />
-										<Text style={[styles.roomDescription, { color: themes[theme].fontSecondaryInfo }]}>
-											{expiry}
-										</Text>
-									</View>
-								);
-							})()}
+							{t === 'd' && !!member.statusExpiresAt && (
+								<View style={styles.statusRow}>
+									<CustomIcon name='clock' size={14} color={themes[theme].fontSecondaryInfo} />
+									<Text style={[styles.roomDescription, { color: themes[theme].fontSecondaryInfo }]}>
+										{formatStatusExpiry(member.statusExpiresAt)}
+									</Text>
+								</View>
+							)}
 						</View>
 						{isGroupChatHandler ? null : <List.Icon name='chevron-right' style={styles.actionIndicator} />}
 					</View>

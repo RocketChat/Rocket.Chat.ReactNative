@@ -33,7 +33,16 @@ interface IRoomInfoViewTitle {
 	type: SubscriptionType;
 }
 
-const RoomInfoViewTitle = ({ room, name, username, userId, status, statusText, statusExpiresAt, type }: IRoomInfoViewTitle): React.ReactElement => {
+const RoomInfoViewTitle = ({
+	room,
+	name,
+	username,
+	userId,
+	status,
+	statusText,
+	statusExpiresAt,
+	type
+}: IRoomInfoViewTitle): React.ReactElement => {
 	const { colors } = useTheme();
 
 	const copyInfoToClipboard = (data: string) => {
@@ -78,9 +87,7 @@ const RoomInfoViewTitle = ({ room, name, username, userId, status, statusText, s
 				{!!formattedExpiry && (
 					<View testID='room-info-view-status-expiry' style={styles.statusRow}>
 						<CustomIcon name='clock' size={14} color={colors.fontSecondaryInfo} />
-						<Text style={[styles.roomUsername, { color: colors.fontSecondaryInfo, marginTop: 0 }]}>
-							{formattedExpiry}
-						</Text>
+						<Text style={[styles.roomUsername, { color: colors.fontSecondaryInfo, marginTop: 0 }]}>{formattedExpiry}</Text>
 					</View>
 				)}
 			</View>

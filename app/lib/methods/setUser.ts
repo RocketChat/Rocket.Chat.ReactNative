@@ -7,7 +7,16 @@ import { store as reduxStore } from '../store/auxStore';
 import { compareServerVersion } from './helpers';
 
 export interface IActiveUsers {
-	[key: string]: { status: TUserStatus; statusDefault?: TUserStatus; statusText?: string; statusExpiresAt?: string; statusSource?: TStatusSource } | string | boolean;
+	[key: string]:
+		| {
+				status: TUserStatus;
+				statusDefault?: TUserStatus;
+				statusText?: string;
+				statusExpiresAt?: string;
+				statusSource?: TStatusSource;
+		  }
+		| string
+		| boolean;
 	msg: string;
 	collection: string;
 	id: string;
