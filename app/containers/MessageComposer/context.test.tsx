@@ -16,21 +16,12 @@ import {
 
 type Api = ReturnType<typeof useMessageComposerApi>;
 
-// These are characterization tests for the composer state container. They pin the full contract that the
-// current split-context implementation provides and that the Zustand migration must preserve unchanged, but
-// which the behavior-level suite in MessageComposer.test.tsx does not cover:
-//   1. Per-slice re-render granularity — changing one slice must not re-render consumers of another.
-//   2. Per-instance isolation — each MessageComposerProvider owns independent state (no shared store).
-//   3. Set→read for every public slice, including the attachment setters (add/update/remove/clear).
-//   4. A stable `api` reference — selectors that return a fresh actions object trip Zustand v5's
-//      "snapshot changed" re-render loop, so the api the swap exposes must stay referentially stable.
-// Every pin imports the public surface only (the hooks + provider). The store factory is intentionally NOT
-// exported for testing, so these stay true characterization tests: green on the current code AND green,
-// unchanged, after the swap. Each probe records renders through a jest.fn spy (calling a spy during render is
-// pure from React's point of view; mutating an outer counter is not).
+// Characterization tests for the composer store, pinning the public hook/provider contract so the
+// split-context → zustand swap stays behaviour-identical. Non-obvious constraint: the `actions` bag must stay a
+// stable reference — a selector returning a fresh object each render trips zustand v5's snapshot-equality loop.
+// Renders are counted with jest.fn spies, not an outer counter (a spy call in render is pure; mutation isn't).
 
-// Renders one probe per entry in `probes` (name -> subscription hook) plus an api probe. Adding a slice to a
-// test = add an entry here. Returns the (stable) api, a per-probe render counter, and a per-probe value reader.
+// One probe per `probes` entry (name -> hook) plus an api probe; returns the stable api and per-probe render/value readers.
 const renderComposer = (probes: Record<string, () => unknown>) => {
 	const probeSpies: Record<string, jest.Mock> = {};
 	const apiSpy = jest.fn();
@@ -77,8 +68,7 @@ const attachment = (path: string, extra?: Partial<IShareAttachment>): IShareAtta
 	...extra
 });
 
-// The six scalar slices, each driven through set→read and granularity by the same loop. Adding a scalar slice
-// later = add a row. `attachments` is the list slice and gets its own block below.
+// One row per scalar slice; each runs the same set→read + granularity tests. (attachments is a list slice, tested below.)
 type ScalarCase = {
 	name: string;
 	useHook: () => unknown;
@@ -222,9 +212,7 @@ describe('MessageComposer state container', () => {
 			expect(latestValue('attachments')).toEqual([]);
 		});
 
-		// The reverse direction (a scalar change must not re-render an attachments consumer) is already covered
-		// for every scalar by the granularity row in the SCALAR_SLICES table, which uses attachments as its
-		// control. This pins the direction the table can't: a list mutation must not re-render scalar consumers.
+		// Reverse of the table's granularity check: a list mutation must not re-render scalar consumers.
 		it('does not re-render a scalar consumer when attachments change', () => {
 			const { api, renderCount } = renderComposer({ attachments: useComposerAttachments, focused: useFocused });
 
@@ -242,9 +230,7 @@ describe('MessageComposer state container', () => {
 		it('keeps the same api reference across slice updates', () => {
 			const probe = jest.fn();
 
-			// The probe subscribes to BOTH a changing slice and the api, so per-slice granularity can't keep it
-			// from re-rendering and let this pass for the wrong reason — it genuinely re-renders, and the api ref
-			// must still be identical before and after.
+			// Subscribes to a changing slice AND the api, so the re-render is real — the api ref must still be identical.
 			const Probe = () => {
 				useFocused();
 				probe(useMessageComposerApi());
