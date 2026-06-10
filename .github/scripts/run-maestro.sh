@@ -9,13 +9,24 @@ MAX_RERUN_ROUNDS="${MAX_RERUN_ROUNDS:-2}"
 RERUN_REPORT_PREFIX="maestro-rerun"
 export MAESTRO_DRIVER_STARTUP_TIMEOUT="${MAESTRO_DRIVER_STARTUP_TIMEOUT:-120000}"
 
+# GNU coreutils `timeout` is `timeout` on the Linux (Android) runners but
+# `gtimeout` from Homebrew coreutils on the macOS (iOS) runners — plain `timeout`
+# does not exist on macOS. Resolve whichever is present once.
+TIMEOUT_BIN="$(command -v timeout || command -v gtimeout || true)"
+
 # Bounds each `maestro test`: a child wedged on simctl/devicectl/networksetup/kill
 # (CoreSimulator wedge) can otherwise hang past any in-script logic. -k SIGKILLs
 # 30s after the 35m soft bound so even an unkillable child is reaped. Exit 124 =
-# soft timeout, 137 = SIGKILL after grace; annotate so the red is explained.
+# soft timeout, 137 = SIGKILL after grace; annotate so the red is explained. If
+# neither timeout binary resolves, run unbounded and lean on the job-level
+# timeout-minutes backstop rather than aborting the run.
 run_maestro_test() {
   local rc=0
-  timeout -k 30s 35m maestro test "$@" || rc=$?
+  if [ -n "$TIMEOUT_BIN" ]; then
+    "$TIMEOUT_BIN" -k 30s 35m maestro test "$@" || rc=$?
+  else
+    maestro test "$@" || rc=$?
+  fi
   if [ "$rc" -eq 124 ] || [ "$rc" -eq 137 ]; then
     echo "::error title=Maestro run timed out::A 'maestro test' invocation exceeded 35m and was terminated (likely a wedged CoreSimulator). This is an environment failure, not an app or test regression."
   fi
