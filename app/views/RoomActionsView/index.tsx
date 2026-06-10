@@ -25,6 +25,7 @@ import {
 	SubscriptionType,
 	type TSubscriptionModel
 } from '../../definitions';
+import { type IActiveUsers } from '../../reducers/activeUsers';
 import { withDimensions } from '../../dimensions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
@@ -108,6 +109,7 @@ interface IRoomActionsViewProps extends IActionSheetProvider, IBaseScreen<StackT
 	videoConf_Enable_Channels: boolean;
 	videoConf_Enable_Groups: boolean;
 	videoConf_Enable_Teams: boolean;
+	activeUsers: IActiveUsers;
 }
 
 interface IRoomActionsViewState {
@@ -465,13 +467,23 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 	updateRoomMember = async () => {
 		const { room } = this.state;
+		const { activeUsers } = this.props;
 
 		try {
 			if (!isGroupChat(room)) {
 				const roomUserId = getUidDirectMessage(room);
 				const result = await getUserInfo(roomUserId);
+				const activeUserStatus = roomUserId ? activeUsers[roomUserId] : undefined;
 				if (result.success) {
-					this.setState({ member: result.user as any });
+					const user = result.user as any;
+					this.setState({
+						member: {
+							...user,
+							...(activeUserStatus?.statusText && { statusText: activeUserStatus.statusText }),
+							...(activeUserStatus?.statusExpiresAt && { statusExpiresAt: activeUserStatus.statusExpiresAt }),
+							...(activeUserStatus?.statusSource && { statusSource: activeUserStatus.statusSource })
+						}
+					});
 				}
 			}
 		} catch (e) {
@@ -750,10 +762,15 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 	renderRoomInfo = () => {
 		const { room, member } = this.state;
 		const { rid, name, t, topic, source } = room;
-		const { theme, fontScale } = this.props;
+		const { theme, fontScale, activeUsers } = this.props;
 
 		const avatar = getRoomAvatar(room);
 		const isGroupChatHandler = isGroupChat(room);
+		const roomUserId = !isGroupChatHandler && t === 'd' ? getUidDirectMessage(room) : undefined;
+		const activeUserStatus = roomUserId ? activeUsers[roomUserId] : undefined;
+		const statusText = activeUserStatus?.statusText || member.statusText;
+		const statusExpiresAt = activeUserStatus?.statusExpiresAt || member.statusExpiresAt;
+		const formattedStatusExpiry = statusExpiresAt ? formatStatusExpiry(statusExpiresAt as string) : undefined;
 
 		return (
 			<List.Section>
@@ -801,20 +818,20 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 								msg={t === 'd' ? `@${name}` : topic}
 								style={[styles.roomDescription, { color: themes[theme].fontSecondaryInfo }]}
 							/>
-							{t === 'd' && !!member.statusText && (
+							{t === 'd' && !!statusText && (
 								<View style={styles.statusRow}>
 									{member._id && <Status size={12} id={member._id} />}
 									<MarkdownPreview
-										msg={member.statusText}
+										msg={statusText}
 										style={[styles.roomDescription, { color: themes[theme].fontSecondaryInfo }]}
 									/>
 								</View>
 							)}
-							{t === 'd' && !!member.statusExpiresAt && (
+							{t === 'd' && !!formattedStatusExpiry && (
 								<View style={styles.statusRow}>
 									<CustomIcon name='clock' size={14} color={themes[theme].fontSecondaryInfo} />
 									<Text style={[styles.roomDescription, { color: themes[theme].fontSecondaryInfo }]}>
-										{formatStatusExpiry(member.statusExpiresAt)}
+										{formattedStatusExpiry}
 									</Text>
 								</View>
 							)}
@@ -1333,7 +1350,8 @@ const mapStateToProps = (state: IApplicationState) => ({
 	convertTeamPermission: state.permissions['convert-team'],
 	viewCannedResponsesPermission: state.permissions['view-canned-responses'],
 	livechatAllowManualOnHold: state.settings.Livechat_allow_manual_on_hold as boolean,
-	livechatRequestComment: state.settings.Livechat_request_comment_when_closing_conversation as boolean
+	livechatRequestComment: state.settings.Livechat_request_comment_when_closing_conversation as boolean,
+	activeUsers: state.activeUsers
 });
 
 export default connect(mapStateToProps)(withTheme(withActionSheet(withDimensions(RoomActionsView))));

@@ -63,7 +63,8 @@ const RoomInfoView = (): React.ReactElement => {
 		// permissions
 		editRoomPermission,
 		editOmnichannelContact,
-		editLivechatRoomCustomfields
+		editLivechatRoomCustomfields,
+		activeUsers
 	} = useAppSelector(state => ({
 		subscribedRoom: state.room.subscribedRoom,
 		isMasterDetail: state.app.isMasterDetail,
@@ -73,8 +74,12 @@ const RoomInfoView = (): React.ReactElement => {
 		// permissions
 		editRoomPermission: state.permissions['edit-room'],
 		editOmnichannelContact: state.permissions['edit-omnichannel-contact'],
-		editLivechatRoomCustomfields: state.permissions['edit-livechat-room-customfields']
+		editLivechatRoomCustomfields: state.permissions['edit-livechat-room-customfields'],
+		activeUsers: state.activeUsers
 	}));
+
+	const roomUserId = isDirect ? getUidDirectMessage({ ...(room || { rid, t }), itsMe }) : undefined;
+	const activeUserStatus = roomUserId ? activeUsers[roomUserId] : undefined;
 
 	const { colors } = useTheme();
 
@@ -302,9 +307,9 @@ const RoomInfoView = (): React.ReactElement => {
 						name={roomUser?.name}
 						username={roomUser?.username}
 						userId={roomUser?._id}
-						status={roomUser?.status}
-						statusText={roomUser?.statusText}
-						statusExpiresAt={roomUser?.statusExpiresAt}
+						status={activeUserStatus?.status || roomUser?.status}
+						statusText={activeUserStatus?.statusText || roomUser?.statusText}
+						statusExpiresAt={activeUserStatus?.statusExpiresAt || roomUser?.statusExpiresAt}
 					/>
 					<RoomInfoButtons
 						rid={room?.rid || rid}
