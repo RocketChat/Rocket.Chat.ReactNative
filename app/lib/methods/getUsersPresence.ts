@@ -87,7 +87,7 @@ export async function getUsersPresence(usersParams: string[]) {
 					}
 
 					ret[_id] = { status, statusText, statusExpiresAt, statusSource };
-					return ret;
+					return ret; 
 				}, {});
 				InteractionManager.runAfterInteractions(() => {
 					reduxStore.dispatch(setActiveUsers(activeUsers));
