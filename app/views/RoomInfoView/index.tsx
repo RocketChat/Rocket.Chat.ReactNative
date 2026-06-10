@@ -299,7 +299,6 @@ const RoomInfoView = (): React.ReactElement => {
 						handleEditAvatar={() => navigate('ChangeAvatarView', { titleHeader: I18n.t('Room_Info'), room, t, context: 'room' })}
 						showEdit={showEdit}
 						type={t}
-						userId={roomUser._id}
 					/>
 					<RoomInfoViewTitle
 						type={t}
