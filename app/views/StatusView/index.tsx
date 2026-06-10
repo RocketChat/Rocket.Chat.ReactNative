@@ -197,7 +197,7 @@ const StatusView = (): React.ReactElement => {
 		}
 		const isStatusEqual = status === user.status;
 		const isStatusTextEqual = (!!user.statusText && user.statusText === statusText) ?? (!user.statusText && !statusText);
-		return !isValid || isStatusEqual && isStatusTextEqual;
+		return  !isValid && isStatusEqual && isStatusTextEqual;
 	};
 
 	const FooterComponent = () => (
