@@ -37,17 +37,12 @@ runs:
         bundler-cache: true
         working-directory: android
 
-    # setup-gradle owns the ~/.gradle cache (write on the default branch, read-only on PRs),
-    # so the previous manual actions/cache for ~/.gradle is intentionally removed — stacking
-    # the two is redundant and Gradle warns it can interfere.
+    # setup-gradle manages the ~/.gradle cache itself — no separate actions/cache step needed for it.
     - name: Set up Gradle
       uses: gradle/actions/setup-gradle@ed408507eac070d1f99cc633dbcf757c94c7933a # v4.4.3
 
-    # Restore the native build outputs (CMake/externalNativeBuild object files, Gradle
-    # incremental state, packaged intermediates) so warm builds skip recompiling C++ for
-    # every ABI. Always restore; the cache is only written on develop (see "Save" step
-    # below), so PRs read the latest develop cache via the restore-keys prefix fallback.
-    # Distinct "android-store-" namespace keeps this separate from the single-ABI E2E cache.
+    # Native build outputs (CMake objects, Gradle state, intermediates) so warm builds skip
+    # recompiling C++. Written only on develop (Save step); PRs read it via restore-keys.
     - name: Restore Android native build cache
       uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
       with:
@@ -103,16 +98,15 @@ runs:
         echo "BUILD_DURATION_SECONDS=$((build_end - build_start))" >> "$GITHUB_ENV"
       shell: bash
 
-    # Hard gate: a cache-poisoning bug or a silently-dropped ABI must fail the build loudly
-    # rather than ship a defective signed release bundle.
+    # Fail loudly if a cache/packaging bug dropped an ABI, instead of shipping an incomplete bundle.
     - name: Verify AAB contains all target ABIs
       working-directory: android
       run: |
         AAB=app/build/outputs/bundle/release/app-release.aab
-        echo "Inspecting native libraries in $AAB"
+        libs=$(unzip -l "$AAB")
         missing=0
         for abi in armeabi-v7a arm64-v8a x86 x86_64; do
-          if unzip -l "$AAB" | grep -q "base/lib/$abi/"; then
+          if grep -q "base/lib/$abi/" <<< "$libs"; then
             echo "  found: $abi"
           else
             echo "  MISSING: $abi"
@@ -120,18 +114,14 @@ runs:
           fi
         done
         if [ "$missing" -ne 0 ]; then
-          echo "::error::AAB is missing one or more target ABIs — refusing to ship an incomplete release bundle."
+          echo "::error::AAB is missing one or more target ABIs."
           exit 1
         fi
       shell: bash
 
-    # Hard gate: the AAB must be signed with the official upload certificate.
-    # The keystore password is read via keytool's `-storepass:env` rather than a
-    # shell-quoted argument — the secret contains shell-special characters (the same
-    # reason the gradle.properties step above single-quotes the password lines), so
-    # interpolating it into `-storepass "…"` mangles it and the read silently fails.
-    # Captures use `|| true` so an empty read never trips `set -e -o pipefail`; the
-    # full keytool output is printed only on failure so a problem is self-explaining.
+    # Fail unless the AAB is signed by the official upload cert. Reads the keystore password
+    # via `-storepass:env` (not a shell-quoted arg) since the secret has shell-special chars;
+    # captures use `|| true` so an empty read can't trip `set -e -o pipefail`.
     - name: Verify AAB signing certificate
       working-directory: android
       env:
@@ -167,8 +157,7 @@ runs:
         echo "Signing certificate verified against the official keystore ($aab_fp)."
       shell: bash
 
-    # Write the native build cache only on develop (the default branch); PRs restore it
-    # read-only. Runs after the gates so a poisoned/incomplete build is never cached.
+    # Write the cache only on develop; runs after the gates so a bad build is never cached.
     - name: Save Android native build cache
       if: ${{ inputs.trigger == 'develop' }}
       uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
