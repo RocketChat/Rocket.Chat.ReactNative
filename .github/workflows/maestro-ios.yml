@@ -120,13 +120,6 @@ jobs:
           echo "Booted devices:"
           xcrun simctl list devices | grep Booted
 
-      - name: Get Booted Simulator UDID
-        id: booted-sim
-        run: |
-          UDID=$(xcrun simctl list devices booted | grep -oE '[A-F0-9-]{36}' | head -n1)
-          echo "UDID=$UDID"
-          echo "UDID=$UDID" >> $GITHUB_ENV
-
       - name: Install App
         run: |
           xcrun simctl install booted ios-simulator-app
