@@ -44,7 +44,6 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
           [
             {
               "alignItems": "center",
-              "flex": 1,
               "flexDirection": "row",
               "justifyContent": "center",
               "paddingHorizontal": 12,
@@ -153,7 +152,6 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
           [
             {
               "alignItems": "center",
-              "flex": 1,
               "flexDirection": "row",
               "justifyContent": "center",
               "paddingHorizontal": 12,
@@ -262,7 +260,6 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
           [
             {
               "alignItems": "center",
-              "flex": 1,
               "flexDirection": "row",
               "justifyContent": "center",
               "paddingHorizontal": 12,
@@ -420,7 +417,6 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
           [
             {
               "alignItems": "center",
-              "flex": 1,
               "flexDirection": "row",
               "justifyContent": "center",
               "paddingHorizontal": 12,
@@ -789,7 +785,6 @@ exports[`Story Snapshots: ListItemWithRightContainerStyle should match snapshot 
           [
             {
               "alignItems": "center",
-              "flex": 1,
               "flexDirection": "row",
               "justifyContent": "center",
               "paddingHorizontal": 12,
@@ -1079,7 +1074,6 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
               [
                 {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                   "justifyContent": "center",
                   "paddingHorizontal": 12,
@@ -1234,7 +1228,6 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
               [
                 {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                   "justifyContent": "center",
                   "paddingHorizontal": 12,
@@ -1424,7 +1417,6 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
               [
                 {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                   "justifyContent": "center",
                   "paddingHorizontal": 12,
@@ -1628,7 +1620,6 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
               [
                 {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                   "justifyContent": "center",
                   "paddingHorizontal": 12,
@@ -1832,7 +1823,6 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
               [
                 {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                   "justifyContent": "center",
                   "paddingHorizontal": 12,
@@ -2036,7 +2026,6 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
               [
                 {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                   "justifyContent": "center",
                   "paddingHorizontal": 12,
@@ -2248,7 +2237,6 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
               [
                 {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                   "justifyContent": "center",
                   "paddingHorizontal": 12,
@@ -2329,7 +2317,6 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
               [
                 {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                   "justifyContent": "center",
                   "paddingHorizontal": 12,
@@ -2431,7 +2418,6 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
               [
                 {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                   "justifyContent": "center",
                   "paddingHorizontal": 12,
@@ -2512,7 +2498,6 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
               [
                 {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                   "justifyContent": "center",
                   "paddingHorizontal": 12,
@@ -2642,7 +2627,6 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
               [
                 {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                   "justifyContent": "center",
                   "paddingHorizontal": 12,
@@ -2723,7 +2707,6 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
               [
                 {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                   "justifyContent": "center",
                   "paddingHorizontal": 12,
@@ -2881,7 +2864,6 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
               [
                 {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                   "justifyContent": "center",
                   "paddingHorizontal": 12,
@@ -2962,7 +2944,6 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
               [
                 {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                   "justifyContent": "center",
                   "paddingHorizontal": 12,
@@ -3139,7 +3120,6 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
           [
             {
               "alignItems": "center",
-              "flex": 1,
               "flexDirection": "row",
               "justifyContent": "center",
               "paddingHorizontal": 12,
@@ -3220,7 +3200,6 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
           [
             {
               "alignItems": "center",
-              "flex": 1,
               "flexDirection": "row",
               "justifyContent": "center",
               "paddingHorizontal": 12,
@@ -3320,7 +3299,6 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
           [
             {
               "alignItems": "center",
-              "flex": 1,
               "flexDirection": "row",
               "justifyContent": "center",
               "paddingHorizontal": 12,
@@ -3421,7 +3399,6 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
           [
             {
               "alignItems": "center",
-              "flex": 1,
               "flexDirection": "row",
               "justifyContent": "center",
               "paddingHorizontal": 12,
@@ -3683,7 +3660,6 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                   [
                     {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
                       "justifyContent": "center",
                       "paddingHorizontal": 12,
@@ -3952,7 +3928,6 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                   [
                     {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
                       "justifyContent": "center",
                       "paddingHorizontal": 12,
@@ -4300,7 +4275,6 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                   [
                     {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
                       "justifyContent": "center",
                       "paddingHorizontal": 12,
@@ -4569,7 +4543,6 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                   [
                     {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
                       "justifyContent": "center",
                       "paddingHorizontal": 12,
@@ -4959,7 +4932,6 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                   [
                     {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
                       "justifyContent": "center",
                       "paddingHorizontal": 12,
@@ -5228,7 +5200,6 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                   [
                     {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
                       "justifyContent": "center",
                       "paddingHorizontal": 12,
@@ -5576,7 +5547,6 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                   [
                     {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
                       "justifyContent": "center",
                       "paddingHorizontal": 12,
@@ -5845,7 +5815,6 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                   [
                     {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
                       "justifyContent": "center",
                       "paddingHorizontal": 12,
@@ -6107,7 +6076,6 @@ exports[`Story Snapshots: WithCustomColors should match snapshot 1`] = `
           [
             {
               "alignItems": "center",
-              "flex": 1,
               "flexDirection": "row",
               "justifyContent": "center",
               "paddingHorizontal": 12,
@@ -6260,7 +6228,6 @@ exports[`Story Snapshots: WithCustomColors should match snapshot 1`] = `
               [
                 {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                   "justifyContent": "center",
                   "paddingHorizontal": 12,
@@ -6504,7 +6471,6 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                   [
                     {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
                       "justifyContent": "center",
                       "paddingHorizontal": 12,
@@ -6773,7 +6739,6 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                   [
                     {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
                       "justifyContent": "center",
                       "paddingHorizontal": 12,
@@ -7121,7 +7086,6 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                   [
                     {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
                       "justifyContent": "center",
                       "paddingHorizontal": 12,
@@ -7390,7 +7354,6 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                   [
                     {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
                       "justifyContent": "center",
                       "paddingHorizontal": 12,
@@ -7746,7 +7709,6 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
               [
                 {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                   "justifyContent": "center",
                   "paddingHorizontal": 12,
@@ -7833,7 +7795,6 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
               [
                 {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                   "justifyContent": "center",
                   "paddingHorizontal": 12,
@@ -7920,7 +7881,6 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
               [
                 {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                   "justifyContent": "center",
                   "paddingHorizontal": 12,
@@ -8007,7 +7967,6 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
               [
                 {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                   "justifyContent": "center",
                   "paddingHorizontal": 12,
@@ -8094,7 +8053,6 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
               [
                 {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                   "justifyContent": "center",
                   "paddingHorizontal": 12,
@@ -8181,7 +8139,6 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
               [
                 {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                   "justifyContent": "center",
                   "paddingHorizontal": 12,
@@ -8268,7 +8225,6 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
               [
                 {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                   "justifyContent": "center",
                   "paddingHorizontal": 12,
@@ -8355,7 +8311,6 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
               [
                 {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                   "justifyContent": "center",
                   "paddingHorizontal": 12,
@@ -8442,7 +8397,6 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
               [
                 {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                   "justifyContent": "center",
                   "paddingHorizontal": 12,
@@ -8529,7 +8483,6 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
               [
                 {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                   "justifyContent": "center",
                   "paddingHorizontal": 12,
@@ -8669,7 +8622,6 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
           [
             {
               "alignItems": "center",
-              "flex": 1,
               "flexDirection": "row",
               "justifyContent": "center",
               "paddingHorizontal": 12,
@@ -8796,7 +8748,6 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
           [
             {
               "alignItems": "center",
-              "flex": 1,
               "flexDirection": "row",
               "justifyContent": "center",
               "paddingHorizontal": 12,
@@ -8926,7 +8877,6 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
           [
             {
               "alignItems": "center",
-              "flex": 1,
               "flexDirection": "row",
               "justifyContent": "center",
               "paddingHorizontal": 12,
@@ -9121,7 +9071,6 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
           [
             {
               "alignItems": "center",
-              "flex": 1,
               "flexDirection": "row",
               "justifyContent": "center",
               "paddingHorizontal": 12,
@@ -9412,7 +9361,6 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                   [
                     {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
                       "justifyContent": "center",
                       "paddingHorizontal": 12,
@@ -9681,7 +9629,6 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                   [
                     {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
                       "justifyContent": "center",
                       "paddingHorizontal": 12,
@@ -10029,7 +9976,6 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                   [
                     {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
                       "justifyContent": "center",
                       "paddingHorizontal": 12,
@@ -10298,7 +10244,6 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                   [
                     {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
                       "justifyContent": "center",
                       "paddingHorizontal": 12,
