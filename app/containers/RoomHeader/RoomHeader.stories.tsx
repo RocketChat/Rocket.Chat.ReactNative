@@ -14,7 +14,7 @@ export default {
 
 const HeaderExample = ({ title, theme = 'light' }: { title: Function; theme?: TSupportedThemes }) => (
 	// Using View directly instead of Header from react-navigation because it's easier to test.
-	<View style={{ flex: 1, maxHeight: 48, backgroundColor: themes[theme].surfaceNeutral }}>{title()}</View>
+	<View style={{ flex: 1, maxHeight: 48, paddingHorizontal: 16, backgroundColor: themes[theme].surfaceNeutral }}>{title()}</View>
 );
 
 const RoomHeader = ({ ...props }) => (
@@ -99,5 +99,34 @@ export const Themes = () => (
 		<ThemeStory theme='light' />
 		<ThemeStory theme='dark' />
 		<ThemeStory theme='black' />
+	</>
+);
+
+const futureExpiry = new Date(Date.now() + 3600000).toISOString();
+
+export const DM_Status = () => (
+	<>
+		<HeaderExample title={() => <RoomHeader title='John Doe' type='d' roomUserId='user1' subtitle='Online' status='online' />} />
+		<HeaderExample title={() => <RoomHeader title='John Doe' type='d' roomUserId='user2' subtitle='Away' status='away' />} />
+		<HeaderExample title={() => <RoomHeader title='John Doe' type='d' roomUserId='user3' subtitle='Busy' status='busy' />} />
+		<HeaderExample title={() => <RoomHeader title='John Doe' type='d' roomUserId='user4' subtitle='Offline' status='offline' />} />
+		<HeaderExample
+			title={() => <RoomHeader title='John Doe' type='d' roomUserId='user5' subtitle='In a meeting' status='online' />}
+		/>
+		<HeaderExample
+			title={() => (
+				<RoomHeader
+					title='John Doe'
+					type='d'
+					roomUserId='user6'
+					subtitle='In a meeting'
+					status='online'
+					statusExpiresAt={futureExpiry}
+				/>
+			)}
+		/>
+		<HeaderExample
+			title={() => <RoomHeader title='Jane Smith' type='d' roomUserId='user7' subtitle='On call' status='busy' />}
+		/>
 	</>
 );
