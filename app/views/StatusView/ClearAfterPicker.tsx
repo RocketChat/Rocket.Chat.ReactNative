@@ -167,6 +167,9 @@ const ClearAfterPicker = ({ value, customDate, onChange }: IClearAfterPickerProp
 		if (value === 'custom' && customDate) {
 			return customDate.toLocaleString(undefined, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
 		}
+		if (value === 'custom' && !customDate) {
+			return I18n.t('Status_dont_clear');
+		}
 		const option = CLEAR_AFTER_OPTIONS.find(o => o.value === value);
 		return option ? I18n.t(option.labelKey) : I18n.t('Status_dont_clear');
 	};

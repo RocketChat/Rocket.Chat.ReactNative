@@ -46,6 +46,9 @@ const styles = StyleSheet.create({
 	},
 	typingUsers: {
 		...sharedStyles.textSemibold
+	},
+	clockIcon: {
+		marginRight: 4
 	}
 });
 
@@ -119,7 +122,7 @@ const SubTitle = React.memo(({ usersTyping, subtitle, statusExpiresAt, renderFun
 		if (statusExpiresAt) {
 			return (
 				<View style={styles.titleContainer}>
-					<CustomIcon name='clock' size={fontSize} color={colors.fontSecondaryInfo} style={{ marginRight: 4 }} />
+					<CustomIcon name='clock' size={fontSize} color={colors.fontSecondaryInfo} style={styles.clockIcon} />
 					<MarkdownPreview msg={subtitle} style={[styles.subtitle, { fontSize, color: colors.fontSecondaryInfo }]} />
 				</View>
 			);

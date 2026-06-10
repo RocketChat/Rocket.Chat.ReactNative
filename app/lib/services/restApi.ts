@@ -330,13 +330,13 @@ export const setUserPreferences = (userId: string, data: Partial<INotificationPr
 	sdk.post('users.setPreferences', { userId, data });
 
 export const setUserStatus = (status: string, message: string, expiresAt?: string | null) => {
-	if(compareServerVersion(reduxStore.getState().server.version, 'greaterThanOrEqualTo', '8.6.0')) {
+	if (compareServerVersion(reduxStore.getState().server.version, 'greaterThanOrEqualTo', '8.6.0')) {
 		return sdk.post('users.setStatus', { status, message, ...(expiresAt !== undefined && { expiresAt }) });
 	}
 
 	// RC 1.2.0
 	return sdk.methodCall('setUserStatus', status, message);
-}
+};
 
 export const setReaction = (emoji: string, messageId: string) =>
 	// RC 0.62.2

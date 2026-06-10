@@ -43,6 +43,7 @@ const RoomInfoViewTitle = ({ room, name, username, userId, status, statusText, s
 
 	if (type === SubscriptionType.DIRECT) {
 		const presenceLabel = !statusText && status ? STATUS_I18N_KEYS[status] : undefined;
+		const formattedExpiry = statusExpiresAt ? formatStatusExpiry(statusExpiresAt) : undefined;
 
 		return (
 			<View style={styles.roomInfoViewTitleContainer}>
@@ -74,11 +75,11 @@ const RoomInfoViewTitle = ({ room, name, username, userId, status, statusText, s
 						<Text style={[styles.roomUsername, { color: colors.fontSecondaryInfo }]}>{I18n.t(presenceLabel)}</Text>
 					</View>
 				)}
-				{!!statusExpiresAt && !!formatStatusExpiry(statusExpiresAt) && (
+				{!!formattedExpiry && (
 					<View testID='room-info-view-status-expiry' style={styles.statusRow}>
 						<CustomIcon name='clock' size={14} color={colors.fontSecondaryInfo} />
 						<Text style={[styles.roomUsername, { color: colors.fontSecondaryInfo, marginTop: 0 }]}>
-							{formatStatusExpiry(statusExpiresAt)}
+							{formattedExpiry}
 						</Text>
 					</View>
 				)}

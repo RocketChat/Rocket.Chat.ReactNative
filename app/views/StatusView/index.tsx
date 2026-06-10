@@ -115,7 +115,7 @@ const StatusView = (): React.ReactElement => {
 		(state: IApplicationState) => state.settings.Accounts_AllowInvisibleStatusOption
 	);
 	const serverVersion = useSelector((state: IApplicationState) => state.server.version);
-	const supportsStatusExpiry = compareServerVersion(serverVersion as string, 'greaterThanOrEqualTo', '8.6.0');
+	const supportsStatusExpiry = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.6.0');
 
 	const {
 		control,

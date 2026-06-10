@@ -804,9 +804,6 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 							{t === 'd' && !!member.statusText && (
 								<View style={styles.statusRow}>
 									{member._id && <Status size={12} id={member._id} />}
-									{member.statusSource && member.statusSource !== 'manual' && (
-										<CustomIcon name='calendar' size={14} color={themes[theme].fontSecondaryInfo} />
-									)}
 									<MarkdownPreview
 										msg={member.statusText}
 										style={[styles.roomDescription, { color: themes[theme].fontSecondaryInfo }]}
