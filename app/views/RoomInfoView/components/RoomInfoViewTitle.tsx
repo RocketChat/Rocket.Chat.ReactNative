@@ -74,20 +74,20 @@ const RoomInfoViewTitle = ({
 						<CollapsibleText
 							linesToTruncate={2}
 							msg={statusText}
-							style={[styles.roomUsername, { color: colors.fontSecondaryInfo }]}
+							style={[styles.statusText, { color: colors.fontTitlesLabels }]}
 						/>
 					</View>
 				)}
 				{!!presenceLabel && (
 					<View testID='room-info-view-presence-status' style={styles.statusRow}>
 						{userId && <Status size={12} id={userId} />}
-						<Text style={[styles.roomUsername, { color: colors.fontSecondaryInfo }]}>{I18n.t(presenceLabel)}</Text>
+						<Text style={[styles.statusText, { color: colors.fontTitlesLabels }]}>{I18n.t(presenceLabel)}</Text>
 					</View>
 				)}
 				{!!formattedExpiry && (
-					<View testID='room-info-view-status-expiry' style={styles.statusRow}>
+					<View testID='room-info-view-status-expiry' style={styles.expiryContainer}>
 						<CustomIcon name='clock' size={14} color={colors.fontSecondaryInfo} />
-						<Text style={[styles.roomUsername, { color: colors.fontSecondaryInfo, marginTop: 0 }]}>{formattedExpiry}</Text>
+						<Text style={[styles.expiryText, { color: colors.fontSecondaryInfo }]}>{formattedExpiry}</Text>
 					</View>
 				)}
 			</View>

@@ -102,6 +102,22 @@ export default StyleSheet.create({
 	statusRow: {
 		flexDirection: 'row',
 		alignItems: 'center',
+		gap: 4,
+		marginTop: 10
+	},
+	statusText: {
+		fontSize: 14,
+		...sharedStyles.textAlignCenter,
+		...sharedStyles.textMedium
+	},
+	expiryContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
 		gap: 4
+	},
+	expiryText: {
+		fontSize: 14,
+		...sharedStyles.textAlignCenter,
+		...sharedStyles.textRegular
 	}
 });
