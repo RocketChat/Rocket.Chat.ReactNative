@@ -98,5 +98,10 @@ export default StyleSheet.create({
 		lineHeight: 22,
 		fontSize: 16,
 		...sharedStyles.textRegular
+	},
+	statusRow: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		gap: 4
 	}
 });

@@ -202,8 +202,8 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 		sdk.current.onStreamData('stream-user-presence', (ddpMessage: { fields: { args?: any; uid?: any } }) => {
 			const userStatus = ddpMessage.fields.args[0];
 			const { uid } = ddpMessage.fields;
-			const [, status, statusText] = userStatus;
-			const newStatus = { status: STATUSES[status], statusText };
+			const [, status, statusText, statusSource, statusExpiresAt] = userStatus;
+			const newStatus = { status: STATUSES[status], statusText, statusSource, statusExpiresAt };
 			// @ts-ignore
 			store.dispatch(setActiveUsers({ [uid]: newStatus }));
 
@@ -235,12 +235,12 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 						}, 10000);
 					}
 					const userStatus = ddpMessage.fields.args[0];
-					const [id, , status, statusText] = userStatus;
-					_activeUsers.activeUsers[id] = { status: STATUSES[status], statusText };
+					const [id, , status, statusText, statusSource, statusExpiresAt] = userStatus;
+					_activeUsers.activeUsers[id] = { status: STATUSES[status], statusText, statusSource, statusExpiresAt };
 
 					const { user: loggedUser } = store.getState().login;
 					if (loggedUser && loggedUser.id === id) {
-						store.dispatch(setUser({ status: STATUSES[status], statusText }));
+						store.dispatch(setUser({ status: STATUSES[status], statusText, statusSource, statusExpiresAt }));
 					}
 				} else if (/updateAvatar/.test(eventName)) {
 					const { username, etag } = ddpMessage.fields.args[0];

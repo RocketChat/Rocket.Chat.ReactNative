@@ -16,6 +16,7 @@ import { MarkdownPreview } from '../../containers/markdown';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Status from '../../containers/Status';
+import { CustomIcon } from '../../containers/CustomIcon';
 import {
 	type IApplicationState,
 	type IBaseScreen,
@@ -33,8 +34,8 @@ import { type ChatsStackParamList } from '../../stacks/types';
 import { withTheme } from '../../theme';
 import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
+import { formatStatusExpiry } from '../../lib/methods/helpers/formatStatusExpiry';
 import Touch from '../../containers/Touch';
-import sharedStyles from '../Styles';
 import styles from './styles';
 import { ERoomType } from '../../definitions/ERoomType';
 import { E2E_ROOM_TYPES } from '../../lib/constants/keys';
@@ -775,14 +776,8 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 					accessibilityLabel={I18n.t('Room_Info')}
 					enabled={!isGroupChatHandler}
 					testID='room-actions-info'>
-					<View style={[styles.roomInfoContainer, { height: 72 * fontScale }]}>
-						<Avatar text={avatar} style={styles.avatar} size={50 * fontScale} type={t} rid={rid}>
-							{t === 'd' && member._id ? (
-								<View style={[sharedStyles.status, { backgroundColor: themes[theme].surfaceRoom }]}>
-									<Status size={16} id={member._id} />
-								</View>
-							) : undefined}
-						</Avatar>
+					<View style={[styles.roomInfoContainer, { height: 85 * fontScale }]}>
+						<Avatar text={avatar} style={styles.avatar} size={50 * fontScale} type={t} rid={rid} />
 						<View style={styles.roomTitleContainer}>
 							{room.t === 'd' ? (
 								<Text style={[styles.roomTitle, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
@@ -806,12 +801,29 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 								msg={t === 'd' ? `@${name}` : topic}
 								style={[styles.roomDescription, { color: themes[theme].fontSecondaryInfo }]}
 							/>
-							{room.t === 'd' && (
-								<MarkdownPreview
-									msg={member.statusText}
-									style={[styles.roomDescription, { color: themes[theme].fontSecondaryInfo }]}
-								/>
+							{t === 'd' && !!member.statusText && (
+								<View style={styles.statusRow}>
+									{member._id && <Status size={12} id={member._id} />}
+									{member.statusSource && member.statusSource !== 'manual' && (
+										<CustomIcon name='calendar' size={14} color={themes[theme].fontSecondaryInfo} />
+									)}
+									<MarkdownPreview
+										msg={member.statusText}
+										style={[styles.roomDescription, { color: themes[theme].fontSecondaryInfo }]}
+									/>
+								</View>
 							)}
+							{t === 'd' && !!member.statusExpiresAt && (() => {
+								const expiry = formatStatusExpiry(member.statusExpiresAt);
+								return !!expiry && (
+									<View style={styles.statusRow}>
+										<CustomIcon name='clock' size={14} color={themes[theme].fontSecondaryInfo} />
+										<Text style={[styles.roomDescription, { color: themes[theme].fontSecondaryInfo }]}>
+											{expiry}
+										</Text>
+									</View>
+								);
+							})()}
 						</View>
 						{isGroupChatHandler ? null : <List.Icon name='chevron-right' style={styles.actionIndicator} />}
 					</View>

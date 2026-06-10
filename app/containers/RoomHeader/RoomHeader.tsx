@@ -9,6 +9,7 @@ import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
 import { MarkdownPreview } from '../markdown';
 import RoomTypeIcon from '../RoomTypeIcon';
+import { CustomIcon } from '../CustomIcon';
 import { type TUserStatus, type IOmnichannelSource, type ISubscription } from '../../definitions';
 import { useTheme } from '../../theme';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
@@ -51,6 +52,7 @@ const styles = StyleSheet.create({
 type TRoomHeaderSubTitle = {
 	usersTyping: IUsersTyping;
 	subtitle?: string;
+	statusExpiresAt?: string;
 	renderFunc?: () => React.ReactElement;
 	scale: number;
 };
@@ -66,6 +68,7 @@ type TRoomHeaderHeaderTitle = {
 interface IRoomHeader {
 	title?: string;
 	subtitle?: string;
+	statusExpiresAt?: string;
 	type: string;
 	width: number;
 	height: number;
@@ -87,7 +90,7 @@ interface IRoomHeader {
 
 type IRoomHeaderProps = IRoomHeader;
 
-const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, scale }: TRoomHeaderSubTitle) => {
+const SubTitle = React.memo(({ usersTyping, subtitle, statusExpiresAt, renderFunc, scale }: TRoomHeaderSubTitle) => {
 	const { colors } = useTheme();
 	const fontSize = getSubTitleSize(scale);
 	// typing
@@ -113,6 +116,14 @@ const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, scale }: TRoom
 
 	// subtitle
 	if (subtitle) {
+		if (statusExpiresAt) {
+			return (
+				<View style={styles.titleContainer}>
+					<CustomIcon name='clock' size={fontSize} color={colors.fontSecondaryInfo} style={{ marginRight: 4 }} />
+					<MarkdownPreview msg={subtitle} style={[styles.subtitle, { fontSize, color: colors.fontSecondaryInfo }]} />
+				</View>
+			);
+		}
 		return <MarkdownPreview msg={subtitle} style={[styles.subtitle, { fontSize, color: colors.fontSecondaryInfo }]} />;
 	}
 
@@ -138,6 +149,7 @@ const HeaderTitle = React.memo(({ title, tmid, prid, scale, testID }: TRoomHeade
 const Header = ({
 	title,
 	subtitle,
+	statusExpiresAt,
 	parentTitle,
 	type,
 	status,
@@ -231,7 +243,7 @@ const Header = ({
 					)}
 					<HeaderTitle title={title} tmid={tmid} prid={prid} scale={scale} testID={testID} />
 				</View>
-				<SubTitle usersTyping={tmid ? [] : usersTyping} subtitle={subtitle} renderFunc={renderFunc} scale={scale} />
+				<SubTitle usersTyping={tmid ? [] : usersTyping} subtitle={subtitle} statusExpiresAt={statusExpiresAt} renderFunc={renderFunc} scale={scale} />
 			</TouchableOpacity>
 		</KeyboardFocusView>
 	);

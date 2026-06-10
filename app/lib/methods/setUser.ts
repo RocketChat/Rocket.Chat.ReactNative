@@ -2,12 +2,12 @@ import { InteractionManager } from 'react-native';
 
 import { setActiveUsers } from '../../actions/activeUsers';
 import { setUser } from '../../actions/login';
-import { type IUser } from '../../definitions';
+import { type IUser, type TStatusSource, type TUserStatus } from '../../definitions';
 import { store as reduxStore } from '../store/auxStore';
 import { compareServerVersion } from './helpers';
 
 export interface IActiveUsers {
-	[key: string]: { status: string; statusText?: string } | string | boolean;
+	[key: string]: { status: TUserStatus; statusDefault?: TUserStatus; statusText?: string; statusExpiresAt?: string; statusSource?: TStatusSource } | string | boolean;
 	msg: string;
 	collection: string;
 	id: string;
@@ -18,7 +18,7 @@ export interface IActiveUsers {
 			verified: boolean;
 		}[];
 		username: string;
-		status: string;
+		status: TUserStatus;
 	};
 }
 

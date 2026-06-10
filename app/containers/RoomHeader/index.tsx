@@ -45,6 +45,7 @@ const RoomHeaderContainer = React.memo(
 		let subtitle: string | undefined;
 		let statusVisitor: TUserStatus | undefined;
 		let statusText: string | undefined;
+		let statusExpiresAt: string | undefined;
 		const { width, height } = useResponsiveLayout();
 
 		const connecting = useSelector((state: IApplicationState) => state.meteor.connecting || state.server.loading);
@@ -65,8 +66,9 @@ const RoomHeaderContainer = React.memo(
 
 		if (connected) {
 			if ((type === 'd' || (tmid && roomUserId)) && activeUser) {
-				const { statusText: statusTextActiveUser } = activeUser;
+				const { statusText: statusTextActiveUser, statusExpiresAt: statusExpiresAtActiveUser } = activeUser;
 				statusText = statusTextActiveUser;
+				statusExpiresAt = statusExpiresAtActiveUser;
 			} else if (type === 'l' && visitor?.status) {
 				({ status: statusVisitor } = visitor);
 			}
@@ -79,6 +81,7 @@ const RoomHeaderContainer = React.memo(
 				tmid={tmid}
 				title={title}
 				subtitle={type === 'd' ? statusText : subtitle}
+				statusExpiresAt={type === 'd' ? statusExpiresAt : undefined}
 				type={type}
 				teamMain={teamMain}
 				status={statusVisitor}

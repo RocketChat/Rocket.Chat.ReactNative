@@ -291,17 +291,20 @@ const RoomInfoView = (): React.ReactElement => {
 					<RoomInfoViewAvatar
 						username={room?.name || roomUser.username}
 						rid={room?.rid}
-						userId={roomUser?._id}
 						handleEditAvatar={() => navigate('ChangeAvatarView', { titleHeader: I18n.t('Room_Info'), room, t, context: 'room' })}
 						showEdit={showEdit}
 						type={t}
+						userId={roomUser._id}
 					/>
 					<RoomInfoViewTitle
 						type={t}
 						room={room || roomUser}
 						name={roomUser?.name}
 						username={roomUser?.username}
+						userId={roomUser?._id}
+						status={roomUser?.status}
 						statusText={roomUser?.statusText}
+						statusExpiresAt={roomUser?.statusExpiresAt}
 					/>
 					<RoomInfoButtons
 						rid={room?.rid || rid}

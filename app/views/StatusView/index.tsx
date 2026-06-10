@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
@@ -19,11 +19,12 @@ import I18n from '../../i18n';
 import { showToast } from '../../lib/methods/helpers/showToast';
 import { setUserStatus } from '../../lib/services/restApi';
 import { getUserSelector } from '../../selectors/login';
-import { showErrorAlert } from '../../lib/methods/helpers';
+import { showErrorAlert, compareServerVersion } from '../../lib/methods/helpers';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { useTheme } from '../../theme';
 import Button from '../../containers/Button';
 import { USER_STATUS_TEXT_MAX_LENGTH } from '../../lib/constants/maxLength';
+import ClearAfterPicker, { type ClearAfterValue, computeExpiresAt } from './ClearAfterPicker';
 
 interface IStatus {
 	id: TUserStatus;
@@ -63,6 +64,9 @@ const styles = StyleSheet.create({
 	footerComponent: {
 		marginTop: 36,
 		paddingHorizontal: 16
+	},
+	footerComponentWithPicker: {
+		marginTop: 16
 	}
 });
 
@@ -110,6 +114,8 @@ const StatusView = (): React.ReactElement => {
 	const Accounts_AllowInvisibleStatusOption = useSelector(
 		(state: IApplicationState) => state.settings.Accounts_AllowInvisibleStatusOption
 	);
+	const serverVersion = useSelector((state: IApplicationState) => state.server.version);
+	const supportsStatusExpiry = compareServerVersion(serverVersion as string, 'greaterThanOrEqualTo', '8.6.0');
 
 	const {
 		control,
@@ -125,6 +131,10 @@ const StatusView = (): React.ReactElement => {
 	const inputValues = watch();
 	const { statusText } = inputValues;
 
+	const [clearAfter, setClearAfter] = useState<ClearAfterValue>('');
+	const [clearAfterDate, setClearAfterDate] = useState<Date | null>(null);
+	const clearAfterTouched = useRef(false);
+
 	const dispatch = useDispatch();
 	const { setOptions, goBack } = useNavigation();
 	const { colors } = useTheme();
@@ -132,8 +142,9 @@ const StatusView = (): React.ReactElement => {
 	const submit = async () => {
 		const { status } = inputValues;
 		logEvent(events.STATUS_DONE);
-		if (statusText !== user.statusText || status !== user.status) {
-			await setCustomStatus(status, statusText);
+		if (statusText !== user.statusText || status !== user.status || clearAfterTouched.current) {
+			const expiresAt = clearAfterTouched.current && supportsStatusExpiry ? computeExpiresAt(clearAfter, clearAfterDate) : undefined;
+			await setCustomStatus(status, statusText, expiresAt);
 		}
 		goBack();
 	};
@@ -154,11 +165,11 @@ const StatusView = (): React.ReactElement => {
 		setValue('status', updatedStatus);
 	};
 
-	const setCustomStatus = async (status: TUserStatus, statusText: string) => {
+	const setCustomStatus = async (status: TUserStatus, statusText: string, expiresAt?: string | null) => {
 		sendLoadingEvent({ visible: true });
 		try {
-			await setUserStatus(status, statusText);
-			dispatch(setUser({ statusText, status }));
+			await setUserStatus(status, statusText, expiresAt);
+			dispatch(setUser({ statusText, status, ...(expiresAt !== undefined && { statusExpiresAt: expiresAt ?? undefined }) }));
 			logEvent(events.STATUS_CUSTOM);
 			showToast(I18n.t('Status_saved_successfully'));
 		} catch (e: any) {
@@ -180,14 +191,30 @@ const StatusView = (): React.ReactElement => {
 		if (!isValid) {
 			return true;
 		}
+		if (supportsStatusExpiry && clearAfterTouched.current) {
+			return false;
+		}
 		const isStatusEqual = status === user.status;
 		const isStatusTextEqual = (!!user.statusText && user.statusText === statusText) ?? (!user.statusText && !statusText);
-		return !isValid && isStatusEqual && isStatusTextEqual;
+		return !isValid || (isStatusEqual && isStatusTextEqual);
 	};
 
 	const FooterComponent = () => (
-		<View style={styles.footerComponent}>
-			<Button testID='status-view-submit' disabled={isStatusChanged()} onPress={submit} title={I18n.t('Save')} />
+		<View>
+			{supportsStatusExpiry && (
+				<ClearAfterPicker
+					value={clearAfter}
+					customDate={clearAfterDate}
+					onChange={(v, d) => {
+						clearAfterTouched.current = true;
+						setClearAfter(v);
+						if (d) setClearAfterDate(d);
+					}}
+				/>
+			)}
+			<View style={[styles.footerComponent, supportsStatusExpiry && styles.footerComponentWithPicker]}>
+				<Button testID='status-view-submit' disabled={isStatusChanged()} onPress={submit} title={I18n.t('Save')} />
+			</View>
 		</View>
 	);
 
@@ -202,7 +229,7 @@ const StatusView = (): React.ReactElement => {
 						<ControlledFormTextInput
 							name='statusText'
 							control={control}
-							label={I18n.t('Message')}
+							label={I18n.t('Status')}
 							value={statusText}
 							containerStyle={styles.inputContainer}
 							inputStyle={styles.inputStyle}
