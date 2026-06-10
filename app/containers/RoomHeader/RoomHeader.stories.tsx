@@ -103,6 +103,7 @@ export const Themes = () => (
 );
 
 const futureExpiry = new Date(Date.now() + 3600000).toISOString();
+const expiredExpiry = new Date(Date.now() - 3600000).toISOString();
 
 export const DM_Status = () => (
 	<>
@@ -128,5 +129,17 @@ export const DM_Status = () => (
 			)}
 		/>
 		<HeaderExample title={() => <RoomHeader title='Jane Smith' type='d' roomUserId='user7' subtitle='On call' status='busy' />} />
+		<HeaderExample
+			title={() => (
+				<RoomHeader
+					title='John Doe'
+					type='d'
+					roomUserId='user8'
+					subtitle='In a meeting'
+					status='online'
+					statusExpiresAt={expiredExpiry}
+				/>
+			)}
+		/>
 	</>
 );

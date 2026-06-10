@@ -11,6 +11,7 @@ import { MarkdownPreview } from '../markdown';
 import RoomTypeIcon from '../RoomTypeIcon';
 import { CustomIcon } from '../CustomIcon';
 import { type TUserStatus, type IOmnichannelSource, type ISubscription } from '../../definitions';
+import { formatStatusExpiry } from '../../lib/methods/helpers/formatStatusExpiry';
 import { useTheme } from '../../theme';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import useStatusAccessibilityLabel from '../../lib/hooks/useStatusAccessibilityLabel';
@@ -119,7 +120,8 @@ const SubTitle = React.memo(({ usersTyping, subtitle, statusExpiresAt, renderFun
 
 	// subtitle
 	if (subtitle) {
-		if (statusExpiresAt) {
+		const formattedExpiry = statusExpiresAt ? formatStatusExpiry(statusExpiresAt) : undefined;
+		if (formattedExpiry) {
 			return (
 				<View style={styles.titleContainer}>
 					<CustomIcon name='clock' size={fontSize} color={colors.fontSecondaryInfo} style={styles.clockIcon} />
