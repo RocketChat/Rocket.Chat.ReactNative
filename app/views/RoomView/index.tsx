@@ -91,7 +91,8 @@ import {
 	canAutoTranslate as canAutoTranslateMethod,
 	debounce,
 	isIOS,
-	hasPermission
+	hasPermission,
+	tsToMs
 } from '../../lib/methods/helpers';
 import { withActionSheet } from '../../containers/ActionSheet';
 import { goRoom, type TGoRoomItem } from '../../lib/methods/helpers/goRoom';
@@ -239,10 +240,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 				}
 			}
 			if (this.jumpToMessageId) {
-				this.jumpToMessage(this.jumpToMessageId);
-				// Consume the one-shot jump param (see componentDidUpdate) so a later Search for this same
-				// id is seen as a change and re-fires, rather than matching the stale param and no-opping.
-				this.props.navigation.setParams({ jumpToMessageId: undefined });
+				this.consumeJumpParam(this.jumpToMessageId);
 			}
 			if (this.jumpToThreadId && !this.jumpToMessageId) {
 				this.navToThread({ tmid: this.jumpToThreadId });
@@ -309,13 +307,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 		const { insets, route, encryptionEnabled } = this.props;
 
 		if (route?.params?.jumpToMessageId && route?.params?.jumpToMessageId !== prevProps.route?.params?.jumpToMessageId) {
-			this.jumpToMessage(route?.params?.jumpToMessageId);
-			// Consume the one-shot jump param. Search delivers the target via Navigation.setParams with the
-			// message id; re-selecting the SAME message sets an identical value, which this change guard
-			// would otherwise treat as "no change" and skip. Clearing it means the next setParams is always
-			// an edge (undefined -> id), so jumping to a message, returning to the Live Tail, then searching
-			// that same message again re-fires the jump instead of silently no-opping.
-			this.props.navigation.setParams({ jumpToMessageId: undefined });
+			this.consumeJumpParam(route?.params?.jumpToMessageId);
 		}
 
 		if (route?.params?.jumpToThreadId && route?.params?.jumpToThreadId !== prevProps.route?.params?.jumpToThreadId) {
@@ -1012,6 +1004,14 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 		}
 	};
 
+	// Fire a jump from a Navigation param, then consume the one-shot param so re-selecting the SAME
+	// message id reads as a change (undefined -> id edge) and re-fires, instead of matching a stale
+	// param and no-opping. Both mount (initial param) and update (Search delivers via setParams) use this.
+	consumeJumpParam = (messageId: string) => {
+		this.jumpToMessage(messageId);
+		this.props.navigation.setParams({ jumpToMessageId: undefined });
+	};
+
 	jumpToMessage = async (messageId: string, isFromReply?: boolean) => {
 		try {
 			sendLoadingEvent({ visible: true, onCancel: this.cancelJumpToMessage });
@@ -1059,7 +1059,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 							const anchorMessages: AnchorMessage[] = chunk.map(m => ({
 								id: m._id,
 								t: m.t,
-								ts: m.ts instanceof Date ? m.ts : new Date(m.ts)
+								ts: tsToMs(m.ts)
 							}));
 							highTs = anchorForTarget(anchorMessages, message.id);
 						}
@@ -1074,7 +1074,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 					// out-of-window target never re-observes and the jump silently aborts after the safety
 					// timeout, dropping the user back to the Live Tail (which is then reachable via the FAB).
 					if (highTs == null && message.ts) {
-						highTs = message.ts instanceof Date ? message.ts.getTime() : new Date(message.ts).getTime();
+						highTs = tsToMs(message.ts);
 					}
 				}
 				// Synchronization needed for Fabric to work

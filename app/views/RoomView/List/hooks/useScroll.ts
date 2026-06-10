@@ -1,9 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { type ViewToken, type ViewabilityConfigCallbackPairs } from 'react-native';
 
 import { type IListContainerRef, type IListProps, type TListRef, type TMessagesIdsRef } from '../definitions';
 import { type TAnyMessageModel } from '../../../../definitions';
-import { VIEWABILITY_CONFIG } from '../constants';
 
 // Safety net for a Jump to Message: if the target never re-observes within this window we abort the
 // anchor, drop back to the Live Tail and clear the spinner. It does NOT cancel a valid in-flight
@@ -58,7 +56,6 @@ export const useScroll = ({
 	// intentional incomplete effect-dep array (see the disable below). Annotating it would no-op, so the
 	// manual useCallback here are load-bearing and must stay.
 	const [highlightedMessageId, setHighlightedMessageId] = useState<string | null>(null);
-	const viewableItems = useRef<ViewToken[] | null>(null);
 	const highlightTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 	const pendingJump = useRef<IPendingJump | null>(null);
 	// The most recent jump target. FlatList may fire onScrollToIndexFailed AFTER completeJump has
@@ -87,14 +84,6 @@ export const useScroll = ({
 		setHighTs(null);
 		listRef.current?.scrollToOffset({ offset: -100 });
 	}, [listRef, setHighTs]);
-
-	const onViewableItemsChanged: IListProps['onViewableItemsChanged'] = ({ viewableItems: vi }) => {
-		viewableItems.current = vi;
-	};
-
-	const viewabilityConfigCallbackPairs = useRef<ViewabilityConfigCallbackPairs>([
-		{ onViewableItemsChanged, viewabilityConfig: VIEWABILITY_CONFIG }
-	]);
 
 	const setHighlightTimeout = useCallback(() => {
 		if (highlightTimeout.current) {
@@ -264,7 +253,6 @@ export const useScroll = ({
 		jumpToBottom,
 		jumpToMessage,
 		cancelJumpToMessage,
-		viewabilityConfigCallbackPairs,
 		handleScrollToIndexFailed,
 		highlightedMessageId
 	};

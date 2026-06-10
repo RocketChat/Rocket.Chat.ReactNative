@@ -2,9 +2,8 @@ import { Q } from '@nozbe/watermelondb';
 
 import database from '../../../lib/database';
 import { MessageTypeLoad } from '../../../lib/constants/messageTypeLoad';
+import { tsToMs } from '../../../lib/methods/helpers/tsToMs';
 import { type TAnyMessageModel } from '../../../definitions';
-
-const toMs = (ts: Date | number | string): number => (ts instanceof Date ? ts.getTime() : new Date(ts).getTime());
 
 /**
  * Upper ts bound (ms) for a Jump to Message onto a target that is cached locally but sits OUTSIDE the
@@ -19,7 +18,7 @@ const toMs = (ts: Date | number | string): number => (ts instanceof Date ? ts.ge
  * Live Tail); the caller then falls back to the target's own ts so the window still re-seeds onto it.
  */
 const getLocalAnchorTs = async (rid: string, targetTs: Date | number | string): Promise<number | null> => {
-	const targetMs = toMs(targetTs);
+	const targetMs = tsToMs(targetTs);
 	const loaders = (await database.active
 		.get('messages')
 		.query(
@@ -31,7 +30,7 @@ const getLocalAnchorTs = async (rid: string, targetTs: Date | number | string): 
 		)
 		.fetch()) as TAnyMessageModel[];
 
-	return loaders.length ? toMs(loaders[0].ts) : null;
+	return loaders.length ? tsToMs(loaders[0].ts) : null;
 };
 
 export default getLocalAnchorTs;

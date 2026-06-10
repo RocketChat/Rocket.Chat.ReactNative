@@ -7,15 +7,13 @@ import { type IApplicationState, type RoomType, type TAnyMessageModel } from '..
 import database from '../../../../lib/database';
 import { getMessageById } from '../../../../lib/database/services/Message';
 import { getThreadById } from '../../../../lib/database/services/Thread';
-import { compareServerVersion, useDebounce } from '../../../../lib/methods/helpers';
+import { compareServerVersion, tsToMs, useDebounce } from '../../../../lib/methods/helpers';
 import { readThreads } from '../../../../lib/services/restApi';
-import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '../../../../lib/constants/messageTypeLoad';
+import { MESSAGE_TYPE_ANY_LOAD, type MessageTypeLoad } from '../../../../lib/constants/messageTypeLoad';
 import { MAX_AUTO_LOADS, QUERY_SIZE } from '../constants';
 import { buildVisibleSystemTypesClause } from './buildVisibleSystemTypesClause';
 import { roomHistoryRequest } from '../../../../actions/room';
-import { raiseOrRelease, type AnchorMessage } from './anchorResolver';
-
-const toMs = (ts: string | Date | number): number => (ts instanceof Date ? ts.getTime() : new Date(ts).getTime());
+import { isNewerLoader, raiseOrRelease, type AnchorMessage } from './anchorResolver';
 
 export const useMessages = ({
 	rid,
@@ -75,7 +73,7 @@ export const useMessages = ({
 	const raiseOrReleaseAnchor = useCallback(
 		async (observed: TAnyMessageModel[], currentHighTs: number) => {
 			const wasPresent = boundaryLoaderPresent.current;
-			const isPresent = observed.some(m => m.t === MessageTypeLoad.NEXT_CHUNK && toMs(m.ts) === currentHighTs);
+			const isPresent = (observed as unknown as AnchorMessage[]).some(m => isNewerLoader(m) && tsToMs(m.ts) === currentHighTs);
 			boundaryLoaderPresent.current = isPresent;
 
 			// Only a present → absent transition is a consume. Anything else (still present, or never

@@ -1,4 +1,5 @@
 import { MessageTypeLoad } from '../../../../lib/constants/messageTypeLoad';
+import { tsToMs } from '../../../../lib/methods/helpers/tsToMs';
 
 /**
  * Pure anchor-resolver for the bounded Message Window.
@@ -21,9 +22,7 @@ export interface AnchorMessage {
 	ts: Date | number;
 }
 
-const toMs = (ts: Date | number): number => (ts instanceof Date ? ts.getTime() : Number(ts));
-
-const isNewerLoader = (message: AnchorMessage): boolean => message.t === MessageTypeLoad.NEXT_CHUNK;
+export const isNewerLoader = (message: AnchorMessage): boolean => message.t === MessageTypeLoad.NEXT_CHUNK;
 
 /**
  * Resolve the upper bound for a Jump to Message onto `targetId`.
@@ -38,14 +37,14 @@ export function anchorForTarget(messages: AnchorMessage[], targetId: string): nu
 		return null;
 	}
 
-	const targetTs = toMs(target.ts);
+	const targetTs = tsToMs(target.ts);
 	let bound: number | null = null;
 
 	for (const message of messages) {
 		if (!isNewerLoader(message)) {
 			continue;
 		}
-		const ts = toMs(message.ts);
+		const ts = tsToMs(message.ts);
 		if (ts > targetTs && (bound === null || ts < bound)) {
 			bound = ts;
 		}
@@ -65,7 +64,7 @@ export function anchorForTarget(messages: AnchorMessage[], targetId: string): nu
  * practice the returned value is >= `currentHighTs`.
  */
 export function raiseOrRelease(messages: AnchorMessage[], currentHighTs: number | null): number | null {
-	const loaders = messages.filter(isNewerLoader).map(m => toMs(m.ts));
+	const loaders = messages.filter(isNewerLoader).map(m => tsToMs(m.ts));
 	if (!loaders.length) {
 		return null;
 	}
