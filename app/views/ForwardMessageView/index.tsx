@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { Alert, ScrollView, View } from 'react-native';
 import { type RouteProp, StackActions, useNavigation, useRoute } from '@react-navigation/native';
 

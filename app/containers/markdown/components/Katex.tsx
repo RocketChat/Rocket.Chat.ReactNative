@@ -1,5 +1,5 @@
 import { type KaTeX as KaTeXProps } from '@rocket.chat/message-parser';
-import React from 'react';
+import { type ReactElement } from 'react';
 import { type StyleProp, type ViewStyle } from 'react-native';
 import Katex from 'react-native-katex';
 // eslint-disable-next-line import/no-unresolved
@@ -15,7 +15,7 @@ interface IKaTeXProps {
 
 const BLOCK_ENV_PATTERN = /\\begin\s*\{\s*(array|matrix|pmatrix|bmatrix|Bmatrix|vmatrix|Vmatrix)\s*\}/;
 
-export const KaTeX = ({ value }: IKaTeXProps): React.ReactElement | null => {
+export const KaTeX = ({ value }: IKaTeXProps): ReactElement | null => {
 	const { colors } = useTheme();
 	const fixAndroidWebviewCrashStyle: StyleProp<ViewStyle> = isAndroid ? { opacity: 0.99, overflow: 'hidden' } : {};
 	// KaTeX array does not render correctly in MathView (shows gray box).
@@ -46,7 +46,7 @@ export const KaTeX = ({ value }: IKaTeXProps): React.ReactElement | null => {
 	);
 };
 
-export const InlineKaTeX = ({ value }: IKaTeXProps): React.ReactElement | null => {
+export const InlineKaTeX = ({ value }: IKaTeXProps): ReactElement | null => {
 	const { colors } = useTheme();
 	return <MathText color value={`$$${value}$$`} direction='ltr' style={{ color: colors.fontDefault }} />;
 };

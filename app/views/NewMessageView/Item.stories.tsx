@@ -1,5 +1,5 @@
-import React from 'react';
 import { View, StyleSheet } from 'react-native';
+import type { ComponentType, ReactNode } from 'react';
 
 import Item from './Item';
 import { mockedStore } from '../../reducers/mockedStore';
@@ -15,16 +15,16 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Wrapper = ({ children }: { children: React.ReactNode }) => <View style={styles.container}>{children}</View>;
+const Wrapper = ({ children }: { children: ReactNode }) => <View style={styles.container}>{children}</View>;
 
-const withVoiceCallEnabled = (Story: React.ComponentType) => {
+const withVoiceCallEnabled = (Story: ComponentType) => {
 	mockedStore.dispatch(setEnterpriseModules(['teams-voip']));
 	mockedStore.dispatch(setPermissions({ 'allow-internal-voice-calls': ['user'], 'allow-external-voice-calls': ['user'] }));
 	mockedStore.dispatch(setUser({ roles: ['user'] }));
 	return <Story />;
 };
 
-const withVoiceCallDisabled = (Story: React.ComponentType) => {
+const withVoiceCallDisabled = (Story: ComponentType) => {
 	mockedStore.dispatch(setEnterpriseModules([]));
 	mockedStore.dispatch(setPermissions({ 'allow-internal-voice-calls': [], 'allow-external-voice-calls': [] }));
 	mockedStore.dispatch(setUser({ roles: ['user'] }));

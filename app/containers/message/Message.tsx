@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext, memo } from 'react';
 import { View, type ViewStyle, type AccessibilityActionEvent, type AccessibilityActionInfo } from 'react-native';
 import { A11y } from 'react-native-a11y-order';
 
@@ -29,7 +29,7 @@ import { useMessageAccessibilityLabel } from './hooks/useMessageAccessibilityLab
 import { useMessageAccessibilityActions } from './hooks/useMessageAccessibilityActions';
 import { useMessageAccessibilityHint } from './hooks/useMessageAccessibilityHint';
 
-const MessageInner = React.memo((props: IMessageInner) => {
+const MessageInner = memo((props: IMessageInner) => {
 	const { isLargeFontScale } = useResponsiveLayout();
 	const showTimeLarge = isLargeFontScale && props.isHeader;
 
@@ -109,7 +109,7 @@ interface IMessageA11y {
 	onAccessibilityAction?: (event: AccessibilityActionEvent) => void;
 	handleLongPress?: () => void;
 }
-const Message = React.memo((props: IMessageTouchable & IMessage & IMessageA11y) => {
+const Message = memo((props: IMessageTouchable & IMessage & IMessageA11y) => {
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo || props.isIgnored) {
 		const thread = props.isThreadReply ? <RepliedThread {...props} /> : null;
 		// Prevent misalignment of info when the font size is increased.
@@ -170,7 +170,7 @@ const Message = React.memo((props: IMessageTouchable & IMessage & IMessageA11y) 
 });
 Message.displayName = 'Message';
 
-const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
+const MessageTouchable = memo((props: IMessageTouchable & IMessage) => {
 	const { onPress, onLongPress } = useContext(MessageContext);
 	const { colors } = useTheme();
 	const { ref: touchRef, markAsLastFocused } = useLastFocusedMessageRef();

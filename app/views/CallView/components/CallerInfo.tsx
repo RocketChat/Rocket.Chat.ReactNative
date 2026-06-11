@@ -1,6 +1,6 @@
-import React from 'react';
 import { Pressable, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
+import type { ReactElement } from 'react';
 
 import AvatarContainer from '../../../containers/Avatar';
 import I18n from '../../../i18n';
@@ -9,7 +9,7 @@ import { useIsScreenReaderEnabled } from '../../../lib/hooks/useIsScreenReaderEn
 import { CONTROLS_ANIMATION_DURATION, styles } from '../styles';
 import { useTheme } from '../../../theme';
 
-const CallerInfo = (): React.ReactElement => {
+const CallerInfo = (): ReactElement => {
 	const { colors } = useTheme();
 	const contact = useCallContact();
 	const toggleControlsVisible = useCallStore(state => state.toggleControlsVisible);

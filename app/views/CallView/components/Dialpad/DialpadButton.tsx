@@ -1,6 +1,6 @@
-import React from 'react';
 import { Pressable, Text, View } from 'react-native';
 import * as Haptics from 'expo-haptics';
+import type { ReactElement } from 'react';
 
 import { useCallStore } from '../../../../lib/services/voip/useCallStore';
 import { useTheme } from '../../../../theme';
@@ -13,7 +13,7 @@ interface IDialpadButton {
 	testID?: string;
 }
 
-const DialpadButton = ({ digit, letters, testID }: IDialpadButton): React.ReactElement => {
+const DialpadButton = ({ digit, letters, testID }: IDialpadButton): ReactElement => {
 	'use memo';
 
 	const { colors } = useTheme();

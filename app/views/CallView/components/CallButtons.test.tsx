@@ -1,6 +1,6 @@
-import React from 'react';
 import { render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
+import { type ReactNode } from 'react';
 
 import { mockedStore } from '../../../reducers/mockedStore';
 import { useCallStore } from '../../../lib/services/voip/useCallStore';
@@ -55,7 +55,7 @@ const setStoreState = (overrides: Partial<ReturnType<typeof useCallStore.getStat
 	});
 };
 
-const Wrapper = ({ children }: { children: React.ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
+const Wrapper = ({ children }: { children: ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
 
 describe('CallButtons', () => {
 	beforeEach(() => {

@@ -1,4 +1,4 @@
-import React, { memo, useLayoutEffect, useRef, useState } from 'react';
+import { memo, useLayoutEffect, useRef, useState } from 'react';
 import { FlatList, Text, View } from 'react-native';
 import { batch, useDispatch } from 'react-redux';
 import { type Subscription } from 'rxjs';

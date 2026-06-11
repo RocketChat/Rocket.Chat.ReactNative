@@ -1,4 +1,4 @@
-import React from 'react';
+import { Fragment, type ReactElement } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { useActionSheet } from '../../containers/ActionSheet';
@@ -63,24 +63,29 @@ const ListPicker = ({
 	onChangeValue
 }: {
 	title: string;
-	testID?: string;
+	testID: string;
 } & IBaseParams) => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
 	const option = OPTIONS.find(option => option.value === value) || OPTIONS[2];
 
-	const getOptions = () => (
+	const getOptions = (): ReactElement => (
 		<View style={{ backgroundColor: colors.surfaceRoom }}>
+			<List.Separator />
 			{OPTIONS.map(i => (
-				<List.Radio
-					onPress={() => {
-						hideActionSheet();
-						onChangeValue(i.value);
-					}}
-					title={i.label}
-					value={i.value}
-					isSelected={option.value === i.value}
-				/>
+				<Fragment key={i.value}>
+					<List.Radio
+						onPress={() => {
+							hideActionSheet();
+							onChangeValue(i.value);
+						}}
+						title={i.label}
+						value={i.value}
+						isSelected={option.value === i.value}
+						testID={`${testID}-${i.value}`}
+					/>
+					<List.Separator />
+				</Fragment>
 			))}
 		</View>
 	);

@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component, createRef, type RefObject } from 'react';
 import { AccessibilityInfo, InteractionManager, PixelRatio, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import parse from 'url-parse';
@@ -112,16 +112,16 @@ import { InvitedRoom } from './components/InvitedRoom';
 import { getInvitationData } from '../../lib/methods/getInvitationData';
 import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
 
-class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
+class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 	private rid?: string;
 	private t?: string;
 	private tmid?: string;
 	private jumpToMessageId?: string;
 	private jumpToThreadId?: string;
-	private messageComposerRef: React.RefObject<IMessageComposerRef | null>;
-	private joinCode: React.RefObject<IJoinCode | null>;
+	private messageComposerRef: RefObject<IMessageComposerRef | null>;
+	private joinCode: RefObject<IJoinCode | null>;
 	// ListContainer component
-	private list: React.RefObject<IListContainerRef | null>;
+	private list: RefObject<IListContainerRef | null>;
 	// FlatList inside ListContainer
 	private flatList: TListRef;
 	private mounted: boolean;
@@ -201,10 +201,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.setReadOnly();
 		this.updateE2EEState();
 
-		this.messageComposerRef = React.createRef();
-		this.list = React.createRef();
-		this.flatList = React.createRef();
-		this.joinCode = React.createRef();
+		this.messageComposerRef = createRef();
+		this.list = createRef();
+		this.flatList = createRef();
+		this.joinCode = createRef();
 		this.mounted = false;
 
 		if (this.t === 'l') {

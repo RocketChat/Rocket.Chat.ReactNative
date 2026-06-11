@@ -1,6 +1,6 @@
-import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Fragment, type ReactElement } from 'react';
 
 import * as List from '../../containers/List';
 import I18n from '../../i18n';
@@ -13,9 +13,6 @@ const styles = StyleSheet.create({
 	pickerText: {
 		...sharedStyles.textRegular,
 		fontSize: 16
-	},
-	pickerItem: {
-		height: 48
 	}
 });
 
@@ -42,11 +39,11 @@ const ListPicker = ({
 	const option = value ? OPTIONS[preference].find(option => option.value === value) : OPTIONS[preference][0];
 	const insets = useSafeAreaInsets();
 
-	const getOptions = (): React.ReactElement => (
+	const getOptions = (): ReactElement => (
 		<View style={{ backgroundColor: colors.surfaceRoom, paddingBottom: insets.bottom }}>
 			<List.Separator />
 			{OPTIONS[preference].map(i => (
-				<React.Fragment key={i.value}>
+				<Fragment key={i.value}>
 					<List.Radio
 						title={i.label}
 						isSelected={option?.value === i.value}
@@ -55,11 +52,10 @@ const ListPicker = ({
 							hideActionSheet();
 							onChangeValue({ [preference]: i.value.toString() });
 						}}
-						style={styles.pickerItem}
 						testID={`notification-preferences-${preference}-${i.value}`}
 					/>
 					<List.Separator />
-				</React.Fragment>
+				</Fragment>
 			))}
 		</View>
 	);

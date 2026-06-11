@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -42,9 +42,19 @@ const MediaAutoDownload = () => {
 						testID='media-auto-download-image'
 					/>
 					<List.Separator />
-					<ListPicker onChangeValue={setVideoPreference} value={videoPreference as MediaDownloadOption} title='Video' />
+					<ListPicker
+						onChangeValue={setVideoPreference}
+						value={videoPreference as MediaDownloadOption}
+						title='Video'
+						testID='media-auto-download-video'
+					/>
 					<List.Separator />
-					<ListPicker onChangeValue={setAudioPreference} value={audioPreference as MediaDownloadOption} title='Audio' />
+					<ListPicker
+						onChangeValue={setAudioPreference}
+						value={audioPreference as MediaDownloadOption}
+						title='Audio'
+						testID='media-auto-download-audio'
+					/>
 					<List.Separator />
 				</List.Section>
 			</List.Container>
