@@ -1,5 +1,5 @@
-import React from 'react';
 import { View, StyleSheet } from 'react-native';
+import { type ComponentType, type ReactNode } from 'react';
 
 import { RoomInfoButtons } from './RoomInfoButtons';
 import type { ISubscription } from '../../../definitions';
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Wrapper = ({ children }: { children: React.ReactNode }) => <View style={styles.container}>{children}</View>;
+const Wrapper = ({ children }: { children: ReactNode }) => <View style={styles.container}>{children}</View>;
 
 const createMockRoom = (overrides: Partial<ISubscription> = {}): ISubscription =>
 	({
@@ -53,7 +53,7 @@ const defaultHandlers = {
 	showActionSheet: () => {}
 };
 
-const withVoiceAndVideoCallEnabled = (Story: React.ComponentType) => {
+const withVoiceAndVideoCallEnabled = (Story: ComponentType) => {
 	mockedStore.dispatch(setEnterpriseModules(['teams-voip']));
 	mockedStore.dispatch(addSettings({ VideoConf_Enable_DMs: true }));
 	mockedStore.dispatch(
@@ -137,7 +137,7 @@ export const WithBlockedUser = () => (
 	</Wrapper>
 );
 
-const withVoiceCallDisabled = (Story: React.ComponentType) => {
+const withVoiceCallDisabled = (Story: ComponentType) => {
 	mockedStore.dispatch(clearEnterpriseModules());
 	return <Story />;
 };

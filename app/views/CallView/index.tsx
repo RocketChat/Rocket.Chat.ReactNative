@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { type ReactElement, useEffect } from 'react';
 import { Audio, InterruptionModeIOS } from 'expo-av';
 
 import { useCallStore } from '../../lib/services/voip/useCallStore';
@@ -11,7 +11,7 @@ import Ringer, { ERingerSounds } from '../../containers/Ringer';
 import { isIOS } from '../../lib/methods/helpers';
 import NativeVoipModule from '../../lib/native/NativeVoip';
 
-const CallView = (): React.ReactElement | null => {
+const CallView = (): ReactElement | null => {
 	'use memo';
 
 	const { colors } = useTheme();

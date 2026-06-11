@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext, memo, type FC } from 'react';
 import { dequal } from 'dequal';
 import { View } from 'react-native';
 
@@ -10,24 +10,16 @@ import AttachedActions from './AttachedActions';
 import Reply from './Reply';
 import MessageContext from '../../Context';
 import { type IMessageAttachments } from '../../interfaces';
-import { type IAttachment } from '../../../../definitions';
 import { getMessageFromAttachment } from '../../utils';
+import { isContentAttachment } from './utils';
 
-const removeQuote = (file?: IAttachment) =>
-	file?.image_url ||
-	file?.audio_url ||
-	file?.video_url ||
-	file?.collapsed ||
-	(file?.actions?.length || 0) > 0 ||
-	(file?.attachments?.length || 0) > 0;
-
-const Attachments: React.FC<IMessageAttachments> = React.memo(
+const Attachments: FC<IMessageAttachments> = memo(
 	({ attachments, timeFormat, showAttachment, getCustomEmoji, author }: IMessageAttachments) => {
 		'use memo';
 
 		const { translateLanguage } = useContext(MessageContext);
 
-		const nonQuoteAttachments = attachments?.filter(removeQuote);
+		const nonQuoteAttachments = attachments?.filter(isContentAttachment);
 
 		if (!nonQuoteAttachments || nonQuoteAttachments.length === 0) {
 			return null;

@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import { FlatList, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
@@ -78,7 +78,7 @@ interface IParams {
 	roomUserId?: string;
 }
 
-class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewState> {
+class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 	private rid: string;
 	private t: SubscriptionType;
 	private content: any;

@@ -1,4 +1,4 @@
-import React from 'react';
+import { type ReactElement } from 'react';
 import { View } from 'react-native';
 
 import { themes } from '../../lib/constants/colors';
@@ -9,7 +9,7 @@ export default {
 	title: 'Unread Badge'
 };
 
-const StoryTester = ({ children }: { children: React.ReactElement | React.ReactElement[] }) => (
+const StoryTester = ({ children }: { children: ReactElement | ReactElement[] }) => (
 	<View
 		style={{
 			flex: 1,
