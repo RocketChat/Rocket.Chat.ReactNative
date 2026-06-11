@@ -78,13 +78,18 @@ jobs:
         if: steps.sdk-cache.outputs.cache-hit != 'true'
         uses: ./.github/actions/preinstall-android-sdk
 
+      # Restore-only: e2e-build-android.yml is the single writer of this key, and
+      # the shards need that build, so the cache is always populated before this
+      # runs — every shard hits and only restores (no save → no first-writer
+      # race). The Install Maestro step below stays as a fallback for the rare
+      # miss (version drift between the two workflows, or eviction).
       # Cache only the Maestro install dirs — never run data. A later step greps
       # ~/.maestro/tests for SERVER_ERR to classify server-flake vs real
       # regression; caching tests/ + run logs would restore another shard's stale
       # logs and mislabel a genuine failure as a flake.
-      - name: Cache Maestro
+      - name: Restore Maestro cache
         id: cache-maestro
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: |
             ~/.maestro/bin

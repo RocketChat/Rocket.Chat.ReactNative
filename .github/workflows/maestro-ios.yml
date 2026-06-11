@@ -95,9 +95,14 @@ jobs:
         with:
           E2E_ACCOUNT: ${{ secrets.E2E_ACCOUNT }}
 
-      - name: Cache Maestro
+      # Restore-only: e2e-build-ios.yml is the single writer of this key, and
+      # the shards need that build, so the cache is always populated before this
+      # runs — every shard hits and only restores (no save → no first-writer
+      # race). The Install Maestro step below stays as a fallback for the rare
+      # miss (version drift between the two workflows, or eviction).
+      - name: Restore Maestro cache
         id: cache-maestro
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           # Only the Maestro install (binary/runtime), never ~/.maestro/tests run
           # data: a later step greps those logs for server-error strings to label
