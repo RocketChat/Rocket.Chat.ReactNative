@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext, memo } from 'react';
 import { Text, useWindowDimensions, View } from 'react-native';
 
 import I18n from '../../i18n';
@@ -29,7 +29,7 @@ interface IMessageReactions {
 	getCustomEmoji: TGetCustomEmoji;
 }
 
-const AddReaction = React.memo(({ theme }: { theme: TSupportedThemes }) => {
+const AddReaction = memo(({ theme }: { theme: TSupportedThemes }) => {
 	'use memo';
 
 	const { reactionInit } = useContext(MessageContext);
@@ -52,7 +52,7 @@ const AddReaction = React.memo(({ theme }: { theme: TSupportedThemes }) => {
 	);
 });
 
-const Reaction = React.memo(({ reaction, getCustomEmoji, theme }: IMessageReaction) => {
+const Reaction = memo(({ reaction, getCustomEmoji, theme }: IMessageReaction) => {
 	'use memo';
 
 	const { onReactionPress, onReactionLongPress, user } = useContext(MessageContext);
@@ -88,7 +88,7 @@ const Reaction = React.memo(({ reaction, getCustomEmoji, theme }: IMessageReacti
 	);
 });
 
-const Reactions = React.memo(({ reactions, getCustomEmoji }: IMessageReactions) => {
+const Reactions = memo(({ reactions, getCustomEmoji }: IMessageReactions) => {
 	'use memo';
 
 	const { theme } = useTheme();

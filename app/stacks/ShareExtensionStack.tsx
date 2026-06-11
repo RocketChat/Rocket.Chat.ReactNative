@@ -1,4 +1,4 @@
-import React from 'react';
+import { useContext } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { ThemeContext } from '../theme';
@@ -11,7 +11,7 @@ const ShareExtension = createNativeStackNavigator<any>();
 const ShareExtensionStack = () => {
 	'use memo';
 
-	const { theme } = React.useContext(ThemeContext);
+	const { theme } = useContext(ThemeContext);
 
 	return (
 		<ShareExtension.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>

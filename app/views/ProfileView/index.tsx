@@ -48,7 +48,7 @@ const MAX_NICKNAME_LENGTH = 120;
 interface IProfileViewProps {
 	navigation: NativeStackNavigationProp<ProfileStackParamList, 'ProfileView'>;
 }
-const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
+const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 	const validationSchema = yup.object().shape({
 		name: yup.string().required(I18n.t('Name_required')),
 		email: yup.string().email(I18n.t('Email_must_be_a_valid_email')).required(I18n.t('Email_required')),

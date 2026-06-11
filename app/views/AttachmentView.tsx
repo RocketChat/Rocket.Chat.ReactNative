@@ -1,7 +1,7 @@
 import { CameraRoll } from '@react-native-camera-roll/camera-roll';
 import { useHeaderHeight } from '@react-navigation/elements';
 import { ResizeMode, Video } from 'expo-av';
-import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useLayoutEffect, useRef, useState, type Dispatch, type SetStateAction, type ReactElement } from 'react';
 import { PermissionsAndroid, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
@@ -30,7 +30,7 @@ const RenderContent = ({
 	attachment,
 	altText
 }: {
-	setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+	setLoading: Dispatch<SetStateAction<boolean>>;
 	attachment: IAttachment;
 	altText?: string;
 }) => {
@@ -99,7 +99,7 @@ const RenderContent = ({
 	return null;
 };
 
-const AttachmentView = (): React.ReactElement => {
+const AttachmentView = (): ReactElement => {
 	const navigation = useAppNavigation<TNavigation, 'AttachmentView'>();
 	const {
 		params: { attachment }
