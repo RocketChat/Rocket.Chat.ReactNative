@@ -8,12 +8,15 @@ import {
 	type ServerMediaSignal,
 	type WebRTCProcessorConfig
 } from '@rocket.chat/media-signaling';
+import { Platform } from 'react-native';
 import RNCallKeep from 'react-native-callkeep';
 import { registerGlobals } from 'react-native-webrtc';
 import { getUniqueIdSync } from 'react-native-device-info';
 import { dequal } from 'dequal';
 
+import NativeVoipModule from '../../native/NativeVoip';
 import { mediaSessionStore } from './MediaSessionStore';
+import { pendingHangups } from './pendingHangups';
 import { terminateNativeCall } from './terminateNativeCall';
 import { useCallStore } from './useCallStore';
 import { MediaCallLogger } from './MediaCallLogger';
@@ -128,7 +131,25 @@ class MediaSessionInstance {
 				if (call.localParticipant.role === 'caller') {
 					useCallStore.getState().setCall(call);
 					useCallStore.getState().setDirection('outgoing');
-					Navigation.navigate('CallView');
+					// Outgoing calls don't go through VoipNotification, so the FGS that the incoming
+					// path starts after Telecom-accept doesn't exist here. Start it now (we're on the
+					// JS thread that ran startCall, the initiating activity is still visible) so the
+					// while-in-use microphone permission survives the user backgrounding the app
+					// while the call is in progress.
+					// Navigation is gated on the FGS resolving so a rejection doesn't strand the user
+					// on a `CallView` whose `'ended'` listener has already been detached by `endCall` →
+					// `useCallStore.reset()` before the async `hangup()` could fire `Navigation.back()`.
+					if (Platform.OS === 'android') {
+						NativeVoipModule.startVoipCallService(call.callId)
+							.then(() => Navigation.navigate('CallView'))
+							.catch(error => {
+								log(error);
+								showErrorAlert(I18n.t('VoIP_Call_Issue'), I18n.t('Oops'));
+								this.endCall(call.callId);
+							});
+					} else {
+						Navigation.navigate('CallView');
+					}
 					if (useCallStore.getState().roomId == null) {
 						this.resolveRoomIdFromContact(call.remoteParticipants[0]?.contact).catch(error => {
 							log(error);
@@ -227,6 +248,9 @@ class MediaSessionInstance {
 		const mainCall = this.instance?.getCallData(callId);
 
 		if (mainCall && mainCall.callId === callId) {
+			// Record before dispatching so a hangup written into a dead socket is replayed on reconnect.
+			pendingHangups.record(callId);
+
 			if (mainCall.state === 'ringing') {
 				mainCall.reject();
 			} else {
@@ -239,6 +263,25 @@ class MediaSessionInstance {
 		useCallStore.getState().resetNativeCallId();
 		useCallStore.getState().reset();
 	};
+
+	/**
+	 * Re-dispatch hangup signals for calls the user ended while the WebSocket was unhealthy.
+	 * `Session.transporter` is declared `private` in the lib's `.d.ts`; routing the replay through
+	 * `MediaSignalTransportWrapper.hangup` keeps the wire shape consistent with the happy path.
+	 */
+	public drainPendingHangups(): void {
+		if (this.instance == null) {
+			return;
+		}
+		const ids = pendingHangups.drainAll();
+		for (const id of ids) {
+			try {
+				(this.instance as any).transporter.hangup(id, 'normal');
+			} catch (error) {
+				log(error);
+			}
+		}
+	}
 
 	private async resolveRoomIdFromContact(contact: CallContact | undefined): Promise<void> {
 		if (!contact) {
@@ -299,6 +342,7 @@ class MediaSessionInstance {
 		}
 		mediaSessionStore.dispose();
 		this.instance = null;
+		pendingHangups.clear();
 		useCallStore.getState().reset();
 	}
 }

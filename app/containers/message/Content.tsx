@@ -6,7 +6,7 @@ import I18n from '../../i18n';
 import styles from './styles';
 import Markdown, { MarkdownPreview } from '../markdown';
 import User from './User';
-import { messageHaveAuthorName, getInfoMessage } from './utils';
+import { messageHaveAuthorName, getInfoMessage, getPreviewMessageFromAttachment } from './utils';
 import MessageContext from './Context';
 import { type IMessageContent } from './interfaces';
 import { useTheme } from '../../theme';
@@ -53,7 +53,12 @@ const Content = memo(
 				</Text>
 			);
 		} else if (isPreview) {
-			content = <MarkdownPreview testID={`message-preview-${props.msg}`} msg={props.msg} />;
+			const previewMsg =
+				props.msg ||
+				(props.attachments?.length
+					? getPreviewMessageFromAttachment(props.attachments[0], props.autoTranslateLanguage)
+					: undefined);
+			content = previewMsg ? <MarkdownPreview testID={`message-preview-${previewMsg}`} msg={previewMsg} /> : null;
 		} else if (props.msg) {
 			content = (
 				<Markdown
@@ -101,6 +106,15 @@ const Content = memo(
 		if (prevProps.isIgnored !== nextProps.isIgnored) {
 			return false;
 		}
+		if (prevProps.tmid !== nextProps.tmid) {
+			return false;
+		}
+		if (prevProps.isThreadRoom !== nextProps.isThreadRoom) {
+			return false;
+		}
+		if (prevProps.autoTranslateLanguage !== nextProps.autoTranslateLanguage) {
+			return false;
+		}
 		if (!dequal(prevProps.md, nextProps.md)) {
 			return false;
 		}
@@ -108,6 +122,9 @@ const Content = memo(
 			return false;
 		}
 		if (!dequal(prevProps.channels, nextProps.channels)) {
+			return false;
+		}
+		if (!dequal(prevProps.attachments, nextProps.attachments)) {
 			return false;
 		}
 		return true;

@@ -27,7 +27,6 @@ const shouldDisableAccessibility = process.env.RUNNING_E2E_TESTS === 'true' && i
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center',

@@ -8,6 +8,7 @@ import Touch from '../Touch';
 import { useUserPreferences } from '../../lib/methods/userPreferences';
 import { AUTOPLAY_GIFS_PREFERENCES_KEY } from '../../lib/constants/keys';
 import { useTheme } from '../../theme';
+import I18n from '../../i18n';
 
 interface ImageViewerProps {
 	style?: StyleProp<ImageStyle>;
@@ -18,6 +19,8 @@ interface ImageViewerProps {
 	width: number;
 	height: number;
 	onLoadEnd?: () => void;
+	altText?: string;
+	isAnimated?: boolean;
 }
 
 const styles = StyleSheet.create({
@@ -34,7 +37,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const ImageViewer = ({ uri = '', width, height, ...props }: ImageViewerProps): ReactElement => {
+export const ImageViewer = ({ uri = '', width, height, altText, isAnimated, ...props }: ImageViewerProps): ReactElement => {
 	const [autoplayGifs] = useUserPreferences<boolean>(AUTOPLAY_GIFS_PREFERENCES_KEY, true);
 	const [isPlaying, setIsPlaying] = useState<boolean>(!!autoplayGifs);
 	const expoImageRef = useRef<Image>(null);
@@ -131,13 +134,42 @@ export const ImageViewer = ({ uri = '', width, height, ...props }: ImageViewerPr
 
 	const { colors } = useTheme();
 
+	const accessibilityLabel = altText?.trim() || I18n.t('A11y_image_no_description');
+
 	return (
-		<View style={[styles.container, { width, height, backgroundColor: colors.surfaceNeutral }]}>
+		<View importantForAccessibility='no' style={[styles.container, { width, height, backgroundColor: colors.surfaceNeutral }]}>
 			<GestureDetector gesture={gesture}>
-				<Animated.View onLayout={onLayout} style={[styles.flex, style]}>
-					<Touch onPress={handleGifPlayback} style={styles.flex} rectButtonStyle={styles.flex}>
-						<Image style={styles.image} contentFit='contain' source={{ uri }} ref={expoImageRef} {...props} />
-					</Touch>
+				<Animated.View accessible={false} onLayout={onLayout} style={[styles.flex, style]}>
+					{isAnimated ? (
+						<Touch
+							accessible
+							accessibilityLabel={accessibilityLabel}
+							accessibilityRole='button'
+							accessibilityHint={I18n.t('A11y_image_viewer_gif_hint')}
+							onPress={handleGifPlayback}
+							style={styles.flex}
+							rectButtonStyle={styles.flex}>
+							<Image
+								accessible={false}
+								style={styles.image}
+								contentFit='contain'
+								source={{ uri }}
+								ref={expoImageRef}
+								{...props}
+							/>
+						</Touch>
+					) : (
+						<Image
+							accessible
+							accessibilityLabel={accessibilityLabel}
+							accessibilityRole='image'
+							style={styles.image}
+							contentFit='contain'
+							source={{ uri }}
+							ref={expoImageRef}
+							{...props}
+						/>
+					)}
 				</Animated.View>
 			</GestureDetector>
 		</View>

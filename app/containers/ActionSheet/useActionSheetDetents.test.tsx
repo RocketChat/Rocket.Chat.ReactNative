@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react-native';
 
-import { useActionSheetDetents } from './useActionSheetDetents';
+import { HANDLE_HEIGHT, useActionSheetDetents } from './useActionSheetDetents';
 
 describe('useActionSheetDetents', () => {
 	const windowHeight = 1000;
@@ -71,7 +71,7 @@ describe('useActionSheetDetents', () => {
 			})
 		);
 
-		expect(result.current.detents).toEqual([(300 + 50) / windowHeight]);
+		expect(result.current.detents).toEqual([(300 + 50 + HANDLE_HEIGHT) / windowHeight]);
 	});
 
 	it('falls back to minimum height when no content or options', () => {

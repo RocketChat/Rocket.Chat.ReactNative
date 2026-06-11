@@ -30,9 +30,9 @@ class Database {
     }
 
     func getDatabasePath(name: String) -> String? {
-        let isOfficial = Bundle.main.bool(forKey: "IS_OFFICIAL")
         let groupDir = FileManager.default.groupDir()
-        return "\(groupDir)/\(name)\(isOfficial ? "" : "-experimental").db"
+        guard !groupDir.isEmpty else { return nil }
+        return "\(groupDir)/\(name).db"
     }
 
     func openDatabase(databasePath: String) {

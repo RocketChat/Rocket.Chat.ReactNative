@@ -52,7 +52,11 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps) => {
 
 	const toggleConvertAsciiToEmoji = async (value: boolean) => {
 		try {
-			dispatch(setUser({ settings: { ...settings, preferences: { convertAsciiEmoji: value } } } as Partial<IUser>));
+			dispatch(
+				setUser({
+					settings: { ...settings, preferences: { ...settings?.preferences, convertAsciiEmoji: value } }
+				} as Partial<IUser>)
+			);
 			await saveUserPreferences({ convertAsciiEmoji: value });
 		} catch (e) {
 			log(e);
@@ -61,7 +65,11 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps) => {
 
 	const toggleEnableMobileRinging = async (value: boolean) => {
 		try {
-			dispatch(setUser({ settings: { ...settings, preferences: { enableMobileRinging: value } } } as Partial<IUser>));
+			dispatch(
+				setUser({
+					settings: { ...settings, preferences: { ...settings?.preferences, enableMobileRinging: value } }
+				} as Partial<IUser>)
+			);
 			await saveUserPreferences({ enableMobileRinging: value });
 		} catch (e) {
 			log(e);

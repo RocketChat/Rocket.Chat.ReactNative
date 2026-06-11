@@ -1,10 +1,9 @@
 import { useCallback, useReducer } from 'react';
-import { AccessibilityInfo } from 'react-native';
 
 import { type IRoomItem } from '../../../containers/RoomItem/interfaces';
 import { search as searchLib } from '../../../lib/methods/search';
 import { useDebounce } from '../../../lib/methods/helpers/debounce';
-import i18n from '../../../i18n';
+import { announceSearchResultsForAccessibility } from '../../../lib/methods/helpers/announceSearchResultsForAccessibility';
 
 interface SearchState {
 	searchEnabled: boolean;
@@ -59,16 +58,6 @@ export const useSearch = () => {
 	'use memo';
 
 	const [state, dispatch] = useReducer(searchReducer, initialState);
-
-	const announceSearchResultsForAccessibility = (count: number) => {
-		if (count < 1) {
-			AccessibilityInfo.announceForAccessibility(i18n.t('No_results_found'));
-			return;
-		}
-
-		const message = count === 1 ? i18n.t('One_result_found') : i18n.t('Search_Results_found', { count });
-		AccessibilityInfo.announceForAccessibility(message);
-	};
 
 	const search = useDebounce(async (text: string) => {
 		if (!state.searchEnabled) return;

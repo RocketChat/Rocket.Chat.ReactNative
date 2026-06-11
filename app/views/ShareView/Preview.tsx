@@ -9,7 +9,7 @@ import { CustomIcon, type TIconsName } from '../../containers/CustomIcon';
 import { ImageViewer } from '../../containers/ImageViewer';
 import sharedStyles from '../Styles';
 import I18n from '../../i18n';
-import { THUMBS_HEIGHT } from './constants';
+import { THUMBS_HEIGHT } from '../../containers/Thumbs';
 import { type TSupportedThemes } from '../../theme';
 import { themes } from '../../lib/constants/colors';
 import { type IShareAttachment } from '../../definitions';
@@ -99,7 +99,16 @@ const Preview = memo(({ item, theme, length }: IPreview) => {
 
 		if (type?.match(/image/)) {
 			const imageViewerWidth = width - insets.left - insets.right;
-			return <ImageViewer uri={item.path} width={imageViewerWidth} height={calculatedHeight} />;
+			const isAnimated = item.mime === 'image/gif' || /\.gif(\?|$)/i.test(item.path);
+			return (
+				<ImageViewer
+					uri={item.path}
+					width={imageViewerWidth}
+					height={calculatedHeight}
+					altText={item.altText}
+					isAnimated={isAnimated}
+				/>
+			);
 		}
 
 		return (

@@ -1,9 +1,9 @@
-import { memo, type Ref } from 'react';
+import { memo } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 
 import type { IApplicationState, TUserStatus, IOmnichannelSource, IVisitor, ISubscription } from '../../definitions';
 import I18n from '../../i18n';
-import RoomHeader, { type IRoomHeaderRef } from './RoomHeader';
+import RoomHeader from './RoomHeader';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 interface IRoomHeaderContainerProps {
@@ -24,10 +24,6 @@ interface IRoomHeaderContainerProps {
 	abacAttributes?: ISubscription['abacAttributes'];
 }
 
-type IRoomHeaderContainerWithRefProps = IRoomHeaderContainerProps & {
-	ref?: Ref<IRoomHeaderRef>;
-};
-
 const RoomHeaderContainer = memo(
 	({
 		isGroupChat,
@@ -44,9 +40,8 @@ const RoomHeaderContainer = memo(
 		sourceType,
 		visitor,
 		disabled,
-		abacAttributes,
-		ref
-	}: IRoomHeaderContainerWithRefProps) => {
+		abacAttributes
+	}: IRoomHeaderContainerProps) => {
 		let subtitle: string | undefined;
 		let statusVisitor: TUserStatus | undefined;
 		let statusText: string | undefined;
@@ -79,7 +74,6 @@ const RoomHeaderContainer = memo(
 
 		return (
 			<RoomHeader
-				ref={ref}
 				roomUserId={roomUserId}
 				prid={prid}
 				tmid={tmid}
@@ -104,4 +98,3 @@ const RoomHeaderContainer = memo(
 );
 
 export default RoomHeaderContainer;
-export type { IRoomHeaderRef };
