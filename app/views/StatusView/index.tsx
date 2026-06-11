@@ -185,7 +185,11 @@ const StatusView = (): React.ReactElement => {
 		sendLoadingEvent({ visible: false });
 	};
 
-	const statusType = Accounts_AllowInvisibleStatusOption ? STATUS : STATUS.filter(s => s.id !== 'offline');
+	const statusType = STATUS.filter(s => {
+		if (s.id === 'offline' && !Accounts_AllowInvisibleStatusOption) return false;
+		if (supportsStatusExpiry && s.id === 'away' && user.status !== 'away') return false;
+		return true;
+	});
 
 	const isStatusChanged = () => {
 		const { status } = inputValues;
