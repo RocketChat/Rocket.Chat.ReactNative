@@ -264,7 +264,7 @@ const checkVoipPermission = async () => {
 			return;
 		}
 		if (!mediaSessionStore.getCurrentInstance()) {
-			mediaSessionInstance.init(userId);
+			mediaSessionInstance.init(userId).catch(log);
 			// Pre-acquire the microphone now (foreground, post-login) so an incoming call while the
 			// device is locked/backgrounded — where a permission dialog is impossible — can still be
 			// answered. Fire-and-forget: never block session setup on the OS dialog.

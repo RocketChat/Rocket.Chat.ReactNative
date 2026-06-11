@@ -364,6 +364,7 @@ class MediaSessionInstance {
 		mediaSessionStore.dispose();
 		this.instance = null;
 		pendingHangups.clear();
+		this.answeringCallIds.clear();
 		useCallStore.getState().reset();
 	}
 }
