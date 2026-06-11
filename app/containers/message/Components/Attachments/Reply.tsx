@@ -1,5 +1,5 @@
 import { dequal } from 'dequal';
-import React, { useContext, useState } from 'react';
+import { useContext, useState, memo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Image } from 'expo-image';
 
@@ -100,7 +100,7 @@ interface IMessageReply {
 	showAttachment?: (file: IAttachment) => void;
 }
 
-const Title = React.memo(
+const Title = memo(
 	({ attachment, timeFormat, theme }: { attachment: IAttachment; timeFormat?: string; theme: TSupportedThemes }) => {
 		'use memo';
 
@@ -119,7 +119,7 @@ const Title = React.memo(
 	}
 );
 
-const Description = React.memo(
+const Description = memo(
 	({ attachment, getCustomEmoji }: { attachment: IAttachment; getCustomEmoji: TGetCustomEmoji }) => {
 		'use memo';
 
@@ -156,7 +156,7 @@ const Description = React.memo(
 	}
 );
 
-const UrlImage = React.memo(
+const UrlImage = memo(
 	({ image }: { image?: string }) => {
 		'use memo';
 
@@ -172,7 +172,7 @@ const UrlImage = React.memo(
 	(prevProps, nextProps) => prevProps.image === nextProps.image
 );
 
-const Fields = React.memo(
+const Fields = memo(
 	({
 		attachment,
 		theme,
@@ -205,7 +205,7 @@ const Fields = React.memo(
 		dequal(prevProps.attachment.fields, nextProps.attachment.fields) && prevProps.theme === nextProps.theme
 );
 
-const Reply = React.memo(
+const Reply = memo(
 	({ attachment, timeFormat, getCustomEmoji, msg, showAttachment }: IMessageReply) => {
 		'use memo';
 

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext, memo, type FC } from 'react';
 import { dequal } from 'dequal';
 import { View } from 'react-native';
 
@@ -13,7 +13,7 @@ import { type IMessageAttachments } from '../../interfaces';
 import { getMessageFromAttachment } from '../../utils';
 import { isContentAttachment } from './utils';
 
-const Attachments: React.FC<IMessageAttachments> = React.memo(
+const Attachments: FC<IMessageAttachments> = memo(
 	({ attachments, timeFormat, showAttachment, getCustomEmoji, author }: IMessageAttachments) => {
 		'use memo';
 

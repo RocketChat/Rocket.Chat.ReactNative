@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { type ReactElement, useEffect, useState } from 'react';
 
 import * as List from '../../../containers/List';
 import { useVideoConf } from '../../../lib/hooks/useVideoConf';
@@ -15,7 +15,7 @@ export default function CallSection({
 	room: TSubscriptionModel;
 	disabled: boolean;
 	itsMe?: boolean;
-}): React.ReactElement | null {
+}): ReactElement | null {
 	const { callEnabled, showInitCallActionSheet, disabledTooltip } = useVideoConf(room.rid);
 	const { openNewMediaCall, hasMediaCallPermission, isInActiveCall } = useNewMediaCall(room.rid);
 	const isInActiveVoipCall = useIsInActiveVoipCall();

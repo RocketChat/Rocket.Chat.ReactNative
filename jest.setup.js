@@ -1,4 +1,3 @@
-import React from 'react';
 import mockClipboard from '@react-native-clipboard/clipboard/jest/clipboard-mock.js';
 import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
 import { Image } from 'expo-image';
@@ -56,9 +55,9 @@ jest.mock('expo-haptics', () => ({
 }));
 
 jest.mock('react-native-gesture-handler', () => {
-	const React = require('react');
+	const { forwardRef } = require('react');
 	const { View } = require('react-native');
-	const GestureHandlerRootView = React.forwardRef(({ children, ...props }, ref) => (
+	const GestureHandlerRootView = forwardRef(({ children, ...props }, ref) => (
 		<View ref={ref} {...props}>
 			{children}
 		</View>
@@ -287,10 +286,10 @@ jest.mock('expo-device', () => ({
 }));
 
 jest.mock('@lodev09/react-native-true-sheet', () => {
-	const React = require('react');
+	const { forwardRef, useImperativeHandle } = require('react');
 	const { View } = require('react-native');
-	const TrueSheet = React.forwardRef((props, ref) => {
-		React.useImperativeHandle(ref, () => ({
+	const TrueSheet = forwardRef((props, ref) => {
+		useImperativeHandle(ref, () => ({
 			present: () => Promise.resolve(),
 			dismiss: () => Promise.resolve(),
 			resize: () => Promise.resolve()
@@ -321,9 +320,9 @@ jest.mock('./app/lib/methods/helpers/externalInput', () => ({
 }));
 
 jest.mock('react-native-webview', () => {
-	const React = require('react');
+	const { forwardRef } = require('react');
 	const { View } = require('react-native');
-	const WebView = React.forwardRef(() => <View />);
+	const WebView = forwardRef(() => <View />);
 	WebView.defaultProps = {};
 	return { WebView };
 });

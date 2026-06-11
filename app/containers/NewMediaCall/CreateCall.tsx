@@ -1,4 +1,3 @@
-import React from 'react';
 import { Pressable, StyleSheet, Text } from 'react-native';
 
 import I18n from '../../i18n';

@@ -9,9 +9,9 @@ jest.mock('../../lib/database', () => ({
 }));
 
 jest.mock('../../containers/MessageComposer', () => {
-	const React = require('react');
+	const { forwardRef } = require('react');
 
-	const MessageComposerContainer = React.forwardRef(({ children }: { children: ReactNode }, _ref: unknown) => children);
+	const MessageComposerContainer = forwardRef(({ children }: { children: ReactNode }, _ref: unknown) => children);
 	MessageComposerContainer.displayName = 'MessageComposerContainer';
 
 	return {
