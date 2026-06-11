@@ -1,0 +1,12 @@
+diff --git a/node_modules/react-native-owl/dist/utils/adb.js b/node_modules/react-native-owl/dist/utils/adb.js
+--- a/node_modules/react-native-owl/dist/utils/adb.js
++++ b/node_modules/react-native-owl/dist/utils/adb.js
+@@ -94,7 +94,7 @@
+             switch (_b.label) {
+                 case 0:
+                     stdio = debug ? 'inherit' : 'ignore';
+-                    command = "adb shell monkey -p \"" + packageName + "\" -c android.intent.category.LAUNCHER 1";
++                    command = "adb shell monkey -p \"" + packageName + "\" --pct-syskeys 0 -c android.intent.category.LAUNCHER 1";
+                     return [4 /*yield*/, execa_1.default.command(command, { stdio: stdio })];
+                 case 1:
+                     _b.sent();

@@ -1,0 +1,67 @@
+name: Visual Regression Build iOS
+
+# Reusable: builds the Owl iOS app ONCE and uploads it as an artifact. Every
+# iOS run leg (iPhone 16 Pro, iPhone SE) downloads and reuses this single build
+# — the .app is device-agnostic, so there is no need to rebuild per device.
+
+on:
+  workflow_call:
+    outputs:
+      artifact:
+        description: Name of the uploaded Owl iOS app artifact
+        value: owl-app-ios
+
+jobs:
+  build:
+    runs-on: macos-26
+    timeout-minutes: 60
+    env:
+      USE_OWL: true
+      RUNNING_E2E_TESTS: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Checkout and Setup Node
+        uses: ./.github/actions/setup-node
+
+      - name: Set up Xcode
+        uses: maxim-lobanov/setup-xcode@ed7a3b1fda3918c0306d1b724322adc0b8cc0a90 # v1.7.0
+        with:
+          xcode-version: '26.2.0'
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@7372622e62b60b3cb750dcd2b9e32c247ffec26a # v1.302.0
+        with:
+          ruby-version: 2.7.7
+          bundler-cache: true
+
+      - name: Cache CocoaPods and derived data
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: |
+            ios/Pods
+            ~/Library/Caches/CocoaPods
+            ~/.cocoapods/repos
+            ~/Library/Developer/Xcode/DerivedData
+          key: visual-regression-ios-${{ runner.os }}-${{ hashFiles('ios/Podfile.lock', 'ios/Podfile') }}
+          restore-keys: |
+            visual-regression-ios-${{ runner.os }}-
+
+      - name: Install CocoaPods
+        run: pnpm pod-install
+
+      - name: Build Owl app
+        run: pnpm owl:build:ios
+
+      # owl-build.sh derives data to ios/build and copies the product to
+      # RocketChat.app — the exact name+path `owl test` installs from on the run
+      # leg (scheme "RocketChat", Release-iphonesimulator).
+      - name: Upload Owl iOS app
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: owl-app-ios
+          path: ios/build/Build/Products/Release-iphonesimulator/RocketChat.app
+          retention-days: 1
+          if-no-files-found: error

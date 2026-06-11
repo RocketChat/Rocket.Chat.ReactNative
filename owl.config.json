@@ -8,7 +8,7 @@
 		"quiet": true
 	},
 	"android": {
-		"packageName": "chat.rocket.reactnative",
+		"packageName": "chat.rocket.android",
 		"buildType": "Release",
 		"quiet": true
 	},

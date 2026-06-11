@@ -9,6 +9,7 @@ jest.setTimeout(180000);
 // baseline filename is unique (all iOS baselines share .owl/baseline/ios).
 const variant = process.env.OWL_VARIANT || 'local';
 const screenshotName = (name: string) => `${variant}-${name}`;
+const isLandscape = variant.includes('landscape');
 
 const wait = (ms: number) => new Promise<void>(resolve => setTimeout(resolve, ms));
 
@@ -18,6 +19,7 @@ const wait = (ms: number) => new Promise<void>(resolve => setTimeout(resolve, ms
 const SCREEN_SETTLE_DELAY = 6000;
 const SHEET_PRESENT_DELAY = 6000;
 const APP_READY_DELAY = 2000;
+const ORIENTATION_DELAY = 3000;
 
 // Each case opens the real screen, then its real action sheet. The trigger lives
 // either in the navigation header (rooms list, directory) or the screen body
@@ -35,10 +37,16 @@ const CASES = [
 
 describe('Action sheet safe-area spacing', () => {
 	beforeEach(async () => {
-		// Reload returns to the launcher with the previous sheet dismissed. Device
-		// orientation is OS-level and persists across reloads.
+		// Reload returns to the launcher with the previous sheet dismissed and the
+		// app back in its default portrait orientation.
 		await reload();
 		await wait(APP_READY_DELAY);
+
+		// Orientation is requested from JS on the launcher (works in CI/local with
+		// no device rotation). Landscape variants rotate before navigating so the
+		// pushed screen + native action sheet render in true landscape.
+		await press(isLandscape ? 'owl-set-landscape' : 'owl-set-portrait');
+		await wait(ORIENTATION_DELAY);
 	});
 
 	CASES.forEach(({ name, nav, trigger }) => {

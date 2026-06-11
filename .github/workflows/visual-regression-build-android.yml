@@ -1,0 +1,90 @@
+name: Visual Regression Build Android
+
+# Reusable: builds the Owl Android APK ONCE and uploads it as an artifact. The
+# Android run leg downloads and reuses it. Owl builds Release (so USE_OWL is
+# inlined) and signs with the local debug key via the `isOwlBuild` fallback in
+# android/app/build.gradle — no production signing secrets are needed.
+
+on:
+  workflow_call:
+    outputs:
+      artifact:
+        description: Name of the uploaded Owl Android APK artifact
+        value: owl-app-android
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      USE_OWL: true
+      RUNNING_E2E_TESTS: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Checkout and Setup Node
+        uses: ./.github/actions/setup-node
+
+      - name: Set up JDK
+        uses: actions/setup-java@c1e323688fd81a25caa38c78aa6df2d33d3e20d9 # v4.8.0
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407 # v3.2.2
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@ed408507eac070d1f99cc633dbcf757c94c7933a # v4.4.3
+        with:
+          gradle-version: wrapper
+
+      - name: Cache Gradle dependencies
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: |
+            ~/.gradle
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            gradle-${{ runner.os }}-
+
+      # build.gradle's isOwlBuild fallback signs the Release APK with the local
+      # Android debug key; create it if the runner doesn't have one yet.
+      - name: Ensure Android debug keystore
+        run: |
+          set -eux
+          mkdir -p "$HOME/.android"
+          if [ ! -f "$HOME/.android/debug.keystore" ]; then
+            keytool -genkeypair -v \
+              -keystore "$HOME/.android/debug.keystore" \
+              -storepass android -keypass android \
+              -alias androiddebugkey \
+              -keyalg RSA -keysize 2048 -validity 10000 \
+              -dname "CN=Android Debug,O=Android,C=US"
+          fi
+
+      - name: Set gradle.properties
+        working-directory: android
+        run: |
+          echo "" > ./gradle.properties
+          echo -e "org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g -Dfile.encoding=UTF-8" >> ./gradle.properties
+          echo -e "android.useAndroidX=true" >> ./gradle.properties
+          echo -e "android.enableJetifier=true" >> ./gradle.properties
+          echo -e "reactNativeArchitectures=x86_64" >> ./gradle.properties
+          echo -e "APPLICATION_ID=chat.rocket.android" >> ./gradle.properties
+          echo -e "newArchEnabled=true" >> ./gradle.properties
+          echo -e "hermesEnabled=true" >> ./gradle.properties
+          echo -e "VERSIONCODE=999999" >> ./gradle.properties
+
+      - name: Build Owl APK
+        run: pnpm owl:build:android
+
+      - name: Upload Owl Android APK
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: owl-app-android
+          path: android/app/build/outputs/apk/release/app-release.apk
+          retention-days: 1
+          if-no-files-found: error

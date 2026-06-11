@@ -104,6 +104,17 @@ android {
                 storePassword KEYSTORE_PASSWORD
                 keyAlias KEY_ALIAS
                 keyPassword KEY_PASSWORD
+            } else if (project.hasProperty('isOwlBuild')) {
+                // Visual-regression (Owl) builds must be Release so `USE_OWL` is
+                // inlined into the JS bundle, but they are never shipped. Without a
+                // release keystore the APK would be unsigned and impossible to
+                // install on an emulator, so sign it with the local Android debug
+                // key. Gated on `isOwlBuild` (passed by react-native-owl) so real
+                // release builds are unaffected.
+                storeFile file("${System.properties['user.home']}/.android/debug.keystore")
+                storePassword 'android'
+                keyAlias 'androiddebugkey'
+                keyPassword 'android'
             }
         }
     }

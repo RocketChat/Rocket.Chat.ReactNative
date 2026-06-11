@@ -2,6 +2,7 @@ import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import * as ScreenOrientation from 'expo-screen-orientation';
 
 import { colors } from '../lib/constants/colors';
 import DirectoryView from '../views/DirectoryView';
@@ -42,10 +43,23 @@ const styles = StyleSheet.create({
 	}
 });
 
+// Orientation is driven from JS (not by rotating the device) so it works in CI
+// and locally without Accessibility/synthetic input. LANDSCAPE_LEFT is fixed for
+// determinism. iOS Info.plist already allows landscape and the Android
+// MainActivity handles orientation changes, so no orientation boundaries change.
+const setLandscape = () => ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT);
+const setPortrait = () => ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
+
 const Launcher = () => {
 	const navigation = useNavigation<any>();
 	return (
 		<ScrollView contentContainerStyle={styles.launcher} testID='owl-launcher'>
+			<Pressable testID='owl-set-portrait' style={styles.button} onPress={setPortrait}>
+				<Text style={styles.buttonText}>Portrait</Text>
+			</Pressable>
+			<Pressable testID='owl-set-landscape' style={styles.button} onPress={setLandscape}>
+				<Text style={styles.buttonText}>Landscape</Text>
+			</Pressable>
 			{LINKS.map(link => (
 				<Pressable key={link.route} testID={link.testID} style={styles.button} onPress={() => navigation.navigate(link.route)}>
 					<Text style={styles.buttonText}>{link.label}</Text>
