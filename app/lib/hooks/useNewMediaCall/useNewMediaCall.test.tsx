@@ -1,5 +1,5 @@
 import { act, renderHook } from '@testing-library/react-native';
-import React from 'react';
+import { isValidElement } from 'react';
 
 import { NewMediaCall } from '../../../containers/NewMediaCall';
 import { useNewMediaCall } from './useNewMediaCall';
@@ -84,7 +84,7 @@ describe('useNewMediaCall', () => {
 	const expectNewMediaCallActionSheet = (expectedHugContent = false) => {
 		expect(mockShowActionSheetRef).toHaveBeenCalledTimes(1);
 		const [actionSheetArgs] = mockShowActionSheetRef.mock.calls[0];
-		expect(React.isValidElement(actionSheetArgs.children)).toBe(true);
+		expect(isValidElement(actionSheetArgs.children)).toBe(true);
 		expect(actionSheetArgs.children.type).toBe(NewMediaCall);
 		expect(actionSheetArgs.hugContent).toBe(expectedHugContent);
 	};
@@ -293,7 +293,7 @@ describe('useNewMediaCall', () => {
 		// Re-required hook uses a fresh NewMediaCall mock ref; only assert hugContent and element shape.
 		expect(mockShowActionSheetRef).toHaveBeenCalledTimes(1);
 		const [actionSheetArgs] = mockShowActionSheetRef.mock.calls[0];
-		expect(React.isValidElement(actionSheetArgs.children)).toBe(true);
+		expect(isValidElement(actionSheetArgs.children)).toBe(true);
 		expect(actionSheetArgs.hugContent).toBe(true);
 	});
 

@@ -11,12 +11,12 @@
 // comment on the jest.mock below). Everything between that mock and the UI —
 // MediaSessionInstance, useCallStore, NewMediaCall, CallView — runs as real code.
 
-import React from 'react';
 import { act, fireEvent, render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import RNCallKeep from 'react-native-callkeep';
 import InCallManager from 'react-native-incall-manager';
 import type { IClientMediaCall } from '@rocket.chat/media-signaling';
+import { type ReactNode } from 'react';
 
 import { NewMediaCall } from './NewMediaCall';
 import CallView from '../../views/CallView';
@@ -327,7 +327,7 @@ function setSelectedPeer(peer: TPeerItem): void {
 	usePeerAutocompleteStore.setState({ selectedPeer: peer, options: [], filter: '' });
 }
 
-const Wrapper = ({ children }: { children: React.ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
+const Wrapper = ({ children }: { children: ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
 
 // Flushes the microtask queue (answerCall uses async handlers).
 const flushMicrotasks = async () => {

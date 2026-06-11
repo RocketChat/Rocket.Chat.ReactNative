@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect } from 'react';
+import { type ReactElement, useEffect } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
@@ -98,7 +98,7 @@ const Status = ({
 	);
 };
 
-const StatusView = (): React.ReactElement => {
+const StatusView = (): ReactElement => {
 	const validationSchema = yup.object().shape({
 		statusText: yup
 			.string()

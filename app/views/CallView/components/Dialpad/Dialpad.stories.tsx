@@ -1,5 +1,5 @@
-import React from 'react';
 import { View, StyleSheet } from 'react-native';
+import type { ComponentType, ReactNode } from 'react';
 
 import Dialpad from './Dialpad';
 import { useCallStore } from '../../../../lib/services/voip/useCallStore';
@@ -19,13 +19,13 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Wrapper = ({ children }: { children: React.ReactNode }) => <View style={styles.container}>{children}</View>;
+const Wrapper = ({ children }: { children: ReactNode }) => <View style={styles.container}>{children}</View>;
 
 // Provides a ResponsiveLayoutContext with a fixed width so useCallLayoutMode
 // returns a deterministic layoutMode in both Jest and the Storybook UI.
 // width=350 → narrow (< MIN_WIDTH_MASTER_DETAIL_LAYOUT=700)
 // width=800 → wide  (≥ MIN_WIDTH_MASTER_DETAIL_LAYOUT=700)
-const LayoutWrapper = ({ width, children }: { width: number; children: React.ReactNode }) => (
+const LayoutWrapper = ({ width, children }: { width: number; children: ReactNode }) => (
 	<ResponsiveLayoutContext.Provider
 		value={{
 			fontScale: 1,
@@ -64,7 +64,7 @@ export default {
 	title: 'CallView/Dialpad',
 	component: Dialpad,
 	decorators: [
-		(Story: React.ComponentType) => {
+		(Story: ComponentType) => {
 			setStoreState();
 			return (
 				<Wrapper>
@@ -90,9 +90,7 @@ export const WithValue = () => {
 	);
 };
 
-const LandscapeWrapper = ({ children }: { children: React.ReactNode }) => (
-	<View style={styles.landscapeContainer}>{children}</View>
-);
+const LandscapeWrapper = ({ children }: { children: ReactNode }) => <View style={styles.landscapeContainer}>{children}</View>;
 
 export const TabletLandscape = () => (
 	<LayoutWrapper width={800}>

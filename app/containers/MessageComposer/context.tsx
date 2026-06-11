@@ -1,4 +1,4 @@
-import React, { createContext, type ReactElement, useContext, useState } from 'react';
+import { createContext, type ReactElement, useContext, useState } from 'react';
 import { createStore, useStore } from 'zustand';
 
 import { type IEmoji, type IShareAttachment } from '../../definitions';
