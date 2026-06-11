@@ -492,8 +492,7 @@ class VoipNotification(private val context: Context) {
          * Unlike [startListeningForCallEnd] (used by the normal incoming-call path), this
          * does NOT subscribe to `stream-notify-user` or install a collection-message
          * handler, because no incoming-call UI was ever shown and there is nothing
-         * to dismiss if the caller hangs up or another device answers. Shared by the
-         * busy and microphone-denied reject paths; callers log their own distinct reason.
+         * to dismiss if the caller hangs up or another device answers.
          */
         private fun rejectIncomingCallSilently(context: Context, payload: VoipPayload) {
             cancelTimeout(payload.callId)
@@ -519,16 +518,16 @@ class VoipNotification(private val context: Context) {
         }
 
         /**
-         * Rejects an incoming call at the push layer because the OS microphone permission
-         * (`RECORD_AUDIO`) is not granted — the call could never carry audio, so the device
-         * is never rung (no Telecom registration, no notification). See adr/0002.
+         * Ignores an incoming call at the push layer because the OS microphone permission
+         * (`RECORD_AUDIO`) is not granted — the call could never carry audio here, so the device
+         * is never rung (no Telecom registration, no notification). Deliberately sends nothing
+         * to the server so the call keeps ringing on the user's other devices. See adr/0002.
          */
         @JvmStatic
-        fun rejectNoMicPermissionCall(context: Context, payload: VoipPayload) {
+        fun ignoreNoMicPermissionCall(payload: VoipPayload) {
             if (BuildConfig.DEBUG) {
-                Log.d(TAG, "Rejected incoming call ${payload.callId} — microphone permission denied")
+                Log.d(TAG, "Ignoring incoming call ${payload.callId} — microphone permission denied")
             }
-            rejectIncomingCallSilently(context, payload)
         }
 
         // -- Native DDP Listener (Call End Detection) --
@@ -705,7 +704,7 @@ class VoipNotification(private val context: Context) {
                             }
                         }
                     }
-                    VoipIncomingPushAction.REJECT_NO_PERMISSION -> rejectNoMicPermissionCall(context, voipPayload)
+                    VoipIncomingPushAction.IGNORE_NO_PERMISSION -> ignoreNoMicPermissionCall(voipPayload)
                     VoipIncomingPushAction.REJECT_BUSY -> rejectBusyCall(context, voipPayload)
                     VoipIncomingPushAction.SHOW_INCOMING -> showIncomingCall(voipPayload)
                 }

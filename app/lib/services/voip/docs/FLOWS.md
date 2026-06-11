@@ -110,7 +110,7 @@ _Last verified: cd2faa00a_
 
 The signaling session sees the call first via DDP. Native still owns the system call UI and still issues the REST accept, but JS is alive throughout, so the warm path converges quickly. `answerCall` is idempotent; the DDP `notification/accepted` and the REST replay race harmlessly.
 
-At push receipt, native first runs the **Incoming-push gate**: if the OS microphone permission is denied it declines the call (**Reject-without-ringing**) before any ringing UI — truly silent on Android (REST `reject`, no Telecom, no notification), a sub-second CallKit flash then `reject` on iOS — and never hands the call to JS. Only if granted does it report the call and ring. Before binding, `answerCall` then runs a **check-only** microphone gate as a backstop — it never prompts (the device may be locked/backgrounded) and rejects silently if the mic was revoked since push receipt. The permission is pre-acquired at init (flow 1). See `adr/0002-reject-incoming-at-push-layer-when-mic-denied.md`.
+At push receipt, native first runs the **Incoming-push gate**: if the OS microphone permission is denied it suppresses the call locally (**Suppress-without-ringing**) before any ringing UI — truly silent on Android (no Telecom, no notification), a sub-second CallKit flash on iOS — and never hands the call to JS. Nothing is signalled to the server, so the call keeps ringing on the user's other devices. Only if granted does it report the call and ring. Before binding, `answerCall` then runs a **check-only** microphone gate as a backstop — it never prompts (the device may be locked/backgrounded) and ends the call silently if the mic was revoked since push receipt (by then native has already accepted, so the call cannot return to other devices). The permission is pre-acquired at init (flow 1). See `adr/0002-suppress-incoming-at-push-layer-when-mic-denied.md`.
 
 ```mermaid
 sequenceDiagram
@@ -128,8 +128,7 @@ sequenceDiagram
     Server->>Native: VoIP push (PushKit / FCM data)
     Note over Native: Incoming-push gate — read OS microphone permission
     alt microphone denied
-        Native->>Server: REST reject (Reject-without-ringing)
-        Note over Native,OS: Android: nothing shown. iOS: report placeholder + end (sub-second flash). No JS handoff.
+        Note over Native,OS: Suppress-without-ringing — no server signal, other devices keep ringing. Android: nothing shown. iOS: report placeholder + end (sub-second flash). No JS handoff.
     else microphone granted
         Native->>OS: report incoming call
         OS->>User: ringtone, system call UI
@@ -139,7 +138,7 @@ sequenceDiagram
 
     User->>OS: Accept
     OS->>Native: accept action
-    Note over JS: Check-only mic gate (no prompt). Not granted → reject the call silently.
+    Note over JS: Check-only mic gate (no prompt). Not granted → end the call silently.
     Native->>Server: REST media-calls.answer (per-call DDP)
     Server-->>Native: ok
     Native->>Events: VoipAcceptSucceeded

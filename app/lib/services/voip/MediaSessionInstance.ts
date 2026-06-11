@@ -188,7 +188,8 @@ class MediaSessionInstance {
 			if (mainCall && mainCall.callId === callId) {
 				// Check-only gate — never prompt. The mic is pre-acquired at session init; at answer
 				// time the app may be locked/backgrounded where a dialog is impossible. Not granted →
-				// reject the call silently (an alert would be invisible/confusing on the lock screen).
+				// end the call silently (an alert would be invisible/confusing on the lock screen).
+				// Native already sent the REST accept, so the call cannot return to other devices.
 				const granted = await hasVoipCallPermission();
 				if (!granted) {
 					this.endCall(callId);

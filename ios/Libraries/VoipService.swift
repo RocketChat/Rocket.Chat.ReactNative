@@ -574,17 +574,6 @@ public final class VoipService: NSObject {
         #endif
     }
 
-    /// Public entry point for the incoming-push microphone gate (see ADR-0002): declines a call
-    /// over REST `reject` because the OS microphone permission is denied. Unlike `rejectBusyCall`
-    /// this does NOT touch CallKit — the PushKit handler reports a placeholder and ends it (PushKit
-    /// mandates a report) — and nothing was stashed for JS because `prepareIncomingCall` is skipped.
-    public static func rejectNoMicPermissionCall(_ payload: VoipPayload) {
-        #if DEBUG
-        print("[\(TAG)] Rejected incoming call \(payload.callId) — microphone permission denied")
-        #endif
-        reject(payload: payload)
-    }
-
     private static func reject(payload: VoipPayload) {
         guard let api = API(server: payload.host) else {
             #if DEBUG

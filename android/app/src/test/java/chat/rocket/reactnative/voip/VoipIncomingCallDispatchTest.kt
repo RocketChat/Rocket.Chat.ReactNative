@@ -38,9 +38,9 @@ class VoipIncomingCallDispatchTest {
     }
 
     @Test
-    fun `valid push without microphone permission rejects for no permission`() {
+    fun `valid push without microphone permission is ignored`() {
         assertEquals(
-            VoipIncomingPushAction.REJECT_NO_PERMISSION,
+            VoipIncomingPushAction.IGNORE_NO_PERMISSION,
             decideIncomingVoipPushAction(
                 isValidForIncomingHandling = true,
                 hasActiveCall = false,
@@ -52,7 +52,7 @@ class VoipIncomingCallDispatchTest {
     @Test
     fun `microphone denied takes precedence over busy`() {
         assertEquals(
-            VoipIncomingPushAction.REJECT_NO_PERMISSION,
+            VoipIncomingPushAction.IGNORE_NO_PERMISSION,
             decideIncomingVoipPushAction(
                 isValidForIncomingHandling = true,
                 hasActiveCall = true,
