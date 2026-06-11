@@ -1,5 +1,5 @@
-import React from 'react';
 import { View, StyleSheet } from 'react-native';
+import { type ComponentType } from 'react';
 
 import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';
 import { FilterHeader } from './FilterHeader';
@@ -22,7 +22,7 @@ export default {
 	title: 'NewMediaCall/FilterHeader',
 	component: FilterHeader,
 	decorators: [
-		(Story: React.ComponentType) => (
+		(Story: ComponentType) => (
 			<View style={styles.root}>
 				<Story />
 			</View>

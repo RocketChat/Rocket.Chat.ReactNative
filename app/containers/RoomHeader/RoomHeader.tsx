@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo, type ReactElement } from 'react';
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { KeyboardFocusView } from 'react-native-external-keyboard';
@@ -57,7 +57,7 @@ type TRoomHeaderSubTitle = {
 	usersTyping: IUsersTyping;
 	subtitle?: string;
 	statusExpiresAt?: string;
-	renderFunc?: () => React.ReactElement;
+	renderFunc?: () => ReactElement;
 	scale: number;
 };
 
@@ -94,7 +94,7 @@ interface IRoomHeader {
 
 type IRoomHeaderProps = IRoomHeader;
 
-const SubTitle = React.memo(({ usersTyping, subtitle, statusExpiresAt, renderFunc, scale }: TRoomHeaderSubTitle) => {
+const SubTitle = memo(({ usersTyping, subtitle, statusExpiresAt, renderFunc, scale }: TRoomHeaderSubTitle) => {
 	const { colors } = useTheme();
 	const fontSize = getSubTitleSize(scale);
 	// typing
@@ -135,7 +135,7 @@ const SubTitle = React.memo(({ usersTyping, subtitle, statusExpiresAt, renderFun
 	return null;
 });
 
-const HeaderTitle = React.memo(({ title, tmid, prid, scale, testID }: TRoomHeaderHeaderTitle) => {
+const HeaderTitle = memo(({ title, tmid, prid, scale, testID }: TRoomHeaderHeaderTitle) => {
 	const { colors } = useTheme();
 	const { isLargeFontScale } = useResponsiveLayout();
 
