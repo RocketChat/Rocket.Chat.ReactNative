@@ -1,6 +1,6 @@
-import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
+import { type ReactNode } from 'react';
 
 import CallerInfo from './CallerInfo';
 import { useCallStore } from '../../../lib/services/voip/useCallStore';
@@ -24,7 +24,7 @@ const setStoreState = (contact: { displayName?: string; username?: string; sipEx
 	});
 };
 
-const Wrapper = ({ children }: { children: React.ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
+const Wrapper = ({ children }: { children: ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
 
 describe('CallerInfo', () => {
 	beforeEach(() => {

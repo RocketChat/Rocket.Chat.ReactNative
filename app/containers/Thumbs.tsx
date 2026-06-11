@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 import { FlatList, Image, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const ThumbContent = React.memo(({ path, mime }: { path: string; mime?: string }) => {
+const ThumbContent = memo(({ path, mime }: { path: string; mime?: string }) => {
 	const { colors } = useTheme();
 
 	if (mime?.startsWith('image/')) {

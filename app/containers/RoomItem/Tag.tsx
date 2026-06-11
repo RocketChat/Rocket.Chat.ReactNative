@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 import { Text, View } from 'react-native';
 
 import { themes } from '../../lib/constants/colors';
@@ -10,7 +10,7 @@ interface ITag {
 	testID?: string;
 }
 
-const Tag = React.memo(({ name, testID }: ITag) => {
+const Tag = memo(({ name, testID }: ITag) => {
 	const { theme } = useTheme();
 
 	return (

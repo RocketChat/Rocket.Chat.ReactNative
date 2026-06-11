@@ -1,4 +1,4 @@
-import React from 'react';
+import { type ReactElement } from 'react';
 import { View } from 'react-native';
 import { type Code as CodeProps } from '@rocket.chat/message-parser';
 
@@ -10,7 +10,7 @@ interface ICodeProps {
 	value: CodeProps['value'];
 }
 
-const Code = ({ value }: ICodeProps): React.ReactElement => {
+const Code = ({ value }: ICodeProps): ReactElement => {
 	const { colors } = useTheme();
 
 	return (

@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react';
+import { useLayoutEffect, type ReactElement } from 'react';
 import { FlatList, type ListRenderItem } from 'react-native';
 import { shallowEqual } from 'react-redux';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -33,7 +33,7 @@ interface IDirectoryViewProps {
 	>;
 }
 
-const DirectoryView = ({ navigation }: IDirectoryViewProps): React.ReactElement => {
+const DirectoryView = ({ navigation }: IDirectoryViewProps): ReactElement => {
 	const { colors } = useTheme();
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 

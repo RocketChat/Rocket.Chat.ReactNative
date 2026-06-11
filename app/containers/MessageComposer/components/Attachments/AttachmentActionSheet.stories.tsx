@@ -1,4 +1,4 @@
-import React from 'react';
+import { type ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { AttachmentActionSheet } from './AttachmentActionSheet';
@@ -40,7 +40,7 @@ const fileAttachment: IShareAttachment = {
 	path: 'file:///tmp/requirements.pdf'
 };
 
-const Wrapper = ({ children }: { children: React.ReactNode }) => <View style={styles.container}>{children}</View>;
+const Wrapper = ({ children }: { children: ReactNode }) => <View style={styles.container}>{children}</View>;
 
 export default {
 	title: 'MessageComposer/AttachmentActionSheet',

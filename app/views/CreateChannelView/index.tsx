@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect } from 'react';
+import { useCallback, useEffect, useLayoutEffect } from 'react';
 import { shallowEqual, useDispatch } from 'react-redux';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';

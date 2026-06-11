@@ -2,11 +2,11 @@
 import { Q } from '@nozbe/watermelondb';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import isEmpty from 'lodash/isEmpty';
-import React from 'react';
 import { Share, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { type Observable, type Subscription } from 'rxjs';
 import { type CompositeNavigationProp } from '@react-navigation/native';
+import { Component } from 'react';
 
 import { leaveRoom } from '../../actions/room';
 import Avatar from '../../containers/Avatar';
@@ -125,7 +125,7 @@ interface IRoomActionsViewState {
 	loading: boolean;
 }
 
-class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomActionsViewState> {
+class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewState> {
 	private mounted: boolean;
 	private rid: string;
 	private t: string;

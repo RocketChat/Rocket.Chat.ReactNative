@@ -1,4 +1,4 @@
-import React from 'react';
+import { forwardRef, type ReactNode } from 'react';
 import { RectButton, type RectButtonProps } from 'react-native-gesture-handler';
 import {
 	View,
@@ -13,7 +13,7 @@ import { withKeyboardFocus } from 'react-native-external-keyboard';
 import { useTheme } from '../theme';
 
 export interface ITouchProps extends RectButtonProps {
-	children: React.ReactNode;
+	children: ReactNode;
 	accessible?: boolean;
 	accessibilityLabel?: string;
 	accessibilityHint?: string;
@@ -26,7 +26,7 @@ export interface ITouchProps extends RectButtonProps {
 
 const KeyboardRectButton = withKeyboardFocus(RectButton);
 
-const Touch = React.forwardRef<any, ITouchProps>(
+const Touch = forwardRef<any, ITouchProps>(
 	(
 		{
 			children,
