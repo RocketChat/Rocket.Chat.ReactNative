@@ -191,7 +191,11 @@ const Header = ({
 	// keyboard); regular touch users shouldn't have focus yanked onto the header on room open.
 	const autoFocusHeader = useIsAccessibilityNavigationEnabled();
 	const subtitleAccessibilityLabel = tmid ? parentTitle : subtitle;
-	const accessibilityLabel = `${statusAccessibilityLabel} ${title} ${subtitleAccessibilityLabel || ''}.`;
+	const expiryAccessibilityLabel = statusExpiresAt ? formatStatusExpiry(statusExpiresAt) : undefined;
+	const fullSubtitleAccessibilityLabel = expiryAccessibilityLabel
+		? `${subtitleAccessibilityLabel}, ${expiryAccessibilityLabel}`
+		: subtitleAccessibilityLabel;
+	const accessibilityLabel = `${statusAccessibilityLabel} ${title} ${fullSubtitleAccessibilityLabel || ''}.`;
 
 	if (!portrait && !tmid && !isMasterDetail) {
 		if (usersTyping.length > 0 || subtitle) {

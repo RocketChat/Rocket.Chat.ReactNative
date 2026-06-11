@@ -79,7 +79,13 @@ const RoomInfoViewTitle = ({
 				)}
 				{!!formattedExpiry && (
 					<View testID='room-info-view-status-expiry' style={styles.expiryContainer}>
-						<CustomIcon name='clock' size={14} color={colors.fontSecondaryInfo} />
+						<CustomIcon
+							name='clock'
+							size={14}
+							color={colors.fontSecondaryInfo}
+							accessibilityElementsHidden
+							importantForAccessibility='no'
+						/>
 						<Text style={[styles.expiryText, { color: colors.fontSecondaryInfo }]}>{formattedExpiry}</Text>
 					</View>
 				)}

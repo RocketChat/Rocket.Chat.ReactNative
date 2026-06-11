@@ -841,7 +841,13 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 							)}
 							{t === 'd' && !!formattedStatusExpiry && (
 								<View style={styles.statusRow}>
-									<CustomIcon name='clock' size={14} color={themes[theme].fontSecondaryInfo} />
+									<CustomIcon
+										name='clock'
+										size={14}
+										color={themes[theme].fontSecondaryInfo}
+										accessibilityElementsHidden
+										importantForAccessibility='no'
+									/>
 									<Text style={[styles.roomDescription, { color: themes[theme].fontSecondaryInfo }]}>
 										{formattedStatusExpiry}
 									</Text>
