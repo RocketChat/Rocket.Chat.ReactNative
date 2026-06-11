@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
@@ -24,7 +24,7 @@ interface IListHeader {
 	numberOfLines?: number;
 }
 
-const ListHeader = React.memo(({ title, translateTitle = true, numberOfLines }: IListHeader) => {
+const ListHeader = memo(({ title, translateTitle = true, numberOfLines }: IListHeader) => {
 	'use memo';
 
 	const { theme } = useTheme();

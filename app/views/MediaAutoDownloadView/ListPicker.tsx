@@ -1,4 +1,4 @@
-import React from 'react';
+import { Fragment, type ReactElement } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -71,11 +71,11 @@ const ListPicker = ({
 	const insets = useSafeAreaInsets();
 	const option = OPTIONS.find(option => option.value === value) || OPTIONS[2];
 
-	const getOptions = (): React.ReactElement => (
+	const getOptions = (): ReactElement => (
 		<View style={{ backgroundColor: colors.surfaceRoom, marginBottom: insets.bottom }}>
 			<List.Separator />
 			{OPTIONS.map(i => (
-				<React.Fragment key={i.value}>
+				<Fragment key={i.value}>
 					<List.Radio
 						onPress={() => {
 							hideActionSheet();
@@ -87,7 +87,7 @@ const ListPicker = ({
 						testID={`${testID}-${i.value}`}
 					/>
 					<List.Separator />
-				</React.Fragment>
+				</Fragment>
 			))}
 		</View>
 	);

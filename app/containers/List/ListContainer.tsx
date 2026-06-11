@@ -1,4 +1,4 @@
-import React from 'react';
+import { type ReactElement } from 'react';
 import { ScrollView, type ScrollViewProps, StyleSheet } from 'react-native';
 
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
 });
 
 interface IListContainer extends ScrollViewProps {
-	children: (React.ReactElement | null)[] | React.ReactElement | null;
+	children: (ReactElement | null)[] | ReactElement | null;
 	testID?: string;
 }
 const ListContainer = ({ children, ...props }: IListContainer) => {

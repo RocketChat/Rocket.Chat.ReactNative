@@ -1,7 +1,7 @@
-import React from 'react';
 import { Platform } from 'react-native';
 import { fireEvent, render, within } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
+import { type ReactNode } from 'react';
 
 import CallView from '.';
 import { navigateToCallRoom } from '../../lib/services/voip/navigateToCallRoom';
@@ -87,6 +87,7 @@ jest.mock('../../lib/hooks/useResponsiveLayout/useResponsiveLayout', () => {
 	return {
 		...actual,
 		useResponsiveLayout: () => {
+			// eslint-disable-next-line no-restricted-syntax
 			const ctx = React.useContext(actual.ResponsiveLayoutContext);
 			const { width: winWidth, height: winHeight, fontScale: winFontScale } = useWindowDimensions();
 			const width = ctx && ctx.width ? ctx.width : winWidth;
@@ -111,7 +112,7 @@ const mockShowActionSheetRef = jest.fn();
 jest.mock('../../containers/ActionSheet', () => ({
 	showActionSheetRef: (options: any) => mockShowActionSheetRef(options),
 	hideActionSheetRef: jest.fn(),
-	ActionSheetProvider: ({ children }: { children: React.ReactNode }) => children
+	ActionSheetProvider: ({ children }: { children: ReactNode }) => children
 }));
 
 // Helper to create a mock call
@@ -156,7 +157,7 @@ const setStoreState = (overrides: Partial<ReturnType<typeof useCallStore.getStat
 	});
 };
 
-const Wrapper = ({ children }: { children: React.ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
+const Wrapper = ({ children }: { children: ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
 
 describe('CallView/CallView', () => {
 	beforeEach(() => {

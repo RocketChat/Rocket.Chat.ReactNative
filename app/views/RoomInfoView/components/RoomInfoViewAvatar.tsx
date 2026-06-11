@@ -1,4 +1,4 @@
-import React from 'react';
+import { type ReactElement } from 'react';
 
 import { AvatarWithEdit } from '../../../containers/Avatar';
 import { SubscriptionType } from '../../../definitions';
@@ -17,7 +17,9 @@ const RoomInfoViewAvatar = ({
 	username: string;
 	rid?: string;
 	handleEditAvatar: () => void;
-}): React.ReactElement => {
+}): ReactElement => {
+	const { colors } = useTheme();
+
 	const showAvatarEdit = showEdit && type !== SubscriptionType.OMNICHANNEL;
 
 	return (
