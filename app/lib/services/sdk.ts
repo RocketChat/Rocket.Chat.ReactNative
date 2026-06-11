@@ -111,13 +111,7 @@ class Sdk {
 	methodCall(...args: any[]): Promise<any> {
 		return new Promise(async (resolve, reject) => {
 			try {
-				// Only append the TOTP code when a 2FA flow is in progress. Appending an empty
-				// string unconditionally pushes a junk trailing positional arg into every method
-				// call, which breaks methods whose signature grows a typed trailing param
-				// (e.g. loadSurroundingMessages' `showThreadMessages: boolean`).
-				// The code is single-use: consume and clear it so it never leaks into
-				// unrelated later calls (a stale trailing arg breaks typed signatures
-				// and would replay a spent TOTP).
+				// Clear the 2FA code after use — a stale trailing arg breaks typed method signatures
 				const { code } = this;
 				this.code = null;
 				const result = await this.current.methodCall(...args, ...(code ? [code] : []));

@@ -11,10 +11,6 @@ tags:
       visible: '.*Open in.*'
       platform: iOS
     commands:
-      # Anchored regex: the dialog title "Open in 'Rocket.Chat Experimental'?"
-      # also matches `Open` as a substring, so an unanchored selector picks the
-      # title (cold-launch on iOS 26) instead of the button and leaves the
-      # dialog up. ^Open$ targets only the button label.
       - tapOn:
           text: '^Open$'
           optional: true

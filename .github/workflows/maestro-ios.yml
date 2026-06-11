@@ -128,8 +128,7 @@ jobs:
         run: chmod +x .github/scripts/run-maestro.sh
 
       - name: Run Maestro Tests
-        # Between the script's 35m bound and the job's 40m backstop
-        timeout-minutes: 38
+        timeout-minutes: 30
         run: ./.github/scripts/run-maestro.sh ios ${{ inputs.shard }}
 
       - name: Upload Maestro Logs
