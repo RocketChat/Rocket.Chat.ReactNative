@@ -41,11 +41,8 @@ jobs:
     with:
       trigger: develop
 
-  # The single cross-PR writer of the AVD snapshot + SDK package caches. GitHub
-  # scopes PR-written caches to the PR merge ref, so a per-PR seed is invisible
-  # to other PRs; a develop-branch cache IS restorable by every PR. Keys are
-  # branch-independent and identical to maestro-android.yml's restore step, so
-  # PRs read this snapshot read-only. On a miss a PR shard cold-boots instead.
+  # Single writer of the AVD + SDK caches: PR-written caches aren't visible to
+  # other PRs, so develop seeds them and the shards restore read-only.
   seed-android-avd:
     name: Seed Android AVD Cache
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
@@ -71,11 +68,8 @@ jobs:
             ~/.android/adb*
           key: avd-${{ runner.os }}-api34
 
-      # The emulator binary and the api-34 system image are NOT in the AVD cache
-      # above (that only holds the AVD instance under ~/.android/avd). Cache them
-      # separately so PR shards restore them instead of each pulling ~1 GB from
-      # dl.google.com — the concurrent re-downloads trigger the random "Error on
-      # ZipFile unknown archive" failures.
+      # The emulator + system image live outside ~/.android/avd — cache them
+      # separately so shards don't each re-download ~1 GB.
       - name: Cache Android SDK packages (emulator + system image)
         id: sdk-cache
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
@@ -85,9 +79,7 @@ jobs:
             /usr/local/lib/android/sdk/system-images/android-34/google_apis/x86_64
           key: android-sdk-emu-${{ runner.os }}-api34
 
-      # Single serialized, retried download so a corrupt/truncated archive
-      # self-heals. Runs before the snapshot step below so android-emulator-runner's
-      # own sdkmanager install finds the packages already present (a no-op).
+      # Retried install so a corrupt partial download self-heals
       - name: Pre-install Android SDK packages (cache miss only)
         if: steps.sdk-cache.outputs.cache-hit != 'true'
         uses: ./.github/actions/preinstall-android-sdk

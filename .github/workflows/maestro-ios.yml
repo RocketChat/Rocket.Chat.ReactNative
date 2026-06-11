@@ -10,13 +10,8 @@ on:
 jobs:
   ios-test:
     runs-on: macos-26
-    # Coarse backstop just above the in-script 35m bound, so the script's bounded
-    # exit (with its annotation) wins over a blunt job-kill on a wedged shard.
     timeout-minutes: 40
     env:
-      # Pinned alongside the Android workflow so both platforms run the same
-      # Maestro CLI. See cli-2.5.1 release notes for driver improvements.
-      # https://github.com/mobile-dev-inc/maestro/releases/tag/cli-2.5.1
       MAESTRO_VERSION: 2.5.1
 
     steps:
@@ -24,8 +19,7 @@ jobs:
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
       - name: Set up Xcode
-        # Match e2e-build-ios.yml so the artifact built against the iOS 26 SDK
-        # is exercised on an iOS 26 simulator runtime (avoids SDK/runtime drift).
+        # Match the Xcode version e2e-build-ios.yml builds with
         uses: maxim-lobanov/setup-xcode@ed7a3b1fda3918c0306d1b724322adc0b8cc0a90 # v1.7.0
         with:
           xcode-version: '26.2.0'
@@ -41,18 +35,13 @@ jobs:
           defaults write com.apple.iphonesimulator ShowChrome -bool false
           defaults write com.apple.iphonesimulator DeviceFramebufferOnly -bool true
 
-      # Kick off the cold boot asynchronously, as early as possible, so the iOS
-      # runtime boots in the background while the remaining setup steps (Java,
-      # app download, E2E account, Maestro cache/install) run. We block on it
-      # afterwards in "Wait for Simulator Ready".
+      # Boot async so the simulator boots while the remaining setup steps run;
+      # "Wait for Simulator Ready" blocks on it later.
       - name: Start Simulator Boot
         run: |
-          # macos-26 catalogs different iPhone names per Xcode release, so resolve
-          # the device by family at runtime rather than pinning a name that
-          # disappears on image rotation.
+          # Device names rotate with Xcode releases — resolve by family instead of pinning.
           if [[ "${{ inputs.shard }}" == "14" ]]; then
-            # Shard 14 holds the small-screen flows: exercise the smallest iPhone
-            # (prefer an SE) so compact-layout behavior is actually covered.
+            # Shard 14 holds the small-screen flows: smallest iPhone, preferring an SE.
             SIM_NAME=$(xcrun simctl list devices available --json \
               | jq -r '[.devices | to_entries[] | .value[] | select(.name | test("^iPhone SE"))] | first | .name')
             if [[ -z "$SIM_NAME" || "$SIM_NAME" == "null" ]]; then
@@ -95,35 +84,21 @@ jobs:
         with:
           E2E_ACCOUNT: ${{ secrets.E2E_ACCOUNT }}
 
-      # Restore-only: e2e-build-ios.yml is the single writer of this key, and
-      # the shards need that build, so the cache is always populated before this
-      # runs — every shard hits and only restores (no save → no first-writer
-      # race). The Install Maestro step below stays as a fallback for the rare
-      # miss (version drift between the two workflows, or eviction).
+      # Restore-only: written by e2e-build-ios.yml. Install dirs only — the
+      # server-flake log scan must see only this run's logs.
       - name: Restore Maestro cache
         id: cache-maestro
         uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
-          # Only the Maestro install (binary/runtime), never ~/.maestro/tests run
-          # data: a later step greps those logs for server-error strings to label
-          # a failure as a server flake, so restoring a prior run's logs would
-          # mislabel a fresh regression. The grep must see only this run's output.
           path: |
             ~/.maestro/bin
             ~/.maestro/lib
             ~/.maestro/deps
           key: maestro-${{ runner.os }}-${{ env.MAESTRO_VERSION }}
 
-      # idb-companion is intentionally not installed: Maestro's iOS driver has
-      # used XCUITest since 1.18.0 and no longer needs idb to drive the simulator
-      # (verified on Maestro 2.5.1 + iOS 26 — launch, tap, hierarchy read and
-      # screenshot all work with idb absent). Dropping the `brew tap facebook/fb`
-      # + idb install removes ~110s/shard — the tap triggers a full Homebrew
-      # auto-update. MAESTRO_VERSION is read from the job env to pin the release.
+      # No idb-companion: Maestro drives iOS via XCUITest (saves ~110s/shard).
       - name: Install Maestro
-        # The install script wipes and re-downloads ~/.maestro on every run (it
-        # has no "already installed" check), so gate it on a cache miss —
-        # otherwise the Cache Maestro restore above is overwritten and wasted.
+        # The install script always wipes ~/.maestro, so only run it on a cache miss.
         if: steps.cache-maestro.outputs.cache-hit != 'true'
         run: curl -fsSL "https://get.maestro.mobile.dev" | bash
 
@@ -136,13 +111,9 @@ jobs:
           echo "Waiting for simulator to finish booting: $SIM_NAME"
           xcrun simctl bootstatus "$SIM_NAME" -b
 
-          # Collapse UIKit/CoreAnimation transition durations toward zero so
-          # React Navigation native-stack transitions finish near-instantly and
-          # Maestro never waits on (or acts mid-) a transition. Read once at app
-          # launch. iOS analogue of Android's disable-animations.
-          # NOTE: this is a duration MULTIPLIER, not an on/off flag — values > 1
-          # SLOW animations down. The previous value of 10 made every transition
-          # 10x slower (the opposite of the "Disabling animations" intent).
+          # UIAnimationDragCoefficient is a duration multiplier (values > 1 SLOW
+          # animations down); near-zero makes transitions instant — the iOS
+          # analogue of Android's disable-animations.
           echo "Disabling animations"
           xcrun simctl spawn booted defaults write -g UIAnimationDragCoefficient -float 0.0001
 
@@ -157,9 +128,7 @@ jobs:
         run: chmod +x .github/scripts/run-maestro.sh
 
       - name: Run Maestro Tests
-        # Sits between the script's per-call 35m bound and the job's 40m backstop,
-        # so a wedged shard is bounded by the script first (useful annotation)
-        # rather than the blunt job-kill. Slowest passing shard is ~27 min.
+        # Between the script's 35m bound and the job's 40m backstop
         timeout-minutes: 38
         run: ./.github/scripts/run-maestro.sh ios ${{ inputs.shard }}
 

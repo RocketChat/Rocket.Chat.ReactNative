@@ -52,17 +52,7 @@ jobs:
     needs: [e2e-hold]
     secrets: inherit
 
-  # Single source of the shard list both platforms fan out over, and the guard
-  # that keeps it honest: it asserts every flow under .maestro/tests is tagged
-  # test-<N> within the declared range and every shard in the range has a flow,
-  # then emits the list as JSON for the matrices below. A flow tagged outside
-  # the range, or a gap in the range, fails here instead of letting that flow
-  # silently never run. No AVD seeding happens on PRs — the avd/sdk caches are
-  # written only on develop (build-develop.yml's seed-android-avd); shards
-  # restore them read-only and cold-boot on a miss.
-  # Gated behind e2e-hold, alongside the e2e builds, so it runs only once e2e is
-  # approved — a PR that never opts into e2e neither burns a runner here nor gets
-  # a red X from the drift guard for a suite it isn't running.
+  # Validates flow tags and emits the shard list both matrices fan out over.
   e2e-shards:
     name: E2E Shard Preflight
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}

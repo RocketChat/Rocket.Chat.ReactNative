@@ -1,9 +1,7 @@
 name: Pre-install Android SDK packages
 description: >-
-  Serialized, 3x-retried install of the Android emulator + api-34 system image that
-  clears partial downloads between attempts, so a truncated/corrupt archive self-heals
-  instead of failing the job ("Error on ZipFile unknown archive"). Gate the calling step
-  on a cache miss; on a cache hit the install is a no-op.
+  Retried install of the Android emulator + api-34 system image; clears partial
+  downloads between attempts so a corrupt archive self-heals.
 
 runs:
   using: composite

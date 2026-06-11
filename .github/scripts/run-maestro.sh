@@ -9,17 +9,11 @@ MAX_RERUN_ROUNDS="${MAX_RERUN_ROUNDS:-2}"
 RERUN_REPORT_PREFIX="maestro-rerun"
 export MAESTRO_DRIVER_STARTUP_TIMEOUT="${MAESTRO_DRIVER_STARTUP_TIMEOUT:-120000}"
 
-# GNU coreutils `timeout` is `timeout` on the Linux (Android) runners but
-# `gtimeout` from Homebrew coreutils on the macOS (iOS) runners — plain `timeout`
-# does not exist on macOS. Resolve whichever is present once.
+# Linux has timeout, macOS has gtimeout (Homebrew coreutils)
 TIMEOUT_BIN="$(command -v timeout || command -v gtimeout || true)"
 
-# Bounds each `maestro test`: a child wedged on simctl/devicectl/networksetup/kill
-# (CoreSimulator wedge) can otherwise hang past any in-script logic. -k SIGKILLs
-# 30s after the 35m soft bound so even an unkillable child is reaped. Exit 124 =
-# soft timeout, 137 = SIGKILL after grace; annotate so the red is explained. If
-# neither timeout binary resolves, run unbounded and lean on the job-level
-# timeout-minutes backstop rather than aborting the run.
+# Bound each `maestro test` so a wedged CoreSimulator child can't hang the job;
+# 124/137 = timed out, annotated as an environment failure.
 run_maestro_test() {
   local rc=0
   if [ -n "$TIMEOUT_BIN" ]; then
@@ -33,10 +27,8 @@ run_maestro_test() {
   return 0
 }
 
-# The login-with-deeplink flow logs its deeplink URL, leaking a live session token
-# as `&token=<authToken>` into Maestro's command logs — which the job uploads as a
-# public artifact. Scrub it in place before upload. perl -i is portable across the
-# Linux (Android) and macOS (iOS) runners, unlike sed's split -i syntax.
+# The deeplink-login flow logs a live session token; scrub it before the logs
+# upload as a public artifact. perl -i works on both Linux and macOS.
 redact_uploaded_logs() {
   local logs_dir="$HOME/.maestro/tests"
   [ -d "$logs_dir" ] || return 0
@@ -67,15 +59,8 @@ else
   fi
 fi
 
-# E2E server preflight. Every flow is driven by REST calls (login, users.create, …)
-# that .maestro/scripts/data-setup.js makes to this server from the runner host. If
-# the server is down the flow fails deep inside an evalScript as an opaque
-# "[Failed] <flow>" with no reason in the job log — you'd have to download the
-# Maestro artifact to learn it was an HTTP error. Probe it up front so a server
-# outage surfaces as a single red annotation on the job (and, when the whole server
-# is down, the same annotation on every shard) instead of mystery flow failures.
-# data.js is the single source of truth for the server URL; accept either quote
-# style so a reformat doesn't silently break the scrape.
+# Probe the E2E server up front so an outage surfaces as one clear annotation
+# instead of opaque flow failures. data.js is the source of the server URL.
 E2E_SERVER="$(sed -n "s/^[[:space:]]*server:[[:space:]]*['\"]\([^'\"]*\)['\"].*/\1/p" .maestro/scripts/data.js | head -1)"
 if [ -z "$E2E_SERVER" ]; then
   echo "::error title=E2E server URL not found::Could not scrape 'server' from .maestro/scripts/data.js — its format may have changed. This is a CI config failure, not an app or test regression."
@@ -90,8 +75,7 @@ fi
 echo "Preflight OK: ${E2E_SERVER}/api/info -> 200"
 
 MAPFILE="$(mktemp)"
-# Redact on EXIT so the token is scrubbed regardless of which exit path the script
-# takes, before the always() upload step reads the logs.
+# Redact on every exit path, before the always() upload reads the logs
 trap 'rm -f "$MAPFILE"; redact_uploaded_logs' EXIT
 
 while IFS= read -r -d '' file; do
@@ -154,9 +138,8 @@ run_main_suite() {
 
 run_main_suite
 
-# No main report means the run aborted before producing JUnit output — a genuine
-# session/driver-startup failure. Let it go red so a human can use "Re-run failed
-# jobs"; auto-retrying here would hide real startup breakage.
+# No JUnit output = startup failure; go red for a human re-run instead of
+# auto-retrying, which would hide real startup breakage.
 if [ ! -f "$MAIN_REPORT" ]; then
   echo "::error title=Maestro session produced no report::The Maestro run produced no JUnit output (session/driver-startup failure or a timeout — see the annotation above). Re-run the failed job if this looks transient."
   exit 1
@@ -273,10 +256,8 @@ done
 echo "Retry strategy finished with remaining failures:"
 printf '%s\n' "${CURRENT_FAILS[@]}"
 
-# The server can also blip after preflight (e.g. a 404 on users.create mid-flow).
-# data-setup.js's retryRequest records that as "Non-retryable error <code>" in the
-# local Maestro logs. Scan them (already on disk — no artifact download) so an
-# environment-caused failure is annotated as such instead of reading like an app bug.
+# The server can also blip after preflight; scan the local logs and annotate so
+# an environment failure doesn't read like an app bug.
 SERVER_ERR="$(grep -rhoE "Non-retryable error [0-9]{3}|Connection refused|Failed to connect|UnknownHostException|ConnectException|Read timed out" "$HOME/.maestro/tests/" 2>/dev/null | sort -u | head -5 | paste -sd '; ' - || true)"
 if [ -n "$SERVER_ERR" ]; then
   echo "::error title=E2E server error during run::A test-setup REST call to ${E2E_SERVER:-the test server} failed mid-run (${SERVER_ERR}). The shard failure is likely a server/environment flake, not an app or test regression."

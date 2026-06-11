@@ -1,20 +1,16 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Single source of truth for the Maestro shard list. The PR matrix fans out over
-# exactly these shards (this script emits the JSON array it consumes), and every
-# flow under .maestro/tests must carry a test-<N> tag with N inside the range.
-# This job asserts the two stay in lockstep: a flow tagged outside the range, or
-# a shard in the range with no flow tagged for it, fails the run loud — instead
-# of that flow silently never executing (a gap) or a tag never being scheduled.
+# Emits the shard list the PR matrices fan out over and asserts every flow's
+# test-<N> tag falls inside it, so drift fails loud instead of a flow silently
+# never running.
 SHARD_COUNT=14
 FLOWS_DIR=".maestro/tests"
 
 declared=()
 for n in $(seq 1 "$SHARD_COUNT"); do declared+=("$n"); done
 
-# test-<N> values actually tagged on flows, keyed off the same tag-list-item
-# shape run-maestro.sh matches (a `- test-N` entry, optionally quoted).
+# Match the same `- test-N` list-item shape run-maestro.sh greps
 found="$(grep -rhoE "^[[:space:]]*-[[:space:]]*['\"]?test-[0-9]+" "$FLOWS_DIR" \
   --include='*.yaml' --include='*.yml' \
   | grep -oE '[0-9]+' | sort -n -u)"
