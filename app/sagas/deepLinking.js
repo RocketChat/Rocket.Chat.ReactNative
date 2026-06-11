@@ -225,13 +225,24 @@ const handleOpen = function* handleOpen({ params }) {
 			yield fallbackNavigation();
 			return;
 		}
-		yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
-		yield put(serverInitAdd(server));
-		yield delay(1000);
-		EventEmitter.emit('NewServer', { server: host });
+		// if the host is different from the current one, we need to connect to it before navigating
+		const hostAlreadyConnected = sdk.current?.client?.host === host;
+		if (!hostAlreadyConnected) {
+			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+			yield put(serverInitAdd(server));
+			yield delay(1000);
+			EventEmitter.emit('NewServer', { server: host });
+		}
 
 		if (params.token) {
-			yield take(types.SERVER.SELECT_SUCCESS);
+			if (!hostAlreadyConnected) {
+				yield take(types.SERVER.SELECT_SUCCESS);
+				// SERVER.SELECT_SUCCESS doesn't mean 'connected'; skip the take if it already is.
+				const connected = yield select(state => state.meteor.connected);
+				if (!connected) {
+					yield take(types.METEOR.SUCCESS);
+				}
+			}
 			yield put(loginRequest({ resume: params.token }, true));
 			yield take(types.LOGIN.SUCCESS);
 			yield put(appReady({}));
@@ -326,6 +337,11 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 		EventEmitter.emit('NewServer', { server: host });
 		if (params.token) {
 			yield take(types.SERVER.SELECT_SUCCESS);
+			// SERVER.SELECT_SUCCESS doesn't mean 'connected'; skip the take if it already is.
+			const connected = yield select(state => state.meteor.connected);
+			if (!connected) {
+				yield take(types.METEOR.SUCCESS);
+			}
 			yield put(loginRequest({ resume: params.token }, true));
 			yield take(types.LOGIN.SUCCESS);
 			yield handleNavigateCallRoom({ params });
