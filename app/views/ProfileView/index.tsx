@@ -1,5 +1,5 @@
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
+import { type ReactElement, useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { Keyboard, ScrollView, View, type TextInput } from 'react-native';
 import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
