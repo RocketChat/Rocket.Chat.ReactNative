@@ -77,6 +77,10 @@ jobs:
           echo -e "newArchEnabled=true" >> ./gradle.properties
           echo -e "hermesEnabled=true" >> ./gradle.properties
           echo -e "VERSIONCODE=999999" >> ./gradle.properties
+          # build.gradle reads BugsnagAPIKey into a manifest placeholder. Owl
+          # builds are throwaway and never upload to Bugsnag, so a dummy value is
+          # enough to satisfy the property (no secret needed).
+          echo -e "BugsnagAPIKey=0000000000000000000000000000000000" >> ./gradle.properties
 
       - name: Build Owl APK
         run: pnpm owl:build:android
