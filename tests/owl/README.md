@@ -65,7 +65,7 @@ out over every device leg.
 
 | Workflow | Role |
 | --- | --- |
-| `visual-regression.yml` | Orchestrator. `workflow_dispatch` (with an `update_baseline` toggle) + `pull_request` on owl paths. |
+| `visual-regression.yml` | Orchestrator. `workflow_dispatch` (with an `update_baseline` toggle) + `pull_request` on owl paths. Gated behind a manual approval `hold` job (protected `approve_e2e_testing` environment, like e2e) so nothing builds until a reviewer approves. |
 | `visual-regression-build-ios.yml` | Reusable — builds the Owl iOS `.app` once, uploads it. |
 | `visual-regression-build-android.yml` | Reusable — builds the Owl APK once (debug-signed via the `isOwlBuild` fallback), uploads it. |
 | `visual-regression-run-ios.yml` | Reusable — downloads the app, points owl at the leg's simulator, syncs baselines, compares. |
