@@ -36,6 +36,13 @@ const styles = StyleSheet.create({
 	},
 	pickerItem: {
 		height: 48
+	},
+	buttonContainer: {
+		paddingHorizontal: 16,
+		alignSelf: 'stretch'
+	},
+	confirmButton: {
+		marginTop: 24
 	}
 });
 
@@ -73,14 +80,17 @@ const DatePickerSheetContent = ({ initialDate, onConfirm }: IDatePickerSheetCont
 					if (date) setPendingDate(date);
 				}}
 			/>
-			<Button
-				title={I18n.t('Confirm')}
-				onPress={() => {
-					onConfirm(pendingDate);
-					hideActionSheet();
-				}}
-				testID='status-clear-after-confirm'
-			/>
+			<View style={styles.buttonContainer}>
+				<Button
+					title={I18n.t('Confirm')}
+					onPress={() => {
+						onConfirm(pendingDate);
+						hideActionSheet();
+					}}
+					testID='status-clear-after-confirm'
+					style={styles.confirmButton}
+				/>
+			</View>
 		</View>
 	);
 };
@@ -166,7 +176,7 @@ const ClearAfterPicker = ({ value, customDate, onChange }: IClearAfterPickerProp
 
 	const getDisplayLabel = (): string => {
 		if (value === 'custom' && customDate) {
-			return customDate.toLocaleString(undefined, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+			return dayjs(customDate).format('DD/MM/YYYY hh:mm A');
 		}
 		if (value === 'custom' && !customDate) {
 			return I18n.t('Status_dont_clear');
