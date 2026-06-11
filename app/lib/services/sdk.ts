@@ -115,7 +115,12 @@ class Sdk {
 				// string unconditionally pushes a junk trailing positional arg into every method
 				// call, which breaks methods whose signature grows a typed trailing param
 				// (e.g. loadSurroundingMessages' `showThreadMessages: boolean`).
-				const result = await this.current.methodCall(...args, ...(this.code ? [this.code] : []));
+				// The code is single-use: consume and clear it so it never leaks into
+				// unrelated later calls (a stale trailing arg breaks typed signatures
+				// and would replay a spent TOTP).
+				const { code } = this;
+				this.code = null;
+				const result = await this.current.methodCall(...args, ...(code ? [code] : []));
 				return resolve(result);
 			} catch (e: any) {
 				if (e.error && (e.error === 'totp-required' || e.error === 'totp-invalid')) {
