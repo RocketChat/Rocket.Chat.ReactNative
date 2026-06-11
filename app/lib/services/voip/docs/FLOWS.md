@@ -163,7 +163,7 @@ sequenceDiagram
     Note over Server,JS: Concurrent path — DDP notification/accepted may arrive first, matcher gates by mobileDeviceId and triggers the same answerCall (idempotent).
 ```
 
-_Last verified: 934c5bb8a_
+_Last verified: a17628945_
 
 ---
 
