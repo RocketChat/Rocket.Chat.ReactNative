@@ -1,6 +1,6 @@
-import React from 'react';
 import { Text } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
+import { type ReactElement } from 'react';
 
 import { CustomIcon, type TIconsName } from '../../../containers/CustomIcon';
 import { useTheme } from '../../../theme';
@@ -20,7 +20,7 @@ export function BaseButton({
 	label: string;
 	showIcon?: boolean;
 	enabled?: boolean;
-}): React.ReactElement | null {
+}): ReactElement | null {
 	const { colors } = useTheme();
 	const color = danger ? colors.buttonBackgroundDangerDefault : colors.fontHint;
 

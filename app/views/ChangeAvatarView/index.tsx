@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useReducer, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useReducer, useRef, useState } from 'react';
 import { AccessibilityInfo, ScrollView, View } from 'react-native';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';

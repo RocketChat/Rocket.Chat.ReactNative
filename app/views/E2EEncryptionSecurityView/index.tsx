@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { Text, View } from 'react-native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useDispatch } from 'react-redux';

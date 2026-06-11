@@ -3029,8 +3029,6 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - RNConfigReader (1.0.0):
-    - React
   - RNCPicker (2.11.4):
     - boost
     - DoubleConversion
@@ -3315,7 +3313,7 @@ PODS:
     - RNWorklets
     - SocketRocket
     - Yoga
-  - RNScreens (4.16.0):
+  - RNScreens (4.17.1):
     - boost
     - DoubleConversion
     - fast_float
@@ -3342,10 +3340,10 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNScreens/common (= 4.16.0)
+    - RNScreens/common (= 4.17.1)
     - SocketRocket
     - Yoga
-  - RNScreens/common (4.16.0):
+  - RNScreens/common (4.17.1):
     - boost
     - DoubleConversion
     - fast_float
@@ -3689,7 +3687,6 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
   - "RNCMaskedView (from `../node_modules/@react-native-masked-view/masked-view`)"
-  - RNConfigReader (from `../node_modules/react-native-config-reader`)
   - "RNCPicker (from `../node_modules/@react-native-picker/picker`)"
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
@@ -3970,8 +3967,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-clipboard/clipboard"
   RNCMaskedView:
     :path: "../node_modules/@react-native-masked-view/masked-view"
-  RNConfigReader:
-    :path: "../node_modules/react-native-config-reader"
   RNCPicker:
     :path: "../node_modules/@react-native-picker/picker"
   RNDateTimePicker:
@@ -4146,7 +4141,6 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: fd44f4b03e007e642e98df6726737bc66e9ba609
   RNCClipboard: e560338bf6cc4656a09ff90610b62ddc0dbdad65
   RNCMaskedView: d707a83784c67099b54b37d056ababb2767ce15e
-  RNConfigReader: 27bab37cca5e6b87766ffd73b8b8818ee46e3416
   RNCPicker: 35fc66f352403cdfe99d53b541f5180482ca2bc5
   RNDateTimePicker: ca1dc7e24d0b4839877f0ab619e7bca5db715289
   RNDeviceInfo: 900bd20e1fd3bfd894e7384cc4a83880c0341bd3
@@ -4159,7 +4153,7 @@ SPEC CHECKSUMS:
   RNKeychain: 76d042fc1dfba47f3945920bc82e0bce9ad1ff55
   RNLocalize: ca86348d88b9a89da0e700af58d428ab3f343c4e
   RNReanimated: e1690cdd7f215cfb96a3b7986b81889867dfdb4f
-  RNScreens: 2e9c41cd099b1ca50136af8d57c3594214d0086a
+  RNScreens: ccfcc2f7d9c0d458b7fc41b3f4f0bea054602b3a
   RNSVG: 94a1be05fab4043354bcf7104f0f9b0e2231ef05
   RNTrueSheet: 53f29088da313dabff8b81d7c4d52afd8e609cfa
   RNWorklets: ab618bf7d1c7fd2cb793b9f0f39c3e29274b3ebf
