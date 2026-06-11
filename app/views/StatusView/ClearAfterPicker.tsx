@@ -36,10 +36,6 @@ const styles = StyleSheet.create({
 	},
 	pickerItem: {
 		height: 48
-	},
-	confirmButton: {
-		marginHorizontal: 16,
-		marginTop: 8
 	}
 });
 
@@ -77,16 +73,14 @@ const DatePickerSheetContent = ({ initialDate, onConfirm }: IDatePickerSheetCont
 					if (date) setPendingDate(date);
 				}}
 			/>
-			<View style={styles.confirmButton}>
-				<Button
-					title={I18n.t('Confirm')}
-					onPress={() => {
-						onConfirm(pendingDate);
-						hideActionSheet();
-					}}
-					testID='status-clear-after-confirm'
-				/>
-			</View>
+			<Button
+				title={I18n.t('Confirm')}
+				onPress={() => {
+					onConfirm(pendingDate);
+					hideActionSheet();
+				}}
+				testID='status-clear-after-confirm'
+			/>
 		</View>
 	);
 };
