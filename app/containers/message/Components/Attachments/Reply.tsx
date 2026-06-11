@@ -13,6 +13,7 @@ import sharedStyles from '../../../../views/Styles';
 import RCActivityIndicator from '../../../ActivityIndicator';
 import Markdown, { MarkdownPreview } from '../../../markdown';
 import { Attachments } from './components';
+import Quote from './Quote';
 import MessageContext from '../../Context';
 import Touchable from '../../Touchable';
 import messageStyles from '../../styles';
@@ -252,6 +253,12 @@ const Reply = memo(
 						<View style={styles.titleAndDescriptionContainer}>
 							<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
 							<Description attachment={attachment} getCustomEmoji={getCustomEmoji} />
+							<Quote
+								attachments={attachment.attachments}
+								getCustomEmoji={getCustomEmoji}
+								timeFormat={timeFormat}
+								showAttachment={showAttachment}
+							/>
 							<Attachments
 								attachments={attachment.attachments}
 								getCustomEmoji={getCustomEmoji}
