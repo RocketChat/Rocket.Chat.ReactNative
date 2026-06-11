@@ -19,6 +19,7 @@ import { type SettingsStackParamList } from '../../stacks/types';
 import { showErrorAlert } from '../../lib/methods/helpers/info';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { saveUserPreferences } from '../../lib/services/restApi';
+import { getAppTranslations } from '../../lib/methods/getAppTranslations';
 
 const LanguageView = () => {
 	const { languageDefault, id } = useAppSelector(state => ({
@@ -81,6 +82,9 @@ const LanguageView = () => {
 					logEvent(events.LANG_SET_LANGUAGE_F);
 				}
 			});
+
+			const appLang = (params.language || 'en').split('-')[0];
+			await getAppTranslations(appLang);
 		} catch (e) {
 			logEvent(events.LANG_SET_LANGUAGE_F);
 			showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t('saving_preferences') }));

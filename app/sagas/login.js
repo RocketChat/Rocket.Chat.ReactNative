@@ -38,6 +38,8 @@ import { getServerById } from '../lib/database/services/Server';
 import appNavigation from '../lib/navigation/appNavigation';
 import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
+import { isIOS } from '../lib/methods/helpers';
+import { getAppTranslations } from '../lib/methods/getAppTranslations';
 import { mediaSessionInstance } from '../lib/services/voip/MediaSessionInstance';
 import { hasPermission } from '../lib/methods/helpers/helpers';
 import { mediaSessionStore } from '../lib/services/voip/MediaSessionStore';
@@ -187,6 +189,15 @@ const fetchSlashCommandsFork = function* fetchSlashCommandsFork() {
 	}
 };
 
+const fetchAppTranslationsFork = function* fetchAppTranslationsFork(userLanguage) {
+	try {
+		const appLang = (userLanguage || I18n.currentLocale()).split('-')[0];
+		yield getAppTranslations(appLang);
+	} catch (e) {
+		log(e);
+	}
+};
+
 const registerPushTokenFork = function* registerPushTokenFork() {
 	try {
 		yield registerPushToken();
@@ -300,6 +311,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield call(fetchEnterpriseModules, { user });
 		yield fork(fetchCustomEmojisFork);
 		yield fork(fetchRolesFork);
+		yield fork(fetchAppTranslationsFork, user.language);
 		yield fork(fetchSlashCommandsFork);
 		yield fork(registerPushTokenFork);
 		yield fork(fetchUsersPresenceFork);

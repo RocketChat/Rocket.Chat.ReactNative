@@ -345,6 +345,19 @@ export default schemaMigrations({
 					]
 				})
 			]
+		},
+		{
+			toVersion: 29,
+			steps: [
+				createTable({
+					name: 'app_translations',
+					columns: [
+						{ name: 'key', type: 'string', isIndexed: true },
+						{ name: 'value', type: 'string' },
+						{ name: 'language', type: 'string', isIndexed: true }
+					]
+				})
+			]
 		}
 	]
 });
