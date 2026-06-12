@@ -1,11 +1,11 @@
-import React from 'react';
+import { type ReactElement } from 'react';
 
 import styles from './styles';
 import { type IEmoji } from '../../definitions/IEmoji';
 import { Emoji } from './Emoji';
 import Touch from '../Touch';
 
-export const PressableEmoji = ({ emoji, onPress }: { emoji: IEmoji; onPress: (emoji: IEmoji) => void }): React.ReactElement => {
+export const PressableEmoji = ({ emoji, onPress }: { emoji: IEmoji; onPress: (emoji: IEmoji) => void }): ReactElement => {
 	const accessibilityLabel = typeof emoji === 'string' ? emoji : emoji.name;
 	return (
 		<Touch

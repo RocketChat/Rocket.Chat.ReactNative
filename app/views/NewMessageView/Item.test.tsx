@@ -1,6 +1,6 @@
-import React from 'react';
 import { fireEvent, render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
+import { isValidElement, type ReactNode } from 'react';
 
 import Item from './Item';
 import { mockedStore } from '../../reducers/mockedStore';
@@ -35,7 +35,7 @@ jest.mock('../../containers/NewMediaCall', () => ({
 	NewMediaCall: jest.fn(() => null)
 }));
 
-const Wrapper = ({ children }: { children: React.ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
+const Wrapper = ({ children }: { children: ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
 
 describe('NewMessageView Item', () => {
 	beforeAll(() => {
@@ -118,7 +118,7 @@ describe('NewMessageView Item', () => {
 		});
 		expect(mockShowActionSheetRef).toHaveBeenCalledTimes(1);
 		const [actionSheetArgs] = mockShowActionSheetRef.mock.calls[0];
-		expect(React.isValidElement(actionSheetArgs.children)).toBe(true);
+		expect(isValidElement(actionSheetArgs.children)).toBe(true);
 		expect(actionSheetArgs.children.type).toBe(NewMediaCall);
 	});
 

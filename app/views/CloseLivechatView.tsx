@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect } from 'react';
+import { useState, useLayoutEffect } from 'react';
 import { StyleSheet, ScrollView, Text } from 'react-native';
 import { BlockContext } from '@rocket.chat/ui-kit';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';

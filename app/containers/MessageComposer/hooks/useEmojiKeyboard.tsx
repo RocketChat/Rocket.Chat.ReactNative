@@ -1,4 +1,4 @@
-import React, { createContext, type ReactElement, useContext, useState } from 'react';
+import { createContext, useContext, useState, type ReactElement } from 'react';
 import { Platform } from 'react-native';
 import { useKeyboardHandler } from 'react-native-keyboard-controller';
 import { type SharedValue, useAnimatedReaction, useSharedValue } from 'react-native-reanimated';

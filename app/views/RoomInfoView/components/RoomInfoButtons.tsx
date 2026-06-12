@@ -1,5 +1,5 @@
-import React from 'react';
 import { View } from 'react-native';
+import { type ReactElement } from 'react';
 
 import { type TIconsName } from '../../../containers/CustomIcon';
 import { type ISubscription, SubscriptionType } from '../../../definitions';
@@ -51,7 +51,7 @@ export const RoomInfoButtons = ({
 	roomFromRid,
 	serverVersion,
 	itsMe
-}: IRoomInfoButtons): React.ReactElement => {
+}: IRoomInfoButtons): ReactElement => {
 	'use memo';
 
 	const room = roomFromRid || roomFromProps;

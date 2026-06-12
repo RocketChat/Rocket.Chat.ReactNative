@@ -1,4 +1,4 @@
-import React, { type ReactElement } from 'react';
+import { type ReactElement } from 'react';
 import { FlatList, type ViewStyle } from 'react-native';
 import Animated, { type AnimatedStyle } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
