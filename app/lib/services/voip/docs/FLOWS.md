@@ -49,7 +49,7 @@ sequenceDiagram
     JS->>JS: clear call store (preserving native-accepted id)
 ```
 
-_Last verified: c4771ae02_
+_Last verified: 597836364_
 
 ---
 
