@@ -36,7 +36,7 @@ jobs:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
-          key: avd-${{ runner.os }}-api34-v2
+          key: avd-${{ runner.os }}-api34
 
       # Restore-only: seeded on develop. Saves each shard re-downloading ~1 GB
       # of emulator + system image; on a miss the preinstall step backfills.
@@ -47,7 +47,7 @@ jobs:
           path: |
             /usr/local/lib/android/sdk/emulator
             /usr/local/lib/android/sdk/system-images/android-34/google_apis/x86_64
-          key: android-sdk-emu-${{ runner.os }}-api34-v2
+          key: android-sdk-emu-${{ runner.os }}-api34
 
       # Retried install so a corrupt partial download self-heals instead of
       # failing the shard ("Error on ZipFile unknown archive").

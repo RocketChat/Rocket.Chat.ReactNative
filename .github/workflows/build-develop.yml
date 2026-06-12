@@ -66,7 +66,7 @@ jobs:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
-          key: avd-${{ runner.os }}-api34-v2
+          key: avd-${{ runner.os }}-api34
 
       # The emulator + system image live outside ~/.android/avd — cache them
       # separately so shards don't each re-download ~1 GB.
@@ -77,7 +77,7 @@ jobs:
           path: |
             /usr/local/lib/android/sdk/emulator
             /usr/local/lib/android/sdk/system-images/android-34/google_apis/x86_64
-          key: android-sdk-emu-${{ runner.os }}-api34-v2
+          key: android-sdk-emu-${{ runner.os }}-api34
 
       # Retried install so a corrupt partial download self-heals
       - name: Pre-install Android SDK packages (cache miss only)
