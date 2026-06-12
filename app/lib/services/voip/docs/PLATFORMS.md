@@ -22,7 +22,7 @@ When a PushKit payload arrives, iOS gives the app a hard window (~5 seconds) to 
 
 ### Incoming-push microphone gate
 
-If the OS microphone permission is denied, `didReceiveIncomingPushWith` suppresses the call before it rings: it reports a placeholder call it ends immediately — the unavoidable sub-second CallKit flash satisfies the reporting deadline above — and skips `prepareIncomingCall`, so nothing is stashed for JS (opening the app cannot resurrect the call). Nothing is signalled to the server, so the call keeps ringing on the user's other devices. The read is `VoipService.hasMicrophonePermission()` (`AVAudioApplication.recordPermission` on iOS 17+, `AVAudioSession.recordPermission` earlier). A truly silent path is impossible — returning without a report kills the app. See `adr/0002-suppress-incoming-at-push-layer-when-mic-denied.md`.
+If the OS microphone permission is denied, `didReceiveIncomingPushWith` suppresses the call before it rings: it reports a placeholder call it ends immediately — the unavoidable sub-second CallKit flash satisfies the reporting deadline above — and skips `prepareIncomingCall`, so nothing is stashed for JS (opening the app cannot resurrect the call). Nothing is signalled to the server, so the call keeps ringing on the user's other devices. The read is `VoipService.hasMicrophonePermission()` (`AVAudioApplication.recordPermission` on iOS 17+, `AVAudioSession.recordPermission` earlier). A truly silent path is impossible — returning without a report kills the app.
 
 ### Native accept path — no JS `answerCall` listener
 
@@ -63,7 +63,7 @@ VoIP incoming calls arrive as FCM **data-only payloads** (so the app can wake wi
 2. `VoipIncomingCallDispatch` ensures the self-managed PhoneAccount is registered, opens a per-call DDP client, and starts `VoipCallService` as a foreground service.
 3. `VoipCallService` shows the foreground notification, drives the call lifecycle, and on user accept sends the REST `media-calls.answer` over the per-call DDP client. Result is forwarded as `VoipAcceptSucceeded` / `VoipAcceptFailed` once JS is alive.
 
-Before any of this, `VoipNotification.onMessageReceived` runs the pure `decideIncomingVoipPushAction` (precedence `stale → IGNORE_NO_PERMISSION → REJECT_BUSY → SHOW_INCOMING`). If `RECORD_AUDIO` is denied it ignores the push (`ignoreNoMicPermissionCall`, log-only) and returns — no PhoneAccount registration, no per-call DDP, no foreground service, no notification, no REST — so the device stays truly silent and the call keeps ringing on the user's other devices. See `adr/0002-suppress-incoming-at-push-layer-when-mic-denied.md`.
+Before any of this, `VoipNotification.onMessageReceived` runs the pure `decideIncomingVoipPushAction` (precedence `stale → IGNORE_NO_PERMISSION → REJECT_BUSY → SHOW_INCOMING`). If `RECORD_AUDIO` is denied it ignores the push (`ignoreNoMicPermissionCall`, log-only) and returns — no PhoneAccount registration, no per-call DDP, no foreground service, no notification, no REST — so the device stays truly silent and the call keeps ringing on the user's other devices.
 
 `IncomingCallActivity` is the lock-screen activity that surfaces the incoming call UI when the device is locked.
 

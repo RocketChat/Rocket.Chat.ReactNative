@@ -170,7 +170,7 @@ public final class VoipService: NSObject {
     /// True only when the OS microphone permission is currently `granted`. `denied` and
     /// `undetermined` both count as not-granted (matching the Android/JS gate), so an incoming
     /// call is never rung when audio could not be captured. Uses `AVAudioApplication` on iOS 17+
-    /// and the deprecated `AVAudioSession` API on earlier supported iOS. See the push-layer gate ADR.
+    /// and the deprecated `AVAudioSession` API on earlier supported iOS.
     public static func hasMicrophonePermission() -> Bool {
         if #available(iOS 17.0, *) {
             return AVAudioApplication.shared.recordPermission == .granted

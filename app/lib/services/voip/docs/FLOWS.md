@@ -6,7 +6,7 @@ Cross-runtime sequence diagrams for the handshakes that span TypeScript, Swift, 
 
 ## 1. Init and teardown
 
-Login establishes the singleton; logout or server switch tears it down. The DDP listener and Redux subscriptions live for the duration of the session. Immediately after init, JS pre-acquires the OS microphone permission (fire-and-forget, suppressed if a call is already active) so a later incoming call on a locked/backgrounded device — where no dialog can be shown — can still be answered. See `CONTEXT.md` and `adr/0001-pre-acquire-microphone-at-login.md`.
+Login establishes the singleton; logout or server switch tears it down. The DDP listener and Redux subscriptions live for the duration of the session. At the end of init, JS pre-acquires the OS microphone permission (fire-and-forget, suppressed if a call is already active) because an incoming call on a locked/backgrounded device cannot show a permission dialog. See `CONTEXT.md`.
 
 ```mermaid
 sequenceDiagram
@@ -110,7 +110,7 @@ _Last verified: cd2faa00a_
 
 The signaling session sees the call first via DDP. Native still owns the system call UI and still issues the REST accept, but JS is alive throughout, so the warm path converges quickly. `answerCall` is idempotent; the DDP `notification/accepted` and the REST replay race harmlessly.
 
-At push receipt, native first runs the **Incoming-push gate**: if the OS microphone permission is denied it suppresses the call locally (**Suppress-without-ringing**) before any ringing UI — truly silent on Android (no Telecom, no notification), a sub-second CallKit flash on iOS — and never hands the call to JS. Nothing is signalled to the server, so the call keeps ringing on the user's other devices. Only if granted does it report the call and ring. Before binding, `answerCall` then runs a **check-only** microphone gate as a backstop — it never prompts (the device may be locked/backgrounded) and ends the call silently if the mic was revoked since push receipt (by then native has already accepted, so the call cannot return to other devices). The permission is pre-acquired at init (flow 1). See `adr/0002-suppress-incoming-at-push-layer-when-mic-denied.md`.
+At push receipt, native first runs the **Incoming-push gate**: if the OS microphone permission is denied it suppresses the call locally (**Suppress-without-ringing**) before any ringing UI — truly silent on Android (no Telecom, no notification), a sub-second CallKit flash on iOS — and never hands the call to JS. Suppression signals nothing to the server, so the call keeps ringing on the user's other devices. Only if granted does it report the call and ring. Before binding, `answerCall` then runs a **check-only** microphone gate as a backstop — it never prompts (the device may be locked/backgrounded) and ends the call silently if the mic was revoked since push receipt (by then native has already accepted, so the call cannot return to other devices). The permission is pre-acquired at init (flow 1).
 
 ```mermaid
 sequenceDiagram
