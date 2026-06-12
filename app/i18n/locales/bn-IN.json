@@ -519,6 +519,7 @@
   "Message_was_not_read": "বার্তাটি পড়া হয়নি।",
   "Message_was_read": "বার্তাটি পড়া হয়েছে।",
   "messages": "বার্তা",
+  "Microphone_access_needed_for_voice_calls": "ভয়েস কলের জন্য মাইক্রোফোন অ্যাক্সেস প্রয়োজন",
   "Missed_call": "মিস কল",
   "missing_room_e2ee_description": "ঘরের জন্য এনক্রিপশন কীগুলি আপডেট করা প্রয়োজন, এর জন্য আরেকজন ঘরের সদস্যকে অনলাইনে থাকতে হবে।",
   "missing_room_e2ee_title": "কয়েক মুহূর্তের মধ্যে পরীক্ষা করুন",

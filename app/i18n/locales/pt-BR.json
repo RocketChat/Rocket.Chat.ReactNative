@@ -563,6 +563,7 @@
   "Message_was_not_read": "Mensagem não foi lida",
   "Message_was_read": "Mensagem foi lida",
   "messages": "mensagens",
+  "Microphone_access_needed_for_voice_calls": "Acesso ao microfone necessário para chamadas de voz",
   "Microphone_access_needed_to_record_audio": "Acesso ao microfone necessário para gravar áudio",
   "Missed_call": "Chamada perdida",
   "missing_room_e2ee_description": "As chaves de criptografia da sala precisam ser atualizadas, outro membro da sala precisa estar online para que isso aconteça.",

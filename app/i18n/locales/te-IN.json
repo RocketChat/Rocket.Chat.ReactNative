@@ -518,6 +518,7 @@
   "Message_was_not_read": "సందేశం చదవలేదు",
   "Message_was_read": "సందేశం చదవబడింది",
   "messages": "సందేశాలు",
+  "Microphone_access_needed_for_voice_calls": "వాయిస్ కాల్స్‌కు మైక్రోఫోన్ యాక్సెస్ అవసరం",
   "Missed_call": "మిస్డ్ కాల్",
   "missing_room_e2ee_description": "గది కోసం ఎన్క్రిప్షన్ కీలు నవీకరించబడాలి, దీని జరగాలంటే మరొక గది సభ్యుడు ఆన్లైన్‌లో ఉండాలి.",
   "missing_room_e2ee_title": "కొన్ని క్షణాల్లో తిరిగి తనిఖీ చేయండి",

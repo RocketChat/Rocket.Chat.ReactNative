@@ -520,6 +520,7 @@
   "Message_was_not_read": "Az üzenet nem lett elolvasva.",
   "Message_was_read": "Az üzenet elolvasva.",
   "messages": "üzenetek",
+  "Microphone_access_needed_for_voice_calls": "Mikrofonhozzáférés szükséges hanghívásokhoz",
   "Missed_call": "Nem fogadott hívás",
   "missing_room_e2ee_description": "A szoba titkosítási kulcsait frissíteni kell, ehhez egy másik szobatagnak online kell lennie.",
   "missing_room_e2ee_title": "Nézzen vissza néhány perc múlva",

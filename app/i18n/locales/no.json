@@ -544,6 +544,7 @@
   "Message_was_not_read": "Meldingen ble ikke lest",
   "Message_was_read": "Meldingen ble lest",
   "messages": "meldinger",
+  "Microphone_access_needed_for_voice_calls": "Mikrofontilgang nødvendig for talesamtaler",
   "Microphone_access_needed_to_record_audio": "Mikrofontilgang nødvendig for å ta opp lyd",
   "Missed_call": "Ubesvart anrop",
   "missing_room_e2ee_description": "Krypteringsnøklene for rommet må oppdateres, et annet rommedlem må være online for at dette skal skje.",

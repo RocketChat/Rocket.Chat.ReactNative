@@ -554,6 +554,7 @@
   "Message_was_not_read": "Zpráva nebyla přečtena.",
   "Message_was_read": "Zpráva byla přečtena.",
   "messages": "zprávy",
+  "Microphone_access_needed_for_voice_calls": "Pro hlasové hovory je nutný přístup k mikrofonu",
   "Microphone_access_needed_to_record_audio": "Pro záznam zvuku je nutný přístup k mikrofonu",
   "Missed_call": "Zmeškaný hovor",
   "Moderator": "Moderátor",
