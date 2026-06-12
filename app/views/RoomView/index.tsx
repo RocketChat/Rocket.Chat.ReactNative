@@ -100,7 +100,7 @@ import { ComposerAttachments, type IMessageComposerRef, MessageComposerContainer
 import { RoomContext } from './context';
 import AudioManager from '../../lib/methods/AudioManager';
 import { type IListContainerRef, type TListRef } from './List/definitions';
-import { anchorForTarget, type AnchorMessage } from './List/hooks/anchorResolver';
+import { anchorForServerChunk, type AnchorMessage } from './List/hooks/anchorResolver';
 import { getMessageById } from '../../lib/database/services/Message';
 import { getThreadById } from '../../lib/database/services/Thread';
 import { isE2EEDisabledEncryptedRoom, isMissingRoomE2EEKey } from '../../lib/encryption/utils';
@@ -1054,27 +1054,27 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 				if (!message.tmid && this.rid && !inWindow) {
 					if (message.fromServer) {
 						// Not cached locally: fetch one Chunk around the target so a Newer Loader can bracket it.
+						// A chunk with no Newer Loader above the target reaches the Live Tail (e.g. a push
+						// notification for a brand-new message), so the window stays live.
 						const chunk = (await loadSurroundingMessages({ messageId, rid: this.rid })) as IMessage[];
-						if (Array.isArray(chunk) && chunk.length) {
-							const anchorMessages: AnchorMessage[] = chunk.map(m => ({
-								id: m._id,
-								t: m.t,
-								ts: tsToMs(m.ts)
-							}));
-							highTs = anchorForTarget(anchorMessages, message.id);
-						}
+						const anchorMessages: AnchorMessage[] = (Array.isArray(chunk) ? chunk : []).map(m => ({
+							id: m._id,
+							t: m.t,
+							ts: tsToMs(m.ts)
+						}));
+						highTs = anchorForServerChunk(anchorMessages, message.id, message.ts);
 					} else {
 						// Cached locally but out of window: reuse the Newer Loader already bracketing the
 						// target's Chunk (a gappy island from a prior jump) so the re-seeded page still
 						// exposes "Load newer" and can rejoin the Live Tail.
 						highTs = await RoomServices.getLocalAnchorTs(this.rid, message.ts);
-					}
-					// No bracketing Loader (contiguous cached region, or a server Chunk that returned none):
-					// anchor at the target's own ts so the window still re-seeds onto it. Without this a local
-					// out-of-window target never re-observes and the jump silently aborts after the safety
-					// timeout, dropping the user back to the Live Tail (which is then reachable via the FAB).
-					if (highTs == null && message.ts) {
-						highTs = tsToMs(message.ts);
+						// No bracketing Loader (contiguous cached region): anchor at the target's own ts so
+						// the window still re-seeds onto it. Without this a local out-of-window target never
+						// re-observes and the jump silently aborts after the safety timeout, dropping the
+						// user back to the Live Tail (which is then reachable via the FAB).
+						if (highTs == null && message.ts) {
+							highTs = tsToMs(message.ts);
+						}
 					}
 				}
 				// Synchronization needed for Fabric to work

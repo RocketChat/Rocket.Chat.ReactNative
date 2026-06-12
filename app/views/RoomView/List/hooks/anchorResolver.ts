@@ -54,6 +54,25 @@ export function anchorForTarget(messages: AnchorMessage[], targetId: string): nu
 }
 
 /**
+ * Resolve the upper bound for a Jump to Message onto a target that was fetched from the server
+ * (not cached locally), given the Chunk `loadSurroundingMessages` returned.
+ *
+ * - A Newer Loader above the target brackets its Chunk away from the Live Tail → anchor at it.
+ * - Target present with no Newer Loader above it → the Chunk reaches the Live Tail → stay a Live
+ *   Window (`null`). Anchoring here would pin the room in an Anchored Window with no boundary
+ *   Loader: the anchor could never release, so newly arriving messages would never render.
+ * - Target absent / empty Chunk → anchor at the target's own ts so the window still re-seeds onto it.
+ */
+export function anchorForServerChunk(messages: AnchorMessage[], targetId: string, targetTs: Date | number): number | null {
+	const bound = anchorForTarget(messages, targetId);
+	if (bound !== null) {
+		return bound;
+	}
+	const targetInChunk = messages.some(m => m.id === targetId);
+	return targetInChunk ? null : tsToMs(targetTs);
+}
+
+/**
  * Climb the bound toward the Live Tail, or release the window to live.
  *
  * Returns the ts (ms) of the Newer Loader nearest the Live Tail (the maximum) while any Newer

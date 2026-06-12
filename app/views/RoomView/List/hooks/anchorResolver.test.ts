@@ -1,5 +1,5 @@
 import { MessageTypeLoad } from '../../../../lib/constants/messageTypeLoad';
-import { anchorForTarget, raiseOrRelease, type AnchorMessage } from './anchorResolver';
+import { anchorForServerChunk, anchorForTarget, raiseOrRelease, type AnchorMessage } from './anchorResolver';
 
 const at = (id: string, ts: number, t?: string): AnchorMessage => ({ id, ts, t });
 
@@ -40,6 +40,45 @@ describe('anchorForTarget', () => {
 		const target: AnchorMessage = { id: 'target', ts: new Date(1000) };
 		const loader: AnchorMessage = { id: 'loader', ts: new Date(1500), t: MessageTypeLoad.NEXT_CHUNK };
 		expect(anchorForTarget([target, loader], 'target')).toBe(1500);
+	});
+});
+
+describe('anchorForServerChunk', () => {
+	it('anchors at the bounding Newer Loader when one sits above the target', () => {
+		const chunk: AnchorMessage[] = [at('target', 1000), newerLoader('next-chunk', 1500)];
+		expect(anchorForServerChunk(chunk, 'target', 1000)).toBe(1500);
+	});
+
+	it('stays a Live Window (null) when the target is contiguous with the Live Tail — a push-notification deep link onto a tail message must not open the room anchored', () => {
+		const chunk: AnchorMessage[] = [at('older', 500), at('target', 1000)];
+		expect(anchorForServerChunk(chunk, 'target', 1000)).toBeNull();
+	});
+
+	it('stays a Live Window (null) when the target is the only message in the Chunk', () => {
+		const chunk: AnchorMessage[] = [at('target', 1000)];
+		expect(anchorForServerChunk(chunk, 'target', 1000)).toBeNull();
+	});
+
+	it('ignores a Previous Loader below the target — only a Newer Loader above brackets it away from the Live Tail', () => {
+		const chunk: AnchorMessage[] = [
+			{ id: 'prev-chunk', ts: 400, t: MessageTypeLoad.PREVIOUS_CHUNK },
+			at('older', 500),
+			at('target', 1000)
+		];
+		expect(anchorForServerChunk(chunk, 'target', 1000)).toBeNull();
+	});
+
+	it('anchors at the target own ts when the Chunk is empty', () => {
+		expect(anchorForServerChunk([], 'target', 1000)).toBe(1000);
+	});
+
+	it('anchors at the target own ts when the target is absent from the Chunk', () => {
+		const chunk: AnchorMessage[] = [at('other', 2000)];
+		expect(anchorForServerChunk(chunk, 'target', 1000)).toBe(1000);
+	});
+
+	it('normalizes the target ts whether given as a Date or a number', () => {
+		expect(anchorForServerChunk([], 'target', new Date(1000))).toBe(1000);
 	});
 });
 
