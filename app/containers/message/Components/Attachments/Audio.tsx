@@ -19,12 +19,12 @@ const MessageAudio = ({ file, getCustomEmoji, author, msg }: IMessageAudioProps)
 	'use memo';
 
 	const { user, id, rid } = useContext(MessageContext);
-	const { status, onPress, url, localUri } = useMediaAutoDownload({ file, author });
+	const { status, onPress, url } = useMediaAutoDownload({ file, author });
 
 	return (
 		<View style={{ gap: 4 }}>
 			{msg ? <Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} /> : null}
-			<AudioPlayer msgId={id} fileUri={localUri || url} downloadState={status} onPlayButtonPress={onPress} rid={rid} />
+			<AudioPlayer msgId={id} fileUri={url} downloadState={status} onPlayButtonPress={onPress} rid={rid} />
 		</View>
 	);
 };
