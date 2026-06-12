@@ -12,21 +12,14 @@ internal enum class VoipIncomingPushAction {
 }
 
 /**
- * Precedence (encodes the agreed push-layer microphone gate; see adr/0002):
- * not valid (stale/expired) → STALE; microphone denied → IGNORE_NO_PERMISSION;
- * already on a call → REJECT_BUSY; otherwise → SHOW_INCOMING.
- *
- * IGNORE_NO_PERMISSION deliberately sends nothing to the server (unlike REJECT_BUSY) so the call
- * keeps ringing on the user's other devices.
- *
- * The microphone-denied branch deliberately precedes busy. In practice an active call implies the
- * permission is granted, so the combination is near-impossible; the explicit ordering removes ambiguity.
- * [hasMicPermission] defaults to granted so existing callers keep their current outcomes.
+ * Pure routing decision for an incoming VoIP push.
+ * Precedence: stale → mic denied → busy → show. Mic-denied precedes busy and suppresses the call
+ * locally with no server signal, so it keeps ringing on the user's other devices.
  */
 internal fun decideIncomingVoipPushAction(
     isValidForIncomingHandling: Boolean,
     hasActiveCall: Boolean,
-    hasMicPermission: Boolean = true
+    hasMicPermission: Boolean
 ): VoipIncomingPushAction {
     if (!isValidForIncomingHandling) {
         return VoipIncomingPushAction.STALE

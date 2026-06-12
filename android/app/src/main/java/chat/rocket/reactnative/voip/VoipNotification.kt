@@ -518,11 +518,28 @@ class VoipNotification(private val context: Context) {
         }
 
         /**
-         * Ignores an incoming call at the push layer because the OS microphone permission
-         * (`RECORD_AUDIO`) is not granted — the call could never carry audio here, so the device
-         * is never rung (no Telecom registration, no notification). Deliberately sends nothing
-         * to the server so the call keeps ringing on the user's other devices. See adr/0002.
+         * Returns true when [payload] is fresh enough to present as an incoming call.
+         * Logs and returns false when [getRemainingLifetimeMs] is null (no createdAt) or the
+         * call has already expired.
          */
+        private fun isPayloadFreshForIncoming(payload: VoipPayload): Boolean {
+            if (payload.getRemainingLifetimeMs() == null) {
+                if (BuildConfig.DEBUG) {
+                    Log.w(TAG, "Skipping incoming VoIP call without a valid createdAt timestamp - callId: ${payload.callId}")
+                }
+                return false
+            }
+            if (payload.isExpired()) {
+                if (BuildConfig.DEBUG) {
+                    Log.d(TAG, "Skipping expired incoming VoIP call - callId: ${payload.callId}")
+                }
+                return false
+            }
+            return true
+        }
+
+        /** Log-only: no Telecom registration, no notification, no per-call DDP, no REST —
+         * the device stays silent and the call keeps ringing on the user's other devices. */
         @JvmStatic
         fun ignoreNoMicPermissionCall(payload: VoipPayload) {
             if (BuildConfig.DEBUG) {
@@ -683,27 +700,13 @@ class VoipNotification(private val context: Context) {
     fun onMessageReceived(voipPayload: VoipPayload) {
         when {
             voipPayload.isVoipIncomingCall() -> {
-                val isValidForIncoming =
-                    voipPayload.getRemainingLifetimeMs() != null && !voipPayload.isExpired()
+                val isValidForIncoming = isPayloadFreshForIncoming(voipPayload)
                 val hasMicPermission = ContextCompat.checkSelfPermission(
                     context,
                     Manifest.permission.RECORD_AUDIO
                 ) == PackageManager.PERMISSION_GRANTED
                 when (decideIncomingVoipPushAction(isValidForIncoming, hasActiveCall(context), hasMicPermission)) {
-                    VoipIncomingPushAction.STALE -> {
-                        if (voipPayload.getRemainingLifetimeMs() == null) {
-                            if (BuildConfig.DEBUG) {
-                                Log.w(
-                                    TAG,
-                                    "Skipping incoming VoIP call without a valid createdAt timestamp - callId: ${voipPayload.callId}"
-                                )
-                            }
-                        } else {
-                            if (BuildConfig.DEBUG) {
-                                Log.d(TAG, "Skipping expired incoming VoIP call - callId: ${voipPayload.callId}")
-                            }
-                        }
-                    }
+                    VoipIncomingPushAction.STALE -> { /* logged by isPayloadFreshForIncoming */ }
                     VoipIncomingPushAction.IGNORE_NO_PERMISSION -> ignoreNoMicPermissionCall(voipPayload)
                     VoipIncomingPushAction.REJECT_BUSY -> rejectBusyCall(context, voipPayload)
                     VoipIncomingPushAction.SHOW_INCOMING -> showIncomingCall(voipPayload)
@@ -749,21 +752,9 @@ class VoipNotification(private val context: Context) {
      * @param voipPayload The VoIP payload containing call information
      */
     fun showIncomingCall(voipPayload: VoipPayload) {
+        if (!isPayloadFreshForIncoming(voipPayload)) return
         val callId = voipPayload.callId
         val caller = voipPayload.caller
-        if (voipPayload.getRemainingLifetimeMs() == null) {
-            if (BuildConfig.DEBUG) {
-                Log.w(TAG, "Skipping incoming VoIP call without a valid createdAt timestamp - callId: $callId")
-            }
-            return
-        }
-
-        if (voipPayload.isExpired()) {
-            if (BuildConfig.DEBUG) {
-                Log.d(TAG, "Skipping expired incoming VoIP call - callId: $callId")
-            }
-            return
-        }
 
         if (BuildConfig.DEBUG) {
             Log.d(TAG, "Showing incoming VoIP call - callId: $callId, caller: $caller")
