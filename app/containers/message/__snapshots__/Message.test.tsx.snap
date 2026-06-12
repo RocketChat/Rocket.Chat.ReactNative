@@ -83527,6 +83527,7 @@ exports[`Story Snapshots: MessageWithNestedReplyAndFile should match snapshot 1`
                                                 "width": 32,
                                               }
                                             }
+                                            testID="play-button"
                                           >
                                             <Text
                                               allowFontScaling={false}
@@ -96368,6 +96369,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                                                 "width": 32,
                                               }
                                             }
+                                            testID="play-button"
                                           >
                                             <Text
                                               allowFontScaling={false}
