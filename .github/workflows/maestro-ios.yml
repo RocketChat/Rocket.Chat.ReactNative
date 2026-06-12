@@ -40,13 +40,6 @@ jobs:
           path: ~/.maestro
           key: maestro-${{ runner.os }}-${{ env.MAESTRO_VERSION }}
 
-      - name: Install Maestro + idb
-        run: |
-          brew tap facebook/fb
-          brew install facebook/fb/idb-companion
-          curl -fsSL "https://get.maestro.mobile.dev" | bash
-          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
-
       - name: Configure Simulator
         run: |
           defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false
@@ -58,18 +51,32 @@ jobs:
           defaults write com.apple.iphonesimulator ShowChrome -bool false
           defaults write com.apple.iphonesimulator DeviceFramebufferOnly -bool true
 
-      - name: Boot Simulator
-        timeout-minutes: 15
+      # Kick off the cold boot asynchronously so the iOS runtime boots in the
+      # background while Maestro + idb install. We block on it afterwards in
+      # "Wait for Simulator Ready".
+      - name: Start Simulator Boot
         run: |
           if [ "${{ inputs.shard }}" = "14" ]; then
             SIM_NAME="iPhone SE (3rd generation)"
           else
             SIM_NAME="iPhone 16 Pro"
           fi
+          echo "SIM_NAME=$SIM_NAME" >> "$GITHUB_ENV"
 
-          echo "Booting simulator: $SIM_NAME"
-
+          echo "Starting boot for simulator: $SIM_NAME"
           xcrun simctl boot "$SIM_NAME" || true
+
+      - name: Install Maestro + idb
+        run: |
+          brew tap facebook/fb
+          brew install facebook/fb/idb-companion
+          curl -fsSL "https://get.maestro.mobile.dev" | bash
+          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+
+      - name: Wait for Simulator Ready
+        timeout-minutes: 15
+        run: |
+          echo "Waiting for simulator to finish booting: $SIM_NAME"
           xcrun simctl bootstatus "$SIM_NAME" -b
 
           echo "Disabling animations"
@@ -77,7 +84,7 @@ jobs:
 
           echo "Warming SpringBoard"
           xcrun simctl launch booted com.apple.springboard
-          sleep 15
+          sleep 5
 
           echo "Booted devices:"
           xcrun simctl list devices | grep Booted
@@ -96,13 +103,21 @@ jobs:
       - name: Make Maestro Script Executable
         run: chmod +x .github/scripts/run-maestro.sh
 
+      # Installs Maestro's XCTest driver onto the booted simulator (~3min on a
+      # cold sim) so the timed step below measures test execution only.
+      - name: Warm Up Maestro Driver
+        timeout-minutes: 6
+        run: |
+          cat > /tmp/maestro-warmup.yaml <<'EOF'
+          appId: com.apple.Preferences
+          ---
+          - launchApp
+          EOF
+          maestro test /tmp/maestro-warmup.yaml || true
+
       - name: Run Maestro Tests
-        uses: nick-fields/retry@ce71cc2ab81d554ebbe88c79ab5975992d79ba08 # v3.0.2
-        with:
-          timeout_minutes: 30
-          max_attempts: 2
-          retry_on: timeout
-          command: ./.github/scripts/run-maestro.sh ios ${{ inputs.shard }}
+        timeout-minutes: 30
+        run: ./.github/scripts/run-maestro.sh ios ${{ inputs.shard }}
 
       - name: Upload Maestro Logs
         if: always()
