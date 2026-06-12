@@ -1,5 +1,5 @@
 import DateTimePicker, { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
-import React, { useState } from 'react';
+import { useState, Fragment, type ReactElement } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -148,7 +148,7 @@ const ClearAfterSheetContent = ({ initialValue, initialDate, onConfirm }: IClear
 		<View style={{ backgroundColor: colors.surfaceRoom, marginBottom: insets.bottom }}>
 			<List.Separator />
 			{CLEAR_AFTER_OPTIONS.map(option => (
-				<React.Fragment key={option.value}>
+				<Fragment key={option.value}>
 					<List.Radio
 						title={option.labelKey}
 						isSelected={pendingValue === option.value}
@@ -158,7 +158,7 @@ const ClearAfterSheetContent = ({ initialValue, initialDate, onConfirm }: IClear
 						testID={`status-clear-after-${option.value || 'never'}`}
 					/>
 					<List.Separator />
-				</React.Fragment>
+				</Fragment>
 			))}
 		</View>
 	);
@@ -170,7 +170,7 @@ interface IClearAfterPickerProps {
 	onChange: (value: ClearAfterValue, date: Date | null) => void;
 }
 
-const ClearAfterPicker = ({ value, customDate, onChange }: IClearAfterPickerProps): React.ReactElement => {
+const ClearAfterPicker = ({ value, customDate, onChange }: IClearAfterPickerProps): ReactElement => {
 	const { showActionSheet } = useActionSheet();
 	const { colors } = useTheme();
 

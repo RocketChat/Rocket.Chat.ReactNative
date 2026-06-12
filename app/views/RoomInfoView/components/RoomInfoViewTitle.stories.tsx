@@ -1,4 +1,4 @@
-import React from 'react';
+import { type ReactNode } from 'react';
 import { View, StyleSheet } from 'react-native';
 
 import RoomInfoViewTitle from './RoomInfoViewTitle';
@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Wrapper = ({ children }: { children: React.ReactNode }) => <View style={styles.container}>{children}</View>;
+const Wrapper = ({ children }: { children: ReactNode }) => <View style={styles.container}>{children}</View>;
 
 const futureExpiry = new Date(Date.now() + 3600000).toISOString();
 

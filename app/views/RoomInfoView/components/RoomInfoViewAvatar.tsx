@@ -18,8 +18,6 @@ const RoomInfoViewAvatar = ({
 	rid?: string;
 	handleEditAvatar: () => void;
 }): ReactElement => {
-	const { colors } = useTheme();
-
 	const showAvatarEdit = showEdit && type !== SubscriptionType.OMNICHANNEL;
 
 	return (
