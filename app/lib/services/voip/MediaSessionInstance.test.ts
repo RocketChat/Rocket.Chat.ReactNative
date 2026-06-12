@@ -132,10 +132,12 @@ jest.mock('../../navigation/appNavigation', () => ({
 const mockRequestVoipCallPermissions = jest.fn().mockResolvedValue({ granted: true, canAskAgain: true });
 const mockHasVoipCallPermission = jest.fn().mockResolvedValue(true);
 const mockShowVoipMicrophoneDeniedAlert = jest.fn();
+const mockPreAcquireVoipMicPermission = jest.fn().mockResolvedValue(undefined);
 jest.mock('../../methods/voipCallPermissions', () => ({
 	requestVoipCallPermissions: () => mockRequestVoipCallPermissions(),
 	hasVoipCallPermission: () => mockHasVoipCallPermission(),
-	showVoipMicrophoneDeniedAlert: (...args: unknown[]) => mockShowVoipMicrophoneDeniedAlert(...args)
+	showVoipMicrophoneDeniedAlert: (...args: unknown[]) => mockShowVoipMicrophoneDeniedAlert(...args),
+	preAcquireVoipMicPermission: () => mockPreAcquireVoipMicPermission()
 }));
 
 jest.mock('react-native', () => ({
@@ -249,6 +251,7 @@ describe('MediaSessionInstance', () => {
 		mockMediaCallsStateSignals.mockResolvedValue({ signals: [], success: true });
 		mockRequestVoipCallPermissions.mockResolvedValue({ granted: true, canAskAgain: true });
 		mockHasVoipCallPermission.mockResolvedValue(true);
+		mockPreAcquireVoipMicPermission.mockResolvedValue(undefined);
 		createdSessions.length = 0;
 		mockGetUidDirectMessage.mockReturnValue('other-user-id');
 		mockGetDMSubscriptionByUsername.mockResolvedValue(null);
@@ -300,6 +303,11 @@ describe('MediaSessionInstance', () => {
 				expect.stringContaining('register')
 			);
 			spy.mockRestore();
+		});
+
+		it('should fire preAcquireVoipMicPermission as part of init', async () => {
+			await mediaSessionInstance.init('user-1');
+			expect(mockPreAcquireVoipMicPermission).toHaveBeenCalledTimes(1);
 		});
 	});
 

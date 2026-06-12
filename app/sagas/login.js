@@ -40,7 +40,6 @@ import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
 import { mediaSessionInstance } from '../lib/services/voip/MediaSessionInstance';
 import { hasPermission } from '../lib/methods/helpers/helpers';
-import { preAcquireVoipMicPermission } from '../lib/methods/voipCallPermissions';
 import { mediaSessionStore } from '../lib/services/voip/MediaSessionStore';
 import { store as reduxStore } from '../lib/store/auxStore';
 
@@ -265,10 +264,6 @@ const checkVoipPermission = async () => {
 		}
 		if (!mediaSessionStore.getCurrentInstance()) {
 			mediaSessionInstance.init(userId).catch(log);
-			// Pre-acquire the microphone now (foreground, post-login) so an incoming call while the
-			// device is locked/backgrounded — where a permission dialog is impossible — can still be
-			// answered. Fire-and-forget: never block session setup on the OS dialog.
-			preAcquireVoipMicPermission().catch(log);
 		}
 	} catch (e) {
 		log(e);

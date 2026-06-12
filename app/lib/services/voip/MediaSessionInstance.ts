@@ -35,6 +35,7 @@ import log from '../../methods/helpers/log';
 import { isInActiveVoipCall } from './isInActiveVoipCall';
 import {
 	hasVoipCallPermission,
+	preAcquireVoipMicPermission,
 	requestVoipCallPermissions,
 	showVoipMicrophoneDeniedAlert
 } from '../../methods/voipCallPermissions';
@@ -167,6 +168,9 @@ class MediaSessionInstance {
 				});
 			}
 		});
+
+		// Fire-and-forget: session setup never blocks on the OS permission dialog.
+		preAcquireVoipMicPermission().catch(error => log(error));
 	}
 
 	public answerCall = async (callId: string) => {
@@ -174,10 +178,7 @@ class MediaSessionInstance {
 		if (existingCall != null && existingCall.callId === callId) {
 			return;
 		}
-		// The `await hasVoipCallPermission()` below widens the window before the `setCall` anchor, and
-		// both invocation paths (REST replay + live listener via `tryAnswerIfNativeAcceptedNotification`)
-		// are gated only on `call == null`. Without this an in-flight answer can be entered twice and
-		// double `accept()`/navigate (granted) or double `endCall` (not granted). Keep it idempotent.
+		// In-flight guard: REST replay and the DDP listener can both answer the same callId.
 		if (this.answeringCallIds.has(callId)) {
 			return;
 		}
@@ -186,10 +187,7 @@ class MediaSessionInstance {
 			const mainCall = this.instance?.getCallData(callId);
 
 			if (mainCall && mainCall.callId === callId) {
-				// Check-only gate — never prompt. The mic is pre-acquired at session init; at answer
-				// time the app may be locked/backgrounded where a dialog is impossible. Not granted →
-				// end the call silently (an alert would be invisible/confusing on the lock screen).
-				// Native already sent the REST accept, so the call cannot return to other devices.
+				// Check-only: a locked/backgrounded answer can't show a dialog. Native already accepted server-side, so a denied mic ends the call.
 				const granted = await hasVoipCallPermission();
 				if (!granted) {
 					this.endCall(callId);
