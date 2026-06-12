@@ -603,6 +603,10 @@ tags:
     id: 'message-composer-input'
 - eraseText
 - inputText: ${output.quoteMessage}
+- extendedWaitUntil:
+    visible:
+      text: ${output.quoteMessage}
+    timeout: 10000
 - runFlow: '../../helpers/go-back.yaml'
 - runFlow:
     file: '../../helpers/navigate-to-room.yaml'
@@ -616,6 +620,10 @@ tags:
     id: 'message-composer-input'
 - eraseText
 - inputText: ${output.quoteMessage}
+- extendedWaitUntil:
+    visible:
+      text: ${output.quoteMessage}
+    timeout: 10000
 - runFlow: '../../helpers/go-back.yaml'
 - runFlow:
     file: '../../helpers/navigate-to-room.yaml'
