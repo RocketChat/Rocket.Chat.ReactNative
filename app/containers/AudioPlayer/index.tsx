@@ -116,7 +116,7 @@ const AudioPlayer = ({
 	};
 
 	useEffect(() => {
-		if (fileUri && isDownloaded) {
+		if (fileUri) {
 			const task = InteractionManager.runAfterInteractions(async () => {
 				try {
 					audioUri.current = await AudioManager.loadAudio({ msgId, rid, uri: fileUri });
@@ -128,7 +128,7 @@ const AudioPlayer = ({
 			});
 			return () => task.cancel();
 		}
-	}, [fileUri, isDownloaded]);
+	}, [fileUri]);
 
 	useEffect(() => {
 		if (paused) {
