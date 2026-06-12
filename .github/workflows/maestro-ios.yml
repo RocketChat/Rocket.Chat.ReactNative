@@ -127,18 +127,6 @@ jobs:
       - name: Make Maestro Script Executable
         run: chmod +x .github/scripts/run-maestro.sh
 
-      # Installs Maestro's XCUITest driver onto the booted simulator (~3min on
-      # a cold sim) so the timed step below measures flow execution only.
-      - name: Warm Up Maestro Driver
-        timeout-minutes: 6
-        run: |
-          cat > /tmp/maestro-warmup.yaml <<'EOF'
-          appId: com.apple.Preferences
-          ---
-          - launchApp
-          EOF
-          maestro test /tmp/maestro-warmup.yaml || true
-
       - name: Run Maestro Tests
         timeout-minutes: 30
         run: ./.github/scripts/run-maestro.sh ios ${{ inputs.shard }}
