@@ -1,4 +1,30 @@
-import { getFilename } from './handleMediaDownload';
+import { getFilename, matchDownloadUrl } from './handleMediaDownload';
+
+describe('matchDownloadUrl', () => {
+	it('matches when downloadUrl contains image_url', () => {
+		expect(matchDownloadUrl({ image_url: '/file-upload/abc/photo.jpg' }, 'https://server.com/file-upload/abc/photo.jpg')).toBeTruthy();
+	});
+
+	it('matches when downloadUrl contains audio_url', () => {
+		expect(matchDownloadUrl({ audio_url: '/file-upload/abc/audio.mp3' }, 'https://server.com/file-upload/abc/audio.mp3')).toBeTruthy();
+	});
+
+	it('matches when downloadUrl contains video_url', () => {
+		expect(matchDownloadUrl({ video_url: '/file-upload/abc/video.mp4' }, 'https://server.com/file-upload/abc/video.mp4')).toBeTruthy();
+	});
+
+	it('returns falsy when none of the attachment URLs match', () => {
+		expect(matchDownloadUrl({ audio_url: '/file-upload/abc/other.mp3' }, 'https://server.com/file-upload/xyz/audio.mp3')).toBeFalsy();
+	});
+
+	it('returns falsy when the attachment has no URL fields', () => {
+		expect(matchDownloadUrl({}, 'https://server.com/file-upload/abc/audio.mp3')).toBeFalsy();
+	});
+
+	it('does not match image_url against an unrelated audio download', () => {
+		expect(matchDownloadUrl({ image_url: '/file-upload/abc/photo.jpg' }, 'https://server.com/file-upload/abc/audio.mp3')).toBeFalsy();
+	});
+});
 
 describe('Test the getFilename', () => {
 	it('returns the title without changes', () => {
