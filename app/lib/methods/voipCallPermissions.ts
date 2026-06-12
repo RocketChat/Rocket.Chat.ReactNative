@@ -9,11 +9,7 @@ import { isInActiveVoipCall } from '../services/voip/isInActiveVoipCall';
 export type VoipCallPermissionResult = {
 	granted: boolean;
 	canAskAgain: boolean;
-	/**
-	 * Whether the OS presented its permission dialog and the user actively acted on it this call.
-	 * Only meaningful when `granted` is false — it lets `preAcquireVoipMicPermission` surface the
-	 * denied alert on a *fresh* denial only, never on a relaunch where no dialog was shown.
-	 */
+	/** True only when the OS dialog was actually shown — a fresh denial, not a relaunch with the mic already denied. */
 	prompted: boolean;
 };
 
@@ -45,21 +41,13 @@ export const requestVoipCallPermissions = async (): Promise<VoipCallPermissionRe
 		}
 		return { granted: false, canAskAgain: false, prompted: false };
 	} catch (error) {
-		// A throw here (e.g. Android `request` when not attached to an Activity on a locked/backgrounded
-		// answer) must not escape: callers would swallow it and the call would hang until the 10s
-		// signaling timeout. Treat a failed permission check as denied so the call ends promptly.
+		// A throw (e.g. activity detached) is transient, not a permission verdict — denied but re-promptable.
 		log(error);
-		return { granted: false, canAskAgain: false, prompted: false };
+		return { granted: false, canAskAgain: true, prompted: false };
 	}
 };
 
-/**
- * Check-only microphone gate for the incoming-answer path. Never prompts: at answer time the app
- * may be locked or backgrounded (CallKit/Telecom UI up), where a permission dialog is impossible.
- * Returns whether the mic is currently granted; a throw resolves to `false` so the caller rejects
- * the call rather than hanging. The permission is pre-acquired at session init (see
- * `preAcquireVoipMicPermission`).
- */
+/** Check-only gate for the incoming-answer path — never prompts; mic is pre-acquired at session init. */
 export const hasVoipCallPermission = async (): Promise<boolean> => {
 	try {
 		if (Platform.OS === 'android') {
@@ -68,19 +56,14 @@ export const hasVoipCallPermission = async (): Promise<boolean> => {
 		const { granted } = await Audio.getPermissionsAsync();
 		return granted;
 	} catch (error) {
+		// Throw → false so the caller ends the call instead of hanging until the signaling timeout.
 		log(error);
 		return false;
 	}
 };
 
-/**
- * Pre-acquire the microphone at session init (login → VoIP init), while the app is foreground and a
- * permission dialog can actually be shown. Fire-and-forget from the login flow. Suppressed when a
- * call is active/being reconciled so we never pop a dialog over a ringing call. The denied alert is
- * surfaced only on a fresh denial (a dialog the user just acted on); a relaunch where the mic is
- * already denied shows nothing — the outgoing path re-nudges in context. On Android the OS may
- * re-show its own dialog on each cold start until the user grants or picks "don't ask again".
- */
+/** Pre-acquires the mic at session init, while the app is foregrounded and a dialog is possible — an incoming call on a locked device can't prompt.
+ * Alerts only on a fresh denial; skipped during an active call. */
 export const preAcquireVoipMicPermission = async (): Promise<void> => {
 	if (isInActiveVoipCall()) {
 		return;

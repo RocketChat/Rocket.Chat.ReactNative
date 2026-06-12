@@ -128,7 +128,7 @@ describe('requestVoipCallPermissions', () => {
 
 		const result = await requestVoipCallPermissions();
 
-		expect(result).toEqual({ granted: false, canAskAgain: false, prompted: false });
+		expect(result).toEqual({ granted: false, canAskAgain: true, prompted: false });
 		expect(log).toHaveBeenCalledTimes(1);
 	});
 
@@ -137,7 +137,7 @@ describe('requestVoipCallPermissions', () => {
 
 		const result = await requestVoipCallPermissions();
 
-		expect(result).toEqual({ granted: false, canAskAgain: false, prompted: false });
+		expect(result).toEqual({ granted: false, canAskAgain: true, prompted: false });
 		expect(log).toHaveBeenCalledTimes(1);
 	});
 
