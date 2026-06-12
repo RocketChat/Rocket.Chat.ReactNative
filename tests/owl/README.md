@@ -94,6 +94,15 @@ runs the comparison.** A local `pnpm owl:compare:*` run is still useful for auth
 and quick checks against your own machine, but the prints committed to the reference
 repo must come from CI.
 
+To keep CI renders byte-stable, the environment is pinned and the obvious sources of
+noise are neutralised:
+
+- **iOS runtime** is pinned via `OWL_IOS_RUNTIME` in `visual-regression-run-ios.yml`
+  (the simulator is created on exactly that runtime; the job fails loudly if it's
+  missing). Bumping it changes rendering — do it deliberately and re-seed baselines.
+- **Status-bar clock**: iOS forces 24-hour time; Android uses SystemUI demo mode to
+  freeze the clock/battery/network icons. Otherwise the live clock differs every run.
+
 ## Updating / seeding baselines (manual)
 
 1. Actions → **Visual Regression** → *Run workflow*, tick **`update_baseline`**.

@@ -30,6 +30,9 @@ jobs:
       RUNNING_E2E_TESTS: true
       OWL_VARIANT: ${{ inputs.variant }}
       OWL_DEVICE: ${{ inputs.device }}
+      # Pin the simulator runtime so baselines can't silently drift when a runner
+      # image bumps Xcode/iOS. Bump this (and re-seed baselines) on purpose only.
+      OWL_IOS_RUNTIME: com.apple.CoreSimulator.SimRuntime.iOS-26-0
       BASELINE_REPO: https://github.com/OtavioStasiak/Rocket.Chat.ReactNative.VisualRegressionTest
 
     steps:
@@ -58,36 +61,42 @@ jobs:
 
       # The runner doesn't pre-create named simulators for the freshly selected
       # Xcode, so "iPhone 16 Pro" / "iPhone SE (3rd generation)" may not exist
-      # yet (simctl: "Invalid device"). Resolve the device by name, creating it
-      # on the latest available iOS runtime if missing, then boot by UDID. owl
-      # then installs by name onto the one booted device.
+      # yet (simctl: "Invalid device"). Resolve a device of the requested name ON
+      # THE PINNED RUNTIME, creating it if missing, then boot by UDID. Pinning the
+      # runtime keeps renders byte-stable across runner image updates.
       - name: Ensure & boot simulator
         run: |
           set -euo pipefail
           UDID="$(node <<'NODE'
           const { execSync } = require('child_process');
           const name = process.env.OWL_DEVICE;
+          const wantRt = process.env.OWL_IOS_RUNTIME;
           const j = c => JSON.parse(execSync(c).toString());
+          const runtimes = j('xcrun simctl list runtimes -j').runtimes.filter(r => r.platform === 'iOS' && r.isAvailable);
+          const rt = runtimes.find(r => r.identifier === wantRt);
+          if (!rt) {
+            console.error(`Pinned iOS runtime ${wantRt} not available. Present: ` + runtimes.map(r => r.identifier).join(', '));
+            process.exit(1);
+          }
           const devices = j('xcrun simctl list devices available -j').devices;
           let udid;
-          for (const rt of Object.keys(devices))
-            for (const d of devices[rt]) if (d.name === name) udid = d.udid;
+          for (const d of (devices[rt.identifier] || [])) if (d.name === name) udid = d.udid;
           if (!udid) {
             const dt = j('xcrun simctl list devicetypes -j').devicetypes.find(t => t.name === name);
             if (!dt) { console.error('No simulator device type named: ' + name); process.exit(1); }
-            const rts = j('xcrun simctl list runtimes -j').runtimes.filter(r => r.platform === 'iOS' && r.isAvailable);
-            if (!rts.length) { console.error('No available iOS runtime'); process.exit(1); }
-            const rt = rts[rts.length - 1];
             console.error(`Creating "${name}" on ${rt.name}`);
             udid = execSync(`xcrun simctl create ${JSON.stringify(name)} ${dt.identifier} ${rt.identifier}`).toString().trim();
           }
           process.stdout.write(udid);
           NODE
           )"
-          echo "Using simulator $OWL_DEVICE ($UDID)"
+          echo "Using simulator $OWL_DEVICE ($UDID) on $OWL_IOS_RUNTIME"
           xcrun simctl boot "$UDID" || true
           xcrun simctl bootstatus "$UDID" -b
           xcrun simctl spawn "$UDID" defaults write -g UIAnimationDragCoefficient -float 10
+          # Force 24-hour time so the status-bar clock owl stamps ("9:41") renders
+          # identically regardless of the runner's region (avoids 09:41 vs 9:41 AM).
+          xcrun simctl spawn "$UDID" defaults write -g AppleICUForce24HourTime -bool true
 
       - name: Sync baseline prints from reference repo (compare mode)
         if: ${{ !inputs.update_baseline }}
