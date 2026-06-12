@@ -80,8 +80,26 @@ Run it from the Actions tab → **Visual Regression** → *Run workflow*. Tick
 `update_baseline` to capture fresh prints instead of comparing; download the resulting
 artifact and commit the PNGs to the reference repo (below).
 
-## Updating a baseline
+## Baselines must be captured in CI
 
-Capture fresh prints — locally (`pnpm owl:test:update:ios`) or via the
-`update_baseline` toggle in the **Visual Regression** workflow — review them, and commit
-the new PNGs to the **reference repo** under `app/containers/ActionSheet/` — never here.
+owl compares **pixel-exact** (it passes only when zero pixels differ; the `threshold`
+option is per-pixel colour sensitivity, not a diff budget). iOS/Android simulators do
+**not** render identically across machines — font hinting, sub-pixel antialiasing, a
+1-px sheet offset, and even the status-bar clock format (`09:41` vs `9:41 AM`, a region
+setting) all differ between a local Mac and the CI runner. So a baseline captured
+locally will never match a CI render, and vice-versa.
+
+**The golden baselines therefore have to be captured by the same CI environment that
+runs the comparison.** A local `pnpm owl:compare:*` run is still useful for authoring
+and quick checks against your own machine, but the prints committed to the reference
+repo must come from CI.
+
+## Updating / seeding baselines (manual)
+
+1. Actions → **Visual Regression** → *Run workflow*, tick **`update_baseline`**.
+2. When it finishes, download the **`owl-baseline-<variant>`** artifact from each leg
+   (`iphone16pro-portrait`, `iphonese-portrait`, `android-portrait`,
+   `android-landscape`). Each holds just the correctly-named PNGs.
+3. Drop all of them into the **reference repo** under `app/containers/ActionSheet/`,
+   review, and commit. They are now the source of truth — never commit baselines here.
+4. Re-run **Visual Regression** in compare mode; it should be green (CI vs CI).

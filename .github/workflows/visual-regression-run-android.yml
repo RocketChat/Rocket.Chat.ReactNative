@@ -101,6 +101,17 @@ jobs:
               pnpm owl:test:android
             fi
 
+      # Clean, commit-ready prints: just the PNGs, correctly named. Download all
+      # legs' owl-baseline-* artifacts and drop them into the reference repo's
+      # app/containers/ActionSheet/ to seed the CI goldens.
+      - name: Upload fresh baselines (update mode)
+        if: ${{ inputs.update_baseline }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: owl-baseline-${{ inputs.variant }}
+          path: .owl/baseline/android/*.png
+          if-no-files-found: error
+
       - name: Upload Owl results
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
