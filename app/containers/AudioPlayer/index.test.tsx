@@ -1,4 +1,3 @@
-import React from 'react';
 import { act, fireEvent, render, waitFor } from '@testing-library/react-native';
 import { InteractionManager } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
