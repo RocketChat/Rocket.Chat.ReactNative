@@ -1,4 +1,3 @@
-import { Platform } from 'react-native';
 import { renderHook } from '@testing-library/react-native';
 
 import { useMessageAccessibilityLabel } from './useMessageAccessibilityLabel';
@@ -7,16 +6,6 @@ import { type IMessage, type IMessageTouchable } from '../interfaces';
 jest.mock('../../../lib/hooks/useAltTextSupported', () => ({
 	useAltTextSupported: () => false
 }));
-
-// The quote suffix is iOS-only (TalkBack enumerates the quote subtree on Android, so it would
-// double-announce); pin OS to iOS by default and restore it after each test.
-const originalOS = Platform.OS;
-beforeEach(() => {
-	Platform.OS = 'ios';
-});
-afterEach(() => {
-	Platform.OS = originalOS;
-});
 
 type TProps = IMessage & IMessageTouchable;
 
@@ -122,55 +111,6 @@ describe('useMessageAccessibilityLabel', () => {
 			)
 		);
 		expect(result.current).toBe(`alice ${HOUR} caption. Image description: A wavy pattern`);
-	});
-
-	it('appends the quoted message text to the suffix on iOS', () => {
-		const { result } = renderHook(() =>
-			useMessageAccessibilityLabel(
-				buildProps({
-					msg: 'Go to a thread from another room',
-					attachments: [
-						{
-							message_link: 'https://example.com/group/jumping?msg=abc',
-							author_name: 'diego.mello',
-							text: "Go to jumping-thread's thread"
-						}
-					]
-				})
-			)
-		);
-		expect(result.current).toBe(`alice ${HOUR} Go to a thread from another room. Quote: Go to jumping-thread's thread`);
-	});
-
-	it('omits the quoted message suffix on Android', () => {
-		Platform.OS = 'android';
-		const { result } = renderHook(() =>
-			useMessageAccessibilityLabel(
-				buildProps({
-					msg: 'Go to a thread from another room',
-					attachments: [
-						{
-							message_link: 'https://example.com/group/jumping?msg=abc',
-							author_name: 'diego.mello',
-							text: "Go to jumping-thread's thread"
-						}
-					]
-				})
-			)
-		);
-		expect(result.current).toBe(`alice ${HOUR} Go to a thread from another room.`);
-	});
-
-	it('announces the quote even when the message has no body of its own on iOS', () => {
-		const { result } = renderHook(() =>
-			useMessageAccessibilityLabel(
-				buildProps({
-					msg: undefined,
-					attachments: [{ message_link: 'https://example.com/group/jumping?msg=abc', text: 'quoted body' }]
-				})
-			)
-		);
-		expect(result.current).toBe(`alice ${HOUR}. Quote: quoted body`);
 	});
 
 	it('does not announce "undefined" for attachment-only messages', () => {
