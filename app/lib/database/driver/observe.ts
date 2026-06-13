@@ -76,7 +76,11 @@ export interface UseTableQueryOptions<T> {
  *                  (e.g. filter values). Changing `tables` or `queryFn` identity does
  *                  not automatically re-subscribe — pass them as deps if they can change.
  */
-export function useTableQuery<T>(dbHandle: DbHandle | null | undefined, options: UseTableQueryOptions<T>, deps: unknown[] = []): T[] {
+export function useTableQuery<T>(
+	dbHandle: DbHandle | null | undefined,
+	options: UseTableQueryOptions<T>,
+	deps: unknown[] = []
+): T[] {
 	const { tables, queryFn, rowKey, equalFn, debounceMs = 16 } = options;
 
 	const [rows, setRows] = useState<T[]>([]);

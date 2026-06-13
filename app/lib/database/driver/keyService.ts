@@ -37,17 +37,19 @@ function assertDevShimAllowed(): void {
 }
 
 const _devShim: IKeychainShim = {
-	getItem: async (key: string) => {
+	getItem: (key: string) => {
 		assertDevShimAllowed();
-		return _devStore.get(key) ?? null;
+		return Promise.resolve(_devStore.get(key) ?? null);
 	},
-	setItem: async (key: string, value: string) => {
+	setItem: (key: string, value: string) => {
 		assertDevShimAllowed();
 		_devStore.set(key, value);
+		return Promise.resolve();
 	},
-	removeItem: async (key: string) => {
+	removeItem: (key: string) => {
 		assertDevShimAllowed();
 		_devStore.delete(key);
+		return Promise.resolve();
 	}
 };
 

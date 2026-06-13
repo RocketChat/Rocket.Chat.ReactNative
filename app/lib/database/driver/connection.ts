@@ -104,7 +104,11 @@ function resolveDbDirectory(): string | undefined {
 		// uri may have a trailing slash; expo-sqlite wants a directory path
 		return container.uri.replace(/\/$/, '');
 	} catch (e) {
-		console.warn('[db/connection] Failed to resolve App Group path:', (e as Error).message, '— falling back to default directory');
+		console.warn(
+			'[db/connection] Failed to resolve App Group path:',
+			(e as Error).message,
+			'— falling back to default directory'
+		);
 		return undefined;
 	}
 }
@@ -177,7 +181,7 @@ async function openDb<K extends DbKind>(dbName: string, kind: K): Promise<DbHand
 /**
  * Opens (or returns the cached handle for) the global servers database.
  */
-export async function openServersDb(): Promise<DbHandle<'servers'>> {
+export function openServersDb(): Promise<DbHandle<'servers'>> {
 	return openDb(DEFAULT_DB_NAME, 'servers');
 }
 
@@ -185,7 +189,7 @@ export async function openServersDb(): Promise<DbHandle<'servers'>> {
  * Opens (or returns the cached handle for) the per-server app database.
  * @param serverUrl  The full server URL, e.g. "https://open.rocket.chat"
  */
-export async function openServerDb(serverUrl: string): Promise<DbHandle<'app'>> {
+export function openServerDb(serverUrl: string): Promise<DbHandle<'app'>> {
 	const dbName = deriveServerDbName(serverUrl);
 	return openDb(dbName, 'app');
 }
