@@ -12,7 +12,10 @@ import com.google.gson.JsonObject;
 import chat.rocket.mobilecrypto.algorithms.AESCrypto;
 import chat.rocket.mobilecrypto.algorithms.RSACrypto;
 import chat.rocket.mobilecrypto.algorithms.CryptoUtils;
-import com.nozbe.watermelondb.WMDatabase;
+import chat.rocket.reactnative.storage.DatabaseKeyStore;
+import net.zetetic.database.sqlcipher.SQLiteDatabase;
+import net.zetetic.database.sqlcipher.SQLiteDatabaseHook;
+import net.zetetic.database.sqlcipher.SQLiteConnection;
 
 import java.security.SecureRandom;
 import java.util.Arrays;
@@ -172,55 +175,77 @@ class Encryption {
     }
 
     public Room readRoom(final Ejson ejson, Context context) {
-        String dbName = getDatabaseName(ejson.serverURL(), context);
-        WMDatabase db = null;
+        String dbName = deriveDbName(ejson.serverURL());
+        String dbPath = context.getFilesDir().getAbsolutePath() + "/SQLite/" + dbName;
 
+        // Load the SQLCipher native library. Safe to call multiple times per process.
+        System.loadLibrary("sqlcipher");
+
+        // Read the key from the AndroidKeyStore-backed store.
+        // Storage key matches JS KEY_PREFIX: "db_key_v1:<dbName>"
+        String storageKey = "db_key_v1:" + dbName;
+        String keyHex = DatabaseKeyStore.getItemInternal(context, storageKey);
+        if (keyHex == null) {
+            Log.w(TAG, "No encryption key found for " + dbName + " — cannot read room");
+            return null;
+        }
+
+        // Raw-key string form: "x'<64 hex>'" — skips PBKDF2, matches the JS driver.
+        // Never use the byte[] overload: it silently PBKDF2-derives and produces
+        // "file is not a database" even when the bytes match.
+        String rawKey = "x'" + keyHex + "'";
+
+        SQLiteDatabase db = null;
         try {
-           db = WMDatabase.getInstance(dbName, context);
-           String[] queryArgs = {ejson.rid};
+            db = SQLiteDatabase.openDatabase(dbPath, rawKey, null, SQLiteDatabase.OPEN_READONLY, null);
 
-           Cursor cursor = db.rawQuery("SELECT * FROM subscriptions WHERE id == ? LIMIT 1", queryArgs);
+            Cursor cursor = db.rawQuery("SELECT * FROM subscriptions WHERE id == ? LIMIT 1", new String[]{ejson.rid});
 
-           if (cursor.getCount() == 0) {
-               cursor.close();
-               return null;
-           }
+            if (cursor.getCount() == 0) {
+                cursor.close();
+                return null;
+            }
 
-           cursor.moveToFirst();
-           int e2eKeyColumnIndex = cursor.getColumnIndex("e2e_key");
-           int encryptedColumnIndex = cursor.getColumnIndex("encrypted");
-           
-           if (e2eKeyColumnIndex == -1) {
-               Log.e(TAG, "e2e_key column not found in subscriptions table");
-               cursor.close();
-               return null;
-           }
-           
-           String e2eKey = cursor.getString(e2eKeyColumnIndex);
-           Boolean encrypted = encryptedColumnIndex != -1 && cursor.getInt(encryptedColumnIndex) > 0;
-           cursor.close();
+            cursor.moveToFirst();
+            int e2eKeyColumnIndex = cursor.getColumnIndex("e2e_key");
+            int encryptedColumnIndex = cursor.getColumnIndex("encrypted");
 
-           return new Room(e2eKey, encrypted);
+            if (e2eKeyColumnIndex == -1) {
+                Log.e(TAG, "e2e_key column not found in subscriptions table");
+                cursor.close();
+                return null;
+            }
+
+            String e2eKey = cursor.getString(e2eKeyColumnIndex);
+            Boolean encrypted = encryptedColumnIndex != -1 && cursor.getInt(encryptedColumnIndex) > 0;
+            cursor.close();
+
+            return new Room(e2eKey, encrypted);
 
         } catch (Exception e) {
             Log.e(TAG, "Error reading room", e);
             return null;
 
         } finally {
-            if (db != null) {
+            if (db != null && db.isOpen()) {
                 db.close();
             }
         }
     }
 
-    private String getDatabaseName(String serverUrl, Context context) {
-        // Match JS WatermelonDB naming: strip scheme, replace '/' with '.', and append one ".db".
-        String name = serverUrl.replaceFirst("^(\\w+:)?//", "").replace("/", ".");
-        name += ".db";
-
-        // Important: return just the name (not an absolute path). WMDatabase will resolve and append its own ".db" internally,
-        // so the physical file becomes "*.db.db", matching the JS adapter.
-        return name;
+    /**
+     * Derives the clean database filename from a server URL.
+     * Matches the JS `deriveServerDbName` in connection.ts:
+     *   strip trailing slashes → strip scheme → replace '/' with '.' → append ".db"
+     */
+    private static String deriveDbName(String serverUrl) {
+        // Strip trailing slashes
+        String s = serverUrl.replaceAll("/+$", "");
+        // Strip scheme ("https://", "http://", or bare "//")
+        s = s.replaceFirst("^(\\w+:)?//", "");
+        // Replace remaining slashes with dots
+        s = s.replace("/", ".");
+        return s + ".db";
     }
 
     public String readUserKey(final Ejson ejson) throws Exception {

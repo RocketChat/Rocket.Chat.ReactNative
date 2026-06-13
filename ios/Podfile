@@ -29,14 +29,18 @@ end
 abstract_target 'defaults' do
 
   all_pods
+  # Required by Database.swift (NSE + main app) to open SQLCipher-encrypted databases.
+  # Version locked to match expo-sqlite 16.0.10's vendored SQLCipher 4.7.0.
+  pod 'SQLCipher', '~> 4.7.0'
 
   target 'Rocket.Chat'
   target 'NotificationService'
 end
 
-$static_framework = [ 
+$static_framework = [
   'WatermelonDB',
-  'simdjson'
+  'simdjson',
+  'SQLCipher'
 ]
 pre_install do |installer|
   Pod::Installer::Xcode::TargetValidator.send(:define_method, :verify_no_static_framework_transitive_dependencies) {}
@@ -65,12 +69,46 @@ post_install do |installer|
       config.build_settings['CODE_SIGNING_REQUIRED'] = "NO"
       config.build_settings['CODE_SIGNING_ALLOWED'] = "NO"
       config.build_settings['ENABLE_BITCODE'] = "NO"
-      
+
       # Add SecureStorage headers to search paths for react-native-webview
       if target.name == 'react-native-webview'
         config.build_settings['HEADER_SEARCH_PATHS'] ||= ['$(inherited)']
         config.build_settings['HEADER_SEARCH_PATHS'] << '$(SRCROOT)/..'
       end
+    end
+  end
+
+  # SQLCipher's xcconfig propagates defines and header search paths to aggregate
+  # xcconfigs, breaking Swift module maps for the SDK's built-in SQLite3:
+  #   - _SQLITE3_H_=1 / _FTS5_H=1 / _SQLITE3RTREE_H_=1: block SQLite3.modulemap
+  #   - HEADER_SEARCH_PATHS into SQLCipher pod: cause sqlite3_api_routines
+  #     struct redefinition (two different sqlite3.h in scope)
+  # Strip them from aggregate xcconfigs; only the SQLCipher pod itself needs them.
+  Dir.glob(File.join(__dir__, 'Pods/Target Support Files/**/*.xcconfig')).each do |xcconfig_path|
+    next unless File.basename(xcconfig_path).start_with?('Pods-')
+    content = File.read(xcconfig_path)
+    modified = content
+      .gsub(/ _SQLITE3_H_=1/, '')
+      .gsub(/ _FTS5_H=1/, '')
+      .gsub(/ _SQLITE3RTREE_H_=1/, '')
+      .gsub(/\s*"[^"]*\/SQLCipher"/, '')
+      .gsub(/\s+\$[({]PODS_ROOT[)}]\/SQLCipher\b/, '')
+      .gsub(/\s+"[^"]*\/Headers\/Public\/SQLCipher"/, '')
+    File.write(xcconfig_path, modified) if modified != content
+  end
+
+  # The static_framework override bypasses CocoaPods' normal LIBRARY_SEARCH_PATHS
+  # injection for SQLCipher, so -l"SQLCipher" fails to resolve at link time.
+  # Add the path manually to all aggregate xcconfigs that already have the setting.
+  Dir.glob(File.join(__dir__, 'Pods/Target Support Files/Pods-*/*.xcconfig')).each do |xcconfig_path|
+    content = File.read(xcconfig_path)
+    sqlcipher_lib_dir = '"${PODS_CONFIGURATION_BUILD_DIR}/SQLCipher"'
+    if content.include?('LIBRARY_SEARCH_PATHS') && !content.include?(sqlcipher_lib_dir)
+      modified = content.gsub(
+        'LIBRARY_SEARCH_PATHS = $(inherited)',
+        "LIBRARY_SEARCH_PATHS = $(inherited) #{sqlcipher_lib_dir}"
+      )
+      File.write(xcconfig_path, modified) if modified != content
     end
   end
 
