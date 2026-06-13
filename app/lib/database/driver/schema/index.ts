@@ -1,5 +1,22 @@
 import type { InferInsertModel, InferSelectModel } from 'drizzle-orm';
 
+import type {
+	customEmojisTable,
+	frequentlyUsedEmojisTable,
+	messagesTable,
+	permissionsTable,
+	rolesTable,
+	roomsTable,
+	settingsTable,
+	slashCommandsTable,
+	subscriptionsTable,
+	threadMessagesTable,
+	threadsTable,
+	uploadsTable,
+	usersAppTable
+} from './app';
+import type { serversHistoryTable, serversTable, usersServersTable } from './servers';
+
 export {
 	customEmojisTable,
 	frequentlyUsedEmojisTable,
@@ -18,23 +35,6 @@ export {
 export { serversHistoryTable, serversTable, usersServersTable } from './servers';
 
 // ---- app (per-server) database row types ----
-
-import {
-	customEmojisTable,
-	frequentlyUsedEmojisTable,
-	messagesTable,
-	permissionsTable,
-	rolesTable,
-	roomsTable,
-	settingsTable,
-	slashCommandsTable,
-	subscriptionsTable,
-	threadMessagesTable,
-	threadsTable,
-	uploadsTable,
-	usersAppTable
-} from './app';
-import { serversHistoryTable, serversTable, usersServersTable } from './servers';
 
 export type TSubscriptionRow = InferSelectModel<typeof subscriptionsTable>;
 export type TSubscriptionInsert = InferInsertModel<typeof subscriptionsTable>;

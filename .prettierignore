@@ -29,3 +29,4 @@ pnpm-lock.yaml
 app/i18n/locales/
 app/containers/CustomIcon/mappedIcons.js
 app/containers/CustomIcon/selection.json
+app/lib/database/driver/migrations/
