@@ -6,3 +6,4 @@ android
 ios
 
 .worktrees/
+app/lib/database/driver/migrations/
