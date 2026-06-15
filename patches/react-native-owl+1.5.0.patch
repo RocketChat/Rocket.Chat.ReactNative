@@ -10,3 +10,26 @@ diff --git a/node_modules/react-native-owl/dist/utils/adb.js b/node_modules/reac
                      return [4 /*yield*/, execa_1.default.command(command, { stdio: stdio })];
                  case 1:
                      _b.sent();
+diff --git a/node_modules/react-native-owl/dist/matchers.js b/node_modules/react-native-owl/dist/matchers.js
+--- a/node_modules/react-native-owl/dist/matchers.js
++++ b/node_modules/react-native-owl/dist/matchers.js
+@@ -26,6 +26,19 @@ var toMatchBaseline = function (latestPath, options) {
+         var baselineImage = pngjs_1.PNG.sync.read(baselineData);
+         var latestData = fs_1.default.readFileSync(latestPath);
+         var latestImage = pngjs_1.PNG.sync.read(latestData);
++        // Mask the top status-bar strip (OWL_MASK_TOP px) on both images before
++        // diffing. The OS top bar (live clock, battery, signal) never matches
++        // across capture/compare runs and the matcher passes only at 0 diff, so
++        // it must be excluded. The strip is zeroed identically on both images, so
++        // pixelmatch sees no diff there while the rest of the app is still
++        // verified pixel-for-pixel. Default 0 = no masking (unchanged behaviour).
++        var maskTop = parseInt(process.env.OWL_MASK_TOP || '0', 10) || 0;
++        maskTop = Math.max(0, Math.min(maskTop, baselineImage.height));
++        if (maskTop > 0) {
++            var maskBytes = baselineImage.width * maskTop * 4;
++            baselineImage.data.fill(0, 0, maskBytes);
++            latestImage.data.fill(0, 0, maskBytes);
++        }
+         var diffImage = new pngjs_1.PNG({
+             width: baselineImage.width,
+             height: baselineImage.height,

@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect } from 'react';
 import { Dimensions, StatusBar, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
@@ -75,7 +75,7 @@ seedMockServers();
  * screen and opens its real action sheet, so baselines are real screens.
  */
 const OwlRoot = () => {
-	React.useEffect(() => {
+	useEffect(() => {
 		RNBootSplash.hide({ fade: false });
 	}, []);
 

@@ -11,6 +11,23 @@ const variant = process.env.OWL_VARIANT || 'local';
 const screenshotName = (name: string) => `${variant}-${name}`;
 const isLandscape = variant.includes('landscape');
 
+// Owl screenshots the whole device and its matcher passes only at zero pixel
+// diff, so the OS status bar (live clock, battery, signal) would make every
+// baseline fail — it changes on every run. The patched matcher zeroes the top
+// OWL_MASK_TOP px of both images before diffing, so we mask each device's
+// status-bar height (device px, measured from the captured PNG) while the app
+// below it is still verified pixel-for-pixel. Source-agnostic: works for Owl's
+// own captures and for any screenshot fed through the matcher (e.g. Maestro).
+// Tune a value if the first baseline shows the clock leaking in (raise it) or
+// the header being clipped (lower it).
+const MASK_TOP_BY_VARIANT: Record<string, number> = {
+	'iphone16pro-portrait': 150,
+	'iphonese-portrait': 40,
+	'android-portrait': 88,
+	'android-landscape': 88
+};
+process.env.OWL_MASK_TOP = String(MASK_TOP_BY_VARIANT[variant] ?? 0);
+
 const wait = (ms: number) => new Promise<void>(resolve => setTimeout(resolve, ms));
 
 // Real screens settle after mount (navigation push animation, DB/REST loading);
