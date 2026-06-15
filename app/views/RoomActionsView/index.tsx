@@ -468,24 +468,13 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 
 	updateRoomMember = async () => {
 		const { room } = this.state;
-		const { activeUsers } = this.props;
 
 		try {
 			if (!isGroupChat(room)) {
 				const roomUserId = getUidDirectMessage(room);
 				const result = await getUserInfo(roomUserId);
-				const activeUserStatus = roomUserId ? activeUsers[roomUserId] : undefined;
 				if (result.success) {
-					const user = result.user as any;
-					this.setState({
-						member: {
-							...user,
-							...(activeUserStatus?.status != null && { status: activeUserStatus.status }),
-							...(activeUserStatus?.statusText != null && { statusText: activeUserStatus.statusText }),
-							...(activeUserStatus?.statusExpiresAt != null && { statusExpiresAt: activeUserStatus.statusExpiresAt }),
-							...(activeUserStatus?.statusSource != null && { statusSource: activeUserStatus.statusSource })
-						}
-					});
+					this.setState({ member: result.user as any });
 				}
 			}
 		} catch (e) {
@@ -770,10 +759,10 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 		const isGroupChatHandler = isGroupChat(room);
 		const roomUserId = !isGroupChatHandler && t === 'd' ? getUidDirectMessage(room) : undefined;
 		const activeUserStatus = roomUserId ? activeUsers[roomUserId] : undefined;
-		const userStatus = activeUserStatus?.status != null ? activeUserStatus.status : member.status;
-		const statusText = activeUserStatus?.statusText != null ? activeUserStatus.statusText : member.statusText;
-		const statusExpiresAt = activeUserStatus?.statusExpiresAt != null ? activeUserStatus.statusExpiresAt : member.statusExpiresAt;
-		const formattedStatusExpiry = statusExpiresAt ? formatStatusExpiry(statusExpiresAt as string) : undefined;
+		const userStatus = activeUserStatus?.status ?? member.status;
+		const statusText = activeUserStatus?.statusText ?? member.statusText;
+		const statusExpiresAt = activeUserStatus?.statusExpiresAt ?? member.statusExpiresAt;
+		const formattedStatusExpiry = statusExpiresAt ? formatStatusExpiry(statusExpiresAt) : undefined;
 		const presenceLabel = !statusText && userStatus ? STATUS_I18N_KEYS[userStatus] : undefined;
 
 		return (
