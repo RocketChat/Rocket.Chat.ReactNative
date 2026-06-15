@@ -279,18 +279,23 @@ describe('translateClauses', () => {
 		expect(sql).toContain(' or ');
 	});
 
-	it('translates oneOf -> IN', () => {
-		const { sql, params } = buildSql([Q.oneOf('rid', ['a', 'b', 'c'])]);
+	it('translates where(oneOf) -> IN', () => {
+		const { sql, params } = buildSql([Q.where('rid', Q.oneOf(['a', 'b', 'c']))]);
 		expect(sql).toContain(' in (?, ?, ?)');
 		expect(params).toEqual(['a', 'b', 'c']);
 	});
 
-	it('translates notEq, gt, lte, like, notLike', () => {
-		expect(buildSql([Q.notEq('t', 'd')]).sql).toContain('<>');
-		expect(buildSql([Q.gt('unread', 0)]).sql).toContain('>');
-		expect(buildSql([Q.lte('unread', 5)]).sql).toContain('<=');
-		expect(buildSql([Q.like('name', '%x%')]).sql).toContain('like');
-		expect(buildSql([Q.notLike('name', '%x%')]).sql).toContain('not ');
+	it('translates where(notEq), where(gt), where(lte), where(like), where(notLike)', () => {
+		expect(buildSql([Q.where('t', Q.notEq('d'))]).sql).toContain('<>');
+		expect(buildSql([Q.where('unread', Q.gt(0))]).sql).toContain('>');
+		expect(buildSql([Q.where('unread', Q.lte(5))]).sql).toContain('<=');
+		expect(buildSql([Q.where('name', Q.like('%x%'))]).sql).toContain('like');
+		expect(buildSql([Q.where('name', Q.notLike('%x%'))]).sql).toContain('not ');
+	});
+
+	it('lowers a null comparison to IS NULL / IS NOT NULL', () => {
+		expect(buildSql([Q.where('rid', null)]).sql).toContain('is null');
+		expect(buildSql([Q.where('rid', Q.notEq(null))]).sql).toContain('is not null');
 	});
 
 	it('translates sortBy asc/desc into order by', () => {

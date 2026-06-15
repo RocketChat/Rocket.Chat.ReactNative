@@ -1,7 +1,28 @@
 /**
  * Q namespace — clause descriptor objects only.
  * No eager Drizzle refs; safe to import without a DB handle.
+ *
+ * Mirrors WatermelonDB's surface: comparison operators (eq, gt, like, …) take ONLY the
+ * right-hand value and return a Comparison; Q.where(column, valueOrComparison) wraps it
+ * (a raw value is treated as an implicit eq). Operators are never clauses on their own.
  */
+
+// ---------------------------------------------------------------------------
+// Comparison — right-hand side of a where clause
+// ---------------------------------------------------------------------------
+
+export type Operator = 'eq' | 'notEq' | 'gt' | 'gte' | 'lt' | 'lte' | 'like' | 'notLike' | 'oneOf';
+
+export interface Comparison {
+	__comparison: true;
+	operator: Operator;
+	value?: unknown;
+	values?: unknown[];
+}
+
+function isComparison(value: unknown): value is Comparison {
+	return typeof value === 'object' && value !== null && (value as Comparison).__comparison === true;
+}
 
 // ---------------------------------------------------------------------------
 // Clause descriptor types
@@ -10,55 +31,7 @@
 export interface WhereDescription {
 	type: 'where';
 	column: string;
-	value: unknown;
-}
-
-export interface NotEqDescription {
-	type: 'notEq';
-	column: string;
-	value: unknown;
-}
-
-export interface GtDescription {
-	type: 'gt';
-	column: string;
-	value: number;
-}
-
-export interface GteDescription {
-	type: 'gte';
-	column: string;
-	value: number;
-}
-
-export interface LtDescription {
-	type: 'lt';
-	column: string;
-	value: number;
-}
-
-export interface LteDescription {
-	type: 'lte';
-	column: string;
-	value: number;
-}
-
-export interface LikeDescription {
-	type: 'like';
-	column: string;
-	value: string;
-}
-
-export interface NotLikeDescription {
-	type: 'notLike';
-	column: string;
-	value: string;
-}
-
-export interface OneOfDescription {
-	type: 'oneOf';
-	column: string;
-	values: unknown[];
+	comparison: Comparison;
 }
 
 export interface AndDescription {
@@ -93,64 +66,59 @@ export interface OnDescription {
 	clause: Clause;
 }
 
-export type Clause =
-	| WhereDescription
-	| NotEqDescription
-	| GtDescription
-	| GteDescription
-	| LtDescription
-	| LteDescription
-	| LikeDescription
-	| NotLikeDescription
-	| OneOfDescription
-	| AndDescription
-	| OrDescription
-	| SortBy
-	| Take
-	| Skip
-	| OnDescription;
+export type Clause = WhereDescription | AndDescription | OrDescription | SortBy | Take | Skip | OnDescription;
 
-// Type aliases re-exported to match WMDB surface
+// Type alias re-exported to match WMDB surface
 export type Or = OrDescription;
 
 // ---------------------------------------------------------------------------
-// Operators
+// Comparison operators — take only the right-hand value
 // ---------------------------------------------------------------------------
 
-export function where(column: string, value: unknown): WhereDescription {
-	return { type: 'where', column, value };
+export function eq(value: unknown): Comparison {
+	return { __comparison: true, operator: 'eq', value };
 }
 
-export function notEq(column: string, value: unknown): NotEqDescription {
-	return { type: 'notEq', column, value };
+export function notEq(value: unknown): Comparison {
+	return { __comparison: true, operator: 'notEq', value };
 }
 
-export function gt(column: string, value: number): GtDescription {
-	return { type: 'gt', column, value };
+export function gt(value: unknown): Comparison {
+	return { __comparison: true, operator: 'gt', value };
 }
 
-export function gte(column: string, value: number): GteDescription {
-	return { type: 'gte', column, value };
+export function gte(value: unknown): Comparison {
+	return { __comparison: true, operator: 'gte', value };
 }
 
-export function lt(column: string, value: number): LtDescription {
-	return { type: 'lt', column, value };
+export function lt(value: unknown): Comparison {
+	return { __comparison: true, operator: 'lt', value };
 }
 
-export function lte(column: string, value: number): LteDescription {
-	return { type: 'lte', column, value };
+export function lte(value: unknown): Comparison {
+	return { __comparison: true, operator: 'lte', value };
 }
 
-export function like(column: string, value: string): LikeDescription {
-	return { type: 'like', column, value };
+export function like(value: string): Comparison {
+	return { __comparison: true, operator: 'like', value };
 }
 
-export function notLike(column: string, value: string): NotLikeDescription {
-	return { type: 'notLike', column, value };
+export function notLike(value: string): Comparison {
+	return { __comparison: true, operator: 'notLike', value };
 }
 
-export function oneOf(column: string, values: unknown[]): OneOfDescription {
-	return { type: 'oneOf', column, values };
+export function oneOf(values: unknown[]): Comparison {
+	return { __comparison: true, operator: 'oneOf', values };
+}
+
+// ---------------------------------------------------------------------------
+// Clause builders
+// ---------------------------------------------------------------------------
+
+/** A raw value is treated as an implicit eq; a Comparison is used as-is. */
+export function where(column: string, valueOrComparison: unknown): WhereDescription {
+	const comparison = isComparison(valueOrComparison) ? valueOrComparison : eq(valueOrComparison);
+	return { type: 'where', column, comparison };
 }
 
 export function and(...clauses: Clause[]): AndDescription {

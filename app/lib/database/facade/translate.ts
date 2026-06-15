@@ -3,7 +3,7 @@
  * Operates against a Drizzle table's column map (Record<string, Column>).
  */
 
-import { and, or, eq, ne, gt, gte, lt, lte, like, inArray, not, asc, desc, type SQL } from 'drizzle-orm';
+import { and, or, eq, ne, gt, gte, lt, lte, like, inArray, not, isNull, isNotNull, asc, desc, type SQL } from 'drizzle-orm';
 import type { SQLiteTable } from 'drizzle-orm/sqlite-core';
 import { getTableColumns } from 'drizzle-orm';
 
@@ -17,37 +17,50 @@ export interface TranslatedQuery {
 }
 
 type ColumnMap = ReturnType<typeof getTableColumns>;
+type Column = ColumnMap[string];
 
-function resolveColumn(columns: ColumnMap, name: string) {
+function resolveColumn(columns: ColumnMap, name: string): Column {
 	const col = columns[name];
 	if (!col) throw new Error(`Column '${name}' not found in table`);
 	return col;
 }
 
+function translateComparison(col: Column, comparison: Q.Comparison): SQL | undefined {
+	const { operator, value, values } = comparison;
+	switch (operator) {
+		// SQL `= NULL` / `<> NULL` are never true; WMDB lowers null comparisons to IS [NOT] NULL.
+		case 'eq':
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			return value === null ? isNull(col) : eq(col, value as any);
+		case 'notEq':
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			return value === null ? isNotNull(col) : ne(col, value as any);
+		case 'gt':
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			return gt(col, value as any);
+		case 'gte':
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			return gte(col, value as any);
+		case 'lt':
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			return lt(col, value as any);
+		case 'lte':
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			return lte(col, value as any);
+		case 'like':
+			return like(col, value as string);
+		case 'notLike':
+			return not(like(col, value as string));
+		case 'oneOf':
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			return inArray(col, values as any[]);
+	}
+}
+
 function translateWhere(clause: Q.Clause, columns: ColumnMap): SQL | undefined {
 	switch (clause.type) {
 		case 'where':
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			return eq(resolveColumn(columns, clause.column), clause.value as any);
-		case 'notEq':
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			return ne(resolveColumn(columns, clause.column), clause.value as any);
-		case 'gt':
-			return gt(resolveColumn(columns, clause.column), clause.value);
-		case 'gte':
-			return gte(resolveColumn(columns, clause.column), clause.value);
-		case 'lt':
-			return lt(resolveColumn(columns, clause.column), clause.value);
-		case 'lte':
-			return lte(resolveColumn(columns, clause.column), clause.value);
-		case 'like':
-			return like(resolveColumn(columns, clause.column), clause.value);
-		case 'notLike':
-			return not(like(resolveColumn(columns, clause.column), clause.value));
-		case 'oneOf': {
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			return inArray(resolveColumn(columns, clause.column), clause.values as any[]);
-		}
+			return translateComparison(resolveColumn(columns, clause.column), clause.comparison);
 		case 'and': {
 			const conditions = clause.clauses.map(c => translateWhere(c, columns)).filter(Boolean);
 			return and(...(conditions as SQL[])) ?? undefined;
