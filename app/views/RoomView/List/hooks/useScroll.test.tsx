@@ -353,6 +353,42 @@ describe('useScroll', () => {
 		expect(scrollToOffset).toHaveBeenCalledWith({ offset: -100 });
 	});
 
+	it("does not let a completed jump's deferred re-scroll fire after a newer jump supersedes it", () => {
+		const setHighTs = jest.fn();
+		// Both targets start present so each jump resolves synchronously (contiguous, non-anchored).
+		const { result, rerender, scrollToIndex } = renderUseScroll(
+			[{ id: 'a' }, { id: 'target-a' }, { id: 'b' }, { id: 'target-b' }],
+			setHighTs
+		);
+
+		// Jump A: resolves synchronously; its deferred re-scroll is now queued.
+		act(() => {
+			result.current.jumpToMessage('target-a', null);
+		});
+		// Immediate scroll fired once toward A's index (1).
+		expect(scrollToIndex).toHaveBeenCalledTimes(1);
+		expect(scrollToIndex).toHaveBeenLastCalledWith(expect.objectContaining({ index: 1 }));
+
+		// Jump B: starts before the 50 ms timer fires, updating lastJumpTargetId to 'target-b'.
+		act(() => {
+			rerender({ rows: [{ id: 'a' }, { id: 'target-a' }, { id: 'b' }, { id: 'target-b' }] });
+			result.current.jumpToMessage('target-b', null);
+		});
+		// Immediate scroll for B fired (target-b is at index 3).
+		const callCountAfterBJump = scrollToIndex.mock.calls.length;
+		expect(scrollToIndex).toHaveBeenLastCalledWith(expect.objectContaining({ index: 3 }));
+
+		// Advance past 50 ms: A's deferred re-scroll timer fires. The guard must suppress it.
+		act(() => {
+			jest.advanceTimersByTime(100);
+		});
+
+		// Only B's own deferred re-scroll may have fired (also at index 3), never a call to A's index (1).
+		const aIndex = 1;
+		const staleCallsToA = scrollToIndex.mock.calls.slice(callCountAfterBJump).filter(args => args[0] && args[0].index === aIndex);
+		expect(staleCallsToA).toHaveLength(0);
+	});
+
 	it('performs a single scroll for a contiguous target already present (no anchor)', async () => {
 		const setHighTs = jest.fn();
 		// Target is already in the rows; contiguous case passes highTs = null (Live Window).

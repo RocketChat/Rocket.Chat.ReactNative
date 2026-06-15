@@ -133,6 +133,11 @@ export const useScroll = ({
 		(messageId: string, index: number) => {
 			listRef.current?.scrollToIndex({ index, ...JUMP_SCROLL_POSITION });
 			setTimeout(() => {
+				// A newer jump may have started within this frame; its target now owns the scroll. Re-reading
+				// the OLD messageId's index here would yank the list back off the message just jumped to.
+				if (lastJumpTargetId.current !== messageId) {
+					return;
+				}
 				const settled = messagesIds.current?.findIndex(id => id === messageId) ?? -1;
 				if (settled !== -1) {
 					listRef.current?.scrollToIndex({ index: settled, ...JUMP_SCROLL_POSITION });
