@@ -112,11 +112,11 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 		});
 	};
 
-	uploadCheck = () => {
+	uploadCheck = async () => {
 		this.ranInitialUploadCheck = true;
 		const { rid } = this.props;
 		const { uploads } = this.state;
-		uploads.forEach(async u => {
+		for (const u of uploads) {
 			if (!isUploadActive(u.path, rid)) {
 				try {
 					const db = database.active;
@@ -129,7 +129,7 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 					log(e);
 				}
 			}
-		});
+		}
 	};
 
 	deleteUpload = async (item: TUploadModel) => {
