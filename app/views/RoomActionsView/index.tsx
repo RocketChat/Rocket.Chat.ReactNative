@@ -474,7 +474,7 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 				const roomUserId = getUidDirectMessage(room);
 				const result = await getUserInfo(roomUserId);
 				if (result.success) {
-					this.setState({ member: result.user as any });
+					this.setState({ member: result.user as unknown as Partial<IUser> });
 				}
 			}
 		} catch (e) {
