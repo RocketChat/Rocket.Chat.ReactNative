@@ -24,7 +24,7 @@ import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { useTheme } from '../../theme';
 import Button from '../../containers/Button';
 import { USER_STATUS_TEXT_MAX_LENGTH } from '../../lib/constants/maxLength';
-import ClearAfterPicker, { type ClearAfterValue, computeExpiresAt } from './ClearAfterPicker';
+import ClearAfterPicker, { type ClearAfterValue, computeExpiresAt, getInitialClearAfterState } from './ClearAfterPicker';
 
 interface IStatus {
 	id: TUserStatus;
@@ -131,8 +131,9 @@ const StatusView = (): ReactElement => {
 	const inputValues = watch();
 	const { statusText } = inputValues;
 
-	const [clearAfter, setClearAfter] = useState<ClearAfterValue>('');
-	const [clearAfterDate, setClearAfterDate] = useState<Date | null>(null);
+	const initialClearAfter = getInitialClearAfterState(user.statusExpiresAt);
+	const [clearAfter, setClearAfter] = useState<ClearAfterValue>(initialClearAfter.value);
+	const [clearAfterDate, setClearAfterDate] = useState<Date | null>(initialClearAfter.customDate);
 	const clearAfterTouched = useRef(false);
 
 	const dispatch = useDispatch();

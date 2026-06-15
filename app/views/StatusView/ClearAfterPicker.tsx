@@ -29,6 +29,17 @@ export const computeExpiresAt = (value: ClearAfterValue, customDate: Date | null
 	return null;
 };
 
+export const getInitialClearAfterState = (
+	statusExpiresAt: string | undefined
+): { value: ClearAfterValue; customDate: Date | null } => {
+	if (!statusExpiresAt) return { value: '', customDate: null };
+
+	const expiresAt = dayjs(statusExpiresAt);
+	if (!expiresAt.isValid() || !expiresAt.isAfter(dayjs())) return { value: '', customDate: null };
+
+	return { value: 'custom', customDate: expiresAt.toDate() };
+};
+
 const styles = StyleSheet.create({
 	pickerText: {
 		...sharedStyles.textRegular,

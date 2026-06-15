@@ -1,5 +1,5 @@
 import dayjs from '../../lib/dayjs';
-import { computeExpiresAt } from './ClearAfterPicker';
+import { computeExpiresAt, getInitialClearAfterState } from './ClearAfterPicker';
 
 describe('computeExpiresAt', () => {
 	beforeEach(() => {
@@ -41,5 +41,36 @@ describe('computeExpiresAt', () => {
 		// @ts-ignore - testing unexpected value
 		const result = computeExpiresAt('unknown', null);
 		expect(result).toBeNull();
+	});
+});
+
+describe('getInitialClearAfterState', () => {
+	beforeEach(() => {
+		jest.useFakeTimers({ now: new Date('2026-06-15T08:00:00.000Z').getTime() });
+	});
+
+	afterEach(() => {
+		jest.useRealTimers();
+	});
+
+	it('returns empty value for undefined', () => {
+		const result = getInitialClearAfterState(undefined);
+		expect(result).toEqual({ value: '', customDate: null });
+	});
+
+	it('returns empty value for expired timestamp', () => {
+		const result = getInitialClearAfterState(new Date('2026-06-15T07:00:00.000Z').toISOString());
+		expect(result).toEqual({ value: '', customDate: null });
+	});
+
+	it('returns empty value for invalid date string', () => {
+		const result = getInitialClearAfterState('not-a-date');
+		expect(result).toEqual({ value: '', customDate: null });
+	});
+
+	it('returns "custom" with date for a future timestamp', () => {
+		const expiresAt = new Date('2026-06-15T08:29:00.000Z');
+		const result = getInitialClearAfterState(expiresAt.toISOString());
+		expect(result).toEqual({ value: 'custom', customDate: expiresAt });
 	});
 });
