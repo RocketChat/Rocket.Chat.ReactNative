@@ -4,7 +4,7 @@ import { setActiveUsers } from '../../actions/activeUsers';
 import { setUser } from '../../actions/login';
 import { type IUser, type TStatusSource, type TUserStatus } from '../../definitions';
 import { store as reduxStore } from '../store/auxStore';
-import { compareServerVersion } from './helpers';
+import { compareServerVersion, normalizeStatusExpiresAt } from './helpers';
 
 export interface IActiveUsers {
 	[key: string]:
@@ -28,6 +28,9 @@ export interface IActiveUsers {
 		}[];
 		username: string;
 		status: TUserStatus;
+		statusText?: string;
+		statusSource?: TStatusSource;
+		statusExpiresAt?: string;
 	};
 }
 
@@ -63,7 +66,15 @@ export function _setUser(ddpMessage: IActiveUsers): void {
 
 	if (!ddpMessage.fields) {
 		_activeUsers.activeUsers[ddpMessage.id] = { status: 'offline' };
-	} else if (ddpMessage.fields.status) {
-		_activeUsers.activeUsers[ddpMessage.id] = { status: ddpMessage.fields.status };
+	} else {
+		const { status, statusText, statusSource, statusExpiresAt } = ddpMessage.fields;
+		if (status) {
+			_activeUsers.activeUsers[ddpMessage.id] = {
+				status,
+				...(statusText !== undefined && { statusText }),
+				...(statusSource !== undefined && { statusSource }),
+				...(statusExpiresAt !== undefined && { statusExpiresAt: normalizeStatusExpiresAt(statusExpiresAt) })
+			};
+		}
 	}
 }

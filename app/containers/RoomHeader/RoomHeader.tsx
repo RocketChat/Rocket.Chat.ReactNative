@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
 type TRoomHeaderSubTitle = {
 	usersTyping: IUsersTyping;
 	subtitle?: string;
-	statusExpiresAt?: string;
+	formattedStatusExpiry?: string;
 	renderFunc?: () => ReactElement;
 	scale: number;
 };
@@ -94,7 +94,7 @@ interface IRoomHeader {
 
 type IRoomHeaderProps = IRoomHeader;
 
-const SubTitle = memo(({ usersTyping, subtitle, statusExpiresAt, renderFunc, scale }: TRoomHeaderSubTitle) => {
+const SubTitle = memo(({ usersTyping, subtitle, formattedStatusExpiry, renderFunc, scale }: TRoomHeaderSubTitle) => {
 	const { colors } = useTheme();
 	const fontSize = getSubTitleSize(scale);
 	// typing
@@ -120,8 +120,7 @@ const SubTitle = memo(({ usersTyping, subtitle, statusExpiresAt, renderFunc, sca
 
 	// subtitle
 	if (subtitle) {
-		const formattedExpiry = statusExpiresAt ? formatStatusExpiry(statusExpiresAt) : undefined;
-		if (formattedExpiry) {
+		if (formattedStatusExpiry) {
 			return (
 				<View style={styles.titleContainer}>
 					<CustomIcon name='clock' size={fontSize} color={colors.fontSecondaryInfo} style={styles.clockIcon} />
@@ -191,9 +190,9 @@ const Header = ({
 	// keyboard); regular touch users shouldn't have focus yanked onto the header on room open.
 	const autoFocusHeader = useIsAccessibilityNavigationEnabled();
 	const subtitleAccessibilityLabel = tmid ? parentTitle : subtitle;
-	const expiryAccessibilityLabel = statusExpiresAt ? formatStatusExpiry(statusExpiresAt) : undefined;
-	const fullSubtitleAccessibilityLabel = expiryAccessibilityLabel
-		? `${subtitleAccessibilityLabel}, ${expiryAccessibilityLabel}`
+	const formattedStatusExpiry = statusExpiresAt ? formatStatusExpiry(statusExpiresAt) : undefined;
+	const fullSubtitleAccessibilityLabel = formattedStatusExpiry
+		? `${subtitleAccessibilityLabel}, ${formattedStatusExpiry}`
 		: subtitleAccessibilityLabel;
 	const accessibilityLabel = `${statusAccessibilityLabel} ${title} ${fullSubtitleAccessibilityLabel || ''}.`;
 
@@ -252,13 +251,13 @@ const Header = ({
 					)}
 					<HeaderTitle title={title} tmid={tmid} prid={prid} scale={scale} testID={testID} />
 				</View>
-				<SubTitle
-					usersTyping={tmid ? [] : usersTyping}
-					subtitle={subtitle}
-					statusExpiresAt={statusExpiresAt}
-					renderFunc={renderFunc}
-					scale={scale}
-				/>
+			<SubTitle
+				usersTyping={tmid ? [] : usersTyping}
+				subtitle={subtitle}
+				formattedStatusExpiry={formattedStatusExpiry}
+				renderFunc={renderFunc}
+				scale={scale}
+			/>
 			</TouchableOpacity>
 		</KeyboardFocusView>
 	);

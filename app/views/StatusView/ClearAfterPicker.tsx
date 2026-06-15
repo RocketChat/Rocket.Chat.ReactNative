@@ -26,7 +26,7 @@ export const computeExpiresAt = (value: ClearAfterValue, customDate: Date | null
 	if (value === '30') return dayjs().add(30, 'minute').toISOString();
 	if (value === '60') return dayjs().add(1, 'hour').toISOString();
 	if (value === 'custom' && customDate) return dayjs(customDate).toISOString();
-	return undefined;
+	return null;
 };
 
 const styles = StyleSheet.create({
@@ -176,7 +176,7 @@ const ClearAfterPicker = ({ value, customDate, onChange }: IClearAfterPickerProp
 
 	const getDisplayLabel = (): string => {
 		if (value === 'custom' && customDate) {
-			return dayjs(customDate).format('DD/MM/YYYY hh:mm A');
+			return dayjs(customDate).format('LL LT');
 		}
 		if (value === 'custom' && !customDate) {
 			return I18n.t('Status_dont_clear');
