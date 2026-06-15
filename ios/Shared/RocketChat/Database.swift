@@ -101,9 +101,12 @@ class Database {
 		//    are both active with WAL reader locks on the same file
 		sqlite3_exec(db, "PRAGMA busy_timeout = 500;", nil, nil, nil)
 
-		// 4. Verify: a wrong key or corrupt file will fail here rather than at first use
+		// 4. Verify: a wrong key or corrupt file will fail here rather than at first use.
+		//    PRAGMA key does not validate the key and prepare alone only parses SQL —
+		//    the statement must be stepped so SQLCipher actually decrypts a page.
 		var stmt: OpaquePointer?
-		let verifyOk = sqlite3_prepare_v2(db, "SELECT count(*) FROM sqlite_master;", -1, &stmt, nil) == SQLITE_OK
+		let prepareOk = sqlite3_prepare_v2(db, "SELECT count(*) FROM sqlite_master;", -1, &stmt, nil) == SQLITE_OK
+		let verifyOk = prepareOk && sqlite3_step(stmt) == SQLITE_ROW
 		sqlite3_finalize(stmt)
 		if !verifyOk {
 			NSLog("[Database] Open-verify failed for %@ — key may be wrong or file corrupt", dbName)

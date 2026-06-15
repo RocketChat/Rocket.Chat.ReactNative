@@ -203,27 +203,26 @@ class Encryption {
             db.execSQL("PRAGMA busy_timeout = 500;");
 
             Cursor cursor = db.rawQuery("SELECT * FROM subscriptions WHERE id == ? LIMIT 1", new String[]{ejson.rid});
+            try {
+                if (cursor.getCount() == 0) {
+                    return null;
+                }
 
-            if (cursor.getCount() == 0) {
+                cursor.moveToFirst();
+                int e2eKeyColumnIndex = cursor.getColumnIndex("e2e_key");
+                int encryptedColumnIndex = cursor.getColumnIndex("encrypted");
+
+                if (e2eKeyColumnIndex == -1) {
+                    Log.e(TAG, "e2e_key column not found in subscriptions table");
+                    return null;
+                }
+
+                String e2eKey = cursor.getString(e2eKeyColumnIndex);
+                Boolean encrypted = encryptedColumnIndex != -1 && cursor.getInt(encryptedColumnIndex) > 0;
+                return new Room(e2eKey, encrypted);
+            } finally {
                 cursor.close();
-                return null;
             }
-
-            cursor.moveToFirst();
-            int e2eKeyColumnIndex = cursor.getColumnIndex("e2e_key");
-            int encryptedColumnIndex = cursor.getColumnIndex("encrypted");
-
-            if (e2eKeyColumnIndex == -1) {
-                Log.e(TAG, "e2e_key column not found in subscriptions table");
-                cursor.close();
-                return null;
-            }
-
-            String e2eKey = cursor.getString(e2eKeyColumnIndex);
-            Boolean encrypted = encryptedColumnIndex != -1 && cursor.getInt(encryptedColumnIndex) > 0;
-            cursor.close();
-
-            return new Room(e2eKey, encrypted);
 
         } catch (Exception e) {
             Log.e(TAG, "Error reading room", e);
