@@ -3,7 +3,7 @@
 exports[`Story Snapshots: Separators should match snapshot 1`] = `
 [
   <RNGestureHandlerButton
-    accessibilityLabel="Onboarding_more_options"
+    accessibilityLabel="More options"
     accessibilityRole="button"
     activeOpacity={0.105}
     collapsable={false}
@@ -69,7 +69,7 @@ exports[`Story Snapshots: Separators should match snapshot 1`] = `
         ]
       }
     >
-      Onboarding_more_options
+      More options
     </Text>
   </RNGestureHandlerButton>,
   <View
@@ -129,7 +129,7 @@ exports[`Story Snapshots: Separators should match snapshot 1`] = `
     />
   </View>,
   <RNGestureHandlerButton
-    accessibilityLabel="Onboarding_less_options"
+    accessibilityLabel="Less options"
     accessibilityRole="button"
     activeOpacity={0.105}
     collapsable={false}
@@ -195,7 +195,7 @@ exports[`Story Snapshots: Separators should match snapshot 1`] = `
         ]
       }
     >
-      Onboarding_less_options
+      Less options
     </Text>
   </RNGestureHandlerButton>,
   <View
@@ -260,7 +260,7 @@ exports[`Story Snapshots: Separators should match snapshot 1`] = `
 exports[`Story Snapshots: ServiceListCollapsed should match snapshot 1`] = `
 [
   <RNGestureHandlerButton
-    accessibilityLabel="Login_on_web"
+    accessibilityLabel="Login on web"
     accessibilityRole="button"
     activeOpacity={0.105}
     collapsable={false}
@@ -326,7 +326,7 @@ exports[`Story Snapshots: ServiceListCollapsed should match snapshot 1`] = `
         ]
       }
     >
-      Login_on_web
+      Login on web
     </Text>
   </RNGestureHandlerButton>,
   <ExternalKeyboardView
@@ -406,7 +406,7 @@ exports[`Story Snapshots: ServiceListCollapsed should match snapshot 1`] = `
         }
       />
       <View
-        accessibilityLabel="Continue_with Github"
+        accessibilityLabel="Continue with Github"
         accessible={true}
         style={{}}
       >
@@ -470,7 +470,7 @@ exports[`Story Snapshots: ServiceListCollapsed should match snapshot 1`] = `
               ]
             }
           >
-            Continue_with
+            Continue with
              
             <Text
               style={
@@ -566,7 +566,7 @@ exports[`Story Snapshots: ServiceListCollapsed should match snapshot 1`] = `
         }
       />
       <View
-        accessibilityLabel="Continue_with Gitlab"
+        accessibilityLabel="Continue with Gitlab"
         accessible={true}
         style={{}}
       >
@@ -630,7 +630,7 @@ exports[`Story Snapshots: ServiceListCollapsed should match snapshot 1`] = `
               ]
             }
           >
-            Continue_with
+            Continue with
              
             <Text
               style={
@@ -726,7 +726,7 @@ exports[`Story Snapshots: ServiceListCollapsed should match snapshot 1`] = `
         }
       />
       <View
-        accessibilityLabel="Continue_with Google"
+        accessibilityLabel="Continue with Google"
         accessible={true}
         style={{}}
       >
@@ -790,7 +790,7 @@ exports[`Story Snapshots: ServiceListCollapsed should match snapshot 1`] = `
               ]
             }
           >
-            Continue_with
+            Continue with
              
             <Text
               style={
@@ -815,7 +815,7 @@ exports[`Story Snapshots: ServiceListCollapsed should match snapshot 1`] = `
 exports[`Story Snapshots: ServiceListUncollapsed should match snapshot 1`] = `
 [
   <RNGestureHandlerButton
-    accessibilityLabel="Login_on_web"
+    accessibilityLabel="Login on web"
     accessibilityRole="button"
     activeOpacity={0.105}
     collapsable={false}
@@ -881,7 +881,7 @@ exports[`Story Snapshots: ServiceListUncollapsed should match snapshot 1`] = `
         ]
       }
     >
-      Login_on_web
+      Login on web
     </Text>
   </RNGestureHandlerButton>,
   <ExternalKeyboardView
@@ -961,7 +961,7 @@ exports[`Story Snapshots: ServiceListUncollapsed should match snapshot 1`] = `
         }
       />
       <View
-        accessibilityLabel="Continue_with Github"
+        accessibilityLabel="Continue with Github"
         accessible={true}
         style={{}}
       >
@@ -1025,7 +1025,7 @@ exports[`Story Snapshots: ServiceListUncollapsed should match snapshot 1`] = `
               ]
             }
           >
-            Continue_with
+            Continue with
              
             <Text
               style={
@@ -1121,7 +1121,7 @@ exports[`Story Snapshots: ServiceListUncollapsed should match snapshot 1`] = `
         }
       />
       <View
-        accessibilityLabel="Continue_with Gitlab"
+        accessibilityLabel="Continue with Gitlab"
         accessible={true}
         style={{}}
       >
@@ -1185,7 +1185,7 @@ exports[`Story Snapshots: ServiceListUncollapsed should match snapshot 1`] = `
               ]
             }
           >
-            Continue_with
+            Continue with
              
             <Text
               style={
@@ -1281,7 +1281,7 @@ exports[`Story Snapshots: ServiceListUncollapsed should match snapshot 1`] = `
         }
       />
       <View
-        accessibilityLabel="Continue_with Google"
+        accessibilityLabel="Continue with Google"
         accessible={true}
         style={{}}
       >
@@ -1345,7 +1345,7 @@ exports[`Story Snapshots: ServiceListUncollapsed should match snapshot 1`] = `
               ]
             }
           >
-            Continue_with
+            Continue with
              
             <Text
               style={
@@ -1441,7 +1441,7 @@ exports[`Story Snapshots: ServiceListUncollapsed should match snapshot 1`] = `
         }
       />
       <View
-        accessibilityLabel="Continue_with Apple"
+        accessibilityLabel="Continue with Apple"
         accessible={true}
         style={{}}
       >
@@ -1505,7 +1505,7 @@ exports[`Story Snapshots: ServiceListUncollapsed should match snapshot 1`] = `
               ]
             }
           >
-            Continue_with
+            Continue with
              
             <Text
               style={
@@ -1669,7 +1669,7 @@ exports[`Story Snapshots: ServicesList should match snapshot 1`] = `
               ]
             }
           >
-            Continue_with
+            Continue with
              
             <Text
               style={
@@ -1828,7 +1828,7 @@ exports[`Story Snapshots: ServicesList should match snapshot 1`] = `
               ]
             }
           >
-            Continue_with
+            Continue with
              
             <Text
               style={
@@ -1987,7 +1987,7 @@ exports[`Story Snapshots: ServicesList should match snapshot 1`] = `
               ]
             }
           >
-            Continue_with
+            Continue with
              
             <Text
               style={
@@ -2146,7 +2146,7 @@ exports[`Story Snapshots: ServicesList should match snapshot 1`] = `
               ]
             }
           >
-            Continue_with
+            Continue with
              
             <Text
               style={

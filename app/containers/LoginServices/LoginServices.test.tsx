@@ -16,10 +16,6 @@ jest.mock('../../lib/services/connect', () => ({}));
 
 generateSnapshots(stories);
 
-jest.mock('../../i18n', () => ({
-	t: (key: string) => key
-}));
-
 jest.mock('./serviceLogin', () => ({}));
 
 jest.mock('react-native/Libraries/Linking/Linking', () => ({
@@ -65,7 +61,7 @@ describe('LoginServices', () => {
 				<LoginServices separator />
 			</Wrapper>
 		);
-		expect(screen.queryByText('Onboarding_more_options')).toBeNull();
+		expect(screen.queryByText('More options')).toBeNull();
 	});
 
 	it('shows expand/collapse button when separator=true and > 3 services, does not show all services', () => {
@@ -76,9 +72,9 @@ describe('LoginServices', () => {
 				<LoginServices separator />
 			</Wrapper>
 		);
-		expect(screen.queryByText('Continue_with Facebook')).toBeNull();
-		expect(screen.queryByText('Continue_with Linkedin')).toBeNull();
-		expect(screen.getByText('Onboarding_more_options')).toBeTruthy();
+		expect(screen.queryByText('Continue with Facebook')).toBeNull();
+		expect(screen.queryByText('Continue with Linkedin')).toBeNull();
+		expect(screen.getByText('More options')).toBeTruthy();
 	});
 
 	it('uncollapses and shows all services', () => {
@@ -89,17 +85,17 @@ describe('LoginServices', () => {
 				<LoginServices separator />
 			</Wrapper>
 		);
-		expect(screen.queryByText('Continue_with Facebook')).toBeNull();
-		expect(screen.queryByText('Continue_with Linkedin')).toBeNull();
-		expect(screen.getByText('Onboarding_more_options')).toBeTruthy();
+		expect(screen.queryByText('Continue with Facebook')).toBeNull();
+		expect(screen.queryByText('Continue with Linkedin')).toBeNull();
+		expect(screen.getByText('More options')).toBeTruthy();
 
-		fireEvent.press(screen.getByText('Onboarding_more_options'));
+		fireEvent.press(screen.getByText('More options'));
 
-		expect(screen.getByText('Continue_with Facebook')).toBeTruthy();
-		expect(screen.getByText('Continue_with Linkedin')).toBeTruthy();
+		expect(screen.getByText('Continue with Facebook')).toBeTruthy();
+		expect(screen.getByText('Continue with Linkedin')).toBeTruthy();
 	});
 
-	it('filters out services with hideButtonOnMobile=true and shows Login_on_web button', () => {
+	it('filters out services with hideButtonOnMobile=true and shows Login on web button', () => {
 		const store = createMockedStore();
 		const services = {
 			...buildServices(2),
@@ -112,9 +108,9 @@ describe('LoginServices', () => {
 			</Wrapper>
 		);
 
-		expect(screen.queryByText('Continue_with Facebook')).toBeNull();
-		expect(screen.queryByText('Onboarding_more_options')).toBeNull();
-		expect(screen.getByText('Login_on_web')).toBeTruthy();
+		expect(screen.queryByText('Continue with Facebook')).toBeNull();
+		expect(screen.queryByText('More options')).toBeNull();
+		expect(screen.getByText('Login on web')).toBeTruthy();
 	});
 
 	it('does not show Login_on_web button when no services are hidden', () => {
@@ -125,7 +121,7 @@ describe('LoginServices', () => {
 				<LoginServices separator={false} />
 			</Wrapper>
 		);
-		expect(screen.queryByText('Login_on_web')).toBeNull();
+		expect(screen.queryByText('Login on web')).toBeNull();
 	});
 
 	it('opens Login on web URL when button is pressed', () => {
@@ -142,7 +138,7 @@ describe('LoginServices', () => {
 			</Wrapper>
 		);
 
-		fireEvent.press(screen.getByText('Login_on_web'));
+		fireEvent.press(screen.getByText('Login on web'));
 		expect(Linking.openURL).toHaveBeenCalledWith(`${SERVER}/home?loginClient=mobile`);
 	});
 });
