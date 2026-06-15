@@ -35,7 +35,7 @@ export type UsersEndpoints = {
 		POST: (params: { name: string; email: string; username: string; pass: string }) => { user: IUserRegistered };
 	};
 	'users.setStatus': {
-		POST: (params: { status?: string; message?: string; expiresAt?: string | null }) => {};
+		POST: (params: { status?: string; message?: string; expiresAt?: string | null }) => { success: boolean };
 	};
 	'users.updateOwnBasicInfo': {
 		POST: (params: {
