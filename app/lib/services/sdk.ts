@@ -111,11 +111,13 @@ class Sdk {
 	methodCall(...args: any[]): Promise<any> {
 		return new Promise(async (resolve, reject) => {
 			try {
-				// Only append the TOTP code when a 2FA flow is in progress. Appending an empty
-				// string unconditionally pushes a junk trailing positional arg into every method
-				// call, which breaks methods whose signature grows a typed trailing param
-				// (e.g. loadSurroundingMessages' `showThreadMessages: boolean`).
-				const result = await this.current.methodCall(...args, ...(this.code ? [this.code] : []));
+				// Single-use the TOTP code: read then clear it, and only append when set. An
+				// unconditional trailing arg pushes junk into every call and breaks methods whose
+				// signature grows a typed trailing param (e.g. loadSurroundingMessages'
+				// `showThreadMessages: boolean`); a code left set re-appends on every later call.
+				const { code } = this;
+				this.code = null;
+				const result = await this.current.methodCall(...args, ...(code ? [code] : []));
 				return resolve(result);
 			} catch (e: any) {
 				if (e.error && (e.error === 'totp-required' || e.error === 'totp-invalid')) {
