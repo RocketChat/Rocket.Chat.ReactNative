@@ -19,7 +19,7 @@ import I18n from '../../i18n';
 import { showToast } from '../../lib/methods/helpers/showToast';
 import { setUserStatus } from '../../lib/services/restApi';
 import { getUserSelector } from '../../selectors/login';
-import { showErrorAlert, compareServerVersion } from '../../lib/methods/helpers';
+import { showErrorAlertWithEMessage, compareServerVersion } from '../../lib/methods/helpers';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { useTheme } from '../../theme';
 import Button from '../../containers/Button';
@@ -175,12 +175,8 @@ const StatusView = (): ReactElement => {
 			logEvent(events.STATUS_CUSTOM);
 			showToast(I18n.t('Status_saved_successfully'));
 		} catch (e: any) {
-			const messageError =
-				e.error && e.error.includes('[error-too-many-requests]')
-					? I18n.t('error-too-many-requests', { seconds: e.reason.replace(/\D/g, '') })
-					: e.reason;
 			logEvent(events.STATUS_CUSTOM_F);
-			showErrorAlert(messageError);
+			showErrorAlertWithEMessage(e);
 			log(e);
 		}
 		sendLoadingEvent({ visible: false });
