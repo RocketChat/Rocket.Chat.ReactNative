@@ -1,0 +1,83 @@
+appId: ${APP_ID}
+name: Action Sheet Safe Area
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-7
+
+# Regression for the action-sheet bottom safe-area spacing fix. The sheet
+# (TrueSheet / BottomSheetContent) owns the bottom safe-area inset; content must
+# not add its own bottom margin, which would either leave a blank band or push
+# the bottom-most row off-screen. Maestro can't measure a pixel gap, so the guard
+# is that each sheet opens and its bottom-most content stays fully visible.
+
+---
+- evalScript: ${output.user = output.utils.createUser()}
+
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+
+# Workspaces (servers list) action sheet — the bottom "Add server" row must be visible.
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-header-servers-list-button'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-header-servers-list-button'
+- waitForAnimationToEnd:
+    timeout: 10000
+- extendedWaitUntil:
+    visible:
+      id: 'action-sheet'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-header-servers-list'
+    timeout: 60000
+- assertVisible:
+    id: 'rooms-list-header-server-add'
+
+# Dismiss the sheet before moving on.
+- swipe:
+    direction: DOWN
+    duration: 500
+- waitForAnimationToEnd:
+    timeout: 10000
+
+# Directory filter action sheet — the bottom radio row must be visible.
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view-directory'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-view-directory'
+- extendedWaitUntil:
+    visible:
+      id: 'directory-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'directory-view-filter'
+    timeout: 60000
+- tapOn:
+    id: 'directory-view-filter'
+- waitForAnimationToEnd:
+    timeout: 10000
+- extendedWaitUntil:
+    visible:
+      id: 'action-sheet'
+    timeout: 60000
+- assertVisible:
+    id: 'directory-switch-channels'
+- assertVisible:
+    id: 'directory-switch-teams'
