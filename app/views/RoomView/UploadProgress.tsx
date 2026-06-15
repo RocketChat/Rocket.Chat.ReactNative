@@ -107,7 +107,7 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 				this.state.uploads = uploads;
 			}
 			if (!this.ranInitialUploadCheck) {
-				this.uploadCheck();
+				this.uploadCheck().catch(log);
 			}
 		});
 	};
