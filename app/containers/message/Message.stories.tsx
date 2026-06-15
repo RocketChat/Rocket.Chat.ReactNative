@@ -1457,6 +1457,77 @@ export const MessageWithNestedReplyAndFile = () => (
 				}
 			]}
 		/>
+		<Message
+			msg='Forwarded message with nested audio'
+			attachments={[
+				{
+					author_name: 'rocket.cat',
+					ts: date,
+					timeFormat: 'LT',
+					text: '',
+					attachments: [
+						{
+							author_name: 'user',
+							ts: date,
+							timeFormat: 'LT',
+							title: 'audio.mp3',
+							audio_url: '/dummypath'
+						}
+					]
+				}
+			]}
+		/>
+		<Message
+			msg='Forwarded message with nested video'
+			attachments={[
+				{
+					author_name: 'rocket.cat',
+					ts: date,
+					timeFormat: 'LT',
+					text: '',
+					attachments: [
+						{
+							author_name: 'user',
+							ts: date,
+							timeFormat: 'LT',
+							title: 'video.mp4',
+							video_url: '/dummypath'
+						}
+					]
+				}
+			]}
+		/>
+		<Message
+			msg='Message forwarded twice with file inside'
+			attachments={[
+				{
+					author_name: 'rocket.cat',
+					message_link: 'https://open.rocket.chat/group/msg-id',
+					ts: date,
+					timeFormat: 'LT',
+					text: '',
+					attachments: [
+						{
+							author_name: 'rocket.cat',
+							message_link: 'https://open.rocket.chat/group/msg-id-2',
+							ts: date,
+							timeFormat: 'LT',
+							text: '',
+							attachments: [
+								{
+									author_name: 'user',
+									ts: date,
+									timeFormat: 'LT',
+									type: 'file',
+									title: 'document.pdf',
+									title_link: '/file-upload/abc/document.pdf'
+								}
+							]
+						}
+					]
+				}
+			]}
+		/>
 	</>
 );
 
@@ -1507,6 +1578,77 @@ export const MessageWithReplyAndFileLargeFont = () => (
 					type: 'file',
 					title: 'styles.css',
 					title_link: '/file-upload/ghi789/styles.css'
+				}
+			]}
+		/>
+		<MessageLargeFont
+			msg='Forwarded message with nested audio'
+			attachments={[
+				{
+					author_name: 'rocket.cat',
+					ts: date,
+					timeFormat: 'LT',
+					text: '',
+					attachments: [
+						{
+							author_name: 'user',
+							ts: date,
+							timeFormat: 'LT',
+							title: 'audio.mp3',
+							audio_url: '/dummypath'
+						}
+					]
+				}
+			]}
+		/>
+		<MessageLargeFont
+			msg='Forwarded message with nested video'
+			attachments={[
+				{
+					author_name: 'rocket.cat',
+					ts: date,
+					timeFormat: 'LT',
+					text: '',
+					attachments: [
+						{
+							author_name: 'user',
+							ts: date,
+							timeFormat: 'LT',
+							title: 'video.mp4',
+							video_url: '/dummypath'
+						}
+					]
+				}
+			]}
+		/>
+		<MessageLargeFont
+			msg='Message forwarded twice with file inside'
+			attachments={[
+				{
+					author_name: 'rocket.cat',
+					message_link: 'https://open.rocket.chat/group/msg-id',
+					ts: date,
+					timeFormat: 'LT',
+					text: '',
+					attachments: [
+						{
+							author_name: 'rocket.cat',
+							message_link: 'https://open.rocket.chat/group/msg-id-2',
+							ts: date,
+							timeFormat: 'LT',
+							text: '',
+							attachments: [
+								{
+									author_name: 'user',
+									ts: date,
+									timeFormat: 'LT',
+									type: 'file',
+									title: 'document.pdf',
+									title_link: '/file-upload/abc/document.pdf'
+								}
+							]
+						}
+					]
 				}
 			]}
 		/>
