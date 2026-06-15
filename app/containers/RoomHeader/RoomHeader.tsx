@@ -192,9 +192,9 @@ const Header = ({
 	const subtitleAccessibilityLabel = tmid ? parentTitle : subtitle;
 	const formattedStatusExpiry = statusExpiresAt ? formatStatusExpiry(statusExpiresAt) : undefined;
 	const fullSubtitleAccessibilityLabel = formattedStatusExpiry
-		? `${subtitleAccessibilityLabel}, ${formattedStatusExpiry}`
-		: subtitleAccessibilityLabel;
-	const accessibilityLabel = `${statusAccessibilityLabel} ${title} ${fullSubtitleAccessibilityLabel || ''}.`;
+		? `${subtitleAccessibilityLabel || ''}, ${formattedStatusExpiry}`
+		: subtitleAccessibilityLabel || '';
+	const accessibilityLabel = `${statusAccessibilityLabel} ${title} ${fullSubtitleAccessibilityLabel}.`;
 
 	if (!portrait && !tmid && !isMasterDetail) {
 		if (usersTyping.length > 0 || subtitle) {
