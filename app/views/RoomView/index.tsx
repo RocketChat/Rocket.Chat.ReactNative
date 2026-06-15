@@ -1033,7 +1033,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 				}
 				// Synchronization needed for Fabric to work
 				await new Promise(res => setTimeout(res, 100));
-				await Promise.race([this.list.current?.jumpToMessage(message.id), new Promise(res => setTimeout(res, 5000))]);
+				await Promise.race([this.list.current?.jumpToMessage(message.id), new Promise(res => setTimeout(res, 20000))]);
 				this.cancelJumpToMessage();
 			}
 		} catch (error: any) {

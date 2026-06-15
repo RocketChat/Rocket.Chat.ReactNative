@@ -16,6 +16,10 @@ jobs:
   android-build:
     runs-on: ubuntu-latest
 
+    env:
+      # Keep in sync with maestro-android.yml
+      MAESTRO_VERSION: 2.5.1
+
     outputs:
       artifact_name: Android APK
 
@@ -25,6 +29,32 @@ jobs:
 
       - name: Checkout and Setup Node
         uses: ./.github/actions/setup-node
+
+      # Warm the Maestro cache the shards restore; this job is its single writer.
+      - name: Look up Maestro cache
+        id: maestro-lookup
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: |
+            ~/.maestro/bin
+            ~/.maestro/lib
+            ~/.maestro/deps
+          key: maestro-${{ runner.os }}-${{ env.MAESTRO_VERSION }}
+          lookup-only: true
+
+      - name: Install Maestro
+        if: steps.maestro-lookup.outputs.cache-hit != 'true'
+        run: curl -fsSL "https://get.maestro.mobile.dev" | bash
+
+      - name: Save Maestro cache
+        if: steps.maestro-lookup.outputs.cache-hit != 'true'
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: |
+            ~/.maestro/bin
+            ~/.maestro/lib
+            ~/.maestro/deps
+          key: maestro-${{ runner.os }}-${{ env.MAESTRO_VERSION }}
 
       - name: Cache Gradle dependencies
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
