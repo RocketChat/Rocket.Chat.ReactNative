@@ -142,6 +142,68 @@ describe('useScroll', () => {
 		expect(fetchMessages).toHaveBeenCalledTimes(2);
 	});
 
+	it('refreshes the safety window on each productive growth so a slow deep target is not aborted mid-load', async () => {
+		const setHighTs = jest.fn();
+		const fetchMessages = jest.fn();
+		const { result, rerender, scrollToIndex } = renderUseScroll([{ id: 'live-1' }], setHighTs, fetchMessages);
+
+		let jumpResolved = false;
+		act(() => {
+			result.current.jumpToMessage('deep', 1500).then(() => {
+				jumpResolved = true;
+			});
+		});
+		expect(setHighTs).toHaveBeenCalledWith(1500);
+
+		// Growth 1: first page loaded, target still absent. Advance just under the budget first; the timer
+		// must NOT have fired yet (the old single-budget would fire at 5000 ms total).
+		act(() => {
+			jest.advanceTimersByTime(4000);
+		});
+		expect(jumpResolved).toBe(false);
+		act(() => {
+			rerender({ rows: [{ id: 'p1-a' }] });
+		});
+		expect(fetchMessages).toHaveBeenCalledTimes(1);
+
+		// Growth 2: advance another 4 s (total 8 s — beyond the original 5 s single budget). Without the
+		// per-growth refresh the timer would have fired at 5 s and aborted; with it the window resets each time.
+		act(() => {
+			jest.advanceTimersByTime(4000);
+		});
+		expect(jumpResolved).toBe(false);
+		act(() => {
+			rerender({ rows: [{ id: 'p2-a' }, { id: 'p2-b' }] });
+		});
+		expect(fetchMessages).toHaveBeenCalledTimes(2);
+
+		// Growth 3: advance another 4 s (total 12 s). Still no abort — each growth refreshed the window.
+		act(() => {
+			jest.advanceTimersByTime(4000);
+		});
+		expect(jumpResolved).toBe(false);
+		act(() => {
+			rerender({ rows: [{ id: 'p3-a' }, { id: 'p3-b' }] });
+		});
+		expect(fetchMessages).toHaveBeenCalledTimes(3);
+
+		// Target finally arrives — jump must complete, not abort.
+		setHighTs.mockClear();
+		act(() => {
+			rerender({ rows: [{ id: 'older' }, { id: 'deep' }, { id: 'newer' }] });
+		});
+		await waitFor(() => expect(scrollToIndex).toHaveBeenCalledTimes(1));
+		expect(scrollToIndex).toHaveBeenCalledWith(expect.objectContaining({ index: 1 }));
+		// abortJump was never called: the anchor was NOT released back to null.
+		expect(setHighTs).not.toHaveBeenCalledWith(null);
+
+		await act(async () => {
+			jest.runOnlyPendingTimers();
+			await Promise.resolve();
+		});
+		await waitFor(() => expect(jumpResolved).toBe(true));
+	});
+
 	it('caps anchored window growth so a never-materialising target stops growing and the safety net aborts', async () => {
 		const setHighTs = jest.fn();
 		const fetchMessages = jest.fn();

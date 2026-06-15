@@ -125,6 +125,23 @@ export const useScroll = ({
 		[setHighTs]
 	);
 
+	// Arm (or refresh) the abort safety net for a jump. Refreshed on each productive window growth so a
+	// deep target that is still loading page-by-page is not aborted mid-load; the growth cap
+	// (MAX_JUMP_GROWTH_RETRIES) still guarantees the jump terminates once no more pages are pulled.
+	const armJumpSafety = useCallback(
+		(jump: IPendingJump) => {
+			if (jump.safety) {
+				clearTimeout(jump.safety);
+			}
+			jump.safety = setTimeout(() => {
+				if (pendingJump.current === jump && !jump.scrolled) {
+					abortJump(jump);
+				}
+			}, JUMP_SAFETY_TIMEOUT);
+		},
+		[abortJump]
+	);
+
 	// A jump scroll on the inverted list uses an ESTIMATED offset — there is no getItemLayout for these
 	// variable-height messages — so it can undershoot while the target's row is still unmeasured (fresh
 	// jump), landing the target above the viewport. The first scroll renders the row; once it has been
@@ -161,6 +178,7 @@ export const useScroll = ({
 			// The safety net still aborts if it never materialises after the cap.
 			if (jump.anchored && jumpGrowthRetries.current < MAX_JUMP_GROWTH_RETRIES) {
 				jumpGrowthRetries.current += 1;
+				armJumpSafety(jump); // productive growth → grant the next page its own arrival window
 				fetchMessages();
 			}
 			return;
@@ -219,12 +237,9 @@ export const useScroll = ({
 			pendingJump.current = jump;
 
 			// Safety net only: fires only if the target never re-observes (it cannot interrupt a
-			// completed scroll because completeJump clears it the moment the target appears).
-			jump.safety = setTimeout(() => {
-				if (pendingJump.current === jump && !jump.scrolled) {
-					abortJump(jump);
-				}
-			}, JUMP_SAFETY_TIMEOUT);
+			// completed scroll because completeJump clears it the moment the target appears). Refreshed on
+			// each productive growth (see the re-observe effect) so a deep, still-loading target survives.
+			armJumpSafety(jump);
 
 			// Non-contiguous target → set the Anchored Window (re-seeds to one page centered on the
 			// target's Chunk). Contiguous / thread / local targets keep their current window.
