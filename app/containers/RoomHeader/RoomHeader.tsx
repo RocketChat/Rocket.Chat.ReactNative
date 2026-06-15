@@ -251,13 +251,13 @@ const Header = ({
 					)}
 					<HeaderTitle title={title} tmid={tmid} prid={prid} scale={scale} testID={testID} />
 				</View>
-			<SubTitle
-				usersTyping={tmid ? [] : usersTyping}
-				subtitle={subtitle}
-				formattedStatusExpiry={formattedStatusExpiry}
-				renderFunc={renderFunc}
-				scale={scale}
-			/>
+				<SubTitle
+					usersTyping={tmid ? [] : usersTyping}
+					subtitle={subtitle}
+					formattedStatusExpiry={formattedStatusExpiry}
+					renderFunc={renderFunc}
+					scale={scale}
+				/>
 			</TouchableOpacity>
 		</KeyboardFocusView>
 	);
