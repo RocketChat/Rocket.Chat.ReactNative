@@ -1,4 +1,4 @@
-import { MessageTypeLoad } from '../../../../lib/constants/messageTypeLoad';
+import { MessageTypeLoad } from '../../../lib/constants/messageTypeLoad';
 import { anchorForServerChunk, anchorForTarget, raiseOrRelease, type AnchorMessage } from './anchorResolver';
 
 const at = (id: string, ts: number, t?: string): AnchorMessage => ({ id, ts, t });

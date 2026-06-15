@@ -13,7 +13,7 @@ import { MESSAGE_TYPE_ANY_LOAD, type MessageTypeLoad } from '../../../../lib/con
 import { MAX_AUTO_LOADS, QUERY_SIZE } from '../constants';
 import { buildVisibleSystemTypesClause } from './buildVisibleSystemTypesClause';
 import { roomHistoryRequest } from '../../../../actions/room';
-import { isNewerLoader, raiseOrRelease, type AnchorMessage } from './anchorResolver';
+import { isNewerLoader, raiseOrRelease, type AnchorMessage } from '../../services/anchorResolver';
 
 export const useMessages = ({
 	rid,

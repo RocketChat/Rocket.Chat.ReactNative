@@ -1,5 +1,5 @@
-import { MessageTypeLoad } from '../../../../lib/constants/messageTypeLoad';
-import { tsToMs } from '../../../../lib/methods/helpers/tsToMs';
+import { MessageTypeLoad } from '../../../lib/constants/messageTypeLoad';
+import { tsToMs } from '../../../lib/methods/helpers/tsToMs';
 
 /**
  * Pure anchor-resolver for the bounded Message Window.
@@ -66,7 +66,7 @@ export function anchorForTarget(messages: AnchorMessage[], targetId: string): nu
 export function anchorForServerChunk(
 	messages: AnchorMessage[],
 	targetId: string,
-	targetTs: Date | number | string
+	targetTs: Date | number
 ): number | null {
 	const bound = anchorForTarget(messages, targetId);
 	if (bound !== null) {

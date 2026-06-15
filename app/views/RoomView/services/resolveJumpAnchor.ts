@@ -1,6 +1,6 @@
 import { type IMessage } from '../../../definitions';
 import { tsToMs } from '../../../lib/methods/helpers/tsToMs';
-import { anchorForServerChunk, type AnchorMessage } from '../List/hooks/anchorResolver';
+import { anchorForServerChunk, type AnchorMessage } from './anchorResolver';
 
 export interface IJumpTarget {
 	id: string;
@@ -42,9 +42,21 @@ export const resolveJumpAnchor = async (
 			t: m.t,
 			ts: tsToMs(m.ts)
 		}));
-		return anchorForServerChunk(anchorMessages, target.id, target.ts);
+		const bound = anchorForServerChunk(anchorMessages, target.id, tsToMs(target.ts));
+		if (__DEV__ && bound !== null) {
+			const collisions = anchorMessages.filter(m => tsToMs(m.ts) === bound).length;
+			if (collisions > 1) {
+				console.warn(
+					`[RoomView] Jump anchor resolved onto ts ${bound} shared by ${collisions} rows; the scalar ts ` +
+						`window bound cannot split equal-ts rows, so the jump may land on the wrong message. Deferred fix: composite (ts,id) ordering.`
+				);
+			}
+		}
+		return bound;
 	}
 
+	// The local path can't detect the equal-ts collision the server path warns about above:
+	// getLocalAnchorTs returns only a scalar ts, so two cached rows sharing it are indistinguishable here.
 	const localAnchor = await deps.getLocalAnchorTs(rid, target.ts);
 	if (localAnchor != null) {
 		return localAnchor;
