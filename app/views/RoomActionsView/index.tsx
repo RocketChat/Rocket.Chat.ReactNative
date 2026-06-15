@@ -797,7 +797,7 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 					accessibilityLabel={I18n.t('Room_Info')}
 					enabled={!isGroupChatHandler}
 					testID='room-actions-info'>
-					<View style={[styles.roomInfoContainer, { height: 85 * fontScale }]}>
+					<View style={styles.roomInfoContainer}>
 						<Avatar text={avatar} style={styles.avatar} size={50 * fontScale} type={t} rid={rid} />
 						<View style={styles.roomTitleContainer}>
 							{room.t === 'd' ? (

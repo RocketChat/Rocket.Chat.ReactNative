@@ -6,6 +6,7 @@ import sharedStyles from '../Styles';
 export default StyleSheet.create({
 	roomInfoContainer: {
 		paddingHorizontal: PADDING_HORIZONTAL,
+		paddingVertical: 4,
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
