@@ -41,7 +41,8 @@ tags:
     id: 'room-view-messages'
 - assertVisible:
     id: 'room-view-title-${output.teamname}'
-- tapOn: 'private team ${output.teamname} .'
+- tapOn:
+    id: 'room-header'
 - assertVisible:
     id: 'room-actions-info'
 - tapOn:
