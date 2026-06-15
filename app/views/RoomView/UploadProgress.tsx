@@ -116,20 +116,22 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 		this.ranInitialUploadCheck = true;
 		const { rid } = this.props;
 		const { uploads } = this.state;
-		for (const u of uploads) {
-			if (!isUploadActive(u.path, rid)) {
-				try {
-					const db = database.active;
-					await db.write(async () => {
-						await u.update(() => {
-							u.error = true;
+		await Promise.all(
+			uploads
+				.filter(u => !isUploadActive(u.path, rid))
+				.map(async u => {
+					try {
+						const db = database.active;
+						await db.write(async () => {
+							await u.update(() => {
+								u.error = true;
+							});
 						});
-					});
-				} catch (e) {
-					log(e);
-				}
-			}
-		}
+					} catch (e) {
+						log(e);
+					}
+				})
+		);
 	};
 
 	deleteUpload = async (item: TUploadModel) => {
