@@ -81,8 +81,10 @@ class Database {
 
 		// Read the key using the storage key that matches the JS KEY_PREFIX ("db_key_v1:<dbName>")
 		let storageKey = "db_key_v1:\(dbName)"
-		guard let keyHex = DatabaseKeyStore.read(account: storageKey) else {
-			NSLog("[Database] No encryption key found for %@ — closing", dbName)
+		var readErr: NSError?
+		let keyHexOpt = DatabaseKeyStore.read(account: storageKey, error: &readErr)
+		guard readErr == nil, let keyHex = keyHexOpt else {
+			NSLog("[Database] No encryption key for %@ (missing or unreadable) — closing", dbName)
 			sqlite3_close(db)
 			db = nil
 			return

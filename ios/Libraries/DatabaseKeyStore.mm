@@ -6,7 +6,7 @@
 // declaration VoipModule.mm uses for VoipService — the symbol links from the
 // same target at link time; importing the generated -Swift.h here is unnecessary.
 @interface DatabaseKeyStore : NSObject
-+ (NSString * _Nullable)read:(NSString *)account;
++ (NSString * _Nullable)readAccount:(NSString *)account error:(NSError * _Nullable * _Nullable)error;
 + (BOOL)write:(NSString *)account value:(NSString *)value;
 + (void)delete:(NSString *)account;
 @end
@@ -25,8 +25,13 @@ RCT_EXPORT_MODULE(DatabaseKeyStoreModule)
 - (void)getItem:(NSString *)key
         resolve:(RCTPromiseResolveBlock)resolve
          reject:(RCTPromiseRejectBlock)reject {
-    NSString *value = [DatabaseKeyStore read:key];
-    // Resolve explicit JS null (not nil) on a miss: nil bridges to `undefined`,
+    NSError *err = nil;
+    NSString *value = [DatabaseKeyStore readAccount:key error:&err];
+    if (err != nil) {
+        reject(@"KEYCHAIN_READ_ERROR", @"Failed to read key from Keychain", err);
+        return;
+    }
+    // Resolve explicit JS null (not nil) on a genuine miss: nil bridges to `undefined`,
     // which breaks the `Promise<string | null>` contract and the `!== null` check
     // in getOrCreateDatabaseKey. Android already resolves null on a miss.
     resolve(value ?: (id)[NSNull null]);

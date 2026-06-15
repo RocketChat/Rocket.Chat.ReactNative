@@ -31,9 +31,12 @@ final class DatabaseKeyStore: NSObject {
 
 	// MARK: - Native-side helpers (called from DatabaseKeyStore.mm and Database.swift in extensions)
 
-	/// Read a key by account name. Returns nil if not found.
+	/// Read a key by account name.
+	/// Returns the stored string on success.
+	/// Returns nil with error == nil on a genuine not-found (errSecItemNotFound).
+	/// Returns nil with error set on any other Keychain failure or undecodable data.
 	/// Safe to call from the NotificationService extension — the access group is shared.
-	@objc(read:) static func read(account: String) -> String? {
+	@objc(readAccount:error:) static func read(account: String, error: NSErrorPointer) -> String? {
 		let query: [String: Any] = [
 			kSecClass as String:              kSecClassGenericPassword,
 			kSecAttrService as String:        service,
@@ -45,10 +48,18 @@ final class DatabaseKeyStore: NSObject {
 		]
 		var result: AnyObject?
 		let status = SecItemCopyMatching(query as CFDictionary, &result)
-		guard status == errSecSuccess, let data = result as? Data else {
-			return nil
+		if status == errSecItemNotFound {
+			return nil  // true not-found; error stays nil
 		}
-		return String(data: data, encoding: .utf8)
+		guard status == errSecSuccess, let data = result as? Data, let value = String(data: data, encoding: .utf8) else {
+			error?.pointee = NSError(
+				domain: "DatabaseKeyStore",
+				code: Int(status),
+				userInfo: [NSLocalizedDescriptionKey: "Keychain read failed for account \(account)"]
+			)
+			return nil  // failure; error is set
+		}
+		return value
 	}
 
 	/// Write a key. Idempotent: updates the item if it already exists.

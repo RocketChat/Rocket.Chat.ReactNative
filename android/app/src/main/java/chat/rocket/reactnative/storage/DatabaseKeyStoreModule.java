@@ -55,7 +55,7 @@ public class DatabaseKeyStoreModule extends NativeDatabaseKeyStoreSpec {
 			promise.resolve(getItemInternal(getReactApplicationContext(), key));
 		} catch (Exception e) {
 			Log.e(TAG, "getItem failed for key: " + key, e);
-			promise.resolve(null);
+			promise.reject("KEYSTORE_READ_ERROR", e);
 		}
 	}
 
@@ -85,37 +85,39 @@ public class DatabaseKeyStoreModule extends NativeDatabaseKeyStoreSpec {
 	// Native-side helpers — callable from Encryption.java (same process, plain Context)
 	// -------------------------------------------------------------------------
 
-	/** Returns the stored plaintext value or null if not found. */
-	public static String getItemInternal(Context context, String key) {
-		try {
-			SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-			String encoded = prefs.getString(key, null);
-			if (encoded == null) {
-				return null;
-			}
-
-			KeyStore ks = KeyStore.getInstance(KEYSTORE_PROVIDER);
-			ks.load(null);
-			if (!ks.containsAlias(key)) {
-				return null;
-			}
-
-			SecretKey secretKey = (SecretKey) ks.getKey(key, null);
-			byte[] combined = Base64.decode(encoded, Base64.DEFAULT);
-
-			byte[] iv = new byte[GCM_IV_LENGTH];
-			byte[] encrypted = new byte[combined.length - GCM_IV_LENGTH];
-			System.arraycopy(combined, 0, iv, 0, GCM_IV_LENGTH);
-			System.arraycopy(combined, GCM_IV_LENGTH, encrypted, 0, encrypted.length);
-
-			Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-			cipher.init(Cipher.DECRYPT_MODE, secretKey, new GCMParameterSpec(GCM_TAG_LENGTH, iv));
-			byte[] plain = cipher.doFinal(encrypted);
-			return new String(plain, StandardCharsets.UTF_8);
-		} catch (Exception e) {
-			Log.e(TAG, "getItemInternal failed for key: " + key, e);
+	/**
+	 * Returns the stored plaintext value, or null if the key is genuinely absent
+	 * (SharedPreferences blob not present). Throws on any other failure — corrupt
+	 * data, missing Keystore alias for an existing blob, decryption error, etc. —
+	 * so callers can distinguish a true not-found from a read/decrypt failure.
+	 */
+	public static String getItemInternal(Context context, String key) throws Exception {
+		SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+		String encoded = prefs.getString(key, null);
+		if (encoded == null) {
+			// Genuine not-found: no blob stored for this key.
 			return null;
 		}
+
+		KeyStore ks = KeyStore.getInstance(KEYSTORE_PROVIDER);
+		ks.load(null);
+		if (!ks.containsAlias(key)) {
+			// Blob exists but Keystore alias is gone — this is corruption, not a miss.
+			throw new IllegalStateException("keystore alias missing for existing key blob: " + key);
+		}
+
+		SecretKey secretKey = (SecretKey) ks.getKey(key, null);
+		byte[] combined = Base64.decode(encoded, Base64.DEFAULT);
+
+		byte[] iv = new byte[GCM_IV_LENGTH];
+		byte[] encrypted = new byte[combined.length - GCM_IV_LENGTH];
+		System.arraycopy(combined, 0, iv, 0, GCM_IV_LENGTH);
+		System.arraycopy(combined, GCM_IV_LENGTH, encrypted, 0, encrypted.length);
+
+		Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+		cipher.init(Cipher.DECRYPT_MODE, secretKey, new GCMParameterSpec(GCM_TAG_LENGTH, iv));
+		byte[] plain = cipher.doFinal(encrypted);
+		return new String(plain, StandardCharsets.UTF_8);
 	}
 
 	/** Stores value under key. Idempotent: the AES Keystore entry is reused if it exists. */

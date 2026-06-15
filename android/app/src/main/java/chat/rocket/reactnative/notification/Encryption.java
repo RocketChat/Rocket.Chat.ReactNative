@@ -182,7 +182,13 @@ class Encryption {
         // Read the key from the AndroidKeyStore-backed store.
         // Storage key matches JS KEY_PREFIX: "db_key_v1:<dbName>"
         String storageKey = "db_key_v1:" + dbName;
-        String keyHex = DatabaseKeyStoreModule.getItemInternal(context, storageKey);
+        String keyHex;
+        try {
+            keyHex = DatabaseKeyStoreModule.getItemInternal(context, storageKey);
+        } catch (Exception e) {
+            Log.w(TAG, "Could not read encryption key for " + dbName + " — cannot read room", e);
+            return null;
+        }
         if (keyHex == null) {
             Log.w(TAG, "No encryption key found for " + dbName + " — cannot read room");
             return null;
