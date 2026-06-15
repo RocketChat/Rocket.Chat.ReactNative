@@ -101,8 +101,8 @@ export const Themes = () => (
 	</>
 );
 
-const futureExpiry = new Date(Date.now() + 3600000).toISOString();
-const expiredExpiry = new Date(Date.now() - 3600000).toISOString();
+const futureExpiry = new Date('2026-06-15T19:00:00.000Z').toISOString();
+const expiredExpiry = new Date('2026-06-15T07:00:00.000Z').toISOString();
 
 export const DM_Status = () => (
 	<>

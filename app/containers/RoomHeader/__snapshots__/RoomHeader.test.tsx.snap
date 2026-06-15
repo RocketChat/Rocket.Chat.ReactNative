@@ -963,7 +963,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="Online John Doe In a meeting, Until 2:38 PM."
+      accessibilityLabel="Online John Doe In a meeting, Until 7:00 PM."
       accessibilityRole="header"
       accessible={true}
       autoFocus={false}
