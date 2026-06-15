@@ -63,11 +63,7 @@ export function anchorForTarget(messages: AnchorMessage[], targetId: string): nu
  *   Loader: the anchor could never release, so newly arriving messages would never render.
  * - Target absent / empty Chunk → anchor at the target's own ts so the window still re-seeds onto it.
  */
-export function anchorForServerChunk(
-	messages: AnchorMessage[],
-	targetId: string,
-	targetTs: Date | number
-): number | null {
+export function anchorForServerChunk(messages: AnchorMessage[], targetId: string, targetTs: Date | number): number | null {
 	const bound = anchorForTarget(messages, targetId);
 	if (bound !== null) {
 		return bound;
