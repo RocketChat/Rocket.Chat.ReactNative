@@ -3,6 +3,7 @@
 //
 
 #import <RNCallKeep/RNCallKeep.h>
+#import <React/RCTBridgeModule.h>
 #import "Libraries/SecureStorage.h"
 #import "Libraries/MMKVKeyManager.h"
 #import "Shared/RocketChat/MMKVBridge.h"

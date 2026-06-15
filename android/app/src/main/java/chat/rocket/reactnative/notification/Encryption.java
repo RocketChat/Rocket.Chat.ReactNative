@@ -14,8 +14,6 @@ import chat.rocket.mobilecrypto.algorithms.RSACrypto;
 import chat.rocket.mobilecrypto.algorithms.CryptoUtils;
 import chat.rocket.reactnative.storage.DatabaseKeyStore;
 import net.zetetic.database.sqlcipher.SQLiteDatabase;
-import net.zetetic.database.sqlcipher.SQLiteDatabaseHook;
-import net.zetetic.database.sqlcipher.SQLiteConnection;
 
 import java.security.SecureRandom;
 import java.util.Arrays;
@@ -198,6 +196,11 @@ class Encryption {
         SQLiteDatabase db = null;
         try {
             db = SQLiteDatabase.openDatabase(dbPath, rawKey, null, SQLiteDatabase.OPEN_READONLY, null);
+
+            // Mandatory multi-process WAL safety, matching the JS driver and the iOS reader:
+            // the notification path can read while the main app holds a WAL lock; without a
+            // busy timeout that contention surfaces as an immediate SQLITE_BUSY.
+            db.execSQL("PRAGMA busy_timeout = 500;");
 
             Cursor cursor = db.rawQuery("SELECT * FROM subscriptions WHERE id == ? LIMIT 1", new String[]{ejson.rid});
 

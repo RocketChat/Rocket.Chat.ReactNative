@@ -19,6 +19,9 @@
 		1E06561B2B7E91FB0081B01F /* ErrorActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E06561A2B7E91FB0081B01F /* ErrorActionHandler.swift */; };
 		1E06561D2B7E9C1C0081B01F /* MessageActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E06561C2B7E9C1C0081B01F /* MessageActionView.swift */; };
 		1E1C2F80250FCB69005DCE7D /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1C2F7F250FCB69005DCE7D /* Database.swift */; };
+		7ADBC0032F80000100000003 /* DatabaseKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADBC0012F80000100000001 /* DatabaseKeyStore.swift */; };
+		7ADBC0042F80000100000004 /* DatabaseKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADBC0012F80000100000001 /* DatabaseKeyStore.swift */; };
+		7ADBC0052F80000100000005 /* DatabaseKeyStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ADBC0022F80000100000002 /* DatabaseKeyStore.m */; };
 		1E29A2CC2B5857F50093C03C /* RoomListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2CB2B5857F50093C03C /* RoomListView.swift */; };
 		1E29A2D02B58582F0093C03C /* RoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2CF2B58582F0093C03C /* RoomView.swift */; };
 		1E29A2EF2B585B070093C03C /* RocketChatClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2D22B585B070093C03C /* RocketChatClient.swift */; };
@@ -293,6 +296,8 @@
 		1E068CFD24FD2DC700A0FFC1 /* AppGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGroup.swift; sourceTree = "<group>"; };
 		1E068D0024FD2E0500A0FFC1 /* AppGroup.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppGroup.m; sourceTree = "<group>"; };
 		1E1C2F7F250FCB69005DCE7D /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
+		7ADBC0012F80000100000001 /* DatabaseKeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseKeyStore.swift; sourceTree = "<group>"; };
+		7ADBC0022F80000100000002 /* DatabaseKeyStore.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DatabaseKeyStore.m; sourceTree = "<group>"; };
 		1E1EA8092326CD2200E22452 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		1E1EA80B2326CD2800E22452 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		1E1EA80D2326CD2F00E22452 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -946,6 +951,8 @@
 				7AC0A1E02C000001001CAA11 /* Challenge.h */,
 				7AC0A1E02C000002001CAA11 /* Challenge.mm */,
 				9BE2F3DC02A264F204E3EDE3 /* DDPClient.swift */,
+				7ADBC0012F80000100000001 /* DatabaseKeyStore.swift */,
+				7ADBC0022F80000100000002 /* DatabaseKeyStore.m */,
 			);
 			path = Libraries;
 			sourceTree = "<group>";
@@ -1674,6 +1681,7 @@
 				1E01C8252511303100FEF824 /* Notification.swift in Sources */,
 				1E0426E7251A54B4008F022C /* RoomType.swift in Sources */,
 				1E1C2F80250FCB69005DCE7D /* Database.swift in Sources */,
+				7ADBC0042F80000100000004 /* DatabaseKeyStore.swift in Sources */,
 				1E67380424DC529B0009E081 /* String+Extensions.swift in Sources */,
 				1ED038A62B50900800C007D4 /* Bundle+Extensions.swift in Sources */,
 				1E01C8292511304100FEF824 /* Sender.swift in Sources */,
@@ -1724,6 +1732,8 @@
 				7AAB3E23257E6A6E00707CF6 /* Data+Extensions.swift in Sources */,
 				7AAB3E24257E6A6E00707CF6 /* Date+Extensions.swift in Sources */,
 				7AAB3E25257E6A6E00707CF6 /* Database.swift in Sources */,
+				7ADBC0032F80000100000003 /* DatabaseKeyStore.swift in Sources */,
+				7ADBC0052F80000100000005 /* DatabaseKeyStore.m in Sources */,
 				7ACFE7D92DDE48760090D9BC /* AppDelegate.swift in Sources */,
 				7A3704572F7DB36E009085FC /* VoipPerCallDdpRegistry.swift in Sources */,
 				1E9A71752B59F36E00477BA2 /* ClientSSL.swift in Sources */,
