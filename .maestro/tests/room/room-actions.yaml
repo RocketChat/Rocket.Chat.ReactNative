@@ -171,8 +171,8 @@ tags:
     from:
       id: action-sheet-handle
     direction: UP
-- extendedWaitUntil:
-    visible:
+- scrollUntilVisible:
+    element:
       text: 'Unstar'
     timeout: 60000
 - tapOn:
