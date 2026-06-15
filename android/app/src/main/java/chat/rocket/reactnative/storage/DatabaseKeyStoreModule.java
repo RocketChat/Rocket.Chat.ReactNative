@@ -9,8 +9,6 @@ import android.util.Log;
 
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.ReactContextBaseJavaModule;
-import com.facebook.react.bridge.ReactMethod;
 
 import java.nio.charset.StandardCharsets;
 import java.security.KeyStore;
@@ -27,13 +25,14 @@ import javax.crypto.spec.GCMParameterSpec;
  * that holds the IV-prefixed ciphertext.  The AES key is never exported; only the
  * encrypted value is written to disk.
  *
- * getItemInternal / setItemInternal are intentionally static so Encryption.java can
- * call them without a ReactApplicationContext (same app process, plain Context is enough).
+ * getItemInternal / setItemInternal / removeItemInternal are intentionally static so
+ * Encryption.java can call them without a ReactApplicationContext (same app process,
+ * plain Context is enough).
  *
  * SharedPreferences file: "RCDatabaseKeyStore" — separate from MMKV and SecureStoragePrefs
  * so these keys can be found unambiguously from native-only callers.
  */
-public class DatabaseKeyStore extends ReactContextBaseJavaModule {
+public class DatabaseKeyStoreModule extends NativeDatabaseKeyStoreSpec {
 
 	private static final String TAG = "RocketChat.DBKeyStore";
 	private static final String KEYSTORE_PROVIDER = "AndroidKeyStore";
@@ -42,37 +41,28 @@ public class DatabaseKeyStore extends ReactContextBaseJavaModule {
 	private static final int GCM_IV_LENGTH = 12;
 	private static final int GCM_TAG_LENGTH = 128;
 
-	// Kept for the ReactContextBaseJavaModule constructor path
-	private final ReactApplicationContext reactContext;
-
-	public DatabaseKeyStore(ReactApplicationContext reactContext) {
+	public DatabaseKeyStoreModule(ReactApplicationContext reactContext) {
 		super(reactContext);
-		this.reactContext = reactContext;
 	}
+
+	// -------------------------------------------------------------------------
+	// JS-facing TurboModule methods
+	// -------------------------------------------------------------------------
 
 	@Override
-	public String getName() {
-		return "DatabaseKeyStore";
-	}
-
-	// -------------------------------------------------------------------------
-	// JS-facing methods
-	// -------------------------------------------------------------------------
-
-	@ReactMethod
 	public void getItem(String key, Promise promise) {
 		try {
-			promise.resolve(getItemInternal(reactContext, key));
+			promise.resolve(getItemInternal(getReactApplicationContext(), key));
 		} catch (Exception e) {
 			Log.e(TAG, "getItem failed for key: " + key, e);
 			promise.resolve(null);
 		}
 	}
 
-	@ReactMethod
+	@Override
 	public void setItem(String key, String value, Promise promise) {
 		try {
-			setItemInternal(reactContext, key, value);
+			setItemInternal(getReactApplicationContext(), key, value);
 			promise.resolve(null);
 		} catch (Exception e) {
 			Log.e(TAG, "setItem failed for key: " + key, e);
@@ -80,10 +70,10 @@ public class DatabaseKeyStore extends ReactContextBaseJavaModule {
 		}
 	}
 
-	@ReactMethod
+	@Override
 	public void removeItem(String key, Promise promise) {
 		try {
-			removeItemInternal(reactContext, key);
+			removeItemInternal(getReactApplicationContext(), key);
 			promise.resolve(null);
 		} catch (Exception e) {
 			Log.e(TAG, "removeItem failed for key: " + key, e);

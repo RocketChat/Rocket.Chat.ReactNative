@@ -12,7 +12,7 @@ import com.google.gson.JsonObject;
 import chat.rocket.mobilecrypto.algorithms.AESCrypto;
 import chat.rocket.mobilecrypto.algorithms.RSACrypto;
 import chat.rocket.mobilecrypto.algorithms.CryptoUtils;
-import chat.rocket.reactnative.storage.DatabaseKeyStore;
+import chat.rocket.reactnative.storage.DatabaseKeyStoreModule;
 import net.zetetic.database.sqlcipher.SQLiteDatabase;
 
 import java.security.SecureRandom;
@@ -182,7 +182,7 @@ class Encryption {
         // Read the key from the AndroidKeyStore-backed store.
         // Storage key matches JS KEY_PREFIX: "db_key_v1:<dbName>"
         String storageKey = "db_key_v1:" + dbName;
-        String keyHex = DatabaseKeyStore.getItemInternal(context, storageKey);
+        String keyHex = DatabaseKeyStoreModule.getItemInternal(context, storageKey);
         if (keyHex == null) {
             Log.w(TAG, "No encryption key found for " + dbName + " — cannot read room");
             return null;

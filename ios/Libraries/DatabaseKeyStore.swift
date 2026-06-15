@@ -21,7 +21,7 @@ import Foundation
 import Security
 
 @objc(DatabaseKeyStore)
-final class DatabaseKeyStore: NSObject, RCTBridgeModule {
+final class DatabaseKeyStore: NSObject {
 
 	// kSecAttrService shared between this module and Database.swift
 	static let service = "chat.rocket.reactnative.dbkeys"
@@ -29,39 +29,11 @@ final class DatabaseKeyStore: NSObject, RCTBridgeModule {
 	// Full team-prefixed access group — bare suffix fails with errSecMissingEntitlement
 	private static let accessGroup = "S6UPZG7ZR3.chat.rocket.reactnative"
 
-	static func moduleName() -> String! { "DatabaseKeyStore" }
-
-	static func requiresMainQueueSetup() -> Bool { false }
-
-	// MARK: - JS-facing methods
-
-	@objc func getItem(_ key: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) {
-		if let value = DatabaseKeyStore.read(account: key) {
-			resolve(value)
-		} else {
-			resolve(nil)
-		}
-	}
-
-	@objc func setItem(_ key: String, value: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) {
-		let ok = DatabaseKeyStore.write(account: key, value: value)
-		if ok {
-			resolve(nil)
-		} else {
-			reject("KEYCHAIN_WRITE_ERROR", "Failed to store item in Keychain", nil)
-		}
-	}
-
-	@objc func removeItem(_ key: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) {
-		DatabaseKeyStore.delete(account: key)
-		resolve(nil)
-	}
-
-	// MARK: - Native-side helpers (called from Database.swift in extensions)
+	// MARK: - Native-side helpers (called from DatabaseKeyStore.mm and Database.swift in extensions)
 
 	/// Read a key by account name. Returns nil if not found.
 	/// Safe to call from the NotificationService extension — the access group is shared.
-	static func read(account: String) -> String? {
+	@objc(read:) static func read(account: String) -> String? {
 		let query: [String: Any] = [
 			kSecClass as String:              kSecClassGenericPassword,
 			kSecAttrService as String:        service,
@@ -82,7 +54,7 @@ final class DatabaseKeyStore: NSObject, RCTBridgeModule {
 	/// Write a key. Idempotent: updates the item if it already exists.
 	/// Returns false only on an unexpected Keychain error.
 	@discardableResult
-	static func write(account: String, value: String) -> Bool {
+	@objc(write:value:) static func write(account: String, value: String) -> Bool {
 		let data = Data(value.utf8)
 		var attrs: [String: Any] = [
 			kSecClass as String:              kSecClassGenericPassword,
@@ -108,7 +80,7 @@ final class DatabaseKeyStore: NSObject, RCTBridgeModule {
 	}
 
 	/// Delete an item. No-op if not found.
-	static func delete(account: String) {
+	@objc(delete:) static func delete(account: String) {
 		let query: [String: Any] = [
 			kSecClass as String:              kSecClassGenericPassword,
 			kSecAttrService as String:        service,

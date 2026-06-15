@@ -17,7 +17,7 @@ import com.nozbe.watermelondb.jsi.WatermelonDBJSIPackage;
 import com.bugsnag.android.Bugsnag
 import expo.modules.ApplicationLifecycleDispatcher
 import chat.rocket.reactnative.networking.SSLPinningTurboPackage;
-import chat.rocket.reactnative.storage.DatabaseKeyStorePackage;
+import chat.rocket.reactnative.storage.DatabaseKeyStoreTurboPackage;
 import chat.rocket.reactnative.storage.MMKVKeyManager;
 import chat.rocket.reactnative.storage.SecureStoragePackage;
 import chat.rocket.reactnative.notification.VideoConfTurboPackage
@@ -50,7 +50,7 @@ open class MainApplication : Application(), ReactApplication {
               add(PushNotificationTurboPackage())
               add(VoipTurboPackage())
               add(SecureStoragePackage())
-              add(DatabaseKeyStorePackage())
+              add(DatabaseKeyStoreTurboPackage())
               add(InvertedScrollPackage())
               add(ExternalInputPackage())
             }

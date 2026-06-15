@@ -129,6 +129,8 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
+  - ExpoSQLite (16.0.10):
+    - ExpoModulesCore
   - ExpoSystemUI (6.0.9):
     - ExpoModulesCore
   - ExpoVideoThumbnails (10.0.8):
@@ -3531,6 +3533,11 @@ PODS:
     - SDWebImage/Core (~> 5.17)
   - simdjson (3.9.4)
   - SocketRocket (0.7.1)
+  - SQLCipher (4.7.0):
+    - SQLCipher/standard (= 4.7.0)
+  - SQLCipher/common (4.7.0)
+  - SQLCipher/standard (4.7.0):
+    - SQLCipher/common
   - TOCropViewController (2.7.4)
   - WatermelonDB (0.28.1-0):
     - React
@@ -3564,6 +3571,7 @@ DEPENDENCIES:
   - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
   - ExpoLocalAuthentication (from `../node_modules/expo-local-authentication/ios`)
   - ExpoModulesCore (from `../node_modules/expo-modules-core`)
+  - ExpoSQLite (from `../node_modules/expo-sqlite/ios`)
   - ExpoSystemUI (from `../node_modules/expo-system-ui/ios`)
   - ExpoVideoThumbnails (from `../node_modules/expo-video-thumbnails/ios`)
   - ExpoWebBrowser (from `../node_modules/expo-web-browser/ios`)
@@ -3676,6 +3684,7 @@ DEPENDENCIES:
   - RNWorklets (from `../node_modules/react-native-worklets`)
   - "simdjson (from `../node_modules/@nozbe/simdjson`)"
   - SocketRocket (~> 0.7.1)
+  - SQLCipher (~> 4.7.0)
   - "WatermelonDB (from `../node_modules/@nozbe/watermelondb`)"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -3707,6 +3716,7 @@ SPEC REPOS:
     - SDWebImageSVGCoder
     - SDWebImageWebPCoder
     - SocketRocket
+    - SQLCipher
     - TOCropViewController
     - ZXingObjC
 
@@ -3753,6 +3763,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-local-authentication/ios"
   ExpoModulesCore:
     :path: "../node_modules/expo-modules-core"
+  ExpoSQLite:
+    :path: "../node_modules/expo-sqlite/ios"
   ExpoSystemUI:
     :path: "../node_modules/expo-system-ui/ios"
   ExpoVideoThumbnails:
@@ -3997,6 +4009,7 @@ SPEC CHECKSUMS:
   ExpoKeepAwake: 55f75eca6499bb9e4231ebad6f3e9cb8f99c0296
   ExpoLocalAuthentication: 8a31808565da7af926dd9b595e98594d8b1553b6
   ExpoModulesCore: 91a57f1d109cf53fe58d44fcf6b68a777561549a
+  ExpoSQLite: e8ec472fce715add19e5fc6e44698ab96a902cd3
   ExpoSystemUI: 2ad325f361a2fcd96a464e8574e19935c461c9cc
   ExpoVideoThumbnails: 503a79271416c8723f04b55ea4737282513ebe4f
   ExpoWebBrowser: 17b064c621789e41d4816c95c93f429b84971f52
@@ -4102,7 +4115,7 @@ SPEC CHECKSUMS:
   React-timing: c39eeb992274aeaeb9f4666dc97a36a31d33fe94
   React-utils: 2f9ba0088251788ad66aa1855ff99ed2424024d2
   ReactAppDependencyProvider: 1bcd3527ac0390a1c898c114f81ff954be35ed79
-  ReactCodegen: 7fadc30654a54b3a0d62df08f55e2211e25486ee
+  ReactCodegen: 250f0c4b774af2cc431fe53c10d01e124a4bdff1
   ReactCommon: 6d0fa86a4510730da7c72560e0ced14258292ab9
   ReactNativeIncallManager: dccd3e7499caa3bb73d3acfedf4fb0360f1a87d5
   RNBootSplash: 7fcc9a58ae343aeb1a1dd49f9030832fe432c544
@@ -4131,11 +4144,12 @@ SPEC CHECKSUMS:
   SDWebImageWebPCoder: e38c0a70396191361d60c092933e22c20d5b1380
   simdjson: 7bb9e33d87737cec966e7b427773c67baa4458fe
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
+  SQLCipher: ba9d0076041ed767c5bd3d3f77098318d04a403c
   TOCropViewController: 80b8985ad794298fb69d3341de183f33d1853654
   WatermelonDB: 4c846c8cb94eef3cba90fa034d15310163226703
   Yoga: 1e91d83a5286cfd3b725eade59274c92270540d4
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
-PODFILE CHECKSUM: d05b9b865205e9c845b4e7c288577d4b4ae403ab
+PODFILE CHECKSUM: 24fecc60b74227f0945a090fd455b87c06a52800
 
 COCOAPODS: 1.15.2

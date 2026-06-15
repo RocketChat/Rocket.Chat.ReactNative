@@ -19,9 +19,6 @@
 		1E06561B2B7E91FB0081B01F /* ErrorActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E06561A2B7E91FB0081B01F /* ErrorActionHandler.swift */; };
 		1E06561D2B7E9C1C0081B01F /* MessageActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E06561C2B7E9C1C0081B01F /* MessageActionView.swift */; };
 		1E1C2F80250FCB69005DCE7D /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1C2F7F250FCB69005DCE7D /* Database.swift */; };
-		7ADBC0032F80000100000003 /* DatabaseKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADBC0012F80000100000001 /* DatabaseKeyStore.swift */; };
-		7ADBC0042F80000100000004 /* DatabaseKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADBC0012F80000100000001 /* DatabaseKeyStore.swift */; };
-		7ADBC0052F80000100000005 /* DatabaseKeyStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ADBC0022F80000100000002 /* DatabaseKeyStore.m */; };
 		1E29A2CC2B5857F50093C03C /* RoomListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2CB2B5857F50093C03C /* RoomListView.swift */; };
 		1E29A2D02B58582F0093C03C /* RoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2CF2B58582F0093C03C /* RoomView.swift */; };
 		1E29A2EF2B585B070093C03C /* RocketChatClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E29A2D22B585B070093C03C /* RocketChatClient.swift */; };
@@ -214,6 +211,9 @@
 		7AC0A1E02C000011001CAA11 /* Challenge.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7AC0A1E02C000002001CAA11 /* Challenge.mm */; };
 		7AC0A1E02C000012001CAA11 /* Challenge.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7AC0A1E02C000002001CAA11 /* Challenge.mm */; };
 		7ACFE7D92DDE48760090D9BC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACFE7D82DDE48760090D9BC /* AppDelegate.swift */; };
+		7ADBC0032F80000100000003 /* DatabaseKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADBC0012F80000100000001 /* DatabaseKeyStore.swift */; };
+		7ADBC0042F80000100000004 /* DatabaseKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADBC0012F80000100000001 /* DatabaseKeyStore.swift */; };
+		7ADBC0062F80000100000006 /* DatabaseKeyStore.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7ADBC0022F80000100000002 /* DatabaseKeyStore.mm */; };
 		7AE10C0828A59530003593CB /* Inter.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7AE10C0528A59530003593CB /* Inter.ttf */; };
 		7AVR00022F5F5900002A6BDE /* VoipRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AVR00002F5F5900002A6BDE /* VoipRegion.swift */; };
 		85160EB6C143E0493FE5F014 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194D9A8897F4A486C2C6F89A /* ExpoModulesProvider.swift */; };
@@ -296,8 +296,6 @@
 		1E068CFD24FD2DC700A0FFC1 /* AppGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGroup.swift; sourceTree = "<group>"; };
 		1E068D0024FD2E0500A0FFC1 /* AppGroup.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppGroup.m; sourceTree = "<group>"; };
 		1E1C2F7F250FCB69005DCE7D /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
-		7ADBC0012F80000100000001 /* DatabaseKeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseKeyStore.swift; sourceTree = "<group>"; };
-		7ADBC0022F80000100000002 /* DatabaseKeyStore.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DatabaseKeyStore.m; sourceTree = "<group>"; };
 		1E1EA8092326CD2200E22452 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		1E1EA80B2326CD2800E22452 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		1E1EA80D2326CD2F00E22452 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -455,6 +453,8 @@
 		7AC0A1E02C000002001CAA11 /* Challenge.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Challenge.mm; sourceTree = "<group>"; };
 		7ACD4853222860DE00442C55 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		7ACFE7D82DDE48760090D9BC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		7ADBC0012F80000100000001 /* DatabaseKeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseKeyStore.swift; sourceTree = "<group>"; };
+		7ADBC0022F80000100000002 /* DatabaseKeyStore.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DatabaseKeyStore.mm; sourceTree = "<group>"; };
 		7AE10C0528A59530003593CB /* Inter.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Inter.ttf; sourceTree = "<group>"; };
 		7AVR00002F5F5900002A6BDE /* VoipRegion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoipRegion.swift; sourceTree = "<group>"; };
 		83F98EE33D91A93DF8E69F34 /* MediaCallsAnswerRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCallsAnswerRequest.swift; sourceTree = "<group>"; };
@@ -952,7 +952,7 @@
 				7AC0A1E02C000002001CAA11 /* Challenge.mm */,
 				9BE2F3DC02A264F204E3EDE3 /* DDPClient.swift */,
 				7ADBC0012F80000100000001 /* DatabaseKeyStore.swift */,
-				7ADBC0022F80000100000002 /* DatabaseKeyStore.m */,
+				7ADBC0022F80000100000002 /* DatabaseKeyStore.mm */,
 			);
 			path = Libraries;
 			sourceTree = "<group>";
@@ -1303,6 +1303,7 @@
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/React-Core_privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-cxxreact/React-cxxreact_privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage/SDWebImage.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/SQLCipher/SQLCipher.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/TOCropViewController/TOCropViewControllerBundle.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/boost/boost_privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/glog/glog_privacy.bundle",
@@ -1337,6 +1338,7 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-Core_privacy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-cxxreact_privacy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SDWebImage.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SQLCipher.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TOCropViewControllerBundle.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/boost_privacy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/glog_privacy.bundle",
@@ -1460,6 +1462,7 @@
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/React-Core_privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-cxxreact/React-cxxreact_privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage/SDWebImage.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/SQLCipher/SQLCipher.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/TOCropViewController/TOCropViewControllerBundle.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/boost/boost_privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/glog/glog_privacy.bundle",
@@ -1494,6 +1497,7 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-Core_privacy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-cxxreact_privacy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SDWebImage.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SQLCipher.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TOCropViewControllerBundle.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/boost_privacy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/glog_privacy.bundle",
@@ -1733,7 +1737,7 @@
 				7AAB3E24257E6A6E00707CF6 /* Date+Extensions.swift in Sources */,
 				7AAB3E25257E6A6E00707CF6 /* Database.swift in Sources */,
 				7ADBC0032F80000100000003 /* DatabaseKeyStore.swift in Sources */,
-				7ADBC0052F80000100000005 /* DatabaseKeyStore.m in Sources */,
+				7ADBC0062F80000100000006 /* DatabaseKeyStore.mm in Sources */,
 				7ACFE7D92DDE48760090D9BC /* AppDelegate.swift in Sources */,
 				7A3704572F7DB36E009085FC /* VoipPerCallDdpRegistry.swift in Sources */,
 				1E9A71752B59F36E00477BA2 /* ClientSSL.swift in Sources */,

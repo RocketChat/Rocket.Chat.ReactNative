@@ -6,22 +6,20 @@
  *  - Missing native module throws a clear error (not an obscure undefined crash)
  */
 
-import { NativeModules } from 'react-native';
-
 import { installKeychainShim } from '../keyService';
 import { installNativeKeychainShim } from '../keyStore';
+import NativeDatabaseKeyStore from '../../../native/NativeDatabaseKeyStore';
 
 // ---------------------------------------------------------------------------
 // Mocks
 // ---------------------------------------------------------------------------
 
-jest.mock('react-native', () => ({
-	NativeModules: {
-		DatabaseKeyStore: {
-			getItem: jest.fn(async (_key: string) => null),
-			setItem: jest.fn(async (_key: string, _value: string) => undefined),
-			removeItem: jest.fn(async (_key: string) => undefined)
-		}
+jest.mock('../../../native/NativeDatabaseKeyStore', () => ({
+	__esModule: true,
+	default: {
+		getItem: jest.fn(async (_key: string): Promise<string | null> => null),
+		setItem: jest.fn(async (_key: string, _value: string): Promise<void> => undefined),
+		removeItem: jest.fn(async (_key: string): Promise<void> => undefined)
 	}
 }));
 
@@ -45,7 +43,7 @@ describe('installNativeKeychainShim', () => {
 		const shim = (installKeychainShim as jest.Mock).mock.calls[0][0];
 
 		// getItem delegates
-		const mockNative = NativeModules.DatabaseKeyStore;
+		const mockNative = NativeDatabaseKeyStore!;
 		(mockNative.getItem as jest.Mock).mockResolvedValueOnce('abc123');
 		const result = await shim.getItem('db_key_v1:test.db');
 		expect(mockNative.getItem).toHaveBeenCalledWith('db_key_v1:test.db');
@@ -62,7 +60,10 @@ describe('installNativeKeychainShim', () => {
 
 	it('throws a descriptive error when the native module is not linked', () => {
 		jest.resetModules();
-		jest.doMock('react-native', () => ({ NativeModules: {} }));
+		jest.doMock('../../../native/NativeDatabaseKeyStore', () => ({
+			__esModule: true,
+			default: null
+		}));
 		jest.doMock('../keyService', () => ({ installKeychainShim: jest.fn() }));
 
 		// Load a fresh copy of the module without the native module present

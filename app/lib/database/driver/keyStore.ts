@@ -1,5 +1,5 @@
 /**
- * Thin JS shim that wraps the native DatabaseKeyStore module and satisfies
+ * Thin JS shim that wraps the native DatabaseKeyStore TurboModule and satisfies
  * IKeychainShim, then installs it into keyService via installKeychainShim.
  *
  * Call installNativeKeychainShim() once before any database is opened.
@@ -8,22 +8,14 @@
  * until that ticket lands, call it from the app entry point (app/index.tsx).
  */
 
-import { NativeModules } from 'react-native';
-
+import NativeDatabaseKeyStore from '../../native/NativeDatabaseKeyStore';
 import { installKeychainShim, type IKeychainShim } from './keyService';
 
-interface NativeDatabaseKeyStore {
-	getItem(key: string): Promise<string | null>;
-	setItem(key: string, value: string): Promise<void>;
-	removeItem(key: string): Promise<void>;
-}
-
-function getNativeModule(): NativeDatabaseKeyStore {
-	const mod = NativeModules.DatabaseKeyStore as NativeDatabaseKeyStore | undefined;
-	if (!mod) {
+function getNativeModule() {
+	if (!NativeDatabaseKeyStore) {
 		throw new Error('DatabaseKeyStore native module not found — ensure the module is linked and the app is rebuilt');
 	}
-	return mod;
+	return NativeDatabaseKeyStore;
 }
 
 function makeNativeShim(): IKeychainShim {
