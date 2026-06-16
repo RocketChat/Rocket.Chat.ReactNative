@@ -283,6 +283,18 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 		}
 	}
 
+	componentDidUpdate(prevProps: IRoomActionsViewProps) {
+		const { activeUsers } = this.props;
+		const { room, member } = this.state;
+
+		if (prevProps.activeUsers !== activeUsers && room.t === 'd') {
+			const roomUserId = getUidDirectMessage(room);
+			if (roomUserId && activeUsers[roomUserId]) {
+				this.setState({ member: { ...member, ...activeUsers[roomUserId] } });
+			}
+		}
+	}
+
 	componentWillUnmount() {
 		if (this.subscription && this.subscription.unsubscribe) {
 			this.subscription.unsubscribe();
@@ -753,17 +765,14 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 	renderRoomInfo = () => {
 		const { room, member } = this.state;
 		const { rid, name, t, topic, source } = room;
-		const { theme, fontScale, activeUsers } = this.props;
+		const { theme, fontScale } = this.props;
+		const { status, statusText, statusExpiresAt } = member;
 
 		const avatar = getRoomAvatar(room);
 		const isGroupChatHandler = isGroupChat(room);
 		const roomUserId = !isGroupChatHandler && t === 'd' ? getUidDirectMessage(room) : undefined;
-		const activeUserStatus = roomUserId ? activeUsers[roomUserId] : undefined;
-		const userStatus = activeUserStatus?.status ?? member.status;
-		const statusText = activeUserStatus?.statusText ?? member.statusText;
-		const statusExpiresAt = activeUserStatus?.statusExpiresAt ?? member.statusExpiresAt;
 		const formattedStatusExpiry = statusExpiresAt ? formatStatusExpiry(statusExpiresAt) : undefined;
-		const presenceLabel = !statusText && userStatus ? STATUS_I18N_KEYS[userStatus] : undefined;
+		const presenceLabel = !statusText && status ? STATUS_I18N_KEYS[status] : undefined;
 
 		return (
 			<List.Section>
