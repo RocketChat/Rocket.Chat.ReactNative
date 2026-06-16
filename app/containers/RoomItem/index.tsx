@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useRef } from 'react';
+import { useEffect, useReducer, useRef, memo } from 'react';
 import { type Subscription } from 'rxjs';
 import { AccessibilityInfo } from 'react-native';
 
@@ -14,7 +14,7 @@ import { isExternalKeyboardConnected } from '../../lib/methods/helpers/externalI
 
 const attrs = ['width', 'isFocused', 'showLastMessage', 'autoJoin', 'showAvatar', 'displayMode'];
 
-const RoomItemContainer = React.memo(
+const RoomItemContainer = memo(
 	({
 		item,
 		id,

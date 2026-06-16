@@ -8,6 +8,8 @@ export const useScroll = ({ listRef, messagesIds }: { listRef: TListRef; message
 	const [highlightedMessageId, setHighlightedMessageId] = useState<string | null>(null);
 	const cancelJump = useRef(false);
 	const jumping = useRef(false);
+	const lastLoadedCount = useRef(-1);
+	const noProgressRounds = useRef(0);
 	const viewableItems = useRef<ViewToken[] | null>(null);
 	const highlightTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -75,7 +77,22 @@ export const useScroll = ({ listRef, messagesIds }: { listRef: TListRef; message
 				resetJumpToMessage();
 				resolve();
 			} else {
-				// if message not on state yet, scroll to top, so it triggers onEndReached and try again
+				// if message not on state yet, check whether history is still loading:
+				// when the loaded count stops growing across consecutive retries, the
+				// target can never appear (deleted message or history exhausted) — give
+				// up instead of looping until the caller's race timeout fires.
+				const loadedCount = messagesIds.current?.length ?? 0;
+				if (loadedCount === lastLoadedCount.current) {
+					noProgressRounds.current += 1;
+				} else {
+					noProgressRounds.current = 0;
+				}
+				lastLoadedCount.current = loadedCount;
+				if (noProgressRounds.current >= 5) {
+					resetJumpToMessage();
+					return resolve();
+				}
+				// scroll to top, so it triggers onEndReached and try again
 				listRef.current?.scrollToEnd();
 				await setTimeout(() => resolve(jumpToMessage(messageId)), 600);
 			}
@@ -84,6 +101,8 @@ export const useScroll = ({ listRef, messagesIds }: { listRef: TListRef; message
 	const resetJumpToMessage = () => {
 		cancelJump.current = false;
 		jumping.current = false;
+		lastLoadedCount.current = -1;
+		noProgressRounds.current = 0;
 	};
 
 	const cancelJumpToMessage: IListContainerRef['cancelJumpToMessage'] = () => {

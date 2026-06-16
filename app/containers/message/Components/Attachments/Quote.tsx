@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext, memo, type FC } from 'react';
 import { dequal } from 'dequal';
 import { View } from 'react-native';
 
@@ -7,29 +7,9 @@ import MessageContext from '../../Context';
 import { type IMessageAttachments } from '../../interfaces';
 import { type IAttachment } from '../../../../definitions';
 import { getMessageFromAttachment } from '../../utils';
+import { isQuoteAttachment } from './utils';
 
-const isQuoteAttachment = (file?: IAttachment): boolean => {
-	if (!file) return false;
-
-	if (file.collapsed) return false;
-
-	// Attachments with nested attachments (e.g. message link + quoted image) are rendered only by Attachments as Reply
-	if (file.attachments?.length) {
-		return false;
-	}
-
-	if (!file.color && !file.text && (file.image_url || file.audio_url || file.video_url)) {
-		return false;
-	}
-
-	if (file.actions?.length) {
-		return false;
-	}
-
-	return true;
-};
-
-const Quote: React.FC<IMessageAttachments> = React.memo(
+const Quote: FC<IMessageAttachments> = memo(
 	({ attachments, timeFormat, showAttachment, getCustomEmoji }: IMessageAttachments) => {
 		'use memo';
 
