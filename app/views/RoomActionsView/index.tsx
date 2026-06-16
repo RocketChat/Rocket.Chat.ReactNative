@@ -217,8 +217,33 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 		}
 	}
 
+	syncMemberFromActiveUsers = (prevActiveUsers?: IActiveUsers): void => {
+		const { activeUsers } = this.props;
+		const { room } = this.state;
+		if (room.t !== 'd') {
+			return;
+		}
+
+		const roomUserId = getUidDirectMessage(room);
+		if (!roomUserId) {
+			return;
+		}
+
+		const nextActiveUser = activeUsers[roomUserId];
+		if (!nextActiveUser) {
+			return;
+		}
+
+		if (prevActiveUsers?.[roomUserId] === nextActiveUser) {
+			return;
+		}
+
+		this.setState(prevState => ({ member: { ...prevState.member, ...nextActiveUser } }));
+	};
+
 	async componentDidMount() {
 		this.mounted = true;
+		this.syncMemberFromActiveUsers();
 		const { room, member } = this.state;
 		const { encryptionEnabled } = this.props;
 		if (room.rid) {
@@ -283,15 +308,9 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 		}
 	}
 
-	componentDidUpdate(prevProps: IRoomActionsViewProps) {
-		const { activeUsers } = this.props;
-		const { room, member } = this.state;
-
-		if (prevProps.activeUsers !== activeUsers && room.t === 'd') {
-			const roomUserId = getUidDirectMessage(room);
-			if (roomUserId && activeUsers[roomUserId]) {
-				this.setState({ member: { ...member, ...activeUsers[roomUserId] } });
-			}
+	componentDidUpdate(prevProps: IRoomActionsViewProps): void {
+		if (prevProps.activeUsers !== this.props.activeUsers) {
+			this.syncMemberFromActiveUsers(prevProps.activeUsers);
 		}
 	}
 
