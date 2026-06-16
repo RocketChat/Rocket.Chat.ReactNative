@@ -226,6 +226,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 		this.didMountInteraction = InteractionManager.runAfterInteractions(() => {
 			const { isAuthenticated } = this.props;
 			this.setHeader();
+			let initPromise: Promise<void> | undefined;
 			if (this.rid) {
 				try {
 					this.sub?.subscribe?.();
@@ -233,13 +234,21 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 					log(e);
 				}
 				if (isAuthenticated) {
-					this.init();
+					initPromise = this.init();
 				} else {
 					EventEmitter.addEventListener('connected', this.handleConnected);
 				}
 			}
 			if (this.jumpToMessageId) {
-				this.consumeJumpParam(this.jumpToMessageId);
+				// A thread jump scrolls within the thread's own window, populated by init()'s
+				// loadThreadMessages. Fire it only after that load resolves so the target row exists;
+				// a non-anchored thread jump aborts on its safety net and parks on the live tail if it
+				// runs first. The main-list jump (no tmid) re-anchors on its own and must not wait.
+				if (this.tmid && initPromise) {
+					initPromise.then(() => this.consumeJumpParam(this.jumpToMessageId as string)).catch(() => {});
+				} else {
+					this.consumeJumpParam(this.jumpToMessageId);
+				}
 			}
 			if (this.jumpToThreadId && !this.jumpToMessageId) {
 				this.navToThread({ tmid: this.jumpToThreadId });
