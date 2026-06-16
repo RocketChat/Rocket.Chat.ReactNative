@@ -415,6 +415,7 @@
   "Logging_out": "Odjava.",
   "Login": "Prijava",
   "Login_error": "Vaše poverilnice so bile zavrnjene! Prosim poskusite ponovno.",
+  "Login_on_web": "Prijava na spletu",
   "Logout": "Odjava",
   "Logout_failed": "Odjava ni uspela!",
   "Logout_from_other_logged_in_locations": "Odjava z drugih prijavljenih lokacij",

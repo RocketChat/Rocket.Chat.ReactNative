@@ -24,6 +24,7 @@ export interface IItemService {
 	authorizePath: string;
 	clientId: string;
 	scope: string;
+	hideButtonOnMobile?: boolean;
 }
 
 export interface IServiceLogin {
@@ -54,7 +55,7 @@ export interface IServiceList {
 }
 
 export interface IServicesSeparator {
-	services: IServices;
+	totalServices: number;
 	separator: boolean;
 	collapsed: boolean;
 	onPress(): void;

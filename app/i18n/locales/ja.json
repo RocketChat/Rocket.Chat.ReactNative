@@ -324,6 +324,7 @@
   "Logging_out": "ログアウトしています。",
   "Login": "ログイン",
   "Login_error": "証明書が承認されませんでした。再度お試しください。",
+  "Login_on_web": "ウェブでログイン",
   "Logout": "ログアウト",
   "Mark_read": "マークを既読にする",
   "Mark_unread": "未読にする",

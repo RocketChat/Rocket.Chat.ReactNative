@@ -514,6 +514,7 @@
   "Login_error": "Your credentials were rejected! Please try again.",
   "Login_has_been_temporarily_blocked_for_this_IP": "Login has been temporarily blocked for this IP",
   "Login_has_been_temporarily_blocked_for_this_User": "Login has been temporarily blocked for this user",
+  "Login_on_web": "Login on web",
   "Logout": "Logout",
   "Logout_failed": "Logout failed!",
   "Logout_from_other_logged_in_locations": "Logout from other logged in locations",

@@ -405,6 +405,7 @@
   "Logging_out": "Uitloggen.",
   "Login": "Inloggen",
   "Login_error": "Je inloggegevens zijn geweigerd! Probeer het opnieuw.",
+  "Login_on_web": "Inloggen op internet",
   "Logout": "Uitloggen",
   "Logout_failed": "Uitloggen mislukt!",
   "Logout_from_other_logged_in_locations": "Afmelden bij andere ingelogde locaties",
