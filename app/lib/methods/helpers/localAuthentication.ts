@@ -174,6 +174,14 @@ export const localAuthenticate = async (server: string): Promise<void> => {
 		// Check if the app has passcode
 		const result = await checkHasPasscode({});
 
+		// The session timestamp we persist below. Defaults to the `timesync` captured above, but if
+		// the lock modal is shown it's refreshed to the moment authentication actually completes —
+		// the user may sit on the lock screen longer than the auto-lock window, and persisting the
+		// stale pre-modal `timesync` would let the next lock check (e.g. a late localAuthenticate
+		// from the login/connect flow) see a gap >= autoLockTime and immediately re-lock a session
+		// the user just unlocked.
+		let authenticatedTimesync = timesync;
+
 		// `checkHasPasscode` results newPasscode = true if a passcode has been set
 		if (!result?.newPasscode) {
 			// diff to last authenticated session
@@ -193,11 +201,15 @@ export const localAuthenticate = async (server: string): Promise<void> => {
 
 				// set isLocalAuthenticated to true
 				store.dispatch(setLocalAuthenticated(true));
+
+				// Re-read the clock now that the user has authenticated, so the persisted session
+				// reflects the unlock moment rather than when this check started.
+				authenticatedTimesync = await getServerTimeSync(server);
 			}
 		}
 
 		await resetAttempts();
-		await saveLastLocalAuthenticationSession(server, serverRecord, timesync);
+		await saveLastLocalAuthenticationSession(server, serverRecord, authenticatedTimesync);
 	}
 };
 

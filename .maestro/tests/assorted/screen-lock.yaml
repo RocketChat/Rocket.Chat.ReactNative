@@ -143,6 +143,25 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'security-privacy-view-screen-lock'
+
+# Entering the Screen Lock screen requires re-auth (PR #4052); unlock with current passcode
+- extendedWaitUntil:
+    visible:
+      id: 'passcode-button-1'
+    timeout: 60000
+- tapOn:
+    id: 'passcode-button-1'
+- tapOn:
+    id: 'passcode-button-2'
+- tapOn:
+    id: 'passcode-button-3'
+- tapOn:
+    id: 'passcode-button-4'
+- tapOn:
+    id: 'passcode-button-5'
+- tapOn:
+    id: 'passcode-button-6'
+
 - extendedWaitUntil:
     visible:
       id: 'screen-lock-config-view'
