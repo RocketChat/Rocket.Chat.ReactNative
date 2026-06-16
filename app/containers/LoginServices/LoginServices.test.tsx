@@ -1,6 +1,7 @@
 import { Linking } from 'react-native';
 import { fireEvent, render, screen } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
+import type { ReactNode } from 'react';
 
 import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
 import * as stories from './LoginServices.stories';
@@ -47,7 +48,7 @@ const buildServices = (count: number, extra: Partial<IItemService> = {}): IServi
 	) as unknown as IServices;
 };
 
-const Wrapper = ({ children, store }: { children: React.ReactNode; store: ReturnType<typeof createMockedStore> }) => (
+const Wrapper = ({ children, store }: { children: ReactNode; store: ReturnType<typeof createMockedStore> }) => (
 	<Provider store={store}>{children}</Provider>
 );
 
