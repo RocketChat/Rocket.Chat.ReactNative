@@ -31,6 +31,9 @@ describe('MediaAutoDownloadView ListPicker — action sheet bottom spacing', () 
 		expect(showActionSheet).toHaveBeenCalledTimes(1);
 		const { children } = showActionSheet.mock.calls[0][0];
 		const style = StyleSheet.flatten(children.props.style);
+		// Neither margin nor padding: this view drops the inset entirely, so a
+		// margin->padding swap would still inflate the bottom spacing and must fail.
 		expect(style.marginBottom).toBeUndefined();
+		expect(style.paddingBottom).toBeUndefined();
 	});
 });

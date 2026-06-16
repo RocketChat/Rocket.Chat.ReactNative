@@ -25,6 +25,9 @@ describe('DirectoryView Options — action sheet bottom spacing', () => {
 
 		const container = screen.UNSAFE_getByType(ScrollView);
 		const style = StyleSheet.flatten(container.props.contentContainerStyle);
+		// Neither margin nor padding: this view drops the inset entirely, so a
+		// margin->padding swap would still inflate the bottom spacing and must fail.
 		expect(style.marginBottom).toBeUndefined();
+		expect(style.paddingBottom).toBeUndefined();
 	});
 });
