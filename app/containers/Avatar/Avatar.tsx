@@ -31,6 +31,8 @@ const Avatar = memo(
 		size = 25,
 		borderRadius = 4,
 		type = SubscriptionType.DIRECT,
+		avatarExternalProviderUrl,
+		roomAvatarExternalProviderUrl,
 		cdnPrefix,
 		accessibilityLabel,
 		accessible = true
@@ -75,6 +77,8 @@ const Avatar = memo(
 					serverVersion,
 					rid,
 					blockUnauthenticatedAccess,
+					avatarExternalProviderUrl,
+					roomAvatarExternalProviderUrl,
 					cdnPrefix
 				});
 			}
