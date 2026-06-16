@@ -102,58 +102,63 @@ export const Themes = () => (
 );
 
 const futureExpiry = '2030-06-15T19:00:00.000Z';
+const now = new Date('2026-06-15T12:00:00.000Z');
 
 export const DM_Status = () => {
-	const hourLaterExpiry = new Date(Date.now() + 3600000).toISOString();
-	const expiredExpiry = new Date(Date.now() - 3600000).toISOString();
+	const hourLaterExpiry = new Date(now.getTime() + 3600000).toISOString();
+	const expiredExpiry = new Date(now.getTime() - 3600000).toISOString();
 	return (
-	<>
-		<HeaderExample title={() => <RoomHeader title='John Doe' type='d' roomUserId='user1' subtitle='Online' status='online' />} />
-		<HeaderExample title={() => <RoomHeader title='John Doe' type='d' roomUserId='user2' subtitle='Away' status='away' />} />
-		<HeaderExample title={() => <RoomHeader title='John Doe' type='d' roomUserId='user3' subtitle='Busy' status='busy' />} />
-		<HeaderExample
-			title={() => <RoomHeader title='John Doe' type='d' roomUserId='user4' subtitle='Offline' status='offline' />}
-		/>
-		<HeaderExample
-			title={() => <RoomHeader title='John Doe' type='d' roomUserId='user5' subtitle='In a meeting' status='online' />}
-		/>
-		<HeaderExample
-			title={() => (
-				<RoomHeader
-					title='John Doe'
-					type='d'
-					roomUserId='user6'
-					subtitle='In a meeting'
-					status='online'
-					statusExpiresAt={futureExpiry}
-				/>
-			)}
-		/>
-		<HeaderExample
-			title={() => (
-				<RoomHeader
-					title='John Doe'
-					type='d'
-					roomUserId='user9'
-					subtitle='to be online in 1 hour'
-					status='away'
-					statusExpiresAt={hourLaterExpiry}
-				/>
-			)}
-		/>
-		<HeaderExample title={() => <RoomHeader title='Jane Smith' type='d' roomUserId='user7' subtitle='On call' status='busy' />} />
-		<HeaderExample
-			title={() => (
-				<RoomHeader
-					title='John Doe'
-					type='d'
-					roomUserId='user8'
-					subtitle='In a meeting (status expired)'
-					status='online'
-					statusExpiresAt={expiredExpiry}
-				/>
-			)}
-		/>
-	</>
+		<>
+			<HeaderExample
+				title={() => <RoomHeader title='John Doe' type='d' roomUserId='user1' subtitle='Online' status='online' />}
+			/>
+			<HeaderExample title={() => <RoomHeader title='John Doe' type='d' roomUserId='user2' subtitle='Away' status='away' />} />
+			<HeaderExample title={() => <RoomHeader title='John Doe' type='d' roomUserId='user3' subtitle='Busy' status='busy' />} />
+			<HeaderExample
+				title={() => <RoomHeader title='John Doe' type='d' roomUserId='user4' subtitle='Offline' status='offline' />}
+			/>
+			<HeaderExample
+				title={() => <RoomHeader title='John Doe' type='d' roomUserId='user5' subtitle='In a meeting' status='online' />}
+			/>
+			<HeaderExample
+				title={() => (
+					<RoomHeader
+						title='John Doe'
+						type='d'
+						roomUserId='user6'
+						subtitle='In a meeting'
+						status='online'
+						statusExpiresAt={futureExpiry}
+					/>
+				)}
+			/>
+			<HeaderExample
+				title={() => (
+					<RoomHeader
+						title='John Doe'
+						type='d'
+						roomUserId='user9'
+						subtitle='to be online in 1 hour'
+						status='away'
+						statusExpiresAt={hourLaterExpiry}
+					/>
+				)}
+			/>
+			<HeaderExample
+				title={() => <RoomHeader title='Jane Smith' type='d' roomUserId='user7' subtitle='On call' status='busy' />}
+			/>
+			<HeaderExample
+				title={() => (
+					<RoomHeader
+						title='John Doe'
+						type='d'
+						roomUserId='user8'
+						subtitle='In a meeting (status expired)'
+						status='online'
+						statusExpiresAt={expiredExpiry}
+					/>
+				)}
+			/>
+		</>
 	);
 };
