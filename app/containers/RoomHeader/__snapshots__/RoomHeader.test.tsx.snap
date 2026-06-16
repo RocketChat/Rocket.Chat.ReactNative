@@ -8,7 +8,6 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
         "backgroundColor": "#E4E7EA",
         "flex": 1,
         "maxHeight": 48,
-        "paddingHorizontal": 16,
       }
     }
   >
@@ -198,7 +197,6 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
         "backgroundColor": "#E4E7EA",
         "flex": 1,
         "maxHeight": 48,
-        "paddingHorizontal": 16,
       }
     }
   >
@@ -388,7 +386,6 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
         "backgroundColor": "#E4E7EA",
         "flex": 1,
         "maxHeight": 48,
-        "paddingHorizontal": 16,
       }
     }
   >
@@ -578,7 +575,6 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
         "backgroundColor": "#E4E7EA",
         "flex": 1,
         "maxHeight": 48,
-        "paddingHorizontal": 16,
       }
     }
   >
@@ -768,7 +764,6 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
         "backgroundColor": "#E4E7EA",
         "flex": 1,
         "maxHeight": 48,
-        "paddingHorizontal": 16,
       }
     }
   >
@@ -958,7 +953,6 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
         "backgroundColor": "#E4E7EA",
         "flex": 1,
         "maxHeight": 48,
-        "paddingHorizontal": 16,
       }
     }
   >
@@ -1185,7 +1179,6 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
         "backgroundColor": "#E4E7EA",
         "flex": 1,
         "maxHeight": 48,
-        "paddingHorizontal": 16,
       }
     }
   >
@@ -1412,7 +1405,6 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
         "backgroundColor": "#E4E7EA",
         "flex": 1,
         "maxHeight": 48,
-        "paddingHorizontal": 16,
       }
     }
   >
@@ -1602,7 +1594,6 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
         "backgroundColor": "#E4E7EA",
         "flex": 1,
         "maxHeight": 48,
-        "paddingHorizontal": 16,
       }
     }
   >
@@ -1797,7 +1788,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         "backgroundColor": "#E4E7EA",
         "flex": 1,
         "maxHeight": 48,
-        "paddingHorizontal": 16,
       }
     }
   >
@@ -1945,7 +1935,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         "backgroundColor": "#E4E7EA",
         "flex": 1,
         "maxHeight": 48,
-        "paddingHorizontal": 16,
       }
     }
   >
@@ -2093,7 +2082,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         "backgroundColor": "#E4E7EA",
         "flex": 1,
         "maxHeight": 48,
-        "paddingHorizontal": 16,
       }
     }
   >
@@ -2254,7 +2242,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         "backgroundColor": "#E4E7EA",
         "flex": 1,
         "maxHeight": 48,
-        "paddingHorizontal": 16,
       }
     }
   >
@@ -2402,7 +2389,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         "backgroundColor": "#E4E7EA",
         "flex": 1,
         "maxHeight": 48,
-        "paddingHorizontal": 16,
       }
     }
   >
@@ -2550,7 +2536,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         "backgroundColor": "#E4E7EA",
         "flex": 1,
         "maxHeight": 48,
-        "paddingHorizontal": 16,
       }
     }
   >
@@ -2698,7 +2683,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         "backgroundColor": "#E4E7EA",
         "flex": 1,
         "maxHeight": 48,
-        "paddingHorizontal": 16,
       }
     }
   >
@@ -2846,7 +2830,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         "backgroundColor": "#E4E7EA",
         "flex": 1,
         "maxHeight": 48,
-        "paddingHorizontal": 16,
       }
     }
   >
@@ -2994,7 +2977,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         "backgroundColor": "#E4E7EA",
         "flex": 1,
         "maxHeight": 48,
-        "paddingHorizontal": 16,
       }
     }
   >
@@ -3142,7 +3124,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         "backgroundColor": "#E4E7EA",
         "flex": 1,
         "maxHeight": 48,
-        "paddingHorizontal": 16,
       }
     }
   >
@@ -3290,7 +3271,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         "backgroundColor": "#E4E7EA",
         "flex": 1,
         "maxHeight": 48,
-        "paddingHorizontal": 16,
       }
     }
   >
@@ -3438,7 +3418,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         "backgroundColor": "#E4E7EA",
         "flex": 1,
         "maxHeight": 48,
-        "paddingHorizontal": 16,
       }
     }
   >
@@ -3586,7 +3565,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         "backgroundColor": "#E4E7EA",
         "flex": 1,
         "maxHeight": 48,
-        "paddingHorizontal": 16,
       }
     }
   >
@@ -3734,7 +3712,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         "backgroundColor": "#E4E7EA",
         "flex": 1,
         "maxHeight": 48,
-        "paddingHorizontal": 16,
       }
     }
   >
@@ -3887,7 +3864,6 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
         "backgroundColor": "#E4E7EA",
         "flex": 1,
         "maxHeight": 48,
-        "paddingHorizontal": 16,
       }
     }
   >
@@ -4068,7 +4044,6 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
         "backgroundColor": "#2D3039",
         "flex": 1,
         "maxHeight": 48,
-        "paddingHorizontal": 16,
       }
     }
   >
@@ -4249,7 +4224,6 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
         "backgroundColor": "#16181a",
         "flex": 1,
         "maxHeight": 48,
-        "paddingHorizontal": 16,
       }
     }
   >
@@ -4435,7 +4409,6 @@ exports[`Story Snapshots: Thread should match snapshot 1`] = `
         "backgroundColor": "#E4E7EA",
         "flex": 1,
         "maxHeight": 48,
-        "paddingHorizontal": 16,
       }
     }
   >
@@ -4624,7 +4597,6 @@ exports[`Story Snapshots: Thread should match snapshot 1`] = `
         "backgroundColor": "#E4E7EA",
         "flex": 1,
         "maxHeight": 48,
-        "paddingHorizontal": 16,
       }
     }
   >
@@ -4826,7 +4798,6 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
         "backgroundColor": "#E4E7EA",
         "flex": 1,
         "maxHeight": 48,
-        "paddingHorizontal": 16,
       }
     }
   >
@@ -4974,7 +4945,6 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
         "backgroundColor": "#E4E7EA",
         "flex": 1,
         "maxHeight": 48,
-        "paddingHorizontal": 16,
       }
     }
   >
@@ -5122,7 +5092,6 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
         "backgroundColor": "#E4E7EA",
         "flex": 1,
         "maxHeight": 48,
-        "paddingHorizontal": 16,
       }
     }
   >
@@ -5303,7 +5272,6 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
         "backgroundColor": "#E4E7EA",
         "flex": 1,
         "maxHeight": 48,
-        "paddingHorizontal": 16,
       }
     }
   >
@@ -5484,7 +5452,6 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
         "backgroundColor": "#E4E7EA",
         "flex": 1,
         "maxHeight": 48,
-        "paddingHorizontal": 16,
       }
     }
   >
@@ -5671,7 +5638,6 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
         "backgroundColor": "#E4E7EA",
         "flex": 1,
         "maxHeight": 48,
-        "paddingHorizontal": 16,
       }
     }
   >
@@ -5852,7 +5818,6 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
         "backgroundColor": "#E4E7EA",
         "flex": 1,
         "maxHeight": 48,
-        "paddingHorizontal": 16,
       }
     }
   >
@@ -6033,7 +5998,6 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
         "backgroundColor": "#E4E7EA",
         "flex": 1,
         "maxHeight": 48,
-        "paddingHorizontal": 16,
       }
     }
   >
