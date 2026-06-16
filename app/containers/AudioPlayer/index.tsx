@@ -116,14 +116,19 @@ const AudioPlayer = ({
 	};
 
 	useEffect(() => {
-		if (fileUri) {
-			InteractionManager.runAfterInteractions(async () => {
-				audioUri.current = await AudioManager.loadAudio({ msgId, rid, uri: fileUri });
-				AudioManager.setOnPlaybackStatusUpdate(audioUri.current, onPlaybackStatusUpdate);
-				AudioManager.setRateAsync(audioUri.current, playbackSpeed);
+		if (fileUri && isDownloaded) {
+			const task = InteractionManager.runAfterInteractions(async () => {
+				try {
+					audioUri.current = await AudioManager.loadAudio({ msgId, rid, uri: fileUri });
+					AudioManager.setOnPlaybackStatusUpdate(audioUri.current, onPlaybackStatusUpdate);
+					AudioManager.setRateAsync(audioUri.current, playbackSpeed);
+				} catch {
+					// do nothing
+				}
 			});
+			return () => task.cancel();
 		}
-	}, [fileUri]);
+	}, [fileUri, isDownloaded]);
 
 	useEffect(() => {
 		if (paused) {
