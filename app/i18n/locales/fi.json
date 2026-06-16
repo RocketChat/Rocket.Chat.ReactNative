@@ -441,6 +441,7 @@
   "Logging_out": "Kirjaudutaan ulos.",
   "Login": "Kirjaudu",
   "Login_error": "Tunnistetietojasi ei hyväksytty! Yritä uudelleen.",
+  "Login_on_web": "Kirjaudu sisään verkossa",
   "Logout": "Kirjaudu ulos",
   "Logout_failed": "Uloskirjaus epäonnistui!",
   "Logout_from_other_logged_in_locations": "Kirjaa ulos muista sijainneista",

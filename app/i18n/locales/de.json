@@ -460,6 +460,7 @@
   "Logging_out": "Abmelden.",
   "Login": "Anmeldung",
   "Login_error": "Ihre Zugangsdaten wurden abgelehnt! Bitte versuchen Sie es erneut.",
+  "Login_on_web": "Im Web anmelden",
   "Logout": "Abmelden",
   "Logout_failed": "Abmeldung fehlgeschlagen!",
   "Logout_from_other_logged_in_locations": "Auf anderen angemeldeten Geräte abmelden",

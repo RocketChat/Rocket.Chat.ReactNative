@@ -467,6 +467,7 @@
   "Logging_out": "Kijelentkezett.",
   "Login": "Bejelentkezés",
   "Login_error": "A hitelesítő adatait elutasítottuk! Kérjük, próbálja meg újra.",
+  "Login_on_web": "Bejelentkezés weben",
   "Logout": "Kijelentkezés",
   "Logout_failed": "A kijelentkezés sikertelen!",
   "Logout_from_other_logged_in_locations": "Kijelentkezés más bejelentkezett helyekről",

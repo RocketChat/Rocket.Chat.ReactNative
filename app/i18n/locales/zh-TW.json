@@ -354,6 +354,7 @@
   "Logging_out": "正在登出",
   "Login": "登入",
   "Login_error": "認證失敗！請再試一次",
+  "Login_on_web": "在網頁上登入",
   "Logout": "登出",
   "Logout_failed": "登出失敗",
   "Logout_from_other_logged_in_locations": "登出其他已登入的設備",

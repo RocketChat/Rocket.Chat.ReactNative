@@ -406,6 +406,7 @@
   "Logging_out": "Déconnexion.",
   "Login": "Connexion",
   "Login_error": "Vos identifiants ont été rejetés ! Veuillez réessayer.",
+  "Login_on_web": "Se connecter sur le web",
   "Logout": "Se déconnecter",
   "Logout_failed": "Echec de la déconnexion !",
   "Logout_from_other_logged_in_locations": "Déconnexion des autres emplacements connectés",

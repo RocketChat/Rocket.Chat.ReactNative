@@ -353,6 +353,7 @@
   "Logging_out": "Çıkış Yapılıyor",
   "Login": "Oturum aç",
   "Login_error": "Kimlik bilgileriniz reddedildi! Lütfen tekrar deneyin.",
+  "Login_on_web": "Web'de oturum aç",
   "Logout": "Çıkış Yap",
   "Logout_failed": "Oturum kapatma başarısız oldu!",
   "Logout_from_other_logged_in_locations": "Giriş yapılan diğer konumlardan çıkış yap",

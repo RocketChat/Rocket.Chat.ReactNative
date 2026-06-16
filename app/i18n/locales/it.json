@@ -368,6 +368,7 @@
   "Logging_out": "Disconnettendo.",
   "Login": "Accedi",
   "Login_error": "Le tue credenziali sono state rifiutate! Prova di nuovo.",
+  "Login_on_web": "Accedi sul web",
   "Logout": "Disconnetti",
   "Logout_failed": "Disconnessione fallita!",
   "Logout_from_other_logged_in_locations": "Disconnetti da altre postazioni",
