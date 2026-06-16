@@ -55,10 +55,10 @@ const LoginServices = ({ separator }: { separator: boolean }): ReactElement => {
 					/>
 				</Animated.View>
 				<ServicesSeparator
+					totalServices={totalServices}
 					separator={separator}
 					collapsed={collapsed}
 					onPress={onPressButtonSeparator}
-					totalServices={totalServices}
 				/>
 			</>
 		);
