@@ -101,12 +101,12 @@ export const Themes = () => (
 	</>
 );
 
-const futureExpiry = '2030-06-15T19:00:00.000Z';
-const now = new Date('2026-06-15T12:00:00.000Z').getTime();
-const hourLaterExpiry = new Date(now + 3600000).toISOString();
-const expiredExpiry = new Date(now - 3600000).toISOString();
-
 export const DM_Status = () => {
+	const futureExpiry = '2030-06-15T19:00:00.000Z';
+	const now = Date.now();
+	console.log('now', now, new Date(now).toISOString());
+	const hourLaterExpiry = new Date(now + 3600000).toISOString();
+	const expiredExpiry = new Date(now - 3600000).toISOString();
 	return (
 		<>
 			<HeaderExample
