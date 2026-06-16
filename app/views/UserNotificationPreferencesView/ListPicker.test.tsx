@@ -34,5 +34,7 @@ describe('UserNotificationPreferencesView ListPicker — action sheet bottom spa
 		const { children } = showActionSheet.mock.calls[0][0];
 		const style = StyleSheet.flatten(children.props.style);
 		expect(style.marginBottom).toBeUndefined();
+		// This view intentionally keeps the bottom safe-area inset as padding, so lock that contract.
+		expect(style.paddingBottom).toBe(34);
 	});
 });
