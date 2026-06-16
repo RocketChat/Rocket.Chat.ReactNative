@@ -101,10 +101,12 @@ export const Themes = () => (
 	</>
 );
 
-const futureExpiry = new Date('2026-06-15T19:00:00.000Z').toISOString();
-const expiredExpiry = new Date('2026-06-15T07:00:00.000Z').toISOString();
+const futureExpiry = '2030-06-15T19:00:00.000Z';
 
-export const DM_Status = () => (
+export const DM_Status = () => {
+	const hourLaterExpiry = new Date(Date.now() + 3600000).toISOString();
+	const expiredExpiry = new Date(Date.now() - 3600000).toISOString();
+	return (
 	<>
 		<HeaderExample title={() => <RoomHeader title='John Doe' type='d' roomUserId='user1' subtitle='Online' status='online' />} />
 		<HeaderExample title={() => <RoomHeader title='John Doe' type='d' roomUserId='user2' subtitle='Away' status='away' />} />
@@ -127,6 +129,18 @@ export const DM_Status = () => (
 				/>
 			)}
 		/>
+		<HeaderExample
+			title={() => (
+				<RoomHeader
+					title='John Doe'
+					type='d'
+					roomUserId='user9'
+					subtitle='to be online in 1 hour'
+					status='away'
+					statusExpiresAt={hourLaterExpiry}
+				/>
+			)}
+		/>
 		<HeaderExample title={() => <RoomHeader title='Jane Smith' type='d' roomUserId='user7' subtitle='On call' status='busy' />} />
 		<HeaderExample
 			title={() => (
@@ -134,11 +148,12 @@ export const DM_Status = () => (
 					title='John Doe'
 					type='d'
 					roomUserId='user8'
-					subtitle='In a meeting'
+					subtitle='In a meeting (status expired)'
 					status='online'
 					statusExpiresAt={expiredExpiry}
 				/>
 			)}
 		/>
 	</>
-);
+	);
+};

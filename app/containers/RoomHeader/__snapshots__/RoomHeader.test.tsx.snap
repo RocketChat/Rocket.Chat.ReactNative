@@ -963,7 +963,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="Online John Doe In a meeting, Until 7:00 PM."
+      accessibilityLabel="Online John Doe In a meeting, Until Jun 15, 7:00 PM."
       accessibilityRole="header"
       accessible={true}
       autoFocus={false}
@@ -1190,6 +1190,233 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
+      accessibilityLabel="Away John Doe to be online in 1 hour, Until 1:00 PM."
+      accessibilityRole="header"
+      accessible={true}
+      autoFocus={false}
+      canBeFocused={true}
+      enableA11yFocus={false}
+      enableContextMenu={false}
+      group={false}
+      haloEffect={true}
+      hasKeyDownPress={false}
+      hasKeyUpPress={true}
+      hasOnFocusChanged={true}
+      lockFocus={0}
+      onFocusChange={[Function]}
+      onKeyUpPress={[Function]}
+      orderIndex={-1}
+      screenAutoA11yFocusDelay={500}
+      style={
+        [
+          [
+            {
+              "flex": 1,
+              "justifyContent": "center",
+            },
+            {
+              "height": 36.9,
+              "opacity": 1,
+            },
+          ],
+          undefined,
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        exclusive={true}
+        handlerTag={-1}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        rippleColor="transparent"
+        style={
+          [
+            undefined,
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="room-header"
+        touchSoundDisabled={false}
+      >
+        <View
+          accessible={true}
+          collapsable={false}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#AC892F",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "height": 16,
+                        "textAlign": "center",
+                        "textAlignVertical": "center",
+                        "width": 16,
+                      },
+                      [
+                        {
+                          "marginRight": 4,
+                        },
+                        undefined,
+                      ],
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="John Doe"
+            >
+              John Doe
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#6C727A",
+                    "fontSize": 12,
+                  },
+                  [
+                    {
+                      "lineHeight": 12,
+                    },
+                    {
+                      "marginRight": 4,
+                    },
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              accessibilityLabel="to be online in 1 hour"
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                    "lineHeight": undefined,
+                  },
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#6C727A",
+                    "fontSize": 12,
+                  },
+                ]
+              }
+              testID="markdown-preview-to be online in 1 hour"
+            >
+              to be online in 1 hour
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </ExternalKeyboardView>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+        "paddingHorizontal": 16,
+      }
+    }
+  >
+    <ExternalKeyboardView
       accessibilityLabel="Busy Jane Smith On call."
       accessibilityRole="header"
       accessible={true}
@@ -1380,7 +1607,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="Online John Doe In a meeting."
+      accessibilityLabel="Online John Doe In a meeting (status expired)."
       accessibilityRole="header"
       accessible={true}
       autoFocus={false}
@@ -1522,7 +1749,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
             </Text>
           </View>
           <Text
-            accessibilityLabel="In a meeting"
+            accessibilityLabel="In a meeting (status expired)"
             numberOfLines={1}
             style={
               [
@@ -1551,9 +1778,9 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
                 },
               ]
             }
-            testID="markdown-preview-In a meeting"
+            testID="markdown-preview-In a meeting (status expired)"
           >
-            In a meeting
+            In a meeting (status expired)
           </Text>
         </View>
       </RNGestureHandlerButton>
