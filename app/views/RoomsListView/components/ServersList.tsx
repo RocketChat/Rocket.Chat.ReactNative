@@ -1,5 +1,5 @@
 import { memo, useLayoutEffect, useRef, useState } from 'react';
-import { FlatList, Text, View } from 'react-native';
+import { FlatList, Text, useWindowDimensions, View } from 'react-native';
 import { batch, useDispatch } from 'react-redux';
 import { type Subscription } from 'rxjs';
 
@@ -23,9 +23,7 @@ import { events, logEvent } from '../../../lib/methods/helpers/log';
 import UserPreferences from '../../../lib/methods/userPreferences';
 import { useTheme } from '../../../theme';
 import styles from '../styles';
-
-const ROW_HEIGHT = 68;
-const MAX_ROWS = 4.5;
+import { getServersListMaxHeight } from './serversListLayout';
 
 const ServersList = () => {
 	'use memo';
@@ -36,6 +34,7 @@ const ServersList = () => {
 	const server = useAppSelector(state => state.server.server);
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 	const { colors } = useTheme();
+	const { height: windowHeight } = useWindowDimensions();
 
 	useLayoutEffect(() => {
 		const init = () => {
@@ -129,7 +128,7 @@ const ServersList = () => {
 				<Text style={[styles.serverHeaderText, { color: colors.fontSecondaryInfo }]}>{I18n.t('Workspaces')}</Text>
 			</View>
 			<FlatList
-				style={{ maxHeight: MAX_ROWS * ROW_HEIGHT }}
+				style={{ maxHeight: getServersListMaxHeight(windowHeight) }}
 				data={servers}
 				keyExtractor={item => item.id}
 				renderItem={renderItem}
