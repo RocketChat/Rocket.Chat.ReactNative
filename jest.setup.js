@@ -18,6 +18,20 @@ jest.mock('react-native-safe-area-context', () => {
 const loadAsyncMock = jest.spyOn(Image, 'loadAsync');
 loadAsyncMock.mockImplementation(() => Promise.resolve({ width: 200, height: 300 }));
 
+jest.mock('react-native-worklets', () => ({
+	RuntimeKind: { ReactNative: 1, UI: 2, Worker: 3 },
+	getRuntimeKind: jest.fn(() => 1),
+	createSerializable: jest.fn(value => value),
+	isWorkletFunction: jest.fn(() => false),
+	runOnUI: jest.fn(fn => fn),
+	runOnJS: jest.fn(fn => fn),
+	makeShareable: jest.fn(value => value),
+	callMicrotasks: jest.fn(),
+	executeOnUIRuntimeSync: jest.fn(fn => fn()),
+	serializableMappingCache: { get: jest.fn(), set: jest.fn(), has: jest.fn(() => false), delete: jest.fn() },
+	scheduleOnRN: jest.fn((fn, ...args) => fn(...args))
+}));
+
 // @ts-ignore
 global.__reanimatedWorkletInit = () => {};
 jest.mock('react-native-reanimated', () => {
@@ -256,10 +270,10 @@ jest.mock('@react-navigation/native', () => {
 		isFocused: () => true,
 		useIsFocused: () => true,
 		useRoute: () => jest.fn(),
-		useNavigation: () => ({
+		useNavigation: jest.fn(() => ({
 			navigate: jest.fn(),
 			addListener: () => jest.fn()
-		}),
+		})),
 		createNavigationContainerRef: jest.fn(),
 		navigate: jest.fn(),
 		addListener: jest.fn(() => jest.fn())
