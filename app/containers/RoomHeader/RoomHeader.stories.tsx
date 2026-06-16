@@ -103,8 +103,7 @@ export const Themes = () => (
 
 export const DM_Status = () => {
 	const futureExpiry = '2030-06-15T19:00:00.000Z';
-	const now = Date.now();
-	console.log('now', now, new Date(now).toISOString());
+	const now = new Date().getTime();
 	const hourLaterExpiry = new Date(now + 3600000).toISOString();
 	const expiredExpiry = new Date(now - 3600000).toISOString();
 	return (
