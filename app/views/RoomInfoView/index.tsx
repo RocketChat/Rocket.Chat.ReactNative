@@ -80,6 +80,7 @@ const RoomInfoView = (): ReactElement => {
 
 	const roomUserId = isDirect ? getUidDirectMessage({ ...(room || { rid, t }), itsMe }) : undefined;
 	const activeUserStatus = roomUserId ? activeUsers[roomUserId] : undefined;
+	const userStatus = activeUserStatus || roomUser;
 
 	const { colors } = useTheme();
 
@@ -306,9 +307,9 @@ const RoomInfoView = (): ReactElement => {
 						name={roomUser?.name}
 						username={roomUser?.username}
 						userId={roomUser?._id}
-						status={activeUserStatus?.status || roomUser?.status}
-						statusText={activeUserStatus?.statusText || roomUser?.statusText}
-						statusExpiresAt={activeUserStatus?.statusExpiresAt || roomUser?.statusExpiresAt}
+						status={userStatus?.status}
+						statusText={userStatus?.statusText}
+						statusExpiresAt={userStatus?.statusExpiresAt}
 					/>
 					<RoomInfoButtons
 						rid={room?.rid || rid}
