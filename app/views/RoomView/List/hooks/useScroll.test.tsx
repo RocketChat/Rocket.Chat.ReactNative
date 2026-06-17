@@ -252,7 +252,7 @@ describe('useScroll', () => {
 		expect(fetchMessages).not.toHaveBeenCalled();
 	});
 
-	it('scroll-to-index-failed retries toward the actual target index, not highestMeasuredFrameIndex', async () => {
+	it('scroll-to-index-failed steps to the measured frontier first, then lands on the actual target index', async () => {
 		const setHighTs = jest.fn();
 		const { result, rerender, scrollToIndex } = renderUseScroll([{ id: 'live-1' }, { id: 'live-2' }], setHighTs);
 
@@ -286,13 +286,18 @@ describe('useScroll', () => {
 		// nothing scrolls within this stack frame.
 		expect(scrollToIndex).not.toHaveBeenCalled();
 
-		// Once the frame elapses it must retry toward the ACTUAL target index (3), not
-		// highestMeasuredFrameIndex (1).
+		// First frame: a straight scroll to the unmeasured target would fail without moving the viewport, so
+		// the retry steps to the measured frontier (1) — which DOES advance the render window.
 		act(() => {
-			jest.advanceTimersByTime(100);
+			jest.advanceTimersByTime(50);
 		});
-		expect(scrollToIndex).toHaveBeenCalledTimes(1);
-		expect(scrollToIndex).toHaveBeenCalledWith(expect.objectContaining({ index: 3 }));
+		expect(scrollToIndex).toHaveBeenLastCalledWith(expect.objectContaining({ index: 1 }));
+
+		// Next frame: re-attempt the ACTUAL target index (3).
+		act(() => {
+			jest.advanceTimersByTime(50);
+		});
+		expect(scrollToIndex).toHaveBeenLastCalledWith(expect.objectContaining({ index: 3 }));
 	});
 
 	it('keeps the header-clearing view offset on a scroll-to-index-failed retry so the target is not hidden behind the header', async () => {
@@ -324,10 +329,10 @@ describe('useScroll', () => {
 			jest.advanceTimersByTime(100);
 		});
 
-		// The retry must re-apply the same centering + header-clearing offset; otherwise the target lands
-		// flush at the top edge and sits hidden behind the room header.
-		expect(scrollToIndex).toHaveBeenCalledTimes(1);
-		expect(scrollToIndex).toHaveBeenCalledWith(expect.objectContaining({ index: 3, viewPosition: 0.5, viewOffset: 100 }));
+		// The landing on the actual target (after the frontier step) must re-apply the same centering +
+		// header-clearing offset; otherwise the target lands flush at the top edge and sits hidden behind
+		// the room header.
+		expect(scrollToIndex).toHaveBeenLastCalledWith(expect.objectContaining({ index: 3, viewPosition: 0.5, viewOffset: 100 }));
 	});
 
 	it('defers a scroll-to-index-failed retry and caps it so an unmeasurable target cannot recurse into a stack overflow', () => {
@@ -373,6 +378,55 @@ describe('useScroll', () => {
 			});
 		}
 		expect(scrollToIndex.mock.calls.length).toBeLessThan(50);
+	});
+
+	it('climbs the measured frontier across repeated failures until a deep target lands', () => {
+		const setHighTs = jest.fn();
+		const { result, rerender, scrollToIndex } = renderUseScroll([{ id: 'live-1' }, { id: 'live-2' }], setHighTs);
+
+		act(() => {
+			result.current.jumpToMessage('target', 1500);
+		});
+
+		// A deep target: index 8, many rows past the frame the inverted list can initially measure (1).
+		const rows = Array.from({ length: 8 }, (_, i) => ({ id: `m${i}` })).concat([{ id: 'target' }]);
+		act(() => {
+			rerender({ rows });
+		});
+		act(() => {
+			jest.runOnlyPendingTimers();
+		});
+		scrollToIndex.mockClear();
+
+		// Model a real inverted VirtualizedList: scrolling straight to the still-unmeasured target re-invokes
+		// onScrollToIndexFailed with the unchanged frontier, while a scroll to the frontier renders the next
+		// batch and advances it. Landing on the target only succeeds once the frontier has climbed to it.
+		let frontier = 1;
+		let landed = false;
+		scrollToIndex.mockImplementation(({ index }: { index: number }) => {
+			if (index === 8) {
+				if (frontier >= 8) {
+					landed = true;
+					return;
+				}
+				result.current.handleScrollToIndexFailed({ index: 8, highestMeasuredFrameIndex: frontier, averageItemLength: 50 });
+				return;
+			}
+			frontier = Math.min(8, frontier + 2);
+		});
+
+		act(() => {
+			result.current.handleScrollToIndexFailed({ index: 8, highestMeasuredFrameIndex: frontier, averageItemLength: 50 });
+		});
+		for (let i = 0; i < 40; i++) {
+			act(() => {
+				jest.runOnlyPendingTimers();
+			});
+		}
+
+		// Stepping straight to the target every retry (the pre-fix behavior) would exhaust the cap with the
+		// frontier still at 1; climbing the frontier first gets the deep target rendered and landed.
+		expect(landed).toBe(true);
 	});
 
 	it('aborts cleanly and releases the anchor when the target never re-observes within the safety window', async () => {

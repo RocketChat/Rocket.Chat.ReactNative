@@ -19,7 +19,11 @@ const MAX_JUMP_GROWTH_RETRIES = 5;
 // after a failed scrollToIndex, so we defer each retry one frame to break the recursion and cap the
 // number of attempts so an unreachable/unmeasurable target terminates instead of spinning forever.
 const SCROLL_TO_INDEX_RETRY_DELAY = 50;
-const MAX_SCROLL_TO_INDEX_RETRIES = 5;
+// A deep target on the inverted list (an old thread reply, a far row in a large window) can sit ~30 rows
+// past the measured frontier. Each retry advances that frontier by ~one render batch, so the cap must be
+// high enough to climb the whole distance; 5 stalled a few rows short. Still bounded so an unreachable
+// target terminates into the safety-net abort instead of looping.
+const MAX_SCROLL_TO_INDEX_RETRIES = 20;
 
 // Where a jumped-to message lands: centered, then pushed clear of the sticky room header so it is never
 // hidden behind it. Shared by EVERY scrollToIndex in the jump path (initial scroll AND the
@@ -206,8 +210,26 @@ export const useScroll = ({
 			// Re-read the target at fire time so a retry queued by a previous jump cannot scroll to a stale index.
 			const targetId = pendingJump.current?.messageId ?? lastJumpTargetId.current;
 			const targetIndex = targetId ? messagesIds.current?.findIndex(id => id === targetId) ?? -1 : -1;
-			const index = targetIndex !== -1 ? targetIndex : params.highestMeasuredFrameIndex;
-			listRef.current?.scrollToIndex({ index, animated: false, ...JUMP_SCROLL_POSITION });
+			if (targetIndex === -1) {
+				return;
+			}
+			// Scrolling straight to a still-unmeasured target fails without moving the viewport, so the
+			// render window plateaus a few rows short and never reaches the target. Step the viewport to the
+			// measured frontier first — that DOES move it, rendering the next batch and advancing
+			// highestMeasuredFrameIndex — then re-attempt the target, which lands once it falls within the
+			// measured range (or re-fires this handler to climb another batch).
+			if (targetIndex > params.highestMeasuredFrameIndex) {
+				listRef.current?.scrollToIndex({ index: params.highestMeasuredFrameIndex, animated: false });
+				setTimeout(() => {
+					const settled =
+						messagesIds.current?.findIndex(id => id === (pendingJump.current?.messageId ?? lastJumpTargetId.current)) ?? -1;
+					if (settled !== -1) {
+						listRef.current?.scrollToIndex({ index: settled, animated: false, ...JUMP_SCROLL_POSITION });
+					}
+				}, SCROLL_TO_INDEX_RETRY_DELAY);
+				return;
+			}
+			listRef.current?.scrollToIndex({ index: targetIndex, animated: false, ...JUMP_SCROLL_POSITION });
 		}, SCROLL_TO_INDEX_RETRY_DELAY);
 	};
 
