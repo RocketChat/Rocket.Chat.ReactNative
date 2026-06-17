@@ -138,7 +138,7 @@ sequenceDiagram
         Resolve->>Store: disenroll()
         Resolve->>Store: setEnabled(false)
         Resolve-->>Passcode: { unlocked:false, modal:{ hasBiometry:false, reason? } }
-        Note over Passcode: hide biometry button in-place;<br/>show enrollment-changed subtitle if reason set;<br/>user must enter passcode
+        Note over Passcode: hide biometry button in-place,<br/>show enrollment-changed subtitle if reason set,<br/>user must enter passcode
     else canceled / error
         Resolve-->>Passcode: { unlocked:false, modal:{ hasBiometry:true } }
         Note over Passcode: keep biometry button for manual retry
