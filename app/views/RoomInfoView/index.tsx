@@ -65,17 +65,20 @@ const RoomInfoView = (): ReactElement => {
 		editRoomPermission,
 		editOmnichannelContact,
 		editLivechatRoomCustomfields
-	} = useAppSelector(state => ({
-		subscribedRoom: state.room.subscribedRoom,
-		isMasterDetail: state.app.isMasterDetail,
-		roles: state.roles,
-		usersRoles: state.usersRoles,
-		serverVersion: state.server.version,
-		// permissions
-		editRoomPermission: state.permissions['edit-room'],
-		editOmnichannelContact: state.permissions['edit-omnichannel-contact'],
-		editLivechatRoomCustomfields: state.permissions['edit-livechat-room-customfields']
-	}), shallowEqual);
+	} = useAppSelector(
+		state => ({
+			subscribedRoom: state.room.subscribedRoom,
+			isMasterDetail: state.app.isMasterDetail,
+			roles: state.roles,
+			usersRoles: state.usersRoles,
+			serverVersion: state.server.version,
+			// permissions
+			editRoomPermission: state.permissions['edit-room'],
+			editOmnichannelContact: state.permissions['edit-omnichannel-contact'],
+			editLivechatRoomCustomfields: state.permissions['edit-livechat-room-customfields']
+		}),
+		shallowEqual
+	);
 
 	const roomUserId = isDirect ? getUidDirectMessage({ ...(room || { rid, t }), itsMe }) : undefined;
 	const activeUserStatus = useAppSelector(state => (roomUserId ? state.activeUsers[roomUserId] : undefined));

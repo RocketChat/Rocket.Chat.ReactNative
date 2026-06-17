@@ -31,11 +31,5 @@ export default StyleSheet.create({
 	},
 	actionIndicator: {
 		...(I18nManager.isRTL ? { transform: [{ rotate: '180deg' }] } : {})
-	},
-	statusRow: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		gap: 4,
-		marginTop: 2
 	}
 });

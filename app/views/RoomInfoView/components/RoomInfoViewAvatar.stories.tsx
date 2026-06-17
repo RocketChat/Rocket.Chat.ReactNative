@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
 		padding: 24,
 		backgroundColor: '#ffffff',
 		minHeight: 200,
-		alignItems: 'center',
+		alignItems: 'center'
 	}
 });
 
@@ -22,7 +22,13 @@ export default {
 
 export const Default = () => (
 	<Wrapper>
-		<RoomInfoViewAvatar showEdit={false} type={SubscriptionType.DIRECT} username='john.doe' rid='rid1' handleEditAvatar={() => {}} />
+		<RoomInfoViewAvatar
+			showEdit={false}
+			type={SubscriptionType.DIRECT}
+			username='john.doe'
+			rid='rid1'
+			handleEditAvatar={() => {}}
+		/>
 	</Wrapper>
 );
 
