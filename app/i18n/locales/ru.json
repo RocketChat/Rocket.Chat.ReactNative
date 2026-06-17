@@ -828,7 +828,7 @@
   "Unstar": "Снять отметку",
   "Unsupported_format": "Неподдерживаемый формат",
   "Unsupported_system_message": "Неподдерживаемое системное сообщение",
-  "Until": "До",
+  "Until": "До {{time}}",
   "Updating": "Обновление...",
   "Uploading": "Загрузка",
   "Use": "Использовать",

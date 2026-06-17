@@ -798,7 +798,7 @@
   "Unstar": "Preklicati zvezdico",
   "Unsupported_format": "Nepodprta oblika",
   "Unsupported_system_message": "Nepodprto sistemsko sporočilo",
-  "Until": "Do",
+  "Until": "Do {{time}}",
   "Updating": "Posodobitev ...",
   "Uploading": "Nalaganje",
   "Use": "Uporaba",

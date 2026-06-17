@@ -924,7 +924,7 @@
   "Unstar": "Fjern stjerne",
   "Unsupported_format": "Ikke støttet format",
   "Unsupported_system_message": "Melding om at systemet ikke støttes",
-  "Until": "Inntil",
+  "Until": "Inntil {{time}}",
   "Updating": "Oppdaterer...",
   "Upload_image": "Last opp bilde",
   "Upload_in_progress": "Opplasting pågår",

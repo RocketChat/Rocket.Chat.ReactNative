@@ -876,7 +876,7 @@
   "Unstar": "von Favoriten entfernen",
   "Unsupported_format": "Nicht unterstütztes Format",
   "Unsupported_system_message": "Nicht unterstützte Systemmeldung",
-  "Until": "Bis",
+  "Until": "Bis {{time}}",
   "Updating": "Aktualisierung …",
   "Upload_image": "Bild hochladen",
   "Upload_in_progress": "Upload in Bearbeitung",

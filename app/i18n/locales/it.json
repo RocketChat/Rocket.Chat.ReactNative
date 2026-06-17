@@ -691,7 +691,7 @@
   "unread_messages": "non letti",
   "Unread_on_top": "Non letti sopra",
   "Unstar": "Rimuovi dai preferiti",
-  "Until": "Fino al",
+  "Until": "Fino al {{time}}",
   "Updating": "Aggiornamento...",
   "Uploading": "Caricamento",
   "User": "Utente",

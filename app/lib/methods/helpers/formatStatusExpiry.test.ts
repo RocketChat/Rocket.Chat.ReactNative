@@ -1,8 +1,19 @@
 import { formatStatusExpiry } from './formatStatusExpiry';
 
-jest.mock('../../../i18n', () => ({
-	t: (key: string) => key
-}));
+jest.mock('../../../i18n', () => {
+	const en = require('../../../i18n/locales/en.json');
+	return {
+		t: (key: string, options?: Record<string, string>) => {
+			let value: string = en[key];
+			if (options && value) {
+				for (const [k, v] of Object.entries(options)) {
+					value = value.replace(new RegExp(`\\{\\{\\s*${k}\\s*\\}\\}`, 'g'), v);
+				}
+			}
+			return value ?? key;
+		}
+	};
+});
 
 describe('formatStatusExpiry', () => {
 	it('returns undefined for an already-expired timestamp', () => {

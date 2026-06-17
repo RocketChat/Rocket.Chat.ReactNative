@@ -884,7 +884,7 @@
   "Unstar": "Csillagozatlan",
   "Unsupported_format": "Nem támogatott formátum",
   "Unsupported_system_message": "Nem támogatott rendszerüzenet",
-  "Until": "Ig",
+  "Until": "{{time}}-ig",
   "Updating": "Frissítés...",
   "Upload_image": "Kép feltöltése",
   "Upload_in_progress": "Feltöltés folyamatban",

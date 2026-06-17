@@ -882,7 +882,7 @@
   "Unstar": "स्टार हटाएं",
   "Unsupported_format": "असमर्थित प्रारूप",
   "Unsupported_system_message": "असमर्थित सिस्टम संदेश",
-  "Until": "तक",
+  "Until": "{{time}} तक",
   "Updating": "अपडेट हो रहा है...",
   "Upload_image": "छवि अपलोड करें",
   "Upload_in_progress": "अपलोड प्रगति पर है",

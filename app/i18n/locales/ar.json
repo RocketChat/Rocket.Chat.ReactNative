@@ -653,7 +653,7 @@
   "unread_messages": "رسائل غير مقروءة",
   "Unread_on_top": "غير مقروء في الأعلى",
   "Unstar": "إلغاء التمييز",
-  "Until": "حتى",
+  "Until": "حتى {{time}}",
   "Updating": "جار التحديث...",
   "Uploading": "جار الرفع",
   "User": "مستخدم",

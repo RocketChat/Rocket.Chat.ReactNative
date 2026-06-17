@@ -783,7 +783,7 @@
   "Unstar": "Enlever des favoris",
   "Unsupported_format": "Format non supporté",
   "Unsupported_system_message": "Message système non pris en charge",
-  "Until": "Jusqu'à",
+  "Until": "Jusqu'à {{time}}",
   "Updating": "Mise à jour...",
   "Uploading": "Envoyer",
   "Use": "Utiliser",

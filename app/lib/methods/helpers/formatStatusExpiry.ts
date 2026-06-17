@@ -9,8 +9,8 @@ export const formatStatusExpiry = (statusExpiresAt: string): string | undefined 
 	}
 
 	if (expiresAt.isSame(now, 'day')) {
-		return `${I18n.t('Until')} ${expiresAt.format('h:mm A')}`;
+		return I18n.t('Until', { time: expiresAt.format('h:mm A') });
 	}
 
-	return `${I18n.t('Until')} ${expiresAt.format('MMM D, h:mm A')}`;
+	return I18n.t('Until', { time: expiresAt.format('MMM D, h:mm A') });
 };

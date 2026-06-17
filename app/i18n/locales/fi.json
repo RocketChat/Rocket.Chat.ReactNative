@@ -851,7 +851,7 @@
   "Unstar": "Poista tähti",
   "Unsupported_format": "Muotoa ei tueta",
   "Unsupported_system_message": "Ei tuettu järjestelmäilmoitus",
-  "Until": "Asti",
+  "Until": "{{time}} asti",
   "Updating": "Päivitetään...",
   "Upload_in_progress": "Lataus käynnissä",
   "Uploading": "Ladataan",

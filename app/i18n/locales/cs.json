@@ -948,7 +948,7 @@
   "Unstar": "Odebrat hvězdičku",
   "Unsupported_format": "Nepodporovaný formát",
   "Unsupported_system_message": "Nepodporovaná systémová zpráva",
-  "Until": "Do",
+  "Until": "Do {{time}}",
   "Updating": "Aktualizuji...",
   "Upload_image": "Nahrát obrázek",
   "Upload_in_progress": "Probíhá nahrávání",

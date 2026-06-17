@@ -562,7 +562,7 @@
   "unread_messages": "não lidas",
   "Unread_on_top": "Não lidas no topo",
   "Unstar": "Retirar estrela",
-  "Until": "Até",
+  "Until": "Até {{time}}",
   "Updating": "A actualizar...",
   "Uploading": "A enviar",
   "User_has_been_key": "Utilizador foi {{key}}",

@@ -584,7 +584,7 @@
   "unread_messages": "未読",
   "Unread_on_top": "未読メッセージを上に表示",
   "Unstar": "お気に入り解除",
-  "Until": "まで",
+  "Until": "{{time}} まで",
   "Updating": "更新中...",
   "Uploading": "アップロード中",
   "User": "ユーザー",

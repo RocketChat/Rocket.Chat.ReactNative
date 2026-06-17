@@ -436,7 +436,7 @@
   "Unmute_someone_in_room": "Slå på noen på rommet",
   "Unread": "ulest",
   "Unread_on_top": "Ulest på toppen",
-  "Until": "Inntil",
+  "Until": "Inntil {{time}}",
   "Use": "Bruk",
   "User": "Bruker",
   "User__username__is_now_a_leader_of__room_name_": "Bruker {{username}} er nå leder av {{room_name}}",

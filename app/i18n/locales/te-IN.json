@@ -881,7 +881,7 @@
   "Unstar": "స్టార్ తీసుకో",
   "Unsupported_format": "అమాన్యమైన ఫార్మాట్",
   "Unsupported_system_message": "అనుమతించబడని వ్యవస్థ సందేశం",
-  "Until": "వరకు",
+  "Until": "{{time}} వరకు",
   "Updating": "తాజాగా అప్డేట్ అవుతోంది...",
   "Upload_image": "చిత్రం అప్‌లోడ్ చేయండి",
   "Upload_in_progress": "అప్లోడ్ ప్రగతిలో ఉంది",

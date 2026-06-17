@@ -783,7 +783,7 @@
   "Unstar": "Ster verwijderen",
   "Unsupported_format": "Niet ondersteund formaat",
   "Unsupported_system_message": "Niet-ondersteund systeembericht",
-  "Until": "Tot",
+  "Until": "Tot {{time}}",
   "Updating": "Updaten...",
   "Uploading": "Uploaden",
   "Use": "Gebruiken",
