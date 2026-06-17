@@ -63,8 +63,7 @@ const RoomInfoView = (): ReactElement => {
 		// permissions
 		editRoomPermission,
 		editOmnichannelContact,
-		editLivechatRoomCustomfields,
-		activeUsers
+		editLivechatRoomCustomfields
 	} = useAppSelector(state => ({
 		subscribedRoom: state.room.subscribedRoom,
 		isMasterDetail: state.app.isMasterDetail,
@@ -74,12 +73,11 @@ const RoomInfoView = (): ReactElement => {
 		// permissions
 		editRoomPermission: state.permissions['edit-room'],
 		editOmnichannelContact: state.permissions['edit-omnichannel-contact'],
-		editLivechatRoomCustomfields: state.permissions['edit-livechat-room-customfields'],
-		activeUsers: state.activeUsers
+		editLivechatRoomCustomfields: state.permissions['edit-livechat-room-customfields']
 	}));
 
 	const roomUserId = isDirect ? getUidDirectMessage({ ...(room || { rid, t }), itsMe }) : undefined;
-	const activeUserStatus = roomUserId ? activeUsers[roomUserId] : undefined;
+	const activeUserStatus = useAppSelector(state => (roomUserId ? state.activeUsers[roomUserId] : undefined));
 	const userStatus = activeUserStatus || roomUser;
 
 	const { colors } = useTheme();
