@@ -226,7 +226,6 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 		this.didMountInteraction = InteractionManager.runAfterInteractions(() => {
 			const { isAuthenticated } = this.props;
 			this.setHeader();
-			let initPromise: Promise<void> | undefined;
 			if (this.rid) {
 				try {
 					this.sub?.subscribe?.();
@@ -234,21 +233,16 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 					log(e);
 				}
 				if (isAuthenticated) {
-					initPromise = this.init();
+					this.init();
 				} else {
 					EventEmitter.addEventListener('connected', this.handleConnected);
 				}
 			}
-			if (this.jumpToMessageId) {
-				// A thread jump scrolls within the thread's own window, populated by init()'s
-				// loadThreadMessages. Fire it only after that load resolves so the target row exists;
-				// a non-anchored thread jump aborts on its safety net and parks on the live tail if it
-				// runs first. The main-list jump (no tmid) re-anchors on its own and must not wait.
-				if (this.tmid && initPromise) {
-					initPromise.then(() => this.consumeJumpParam(this.jumpToMessageId as string)).catch(() => {});
-				} else {
-					this.consumeJumpParam(this.jumpToMessageId);
-				}
+			// Main-list jump: re-anchors its own window, so fire immediately. A thread jump waits for its
+			// rows and is fired from init()'s success path instead (see init) — firing it here would race
+			// loadThreadMessages and park on the live tail.
+			if (this.jumpToMessageId && !this.tmid) {
+				this.consumeJumpParam(this.jumpToMessageId);
 			}
 			if (this.jumpToThreadId && !this.jumpToMessageId) {
 				this.navToThread({ tmid: this.jumpToThreadId });
@@ -668,6 +662,15 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 
 			if (this.tmid) {
 				await loadThreadMessages({ tmid: this.tmid, rid: this.rid });
+				// Thread jump: the target lives in the thread window we just populated, so fire here rather
+				// than in componentDidMount — the row exists now (a non-anchored thread jump otherwise aborts
+				// on its safety net and parks on the live tail). Read-and-clear so the other init() callers
+				// (the connected handler, accept-invite, the 300 ms retry) can't re-fire it.
+				if (this.jumpToMessageId) {
+					const messageId = this.jumpToMessageId;
+					this.jumpToMessageId = undefined;
+					this.consumeJumpParam(messageId);
+				}
 			} else {
 				const newLastOpen = new Date();
 				await RoomServices.getMessages({
