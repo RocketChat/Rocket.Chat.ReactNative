@@ -12,7 +12,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="Online John Doe Online."
+      accessibilityLabel="John Doe. Online."
       accessibilityRole="header"
       accessible={true}
       autoFocus={false}
@@ -201,7 +201,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="Away John Doe Away."
+      accessibilityLabel="John Doe. Away."
       accessibilityRole="header"
       accessible={true}
       autoFocus={false}
@@ -390,7 +390,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="Busy John Doe Busy."
+      accessibilityLabel="John Doe. Busy."
       accessibilityRole="header"
       accessible={true}
       autoFocus={false}
@@ -579,7 +579,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="Offline John Doe Offline."
+      accessibilityLabel="John Doe. Offline."
       accessibilityRole="header"
       accessible={true}
       autoFocus={false}
