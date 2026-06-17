@@ -15,16 +15,14 @@ import * as List from '../../containers/List';
 import { MarkdownPreview } from '../../containers/markdown';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import SafeAreaView from '../../containers/SafeAreaView';
-import Status from '../../containers/Status';
-import { CustomIcon } from '../../containers/CustomIcon';
+import StatusRows from '../../containers/Status/StatusRows';
 import {
 	type IApplicationState,
 	type IBaseScreen,
 	type ISubscription,
 	type IUser,
 	SubscriptionType,
-	type TSubscriptionModel,
-	STATUS_I18N_KEYS
+	type TSubscriptionModel
 } from '../../definitions';
 import { type IActiveUser } from '../../reducers/activeUsers';
 import { withDimensions } from '../../dimensions';
@@ -36,7 +34,6 @@ import { type ChatsStackParamList } from '../../stacks/types';
 import { withTheme } from '../../theme';
 import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import { formatStatusExpiry } from '../../lib/methods/helpers/formatStatusExpiry';
 import Touch from '../../containers/Touch';
 import styles from './styles';
 import { ERoomType } from '../../definitions/ERoomType';
@@ -760,8 +757,6 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 		const avatar = getRoomAvatar(room);
 		const isGroupChatHandler = isGroupChat(room);
 		const roomUserId = !isGroupChatHandler && t === 'd' ? getUidDirectMessage(room) : undefined;
-		const formattedStatusExpiry = statusExpiresAt ? formatStatusExpiry(statusExpiresAt) : undefined;
-		const presenceLabel = !statusText && status ? STATUS_I18N_KEYS[status] : undefined;
 
 		return (
 			<List.Section>
@@ -809,36 +804,20 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 								msg={t === 'd' ? `@${name}` : topic}
 								style={[styles.roomDescription, { color: themes[theme].fontSecondaryInfo }]}
 							/>
-							{t === 'd' && !!statusText && (
-								<View style={styles.statusRow}>
-									{roomUserId && <Status size={12} id={roomUserId} />}
-									<MarkdownPreview
-										msg={statusText}
-										style={[styles.roomDescription, { color: themes[theme].fontSecondaryInfo }]}
-									/>
-								</View>
-							)}
-							{t === 'd' && !!presenceLabel && !statusText && (
-								<View style={styles.statusRow}>
-									{roomUserId && <Status size={12} id={roomUserId} />}
-									<Text style={[styles.roomDescription, { color: themes[theme].fontSecondaryInfo }]}>
-										{I18n.t(presenceLabel)}
-									</Text>
-								</View>
-							)}
-							{t === 'd' && !!formattedStatusExpiry && (
-								<View style={styles.statusRow}>
-									<CustomIcon
-										name='clock'
-										size={14}
-										color={themes[theme].fontSecondaryInfo}
-										accessibilityElementsHidden
-										importantForAccessibility='no'
-									/>
-									<Text style={[styles.roomDescription, { color: themes[theme].fontSecondaryInfo }]}>
-										{formattedStatusExpiry}
-									</Text>
-								</View>
+							{t === 'd' && (
+								<StatusRows
+									userId={roomUserId}
+									statusText={statusText}
+									status={status}
+									statusExpiresAt={statusExpiresAt}
+									statusTextColor={themes[theme].fontSecondaryInfo}
+									fontSecondaryInfo={themes[theme].fontSecondaryInfo}
+									renderStatusText={text => (
+										<MarkdownPreview msg={text} style={[styles.roomDescription, { color: themes[theme].fontSecondaryInfo }]} />
+									)}
+									textStyle={styles.roomDescription}
+									secondaryTextStyle={styles.roomDescription}
+								/>
 							)}
 						</View>
 						{isGroupChatHandler ? null : <List.Icon name='chevron-right' style={styles.actionIndicator} />}

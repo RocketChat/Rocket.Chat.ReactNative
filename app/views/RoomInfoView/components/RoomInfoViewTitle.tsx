@@ -2,15 +2,13 @@ import { Text, View } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { type ReactElement } from 'react';
 
-import { type ISubscription, type TUserStatus, SubscriptionType, STATUS_I18N_KEYS } from '../../../definitions';
+import { type ISubscription, type TUserStatus, SubscriptionType } from '../../../definitions';
 import styles from '../styles';
 import { useTheme } from '../../../theme';
 import RoomTypeIcon from '../../../containers/RoomTypeIcon';
 import { getRoomTitle } from '../../../lib/methods/helpers';
-import { formatStatusExpiry } from '../../../lib/methods/helpers/formatStatusExpiry';
 import CollapsibleText from '../../../containers/CollapsibleText';
-import { CustomIcon } from '../../../containers/CustomIcon';
-import Status from '../../../containers/Status';
+import StatusRows from '../../../containers/Status/StatusRows';
 import EventEmitter from '../../../lib/methods/helpers/events';
 import { LISTENER } from '../../../containers/Toast';
 import I18n from '../../../i18n';
@@ -44,9 +42,6 @@ const RoomInfoViewTitle = ({
 	};
 
 	if (type === SubscriptionType.DIRECT) {
-		const presenceLabel = !statusText && status ? STATUS_I18N_KEYS[status] : undefined;
-		const formattedExpiry = statusExpiresAt ? formatStatusExpiry(statusExpiresAt) : undefined;
-
 		return (
 			<View style={styles.roomInfoViewTitleContainer}>
 				<Text
@@ -61,34 +56,26 @@ const RoomInfoViewTitle = ({
 						testID='room-info-view-username'
 						style={[styles.roomUsername, { color: colors.fontSecondaryInfo }]}>{`@${username}`}</Text>
 				)}
-				{!!statusText && (
-					<View testID='room-info-view-custom-status' style={styles.statusRow}>
-						{userId && <Status size={12} id={userId} />}
-						<CollapsibleText
-							linesToTruncate={2}
-							msg={statusText}
-							style={[styles.statusText, { color: colors.fontTitlesLabels }]}
-						/>
-					</View>
-				)}
-				{!!presenceLabel && (
-					<View testID='room-info-view-presence-status' style={styles.statusRow}>
-						{userId && <Status size={12} id={userId} />}
-						<Text style={[styles.statusText, { color: colors.fontTitlesLabels }]}>{I18n.t(presenceLabel)}</Text>
-					</View>
-				)}
-				{!!formattedExpiry && (
-					<View testID='room-info-view-status-expiry' style={styles.expiryContainer}>
-						<CustomIcon
-							name='clock'
-							size={14}
-							color={colors.fontSecondaryInfo}
-							accessibilityElementsHidden
-							importantForAccessibility='no'
-						/>
-						<Text style={[styles.expiryText, { color: colors.fontSecondaryInfo }]}>{formattedExpiry}</Text>
-					</View>
-				)}
+				<StatusRows
+					userId={userId}
+					statusText={statusText}
+					status={status}
+					statusExpiresAt={statusExpiresAt}
+					statusTextColor={colors.fontTitlesLabels}
+					fontSecondaryInfo={colors.fontSecondaryInfo}
+					renderStatusText={text => (
+						<CollapsibleText linesToTruncate={2} msg={text} style={[styles.statusText, { color: colors.fontTitlesLabels }]} />
+					)}
+					textStyle={styles.statusText}
+					secondaryTextStyle={styles.expiryText}
+					rowStyle={{ marginTop: 10 }}
+					expiryRowStyle={{ marginTop: 0 }}
+					testIDs={{
+						customStatus: 'room-info-view-custom-status',
+						presenceStatus: 'room-info-view-presence-status',
+						statusExpiry: 'room-info-view-status-expiry'
+					}}
+				/>
 			</View>
 		);
 	}
