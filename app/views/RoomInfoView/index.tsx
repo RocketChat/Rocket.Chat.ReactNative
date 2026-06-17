@@ -13,6 +13,7 @@ import { type ISubscription, type IUser, SubscriptionType } from '../../definiti
 import I18n from '../../i18n';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { shallowEqual } from 'react-redux';
 import { getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/methods/helpers';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 import { handleIgnore } from '../../lib/methods/helpers/handleIgnore';
@@ -74,7 +75,7 @@ const RoomInfoView = (): ReactElement => {
 		editRoomPermission: state.permissions['edit-room'],
 		editOmnichannelContact: state.permissions['edit-omnichannel-contact'],
 		editLivechatRoomCustomfields: state.permissions['edit-livechat-room-customfields']
-	}));
+	}), shallowEqual);
 
 	const roomUserId = isDirect ? getUidDirectMessage({ ...(room || { rid, t }), itsMe }) : undefined;
 	const activeUserStatus = useAppSelector(state => (roomUserId ? state.activeUsers[roomUserId] : undefined));
