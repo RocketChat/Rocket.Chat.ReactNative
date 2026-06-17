@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import { type ReactElement, useEffect, useRef, useState } from 'react';
+import { type ReactElement, useEffect, useMemo, useRef, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
@@ -131,9 +131,9 @@ const StatusView = (): ReactElement => {
 	const inputValues = watch();
 	const { statusText } = inputValues;
 
-	const initialClearAfter = getInitialClearAfterState(user.statusExpiresAt);
-	const [clearAfter, setClearAfter] = useState<ClearAfterValue>(initialClearAfter.value);
-	const [clearAfterDate, setClearAfterDate] = useState<Date | null>(initialClearAfter.customDate);
+	const clearAfterInitialState = useMemo(() => getInitialClearAfterState(user.statusExpiresAt), []);
+	const [clearAfter, setClearAfter] = useState<ClearAfterValue>(clearAfterInitialState.value);
+	const [clearAfterDate, setClearAfterDate] = useState<Date | null>(clearAfterInitialState.customDate);
 	const clearAfterTouched = useRef(false);
 
 	const dispatch = useDispatch();
@@ -197,8 +197,8 @@ const StatusView = (): ReactElement => {
 			return false;
 		}
 		const isStatusEqual = status === user.status;
-		const isStatusTextEqual = (!!user.statusText && user.statusText === statusText) ?? (!user.statusText && !statusText);
-		return !isValid && isStatusEqual && isStatusTextEqual;
+		const isStatusTextEqual = (!!user.statusText && user.statusText === statusText) || (!user.statusText && !statusText);
+		return isStatusEqual && isStatusTextEqual;
 	};
 
 	const FooterComponent = () => (
