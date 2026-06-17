@@ -46,10 +46,7 @@ export const resolveJumpAnchor = async (
 		if (__DEV__ && bound !== null) {
 			const collisions = anchorMessages.filter(m => tsToMs(m.ts) === bound).length;
 			if (collisions > 1) {
-				console.warn(
-					`[RoomView] Jump anchor resolved onto ts ${bound} shared by ${collisions} rows; the scalar ts ` +
-						`window bound cannot split equal-ts rows, so the jump may land on the wrong message. Deferred fix: composite (ts,id) ordering.`
-				);
+				console.warn(`[RoomView] jump anchor ts shared by ${collisions} rows; may land on wrong message`);
 			}
 		}
 		return bound;
