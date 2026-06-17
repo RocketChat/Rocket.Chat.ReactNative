@@ -1,5 +1,5 @@
 import { type ReactElement, type ReactNode } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, type StyleProp, Text, type TextStyle, View, type ViewStyle } from 'react-native';
 
 import Status from '../Status';
 import { CustomIcon } from '../CustomIcon';
@@ -24,10 +24,10 @@ interface IStatusRows {
 	statusTextColor: string;
 	fontSecondaryInfo: string;
 	renderStatusText?: (text: string) => ReactNode;
-	textStyle?: object;
-	secondaryTextStyle?: object;
-	rowStyle?: object;
-	expiryRowStyle?: object;
+	textStyle?: StyleProp<TextStyle>;
+	secondaryTextStyle?: StyleProp<TextStyle>;
+	rowStyle?: StyleProp<ViewStyle>;
+	expiryRowStyle?: StyleProp<ViewStyle>;
 	testIDs?: {
 		customStatus?: string;
 		presenceStatus?: string;
