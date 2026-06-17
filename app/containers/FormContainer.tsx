@@ -8,6 +8,7 @@ import { useTheme } from '../theme';
 import AppVersion from './AppVersion';
 import { isTablet } from '../lib/methods/helpers';
 import SafeAreaView from './SafeAreaView';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface IFormContainer extends ScrollViewProps {
 	testID: string;
@@ -35,12 +36,13 @@ export const FormContainerInner = ({
 
 const FormContainer = ({ children, testID, showAppVersion = true, ...props }: IFormContainer) => {
 	const { colors } = useTheme();
+	const { bottom } = useSafeAreaInsets();
 
 	return (
 		<KeyboardView>
 			<ScrollView
 				style={sharedStyles.container}
-				contentContainerStyle={[sharedStyles.containerScrollView, styles.scrollView]}
+				contentContainerStyle={[sharedStyles.containerScrollView, styles.scrollView, { paddingBottom: bottom }]}
 				{...scrollPersistTaps}
 				{...props}>
 				<SafeAreaView testID={testID} style={{ backgroundColor: colors.surfaceRoom }}>
