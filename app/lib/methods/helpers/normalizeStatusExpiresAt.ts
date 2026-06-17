@@ -1,11 +1,9 @@
+import EJSON from 'ejson';
 import dayjs from '../../dayjs';
 
-export const normalizeStatusExpiresAt = (value: any): string | undefined => {
+export const normalizeStatusExpiresAt = (value: unknown): string | undefined => {
 	if (!value) return undefined;
-	if (typeof value === 'object' && value.$date) {
-		const d = dayjs(value.$date);
-		return d.isValid() ? d.toISOString() : undefined;
-	}
-	const d = dayjs(value);
+	const parsed = EJSON.fromJSONValue(value);
+	const d = dayjs(parsed);
 	return d.isValid() ? d.toISOString() : undefined;
 };

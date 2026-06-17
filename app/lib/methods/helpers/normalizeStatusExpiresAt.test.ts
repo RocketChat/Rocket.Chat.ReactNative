@@ -4,7 +4,6 @@ import { normalizeStatusExpiresAt } from './normalizeStatusExpiresAt';
 describe('normalizeStatusExpiresAt', () => {
 	const isoString = '2026-06-11T10:00:00.000Z';
 	const timestampMs = 1752300000000;
-	const timestampSec = 1752300000;
 
 	it('returns undefined for null', () => {
 		expect(normalizeStatusExpiresAt(null)).toBeUndefined();
@@ -35,8 +34,8 @@ describe('normalizeStatusExpiresAt', () => {
 		expect(normalizeStatusExpiresAt(timestampMs)).toBe(dayjs(timestampMs).toISOString());
 	});
 
-	it('converts a number (seconds timestamp) to ISO string', () => {
-		expect(normalizeStatusExpiresAt(timestampSec)).toBe(dayjs(timestampSec).toISOString());
+	it('converts EJSON date format {$date: isoString} to ISO string', () => {
+		expect(normalizeStatusExpiresAt({ $date: isoString })).toBe(isoString);
 	});
 
 	it('converts EJSON date format {$date: ms} to ISO string', () => {
