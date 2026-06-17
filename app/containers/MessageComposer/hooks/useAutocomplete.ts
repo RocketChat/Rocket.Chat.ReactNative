@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Q } from '@nozbe/watermelondb';
 
+import { Q } from '../../../lib/database/facade';
 import {
 	type IAutocompleteEmoji,
 	type IAutocompleteUserRoom,

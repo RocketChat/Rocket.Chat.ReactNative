@@ -1,8 +1,7 @@
 import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
-import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { InteractionManager } from 'react-native';
-import { Q } from '@nozbe/watermelondb';
 
+import { sanitizedRaw, Q } from '../database/facade';
 import log from '../methods/helpers/log';
 import { setActiveUsers } from '../../actions/activeUsers';
 import protectedFunction from '../methods/helpers/protectedFunction';
@@ -49,14 +48,14 @@ let rolesListener: any;
 let notifyLoggedListener: any;
 let logoutListener: any;
 
-function connect({ server, logoutOnError = false }: { server: string; logoutOnError?: boolean }): Promise<void> {
+async function connect({ server, logoutOnError = false }: { server: string; logoutOnError?: boolean }): Promise<void> {
+	// Check for running requests and abort them before connecting to the server
+	abort();
+	disconnect();
+	// Active DB must be open before any stream listener reads database.active.
+	await database.setActiveDB(server);
+
 	return new Promise<void>(resolve => {
-		// Check for running requests and abort them before connecting to the server
-		abort();
-
-		disconnect();
-		database.setActiveDB(server);
-
 		store.dispatch(connectRequest());
 
 		if (connectingListener) {

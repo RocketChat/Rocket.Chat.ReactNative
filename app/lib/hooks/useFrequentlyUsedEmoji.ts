@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Q } from '@nozbe/watermelondb';
 
+import { Q } from '../database/facade';
 import database from '../database';
 import { type IEmoji } from '../../definitions';
 import { DEFAULT_EMOJIS } from '../constants/emojis';

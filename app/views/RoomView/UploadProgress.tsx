@@ -1,9 +1,9 @@
 import { Component } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Q } from '@nozbe/watermelondb';
 import { type Observable, type Subscription } from 'rxjs';
 import { A11y } from 'react-native-a11y-order';
 
+import { Q } from '../../lib/database/facade';
 import database from '../../lib/database';
 import log from '../../lib/methods/helpers/log';
 import I18n from '../../i18n';

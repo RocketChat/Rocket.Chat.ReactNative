@@ -1,9 +1,9 @@
 import { type ReactElement, type Ref, useRef, useImperativeHandle } from 'react';
 import { AccessibilityInfo, findNodeHandle, type LayoutChangeEvent } from 'react-native';
 import { useBackHandler } from '@react-native-community/hooks';
-import { Q } from '@nozbe/watermelondb';
 import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 
+import { Q } from '../../lib/database/facade';
 import { useRoomContext } from '../../views/RoomView/context';
 import { Autocomplete } from './components';
 import { MIN_HEIGHT } from './constants';

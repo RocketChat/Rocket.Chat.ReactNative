@@ -1,5 +1,4 @@
-import { Q } from '@nozbe/watermelondb';
-
+import { Q } from '../database/facade';
 import { sanitizeLikeString, slugifyLikeString } from '../database/utils';
 import database from '../database/index';
 import { store as reduxStore } from '../store/auxStore';

@@ -133,13 +133,9 @@ export function sortBy(column: string, direction: 'asc' | 'desc' = 'asc'): SortB
 	return { type: 'sortBy', column, direction };
 }
 
-export function asc(column: string): SortBy {
-	return { type: 'sortBy', column, direction: 'asc' };
-}
-
-export function desc(column: string): SortBy {
-	return { type: 'sortBy', column, direction: 'desc' };
-}
+/** Sort-direction constants — passed as the 2nd arg to Q.sortBy (WMDB surface). */
+export const asc = 'asc' as const;
+export const desc = 'desc' as const;
 
 export function take(count: number): Take {
 	return { type: 'take', count };

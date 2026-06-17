@@ -1,9 +1,9 @@
-import { Q } from '@nozbe/watermelondb';
 import { type NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { Alert, FlatList, Keyboard, PixelRatio } from 'react-native';
 import { connect } from 'react-redux';
 import { Component } from 'react';
 
+import { Q } from '../lib/database/facade';
 import { deleteRoom } from '../actions/room';
 import { type DisplayMode } from '../lib/constants/constantDisplayMode';
 import { textInputDebounceTime } from '../lib/constants/debounceConfig';

@@ -1,3 +1,22 @@
+// Keep the database engine behind the facade. Everything outside app/lib/database/ must import
+// from app/lib/database/facade — never the raw engine or the facade's internal modules. The
+// migration reader and driver live inside app/lib/database/ and are excluded below.
+const reactDefaultImport = {
+	name: 'react',
+	importNames: ['default'],
+	message: 'Import specific named exports from React instead.'
+};
+const facadeOnlyPatterns = [
+	{
+		group: ['@nozbe/watermelondb', '@nozbe/watermelondb/**', 'expo-sqlite', 'expo-sqlite/**', 'drizzle-orm', 'drizzle-orm/**'],
+		message: 'Do not import the database engine directly. Use the facade at app/lib/database/facade.'
+	},
+	{
+		group: ['**/database/facade/*'],
+		message: 'Import from the facade barrel (app/lib/database/facade), not its internal modules.'
+	}
+];
+
 module.exports = {
 	settings: {
 		'import/resolver': {
@@ -164,6 +183,20 @@ module.exports = {
 			files: ['index.js', 'app/**/*.{js,ts,tsx}'],
 			env: {
 				'react-native/react-native': true
+			}
+		},
+		{
+			files: ['app/**/*.js'],
+			excludedFiles: ['app/lib/database/**'],
+			rules: {
+				'no-restricted-imports': ['error', { paths: [reactDefaultImport], patterns: facadeOnlyPatterns }]
+			}
+		},
+		{
+			files: ['app/**/*.{ts,tsx}'],
+			excludedFiles: ['app/lib/database/**'],
+			rules: {
+				'@typescript-eslint/no-restricted-imports': ['error', { paths: [reactDefaultImport], patterns: facadeOnlyPatterns }]
 			}
 		}
 	]

@@ -3,9 +3,9 @@ import { type NativeStackNavigationOptions, type NativeStackNavigationProp } fro
 import { type RouteProp } from '@react-navigation/native';
 import { Keyboard, Text, View } from 'react-native';
 import { connect } from 'react-redux';
-import { Q } from '@nozbe/watermelondb';
 import { type Dispatch } from 'redux';
 
+import { Q } from '../../lib/database/facade';
 import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
 import { type IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
 import { type InsideStackParamList } from '../../stacks/types';

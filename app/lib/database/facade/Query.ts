@@ -51,4 +51,12 @@ export class Query<M extends Model> {
 	extend(...clauses: Q.Clause[]): Query<M> {
 		return new Query(this._collection, [...this._clauses, ...clauses]);
 	}
+
+	/** WMDB Query is a thenable — `await collection.query(...)` resolves to the records without `.fetch()`. */
+	then<TResult1 = M[], TResult2 = never>(
+		onFulfilled?: ((value: M[]) => TResult1 | PromiseLike<TResult1>) | null,
+		onRejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null
+	): Promise<TResult1 | TResult2> {
+		return this.fetch().then(onFulfilled, onRejected);
+	}
 }

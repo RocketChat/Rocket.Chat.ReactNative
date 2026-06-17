@@ -58,6 +58,11 @@ export class Model {
 		return this._raw.id as string;
 	}
 
+	/** WMDB compat — call sites read `record.collection.table`. */
+	get collection(): ICollection {
+		return this._collection;
+	}
+
 	/** Used by WMDB Relation/children to resolve collections. */
 	get collections(): { get: (table: string) => ICollection } {
 		const db = this._collection._db;

@@ -1,11 +1,11 @@
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type CompositeNavigationProp, type RouteProp } from '@react-navigation/core';
 import { FlatList, Text, View } from 'react-native';
-import { Q } from '@nozbe/watermelondb';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 import { Component } from 'react';
 
+import { Q } from '../../lib/database/facade';
 import { FormTextInput } from '../../containers/TextInput';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import Markdown from '../../containers/markdown';

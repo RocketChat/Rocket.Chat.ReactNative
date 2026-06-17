@@ -1,6 +1,5 @@
-import { type Model, Q } from '@nozbe/watermelondb';
-import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-
+import { type Model, Q } from '../database/facade';
+import { sanitizedRaw } from '../database/facade';
 import { MESSAGE_TYPE_ANY_LOAD } from '../constants/messageTypeLoad';
 import {
 	type IMessage,

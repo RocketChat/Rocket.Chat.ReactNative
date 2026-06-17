@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Q } from '@nozbe/watermelondb';
 
+import { Q } from '../../../lib/database/facade';
 import { textInputDebounceTime } from '../../../lib/constants/debounceConfig';
 import { useDebounce } from '../../../lib/methods/helpers';
 import { sanitizeLikeString } from '../../../lib/database/utils';

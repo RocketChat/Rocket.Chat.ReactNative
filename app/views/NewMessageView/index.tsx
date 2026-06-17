@@ -1,10 +1,10 @@
-import { Q } from '@nozbe/watermelondb';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 import { shallowEqual } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
+import { Q } from '../../lib/database/facade';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';

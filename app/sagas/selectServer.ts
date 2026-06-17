@@ -1,10 +1,9 @@
 import { put, takeLatest } from 'redux-saga/effects';
-import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { Q } from '@nozbe/watermelondb';
 import valid from 'semver/functions/valid';
 import coerce from 'semver/functions/coerce';
 import { call } from 'typed-redux-saga';
 
+import { Q, sanitizedRaw } from '../lib/database/facade';
 import Navigation from '../lib/navigation/appNavigation';
 import { SERVER } from '../actions/actionsTypes';
 import {

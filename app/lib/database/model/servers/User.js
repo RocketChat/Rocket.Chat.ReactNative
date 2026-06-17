@@ -1,5 +1,4 @@
-import { Model } from '@nozbe/watermelondb';
-import { field, json } from '@nozbe/watermelondb/decorators';
+import { Model, field, json } from '../../facade';
 
 import { sanitizer } from '../../utils';
 

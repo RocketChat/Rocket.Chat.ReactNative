@@ -195,7 +195,7 @@ export function children(childTable: string) {
 // Relation
 // ---------------------------------------------------------------------------
 
-export class Relation {
+export class Relation<T extends Model = Model> {
 	static readonly _wmelonTag = 'relation';
 
 	private _model: AnyModel;
@@ -216,7 +216,7 @@ export class Relation {
 		this._model._setRaw(this._columnName, newId ?? null);
 	}
 
-	fetch(): Promise<Model | null> {
+	fetch(): Promise<T | null> {
 		const { id } = this;
 		if (id) {
 			const col = this._model.collections.get(this._relationTableName);
@@ -226,15 +226,15 @@ export class Relation {
 		return Promise.resolve(null);
 	}
 
-	then<T>(onFulfill: (v: Model | null) => T, onReject?: (r: unknown) => T): Promise<T> {
+	then<U>(onFulfill: (v: T | null) => U, onReject?: (r: unknown) => U): Promise<U> {
 		return this.fetch().then(onFulfill, onReject);
 	}
 
-	set(record: Model | null | undefined): void {
+	set(record: T | null | undefined): void {
 		this.id = record?.id ?? null;
 	}
 
-	observe(): Observable<Model | null> {
+	observe(): Observable<T | null> {
 		const { _handle } = this._model._collection;
 		const model = this._model;
 		const relationTableName = this._relationTableName;
@@ -246,7 +246,7 @@ export class Relation {
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			const rows = (col as any)._fetchSync({ id });
 			return rows.length > 0 ? rows[0] : null;
-		}) as Observable<Model | null>;
+		}) as Observable<T | null>;
 	}
 }
 

@@ -107,9 +107,9 @@ export class Collection<M extends Model = Model> {
 	// Public API
 	// ---------------------------------------------------------------------------
 
-	/** Build a Query for this collection. */
-	query(...clauses: Q.Clause[]): Query<M> {
-		return new Query<M>(this, clauses);
+	/** Build a Query for this collection. Accepts spread clauses or a single array (WMDB parity). */
+	query(...clauses: (Q.Clause | Q.Clause[])[]): Query<M> {
+		return new Query<M>(this, clauses.flat());
 	}
 
 	/** Find a record by id. Rejects when missing (WMDB parity). */

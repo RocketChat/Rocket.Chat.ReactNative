@@ -1,4 +1,4 @@
-import type Model from '@nozbe/watermelondb/Model';
+import type { Model } from '../lib/database/facade';
 
 export interface IServerHistory {
 	id: string;

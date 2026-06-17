@@ -5,9 +5,9 @@ import * as FileSystem from 'expo-file-system/legacy';
 import { connect } from 'react-redux';
 import * as mime from 'react-native-mime-types';
 import { dequal } from 'dequal';
-import { Q } from '@nozbe/watermelondb';
 import { Component } from 'react';
 
+import { Q } from '../../lib/database/facade';
 import database from '../../lib/database';
 import I18n from '../../i18n';
 import DirectoryItem, { ROW_HEIGHT } from '../../containers/DirectoryItem';

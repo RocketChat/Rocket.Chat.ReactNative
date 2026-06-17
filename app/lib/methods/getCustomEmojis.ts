@@ -1,6 +1,6 @@
 import orderBy from 'lodash/orderBy';
-import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
+import { sanitizedRaw } from '../database/facade';
 import { store as reduxStore } from '../store/auxStore';
 import database from '../database';
 import log from './helpers/log';

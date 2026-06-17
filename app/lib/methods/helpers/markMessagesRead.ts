@@ -1,5 +1,4 @@
-import { Q } from '@nozbe/watermelondb';
-
+import { Q } from '../../database/facade';
 import database from '../../database';
 
 interface IMarkMessagesReadParams {

@@ -1,11 +1,10 @@
 import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
-import { Q } from '@nozbe/watermelondb';
-import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { type NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { type Observable, type Subscription } from 'rxjs';
 import { Component } from 'react';
 
+import { sanitizedRaw, Q } from '../../lib/database/facade';
 import { showActionSheetRef } from '../../containers/ActionSheet';
 import { CustomIcon } from '../../containers/CustomIcon';
 import ActivityIndicator from '../../containers/ActivityIndicator';

@@ -9,25 +9,27 @@ import { eq } from 'drizzle-orm';
 import type { SQLiteTable } from 'drizzle-orm/sqlite-core';
 
 import type { DbHandle } from '../driver/connection';
-import type { AppSchema } from './schema';
-import { Model, type PendingOp } from './Model';
+import type { AppSchema, RawRecord } from './schema';
+import { Model, type ICollection, type PendingOp } from './Model';
 import { Collection } from './Collection';
 import { WriterQueue } from './writer';
 
-// Table name → Drizzle table object, loaded lazily per db kind
-// We import the Drizzle schema modules at construction time via the registry below.
+/** Constructor for a Model subclass, as registered per table (mirrors WMDB modelClasses). */
+export type ModelClass = new (collection: ICollection, raw: RawRecord) => Model;
 
 export class Database {
 	private _handle: DbHandle;
 	private _schema: AppSchema;
 	private _tableMap: Record<string, SQLiteTable>;
+	private _modelMap: Record<string, ModelClass>;
 	private _collections: Map<string, Collection> = new Map();
 	private _writer: WriterQueue = new WriterQueue();
 
-	constructor(handle: DbHandle, schema: AppSchema, tableMap: Record<string, SQLiteTable>) {
+	constructor(handle: DbHandle, schema: AppSchema, tableMap: Record<string, SQLiteTable>, modelMap: Record<string, ModelClass>) {
 		this._handle = handle;
 		this._schema = schema;
 		this._tableMap = tableMap;
+		this._modelMap = modelMap;
 	}
 
 	/** Get the Collection for the given WMDB table name. */
@@ -41,7 +43,9 @@ export class Database {
 		const drizzleTable = this._tableMap[table];
 		if (!drizzleTable) throw new Error(`No Drizzle table registered for '${table}'`);
 
-		const col = new Collection(table, tableSchema, drizzleTable, this._handle, Model);
+		// Instantiate the registered subclass so its @field/@date/@json accessors are present.
+		const ModelClass = this._modelMap[table] ?? Model;
+		const col = new Collection(table, tableSchema, drizzleTable, this._handle, ModelClass);
 		col._db = this;
 		this._collections.set(table, col);
 		return col;

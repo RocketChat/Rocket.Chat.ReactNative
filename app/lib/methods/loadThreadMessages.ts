@@ -1,7 +1,6 @@
-import { Q } from '@nozbe/watermelondb';
-import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import EJSON from 'ejson';
 
+import { Q, sanitizedRaw } from '../database/facade';
 import database from '../database';
 import log from './helpers/log';
 import { Encryption } from '../encryption';

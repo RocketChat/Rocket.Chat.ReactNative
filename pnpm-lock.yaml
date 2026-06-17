@@ -336,6 +336,9 @@ importers:
       reselect:
         specifier: 4.0.0
         version: 4.0.0
+      rxjs:
+        specifier: 7.8.2
+        version: 7.8.2
       semver:
         specifier: 7.5.2
         version: 7.5.2
@@ -481,6 +484,9 @@ importers:
       babel-loader:
         specifier: ~9.1.3
         version: 9.1.3(@babel/core@7.25.9)(webpack@5.106.2(esbuild@0.25.12))
+      babel-plugin-inline-import:
+        specifier: ^3.0.0
+        version: 3.0.0
       babel-plugin-react-compiler:
         specifier: 19.1.0-rc.3
         version: 19.1.0-rc.3
@@ -3614,6 +3620,9 @@ packages:
       '@babel/core': ^7.12.0
       webpack: '>=5'
 
+  babel-plugin-inline-import@3.0.0:
+    resolution: {integrity: sha512-thnykl4FMb8QjMjVCuZoUmAM7r2mnTn5qJwrryCvDv6rugbJlTHZMctdjDtEgD0WBAXJOLJSGXN3loooEwx7UQ==}
+
   babel-plugin-istanbul@6.1.1:
     resolution: {integrity: sha512-Y1IQok9821cC9onCx5otgFfRm7Lm+I+wwxOx738M/WLPZ9Q42m4IG5W0FNX8WLL2gYMZo3JkuXIH2DOpWM+qwA==}
     engines: {node: '>=8'}
@@ -6532,6 +6541,9 @@ packages:
     resolution: {integrity: sha512-RjhtfwJOxzcFmNOi6ltcbcu4Iu+FL3zEj83dk4kAS+fVpTxXLO1b38RvJgT/0QwvV/L3aY9TAnyv0EOqW4GoMQ==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
+  path-extra@1.0.3:
+    resolution: {integrity: sha512-vYm3+GCkjUlT1rDvZnDVhNLXIRvwFPaN8ebHAFcuMJM/H0RBOPD7JrcldiNLd9AS3dhAyUHLa4Hny5wp1A+Ffw==}
+
   path-is-absolute@1.0.1:
     resolution: {integrity: sha512-AVbw3UJ2e9bq64vSaS9Am0fje1Pa8pbGqTTsmXfaIiMpnr5DlDhfJOuLj9Sf95ZPVDAUerDfEk88MPmPe7UCQg==}
     engines: {node: '>=0.10.0'}
@@ -7125,6 +7137,9 @@ packages:
 
   require-main-filename@2.0.0:
     resolution: {integrity: sha512-NKN5kMDylKuldxYLSUfrbo5Tuzh4hd+2E8NPPX02mZtn1VuREQToYe/ZdlJy+J3uCpfaiGF05e7B8W0iXbQHmg==}
+
+  require-resolve@0.0.2:
+    resolution: {integrity: sha512-eafQVaxdQsWUB8HybwognkdcIdKdQdQBwTxH48FuE6WI0owZGKp63QYr1MRp73PoX0AcyB7MDapZThYUY8FD0A==}
 
   requireg@0.2.2:
     resolution: {integrity: sha512-nYzyjnFcPNGR3lx9lwPPPnuQxv6JWEZd2Ci0u9opN7N5zUEPIhY/GbL3vMGOr2UXwEg9WwSyV9X9Y/kLFgPsOg==}
@@ -8156,6 +8171,9 @@ packages:
         optional: true
       utf-8-validate:
         optional: true
+
+  x-path@0.0.2:
+    resolution: {integrity: sha512-zQ4WFI0XfJN1uEkkrB19Y4TuXOlHqKSxUJo0Yt+axPjRm8tCG6SJ6+Wo3/+Kjg4c2c8IvBXuJ0uYoshxNn4qMw==}
 
   xcode@3.0.1:
     resolution: {integrity: sha512-kCz5k7J7XbJtjABOvkc5lJmkiDh8VhjVCGNiqdKCscmVpdVUpEAyXv1xmCLkQJ5dsHqx3IPO4XW+NTDhU/fatA==}
@@ -11997,6 +12015,10 @@ snapshots:
       schema-utils: 4.3.3
       webpack: 5.106.2(esbuild@0.25.12)
 
+  babel-plugin-inline-import@3.0.0:
+    dependencies:
+      require-resolve: 0.0.2
+
   babel-plugin-istanbul@6.1.1:
     dependencies:
       '@babel/helper-plugin-utils': 7.28.6
@@ -15426,6 +15448,8 @@ snapshots:
 
   path-exists@5.0.0: {}
 
+  path-extra@1.0.3: {}
+
   path-is-absolute@1.0.1: {}
 
   path-key@3.1.1: {}
@@ -16090,6 +16114,10 @@ snapshots:
   require-from-string@2.0.2: {}
 
   require-main-filename@2.0.0: {}
+
+  require-resolve@0.0.2:
+    dependencies:
+      x-path: 0.0.2
 
   requireg@0.2.2:
     dependencies:
@@ -17212,6 +17240,10 @@ snapshots:
   ws@7.5.10: {}
 
   ws@8.18.3: {}
+
+  x-path@0.0.2:
+    dependencies:
+      path-extra: 1.0.3
 
   xcode@3.0.1:
     dependencies:

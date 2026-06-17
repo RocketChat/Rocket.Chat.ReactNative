@@ -1,5 +1,4 @@
-import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-
+import { sanitizedRaw } from '../database/facade';
 import database from '../database';
 import { getMessageById } from '../database/services/Message';
 import { getThreadById } from '../database/services/Thread';

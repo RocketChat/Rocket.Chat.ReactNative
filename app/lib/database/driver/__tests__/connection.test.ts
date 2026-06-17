@@ -42,10 +42,23 @@ jest.mock('expo-sqlite', () => ({
 	addDatabaseChangeListener: jest.fn(() => ({ remove: jest.fn() }))
 }));
 
+const createdDirs: string[] = [];
+
 jest.mock('expo-file-system', () => ({
 	Paths: {
 		appleSharedContainers: {
 			'group.ios.chat.rocket': { uri: '/fake/app-group/' }
+		}
+	},
+	// Minimal Directory stub: joins uris like the real constructor and records create() calls
+	Directory: class {
+		uri: string;
+		exists = false;
+		constructor(...uris: string[]) {
+			this.uri = uris.join('/').replace(/\/+/g, '/');
+		}
+		create() {
+			createdDirs.push(this.uri);
 		}
 	}
 }));
@@ -58,6 +71,11 @@ jest.mock('../keyService', () => ({
 // drizzle-orm/expo-sqlite — stub out Drizzle wrapping (we only test connection logic)
 jest.mock('drizzle-orm/expo-sqlite', () => ({
 	drizzle: jest.fn(() => ({}))
+}));
+
+// Migrator — DDL application is covered on-device; here we only assert the open sequence
+jest.mock('drizzle-orm/expo-sqlite/migrator', () => ({
+	migrate: jest.fn(async () => {})
 }));
 
 // React Native Platform
@@ -162,6 +180,21 @@ describe('open sequence', () => {
 
 		await openServerDb('https://example.com');
 		expect(callOrder.indexOf('key')).toBeLessThan(callOrder.indexOf('open'));
+	});
+});
+
+// ---------------------------------------------------------------------------
+// iOS directory isolation (Slice 0 — collision fix)
+// ---------------------------------------------------------------------------
+
+describe('iOS directory isolation', () => {
+	it('creates and opens DBs in the App Group SQLite subdirectory, not the container root', async () => {
+		// resolved once at module load — proves new DBs avoid the legacy plaintext files at the root
+		expect(createdDirs).toContain('/fake/app-group/SQLite');
+
+		await openServersDb();
+		const [, , dir] = (openDatabaseAsync as jest.Mock).mock.calls[0];
+		expect(dir).toBe('/fake/app-group/SQLite');
 	});
 });
 

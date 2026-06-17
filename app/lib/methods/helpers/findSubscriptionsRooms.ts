@@ -1,5 +1,4 @@
-import { Q } from '@nozbe/watermelondb';
-
+import { Q } from '../../database/facade';
 import { type IServerSubscription, type IServerRoom } from '../../../definitions';
 import database from '../../database';
 

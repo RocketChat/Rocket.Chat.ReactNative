@@ -1,8 +1,8 @@
-import { Q } from '@nozbe/watermelondb';
 import { Alert } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
+import { Q } from '../../../lib/database/facade';
 import { type ChatsStackParamList } from '../../../stacks/types';
 import { type ModalStackParamList } from '../../../stacks/MasterDetailStack/types';
 import { type TNavigation } from '../../../stacks/stackType';

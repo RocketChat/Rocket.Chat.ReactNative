@@ -1,5 +1,4 @@
-import type Model from '@nozbe/watermelondb/Model';
-
+import type { Model } from '../lib/database/facade';
 import { type IEnterpriseModules } from '../reducers/enterpriseModules';
 
 export type TSVStatus = 'supported' | 'expired' | 'warn';

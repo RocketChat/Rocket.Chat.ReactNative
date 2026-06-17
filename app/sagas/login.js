@@ -1,6 +1,5 @@
 import { call, cancel, delay, fork, put, race, select, spawn, take, takeLatest } from 'redux-saga/effects';
-import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { Q } from '@nozbe/watermelondb';
+import { sanitizedRaw, Q } from '../lib/database/facade';
 
 import dayjs from '../lib/dayjs';
 import * as types from '../actions/actionsTypes';

@@ -1,5 +1,4 @@
-import type Model from '@nozbe/watermelondb/Model';
-
+import type { Model } from '../lib/database/facade';
 import { type IMessage } from './IMessage';
 
 export interface IThreadMessage extends IMessage {

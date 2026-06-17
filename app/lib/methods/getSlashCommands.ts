@@ -1,5 +1,4 @@
-import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-
+import { sanitizedRaw } from '../database/facade';
 import database from '../database';
 import log from './helpers/log';
 import protectedFunction from './helpers/protectedFunction';

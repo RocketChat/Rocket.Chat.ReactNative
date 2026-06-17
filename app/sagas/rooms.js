@@ -1,6 +1,5 @@
 import { cancel, delay, fork, put, race, select, take } from 'redux-saga/effects';
-import { Q } from '@nozbe/watermelondb';
-import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import { Q, sanitizedRaw } from '../lib/database/facade';
 
 import * as types from '../actions/actionsTypes';
 import { roomsFailure, roomsRefresh, roomsSuccess } from '../actions/rooms';

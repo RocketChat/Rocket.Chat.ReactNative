@@ -1,105 +1,67 @@
-import { Database } from '@nozbe/watermelondb';
-import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
-import logger from '@nozbe/watermelondb/utils/common/logger';
-
-import { appGroupPath } from '../methods/appGroup';
-import Subscription from './model/Subscription';
-import Room from './model/Room';
-import Message from './model/Message';
-import Thread from './model/Thread';
-import ThreadMessage from './model/ThreadMessage';
-import CustomEmoji from './model/CustomEmoji';
-import FrequentlyUsedEmoji from './model/FrequentlyUsedEmoji';
-import Upload from './model/Upload';
-import Setting from './model/Setting';
-import Role from './model/Role';
-import Permission from './model/Permission';
-import SlashCommand from './model/SlashCommand';
-import User from './model/User';
-import LoggedUser from './model/servers/User';
-import Server from './model/servers/Server';
-import ServersHistory from './model/ServersHistory';
+import { Database } from './facade';
+import { openServersDb, openServerDb } from './driver/connection';
+import { installNativeKeychainShim } from './driver/keyStore';
+import { appTableMap, appModelMap, serversTableMap, serversModelMap } from './tableMaps';
 import serversSchema from './schema/servers';
 import appSchema from './schema/app';
-import migrations from './model/migrations';
-import serversMigrations from './model/servers/migrations';
 import { type TAppDatabase, type TServerDatabase } from './interfaces';
 
-if (__DEV__) {
-	console.log(appGroupPath);
-}
-
-const getDatabasePath = (name: string) => `${appGroupPath}${name}.db`;
-
-export const getDatabase = (database = ''): Database => {
-	const path = database.replace(/(^\w+:|^)\/\//, '').replace(/\//g, '.');
-	const dbName = getDatabasePath(path);
-
-	const adapter = new SQLiteAdapter({
-		dbName,
-		schema: appSchema,
-		migrations,
-		jsi: true,
-		// @ts-expect-error
-		experimentalUnsafeNativeReuse: true
-	});
-
-	return new Database({
-		adapter,
-		modelClasses: [
-			Subscription,
-			Room,
-			Message,
-			Thread,
-			ThreadMessage,
-			CustomEmoji,
-			FrequentlyUsedEmoji,
-			Upload,
-			Setting,
-			Role,
-			Permission,
-			SlashCommand,
-			User
-		]
-	});
+/**
+ * Opens (or returns the cached handle for) the per-server app database and wraps it
+ * in a fresh facade Database. Used for one-off resets where the target server is not
+ * necessarily the active one (see logout).
+ */
+export const getDatabase = async (database = ''): Promise<TAppDatabase> => {
+	const handle = await openServerDb(database);
+	return new Database(handle, appSchema, appTableMap, appModelMap) as unknown as TAppDatabase;
 };
 
 interface IDatabases {
-	serversDB: TServerDatabase;
+	serversDB?: TServerDatabase;
 	activeDB?: TAppDatabase;
 }
 
 class DB {
-	databases: IDatabases = {
-		serversDB: new Database({
-			adapter: new SQLiteAdapter({
-				dbName: getDatabasePath('default'),
-				schema: serversSchema,
-				migrations: serversMigrations,
-				jsi: true,
-				// @ts-expect-error
-				experimentalUnsafeNativeReuse: true
-			}),
-			modelClasses: [Server, LoggedUser, ServersHistory]
-		}) as TServerDatabase
-	};
+	databases: IDatabases = {};
 
 	get active(): TAppDatabase {
-		return this.databases.activeDB!;
+		if (!this.databases.activeDB) {
+			throw new Error('Active database accessed before setActiveDB() resolved');
+		}
+		return this.databases.activeDB;
 	}
 
-	get servers() {
+	get servers(): TServerDatabase {
+		if (!this.databases.serversDB) {
+			throw new Error('Servers database accessed before initServers() resolved');
+		}
 		return this.databases.serversDB;
 	}
 
-	setActiveDB(database: string) {
-		this.databases.activeDB = getDatabase(database) as TAppDatabase;
-	}
+	/**
+	 * Installs the native key shim and opens the global servers database.
+	 * Must resolve before any consumer reads `database.servers`.
+	 * Arrow field so `yield call(database.initServers)` keeps its `this`.
+	 */
+	initServers = async (): Promise<void> => {
+		if (this.databases.serversDB) {
+			return;
+		}
+		installNativeKeychainShim();
+		const handle = await openServersDb();
+		this.databases.serversDB = new Database(
+			handle,
+			serversSchema,
+			serversTableMap,
+			serversModelMap
+		) as unknown as TServerDatabase;
+	};
+
+	setActiveDB = async (database = ''): Promise<void> => {
+		const handle = await openServerDb(database);
+		this.databases.activeDB = new Database(handle, appSchema, appTableMap, appModelMap) as unknown as TAppDatabase;
+	};
 }
 
 const db = new DB();
 export default db;
-
-if (!__DEV__) {
-	logger.silence();
-}

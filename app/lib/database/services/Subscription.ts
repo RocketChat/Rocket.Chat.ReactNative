@@ -1,5 +1,4 @@
-import { Q } from '@nozbe/watermelondb';
-
+import { Q } from '../facade';
 import database from '..';
 import { type TSubscriptionModel } from '../../../definitions';
 import { type TAppDatabase } from '../interfaces';

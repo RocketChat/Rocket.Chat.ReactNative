@@ -1,8 +1,7 @@
 import EJSON from 'ejson';
-import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { InteractionManager } from 'react-native';
-import { Q } from '@nozbe/watermelondb';
 
+import { sanitizedRaw, Q } from '../../database/facade';
 import log from '../helpers/log';
 import protectedFunction from '../helpers/protectedFunction';
 import buildMessage from '../helpers/buildMessage';

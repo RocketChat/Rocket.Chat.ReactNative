@@ -1,6 +1,4 @@
-import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { Q } from '@nozbe/watermelondb';
-
+import { sanitizedRaw, Q } from '../database/facade';
 import database from '../database';
 import { type IEmoji, type TFrequentlyUsedEmojiModel } from '../../definitions';
 import log from './helpers/log';

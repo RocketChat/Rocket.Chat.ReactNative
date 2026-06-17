@@ -1,6 +1,6 @@
-import type Model from '@nozbe/watermelondb/Model';
 import { type Root } from '@rocket.chat/message-parser';
 
+import type { Model } from '../lib/database/facade';
 import { type IAttachment } from './IAttachment';
 import { type IMessage, type IUserChannel, type IUserMention, type IUserMessage } from './IMessage';
 import { type IUrl } from './IUrl';

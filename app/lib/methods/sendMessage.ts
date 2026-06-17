@@ -1,6 +1,5 @@
-import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { type Model } from '@nozbe/watermelondb';
-
+import { sanitizedRaw } from '../database/facade';
+import { type Model } from '../database/facade';
 import database from '../database';
 import log from './helpers/log';
 import { random } from './helpers';

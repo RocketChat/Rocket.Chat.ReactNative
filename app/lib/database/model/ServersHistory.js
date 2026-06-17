@@ -1,5 +1,4 @@
-import { Model } from '@nozbe/watermelondb';
-import { date, field, readonly } from '@nozbe/watermelondb/decorators';
+import { Model, date, field, readonly } from '../facade';
 
 export const SERVERS_HISTORY_TABLE = 'servers_history';
 

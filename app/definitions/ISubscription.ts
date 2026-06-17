@@ -1,6 +1,4 @@
-import type Model from '@nozbe/watermelondb/Model';
-import type Relation from '@nozbe/watermelondb/Relation';
-
+import type { Model, Relation } from '../lib/database/facade';
 import { type ILastMessage, type TMessageModel } from './IMessage';
 import { type IRocketChatRecord } from './IRocketChatRecord';
 import { type IOmnichannelSource, type RoomID, type RoomType, type TUserWaitingForE2EKeys } from './IRoom';

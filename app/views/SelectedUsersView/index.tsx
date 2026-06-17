@@ -1,4 +1,3 @@
-import { Q } from '@nozbe/watermelondb';
 import orderBy from 'lodash/orderBy';
 import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { FlatList } from 'react-native';
@@ -7,6 +6,7 @@ import { type Subscription } from 'rxjs';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
+import { Q } from '../../lib/database/facade';
 import { addUser, removeUser, reset } from '../../actions/selectedUsers';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import * as List from '../../containers/List';

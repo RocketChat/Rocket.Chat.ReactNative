@@ -28,11 +28,16 @@
 import { Platform } from 'react-native';
 import { openDatabaseAsync, deleteDatabaseAsync, type SQLiteDatabase } from 'expo-sqlite';
 import { drizzle, type ExpoSQLiteDatabase } from 'drizzle-orm/expo-sqlite';
-import { Paths } from 'expo-file-system';
+import { migrate } from 'drizzle-orm/expo-sqlite/migrator';
+import { Directory, Paths } from 'expo-file-system';
 
 import * as appSchema from './schema/app';
 import * as serversSchema from './schema/servers';
+import appMigrations from './migrations/app/migrations';
+import serversMigrations from './migrations/servers/migrations';
 import { getOrCreateDatabaseKey } from './keyService';
+
+type MigrationConfig = Parameters<typeof migrate>[1];
 
 // ---------------------------------------------------------------------------
 // Types
@@ -59,6 +64,9 @@ export interface DbHandle<K extends DbKind = DbKind> {
 
 const APP_GROUP_ID = 'group.ios.chat.rocket';
 
+/** iOS subdirectory for new encrypted DBs, isolating them from legacy files at the container root. */
+const DB_SUBDIRECTORY = 'SQLite';
+
 /** The single servers/global DB name (no server URL involved). */
 export const DEFAULT_DB_NAME = 'default.db';
 
@@ -81,9 +89,18 @@ export function deriveServerDbName(serverUrl: string): string {
 // ---------------------------------------------------------------------------
 
 /**
- * Returns the iOS App Group container URI for database placement.
+ * Returns the iOS directory for new encrypted database files: a `SQLite/`
+ * subdirectory of the App Group container, created on first resolve.
+ *
+ * The subdirectory is load-bearing for the wipe-and-restore migration: legacy
+ * plaintext WatermelonDB files live at the App Group ROOT (`<container>/default.db`).
+ * Writing the new encrypted DBs there too would collide — `openServersDb()` would
+ * open the legacy plaintext `default.db`, run PRAGMA key, and fail open-verify,
+ * crashing every existing user on upgrade. Isolating new DBs in `SQLite/` mirrors
+ * Android (`files/SQLite/`) and lets the migration read one location, write the other.
+ *
  * Falls back to undefined (expo-sqlite default dir) when:
- *   - running on Android
+ *   - running on Android (expo-sqlite already uses its own `SQLite/` dir there)
  *   - the container is unavailable (simulator builds without entitlement, unit tests)
  * A warning is logged on fallback; this never crashes.
  */
@@ -101,8 +118,12 @@ function resolveDbDirectory(): string | undefined {
 			);
 			return undefined;
 		}
-		// uri may have a trailing slash; expo-sqlite wants a directory path
-		return container.uri.replace(/\/$/, '');
+		const sqliteDir = new Directory(container.uri, DB_SUBDIRECTORY);
+		if (!sqliteDir.exists) {
+			sqliteDir.create({ intermediates: true, idempotent: true });
+		}
+		// uri may carry a trailing slash; expo-sqlite wants a bare directory path
+		return sqliteDir.uri.replace(/\/$/, '');
 	} catch (e) {
 		console.warn(
 			'[db/connection] Failed to resolve App Group path:',
@@ -168,6 +189,11 @@ async function openDb<K extends DbKind>(dbName: string, kind: K): Promise<DbHand
 	// The conditional type SchemaForKind<K> cannot be narrowed by the JS runtime check above;
 	// casting through unknown is the standard TS pattern for this shape.
 	const db = drizzle(sqlite, { schema }) as unknown as ExpoSQLiteDatabase<SchemaForKind<K>>;
+
+	// Apply the schema DDL on the freshly keyed handle. The migrator creates tables on first
+	// open and tracks applied migrations in __drizzle_migrations, so re-opens are no-ops.
+	const migrations = (kind === 'servers' ? serversMigrations : appMigrations) as MigrationConfig;
+	await migrate(db, migrations);
 
 	const handle: DbHandle<K> = { db, sqlite, dbName };
 	_registry.set(dbName, handle as DbHandle);

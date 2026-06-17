@@ -2,8 +2,8 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { StyleSheet, Text } from 'react-native';
 import { useEffect, useRef, type ReactElement } from 'react';
 import { type Subscription } from 'rxjs';
-import { Q } from '@nozbe/watermelondb';
 
+import { Q } from '../../../lib/database/facade';
 import { useRoomContext } from '../../../views/RoomView/context';
 import { useAlsoSendThreadToChannel, useMessageComposerApi } from '../context';
 import { CustomIcon } from '../../CustomIcon';

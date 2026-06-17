@@ -299,8 +299,8 @@ describe('translateClauses', () => {
 	});
 
 	it('translates sortBy asc/desc into order by', () => {
-		expect(buildSql([Q.desc('room_updated_at')]).sql).toContain('order by "subscriptions"."room_updated_at" desc');
-		expect(buildSql([Q.asc('name')]).sql).toContain('order by "subscriptions"."name" asc');
+		expect(buildSql([Q.sortBy('room_updated_at', Q.desc)]).sql).toContain('order by "subscriptions"."room_updated_at" desc');
+		expect(buildSql([Q.sortBy('name', Q.asc)]).sql).toContain('order by "subscriptions"."name" asc');
 	});
 
 	it('translates take/skip into limit/offset', () => {
@@ -311,7 +311,7 @@ describe('translateClauses', () => {
 	});
 
 	it('combines where + order + limit in one query', () => {
-		const { sql } = buildSql([Q.where('open', true), Q.desc('room_updated_at'), Q.take(50)]);
+		const { sql } = buildSql([Q.where('open', true), Q.sortBy('room_updated_at', Q.desc), Q.take(50)]);
 		expect(sql).toContain('where');
 		expect(sql).toContain('order by');
 		expect(sql).toContain('limit');

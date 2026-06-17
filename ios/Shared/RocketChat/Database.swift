@@ -70,7 +70,11 @@ class Database {
 			NSLog("[Database] App Group container unavailable — cannot open %@", dbName)
 			return
 		}
-		let path = (groupRoot as NSString).appendingPathComponent(dbName)
+		// New encrypted DBs live in a `SQLite/` subdirectory, isolated from the legacy
+		// plaintext WatermelonDB files at the container root. Must stay in lockstep with
+		// `DB_SUBDIRECTORY` / `resolveDbDirectory()` in the JS driver (connection.ts).
+		let sqliteDir = (groupRoot as NSString).appendingPathComponent("SQLite")
+		let path = (sqliteDir as NSString).appendingPathComponent(dbName)
 
 		guard sqlite3_open(path, &db) == SQLITE_OK else {
 			NSLog("[Database] sqlite3_open failed for %@: %@", dbName, String(cString: sqlite3_errmsg(db)))
