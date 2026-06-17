@@ -1,7 +1,7 @@
 import { type ReactElement } from 'react';
 import { StyleSheet, type StyleProp, Text, type TextStyle, View, type ViewStyle } from 'react-native';
 
-import Status from '../Status';
+import Status from '.';
 import { CustomIcon } from '../CustomIcon';
 import { type TUserStatus, STATUS_I18N_KEYS } from '../../definitions';
 import { formatStatusExpiry } from '../../lib/methods/helpers/formatStatusExpiry';
