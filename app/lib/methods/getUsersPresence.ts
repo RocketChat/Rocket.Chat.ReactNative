@@ -9,7 +9,7 @@ import { setUser } from '../../actions/login';
 import database from '../database';
 import { type IUser } from '../../definitions';
 import sdk from '../services/sdk';
-import { compareServerVersion } from './helpers';
+import { compareServerVersion, normalizeStatusExpiresAt } from './helpers';
 import log from './helpers/log';
 import userPreferences from './userPreferences';
 import { NOTIFICATION_PRESENCE_CAP } from '../constants/notifications';
@@ -83,10 +83,10 @@ export async function getUsersPresence(usersParams: string[]) {
 					const { _id, status, statusText, statusExpiresAt, statusSource } = user;
 
 					if (loggedUser && loggedUser.id === _id) {
-						reduxStore.dispatch(setUser({ status, statusText, statusExpiresAt, statusSource }));
+						reduxStore.dispatch(setUser({ status, statusText, statusExpiresAt: normalizeStatusExpiresAt(statusExpiresAt), statusSource }));
 					}
 
-					ret[_id] = { status, statusText, statusExpiresAt, statusSource };
+					ret[_id] = { status, statusText, statusExpiresAt: normalizeStatusExpiresAt(statusExpiresAt), statusSource };
 					return ret;
 				}, {});
 				InteractionManager.runAfterInteractions(() => {
