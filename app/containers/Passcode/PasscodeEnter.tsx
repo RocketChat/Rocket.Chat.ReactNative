@@ -74,13 +74,6 @@ const PasscodeEnter = ({ hasBiometry: initialHasBiometry, reason: initialReason,
 	};
 
 	useEffect(() => {
-		// New lock requests can reuse the mounted modal instance, so resync the per-session mirrors
-		// from the latest request payload before this session's biometry/UI flow runs.
-		setHasBiometry(initialHasBiometry);
-		setReason(initialReason);
-	}, [initialHasBiometry, initialReason]);
-
-	useEffect(() => {
 		readStorage();
 	}, [status]);
 
