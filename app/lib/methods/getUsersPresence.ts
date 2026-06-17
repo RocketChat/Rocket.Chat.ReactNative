@@ -83,7 +83,9 @@ export async function getUsersPresence(usersParams: string[]) {
 					const { _id, status, statusText, statusExpiresAt, statusSource } = user;
 
 					if (loggedUser && loggedUser.id === _id) {
-						reduxStore.dispatch(setUser({ status, statusText, statusExpiresAt: normalizeStatusExpiresAt(statusExpiresAt), statusSource }));
+						reduxStore.dispatch(
+							setUser({ status, statusText, statusExpiresAt: normalizeStatusExpiresAt(statusExpiresAt), statusSource })
+						);
 					}
 
 					ret[_id] = { status, statusText, statusExpiresAt: normalizeStatusExpiresAt(statusExpiresAt), statusSource };
