@@ -1183,7 +1183,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="Away John Doe to be online in 1 hour, Until 1:00 PM."
+      accessibilityLabel="Away John Doe having lunch (clock icon should be visible), Until 1:00 PM."
       accessibilityRole="header"
       accessible={true}
       autoFocus={false}
@@ -1361,7 +1361,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
               
             </Text>
             <Text
-              accessibilityLabel="to be online in 1 hour"
+              accessibilityLabel="having lunch (clock icon should be visible)"
               numberOfLines={1}
               style={
                 [
@@ -1390,9 +1390,9 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
                   },
                 ]
               }
-              testID="markdown-preview-to be online in 1 hour"
+              testID="markdown-preview-having lunch (clock icon should be visible)"
             >
-              to be online in 1 hour
+              having lunch (clock icon should be visible)
             </Text>
           </View>
         </View>
@@ -1598,7 +1598,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
     }
   >
     <ExternalKeyboardView
-      accessibilityLabel="Online John Doe In a meeting (status expired)."
+      accessibilityLabel="Online John Doe In a meeting (past expiry — clock icon should be hidden)."
       accessibilityRole="header"
       accessible={true}
       autoFocus={false}
@@ -1740,7 +1740,7 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
             </Text>
           </View>
           <Text
-            accessibilityLabel="In a meeting (status expired)"
+            accessibilityLabel="In a meeting (past expiry — clock icon should be hidden)"
             numberOfLines={1}
             style={
               [
@@ -1769,9 +1769,9 @@ exports[`Story Snapshots: DM_Status should match snapshot 1`] = `
                 },
               ]
             }
-            testID="markdown-preview-In a meeting (status expired)"
+            testID="markdown-preview-In a meeting (past expiry — clock icon should be hidden)"
           >
-            In a meeting (status expired)
+            In a meeting (past expiry — clock icon should be hidden)
           </Text>
         </View>
       </RNGestureHandlerButton>

@@ -137,7 +137,7 @@ export const DM_Status = () => {
 						title='John Doe'
 						type='d'
 						roomUserId='user9'
-						subtitle='to be online in 1 hour'
+						subtitle='having lunch (clock icon should be visible)'
 						status='away'
 						statusExpiresAt={hourLaterExpiry}
 					/>
@@ -152,7 +152,7 @@ export const DM_Status = () => {
 						title='John Doe'
 						type='d'
 						roomUserId='user8'
-						subtitle='In a meeting (status expired)'
+						subtitle='In a meeting (past expiry — clock icon should be hidden)'
 						status='online'
 						statusExpiresAt={expiredExpiry}
 					/>
