@@ -23,9 +23,6 @@ interface IPasscodePasscodeEnter {
 
 const PasscodeEnter = ({ hasBiometry: initialHasBiometry, reason: initialReason, finishProcess }: IPasscodePasscodeEnter) => {
 	const ref = useRef<IBase>(null);
-	// A ref, not a per-render local: any state update re-renders the component, and a plain `let`
-	// would silently reset the failed-attempts counter mid-session, defeating the MAX_ATTEMPTS
-	// lockout. Refs don't survive remounts, so readStorage also seeds it from ATTEMPTS_KEY.
 	const attempts = useRef(0);
 	const [passcode] = useUserPreferences(PASSCODE_KEY);
 	const [status, setStatus] = useState<TYPE | null>(null);

@@ -12,7 +12,7 @@ import { biometricTrustStore } from '../../biometricTrustStore';
 import {
 	ATTEMPTS_KEY,
 	CHANGE_PASSCODE_EMITTER,
-	E2E_AUTO_LOCK_TIME,
+	E2E_TESTS_AUTO_LOCK_TIME,
 	LOCAL_AUTHENTICATE_EMITTER,
 	LOCKED_OUT_TIMER_KEY,
 	PASSCODE_KEY
@@ -188,7 +188,7 @@ export const localAuthenticate = async (server: string): Promise<void> => {
 			const diffToLastSession = dayjs(timesync).diff(serverRecord?.lastLocalAuthenticatedSession, 'seconds');
 
 			// During E2E runs we use a shorter threshold so tests don't have to wait past the smallest user-facing option (60s)
-			const autoLockTime = process.env.RUNNING_E2E_TESTS === 'true' ? E2E_AUTO_LOCK_TIME : serverRecord?.autoLockTime;
+			const autoLockTime = process.env.RUNNING_E2E_TESTS === 'true' ? E2E_TESTS_AUTO_LOCK_TIME : serverRecord?.autoLockTime;
 
 			// if it was not possible to get `timesync` from server or the last authenticated session is older than the configured auto lock time, authentication is required
 			if (!timesync || (autoLockTime && diffToLastSession >= autoLockTime)) {

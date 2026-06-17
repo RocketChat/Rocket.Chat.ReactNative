@@ -15,7 +15,7 @@ export const DEFAULT_AUTO_LOCK = 1800;
 
 // During E2E runs we shorten the auto-lock threshold so tests don't have to wait
 // past the smallest user-facing option (60s) to trigger the screen lock.
-export const E2E_AUTO_LOCK_TIME = 5;
+export const E2E_TESTS_AUTO_LOCK_TIME = 5;
 
 // Keychain sentinel used by the biometric trust store to detect enrollment changes.
 export const BIOMETRIC_TRUST_SENTINEL_SERVICE = 'chat.rocket.reactnative.biometric-trust';
