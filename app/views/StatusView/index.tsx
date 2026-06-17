@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import { type ReactElement, useEffect, useMemo, useRef, useState } from 'react';
+import { type ReactElement, useEffect, useRef, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
@@ -131,9 +131,10 @@ const StatusView = (): ReactElement => {
 	const inputValues = watch();
 	const { statusText } = inputValues;
 
-	const clearAfterInitialState = useMemo(() => getInitialClearAfterState(user.statusExpiresAt), []);
-	const [clearAfter, setClearAfter] = useState<ClearAfterValue>(clearAfterInitialState.value);
-	const [clearAfterDate, setClearAfterDate] = useState<Date | null>(clearAfterInitialState.customDate);
+	const [clearAfter, setClearAfter] = useState<ClearAfterValue>(() => getInitialClearAfterState(user.statusExpiresAt).value);
+	const [clearAfterDate, setClearAfterDate] = useState<Date | null>(
+		() => getInitialClearAfterState(user.statusExpiresAt).customDate
+	);
 	const clearAfterTouched = useRef(false);
 
 	const dispatch = useDispatch();

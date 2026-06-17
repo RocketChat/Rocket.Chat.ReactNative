@@ -1,4 +1,4 @@
-import { type ReactElement, type ReactNode } from 'react';
+import { type ReactElement } from 'react';
 import { StyleSheet, type StyleProp, Text, type TextStyle, View, type ViewStyle } from 'react-native';
 
 import Status from '../Status';
@@ -23,7 +23,7 @@ interface IStatusRows {
 	statusExpiresAt?: string;
 	statusTextColor: string;
 	fontSecondaryInfo: string;
-	renderStatusText?: (text: string) => ReactNode;
+	renderStatusText?: (text: string) => ReactElement;
 	textStyle?: StyleProp<TextStyle>;
 	secondaryTextStyle?: StyleProp<TextStyle>;
 	rowStyle?: StyleProp<ViewStyle>;
