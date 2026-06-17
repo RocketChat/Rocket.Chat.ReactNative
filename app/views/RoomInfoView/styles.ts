@@ -107,6 +107,7 @@ export default StyleSheet.create({
 	},
 	statusText: {
 		fontSize: 14,
+		lineHeight: 22,
 		...sharedStyles.textAlignCenter,
 		...sharedStyles.textMedium
 	},
@@ -117,6 +118,7 @@ export default StyleSheet.create({
 	},
 	expiryText: {
 		fontSize: 14,
+		lineHeight: 22,
 		...sharedStyles.textAlignCenter,
 		...sharedStyles.textRegular
 	}
