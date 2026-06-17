@@ -26,7 +26,7 @@ import {
 	type TSubscriptionModel,
 	STATUS_I18N_KEYS
 } from '../../definitions';
-import { type IActiveUsers } from '../../reducers/activeUsers';
+import { type IActiveUser } from '../../reducers/activeUsers';
 import { withDimensions } from '../../dimensions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
@@ -110,7 +110,7 @@ interface IRoomActionsViewProps extends IActionSheetProvider, IBaseScreen<StackT
 	videoConf_Enable_Channels: boolean;
 	videoConf_Enable_Groups: boolean;
 	videoConf_Enable_Teams: boolean;
-	activeUsers: IActiveUsers;
+	activeUser?: IActiveUser;
 }
 
 interface IRoomActionsViewState {
@@ -217,33 +217,8 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 		}
 	}
 
-	syncMemberFromActiveUsers = (prevActiveUsers?: IActiveUsers): void => {
-		const { activeUsers } = this.props;
-		const { room } = this.state;
-		if (room.t !== 'd') {
-			return;
-		}
-
-		const roomUserId = getUidDirectMessage(room);
-		if (!roomUserId) {
-			return;
-		}
-
-		const nextActiveUser = activeUsers[roomUserId];
-		if (!nextActiveUser) {
-			return;
-		}
-
-		if (prevActiveUsers?.[roomUserId] === nextActiveUser) {
-			return;
-		}
-
-		this.setState(prevState => ({ member: { ...prevState.member, ...nextActiveUser } }));
-	};
-
 	async componentDidMount() {
 		this.mounted = true;
-		this.syncMemberFromActiveUsers();
 		const { room, member } = this.state;
 		const { encryptionEnabled } = this.props;
 		if (room.rid) {
@@ -305,12 +280,6 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 				canConvertTeam,
 				hasE2EEWarning
 			});
-		}
-	}
-
-	componentDidUpdate(prevProps: IRoomActionsViewProps): void {
-		if (prevProps.activeUsers !== this.props.activeUsers) {
-			this.syncMemberFromActiveUsers(prevProps.activeUsers);
 		}
 	}
 
@@ -782,9 +751,10 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 	};
 
 	renderRoomInfo = () => {
-		const { room, member } = this.state;
+		const { room } = this.state;
 		const { rid, name, t, topic, source } = room;
-		const { theme, fontScale } = this.props;
+		const { theme, fontScale, activeUser } = this.props;
+		const member = { ...this.state.member, ...activeUser };
 		const { status, statusText, statusExpiresAt } = member;
 
 		const avatar = getRoomAvatar(room);
@@ -1371,22 +1341,27 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 	}
 }
 
-const mapStateToProps = (state: IApplicationState) => ({
-	userId: getUserSelector(state).id,
-	encryptionEnabled: state.encryption.enabled,
-	serverVersion: state.server.version,
-	isMasterDetail: state.app.isMasterDetail,
-	editRoomPermission: state.permissions['edit-room'],
-	toggleRoomE2EEncryptionPermission: state.permissions['toggle-room-e2e-encryption'],
-	viewBroadcastMemberListPermission: state.permissions['view-broadcast-member-list'],
-	createTeamPermission: state.permissions['create-team'],
-	addTeamChannelPermission: state.permissions['add-team-channel'],
-	moveRoomToTeamPermission: state.permissions['move-room-to-team'],
-	convertTeamPermission: state.permissions['convert-team'],
-	viewCannedResponsesPermission: state.permissions['view-canned-responses'],
-	livechatAllowManualOnHold: state.settings.Livechat_allow_manual_on_hold as boolean,
-	livechatRequestComment: state.settings.Livechat_request_comment_when_closing_conversation as boolean,
-	activeUsers: state.activeUsers
-});
+const mapStateToProps = (state: IApplicationState, ownProps: Partial<Pick<IRoomActionsViewProps, 'route'>>) => {
+	const params = ownProps.route?.params;
+	const room = params?.room || { rid: params?.rid, t: params?.t };
+	const roomUserId = room && room.t === 'd' ? getUidDirectMessage(room) : undefined;
+	return {
+		userId: getUserSelector(state).id,
+		encryptionEnabled: state.encryption.enabled,
+		serverVersion: state.server.version,
+		isMasterDetail: state.app.isMasterDetail,
+		editRoomPermission: state.permissions['edit-room'],
+		toggleRoomE2EEncryptionPermission: state.permissions['toggle-room-e2e-encryption'],
+		viewBroadcastMemberListPermission: state.permissions['view-broadcast-member-list'],
+		createTeamPermission: state.permissions['create-team'],
+		addTeamChannelPermission: state.permissions['add-team-channel'],
+		moveRoomToTeamPermission: state.permissions['move-room-to-team'],
+		convertTeamPermission: state.permissions['convert-team'],
+		viewCannedResponsesPermission: state.permissions['view-canned-responses'],
+		livechatAllowManualOnHold: state.settings.Livechat_allow_manual_on_hold as boolean,
+		livechatRequestComment: state.settings.Livechat_request_comment_when_closing_conversation as boolean,
+		activeUser: roomUserId ? state.activeUsers[roomUserId] : undefined
+	};
+};
 
 export default connect(mapStateToProps)(withTheme(withActionSheet(withDimensions(RoomActionsView))));
