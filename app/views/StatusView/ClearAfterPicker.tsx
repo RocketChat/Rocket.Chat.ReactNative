@@ -120,7 +120,7 @@ const ClearAfterSheetContent = ({ initialValue, initialDate, onConfirm }: IClear
 			minimumDate: new Date(),
 			onChange: (dateEvent, selectedDate) => {
 				if (dateEvent.type !== 'set' || !selectedDate) {
-					setPendingValue('');
+					setPendingValue(initialValue);
 					return;
 				}
 				DateTimePickerAndroid.open({
@@ -131,7 +131,7 @@ const ClearAfterSheetContent = ({ initialValue, initialDate, onConfirm }: IClear
 							onConfirm('custom', finalDate);
 							hideActionSheet();
 						} else {
-							setPendingValue('');
+							setPendingValue(initialValue);
 						}
 					}
 				});
