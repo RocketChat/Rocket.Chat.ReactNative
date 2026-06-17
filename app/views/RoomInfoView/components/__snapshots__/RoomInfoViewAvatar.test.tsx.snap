@@ -4,6 +4,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
 <View
   style={
     {
+      "alignItems": "center",
       "backgroundColor": "#ffffff",
       "minHeight": 200,
       "padding": 24,
@@ -71,6 +72,7 @@ exports[`Story Snapshots: WithEdit should match snapshot 1`] = `
 <View
   style={
     {
+      "alignItems": "center",
       "backgroundColor": "#ffffff",
       "minHeight": 200,
       "padding": 24,

@@ -8,7 +8,8 @@ const styles = StyleSheet.create({
 	container: {
 		padding: 24,
 		backgroundColor: '#ffffff',
-		minHeight: 200
+		minHeight: 200,
+		alignItems: 'center',
 	}
 });
 
