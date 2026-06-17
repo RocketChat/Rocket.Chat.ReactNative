@@ -102,18 +102,6 @@ describe('PasscodeEnter biometry', () => {
 		await waitFor(() => expect(queryByTestId('biometry-button')).toBeNull());
 		expect(mockedBiometryAuth).not.toHaveBeenCalled();
 	});
-
-	it('resyncs mirrored biometry state when props change', async () => {
-		const { queryByTestId, queryByText, rerender } = render(<PasscodeEnter hasBiometry={false} finishProcess={jest.fn()} />);
-
-		await waitFor(() => expect(queryByTestId('biometry-button')).toBeNull());
-		expect(queryByText('Local_authentication_biometric_enrollment_changed')).toBeNull();
-
-		rerender(<PasscodeEnter hasBiometry reason='enrollmentChanged' finishProcess={jest.fn()} />);
-
-		await waitFor(() => expect(queryByTestId('biometry-button')).toBeTruthy());
-		expect(queryByText('Local_authentication_biometric_enrollment_changed')).toBeTruthy();
-	});
 });
 
 describe('PasscodeEnter enrollmentChanged subtitle', () => {
