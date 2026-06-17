@@ -194,9 +194,10 @@ const Header = ({
 	const fullSubtitleAccessibilityLabel = formattedStatusExpiry
 		? `${subtitleAccessibilityLabel || ''}, ${formattedStatusExpiry}`
 		: subtitleAccessibilityLabel || '';
-	const accessibilityLabel = type === 'd' && subtitleAccessibilityLabel === statusAccessibilityLabel
-		? `${title}. ${fullSubtitleAccessibilityLabel}.`
-		: `${statusAccessibilityLabel} ${title} ${fullSubtitleAccessibilityLabel}.`;
+	const accessibilityLabel =
+		type === 'd' && subtitleAccessibilityLabel === statusAccessibilityLabel
+			? `${title}. ${fullSubtitleAccessibilityLabel}.`
+			: `${statusAccessibilityLabel} ${title} ${fullSubtitleAccessibilityLabel}.`;
 
 	if (!portrait && !tmid && !isMasterDetail) {
 		if (usersTyping.length > 0 || subtitle) {
