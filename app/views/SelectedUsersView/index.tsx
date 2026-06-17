@@ -1,6 +1,6 @@
 import { Q } from '@nozbe/watermelondb';
 import orderBy from 'lodash/orderBy';
-import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { FlatList } from 'react-native';
 import { shallowEqual, useDispatch } from 'react-redux';
 import { type Subscription } from 'rxjs';
@@ -22,7 +22,7 @@ import { type ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import { useTheme } from '../../theme';
 import { showErrorAlert } from '../../lib/methods/helpers/info';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import { search as searchMethod, type TSearch } from '../../lib/methods/search';
+import { searchLocal, searchRemote, type TSearch } from '../../lib/methods/search';
 import { isGroupChat as isGroupChatMethod } from '../../lib/methods/helpers';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import Header from './Header';
@@ -36,6 +36,8 @@ type TNavigation = NativeStackNavigationProp<
 const SelectedUsersView = () => {
 	const [chats, setChats] = useState<ISelectedUser[]>([]);
 	const [search, setSearch] = useState<TSearch[]>([]);
+	// Guards against an older (slower) search overwriting the results of a newer one
+	const searchId = useRef(0);
 
 	const { maxUsers, showButton, title, buttonText, showSkipText = true, nextAction } = useRoute<TRoute>().params;
 	const navigation = useNavigation<TNavigation>();
@@ -118,7 +120,17 @@ const SelectedUsersView = () => {
 	}, [dispatch]);
 
 	const handleSearch = useCallback(async (text: string) => {
-		const result = await searchMethod({ text, filterRooms: false });
+		searchId.current += 1;
+		const currentSearchId = searchId.current;
+		const isStale = () => currentSearchId !== searchId.current;
+
+		// Paint local results immediately while the backend request is still in flight
+		const localData = await searchLocal({ text, filterRooms: false });
+		if (isStale()) return;
+		setSearch(localData);
+
+		const result = await searchRemote({ text, filterRooms: false, localData });
+		if (isStale()) return;
 		setSearch(result);
 	}, []);
 

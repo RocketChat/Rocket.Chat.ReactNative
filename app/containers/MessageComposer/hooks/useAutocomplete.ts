@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Q } from '@nozbe/watermelondb';
 
 import {
@@ -7,7 +7,7 @@ import {
 	type TAutocompleteItem,
 	type TAutocompleteType
 } from '../interfaces';
-import { search } from '../../../lib/methods/search';
+import { searchLocal, searchRemote, type TSearch } from '../../../lib/methods/search';
 import { sanitizeLikeString } from '../../../lib/database/utils';
 import database from '../../../lib/database';
 import { emojis } from '../../../lib/constants/emojis';
@@ -54,8 +54,46 @@ export const useAutocomplete = ({
 }): TAutocompleteItem[] => {
 	const [items, setItems] = useState<TAutocompleteItem[]>([]);
 	const [mentionAll, mentionHere] = usePermissions(['mention-all', 'mention-here']);
+	// Guards against an older (slower) search overwriting the results of a newer one
+	const searchId = useRef(0);
 
 	useEffect(() => {
+		const parseUserRoom = (res: TSearch[]): IAutocompleteUserRoom[] => {
+			const parsedRes: IAutocompleteUserRoom[] = res
+				// TODO: need to refactor search to have a more predictable return type
+				.map((item: any) => ({
+					id: type === '@' ? item._id : item.rid,
+					title: item.fname || item.name || item.username,
+					subtitle: item.username || item.name,
+					outside: item.outside,
+					t: item.t ?? 'd',
+					status: item.status,
+					teamMain: item.teamMain,
+					type
+				})) as IAutocompleteUserRoom[];
+			if (type === '@') {
+				if (mentionAll && 'all'.includes(text.toLocaleLowerCase())) {
+					parsedRes.push({
+						id: 'all',
+						title: 'all',
+						subtitle: I18n.t('Notify_all_in_this_room'),
+						type,
+						t: 'd'
+					});
+				}
+				if (mentionHere && 'here'.includes(text.toLocaleLowerCase())) {
+					parsedRes.push({
+						id: 'here',
+						title: 'here',
+						subtitle: I18n.t('Notify_active_in_this_room'),
+						type,
+						t: 'd'
+					});
+				}
+			}
+			return parsedRes;
+		};
+
 		const getAutocomplete = async () => {
 			try {
 				if (!rid || !type) {
@@ -76,39 +114,24 @@ export const useAutocomplete = ({
 				setItems(items);
 
 				if (type === '@' || type === '#') {
-					const res = await search({ text, filterRooms: type === '#', filterUsers: type === '@', rid });
-					const parsedRes: IAutocompleteUserRoom[] = res
-						// TODO: need to refactor search to have a more predictable return type
-						.map((item: any) => ({
-							id: type === '@' ? item._id : item.rid,
-							title: item.fname || item.name || item.username,
-							subtitle: item.username || item.name,
-							outside: item.outside,
-							t: item.t ?? 'd',
-							status: item.status,
-							teamMain: item.teamMain,
-							type
-						})) as IAutocompleteUserRoom[];
-					if (type === '@') {
-						if (mentionAll && 'all'.includes(text.toLocaleLowerCase())) {
-							parsedRes.push({
-								id: 'all',
-								title: 'all',
-								subtitle: I18n.t('Notify_all_in_this_room'),
-								type,
-								t: 'd'
-							});
-						}
-						if (mentionHere && 'here'.includes(text.toLocaleLowerCase())) {
-							parsedRes.push({
-								id: 'here',
-								title: 'here',
-								subtitle: I18n.t('Notify_active_in_this_room'),
-								type,
-								t: 'd'
-							});
-						}
+					searchId.current += 1;
+					const currentSearchId = searchId.current;
+					const isStale = () => currentSearchId !== searchId.current;
+					const searchParams = { text, filterRooms: type === '#', filterUsers: type === '@', rid };
+
+					// Paint local results immediately while the backend request is still in flight
+					const localData = await searchLocal(searchParams);
+					if (isStale()) return;
+					const parsedLocal = parseUserRoom(localData);
+					setItems(parsedLocal);
+					if (parsedLocal.length > 0) {
+						updateAutocompleteVisible(true);
+						accessibilityFocusOnInput();
 					}
+
+					const res = await searchRemote({ ...searchParams, localData });
+					if (isStale()) return;
+					const parsedRes = parseUserRoom(res);
 					setItems(parsedRes);
 					if (parsedRes.length > 0) {
 						updateAutocompleteVisible(true);

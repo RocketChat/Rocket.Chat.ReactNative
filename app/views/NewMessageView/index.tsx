@@ -1,6 +1,6 @@
 import { Q } from '@nozbe/watermelondb';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { FlatList } from 'react-native';
 import { shallowEqual } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
@@ -15,7 +15,7 @@ import { useTheme } from '../../theme';
 import { goRoom as goRoomMethod, type TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { type NewMessageStackParamList } from '../../stacks/types';
-import { search as searchMethod } from '../../lib/methods/search';
+import { searchLocal, searchRemote } from '../../lib/methods/search';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import Item from './Item';
 import HeaderNewMessage from './HeaderNewMessage';
@@ -28,6 +28,8 @@ type TItem = ISearch | TSubscriptionModel;
 const NewMessageView = () => {
 	const [chats, setChats] = useState<TSubscriptionModel[]>([]);
 	const [search, setSearch] = useState<TItem[]>([]);
+	// Guards against an older (slower) search overwriting the results of a newer one
+	const searchId = useRef(0);
 
 	const { colors } = useTheme();
 
@@ -67,7 +69,17 @@ const NewMessageView = () => {
 	}, []);
 
 	const handleSearch = useCallback(async (text: string) => {
-		const result = (await searchMethod({ text, filterRooms: false })) as ISearch[];
+		searchId.current += 1;
+		const currentSearchId = searchId.current;
+		const isStale = () => currentSearchId !== searchId.current;
+
+		// Paint local results immediately while the backend request is still in flight
+		const localData = await searchLocal({ text, filterRooms: false });
+		if (isStale()) return;
+		setSearch(localData as ISearch[]);
+
+		const result = (await searchRemote({ text, filterRooms: false, localData })) as ISearch[];
+		if (isStale()) return;
 		setSearch(result);
 	}, []);
 

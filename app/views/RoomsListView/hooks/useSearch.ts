@@ -1,7 +1,7 @@
-import { useCallback, useReducer } from 'react';
+import { useCallback, useReducer, useRef } from 'react';
 
 import { type IRoomItem } from '../../../containers/RoomItem/interfaces';
-import { search as searchLib } from '../../../lib/methods/search';
+import { searchLocal, searchRemote } from '../../../lib/methods/search';
 import { useDebounce } from '../../../lib/methods/helpers/debounce';
 import { announceSearchResultsForAccessibility } from '../../../lib/methods/helpers/announceSearchResultsForAccessibility';
 
@@ -13,6 +13,7 @@ interface SearchState {
 
 type SearchAction =
 	| { type: 'START_SEARCH' }
+	| { type: 'SEARCH_LOCAL'; payload: IRoomItem[] }
 	| { type: 'SEARCH_SUCCESS'; payload: IRoomItem[] }
 	| { type: 'STOP_SEARCH' }
 	| { type: 'SET_SEARCHING' };
@@ -30,6 +31,12 @@ const searchReducer = (state: SearchState, action: SearchAction): SearchState =>
 				...state,
 				searchEnabled: true,
 				searching: true
+			};
+		case 'SEARCH_LOCAL':
+			// Paint local results immediately while the backend request is still in flight
+			return {
+				...state,
+				searchResults: action.payload
 			};
 		case 'SEARCH_SUCCESS':
 			return {
@@ -58,11 +65,23 @@ export const useSearch = () => {
 	'use memo';
 
 	const [state, dispatch] = useReducer(searchReducer, initialState);
+	// Guards against an older (slower) search overwriting the results of a newer one
+	const searchId = useRef(0);
 
 	const search = useDebounce(async (text: string) => {
 		if (!state.searchEnabled) return;
+		searchId.current += 1;
+		const currentSearchId = searchId.current;
+		const isStale = () => currentSearchId !== searchId.current;
+
 		dispatch({ type: 'SET_SEARCHING' });
-		const result = await searchLib({ text });
+
+		const localData = await searchLocal({ text });
+		if (isStale()) return;
+		dispatch({ type: 'SEARCH_LOCAL', payload: localData as IRoomItem[] });
+
+		const result = await searchRemote({ text, localData });
+		if (isStale()) return;
 		dispatch({ type: 'SEARCH_SUCCESS', payload: result as IRoomItem[] });
 		announceSearchResultsForAccessibility(result.length);
 	}, 500);
