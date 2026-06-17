@@ -110,5 +110,11 @@ export default StyleSheet.create({
 		lineHeight: 22,
 		...sharedStyles.textAlignCenter,
 		...sharedStyles.textRegular
+	},
+	statusRow: {
+		marginTop: 10
+	},
+	statusExpiryRow: {
+		marginTop: 0
 	}
 });

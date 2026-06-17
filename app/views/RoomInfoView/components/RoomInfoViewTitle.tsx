@@ -68,8 +68,8 @@ const RoomInfoViewTitle = ({
 					)}
 					textStyle={styles.statusText}
 					secondaryTextStyle={styles.expiryText}
-					rowStyle={{ marginTop: 10 }}
-					expiryRowStyle={{ marginTop: 0 }}
+					rowStyle={styles.statusRow}
+					expiryRowStyle={styles.statusExpiryRow}
 					testIDs={{
 						customStatus: 'room-info-view-custom-status',
 						presenceStatus: 'room-info-view-presence-status',
