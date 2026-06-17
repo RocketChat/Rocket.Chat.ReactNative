@@ -31,10 +31,6 @@ export const useMessages = ({
 	hideSystemMessages: string[];
 	t: RoomType;
 }) => {
-	// NOT migrated to the React Compiler ('use memo'): babel-plugin-react-compiler (rc) silently skips
-	// any function whose body contains a react-hooks/exhaustive-deps suppression, and this hook keeps
-	// intentional incomplete effect-dep arrays (see the disables below). Annotating it would no-op, so
-	// the manual useCallback/useMemo here are load-bearing and must stay.
 	const [rawMessages, setRawMessages] = useState<TAnyMessageModel[]>([]);
 	// Optional UPPER ts bound for the Message Window. null => Live Window (newest-first, follows the
 	// Live Tail). A finite number (ms since epoch) => Anchored Window pinned below the Live Tail.
@@ -159,9 +155,7 @@ export const useMessages = ({
 				.query(
 					Q.where('rid', tmid),
 					...(visibleSystemClause ? [visibleSystemClause] : []),
-					// Anchored Window upper bound. NOTE: ordering stays ts-only here, which has a tie /
-					// clock-skew weakness (equal-ts rows can straddle the bound); the deferred fix is a
-					// composite ts + _id ordering (see the ADR consequences).
+					// Anchored Window upper bound (ts-only ordering: equal-ts rows can straddle the bound).
 					...(highTs != null ? [Q.where('ts', Q.lte(highTs))] : []),
 					Q.sortBy('ts', Q.desc),
 					Q.skip(0),
@@ -172,9 +166,7 @@ export const useMessages = ({
 			const whereClause: Q.Clause[] = [
 				Q.where('rid', rid),
 				...(visibleSystemClause ? [visibleSystemClause] : []),
-				// Anchored Window upper bound. NOTE: ordering stays ts-only here, which has a tie /
-				// clock-skew weakness (equal-ts rows can straddle the bound); the deferred fix is a
-				// composite ts + _id ordering (see the ADR consequences).
+				// Anchored Window upper bound (ts-only ordering: equal-ts rows can straddle the bound).
 				...(highTs != null ? [Q.where('ts', Q.lte(highTs))] : []),
 				Q.sortBy('ts', Q.desc),
 				Q.skip(0),
@@ -198,7 +190,6 @@ export const useMessages = ({
 
 			// Thread / local windows are never anchored, so rejoin only applies to the bounded main room.
 			if (!tmid && highTs != null) {
-				// Best-effort: the targeted read may reject; never let that break the emit.
 				raiseOrReleaseAnchor(result as TAnyMessageModel[], highTs).catch(() => {});
 			}
 

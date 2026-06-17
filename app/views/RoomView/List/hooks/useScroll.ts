@@ -3,41 +3,31 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react
 import { type IListContainerRef, type IListProps, type TListRef, type TMessagesIdsRef } from '../definitions';
 import { type TAnyMessageModel } from '../../../../definitions';
 
-// Safety net for a Jump to Message: if the target never re-observes within this window we abort the
-// anchor, drop back to the Live Tail and clear the spinner. It does NOT cancel a valid in-flight
-// scroll — completion happens reactively the moment the target appears in the rendered rows.
+// Abort a jump whose target never re-observes within this window: release the anchor, drop to the Live
+// Tail, clear the spinner. Does not cancel an in-flight scroll — completion is reactive on re-observe.
 const JUMP_SAFETY_TIMEOUT = 5000;
 const HIGHLIGHT_TIMEOUT = 5000;
 
-// Bounded growth for an Anchored Window jump: the anchor re-seeds to one page, but a target deeper than
-// that first page (large Chunk / filtered rows between the bound and the target) is not in it yet. Each
-// retry grows the window by one page (fetchMessages) to pull the target down into the rendered rows.
-// Capped so a target that never materialises terminates into the safety-net abort instead of looping.
+// A target deeper than the anchor's first page needs the window grown one page per retry to pull it in.
+// Capped so a target that never materialises aborts via the safety net instead of looping.
 const MAX_JUMP_GROWTH_RETRIES = 5;
 
-// onScrollToIndexFailed retry budget. VirtualizedList re-invokes onScrollToIndexFailed SYNCHRONOUSLY
-// after a failed scrollToIndex, so we defer each retry one frame to break the recursion and cap the
-// number of attempts so an unreachable/unmeasurable target terminates instead of spinning forever.
+// VirtualizedList re-fires onScrollToIndexFailed synchronously, so defer each retry one frame to break
+// the recursion.
 const SCROLL_TO_INDEX_RETRY_DELAY = 50;
-// A deep target on the inverted list (an old thread reply, a far row in a large window) can sit ~30 rows
-// past the measured frontier. Each retry advances that frontier by ~one render batch, so the cap must be
-// high enough to climb the whole distance; 5 stalled a few rows short. Still bounded so an unreachable
-// target terminates into the safety-net abort instead of looping.
+// A deep target can sit ~30 rows past the measured frontier; each retry climbs ~one render batch, so the
+// cap must cover the distance (5 stalled short). Bounded so an unreachable target aborts, not loops.
 const MAX_SCROLL_TO_INDEX_RETRIES = 20;
 
-// Where a jumped-to message lands: centered, then pushed clear of the sticky room header so it is never
-// hidden behind it. Shared by EVERY scrollToIndex in the jump path (initial scroll AND the
-// onScrollToIndexFailed retry) so the landing position cannot drift between them.
+// Jump landing: centered, offset clear of the sticky header. Shared by every scrollToIndex in the jump
+// path so the position cannot drift between them.
 const JUMP_SCROLL_POSITION = { viewPosition: 0.5, viewOffset: 100 } as const;
 
-// A Jump to Message in flight: we re-anchor the Message Window, wait for the observation to re-emit
-// with the target present, then scroll exactly once.
+// A Jump to Message in flight: re-anchor the window, wait for the target to re-emit, scroll once.
 interface IPendingJump {
 	messageId: string;
-	// Whether this jump set an Anchored Window bound (so the abort path knows to release it).
-	anchored: boolean;
-	// Guards against scrolling more than once per jump as rows keep re-emitting.
-	scrolled: boolean;
+	anchored: boolean; // set an Anchored Window bound? the abort path releases it
+	scrolled: boolean; // guards against scrolling more than once as rows re-emit
 	resolve: () => void;
 	safety: ReturnType<typeof setTimeout> | null;
 }
@@ -55,15 +45,11 @@ export const useScroll = ({
 	setHighTs: (next: number | null) => void;
 	fetchMessages: () => Promise<void>;
 }) => {
-	// NOT migrated to the React Compiler ('use memo'): babel-plugin-react-compiler (rc) silently skips
-	// any function whose body contains a react-hooks/exhaustive-deps suppression, and this hook keeps an
-	// intentional incomplete effect-dep array (see the disable below). Annotating it would no-op, so the
-	// manual useCallback here are load-bearing and must stay.
 	const [highlightedMessageId, setHighlightedMessageId] = useState<string | null>(null);
 	const highlightTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 	const pendingJump = useRef<IPendingJump | null>(null);
-	// The most recent jump target. FlatList may fire onScrollToIndexFailed AFTER completeJump has
-	// already cleared pendingJump, so the retry handler reads this to recompute the actual target index.
+	// Most recent jump target. onScrollToIndexFailed can fire after completeJump clears pendingJump, so
+	// the retry handler reads this for the target index.
 	const lastJumpTargetId = useRef<string | null>(null);
 	// Bounds the onScrollToIndexFailed retry chain per jump (reset when a new jump starts).
 	const scrollFailRetries = useRef(0);
@@ -82,8 +68,7 @@ export const useScroll = ({
 		[]
 	);
 
-	// Snap straight back to live: release any Anchored Window first (the public setter re-seeds to one
-	// page, which is correct here), then scroll to the Live Tail.
+	// Back to live: release any Anchored Window, then scroll to the Live Tail.
 	const jumpToBottom = useCallback(() => {
 		setHighTs(null);
 		listRef.current?.scrollToOffset({ offset: -100 });
@@ -98,8 +83,7 @@ export const useScroll = ({
 		}, HIGHLIGHT_TIMEOUT);
 	}, []);
 
-	// Finish a jump: highlight the target, clear the spinner and resolve. The Anchored Window stays
-	// in place (rejoining the Live Tail is a separate, explicit action).
+	// Finish a jump: highlight the target, clear the spinner, resolve. The Anchored Window stays put.
 	const completeJump = useCallback(
 		(jump: IPendingJump) => {
 			if (jump.safety) {
@@ -113,8 +97,8 @@ export const useScroll = ({
 		[setHighlightTimeout]
 	);
 
-	// Abort a jump that never resolved (target deleted / filtered out / never re-observed): release
-	// any Anchored Window back to the Live Tail and clear the spinner. Never leaves the user stuck.
+	// Abort a jump that never resolved (target deleted / filtered / never re-observed): release any
+	// Anchored Window and clear the spinner so the user is never stuck.
 	const abortJump = useCallback(
 		(jump: IPendingJump) => {
 			if (jump.safety) {
@@ -129,9 +113,8 @@ export const useScroll = ({
 		[setHighTs]
 	);
 
-	// Arm (or refresh) the abort safety net for a jump. Refreshed on each productive window growth so a
-	// deep target that is still loading page-by-page is not aborted mid-load; the growth cap
-	// (MAX_JUMP_GROWTH_RETRIES) still guarantees the jump terminates once no more pages are pulled.
+	// Arm/refresh the abort safety net. Refreshed on each productive growth so a deep, still-loading
+	// target is not aborted mid-load; MAX_JUMP_GROWTH_RETRIES still guarantees termination.
 	const armJumpSafety = useCallback(
 		(jump: IPendingJump) => {
 			if (jump.safety) {
@@ -146,16 +129,14 @@ export const useScroll = ({
 		[abortJump]
 	);
 
-	// A jump scroll on the inverted list uses an ESTIMATED offset — there is no getItemLayout for these
-	// variable-height messages — so it can undershoot while the target's row is still unmeasured (fresh
-	// jump), landing the target above the viewport. The first scroll renders the row; once it has been
-	// measured a second scroll lands precisely. Re-read the index in case the window shifted a row between.
+	// No getItemLayout for these variable-height rows, so the first scroll uses an estimated offset and
+	// can undershoot while the target is unmeasured. It renders the row; a second scroll lands precisely.
+	// Re-read the index in case the window shifted a row between.
 	const scrollToTarget = useCallback(
 		(messageId: string, index: number) => {
 			listRef.current?.scrollToIndex({ index, ...JUMP_SCROLL_POSITION });
 			setTimeout(() => {
-				// A newer jump may have started within this frame; its target now owns the scroll. Re-reading
-				// the OLD messageId's index here would yank the list back off the message just jumped to.
+				// A newer jump may now own the scroll; re-reading this old target would yank the list off it.
 				if (lastJumpTargetId.current !== messageId) {
 					return;
 				}
@@ -168,9 +149,8 @@ export const useScroll = ({
 		[listRef, messagesIds]
 	);
 
-	// Reactive await-re-observe: every time the rendered rows change, check whether the pending
-	// target has appeared. The first time it has, scroll once and complete. This replaces the old
-	// recursive scroll-until-present loop.
+	// On every re-observe, check whether the pending target has appeared; the first time it has, scroll
+	// once and complete.
 	useLayoutEffect(() => {
 		const jump = pendingJump.current;
 		if (!jump || jump.scrolled) {
@@ -178,12 +158,13 @@ export const useScroll = ({
 		}
 		const index = messagesIds.current?.findIndex(id => id === jump.messageId) ?? -1;
 		if (index === -1) {
-			// Anchored target deeper than the current window: grow by one page (bounded) to pull it in.
-			// The safety net still aborts if it never materialises after the cap.
+			// Anchored target deeper than the window: grow one page (bounded) to pull it in; the safety
+			// net aborts if it never materialises.
 			if (jump.anchored && jumpGrowthRetries.current < MAX_JUMP_GROWTH_RETRIES) {
 				jumpGrowthRetries.current += 1;
 				armJumpSafety(jump); // productive growth → grant the next page its own arrival window
-				fetchMessages();
+				// A grow failure leaves the jump pending; the safety net aborts it, so swallow here.
+				fetchMessages().catch(() => {});
 			}
 			return;
 		}
@@ -193,31 +174,25 @@ export const useScroll = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps -- keyed on messages so it re-runs on every re-observe; messagesIds is a ref read at run time; fetchMessages is a stable trigger, not a dependency
 	}, [messages]);
 
-	// scroll-to-index-failed: the inverted list could not measure the target's frame yet (a mid-window
-	// target can sit far past the initially-rendered rows). We still want to land on the ACTUAL target
-	// index, but VirtualizedList re-fires onScrollToIndexFailed SYNCHRONOUSLY after a failed scrollToIndex
-	// when there is no getItemLayout — retrying inline recurses until the stack overflows. So defer the
-	// retry one frame (letting the list render & measure more rows first) and cap the attempts so an
-	// unmeasurable target gives up gracefully instead of spinning forever.
+	// The list could not measure the target's frame yet. VirtualizedList re-fires this synchronously with
+	// no getItemLayout, so an inline retry recurses; defer one frame to render more rows, capped so an
+	// unmeasurable target gives up.
 	const handleScrollToIndexFailed: IListProps['onScrollToIndexFailed'] = params => {
-		// Per-jump cap: once hit, stay capped for the rest of this jump. The only reset is at jump start
-		// (jumpToMessage); resetting here would let a later failure restart the chain and defeat the cap.
+		// Per-jump cap, reset only at jump start; resetting here would let a later failure defeat it.
 		if (scrollFailRetries.current >= MAX_SCROLL_TO_INDEX_RETRIES) {
 			return;
 		}
 		scrollFailRetries.current += 1;
 		setTimeout(() => {
-			// Re-read the target at fire time so a retry queued by a previous jump cannot scroll to a stale index.
+			// Re-read at fire time so a retry queued by a previous jump can't scroll to a stale index.
 			const targetId = pendingJump.current?.messageId ?? lastJumpTargetId.current;
 			const targetIndex = targetId ? messagesIds.current?.findIndex(id => id === targetId) ?? -1 : -1;
 			if (targetIndex === -1) {
 				return;
 			}
-			// Scrolling straight to a still-unmeasured target fails without moving the viewport, so the
-			// render window plateaus a few rows short and never reaches the target. Step the viewport to the
-			// measured frontier first — that DOES move it, rendering the next batch and advancing
-			// highestMeasuredFrameIndex — then re-attempt the target, which lands once it falls within the
-			// measured range (or re-fires this handler to climb another batch).
+			// Scrolling straight to an unmeasured target doesn't move the viewport, so the window plateaus
+			// short. Step to the measured frontier first (that renders the next batch, advancing
+			// highestMeasuredFrameIndex), then re-attempt — it lands once measured, or re-fires to climb on.
 			if (targetIndex > params.highestMeasuredFrameIndex) {
 				listRef.current?.scrollToIndex({ index: params.highestMeasuredFrameIndex, animated: false });
 				setTimeout(() => {
@@ -258,19 +233,17 @@ export const useScroll = ({
 			};
 			pendingJump.current = jump;
 
-			// Safety net only: fires only if the target never re-observes (it cannot interrupt a
-			// completed scroll because completeJump clears it the moment the target appears). Refreshed on
-			// each productive growth (see the re-observe effect) so a deep, still-loading target survives.
+			// Safety net only: fires if the target never re-observes; completeJump clears it on arrival, so
+			// it can't interrupt a completed scroll. Refreshed on each productive growth.
 			armJumpSafety(jump);
 
-			// Non-contiguous target → set the Anchored Window (re-seeds to one page centered on the
-			// target's Chunk). Contiguous / thread / local targets keep their current window.
+			// Non-contiguous target → set the Anchored Window (re-seeds one page on the target's Chunk).
+			// Contiguous / thread / local targets keep their current window.
 			if (anchored) {
 				setHighTs(highTs as number);
 			}
 
-			// Target may already be present (contiguous / local case): try to resolve synchronously
-			// against the current rows so we still perform exactly one scroll.
+			// Target may already be present (contiguous / local): resolve synchronously, still one scroll.
 			const index = messagesIds.current?.findIndex(id => id === messageId) ?? -1;
 			if (index !== -1 && !anchored) {
 				jump.scrolled = true;

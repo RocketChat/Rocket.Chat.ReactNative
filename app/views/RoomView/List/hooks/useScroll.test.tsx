@@ -16,7 +16,7 @@ const makeListRef = () => {
 
 const makeMessagesIdsRef = (ids: string[]): TMessagesIdsRef => ({ current: ids });
 
-const renderUseScroll = (initialRows: Row[], setHighTs = jest.fn(), fetchMessages = jest.fn()) => {
+const renderUseScroll = (initialRows: Row[], setHighTs = jest.fn(), fetchMessages = jest.fn(() => Promise.resolve())) => {
 	const { listRef, scrollToIndex, scrollToOffset, scrollToEnd } = makeListRef();
 	const idsRef = makeMessagesIdsRef(initialRows.map(r => r.id));
 
@@ -111,7 +111,7 @@ describe('useScroll', () => {
 
 	it('grows the window (bounded) for a deep anchored target, then scrolls once it appears', async () => {
 		const setHighTs = jest.fn();
-		const fetchMessages = jest.fn();
+		const fetchMessages = jest.fn(() => Promise.resolve());
 		const { result, rerender, scrollToIndex } = renderUseScroll([{ id: 'live-1' }, { id: 'live-2' }], setHighTs, fetchMessages);
 
 		act(() => {
@@ -144,7 +144,7 @@ describe('useScroll', () => {
 
 	it('refreshes the safety window on each productive growth so a slow deep target is not aborted mid-load', async () => {
 		const setHighTs = jest.fn();
-		const fetchMessages = jest.fn();
+		const fetchMessages = jest.fn(() => Promise.resolve());
 		const { result, rerender, scrollToIndex } = renderUseScroll([{ id: 'live-1' }], setHighTs, fetchMessages);
 
 		let jumpResolved = false;
@@ -206,7 +206,7 @@ describe('useScroll', () => {
 
 	it('caps anchored window growth so a never-materialising target stops growing and the safety net aborts', async () => {
 		const setHighTs = jest.fn();
-		const fetchMessages = jest.fn();
+		const fetchMessages = jest.fn(() => Promise.resolve());
 		const { result, rerender, scrollToIndex } = renderUseScroll([{ id: 'live-1' }], setHighTs, fetchMessages);
 
 		let jumpResolved = false;
@@ -237,7 +237,7 @@ describe('useScroll', () => {
 
 	it('does not grow the window for a non-anchored (contiguous) target that is not yet present', () => {
 		const setHighTs = jest.fn();
-		const fetchMessages = jest.fn();
+		const fetchMessages = jest.fn(() => Promise.resolve());
 		const { result, rerender } = renderUseScroll([{ id: 'live-1' }, { id: 'live-2' }], setHighTs, fetchMessages);
 
 		// Contiguous jump passes highTs = null: there is no Anchored Window to grow, so a missing target

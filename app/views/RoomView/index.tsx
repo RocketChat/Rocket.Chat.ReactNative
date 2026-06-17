@@ -662,10 +662,9 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 
 			if (this.tmid) {
 				await loadThreadMessages({ tmid: this.tmid, rid: this.rid });
-				// Thread jump: the target lives in the thread window we just populated, so fire here rather
-				// than in componentDidMount — the row exists now (a non-anchored thread jump otherwise aborts
-				// on its safety net and parks on the live tail). Read-and-clear so the other init() callers
-				// (the connected handler, accept-invite, the 300 ms retry) can't re-fire it.
+				// Thread jump: fire here, not in componentDidMount — the thread window is populated now, so
+				// the row exists (a non-anchored thread jump otherwise aborts and parks on the live tail).
+				// Read-and-clear so other init() callers can't re-fire it.
 				if (this.jumpToMessageId) {
 					const messageId = this.jumpToMessageId;
 					this.jumpToMessageId = undefined;
