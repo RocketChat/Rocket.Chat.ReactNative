@@ -15,6 +15,7 @@ type SearchAction =
 	| { type: 'START_SEARCH' }
 	| { type: 'SEARCH_LOCAL'; payload: IRoomItem[] }
 	| { type: 'SEARCH_SUCCESS'; payload: IRoomItem[] }
+	| { type: 'SEARCH_FAILURE' }
 	| { type: 'STOP_SEARCH' }
 	| { type: 'SET_SEARCHING' };
 
@@ -51,6 +52,12 @@ const searchReducer = (state: SearchState, action: SearchAction): SearchState =>
 				searching: false,
 				searchResults: []
 			};
+		case 'SEARCH_FAILURE':
+			// Clear the loading state but keep whatever results we already painted
+			return {
+				...state,
+				searching: false
+			};
 		case 'SET_SEARCHING':
 			return {
 				...state,
@@ -76,14 +83,19 @@ export const useSearch = () => {
 
 		dispatch({ type: 'SET_SEARCHING' });
 
-		const localData = await searchLocal({ text });
-		if (isStale()) return;
-		dispatch({ type: 'SEARCH_LOCAL', payload: localData as IRoomItem[] });
+		try {
+			const localData = await searchLocal({ text });
+			if (isStale()) return;
+			dispatch({ type: 'SEARCH_LOCAL', payload: localData as IRoomItem[] });
 
-		const result = await searchRemote({ text, localData });
-		if (isStale()) return;
-		dispatch({ type: 'SEARCH_SUCCESS', payload: result as IRoomItem[] });
-		announceSearchResultsForAccessibility(result.length);
+			const result = await searchRemote({ text, localData });
+			if (isStale()) return;
+			dispatch({ type: 'SEARCH_SUCCESS', payload: result as IRoomItem[] });
+			announceSearchResultsForAccessibility(result.length);
+		} catch (e) {
+			if (isStale()) return;
+			dispatch({ type: 'SEARCH_FAILURE' });
+		}
 	}, 500);
 
 	const startSearch = useCallback(() => {
