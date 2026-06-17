@@ -144,9 +144,6 @@ export const DM_Status = () => {
 				)}
 			/>
 			<HeaderExample
-				title={() => <RoomHeader title='Jane Smith' type='d' roomUserId='user7' subtitle='On call' status='busy' />}
-			/>
-			<HeaderExample
 				title={() => (
 					<RoomHeader
 						title='John Doe'
