@@ -1,8 +1,9 @@
-import { search, searchLocal, searchRemote } from './search';
+import { search, searchLocal, searchRemote, type TSearch } from './search';
 import { spotlight } from '../services/restApi';
 import database from '../database/index';
 import { store as reduxStore } from '../store/auxStore';
 import { type ISearch, type ISearchLocal, type IUserMessage } from '../../definitions';
+import { type ISpotlightRoom, type TSpotlightUser } from '../../definitions/ISpotlight';
 
 // jest.setup.js globally mocks this module - exercise the real implementation here
 jest.unmock('./search');
@@ -46,17 +47,16 @@ const mockedSpotlight = spotlight as jest.MockedFunction<typeof spotlight>;
 const mockedGet = (database as any).active.get as jest.Mock;
 const mockedGetState = reduxStore.getState as jest.Mock;
 
-const buildSpotlightUser = (over: Partial<ISearch> = {}): ISearch =>
-	({
-		_id: 'u-id',
-		username: 'john.doe',
-		name: 'John Doe',
-		status: 'online',
-		outside: false,
-		...over
-	} as ISearch);
+const buildSpotlightUser = (over: Partial<TSpotlightUser> = {}): TSpotlightUser => ({
+	_id: 'u-id',
+	username: 'john.doe',
+	name: 'John Doe',
+	status: 'online',
+	outside: false,
+	...over
+});
 
-const buildSpotlightRoom = (over: Record<string, any> = {}) => ({
+const buildSpotlightRoom = (over: Partial<ISpotlightRoom> = {}): ISpotlightRoom => ({
 	_id: 'room-id',
 	name: 'general',
 	t: 'c',
@@ -64,7 +64,7 @@ const buildSpotlightRoom = (over: Record<string, any> = {}) => ({
 });
 
 // A local subscription result (the shape returned by localSearchSubscription)
-const buildLocalSubscription = (over: Partial<ISearchLocal> = {}): ISearchLocal =>
+const buildLocalSubscription = (over: Partial<ISearch> = {}): TSearch =>
 	({
 		_id: 'sub-id',
 		rid: 'sub-rid',
