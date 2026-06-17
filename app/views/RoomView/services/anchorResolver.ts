@@ -1,5 +1,5 @@
 import { MessageTypeLoad } from '../../../lib/constants/messageTypeLoad';
-import { tsToMs } from '../../../lib/methods/helpers/tsToMs';
+import { tsToMs } from '../../../lib/dayjs';
 
 /**
  * Pure anchor-resolver for the bounded Message Window.

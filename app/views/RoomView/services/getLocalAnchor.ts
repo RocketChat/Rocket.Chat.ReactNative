@@ -2,7 +2,7 @@ import { Q } from '@nozbe/watermelondb';
 
 import database from '../../../lib/database';
 import { MessageTypeLoad } from '../../../lib/constants/messageTypeLoad';
-import { tsToMs } from '../../../lib/methods/helpers/tsToMs';
+import { tsToMs } from '../../../lib/dayjs';
 import { type TAnyMessageModel } from '../../../definitions';
 
 /**

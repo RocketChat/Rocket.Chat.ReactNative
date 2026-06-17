@@ -7,7 +7,8 @@ import { type IApplicationState, type RoomType, type TAnyMessageModel } from '..
 import database from '../../../../lib/database';
 import { getMessageById } from '../../../../lib/database/services/Message';
 import { getThreadById } from '../../../../lib/database/services/Thread';
-import { compareServerVersion, tsToMs, useDebounce } from '../../../../lib/methods/helpers';
+import { tsToMs } from '../../../../lib/dayjs';
+import { compareServerVersion, useDebounce } from '../../../../lib/methods/helpers';
 import { readThreads } from '../../../../lib/services/restApi';
 import { MESSAGE_TYPE_ANY_LOAD, type MessageTypeLoad } from '../../../../lib/constants/messageTypeLoad';
 import { MAX_AUTO_LOADS, QUERY_SIZE } from '../constants';

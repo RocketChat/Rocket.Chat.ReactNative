@@ -36,9 +36,7 @@ const List = ({ listRef, jumpToBottom, isAnchored, ...props }: IListProps) => {
 		}
 	});
 
-	// In a Live Window the FAB tracks scroll distance from the Live Tail. In an Anchored (historical)
-	// Window the loaded rows' bottom edge is NOT the Live Tail, so offset alone would hide the FAB right
-	// at the "Load newer" boundary — leaving no one-tap way back to live. Force it visible while anchored.
+	// Anchored window: loaded rows' bottom edge isn't the Live Tail, so force the FAB visible to keep a path back to live.
 	const visible = scrolledPastLimit || !!isAnchored;
 
 	const isScreenReaderEnabled = useIsScreenReaderEnabled();
@@ -62,11 +60,6 @@ const List = ({ listRef, jumpToBottom, isAnchored, ...props }: IListProps) => {
 						: undefined
 				}
 				removeClippedSubviews={isIOS}
-				// Seeds the render window. A Jump to Message re-anchors the window and scrolls to the target by
-				// index, but this inverted list has no getItemLayout, so scrollToIndex cannot reach a frame that
-				// was never rendered — and maintainVisibleContentPosition freezes window growth during the jump.
-				// 20 keeps the target within the seeded window; a smaller seed leaves it unmeasured and the jump
-				// parks short of it (empty list above the loaded rows).
 				initialNumToRender={20}
 				onEndReachedThreshold={0.5}
 				maxToRenderPerBatch={5}
