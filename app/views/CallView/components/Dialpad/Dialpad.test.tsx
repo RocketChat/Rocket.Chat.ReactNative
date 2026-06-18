@@ -1,7 +1,7 @@
-import React from 'react';
 import { fireEvent, render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import * as Haptics from 'expo-haptics';
+import { type ReactNode } from 'react';
 
 import Dialpad from './Dialpad';
 import { useCallStore } from '../../../../lib/services/voip/useCallStore';
@@ -65,7 +65,7 @@ const setStoreState = (overrides: Partial<ReturnType<typeof useCallStore.getStat
 	});
 };
 
-const Wrapper = ({ children }: { children: React.ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
+const Wrapper = ({ children }: { children: ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
 
 const mockResponsiveLayout = (width: number, height: number) =>
 	(useResponsiveLayout as jest.Mock).mockReturnValue({

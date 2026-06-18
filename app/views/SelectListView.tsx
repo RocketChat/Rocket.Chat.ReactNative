@@ -1,9 +1,9 @@
-import React from 'react';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { type RouteProp } from '@react-navigation/native';
 import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
+import { Component } from 'react';
 
 import { type ChatsStackParamList } from '../stacks/types';
 import log from '../lib/methods/helpers/log';
@@ -43,7 +43,7 @@ interface ISelectListViewProps {
 	insets: EdgeInsets;
 }
 
-class SelectListView extends React.Component<ISelectListViewProps, ISelectListViewState> {
+class SelectListView extends Component<ISelectListViewProps, ISelectListViewState> {
 	private title: string;
 
 	private infoText: string;

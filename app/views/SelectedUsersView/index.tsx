@@ -1,6 +1,6 @@
 import { Q } from '@nozbe/watermelondb';
 import orderBy from 'lodash/orderBy';
-import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 import { shallowEqual, useDispatch } from 'react-redux';
 import { type Subscription } from 'rxjs';

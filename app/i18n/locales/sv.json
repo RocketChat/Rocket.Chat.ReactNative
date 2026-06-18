@@ -439,6 +439,7 @@
   "Logging_out": "Loggar ut.",
   "Login": "Logga in",
   "Login_error": "Dina inloggningsuppgifter avvisades. Försök igen.",
+  "Login_on_web": "Logga in på webben",
   "Logout": "Logga ut",
   "Logout_failed": "Det gick inte att logga ut.",
   "Logout_from_other_logged_in_locations": "Logga ut från andra platser där du är inloggad",

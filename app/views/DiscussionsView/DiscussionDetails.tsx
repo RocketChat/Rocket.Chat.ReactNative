@@ -1,4 +1,4 @@
-import React from 'react';
+import { type ReactElement } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { CustomIcon } from '../../containers/CustomIcon';
@@ -34,7 +34,7 @@ interface IDiscussionDetails {
 	date: string;
 }
 
-const DiscussionDetails = ({ item, date }: IDiscussionDetails): React.ReactElement => {
+const DiscussionDetails = ({ item, date }: IDiscussionDetails): ReactElement => {
 	const { colors } = useTheme();
 	let count: string | number | undefined = item.dcount;
 	if (count && count >= 1000) {

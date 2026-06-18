@@ -44,7 +44,7 @@ jobs:
 
       - name: Build Android
         uses: ./.github/actions/build-android
-        timeout-minutes: 40
+        timeout-minutes: 60
         with:
           GOOGLE_SERVICES_ANDROID: ${{ secrets.GOOGLE_SERVICES_ANDROID }}
           KEYSTORE_OFFICIAL_BASE64: ${{ secrets.KEYSTORE_OFFICIAL_BASE64 }}

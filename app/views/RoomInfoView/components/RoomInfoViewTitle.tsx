@@ -1,6 +1,6 @@
-import React from 'react';
 import { Text, View } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
+import { type ReactElement } from 'react';
 
 import { type ISubscription, SubscriptionType } from '../../../definitions';
 import styles from '../styles';
@@ -20,7 +20,7 @@ interface IRoomInfoViewTitle {
 	type: SubscriptionType;
 }
 
-const RoomInfoViewTitle = ({ room, name, username, statusText, type }: IRoomInfoViewTitle): React.ReactElement => {
+const RoomInfoViewTitle = ({ room, name, username, statusText, type }: IRoomInfoViewTitle): ReactElement => {
 	const { colors } = useTheme();
 
 	const copyInfoToClipboard = (data: string) => {

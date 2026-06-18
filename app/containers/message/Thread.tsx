@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext, memo } from 'react';
 import { Text, View } from 'react-native';
 
 import styles from './styles';
@@ -9,7 +9,7 @@ import { type IMessageThread } from './interfaces';
 import { useTheme } from '../../theme';
 import Touchable from './Touchable';
 
-const Thread = React.memo(
+const Thread = memo(
 	({ msg, tcount, tlm, isThreadRoom, id }: IMessageThread) => {
 		'use memo';
 

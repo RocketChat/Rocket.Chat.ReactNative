@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Q } from '@nozbe/watermelondb';
@@ -20,7 +20,7 @@ const getItemLayout = (_data: any, index: number) => ({ length: ROW_HEIGHT, offs
 const keyExtractor = (item: TServerModel) => item.id;
 
 const SelectServerView = () => {
-	const [servers, setServers] = React.useState<TServerModel[]>([]);
+	const [servers, setServers] = useState<TServerModel[]>([]);
 	const dispatch = useDispatch();
 	const { bottom } = useSafeAreaInsets();
 

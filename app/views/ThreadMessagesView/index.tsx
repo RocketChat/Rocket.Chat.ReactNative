@@ -1,4 +1,3 @@
-import React from 'react';
 import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
@@ -6,6 +5,7 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { type NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { type Observable, type Subscription } from 'rxjs';
 import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
+import { Component } from 'react';
 
 import { showActionSheetRef } from '../../containers/ActionSheet';
 import { CustomIcon } from '../../containers/CustomIcon';
@@ -69,7 +69,7 @@ interface IThreadMessagesViewProps extends IBaseScreen<ChatsStackParamList, 'Thr
 	insets: EdgeInsets;
 }
 
-class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThreadMessagesViewState> {
+class ThreadMessagesView extends Component<IThreadMessagesViewProps, IThreadMessagesViewState> {
 	private mounted: boolean;
 
 	private rid: string;

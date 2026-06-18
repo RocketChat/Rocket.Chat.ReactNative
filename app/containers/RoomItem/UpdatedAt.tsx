@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 import { Text } from 'react-native';
 
 import styles from './styles';
@@ -6,7 +6,7 @@ import { capitalize } from '../../lib/methods/helpers/room';
 import { type IUpdatedAtProps } from './interfaces';
 import { useTheme } from '../../theme';
 
-const UpdatedAt = React.memo(({ date, hideUnreadStatus, alert }: IUpdatedAtProps) => {
+const UpdatedAt = memo(({ date, hideUnreadStatus, alert }: IUpdatedAtProps) => {
 	const { colors } = useTheme();
 
 	if (!date) {

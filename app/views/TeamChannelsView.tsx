@@ -1,9 +1,9 @@
 import { Q } from '@nozbe/watermelondb';
 import { type NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import React from 'react';
 import { Alert, FlatList, Keyboard, PixelRatio } from 'react-native';
 import { connect } from 'react-redux';
 import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
+import { Component } from 'react';
 
 import { deleteRoom } from '../actions/room';
 import { type DisplayMode } from '../lib/constants/constantDisplayMode';
@@ -96,7 +96,7 @@ interface ITeamChannelsViewProps extends IBaseScreen<ChatsStackParamList, 'TeamC
 	displayMode: DisplayMode;
 	insets: EdgeInsets;
 }
-class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChannelsViewState> {
+class TeamChannelsView extends Component<ITeamChannelsViewProps, ITeamChannelsViewState> {
 	private teamId: string;
 	private joined: boolean;
 	private teamChannels: TSubscriptionModel[];

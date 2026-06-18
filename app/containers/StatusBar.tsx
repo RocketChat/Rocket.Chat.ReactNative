@@ -1,4 +1,3 @@
-import React from 'react';
 import { StatusBar as StatusBarRN } from 'expo-status-bar';
 import { NavigationBar } from '@zoontek/react-native-navigation-bar';
 

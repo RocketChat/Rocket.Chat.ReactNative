@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle } from 'react';
+import { forwardRef, useImperativeHandle } from 'react';
 
 import { useDebounce } from '../../../lib/methods/helpers';
 import EmptyRoom from './components/EmptyRoom';
