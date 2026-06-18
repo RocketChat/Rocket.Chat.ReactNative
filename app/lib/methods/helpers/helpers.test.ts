@@ -79,7 +79,7 @@ describe('getUidDirectMessage', () => {
 
 		describe('with redux fallback (single room arg)', () => {
 			it('resolves the other user using redux userId', () => {
-				expect(getUidDirectMessage({ rid: 'reduxUserId' + 'otherUserId', t: 'd' })).toBe('otherUserId');
+				expect(getUidDirectMessage({ rid: 'reduxUserIdotherUserId', t: 'd' })).toBe('otherUserId');
 				expect(mockedGetState).toHaveBeenCalled();
 			});
 
