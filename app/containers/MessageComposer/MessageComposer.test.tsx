@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect, type ReactElement } from 'react';
 import { act, render, screen, fireEvent, waitFor, userEvent } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
@@ -48,7 +48,7 @@ const advanceComposerTimers = async (time = 500) => {
 	});
 };
 
-const renderAndFlush = async (ui: React.ReactElement) => {
+const renderAndFlush = async (ui: ReactElement) => {
 	render(ui);
 	await act(async () => {
 		await Promise.resolve();
@@ -117,7 +117,7 @@ const initialContext = {
 	onRemoveQuoteMessage: jest.fn()
 };
 
-const Render = ({ context, children }: { context?: Partial<IRoomContext>; children?: React.ReactElement }) => (
+const Render = ({ context, children }: { context?: Partial<IRoomContext>; children?: ReactElement }) => (
 	<Provider store={mockedStore}>
 		<RoomContext.Provider value={{ ...initialContext, ...context }}>
 			<MessageComposerContainer>

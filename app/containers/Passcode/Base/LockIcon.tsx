@@ -1,4 +1,3 @@
-import React from 'react';
 import { View } from 'react-native';
 import { Row } from 'react-native-easy-grid';
 

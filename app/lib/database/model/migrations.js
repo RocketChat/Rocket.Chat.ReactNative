@@ -1,4 +1,4 @@
-import { addColumns, createTable, schemaMigrations } from '@nozbe/watermelondb/Schema/migrations';
+import { addColumns, createTable, schemaMigrations, unsafeExecuteSql } from '@nozbe/watermelondb/Schema/migrations';
 
 export default schemaMigrations({
 	migrations: [
@@ -344,6 +344,14 @@ export default schemaMigrations({
 						{ name: 'inviter', type: 'string', isOptional: true }
 					]
 				})
+			]
+		},
+		{
+			toVersion: 29,
+			steps: [
+				// Drop legacy rows whose id contains a non-printable-ASCII char: emoji content/names
+				// were used as ids and corrupt across the native bridge. ASCII ids (e.g. heart_eyes) are kept.
+				unsafeExecuteSql("DELETE FROM frequently_used_emojis WHERE id GLOB '*[^ -~]*';")
 			]
 		}
 	]

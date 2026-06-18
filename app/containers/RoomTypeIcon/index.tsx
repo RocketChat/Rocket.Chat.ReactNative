@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 import { StyleSheet, type ViewStyle } from 'react-native';
 import { type ImageStyle } from 'expo-image';
 
@@ -27,7 +27,7 @@ interface IRoomTypeIcon {
 	abacAttributes?: ISubscription['abacAttributes'];
 }
 
-const RoomTypeIcon = React.memo(
+const RoomTypeIcon = memo(
 	({ userId, type, isGroupChat, status, style, teamMain, size = 16, sourceType, abacAttributes }: IRoomTypeIcon) => {
 		const { theme } = useTheme();
 

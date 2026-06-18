@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component, createRef, type RefObject } from 'react';
 import { AccessibilityInfo, InteractionManager, PixelRatio, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import parse from 'url-parse';
@@ -112,16 +112,16 @@ import { InvitedRoom } from './components/InvitedRoom';
 import { getInvitationData } from '../../lib/methods/getInvitationData';
 import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
 
-class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
+class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 	private rid?: string;
 	private t?: string;
 	private tmid?: string;
 	private jumpToMessageId?: string;
 	private jumpToThreadId?: string;
-	private messageComposerRef: React.RefObject<IMessageComposerRef | null>;
-	private joinCode: React.RefObject<IJoinCode | null>;
+	private messageComposerRef: RefObject<IMessageComposerRef | null>;
+	private joinCode: RefObject<IJoinCode | null>;
 	// ListContainer component
-	private list: React.RefObject<IListContainerRef | null>;
+	private list: RefObject<IListContainerRef | null>;
 	// FlatList inside ListContainer
 	private flatList: TListRef;
 	private mounted: boolean;
@@ -201,10 +201,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.setReadOnly();
 		this.updateE2EEState();
 
-		this.messageComposerRef = React.createRef();
-		this.list = React.createRef();
-		this.flatList = React.createRef();
-		this.joinCode = React.createRef();
+		this.messageComposerRef = createRef();
+		this.list = createRef();
+		this.flatList = createRef();
+		this.joinCode = createRef();
 		this.mounted = false;
 
 		if (this.t === 'l') {
@@ -344,10 +344,12 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	}
 
 	updateOmnichannel = async () => {
-		const canForwardGuest = await this.canForwardGuest();
+		const [canForwardGuest, canReturnQueue, canViewCannedResponse] = await Promise.all([
+			this.canForwardGuest(),
+			this.canReturnQueue(),
+			this.canViewCannedResponse()
+		]);
 		const canPlaceLivechatOnHold = this.canPlaceLivechatOnHold();
-		const canReturnQueue = await this.canReturnQueue();
-		const canViewCannedResponse = await this.canViewCannedResponse();
 		this.setState({ canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold });
 		if (this.mounted) {
 			this.setHeader();
@@ -1033,7 +1035,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				}
 				// Synchronization needed for Fabric to work
 				await new Promise(res => setTimeout(res, 100));
-				await Promise.race([this.list.current?.jumpToMessage(message.id), new Promise(res => setTimeout(res, 5000))]);
+				await Promise.race([this.list.current?.jumpToMessage(message.id), new Promise(res => setTimeout(res, 20000))]);
 				this.cancelJumpToMessage();
 			}
 		} catch (error: any) {

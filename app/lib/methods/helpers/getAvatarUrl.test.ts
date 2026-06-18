@@ -1,13 +1,7 @@
 import { formatUrl, getAvatarURL } from './getAvatarUrl';
 import { SubscriptionType } from '../../../definitions';
-import { compareServerVersion } from './compareServerVersion';
 
 jest.mock('react-native', () => ({ PixelRatio: { get: () => 1 } }));
-jest.mock('./compareServerVersion', () => ({
-	compareServerVersion: jest.fn()
-}));
-
-const mockCompareServerVersion = compareServerVersion as jest.MockedFunction<typeof compareServerVersion>;
 
 describe('formatUrl function', () => {
 	test('formats the default URL to get the user avatar', () => {
@@ -39,10 +33,6 @@ describe('formatUrl function', () => {
 });
 
 describe('getAvatarURL function', () => {
-	beforeEach(() => {
-		jest.clearAllMocks();
-	});
-
 	test('returns the avatar unchanged when it is a base64 data URI', () => {
 		const avatar = 'data:image/png;base64,ABC123';
 
@@ -70,29 +60,64 @@ describe('getAvatarURL function', () => {
 		expect(result).toEqual(expected);
 	});
 
-	test('uses external provider URL for direct messages', () => {
+	test('uses the external provider URL for direct messages when the server is older than 6.12.0', () => {
 		const type = SubscriptionType.DIRECT;
 		const text = 'username123';
 		const avatarExternalProviderUrl = 'https://external.provider.com/avatar/{username}';
+		const serverVersion = '6.11.0';
 		const size = 30;
 
 		const expected = 'https://external.provider.com/avatar/username123?format=png&size=30';
-		const result = getAvatarURL({ type, text, avatarExternalProviderUrl, size });
+		const result = getAvatarURL({ type, text, avatarExternalProviderUrl, serverVersion, size });
 		expect(result).toEqual(expected);
 	});
 
-	test('uses room avatar external provider URL when serverVersion >= 3.8.0', () => {
-		const rid = 'room123';
-		const serverVersion = '3.8.0';
-		const roomAvatarExternalProviderUrl = 'https://external.provider.com/room/{roomId}';
+	test('routes direct messages through the server when it is 6.12.0 or newer, ignoring the external provider URL', () => {
+		const type = SubscriptionType.DIRECT;
+		const text = 'username123';
+		const avatarExternalProviderUrl = 'https://external.provider.com/avatar/{username}';
+		const server = 'https://mobile.qa.rocket.chat';
+		const serverVersion = '6.12.0';
 		const size = 30;
 
-		mockCompareServerVersion.mockReturnValue(true);
+		const expected = 'https://mobile.qa.rocket.chat/avatar/username123?format=png&size=30';
+		const result = getAvatarURL({ type, text, avatarExternalProviderUrl, server, serverVersion, size });
+		expect(result).toEqual(expected);
+	});
+
+	test('routes direct messages through the server when the server version is unknown', () => {
+		const type = SubscriptionType.DIRECT;
+		const text = 'username123';
+		const avatarExternalProviderUrl = 'https://external.provider.com/avatar/{username}';
+		const server = 'https://mobile.qa.rocket.chat';
+		const size = 30;
+
+		const expected = 'https://mobile.qa.rocket.chat/avatar/username123?format=png&size=30';
+		const result = getAvatarURL({ type, text, avatarExternalProviderUrl, server, size });
+		expect(result).toEqual(expected);
+	});
+
+	test('uses the room avatar external provider URL when the server is between 3.8.0 and 6.12.0', () => {
+		const rid = 'room123';
+		const roomAvatarExternalProviderUrl = 'https://external.provider.com/room/{roomId}';
+		const serverVersion = '5.0.0';
+		const size = 30;
 
 		const expected = 'https://external.provider.com/room/room123?format=png&size=30';
-		const result = getAvatarURL({ rid, serverVersion, roomAvatarExternalProviderUrl, size });
+		const result = getAvatarURL({ rid, roomAvatarExternalProviderUrl, serverVersion, size });
 		expect(result).toEqual(expected);
-		expect(mockCompareServerVersion).toHaveBeenCalledWith('3.8.0', 'greaterThanOrEqualTo', '3.8.0');
+	});
+
+	test('routes room avatars through the server when it is 6.12.0 or newer, ignoring the external provider URL', () => {
+		const rid = 'room123';
+		const roomAvatarExternalProviderUrl = 'https://external.provider.com/room/{roomId}';
+		const server = 'https://mobile.qa.rocket.chat';
+		const serverVersion = '6.12.0';
+		const size = 30;
+
+		const expected = 'https://mobile.qa.rocket.chat/avatar/room/room123?format=png&size=30';
+		const result = getAvatarURL({ rid, roomAvatarExternalProviderUrl, server, serverVersion, size });
+		expect(result).toEqual(expected);
 	});
 
 	test('uses room/{rid} format when serverVersion >= 3.6.0', () => {
@@ -102,15 +127,9 @@ describe('getAvatarURL function', () => {
 		const size = 30;
 		const text = 'roomname';
 
-		// compareServerVersion returns false for 'lowerThan' when version >= 3.6.0
-		// The condition is !compareServerVersion(..., 'lowerThan', '3.6.0')
-		// So we need to return false to make !false = true
-		mockCompareServerVersion.mockReturnValue(false);
-
 		const expected = 'https://mobile.qa.rocket.chat/avatar/room/room123?format=png&size=30';
 		const result = getAvatarURL({ rid, serverVersion, server, size, text });
 		expect(result).toEqual(expected);
-		expect(mockCompareServerVersion).toHaveBeenCalledWith('3.6.0', 'lowerThan', '3.6.0');
 	});
 
 	test('uses @{text} format when serverVersion < 3.6.0 or no rid', () => {
@@ -118,8 +137,6 @@ describe('getAvatarURL function', () => {
 		const serverVersion = '3.5.0';
 		const server = 'https://mobile.qa.rocket.chat';
 		const size = 30;
-
-		mockCompareServerVersion.mockReturnValue(false);
 
 		const expected = 'https://mobile.qa.rocket.chat/avatar/@username123?format=png&size=30';
 		const result = getAvatarURL({ text, serverVersion, server, size });
@@ -181,21 +198,20 @@ describe('getAvatarURL function', () => {
 		const server = 'https://mobile.qa.rocket.chat';
 		const size = 30;
 
-		mockCompareServerVersion.mockReturnValue(false);
-
 		const expected = 'https://mobile.qa.rocket.chat/avatar/@username123?format=png&size=30';
 		const result = getAvatarURL({ text, server, size });
 		expect(result).toEqual(expected);
 	});
 
-	test('trims trailing slashes from external provider URLs', () => {
+	test('trims trailing slashes from external provider URLs on servers older than 6.12.0', () => {
 		const type = SubscriptionType.DIRECT;
 		const text = 'username123';
 		const avatarExternalProviderUrl = 'https://external.provider.com/avatar/{username}//';
+		const serverVersion = '6.11.0';
 		const size = 30;
 
 		const expected = 'https://external.provider.com/avatar/username123?format=png&size=30';
-		const result = getAvatarURL({ type, text, avatarExternalProviderUrl, size });
+		const result = getAvatarURL({ type, text, avatarExternalProviderUrl, serverVersion, size });
 		expect(result).toEqual(expected);
 	});
 

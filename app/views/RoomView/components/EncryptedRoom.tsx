@@ -1,4 +1,4 @@
-import React, { type ReactElement } from 'react';
+import { type ReactElement } from 'react';
 import { Linking, StyleSheet, Text, View } from 'react-native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -8,7 +8,7 @@ import { CustomIcon } from '../../../containers/CustomIcon';
 import Button from '../../../containers/Button';
 import sharedStyles from '../../Styles';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
-import { LEARN_MORE_E2EE_URL } from '../../../lib/encryption';
+import { LEARN_MORE_E2EE_URL } from '../../../lib/encryption/constants';
 import I18n from '../../../i18n';
 import { type TNavigation } from '../../../stacks/stackType';
 

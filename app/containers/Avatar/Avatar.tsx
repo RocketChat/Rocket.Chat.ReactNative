@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 import { View } from 'react-native';
 import { Image } from 'expo-image';
 
@@ -11,7 +11,7 @@ import I18n from '../../i18n';
 import Touch from '../Touch';
 import sdk from '../../lib/services/sdk';
 
-const Avatar = React.memo(
+const Avatar = memo(
 	({
 		server,
 		style,
