@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { TrueSheet } from '@lodev09/react-native-true-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '../../theme';
 import { isAndroid, isIOS } from '../../lib/methods/helpers';
@@ -34,11 +35,10 @@ const ActionSheet = memo(
 		const [contentHeight, setContentHeight] = useState(0);
 		const onCloseSnapshotRef = useRef<TActionSheetOptions['onClose']>(undefined);
 
-		// TrueSheet detects the bottom inset for Android 16 and iOS
-		// To avoid content hiding behind navigation bar on older Android versions
-		const isNewAndroid = isAndroid && Number(Platform.Version) >= 36;
-		const bottom = isIOS || isNewAndroid ? 0 : windowHeight * 0.03;
+		const insets = useSafeAreaInsets();
 		const itemHeight = 48 * fontScale;
+		const isNewAndroid = isAndroid && Number(Platform.Version) >= 36;
+		const bottomInset = isIOS || isNewAndroid ? 0 : insets.bottom + itemHeight;
 
 		const handleContentLayout = ({ nativeEvent: { layout } }: LayoutChangeEvent) => {
 			setContentHeight(layout.height);
@@ -107,7 +107,7 @@ const ActionSheet = memo(
 
 		const { detents, maxHeight, scrollEnabled } = useActionSheetDetents({
 			windowHeight,
-			bottomInset: bottom,
+			bottomInset,
 			itemHeight,
 			optionsLength: data?.options?.length || 0,
 			snaps: effectiveSnaps,
@@ -156,6 +156,7 @@ const ActionSheet = memo(
 							fullContainer={data.fullContainer}
 							hugContent={data.hugContent}
 							contentMinHeight={isIOS ? contentMinHeight : undefined}
+							contentPaddingBottom={bottomInset}
 							scrollEnabled={scrollEnabled}>
 							{data?.children}
 						</BottomSheetContent>
