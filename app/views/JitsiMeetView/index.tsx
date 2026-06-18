@@ -1,6 +1,6 @@
 import CookieManager from '@react-native-cookies/cookies';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
+import { useKeepAwake } from 'expo-keep-awake';
 import { useCallback, useEffect, useState, type ReactElement } from 'react';
 import { ActivityIndicator, Linking, SafeAreaView, StyleSheet, View } from 'react-native';
 import WebView, { type WebViewNavigation } from 'react-native-webview';
@@ -25,6 +25,8 @@ const JitsiMeetView = (): ReactElement => {
 
 	const [authModal, setAuthModal] = useState(false);
 	const [cookiesSet, setCookiesSet] = useState(false);
+
+	useKeepAwake();
 
 	const setCookies = async () => {
 		const date = new Date();
@@ -88,12 +90,10 @@ const JitsiMeetView = (): ReactElement => {
 	useEffect(() => {
 		handleJitsiApp();
 		onConferenceJoined();
-		activateKeepAwake();
 
 		return () => {
 			logEvent(videoConf ? events.LIVECHAT_VIDEOCONF_TERMINATE : events.JM_CONFERENCE_TERMINATE);
 			if (!videoConf) endVideoConfTimer();
-			deactivateKeepAwake();
 		};
 	}, [handleJitsiApp, onConferenceJoined, videoConf]);
 
