@@ -20,7 +20,7 @@ The security primitive is a single keychain entry, defined in [`../../constants/
 
 | Constant                            | Value                                     |
 | ----------------------------------- | ----------------------------------------- |
-| `BIOMETRIC_TRUST_SENTINEL_SERVICE`  | `chat.rocket.reactnative.biometric-trust` |
+| `BIOMETRIC_TRUST_SENTINEL_SERVICE`  | `rc-biometric-trust`                      |
 | `BIOMETRIC_TRUST_SENTINEL_USERNAME` | `biometric-trust`                         |
 | `BIOMETRIC_TRUST_SENTINEL_VALUE`    | `v1`                                      |
 

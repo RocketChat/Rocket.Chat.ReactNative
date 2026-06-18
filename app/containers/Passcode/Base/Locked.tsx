@@ -2,6 +2,7 @@ import { useEffect, useState, memo } from 'react';
 import { Grid } from 'react-native-easy-grid';
 
 import { resetAttempts } from '../../../lib/methods/helpers/localAuthentication';
+import log from '../../../lib/methods/helpers/log';
 import { TYPE } from '../constants';
 import { getDiff, getLockedUntil } from '../utils';
 import I18n from '../../../i18n';
@@ -38,7 +39,7 @@ const Timer = memo(({ time, setStatus }: IPasscodeTimer) => {
 				// be gone or the user would re-lock after a single wrong attempt.
 				await resetAttempts();
 			} catch (e) {
-				console.warn('[Passcode/Locked] Failed to reset attempts after lock expiration:', e);
+				log(e);
 			} finally {
 				setStatus(TYPE.ENTER);
 			}
@@ -58,7 +59,7 @@ const Timer = memo(({ time, setStatus }: IPasscodeTimer) => {
 			}
 
 			unlock().catch(e => {
-				console.warn('[Passcode/Locked] Unexpected unlock failure:', e);
+				log(e);
 			});
 			return true;
 		};
