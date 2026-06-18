@@ -81,14 +81,13 @@ export async function getUsersPresence(usersParams: string[]) {
 				const activeUsers = usersParams.reduce((ret: IActiveUsers, id) => {
 					const user = users.find((u: IUser) => u._id === id) ?? { _id: id, status: 'offline' };
 					const { _id, status, statusText, statusExpiresAt, statusSource } = user;
+					const normalizedStatusExpiresAt = normalizeStatusExpiresAt(statusExpiresAt);
 
 					if (loggedUser && loggedUser.id === _id) {
-						reduxStore.dispatch(
-							setUser({ status, statusText, statusExpiresAt: normalizeStatusExpiresAt(statusExpiresAt), statusSource })
-						);
+						reduxStore.dispatch(setUser({ status, statusText, statusExpiresAt: normalizedStatusExpiresAt, statusSource }));
 					}
 
-					ret[_id] = { status, statusText, statusExpiresAt: normalizeStatusExpiresAt(statusExpiresAt), statusSource };
+					ret[_id] = { status, statusText, statusExpiresAt: normalizedStatusExpiresAt, statusSource };
 					return ret;
 				}, {});
 				InteractionManager.runAfterInteractions(() => {
