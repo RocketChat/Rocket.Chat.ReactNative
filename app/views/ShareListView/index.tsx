@@ -1,4 +1,3 @@
-import React from 'react';
 import { type Dispatch } from 'redux';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { BackHandler, FlatList, Keyboard, type NativeEventSubscription, Text, View } from 'react-native';
@@ -7,6 +6,7 @@ import { connect } from 'react-redux';
 import * as mime from 'react-native-mime-types';
 import { dequal } from 'dequal';
 import { Q } from '@nozbe/watermelondb';
+import { Component } from 'react';
 
 import database from '../../lib/database';
 import I18n from '../../i18n';
@@ -19,7 +19,7 @@ import SearchHeader from '../../containers/SearchHeader';
 import { themes } from '../../lib/constants/colors';
 import { type TSupportedThemes, withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
-import { sanitizeLikeString } from '../../lib/database/utils';
+import { getSubscriptionSearchClause } from '../../lib/database/utils';
 import styles from './styles';
 import { type IApplicationState, RootEnum, type TServerModel, type TSubscriptionModel } from '../../definitions';
 import { type ShareInsideStackParamList } from '../../definitions/navigationTypes';
@@ -66,7 +66,7 @@ interface IShareListViewProps extends INavigationOption {
 const getItemLayout = (data: any, index: number) => ({ length: data.length, offset: ROW_HEIGHT * index, index });
 const keyExtractor = (item: TSubscriptionModel) => item.rid;
 
-class ShareListView extends React.Component<IShareListViewProps, IState> {
+class ShareListView extends Component<IShareListViewProps, IState> {
 	private unsubscribeFocus: (() => void) | undefined;
 
 	private unsubscribeBlur: (() => void) | undefined;
@@ -227,8 +227,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 			Q.sortBy('room_updated_at', Q.desc)
 		] as (Q.WhereDescription | Q.Skip | Q.Take | Q.SortBy | Q.Or)[];
 		if (text) {
-			const likeString = sanitizeLikeString(text);
-			defaultWhereClause.push(Q.or(Q.where('name', Q.like(`%${likeString}%`)), Q.where('fname', Q.like(`%${likeString}%`))));
+			defaultWhereClause.push(getSubscriptionSearchClause(text));
 		}
 		const data = (await db
 			.get('subscriptions')

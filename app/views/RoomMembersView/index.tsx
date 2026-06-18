@@ -1,5 +1,5 @@
 import { type NavigationProp, type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import React, { useCallback, useEffect, useReducer, useRef } from 'react';
+import { type ReactElement, useCallback, useEffect, useReducer, useRef } from 'react';
 import { FlatList, Text, View } from 'react-native';
 import { shallowEqual } from 'react-redux';
 
@@ -68,7 +68,7 @@ const RightIcon = ({ check, label }: { check: boolean; label: string }) => {
 	);
 };
 
-const RoomMembersView = (): React.ReactElement => {
+const RoomMembersView = (): ReactElement => {
 	const { showActionSheet } = useActionSheet();
 	const { colors } = useTheme();
 
@@ -340,7 +340,7 @@ const RoomMembersView = (): React.ReactElement => {
 		if (muteUserPermission) {
 			const { muted = [], ro: readOnly, unmuted = [] } = room;
 			let userIsMuted = !!muted.find?.(m => m === selectedUser.username);
-			let icon: TIconsName = userIsMuted ? 'audio' : 'audio-disabled';
+			let icon: TIconsName = userIsMuted ? 'mic' : 'mic-off';
 			let title = I18n.t(userIsMuted ? 'Unmute' : 'Mute');
 			if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.4.0')) {
 				if (readOnly) {

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import com.google.gson.GsonBuilder
+import chat.rocket.reactnative.voip.VoipNotification
 
 /**
  * Handles notification Intent processing from MainActivity.
@@ -17,11 +18,15 @@ class NotificationIntentHandler {
 
         /**
          * Handles a notification Intent from MainActivity.
-         * Processes both video conf and regular notification intents.
+         * Processes VoIP, video conf, and regular notification intents.
          */
         @JvmStatic
         fun handleIntent(context: Context, intent: Intent) {
-            // Handle video conf action first
+            if (VoipNotification.handleMainActivityVoipIntent(context, intent)) {
+                return
+            }
+
+            // Handle video conf action
             if (handleVideoConfIntent(context, intent)) {
                 return
             }
@@ -45,7 +50,7 @@ class NotificationIntentHandler {
 
             val rid = intent.getStringExtra("rid") ?: ""
             val callerId = intent.getStringExtra("callerId") ?: ""
-            val callerName = intent.getStringExtra("callerName") ?: ""
+            val caller = intent.getStringExtra("caller") ?: ""
             val host = intent.getStringExtra("host") ?: ""
             val callId = intent.getStringExtra("callId") ?: ""
 
@@ -63,7 +68,7 @@ class NotificationIntentHandler {
                 "callId" to callId,
                 "caller" to mapOf(
                     "_id" to callerId,
-                    "name" to callerName
+                    "name" to caller
                 )
             )
 

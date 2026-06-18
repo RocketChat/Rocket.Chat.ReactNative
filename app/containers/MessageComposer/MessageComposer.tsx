@@ -1,4 +1,4 @@
-import React, { type ReactElement, type Ref, useRef, useImperativeHandle } from 'react';
+import { type ReactElement, type Ref, useRef, useImperativeHandle } from 'react';
 import { AccessibilityInfo, findNodeHandle, type LayoutChangeEvent } from 'react-native';
 import { useBackHandler } from '@react-native-community/hooks';
 import { Q } from '@nozbe/watermelondb';
@@ -7,7 +7,13 @@ import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanima
 import { useRoomContext } from '../../views/RoomView/context';
 import { Autocomplete } from './components';
 import { MIN_HEIGHT } from './constants';
-import { MessageInnerContext, useAlsoSendThreadToChannel, useMessageComposerApi, useRecordingAudio } from './context';
+import {
+	MessageInnerContext,
+	useAlsoSendThreadToChannel,
+	useComposerAttachments,
+	useMessageComposerApi,
+	useRecordingAudio
+} from './context';
 import { type IComposerInput, type IMessageComposerRef } from './interfaces';
 import { EventTypes } from '../EmojiPicker/interfaces';
 import { type IEmoji } from '../../definitions';
@@ -23,13 +29,17 @@ import { useEmojiKeyboard } from './hooks/useEmojiKeyboard';
 import EmojiPicker from '../EmojiPicker';
 import { MessageComposerContent } from './components/MessageComposerContent';
 import { useTheme } from '../../theme';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { getUserSelector } from '../../selectors/login';
+import { sendAttachments } from '../../lib/methods/sendFileMessage/sendAttachments';
+import { useAltTextSupported } from '../../lib/hooks/useAltTextSupported';
 
 export const MessageComposer = ({
 	forwardedRef,
 	children
 }: {
 	forwardedRef: Ref<IMessageComposerRef>;
-	children?: ReactElement;
+	children?: ReactElement | null;
 }): ReactElement | null => {
 	'use memo';
 
@@ -44,13 +54,17 @@ export const MessageComposer = ({
 	});
 	const contentHeight = useSharedValue(MIN_HEIGHT);
 	useCloseKeyboardWhenOrientationChanges();
-	const { rid, tmid, action, selectedMessages, sharing, editRequest, onSendMessage } = useRoomContext();
+	const { rid, tmid, action, selectedMessages, sharing, editRequest, onSendMessage, setQuotesAndText } = useRoomContext();
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
 	const { showEmojiKeyboard, showEmojiSearchbar, openEmojiSearchbar, resetKeyboard, keyboardHeight } = useEmojiKeyboard();
-	const { setAlsoSendThreadToChannel, setAutocompleteParams } = useMessageComposerApi();
+	const { setAlsoSendThreadToChannel, setAutocompleteParams, clearAttachments } = useMessageComposerApi();
 	const recordingAudio = useRecordingAudio();
 	const { formatShortnameToUnicode } = useShortnameToUnicode();
 	const { colors } = useTheme();
+	const user = useAppSelector(state => getUserSelector(state));
+	const server = useAppSelector(state => state.server.server);
+	const altTextSupported = useAltTextSupported();
+	const attachments = useComposerAttachments();
 
 	useBackHandler(() => {
 		if (showEmojiSearchbar) {
@@ -95,7 +109,41 @@ export const MessageComposer = ({
 		const textFromInput = composerInputComponentRef.current.getTextAndClear();
 
 		if (action === 'edit') {
-			return editRequest?.({ id: selectedMessages[0], msg: textFromInput, rid });
+			const updatedAttachments = attachments.length
+				? attachments.map(({ description, altText, fileId, filename }) =>
+						altTextSupported ? { description: altText || '', fileId, filename } : { description: description || '' }
+				  )
+				: undefined;
+			editRequest?.({ id: selectedMessages[0], msg: textFromInput, rid, attachments: updatedAttachments });
+			clearAttachments();
+			return;
+		}
+
+		if (attachments.length) {
+			let quotedMessage: string | undefined;
+
+			if (action === 'quote') {
+				quotedMessage = await prepareQuoteMessage(textFromInput, selectedMessages);
+			}
+
+			try {
+				await sendAttachments({
+					attachments,
+					rid,
+					tmid,
+					server,
+					user: { id: user.id, token: user.token },
+					altTextSupported,
+					getMsg: ({ description }, index) => (index === 0 ? description || quotedMessage || textFromInput : description)
+				});
+				clearAttachments();
+				setQuotesAndText?.('', []);
+				return;
+			} catch (e) {
+				log(e);
+				composerInputComponentRef.current.setInput(textFromInput);
+				return;
+			}
 		}
 
 		if (action === 'quote') {
@@ -170,6 +218,8 @@ export const MessageComposer = ({
 		onKeyboardItemSelected(EventTypes.EMOJI_PRESSED, emoji);
 	};
 
+	const focusComposerInput = () => composerInputComponentRef.current?.focus();
+
 	const accessibilityFocusOnInput = () => {
 		const node = findNodeHandle(composerInputRef.current);
 		if (node) {
@@ -191,7 +241,7 @@ export const MessageComposer = ({
 				sendMessage: handleSendMessage,
 				onEmojiSelected,
 				closeEmojiKeyboardAndAction,
-				focus: () => composerInputComponentRef.current.focus()
+				focus: focusComposerInput
 			}}>
 			<MessageComposerContent
 				recordingAudio={recordingAudio}

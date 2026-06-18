@@ -1,8 +1,10 @@
-import React from 'react';
-import { AccessibilityInfo, findNodeHandle, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { memo, type ReactElement } from 'react';
+import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { KeyboardFocusView } from 'react-native-external-keyboard';
 
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { useIsAccessibilityNavigationEnabled } from '../../lib/hooks/useIsAccessibilityNavigationEnabled';
 import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
 import { MarkdownPreview } from '../markdown';
@@ -49,7 +51,7 @@ const styles = StyleSheet.create({
 type TRoomHeaderSubTitle = {
 	usersTyping: IUsersTyping;
 	subtitle?: string;
-	renderFunc?: () => React.ReactElement;
+	renderFunc?: () => ReactElement;
 	scale: number;
 };
 
@@ -83,15 +85,9 @@ interface IRoomHeader {
 	abacAttributes?: ISubscription['abacAttributes'];
 }
 
-type IRoomHeaderProps = IRoomHeader & {
-	ref?: React.Ref<IRoomHeaderRef>;
-};
+type IRoomHeaderProps = IRoomHeader;
 
-export interface IRoomHeaderRef {
-	focus: () => void;
-}
-
-const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, scale }: TRoomHeaderSubTitle) => {
+const SubTitle = memo(({ usersTyping, subtitle, renderFunc, scale }: TRoomHeaderSubTitle) => {
 	const { colors } = useTheme();
 	const fontSize = getSubTitleSize(scale);
 	// typing
@@ -123,7 +119,7 @@ const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, scale }: TRoom
 	return null;
 });
 
-const HeaderTitle = React.memo(({ title, tmid, prid, scale, testID }: TRoomHeaderHeaderTitle) => {
+const HeaderTitle = memo(({ title, tmid, prid, scale, testID }: TRoomHeaderHeaderTitle) => {
 	const { colors } = useTheme();
 	const { isLargeFontScale } = useResponsiveLayout();
 
@@ -157,24 +153,9 @@ const Header = ({
 	usersTyping = [],
 	sourceType,
 	disabled,
-	abacAttributes,
-	ref
+	abacAttributes
 }: IRoomHeaderProps) => {
 	'use memo';
-
-	const headerRef = React.useRef<View | null>(null);
-	React.useImperativeHandle(
-		ref,
-		() => ({
-			focus: () => {
-				const nodeHandle = headerRef.current ? findNodeHandle(headerRef.current) : null;
-				if (nodeHandle) {
-					AccessibilityInfo.setAccessibilityFocus(nodeHandle);
-				}
-			}
-		}),
-		[]
-	);
 
 	const statusAccessibilityLabel = useStatusAccessibilityLabel({
 		isGroupChat,
@@ -189,6 +170,9 @@ const Header = ({
 	const portrait = height > width;
 	let scale = 1;
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+	// Only move focus to the header for accessibility navigation (screen reader or physical
+	// keyboard); regular touch users shouldn't have focus yanked onto the header on room open.
+	const autoFocusHeader = useIsAccessibilityNavigationEnabled();
 	const subtitleAccessibilityLabel = tmid ? parentTitle : subtitle;
 	const accessibilityLabel = `${statusAccessibilityLabel} ${title} ${subtitleAccessibilityLabel || ''}.`;
 
@@ -220,8 +204,14 @@ const Header = ({
 	const handleOnPress = () => onPress();
 
 	return (
-		<View
-			ref={headerRef}
+		<KeyboardFocusView
+			// Grab focus natively as soon as the header mounts. This handles master-detail,
+			// where the room list and room share the screen and focus would otherwise stay on
+			// the room item, as well as moving screen-reader focus via enableA11yFocus.
+			autoFocus={autoFocusHeader && !disabled}
+			enableA11yFocus={autoFocusHeader && !disabled}
+			focusable={!disabled}
+			canBeFocused={!disabled}
 			style={[styles.container, { opacity: disabled ? 0.5 : 1, height: 36.9 * fontScale }]}
 			accessible
 			accessibilityLabel={accessibilityLabel}
@@ -243,7 +233,7 @@ const Header = ({
 				</View>
 				<SubTitle usersTyping={tmid ? [] : usersTyping} subtitle={subtitle} renderFunc={renderFunc} scale={scale} />
 			</TouchableOpacity>
-		</View>
+		</KeyboardFocusView>
 	);
 };
 

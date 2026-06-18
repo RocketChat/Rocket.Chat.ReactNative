@@ -124,7 +124,7 @@ export const useHeader = () => {
 					) : null}
 					{canCreateRoom ? (
 						<HeaderButton.Item
-							iconName='create'
+							iconName='add'
 							accessibilityLabel={i18n.t('Create_new_channel_team_dm_discussion')}
 							onPress={goToNewMessage}
 							testID='rooms-list-view-create-channel'

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Light theme - mapped from app/lib/constants/colors.ts -->
+    <color name="incoming_call_background">#FFFFFF</color>
+    <color name="incoming_call_header_text">#6C727A</color>
+    <color name="incoming_call_header_icon">#6C727A</color>
+    <color name="incoming_call_name">#1F2329</color>
+    <color name="incoming_call_host_name">#6C727A</color>
+    <color name="incoming_call_avatar_bg">#5F1477</color>
+    <color name="incoming_call_avatar_text">#FFFFFF</color>
+    <color name="incoming_call_reject_bg">#EC0D2A</color>
+    <color name="incoming_call_accept_bg">#158D65</color>
+    <color name="incoming_call_button_label">#1F2329</color>
+    <color name="incoming_call_button_icon">#FFFFFF</color>
+</resources>

@@ -9,13 +9,63 @@ on:
 
 jobs:
   ios-test:
-    runs-on: macos-14
+    runs-on: macos-26
+    timeout-minutes: 40
     env:
-      MAESTRO_VERSION: 2.2.0
+      MAESTRO_VERSION: 2.5.1
 
     steps:
       - name: Checkout Repo
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Set up Xcode
+        # Match the Xcode version e2e-build-ios.yml builds with
+        uses: maxim-lobanov/setup-xcode@ed7a3b1fda3918c0306d1b724322adc0b8cc0a90 # v1.7.0
+        with:
+          xcode-version: '26.2.0'
+
+      - name: Configure Simulator
+        run: |
+          defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false
+          defaults write com.apple.iphonesimulator SlowAnimations -bool false
+          defaults write com.apple.iphonesimulator ShowDeviceBezels -bool false
+          defaults write com.apple.iphonesimulator DisableShadows -bool true
+          defaults write com.apple.iphonesimulator AllowFullscreenMode -bool false
+          defaults write com.apple.iphonesimulator PasteboardAutomaticSync -bool false
+          defaults write com.apple.iphonesimulator ShowChrome -bool false
+          defaults write com.apple.iphonesimulator DeviceFramebufferOnly -bool true
+
+      # Boot async so the simulator boots while the remaining setup steps run;
+      # "Wait for Simulator Ready" blocks on it later.
+      - name: Start Simulator Boot
+        run: |
+          # Device names rotate with Xcode releases — resolve by family instead of pinning.
+          if [[ "${{ inputs.shard }}" == "14" ]]; then
+            # Shard 14 holds the small-screen flows: smallest iPhone, preferring an SE.
+            SIM_NAME=$(xcrun simctl list devices available --json \
+              | jq -r '[.devices | to_entries[] | .value[] | select(.name | test("^iPhone SE"))] | first | .name')
+            if [[ -z "$SIM_NAME" || "$SIM_NAME" == "null" ]]; then
+              SIM_NAME=$(xcrun simctl list devices available --json \
+                | jq -r '[.devices | to_entries[] | .value[] | select(.name | test("^iPhone [0-9]+( mini)?$"))] | sort_by(.name | capture("(?<n>[0-9]+)").n | tonumber) | first | .name')
+            fi
+            SIM_CRITERION="smallest iPhone (small-screen shard)"
+          else
+            # Largest "iPhone N Pro" present in the installed runtimes.
+            SIM_NAME=$(xcrun simctl list devices available --json \
+              | jq -r '[.devices | to_entries[] | .value[] | select(.name | test("^iPhone [0-9]+ Pro$"))] | sort_by(.name | capture("(?<n>[0-9]+)").n | tonumber) | last | .name')
+            SIM_CRITERION="largest iPhone N Pro"
+          fi
+
+          if [[ -z "$SIM_NAME" || "$SIM_NAME" == "null" ]]; then
+            echo "::error::No simulator matched criterion: ${SIM_CRITERION}"
+            xcrun simctl list devices available
+            exit 1
+          fi
+
+          echo "Starting boot for simulator: $SIM_NAME"
+          echo "SIM_NAME=$SIM_NAME" >> "$GITHUB_ENV"
+
+          xcrun simctl boot "$SIM_NAME" || true
 
       - name: Setup Java
         uses: actions/setup-java@c1e323688fd81a25caa38c78aa6df2d33d3e20d9 # v4.8.0
@@ -34,56 +84,41 @@ jobs:
         with:
           E2E_ACCOUNT: ${{ secrets.E2E_ACCOUNT }}
 
-      - name: Cache Maestro
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+      # Restore-only: written by e2e-build-ios.yml. Install dirs only — the
+      # server-flake log scan must see only this run's logs.
+      - name: Restore Maestro cache
+        id: cache-maestro
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
-          path: ~/.maestro
+          path: |
+            ~/.maestro/bin
+            ~/.maestro/lib
+            ~/.maestro/deps
           key: maestro-${{ runner.os }}-${{ env.MAESTRO_VERSION }}
 
-      - name: Install Maestro + idb
-        run: |
-          brew tap facebook/fb
-          brew install facebook/fb/idb-companion
-          curl -fsSL "https://get.maestro.mobile.dev" | bash
-          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+      # No idb-companion: Maestro drives iOS via XCUITest (saves ~110s/shard).
+      - name: Install Maestro
+        # The install script always wipes ~/.maestro, so only run it on a cache miss.
+        if: steps.cache-maestro.outputs.cache-hit != 'true'
+        run: curl -fsSL "https://get.maestro.mobile.dev" | bash
 
-      - name: Configure Simulator
-        run: |
-          defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false
-          defaults write com.apple.iphonesimulator SlowAnimations -bool false
-          defaults write com.apple.iphonesimulator ShowDeviceBezels -bool false
-          defaults write com.apple.iphonesimulator DisableShadows -bool true
-          defaults write com.apple.iphonesimulator AllowFullscreenMode -bool false
-          defaults write com.apple.iphonesimulator PasteboardAutomaticSync -bool false
-          defaults write com.apple.iphonesimulator ShowChrome -bool false
-          defaults write com.apple.iphonesimulator DeviceFramebufferOnly -bool true
+      - name: Add Maestro to PATH
+        run: echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
 
-      - name: Boot Simulator
+      - name: Wait for Simulator Ready
         timeout-minutes: 15
         run: |
-          SIM_NAME="iPhone 16 Pro"
-
-          echo "Booting simulator: $SIM_NAME"
-
-          xcrun simctl boot "$SIM_NAME" || true
+          echo "Waiting for simulator to finish booting: $SIM_NAME"
           xcrun simctl bootstatus "$SIM_NAME" -b
 
+          # UIAnimationDragCoefficient is a duration multiplier (values > 1 SLOW
+          # animations down); near-zero makes transitions instant — the iOS
+          # analogue of Android's disable-animations.
           echo "Disabling animations"
-          xcrun simctl spawn booted defaults write -g UIAnimationDragCoefficient -float 10
-
-          echo "Warming SpringBoard"
-          xcrun simctl launch booted com.apple.springboard
-          sleep 15
+          xcrun simctl spawn booted defaults write -g UIAnimationDragCoefficient -float 0.0001
 
           echo "Booted devices:"
           xcrun simctl list devices | grep Booted
-
-      - name: Get Booted Simulator UDID
-        id: booted-sim
-        run: |
-          UDID=$(xcrun simctl list devices booted | grep -oE '[A-F0-9-]{36}' | head -n1)
-          echo "UDID=$UDID"
-          echo "UDID=$UDID" >> $GITHUB_ENV
 
       - name: Install App
         run: |
@@ -93,17 +128,16 @@ jobs:
         run: chmod +x .github/scripts/run-maestro.sh
 
       - name: Run Maestro Tests
-        uses: nick-fields/retry@ce71cc2ab81d554ebbe88c79ab5975992d79ba08 # v3.0.2
-        with:
-          timeout_minutes: 30
-          max_attempts: 2
-          retry_on: timeout
-          command: ./.github/scripts/run-maestro.sh ios ${{ inputs.shard }}
+        timeout-minutes: 30
+        run: ./.github/scripts/run-maestro.sh ios ${{ inputs.shard }}
 
       - name: Upload Maestro Logs
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: iOS Maestro Logs - Shard ${{ inputs.shard }}
-          path: ~/.maestro/tests/**/*.png
+          path: |
+            ~/.maestro/tests/**/*
+            maestro-report.xml
+            maestro-rerun-round-*.xml
           retention-days: 7

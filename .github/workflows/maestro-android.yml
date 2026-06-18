@@ -11,8 +11,9 @@ jobs:
   android-test:
     name: 'Android Tests'
     runs-on: ubuntu-latest
+    timeout-minutes: 55
     env:
-      MAESTRO_VERSION: 2.2.0
+      MAESTRO_VERSION: 2.5.1
       ANDROID_AVD_HOME: /home/runner/.android/avd
 
     steps:
@@ -25,24 +26,51 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Cache Android AVD
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+      # Restore-only: the AVD snapshot is seeded on develop (build-develop.yml);
+      # on a miss the shard cold-boots. Shard 14 builds its own keyboard AVD.
+      - name: Restore Android AVD
+        if: ${{ inputs.shard != '14' }}
+        id: avd-cache
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
           key: avd-${{ runner.os }}-api34
 
-      - name: Cache Maestro
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+      # Restore-only: seeded on develop. Saves each shard re-downloading ~1 GB
+      # of emulator + system image; on a miss the preinstall step backfills.
+      - name: Restore Android SDK packages (emulator + system image)
+        id: sdk-cache
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
-          path: ~/.maestro
+          path: |
+            /usr/local/lib/android/sdk/emulator
+            /usr/local/lib/android/sdk/system-images/android-34/google_apis/x86_64
+          key: android-sdk-emu-${{ runner.os }}-api34
+
+      # Retried install so a corrupt partial download self-heals instead of
+      # failing the shard ("Error on ZipFile unknown archive").
+      - name: Pre-install Android SDK packages (cache miss only)
+        if: steps.sdk-cache.outputs.cache-hit != 'true'
+        uses: ./.github/actions/preinstall-android-sdk
+
+      # Restore-only: written by e2e-build-android.yml. Install dirs only — the
+      # server-flake log scan must see only this run's logs.
+      - name: Restore Maestro cache
+        id: cache-maestro
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: |
+            ~/.maestro/bin
+            ~/.maestro/lib
+            ~/.maestro/deps
           key: maestro-${{ runner.os }}-${{ env.MAESTRO_VERSION }}
 
       - name: Download APK
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
-          name: Android Experimental APK
+          name: Android APK
 
       - name: Setup E2E Account
         uses: ./.github/actions/e2e-account
@@ -50,9 +78,12 @@ jobs:
           E2E_ACCOUNT: ${{ secrets.E2E_ACCOUNT }}
 
       - name: Install Maestro
-        run: |
-          curl -Ls "https://get.maestro.mobile.dev" | bash
-          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+        # The install script always wipes ~/.maestro, so only run it on a cache miss.
+        if: steps.cache-maestro.outputs.cache-hit != 'true'
+        run: curl -Ls "https://get.maestro.mobile.dev" | bash
+
+      - name: Add Maestro to PATH
+        run: echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
 
       - name: Enable KVM group permissions
         run: |
@@ -134,13 +165,14 @@ jobs:
           target: google_apis
           avd-name: Pixel_API_34_Keyboard
           cores: 4
-          ram-size: 4096M
+          ram-size: 6144M
           force-avd-creation: false
           disable-animations: true
           emulator-boot-timeout: 900
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -accel on
           script: ./.github/scripts/run-maestro.sh android ${{ inputs.shard }}
 
+      # -no-snapshot-save keeps PRs restore-only; the AVD cache is written only on develop.
       - name: Start Android Emulator and Run Maestro Tests (default)
         if: ${{ inputs.shard != '14' }}
         uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a # v2.37.0
@@ -152,11 +184,11 @@ jobs:
           target: google_apis
           profile: pixel_7_pro
           cores: 4
-          ram-size: 4096M
+          ram-size: 6144M
           force-avd-creation: false
           disable-animations: true
           emulator-boot-timeout: 900
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -accel on
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -accel on
           script: ./.github/scripts/run-maestro.sh android ${{ inputs.shard }}
 
       - name: Android Maestro Logs
@@ -164,5 +196,8 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: Android Maestro Logs - Shard ${{ inputs.shard }}
-          path: ~/.maestro/tests/**/*.png
+          path: |
+            ~/.maestro/tests/**/*
+            maestro-report.xml
+            maestro-rerun-round-*.xml
           retention-days: 7

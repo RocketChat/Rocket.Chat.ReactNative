@@ -1,4 +1,4 @@
-appId: chat.rocket.reactnative
+appId: ${APP_ID}
 name: Join From Directory
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'

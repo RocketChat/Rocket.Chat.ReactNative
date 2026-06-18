@@ -1,4 +1,3 @@
-import React from 'react';
 import mockClipboard from '@react-native-clipboard/clipboard/jest/clipboard-mock.js';
 import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
 import { Image } from 'expo-image';
@@ -18,6 +17,20 @@ jest.mock('react-native-safe-area-context', () => {
 
 const loadAsyncMock = jest.spyOn(Image, 'loadAsync');
 loadAsyncMock.mockImplementation(() => Promise.resolve({ width: 200, height: 300 }));
+
+jest.mock('react-native-worklets', () => ({
+	RuntimeKind: { ReactNative: 1, UI: 2, Worker: 3 },
+	getRuntimeKind: jest.fn(() => 1),
+	createSerializable: jest.fn(value => value),
+	isWorkletFunction: jest.fn(() => false),
+	runOnUI: jest.fn(fn => fn),
+	runOnJS: jest.fn(fn => fn),
+	makeShareable: jest.fn(value => value),
+	callMicrotasks: jest.fn(),
+	executeOnUIRuntimeSync: jest.fn(fn => fn()),
+	serializableMappingCache: { get: jest.fn(), set: jest.fn(), has: jest.fn(() => false), delete: jest.fn() },
+	scheduleOnRN: jest.fn((fn, ...args) => fn(...args))
+}));
 
 // @ts-ignore
 global.__reanimatedWorkletInit = () => {};
@@ -40,12 +53,25 @@ jest.mock('react-native-file-viewer', () => ({
 	open: jest.fn(() => null)
 }));
 
-jest.mock('expo-haptics', () => jest.fn(() => null));
+jest.mock('react-native-incall-manager', () => ({
+	start: jest.fn(),
+	stop: jest.fn(),
+	setForceSpeakerphoneOn: jest.fn(() => Promise.resolve())
+}));
+
+jest.mock('expo-haptics', () => ({
+	impactAsync: jest.fn(),
+	ImpactFeedbackStyle: {
+		Light: 'light',
+		Medium: 'medium',
+		Heavy: 'heavy'
+	}
+}));
 
 jest.mock('react-native-gesture-handler', () => {
-	const React = require('react');
+	const { forwardRef } = require('react');
 	const { View } = require('react-native');
-	const GestureHandlerRootView = React.forwardRef(({ children, ...props }, ref) => (
+	const GestureHandlerRootView = forwardRef(({ children, ...props }, ref) => (
 		<View ref={ref} {...props}>
 			{children}
 		</View>
@@ -244,10 +270,10 @@ jest.mock('@react-navigation/native', () => {
 		isFocused: () => true,
 		useIsFocused: () => true,
 		useRoute: () => jest.fn(),
-		useNavigation: () => ({
+		useNavigation: jest.fn(() => ({
 			navigate: jest.fn(),
 			addListener: () => jest.fn()
-		}),
+		})),
 		createNavigationContainerRef: jest.fn(),
 		navigate: jest.fn(),
 		addListener: jest.fn(() => jest.fn())
@@ -274,10 +300,10 @@ jest.mock('expo-device', () => ({
 }));
 
 jest.mock('@lodev09/react-native-true-sheet', () => {
-	const React = require('react');
+	const { forwardRef, useImperativeHandle } = require('react');
 	const { View } = require('react-native');
-	const TrueSheet = React.forwardRef((props, ref) => {
-		React.useImperativeHandle(ref, () => ({
+	const TrueSheet = forwardRef((props, ref) => {
+		useImperativeHandle(ref, () => ({
 			present: () => Promise.resolve(),
 			dismiss: () => Promise.resolve(),
 			resize: () => Promise.resolve()
@@ -308,9 +334,9 @@ jest.mock('./app/lib/methods/helpers/externalInput', () => ({
 }));
 
 jest.mock('react-native-webview', () => {
-	const React = require('react');
+	const { forwardRef } = require('react');
 	const { View } = require('react-native');
-	const WebView = React.forwardRef(() => <View />);
+	const WebView = forwardRef(() => <View />);
 	WebView.defaultProps = {};
 	return { WebView };
 });

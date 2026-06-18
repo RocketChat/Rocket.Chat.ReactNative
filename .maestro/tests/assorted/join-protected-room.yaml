@@ -1,4 +1,4 @@
-appId: chat.rocket.reactnative
+appId: ${APP_ID}
 name: Join Protected Room
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'

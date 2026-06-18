@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component, createRef, type RefObject } from 'react';
 import { AccessibilityInfo, InteractionManager, PixelRatio, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import parse from 'url-parse';
@@ -29,7 +29,7 @@ import MessageErrorActions, { type IMessageErrorActions } from '../../containers
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
-import RoomHeader, { type IRoomHeaderRef } from '../../containers/RoomHeader';
+import RoomHeader from '../../containers/RoomHeader';
 import ReactionsList from '../../containers/ReactionsList';
 import { LISTENER } from '../../containers/Toast';
 import { getBadgeColor, isBlocked, makeThreadName } from '../../lib/methods/helpers/room';
@@ -61,6 +61,7 @@ import {
 	type IApplicationState,
 	type IAttachment,
 	type IMessage,
+	type IMessageEditAttachment,
 	type IOmnichannelSource,
 	type ISubscription,
 	type IVisitor,
@@ -77,6 +78,7 @@ import { themes } from '../../lib/constants/colors';
 import { NOTIFICATION_IN_APP_VIBRATION } from '../../lib/constants/notifications';
 import { type ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import { callJitsi } from '../../lib/methods/callJitsi';
+import { isInActiveVoipCall } from '../../lib/services/voip/isInActiveVoipCall';
 import { loadSurroundingMessages } from '../../lib/methods/loadSurroundingMessages';
 import { loadThreadMessages } from '../../lib/methods/loadThreadMessages';
 import { readMessages } from '../../lib/methods/readMessages';
@@ -93,7 +95,7 @@ import {
 } from '../../lib/methods/helpers';
 import { withActionSheet } from '../../containers/ActionSheet';
 import { goRoom, type TGoRoomItem } from '../../lib/methods/helpers/goRoom';
-import { type IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
+import { ComposerAttachments, type IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
 import { RoomContext } from './context';
 import AudioManager from '../../lib/methods/AudioManager';
 import { type IListContainerRef, type TListRef } from './List/definitions';
@@ -109,19 +111,17 @@ import { type IRoomFederated, isRoomFederated, isRoomNativeFederated } from '../
 import { InvitedRoom } from './components/InvitedRoom';
 import { getInvitationData } from '../../lib/methods/getInvitationData';
 import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
-import { isExternalKeyboardConnected } from '../../lib/methods/helpers/externalInput';
 
-class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
+class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 	private rid?: string;
 	private t?: string;
 	private tmid?: string;
 	private jumpToMessageId?: string;
 	private jumpToThreadId?: string;
-	private messageComposerRef: React.RefObject<IMessageComposerRef | null>;
-	private roomHeaderRef: React.RefObject<IRoomHeaderRef | null>;
-	private joinCode: React.RefObject<IJoinCode | null>;
+	private messageComposerRef: RefObject<IMessageComposerRef | null>;
+	private joinCode: RefObject<IJoinCode | null>;
 	// ListContainer component
-	private list: React.RefObject<IListContainerRef | null>;
+	private list: RefObject<IListContainerRef | null>;
 	// FlatList inside ListContainer
 	private flatList: TListRef;
 	private mounted: boolean;
@@ -139,7 +139,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 	private sub?: RoomClass;
 	private unsubscribeBlur?: () => void;
-	private unsubscribeFocus?: () => void;
 
 	constructor(props: IRoomViewProps) {
 		super(props);
@@ -202,11 +201,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.setReadOnly();
 		this.updateE2EEState();
 
-		this.messageComposerRef = React.createRef();
-		this.roomHeaderRef = React.createRef();
-		this.list = React.createRef();
-		this.flatList = React.createRef();
-		this.joinCode = React.createRef();
+		this.messageComposerRef = createRef();
+		this.list = createRef();
+		this.flatList = createRef();
+		this.joinCode = createRef();
 		this.mounted = false;
 
 		if (this.t === 'l') {
@@ -255,23 +253,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		EventEmitter.addEventListener('ROOM_REMOVED', this.handleRoomRemoved);
 		this.unsubscribeBlur = navigation.addListener('blur', () => {
 			AudioManager.pauseAudio();
-		});
-		this.unsubscribeFocus = navigation.addListener('focus', () => {
-			InteractionManager.runAfterInteractions(() => {
-				if (this.props.isMasterDetail) {
-					this.roomHeaderRef.current?.focus();
-					return;
-				}
-				// Skip autofocus in development because simulators always report a keyboard as connected,
-				// which would force the composer to open on every focus while debugging.
-				if (__DEV__) {
-					return;
-				}
-				const hasExternalKeyboard = isExternalKeyboardConnected();
-				if (hasExternalKeyboard) {
-					this.messageComposerRef.current?.focus?.();
-				}
-			});
 		});
 	}
 
@@ -363,10 +344,12 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	}
 
 	updateOmnichannel = async () => {
-		const canForwardGuest = await this.canForwardGuest();
+		const [canForwardGuest, canReturnQueue, canViewCannedResponse] = await Promise.all([
+			this.canForwardGuest(),
+			this.canReturnQueue(),
+			this.canViewCannedResponse()
+		]);
 		const canPlaceLivechatOnHold = this.canPlaceLivechatOnHold();
-		const canReturnQueue = await this.canReturnQueue();
-		const canViewCannedResponse = await this.canViewCannedResponse();
 		this.setState({ canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold });
 		if (this.mounted) {
 			this.setHeader();
@@ -396,9 +379,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 		if (this.unsubscribeBlur) {
 			this.unsubscribeBlur();
-		}
-		if (this.unsubscribeFocus) {
-			this.unsubscribeFocus();
 		}
 		EventEmitter.removeListener('connected', this.handleConnected);
 		EventEmitter.removeListener('ROOM_REMOVED', this.handleRoomRemoved);
@@ -554,7 +534,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			),
 			headerTitle: () => (
 				<RoomHeader
-					ref={this.roomHeaderRef}
 					prid={prid}
 					tmid={tmid}
 					title={title}
@@ -601,6 +580,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const { room, member, joined, canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold } = this.state;
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
+			// @ts-ignore — navigation types expect a literal screen name
 			navigation.navigate('ModalStackNavigator', {
 				screen: screen ?? 'RoomActionsView',
 				params: {
@@ -808,7 +788,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.resetAction();
 	};
 
-	onEditRequest = async (message: Pick<IMessage, 'id' | 'msg' | 'rid'>) => {
+	onEditRequest = async (
+		message: Pick<IMessage, 'id' | 'msg' | 'rid'> & {
+			attachments?: IMessageEditAttachment[];
+		}
+	) => {
 		try {
 			this.resetAction();
 			await editMessage(message);
@@ -1051,7 +1035,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				}
 				// Synchronization needed for Fabric to work
 				await new Promise(res => setTimeout(res, 100));
-				await Promise.race([this.list.current?.jumpToMessage(message.id), new Promise(res => setTimeout(res, 5000))]);
+				await Promise.race([this.list.current?.jumpToMessage(message.id), new Promise(res => setTimeout(res, 20000))]);
 				this.cancelJumpToMessage();
 			}
 		} catch (error: any) {
@@ -1286,6 +1270,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	// OLD METHOD - support versions before 5.0.0
 	handleEnterCall = () => {
+		if (isInActiveVoipCall()) return;
 		const { room } = this.state;
 		if ('id' in room) {
 			const { jitsiTimeout } = room;
@@ -1579,7 +1564,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			}
 		}
 
-		return <MessageComposerContainer ref={this.messageComposerRef} />;
+		return (
+			<MessageComposerContainer ref={this.messageComposerRef}>
+				<ComposerAttachments />
+			</MessageComposerContainer>
+		);
 	};
 
 	renderActions = () => {

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 
 import { getSubscriptionByRoomId } from '../../../../lib/database/services/Subscription';
 import { BaseButton } from './BaseButton';
@@ -61,7 +61,7 @@ export const ActionsButton = () => {
 				},
 				{
 					title: I18n.t('Take_a_video'),
-					icon: 'camera',
+					icon: 'video',
 					onPress: () => {
 						hideActionSheet();
 						// This is necessary because the action sheet does not close properly on Android
