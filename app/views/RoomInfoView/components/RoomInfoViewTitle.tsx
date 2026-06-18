@@ -70,11 +70,6 @@ const RoomInfoViewTitle = ({
 					secondaryTextStyle={styles.expiryText}
 					rowStyle={styles.statusRow}
 					expiryRowStyle={styles.statusExpiryRow}
-					testIDs={{
-						customStatus: 'room-info-view-custom-status',
-						presenceStatus: 'room-info-view-presence-status',
-						statusExpiry: 'room-info-view-status-expiry'
-					}}
 				/>
 			</View>
 		);

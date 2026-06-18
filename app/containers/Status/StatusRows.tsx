@@ -28,11 +28,6 @@ interface IStatusRows {
 	secondaryTextStyle?: StyleProp<TextStyle>;
 	rowStyle?: StyleProp<ViewStyle>;
 	expiryRowStyle?: StyleProp<ViewStyle>;
-	testIDs?: {
-		customStatus?: string;
-		presenceStatus?: string;
-		statusExpiry?: string;
-	};
 }
 
 const StatusRows = ({
@@ -46,8 +41,7 @@ const StatusRows = ({
 	textStyle,
 	secondaryTextStyle,
 	rowStyle,
-	expiryRowStyle,
-	testIDs
+	expiryRowStyle
 }: IStatusRows): ReactElement => {
 	const presenceLabel = !statusText && status ? STATUS_I18N_KEYS[status] : undefined;
 	const formattedExpiry = statusExpiresAt ? formatStatusExpiry(statusExpiresAt) : undefined;
@@ -55,7 +49,7 @@ const StatusRows = ({
 	return (
 		<>
 			{!!statusText && (
-				<View testID={testIDs?.customStatus} style={[styles.row, rowStyle]}>
+				<View style={[styles.row, rowStyle]}>
 					{userId && <Status size={12} id={userId} />}
 					{renderStatusText ? (
 						renderStatusText(statusText)
@@ -65,13 +59,13 @@ const StatusRows = ({
 				</View>
 			)}
 			{!!presenceLabel && (
-				<View testID={testIDs?.presenceStatus} style={[styles.row, rowStyle]}>
+				<View style={[styles.row, rowStyle]}>
 					{userId && <Status size={12} id={userId} />}
 					<Text style={[textStyle, { color: statusTextColor }]}>{I18n.t(presenceLabel)}</Text>
 				</View>
 			)}
 			{!!formattedExpiry && (
-				<View testID={testIDs?.statusExpiry} style={[styles.row, expiryRowStyle]}>
+				<View style={[styles.row, expiryRowStyle]}>
 					<CustomIcon
 						name='clock'
 						size={14}
