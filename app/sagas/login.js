@@ -14,7 +14,7 @@ import database from '../lib/database';
 import EventEmitter from '../lib/methods/helpers/events';
 import { inviteLinksRequest } from '../actions/inviteLinks';
 import { showErrorAlert } from '../lib/methods/helpers/info';
-import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
+import { localAuthenticate, UserCanceledError } from '../lib/methods/helpers/localAuthentication';
 import { encryptionInit, encryptionStop } from '../actions/encryption';
 import { initTroubleshootingNotification } from '../actions/troubleshootingNotification';
 import UserPreferences from '../lib/methods/userPreferences';
@@ -87,7 +87,15 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 			yield put(appStart({ root: RootEnum.ROOT_SET_USERNAME }));
 		} else {
 			const server = yield select(getServer);
-			yield localAuthenticate(server);
+			try {
+				yield localAuthenticate(server);
+			} catch (e) {
+				// Login already succeeded; a concurrent unlock superseded this gate. Proceed to
+				// loginSuccess instead of falling through to loginFailure. Real errors still propagate.
+				if (!(e instanceof UserCanceledError)) {
+					throw e;
+				}
+			}
 
 			// Saves username on server history
 			const serversDB = database.servers;

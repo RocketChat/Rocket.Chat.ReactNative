@@ -4,16 +4,6 @@ interface ISettleableRequest {
 	cancel?: () => void;
 }
 
-/**
- * Lifecycle for event-emitter-driven modals (ScreenLockedView, ChangePasscodeView) whose callers
- * await a promise the modal must settle (submit → resolve, cancel → reject).
- *
- * Two races are handled so no caller's promise is ever orphaned:
- * - The settle callback is deferred until the modal finishes animating out (`onModalHide`), so a
- *   new request arriving mid-animation flushes the previous session's settle instead of losing it.
- * - A new request arriving while the previous one is still awaiting user input cancels the
- *   previous request, rejecting its caller's promise instead of leaving it hanging forever.
- */
 export const useDeferredModalSettle = <T extends ISettleableRequest>() => {
 	const pendingSettle = useRef<(() => void) | null>(null);
 	const activeRequest = useRef<T | null>(null);

@@ -9,7 +9,7 @@ import { setAllPreferences } from '../actions/sortPreferences';
 import { APP } from '../actions/actionsTypes';
 import log from '../lib/methods/helpers/log';
 import database from '../lib/database';
-import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
+import { localAuthenticate, UserCanceledError } from '../lib/methods/helpers/localAuthentication';
 import { runBiometricTrustMigration } from '../lib/biometricTrustStore/migration';
 import { appReady, appStart } from '../actions/app';
 import { RootEnum } from '../definitions';
@@ -47,7 +47,15 @@ const restore = function* restore() {
 			}
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		} else {
-			yield localAuthenticate(server);
+			try {
+				yield localAuthenticate(server);
+			} catch (e) {
+				// A concurrent unlock (cold-boot deep-link/push race) superseded this one. The newer
+				// modal will gate the screen — keep booting instead of ejecting to the login screen.
+				if (!(e instanceof UserCanceledError)) {
+					throw e; // real failure → outer catch → ROOT_OUTSIDE
+				}
+			}
 			const serverRecord = yield getServerById(server);
 			if (!serverRecord) {
 				return;
