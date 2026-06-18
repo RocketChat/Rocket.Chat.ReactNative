@@ -69,10 +69,8 @@ const createUserWithPasswordChange = () => {
     return createUser({ requirePasswordChange: true });
 }
 
-const deleteCreatedUser = async ({ username: usernameToDelete }) => {
+const deleteCreatedUser = ({ username: usernameToDelete }) => {
     try {
-        login(output.account.adminUser, output.account.adminPassword);
-
         const result = getWithRetry(`${data.server}/api/v1/users.info?username=${usernameToDelete}`, {
             headers: {
                 'Content-Type': 'application/json',
@@ -211,8 +209,7 @@ const deleteCreatedUsers = () => {
         }
     }
 };
-
-const deleteCreatedRoom = async (roomId) => {
+const deleteCreatedRoom = (roomId) => {
     try {
         postWithRetry(`${data.server}/api/v1/rooms.delete`, {
             headers: {
@@ -236,7 +233,7 @@ const deleteCreatedRooms = () => {
     }
 };
 
-const deleteCreatedTeam = async (teamName) => {
+const deleteCreatedTeam = (teamName) => {
     try {
         postWithRetry(`${data.server}/api/v1/teams.delete`, {
             headers: {
@@ -257,6 +254,12 @@ const deleteCreatedTeams = () => {
         for (const deleteTeam of data.teams) {
             deleteCreatedTeam(deleteTeam.name);
         }
+    }
+};
+
+const addUserToClean = (server, user) => {
+    if (server === data.server) {
+        data.accounts.push(user);
     }
 };
 
@@ -314,6 +317,7 @@ const getWithRetry = (url, options) => retryRequest(() => http.get(url, options)
 output.utils = {
     createUser,
     createUserWithPasswordChange,
+    addUserToClean,
     cleanUp,
     createRandomTeam,
     createRandomRoom,
