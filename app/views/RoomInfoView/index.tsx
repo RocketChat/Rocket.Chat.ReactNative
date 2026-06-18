@@ -81,7 +81,7 @@ const RoomInfoView = (): ReactElement => {
 	);
 
 	const roomUserId = isDirect ? getUidDirectMessage({ ...(room || { rid, t }), itsMe }) : undefined;
-	const activeUserStatus = useAppSelector(state => (roomUserId ? state.activeUsers[roomUserId] : undefined));
+	const activeUserStatus = useAppSelector(state => (roomUserId ? state.activeUsers[roomUserId] : undefined), shallowEqual);
 	const userStatus = activeUserStatus || roomUser;
 
 	const { colors } = useTheme();
