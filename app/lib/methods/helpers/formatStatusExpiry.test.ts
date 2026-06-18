@@ -25,6 +25,10 @@ describe('formatStatusExpiry', () => {
 		expect(formatStatusExpiry('not-a-date')).toBeUndefined();
 	});
 
+	it('returns undefined when statusExpiresAt is undefined', () => {
+		expect(formatStatusExpiry(undefined)).toBeUndefined();
+	});
+
 	it('returns "Until HH:mm A" for a same-day future timestamp', () => {
 		// Pin a specific UTC date: 2026-06-09T08:00:00Z, expires at 10:00Z same day
 		const expiresAt = new Date('2026-06-09T10:00:00.000Z');

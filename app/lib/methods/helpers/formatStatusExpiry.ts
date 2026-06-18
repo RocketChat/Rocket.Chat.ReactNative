@@ -1,7 +1,11 @@
 import dayjs from '../../dayjs';
 import I18n from '../../../i18n';
 
-export const formatStatusExpiry = (statusExpiresAt: string): string | undefined => {
+export const formatStatusExpiry = (statusExpiresAt: string | undefined): string | undefined => {
+	if (!statusExpiresAt) {
+		return undefined;
+	}
+
 	const now = dayjs();
 	const expiresAt = dayjs(statusExpiresAt);
 	if (!expiresAt.isValid() || !expiresAt.isAfter(now)) {
