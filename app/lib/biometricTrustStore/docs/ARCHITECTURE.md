@@ -18,11 +18,11 @@ The trust store is **not** the screen-lock feature itself. Screen lock (passcode
 
 The security primitive is a single keychain entry, defined in [`../../constants/localAuthentication.ts`](../../constants/localAuthentication.ts):
 
-| Constant                            | Value                                     |
-| ----------------------------------- | ----------------------------------------- |
-| `BIOMETRIC_TRUST_SENTINEL_SERVICE`  | `rc-biometric-trust`                      |
-| `BIOMETRIC_TRUST_SENTINEL_USERNAME` | `biometric-trust`                         |
-| `BIOMETRIC_TRUST_SENTINEL_VALUE`    | `v1`                                      |
+| Constant                            | Value                |
+| ----------------------------------- | -------------------- |
+| `BIOMETRIC_TRUST_SENTINEL_SERVICE`  | `rc-biometric-trust` |
+| `BIOMETRIC_TRUST_SENTINEL_USERNAME` | `biometric-trust`    |
+| `BIOMETRIC_TRUST_SENTINEL_VALUE`    | `v1`                 |
 
 It is written with two keychain options that together make it a tripwire (`index.ts`, `writeOptions`):
 
