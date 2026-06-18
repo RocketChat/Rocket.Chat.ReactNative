@@ -51,7 +51,7 @@ runs:
         if [[ "${{ inputs.trigger }}" == "pr" ]]; then
           cp changelog.txt "android/fastlane/metadata/android/en-US/changelogs/${BUILD_VERSION}.txt"
         elif [ -f changelog.txt ]; then
-          node .github/scripts/prepare-changelog.js
+          node .github/scripts/changelog.js cap
         else
           printf "Internal improvements and bug fixes" > "android/fastlane/metadata/android/en-US/changelogs/${BUILD_VERSION}.txt"
         fi

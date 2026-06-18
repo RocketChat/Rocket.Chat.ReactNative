@@ -33,7 +33,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh pr view "${{ github.event.pull_request.number }}" --json title,number,commits > pr.json
-          node .github/scripts/generate-pr-changelog.js
+          node .github/scripts/changelog.js pr
 
       - name: Upload changelog artifact
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
