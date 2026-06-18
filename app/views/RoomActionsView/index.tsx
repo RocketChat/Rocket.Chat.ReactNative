@@ -1323,9 +1323,10 @@ class RoomActionsView extends Component<IRoomActionsViewProps, IRoomActionsViewS
 const mapStateToProps = (state: IApplicationState, ownProps: Partial<Pick<IRoomActionsViewProps, 'route'>>) => {
 	const params = ownProps.route?.params;
 	const room = params?.room || { rid: params?.rid, t: params?.t };
-	const roomUserId = room && room.t === 'd' ? getUidDirectMessage(room) : undefined;
+	const userId = getUserSelector(state).id;
+	const roomUserId = room && room.t === 'd' ? getUidDirectMessage(room, userId) : undefined;
 	return {
-		userId: getUserSelector(state).id,
+		userId,
 		encryptionEnabled: state.encryption.enabled,
 		serverVersion: state.server.version,
 		isMasterDetail: state.app.isMasterDetail,
