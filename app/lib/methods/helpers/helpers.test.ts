@@ -79,9 +79,7 @@ describe('getUidDirectMessage', () => {
 
 		describe('with redux fallback (single room arg)', () => {
 			it('resolves the other user using redux userId', () => {
-				expect(
-					getUidDirectMessage({ rid: 'reduxUserId' + 'otherUserId', t: 'd' })
-				).toBe('otherUserId');
+				expect(getUidDirectMessage({ rid: 'reduxUserId' + 'otherUserId', t: 'd' })).toBe('otherUserId');
 				expect(mockedGetState).toHaveBeenCalled();
 			});
 
@@ -123,9 +121,7 @@ describe('getUidDirectMessage', () => {
 
 		describe('with redux fallback (single room arg)', () => {
 			it('returns the other participant uid using redux userId', () => {
-				expect(
-					getUidDirectMessage({ uids: ['reduxUserId', 'otherUserId'] })
-				).toBe('otherUserId');
+				expect(getUidDirectMessage({ uids: ['reduxUserId', 'otherUserId'] })).toBe('otherUserId');
 				expect(mockedGetState).toHaveBeenCalled();
 			});
 
@@ -149,9 +145,7 @@ describe('getUidDirectMessage', () => {
 			});
 
 			it('returns null when usernames indicate a group (more than two)', () => {
-				expect(
-					getUidDirectMessage({ usernames: ['me', 'a', 'b'], uids: ['me', 'a', 'b'] }, 'me')
-				).toBeNull();
+				expect(getUidDirectMessage({ usernames: ['me', 'a', 'b'], uids: ['me', 'a', 'b'] }, 'me')).toBeNull();
 			});
 		});
 
