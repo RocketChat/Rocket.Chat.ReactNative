@@ -16,23 +16,29 @@ const makeListRef = () => {
 
 const makeMessagesIdsRef = (ids: string[]): TMessagesIdsRef => ({ current: ids });
 
-const renderUseScroll = (initialRows: Row[], setHighTs = jest.fn(), fetchMessages = jest.fn(() => Promise.resolve())) => {
+const renderUseScroll = (
+	initialRows: Row[],
+	setHighTs = jest.fn(),
+	fetchMessages = jest.fn(() => Promise.resolve()),
+	initialHighTs: number | null = null
+) => {
 	const { listRef, scrollToIndex, scrollToOffset, scrollToEnd } = makeListRef();
 	const idsRef = makeMessagesIdsRef(initialRows.map(r => r.id));
 
 	const utils = renderHook(
-		({ rows }: { rows: Row[] }) => {
+		({ rows, highTs = null }: { rows: Row[]; highTs?: number | null }) => {
 			// Keep the ids ref in sync the same way useMessages does (before paint).
 			idsRef.current = rows.map(r => r.id);
 			return useScroll({
 				listRef,
 				messages: rows as unknown as TAnyMessageModel[],
 				messagesIds: idsRef,
+				highTs,
 				setHighTs,
 				fetchMessages
 			});
 		},
-		{ initialProps: { rows: initialRows } }
+		{ initialProps: { rows: initialRows, highTs: initialHighTs } }
 	);
 
 	return { ...utils, listRef, scrollToIndex, scrollToOffset, scrollToEnd, idsRef, setHighTs, fetchMessages };
@@ -455,18 +461,51 @@ describe('useScroll', () => {
 		expect(scrollToIndex).not.toHaveBeenCalled();
 	});
 
-	it('jump-to-bottom releases the anchor to a Live Window, then scrolls back to live', () => {
+	it('jump-to-bottom from an anchored window pins offset 0 before the release swap, then re-pins on the live emit', () => {
 		const setHighTs = jest.fn();
-		const { result, scrollToOffset } = renderUseScroll([{ id: 'a' }, { id: 'b' }], setHighTs);
+		const { result, rerender, scrollToOffset } = renderUseScroll(
+			[{ id: 'anchored-1' }, { id: 'anchored-2' }],
+			setHighTs,
+			undefined,
+			1500
+		);
 
 		act(() => {
 			result.current.jumpToBottom();
 		});
 
-		// Release the Anchored Window first (public setter re-seeds to one page — correct for a snap to live),
-		// then scroll back to the Live Tail.
+		// Pin the viewport to offset 0 (newest) on the still-settled anchored content BEFORE releasing: the
+		// live emit swaps these rows for a disjoint, shorter key set, and a deep offset would then sit past the
+		// short content (blank list). offset 0 is valid for any non-empty window, so the swap can't strand it.
+		// The release flag is raised so the caller suppresses MVCP across the swap.
 		expect(setHighTs).toHaveBeenCalledWith(null);
+		expect(scrollToOffset).toHaveBeenCalledTimes(1);
+		expect(scrollToOffset).toHaveBeenLastCalledWith({ offset: 0, animated: false });
+		expect(result.current.isReleasing).toBe(true);
+
+		// Live window emits (disjoint rows, anchor now null): re-pin offset 0 in case the swap nudged it, and
+		// drop the release flag so MVCP resumes for normal live-tail following.
+		act(() => {
+			rerender({ rows: [{ id: 'live-1' }, { id: 'live-2' }], highTs: null });
+		});
+		expect(scrollToOffset).toHaveBeenCalledTimes(2);
+		expect(scrollToOffset).toHaveBeenLastCalledWith({ offset: 0, animated: false });
+		expect(result.current.isReleasing).toBe(false);
+	});
+
+	it('jump-to-bottom in a live window scrolls to the tail immediately without re-anchoring', () => {
+		const setHighTs = jest.fn();
+		const { result, scrollToOffset } = renderUseScroll([{ id: 'a' }, { id: 'b' }], setHighTs, undefined, null);
+
+		act(() => {
+			result.current.jumpToBottom();
+		});
+
+		// Already live (FAB shown only because scrolled past the limit): no anchor churn, scroll straight to the
+		// tail, and no release transition — MVCP stays on throughout.
+		expect(setHighTs).not.toHaveBeenCalled();
 		expect(scrollToOffset).toHaveBeenCalledWith({ offset: -100 });
+		expect(result.current.isReleasing).toBe(false);
 	});
 
 	it("does not let a completed jump's deferred re-scroll fire after a newer jump supersedes it", () => {

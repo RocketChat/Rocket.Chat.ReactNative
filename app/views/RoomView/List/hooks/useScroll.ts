@@ -19,9 +19,11 @@ const SCROLL_TO_INDEX_RETRY_DELAY = 50;
 // cap must cover the distance (5 stalled short). Bounded so an unreachable target aborts, not loops.
 const MAX_SCROLL_TO_INDEX_RETRIES = 20;
 
-// Jump landing: centered, offset clear of the sticky header. Shared by every scrollToIndex in the jump
-// path so the position cannot drift between them.
-const JUMP_SCROLL_POSITION = { viewPosition: 0.5, viewOffset: 100 } as const;
+// Jump landing: centered, offset clear of the sticky header, non-animated. Shared by every scrollToIndex
+// in the jump path so the position cannot drift between them. animated:false snaps straight to the target
+// instead of smooth-scrolling through every row between here and a deep index — the latter reads as the
+// list "hunting" for the message across several visible scrolls.
+const JUMP_SCROLL_POSITION = { viewPosition: 0.5, viewOffset: 100, animated: false } as const;
 
 // A Jump to Message in flight: re-anchor the window, wait for the target to re-emit, scroll once.
 interface IPendingJump {
@@ -36,12 +38,14 @@ export const useScroll = ({
 	listRef,
 	messages,
 	messagesIds,
+	highTs,
 	setHighTs,
 	fetchMessages
 }: {
 	listRef: TListRef;
 	messages: TAnyMessageModel[];
 	messagesIds: TMessagesIdsRef;
+	highTs: number | null;
 	setHighTs: (next: number | null) => void;
 	fetchMessages: () => Promise<void>;
 }) => {
@@ -55,6 +59,11 @@ export const useScroll = ({
 	const scrollFailRetries = useRef(0);
 	// Bounds the window-growth retries while waiting for a deep Anchored target to re-observe (reset per jump).
 	const jumpGrowthRetries = useRef(0);
+	// A jump-to-bottom deferred until the released live window emits (set when releasing an Anchored Window).
+	const pendingBottom = useRef(false);
+	// True across an Anchored → Live release: suppresses maintainVisibleContentPosition so the disjoint
+	// data swap can't apply a native offset adjustment that drags the pre-pinned viewport off-content.
+	const [isReleasing, setIsReleasing] = useState(false);
 
 	useEffect(
 		() => () => {
@@ -68,11 +77,23 @@ export const useScroll = ({
 		[]
 	);
 
-	// Back to live: release any Anchored Window, then scroll to the Live Tail.
+	// Back to live from an Anchored Window. The release swaps the (tall) anchored rows for the disjoint,
+	// shorter live tail in a single emit; a scroll offset deep enough for the tall content then sits past
+	// the short content, and an inverted list renders that as a blank wedge with the FAB stuck visible.
+	// Park the viewport at offset 0 (newest) BEFORE the swap: offset 0 is valid for any non-empty window,
+	// so the shorter tail cannot strand it, and scrolling the already-settled anchored content sidesteps
+	// the post-shrink layout race a deferred correction loses to. Suppress MVCP across the swap so its
+	// offset adjustment for the disjoint key set cannot drag the viewport back off-content.
 	const jumpToBottom = useCallback(() => {
-		setHighTs(null);
+		if (highTs != null) {
+			listRef.current?.scrollToOffset({ offset: 0, animated: false });
+			pendingBottom.current = true;
+			setIsReleasing(true);
+			setHighTs(null);
+			return;
+		}
 		listRef.current?.scrollToOffset({ offset: -100 });
-	}, [listRef, setHighTs]);
+	}, [listRef, highTs, setHighTs]);
 
 	const setHighlightTimeout = useCallback(() => {
 		if (highlightTimeout.current) {
@@ -149,6 +170,19 @@ export const useScroll = ({
 		[listRef, messagesIds]
 	);
 
+	// Release settled: the live tail has emitted and the viewport is already pinned at offset 0 from the
+	// pre-swap scroll. Re-pin in case the swap nudged it, then restore maintainVisibleContentPosition for
+	// normal live-tail following (safe at offset 0 — minIndexForVisible:0 keeps the newest row stable).
+	useLayoutEffect(() => {
+		if (!pendingBottom.current) {
+			return;
+		}
+		pendingBottom.current = false;
+		listRef.current?.scrollToOffset({ offset: 0, animated: false });
+		setIsReleasing(false);
+		// eslint-disable-next-line react-hooks/exhaustive-deps -- keyed on messages so it runs on the first live emit; listRef is a stable ref
+	}, [messages]);
+
 	// On every re-observe, check whether the pending target has appeared; the first time it has, scroll
 	// once and complete.
 	useLayoutEffect(() => {
@@ -199,12 +233,12 @@ export const useScroll = ({
 					const settled =
 						messagesIds.current?.findIndex(id => id === (pendingJump.current?.messageId ?? lastJumpTargetId.current)) ?? -1;
 					if (settled !== -1) {
-						listRef.current?.scrollToIndex({ index: settled, animated: false, ...JUMP_SCROLL_POSITION });
+						listRef.current?.scrollToIndex({ index: settled, ...JUMP_SCROLL_POSITION });
 					}
 				}, SCROLL_TO_INDEX_RETRY_DELAY);
 				return;
 			}
-			listRef.current?.scrollToIndex({ index: targetIndex, animated: false, ...JUMP_SCROLL_POSITION });
+			listRef.current?.scrollToIndex({ index: targetIndex, ...JUMP_SCROLL_POSITION });
 		}, SCROLL_TO_INDEX_RETRY_DELAY);
 	};
 
@@ -269,6 +303,7 @@ export const useScroll = ({
 		jumpToMessage,
 		cancelJumpToMessage,
 		handleScrollToIndexFailed,
-		highlightedMessageId
+		highlightedMessageId,
+		isReleasing
 	};
 };
