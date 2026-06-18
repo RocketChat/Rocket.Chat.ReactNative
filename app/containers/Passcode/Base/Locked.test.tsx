@@ -4,6 +4,7 @@ import Locked from './Locked';
 import { TYPE } from '../constants';
 import { getLockedUntil } from '../utils';
 import { resetAttempts } from '../../../lib/methods/helpers/localAuthentication';
+import log from '../../../lib/methods/helpers/log';
 
 jest.mock('../../../theme', () => ({
 	useTheme: () => ({
@@ -33,8 +34,14 @@ jest.mock('../../../lib/methods/helpers/localAuthentication', () => ({
 	resetAttempts: jest.fn()
 }));
 
+jest.mock('../../../lib/methods/helpers/log', () => ({
+	__esModule: true,
+	default: jest.fn()
+}));
+
 const mockedGetLockedUntil = getLockedUntil as jest.MockedFunction<typeof getLockedUntil>;
 const mockedResetAttempts = resetAttempts as jest.MockedFunction<typeof resetAttempts>;
+const mockedLog = log as jest.MockedFunction<typeof log>;
 
 describe('Locked', () => {
 	beforeEach(() => {
@@ -69,7 +76,6 @@ describe('Locked', () => {
 		mockedGetLockedUntil.mockResolvedValue(new Date(Date.now() + 1500));
 		mockedResetAttempts.mockRejectedValue(new Error('storage failed'));
 		const setStatus = jest.fn();
-		const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
 
 		render(<Locked setStatus={setStatus} />);
 
@@ -81,9 +87,7 @@ describe('Locked', () => {
 		});
 
 		await waitFor(() => expect(mockedResetAttempts).toHaveBeenCalledTimes(1));
-		expect(warnSpy).toHaveBeenCalledWith('[Passcode/Locked] Failed to reset attempts after lock expiration:', expect.any(Error));
+		expect(mockedLog).toHaveBeenCalledWith(expect.any(Error));
 		expect(setStatus).toHaveBeenCalledWith(TYPE.ENTER);
-
-		warnSpy.mockRestore();
 	});
 });
