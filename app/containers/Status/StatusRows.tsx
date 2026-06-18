@@ -48,23 +48,23 @@ const StatusRows = ({
 
 	return (
 		<>
-			{!!statusText && (
+			{statusText ? (
 				<View style={[styles.row, rowStyle]}>
-					{userId && <Status size={12} id={userId} />}
+					{userId ? <Status size={12} id={userId} /> : null}
 					{renderStatusText ? (
 						renderStatusText(statusText)
 					) : (
 						<Text style={[textStyle, { color: statusTextColor }]}>{statusText}</Text>
 					)}
 				</View>
-			)}
-			{!!presenceLabel && (
+			) : null}
+			{presenceLabel ? (
 				<View style={[styles.row, rowStyle]}>
-					{userId && <Status size={12} id={userId} />}
+					{userId ? <Status size={12} id={userId} /> : null}
 					<Text style={[textStyle, { color: statusTextColor }]}>{I18n.t(presenceLabel)}</Text>
 				</View>
-			)}
-			{!!formattedExpiry && (
+			) : null}
+			{formattedExpiry ? (
 				<View style={[styles.row, expiryRowStyle]}>
 					<CustomIcon
 						name='clock'
@@ -75,7 +75,7 @@ const StatusRows = ({
 					/>
 					<Text style={[secondaryTextStyle, { color: fontSecondaryInfo }]}>{formattedExpiry}</Text>
 				</View>
-			)}
+			) : null}
 		</>
 	);
 };
