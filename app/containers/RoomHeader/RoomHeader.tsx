@@ -190,7 +190,7 @@ const Header = ({
 	// keyboard); regular touch users shouldn't have focus yanked onto the header on room open.
 	const autoFocusHeader = useIsAccessibilityNavigationEnabled();
 	const subtitleAccessibilityLabel = tmid ? parentTitle : subtitle;
-	const formattedStatusExpiry = statusExpiresAt ? formatStatusExpiry(statusExpiresAt) : undefined;
+	const formattedStatusExpiry = formatStatusExpiry(statusExpiresAt);
 	const fullSubtitleAccessibilityLabel = formattedStatusExpiry
 		? `${subtitleAccessibilityLabel || ''}, ${formattedStatusExpiry}`
 		: subtitleAccessibilityLabel || '';
