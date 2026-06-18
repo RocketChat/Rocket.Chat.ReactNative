@@ -53,7 +53,7 @@ export const localSearchSubscription = async ({
 		subscriptions = filteredSubscriptions.filter(item => item !== null) as TSubscriptionModel[];
 	}
 
-	const search = subscriptions.slice(0, 7).map(item => ({
+	const search = subscriptions.map(item => ({
 		_id: item._id,
 		rid: item.rid,
 		name: item.name,
@@ -143,7 +143,7 @@ export const searchRemote = async ({
 			: (localData as ISearchLocal[]).map(sub => sub.name);
 
 	try {
-		if (searchText && localData.length < 7) {
+		if (searchText) {
 			const { users, rooms } = (await Promise.race([
 				spotlight(searchText, usernames, { users: filterUsers, rooms: filterRooms, mentions: true }, rid),
 				new Promise((_resolve, reject) => (debounce = reject))

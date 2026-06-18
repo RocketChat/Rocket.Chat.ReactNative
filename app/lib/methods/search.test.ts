@@ -90,12 +90,14 @@ describe('searchRemote', () => {
 		expect(result).toEqual(localData);
 	});
 
-	it('does not call spotlight when local data already has 7 or more items', async () => {
+	it('still calls spotlight to augment even when local data already has many items', async () => {
+		mockedSpotlight.mockResolvedValue({ users: [buildSpotlightUser()], rooms: [] });
 		const localData = Array.from({ length: 7 }, (_, i) => buildLocalSubscription({ _id: `sub-${i}`, name: `user${i}` }));
 		const result = await searchRemote({ text: 'foo', localData });
 
-		expect(mockedSpotlight).not.toHaveBeenCalled();
-		expect(result).toHaveLength(7);
+		expect(mockedSpotlight).toHaveBeenCalled();
+		// 7 local + 1 spotlight user
+		expect(result).toHaveLength(8);
 	});
 
 	it('appends spotlight users with the normalized search shape', async () => {
@@ -248,14 +250,14 @@ describe('searchLocal', () => {
 		expect(result[0].username).toBe('jane.doe');
 	});
 
-	it('caps subscription results at 7 items', async () => {
+	it('returns all matching subscription results without capping', async () => {
 		mockCollections({
 			subscriptions: Array.from({ length: 20 }, (_, i) => buildLocalSubscription({ _id: `s-${i}`, name: `user${i}` }))
 		});
 
 		const result = await searchLocal({ text: 'user' });
 
-		expect(result).toHaveLength(7);
+		expect(result).toHaveLength(20);
 	});
 });
 
