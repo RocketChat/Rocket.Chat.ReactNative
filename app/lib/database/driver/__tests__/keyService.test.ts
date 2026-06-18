@@ -12,12 +12,19 @@
 
 import { randomKey } from '@rocket.chat/mobile-crypto';
 
-import { getOrCreateDatabaseKey, deleteDatabaseKey, installKeychainShim, type IKeychainShim } from '../keyService';
+import {
+	getOrCreateDatabaseKey,
+	getOrCreateDatabaseSalt,
+	deleteDatabaseKey,
+	installKeychainShim,
+	type IKeychainShim
+} from '../keyService';
 
 // Mock @rocket.chat/mobile-crypto so Jest doesn't need the native module.
-// randomKey returns hex (the source uses it instead of randomBytes, which returns base64).
+// randomKey returns hex (the source uses it instead of randomBytes, which returns base64);
+// two hex chars per byte, so the length tracks the requested byte count (32 → 64, 16 → 32).
 jest.mock('@rocket.chat/mobile-crypto', () => ({
-	randomKey: jest.fn(async (_bytes: number) => 'a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90')
+	randomKey: jest.fn(async (bytes: number) => 'ab'.repeat(bytes))
 }));
 
 function makeMemoryShim(): IKeychainShim {
@@ -36,6 +43,8 @@ function makeMemoryShim(): IKeychainShim {
 beforeEach(() => {
 	// Install a fresh shim so tests are isolated
 	installKeychainShim(makeMemoryShim());
+	// Reset the CSPRNG mock after any one-shot override below
+	(randomKey as jest.Mock).mockImplementation(async (bytes: number) => 'ab'.repeat(bytes));
 });
 
 describe('getOrCreateDatabaseKey', () => {
@@ -76,8 +85,46 @@ describe('getOrCreateDatabaseKey', () => {
 		// Error message must not contain the bad output or any hex key material
 		expect(thrown!.message).not.toMatch(/not-valid-hex/);
 		expect(thrown!.message).not.toMatch(/[0-9a-fA-F]{32}/);
-		// Restore
-		(randomKey as jest.Mock).mockResolvedValue('a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90');
+	});
+});
+
+describe('getOrCreateDatabaseSalt', () => {
+	it('generates a 32-hex-char salt', async () => {
+		const salt = await getOrCreateDatabaseSalt('servers.db');
+		expect(salt).toMatch(/^[0-9a-fA-F]{32}$/);
+	});
+
+	it('returns the same salt on repeated calls (idempotent)', async () => {
+		const s1 = await getOrCreateDatabaseSalt('open.rocket.chat.db');
+		const s2 = await getOrCreateDatabaseSalt('open.rocket.chat.db');
+		expect(s1).toBe(s2);
+	});
+
+	it('stores salt under a separate key from the encryption key', async () => {
+		const shim = makeMemoryShim();
+		const spySet = jest.spyOn(shim, 'setItem');
+		installKeychainShim(shim);
+
+		await getOrCreateDatabaseKey('combo.db');
+		await getOrCreateDatabaseSalt('combo.db');
+
+		expect(spySet).toHaveBeenCalledWith('db_key_v1:combo.db', expect.any(String));
+		expect(spySet).toHaveBeenCalledWith('db_salt_v1:combo.db', expect.stringMatching(/^[0-9a-fA-F]{32}$/));
+	});
+
+	it('does not include salt material in thrown errors', async () => {
+		(randomKey as jest.Mock).mockResolvedValueOnce('not-valid-hex!!');
+
+		let thrown: Error | undefined;
+		try {
+			await getOrCreateDatabaseSalt('bad.db');
+		} catch (e) {
+			thrown = e as Error;
+		}
+
+		expect(thrown).toBeDefined();
+		expect(thrown!.message).not.toMatch(/not-valid-hex/);
+		expect(thrown!.message).not.toMatch(/[0-9a-fA-F]{16}/);
 	});
 });
 
@@ -94,6 +141,19 @@ describe('deleteDatabaseKey', () => {
 		const spySet = jest.spyOn(shim, 'setItem');
 		await getOrCreateDatabaseKey('temp.db');
 		expect(spySet).toHaveBeenCalledTimes(1);
+	});
+
+	it('removes the salt as well as the key', async () => {
+		const shim = makeMemoryShim();
+		const spyRemove = jest.spyOn(shim, 'removeItem');
+		installKeychainShim(shim);
+
+		await getOrCreateDatabaseKey('temp.db');
+		await getOrCreateDatabaseSalt('temp.db');
+		await deleteDatabaseKey('temp.db');
+
+		expect(spyRemove).toHaveBeenCalledWith('db_key_v1:temp.db');
+		expect(spyRemove).toHaveBeenCalledWith('db_salt_v1:temp.db');
 	});
 
 	it('is a no-op for a name that was never stored', async () => {
