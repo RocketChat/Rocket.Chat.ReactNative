@@ -299,36 +299,4 @@ export type InsideStackParamList = {
 	CallView: undefined;
 };
 
-export type OutsideParamList = {
-	NewServerView: undefined;
-	WorkspaceView: undefined;
-	LoginView: {
-		title: string;
-		username?: string;
-	};
-	ForgotPasswordView: {
-		title: string;
-	};
-	SendEmailConfirmationView: {
-		user?: string;
-	};
-	RegisterView: {
-		title: string;
-		username?: string;
-	};
-	LegalView: undefined;
-	AuthenticationWebView: {
-		authType: string;
-		url: string;
-		ssoToken?: string;
-	};
-};
-
-export type OutsideModalParamList = {
-	OutsideStack: NavigatorScreenParams<OutsideParamList>;
-	AuthenticationWebView: {
-		authType: string;
-		url: string;
-		ssoToken?: string;
-	};
-};
+export type { OutsideParamList, OutsideModalParamList } from './OutsideStack';
