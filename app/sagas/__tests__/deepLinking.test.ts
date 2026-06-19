@@ -110,6 +110,7 @@ import { canOpenRoom } from '../../lib/methods/canOpenRoom';
 import { getServerInfo } from '../../lib/methods/getServerInfo';
 import { goRoom, navigateToRoom } from '../../lib/methods/helpers/goRoom';
 import { waitForNavigationReady } from '../../lib/navigation/appNavigation';
+import { loginOAuthOrSso } from '../../lib/services/connect';
 import sdk from '../../lib/services/sdk';
 import EventEmitter from '../../lib/methods/helpers/events';
 import database from '../../lib/database';
@@ -657,5 +658,62 @@ describe('deepLinking saga — handleClickCallPush (new server + token + call ro
 
 		// Socket connected → gate released, loginRequest dispatched.
 		expect(loginRequested()).toBe(true);
+	});
+});
+
+// ─── handleOAuth — single-use credentialToken dedup guard ────────────────────
+
+describe('deepLinking saga — handleOAuth dedup guard', () => {
+	// handleOAuth tracks the consumed credentialToken in module scope and it is never reset between
+	// tests, so every oauth case here must use a globally-unique token or the guard silently suppresses it.
+	beforeEach(() => {
+		jest.mocked(loginOAuthOrSso).mockReset();
+		jest.mocked(loginOAuthOrSso).mockResolvedValue(undefined as any);
+	});
+
+	it('calls loginOAuthOrSso with the oauth credentials on a fresh token', async () => {
+		const store = setupStore();
+
+		store.dispatch(deepLinkingOpen({ type: 'oauth', credentialToken: 'token-fresh-A', credentialSecret: 'secret-A' } as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(loginOAuthOrSso)).toHaveBeenCalledTimes(1);
+		expect(jest.mocked(loginOAuthOrSso)).toHaveBeenCalledWith({
+			oauth: { credentialToken: 'token-fresh-A', credentialSecret: 'secret-A' }
+		});
+	});
+
+	it('does not call loginOAuthOrSso a second time for the same credentialToken', async () => {
+		const store = setupStore();
+
+		store.dispatch(deepLinkingOpen({ type: 'oauth', credentialToken: 'token-dup-B', credentialSecret: 'secret-B' } as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		// Second dispatch with the identical token — guard must suppress it.
+		store.dispatch(deepLinkingOpen({ type: 'oauth', credentialToken: 'token-dup-B', credentialSecret: 'secret-B' } as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(loginOAuthOrSso)).toHaveBeenCalledTimes(1);
+	});
+
+	it('calls loginOAuthOrSso again for a different credentialToken after a previous one was consumed', async () => {
+		const store = setupStore();
+
+		store.dispatch(deepLinkingOpen({ type: 'oauth', credentialToken: 'token-first-C', credentialSecret: 'secret-C' } as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		// A distinct token must not be blocked by the guard.
+		store.dispatch(deepLinkingOpen({ type: 'oauth', credentialToken: 'token-second-C', credentialSecret: 'secret-C2' } as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(loginOAuthOrSso)).toHaveBeenCalledTimes(2);
+		expect(jest.mocked(loginOAuthOrSso)).toHaveBeenNthCalledWith(2, {
+			oauth: { credentialToken: 'token-second-C', credentialSecret: 'secret-C2' }
+		});
 	});
 });
