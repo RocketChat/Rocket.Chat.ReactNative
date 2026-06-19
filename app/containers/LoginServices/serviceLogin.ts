@@ -1,4 +1,5 @@
 import * as AppleAuthentication from 'expo-apple-authentication';
+import * as WebBrowser from 'expo-web-browser';
 import { Linking } from 'react-native';
 import { Base64 } from 'js-base64';
 
@@ -6,7 +7,10 @@ import Navigation from '../../lib/navigation/appNavigation';
 import { type IItemService, type IOpenOAuth, type IServiceLogin } from './interfaces';
 import { random } from '../../lib/methods/helpers';
 import { loginOAuthOrSso } from '../../lib/services/connect';
-import { events, logEvent } from '../../lib/methods/helpers/log';
+import log, { events, logEvent } from '../../lib/methods/helpers/log';
+import { store } from '../../lib/store/auxStore';
+import { deepLinkingOpen } from '../../actions/deepLinking';
+import parseDeepLinking from '../../lib/methods/helpers/parseDeepLinking';
 
 type TLoginStyle = 'popup' | 'redirect';
 
@@ -98,7 +102,7 @@ export const onPressCustomOAuth = ({ loginService, server }: { loginService: IIt
 	logEvent(events.ENTER_WITH_CUSTOM_OAUTH);
 	const { serverURL, authorizePath, clientId, scope, service } = loginService;
 	const redirectUri = `${server}/_oauth/${service}`;
-	const state = getOAuthState();
+	const state = getOAuthState('redirect');
 	const separator = authorizePath.indexOf('?') !== -1 ? '&' : '?';
 	const params = `${separator}client_id=${clientId}&redirect_uri=${encodeURIComponent(
 		redirectUri
@@ -106,7 +110,7 @@ export const onPressCustomOAuth = ({ loginService, server }: { loginService: IIt
 	const domain = `${serverURL}`;
 	const absolutePath = `${authorizePath}${params}`;
 	const url = absolutePath.includes(domain) ? absolutePath : domain + absolutePath;
-	openOAuth({ url });
+	openOAuthSession(url);
 };
 
 export const onPressSaml = ({ loginService, server }: { loginService: IItemService; server: string }) => {
@@ -137,6 +141,22 @@ export const onPressAppleLogin = async () => {
 		await loginOAuthOrSso({ fullName, email, identityToken });
 	} catch {
 		logEvent(events.ENTER_WITH_APPLE_F);
+	}
+};
+
+const OAUTH_REDIRECT_URL = 'rocketchat://auth';
+
+const openOAuthSession = async (url: string) => {
+	try {
+		const result = await WebBrowser.openAuthSessionAsync(url, OAUTH_REDIRECT_URL);
+		if (result.type === 'success' && 'url' in result && result.url) {
+			const parsed = parseDeepLinking(result.url);
+			if (parsed) {
+				store.dispatch(deepLinkingOpen(parsed));
+			}
+		}
+	} catch (e) {
+		log(e);
 	}
 };
 
