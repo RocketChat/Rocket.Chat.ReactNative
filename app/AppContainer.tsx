@@ -1,40 +1,74 @@
-import { useContext, memo, useEffect } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { useContext, useEffect } from 'react';
+import { createStaticNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import type { SetUsernameStackParamList, StackParamList } from './definitions/navigationTypes';
+import { RootEnum } from './definitions';
 import Navigation from './lib/navigation/appNavigation';
 import { defaultHeader, getActiveRouteName, navigationTheme } from './lib/methods/helpers/navigation';
-import { RootEnum } from './definitions';
-// Stacks
-import AuthLoadingView from './views/AuthLoadingView';
-// SetUsername Stack
-import SetUsernameView from './views/SetUsernameView';
+// Stacks — navigator config objects, not components
 import OutsideStack from './stacks/OutsideStack';
 import InsideStack from './stacks/InsideStack';
 import MasterDetailStack from './stacks/MasterDetailStack';
 import ShareExtensionStack from './stacks/ShareExtensionStack';
+import AuthLoadingView from './views/AuthLoadingView';
+import SetUsernameView from './views/SetUsernameView';
 import { ThemeContext } from './theme';
 import { setCurrentScreen } from './lib/methods/helpers/log';
 import { themes } from './lib/constants/colors';
 import { emitter } from './lib/methods/helpers';
 import MediaCallHeader from './containers/MediaCallHeader/MediaCallHeader';
 
-const createStackNavigator = createNativeStackNavigator;
+// ─── Conditional-group hooks ──────────────────────────────────────────────────
 
-// SetUsernameStack
-const SetUsername = createStackNavigator<SetUsernameStackParamList>();
-const SetUsernameStack = () => (
-	<SetUsername.Navigator screenOptions={defaultHeader}>
-		<SetUsername.Screen name='SetUsernameView' component={SetUsernameView} />
-	</SetUsername.Navigator>
-);
+const useIsLoading = () =>
+	useSelector(
+		(state: any) => state.app.root === RootEnum.ROOT_LOADING || state.app.root === RootEnum.ROOT_LOADING_SHARE_EXTENSION
+	);
 
-// App
-const Stack = createStackNavigator<StackParamList>();
-const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: boolean }) => {
+const useIsOutside = () => useSelector((state: any) => state.app.root === RootEnum.ROOT_OUTSIDE);
+
+const useIsMasterDetail = () => useSelector((state: any) => state.app.root === RootEnum.ROOT_INSIDE && state.app.isMasterDetail);
+
+const useIsInside = () => useSelector((state: any) => state.app.root === RootEnum.ROOT_INSIDE && !state.app.isMasterDetail);
+
+const useIsSetUsername = () => useSelector((state: any) => state.app.root === RootEnum.ROOT_SET_USERNAME);
+
+const useIsShareExtension = () => useSelector((state: any) => state.app.root === RootEnum.ROOT_SHARE_EXTENSION);
+
+// ─── SetUsername inline navigator ────────────────────────────────────────────
+
+const SetUsernameStack = createNativeStackNavigator({
+	screenOptions: defaultHeader,
+	screens: { SetUsernameView }
+});
+
+// ─── Root navigator ───────────────────────────────────────────────────────────
+
+const RootNavigator = createNativeStackNavigator({
+	screenOptions: { headerShown: false, animation: 'none' },
+	groups: {
+		Loading: { if: useIsLoading, screens: { AuthLoading: AuthLoadingView } },
+		Outside: { if: useIsOutside, screens: { OutsideStack } },
+		MasterDetail: { if: useIsMasterDetail, screens: { MasterDetailStack } },
+		Inside: { if: useIsInside, screens: { InsideStack } },
+		SetUsername: { if: useIsSetUsername, screens: { SetUsernameStack } },
+		ShareExtension: { if: useIsShareExtension, screens: { ShareExtensionStack } }
+	}
+}).with(({ Navigator }) => {
+	'use memo';
+
 	const { theme } = useContext(ThemeContext);
+	return <Navigator screenOptions={{ navigationBarColor: themes[theme].surfaceLight }} />;
+});
+
+const AppNavigation = createStaticNavigation(RootNavigator);
+
+// ─── Root component ───────────────────────────────────────────────────────────
+
+const AppContainer = () => {
+	const { theme } = useContext(ThemeContext);
+	const root = useSelector((state: any) => state.app.root);
 
 	useEffect(() => {
 		if (root) {
@@ -45,17 +79,11 @@ const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: bool
 		}
 	}, [root]);
 
-	if (!root) {
-		return null;
-	}
-
-	const navTheme = navigationTheme(theme);
-
 	return (
 		<>
 			<MediaCallHeader />
-			<NavigationContainer
-				theme={navTheme}
+			<AppNavigation
+				theme={navigationTheme(theme)}
 				ref={Navigation.navigationRef}
 				onReady={() => {
 					emitter.emit('navigationReady');
@@ -67,30 +95,10 @@ const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: bool
 						setCurrentScreen(currentRouteName);
 					}
 					Navigation.routeNameRef.current = currentRouteName;
-				}}>
-				<Stack.Navigator
-					screenOptions={{ headerShown: false, animation: 'none', navigationBarColor: themes[theme].surfaceLight }}>
-					{root === RootEnum.ROOT_LOADING || root === RootEnum.ROOT_LOADING_SHARE_EXTENSION ? (
-						<Stack.Screen name='AuthLoading' component={AuthLoadingView} />
-					) : null}
-					{root === RootEnum.ROOT_OUTSIDE ? <Stack.Screen name='OutsideStack' component={OutsideStack} /> : null}
-					{root === RootEnum.ROOT_INSIDE && isMasterDetail ? (
-						<Stack.Screen name='MasterDetailStack' component={MasterDetailStack} />
-					) : null}
-					{root === RootEnum.ROOT_INSIDE && !isMasterDetail ? <Stack.Screen name='InsideStack' component={InsideStack} /> : null}
-					{root === RootEnum.ROOT_SET_USERNAME ? <Stack.Screen name='SetUsernameStack' component={SetUsernameStack} /> : null}
-					{root === RootEnum.ROOT_SHARE_EXTENSION ? (
-						<Stack.Screen name='ShareExtensionStack' component={ShareExtensionStack} />
-					) : null}
-				</Stack.Navigator>
-			</NavigationContainer>
+				}}
+			/>
 		</>
 	);
-});
-const mapStateToProps = (state: any) => ({
-	root: state.app.root,
-	isMasterDetail: state.app.isMasterDetail
-});
+};
 
-const AppContainer = connect(mapStateToProps)(App);
 export default AppContainer;

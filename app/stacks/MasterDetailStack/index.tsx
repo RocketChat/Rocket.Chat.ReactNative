@@ -314,6 +314,4 @@ const InsideStack = createNativeStackNavigator({
 
 export type MasterDetailInsideStaticParamList = StaticParamList<typeof InsideStack>;
 
-const MasterDetailStack = InsideStack.getComponent();
-
-export default MasterDetailStack;
+export default InsideStack;
