@@ -13,6 +13,7 @@ import { type ISubscription, type IUser, SubscriptionType } from '../../definiti
 import I18n from '../../i18n';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
 import { getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/methods/helpers';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 import { handleIgnore } from '../../lib/methods/helpers/handleIgnore';
@@ -55,7 +56,6 @@ const RoomInfoView = (): ReactElement => {
 	const subscription = useRef<Subscription | undefined>(undefined);
 
 	const {
-		isMasterDetail,
 		subscribedRoom,
 		usersRoles,
 		roles,
@@ -66,7 +66,6 @@ const RoomInfoView = (): ReactElement => {
 		editLivechatRoomCustomfields
 	} = useAppSelector(state => ({
 		subscribedRoom: state.room.subscribedRoom,
-		isMasterDetail: state.app.isMasterDetail,
 		roles: state.roles,
 		usersRoles: state.usersRoles,
 		serverVersion: state.server.version,
@@ -75,6 +74,7 @@ const RoomInfoView = (): ReactElement => {
 		editOmnichannelContact: state.permissions['edit-omnichannel-contact'],
 		editLivechatRoomCustomfields: state.permissions['edit-livechat-room-customfields']
 	}));
+	const isMasterDetail = useMasterDetail();
 
 	const { colors } = useTheme();
 

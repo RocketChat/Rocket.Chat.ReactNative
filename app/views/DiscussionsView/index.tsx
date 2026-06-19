@@ -19,6 +19,7 @@ import SearchHeader from '../../containers/SearchHeader';
 import Item from './Item';
 import { getDiscussions } from '../../lib/services/restApi';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 
 const API_FETCH_COUNT = 50;
@@ -37,7 +38,7 @@ const DiscussionsView = () => {
 	const t = route.params?.t;
 
 	const baseUrl = useAppSelector(state => state.server?.server);
-	const isMasterDetail = useAppSelector(state => state.app?.isMasterDetail);
+	const isMasterDetail = useMasterDetail();
 
 	const [loading, setLoading] = useState(false);
 	const [discussions, setDiscussions] = useState<IMessageFromServer[]>([]);

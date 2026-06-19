@@ -9,9 +9,10 @@ import sharedStyles from '../../views/Styles';
 import { themes } from '../../lib/constants/colors';
 import { useTheme } from '../../theme';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
-import { type IApplicationState, type ISubscription, type SubscriptionType } from '../../definitions';
+import { type ISubscription, type SubscriptionType } from '../../definitions';
 import { hideNotification } from '../../lib/methods/helpers/notifications';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
 import Touch from '../Touch';
 
 export interface INotifierComponent {
@@ -130,8 +131,6 @@ const NotifierComponent = memo(({ notification, isMasterDetail }: INotifierCompo
 	);
 });
 
-const mapStateToProps = (state: IApplicationState) => ({
-	isMasterDetail: state.app.isMasterDetail
-});
+const mapStateToProps = () => ({});
 
-export default connect(mapStateToProps)(NotifierComponent);
+export default connect(mapStateToProps)(withMasterDetail(NotifierComponent));

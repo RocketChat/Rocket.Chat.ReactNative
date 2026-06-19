@@ -16,8 +16,8 @@ import { ICON_SIZE } from '../containers/List/constants';
 import SearchBox from '../containers/SearchBox';
 import Radio from '../containers/Radio';
 import sharedStyles from './Styles';
-import { type IApplicationState } from '../definitions';
 import { type TDataSelect } from '../definitions/IDataSelect';
+import { withMasterDetail } from '../lib/hooks/useMasterDetail';
 
 const styles = StyleSheet.create({
 	buttonText: {
@@ -208,8 +208,6 @@ class SelectListView extends Component<ISelectListViewProps, ISelectListViewStat
 	}
 }
 
-const mapStateToProps = (state: IApplicationState) => ({
-	isMasterDetail: state.app.isMasterDetail
-});
+const mapStateToProps = () => ({});
 
-export default connect(mapStateToProps)(withTheme(SelectListView));
+export default connect(mapStateToProps)(withTheme(withMasterDetail(SelectListView)));

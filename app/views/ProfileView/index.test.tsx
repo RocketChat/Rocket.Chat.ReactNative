@@ -61,7 +61,7 @@ const user = {
 
 const buildState = () => ({
 	login: { user },
-	app: { isMasterDetail: false },
+	app: {},
 	server: { version: '7.0.0' },
 	settings: {
 		Accounts_AllowEmailChange: true,
