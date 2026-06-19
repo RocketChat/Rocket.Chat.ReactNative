@@ -131,4 +131,37 @@ describe('RoomHeaderContainer', () => {
 		const props = mockChild.mock.calls[0][0];
 		expect(props.roomUserId).toBe('user-123');
 	});
+
+	it('should handle activeUser with offline status', () => {
+		connect();
+		mockedStore.dispatch(setActiveUsers({ 'user-123': { status: 'offline', statusText: '', statusExpiresAt: undefined } }));
+
+		renderContainer();
+
+		const props = mockChild.mock.calls[0][0];
+		expect(props.subtitle).toBe('Offline');
+	});
+
+	it('should use statusText even when status is undefined', () => {
+		connect();
+		mockedStore.dispatch(
+			setActiveUsers({
+				'user-123': { status: undefined, statusText: 'Custom text', statusExpiresAt: undefined } as any
+			})
+		);
+
+		renderContainer();
+
+		const props = mockChild.mock.calls[0][0];
+		expect(props.subtitle).toBe('Custom text');
+	});
+
+	it('should pass onPress to RoomHeader', () => {
+		connect();
+
+		renderContainer();
+
+		const props = mockChild.mock.calls[0][0];
+		expect(props.onPress).toBe(defaultProps.onPress);
+	});
 });

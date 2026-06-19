@@ -1,5 +1,5 @@
 import { type ReactNode } from 'react';
-import { fireEvent, render, screen } from '@testing-library/react-native';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
 import { mockedStore } from '../../reducers/mockedStore';
@@ -45,6 +45,12 @@ jest.mock('../../lib/methods/helpers/showToast', () => ({
 const mockShowErrorAlertWithEMessage = jest.fn();
 jest.mock('../../lib/methods/helpers/info', () => ({
 	showErrorAlertWithEMessage: (...args: unknown[]) => mockShowErrorAlertWithEMessage(...args)
+}));
+
+const mockShowActionSheet = jest.fn();
+const mockHideActionSheet = jest.fn();
+jest.mock('../../containers/ActionSheet', () => ({
+	useActionSheet: () => ({ showActionSheet: mockShowActionSheet, hideActionSheet: mockHideActionSheet })
 }));
 
 const Wrapper = ({ children }: { children: ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
@@ -231,12 +237,9 @@ describe('StatusView', () => {
 			renderStatusView();
 
 			fireEvent.press(screen.getByTestId('status-view-busy'));
-
 			fireEvent.press(screen.getByTestId('status-view-submit'));
 
-			await screen.findByTestId('status-view-submit');
-
-			expect(mockShowErrorAlertWithEMessage).toHaveBeenCalledWith(error);
+			await waitFor(() => expect(mockShowErrorAlertWithEMessage).toHaveBeenCalledWith(error));
 		});
 	});
 
@@ -249,6 +252,48 @@ describe('StatusView', () => {
 			renderStatusView();
 
 			expect(screen.getByTestId('status-view-clear-after')).toBeOnTheScreen();
+		});
+
+		it('should not pass statusExpiresAt on submit when picker was not touched', () => {
+			mockedStore.dispatch(
+				setUser({
+					id: 'user-id',
+					username: 'user',
+					status: 'away',
+					statusText: '',
+					statusExpiresAt: '2026-06-20T15:00:00.000Z'
+				})
+			);
+			mockedStore.dispatch(selectServerSuccess({ server: 'https://example.com', version: '8.6.0', name: 'Test' }));
+			mockedStore.dispatch(addSettings({ Accounts_AllowInvisibleStatusOption: true }));
+			mockSetUserStatus.mockResolvedValue(undefined);
+
+			renderStatusView();
+
+			fireEvent.press(screen.getByTestId('status-view-online'));
+			fireEvent.press(screen.getByTestId('status-view-submit'));
+
+			expect(mockSetUserStatus).toHaveBeenCalledWith('online', '', undefined);
+		});
+
+		it('should pass expiresAt on submit when picker is interacted with', () => {
+			mockedStore.dispatch(setUser({ id: 'user-id', username: 'user', status: 'online', statusText: '' }));
+			mockedStore.dispatch(selectServerSuccess({ server: 'https://example.com', version: '8.6.0', name: 'Test' }));
+			mockedStore.dispatch(addSettings({ Accounts_AllowInvisibleStatusOption: true }));
+			mockSetUserStatus.mockResolvedValue(undefined);
+
+			renderStatusView();
+
+			fireEvent.press(screen.getByTestId('status-view-clear-after'));
+
+			expect(mockShowActionSheet).toHaveBeenCalled();
+			const { children } = mockShowActionSheet.mock.calls[0][0] as { children: any };
+			const { onConfirm } = children.props;
+			onConfirm('30', null);
+
+			fireEvent.press(screen.getByTestId('status-view-submit'));
+
+			expect(mockSetUserStatus).toHaveBeenCalledWith('online', '', expect.stringContaining('2026-'));
 		});
 	});
 });
