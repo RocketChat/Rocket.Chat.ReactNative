@@ -130,10 +130,9 @@ const StatusView = (): ReactElement => {
 	const inputValues = watch();
 	const { statusText } = inputValues;
 
-	const [clearAfter, setClearAfter] = useState<ClearAfterValue>(() => getInitialClearAfterState(user.statusExpiresAt).value);
-	const [clearAfterDate, setClearAfterDate] = useState<Date | null>(
-		() => getInitialClearAfterState(user.statusExpiresAt).customDate
-	);
+	const initialClearAfterState = useMemo(() => getInitialClearAfterState(user.statusExpiresAt), []);
+	const [clearAfter, setClearAfter] = useState<ClearAfterValue>(initialClearAfterState.value);
+	const [clearAfterDate, setClearAfterDate] = useState<Date | null>(initialClearAfterState.customDate);
 	const clearAfterTouched = useRef(false);
 
 	const dispatch = useDispatch();
@@ -171,7 +170,13 @@ const StatusView = (): ReactElement => {
 		sendLoadingEvent({ visible: true });
 		try {
 			await setUserStatus(status, statusText, expiresAt);
-			dispatch(setUser({ statusText, status, ...(expiresAt !== undefined && { statusExpiresAt: expiresAt ?? undefined }) }));
+			dispatch(
+				setUser({
+					statusText,
+					status,
+					...(expiresAt !== undefined && { statusExpiresAt: expiresAt ?? undefined })
+				})
+			);
 			logEvent(events.STATUS_CUSTOM);
 			showToast(I18n.t('Status_saved_successfully'));
 		} catch (e: any) {

@@ -16,5 +16,12 @@ export default StyleSheet.create({
 	},
 	confirmButton: {
 		marginTop: 24
+	},
+	listItem: {
+		marginTop: 36
+	},
+	datePickerContainer: {
+		justifyContent: 'center',
+		alignItems: 'center'
 	}
 });

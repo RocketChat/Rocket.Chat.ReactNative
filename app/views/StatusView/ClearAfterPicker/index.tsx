@@ -49,7 +49,7 @@ const ClearAfterPicker = ({ value, customDate, onChange }: IClearAfterPickerProp
 				onPress={handlePress}
 				right={() => <Text style={[styles.pickerText, { color: colors.fontInfo }]}>{getDisplayLabel()}</Text>}
 				additionalAccessibilityLabel={getDisplayLabel()}
-				style={{ marginTop: 36 }}
+				style={styles.listItem}
 			/>
 			<List.Separator />
 			<List.Info info='Status_clear_after_hint' />

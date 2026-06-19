@@ -20,10 +20,10 @@ interface IClearAfterSheetContentProps {
 const ClearAfterSheetContent = ({ initialValue, initialDate, onConfirm }: IClearAfterSheetContentProps): ReactElement => {
 	'use memo';
 	const [pendingValue, setPendingValue] = useState<ClearAfterValue>(initialValue);
-	const [pendingDate] = useState<Date>(initialDate ?? new Date());
 	const { colors } = useTheme();
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const insets = useSafeAreaInsets();
+	const pendingDate = initialDate ?? new Date();
 
 	const openAndroidDateTimePicker = (baseDate: Date) => {
 		DateTimePickerAndroid.open({

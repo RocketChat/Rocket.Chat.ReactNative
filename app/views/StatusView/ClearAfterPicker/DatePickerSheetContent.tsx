@@ -22,13 +22,7 @@ const DatePickerSheetContent = ({ initialDate, onConfirm }: IDatePickerSheetCont
 	const insets = useSafeAreaInsets();
 
 	return (
-		<View
-			style={{
-				backgroundColor: colors.surfaceRoom,
-				marginBottom: insets.bottom,
-				justifyContent: 'center',
-				alignItems: 'center'
-			}}>
+		<View style={[styles.datePickerContainer, { backgroundColor: colors.surfaceRoom, marginBottom: insets.bottom }]}>
 			<DateTimePicker
 				mode='datetime'
 				display='inline'
