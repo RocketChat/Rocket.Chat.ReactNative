@@ -5,7 +5,7 @@ import {
 	type NativeStackNavigationProp
 } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { type StaticParamList, type StaticScreenProps, useNavigation } from '@react-navigation/native';
+import { type StaticScreenProps, useNavigation } from '@react-navigation/native';
 
 import { ThemeContext } from '../../theme';
 import { defaultHeader, themedHeader, drawerStyle } from '../../lib/methods/helpers/navigation';
@@ -84,7 +84,7 @@ import CallView from '../../views/CallView';
 // navigation prop referencing ModalStackParamList ← StaticParamList<typeof ModalStack>
 // ← these components. HOC static properties (navigationOptions) are forwarded by
 // hoistNonReactStatics inside connect() and withTheme(), so `.navigationOptions`
-// is still reachable on the wrapped imports for options callbacks.
+// is still reachable on the connect/withTheme-wrapped default exports for options callbacks.
 
 const RoomViewScreen: ComponentType<StaticScreenProps<MasterDetailChatsStackParamList['RoomView']>> = withNavigation(
 	RoomView as any
@@ -108,6 +108,12 @@ const ThreadMessagesViewScreen: ComponentType<StaticScreenProps<ModalStackParamL
 ) as any;
 const TeamChannelsViewScreen: ComponentType<StaticScreenProps<ModalStackParamList['TeamChannelsView']>> = withNavigation(
 	TeamChannelsView as any
+) as any;
+const ReadReceiptsViewScreen: ComponentType<StaticScreenProps<ModalStackParamList['ReadReceiptsView']>> = withNavigation(
+	ReadReceiptsView as any
+) as any;
+const ScreenLockConfigViewScreen: ComponentType<StaticScreenProps<ModalStackParamList['ScreenLockConfigView']>> = withNavigation(
+	ScreenLockConfigView as any
 ) as any;
 
 // function components
@@ -184,7 +190,7 @@ const DrawerNav = createDrawerNavigator({
 	screens: {
 		ChatsStackNavigator: ChatsStack
 	}
-} as any);
+});
 
 // ─── ModalStackNavigator ──────────────────────────────────────────────────────
 
@@ -227,7 +233,7 @@ const ModalStack = createNativeStackNavigator({
 		DiscussionsView,
 		TeamChannelsView: TeamChannelsViewScreen,
 		ReadReceiptsView: createNativeStackScreen({
-			screen: ReadReceiptsView as any,
+			screen: ReadReceiptsViewScreen,
 			options: props => ReadReceiptsView.navigationOptions!({ ...props, isMasterDetail: true })
 		}),
 		SettingsView,
@@ -236,7 +242,7 @@ const ModalStack = createNativeStackNavigator({
 		ThemeView,
 		DefaultBrowserView,
 		ScreenLockConfigView: createNativeStackScreen({
-			screen: ScreenLockConfigView as any,
+			screen: ScreenLockConfigViewScreen,
 			options: ScreenLockConfigView.navigationOptions
 		}),
 		StatusView,
@@ -311,8 +317,6 @@ const InsideStack = createNativeStackNavigator({
 	const { theme } = useContext(ThemeContext);
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
-
-export type MasterDetailInsideStaticParamList = StaticParamList<typeof InsideStack>;
 
 const MasterDetailStack = InsideStack.getComponent();
 
