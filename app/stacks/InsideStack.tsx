@@ -6,13 +6,12 @@ import {
 	type NativeStackNavigationOptions
 } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { type StaticParamList, type StaticScreenProps } from '@react-navigation/native';
+import { type StaticScreenProps } from '@react-navigation/native';
 
 import { ThemeContext } from '../theme';
 import { defaultHeader, themedHeader } from '../lib/methods/helpers/navigation';
 import withNavigation from '../lib/navigation/withNavigation';
 import Sidebar from '../views/SidebarView';
-import I18n from '../i18n';
 import { isIOS } from '../lib/methods/helpers';
 import { type TNavigation } from './stackType';
 // Chats Stack
@@ -86,42 +85,24 @@ import StatusView from '../views/StatusView';
 import ShareView from '../views/ShareView';
 import CallView from '../views/CallView';
 
-// Cast through `any` to break the type cycle: StaticParamList<typeof Nav> ← these components ← Nav param lists.
-// Use Record<string,any> (not `any`) so StaticParamList infers a concrete param type, not unknown/undefined.
-const RoomViewScreen: ComponentType<StaticScreenProps<Record<string, any>>> = withNavigation(RoomView as any) as any;
-const RoomActionsViewScreen: ComponentType<StaticScreenProps<Record<string, any>>> = withNavigation(
-	RoomActionsView as any
-) as any;
-const SelectListViewScreen: ComponentType<StaticScreenProps<Record<string, any>>> = withNavigation(SelectListView as any) as any;
-const RoomInfoEditViewScreen: ComponentType<StaticScreenProps<Record<string, any>>> = withNavigation(
-	RoomInfoEditView as any
-) as any;
-const SearchMessagesViewScreen: ComponentType<StaticScreenProps<Record<string, any>>> = withNavigation(
-	SearchMessagesView as any
-) as any;
-const InviteUsersViewScreen: ComponentType<StaticScreenProps<Record<string, any>>> = withNavigation(
-	InviteUsersView as any
-) as any;
-const MessagesViewScreen: ComponentType<StaticScreenProps<Record<string, any>>> = withNavigation(MessagesView as any) as any;
-const DirectoryViewScreen: ComponentType<StaticScreenProps<Record<string, any>>> = withNavigation(DirectoryView as any) as any;
+// withNavigation injects navigation via useNavigation() for class components and function components
+// that take navigation as a prop. Cast through `any` to break the type cycle.
+const RoomViewScreen = withNavigation(RoomView as any) as any;
+const RoomActionsViewScreen = withNavigation(RoomActionsView as any) as any;
+const SelectListViewScreen = withNavigation(SelectListView as any) as any;
+const RoomInfoEditViewScreen = withNavigation(RoomInfoEditView as any) as any;
+const SearchMessagesViewScreen = withNavigation(SearchMessagesView as any) as any;
+const InviteUsersViewScreen = withNavigation(InviteUsersView as any) as any;
+const MessagesViewScreen = withNavigation(MessagesView as any) as any;
+const DirectoryViewScreen = withNavigation(DirectoryView as any) as any;
 const PushTroubleshootViewScreen: ComponentType<StaticScreenProps<undefined>> = withNavigation(
 	PushTroubleshootView as any
 ) as any;
-const LivechatEditViewScreen: ComponentType<StaticScreenProps<Record<string, any>>> = withNavigation(
-	LivechatEditView as any
-) as any;
-const ThreadMessagesViewScreen: ComponentType<StaticScreenProps<Record<string, any>>> = withNavigation(
-	ThreadMessagesView as any
-) as any;
-const TeamChannelsViewScreen: ComponentType<StaticScreenProps<Record<string, any>>> = withNavigation(
-	TeamChannelsView as any
-) as any;
-const ReadReceiptsViewScreen: ComponentType<StaticScreenProps<Record<string, any>>> = withNavigation(
-	ReadReceiptsView as any
-) as any;
-const CannedResponsesListViewScreen: ComponentType<StaticScreenProps<Record<string, any>>> = withNavigation(
-	CannedResponsesListView as any
-) as any;
+const LivechatEditViewScreen = withNavigation(LivechatEditView as any) as any;
+const ThreadMessagesViewScreen = withNavigation(ThreadMessagesView as any) as any;
+const TeamChannelsViewScreen = withNavigation(TeamChannelsView as any) as any;
+const ReadReceiptsViewScreen = withNavigation(ReadReceiptsView as any) as any;
+const CannedResponsesListViewScreen = withNavigation(CannedResponsesListView as any) as any;
 const ProfileViewScreen: ComponentType<StaticScreenProps<undefined>> = withNavigation(ProfileView as any) as any;
 const ChangePasswordViewScreen: ComponentType<StaticScreenProps<undefined>> = withNavigation(ChangePasswordView as any) as any;
 const UserPreferencesViewScreen: ComponentType<StaticScreenProps<undefined>> = withNavigation(UserPreferencesView as any) as any;
@@ -129,32 +110,28 @@ const SecurityPrivacyViewScreen: ComponentType<StaticScreenProps<undefined>> = w
 const ScreenLockConfigViewScreen: ComponentType<StaticScreenProps<undefined>> = withNavigation(
 	ScreenLockConfigView as any
 ) as any;
-const CreateDiscussionViewScreen: ComponentType<StaticScreenProps<Record<string, any>>> = withNavigation(
-	CreateDiscussionView as any
-) as any;
+const CreateDiscussionViewScreen = withNavigation(CreateDiscussionView as any) as any;
 const E2EEnterYourPasswordViewScreen: ComponentType<StaticScreenProps<undefined>> = withNavigation(
 	E2EEnterYourPasswordView as any
 ) as any;
-const ShareViewScreen: ComponentType<StaticScreenProps<Record<string, any>>> = withNavigation(ShareView as any) as any;
-const ModalBlockViewScreen: ComponentType<StaticScreenProps<Record<string, any>>> = withNavigation(ModalBlockView as any) as any;
-
-// Bare screens with params: Record<string,any> so StaticParamList infers concrete param type, not unknown/undefined.
-const RoomInfoViewScreen: ComponentType<StaticScreenProps<Record<string, any>>> = RoomInfoView as any;
-const ReportUserViewScreen: ComponentType<StaticScreenProps<Record<string, any>>> = ReportUserView as any;
-const RoomMembersViewScreen: ComponentType<StaticScreenProps<Record<string, any>>> = RoomMembersView as any;
-const DiscussionsViewScreen: ComponentType<StaticScreenProps<Record<string, any>>> = DiscussionsView as any;
-const SelectedUsersViewScreen: ComponentType<StaticScreenProps<Record<string, any>>> = SelectedUsersView as any;
-const InviteUsersEditViewScreen: ComponentType<StaticScreenProps<Record<string, any>>> = InviteUsersEditView as any;
-const AutoTranslateViewScreen: ComponentType<StaticScreenProps<Record<string, any>>> = AutoTranslateView as any;
-const NotificationPrefViewScreen: ComponentType<StaticScreenProps<Record<string, any>>> = NotificationPrefView as any;
-const E2EEToggleRoomViewScreen: ComponentType<StaticScreenProps<Record<string, any>>> = E2EEToggleRoomView as any;
-const CloseLivechatViewScreen: ComponentType<StaticScreenProps<Record<string, any>>> = CloseLivechatView as any;
-const CreateChannelViewScreen: ComponentType<StaticScreenProps<Record<string, any>>> = CreateChannelView as any;
-const AddChannelTeamViewScreen: ComponentType<StaticScreenProps<Record<string, any>>> = AddChannelTeamView as any;
-const AddExistingChannelViewScreen: ComponentType<StaticScreenProps<Record<string, any>>> = AddExistingChannelView as any;
-const CannedResponseDetailScreen: ComponentType<StaticScreenProps<Record<string, any>>> = CannedResponseDetail as any;
-const JitsiMeetViewScreen: ComponentType<StaticScreenProps<Record<string, any>>> = JitsiMeetView as any;
-const ChangeAvatarViewScreen: ComponentType<StaticScreenProps<Record<string, any>>> = ChangeAvatarView as any;
+const ShareViewScreen = withNavigation(ShareView as any) as any;
+const ModalBlockViewScreen = withNavigation(ModalBlockView as any) as any;
+const RoomInfoViewScreen = RoomInfoView as any;
+const ReportUserViewScreen = ReportUserView as any;
+const RoomMembersViewScreen = RoomMembersView as any;
+const DiscussionsViewScreen = DiscussionsView as any;
+const SelectedUsersViewScreen = SelectedUsersView as any;
+const InviteUsersEditViewScreen = InviteUsersEditView as any;
+const AutoTranslateViewScreen = AutoTranslateView as any;
+const NotificationPrefViewScreen = NotificationPrefView as any;
+const E2EEToggleRoomViewScreen = E2EEToggleRoomView as any;
+const CloseLivechatViewScreen = CloseLivechatView as any;
+const CreateChannelViewScreen = CreateChannelView as any;
+const AddChannelTeamViewScreen = AddChannelTeamView as any;
+const AddExistingChannelViewScreen = AddExistingChannelView as any;
+const CannedResponseDetailScreen = CannedResponseDetail as any;
+const JitsiMeetViewScreen = JitsiMeetView as any;
+const ChangeAvatarViewScreen = ChangeAvatarView as any;
 const UserNotificationPrefViewScreen: ComponentType<StaticScreenProps<undefined>> = UserNotificationPrefView as any;
 const SettingsViewScreen: ComponentType<StaticScreenProps<undefined>> = SettingsView as any;
 const E2EEncryptionSecurityViewScreen: ComponentType<StaticScreenProps<undefined>> = E2EEncryptionSecurityView as any;
@@ -168,14 +145,14 @@ const DisplayPrefsViewScreen: ComponentType<StaticScreenProps<undefined>> = Disp
 const ThemeViewScreen: ComponentType<StaticScreenProps<undefined>> = ThemeView as any;
 const AdminPanelViewScreen: ComponentType<StaticScreenProps<undefined>> = AdminPanelView as any;
 const NewMessageViewScreen: ComponentType<StaticScreenProps<undefined>> = NewMessageView as any;
-const ForwardMessageViewScreen: ComponentType<StaticScreenProps<Record<string, any>>> = ForwardMessageView as any;
+const ForwardMessageViewScreen = ForwardMessageView as any;
 const E2ESaveYourPasswordViewScreen: ComponentType<StaticScreenProps<undefined>> = E2ESaveYourPasswordView as any;
-const E2EHowItWorksViewScreen: ComponentType<StaticScreenProps<Record<string, any>>> = E2EHowItWorksView as any;
+const E2EHowItWorksViewScreen = E2EHowItWorksView as any;
 const StatusViewScreen: ComponentType<StaticScreenProps<undefined>> = StatusView as any;
 const CallViewScreen: ComponentType<StaticScreenProps<undefined>> = CallView as any;
 const QueueListViewScreen: ComponentType<StaticScreenProps<undefined>> = QueueListView as any;
 
-// Explicit param-type annotations so StaticParamList preserves the TNavigation screen types.
+// Explicit param-type annotations keep precise types for the TNavigation screens.
 const PickerViewScreen: ComponentType<StaticScreenProps<TNavigation['PickerView']>> = PickerView as any;
 const ForwardLivechatViewScreen: ComponentType<StaticScreenProps<TNavigation['ForwardLivechatView']>> =
 	ForwardLivechatView as any;
@@ -188,7 +165,7 @@ const ChatsStack = createNativeStackNavigator({
 		RoomView: RoomViewScreen,
 		RoomActionsView: createNativeStackScreen({
 			screen: RoomActionsViewScreen,
-			options: { title: I18n.t('Actions') }
+			options: (args: any): NativeStackNavigationOptions => (RoomActionsView as any).navigationOptions(args)
 		}),
 		SelectListView: SelectListViewScreen,
 		RoomInfoView: RoomInfoViewScreen,
@@ -221,7 +198,7 @@ const ChatsStack = createNativeStackNavigator({
 		AddExistingChannelView: AddExistingChannelViewScreen,
 		ReadReceiptsView: createNativeStackScreen({
 			screen: ReadReceiptsViewScreen,
-			options: { title: I18n.t('Read_Receipt') }
+			options: (args: any): NativeStackNavigationOptions => (ReadReceiptsView as any).navigationOptions(args)
 		}),
 		QueueListView: QueueListViewScreen,
 		CannedResponsesListView: CannedResponsesListViewScreen,
@@ -270,7 +247,7 @@ const SettingsStack = createNativeStackNavigator({
 		LegalView: LegalViewScreen,
 		ScreenLockConfigView: createNativeStackScreen({
 			screen: ScreenLockConfigViewScreen,
-			options: { title: I18n.t('Screen_lock') }
+			options: (): NativeStackNavigationOptions => (ScreenLockConfigView as any).navigationOptions()
 		})
 	}
 }).with(({ Navigator }) => {
@@ -412,17 +389,6 @@ const InsideStack = createNativeStackNavigator({
 	const { theme } = useContext(ThemeContext);
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
-
-export type ChatsStackParamList = StaticParamList<typeof ChatsStack>;
-export type ProfileStackParamList = StaticParamList<typeof ProfileStack>;
-export type SettingsStackParamList = StaticParamList<typeof SettingsStack>;
-export type AdminPanelStackParamList = StaticParamList<typeof AdminPanelStack>;
-export type AccessibilityStackParamList = StaticParamList<typeof AccessibilityStack>;
-export type DrawerParamList = StaticParamList<typeof DrawerStack>;
-export type NewMessageStackParamList = StaticParamList<typeof NewMessageStack>;
-export type E2ESaveYourPasswordStackParamList = StaticParamList<typeof E2ESaveYourPasswordStack>;
-export type E2EEnterYourPasswordStackParamList = StaticParamList<typeof E2EEnterYourPasswordStack>;
-export type InsideStackParamList = StaticParamList<typeof InsideStack>;
 
 const InsideStackScreen = InsideStack.getComponent();
 
