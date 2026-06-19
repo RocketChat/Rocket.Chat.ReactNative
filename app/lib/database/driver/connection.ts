@@ -1,8 +1,7 @@
 /**
  * Database connection lifecycle — open, key, configure, wrap with Drizzle, close.
  *
- * Files outside app/lib/database/driver/ must not import expo-sqlite; an ESLint rule
- * enforcing the ban arrives with the facade work.
+ * Files outside app/lib/database/driver/ must not import expo-sqlite.
  *
  * Open sequence (non-negotiable invariants):
  *   1. openDatabaseAsync → raw SQLiteDatabase handle
