@@ -32,6 +32,8 @@ const FooterComponent = ({
 	disabled,
 	onSubmit
 }: IFooterComponentProps): ReactElement => {
+	'use memo';
+
 	return (
 		<View>
 			{supportsStatusExpiry && (
