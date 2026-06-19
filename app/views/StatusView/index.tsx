@@ -79,6 +79,7 @@ const Status = ({
 	setStatus: (status: TUserStatus) => void;
 }) => {
 	'use memo';
+
 	const { id, name } = statusType;
 	return (
 		<>
@@ -104,6 +105,7 @@ const Status = ({
 
 const StatusView = (): ReactElement => {
 	'use memo';
+
 	const user = useSelector((state: IApplicationState) => getUserSelector(state));
 	const isMasterDetail = useSelector((state: IApplicationState) => state.app.isMasterDetail);
 	const Accounts_AllowInvisibleStatusOption = useSelector(
@@ -112,10 +114,7 @@ const StatusView = (): ReactElement => {
 	const serverVersion = useSelector((state: IApplicationState) => state.server.version);
 	const supportsStatusExpiry = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.6.0');
 
-	const defaultFormValues = useMemo(
-		() => ({ statusText: user.statusText || '', status: user.status }),
-		[]
-	);
+	const defaultFormValues = useMemo(() => ({ statusText: user.statusText || '', status: user.status }), []);
 
 	const {
 		control,

@@ -36,9 +36,7 @@ const FooterComponent = ({
 
 	return (
 		<View>
-			{supportsStatusExpiry && (
-				<ClearAfterPicker value={clearAfter} customDate={clearAfterDate} onChange={onClearAfterChange} />
-			)}
+			{supportsStatusExpiry && <ClearAfterPicker value={clearAfter} customDate={clearAfterDate} onChange={onClearAfterChange} />}
 			<View style={[styles.buttonContainer, supportsStatusExpiry && styles.buttonContainerWithPicker]}>
 				<Button testID='status-view-submit' disabled={disabled} onPress={onSubmit} title={I18n.t('Save')} />
 			</View>
