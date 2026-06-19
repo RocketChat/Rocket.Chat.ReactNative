@@ -19,6 +19,10 @@ import {
 import { type ModalStackParamList } from './MasterDetailStack/types';
 import { type TNavigation } from './stackType';
 
+// ChatsStackParamList keeps hand-written specific types because:
+// - Views use composite navigation props that include cross-stack destinations (ModalStackNavigator
+//   for the tablet/MasterDetail modal stack, E2E stacks, etc.).
+// - Specific route param types prevent implicit `any` in view callbacks.
 export type ChatsStackParamList = {
 	ModalStackNavigator: NavigatorScreenParams<ModalStackParamList & TNavigation>;
 	E2ESaveYourPasswordStackNavigator: NavigatorScreenParams<E2ESaveYourPasswordStackParamList>;
@@ -43,7 +47,7 @@ export type ChatsStackParamList = {
 				usedCannedResponse?: string;
 				status?: string;
 		  }
-		| undefined; // Navigates back to RoomView already on stack
+		| undefined;
 	RoomActionsView: {
 		room: TSubscriptionModel;
 		member?: any;
@@ -135,7 +139,7 @@ export type ChatsStackParamList = {
 	};
 	LivechatEditView: {
 		room: ISubscription;
-		roomUser: any; // TODO: Change
+		roomUser: any;
 	};
 	ThreadMessagesView: {
 		rid: string;
@@ -146,7 +150,7 @@ export type ChatsStackParamList = {
 		joined: boolean;
 	};
 	CreateChannelView: {
-		isTeam?: boolean; // TODO: To check
+		isTeam?: boolean;
 		teamId?: string;
 	};
 	AddChannelTeamView: {
@@ -201,6 +205,9 @@ export type ProfileStackParamList = {
 	ChangePasswordView: undefined;
 };
 
+// SettingsStackParamList includes cross-stack entries (ProfileView, DisplayPrefsView,
+// AccessibilityAndAppearanceView) to support navigation from SettingsView to those screens
+// via the drawer/accessibility stack.
 export type SettingsStackParamList = {
 	LegalView: undefined;
 	SettingsView: undefined;
@@ -248,9 +255,9 @@ export type NewMessageStackParamList = {
 		buttonText?: string;
 		nextAction?: Function;
 		showSkipText?: boolean;
-	}; // TODO: Change
+	};
 	CreateChannelView?: {
-		isTeam?: boolean; // TODO: To check
+		isTeam?: boolean;
 		teamId?: string;
 	};
 	CreateDiscussionView: {
@@ -294,7 +301,7 @@ export type InsideStackParamList = {
 		startShareView: () => { text: string; selectedMessages: string[] };
 	};
 	ModalBlockView: {
-		data: any; // TODO: Change;
+		data: any;
 	};
 	CallView: undefined;
 };
