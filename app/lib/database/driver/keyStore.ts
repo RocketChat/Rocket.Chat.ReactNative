@@ -11,6 +11,8 @@
 import NativeDatabaseKeyStore from '../../native/NativeDatabaseKeyStore';
 import { installKeychainShim, type IKeychainShim } from './keyService';
 
+let _installed = false;
+
 function getNativeModule() {
 	if (!NativeDatabaseKeyStore) {
 		throw new Error('DatabaseKeyStore native module not found — ensure the module is linked and the app is rebuilt');
@@ -30,8 +32,10 @@ function makeNativeShim(): IKeychainShim {
 /**
  * Installs the native Keychain/Keystore shim into the key service.
  * Must be called once before any database is opened.
- * Safe to call multiple times (subsequent calls are no-ops in keyService).
+ * No-op after the first successful install.
  */
 export function installNativeKeychainShim(): void {
+	if (_installed) return;
 	installKeychainShim(makeNativeShim());
+	_installed = true;
 }
