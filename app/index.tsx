@@ -13,6 +13,8 @@ import { deepLinkingOpen } from './actions/deepLinking';
 import { ActionSheetProvider } from './containers/ActionSheet';
 import InAppNotification from './containers/InAppNotification';
 import Loading from './containers/Loading';
+import StatusBar from './containers/StatusBar';
+import ThemeContextProvider from './containers/ThemeContextProvider';
 import Toast from './containers/Toast';
 import TwoFactor from './containers/TwoFactor';
 import { type IThemePreference } from './definitions/ITheme';
@@ -41,10 +43,8 @@ import {
 import store from './lib/store';
 import { initStore } from './lib/store/auxStore';
 import { type TSupportedThemes } from './theme';
-import ThemeContextProvider from './containers/ThemeContextProvider';
 import ChangePasscodeView from './views/ChangePasscodeView';
 import ScreenLockedView from './views/ScreenLockedView';
-import StatusBar from './containers/StatusBar';
 
 enableScreens();
 initStore(store);
