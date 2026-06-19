@@ -52,6 +52,7 @@ jest.mock('expo-file-system', () => ({
 
 jest.mock('../keyService', () => ({
 	getOrCreateDatabaseKey: jest.fn(async (_name: string) => 'a'.repeat(64)),
+	getOrCreateDatabaseSalt: jest.fn(async (_name: string) => 'b'.repeat(32)),
 	deleteDatabaseKey: jest.fn(async () => {})
 }));
 
@@ -70,7 +71,7 @@ jest.mock('react-native', () => ({
 // ---------------------------------------------------------------------------
 
 import { openDatabaseAsync } from 'expo-sqlite';
-import { getOrCreateDatabaseKey } from '../keyService';
+import { getOrCreateDatabaseKey, getOrCreateDatabaseSalt } from '../keyService';
 
 beforeEach(() => {
 	execCalls.length = 0;
@@ -80,6 +81,7 @@ beforeEach(() => {
 	// Restore defaults after clearAllMocks
 	(openDatabaseAsync as jest.Mock).mockResolvedValue(mockSqlite);
 	(getOrCreateDatabaseKey as jest.Mock).mockResolvedValue('a'.repeat(64));
+	(getOrCreateDatabaseSalt as jest.Mock).mockResolvedValue('b'.repeat(32));
 	mockSqlite.execAsync.mockImplementation(async (sql: string) => {
 		execCalls.push(sql);
 	});
@@ -120,16 +122,35 @@ describe('deriveServerDbName', () => {
 // ---------------------------------------------------------------------------
 
 describe('open sequence', () => {
-	it('applies PRAGMA key before busy_timeout before WAL', async () => {
+	it('applies PRAGMA key, then cipher header + salt, then busy_timeout, then WAL — in one execAsync call', async () => {
 		await openServersDb();
 
-		const keyIdx = execCalls.findIndex(s => s.includes('PRAGMA key'));
-		const busyIdx = execCalls.findIndex(s => s.includes('busy_timeout'));
-		const walIdx = execCalls.findIndex(s => s.includes('journal_mode'));
+		// All 5 PRAGMAs are sent in a single multi-statement execAsync call.
+		expect(execCalls).toHaveLength(1);
+		const call = execCalls[0];
+		const keyPos = call.indexOf('PRAGMA key');
+		const headerPos = call.indexOf('cipher_plaintext_header_size');
+		const saltPos = call.indexOf('cipher_salt');
+		const busyPos = call.indexOf('busy_timeout');
+		const walPos = call.indexOf('journal_mode');
 
-		expect(keyIdx).toBeGreaterThanOrEqual(0);
-		expect(busyIdx).toBeGreaterThan(keyIdx);
-		expect(walIdx).toBeGreaterThan(busyIdx);
+		expect(keyPos).toBeGreaterThanOrEqual(0);
+		expect(headerPos).toBeGreaterThan(keyPos);
+		expect(saltPos).toBeGreaterThan(headerPos);
+		expect(busyPos).toBeGreaterThan(saltPos);
+		expect(walPos).toBeGreaterThan(busyPos);
+	});
+
+	it('sets cipher_plaintext_header_size = 32', async () => {
+		await openServersDb();
+		expect(execCalls.some(s => s.includes('cipher_plaintext_header_size = 32'))).toBe(true);
+	});
+
+	it('includes the raw-salt x-hex form in the cipher_salt statement', async () => {
+		await openServersDb();
+		const pragmaSalt = execCalls.find(s => s.includes('cipher_salt'));
+		expect(pragmaSalt).toMatch(/PRAGMA cipher_salt = "x'/);
+		expect(pragmaSalt).toMatch(/[0-9a-fA-F]{32}/);
 	});
 
 	it('includes the raw-key x-hex form in the PRAGMA key statement', async () => {

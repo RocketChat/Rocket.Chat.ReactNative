@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "c763e111-fa68-40aa-a5d3-42dfb43a7c9f",
+  "id": "cd85226c-6d5c-42de-990c-ff71944b5572",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "custom_emojis": {
@@ -32,14 +32,14 @@
           "name": "extension",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "_updated_at": {
           "name": "_updated_at",
           "type": "real",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         }
       },
@@ -77,14 +77,14 @@
           "name": "is_custom",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "count": {
           "name": "count",
           "type": "real",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         }
       },
@@ -122,35 +122,42 @@
           "name": "rid",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_updated_at": {
+          "name": "_updated_at",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true,
           "autoincrement": false
         },
         "ts": {
           "name": "ts",
           "type": "real",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "u": {
           "name": "u",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "alias": {
           "name": "alias",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "parse_urls": {
           "name": "parse_urls",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "groupable": {
@@ -184,13 +191,6 @@
         "urls": {
           "name": "urls",
           "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "_updated_at": {
-          "name": "_updated_at",
-          "type": "real",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -258,13 +258,6 @@
           "notNull": false,
           "autoincrement": false
         },
-        "tmid": {
-          "name": "tmid",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "tcount": {
           "name": "tcount",
           "type": "real",
@@ -321,6 +314,27 @@
           "notNull": false,
           "autoincrement": false
         },
+        "e2e": {
+          "name": "e2e",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "content": {
+          "name": "content",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "tmid": {
+          "name": "tmid",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "tmsg": {
           "name": "tmsg",
           "type": "text",
@@ -335,13 +349,6 @@
           "notNull": false,
           "autoincrement": false
         },
-        "e2e": {
-          "name": "e2e",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "tshow": {
           "name": "tshow",
           "type": "integer",
@@ -351,13 +358,6 @@
         },
         "md": {
           "name": "md",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "content": {
-          "name": "content",
           "type": "text",
           "primaryKey": false,
           "notNull": false,
@@ -399,7 +399,7 @@
           "name": "roles",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "_updated_at": {
@@ -454,28 +454,28 @@
           "name": "custom_fields",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "broadcast": {
           "name": "broadcast",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "encrypted": {
           "name": "encrypted",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "ro": {
           "name": "ro",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "v": {
@@ -652,49 +652,49 @@
           "name": "_id",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "f": {
           "name": "f",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "t": {
           "name": "t",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "ts": {
           "name": "ts",
           "type": "real",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "ls": {
           "name": "ls",
           "type": "real",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "name": {
           "name": "name",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "fname": {
           "name": "fname",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "sanitized_fname": {
@@ -708,21 +708,21 @@
           "name": "rid",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "open": {
           "name": "open",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "alert": {
           "name": "alert",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "roles": {
@@ -736,21 +736,21 @@
           "name": "unread",
           "type": "real",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "user_mentions": {
           "name": "user_mentions",
           "type": "real",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "group_mentions": {
           "name": "group_mentions",
           "type": "real",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "tunread": {
@@ -778,14 +778,14 @@
           "name": "room_updated_at",
           "type": "real",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "ro": {
           "name": "ro",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "last_open": {
@@ -855,7 +855,7 @@
           "name": "archived",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "join_code_required": {
@@ -925,7 +925,7 @@
           "name": "auto_translate_language",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "hide_unread_status": {
@@ -1044,7 +1044,7 @@
           "name": "team_id",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "team_main": {
@@ -1195,35 +1195,28 @@
           "name": "rid",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "subscription_id": {
-          "name": "subscription_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "_updated_at": {
           "name": "_updated_at",
           "type": "real",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "ts": {
           "name": "ts",
           "type": "real",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "u": {
           "name": "u",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "alias": {
@@ -1406,6 +1399,13 @@
           "type": "text",
           "primaryKey": false,
           "notNull": false,
+          "autoincrement": false
+        },
+        "subscription_id": {
+          "name": "subscription_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
           "autoincrement": false
         }
       },
@@ -1458,28 +1458,28 @@
           "name": "rid",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "_updated_at": {
           "name": "_updated_at",
           "type": "real",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "ts": {
           "name": "ts",
           "type": "real",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "u": {
           "name": "u",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "alias": {
@@ -1594,13 +1594,6 @@
           "notNull": false,
           "autoincrement": false
         },
-        "tmid": {
-          "name": "tmid",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "tcount": {
           "name": "tcount",
           "type": "real",
@@ -1671,6 +1664,13 @@
           "notNull": false,
           "autoincrement": false
         },
+        "tmid": {
+          "name": "tmid",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "draft_message": {
           "name": "draft_message",
           "type": "text",
@@ -1714,7 +1714,7 @@
           "name": "rid",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "name": {
@@ -1742,7 +1742,7 @@
           "name": "size",
           "type": "real",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "type": {
@@ -1763,14 +1763,14 @@
           "name": "progress",
           "type": "real",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "error": {
           "name": "error",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         }
       },
@@ -1802,7 +1802,7 @@
           "name": "_id",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "name": {
@@ -1816,7 +1816,7 @@
           "name": "username",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "avatar_etag": {

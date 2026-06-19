@@ -120,6 +120,10 @@ export function useTableQuery<T>(
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+	// Stable string derived from the tables list so the effect has a primitive dep
+	// rather than a spread that would differ on every render.
+	const tableKey = tables.slice().sort().join('\0');
+
 	useEffect(() => {
 		if (!dbHandle) {
 			setRows([]);
@@ -145,9 +149,9 @@ export function useTableQuery<T>(
 				timerRef.current = null;
 			}
 		};
-		// deps are caller-controlled; tables/debounceMs treated as stable across renders
+		// tableKey is a stable string derived from tables; debounceMs treated as stable
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [dbHandle, fetchAndReconcile, ...deps]);
+	}, [dbHandle, fetchAndReconcile, tableKey, ...deps]);
 
 	return rows;
 }
@@ -176,14 +180,6 @@ export function useRowObserve<T>(
 		return fetchRow(rowId);
 	});
 
-	const mounted = useRef(true);
-	useEffect(() => {
-		mounted.current = true;
-		return () => {
-			mounted.current = false;
-		};
-	}, []);
-
 	// Stable ref so the listener never captures a stale fetchRow
 	const fetchRowRef = useRef(fetchRow);
 	useEffect(() => {
@@ -203,7 +199,6 @@ export function useRowObserve<T>(
 			if (!eventMatchesDb(event, dbHandle.dbName)) return;
 			if (event.tableName !== tableName) return;
 			if (event.rowId !== rowId) return;
-			if (!mounted.current) return;
 			setRow(fetchRowRef.current(rowId));
 		});
 

@@ -1,8 +1,8 @@
 CREATE TABLE `servers_history` (
 	`id` text PRIMARY KEY NOT NULL,
-	`url` text,
+	`url` text NOT NULL,
 	`username` text,
-	`updated_at` real,
+	`updated_at` real NOT NULL,
 	`icon_url` text
 );
 --> statement-breakpoint
