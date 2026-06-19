@@ -31,11 +31,13 @@ describe('getOrCreateDatabaseKey', () => {
 	});
 
 	it('returns the existing key unchanged when one is stored', async () => {
-		mockGetItem.mockResolvedValueOnce('existingHexKey64chars0000000000000000000000000000000000000000000000');
+		const existingKey = 'b'.repeat(64);
+		mockGetItem.mockResolvedValueOnce(existingKey);
 
 		const result = await getOrCreateDatabaseKey('test.db');
 
-		expect(result).toBe('existingHexKey64chars0000000000000000000000000000000000000000000000');
+		expect(result).toBe(existingKey);
+		expect(result).toMatch(/^[0-9a-f]{64}$/i);
 		expect(mockSetItem).not.toHaveBeenCalled();
 	});
 
@@ -46,6 +48,7 @@ describe('getOrCreateDatabaseKey', () => {
 
 		expect(typeof result).toBe('string');
 		expect(result).toHaveLength(64);
+		expect(result).toMatch(/^[0-9a-f]{64}$/i);
 		expect(mockSetItem).toHaveBeenCalledTimes(1);
 		expect(mockSetItem).toHaveBeenCalledWith('db_key_v1:new.db', result);
 	});
@@ -71,6 +74,13 @@ describe('getOrCreateDatabaseKey', () => {
 		mockGetItem.mockResolvedValueOnce(undefined as unknown as null);
 
 		await expect(getOrCreateDatabaseKey('undef.db')).rejects.toThrow('unexpected value');
+		expect(mockSetItem).not.toHaveBeenCalled();
+	});
+
+	it('rejects a malformed stored key (fail-closed) and does NOT mint', async () => {
+		mockGetItem.mockResolvedValueOnce('z'.repeat(64)); // 64 chars but not hex
+
+		await expect(getOrCreateDatabaseKey('corrupt.db')).rejects.toThrow('malformed');
 		expect(mockSetItem).not.toHaveBeenCalled();
 	});
 });

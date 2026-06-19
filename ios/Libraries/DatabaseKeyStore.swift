@@ -62,12 +62,13 @@ final class DatabaseKeyStore: NSObject {
 		return value
 	}
 
-	/// Write a key. Idempotent: updates the item if it already exists.
-	/// Returns false only on an unexpected Keychain error.
+	/// Write a key. Write-once: never overwrites an existing key — on a duplicate it
+	/// succeeds only if the stored value already matches the value being written.
+	/// Returns false on an unexpected Keychain error or a conflicting existing value.
 	@discardableResult
 	@objc(write:value:) static func write(account: String, value: String) -> Bool {
 		let data = Data(value.utf8)
-		var attrs: [String: Any] = [
+		let attrs: [String: Any] = [
 			kSecClass as String:              kSecClassGenericPassword,
 			kSecAttrService as String:        service,
 			kSecAttrAccount as String:        account,
@@ -82,9 +83,9 @@ final class DatabaseKeyStore: NSObject {
 			return true
 		}
 		if addStatus == errSecDuplicateItem {
-			attrs.removeValue(forKey: kSecValueData as String)
-			let updateStatus = SecItemUpdate(attrs as CFDictionary, [kSecValueData as String: data] as CFDictionary)
-			return updateStatus == errSecSuccess
+			var readError: NSError?
+			let existing = read(account: account, error: &readError)
+			return readError == nil && existing == value
 		}
 		NSLog("[DatabaseKeyStore] write failed for account %@, status=%d", account, addStatus)
 		return false

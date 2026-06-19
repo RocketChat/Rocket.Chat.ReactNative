@@ -7,4 +7,4 @@ export interface Spec extends TurboModule {
 	removeItem(key: string): Promise<void>;
 }
 
-export default TurboModuleRegistry.get<Spec>('DatabaseKeyStoreModule') ?? null;
+export default TurboModuleRegistry.getEnforcing<Spec>('DatabaseKeyStoreModule');
