@@ -19,11 +19,34 @@ jobs:
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
     uses: ./.github/workflows/eslint.yml
 
+  generate-pr-changelog:
+    name: Generate PR Changelog
+    needs: [run-eslint-and-test]
+    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Generate changelog
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr view "${{ github.event.pull_request.number }}" --json title,number,commits > pr.json
+          node .github/scripts/changelog.js pr
+
+      - name: Upload changelog artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: release-changelog
+          path: changelog.txt
+          retention-days: 15
+
   android-build-store:
     name: Build Android
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
     uses: ./.github/workflows/build-android.yml
-    needs: [run-eslint-and-test]
+    needs: [run-eslint-and-test, generate-pr-changelog]
     secrets: inherit
     with:
       trigger: "pr"
@@ -32,7 +55,7 @@ jobs:
     name: Build iOS
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
     uses: ./.github/workflows/build-ios.yml
-    needs: [run-eslint-and-test]
+    needs: [run-eslint-and-test, generate-pr-changelog]
     secrets: inherit
     with:
       trigger: "pr"
