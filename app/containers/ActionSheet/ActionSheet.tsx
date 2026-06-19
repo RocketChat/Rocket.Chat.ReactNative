@@ -6,7 +6,6 @@ import {
 	findNodeHandle,
 	Keyboard,
 	type LayoutChangeEvent,
-	Platform,
 	useWindowDimensions,
 	type View
 } from 'react-native';
@@ -20,6 +19,7 @@ import { Handle } from './Handle';
 import { type TActionSheetOptions } from './Provider';
 import BottomSheetContent from './BottomSheetContent';
 import { HANDLE_HEIGHT, useActionSheetDetents } from './useActionSheetDetents';
+import { getActionSheetBottomInset } from './getActionSheetBottomInset';
 import styles from './styles';
 
 export const ACTION_SHEET_ANIMATION_DURATION = 250;
@@ -37,8 +37,7 @@ const ActionSheet = memo(
 
 		const insets = useSafeAreaInsets();
 		const itemHeight = 48 * fontScale;
-		const isNewAndroid = isAndroid && Number(Platform.Version) >= 36;
-		const bottomInset = isIOS || isNewAndroid ? 0 : insets.bottom + itemHeight;
+		const bottomInset = getActionSheetBottomInset(insets);
 
 		const handleContentLayout = ({ nativeEvent: { layout } }: LayoutChangeEvent) => {
 			setContentHeight(layout.height);
