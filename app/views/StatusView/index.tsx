@@ -154,11 +154,14 @@ const StatusView = (): ReactElement => {
 	useA11yErrorAnnouncement({ errors, inputValues });
 
 	useEffect(() => {
-		setOptions({
-			title: I18n.t('Edit_Status'),
-			headerLeft: isMasterDetail ? undefined : () => <HeaderButton.CloseModal onPress={goBack} />
-		});
-	}, [isMasterDetail, setOptions, goBack]);
+		const setHeader = () => {
+			setOptions({
+				title: I18n.t('Edit_Status'),
+				headerLeft: isMasterDetail ? undefined : () => <HeaderButton.CloseModal onPress={goBack} />
+			});
+		};
+		setHeader();
+	}, [isMasterDetail]);
 
 	const setStatus = (updatedStatus: TUserStatus) => {
 		setValue('status', updatedStatus);
