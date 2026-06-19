@@ -58,7 +58,7 @@ export class Collection<M extends Model = Model> {
 		const { db } = this._handle;
 		const columns = getTableColumns(this._drizzleTable);
 		let q = db.select().from(this._drizzleTable as never);
-		if (filter?.id) {
+		if (filter?.id !== undefined) {
 			const idCol = columns.id;
 			if (idCol) {
 				// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -126,8 +126,8 @@ export class Collection<M extends Model = Model> {
 		// Start with a raw where id will be set by the fn or sanitizedRaw
 		const raw = sanitizedRaw({}, this.schema);
 		const model = new this._ModelClass(this, raw);
-		model._pendingOp = 'create';
 		fn(model);
+		model._pendingOp = 'create';
 		return model;
 	}
 

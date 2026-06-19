@@ -7,14 +7,10 @@
  */
 
 import type { Observable } from 'rxjs';
-import type { SQLiteTable } from 'drizzle-orm/sqlite-core';
 
-import type { DbHandle } from '../driver/connection';
 import { Model, type ICollection } from './Model';
 import type { Query } from './Query';
-import type { TableSchema } from './schema';
 import * as Q from './Q';
-import { Collection } from './Collection';
 import { observeRow } from './observe';
 
 // ---------------------------------------------------------------------------
@@ -170,17 +166,9 @@ export function children(childTable: string) {
 					throw new Error(`@children decorator used for a table that's not has_many: ${childTable}`);
 				}
 
-				const col = new Collection(
-					(childCollection as unknown as { table: string }).table,
-					(childCollection as unknown as { schema: TableSchema }).schema,
-					(childCollection as unknown as { _drizzleTable: SQLiteTable })._drizzleTable,
-					(childCollection as unknown as { _handle: DbHandle })._handle,
-					Model
+				const query = (childCollection as unknown as { query: (...c: unknown[]) => Query<Model> }).query(
+					Q.where(association.foreignKey, model.id)
 				);
-				// eslint-disable-next-line @typescript-eslint/no-explicit-any
-				col._db = (childCollection as any)._db;
-
-				const query = col.query(Q.where(association.foreignKey, model.id));
 				cache[childTable] = query;
 				return query;
 			},

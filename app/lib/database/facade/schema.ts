@@ -92,7 +92,7 @@ export function setRawCoerced(raw: RawRecord, key: string, value: unknown, col: 
 		}
 	} else if (isValidNumber(value)) {
 		// number column, valid value
-		raw[key] = value || 0;
+		raw[key] = value;
 	} else {
 		// number column, invalid value → default
 		raw[key] = isOptional ? null : 0;

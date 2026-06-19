@@ -1,5 +1,4 @@
-import { type Model, Q } from '../database/facade';
-import { sanitizedRaw } from '../database/facade';
+import { type Model, Q, sanitizedRaw } from '../database/facade';
 import { MESSAGE_TYPE_ANY_LOAD } from '../constants/messageTypeLoad';
 import {
 	type IMessage,
