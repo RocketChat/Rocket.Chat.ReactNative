@@ -26,8 +26,11 @@ final class DatabaseKeyStore: NSObject {
 	// kSecAttrService shared between this module and Database.swift
 	static let service = "chat.rocket.reactnative.dbkeys"
 
-	// Full team-prefixed access group — bare suffix fails with errSecMissingEntitlement
-	private static let accessGroup = "S6UPZG7ZR3.chat.rocket.reactnative"
+	// Full team-prefixed access group shared with Database.swift.
+	// Format required by Security.framework: "<TeamID>.<BundleSuffix>".
+	// Must match $(AppIdentifierPrefix)chat.rocket.reactnative in the entitlements;
+	// update here if the signing team changes.
+	static let accessGroup = "S6UPZG7ZR3.chat.rocket.reactnative"
 
 	// MARK: - Native-side helpers (called from DatabaseKeyStore.mm and Database.swift in extensions)
 

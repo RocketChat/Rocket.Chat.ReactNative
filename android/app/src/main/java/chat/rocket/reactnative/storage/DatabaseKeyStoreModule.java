@@ -77,7 +77,7 @@ public class DatabaseKeyStoreModule extends NativeDatabaseKeyStoreSpec {
 			promise.resolve(null);
 		} catch (Exception e) {
 			Log.e(TAG, "removeItem failed for key: " + key, e);
-			promise.resolve(null);
+			promise.reject("KEYSTORE_REMOVE_ERROR", e);
 		}
 	}
 
@@ -155,9 +155,18 @@ public class DatabaseKeyStoreModule extends NativeDatabaseKeyStoreSpec {
 		prefs.edit().putString(key, Base64.encodeToString(combined, Base64.DEFAULT)).apply();
 	}
 
-	/** Removes the SharedPreferences entry. Does not delete the AndroidKeyStore key. */
+	/** Removes the SharedPreferences entry and the corresponding AndroidKeyStore alias. */
 	public static void removeItemInternal(Context context, String key) {
 		SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
 		prefs.edit().remove(key).apply();
+		try {
+			KeyStore ks = KeyStore.getInstance(KEYSTORE_PROVIDER);
+			ks.load(null);
+			if (ks.containsAlias(key)) {
+				ks.deleteEntry(key);
+			}
+		} catch (Exception e) {
+			Log.w(TAG, "Failed to delete AndroidKeyStore alias for key: " + key, e);
+		}
 	}
 }
