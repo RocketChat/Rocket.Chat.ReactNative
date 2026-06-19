@@ -17,7 +17,7 @@ import Toast from './containers/Toast';
 import TwoFactor from './containers/TwoFactor';
 import { type IThemePreference } from './definitions/ITheme';
 import { DimensionsContext } from './dimensions';
-import { colors, themes } from './lib/constants/colors';
+import { themes } from './lib/constants/colors';
 import { MIN_WIDTH_MASTER_DETAIL_LAYOUT } from './lib/constants/tablet';
 import { getAllowAnalyticsEvents, getAllowCrashReport } from './lib/methods/crashReport';
 import { debounce, isTablet } from './lib/methods/helpers';
@@ -40,7 +40,8 @@ import {
 } from './lib/services/voip/MediaCallEvents';
 import store from './lib/store';
 import { initStore } from './lib/store/auxStore';
-import { type TSupportedThemes, ThemeContext } from './theme';
+import { type TSupportedThemes } from './theme';
+import ThemeContextProvider from './containers/ThemeContextProvider';
 import ChangePasscodeView from './views/ChangePasscodeView';
 import ScreenLockedView from './views/ScreenLockedView';
 import StatusBar from './containers/StatusBar';
@@ -240,13 +241,7 @@ export default class Root extends Component<{}, IState> {
 		return (
 			<SafeAreaProvider style={{ backgroundColor: themes[this.state.theme].surfaceRoom }}>
 				<Provider store={store}>
-					<ThemeContext.Provider
-						value={{
-							theme,
-							themePreferences,
-							setTheme: this.setTheme,
-							colors: colors[theme]
-						}}>
+					<ThemeContextProvider theme={theme} themePreferences={themePreferences} setTheme={this.setTheme}>
 						<ResponsiveLayoutProvider>
 							<DimensionsContext.Provider
 								value={{
@@ -272,7 +267,7 @@ export default class Root extends Component<{}, IState> {
 								</GestureHandlerRootView>
 							</DimensionsContext.Provider>
 						</ResponsiveLayoutProvider>
-					</ThemeContext.Provider>
+					</ThemeContextProvider>
 				</Provider>
 			</SafeAreaProvider>
 		);
