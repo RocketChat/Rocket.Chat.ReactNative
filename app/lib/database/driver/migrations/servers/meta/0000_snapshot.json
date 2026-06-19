@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "29015da4-1dcb-4d26-afbe-ff0386793e78",
+  "id": "371884e6-9842-4297-9183-75c341f1da56",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "servers_history": {
@@ -18,7 +18,7 @@
           "name": "url",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "username": {
@@ -32,7 +32,7 @@
           "name": "updated_at",
           "type": "real",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "icon_url": {
