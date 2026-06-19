@@ -80,7 +80,7 @@ export function deriveServerDbName(serverUrl: string): string {
 	const sanitized = serverUrl
 		.replace(/\/+$/, '')
 		.replace(/(^\w+:|^)\/\//, '')
-		.replace(/\//g, '.');
+		.replace(/\//g, '_');
 	return `${sanitized}.db`;
 }
 
@@ -129,32 +129,27 @@ const DB_DIRECTORY = resolveDbDirectory();
 // ---------------------------------------------------------------------------
 
 const _registry = new Map<string, DbHandle>();
+// Coalesces concurrent opens for the same dbName so only one openDatabaseAsync call runs.
+const _inflight = new Map<string, Promise<DbHandle<any>>>();
 
 // ---------------------------------------------------------------------------
 // Open
 // ---------------------------------------------------------------------------
 
 async function applyOpenPragmas(sqlite: SQLiteDatabase, keyHex: string, saltHex: string): Promise<void> {
-	// 1. Key MUST be first — before any schema read/write
-	// Raw-key form: the x'...' prefix tells SQLCipher to skip PBKDF2
-	await sqlite.execAsync(`PRAGMA key = "x'${keyHex}'";`);
+	// Key MUST be the first statement; then plaintext header (0xdead10cc exemption),
+	// salt supply, busy timeout, and WAL mode — all in one round-trip.
+	// Raw-key form: x'...' tells SQLCipher to skip PBKDF2.
+	await sqlite.execAsync(
+		`PRAGMA key = "x'${keyHex}'";` +
+			'PRAGMA cipher_plaintext_header_size = 32;' +
+			`PRAGMA cipher_salt = "x'${saltHex}'";` +
+			'PRAGMA busy_timeout = 500;' +
+			'PRAGMA journal_mode = WAL;'
+	);
 
-	// 2. Plaintext header so iOS recognises the encrypted WAL file and grants the background
-	// idle-WAL exemption; otherwise a suspended app holding a WAL lock on the App Group DB is
-	// killed with 0xdead10cc. Must follow key, precede any other statement.
-	await sqlite.execAsync('PRAGMA cipher_plaintext_header_size = 32;');
-
-	// 3. With a plaintext header the salt is no longer in the file — supply it from the keychain.
-	await sqlite.execAsync(`PRAGMA cipher_salt = "x'${saltHex}'";`);
-
-	// 4. Busy timeout: mandatory for multi-process WAL safety (app + extensions share the file)
-	await sqlite.execAsync('PRAGMA busy_timeout = 500;');
-
-	// 5. WAL mode for concurrent reads + one writer
-	await sqlite.execAsync('PRAGMA journal_mode = WAL;');
-
-	// 6. Verify encryption is working — a trivial read on an unkeyed SQLCipher file
-	// throws "file is not a database"; we surface a safe error that contains no key material
+	// Verify encryption is working — a trivial read on an unkeyed SQLCipher file
+	// throws "file is not a database"; surface a safe error with no key material.
 	try {
 		await sqlite.getFirstAsync('SELECT count(*) FROM sqlite_master;');
 	} catch {
@@ -167,27 +162,50 @@ async function applyOpenPragmas(sqlite: SQLiteDatabase, keyHex: string, saltHex:
  * Opens a database for the given `dbName`, applies the full open sequence
  * (key → busy_timeout → WAL → verify), wraps with Drizzle, and registers the handle.
  * Returns the same handle on repeated calls for the same name.
+ * Concurrent calls for the same name coalesce into a single open; a failed open
+ * closes the raw handle to prevent a file-descriptor leak.
  */
-async function openDb<K extends DbKind>(dbName: string, kind: K): Promise<DbHandle<K>> {
+function openDb<K extends DbKind>(dbName: string, kind: K): Promise<DbHandle<K>> {
 	const cached = _registry.get(dbName);
 	if (cached) {
-		return cached as DbHandle<K>;
+		return Promise.resolve(cached as DbHandle<K>);
 	}
 
-	const [keyHex, saltHex] = await Promise.all([getOrCreateDatabaseKey(dbName), getOrCreateDatabaseSalt(dbName)]);
+	const inflight = _inflight.get(dbName);
+	if (inflight) {
+		return inflight as Promise<DbHandle<K>>;
+	}
 
-	const sqlite = await openDatabaseAsync(dbName, { enableChangeListener: true }, DB_DIRECTORY);
+	const promise = (async (): Promise<DbHandle<K>> => {
+		const [keyHex, saltHex] = await Promise.all([getOrCreateDatabaseKey(dbName), getOrCreateDatabaseSalt(dbName)]);
 
-	await applyOpenPragmas(sqlite, keyHex, saltHex);
+		const sqlite = await openDatabaseAsync(dbName, { enableChangeListener: true }, DB_DIRECTORY);
 
-	const schema = kind === 'servers' ? serversSchema : appSchema;
-	// The conditional type SchemaForKind<K> cannot be narrowed by the JS runtime check above;
-	// casting through unknown is the standard TS pattern for this shape.
-	const db = drizzle(sqlite, { schema }) as unknown as ExpoSQLiteDatabase<SchemaForKind<K>>;
+		try {
+			await applyOpenPragmas(sqlite, keyHex, saltHex);
+		} catch (err) {
+			await sqlite.closeAsync().catch(() => {});
+			throw err;
+		}
 
-	const handle: DbHandle<K> = { db, sqlite, dbName };
-	_registry.set(dbName, handle as DbHandle);
-	return handle;
+		const schema = kind === 'servers' ? serversSchema : appSchema;
+		// The conditional type SchemaForKind<K> cannot be narrowed by the JS runtime check above;
+		// casting through unknown is the standard TS pattern for this shape.
+		const db = drizzle(sqlite, { schema }) as unknown as ExpoSQLiteDatabase<SchemaForKind<K>>;
+
+		const handle: DbHandle<K> = { db, sqlite, dbName };
+		_registry.set(dbName, handle as DbHandle);
+		return handle;
+	})();
+
+	_inflight.set(dbName, promise);
+	// Cleanup inflight entry regardless of outcome. The .catch here silences the secondary
+	// rejection on the finally-chained promise — the real rejection propagates via `promise`.
+	promise.finally(() => {
+		_inflight.delete(dbName);
+	}).catch(() => {});
+
+	return promise as Promise<DbHandle<K>>;
 }
 
 // ---------------------------------------------------------------------------

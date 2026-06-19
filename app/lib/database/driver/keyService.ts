@@ -84,6 +84,52 @@ function storageKey(prefix: string, dbName: string): string {
 	return `${prefix}${dbName}`;
 }
 
+// Per-storageKey in-flight map: serializes concurrent getOrCreate calls so only one
+// CSPRNG + setItem round-trip runs even when callers race.
+const _getOrCreateInflight = new Map<string, Promise<string>>();
+
+/**
+ * Generates or retrieves a hex material string for `storageKey`.
+ * Validates both stored values (corrupt → throw) and generated values (bad bridge → throw).
+ * Neither the stored value nor the generated value ever appears in thrown error messages.
+ */
+async function getOrCreate(sk: string, byteLen: number, hexLen: number, label: string): Promise<string> {
+	const inflight = _getOrCreateInflight.get(sk);
+	if (inflight) return inflight;
+
+	const promise = (async (): Promise<string> => {
+		const existing = await _shim.getItem(sk);
+		if (existing !== null) {
+			// Re-validate the stored value — a corrupt entry must not reach SQLCipher.
+			if (!new RegExp(`^[0-9a-fA-F]{${hexLen}}$`).test(existing)) {
+				throw new Error(`stored ${label} corrupt`);
+			}
+			return existing;
+		}
+
+		// randomKey (not randomBytes): the mobile-crypto bridge encodes randomBytes as
+		// BASE64 on both platforms, while randomKey returns hex (SecureRandom/SecRandomCopyBytes
+		// + bytesToHex). The argument is the byte count.
+		const hex = await randomKey(byteLen);
+		if (!new RegExp(`^[0-9a-fA-F]{${hexLen}}$`).test(hex)) {
+			// Sanitize error — do not include the value in the message.
+			throw new Error(`${label} generation produced unexpected output; cannot open database safely`);
+		}
+
+		await _shim.setItem(sk, hex);
+		return hex;
+	})();
+
+	_getOrCreateInflight.set(sk, promise);
+	// Cleanup regardless of outcome. The .catch silences the secondary rejection on the
+	// finally-chained promise — the real rejection propagates via `promise`.
+	promise.finally(() => {
+		_getOrCreateInflight.delete(sk);
+	}).catch(() => {});
+
+	return promise;
+}
+
 /**
  * Returns the hex key for `dbName`, generating and storing a fresh one if none exists.
  * Idempotent: repeated calls for the same name return the same key.
@@ -91,25 +137,8 @@ function storageKey(prefix: string, dbName: string): string {
  * The key is 32 bytes (256-bit) from the platform CSPRNG, hex-encoded to 64 chars.
  * It is never logged, never included in thrown errors, never sent to telemetry.
  */
-export async function getOrCreateDatabaseKey(dbName: string): Promise<string> {
-	const k = storageKey(KEY_PREFIX, dbName);
-	const existing = await _shim.getItem(k);
-	if (existing !== null) {
-		return existing;
-	}
-
-	// randomKey (not randomBytes): the mobile-crypto bridge encodes randomBytes as
-	// BASE64 on both platforms, while randomKey returns hex (SecureRandom/SecRandomCopyBytes
-	// + bytesToHex). The argument is the byte count: 32 bytes → 64 hex chars.
-	const hex = await randomKey(32);
-	// Guard the bridge contract: anything but 64 hex chars must not be used as a key
-	if (!/^[0-9a-fA-F]{64}$/.test(hex)) {
-		// Sanitize error — do not include the value in the message
-		throw new Error('key generation produced unexpected output; cannot open database safely');
-	}
-
-	await _shim.setItem(k, hex);
-	return hex;
+export function getOrCreateDatabaseKey(dbName: string): Promise<string> {
+	return getOrCreate(storageKey(KEY_PREFIX, dbName), 32, 64, 'key');
 }
 
 /**
@@ -119,21 +148,8 @@ export async function getOrCreateDatabaseKey(dbName: string): Promise<string> {
  * 16 bytes (128-bit) from the platform CSPRNG, hex-encoded to 32 chars — the size
  * SQLCipher expects for cipher_salt. Never logged, thrown, or sent to telemetry.
  */
-export async function getOrCreateDatabaseSalt(dbName: string): Promise<string> {
-	const k = storageKey(SALT_PREFIX, dbName);
-	const existing = await _shim.getItem(k);
-	if (existing !== null) {
-		return existing;
-	}
-
-	// 16 bytes → 32 hex chars; same hex-encoding contract as randomKey above.
-	const hex = await randomKey(16);
-	if (!/^[0-9a-fA-F]{32}$/.test(hex)) {
-		throw new Error('salt generation produced unexpected output; cannot open database safely');
-	}
-
-	await _shim.setItem(k, hex);
-	return hex;
+export function getOrCreateDatabaseSalt(dbName: string): Promise<string> {
+	return getOrCreate(storageKey(SALT_PREFIX, dbName), 16, 32, 'salt');
 }
 
 /**
@@ -142,6 +158,5 @@ export async function getOrCreateDatabaseSalt(dbName: string): Promise<string> {
  * After calling this, the database file is permanently inaccessible.
  */
 export async function deleteDatabaseKey(dbName: string): Promise<void> {
-	await _shim.removeItem(storageKey(KEY_PREFIX, dbName));
-	await _shim.removeItem(storageKey(SALT_PREFIX, dbName));
+	await Promise.all([_shim.removeItem(storageKey(KEY_PREFIX, dbName)), _shim.removeItem(storageKey(SALT_PREFIX, dbName))]);
 }

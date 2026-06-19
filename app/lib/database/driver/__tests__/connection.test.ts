@@ -122,20 +122,23 @@ describe('deriveServerDbName', () => {
 // ---------------------------------------------------------------------------
 
 describe('open sequence', () => {
-	it('applies PRAGMA key, then cipher header + salt, then busy_timeout, then WAL', async () => {
+	it('applies PRAGMA key, then cipher header + salt, then busy_timeout, then WAL — in one execAsync call', async () => {
 		await openServersDb();
 
-		const keyIdx = execCalls.findIndex(s => s.includes('PRAGMA key'));
-		const headerIdx = execCalls.findIndex(s => s.includes('cipher_plaintext_header_size'));
-		const saltIdx = execCalls.findIndex(s => s.includes('cipher_salt'));
-		const busyIdx = execCalls.findIndex(s => s.includes('busy_timeout'));
-		const walIdx = execCalls.findIndex(s => s.includes('journal_mode'));
+		// All 5 PRAGMAs are sent in a single multi-statement execAsync call.
+		expect(execCalls).toHaveLength(1);
+		const call = execCalls[0];
+		const keyPos = call.indexOf('PRAGMA key');
+		const headerPos = call.indexOf('cipher_plaintext_header_size');
+		const saltPos = call.indexOf('cipher_salt');
+		const busyPos = call.indexOf('busy_timeout');
+		const walPos = call.indexOf('journal_mode');
 
-		expect(keyIdx).toBeGreaterThanOrEqual(0);
-		expect(headerIdx).toBeGreaterThan(keyIdx);
-		expect(saltIdx).toBeGreaterThan(headerIdx);
-		expect(busyIdx).toBeGreaterThan(saltIdx);
-		expect(walIdx).toBeGreaterThan(busyIdx);
+		expect(keyPos).toBeGreaterThanOrEqual(0);
+		expect(headerPos).toBeGreaterThan(keyPos);
+		expect(saltPos).toBeGreaterThan(headerPos);
+		expect(busyPos).toBeGreaterThan(saltPos);
+		expect(walPos).toBeGreaterThan(busyPos);
 	});
 
 	it('sets cipher_plaintext_header_size = 32', async () => {
