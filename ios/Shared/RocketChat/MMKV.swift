@@ -1,7 +1,7 @@
 import Foundation
 
 extension MMKVBridge {
-	static func build() -> MMKVBridge {
+    @objc static func build() -> MMKVBridge {
 		let password = SecureStorage().getSecureKey("com.MMKV.default".toHex())
 		let groupDir = FileManager.default.groupDir()
 		

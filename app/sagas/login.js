@@ -38,6 +38,7 @@ import { getServerById } from '../lib/database/services/Server';
 import appNavigation from '../lib/navigation/appNavigation';
 import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
+import syncWatchOSQuickRepliesWithServer from '../lib/methods/WatchOSQuickReplies/syncWatchOSRepliesWithServer';
 import { mediaSessionInstance } from '../lib/services/voip/MediaSessionInstance';
 import { hasPermission } from '../lib/methods/helpers/helpers';
 import { mediaSessionStore } from '../lib/services/voip/MediaSessionStore';
@@ -227,6 +228,24 @@ const fetchUsersRoles = function* fetchRoomsFork() {
 	}
 };
 
+const fetchWatchReplies = function* fetchWatchRepliesFork() {
+	try {
+		// we are getting replies from server settings
+		const state = yield select(state => state);
+
+		if (!state.settings?.Apple_Watch_Quick_Actions) {
+			yield delay(1000);
+			const newState = yield select();
+			syncWatchOSQuickRepliesWithServer(newState);
+			return;
+		}
+
+		syncWatchOSQuickRepliesWithServer(state);
+	} catch (e) {
+		log(e);
+	}
+};
+
 const checkBackgroundAndSetAway = function* checkBackgroundAndSetAway() {
 	try {
 		const { background, root } = yield select(state => state.app);
@@ -343,6 +362,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		UserPreferences.setString(`${TOKEN_KEY}-${user.id}`, user.token);
 		UserPreferences.setString(CURRENT_SERVER, server);
 		EventEmitter.emit('connected');
+		yield fork(fetchWatchReplies);
 		const currentRoot = yield select(state => state.app.root);
 		if (currentRoot !== RootEnum.ROOT_SHARE_EXTENSION && currentRoot !== RootEnum.ROOT_LOADING_SHARE_EXTENSION) {
 			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));

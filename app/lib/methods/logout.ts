@@ -8,7 +8,14 @@ import database, { getDatabase } from '../database';
 import log from './helpers/log';
 import { disconnect } from '../services/connect';
 import sdk from '../services/sdk';
-import { CURRENT_SERVER, E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY, TOKEN_KEY } from '../constants/keys';
+import {
+	CURRENT_SERVER,
+	E2E_PRIVATE_KEY,
+	E2E_PUBLIC_KEY,
+	E2E_RANDOM_PASSWORD_KEY,
+	TOKEN_KEY,
+	WATCHOS_QUICKREPLIES
+} from '../constants/keys';
 import UserPreferences from './userPreferences';
 import { removePushToken } from '../services/restApi';
 import { roomsSubscription } from './subscriptions/rooms';
@@ -23,6 +30,7 @@ function removeServerKeys({ server, userId }: { server: string; userId?: string 
 	UserPreferences.removeItem(`${server}-${E2E_PUBLIC_KEY}`);
 	UserPreferences.removeItem(`${server}-${E2E_PRIVATE_KEY}`);
 	UserPreferences.removeItem(`${server}-${E2E_RANDOM_PASSWORD_KEY}`);
+	UserPreferences.removeItem(`${server}-${WATCHOS_QUICKREPLIES}`);
 }
 
 export async function removeServerData({ server }: { server: string }): Promise<void> {

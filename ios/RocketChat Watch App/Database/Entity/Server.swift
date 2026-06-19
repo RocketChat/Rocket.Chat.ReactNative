@@ -16,6 +16,7 @@ public final class Server: NSManagedObject {
 	@NSManaged public var certificate: Data?
 	@NSManaged public var password: String?
 	@NSManaged public var version: String
+    @NSManaged private var quickRepliesData: NSArray?
 	
 	lazy var database: Database = RocketChatDatabase(server: self)
 	
@@ -28,6 +29,15 @@ public final class Server: NSManagedObject {
 	init(context: NSManagedObjectContext) {
 		fatalError()
 	}
+    
+    public var quickReplies: [String] {
+        get {
+            quickRepliesData as? [String] ?? []
+        }
+        set {
+            quickRepliesData = newValue as NSArray;
+        }
+    }
 	
 	public override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
 		super.init(entity: entity, insertInto: context)
