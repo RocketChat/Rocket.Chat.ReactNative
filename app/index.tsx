@@ -51,7 +51,6 @@ interface IState {
 	themePreferences: IThemePreference;
 }
 
-
 export default class Root extends Component<{}, IState> {
 	private listenerTimeout!: any;
 	private videoConfActionCleanup?: () => void;
