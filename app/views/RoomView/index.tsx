@@ -100,6 +100,7 @@ import { RoomContext } from './context';
 import AudioManager from '../../lib/methods/AudioManager';
 import { type IListContainerRef, type TListRef } from './List/definitions';
 import { resolveJumpAnchor } from './services/resolveJumpAnchor';
+import { type TGetMessageInfoResult } from './services/getMessageInfo';
 import { getMessageById } from '../../lib/database/services/Message';
 import { getThreadById } from '../../lib/database/services/Thread';
 import { isE2EEDisabledEncryptedRoom, isMissingRoomE2EEKey } from '../../lib/encryption/utils';
@@ -991,7 +992,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 
 	onThreadPress = debounce((item: TAnyMessageModel) => this.navToThread(item), 1000, true);
 
-	shouldNavigateToRoom = (message: IMessage) => {
+	shouldNavigateToRoom = (message: TGetMessageInfoResult) => {
 		if (message.tmid && message.tmid === this.tmid) {
 			return false;
 		}
@@ -1020,6 +1021,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 	// message id reads as a change (undefined -> id edge) and re-fires, instead of matching a stale
 	// param and no-opping. Both mount (initial param) and update (Search delivers via setParams) use this.
 	consumeJumpParam = (messageId: string) => {
+		this.jumpToMessageId = undefined;
 		this.jumpToMessage(messageId);
 		this.props.navigation.setParams({ jumpToMessageId: undefined });
 	};
@@ -1231,7 +1233,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 		}
 	};
 
-	navToThread = async (item: TAnyMessageModel | { tmid: string }) => {
+	navToThread = async (item: TAnyMessageModel | { tmid: string } | TGetMessageInfoResult) => {
 		const { roomUserId } = this.state;
 		const { navigation } = this.props;
 
@@ -1243,7 +1245,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 			let name = '';
 			let jumpToMessageId = '';
 			if ('id' in item) {
-				name = item.tmsg ?? '';
+				name = 'tmsg' in item ? item.tmsg ?? '' : '';
 				jumpToMessageId = item.id;
 			}
 			sendLoadingEvent({ visible: true, onCancel: this.cancelJumpToMessage });
@@ -1260,7 +1262,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 				}
 				name = result;
 			}
-			if ('id' in item && item.t === E2E_MESSAGE_TYPE && item.e2e !== E2E_STATUS.DONE) {
+			if ('id' in item && 't' in item && item.t === E2E_MESSAGE_TYPE && 'e2e' in item && item.e2e !== E2E_STATUS.DONE) {
 				name = I18n.t('Encrypted_message');
 			}
 			if (!jumpToMessageId) {
@@ -1289,8 +1291,9 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 		}
 	};
 
-	navToRoom = async (message: TAnyMessageModel) => {
+	navToRoom = async (message: TGetMessageInfoResult) => {
 		const { isMasterDetail } = this.props;
+		if (!message.rid) return;
 		const roomInfo = await getRoomInfo(message.rid);
 
 		return goRoom({

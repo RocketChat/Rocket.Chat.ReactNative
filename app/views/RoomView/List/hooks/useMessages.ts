@@ -139,11 +139,10 @@ export const useMessages = ({
 
 	const fetchMessages = useCallback(async () => {
 		unsubscribe();
-		count.current += QUERY_SIZE;
-
 		if (!rid) {
 			return;
 		}
+		count.current += QUERY_SIZE;
 
 		const db = database.active;
 		// hideSystemMessages applied here so Q.take() counts only visible rows

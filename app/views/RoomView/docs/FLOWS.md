@@ -26,8 +26,6 @@ sequenceDiagram
     Scroll->>Scroll: completeJump — clear safety, highlight
 ```
 
-_Last verified: f78d6a37c_
-
 ---
 
 ## 2. Jump to a server-fetched target (anchored)
@@ -65,8 +63,6 @@ sequenceDiagram
     Scroll->>Scroll: completeJump
 ```
 
-_Last verified: f78d6a37c_
-
 ---
 
 ## 3. Deep target — growth retries and the safety net
@@ -97,8 +93,6 @@ sequenceDiagram
     end
 ```
 
-_Last verified: f78d6a37c_
-
 ---
 
 ## 4. Scroll landing — frontier climb
@@ -121,8 +115,6 @@ sequenceDiagram
     end
     Scroll->>Scroll: target measured → land, completeJump
 ```
-
-_Last verified: f78d6a37c_
 
 ---
 
@@ -156,8 +148,6 @@ sequenceDiagram
     end
 ```
 
-_Last verified: f78d6a37c_
-
 ---
 
 ## 6. Jump to bottom (rejoin live via FAB)
@@ -179,8 +169,6 @@ sequenceDiagram
     Msgs-->>FlatList: re-seed Live Window (newest page)
     Scroll->>FlatList: scrollToOffset(0)  %% inverted → newest
 ```
-
-_Last verified: f78d6a37c_
 
 ---
 
@@ -205,5 +193,3 @@ sequenceDiagram
     Init->>RV: read-and-clear jumpToMessageId
     RV->>List: jumpToMessage(id)  %% rows exist → lands
 ```
-
-_Last verified: f78d6a37c_

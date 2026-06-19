@@ -53,5 +53,6 @@ export const resolveJumpAnchor = async (
 	if (localAnchor != null) {
 		return localAnchor;
 	}
-	return target.ts ? tsToMs(target.ts) : null;
+	const ms = tsToMs(target.ts);
+	return Number.isFinite(ms) ? ms : null;
 };
