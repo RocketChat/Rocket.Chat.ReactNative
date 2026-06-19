@@ -684,6 +684,16 @@ describe('deepLinking saga — handleOAuth dedup guard', () => {
 		});
 	});
 
+	it('does not call loginOAuthOrSso when the credentialSecret is missing', async () => {
+		const store = setupStore();
+
+		store.dispatch(deepLinkingOpen({ type: 'oauth', credentialToken: 'token-no-secret-D' } as any));
+		await flushSagaMicrotasks();
+		await flushSagaMicrotasks();
+
+		expect(jest.mocked(loginOAuthOrSso)).not.toHaveBeenCalled();
+	});
+
 	it('does not call loginOAuthOrSso a second time for the same credentialToken', async () => {
 		const store = setupStore();
 

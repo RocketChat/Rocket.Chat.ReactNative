@@ -132,7 +132,7 @@ let consumedOAuthToken;
 
 const handleOAuth = function* handleOAuth({ params }) {
 	const { credentialToken, credentialSecret } = params;
-	if (!credentialToken || credentialToken === consumedOAuthToken) {
+	if (!credentialToken || !credentialSecret || credentialToken === consumedOAuthToken) {
 		return;
 	}
 	consumedOAuthToken = credentialToken;
