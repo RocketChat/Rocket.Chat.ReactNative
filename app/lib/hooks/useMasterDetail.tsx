@@ -1,4 +1,4 @@
-import { type ComponentType } from 'react';
+import { type ComponentType, forwardRef } from 'react';
 import { useWindowDimensions } from 'react-native';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 
@@ -14,11 +14,12 @@ export const useMasterDetail = (): boolean => {
 export function withMasterDetail<T extends { isMasterDetail: boolean }>(
 	Component: ComponentType<T> & TNavigationOptions
 ): ComponentType<Omit<T, 'isMasterDetail'>> & TNavigationOptions {
-	const MasterDetailComponent = (props: Omit<T, 'isMasterDetail'>) => {
+	const C = Component as ComponentType<any>;
+	const MasterDetailComponent = forwardRef<unknown, Omit<T, 'isMasterDetail'>>((props, ref) => {
 		const isMasterDetail = useMasterDetail();
-		return <Component {...(props as T)} isMasterDetail={isMasterDetail} />;
-	};
+		return <C ref={ref} {...props} isMasterDetail={isMasterDetail} />;
+	});
 
 	hoistNonReactStatics(MasterDetailComponent, Component as any);
-	return MasterDetailComponent as ComponentType<Omit<T, 'isMasterDetail'>> & TNavigationOptions;
+	return MasterDetailComponent as unknown as ComponentType<Omit<T, 'isMasterDetail'>> & TNavigationOptions;
 }

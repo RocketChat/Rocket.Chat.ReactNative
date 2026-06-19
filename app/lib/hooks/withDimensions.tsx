@@ -1,4 +1,4 @@
-import { type ComponentType } from 'react';
+import { type ComponentType, forwardRef } from 'react';
 import { useWindowDimensions, type ScaledSize } from 'react-native';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 
@@ -11,11 +11,12 @@ import { type TNavigationOptions } from '../../definitions/navigationTypes';
 export function withDimensions<T extends object>(
 	Component: ComponentType<T> & TNavigationOptions
 ): ComponentType<Omit<T, keyof ScaledSize>> & TNavigationOptions {
-	const DimensionsComponent = (props: Omit<T, keyof ScaledSize>) => {
+	const C = Component as ComponentType<any>;
+	const DimensionsComponent = forwardRef<unknown, Omit<T, keyof ScaledSize>>((props, ref) => {
 		const dimensions = useWindowDimensions();
-		return <Component {...(props as T)} {...dimensions} />;
-	};
+		return <C ref={ref} {...props} {...dimensions} />;
+	});
 
 	hoistNonReactStatics(DimensionsComponent, Component as any);
-	return DimensionsComponent as ComponentType<Omit<T, keyof ScaledSize>> & TNavigationOptions;
+	return DimensionsComponent as unknown as ComponentType<Omit<T, keyof ScaledSize>> & TNavigationOptions;
 }
