@@ -568,4 +568,74 @@ describe('useScroll', () => {
 		});
 		await waitFor(() => expect(jumpResolved).toBe(true));
 	});
+
+	it('cancelJumpToMessage is a safe no-op when no jump is pending', () => {
+		const setHighTs = jest.fn();
+		const { result, scrollToIndex } = renderUseScroll([{ id: 'a' }, { id: 'b' }], setHighTs);
+
+		act(() => {
+			result.current.cancelJumpToMessage();
+		});
+
+		expect(scrollToIndex).not.toHaveBeenCalled();
+		expect(setHighTs).not.toHaveBeenCalled();
+	});
+
+	it('cancelJumpToMessage aborts a pending unscrolled jump: releases the anchor, resolves, and disarms the safety timer', async () => {
+		const setHighTs = jest.fn();
+		const { result, scrollToIndex } = renderUseScroll([{ id: 'live-1' }, { id: 'live-2' }], setHighTs);
+
+		let jumpResolved = false;
+		act(() => {
+			result.current.jumpToMessage('target', 1500).then(() => {
+				jumpResolved = true;
+			});
+		});
+
+		// Anchor set; target not present yet.
+		expect(setHighTs).toHaveBeenCalledWith(1500);
+		setHighTs.mockClear();
+
+		// Cancel while the jump is pending and has not yet scrolled.
+		act(() => {
+			result.current.cancelJumpToMessage();
+		});
+
+		// Promise resolves (abortJump called resolve()).
+		await waitFor(() => expect(jumpResolved).toBe(true));
+		// Anchor released back to the Live Tail.
+		expect(setHighTs).toHaveBeenCalledWith(null);
+		// No scroll ever happened.
+		expect(scrollToIndex).not.toHaveBeenCalled();
+
+		// Safety timer was disarmed: elapsing past the original budget must not trigger a second release.
+		setHighTs.mockClear();
+		act(() => {
+			jest.advanceTimersByTime(5000);
+		});
+		expect(setHighTs).not.toHaveBeenCalled();
+	});
+
+	it('sets highlightedMessageId on jump completion and clears it automatically after HIGHLIGHT_TIMEOUT', async () => {
+		const setHighTs = jest.fn();
+		const { result, rerender } = renderUseScroll([{ id: 'live-1' }, { id: 'live-2' }], setHighTs);
+
+		act(() => {
+			result.current.jumpToMessage('target', 1500);
+		});
+
+		// Target appears: the layout effect fires, scrolls, and completes the jump.
+		act(() => {
+			rerender({ rows: [{ id: 'older' }, { id: 'target' }, { id: 'newer' }] });
+		});
+
+		// Highlight is set on completion.
+		await waitFor(() => expect(result.current.highlightedMessageId).toBe('target'));
+
+		// After HIGHLIGHT_TIMEOUT the highlight clears automatically.
+		act(() => {
+			jest.advanceTimersByTime(5000);
+		});
+		await waitFor(() => expect(result.current.highlightedMessageId).toBeNull());
+	});
 });

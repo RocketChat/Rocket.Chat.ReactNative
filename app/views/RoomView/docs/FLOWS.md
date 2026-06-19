@@ -20,7 +20,7 @@ sequenceDiagram
     User->>RV: tap quoted reply / jump
     RV->>List: jumpToMessage(id)
     List->>List: isMessageInWindow(id)? yes
-    List->>Scroll: jumpToMessage(id, anchored=false)
+    List->>Scroll: jumpToMessage(id, null)
     Scroll->>Scroll: target already in messages
     Scroll->>FlatList: scrollToTarget (two-pass)
     Scroll->>Scroll: completeJump — clear safety, highlight
@@ -55,10 +55,10 @@ sequenceDiagram
     Resolve->>AR: anchorForServerChunk(rows, id, ts)
     AR-->>Resolve: highTs (Newer Loader ts) | null
     Resolve-->>RV: bound
-    RV->>Msgs: setHighTs(bound)  %% count→0, re-seed
+    RV->>Scroll: jumpToMessage(id, highTs)
+    Scroll->>Msgs: setHighTs(bound)  %% count→0, re-seed
     Msgs->>DB: observe ts<=highTs, take(QUERY_SIZE)
     DB-->>Msgs: anchored page (incl. target)
-    RV->>Scroll: jumpToMessage(id, anchored=true)
     Note over Scroll: re-observe effect keyed on messages
     Scroll->>Scroll: target appeared → scroll once
     Scroll->>FlatList: scrollToTarget

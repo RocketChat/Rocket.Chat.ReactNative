@@ -4,11 +4,11 @@ import { type IListContainerRef, type IListProps, type TListRef, type TMessagesI
 import { type TAnyMessageModel } from '../../../../definitions';
 
 // Abort a jump whose target never re-observes within this window: release the anchor, drop to the Live
-// Tail, clear the spinner. Does not cancel an in-flight scroll — completion is reactive on re-observe.
+// Tail, resolve the jump. Does not cancel an in-flight scroll — completion is reactive on re-observe.
 const JUMP_SAFETY_TIMEOUT = 5000;
 const HIGHLIGHT_TIMEOUT = 5000;
 
-// A target deeper than the anchor's first page needs the window grown one page per retry to pull it in.
+// A target deeper than the Anchored Window's initial QUERY_SIZE rows needs the window grown by QUERY_SIZE per retry to pull it in.
 // Capped so a target that never materialises aborts via the safety net instead of looping.
 const MAX_JUMP_GROWTH_RETRIES = 5;
 
@@ -19,10 +19,8 @@ const SCROLL_TO_INDEX_RETRY_DELAY = 50;
 // cap must cover the distance (5 stalled short). Bounded so an unreachable target aborts, not loops.
 const MAX_SCROLL_TO_INDEX_RETRIES = 20;
 
-// Jump landing: centered, offset clear of the sticky header, non-animated. Shared by every scrollToIndex
-// in the jump path so the position cannot drift between them. animated:false snaps straight to the target
-// instead of smooth-scrolling through every row between here and a deep index — the latter reads as the
-// list "hunting" for the message across several visible scrolls.
+// animated:false snaps straight to the target instead of smooth-scrolling through every row between here
+// and a deep index — the latter reads as the list "hunting" for the message across several visible scrolls.
 const JUMP_SCROLL_POSITION = { viewPosition: 0.5, viewOffset: 100, animated: false } as const;
 
 // A Jump to Message in flight: re-anchor the window, wait for the target to re-emit, scroll once.
@@ -104,7 +102,7 @@ export const useScroll = ({
 		}, HIGHLIGHT_TIMEOUT);
 	}, []);
 
-	// Finish a jump: highlight the target, clear the spinner, resolve. The Anchored Window stays put.
+	// Finish a jump: highlight the target, resolve. The Anchored Window stays put.
 	const completeJump = useCallback(
 		(jump: IPendingJump) => {
 			if (jump.safety) {
@@ -119,7 +117,7 @@ export const useScroll = ({
 	);
 
 	// Abort a jump that never resolved (target deleted / filtered / never re-observed): release any
-	// Anchored Window and clear the spinner so the user is never stuck.
+	// Anchored Window and resolve so the caller is never stuck.
 	const abortJump = useCallback(
 		(jump: IPendingJump) => {
 			if (jump.safety) {
@@ -150,6 +148,17 @@ export const useScroll = ({
 		[abortJump]
 	);
 
+	// Re-scroll once the target's row has settled into the measured window. No-op until it has.
+	const reScrollWhenSettled = useCallback(
+		(targetId: string | null | undefined) => {
+			const settled = targetId ? messagesIds.current?.findIndex(id => id === targetId) ?? -1 : -1;
+			if (settled !== -1) {
+				listRef.current?.scrollToIndex({ index: settled, ...JUMP_SCROLL_POSITION });
+			}
+		},
+		[listRef, messagesIds]
+	);
+
 	// No getItemLayout for these variable-height rows, so the first scroll uses an estimated offset and
 	// can undershoot while the target is unmeasured. It renders the row; a second scroll lands precisely.
 	// Re-read the index in case the window shifted a row between.
@@ -161,13 +170,10 @@ export const useScroll = ({
 				if (lastJumpTargetId.current !== messageId) {
 					return;
 				}
-				const settled = messagesIds.current?.findIndex(id => id === messageId) ?? -1;
-				if (settled !== -1) {
-					listRef.current?.scrollToIndex({ index: settled, ...JUMP_SCROLL_POSITION });
-				}
+				reScrollWhenSettled(messageId);
 			}, SCROLL_TO_INDEX_RETRY_DELAY);
 		},
-		[listRef, messagesIds]
+		[listRef, reScrollWhenSettled]
 	);
 
 	// Release settled: the live tail has emitted and the viewport is already pinned at offset 0 from the
@@ -192,11 +198,11 @@ export const useScroll = ({
 		}
 		const index = messagesIds.current?.findIndex(id => id === jump.messageId) ?? -1;
 		if (index === -1) {
-			// Anchored target deeper than the window: grow one page (bounded) to pull it in; the safety
+			// Anchored target deeper than the window: grow it by QUERY_SIZE (bounded) to pull it in; the safety
 			// net aborts if it never materialises.
 			if (jump.anchored && jumpGrowthRetries.current < MAX_JUMP_GROWTH_RETRIES) {
 				jumpGrowthRetries.current += 1;
-				armJumpSafety(jump); // productive growth → grant the next page its own arrival window
+				armJumpSafety(jump); // productive growth → grant the next growth step its own arrival window
 				// A grow failure leaves the jump pending; the safety net aborts it, so swallow here.
 				fetchMessages().catch(() => {});
 			}
@@ -230,11 +236,7 @@ export const useScroll = ({
 			if (targetIndex > params.highestMeasuredFrameIndex) {
 				listRef.current?.scrollToIndex({ index: params.highestMeasuredFrameIndex, animated: false });
 				setTimeout(() => {
-					const settled =
-						messagesIds.current?.findIndex(id => id === (pendingJump.current?.messageId ?? lastJumpTargetId.current)) ?? -1;
-					if (settled !== -1) {
-						listRef.current?.scrollToIndex({ index: settled, ...JUMP_SCROLL_POSITION });
-					}
+					reScrollWhenSettled(pendingJump.current?.messageId ?? lastJumpTargetId.current);
 				}, SCROLL_TO_INDEX_RETRY_DELAY);
 				return;
 			}
@@ -271,7 +273,7 @@ export const useScroll = ({
 			// it can't interrupt a completed scroll. Refreshed on each productive growth.
 			armJumpSafety(jump);
 
-			// Non-contiguous target → set the Anchored Window (re-seeds one page on the target's Chunk).
+			// Non-contiguous target → set the Anchored Window (re-seeds a QUERY_SIZE window onto the target's Chunk).
 			// Contiguous / thread / local targets keep their current window.
 			if (anchored) {
 				setHighTs(highTs as number);

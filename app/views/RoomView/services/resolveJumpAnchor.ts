@@ -15,15 +15,10 @@ export interface IJumpAnchorDeps {
 }
 
 /**
- * Decide the upper ts bound (ms) for a Jump to Message, or null to keep a Live Window.
- *
- * Returns null — stay on the Live Tail, no anchoring, no I/O — when the target is a thread message,
- * the room id is missing, or the target is already in the rendered window (a nearby quoted reply
- * scrolls in place). Otherwise re-seeds onto the target's Chunk:
- *  - fromServer: fetch one Chunk so a Newer Loader can bracket the target; a Chunk that reaches the
- *    Live Tail resolves to null and stays live.
- *  - cached but out of window: reuse the Newer Loader already bracketing the target's Chunk; with no
- *    bracketing Loader (contiguous cached region) anchor at the target's own ts so it still re-seeds.
+ * Upper ts bound (ms) for the re-seeded window, or null to stay on the Live Tail.
+ * Null for thread targets, missing rid, or inWindow. Otherwise:
+ *  - fromServer: fetches one Chunk; a Newer Loader brackets the target (null if contiguous to Live Tail).
+ *  - cached: reuses the existing Newer Loader bracket, or falls back to the target's own ts.
  */
 export const resolveJumpAnchor = async (
 	rid: string | undefined,

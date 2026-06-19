@@ -1,4 +1,8 @@
+import { Q } from '@nozbe/watermelondb';
+
 import database from '../../../lib/database';
+import { MessageTypeLoad } from '../../../lib/constants/messageTypeLoad';
+import { tsToMs } from '../../../lib/dayjs';
 import getLocalAnchorTs from './getLocalAnchor';
 
 jest.mock('../../../lib/database', () => ({
@@ -31,6 +35,21 @@ describe('getLocalAnchorTs', () => {
 		await getLocalAnchorTs('ROOM_ID', new Date('2024-01-01'));
 		expect(mockDbGet).toHaveBeenCalledWith('messages');
 		expect(query).toHaveBeenCalled();
+	});
+
+	it('builds the correct query clause shape', async () => {
+		const rid = 'ROOM_A';
+		const targetTs = new Date('2024-06-01T12:00:00.000Z');
+		const targetMs = tsToMs(targetTs);
+		const { query } = mockQuery([]);
+		await getLocalAnchorTs(rid, targetTs);
+		expect(query.mock.calls[0]).toEqual([
+			Q.where('rid', rid),
+			Q.where('t', MessageTypeLoad.NEXT_CHUNK),
+			Q.where('ts', Q.gt(targetMs)),
+			Q.sortBy('ts', Q.asc),
+			Q.take(1)
+		]);
 	});
 
 	it('returns the ts (ms) of the nearest Newer Loader above the target', async () => {

@@ -10,11 +10,14 @@ import { getThreadById } from '../../../../lib/database/services/Thread';
 import { tsToMs } from '../../../../lib/dayjs';
 import { compareServerVersion, useDebounce } from '../../../../lib/methods/helpers';
 import { readThreads } from '../../../../lib/services/restApi';
-import { MESSAGE_TYPE_ANY_LOAD, type MessageTypeLoad } from '../../../../lib/constants/messageTypeLoad';
+import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '../../../../lib/constants/messageTypeLoad';
 import { MAX_AUTO_LOADS, QUERY_SIZE } from '../constants';
 import { buildVisibleSystemTypesClause } from './buildVisibleSystemTypesClause';
 import { roomHistoryRequest } from '../../../../actions/room';
 import { isNewerLoader, raiseOrRelease, type AnchorMessage } from '../../services/anchorResolver';
+
+const findFirstLoaderId = (messages: TAnyMessageModel[]): string | null =>
+	messages.find(m => m.t && MESSAGE_TYPE_ANY_LOAD.includes(m.t as MessageTypeLoad))?.id ?? null;
 
 export const useMessages = ({
 	rid,
@@ -84,11 +87,16 @@ export const useMessages = ({
 			// invocation is stale and must not mutate count / highTs for the new window.
 			const sub = subscription.current;
 
-			// Targeted one-shot read of the region above the current bound that the bounded observation
-			// cannot see (the newly-written batch + any new Newer Loader).
+			// Read the Newer Loader closest to the Live Tail directly (highest ts above the bound) so non-loader rows can't crowd the boundary loader out of the fetched set.
 			const rows = (await database.active
 				.get('messages')
-				.query(Q.where('rid', rid), Q.where('ts', Q.gt(currentHighTs)), Q.sortBy('ts', Q.asc), Q.take(QUERY_SIZE + 1))
+				.query(
+					Q.where('rid', rid),
+					Q.where('t', MessageTypeLoad.NEXT_CHUNK),
+					Q.where('ts', Q.gt(currentHighTs)),
+					Q.sortBy('ts', Q.desc),
+					Q.take(1)
+				)
 				.fetch()) as TAnyMessageModel[];
 
 			if (subscription.current !== sub) {
@@ -236,8 +244,7 @@ export const useMessages = ({
 			// auto-dispatch effect treats it as already-seen when it re-fires after the rid
 			// change — rawMessages may still reflect the previous room until the new
 			// subscription emits, and we must not dispatch with a stale loader.
-			lastDispatchedLoaderId.current =
-				visibleMessages.find(m => m.t && MESSAGE_TYPE_ANY_LOAD.includes(m.t as MessageTypeLoad))?.id ?? null;
+			lastDispatchedLoaderId.current = findFirstLoaderId(visibleMessages);
 			autoLoadCount.current = 0;
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps -- visibleMessages intentionally omitted: stale read at rid-change is the desired behaviour
@@ -249,6 +256,11 @@ export const useMessages = ({
 	 * Auto-dispatch until visible content appears or the safety cap is reached.
 	 */
 	useEffect(() => {
+		// Anchored Window deliberately does not auto-follow; only a Live Window auto-dispatches.
+		if (highTs != null) {
+			return;
+		}
+
 		if (!compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.16.0') || !hideSystemMessages.length) {
 			return;
 		}
@@ -257,7 +269,7 @@ export const useMessages = ({
 			return;
 		}
 
-		const loaderId = visibleMessages.find(m => m.t && MESSAGE_TYPE_ANY_LOAD.includes(m.t as MessageTypeLoad))?.id;
+		const loaderId = findFirstLoaderId(visibleMessages);
 
 		if (loaderId && loaderId !== lastDispatchedLoaderId.current) {
 			// Skip if a fetch for this loader is already in flight (push happens before the DB subscription emits)
@@ -268,7 +280,7 @@ export const useMessages = ({
 			autoLoadCount.current += 1;
 			dispatch(roomHistoryRequest({ rid, t, loaderId }));
 		}
-	}, [serverVersion, rid, t, hideSystemMessages, visibleMessages, dispatch, store]);
+	}, [highTs, serverVersion, rid, t, hideSystemMessages, visibleMessages, dispatch, store]);
 
 	return [visibleMessages, messagesIds, fetchMessages, { highTs, setHighTs }] as const;
 };
