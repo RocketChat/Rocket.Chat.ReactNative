@@ -79,6 +79,10 @@ const AppContainer = () => {
 		}
 	}, [root]);
 
+	if (!root) {
+		return null;
+	}
+
 	return (
 		<>
 			<MediaCallHeader />
