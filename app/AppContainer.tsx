@@ -3,7 +3,7 @@ import { createStaticNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useSelector } from 'react-redux';
 
-import { RootEnum } from './definitions';
+import { type IApplicationState, RootEnum } from './definitions';
 import Navigation from './lib/navigation/appNavigation';
 import { defaultHeader, getActiveRouteName, navigationTheme } from './lib/methods/helpers/navigation';
 // Stacks — navigator config objects, not components
@@ -23,18 +23,21 @@ import MediaCallHeader from './containers/MediaCallHeader/MediaCallHeader';
 
 const useIsLoading = () =>
 	useSelector(
-		(state: any) => state.app.root === RootEnum.ROOT_LOADING || state.app.root === RootEnum.ROOT_LOADING_SHARE_EXTENSION
+		(state: IApplicationState) =>
+			state.app.root === RootEnum.ROOT_LOADING || state.app.root === RootEnum.ROOT_LOADING_SHARE_EXTENSION
 	);
 
-const useIsOutside = () => useSelector((state: any) => state.app.root === RootEnum.ROOT_OUTSIDE);
+const useIsOutside = () => useSelector((state: IApplicationState) => state.app.root === RootEnum.ROOT_OUTSIDE);
 
-const useIsMasterDetail = () => useSelector((state: any) => state.app.root === RootEnum.ROOT_INSIDE && state.app.isMasterDetail);
+const useIsMasterDetail = () =>
+	useSelector((state: IApplicationState) => state.app.root === RootEnum.ROOT_INSIDE && state.app.isMasterDetail);
 
-const useIsInside = () => useSelector((state: any) => state.app.root === RootEnum.ROOT_INSIDE && !state.app.isMasterDetail);
+const useIsInside = () =>
+	useSelector((state: IApplicationState) => state.app.root === RootEnum.ROOT_INSIDE && !state.app.isMasterDetail);
 
-const useIsSetUsername = () => useSelector((state: any) => state.app.root === RootEnum.ROOT_SET_USERNAME);
+const useIsSetUsername = () => useSelector((state: IApplicationState) => state.app.root === RootEnum.ROOT_SET_USERNAME);
 
-const useIsShareExtension = () => useSelector((state: any) => state.app.root === RootEnum.ROOT_SHARE_EXTENSION);
+const useIsShareExtension = () => useSelector((state: IApplicationState) => state.app.root === RootEnum.ROOT_SHARE_EXTENSION);
 
 // ─── SetUsername inline navigator ────────────────────────────────────────────
 
@@ -68,7 +71,7 @@ const AppNavigation = createStaticNavigation(RootNavigator);
 
 const AppContainer = () => {
 	const { theme } = useContext(ThemeContext);
-	const root = useSelector((state: any) => state.app.root);
+	const root = useSelector((state: IApplicationState) => state.app.root);
 
 	useEffect(() => {
 		if (root) {
