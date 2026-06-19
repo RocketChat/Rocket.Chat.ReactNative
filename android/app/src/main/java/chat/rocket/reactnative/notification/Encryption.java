@@ -263,15 +263,15 @@ class Encryption {
     /**
      * Derives the clean database filename from a server URL.
      * Matches the JS `deriveServerDbName` in connection.ts:
-     *   strip trailing slashes → strip scheme → replace '/' with '.' → append ".db"
+     *   strip trailing slashes → strip scheme → replace '/' with '_' → append ".db"
      */
     private static String deriveDbName(String serverUrl) {
         // Strip trailing slashes
         String s = serverUrl.replaceAll("/+$", "");
         // Strip scheme ("https://", "http://", or bare "//")
         s = s.replaceFirst("^(\\w+:)?//", "");
-        // Replace remaining slashes with dots
-        s = s.replace("/", ".");
+        // Replace remaining slashes with underscores (matches JS deriveServerDbName)
+        s = s.replace("/", "_");
         return s + ".db";
     }
 

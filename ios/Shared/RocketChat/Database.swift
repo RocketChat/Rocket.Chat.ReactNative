@@ -9,9 +9,15 @@
 //    2. PRAGMA key = "x'<64 hex>'"  ← raw-key form; must be the FIRST statement.
 //       The x'...' prefix tells SQLCipher to use the bytes directly, skipping PBKDF2.
 //       Using PBKDF2 (or omitting x'...') produces "file is not a database".
-//    3. PRAGMA busy_timeout = 500  ← mandatory for multi-process WAL safety.
+//    3. PRAGMA cipher_plaintext_header_size = 32  ← the JS driver exposes a 32-byte
+//       plaintext header for the iOS 0xdead10cc WAL exemption; the reader must match
+//       or SQLCipher tries to decrypt the header and fails.
+//    4. PRAGMA cipher_salt = "x'<32 hex>'"  ← with a plaintext header SQLCipher does
+//       not store the salt in the file; it must be supplied from the keychain entry
+//       written by the JS keyService (key "db_salt_v1:<dbName>"). Missing salt = fail.
+//    5. PRAGMA busy_timeout = 500  ← mandatory for multi-process WAL safety.
 //       Without it the NSE starves on SQLITE_BUSY when the main app holds a WAL lock.
-//    4. Verify with a trivial sqlite_master read — surfaces a wrong key immediately.
+//    6. Verify with a trivial sqlite_master read — surfaces a wrong key immediately.
 //
 //  ARC ownership: the sqlite3 handle is owned by this class and closed in deinit.
 //  Never expose the raw OpaquePointer outside this class — it becomes invalid after
@@ -30,7 +36,7 @@ class Database {
 
 	/// Opens the per-server database.
 	/// Derives the filename from serverUrl exactly as the JS driver does:
-	///   strip trailing slashes → strip scheme → replace '/' with '.' → append ".db"
+	///   strip trailing slashes → strip scheme → replace '/' with '_' → append ".db"
 	init(server: String) {
 		open(dbName: Database.deriveServerDbName(from: server))
 	}
@@ -57,7 +63,8 @@ class Database {
 		} else if s.hasPrefix("//") {
 			s = String(s.dropFirst(2))
 		}
-		s = s.replacingOccurrences(of: "/", with: ".")
+		// Replace interior slashes with underscores — matches JS deriveServerDbName
+		s = s.replacingOccurrences(of: "/", with: "_")
 		return s + ".db"
 	}
 
@@ -99,11 +106,30 @@ class Database {
 			return
 		}
 
-		// 3. busy_timeout: prevent SQLITE_BUSY starvation when NSE and main app
+		// 3. cipher_plaintext_header_size — must match JS driver (32 bytes); without it
+		//    SQLCipher tries to decrypt the header and fails to open the database.
+		sqlite3_exec(db, "PRAGMA cipher_plaintext_header_size = 32;", nil, nil, nil)
+
+		// 4. cipher_salt — the JS driver stores the salt externally because the plaintext
+		//    header means SQLCipher no longer embeds it in the file. Read from keychain
+		//    key "db_salt_v1:<dbName>" (the same entry the JS keyService writes).
+		let saltStorageKey = "db_salt_v1:\(dbName)"
+		var saltErr: NSError?
+		let saltHexOpt = DatabaseKeyStore.read(account: saltStorageKey, error: &saltErr)
+		guard saltErr == nil, let saltHex = saltHexOpt else {
+			NSLog("[Database] No cipher salt for %@ (missing or unreadable) — closing", dbName)
+			sqlite3_close(db)
+			db = nil
+			return
+		}
+		let saltPragma = "PRAGMA cipher_salt = \"x'\(saltHex)'\";"
+		sqlite3_exec(db, saltPragma, nil, nil, nil)
+
+		// 5. busy_timeout: prevent SQLITE_BUSY starvation when NSE and main app
 		//    are both active with WAL reader locks on the same file
 		sqlite3_exec(db, "PRAGMA busy_timeout = 500;", nil, nil, nil)
 
-		// 4. Verify: a wrong key or corrupt file will fail here rather than at first use.
+		// 6. Verify: a wrong key or corrupt file will fail here rather than at first use.
 		//    PRAGMA key does not validate the key and prepare alone only parses SQL —
 		//    the statement must be stepped so SQLCipher actually decrypts a page.
 		var stmt: OpaquePointer?
