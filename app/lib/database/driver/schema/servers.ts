@@ -44,9 +44,9 @@ export const serversHistoryTable = sqliteTable(
 	'servers_history',
 	{
 		id: text('id').primaryKey(),
-		url: text('url'),
+		url: text('url').notNull(),
 		username: text('username'),
-		updated_at: real('updated_at'),
+		updated_at: real('updated_at').notNull(),
 		icon_url: text('icon_url')
 	},
 	t => [index('servers_history_url_idx').on(t.url)]
