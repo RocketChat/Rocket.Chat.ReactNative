@@ -15,6 +15,9 @@ tags:
 
 ---
 - evalScript: ${output.user = output.utils.createUser()}
+- evalScript: ${output.actionSheetMessage = 'message-action-sheet'}
+- evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password)}
+- evalScript: ${output.utils.sendMessage(output.user.username, output.user.password, output.room.name, output.actionSheetMessage)}
 
 - runFlow:
     file: '../../helpers/login-with-deeplink.yaml'
@@ -22,6 +25,47 @@ tags:
       USERNAME: ${output.user.username}
       PASSWORD: ${output.user.password}
 
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+
+# Message actions action sheet — bottom-most row (Delete) must stay reachable and visible.
+- runFlow:
+    file: '../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: ${output.room.name}
+- extendedWaitUntil:
+    visible:
+      id: 'message-content-${output.actionSheetMessage}'
+    timeout: 60000
+- longPressOn:
+    id: 'message-content-${output.actionSheetMessage}'
+- extendedWaitUntil:
+    visible:
+      id: 'action-sheet'
+    timeout: 60000
+- swipe:
+    from:
+      id: 'action-sheet-handle'
+    direction: UP
+- waitForAnimationToEnd:
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      id: 'message-actions-delete'
+    direction: DOWN
+    timeout: 20000
+- assertVisible:
+    id: 'message-actions-delete'
+
+# Dismiss the sheet and return to the rooms list for the remaining cases.
+- swipe:
+    direction: DOWN
+    duration: 500
+- waitForAnimationToEnd:
+    timeout: 10000
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
