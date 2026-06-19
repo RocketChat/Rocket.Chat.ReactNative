@@ -8,20 +8,13 @@ import SelectServerView from '../views/SelectServerView';
 import ShareListView from '../views/ShareListView';
 import ShareView from '../views/ShareView';
 import withNavigation from '../lib/navigation/withNavigation';
-import { type IAttachment, type TServerModel, type TSubscriptionModel } from '../definitions';
+import { type InsideStackParamList } from './types';
 
-type ShareViewParams = {
-	attachments: IAttachment[];
-	isShareView?: boolean;
-	isShareExtension: boolean;
-	serverInfo: TServerModel;
-	text: string;
-	room: TSubscriptionModel;
-	thread?: any;
-};
+// Extension-only subset: omits InsideStack callbacks/params the share extension never provides.
+type ShareViewParams = Omit<InsideStackParamList['ShareView'], 'thread' | 'action' | 'finishShareView' | 'startShareView'>;
 
-// Cast through `any` to break the type cycle that would arise from ShareListView/ShareView
-// referencing ShareInsideStackParamList ← StaticParamList<typeof ShareExtension> ← these components.
+// withNavigation(x as any) returns ComponentType<{}> — not assignable to ComponentType<StaticScreenProps<T>> — due to the
+// type cycle: these components reference ShareInsideStackParamList ← StaticParamList<typeof ShareExtension> ← these components.
 const ShareListViewScreen: ComponentType<StaticScreenProps<undefined>> = withNavigation(ShareListView as any) as any;
 const ShareViewScreen: ComponentType<StaticScreenProps<ShareViewParams>> = withNavigation(ShareView as any) as any;
 
