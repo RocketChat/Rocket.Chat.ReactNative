@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
-import { type ReactElement, useEffect, useRef, useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { type ReactElement, useEffect, useMemo, useRef, useState } from 'react';
+import { FlatList, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -22,9 +22,15 @@ import { getUserSelector } from '../../selectors/login';
 import { showErrorAlertWithEMessage, compareServerVersion } from '../../lib/methods/helpers';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { useTheme } from '../../theme';
-import Button from '../../containers/Button';
 import { USER_STATUS_TEXT_MAX_LENGTH } from '../../lib/constants/maxLength';
-import ClearAfterPicker, { type ClearAfterValue, computeExpiresAt, getInitialClearAfterState } from './ClearAfterPicker';
+import { type ClearAfterValue, computeExpiresAt, getInitialClearAfterState } from './ClearAfterPicker';
+import FooterComponent from './FooterComponent';
+
+const validationSchema = yup.object().shape({
+	statusText: yup
+		.string()
+		.max(USER_STATUS_TEXT_MAX_LENGTH, I18n.t('Status_text_limit_exceeded', { limit: USER_STATUS_TEXT_MAX_LENGTH }))
+});
 
 interface IStatus {
 	id: TUserStatus;
@@ -60,13 +66,6 @@ const styles = StyleSheet.create({
 		borderRadius: 0,
 		borderTopWidth: 1,
 		borderBottomWidth: 1
-	},
-	footerComponent: {
-		marginTop: 36,
-		paddingHorizontal: 16
-	},
-	footerComponentWithPicker: {
-		marginTop: 16
 	}
 });
 
@@ -79,6 +78,7 @@ const Status = ({
 	status: TUserStatus;
 	setStatus: (status: TUserStatus) => void;
 }) => {
+	'use memo';
 	const { id, name } = statusType;
 	return (
 		<>
@@ -103,12 +103,7 @@ const Status = ({
 };
 
 const StatusView = (): ReactElement => {
-	const validationSchema = yup.object().shape({
-		statusText: yup
-			.string()
-			.max(USER_STATUS_TEXT_MAX_LENGTH, I18n.t('Status_text_limit_exceeded', { limit: USER_STATUS_TEXT_MAX_LENGTH }))
-	});
-
+	'use memo';
 	const user = useSelector((state: IApplicationState) => getUserSelector(state));
 	const isMasterDetail = useSelector((state: IApplicationState) => state.app.isMasterDetail);
 	const Accounts_AllowInvisibleStatusOption = useSelector(
@@ -117,6 +112,11 @@ const StatusView = (): ReactElement => {
 	const serverVersion = useSelector((state: IApplicationState) => state.server.version);
 	const supportsStatusExpiry = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.6.0');
 
+	const defaultFormValues = useMemo(
+		() => ({ statusText: user.statusText || '', status: user.status }),
+		[]
+	);
+
 	const {
 		control,
 		watch,
@@ -124,8 +124,7 @@ const StatusView = (): ReactElement => {
 		formState: { errors, isValid }
 	} = useForm({
 		mode: 'onChange',
-		defaultValues: { statusText: user.statusText || '', status: user.status },
-
+		defaultValues: defaultFormValues,
 		resolver: yupResolver(validationSchema)
 	});
 	const inputValues = watch();
@@ -155,14 +154,11 @@ const StatusView = (): ReactElement => {
 	useA11yErrorAnnouncement({ errors, inputValues });
 
 	useEffect(() => {
-		const setHeader = () => {
-			setOptions({
-				title: I18n.t('Edit_Status'),
-				headerLeft: isMasterDetail ? undefined : () => <HeaderButton.CloseModal onPress={goBack} />
-			});
-		};
-		setHeader();
-	}, [isMasterDetail]);
+		setOptions({
+			title: I18n.t('Edit_Status'),
+			headerLeft: isMasterDetail ? undefined : () => <HeaderButton.CloseModal onPress={goBack} />
+		});
+	}, [isMasterDetail, setOptions, goBack]);
 
 	const setStatus = (updatedStatus: TUserStatus) => {
 		setValue('status', updatedStatus);
@@ -202,24 +198,11 @@ const StatusView = (): ReactElement => {
 		return isStatusEqual && isStatusTextEqual;
 	};
 
-	const FooterComponent = () => (
-		<View>
-			{supportsStatusExpiry && (
-				<ClearAfterPicker
-					value={clearAfter}
-					customDate={clearAfterDate}
-					onChange={(v, d) => {
-						clearAfterTouched.current = true;
-						setClearAfter(v);
-						if (d) setClearAfterDate(d);
-					}}
-				/>
-			)}
-			<View style={[styles.footerComponent, supportsStatusExpiry && styles.footerComponentWithPicker]}>
-				<Button testID='status-view-submit' disabled={isStatusChanged()} onPress={submit} title={I18n.t('Save')} />
-			</View>
-		</View>
-	);
+	const handleClearAfterChange = (value: ClearAfterValue, date: Date | null) => {
+		clearAfterTouched.current = true;
+		setClearAfter(value);
+		if (date) setClearAfterDate(date);
+	};
 
 	return (
 		<SafeAreaView testID='status-view'>
@@ -242,7 +225,16 @@ const StatusView = (): ReactElement => {
 						<List.Separator />
 					</>
 				}
-				ListFooterComponent={FooterComponent}
+				ListFooterComponent={
+					<FooterComponent
+						supportsStatusExpiry={supportsStatusExpiry}
+						clearAfter={clearAfter}
+						clearAfterDate={clearAfterDate}
+						onClearAfterChange={handleClearAfterChange}
+						disabled={isStatusChanged()}
+						onSubmit={submit}
+					/>
+				}
 				style={{ backgroundColor: colors.surfaceTint }}
 			/>
 		</SafeAreaView>

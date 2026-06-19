@@ -1,5 +1,5 @@
 import dayjs from '../../lib/dayjs';
-import { computeExpiresAt, getInitialClearAfterState } from './ClearAfterPicker';
+import { computeExpiresAt, getInitialClearAfterState } from './ClearAfterPicker/helpers';
 
 describe('computeExpiresAt', () => {
 	beforeEach(() => {
