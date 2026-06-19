@@ -1,4 +1,4 @@
-import { memo, useMemo, type ReactElement } from 'react';
+import { memo, type ReactElement } from 'react';
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { KeyboardFocusView } from 'react-native-external-keyboard';
@@ -189,7 +189,7 @@ const Header = ({
 	// Only move focus to the header for accessibility navigation (screen reader or physical
 	// keyboard); regular touch users shouldn't have focus yanked onto the header on room open.
 	const autoFocusHeader = useIsAccessibilityNavigationEnabled();
-	const formattedStatusExpiry = useMemo(() => formatStatusExpiry(statusExpiresAt), [statusExpiresAt]);
+	const formattedStatusExpiry = formatStatusExpiry(statusExpiresAt);
 	const subtitleAccessibilityLabel = tmid ? parentTitle : subtitle;
 	const fullSubtitleAccessibilityLabel = formattedStatusExpiry
 		? `${subtitleAccessibilityLabel || ''}, ${formattedStatusExpiry}`

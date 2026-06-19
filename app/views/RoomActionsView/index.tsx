@@ -1324,7 +1324,7 @@ const mapStateToProps = (state: IApplicationState, ownProps: Partial<Pick<IRoomA
 	const params = ownProps.route?.params;
 	const room = params?.room || { rid: params?.rid, t: params?.t };
 	const userId = getUserSelector(state).id;
-	const roomUserId = room && room.t === 'd' ? getUidDirectMessage(room, userId) : undefined;
+	const roomUserId = room?.t === 'd' ? getUidDirectMessage(room, userId) : undefined;
 	return {
 		userId,
 		encryptionEnabled: state.encryption.enabled,

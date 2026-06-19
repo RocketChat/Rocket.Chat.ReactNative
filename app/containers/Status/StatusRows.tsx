@@ -1,4 +1,4 @@
-import { type ReactElement, useMemo } from 'react';
+import { type ReactElement } from 'react';
 import { StyleSheet, type StyleProp, Text, type TextStyle, View, type ViewStyle } from 'react-native';
 
 import Status from '.';
@@ -43,7 +43,9 @@ const StatusRows = ({
 	rowStyle,
 	expiryRowStyle
 }: IStatusRows): ReactElement => {
-	const formattedExpiry = useMemo(() => formatStatusExpiry(statusExpiresAt), [statusExpiresAt]);
+	'use memo';
+
+	const formattedExpiry = formatStatusExpiry(statusExpiresAt);
 	const presenceLabel = !statusText && status ? STATUS_I18N_KEYS[status] : undefined;
 
 	return (
