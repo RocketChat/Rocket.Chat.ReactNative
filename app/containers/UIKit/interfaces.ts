@@ -265,7 +265,6 @@ export interface ISection extends Block {
 
 export interface IFields {
 	parser: IParser;
-	theme: TSupportedThemes;
 	fields: readonly IText[];
 }
 

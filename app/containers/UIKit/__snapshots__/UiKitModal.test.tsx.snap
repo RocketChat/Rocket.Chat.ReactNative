@@ -5668,7 +5668,7 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
       ]
     }
   >
-    <Text
+    <View
       style={
         [
           {
@@ -5677,9 +5677,6 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
           },
           {
             "marginVertical": 6,
-          },
-          {
-            "color": "#2F343D",
           },
         ]
       }
@@ -5803,8 +5800,8 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
           </Text>
         </Text>
       </View>
-    </Text>
-    <Text
+    </View>
+    <View
       style={
         [
           {
@@ -5813,9 +5810,6 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
           },
           {
             "marginVertical": 6,
-          },
-          {
-            "color": "#2F343D",
           },
         ]
       }
@@ -5939,7 +5933,7 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
           </Text>
         </Text>
       </View>
-    </Text>
+    </View>
   </View>,
   <View
     style={
@@ -5953,7 +5947,7 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
       ]
     }
   >
-    <Text
+    <View
       style={
         [
           {
@@ -5962,9 +5956,6 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
           },
           {
             "marginVertical": 6,
-          },
-          {
-            "color": "#2F343D",
           },
         ]
       }
@@ -6088,8 +6079,8 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
           </Text>
         </Text>
       </View>
-    </Text>
-    <Text
+    </View>
+    <View
       style={
         [
           {
@@ -6098,9 +6089,6 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
           },
           {
             "marginVertical": 6,
-          },
-          {
-            "color": "#2F343D",
           },
         ]
       }
@@ -6224,7 +6212,7 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
           </Text>
         </Text>
       </View>
-    </Text>
+    </View>
   </View>,
 ]
 `;
