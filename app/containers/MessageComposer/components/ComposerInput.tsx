@@ -14,7 +14,7 @@ import {
 	type TSetInput
 } from '../interfaces';
 import { useAutocompleteParams, useFocused, useMessageComposerApi, useMicOrSend } from '../context';
-import { fetchIsAllOrHere, getMentionRegexp } from '../helpers';
+import { fetchIsAllOrHere, getMentionRegexp, wrapCodeBlock } from '../helpers';
 import { useAutoSaveDraft } from '../hooks';
 import sharedStyles from '../../../views/Styles';
 import { useTheme } from '../../../theme';
@@ -131,6 +131,11 @@ export const ComposerInput = memo(
 					emitter.on('addMarkdown', ({ style }) => {
 						const { start, end } = selectionRef.current;
 						const text = textRef.current;
+						if (style === 'code-block') {
+							const { updatedText, selection } = wrapCodeBlock(text, start, end);
+							setInput(updatedText, selection);
+							return;
+						}
 						const markdown = MARKDOWN_STYLES[style];
 						const newText = `${text.substr(0, start)}${markdown}${text.substr(start, end - start)}${markdown}${text.substr(end)}`;
 						setInput(newText, {
