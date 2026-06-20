@@ -3,11 +3,17 @@
 // opening and closing fences are placed on dedicated lines and separated from the surrounding
 // text. The cursor is left on the (possibly empty) content line between the fences.
 // See https://github.com/RocketChat/Rocket.Chat.ReactNative/issues/7099
-export const wrapCodeBlock = (
-	text: string,
-	start: number,
-	end: number
-): { updatedText: string; selection: { start: number; end: number } } => {
+interface ISelectionRange {
+	start: number;
+	end: number;
+}
+
+interface IWrapCodeBlockResult {
+	updatedText: string;
+	selection: ISelectionRange;
+}
+
+export const wrapCodeBlock = (text: string, start: number, end: number): IWrapCodeBlockResult => {
 	const before = text.substring(0, start);
 	const selected = text.substring(start, end);
 	const after = text.substring(end);
