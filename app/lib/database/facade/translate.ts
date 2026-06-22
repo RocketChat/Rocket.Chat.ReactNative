@@ -75,9 +75,7 @@ function translateWhere(clause: Q.Clause, columns: ColumnMap): SQL | undefined {
 		case 'skip':
 			return undefined;
 		case 'on':
-			// Q.on is db-module only. Returning undefined here means it won't filter — callers
-			// that use Q.on must build the correlated subquery themselves before calling translate.
-			return undefined;
+			throw new Error('Q.on is not supported by the facade translator; build the correlated subquery at the call site');
 	}
 }
 

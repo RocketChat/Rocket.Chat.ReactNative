@@ -17,7 +17,13 @@ export class WriterQueue {
 		});
 
 		this._tail = this._tail
-			.then(() => fn().then(resolve, reject))
+			.then(async () => {
+				try {
+					resolve(await fn());
+				} catch (e) {
+					reject(e);
+				}
+			})
 			.then(
 				() => undefined,
 				() => undefined

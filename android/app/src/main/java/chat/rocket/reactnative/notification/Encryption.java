@@ -103,6 +103,10 @@ class RoomKeyResult {
 }
 
 class Encryption {
+    static {
+        System.loadLibrary("sqlcipher");
+    }
+
     static class EncryptionContent {
         String algorithm;
         String ciphertext;
@@ -176,13 +180,12 @@ class Encryption {
         String dbName = deriveDbName(ejson.serverURL());
         String dbPath = context.getFilesDir().getAbsolutePath() + "/SQLite/" + dbName;
 
-        // Load the SQLCipher native library. Safe to call multiple times per process.
-        System.loadLibrary("sqlcipher");
-
-        // Read the key from the AndroidKeyStore-backed store.
-        // Storage key matches JS KEY_PREFIX: "db_key_v1:<dbName>"
+        // Read key + salt from the AndroidKeyStore-backed store.
+        // Storage keys match JS KEY_PREFIX / SALT_PREFIX in keyService.ts.
         String storageKey = "db_key_v1:" + dbName;
+        String saltStorageKey = "db_salt_v1:" + dbName;
         String keyHex;
+        String saltHex;
         try {
             keyHex = DatabaseKeyStoreModule.getItemInternal(context, storageKey);
         } catch (Exception e) {
@@ -191,6 +194,16 @@ class Encryption {
         }
         if (keyHex == null) {
             Log.w(TAG, "No encryption key found for " + dbName + " — cannot read room");
+            return null;
+        }
+        try {
+            saltHex = DatabaseKeyStoreModule.getItemInternal(context, saltStorageKey);
+        } catch (Exception e) {
+            Log.w(TAG, "Could not read cipher salt for " + dbName + " — cannot read room", e);
+            return null;
+        }
+        if (saltHex == null) {
+            Log.w(TAG, "No cipher salt found for " + dbName + " — cannot read room");
             return null;
         }
 
@@ -203,12 +216,18 @@ class Encryption {
         try {
             db = SQLiteDatabase.openDatabase(dbPath, rawKey, null, SQLiteDatabase.OPEN_READONLY, null);
 
-            // Mandatory multi-process WAL safety, matching the JS driver and the iOS reader:
-            // the notification path can read while the main app holds a WAL lock; without a
-            // busy timeout that contention surfaces as an immediate SQLITE_BUSY.
+            // Mirror the JS driver's open PRAGMAs (connection.ts applyOpenPragmas):
+            //   cipher_plaintext_header_size = 32 — the driver exposes a 32-byte plaintext header
+            //     so iOS grants the background idle-WAL exemption (0xdead10cc); the reader must
+            //     set this too or SQLCipher will attempt to decrypt the header and fail.
+            //   cipher_salt — with a plaintext header SQLCipher no longer stores the salt in the
+            //     file; it must be supplied from the same keychain entry the JS driver wrote.
+            //   busy_timeout — mandatory multi-process WAL safety.
+            db.execSQL("PRAGMA cipher_plaintext_header_size = 32;");
+            db.execSQL("PRAGMA cipher_salt = \"x'" + saltHex + "'\";");
             db.execSQL("PRAGMA busy_timeout = 500;");
 
-            Cursor cursor = db.rawQuery("SELECT * FROM subscriptions WHERE id == ? LIMIT 1", new String[]{ejson.rid});
+            Cursor cursor = db.rawQuery("SELECT * FROM subscriptions WHERE rid = ? LIMIT 1", new String[]{ejson.rid});
             try {
                 if (cursor.getCount() == 0) {
                     return null;
@@ -244,15 +263,15 @@ class Encryption {
     /**
      * Derives the clean database filename from a server URL.
      * Matches the JS `deriveServerDbName` in connection.ts:
-     *   strip trailing slashes → strip scheme → replace '/' with '.' → append ".db"
+     *   strip trailing slashes → strip scheme → replace '/' with '_' → append ".db"
      */
     private static String deriveDbName(String serverUrl) {
         // Strip trailing slashes
         String s = serverUrl.replaceAll("/+$", "");
         // Strip scheme ("https://", "http://", or bare "//")
         s = s.replaceFirst("^(\\w+:)?//", "");
-        // Replace remaining slashes with dots
-        s = s.replace("/", ".");
+        // Replace remaining slashes with underscores (matches JS deriveServerDbName)
+        s = s.replace("/", "_");
         return s + ".db";
     }
 

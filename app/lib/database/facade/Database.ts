@@ -5,14 +5,19 @@
  * Exposes: get(table) → Collection, write(fn), batch(...models), unsafeResetDatabase().
  */
 
-import { eq } from 'drizzle-orm';
+import { eq, getTableColumns } from 'drizzle-orm';
 import type { SQLiteTable } from 'drizzle-orm/sqlite-core';
+import type { BaseSQLiteDatabase } from 'drizzle-orm/sqlite-core';
+import type { SQLiteRunResult } from 'expo-sqlite';
 
 import type { DbHandle } from '../driver/connection';
 import type { AppSchema, RawRecord } from './schema';
 import { Model, type ICollection, type PendingOp } from './Model';
 import { Collection } from './Collection';
 import { WriterQueue } from './writer';
+
+/** Typed alias for synchronous Drizzle DML without schema-generic noise. */
+type SyncDb = BaseSQLiteDatabase<'sync', SQLiteRunResult, Record<string, unknown>>;
 
 /** Constructor for a Model subclass, as registered per table (mirrors WMDB modelClasses). */
 export type ModelClass = new (collection: ICollection, raw: RawRecord) => Model;
@@ -74,9 +79,9 @@ export class Database {
 
 		if (models.length === 0) return Promise.resolve();
 
-		const { db } = this._handle;
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		(db as any).transaction(() => {
+		const db = this._handle.db as unknown as SyncDb;
+		const committed: Model[] = [];
+		db.transaction(() => {
 			for (const model of models) {
 				const op: PendingOp | null = model._pendingOp;
 				if (!op) continue;
@@ -85,30 +90,21 @@ export class Database {
 				if (!drizzleTable) throw new Error(`No Drizzle table for '${model._collection.table}'`);
 
 				if (op === 'create') {
-					// eslint-disable-next-line @typescript-eslint/no-explicit-any
-					(db as any)
-						.insert(drizzleTable)
-						.values(model._raw as never)
-						.run();
+					db.insert(drizzleTable).values(model._raw as never).run();
 				} else if (op === 'update') {
 					const { id, ...rest } = model._raw;
-					// eslint-disable-next-line @typescript-eslint/no-explicit-any
-					(db as any)
-						.update(drizzleTable)
+					db.update(drizzleTable)
 						.set(rest as never)
-						.where(eq((drizzleTable as never as Record<string, never>).id, id))
+						.where(eq(getTableColumns(drizzleTable).id, id))
 						.run();
 				} else if (op === 'destroy') {
-					// eslint-disable-next-line @typescript-eslint/no-explicit-any
-					(db as any)
-						.delete(drizzleTable)
-						.where(eq((drizzleTable as never as Record<string, never>).id, model._raw.id))
-						.run();
+					db.delete(drizzleTable).where(eq(getTableColumns(drizzleTable).id, model._raw.id)).run();
 				}
 
-				model._pendingOp = null;
+				committed.push(model);
 			}
 		});
+		for (const m of committed) m._pendingOp = null;
 		return Promise.resolve();
 	}
 
@@ -117,12 +113,10 @@ export class Database {
 	 * Does NOT delete the database file — matches WMDB semantics for clearCache/logout.
 	 */
 	unsafeResetDatabase(): Promise<void> {
-		const { db } = this._handle;
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		(db as any).transaction(() => {
+		const db = this._handle.db as unknown as SyncDb;
+		db.transaction(() => {
 			for (const drizzleTable of Object.values(this._tableMap)) {
-				// eslint-disable-next-line @typescript-eslint/no-explicit-any
-				(db as any).delete(drizzleTable).run();
+				db.delete(drizzleTable).run();
 			}
 		});
 		// Clear the collection cache so next fetch sees the empty state

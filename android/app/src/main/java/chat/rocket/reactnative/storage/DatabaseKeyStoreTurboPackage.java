@@ -34,7 +34,7 @@ public class DatabaseKeyStoreTurboPackage extends TurboReactPackage {
                             NativeDatabaseKeyStoreSpec.NAME,
                             false, // canOverrideExistingModule
                             false, // needsEagerInit
-                            true,  // hasConstants
+                            false, // hasConstants
                             false, // isCxxModule
                             true   // isTurboModule
                     ));

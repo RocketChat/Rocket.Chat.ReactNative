@@ -101,9 +101,9 @@ export function observeTable<T extends HasId>(
 
 /**
  * Produces an Observable that emits whenever a specific row (by id) changes.
- * Uses rowId matching from the change event for precision.
+ * Re-runs fetchFn on any change to the table (debounced); the fetchFn resolves the specific row by id.
  */
-export function observeRow<T>(handle: DbHandle, tableName: string, fetchFn: () => T | null): Observable<T> {
+export function observeRow<T>(handle: DbHandle, tableName: string, fetchFn: () => T | null, debounceMs = 16): Observable<T> {
 	return new Observable<T>(subscriber => {
 		const emit = () => {
 			if (subscriber.closed) return;
@@ -114,13 +114,18 @@ export function observeRow<T>(handle: DbHandle, tableName: string, fetchFn: () =
 		// Initial emit
 		emit();
 
+		let timer: ReturnType<typeof setTimeout> | null = null;
 		const sub = addDatabaseChangeListener(event => {
 			if (!event.databaseFilePath.endsWith(`/${handle.dbName}`)) return;
 			if (event.tableName !== tableName) return;
-			emit();
+			if (timer !== null) clearTimeout(timer);
+			timer = setTimeout(emit, debounceMs);
 		});
 
-		return () => sub.remove();
+		return () => {
+			sub.remove();
+			if (timer !== null) clearTimeout(timer);
+		};
 	});
 }
 
@@ -176,9 +181,11 @@ export function observeTableWithColumns<T extends HasId>(
 
 function sameByColumns<T extends HasId>(prev: T[], next: T[], cols: Set<string>): boolean {
 	if (prev.length !== next.length) return false;
-	for (let i = 0; i < prev.length; i++) {
-		const a = rowData(prev[i]);
-		const b = rowData(next[i]);
+	const prevById = new Map(prev.map(r => [r.id, rowData(r)]));
+	for (const row of next) {
+		const a = prevById.get(row.id);
+		if (!a) return false;
+		const b = rowData(row);
 		for (const col of cols) {
 			if (a[col] !== b[col]) return false;
 		}

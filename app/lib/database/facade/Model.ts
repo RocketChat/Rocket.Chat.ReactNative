@@ -40,14 +40,8 @@ export class Model {
 	/** Memoized date cache keyed by ms timestamp — mirrors WMDB @date behavior. */
 	_dateCache: Map<number, Date> = new Map();
 
-	/** Memoized JSON parse cache keyed by raw string value — mirrors WMDB @json memo=true. */
-	_jsonDecoratorCache: Record<string, [unknown, unknown]> = {};
-
 	/** Query cache for @children. */
 	_childrenQueryCache: Record<string, unknown> = {};
-
-	/** Relation instance cache for @relation. */
-	_relationCache: Record<string, unknown> = {};
 
 	constructor(collection: ICollection, raw: RawRecord) {
 		this._collection = collection;
