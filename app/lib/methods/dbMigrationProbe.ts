@@ -17,7 +17,6 @@ export function dbFileUri(dbName: string): string {
 	if (Platform.OS === 'ios') {
 		return `file://${dbName}`;
 	}
-	// documentDirectory = 'file:///data/user/0/<pkg>/files/'
 	const appDataRoot = (documentDirectory ?? '').replace('files/', '');
 	return `${appDataRoot}${dbName}.db`;
 }
@@ -37,13 +36,24 @@ export async function statFileBytes(uri: string): Promise<number | null> {
 	}
 }
 
+// WAL mode keeps -wal and -shm alongside the main file; include them so the
+// reported size reflects actual on-disk footprint. Missing sidecars contribute 0
+// (normal when no uncommitted writes are pending). Returns null only when the
+// main file itself is absent.
+export async function statDbWithSidecars(uri: string): Promise<number | null> {
+	const main = await statFileBytes(uri);
+	if (main === null) return null;
+	const [wal, shm] = await Promise.all([statFileBytes(`${uri}-wal`), statFileBytes(`${uri}-shm`)]);
+	return main + (wal ?? 0) + (shm ?? 0);
+}
+
 export async function collectDbSizes(): Promise<{ serversDbBytes: number | null; totalBytes: number | null }> {
 	const serversDbUri = dbFileUri(`${appGroupPath}default.db`);
-	const serversDbBytes = await statFileBytes(serversDbUri);
+	const serversDbBytes = await statDbWithSidecars(serversDbUri);
 
 	try {
 		const servers = await database.servers.get('servers').query().fetch();
-		const sizes = await Promise.all(servers.map(s => statFileBytes(dbFileUri(serverUrlToDbName(s.id)))));
+		const sizes = await Promise.all(servers.map(s => statDbWithSidecars(dbFileUri(serverUrlToDbName(s.id)))));
 		const anyMissing = sizes.some(sz => sz === null);
 		const serverDbTotal = sizes.reduce<number>((acc, sz) => acc + (sz ?? 0), 0);
 		return {
@@ -56,11 +66,11 @@ export async function collectDbSizes(): Promise<{ serversDbBytes: number | null;
 }
 
 export async function runDbMigrationProbe(): Promise<void> {
-	if (userPreferences.getBool(PROBE_FIRED_KEY)) {
-		return;
-	}
-
 	try {
+		if (userPreferences.getBool(PROBE_FIRED_KEY)) {
+			return;
+		}
+
 		const [freeDiskBytes, { serversDbBytes, totalBytes }] = await Promise.all([
 			DeviceInfo.getFreeDiskStorage(),
 			collectDbSizes()
