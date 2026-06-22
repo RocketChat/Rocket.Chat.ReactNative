@@ -90,7 +90,9 @@ export class Database {
 				if (!drizzleTable) throw new Error(`No Drizzle table for '${model._collection.table}'`);
 
 				if (op === 'create') {
-					db.insert(drizzleTable).values(model._raw as never).run();
+					db.insert(drizzleTable)
+						.values(model._raw as never)
+						.run();
 				} else if (op === 'update') {
 					const { id, ...rest } = model._raw;
 					db.update(drizzleTable)
@@ -98,7 +100,9 @@ export class Database {
 						.where(eq(getTableColumns(drizzleTable).id, id))
 						.run();
 				} else if (op === 'destroy') {
-					db.delete(drizzleTable).where(eq(getTableColumns(drizzleTable).id, model._raw.id)).run();
+					db.delete(drizzleTable)
+						.where(eq(getTableColumns(drizzleTable).id, model._raw.id))
+						.run();
 				}
 
 				committed.push(model);

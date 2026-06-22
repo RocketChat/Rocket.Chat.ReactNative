@@ -19,7 +19,17 @@
 import { deleteDatabaseAsync } from 'expo-sqlite';
 import { File } from 'expo-file-system';
 
-import { isMigrationDone, readState, setPhase, markServer, markDone, markSkipped, startPortingActive, getNowMs, type MigrationPhase } from './state';
+import {
+	isMigrationDone,
+	readState,
+	setPhase,
+	markServer,
+	markDone,
+	markSkipped,
+	startPortingActive,
+	getNowMs,
+	type MigrationPhase
+} from './state';
 import { emitMigrationStart, emitMigrationComplete, categorizeMigrationError } from './telemetry';
 import {
 	LEGACY_DIR,

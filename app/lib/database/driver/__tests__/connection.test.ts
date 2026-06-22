@@ -9,7 +9,15 @@
  *  - open-verify failure: safe error message, no key material
  */
 
-import { deriveServerDbName, openServersDb, openServerDb, closeDb, _clearRegistry, _getRegistry, DEFAULT_DB_NAME } from '../connection';
+import {
+	deriveServerDbName,
+	openServersDb,
+	openServerDb,
+	closeDb,
+	_clearRegistry,
+	_getRegistry,
+	DEFAULT_DB_NAME
+} from '../connection';
 
 // ---------------------------------------------------------------------------
 // Mocks

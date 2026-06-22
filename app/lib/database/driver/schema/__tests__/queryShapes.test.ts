@@ -138,7 +138,10 @@ describe('Drizzle query shapes', () => {
 
 	it('builds the custom emojis search query (app/lib/methods/emojis.ts)', () => {
 		const keyword = 'smile';
-		const q = db.select().from(customEmojisTable).where(like(customEmojisTable.name, `%${keyword}%`));
+		const q = db
+			.select()
+			.from(customEmojisTable)
+			.where(like(customEmojisTable.name, `%${keyword}%`));
 
 		const { sql, params } = q.toSQL();
 		expect(sql).toContain('from "custom_emojis"');
