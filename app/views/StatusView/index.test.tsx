@@ -277,23 +277,29 @@ describe('StatusView', () => {
 		});
 
 		it('should pass expiresAt on submit when picker is interacted with', () => {
-			mockedStore.dispatch(setUser({ id: 'user-id', username: 'user', status: 'online', statusText: '' }));
-			mockedStore.dispatch(selectServerSuccess({ server: 'https://example.com', version: '8.6.0', name: 'Test' }));
-			mockedStore.dispatch(addSettings({ Accounts_AllowInvisibleStatusOption: true }));
-			mockSetUserStatus.mockResolvedValue(undefined);
+			jest.useFakeTimers();
+			jest.setSystemTime(new Date('2026-06-22T12:00:00.000Z'));
+			try {
+				mockedStore.dispatch(setUser({ id: 'user-id', username: 'user', status: 'online', statusText: '' }));
+				mockedStore.dispatch(selectServerSuccess({ server: 'https://example.com', version: '8.6.0', name: 'Test' }));
+				mockedStore.dispatch(addSettings({ Accounts_AllowInvisibleStatusOption: true }));
+				mockSetUserStatus.mockResolvedValue(undefined);
 
-			renderStatusView();
+				renderStatusView();
 
-			fireEvent.press(screen.getByTestId('status-view-clear-after'));
+				fireEvent.press(screen.getByTestId('status-view-clear-after'));
 
-			expect(mockShowActionSheet).toHaveBeenCalled();
-			const { children } = mockShowActionSheet.mock.calls[0][0] as { children: any };
-			const { onConfirm } = children.props;
-			act(() => onConfirm('30', null));
+				expect(mockShowActionSheet).toHaveBeenCalled();
+				const { children } = mockShowActionSheet.mock.calls[0][0] as { children: any };
+				const { onConfirm } = children.props;
+				act(() => onConfirm('30', null));
 
-			fireEvent.press(screen.getByTestId('status-view-submit'));
+				fireEvent.press(screen.getByTestId('status-view-submit'));
 
-			expect(mockSetUserStatus).toHaveBeenCalledWith('online', '', expect.stringContaining('2026-'));
+				expect(mockSetUserStatus).toHaveBeenCalledWith('online', '', '2026-06-22T12:30:00.000Z');
+			} finally {
+				jest.useRealTimers();
+			}
 		});
 	});
 });
