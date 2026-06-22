@@ -1,6 +1,6 @@
 import { useLayoutEffect, useState, type ReactElement } from 'react';
 import { Text } from 'react-native';
-import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation, type StaticScreenProps } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -25,7 +25,9 @@ interface ISubmit {
 	email: string;
 }
 
-const ForgotPasswordView = (): ReactElement => {
+type ForgotPasswordViewProps = StaticScreenProps<{ title: string }>;
+
+const ForgotPasswordView = ({ route }: ForgotPasswordViewProps): ReactElement => {
 	const {
 		control,
 		handleSubmit,
@@ -35,7 +37,7 @@ const ForgotPasswordView = (): ReactElement => {
 	const [isFetching, setIsFetching] = useState(false);
 
 	const navigation = useNavigation<NativeStackNavigationProp<OutsideParamList, 'ForgotPasswordView'>>();
-	const { params } = useRoute<RouteProp<OutsideParamList, 'ForgotPasswordView'>>();
+	const { params } = route;
 	const { colors } = useTheme();
 
 	useLayoutEffect(() => {
