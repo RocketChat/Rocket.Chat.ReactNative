@@ -329,9 +329,9 @@ export const setUserPreferences = (userId: string, data: Partial<INotificationPr
 	// RC 0.62.0
 	sdk.post('users.setPreferences', { userId, data });
 
-export const setUserStatus = (status: string, message: string) =>
+export const setUserStatus = (status: string, message: string, expiresAt?: string | null) =>
 	// RC 1.2.0
-	sdk.methodCall('setUserStatus', status, message);
+	sdk.post('users.setStatus', { status, message, ...(expiresAt !== undefined && { expiresAt }) });
 
 export const setReaction = (emoji: string, messageId: string) =>
 	// RC 0.62.2
