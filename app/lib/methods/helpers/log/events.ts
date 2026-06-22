@@ -367,5 +367,9 @@ export default {
 
 	// DELETE OWN ACCOUNT ACCOUNT
 	DELETE_OWN_ACCOUNT: 'delete_own_account',
-	DELETE_OWN_ACCOUNT_F: 'delete_own_account_f'
+	DELETE_OWN_ACCOUNT_F: 'delete_own_account_f',
+
+	// PRE-MIGRATION PROBE — fires once per install to capture device + DB-size distribution
+	// before the SQLCipher migration ships. Remove after migration stabilises.
+	DB_MIGRATION_PROBE: 'db_migration_probe'
 };
