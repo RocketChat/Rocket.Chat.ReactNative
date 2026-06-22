@@ -35,7 +35,7 @@
 import { Platform } from 'react-native';
 import { openDatabaseAsync, deleteDatabaseAsync, type SQLiteDatabase } from 'expo-sqlite';
 import { drizzle, type ExpoSQLiteDatabase } from 'drizzle-orm/expo-sqlite';
-import { Paths } from 'expo-file-system';
+import { Directory, Paths } from 'expo-file-system';
 
 import * as appSchema from './schema/app';
 import * as serversSchema from './schema/servers';
@@ -65,6 +65,9 @@ export interface DbHandle<K extends DbKind = DbKind> {
 // ---------------------------------------------------------------------------
 
 const APP_GROUP_ID = 'group.ios.chat.rocket';
+
+/** iOS subdirectory for new encrypted DBs, isolating them from legacy files at the container root. */
+const DB_SUBDIRECTORY = 'SQLite';
 
 /** The single servers/global DB name (no server URL involved). */
 export const DEFAULT_DB_NAME = 'default.db';
@@ -108,8 +111,12 @@ function resolveDbDirectory(): string | undefined {
 			);
 			return undefined;
 		}
-		// uri may have a trailing slash; expo-sqlite wants a directory path
-		return container.uri.replace(/\/$/, '');
+		const sqliteDir = new Directory(container.uri, DB_SUBDIRECTORY);
+		if (!sqliteDir.exists) {
+			sqliteDir.create({ intermediates: true, idempotent: true });
+		}
+		// uri may carry a trailing slash; expo-sqlite wants a bare directory path
+		return sqliteDir.uri.replace(/\/$/, '');
 	} catch (e) {
 		console.warn(
 			'[db/connection] Failed to resolve App Group path:',

@@ -43,9 +43,6 @@ export class Model {
 	/** Query cache for @children. */
 	_childrenQueryCache: Record<string, unknown> = {};
 
-	/** Relation instance cache for @relation. */
-	_relationCache: Record<string, unknown> = {};
-
 	constructor(collection: ICollection, raw: RawRecord) {
 		this._collection = collection;
 		this._raw = raw;

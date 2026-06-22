@@ -101,7 +101,7 @@ export function observeTable<T extends HasId>(
 
 /**
  * Produces an Observable that emits whenever a specific row (by id) changes.
- * Uses rowId matching from the change event for precision.
+ * Re-runs fetchFn on any change to the table (debounced); the fetchFn resolves the specific row by id.
  */
 export function observeRow<T>(handle: DbHandle, tableName: string, fetchFn: () => T | null, debounceMs = 16): Observable<T> {
 	return new Observable<T>(subscriber => {
