@@ -1,5 +1,6 @@
 import { memo, type ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { CustomIcon } from '../../../../containers/CustomIcon';
 import { useTheme } from '../../../../theme';
@@ -10,8 +11,7 @@ import i18n from '../../../../i18n';
 const styles = StyleSheet.create({
 	container: {
 		position: 'absolute',
-		right: EDGE_DISTANCE,
-		bottom: EDGE_DISTANCE
+		right: EDGE_DISTANCE
 	},
 	button: {
 		borderRadius: 25
@@ -28,13 +28,14 @@ const styles = StyleSheet.create({
 
 const NavBottomFAB = memo(({ visible, onPress }: { visible: boolean; onPress: Function }): ReactElement | null => {
 	const { colors } = useTheme();
+	const { bottom } = useSafeAreaInsets();
 
 	if (!visible) {
 		return null;
 	}
 
 	return (
-		<View style={styles.container}>
+		<View style={[styles.container, { bottom: EDGE_DISTANCE + bottom }]}>
 			<Touch
 				accessible
 				accessibilityLabel={i18n.t('Jump_to_last_message')}

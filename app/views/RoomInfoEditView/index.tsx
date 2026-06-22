@@ -2,6 +2,7 @@ import { useLayoutEffect, useState } from 'react';
 import { BlockContext } from '@rocket.chat/ui-kit';
 import { dequal } from 'dequal';
 import { AccessibilityInfo, Alert, Keyboard, ScrollView, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useForm } from 'react-hook-form';
 import { type SetValueConfig } from 'react-hook-form';
 import * as yup from 'yup';
@@ -51,6 +52,7 @@ const schema = yup.object().shape({
 
 const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 	const { colors } = useTheme();
+	const { bottom } = useSafeAreaInsets();
 	const { encryptionEnabled, serverVersion } = useAppSelector(state => ({
 		serverVersion: state.server.version as string,
 		encryptionEnabled: state.encryption.enabled
@@ -336,7 +338,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		<KeyboardView>
 			<SafeAreaView testID='room-info-edit-view' style={{ backgroundColor: colors.surfaceRoom }}>
 				<ScrollView
-					contentContainerStyle={sharedStyles.containerScrollView}
+					contentContainerStyle={[sharedStyles.containerScrollView, { paddingBottom: Math.max(24, bottom) }]}
 					testID='room-info-edit-view-list'
 					{...scrollPersistTaps}>
 					<View style={styles.avatarContainer}>

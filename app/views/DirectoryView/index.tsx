@@ -1,6 +1,7 @@
 import { useLayoutEffect, type ReactElement } from 'react';
 import { FlatList, type ListRenderItem } from 'react-native';
 import { shallowEqual } from 'react-redux';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type CompositeNavigationProp } from '@react-navigation/native';
 
@@ -35,6 +36,7 @@ interface IDirectoryViewProps {
 
 const DirectoryView = ({ navigation }: IDirectoryViewProps): ReactElement => {
 	const { colors } = useTheme();
+	const { bottom } = useSafeAreaInsets();
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 
 	const { isFederationEnabled, directoryDefaultView, isMasterDetail } = useAppSelector(
@@ -197,7 +199,7 @@ const DirectoryView = ({ navigation }: IDirectoryViewProps): ReactElement => {
 			<FlatList
 				data={data}
 				style={styles.list}
-				contentContainerStyle={styles.listContainer}
+				contentContainerStyle={[styles.listContainer, { paddingBottom: bottom }]}
 				extraData={type}
 				keyExtractor={item => item._id}
 				renderItem={renderItem}
