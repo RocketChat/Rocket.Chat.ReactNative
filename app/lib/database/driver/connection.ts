@@ -91,7 +91,7 @@ export function deriveServerDbName(serverUrl: string): string {
 // ---------------------------------------------------------------------------
 
 /**
- * Returns the iOS App Group container URI for database placement.
+ * Returns the SQLite/ subdirectory of the iOS App Group container for new encrypted DBs, isolating them from legacy plaintext WatermelonDB files at the container root.
  * Falls back to undefined (expo-sqlite default dir) when:
  *   - running on Android
  *   - the container is unavailable (simulator builds without entitlement, unit tests)
