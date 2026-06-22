@@ -280,7 +280,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 		);
 
 		navigation.setOptions(options);
-	}, []);
+	}, [navigation, isMasterDetail]);
 
 	useFocusEffect(
 		useCallback(() => {

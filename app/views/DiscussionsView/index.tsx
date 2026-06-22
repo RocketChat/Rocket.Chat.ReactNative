@@ -139,7 +139,7 @@ const DiscussionsView = () => {
 	useLayoutEffect(() => {
 		const options = setHeader();
 		navigation.setOptions(options);
-	}, [navigation, isSearching]);
+	}, [navigation, isSearching, isMasterDetail]);
 
 	const onDiscussionPress = (item: TThreadModel) => {
 		if (item.drid && item.t) {

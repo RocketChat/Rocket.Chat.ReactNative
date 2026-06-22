@@ -57,7 +57,7 @@ const AccessibilityAndAppearanceView = () => {
 				? undefined
 				: () => <HeaderButton.Drawer navigation={navigation} testID='accessibility-view-drawer' />
 		});
-	}, []);
+	}, [navigation, isMasterDetail]);
 	return (
 		<SafeAreaView>
 			<List.Container testID='accessibility-view-list'>

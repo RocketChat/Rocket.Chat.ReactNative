@@ -48,7 +48,7 @@ const AddExistingChannelView = () => {
 
 	useLayoutEffect(() => {
 		setHeader();
-	}, [selected.length]);
+	}, [selected.length, isMasterDetail]);
 
 	useEffect(() => {
 		query();
