@@ -200,9 +200,11 @@ function openDb<K extends DbKind>(dbName: string, kind: K): Promise<DbHandle<K>>
 	_inflight.set(dbName, promise);
 	// Cleanup inflight entry regardless of outcome. The .catch here silences the secondary
 	// rejection on the finally-chained promise — the real rejection propagates via `promise`.
-	promise.finally(() => {
-		_inflight.delete(dbName);
-	}).catch(() => {});
+	promise
+		.finally(() => {
+			_inflight.delete(dbName);
+		})
+		.catch(() => {});
 
 	return promise as Promise<DbHandle<K>>;
 }
