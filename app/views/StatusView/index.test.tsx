@@ -1,5 +1,5 @@
 import { type ReactNode } from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
 import { mockedStore } from '../../reducers/mockedStore';
@@ -289,7 +289,7 @@ describe('StatusView', () => {
 			expect(mockShowActionSheet).toHaveBeenCalled();
 			const { children } = mockShowActionSheet.mock.calls[0][0] as { children: any };
 			const { onConfirm } = children.props;
-			onConfirm('30', null);
+			act(() => onConfirm('30', null));
 
 			fireEvent.press(screen.getByTestId('status-view-submit'));
 
