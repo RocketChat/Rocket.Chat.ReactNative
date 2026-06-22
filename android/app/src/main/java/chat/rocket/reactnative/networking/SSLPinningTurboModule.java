@@ -24,6 +24,8 @@ import javax.net.ssl.X509TrustManager;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Interceptor;
 import android.app.Activity;
 import javax.net.ssl.KeyManager;
 import android.security.KeyChain;
@@ -35,6 +37,7 @@ import java.util.concurrent.TimeUnit;
 import com.reactnativecommunity.webview.RNCWebViewManager;
 import expo.modules.filesystem.legacy.FileSystemLegacyModule;
 import chat.rocket.reactnative.networking.ExpoImageClient;
+import chat.rocket.reactnative.notification.NotificationHelper;
 
 public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyChainAliasCallback {
 
@@ -43,12 +46,26 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
     private static ReactApplicationContext reactContext;
     private static OkHttpClient sharedClient;
 
+    private static Interceptor userAgentInterceptor() {
+        return chain -> {
+            Request original = chain.request();
+            if (original.header("User-Agent") != null) {
+                return chain.proceed(original);
+            }
+            Request request = original.newBuilder()
+                    .header("User-Agent", NotificationHelper.getUserAgent())
+                    .build();
+            return chain.proceed(request);
+        };
+    }
+
     public static OkHttpClient getSharedOkHttpClient() {
         if (sharedClient != null) {
             return sharedClient;
         }
         if (alias != null) {
             OkHttpClient.Builder builder = new OkHttpClient.Builder()
+                    .addInterceptor(userAgentInterceptor())
                     .connectTimeout(0, TimeUnit.MILLISECONDS)
                     .readTimeout(0, TimeUnit.MILLISECONDS)
                     .writeTimeout(0, TimeUnit.MILLISECONDS)
@@ -90,6 +107,7 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
             return shared;
         }
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
+                .addInterceptor(userAgentInterceptor())
                 .connectTimeout(0, TimeUnit.MILLISECONDS)
                 .readTimeout(0, TimeUnit.MILLISECONDS)
                 .writeTimeout(0, TimeUnit.MILLISECONDS)
