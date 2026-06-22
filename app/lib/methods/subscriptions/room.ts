@@ -100,8 +100,14 @@ export default class RoomSubscription {
 		try {
 			this.promises = sdk.subscribeRoom(this.rid);
 			await this.promises;
+			if (!this.isAlive) {
+				return;
+			}
 			reduxStore.dispatch(clearUserTyping());
 			await loadMissedMessages({ rid: this.rid });
+			if (!this.isAlive) {
+				return;
+			}
 			this.read();
 		} catch (e) {
 			log(e);
