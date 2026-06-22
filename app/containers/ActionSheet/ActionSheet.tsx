@@ -6,7 +6,6 @@ import {
 	findNodeHandle,
 	Keyboard,
 	type LayoutChangeEvent,
-	Platform,
 	useWindowDimensions,
 	type View
 } from 'react-native';

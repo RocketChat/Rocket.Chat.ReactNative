@@ -3,7 +3,6 @@ import { FlatList, type ListRenderItem } from 'react-native';
 import { shallowEqual } from 'react-redux';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type CompositeNavigationProp } from '@react-navigation/native';
-import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useActionSheet } from '../../containers/ActionSheet';
 import { type ChatsStackParamList } from '../../stacks/types';

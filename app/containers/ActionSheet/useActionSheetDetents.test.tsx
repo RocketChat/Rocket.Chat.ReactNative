@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react-native';
 
-import { HANDLE_HEIGHT, useActionSheetDetents } from './useActionSheetDetents';
+import { useActionSheetDetents } from './useActionSheetDetents';
 
 describe('useActionSheetDetents', () => {
 	const windowHeight = 1000;

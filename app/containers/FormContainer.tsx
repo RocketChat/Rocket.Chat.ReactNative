@@ -1,6 +1,7 @@
 import { type ReactElement } from 'react';
 import { type ScrollViewProps, StyleSheet, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import sharedStyles from '../views/Styles';
 import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
@@ -8,7 +9,6 @@ import { useTheme } from '../theme';
 import AppVersion from './AppVersion';
 import { isTablet } from '../lib/methods/helpers';
 import SafeAreaView from './SafeAreaView';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface IFormContainer extends ScrollViewProps {
 	testID: string;
