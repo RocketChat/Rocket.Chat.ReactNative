@@ -105,6 +105,7 @@ jobs:
           echo -e "APPLICATION_ID=chat.rocket.android" >> ./gradle.properties
           echo -e "newArchEnabled=true" >> ./gradle.properties
           echo -e "hermesEnabled=true" >> ./gradle.properties
+          echo -e "edgeToEdgeEnabled=true" >> ./gradle.properties
           echo -e "VERSIONCODE=999999" >> ./gradle.properties
           echo -e "KEYSTORE=release.keystore" >> ./gradle.properties
           echo -e 'KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_OFFICIAL_PASSWORD }}' >> ./gradle.properties
