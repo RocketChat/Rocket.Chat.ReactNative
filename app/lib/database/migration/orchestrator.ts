@@ -19,7 +19,8 @@
 import { deleteDatabaseAsync } from 'expo-sqlite';
 import { File } from 'expo-file-system';
 
-import { isMigrationDone, readState, setPhase, markServer, markDone, markSkipped, startPortingActive } from './state';
+import { isMigrationDone, readState, setPhase, markServer, markDone, markSkipped, startPortingActive, getNowMs, type MigrationPhase } from './state';
+import { emitMigrationStart, emitMigrationComplete, categorizeMigrationError } from './telemetry';
 import {
 	LEGACY_DIR,
 	LEGACY_SERVERS_DB_NAME,
@@ -104,121 +105,141 @@ export async function runMigrationIfNeeded(): Promise<void> {
 	// Fast path: already done (the overwhelming majority of boots after first upgrade)
 	if (isMigrationDone()) return;
 
+	const startMs = getNowMs();
 	// Resume from the recorded phase, or start fresh
 	let state = readState();
+	let furthestPhase: MigrationPhase = state?.phase ?? 'detect';
+	emitMigrationStart();
 
-	// -----------------------------------------------------------------------
-	// detect — enumerate legacy files; skip if none present (fresh install)
-	// -----------------------------------------------------------------------
-	if ((state?.phase ?? 'detect') === 'detect') {
-		const hasServersDb = legacyFileExists(LEGACY_SERVERS_DB_NAME);
-		if (!hasServersDb) {
-			// No legacy files — fresh install or already wiped; nothing to migrate
-			markSkipped();
-			return;
-		}
-		// Initialise state with phase=porting_servers; server list populated after we read the DB
-		setPhase('porting_servers');
-		state = readState();
-	}
-
-	// -----------------------------------------------------------------------
-	// porting_servers — port users + server lock fields + servers_history
-	// -----------------------------------------------------------------------
-	if (state?.phase === 'porting_servers') {
-		const legacyDb = await openLegacy(LEGACY_SERVERS_DB_NAME);
-		try {
-			const { sqlite: newSqlite } = await openServersDb();
-
-			const [users, lockFields, history] = await Promise.all([
-				readLegacyUsers(legacyDb),
-				readLegacyServerLockFields(legacyDb),
-				readLegacyServersHistory(legacyDb)
-			]);
-
-			await portUsers(users, newSqlite);
-			await portServerLockFields(lockFields, newSqlite);
-			await portServersHistory(history, newSqlite);
-
-			// Capture server URLs before closing the legacy DB; we need them for porting_active
-			const serverUrls = await readLegacyServerUrls(legacyDb);
-
-			// Atomically advance to porting_active with every server URL marked pending
-			startPortingActive(serverUrls);
-			state = readState();
-		} finally {
-			await legacyDb.closeAsync().catch(() => {});
-		}
-	}
-
-	// -----------------------------------------------------------------------
-	// porting_active — port app DB data for each server
-	// -----------------------------------------------------------------------
-	if (state?.phase === 'porting_active') {
-		const serverEntries = Object.entries(state.servers);
-		for (const [url, status] of serverEntries) {
-			if (status === 'ported' || status === 'wiped') continue;
-
-			const dbName = deriveLegacyServerDbName(url);
-			if (!legacyFileExists(dbName)) {
-				// Legacy per-server DB missing — mark ported so wiping doesn't try to unlink it
-				markServer(url, 'ported');
-				continue;
+	try {
+		// -----------------------------------------------------------------------
+		// detect — enumerate legacy files; skip if none present (fresh install)
+		// -----------------------------------------------------------------------
+		if ((state?.phase ?? 'detect') === 'detect') {
+			const hasServersDb = legacyFileExists(LEGACY_SERVERS_DB_NAME);
+			if (!hasServersDb) {
+				// No legacy files — fresh install or already wiped; nothing to migrate
+				markSkipped();
+				emitMigrationComplete({ outcome: 'skipped', furthestPhase, durationMs: getNowMs() - startMs });
+				return;
 			}
+			// Initialise state with phase=porting_servers; server list populated after we read the DB
+			setPhase('porting_servers');
+			state = readState();
+		}
 
-			const legacyDb = await openLegacy(dbName);
+		// -----------------------------------------------------------------------
+		// porting_servers — port users + server lock fields + servers_history
+		// -----------------------------------------------------------------------
+		if (state?.phase === 'porting_servers') {
+			furthestPhase = 'porting_servers';
+			const legacyDb = await openLegacy(LEGACY_SERVERS_DB_NAME);
 			try {
-				const { sqlite: newSqlite } = await openServerDb(url);
+				const { sqlite: newSqlite } = await openServersDb();
 
-				const [pendingMessages, draftSubs, draftThreads, uploads, emojis] = await Promise.all([
-					readLegacyPendingMessages(legacyDb),
-					readLegacyDraftSubscriptions(legacyDb),
-					readLegacyDraftThreads(legacyDb),
-					readLegacyUploads(legacyDb),
-					readLegacyFrequentlyUsedEmojis(legacyDb)
+				const [users, lockFields, history] = await Promise.all([
+					readLegacyUsers(legacyDb),
+					readLegacyServerLockFields(legacyDb),
+					readLegacyServersHistory(legacyDb)
 				]);
 
-				await portPendingMessages(pendingMessages, newSqlite);
-				await portSubscriptionDrafts(draftSubs, newSqlite);
-				await portThreadDrafts(draftThreads, newSqlite);
-				await portUploads(uploads, newSqlite);
-				await portFrequentlyUsedEmojis(emojis, newSqlite);
+				await portUsers(users, newSqlite);
+				await portServerLockFields(lockFields, newSqlite);
+				await portServersHistory(history, newSqlite);
 
-				markServer(url, 'ported');
+				// Capture server URLs before closing the legacy DB; we need them for porting_active
+				const serverUrls = await readLegacyServerUrls(legacyDb);
+
+				// Atomically advance to porting_active with every server URL marked pending
+				startPortingActive(serverUrls);
+				state = readState();
 			} finally {
 				await legacyDb.closeAsync().catch(() => {});
 			}
 		}
 
-		setPhase('wiping');
-		state = readState();
-	}
+		// -----------------------------------------------------------------------
+		// porting_active — port app DB data for each server
+		// -----------------------------------------------------------------------
+		if (state?.phase === 'porting_active') {
+			furthestPhase = 'porting_active';
+			const serverEntries = Object.entries(state.servers);
+			for (const [url, status] of serverEntries) {
+				if (status === 'ported' || status === 'wiped') continue;
 
-	// -----------------------------------------------------------------------
-	// wiping — delete each legacy file + sidecars, then the servers DB
-	// -----------------------------------------------------------------------
-	if (state?.phase === 'wiping') {
-		for (const [url, status] of Object.entries(state.servers)) {
-			if (status === 'wiped') continue;
-			const dbName = deriveLegacyServerDbName(url);
-			await secureDelete(LEGACY_DIR, dbName);
-			markServer(url, 'wiped');
+				const dbName = deriveLegacyServerDbName(url);
+				if (!legacyFileExists(dbName)) {
+					// Legacy per-server DB missing — mark ported so wiping doesn't try to unlink it
+					markServer(url, 'ported');
+					continue;
+				}
+
+				const legacyDb = await openLegacy(dbName);
+				try {
+					const { sqlite: newSqlite } = await openServerDb(url);
+
+					const [pendingMessages, draftSubs, draftThreads, uploads, emojis] = await Promise.all([
+						readLegacyPendingMessages(legacyDb),
+						readLegacyDraftSubscriptions(legacyDb),
+						readLegacyDraftThreads(legacyDb),
+						readLegacyUploads(legacyDb),
+						readLegacyFrequentlyUsedEmojis(legacyDb)
+					]);
+
+					await portPendingMessages(pendingMessages, newSqlite);
+					await portSubscriptionDrafts(draftSubs, newSqlite);
+					await portThreadDrafts(draftThreads, newSqlite);
+					await portUploads(uploads, newSqlite);
+					await portFrequentlyUsedEmojis(emojis, newSqlite);
+
+					markServer(url, 'ported');
+				} finally {
+					await legacyDb.closeAsync().catch(() => {});
+				}
+			}
+
+			setPhase('wiping');
+			state = readState();
 		}
-		// Wipe the servers DB last — it was the entry point for detect
-		await secureDelete(LEGACY_DIR, LEGACY_SERVERS_DB_NAME);
 
-		setPhase('finalizing');
-		state = readState();
-	}
+		// -----------------------------------------------------------------------
+		// wiping — delete each legacy file + sidecars, then the servers DB
+		// -----------------------------------------------------------------------
+		if (state?.phase === 'wiping') {
+			furthestPhase = 'wiping';
+			for (const [url, status] of Object.entries(state.servers)) {
+				if (status === 'wiped') continue;
+				const dbName = deriveLegacyServerDbName(url);
+				await secureDelete(LEGACY_DIR, dbName);
+				markServer(url, 'wiped');
+			}
+			// Wipe the servers DB last — it was the entry point for detect
+			await secureDelete(LEGACY_DIR, LEGACY_SERVERS_DB_NAME);
 
-	// -----------------------------------------------------------------------
-	// finalizing — mark done
-	// -----------------------------------------------------------------------
-	if (state?.phase === 'finalizing') {
-		// No backup-exclusion step: the new DB is SQLCipher-encrypted with a device-only key
-		// (iOS kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly, non-synchronizable; Android Keystore)
-		// and Android sets allowBackup=false app-wide. A backed-up DB is ciphertext whose key can never
-		// be in the backup, so excluding the file would add nothing.
-		markDone();
+			setPhase('finalizing');
+			state = readState();
+		}
+
+		// -----------------------------------------------------------------------
+		// finalizing — mark done
+		// -----------------------------------------------------------------------
+		if (state?.phase === 'finalizing') {
+			furthestPhase = 'finalizing';
+			// No backup-exclusion step: the new DB is SQLCipher-encrypted with a device-only key
+			// (iOS kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly, non-synchronizable; Android Keystore)
+			// and Android sets allowBackup=false app-wide. A backed-up DB is ciphertext whose key can never
+			// be in the backup, so excluding the file would add nothing.
+			markDone();
+		}
+
+		emitMigrationComplete({ outcome: 'success', furthestPhase: 'done', durationMs: getNowMs() - startMs });
+	} catch (err) {
+		emitMigrationComplete({
+			outcome: 'failure',
+			furthestPhase,
+			durationMs: getNowMs() - startMs,
+			errorCategory: categorizeMigrationError(err)
+		});
+		throw err;
 	}
 }

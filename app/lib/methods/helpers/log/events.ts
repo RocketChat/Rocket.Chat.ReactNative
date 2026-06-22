@@ -367,5 +367,10 @@ export default {
 
 	// DELETE OWN ACCOUNT ACCOUNT
 	DELETE_OWN_ACCOUNT: 'delete_own_account',
-	DELETE_OWN_ACCOUNT_F: 'delete_own_account_f'
+	DELETE_OWN_ACCOUNT_F: 'delete_own_account_f',
+
+	// DB MIGRATION TELEMETRY
+	DB_MIGRATION_START: 'db_migration_start',
+	DB_MIGRATION_COMPLETE: 'db_migration_complete',
+	DB_KEY_READ_FAILURE: 'db_key_read_failure'
 };

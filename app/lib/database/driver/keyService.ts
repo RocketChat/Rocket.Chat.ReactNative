@@ -24,6 +24,7 @@
  */
 
 import { randomKey } from '@rocket.chat/mobile-crypto';
+import { logEvent, events } from '../../methods/helpers/log';
 
 // ---------------------------------------------------------------------------
 // Keychain shim — replaced via installKeychainShim by the real native binding
@@ -42,6 +43,7 @@ const _devStore = new Map<string, string>();
 
 function assertDevShimAllowed(): void {
 	if (!__DEV__) {
+		logEvent(events.DB_KEY_READ_FAILURE, { category: 'shim_unavailable' });
 		throw new Error('keychain shim not installed — call installKeychainShim before opening databases');
 	}
 }
@@ -102,6 +104,7 @@ async function getOrCreate(sk: string, byteLen: number, hexLen: number, label: s
 		if (existing !== null) {
 			// Re-validate the stored value — a corrupt entry must not reach SQLCipher.
 			if (!new RegExp(`^[0-9a-fA-F]{${hexLen}}$`).test(existing)) {
+				logEvent(events.DB_KEY_READ_FAILURE, { category: 'stored_corrupt', material: label });
 				throw new Error(`stored ${label} corrupt`);
 			}
 			return existing;
@@ -113,6 +116,7 @@ async function getOrCreate(sk: string, byteLen: number, hexLen: number, label: s
 		const hex = await randomKey(byteLen);
 		if (!new RegExp(`^[0-9a-fA-F]{${hexLen}}$`).test(hex)) {
 			// Sanitize error — do not include the value in the message.
+			logEvent(events.DB_KEY_READ_FAILURE, { category: 'generation_failed', material: label });
 			throw new Error(`${label} generation produced unexpected output; cannot open database safely`);
 		}
 
@@ -123,9 +127,11 @@ async function getOrCreate(sk: string, byteLen: number, hexLen: number, label: s
 	_getOrCreateInflight.set(sk, promise);
 	// Cleanup regardless of outcome. The .catch silences the secondary rejection on the
 	// finally-chained promise — the real rejection propagates via `promise`.
-	promise.finally(() => {
-		_getOrCreateInflight.delete(sk);
-	}).catch(() => {});
+	promise
+		.finally(() => {
+			_getOrCreateInflight.delete(sk);
+		})
+		.catch(() => {});
 
 	return promise;
 }
