@@ -45,9 +45,9 @@ const CloseLivechatView = () => {
 
 	const { colors } = useTheme();
 
-	const { livechatRequestComment } = useAppSelector(state => ({
-		livechatRequestComment: state.settings.Livechat_request_comment_when_closing_conversation as boolean
-	}));
+	const livechatRequestComment = useAppSelector(
+		state => state.settings.Livechat_request_comment_when_closing_conversation as boolean
+	);
 	const isMasterDetail = useMasterDetail();
 
 	useLayoutEffect(() => {

@@ -30,9 +30,7 @@ const UserNotificationPreferencesView = () => {
 	const [loading, setLoading] = useState(true);
 
 	const navigation = useNavigation<TNavigation>();
-	const { userId } = useAppSelector(state => ({
-		userId: getUserSelector(state).id
-	}));
+	const userId = useAppSelector(state => getUserSelector(state).id);
 	const isMasterDetail = useMasterDetail();
 
 	useLayoutEffect(() => {

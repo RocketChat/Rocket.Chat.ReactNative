@@ -1,6 +1,5 @@
 import { memo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { connect } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import Avatar from '../Avatar';
@@ -131,6 +130,4 @@ const NotifierComponent = memo(({ notification, isMasterDetail }: INotifierCompo
 	);
 });
 
-const mapStateToProps = () => ({});
-
-export default connect(mapStateToProps)(withMasterDetail(NotifierComponent));
+export default withMasterDetail(NotifierComponent);

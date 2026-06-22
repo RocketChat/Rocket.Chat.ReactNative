@@ -1,6 +1,5 @@
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
-import { connect } from 'react-redux';
 import { type RouteProp } from '@react-navigation/native';
 import { Component } from 'react';
 
@@ -208,6 +207,4 @@ class SelectListView extends Component<ISelectListViewProps, ISelectListViewStat
 	}
 }
 
-const mapStateToProps = () => ({});
-
-export default connect(mapStateToProps)(withTheme(withMasterDetail(SelectListView)));
+export default withTheme(withMasterDetail(SelectListView));
