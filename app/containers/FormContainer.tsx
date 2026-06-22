@@ -39,17 +39,17 @@ const FormContainer = ({ children, testID, showAppVersion = true, ...props }: IF
 	const { bottom } = useSafeAreaInsets();
 
 	return (
-			<KeyboardAwareScrollView
-				style={[sharedStyles.container, { backgroundColor: colors.surfaceRoom }]}
-				contentContainerStyle={[sharedStyles.containerScrollView, styles.scrollView, { paddingBottom: bottom }]}
-				bottomOffset={20}
-				{...scrollPersistTaps}
-				{...props}>
-				<SafeAreaView testID={testID} style={{ backgroundColor: colors.surfaceRoom }}>
-					{children}
-					<>{showAppVersion && <AppVersion />}</>
-				</SafeAreaView>
-			</KeyboardAwareScrollView>
+		<KeyboardAwareScrollView
+			style={[sharedStyles.container, { backgroundColor: colors.surfaceRoom }]}
+			contentContainerStyle={[sharedStyles.containerScrollView, styles.scrollView, { paddingBottom: bottom }]}
+			bottomOffset={20}
+			{...scrollPersistTaps}
+			{...props}>
+			<SafeAreaView testID={testID} style={{ backgroundColor: colors.surfaceRoom }}>
+				{children}
+				<>{showAppVersion && <AppVersion />}</>
+			</SafeAreaView>
+		</KeyboardAwareScrollView>
 	);
 };
 
