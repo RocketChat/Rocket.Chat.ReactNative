@@ -19,6 +19,7 @@ import expo.modules.ApplicationLifecycleDispatcher
 import chat.rocket.reactnative.networking.SSLPinningTurboPackage;
 import chat.rocket.reactnative.storage.MMKVKeyManager;
 import chat.rocket.reactnative.storage.SecureStoragePackage;
+import chat.rocket.reactnative.storage.DatabaseKeyStoreTurboPackage;
 import chat.rocket.reactnative.notification.VideoConfTurboPackage
 import chat.rocket.reactnative.notification.PushNotificationTurboPackage
 import chat.rocket.reactnative.VoipTurboPackage
@@ -43,6 +44,7 @@ open class MainApplication : Application(), ReactApplication {
       object : DefaultReactNativeHost(this) {
         override fun getPackages(): List<ReactPackage> =
             PackageList(this).packages.apply {
+              add(DatabaseKeyStoreTurboPackage())
               add(SSLPinningTurboPackage())
               add(WatermelonDBJSIPackage())
               add(VideoConfTurboPackage())

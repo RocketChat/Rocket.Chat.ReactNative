@@ -19,6 +19,7 @@ const PlaybackSpeed = () => {
 
 	return (
 		<NativeButton
+			testID='playback-speed'
 			accessible
 			accessibilityLabel={i18n.t('Playback_speed', { playbackSpeed: `${playbackSpeed} x` })}
 			onPress={onPress}

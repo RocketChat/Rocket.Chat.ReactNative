@@ -148,6 +148,9 @@
 		79D8C97F8CE2EC1B6882826B /* SecureStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B215A42CFB843397273C7EA /* SecureStorage.m */; };
 		7A0000052F1BAFA700B6B4BD /* VoipService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0000032F1BAFA700B6B4BD /* VoipService.swift */; };
 		7A0000062F1BAFA700B6B4BD /* VoipModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7A0000042F1BAFA700B6B4BD /* VoipModule.mm */; };
+		7ADBC0032F80000100000003 /* DatabaseKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADBC0012F80000100000001 /* DatabaseKeyStore.swift */; };
+		7ADBC0042F80000100000004 /* DatabaseKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADBC0012F80000100000001 /* DatabaseKeyStore.swift */; };
+		7ADBC0062F80000100000006 /* DatabaseKeyStore.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7ADBC0022F80000100000002 /* DatabaseKeyStore.mm */; };
 		7A0000072F1BAFA700B6B4BD /* MediaCallsAnswerRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F98EE33D91A93DF8E69F34 /* MediaCallsAnswerRequest.swift */; };
 		7A0129D42C6E8EC800F84A97 /* ShareRocketChatRN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0129D22C6E8B5900F84A97 /* ShareRocketChatRN.swift */; };
 		7A0129D62C6E8F0700F84A97 /* ShareRocketChatRN.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 1EC6AD6022CBA20C00A41C61 /* ShareRocketChatRN.entitlements */; };
@@ -432,6 +435,8 @@
 		6FA7E2372F28A9D300A1D45E /* ExternalInputModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExternalInputModule.m; sourceTree = "<group>"; };
 		7A0000032F1BAFA700B6B4BD /* VoipService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoipService.swift; sourceTree = "<group>"; };
 		7A0000042F1BAFA700B6B4BD /* VoipModule.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = VoipModule.mm; sourceTree = "<group>"; };
+		7ADBC0012F80000100000001 /* DatabaseKeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseKeyStore.swift; sourceTree = "<group>"; };
+		7ADBC0022F80000100000002 /* DatabaseKeyStore.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DatabaseKeyStore.mm; sourceTree = "<group>"; };
 		7A006F13229C83B600803143 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7A0129D22C6E8B5900F84A97 /* ShareRocketChatRN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareRocketChatRN.swift; sourceTree = "<group>"; };
 		7A0D62D1242AB187006D5C06 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -934,6 +939,8 @@
 				7AVR00002F5F5900002A6BDE /* VoipRegion.swift */,
 				7A1B58402F5F58FF002A6BDE /* VoipPayload.swift */,
 				7A0000042F1BAFA700B6B4BD /* VoipModule.mm */,
+				7ADBC0012F80000100000001 /* DatabaseKeyStore.swift */,
+				7ADBC0022F80000100000002 /* DatabaseKeyStore.mm */,
 				7A0000032F1BAFA700B6B4BD /* VoipService.swift */,
 				B179038FDD7AAF285047814B /* SecureStorage.h */,
 				9B215A42CFB843397273C7EA /* SecureStorage.m */,
@@ -1674,6 +1681,7 @@
 				1E01C8252511303100FEF824 /* Notification.swift in Sources */,
 				1E0426E7251A54B4008F022C /* RoomType.swift in Sources */,
 				1E1C2F80250FCB69005DCE7D /* Database.swift in Sources */,
+				7ADBC0042F80000100000004 /* DatabaseKeyStore.swift in Sources */,
 				1E67380424DC529B0009E081 /* String+Extensions.swift in Sources */,
 				1ED038A62B50900800C007D4 /* Bundle+Extensions.swift in Sources */,
 				1E01C8292511304100FEF824 /* Sender.swift in Sources */,
@@ -1724,6 +1732,8 @@
 				7AAB3E23257E6A6E00707CF6 /* Data+Extensions.swift in Sources */,
 				7AAB3E24257E6A6E00707CF6 /* Date+Extensions.swift in Sources */,
 				7AAB3E25257E6A6E00707CF6 /* Database.swift in Sources */,
+				7ADBC0032F80000100000003 /* DatabaseKeyStore.swift in Sources */,
+				7ADBC0062F80000100000006 /* DatabaseKeyStore.mm in Sources */,
 				7ACFE7D92DDE48760090D9BC /* AppDelegate.swift in Sources */,
 				7A3704572F7DB36E009085FC /* VoipPerCallDdpRegistry.swift in Sources */,
 				1E9A71752B59F36E00477BA2 /* ClientSSL.swift in Sources */,

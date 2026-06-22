@@ -200,6 +200,11 @@ export async function cancelDownload(messageUrl: string): Promise<void> {
 	}
 }
 
+export const matchDownloadUrl = (att: IAttachment, downloadUrl: string) =>
+	(att.image_url && downloadUrl.includes(att.image_url)) ||
+	(att.audio_url && downloadUrl.includes(att.audio_url)) ||
+	(att.video_url && downloadUrl.includes(att.video_url));
+
 const mapAttachments = ({
 	attachments,
 	uri,
@@ -213,7 +218,7 @@ const mapAttachments = ({
 }): TMessageModel['attachments'] =>
 	attachments?.map(att => ({
 		...att,
-		title_link: att.image_url && downloadUrl.includes(att.image_url) ? uri : att.title_link,
+		title_link: matchDownloadUrl(att, downloadUrl) ? uri : att.title_link,
 		e2e: encryption ? 'done' : undefined
 	}));
 
