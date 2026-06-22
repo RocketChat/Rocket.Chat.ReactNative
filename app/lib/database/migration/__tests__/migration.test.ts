@@ -196,6 +196,7 @@ jest.mock('drizzle-orm/expo-sqlite/migrator', () => ({ migrate: jest.fn(async ()
 
 jest.mock('../../driver/keyService', () => ({
 	getOrCreateDatabaseKey: jest.fn(async () => 'a'.repeat(64)),
+	getOrCreateDatabaseSalt: jest.fn(async () => 'b'.repeat(32)),
 	deleteDatabaseKey: jest.fn(async () => {})
 }));
 
@@ -203,7 +204,7 @@ jest.mock('../../driver/keyService', () => ({
 // Imports (after mocks are set up)
 // ---------------------------------------------------------------------------
 
-import { isMigrationDone, readState, _setNowMs, MIGRATION_DONE_KEY, MIGRATION_KEY } from '../state';
+import { isMigrationDone, readState, startPortingActive, _setNowMs, MIGRATION_DONE_KEY, MIGRATION_KEY } from '../state';
 import { _setLegacyDir, _setFileExists } from '../legacyReader';
 import { runMigrationIfNeeded } from '../orchestrator';
 import { _clearRegistry } from '../../driver/connection';
@@ -513,6 +514,30 @@ describe('crash-resume', () => {
 		const serverDbWrites = mockNewDbWrites['default.db'] ?? [];
 		expect(serverDbWrites.length).toBe(0);
 		expect(readState()?.servers['https://open.rocket.chat']).toBe('wiped');
+	});
+});
+
+// ---------------------------------------------------------------------------
+// startPortingActive — atomic phase + servers write (KtjSl fix)
+// ---------------------------------------------------------------------------
+
+describe('startPortingActive', () => {
+	it('writes phase and all server URLs as pending in one state object', () => {
+		const urls = ['https://open.rocket.chat', 'https://other.example.com'];
+		startPortingActive(urls);
+		const state = readState();
+		expect(state?.phase).toBe('porting_active');
+		expect(state?.servers).toEqual({
+			'https://open.rocket.chat': 'pending',
+			'https://other.example.com': 'pending'
+		});
+	});
+
+	it('writes an empty servers map when given an empty url list', () => {
+		startPortingActive([]);
+		const state = readState();
+		expect(state?.phase).toBe('porting_active');
+		expect(state?.servers).toEqual({});
 	});
 });
 

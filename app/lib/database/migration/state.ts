@@ -74,10 +74,14 @@ export function isMigrationDone(): boolean {
 	return state?.phase === 'done' || state?.phase === 'skipped';
 }
 
-/** Returns the full migration state or null if never started. */
+/** Returns the full migration state or null if never started. Rejects corrupt/unknown-schema entries to avoid misrouting. */
 export function readState(): MigrationState | null {
 	const raw = userPreferences.getMap(KEY_STATE);
 	if (!raw || typeof raw !== 'object') return null;
+	if ((raw as { schema?: unknown }).schema !== 1) return null;
+	const phase = (raw as { phase?: unknown }).phase;
+	const KNOWN: MigrationPhase[] = ['detect', 'porting_servers', 'porting_active', 'wiping', 'finalizing', 'done', 'skipped'];
+	if (typeof phase !== 'string' || !KNOWN.includes(phase as MigrationPhase)) return null;
 	return raw as MigrationState;
 }
 
@@ -117,6 +121,19 @@ export function markServer(url: string, status: ServerStatus): void {
 export function markDone(): void {
 	setPhase('done');
 	userPreferences.setBool(KEY_DONE, true);
+}
+
+/** Atomically advances to porting_active with every server URL marked pending. */
+export function startPortingActive(serverUrls: string[]): void {
+	const now = getNowMs();
+	const existing = readState();
+	writeState({
+		schema: 1,
+		phase: 'porting_active',
+		servers: Object.fromEntries(serverUrls.map(url => [url, 'pending'])),
+		startedAt: existing?.startedAt ?? now,
+		updatedAt: now
+	});
 }
 
 /** Transitions to 'skipped' (fresh install / no legacy files found). */

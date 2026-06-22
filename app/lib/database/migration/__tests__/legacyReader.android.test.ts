@@ -24,7 +24,7 @@ jest.mock('expo-file-system', () => ({
 	}
 }));
 
-import { LEGACY_SERVERS_DB_NAME, deriveServerDbName, resolveLegacyDbDirectory } from '../legacyReader';
+import { LEGACY_SERVERS_DB_NAME, deriveLegacyServerDbName, resolveLegacyDbDirectory } from '../legacyReader';
 
 describe('legacyReader Android addressing', () => {
 	it('names the global DB with a double .db.db suffix', () => {
@@ -32,8 +32,8 @@ describe('legacyReader Android addressing', () => {
 	});
 
 	it('derives per-server names with a double .db.db suffix', () => {
-		expect(deriveServerDbName('https://open.rocket.chat')).toBe('open.rocket.chat.db.db');
-		expect(deriveServerDbName('https://open.rocket.chat/')).toBe('open.rocket.chat.db.db');
+		expect(deriveLegacyServerDbName('https://open.rocket.chat')).toBe('open.rocket.chat.db.db');
+		expect(deriveLegacyServerDbName('https://open.rocket.chat/')).toBe('open.rocket.chat.db.db');
 	});
 
 	it('resolves the legacy directory to the app-data root, not the databases subdir', () => {

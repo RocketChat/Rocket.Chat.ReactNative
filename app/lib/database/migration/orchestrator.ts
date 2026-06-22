@@ -19,13 +19,13 @@
 import { deleteDatabaseAsync } from 'expo-sqlite';
 import { File } from 'expo-file-system';
 
-import { isMigrationDone, readState, setPhase, markServer, markDone, markSkipped } from './state';
+import { isMigrationDone, readState, setPhase, markServer, markDone, markSkipped, startPortingActive } from './state';
 import {
 	LEGACY_DIR,
 	LEGACY_SERVERS_DB_NAME,
 	legacyFileExists,
 	openLegacy,
-	deriveServerDbName,
+	deriveLegacyServerDbName,
 	readLegacyUsers,
 	readLegacyServerLockFields,
 	readLegacyServersHistory,
@@ -106,12 +106,11 @@ export async function runMigrationIfNeeded(): Promise<void> {
 
 	// Resume from the recorded phase, or start fresh
 	let state = readState();
-	const phase = state?.phase ?? 'detect';
 
 	// -----------------------------------------------------------------------
 	// detect — enumerate legacy files; skip if none present (fresh install)
 	// -----------------------------------------------------------------------
-	if (phase === 'detect') {
+	if ((state?.phase ?? 'detect') === 'detect') {
 		const hasServersDb = legacyFileExists(LEGACY_SERVERS_DB_NAME);
 		if (!hasServersDb) {
 			// No legacy files — fresh install or already wiped; nothing to migrate
@@ -144,16 +143,9 @@ export async function runMigrationIfNeeded(): Promise<void> {
 			// Capture server URLs before closing the legacy DB; we need them for porting_active
 			const serverUrls = await readLegacyServerUrls(legacyDb);
 
-			// Record servers as pending in state so porting_active can resume per-server
-			setPhase('porting_active');
+			// Atomically advance to porting_active with every server URL marked pending
+			startPortingActive(serverUrls);
 			state = readState();
-			// Initialise per-server entries if not already set (fresh run from detect)
-			if (state && Object.keys(state.servers).length === 0) {
-				for (const url of serverUrls) {
-					markServer(url, 'pending');
-				}
-				state = readState();
-			}
 		} finally {
 			await legacyDb.closeAsync().catch(() => {});
 		}
@@ -167,7 +159,7 @@ export async function runMigrationIfNeeded(): Promise<void> {
 		for (const [url, status] of serverEntries) {
 			if (status === 'ported' || status === 'wiped') continue;
 
-			const dbName = deriveServerDbName(url);
+			const dbName = deriveLegacyServerDbName(url);
 			if (!legacyFileExists(dbName)) {
 				// Legacy per-server DB missing — mark ported so wiping doesn't try to unlink it
 				markServer(url, 'ported');
@@ -208,7 +200,7 @@ export async function runMigrationIfNeeded(): Promise<void> {
 	if (state?.phase === 'wiping') {
 		for (const [url, status] of Object.entries(state.servers)) {
 			if (status === 'wiped') continue;
-			const dbName = deriveServerDbName(url);
+			const dbName = deriveLegacyServerDbName(url);
 			await secureDelete(LEGACY_DIR, dbName);
 			markServer(url, 'wiped');
 		}

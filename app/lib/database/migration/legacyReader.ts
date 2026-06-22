@@ -19,7 +19,7 @@
 
 import { Platform } from 'react-native';
 import { openDatabaseAsync, type SQLiteDatabase } from 'expo-sqlite';
-import { Paths } from 'expo-file-system';
+import { File, Paths } from 'expo-file-system';
 
 const APP_GROUP_ID = 'group.ios.chat.rocket';
 
@@ -95,9 +95,6 @@ export function _setLegacyDir(dir: string | undefined): void {
 /** Injectable file-existence check — real impl uses expo-file-system File; tests mock this. */
 export let fileExists: (path: string) => boolean = path => {
 	try {
-		// expo-file-system v19 exports File from the top-level package (not /next, which was SDK 52 preview)
-		// eslint-disable-next-line @typescript-eslint/no-var-requires
-		const { File } = require('expo-file-system') as { File: new (path: string) => { exists: boolean } };
 		return new File(path).exists;
 	} catch {
 		return false;
@@ -118,26 +115,13 @@ export function legacyFileExists(dbName: string): boolean {
 }
 
 /**
- * Returns the list of legacy server DB names that are actually present on disk.
- * `serverUrls` comes from the legacy servers DB (read by the orchestrator first).
- * The servers DB itself (`default.db`) is NOT included — check separately via legacyFileExists.
- */
-export function enumeratePresentServerDbs(serverUrls: string[]): string[] {
-	return serverUrls.filter(url => {
-		const dbName = deriveServerDbName(url);
-		return legacyFileExists(dbName);
-	});
-}
-
-/**
  * Mirrors the legacy WMDB on-disk per-server filename: strip scheme, replace slashes with dots,
  * append the platform-aware legacy suffix (`.db` on iOS, `.db.db` on Android).
  *
- * This is the LEGACY-file address — distinct from `connection.deriveServerDbName`, which names the
- * NEW encrypted files with a single `.db` on both platforms. The orchestrator must use this one for
- * every legacy read/exists/wipe, and the connection one only for opening the new DB.
+ * LEGACY-file address only — distinct from `connection.deriveServerDbName`, which names the
+ * NEW encrypted files with a single `.db` on both platforms.
  */
-export function deriveServerDbName(serverUrl: string): string {
+export function deriveLegacyServerDbName(serverUrl: string): string {
 	const sanitized = serverUrl
 		.replace(/\/+$/, '')
 		.replace(/(^\w+:|^)\/\//, '')
@@ -177,30 +161,22 @@ export function readLegacyUsers(db: SQLiteDatabase): Promise<Record<string, unkn
 	return db.getAllAsync('SELECT * FROM users;') as Promise<Record<string, unknown>[]>;
 }
 
+type LegacyServerLockFields = {
+	id: string;
+	auto_lock: number | null;
+	auto_lock_time: number | null;
+	last_local_authenticated_session: number | null;
+	biometry: number | null;
+};
+
 /**
  * Lock fields from legacy servers DB `servers` table.
  * Only the fields that are user-authored / device-local are ported; everything else resyncs.
  */
-export function readLegacyServerLockFields(db: SQLiteDatabase): Promise<
-	{
-		id: string;
-		auto_lock: number | null;
-		auto_lock_time: number | null;
-		last_local_authenticated_session: number | null;
-		biometry: number | null;
-	}[]
-> {
+export function readLegacyServerLockFields(db: SQLiteDatabase): Promise<LegacyServerLockFields[]> {
 	return db.getAllAsync(
 		'SELECT id, auto_lock, auto_lock_time, last_local_authenticated_session, biometry FROM servers;'
-	) as Promise<
-		{
-			id: string;
-			auto_lock: number | null;
-			auto_lock_time: number | null;
-			last_local_authenticated_session: number | null;
-			biometry: number | null;
-		}[]
-	>;
+	) as Promise<LegacyServerLockFields[]>;
 }
 
 /** All rows from legacy servers DB `servers_history` table. */

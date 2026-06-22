@@ -119,32 +119,27 @@ export async function portPendingMessages(legacyRows: LegacyRow[], newSqlite: SQ
 	await insertRows('messages', legacyRows, newSqlite);
 }
 
-/**
- * Ports draft_message for subscriptions. Uses INSERT OR IGNORE + UPDATE so that
- * only the draft column is touched if the subscription row doesn't exist yet.
- */
-export async function portSubscriptionDrafts(
-	legacyRows: Awaited<ReturnType<typeof readLegacyDraftSubscriptions>>,
+// tableName is always a hardcoded literal — never user input — so interpolation is safe.
+async function portDraftColumn(
+	tableName: string,
+	legacyRows: { id: string; draft_message: string }[],
 	newSqlite: SQLiteDatabase
 ): Promise<void> {
 	for (const row of legacyRows) {
-		await newSqlite.runAsync('INSERT OR IGNORE INTO subscriptions (id) VALUES (?);', [row.id]);
-		await newSqlite.runAsync('UPDATE subscriptions SET draft_message = ? WHERE id = ?;', [row.draft_message, row.id]);
+		await newSqlite.runAsync(`INSERT OR IGNORE INTO ${tableName} (id) VALUES (?);`, [row.id]);
+		await newSqlite.runAsync(`UPDATE ${tableName} SET draft_message = ? WHERE id = ?;`, [row.draft_message, row.id]);
 	}
 }
 
-/**
- * Ports draft_message for threads. Same INSERT OR IGNORE + UPDATE pattern.
- */
-export async function portThreadDrafts(
+export const portSubscriptionDrafts = (
+	legacyRows: Awaited<ReturnType<typeof readLegacyDraftSubscriptions>>,
+	newSqlite: SQLiteDatabase
+): Promise<void> => portDraftColumn('subscriptions', legacyRows, newSqlite);
+
+export const portThreadDrafts = (
 	legacyRows: Awaited<ReturnType<typeof readLegacyDraftThreads>>,
 	newSqlite: SQLiteDatabase
-): Promise<void> {
-	for (const row of legacyRows) {
-		await newSqlite.runAsync('INSERT OR IGNORE INTO threads (id) VALUES (?);', [row.id]);
-		await newSqlite.runAsync('UPDATE threads SET draft_message = ? WHERE id = ?;', [row.draft_message, row.id]);
-	}
-}
+): Promise<void> => portDraftColumn('threads', legacyRows, newSqlite);
 
 /**
  * Ports upload rows whose backing file still exists on disk.
