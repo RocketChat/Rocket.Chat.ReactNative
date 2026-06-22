@@ -147,10 +147,7 @@ const NewServerView = () => {
 	}, [connecting, previousServer]);
 
 	return (
-		<FormContainer
-			showAppVersion={showBottomInfo}
-			testID='new-server-view'
-			keyboardShouldPersistTaps='handled'>
+		<FormContainer showAppVersion={showBottomInfo} testID='new-server-view' keyboardShouldPersistTaps='handled'>
 			<FormContainerInner accessibilityLabel={I18n.t('Add_server')}>
 				<Image
 					style={{
