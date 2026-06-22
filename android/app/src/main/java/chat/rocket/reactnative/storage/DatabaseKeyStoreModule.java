@@ -77,7 +77,7 @@ public class DatabaseKeyStoreModule extends NativeDatabaseKeyStoreSpec {
 			promise.resolve(null);
 		} catch (Exception e) {
 			Log.e(TAG, "removeItem failed for key: " + key, e);
-			promise.reject("KEYSTORE_REMOVE_ERROR", e);
+			promise.resolve(null);
 		}
 	}
 
@@ -120,8 +120,19 @@ public class DatabaseKeyStoreModule extends NativeDatabaseKeyStoreSpec {
 		return new String(plain, StandardCharsets.UTF_8);
 	}
 
-	/** Stores value under key. Idempotent: the AES Keystore entry is reused if it exists. */
+	/** Stores value under key. Write-once: an existing key is never overwritten. */
 	public static void setItemInternal(Context context, String key, String value) throws Exception {
+		// Write-once: if a key is already stored, confirm it matches and return.
+		// A differing value means another caller already minted a key — overwriting
+		// it would strand a database encrypted with the first key.
+		String existing = getItemInternal(context, key);
+		if (existing != null) {
+			if (!existing.equals(value)) {
+				throw new IllegalStateException("refusing to overwrite existing database key: " + key);
+			}
+			return;
+		}
+
 		KeyStore ks = KeyStore.getInstance(KEYSTORE_PROVIDER);
 		ks.load(null);
 
@@ -152,21 +163,15 @@ public class DatabaseKeyStoreModule extends NativeDatabaseKeyStoreSpec {
 		System.arraycopy(encrypted, 0, combined, iv.length, encrypted.length);
 
 		SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-		prefs.edit().putString(key, Base64.encodeToString(combined, Base64.DEFAULT)).apply();
+		boolean persisted = prefs.edit().putString(key, Base64.encodeToString(combined, Base64.DEFAULT)).commit();
+		if (!persisted) {
+			throw new IllegalStateException("failed to persist encrypted database key blob: " + key);
+		}
 	}
 
-	/** Removes the SharedPreferences entry and the corresponding AndroidKeyStore alias. */
+	/** Removes the SharedPreferences entry. Does not delete the AndroidKeyStore key. */
 	public static void removeItemInternal(Context context, String key) {
 		SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
 		prefs.edit().remove(key).apply();
-		try {
-			KeyStore ks = KeyStore.getInstance(KEYSTORE_PROVIDER);
-			ks.load(null);
-			if (ks.containsAlias(key)) {
-				ks.deleteEntry(key);
-			}
-		} catch (Exception e) {
-			Log.w(TAG, "Failed to delete AndroidKeyStore alias for key: " + key, e);
-		}
 	}
 }

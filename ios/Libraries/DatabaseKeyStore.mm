@@ -1,5 +1,7 @@
 #import <React/RCTBridgeModule.h>
 
+#import <SSLPinning/SSLPinning.h>
+
 // Forward declaration of the Swift Keychain helper. Same translation-unit-only
 // declaration VoipModule.mm uses for VoipService — the symbol links from the
 // same target at link time; importing the generated -Swift.h here is unnecessary.

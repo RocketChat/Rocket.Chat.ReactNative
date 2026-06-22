@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { type DrawerNavigationProp } from '@react-navigation/drawer';
-import { ScrollView } from 'react-native';
+import { ScrollView, View } from 'react-native';
 
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import styles from './styles';
@@ -25,13 +25,15 @@ const SidebarView = ({ navigation }: { navigation: DrawerNavigationProp<DrawerPa
 	}, [navigation]);
 
 	return (
-		<ScrollView testID='sidebar-view' style={styles.container} {...scrollPersistTaps}>
-			<Profile navigation={navigation} />
-			<SupportedVersionsWarnItem />
-			<CustomStatus />
-			<Stacks currentScreen={currentScreen} />
-			<Admin currentScreen={currentScreen} />
-		</ScrollView>
+		<View testID='sidebar-view' style={styles.container}>
+			<ScrollView style={styles.container} {...scrollPersistTaps}>
+				<Profile navigation={navigation} />
+				<SupportedVersionsWarnItem />
+				<CustomStatus />
+				<Stacks currentScreen={currentScreen} />
+				<Admin currentScreen={currentScreen} />
+			</ScrollView>
+		</View>
 	);
 };
 
