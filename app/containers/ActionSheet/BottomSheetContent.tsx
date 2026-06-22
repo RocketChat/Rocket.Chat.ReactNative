@@ -41,7 +41,7 @@ const BottomSheetContent = memo(
 		const { colors } = useTheme();
 		const { fontScale } = useWindowDimensions();
 		const height = 48 * fontScale;
-		const paddingBottom = contentPaddingBottom || 0;
+		const paddingBottom = contentPaddingBottom ?? 0;
 		const minHeightStyle = isAndroid || !contentMinHeight ? undefined : { minHeight: contentMinHeight };
 
 		const renderFooter = () =>
