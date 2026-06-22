@@ -51,8 +51,8 @@ export default class RoomSubscription {
 		}
 		this.promises = sdk.subscribeRoom(this.rid);
 
-		this.connectedListener = sdk.onStreamData('connected', this.handleConnection);
-		this.disconnectedListener = sdk.onStreamData('close', this.handleConnection);
+		this.connectedListener = sdk.onStreamData('connected', this.handleConnected);
+		this.disconnectedListener = sdk.onStreamData('close', this.handleClose);
 		this.notifyRoomListener = sdk.onStreamData('stream-notify-room', this.handleNotifyRoomReceived);
 		this.messageReceivedListener = sdk.onStreamData('stream-room-messages', this.handleMessageReceived);
 		if (!this.isAlive) {
@@ -93,11 +93,24 @@ export default class RoomSubscription {
 		}
 	};
 
-	handleConnection = async () => {
+	handleConnected = async () => {
+		if (!this.isAlive) {
+			return;
+		}
 		try {
+			this.promises = sdk.subscribeRoom(this.rid);
+			await this.promises;
 			reduxStore.dispatch(clearUserTyping());
 			await loadMissedMessages({ rid: this.rid });
 			this.read();
+		} catch (e) {
+			log(e);
+		}
+	};
+
+	handleClose = () => {
+		try {
+			reduxStore.dispatch(clearUserTyping());
 		} catch (e) {
 			log(e);
 		}
