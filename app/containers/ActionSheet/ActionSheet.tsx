@@ -37,7 +37,7 @@ const ActionSheet = memo(
 
 		const insets = useSafeAreaInsets();
 		const itemHeight = 48 * fontScale;
-		const bottomInset = getActionSheetBottomInset(insets);
+		const bottomInset = getActionSheetBottomInset(insets.bottom);
 
 		const handleContentLayout = ({ nativeEvent: { layout } }: LayoutChangeEvent) => {
 			setContentHeight(layout.height);
