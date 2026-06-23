@@ -13,7 +13,10 @@ export type MigrationErrorCategory =
 export function categorizeMigrationError(err: unknown): MigrationErrorCategory {
 	if (!(err instanceof Error)) return 'unknown';
 	const msg = err.message.toLowerCase();
-	if (msg.includes('key') || msg.includes('salt') || msg.includes('keychain') || msg.includes('shim')) {
+	if (msg.includes('[migration/legacyreader]')) {
+		return 'legacy_read';
+	}
+	if (/\b(keychain|key|salt|shim)\b/.test(msg)) {
 		return 'key_unavailable';
 	}
 	if (msg.includes('open-verify') || msg.includes('not a database') || msg.includes('corrupt')) {

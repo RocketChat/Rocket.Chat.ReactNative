@@ -244,11 +244,16 @@ export async function runMigrationIfNeeded(): Promise<void> {
 
 		emitMigrationComplete({ outcome: 'success', furthestPhase: 'done', durationMs: getNowMs() - startMs });
 	} catch (err) {
+		let errorCategory = categorizeMigrationError(err);
+		if (errorCategory === 'unknown' && (furthestPhase === 'porting_servers' || furthestPhase === 'porting_active')) {
+			errorCategory = 'port_failed';
+		}
+
 		emitMigrationComplete({
 			outcome: 'failure',
 			furthestPhase,
 			durationMs: getNowMs() - startMs,
-			errorCategory: categorizeMigrationError(err)
+			errorCategory
 		});
 		throw err;
 	}

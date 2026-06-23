@@ -324,7 +324,7 @@ describe('migration telemetry', () => {
 			outcome: 'failure',
 			furthestPhase: 'porting_active',
 			durationMs: expect.any(Number),
-			errorCategory: 'unknown'
+			errorCategory: 'port_failed'
 		});
 	});
 
