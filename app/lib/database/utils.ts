@@ -1,4 +1,4 @@
-import { Q } from '@nozbe/watermelondb';
+import { Q } from './facade';
 import XRegExp from 'xregexp';
 import { slugify } from 'transliteration';
 
