@@ -67,7 +67,6 @@ export const localSearchSubscription = async ({
 		prid: item.prid,
 		f: item.f
 	})) as ISearchLocal[];
-
 	return search;
 };
 
@@ -190,16 +189,4 @@ export const searchRemote = async ({
 		console.warn(e);
 		return data;
 	}
-};
-
-// Convenience wrapper that resolves only once both local and remote results are ready.
-// Prefer calling searchLocal + searchRemote separately to render local results first.
-export const search = async ({
-	text = '',
-	filterUsers = true,
-	filterRooms = true,
-	rid = ''
-}: ISearchParams): Promise<TSearch[]> => {
-	const localData = await searchLocal({ text, filterUsers, filterRooms, rid });
-	return searchRemote({ text, filterUsers, filterRooms, rid, localData });
 };

@@ -106,13 +106,13 @@ const RoomsListView = memo(function RoomsListView() {
 		);
 	};
 
-	if (searchEnabled) {
+	if (searchEnabled && searchResults.length === 0) {
+		// Only block on the spinner while we have nothing to show yet. Once local results
+		// are painted, fall through to the list even if the remote request is still in flight.
 		if (searching) {
 			return <ActivityIndicator />;
 		}
-		if (searchResults.length === 0) {
-			return <BackgroundContainer text={i18n.t('No_rooms_found')} />;
-		}
+		return <BackgroundContainer text={i18n.t('No_rooms_found')} />;
 	}
 
 	if (loading || changingServer) {
@@ -135,6 +135,7 @@ const RoomsListView = memo(function RoomsListView() {
 			style={[styles.list, { backgroundColor: colors.surfaceRoom }]}
 			renderItem={renderItem}
 			ListHeaderComponent={ListHeader}
+			ListFooterComponent={searching ? () => <ActivityIndicator /> : undefined}
 			getItemLayout={getItemLayout}
 			removeClippedSubviews={isIOS}
 			keyboardShouldPersistTaps='always'

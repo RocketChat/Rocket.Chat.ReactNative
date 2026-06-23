@@ -1,4 +1,4 @@
-import { search, searchLocal, searchRemote, type TSearch } from './search';
+import { searchLocal, searchRemote, type TSearch } from './search';
 import { spotlight } from '../services/restApi';
 import database from '../database/index';
 import { store as reduxStore } from '../store/auxStore';
@@ -261,7 +261,7 @@ describe('searchLocal', () => {
 	});
 });
 
-describe('search', () => {
+describe('searchLocal + searchRemote', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockedGetState.mockReturnValue({
@@ -279,7 +279,8 @@ describe('search', () => {
 	it('merges local results with spotlight results', async () => {
 		mockedSpotlight.mockResolvedValue({ users: [buildSpotlightUser({ username: 'john.doe' })], rooms: [] });
 
-		const result = (await search({ text: 'doe' })) as ISearch[];
+		const localData = await searchLocal({ text: 'doe' });
+		const result = (await searchRemote({ text: 'doe', localData })) as ISearch[];
 
 		// one local (jane) + one remote (john)
 		expect(result).toHaveLength(2);
