@@ -10,6 +10,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import { type IRoomNotifications, type TRoomNotificationsModel } from '../../definitions';
 import I18n from '../../i18n';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
 import { showErrorAlertWithEMessage } from '../../lib/methods/helpers';
 import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
@@ -90,10 +91,10 @@ const NotificationPreferencesView = (): ReactElement => {
 	const route = useRoute<RouteProp<ChatsStackParamList, 'NotificationPrefView'>>();
 	const { rid, room } = route.params;
 	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList, 'NotificationPrefView'>>();
-	const { serverVersion, isMasterDetail } = useAppSelector(state => ({
-		serverVersion: state.server.version,
-		isMasterDetail: state.app.isMasterDetail
+	const { serverVersion } = useAppSelector(state => ({
+		serverVersion: state.server.version
 	}));
+	const isMasterDetail = useMasterDetail();
 	const [hideUnreadStatus, setHideUnreadStatus] = useState(room.hideUnreadStatus);
 
 	useEffect(() => {

@@ -16,6 +16,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import StatusIcon from '../../containers/Status/Status';
 import { ControlledFormTextInput } from '../../containers/TextInput';
 import { type IApplicationState, type TUserStatus } from '../../definitions';
+import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
 import I18n from '../../i18n';
 import { showToast } from '../../lib/methods/helpers/showToast';
 import { setUserStatus } from '../../lib/services/restApi';
@@ -108,7 +109,7 @@ const StatusView = (): ReactElement => {
 	'use memo';
 
 	const user = useSelector((state: IApplicationState) => getUserSelector(state));
-	const isMasterDetail = useSelector((state: IApplicationState) => state.app.isMasterDetail);
+	const isMasterDetail = useMasterDetail();
 	const Accounts_AllowInvisibleStatusOption = useSelector(
 		(state: IApplicationState) => state.settings.Accounts_AllowInvisibleStatusOption
 	);

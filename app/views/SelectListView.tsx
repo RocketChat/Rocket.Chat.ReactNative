@@ -1,6 +1,5 @@
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
-import { connect } from 'react-redux';
 import { type RouteProp } from '@react-navigation/native';
 import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Component } from 'react';
@@ -17,8 +16,8 @@ import { ICON_SIZE } from '../containers/List/constants';
 import SearchBox from '../containers/SearchBox';
 import Radio from '../containers/Radio';
 import sharedStyles from './Styles';
-import { type IApplicationState } from '../definitions';
 import { type TDataSelect } from '../definitions/IDataSelect';
+import { withMasterDetail } from '../lib/hooks/useMasterDetail';
 
 const styles = StyleSheet.create({
 	buttonText: {
@@ -210,8 +209,4 @@ class SelectListView extends Component<ISelectListViewProps, ISelectListViewStat
 	}
 }
 
-const mapStateToProps = (state: IApplicationState) => ({
-	isMasterDetail: state.app.isMasterDetail
-});
-
-export default connect(mapStateToProps)(withTheme(withSafeAreaInsets(SelectListView)));
+export default withTheme(withMasterDetail(withSafeAreaInsets(SelectListView)));

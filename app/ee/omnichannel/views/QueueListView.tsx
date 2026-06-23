@@ -19,6 +19,7 @@ import { type ChatsStackParamList } from '../../../stacks/types';
 import { type MasterDetailInsideStackParamList } from '../../../stacks/MasterDetailStack/types';
 import { getRoomAvatar, getRoomTitle, getUidDirectMessage, isIOS, isTablet } from '../../../lib/methods/helpers';
 import { useResponsiveLayout } from '../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
 
 type TNavigation = CompositeNavigationProp<
 	NativeStackNavigationProp<ChatsStackParamList, 'QueueListView'>,
@@ -53,7 +54,7 @@ const QueueListView = memo(() => {
 		shallowEqual
 	);
 
-	const isMasterDetail = useSelector((state: IApplicationState) => state.app.isMasterDetail);
+	const isMasterDetail = useMasterDetail();
 	const useRealName = useSelector((state: IApplicationState) => state.settings.UI_Use_Real_Name);
 	const queued = useSelector((state: IApplicationState) => getInquiryQueueSelector(state));
 

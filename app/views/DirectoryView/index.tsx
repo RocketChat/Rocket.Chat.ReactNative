@@ -25,6 +25,7 @@ import { getRoomByTypeAndName } from '../../lib/services/restApi';
 import { createDirectMessage } from '../../lib/methods/createDirectMessage';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
 import { useDirectorySearch } from './hooks/useDirectorySearch';
 
 interface IDirectoryViewProps {
@@ -39,14 +40,14 @@ const DirectoryView = ({ navigation }: IDirectoryViewProps): ReactElement => {
 	const { bottom } = useSafeAreaInsets();
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 
-	const { isFederationEnabled, directoryDefaultView, isMasterDetail } = useAppSelector(
+	const { isFederationEnabled, directoryDefaultView } = useAppSelector(
 		state => ({
 			isFederationEnabled: state.settings.FEDERATION_Enabled as boolean,
-			directoryDefaultView: state.settings.Accounts_Directory_DefaultView as string,
-			isMasterDetail: state.app.isMasterDetail
+			directoryDefaultView: state.settings.Accounts_Directory_DefaultView as string
 		}),
 		shallowEqual
 	);
+	const isMasterDetail = useMasterDetail();
 
 	const { data, loading, type, globalUsers, search, loadMore, onSearchChangeText, changeType, toggleWorkspace } =
 		useDirectorySearch(directoryDefaultView);

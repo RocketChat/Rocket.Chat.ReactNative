@@ -27,7 +27,8 @@ import {
 	type TSubscriptionModel
 } from '../../definitions';
 import { type IActiveUser } from '../../reducers/activeUsers';
-import { withDimensions } from '../../dimensions';
+import { withDimensions } from '../../lib/hooks/withDimensions';
+import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
 import I18n from '../../i18n';
 import database from '../../lib/database';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
@@ -1334,7 +1335,6 @@ const mapStateToProps = (state: IApplicationState, ownProps: Partial<Pick<IRoomA
 		userId,
 		encryptionEnabled: state.encryption.enabled,
 		serverVersion: state.server.version,
-		isMasterDetail: state.app.isMasterDetail,
 		editRoomPermission: state.permissions['edit-room'],
 		toggleRoomE2EEncryptionPermission: state.permissions['toggle-room-e2e-encryption'],
 		viewBroadcastMemberListPermission: state.permissions['view-broadcast-member-list'],
@@ -1351,4 +1351,4 @@ const mapStateToProps = (state: IApplicationState, ownProps: Partial<Pick<IRoomA
 
 const RoomActionsViewWithInsets = withSafeAreaInsets(RoomActionsView);
 hoistNonReactStatics(RoomActionsViewWithInsets, RoomActionsView);
-export default connect(mapStateToProps)(withTheme(withActionSheet(withDimensions(RoomActionsViewWithInsets))));
+export default connect(mapStateToProps)(withTheme(withActionSheet(withDimensions(withMasterDetail(RoomActionsViewWithInsets)))));

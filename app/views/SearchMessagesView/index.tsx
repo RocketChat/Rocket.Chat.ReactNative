@@ -43,6 +43,7 @@ import {
 import { searchMessages } from '../../lib/services/restApi';
 import { type TNavigation } from '../../stacks/stackType';
 import Navigation from '../../lib/navigation/appNavigation';
+import { withMasterDetail } from '../../lib/hooks/useMasterDetail';
 
 const QUERY_SIZE = 50;
 
@@ -354,7 +355,6 @@ class SearchMessagesView extends Component<ISearchMessagesViewProps, ISearchMess
 
 const mapStateToProps = (state: any) => ({
 	serverVersion: state.server.version,
-	isMasterDetail: state.app.isMasterDetail,
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
 	useRealName: state.settings.UI_Use_Real_Name,
@@ -363,4 +363,4 @@ const mapStateToProps = (state: any) => ({
 
 const SearchMessagesViewWithInsets = withSafeAreaInsets(SearchMessagesView);
 hoistNonReactStatics(SearchMessagesViewWithInsets, SearchMessagesView);
-export default connect(mapStateToProps)(withTheme(SearchMessagesViewWithInsets));
+export default connect(mapStateToProps)(withTheme(withMasterDetail(SearchMessagesViewWithInsets)));

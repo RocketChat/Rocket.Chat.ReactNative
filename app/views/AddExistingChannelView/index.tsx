@@ -21,6 +21,7 @@ import { type TSubscriptionModel, SubscriptionType } from '../../definitions';
 import { compareServerVersion, getRoomTitle, hasPermission, useDebounce } from '../../lib/methods/helpers';
 import { addRoomsToTeam } from '../../lib/services/restApi';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
 import Navigation from '../../lib/navigation/appNavigation';
 
 type TNavigation = NativeStackNavigationProp<ChatsStackParamList, 'AddExistingChannelView'>;
@@ -40,16 +41,16 @@ const AddExistingChannelView = () => {
 	} = useRoute<TRoute>();
 	const { bottom } = useSafeAreaInsets();
 
-	const { serverVersion, addTeamChannelPermission, isMasterDetail, moveRoomToTeamPermission } = useAppSelector(state => ({
+	const { serverVersion, addTeamChannelPermission, moveRoomToTeamPermission } = useAppSelector(state => ({
 		serverVersion: state.server.version,
-		isMasterDetail: state.app.isMasterDetail,
 		addTeamChannelPermission: state.permissions['add-team-channel'],
 		moveRoomToTeamPermission: state.permissions['move-room-to-team']
 	}));
+	const isMasterDetail = useMasterDetail();
 
 	useLayoutEffect(() => {
 		setHeader();
-	}, [selected.length]);
+	}, [selected.length, isMasterDetail]);
 
 	useEffect(() => {
 		query();

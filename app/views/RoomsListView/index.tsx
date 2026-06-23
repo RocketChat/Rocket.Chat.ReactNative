@@ -13,6 +13,7 @@ import { SupportedVersionsExpired } from '../../containers/SupportedVersions';
 import i18n from '../../i18n';
 import { MAX_SIDEBAR_WIDTH } from '../../lib/constants/tablet';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
 import { getRoomAvatar, getRoomTitle, getUidDirectMessage, isIOS, isRead, isTablet } from '../../lib/methods/helpers';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 import { events, logEvent } from '../../lib/methods/helpers/log';
@@ -41,7 +42,7 @@ const RoomsListView = memo(function RoomsListView() {
 	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name) as boolean;
 	const showLastMessage = useAppSelector(state => state.settings.Store_Last_Message) as boolean;
 	const { displayMode, showAvatar } = useAppSelector(state => state.sortPreferences, shallowEqual);
-	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+	const isMasterDetail = useMasterDetail();
 	const navigation = useNavigation();
 	const { width } = useSafeAreaFrame();
 	const { bottom } = useSafeAreaInsets();

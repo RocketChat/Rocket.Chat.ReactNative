@@ -17,6 +17,7 @@ import Radio from '../../containers/Radio';
 import { type IGetRoomRoles, type TSubscriptionModel, type TUserModel } from '../../definitions';
 import I18n from '../../i18n';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
 import { usePermissions } from '../../lib/hooks/usePermissions';
 import { compareServerVersion, getRoomTitle, isGroupChat, useDebounce } from '../../lib/methods/helpers';
 import { handleIgnore } from '../../lib/methods/helpers/handleIgnore';
@@ -79,9 +80,8 @@ const RoomMembersView = (): ReactElement => {
 
 	const latestSearchRequest = useRef(0);
 
-	const { isMasterDetail, serverVersion, useRealName, user, loading } = useAppSelector(
+	const { serverVersion, useRealName, user, loading } = useAppSelector(
 		state => ({
-			isMasterDetail: state.app.isMasterDetail,
 			useRealName: state.settings.UI_Use_Real_Name,
 			user: getUserSelector(state),
 			serverVersion: state.server.version,
@@ -89,6 +89,7 @@ const RoomMembersView = (): ReactElement => {
 		}),
 		shallowEqual
 	);
+	const isMasterDetail = useMasterDetail();
 
 	useEffect(() => {
 		sendLoadingEvent({ visible: loading });

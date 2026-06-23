@@ -37,7 +37,7 @@ import { getMessageById } from '../../../lib/database/services/Message';
 import { generateTriggerId } from '../../../lib/methods/actions';
 import { executeCommandPreview } from '../../../lib/services/restApi';
 import log from '../../../lib/methods/helpers/log';
-import { useAppSelector } from '../../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
 import { useAltTextSupported } from '../../../lib/hooks/useAltTextSupported';
 import { usePrevious } from '../../../lib/hooks/usePrevious';
 import { type ChatsStackParamList } from '../../../stacks/types';
@@ -58,7 +58,7 @@ export const ComposerInput = memo(
 		const firstRender = useRef(true);
 		const selectionRef = useRef<IInputSelection>(defaultSelection);
 		const dispatch = useDispatch();
-		const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+		const isMasterDetail = useMasterDetail();
 		const altTextSupported = useAltTextSupported();
 		let placeholder = tmid ? I18n.t('Add_thread_reply') : '';
 		if (room && !tmid) {
