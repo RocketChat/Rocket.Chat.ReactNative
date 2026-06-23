@@ -118,11 +118,13 @@ export const useAutocomplete = ({
 				if (type === '@' || type === '#') {
 					const searchParams = { text, filterRooms: type === '#', filterUsers: type === '@', rid };
 
-					// Paint local results immediately while the backend request is still in flight
+					// Paint local results immediately, keeping a loading row at the bottom while the
+					// backend request is still in flight
 					const localData = await searchLocal(searchParams);
 					if (ignore) return;
 					const parsedLocal = parseUserRoom(localData);
-					setItems(parsedLocal);
+					const loadingItem: TAutocompleteItem = { id: 'loading', type: 'loading' };
+					setItems([...parsedLocal, loadingItem]);
 					if (parsedLocal.length > 0) {
 						updateAutocompleteVisible(true);
 						accessibilityFocusOnInput();

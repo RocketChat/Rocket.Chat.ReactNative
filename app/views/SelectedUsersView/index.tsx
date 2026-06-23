@@ -8,6 +8,7 @@ import { type RouteProp, useNavigation, useRoute } from '@react-navigation/nativ
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { addUser, removeUser, reset } from '../../actions/selectedUsers';
+import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import * as List from '../../containers/List';
 import { sendLoadingEvent } from '../../containers/Loading';
@@ -36,6 +37,8 @@ type TNavigation = NativeStackNavigationProp<
 const SelectedUsersView = () => {
 	const [chats, setChats] = useState<ISelectedUser[]>([]);
 	const [search, setSearch] = useState<TSearch[]>([]);
+	// True while the remote (spotlight) request is in flight, after local results are already painted
+	const [searching, setSearching] = useState(false);
 	// Guards against an older (slower) search overwriting the results of a newer one
 	const searchId = useRef(0);
 
@@ -124,14 +127,23 @@ const SelectedUsersView = () => {
 		const currentSearchId = searchId.current;
 		const isStale = () => currentSearchId !== searchId.current;
 
-		// Paint local results immediately while the backend request is still in flight
-		const localData = await searchLocal({ text, filterRooms: false });
-		if (isStale()) return;
-		setSearch(localData);
+		setSearching(true);
 
-		const result = await searchRemote({ text, filterRooms: false, localData });
-		if (isStale()) return;
-		setSearch(result);
+		try {
+			// Paint local results immediately while the backend request is still in flight
+			const localData = await searchLocal({ text, filterRooms: false });
+			if (isStale()) return;
+			setSearch(localData);
+
+			const result = await searchRemote({ text, filterRooms: false, localData });
+			if (isStale()) return;
+			setSearch(result);
+		} catch (e) {
+			log(e);
+		} finally {
+			// Only the latest search clears the flag, so a stale request never hides an in-flight newer one
+			if (!isStale()) setSearching(false);
+		}
 	}, []);
 
 	const toggleUser = (userItem: ISelectedUser) => {
@@ -185,7 +197,7 @@ const SelectedUsersView = () => {
 					);
 				}}
 				ItemSeparatorComponent={List.Separator}
-				ListFooterComponent={<List.Separator />}
+				ListFooterComponent={searching ? <ActivityIndicator /> : <List.Separator />}
 				ListHeaderComponent={<Header useRealName={useRealName} onChangeText={handleSearch} onPressItem={toggleUser} />}
 				contentContainerStyle={{ backgroundColor: colors.surfaceRoom }}
 				keyboardShouldPersistTaps='always'

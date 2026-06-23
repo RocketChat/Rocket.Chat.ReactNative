@@ -5,6 +5,7 @@ import { FlatList } from 'react-native';
 import { shallowEqual } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
+import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -28,6 +29,8 @@ type TItem = ISearch | TSubscriptionModel;
 const NewMessageView = () => {
 	const [chats, setChats] = useState<TSubscriptionModel[]>([]);
 	const [search, setSearch] = useState<TItem[]>([]);
+	// True while the remote (spotlight) request is in flight, after local results are already painted
+	const [searching, setSearching] = useState(false);
 	// Guards against an older (slower) search overwriting the results of a newer one
 	const searchId = useRef(0);
 
@@ -73,14 +76,23 @@ const NewMessageView = () => {
 		const currentSearchId = searchId.current;
 		const isStale = () => currentSearchId !== searchId.current;
 
-		// Paint local results immediately while the backend request is still in flight
-		const localData = await searchLocal({ text, filterRooms: false });
-		if (isStale()) return;
-		setSearch(localData as ISearch[]);
+		setSearching(true);
 
-		const result = (await searchRemote({ text, filterRooms: false, localData })) as ISearch[];
-		if (isStale()) return;
-		setSearch(result);
+		try {
+			// Paint local results immediately while the backend request is still in flight
+			const localData = await searchLocal({ text, filterRooms: false });
+			if (isStale()) return;
+			setSearch(localData as ISearch[]);
+
+			const result = (await searchRemote({ text, filterRooms: false, localData })) as ISearch[];
+			if (isStale()) return;
+			setSearch(result);
+		} catch (e) {
+			log(e);
+		} finally {
+			// Only the latest search clears the flag, so a stale request never hides an in-flight newer one
+			if (!isStale()) setSearching(false);
+		}
 	}, []);
 
 	const goRoom = useCallback(
@@ -114,7 +126,7 @@ const NewMessageView = () => {
 					);
 				}}
 				ItemSeparatorComponent={List.Separator}
-				ListFooterComponent={List.Separator}
+				ListFooterComponent={searching ? () => <ActivityIndicator /> : List.Separator}
 				style={{ backgroundColor: colors.surfaceTint }}
 				keyboardShouldPersistTaps='always'
 			/>
