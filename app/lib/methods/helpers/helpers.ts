@@ -14,8 +14,8 @@ export function getRoomAvatar(room) {
 	return room.prid ? room.fname : room.name;
 }
 
-export function getUidDirectMessage(room) {
-	const { id: userId } = reduxStore.getState().login.user;
+export function getUidDirectMessage(room, loggedUserId?: string) {
+	const userId = loggedUserId ?? reduxStore.getState().login.user.id;
 
 	if (!room) {
 		return null;

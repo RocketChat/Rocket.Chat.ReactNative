@@ -19,10 +19,8 @@ import {
 import { type ModalStackParamList } from './MasterDetailStack/types';
 import { type TNavigation } from './stackType';
 
-// ChatsStackParamList keeps hand-written specific types because:
-// - Views use composite navigation props that include cross-stack destinations (ModalStackNavigator
-//   for the tablet/MasterDetail modal stack, E2E stacks, etc.).
-// - Specific route param types prevent implicit `any` in view callbacks.
+// Hand-written rather than StaticParamList-inferred: views use composite navigation props spanning
+// cross-stack destinations (ModalStackNavigator, E2E stacks), and explicit params avoid implicit `any`.
 export type ChatsStackParamList = {
 	ModalStackNavigator: NavigatorScreenParams<ModalStackParamList & TNavigation>;
 	E2ESaveYourPasswordStackNavigator: NavigatorScreenParams<E2ESaveYourPasswordStackParamList>;
@@ -205,9 +203,8 @@ export type ProfileStackParamList = {
 	ChangePasswordView: undefined;
 };
 
-// SettingsStackParamList includes cross-stack entries (ProfileView, DisplayPrefsView,
-// AccessibilityAndAppearanceView) to support navigation from SettingsView to those screens
-// via the drawer/accessibility stack.
+// Cross-stack entries (ProfileView, DisplayPrefsView, AccessibilityAndAppearanceView) are reachable
+// from SettingsView via the drawer/accessibility stack.
 export type SettingsStackParamList = {
 	LegalView: undefined;
 	SettingsView: undefined;

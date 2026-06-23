@@ -14,7 +14,6 @@ import withNavigation from '../lib/navigation/withNavigation';
 import Sidebar from '../views/SidebarView';
 import { isIOS } from '../lib/methods/helpers';
 import { type TNavigation } from './stackType';
-// Chats Stack
 import RoomView from '../views/RoomView';
 import RoomsListView from '../views/RoomsListView';
 import RoomActionsView from '../views/RoomActionsView';
@@ -47,12 +46,10 @@ import AddChannelTeamView from '../views/AddChannelTeamView';
 import AddExistingChannelView from '../views/AddExistingChannelView';
 import SelectListView from '../views/SelectListView';
 import QueueListView from '../ee/omnichannel/views/QueueListView';
-// Profile Stack
 import ProfileView from '../views/ProfileView';
 import UserPreferencesView from '../views/UserPreferencesView';
 import UserNotificationPrefView from '../views/UserNotificationPreferencesView';
 import ChangePasswordView from '../views/ChangePasswordView';
-// Settings Stack
 import SettingsView from '../views/SettingsView';
 import SecurityPrivacyView from '../views/SecurityPrivacyView';
 import GetHelpView from '../views/GetHelpView';
@@ -63,30 +60,24 @@ import DefaultBrowserView from '../views/DefaultBrowserView';
 import ScreenLockConfigView from '../views/ScreenLockConfigView';
 import MediaAutoDownloadView from '../views/MediaAutoDownloadView';
 import LegalView from '../views/LegalView';
-// Accessibility Stack
 import AccessibilityAndAppearanceView from '../views/AccessibilityAndAppearanceView';
 import DisplayPrefsView from '../views/DisplayPrefsView';
 import ThemeView from '../views/ThemeView';
-// Admin Stack
 import AdminPanelView from '../views/AdminPanelView';
-// NewMessage Stack
 import NewMessageView from '../views/NewMessageView';
 import CreateChannelView from '../views/CreateChannelView';
 import CreateDiscussionView from '../views/CreateDiscussionView';
 import ForwardMessageView from '../views/ForwardMessageView';
-// E2E Stacks
 import E2ESaveYourPasswordView from '../views/E2ESaveYourPasswordView';
 import E2EHowItWorksView from '../views/E2EHowItWorksView';
 import E2EEnterYourPasswordView from '../views/E2EEnterYourPasswordView';
-// InsideStack top-level screens
 import AttachmentView from '../views/AttachmentView';
 import ModalBlockView from '../views/ModalBlockView';
 import StatusView from '../views/StatusView';
 import ShareView from '../views/ShareView';
 import CallView from '../views/CallView';
 
-// withNavigation injects navigation via useNavigation() for class components and function components
-// that take navigation as a prop. Cast through `any` to break the type cycle.
+// Cast through `any` to break the navigation-prop type cycle; removing it reintroduces a real TS circular ref.
 const RoomViewScreen = withNavigation(RoomView as any) as any;
 const RoomActionsViewScreen = withNavigation(RoomActionsView as any) as any;
 const SelectListViewScreen = withNavigation(SelectListView as any) as any;
@@ -124,7 +115,7 @@ const SelectedUsersViewScreen = SelectedUsersView as any;
 const InviteUsersEditViewScreen = InviteUsersEditView as any;
 const AutoTranslateViewScreen = AutoTranslateView as any;
 const NotificationPrefViewScreen = NotificationPrefView as any;
-const E2EEToggleRoomViewScreen = E2EEToggleRoomView as any;
+const E2EEToggleRoomViewScreen = withNavigation(E2EEToggleRoomView as any) as any;
 const CloseLivechatViewScreen = CloseLivechatView as any;
 const CreateChannelViewScreen = CreateChannelView as any;
 const AddChannelTeamViewScreen = AddChannelTeamView as any;
@@ -152,7 +143,7 @@ const StatusViewScreen: ComponentType<StaticScreenProps<undefined>> = StatusView
 const CallViewScreen: ComponentType<StaticScreenProps<undefined>> = CallView as any;
 const QueueListViewScreen: ComponentType<StaticScreenProps<undefined>> = QueueListView as any;
 
-// Explicit param-type annotations keep precise types for the TNavigation screens.
+// Explicit param types so the TNavigation screens keep precise route params instead of inferred `any`.
 const PickerViewScreen: ComponentType<StaticScreenProps<TNavigation['PickerView']>> = PickerView as any;
 const ForwardLivechatViewScreen: ComponentType<StaticScreenProps<TNavigation['ForwardLivechatView']>> =
 	ForwardLivechatView as any;
@@ -161,7 +152,10 @@ const AttachmentViewScreen: ComponentType<StaticScreenProps<TNavigation['Attachm
 const ChatsStack = createNativeStackNavigator({
 	screenOptions: defaultHeader,
 	screens: {
-		RoomsListView,
+		RoomsListView: createNativeStackScreen({
+			screen: RoomsListView,
+			options: { freezeOnBlur: true }
+		}),
 		RoomView: RoomViewScreen,
 		RoomActionsView: createNativeStackScreen({
 			screen: RoomActionsViewScreen,
