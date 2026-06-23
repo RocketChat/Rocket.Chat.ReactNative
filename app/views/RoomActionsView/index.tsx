@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { type Observable, type Subscription } from 'rxjs';
 import { type CompositeNavigationProp } from '@react-navigation/native';
 import { Component } from 'react';
+import hoistNonReactStatics from 'hoist-non-react-statics';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { leaveRoom } from '../../actions/room';
@@ -1346,4 +1347,6 @@ const mapStateToProps = (state: IApplicationState, ownProps: Partial<Pick<IRoomA
 	};
 };
 
-export default connect(mapStateToProps)(withTheme(withActionSheet(withDimensions(withSafeAreaInsets(RoomActionsView)))));
+const RoomActionsViewWithInsets = withSafeAreaInsets(RoomActionsView);
+hoistNonReactStatics(RoomActionsViewWithInsets, RoomActionsView);
+export default connect(mapStateToProps)(withTheme(withActionSheet(withDimensions(RoomActionsViewWithInsets))));

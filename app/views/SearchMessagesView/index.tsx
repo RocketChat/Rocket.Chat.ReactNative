@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 import { type EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Component } from 'react';
+import hoistNonReactStatics from 'hoist-non-react-statics';
 
 import { FormTextInput } from '../../containers/TextInput';
 import ActivityIndicator from '../../containers/ActivityIndicator';
@@ -360,4 +361,6 @@ const mapStateToProps = (state: any) => ({
 	customEmojis: state.customEmojis
 });
 
-export default connect(mapStateToProps)(withTheme(withSafeAreaInsets(SearchMessagesView)));
+const SearchMessagesViewWithInsets = withSafeAreaInsets(SearchMessagesView);
+hoistNonReactStatics(SearchMessagesViewWithInsets, SearchMessagesView);
+export default connect(mapStateToProps)(withTheme(SearchMessagesViewWithInsets));
