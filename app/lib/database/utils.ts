@@ -1,6 +1,7 @@
-import { Q } from './facade';
 import XRegExp from 'xregexp';
 import { slugify } from 'transliteration';
+
+import { Q } from './facade';
 
 // Matches letters from any alphabet and numbers
 const likeStringRegex = XRegExp('[^\\p{L}\\p{Nd}]', 'g');

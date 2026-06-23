@@ -1,5 +1,4 @@
 import type { Q } from './facade';
-
 import * as utils from './utils';
 
 // Extracts every `LIKE` value (e.g. '%moy%') present in a serialized Q.or clause

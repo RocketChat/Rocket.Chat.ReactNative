@@ -1,5 +1,4 @@
 import { Q } from '../database/facade';
-
 import database from '../database';
 import { type ICustomEmoji, type IEmoji, type TFrequentlyUsedEmojiModel } from '../../definitions';
 import log from './helpers/log';
