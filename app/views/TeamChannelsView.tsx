@@ -601,4 +601,6 @@ const mapStateToProps = (state: IApplicationState) => ({
 	displayMode: state.sortPreferences.displayMode
 });
 
-export default connect(mapStateToProps)(withDimensions(withTheme(withActionSheet(withMasterDetail(withSafeAreaInsets(TeamChannelsView))))));
+export default connect(mapStateToProps)(
+	withDimensions(withTheme(withActionSheet(withMasterDetail(withSafeAreaInsets(TeamChannelsView)))))
+);

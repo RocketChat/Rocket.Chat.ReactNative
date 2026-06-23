@@ -68,7 +68,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 
 	const { theme } = useTheme();
 	const isMasterDetail = useMasterDetail();
-  const { bottom } = useSafeAreaInsets();
+	const { bottom } = useSafeAreaInsets();
 
 	const getRoomFromDb = async () => {
 		const { rid } = route.params;
