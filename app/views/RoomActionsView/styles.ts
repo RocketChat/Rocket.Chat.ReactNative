@@ -4,6 +4,9 @@ import { PADDING_HORIZONTAL } from '../../containers/List/constants';
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
+	scrollContentContainer: {
+		paddingTop: 16
+	},
 	roomInfoContainer: {
 		paddingHorizontal: PADDING_HORIZONTAL,
 		paddingVertical: 4,
