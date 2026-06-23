@@ -13,8 +13,7 @@ import { type Optional } from '../definitions/utils';
 
 type ShareViewParams = Optional<InsideStackParamList['ShareView'], 'thread' | 'action' | 'finishShareView' | 'startShareView'>;
 
-// withNavigation(x as any) returns ComponentType<{}> — not assignable to ComponentType<StaticScreenProps<T>> — due to the
-// type cycle: these components reference ShareInsideStackParamList ← StaticParamList<typeof ShareExtension> ← these components.
+// Cast through `any` to break the navigation-prop type cycle; removing it reintroduces a real TS circular ref.
 const ShareListViewScreen: ComponentType<StaticScreenProps<undefined>> = withNavigation(ShareListView as any) as any;
 const ShareViewScreen: ComponentType<StaticScreenProps<ShareViewParams>> = withNavigation(ShareView as any) as any;
 
