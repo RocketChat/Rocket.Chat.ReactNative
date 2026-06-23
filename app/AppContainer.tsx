@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 
 import { type IApplicationState, RootEnum } from './definitions';
 import Navigation from './lib/navigation/appNavigation';
+import { useMasterDetail } from './lib/hooks/useMasterDetail';
 import { defaultHeader, getActiveRouteName, navigationTheme } from './lib/methods/helpers/navigation';
 import OutsideStack from './stacks/OutsideStack';
 import InsideStack from './stacks/InsideStack';
@@ -26,11 +27,15 @@ const useIsLoading = () =>
 
 const useIsOutside = () => useSelector((state: IApplicationState) => state.app.root === RootEnum.ROOT_OUTSIDE);
 
-const useIsMasterDetail = () =>
-	useSelector((state: IApplicationState) => state.app.root === RootEnum.ROOT_INSIDE && state.app.isMasterDetail);
+const useIsMasterDetail = () => {
+	const isMasterDetail = useMasterDetail();
+	return useSelector((state: IApplicationState) => state.app.root === RootEnum.ROOT_INSIDE) && isMasterDetail;
+};
 
-const useIsInside = () =>
-	useSelector((state: IApplicationState) => state.app.root === RootEnum.ROOT_INSIDE && !state.app.isMasterDetail);
+const useIsInside = () => {
+	const isMasterDetail = useMasterDetail();
+	return useSelector((state: IApplicationState) => state.app.root === RootEnum.ROOT_INSIDE) && !isMasterDetail;
+};
 
 const useIsSetUsername = () => useSelector((state: IApplicationState) => state.app.root === RootEnum.ROOT_SET_USERNAME);
 
