@@ -13,10 +13,12 @@ import { deepLinkingOpen } from './actions/deepLinking';
 import { ActionSheetProvider } from './containers/ActionSheet';
 import InAppNotification from './containers/InAppNotification';
 import Loading from './containers/Loading';
+import StatusBar from './containers/StatusBar';
+import ThemeContextProvider from './containers/ThemeContextProvider';
 import Toast from './containers/Toast';
 import TwoFactor from './containers/TwoFactor';
 import { type IThemePreference } from './definitions/ITheme';
-import { colors, themes } from './lib/constants/colors';
+import { themes } from './lib/constants/colors';
 import { getAllowAnalyticsEvents, getAllowCrashReport } from './lib/methods/crashReport';
 import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './lib/methods/helpers/log';
 import parseQuery from './lib/methods/helpers/parseQuery';
@@ -37,10 +39,9 @@ import {
 } from './lib/services/voip/MediaCallEvents';
 import store from './lib/store';
 import { initStore } from './lib/store/auxStore';
-import { type TSupportedThemes, ThemeContext } from './theme';
+import { type TSupportedThemes } from './theme';
 import ChangePasscodeView from './views/ChangePasscodeView';
 import ScreenLockedView from './views/ScreenLockedView';
-import StatusBar from './containers/StatusBar';
 
 enableScreens();
 initStore(store);
@@ -183,13 +184,7 @@ export default class Root extends Component<{}, IState> {
 		return (
 			<SafeAreaProvider style={{ backgroundColor: themes[this.state.theme].surfaceRoom }}>
 				<Provider store={store}>
-					<ThemeContext.Provider
-						value={{
-							theme,
-							themePreferences,
-							setTheme: this.setTheme,
-							colors: colors[theme]
-						}}>
+					<ThemeContextProvider theme={theme} themePreferences={themePreferences} setTheme={this.setTheme}>
 						<ResponsiveLayoutProvider>
 							<GestureHandlerRootView>
 								<KeyboardProvider>
@@ -206,7 +201,7 @@ export default class Root extends Component<{}, IState> {
 								</KeyboardProvider>
 							</GestureHandlerRootView>
 						</ResponsiveLayoutProvider>
-					</ThemeContext.Provider>
+					</ThemeContextProvider>
 				</Provider>
 			</SafeAreaProvider>
 		);
