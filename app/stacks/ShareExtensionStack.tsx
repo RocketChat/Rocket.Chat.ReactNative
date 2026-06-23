@@ -9,10 +9,9 @@ import ShareListView from '../views/ShareListView';
 import ShareView from '../views/ShareView';
 import withNavigation from '../lib/navigation/withNavigation';
 import { type InsideStackParamList } from './types';
+import { type Optional } from '../definitions/utils';
 
-// Extension-only subset: InsideStack's ShareView params with callback fields made optional.
-type ShareViewParams = Omit<InsideStackParamList['ShareView'], 'thread' | 'action' | 'finishShareView' | 'startShareView'> &
-	Partial<Pick<InsideStackParamList['ShareView'], 'thread' | 'action' | 'finishShareView' | 'startShareView'>>;
+type ShareViewParams = Optional<InsideStackParamList['ShareView'], 'thread' | 'action' | 'finishShareView' | 'startShareView'>;
 
 // withNavigation(x as any) returns ComponentType<{}> — not assignable to ComponentType<StaticScreenProps<T>> — due to the
 // type cycle: these components reference ShareInsideStackParamList ← StaticParamList<typeof ShareExtension> ← these components.
