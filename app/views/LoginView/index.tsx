@@ -1,5 +1,5 @@
 import { useLayoutEffect } from 'react';
-import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation, type StaticScreenProps } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
@@ -9,12 +9,14 @@ import LoginServices from '../../containers/LoginServices';
 import { type OutsideParamList } from '../../stacks/types';
 import UserForm from './UserForm';
 
-const LoginView = () => {
+type LoginViewProps = StaticScreenProps<{ title: string; username?: string }>;
+
+const LoginView = ({ route }: LoginViewProps) => {
 	const navigation = useNavigation<NativeStackNavigationProp<OutsideParamList, 'LoginView'>>();
 
 	const {
 		params: { title }
-	} = useRoute<RouteProp<OutsideParamList, 'LoginView'>>();
+	} = route;
 
 	const { Accounts_ShowFormLogin } = useAppSelector(state => ({
 		Accounts_ShowFormLogin: state.settings.Accounts_ShowFormLogin as boolean

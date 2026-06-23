@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '../facade';
 
 export default appSchema({
-	version: 28,
+	version: 29,
 	tables: [
 		tableSchema({
 			name: 'subscriptions',

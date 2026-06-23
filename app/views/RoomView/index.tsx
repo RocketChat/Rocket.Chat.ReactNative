@@ -344,10 +344,12 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 	}
 
 	updateOmnichannel = async () => {
-		const canForwardGuest = await this.canForwardGuest();
+		const [canForwardGuest, canReturnQueue, canViewCannedResponse] = await Promise.all([
+			this.canForwardGuest(),
+			this.canReturnQueue(),
+			this.canViewCannedResponse()
+		]);
 		const canPlaceLivechatOnHold = this.canPlaceLivechatOnHold();
-		const canReturnQueue = await this.canReturnQueue();
-		const canViewCannedResponse = await this.canViewCannedResponse();
 		this.setState({ canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold });
 		if (this.mounted) {
 			this.setHeader();
@@ -1033,7 +1035,7 @@ class RoomView extends Component<IRoomViewProps, IRoomViewState> {
 				}
 				// Synchronization needed for Fabric to work
 				await new Promise(res => setTimeout(res, 100));
-				await Promise.race([this.list.current?.jumpToMessage(message.id), new Promise(res => setTimeout(res, 5000))]);
+				await Promise.race([this.list.current?.jumpToMessage(message.id), new Promise(res => setTimeout(res, 20000))]);
 				this.cancelJumpToMessage();
 			}
 		} catch (error: any) {

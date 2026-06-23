@@ -19,7 +19,7 @@ import SearchHeader from '../../containers/SearchHeader';
 import { themes } from '../../lib/constants/colors';
 import { type TSupportedThemes, withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
-import { sanitizeLikeString } from '../../lib/database/utils';
+import { getSubscriptionSearchClause } from '../../lib/database/utils';
 import styles from './styles';
 import { type IApplicationState, RootEnum, type TServerModel, type TSubscriptionModel } from '../../definitions';
 import { type ShareInsideStackParamList } from '../../definitions/navigationTypes';
@@ -227,8 +227,7 @@ class ShareListView extends Component<IShareListViewProps, IState> {
 			Q.sortBy('room_updated_at', Q.desc)
 		] as (Q.WhereDescription | Q.Skip | Q.Take | Q.SortBy | Q.Or)[];
 		if (text) {
-			const likeString = sanitizeLikeString(text);
-			defaultWhereClause.push(Q.or(Q.where('name', Q.like(`%${likeString}%`)), Q.where('fname', Q.like(`%${likeString}%`))));
+			defaultWhereClause.push(getSubscriptionSearchClause(text));
 		}
 		const data = (await db
 			.get('subscriptions')

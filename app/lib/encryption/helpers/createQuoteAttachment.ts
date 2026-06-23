@@ -4,7 +4,6 @@ import { getAvatarURL } from '../../methods/helpers';
 
 export function createQuoteAttachment(message: IMessage, messageLink: string): IAttachment {
 	const { server, version: serverVersion } = store.getState().server;
-	const avatarExternalProviderUrl = (store.getState().settings?.Accounts_AvatarExternalProviderUrl as string) || '';
 
 	return {
 		text: message.msg,
@@ -17,8 +16,7 @@ export function createQuoteAttachment(message: IMessage, messageLink: string): I
 			type: message.t,
 			userId: message.u?._id,
 			server,
-			serverVersion,
-			avatarExternalProviderUrl
+			serverVersion
 		}),
 		attachments: message.attachments || [],
 		ts: message.ts
