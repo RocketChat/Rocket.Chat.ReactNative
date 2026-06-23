@@ -338,7 +338,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		<KeyboardView>
 			<SafeAreaView testID='room-info-edit-view' style={{ backgroundColor: colors.surfaceRoom }}>
 				<ScrollView
-					contentContainerStyle={[sharedStyles.containerScrollView, { paddingBottom: Math.max(24, bottom) }]}
+					contentContainerStyle={[sharedStyles.containerScrollView, { paddingBottom: bottom }]}
 					testID='room-info-edit-view-list'
 					{...scrollPersistTaps}>
 					<View style={styles.avatarContainer}>
