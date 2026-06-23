@@ -37,6 +37,7 @@ export * from './redux';
 export * from './redux/TRootEnum';
 export * from './TChangeAvatarViewContext';
 export * from './IDataSelect';
+export * from './TStatusSource';
 export * from './TUserStatus';
 export * from './IDeleteMessageBulkParams';
 
