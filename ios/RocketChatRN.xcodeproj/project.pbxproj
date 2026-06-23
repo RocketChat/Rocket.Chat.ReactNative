@@ -214,6 +214,9 @@
 		7AC0A1E02C000011001CAA11 /* Challenge.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7AC0A1E02C000002001CAA11 /* Challenge.mm */; };
 		7AC0A1E02C000012001CAA11 /* Challenge.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7AC0A1E02C000002001CAA11 /* Challenge.mm */; };
 		7ACFE7D92DDE48760090D9BC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACFE7D82DDE48760090D9BC /* AppDelegate.swift */; };
+		7ADBC0032F80000100000003 /* DatabaseKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADBC0012F80000100000001 /* DatabaseKeyStore.swift */; };
+		7ADBC0042F80000100000004 /* DatabaseKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADBC0012F80000100000001 /* DatabaseKeyStore.swift */; };
+		7ADBC0062F80000100000006 /* DatabaseKeyStore.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7ADBC0022F80000100000002 /* DatabaseKeyStore.mm */; };
 		7AE10C0828A59530003593CB /* Inter.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7AE10C0528A59530003593CB /* Inter.ttf */; };
 		7AVR00022F5F5900002A6BDE /* VoipRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AVR00002F5F5900002A6BDE /* VoipRegion.swift */; };
 		85160EB6C143E0493FE5F014 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194D9A8897F4A486C2C6F89A /* ExpoModulesProvider.swift */; };
@@ -455,6 +458,8 @@
 		7AC0A1E02C000002001CAA11 /* Challenge.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Challenge.mm; sourceTree = "<group>"; };
 		7ACD4853222860DE00442C55 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		7ACFE7D82DDE48760090D9BC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		7ADBC0012F80000100000001 /* DatabaseKeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseKeyStore.swift; sourceTree = "<group>"; };
+		7ADBC0022F80000100000002 /* DatabaseKeyStore.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DatabaseKeyStore.mm; sourceTree = "<group>"; };
 		7AE10C0528A59530003593CB /* Inter.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Inter.ttf; sourceTree = "<group>"; };
 		7AVR00002F5F5900002A6BDE /* VoipRegion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoipRegion.swift; sourceTree = "<group>"; };
 		83F98EE33D91A93DF8E69F34 /* MediaCallsAnswerRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCallsAnswerRequest.swift; sourceTree = "<group>"; };
@@ -953,6 +958,8 @@
 				7AC0A1E02C000001001CAA11 /* Challenge.h */,
 				7AC0A1E02C000002001CAA11 /* Challenge.mm */,
 				9BE2F3DC02A264F204E3EDE3 /* DDPClient.swift */,
+				7ADBC0012F80000100000001 /* DatabaseKeyStore.swift */,
+				7ADBC0022F80000100000002 /* DatabaseKeyStore.mm */,
 			);
 			path = Libraries;
 			sourceTree = "<group>";
@@ -1303,6 +1310,7 @@
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/React-Core_privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-cxxreact/React-cxxreact_privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage/SDWebImage.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/SQLCipher/SQLCipher.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/TOCropViewController/TOCropViewControllerBundle.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/boost/boost_privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/glog/glog_privacy.bundle",
@@ -1337,6 +1345,7 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-Core_privacy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-cxxreact_privacy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SDWebImage.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SQLCipher.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TOCropViewControllerBundle.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/boost_privacy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/glog_privacy.bundle",
@@ -1460,6 +1469,7 @@
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/React-Core_privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-cxxreact/React-cxxreact_privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage/SDWebImage.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/SQLCipher/SQLCipher.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/TOCropViewController/TOCropViewControllerBundle.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/boost/boost_privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/glog/glog_privacy.bundle",
@@ -1494,6 +1504,7 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-Core_privacy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-cxxreact_privacy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SDWebImage.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SQLCipher.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TOCropViewControllerBundle.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/boost_privacy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/glog_privacy.bundle",

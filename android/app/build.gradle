@@ -141,6 +141,11 @@ dependencies {
     // For SecureKeystore (EncryptedSharedPreferences)
     implementation 'androidx.security:security-crypto:1.1.0'
 
+    // SQLCipher for reading encrypted databases from the FCM notification path.
+    // Version locked to match expo-sqlite 16.0.10's vendored SQLCipher 4.7.0.
+    // @aar ensures Gradle unpacks the AAR (ships libsqlcipher.so for all ABIs).
+    implementation 'net.zetetic:sqlcipher-android:4.7.0@aar'
+
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.robolectric:robolectric:4.14.1'
     testImplementation 'com.squareup.okhttp3:mockwebserver:4.9.2'

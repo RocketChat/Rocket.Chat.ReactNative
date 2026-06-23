@@ -12,7 +12,8 @@ import com.google.gson.JsonObject;
 import chat.rocket.mobilecrypto.algorithms.AESCrypto;
 import chat.rocket.mobilecrypto.algorithms.RSACrypto;
 import chat.rocket.mobilecrypto.algorithms.CryptoUtils;
-import com.nozbe.watermelondb.WMDatabase;
+import chat.rocket.reactnative.storage.DatabaseKeyStoreModule;
+import net.zetetic.database.sqlcipher.SQLiteDatabase;
 
 import java.security.SecureRandom;
 import java.util.Arrays;
@@ -102,6 +103,10 @@ class RoomKeyResult {
 }
 
 class Encryption {
+    static {
+        System.loadLibrary("sqlcipher");
+    }
+
     static class EncryptionContent {
         String algorithm;
         String ciphertext;
@@ -172,55 +177,102 @@ class Encryption {
     }
 
     public Room readRoom(final Ejson ejson, Context context) {
-        String dbName = getDatabaseName(ejson.serverURL(), context);
-        WMDatabase db = null;
+        String dbName = deriveDbName(ejson.serverURL());
+        String dbPath = context.getFilesDir().getAbsolutePath() + "/SQLite/" + dbName;
 
+        // Read key + salt from the AndroidKeyStore-backed store.
+        // Storage keys match JS KEY_PREFIX / SALT_PREFIX in keyService.ts.
+        String storageKey = "db_key_v1:" + dbName;
+        String saltStorageKey = "db_salt_v1:" + dbName;
+        String keyHex;
+        String saltHex;
         try {
-           db = WMDatabase.getInstance(dbName, context);
-           String[] queryArgs = {ejson.rid};
+            keyHex = DatabaseKeyStoreModule.getItemInternal(context, storageKey);
+        } catch (Exception e) {
+            Log.w(TAG, "Could not read encryption key for " + dbName + " — cannot read room", e);
+            return null;
+        }
+        if (keyHex == null) {
+            Log.w(TAG, "No encryption key found for " + dbName + " — cannot read room");
+            return null;
+        }
+        try {
+            saltHex = DatabaseKeyStoreModule.getItemInternal(context, saltStorageKey);
+        } catch (Exception e) {
+            Log.w(TAG, "Could not read cipher salt for " + dbName + " — cannot read room", e);
+            return null;
+        }
+        if (saltHex == null) {
+            Log.w(TAG, "No cipher salt found for " + dbName + " — cannot read room");
+            return null;
+        }
 
-           Cursor cursor = db.rawQuery("SELECT * FROM subscriptions WHERE id == ? LIMIT 1", queryArgs);
+        // Raw-key string form: "x'<64 hex>'" — skips PBKDF2, matches the JS driver.
+        // Never use the byte[] overload: it silently PBKDF2-derives and produces
+        // "file is not a database" even when the bytes match.
+        String rawKey = "x'" + keyHex + "'";
 
-           if (cursor.getCount() == 0) {
-               cursor.close();
-               return null;
-           }
+        SQLiteDatabase db = null;
+        try {
+            db = SQLiteDatabase.openDatabase(dbPath, rawKey, null, SQLiteDatabase.OPEN_READONLY, null);
 
-           cursor.moveToFirst();
-           int e2eKeyColumnIndex = cursor.getColumnIndex("e2e_key");
-           int encryptedColumnIndex = cursor.getColumnIndex("encrypted");
-           
-           if (e2eKeyColumnIndex == -1) {
-               Log.e(TAG, "e2e_key column not found in subscriptions table");
-               cursor.close();
-               return null;
-           }
-           
-           String e2eKey = cursor.getString(e2eKeyColumnIndex);
-           Boolean encrypted = encryptedColumnIndex != -1 && cursor.getInt(encryptedColumnIndex) > 0;
-           cursor.close();
+            // Mirror the JS driver's open PRAGMAs (connection.ts applyOpenPragmas):
+            //   cipher_plaintext_header_size = 32 — the driver exposes a 32-byte plaintext header
+            //     so iOS grants the background idle-WAL exemption (0xdead10cc); the reader must
+            //     set this too or SQLCipher will attempt to decrypt the header and fail.
+            //   cipher_salt — with a plaintext header SQLCipher no longer stores the salt in the
+            //     file; it must be supplied from the same keychain entry the JS driver wrote.
+            //   busy_timeout — mandatory multi-process WAL safety.
+            db.execSQL("PRAGMA cipher_plaintext_header_size = 32;");
+            db.execSQL("PRAGMA cipher_salt = \"x'" + saltHex + "'\";");
+            db.execSQL("PRAGMA busy_timeout = 500;");
 
-           return new Room(e2eKey, encrypted);
+            Cursor cursor = db.rawQuery("SELECT * FROM subscriptions WHERE rid = ? LIMIT 1", new String[]{ejson.rid});
+            try {
+                if (cursor.getCount() == 0) {
+                    return null;
+                }
+
+                cursor.moveToFirst();
+                int e2eKeyColumnIndex = cursor.getColumnIndex("e2e_key");
+                int encryptedColumnIndex = cursor.getColumnIndex("encrypted");
+
+                if (e2eKeyColumnIndex == -1) {
+                    Log.e(TAG, "e2e_key column not found in subscriptions table");
+                    return null;
+                }
+
+                String e2eKey = cursor.getString(e2eKeyColumnIndex);
+                Boolean encrypted = encryptedColumnIndex != -1 && cursor.getInt(encryptedColumnIndex) > 0;
+                return new Room(e2eKey, encrypted);
+            } finally {
+                cursor.close();
+            }
 
         } catch (Exception e) {
             Log.e(TAG, "Error reading room", e);
             return null;
 
         } finally {
-            if (db != null) {
+            if (db != null && db.isOpen()) {
                 db.close();
             }
         }
     }
 
-    private String getDatabaseName(String serverUrl, Context context) {
-        // Match JS WatermelonDB naming: strip scheme, replace '/' with '.', and append one ".db".
-        String name = serverUrl.replaceFirst("^(\\w+:)?//", "").replace("/", ".");
-        name += ".db";
-
-        // Important: return just the name (not an absolute path). WMDatabase will resolve and append its own ".db" internally,
-        // so the physical file becomes "*.db.db", matching the JS adapter.
-        return name;
+    /**
+     * Derives the clean database filename from a server URL.
+     * Matches the JS `deriveServerDbName` in connection.ts:
+     *   strip trailing slashes → strip scheme → replace '/' with '_' → append ".db"
+     */
+    private static String deriveDbName(String serverUrl) {
+        // Strip trailing slashes
+        String s = serverUrl.replaceAll("/+$", "");
+        // Strip scheme ("https://", "http://", or bare "//")
+        s = s.replaceFirst("^(\\w+:)?//", "");
+        // Replace remaining slashes with underscores (matches JS deriveServerDbName)
+        s = s.replace("/", "_");
+        return s + ".db";
     }
 
     public String readUserKey(final Ejson ejson) throws Exception {
