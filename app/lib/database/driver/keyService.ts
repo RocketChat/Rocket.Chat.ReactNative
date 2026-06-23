@@ -24,6 +24,7 @@
  */
 
 import { randomKey } from '@rocket.chat/mobile-crypto';
+
 import { logEvent, events } from '../../methods/helpers/log';
 
 // ---------------------------------------------------------------------------
