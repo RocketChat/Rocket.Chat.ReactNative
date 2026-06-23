@@ -6,6 +6,7 @@ import { type ReactElement, useEffect, useLayoutEffect, useRef, useState } from 
 import { ScrollView, View } from 'react-native';
 import { type Subscription } from 'rxjs';
 import UAParser from 'ua-parser-js';
+import { shallowEqual } from 'react-redux';
 
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -13,6 +14,7 @@ import { type ISubscription, type IUser, SubscriptionType } from '../../definiti
 import I18n from '../../i18n';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
 import { getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/methods/helpers';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 import { handleIgnore } from '../../lib/methods/helpers/handleIgnore';
@@ -55,7 +57,6 @@ const RoomInfoView = (): ReactElement => {
 	const subscription = useRef<Subscription | undefined>(undefined);
 
 	const {
-		isMasterDetail,
 		subscribedRoom,
 		usersRoles,
 		roles,
@@ -64,17 +65,24 @@ const RoomInfoView = (): ReactElement => {
 		editRoomPermission,
 		editOmnichannelContact,
 		editLivechatRoomCustomfields
-	} = useAppSelector(state => ({
-		subscribedRoom: state.room.subscribedRoom,
-		isMasterDetail: state.app.isMasterDetail,
-		roles: state.roles,
-		usersRoles: state.usersRoles,
-		serverVersion: state.server.version,
-		// permissions
-		editRoomPermission: state.permissions['edit-room'],
-		editOmnichannelContact: state.permissions['edit-omnichannel-contact'],
-		editLivechatRoomCustomfields: state.permissions['edit-livechat-room-customfields']
-	}));
+	} = useAppSelector(
+		state => ({
+			subscribedRoom: state.room.subscribedRoom,
+			roles: state.roles,
+			usersRoles: state.usersRoles,
+			serverVersion: state.server.version,
+			// permissions
+			editRoomPermission: state.permissions['edit-room'],
+			editOmnichannelContact: state.permissions['edit-omnichannel-contact'],
+			editLivechatRoomCustomfields: state.permissions['edit-livechat-room-customfields']
+		}),
+		shallowEqual
+	);
+	const isMasterDetail = useMasterDetail();
+
+	const roomUserId = isDirect ? getUidDirectMessage({ ...(room || { rid, t }), itsMe }) : undefined;
+	const activeUserStatus = useAppSelector(state => (roomUserId ? state.activeUsers[roomUserId] : undefined), shallowEqual);
+	const userStatus = activeUserStatus || roomUser;
 
 	const { colors } = useTheme();
 
@@ -291,7 +299,6 @@ const RoomInfoView = (): ReactElement => {
 					<RoomInfoViewAvatar
 						username={room?.name || roomUser.username}
 						rid={room?.rid}
-						userId={roomUser?._id}
 						handleEditAvatar={() => navigate('ChangeAvatarView', { titleHeader: I18n.t('Room_Info'), room, t, context: 'room' })}
 						showEdit={showEdit}
 						type={t}
@@ -301,7 +308,10 @@ const RoomInfoView = (): ReactElement => {
 						room={room || roomUser}
 						name={roomUser?.name}
 						username={roomUser?.username}
-						statusText={roomUser?.statusText}
+						userId={roomUser?._id}
+						status={userStatus?.status}
+						statusText={userStatus?.statusText}
+						statusExpiresAt={userStatus?.statusExpiresAt}
 					/>
 					<RoomInfoButtons
 						rid={room?.rid || rid}

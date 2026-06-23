@@ -1,10 +1,11 @@
 import { useContext, memo, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { connect } from 'react-redux';
 
 import type { SetUsernameStackParamList, StackParamList } from './definitions/navigationTypes';
 import Navigation from './lib/navigation/appNavigation';
+import { useMasterDetail } from './lib/hooks/useMasterDetail';
+import { useAppSelector } from './lib/hooks/useAppSelector';
 import { defaultHeader, getActiveRouteName, navigationTheme } from './lib/methods/helpers/navigation';
 import { RootEnum } from './definitions';
 // Stacks
@@ -33,8 +34,10 @@ const SetUsernameStack = () => (
 
 // App
 const Stack = createStackNavigator<StackParamList>();
-const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: boolean }) => {
+const App = memo(() => {
 	const { theme } = useContext(ThemeContext);
+	const isMasterDetail = useMasterDetail();
+	const root = useAppSelector(state => state.app.root);
 
 	useEffect(() => {
 		if (root) {
@@ -87,10 +90,4 @@ const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: bool
 		</>
 	);
 });
-const mapStateToProps = (state: any) => ({
-	root: state.app.root,
-	isMasterDetail: state.app.isMasterDetail
-});
-
-const AppContainer = connect(mapStateToProps)(App);
-export default AppContainer;
+export default App;

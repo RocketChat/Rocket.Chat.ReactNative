@@ -18,12 +18,12 @@ import { useEmojiKeyboard } from '../hooks/useEmojiKeyboard';
 
 const BUTTON_HIT_SLOP = { top: 4, right: 4, bottom: 4, left: 4 };
 
-export const EmojiSearchbar = (): ReactElement | null => {
+export const EmojiSearchbar = (): ReactElement => {
 	'use memo';
 
 	const { colors } = useTheme();
 	const [searchText, setSearchText] = useState<string>('');
-	const { showEmojiSearchbar, closeEmojiSearchbar } = useEmojiKeyboard();
+	const { closeEmojiSearchbar } = useEmojiKeyboard();
 	const { onEmojiSelected } = useContext(MessageInnerContext);
 	const { frequentlyUsed } = useFrequentlyUsedEmoji(true);
 	const [emojis, setEmojis] = useState<IEmoji[]>([]);
@@ -40,10 +40,6 @@ export const EmojiSearchbar = (): ReactElement | null => {
 	};
 
 	const renderItem = ({ item }: { item: IEmoji }) => <PressableEmoji emoji={item} onPress={handleEmojiSelected} />;
-
-	if (!showEmojiSearchbar) {
-		return null;
-	}
 
 	return (
 		<View style={{ backgroundColor: colors.surfaceLight }}>

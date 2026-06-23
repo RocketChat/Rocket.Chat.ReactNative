@@ -152,7 +152,10 @@ const AttachmentViewScreen: ComponentType<StaticScreenProps<TNavigation['Attachm
 const ChatsStack = createNativeStackNavigator({
 	screenOptions: defaultHeader,
 	screens: {
-		RoomsListView,
+		RoomsListView: createNativeStackScreen({
+			screen: RoomsListView,
+			options: { freezeOnBlur: true }
+		}),
 		RoomView: RoomViewScreen,
 		RoomActionsView: createNativeStackScreen({
 			screen: RoomActionsViewScreen,

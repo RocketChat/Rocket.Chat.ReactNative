@@ -8,20 +8,12 @@ import SelectServerView from '../views/SelectServerView';
 import ShareListView from '../views/ShareListView';
 import ShareView from '../views/ShareView';
 import withNavigation from '../lib/navigation/withNavigation';
-import { type IAttachment, type TServerModel, type TSubscriptionModel } from '../definitions';
+import { type InsideStackParamList } from './types';
+import { type Optional } from '../definitions/utils';
 
-type ShareViewParams = {
-	attachments: IAttachment[];
-	isShareView?: boolean;
-	isShareExtension: boolean;
-	serverInfo: TServerModel;
-	text: string;
-	room: TSubscriptionModel;
-	thread?: any;
-};
+type ShareViewParams = Optional<InsideStackParamList['ShareView'], 'thread' | 'action' | 'finishShareView' | 'startShareView'>;
 
-// Cast through `any` to break the type cycle that would arise from ShareListView/ShareView
-// referencing ShareInsideStackParamList ← StaticParamList<typeof ShareExtension> ← these components.
+// Cast through `any` to break the navigation-prop type cycle; removing it reintroduces a real TS circular ref.
 const ShareListViewScreen: ComponentType<StaticScreenProps<undefined>> = withNavigation(ShareListView as any) as any;
 const ShareViewScreen: ComponentType<StaticScreenProps<ShareViewParams>> = withNavigation(ShareView as any) as any;
 

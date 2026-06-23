@@ -98,5 +98,23 @@ export default StyleSheet.create({
 		lineHeight: 22,
 		fontSize: 16,
 		...sharedStyles.textRegular
+	},
+	statusText: {
+		fontSize: 14,
+		lineHeight: 22,
+		...sharedStyles.textAlignCenter,
+		...sharedStyles.textMedium
+	},
+	expiryText: {
+		fontSize: 14,
+		lineHeight: 22,
+		...sharedStyles.textAlignCenter,
+		...sharedStyles.textRegular
+	},
+	statusRow: {
+		marginTop: 10
+	},
+	statusExpiryRow: {
+		marginTop: 0
 	}
 });
