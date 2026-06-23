@@ -337,6 +337,7 @@
   "Logging_out": "正在登出",
   "Login": "登陆",
   "Login_error": "认证失败！请再试一次",
+  "Login_on_web": "在网页上登录",
   "Logout": "注销",
   "Logout_failed": "注销失败",
   "Logout_from_other_logged_in_locations": "注销其他已登陆的设备",

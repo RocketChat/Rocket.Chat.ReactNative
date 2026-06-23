@@ -2,11 +2,11 @@ package chat.rocket.reactnative.storage;
 
 import androidx.annotation.Nullable;
 
+import com.facebook.react.TurboReactPackage;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.module.model.ReactModuleInfo;
 import com.facebook.react.module.model.ReactModuleInfoProvider;
-import com.facebook.react.TurboReactPackage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,9 +18,8 @@ public class DatabaseKeyStoreTurboPackage extends TurboReactPackage {
     public NativeModule getModule(String name, ReactApplicationContext reactContext) {
         if (name.equals(NativeDatabaseKeyStoreSpec.NAME)) {
             return new DatabaseKeyStoreModule(reactContext);
-        } else {
-            return null;
         }
+        return null;
     }
 
     @Override
@@ -34,7 +33,7 @@ public class DatabaseKeyStoreTurboPackage extends TurboReactPackage {
                             NativeDatabaseKeyStoreSpec.NAME,
                             false, // canOverrideExistingModule
                             false, // needsEagerInit
-                            false, // hasConstants
+                            true,  // hasConstants
                             false, // isCxxModule
                             true   // isTurboModule
                     ));

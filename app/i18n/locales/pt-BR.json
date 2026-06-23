@@ -509,6 +509,7 @@
   "Login_error": "Suas credenciais foram rejeitadas. Tente novamente por favor!",
   "Login_has_been_temporarily_blocked_for_this_IP": "Login foi temporariamente bloqueado para este IP",
   "Login_has_been_temporarily_blocked_for_this_User": "Login foi temporariamente bloqueado para este usuário",
+  "Login_on_web": "Entrar na web",
   "Logout": "Sair",
   "Logout_failed": "Falha ao desconectar!",
   "Logout_from_other_logged_in_locations": "Sair de outros locais logados",

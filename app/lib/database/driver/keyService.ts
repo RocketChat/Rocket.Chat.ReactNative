@@ -95,7 +95,7 @@ const _getOrCreateInflight = new Map<string, Promise<string>>();
  * Validates both stored values (corrupt → throw) and generated values (bad bridge → throw).
  * Neither the stored value nor the generated value ever appears in thrown error messages.
  */
-async function getOrCreate(sk: string, byteLen: number, hexLen: number, label: string): Promise<string> {
+function getOrCreate(sk: string, byteLen: number, hexLen: number, label: string): Promise<string> {
 	const inflight = _getOrCreateInflight.get(sk);
 	if (inflight) return inflight;
 

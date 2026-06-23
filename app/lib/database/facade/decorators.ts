@@ -8,7 +8,7 @@
 
 import type { Observable } from 'rxjs';
 
-import { Model, type ICollection } from './Model';
+import { type Model, type ICollection } from './Model';
 import type { Query } from './Query';
 import * as Q from './Q';
 import { observeRow } from './observe';
