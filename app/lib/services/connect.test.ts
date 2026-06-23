@@ -2,6 +2,8 @@ import { connect, determineAuthType, disconnect } from './connect';
 import { mediaSessionInstance } from './voip/MediaSessionInstance';
 import { pendingHangups } from './voip/pendingHangups';
 import { unsubscribeRooms } from '../methods/subscribeRooms';
+import { setUser } from '../../actions/login';
+import database from '../database';
 
 jest.mock('./voip/MediaSessionInstance', () => ({
 	mediaSessionInstance: { reset: jest.fn(), drainPendingHangups: jest.fn() }
@@ -509,6 +511,94 @@ describe('connect — rooms subscription guard reset on close', () => {
 		closeHandler();
 
 		expect(unsubscribeRooms).toHaveBeenCalledTimes(1);
+	});
+});
+
+describe('connect — stream-notify-logged updateAvatar', () => {
+	const mockUserUpdate = jest.fn<Promise<void>, [(u: { avatarETag: string }) => void]>(fn => {
+		fn({ avatarETag: '' });
+		return Promise.resolve();
+	});
+	const mockUserRecord = { update: (fn: (u: { avatarETag: string }) => void) => mockUserUpdate(fn) };
+	const mockFetch = jest.fn<Promise<unknown[]>, []>(() => Promise.resolve([mockUserRecord]));
+	const mockDbWrite = jest.fn<Promise<void>, [() => Promise<void>]>(async fn => {
+		await fn();
+	});
+
+	beforeEach(async () => {
+		jest.clearAllMocks();
+		mockOnStreamDataStops.length = 0;
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: false },
+			login: { user: null, isAuthenticated: false },
+			settings: {}
+		});
+
+		// Wire up database.active so the WatermelonDB section of the handler runs.
+		(database.active as any).get = jest.fn(() => ({
+			query: () => ({ fetch: () => mockFetch() })
+		}));
+		(database.active as any).write = (fn: () => Promise<void>) => mockDbWrite(fn);
+
+		await connect({ server: 'https://example.com' });
+	});
+
+	const getUpdateAvatarHandler = () => getHandlersByEvent('stream-notify-logged')[0];
+
+	const fireUpdateAvatar = async (args: { username: string; etag: string }) => {
+		const handler = getUpdateAvatarHandler();
+		handler({ fields: { eventName: 'updateAvatar', args: [args] } });
+		await flushMicrotasks();
+	};
+
+	it('dispatches setUser with the new etag when the avatar belongs to the logged user', async () => {
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: true },
+			login: { user: { id: 'u1', username: 'rocket.cat' }, isAuthenticated: true },
+			settings: {}
+		});
+
+		await fireUpdateAvatar({ username: 'rocket.cat', etag: 'newEtag' });
+
+		expect(mockStoreDispatch).toHaveBeenCalledWith(setUser({ avatarETag: 'newEtag' }));
+	});
+
+	it('does not dispatch setUser when the avatar belongs to another user', async () => {
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: true },
+			login: { user: { id: 'u1', username: 'rocket.cat' }, isAuthenticated: true },
+			settings: {}
+		});
+
+		await fireUpdateAvatar({ username: 'someone.else', etag: 'newEtag' });
+
+		expect(mockStoreDispatch).not.toHaveBeenCalledWith(setUser({ avatarETag: 'newEtag' }));
+	});
+
+	it('does not dispatch setUser when there is no logged user', async () => {
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: true },
+			login: { user: null, isAuthenticated: false },
+			settings: {}
+		});
+
+		await fireUpdateAvatar({ username: 'rocket.cat', etag: 'newEtag' });
+
+		expect(mockStoreDispatch).not.toHaveBeenCalledWith(setUser({ avatarETag: 'newEtag' }));
+	});
+
+	it('still updates the users-DB record with the new etag for the logged user', async () => {
+		mockStoreGetState.mockReturnValue({
+			meteor: { connected: true },
+			login: { user: { id: 'u1', username: 'rocket.cat' }, isAuthenticated: true },
+			settings: {}
+		});
+
+		await fireUpdateAvatar({ username: 'rocket.cat', etag: 'newEtag' });
+
+		const updated = { avatarETag: '' };
+		await mockUserUpdate.mock.calls[0][0](updated);
+		expect(updated.avatarETag).toBe('newEtag');
 	});
 });
 
