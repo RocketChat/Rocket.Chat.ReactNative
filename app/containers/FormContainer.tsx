@@ -28,13 +28,13 @@ export const FormContainerInner = ({
 }: {
 	children: (ReactElement | null)[];
 	accessibilityLabel?: string;
-}) => (
+}): ReactElement => (
 	<View accessibilityLabel={accessibilityLabel} style={[sharedStyles.container, isTablet && sharedStyles.tabletScreenContent]}>
 		{children}
 	</View>
 );
 
-const FormContainer = ({ children, testID, showAppVersion = true, ...props }: IFormContainer) => {
+const FormContainer = ({ children, testID, showAppVersion = true, ...props }: IFormContainer): ReactElement => {
 	const { colors } = useTheme();
 	const { bottom } = useSafeAreaInsets();
 
