@@ -539,11 +539,11 @@ describe('useMessages', () => {
 
 	const findBoundClause = (clauses: unknown[]) =>
 		clauses.find(
-			(clause): clause is { type: 'where'; left: string; comparison: { operator: string; right: { value: number } } } =>
+			(clause): clause is { type: 'where'; column: string; comparison: { operator: string; value: number } } =>
 				!!clause &&
 				typeof clause === 'object' &&
 				(clause as { type?: string }).type === 'where' &&
-				(clause as { left?: string }).left === 'ts' &&
+				(clause as { column?: string }).column === 'ts' &&
 				(clause as { comparison?: { operator?: string } }).comparison?.operator === 'lte'
 		);
 
@@ -577,7 +577,7 @@ describe('useMessages', () => {
 
 		const lastCall = queryCalls[queryCalls.length - 1];
 		const bound = findBoundClause(lastCall);
-		expect(bound?.comparison.right.value).toBe(1500);
+		expect(bound?.comparison.value).toBe(1500);
 		// take must remain the last clause so the existing pagination test stays valid.
 		expect(lastCall.at(-1)).toEqual(expect.objectContaining({ type: 'take' }));
 	});
@@ -651,7 +651,7 @@ describe('useMessages', () => {
 			result.current[3].setHighTs(1500);
 		});
 		await waitFor(() => {
-			expect(findBoundClause(queryCalls[queryCalls.length - 1])?.comparison.right.value).toBe(1500);
+			expect(findBoundClause(queryCalls[queryCalls.length - 1])?.comparison.value).toBe(1500);
 		});
 		const takeBeforeRaise = findTakeClause(queryCalls[queryCalls.length - 1])?.count;
 		expect(takeBeforeRaise).toBe(QUERY_SIZE);
@@ -667,7 +667,7 @@ describe('useMessages', () => {
 			expect(result.current[3].highTs).toBe(1900);
 		});
 		const lastCall = queryCalls[queryCalls.length - 1];
-		expect(findBoundClause(lastCall)?.comparison.right.value).toBe(1900);
+		expect(findBoundClause(lastCall)?.comparison.value).toBe(1900);
 		expect(findTakeClause(lastCall)?.count).toBe(QUERY_SIZE * 2);
 	});
 
@@ -679,7 +679,7 @@ describe('useMessages', () => {
 			result.current[3].setHighTs(1500);
 		});
 		await waitFor(() => {
-			expect(findBoundClause(queryCalls[queryCalls.length - 1])?.comparison.right.value).toBe(1500);
+			expect(findBoundClause(queryCalls[queryCalls.length - 1])?.comparison.value).toBe(1500);
 		});
 
 		// The targeted read reveals the next batch but NO new Newer Loader: the Gap to the Live Tail closed.
@@ -706,7 +706,7 @@ describe('useMessages', () => {
 			result.current[3].setHighTs(1500);
 		});
 		await waitFor(() => {
-			expect(findBoundClause(queryCalls[queryCalls.length - 1])?.comparison.right.value).toBe(1500);
+			expect(findBoundClause(queryCalls[queryCalls.length - 1])?.comparison.value).toBe(1500);
 		});
 		const anchoredTake = findTakeClause(queryCalls[queryCalls.length - 1])?.count ?? 0;
 
@@ -735,7 +735,7 @@ describe('useMessages', () => {
 			result.current[3].setHighTs(1500);
 		});
 		await waitFor(() => {
-			expect(findBoundClause(queryCalls[queryCalls.length - 1])?.comparison.right.value).toBe(1500);
+			expect(findBoundClause(queryCalls[queryCalls.length - 1])?.comparison.value).toBe(1500);
 		});
 
 		// The targeted read still shows a Newer Loader above the bound — the Gap is NOT closed.
