@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { Dimensions, type EmitterSubscription, Linking } from 'react-native';
+import { Linking } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { enableScreens } from 'react-native-screens';
@@ -8,7 +8,7 @@ import { KeyboardProvider } from 'react-native-keyboard-controller';
 
 import ResponsiveLayoutProvider from './lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import AppContainer from './AppContainer';
-import { appInit, appInitLocalSettings, setMasterDetail as setMasterDetailAction } from './actions/app';
+import { appInit, appInitLocalSettings } from './actions/app';
 import { deepLinkingOpen } from './actions/deepLinking';
 import { ActionSheetProvider } from './containers/ActionSheet';
 import InAppNotification from './containers/InAppNotification';
@@ -18,11 +18,8 @@ import ThemeContextProvider from './containers/ThemeContextProvider';
 import Toast from './containers/Toast';
 import TwoFactor from './containers/TwoFactor';
 import { type IThemePreference } from './definitions/ITheme';
-import { DimensionsContext } from './dimensions';
 import { themes } from './lib/constants/colors';
-import { MIN_WIDTH_MASTER_DETAIL_LAYOUT } from './lib/constants/tablet';
 import { getAllowAnalyticsEvents, getAllowCrashReport } from './lib/methods/crashReport';
-import { debounce, isTablet } from './lib/methods/helpers';
 import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './lib/methods/helpers/log';
 import parseQuery from './lib/methods/helpers/parseQuery';
 import {
@@ -49,20 +46,9 @@ import ScreenLockedView from './views/ScreenLockedView';
 enableScreens();
 initStore(store);
 
-interface IDimensions {
-	width: number;
-	height: number;
-	scale: number;
-	fontScale: number;
-}
-
 interface IState {
 	theme: TSupportedThemes;
 	themePreferences: IThemePreference;
-	width: number;
-	height: number;
-	scale: number;
-	fontScale: number;
 }
 
 const parseDeepLinking = (url: string) => {
@@ -90,7 +76,6 @@ const parseDeepLinking = (url: string) => {
 
 export default class Root extends Component<{}, IState> {
 	private listenerTimeout!: any;
-	private dimensionsListener?: EmitterSubscription;
 	private videoConfActionCleanup?: () => void;
 	private mediaCallEventCleanup?: () => void;
 
@@ -98,19 +83,11 @@ export default class Root extends Component<{}, IState> {
 		super(props);
 		this.init();
 		this.initCrashReport();
-		const { width, height, scale, fontScale } = Dimensions.get('window');
 		const theme = initialTheme();
 		this.state = {
 			theme: getTheme(theme),
-			themePreferences: theme,
-			width,
-			height,
-			scale,
-			fontScale
+			themePreferences: theme
 		};
-		if (isTablet) {
-			this.initTablet();
-		}
 		setNativeTheme(theme);
 	}
 
@@ -130,7 +107,6 @@ export default class Root extends Component<{}, IState> {
 				}
 			});
 		}, 5000);
-		this.dimensionsListener = Dimensions.addEventListener('change', this.onDimensionsChange);
 
 		// Set up video conf action listener for background accept/decline
 		this.videoConfActionCleanup = setupVideoConfActionListener();
@@ -140,7 +116,6 @@ export default class Root extends Component<{}, IState> {
 
 	componentWillUnmount() {
 		clearTimeout(this.listenerTimeout);
-		this.dimensionsListener?.remove?.();
 		this.videoConfActionCleanup?.();
 		this.mediaCallEventCleanup?.();
 
@@ -183,29 +158,6 @@ export default class Root extends Component<{}, IState> {
 		store.dispatch(appInit());
 	};
 
-	getMasterDetail = (width: number) => {
-		if (!isTablet) {
-			return false;
-		}
-		return width > MIN_WIDTH_MASTER_DETAIL_LAYOUT;
-	};
-
-	setMasterDetail = (width: number) => {
-		const isMasterDetail = this.getMasterDetail(width);
-		store.dispatch(setMasterDetailAction(isMasterDetail));
-	};
-
-	// Dimensions update fires twice
-	onDimensionsChange = debounce(({ window: { width, height, scale, fontScale } }: { window: IDimensions }) => {
-		this.setDimensions({
-			width,
-			height,
-			scale,
-			fontScale
-		});
-		this.setMasterDetail(width);
-	});
-
 	setTheme = (newTheme = {}) => {
 		// change theme state
 		this.setState(
@@ -218,15 +170,6 @@ export default class Root extends Component<{}, IState> {
 		);
 	};
 
-	setDimensions = ({ width, height, scale, fontScale }: IDimensions) => {
-		this.setState({ width, height, scale, fontScale });
-	};
-
-	initTablet = () => {
-		const { width } = this.state;
-		this.setMasterDetail(width);
-	};
-
 	initCrashReport = () => {
 		getAllowCrashReport().then(allowCrashReport => {
 			toggleCrashErrorsReport(allowCrashReport);
@@ -237,35 +180,26 @@ export default class Root extends Component<{}, IState> {
 	};
 
 	render() {
-		const { themePreferences, theme, width, height, scale, fontScale } = this.state;
+		const { themePreferences, theme } = this.state;
 		return (
 			<SafeAreaProvider style={{ backgroundColor: themes[this.state.theme].surfaceRoom }}>
 				<Provider store={store}>
 					<ThemeContextProvider theme={theme} themePreferences={themePreferences} setTheme={this.setTheme}>
 						<ResponsiveLayoutProvider>
-							<DimensionsContext.Provider
-								value={{
-									width,
-									height,
-									scale,
-									fontScale,
-									setDimensions: this.setDimensions
-								}}>
-								<GestureHandlerRootView>
-									<KeyboardProvider>
-										<ActionSheetProvider>
-											<StatusBar />
-											<AppContainer />
-											<TwoFactor />
-											<ScreenLockedView />
-											<ChangePasscodeView />
-											<InAppNotification />
-											<Toast />
-											<Loading />
-										</ActionSheetProvider>
-									</KeyboardProvider>
-								</GestureHandlerRootView>
-							</DimensionsContext.Provider>
+							<GestureHandlerRootView>
+								<KeyboardProvider>
+									<ActionSheetProvider>
+										<StatusBar />
+										<AppContainer />
+										<TwoFactor />
+										<ScreenLockedView />
+										<ChangePasscodeView />
+										<InAppNotification />
+										<Toast />
+										<Loading />
+									</ActionSheetProvider>
+								</KeyboardProvider>
+							</GestureHandlerRootView>
 						</ResponsiveLayoutProvider>
 					</ThemeContextProvider>
 				</Provider>

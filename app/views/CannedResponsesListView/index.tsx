@@ -24,7 +24,7 @@ import { type ChatsStackParamList } from '../../stacks/types';
 import { useDebounce } from '../../lib/methods/helpers';
 import { getListCannedResponse, getDepartments } from '../../lib/services/restApi';
 import { type ILivechatDepartment } from '../../definitions/ILivechatDepartment';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
 import { type ISubscription } from '../../definitions';
 
 const COUNT = 25;
@@ -66,7 +66,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 	const [offset, setOffset] = useState(0);
 
 	const { theme } = useTheme();
-	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+	const isMasterDetail = useMasterDetail();
 
 	const getRoomFromDb = async () => {
 		const { rid } = route.params;

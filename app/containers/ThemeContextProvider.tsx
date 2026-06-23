@@ -4,7 +4,7 @@ import { type IThemePreference } from '../definitions/ITheme';
 import { colors } from '../lib/constants/colors';
 import { type IThemeContextProps, type TSupportedThemes, ThemeContext } from '../theme';
 
-// Memoized provider so dimension-driven App re-renders don't propagate to theme consumers.
+// Memoized value so unrelated App re-renders don't change context identity and re-render theme consumers.
 const ThemeContextProvider = ({
 	theme,
 	themePreferences,
