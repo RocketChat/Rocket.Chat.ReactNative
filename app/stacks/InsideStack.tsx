@@ -384,6 +384,4 @@ const InsideStack = createNativeStackNavigator({
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
 
-const InsideStackScreen = InsideStack.getComponent();
-
-export default InsideStackScreen;
+export default InsideStack;

@@ -33,6 +33,4 @@ const ShareExtension = createNativeStackNavigator({
 
 export type ShareInsideStackParamList = StaticParamList<typeof ShareExtension>;
 
-const ShareExtensionStack = ShareExtension.getComponent();
-
-export default ShareExtensionStack;
+export default ShareExtension;

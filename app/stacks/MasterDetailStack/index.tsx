@@ -300,6 +300,4 @@ const InsideStack = createNativeStackNavigator({
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
 
-const MasterDetailStack = InsideStack.getComponent();
-
-export default MasterDetailStack;
+export default InsideStack;
