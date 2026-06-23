@@ -13,7 +13,7 @@ import { CustomIcon } from '../CustomIcon';
 import { type TUserStatus, type IOmnichannelSource, type ISubscription } from '../../definitions';
 import { formatStatusExpiry } from '../../lib/methods/helpers/formatStatusExpiry';
 import { useTheme } from '../../theme';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
 import useStatusAccessibilityLabel from '../../lib/hooks/useStatusAccessibilityLabel';
 import { type IUsersTyping } from '../../reducers/usersTyping';
 
@@ -185,7 +185,7 @@ const Header = ({
 	const { fontScale } = useWindowDimensions();
 	const portrait = height > width;
 	let scale = 1;
-	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+	const isMasterDetail = useMasterDetail();
 	// Only move focus to the header for accessibility navigation (screen reader or physical
 	// keyboard); regular touch users shouldn't have focus yanked onto the header on room open.
 	const autoFocusHeader = useIsAccessibilityNavigationEnabled();

@@ -1,7 +1,7 @@
 import { memo, useMemo } from 'react';
 
 import * as List from '../../../containers/List';
-import { useAppSelector } from '../../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../../lib/hooks/useMasterDetail';
 import { usePermissions } from '../../../lib/hooks/usePermissions';
 import { useTheme } from '../../../theme';
 import { sidebarNavigate } from '../methods/sidebarNavigate';
@@ -9,7 +9,7 @@ import { sidebarNavigate } from '../methods/sidebarNavigate';
 const Admin = ({ currentScreen }: { currentScreen: string | null }) => {
 	'use memo';
 
-	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+	const isMasterDetail = useMasterDetail();
 	const { colors } = useTheme();
 	const [
 		viewStatisticsPermission,
