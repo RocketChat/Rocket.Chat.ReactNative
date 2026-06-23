@@ -1,6 +1,6 @@
 import { forwardRef, useImperativeHandle } from 'react';
-import type Model from '@nozbe/watermelondb/Model';
 
+import type { Model } from '../lib/database/facade';
 import database from '../lib/database';
 import protectedFunction from '../lib/methods/helpers/protectedFunction';
 import { useActionSheet } from './ActionSheet';

@@ -1,5 +1,4 @@
-import type Model from '@nozbe/watermelondb/Model';
-
+import type { Model } from '../lib/database/facade';
 import { type TUserStatus } from './TUserStatus';
 import { type IRocketChatRecord } from './IRocketChatRecord';
 import { type ILoggedUser } from './ILoggedUser';

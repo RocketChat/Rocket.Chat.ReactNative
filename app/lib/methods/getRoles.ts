@@ -1,6 +1,5 @@
-import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import type Model from '@nozbe/watermelondb/Model';
-
+import { sanitizedRaw } from '../database/facade';
+import type { Model } from '../database/facade';
 import database from '../database';
 import { getRoleById } from '../database/services/Role';
 import log from './helpers/log';

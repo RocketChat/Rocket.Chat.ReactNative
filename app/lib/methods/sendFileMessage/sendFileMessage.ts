@@ -1,7 +1,7 @@
-import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import { Alert } from 'react-native';
 
+import { sanitizedRaw } from '../../database/facade';
 import { type IUser, type TSendFileMessageFileInfo, type TUploadModel } from '../../../definitions';
 import i18n from '../../../i18n';
 import database from '../../database';

@@ -1,10 +1,8 @@
-import type { Q } from '@nozbe/watermelondb';
-
+import type { Q } from './facade';
 import * as utils from './utils';
 
 // Extracts every `LIKE` value (e.g. '%moy%') present in a serialized Q.or clause
-const getLikeValues = (clause: Q.Or): string[] =>
-	(clause as any).conditions.map((condition: any) => condition.comparison.right.value);
+const getLikeValues = (clause: Q.Or): string[] => (clause as any).clauses.map((condition: any) => condition.comparison.value);
 
 describe('sanitizeLikeStringTester', () => {
 	// example chars that shouldn't return
@@ -28,7 +26,7 @@ describe('sanitizeLikeStringTester', () => {
 });
 
 describe('getSubscriptionSearchClause', () => {
-	const columnsOf = (clause: Q.Or): string[] => (clause as any).conditions.map((condition: any) => condition.left);
+	const columnsOf = (clause: Q.Or): string[] => (clause as any).clauses.map((condition: any) => condition.column);
 
 	test('queries the slugified and sanitized name/fname columns', () => {
 		const clause = utils.getSubscriptionSearchClause('test');

@@ -1,5 +1,4 @@
-import { Model } from '@nozbe/watermelondb';
-import { field } from '@nozbe/watermelondb/decorators';
+import { Model, field } from '../facade';
 
 export const ROLES_TABLE = 'roles';
 

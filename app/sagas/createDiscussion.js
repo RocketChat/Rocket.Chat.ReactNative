@@ -1,5 +1,5 @@
 import { call, put, select, take, takeLatest } from 'redux-saga/effects';
-import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import { sanitizedRaw } from '../lib/database/facade';
 
 import { CREATE_DISCUSSION, LOGIN } from '../actions/actionsTypes';
 import { createDiscussionFailure, createDiscussionSuccess } from '../actions/createDiscussion';

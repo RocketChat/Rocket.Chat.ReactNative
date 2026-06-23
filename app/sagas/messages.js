@@ -1,5 +1,5 @@
 import { select, takeLatest } from 'redux-saga/effects';
-import { Q } from '@nozbe/watermelondb';
+import { Q } from '../lib/database/facade';
 
 import { MESSAGES } from '../actions/actionsTypes';
 import database from '../lib/database';

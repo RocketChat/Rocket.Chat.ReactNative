@@ -1,7 +1,6 @@
-import { Q } from '@nozbe/watermelondb';
-import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import orderBy from 'lodash/orderBy';
 
+import { Q, sanitizedRaw } from '../database/facade';
 import { setPermissions as setPermissionsAction } from '../../actions/permissions';
 import { type IPermission, type TPermissionModel } from '../../definitions';
 import log from './helpers/log';

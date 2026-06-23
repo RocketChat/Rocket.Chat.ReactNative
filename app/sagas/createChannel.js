@@ -1,5 +1,5 @@
 import { call, put, select, take, takeLatest } from 'redux-saga/effects';
-import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import { sanitizedRaw } from '../lib/database/facade';
 
 import { CREATE_CHANNEL, LOGIN } from '../actions/actionsTypes';
 import { createChannelFailure, createChannelSuccess } from '../actions/createChannel';

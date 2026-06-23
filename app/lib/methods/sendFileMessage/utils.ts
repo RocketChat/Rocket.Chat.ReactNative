@@ -1,8 +1,8 @@
-import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import isEmpty from 'lodash/isEmpty';
 import { Alert } from 'react-native';
 import * as FileSystem from 'expo-file-system/legacy';
 
+import { sanitizedRaw } from '../../database/facade';
 import { getUploadByPath } from '../../database/services/Upload';
 import { type IUpload, type TUploadModel } from '../../../definitions';
 import i18n from '../../../i18n';

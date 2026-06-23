@@ -1,4 +1,4 @@
-import { appSchema, tableSchema } from '@nozbe/watermelondb';
+import { appSchema, tableSchema } from '../facade';
 
 export default appSchema({
 	version: 29,

@@ -1,6 +1,4 @@
-import { Q } from '@nozbe/watermelondb';
-import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-
+import { Q, sanitizedRaw } from '../database/facade';
 import { addSettings, clearSettings } from '../../actions/settings';
 import { defaultSettings } from '../constants/defaultSettings';
 import { DEFAULT_AUTO_LOCK } from '../constants/localAuthentication';

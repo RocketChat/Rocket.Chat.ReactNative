@@ -1,10 +1,10 @@
 import { useEffect, useLayoutEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Q } from '@nozbe/watermelondb';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 
+import { Q } from '../lib/database/facade';
 import I18n from '../i18n';
 import ServerItem, { ROW_HEIGHT } from '../containers/ServerItem';
 import database from '../lib/database';

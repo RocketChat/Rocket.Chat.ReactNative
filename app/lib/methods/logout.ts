@@ -1,6 +1,6 @@
 import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
-import type Model from '@nozbe/watermelondb/Model';
 
+import type { Model } from '../database/facade';
 import { getDeviceToken } from '../notifications';
 import { isSsl } from './helpers';
 import { BASIC_AUTH_KEY } from './helpers/fetch';
@@ -53,7 +53,7 @@ function removeCurrentServer() {
 
 export async function removeServerDatabase({ server }: { server: string }): Promise<void> {
 	try {
-		const db = getDatabase(server);
+		const db = await getDatabase(server);
 		await db.write(() => db.unsafeResetDatabase());
 	} catch (e) {
 		log(e);

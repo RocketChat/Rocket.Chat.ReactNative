@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { Q } from '@nozbe/watermelondb';
 import { type Subscription } from 'rxjs';
 import { useDispatch, useStore } from 'react-redux';
 
+import { Q } from '../../../../lib/database/facade';
 import { type IApplicationState, type RoomType, type TAnyMessageModel } from '../../../../definitions';
 import database from '../../../../lib/database';
 import { getMessageById } from '../../../../lib/database/services/Message';

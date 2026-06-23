@@ -1,8 +1,8 @@
-import { Q } from '@nozbe/watermelondb';
 import { useEffect, useRef, useState } from 'react';
 import { shallowEqual } from 'react-redux';
 import type { Subscription } from 'rxjs';
 
+import { Q } from '../../../lib/database/facade';
 import { type TSubscriptionModel } from '../../../definitions';
 import { SortBy } from '../../../lib/constants/constantDisplayMode';
 import database from '../../../lib/database';

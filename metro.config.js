@@ -6,7 +6,7 @@ const { wrapWithReanimatedMetroConfig } = require('react-native-reanimated/metro
 
 const defaultConfig = getDefaultConfig(__dirname);
 
-const sourceExts = [...defaultConfig.resolver.sourceExts, 'mjs'];
+const sourceExts = [...defaultConfig.resolver.sourceExts, 'mjs', 'sql'];
 
 const config = {
 	transformer: {

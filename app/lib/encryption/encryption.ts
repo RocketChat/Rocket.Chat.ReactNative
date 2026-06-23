@@ -1,4 +1,3 @@
-import { type Model, Q } from '@nozbe/watermelondb';
 import EJSON from 'ejson';
 import { deleteAsync } from 'expo-file-system/legacy';
 import {
@@ -16,6 +15,7 @@ import {
 } from '@rocket.chat/mobile-crypto';
 import { sampleSize } from 'lodash';
 
+import { type Model, Q } from '../database/facade';
 import {
 	type IMessage,
 	type IServerAttachment,

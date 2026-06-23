@@ -1,5 +1,4 @@
-import { Model } from '@nozbe/watermelondb';
-import { field, relation } from '@nozbe/watermelondb/decorators';
+import { Model, field, relation } from '../facade';
 
 export const UPLOADS_TABLE = 'uploads';
 

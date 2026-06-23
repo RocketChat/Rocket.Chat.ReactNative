@@ -1,6 +1,6 @@
 import { type AVPlaybackStatus, Audio } from 'expo-av';
-import { Q } from '@nozbe/watermelondb';
 
+import { Q } from '../database/facade';
 import dayjs from '../dayjs';
 import { getMessageById } from '../database/services/Message';
 import database from '../database';

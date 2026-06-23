@@ -1,6 +1,6 @@
-import { Q } from '@nozbe/watermelondb';
 import { Alert } from 'react-native';
 
+import { Q } from '../../lib/database/facade';
 import { LISTENER } from '../../containers/Toast';
 import { type IGetRoomRoles, type IUser, SubscriptionType, type TSubscriptionModel, type TUserModel } from '../../definitions';
 import I18n from '../../i18n';

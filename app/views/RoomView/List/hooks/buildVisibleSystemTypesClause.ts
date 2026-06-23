@@ -1,5 +1,4 @@
-import { Q } from '@nozbe/watermelondb';
-
+import { Q } from '../../../../lib/database/facade';
 import { MESSAGE_TYPE_ANY_LOAD } from '../../../../lib/constants/messageTypeLoad';
 
 /**

@@ -1,5 +1,4 @@
-import type Model from '@nozbe/watermelondb/Model';
-
+import type { Model } from '../lib/database/facade';
 import { type IUserEmail, type IUserSettings } from './IUser';
 import { type TUserStatus } from './TUserStatus';
 

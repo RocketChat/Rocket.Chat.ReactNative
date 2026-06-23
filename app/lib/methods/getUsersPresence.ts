@@ -1,7 +1,6 @@
 import { InteractionManager } from 'react-native';
-import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { Q } from '@nozbe/watermelondb';
 
+import { sanitizedRaw, Q } from '../database/facade';
 import { type IActiveUsers } from '../../reducers/activeUsers';
 import { store as reduxStore } from '../store/auxStore';
 import { setActiveUsers } from '../../actions/activeUsers';

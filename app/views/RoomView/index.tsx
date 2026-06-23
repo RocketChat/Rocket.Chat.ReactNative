@@ -2,7 +2,6 @@ import { Component, createRef, type RefObject } from 'react';
 import { AccessibilityInfo, InteractionManager, PixelRatio, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import parse from 'url-parse';
-import { Q } from '@nozbe/watermelondb';
 import { dequal } from 'dequal';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { type Subscription } from 'rxjs';
@@ -11,6 +10,7 @@ import { type NavigatorScreenParams } from '@react-navigation/native';
 
 import { type TNavigation } from 'stacks/stackType';
 
+import { Q } from '../../lib/database/facade';
 import dayjs from '../../lib/dayjs';
 import {
 	getRoutingConfig,
