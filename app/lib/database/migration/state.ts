@@ -79,7 +79,7 @@ export function readState(): MigrationState | null {
 	const raw = userPreferences.getMap(KEY_STATE);
 	if (!raw || typeof raw !== 'object') return null;
 	if ((raw as { schema?: unknown }).schema !== 1) return null;
-	const phase = (raw as { phase?: unknown }).phase;
+	const { phase } = raw as { phase?: unknown };
 	const KNOWN: MigrationPhase[] = ['detect', 'porting_servers', 'porting_active', 'wiping', 'finalizing', 'done', 'skipped'];
 	if (typeof phase !== 'string' || !KNOWN.includes(phase as MigrationPhase)) return null;
 	return raw as MigrationState;
