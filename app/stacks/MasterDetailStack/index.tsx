@@ -5,7 +5,7 @@ import {
 	type NativeStackNavigationProp
 } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { type StaticParamList, type StaticScreenProps, useNavigation } from '@react-navigation/native';
+import { type StaticScreenProps, useNavigation } from '@react-navigation/native';
 
 import { ThemeContext } from '../../theme';
 import { defaultHeader, themedHeader, drawerStyle } from '../../lib/methods/helpers/navigation';
@@ -13,10 +13,8 @@ import withNavigation from '../../lib/navigation/withNavigation';
 import { isIOS } from '../../lib/methods/helpers';
 import { ModalContainer } from './ModalContainer';
 import { type MasterDetailChatsStackParamList, type MasterDetailInsideStackParamList, type ModalStackParamList } from './types';
-// Chats Stack
 import RoomView from '../../views/RoomView';
 import RoomsListView from '../../views/RoomsListView';
-// Modal Stack
 import RoomActionsView from '../../views/RoomActionsView';
 import RoomInfoView from '../../views/RoomInfoView';
 import ReportUserView from '../../views/ReportUserView';
@@ -72,25 +70,19 @@ import AddExistingChannelView from '../../views/AddExistingChannelView';
 import DiscussionsView from '../../views/DiscussionsView';
 import AccessibilityAndAppearanceView from '../../views/AccessibilityAndAppearanceView';
 import { SupportedVersionsWarning } from '../../containers/SupportedVersions';
-// InsideStack
 import AttachmentView from '../../views/AttachmentView';
 import ModalBlockView from '../../views/ModalBlockView';
 import JitsiMeetView from '../../views/JitsiMeetView';
 import ShareView from '../../views/ShareView';
 import CallView from '../../views/CallView';
 
-// ─── withNavigation wrappers ──────────────────────────────────────────────────
-// Cast through `any` to break the type cycle that would arise from each view's
-// navigation prop referencing ModalStackParamList ← StaticParamList<typeof ModalStack>
-// ← these components. HOC static properties (navigationOptions) are forwarded by
-// hoistNonReactStatics inside connect() and withTheme(), so `.navigationOptions`
-// is still reachable on the wrapped imports for options callbacks.
+// Cast through `any` to break the navigation-prop type cycle; removing it reintroduces a real TS circular ref.
+// `.navigationOptions` stays reachable on the wrapped components because connect()/withTheme() hoist statics.
 
 const RoomViewScreen: ComponentType<StaticScreenProps<MasterDetailChatsStackParamList['RoomView']>> = withNavigation(
 	RoomView as any
 ) as any;
 
-// class components
 const RoomActionsViewScreen: ComponentType<StaticScreenProps<ModalStackParamList['RoomActionsView']>> = withNavigation(
 	RoomActionsView as any
 ) as any;
@@ -109,8 +101,13 @@ const ThreadMessagesViewScreen: ComponentType<StaticScreenProps<ModalStackParamL
 const TeamChannelsViewScreen: ComponentType<StaticScreenProps<ModalStackParamList['TeamChannelsView']>> = withNavigation(
 	TeamChannelsView as any
 ) as any;
+const ReadReceiptsViewScreen: ComponentType<StaticScreenProps<ModalStackParamList['ReadReceiptsView']>> = withNavigation(
+	ReadReceiptsView as any
+) as any;
+const ScreenLockConfigViewScreen: ComponentType<StaticScreenProps<ModalStackParamList['ScreenLockConfigView']>> = withNavigation(
+	ScreenLockConfigView as any
+) as any;
 
-// function components
 const RoomInfoEditViewScreen: ComponentType<StaticScreenProps<ModalStackParamList['RoomInfoEditView']>> = withNavigation(
 	RoomInfoEditView as any
 ) as any;
@@ -151,15 +148,12 @@ const PushTroubleshootViewScreen: ComponentType<StaticScreenProps<ModalStackPara
 const SupportedVersionsWarningScreen: ComponentType<StaticScreenProps<ModalStackParamList['SupportedVersionsWarning']>> =
 	withNavigation(SupportedVersionsWarning as any) as any;
 
-// InsideStack class components
 const ModalBlockViewScreen: ComponentType<StaticScreenProps<MasterDetailInsideStackParamList['ModalBlockView']>> = withNavigation(
 	ModalBlockView as any
 ) as any;
 const ShareViewScreen: ComponentType<StaticScreenProps<MasterDetailInsideStackParamList['ShareView']>> = withNavigation(
 	ShareView as any
 ) as any;
-
-// ─── ChatsStackNavigator ──────────────────────────────────────────────────────
 
 const ChatsStack = createNativeStackNavigator({
 	screenOptions: defaultHeader,
@@ -176,17 +170,13 @@ const ChatsStack = createNativeStackNavigator({
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
 
-// ─── DrawerNavigator ──────────────────────────────────────────────────────────
-
 const DrawerNav = createDrawerNavigator({
 	screenOptions: { drawerType: 'permanent', headerShown: false, drawerStyle: { ...drawerStyle } },
 	drawerContent: () => <RoomsListView />,
 	screens: {
 		ChatsStackNavigator: ChatsStack
 	}
-} as any);
-
-// ─── ModalStackNavigator ──────────────────────────────────────────────────────
+});
 
 const ModalStack = createNativeStackNavigator({
 	screenOptions: defaultHeader,
@@ -227,7 +217,7 @@ const ModalStack = createNativeStackNavigator({
 		DiscussionsView,
 		TeamChannelsView: TeamChannelsViewScreen,
 		ReadReceiptsView: createNativeStackScreen({
-			screen: ReadReceiptsView as any,
+			screen: ReadReceiptsViewScreen,
 			options: props => ReadReceiptsView.navigationOptions!({ ...props, isMasterDetail: true })
 		}),
 		SettingsView,
@@ -236,7 +226,7 @@ const ModalStack = createNativeStackNavigator({
 		ThemeView,
 		DefaultBrowserView,
 		ScreenLockConfigView: createNativeStackScreen({
-			screen: ScreenLockConfigView as any,
+			screen: ScreenLockConfigViewScreen,
 			options: ScreenLockConfigView.navigationOptions
 		}),
 		StatusView,
@@ -270,8 +260,6 @@ const ModalStack = createNativeStackNavigator({
 		</ModalContainer>
 	);
 });
-
-// ─── InsideStackNavigator (MasterDetailStack root) ────────────────────────────
 
 const InsideStack = createNativeStackNavigator({
 	screenOptions: {
@@ -311,7 +299,5 @@ const InsideStack = createNativeStackNavigator({
 	const { theme } = useContext(ThemeContext);
 	return <Navigator screenOptions={themedHeader(theme)} />;
 });
-
-export type MasterDetailInsideStaticParamList = StaticParamList<typeof InsideStack>;
 
 export default InsideStack;
