@@ -6,7 +6,6 @@ import { useSelector } from 'react-redux';
 import { type IApplicationState, RootEnum } from './definitions';
 import Navigation from './lib/navigation/appNavigation';
 import { defaultHeader, getActiveRouteName, navigationTheme } from './lib/methods/helpers/navigation';
-// Stacks — navigator config objects, not components
 import OutsideStack from './stacks/OutsideStack';
 import InsideStack from './stacks/InsideStack';
 import MasterDetailStack from './stacks/MasterDetailStack';
@@ -18,8 +17,6 @@ import { setCurrentScreen } from './lib/methods/helpers/log';
 import { themes } from './lib/constants/colors';
 import { emitter } from './lib/methods/helpers';
 import MediaCallHeader from './containers/MediaCallHeader/MediaCallHeader';
-
-// ─── Conditional-group hooks ──────────────────────────────────────────────────
 
 const useIsLoading = () =>
 	useSelector(
@@ -39,14 +36,10 @@ const useIsSetUsername = () => useSelector((state: IApplicationState) => state.a
 
 const useIsShareExtension = () => useSelector((state: IApplicationState) => state.app.root === RootEnum.ROOT_SHARE_EXTENSION);
 
-// ─── SetUsername inline navigator ────────────────────────────────────────────
-
 const SetUsernameStack = createNativeStackNavigator({
 	screenOptions: defaultHeader,
 	screens: { SetUsernameView }
 });
-
-// ─── Root navigator ───────────────────────────────────────────────────────────
 
 const RootNavigator = createNativeStackNavigator({
 	screenOptions: { headerShown: false, animation: 'none' },
@@ -66,8 +59,6 @@ const RootNavigator = createNativeStackNavigator({
 });
 
 const AppNavigation = createStaticNavigation(RootNavigator);
-
-// ─── Root component ───────────────────────────────────────────────────────────
 
 const AppContainer = () => {
 	const { theme } = useContext(ThemeContext);
