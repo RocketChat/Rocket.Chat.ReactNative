@@ -1,5 +1,4 @@
-import { Q } from '@nozbe/watermelondb';
-
+import { Q } from '../../../lib/database/facade';
 import database from '../../../lib/database';
 import { MessageTypeLoad } from '../../../lib/constants/messageTypeLoad';
 import { tsToMs } from '../../../lib/dayjs';
