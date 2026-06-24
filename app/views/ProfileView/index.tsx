@@ -33,6 +33,7 @@ import sharedStyles from '../Styles';
 import DeleteAccountActionSheetContent from './components/DeleteAccountActionSheetContent';
 import styles from './styles';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
 import useParsedCustomFields from '../../lib/hooks/useParsedCustomFields';
 import CustomFields from '../../containers/CustomFields';
 import ListSeparator from '../../containers/List/ListSeparator';
@@ -66,12 +67,10 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 		Accounts_AllowUserAvatarChange,
 		Accounts_AllowUsernameChange,
 		Accounts_CustomFields,
-		isMasterDetail,
 		serverVersion,
 		user
 	} = useAppSelector(state => ({
 		user: getUserSelector(state),
-		isMasterDetail: state.app.isMasterDetail,
 		Accounts_AllowEmailChange: state.settings.Accounts_AllowEmailChange as boolean,
 		Accounts_AllowPasswordChange: state.settings.Accounts_AllowPasswordChange as boolean,
 		Accounts_AllowRealNameChange: state.settings.Accounts_AllowRealNameChange as boolean,
@@ -81,6 +80,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 		serverVersion: state.server.version,
 		Accounts_AllowDeleteOwnAccount: state.settings.Accounts_AllowDeleteOwnAccount as boolean
 	}));
+	const isMasterDetail = useMasterDetail();
 	const {
 		control,
 		handleSubmit,
@@ -280,7 +280,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
 		);
 
 		navigation.setOptions(options);
-	}, []);
+	}, [navigation, isMasterDetail]);
 
 	useFocusEffect(
 		useCallback(() => {

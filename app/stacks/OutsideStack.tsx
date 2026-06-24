@@ -50,6 +50,4 @@ const OutsideModal = createNativeStackNavigator({
 
 export type OutsideModalParamList = StaticParamList<typeof OutsideModal>;
 
-const OutsideStackModal = OutsideModal.getComponent();
-
-export default OutsideStackModal;
+export default OutsideModal;
