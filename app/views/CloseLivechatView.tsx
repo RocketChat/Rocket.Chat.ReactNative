@@ -12,6 +12,7 @@ import SafeAreaView from '../containers/SafeAreaView';
 import { FormTextInput } from '../containers/TextInput';
 import Button from '../containers/Button';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
+import { useMasterDetail } from '../lib/hooks/useMasterDetail';
 import sharedStyles from './Styles';
 import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
 import { MultiSelect } from '../containers/UIKit/MultiSelect';
@@ -44,10 +45,10 @@ const CloseLivechatView = () => {
 
 	const { colors } = useTheme();
 
-	const { isMasterDetail, livechatRequestComment } = useAppSelector(state => ({
-		isMasterDetail: state.app.isMasterDetail,
-		livechatRequestComment: state.settings.Livechat_request_comment_when_closing_conversation as boolean
-	}));
+	const livechatRequestComment = useAppSelector(
+		state => state.settings.Livechat_request_comment_when_closing_conversation as boolean
+	);
+	const isMasterDetail = useMasterDetail();
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
