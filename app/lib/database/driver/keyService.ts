@@ -25,6 +25,8 @@
 
 import { randomKey } from '@rocket.chat/mobile-crypto';
 
+import { logEvent, events } from '../../methods/helpers/log';
+
 // ---------------------------------------------------------------------------
 // Keychain shim — replaced via installKeychainShim by the real native binding
 // ---------------------------------------------------------------------------
@@ -42,6 +44,7 @@ const _devStore = new Map<string, string>();
 
 function assertDevShimAllowed(): void {
 	if (!__DEV__) {
+		logEvent(events.DB_KEY_READ_FAILURE, { category: 'shim_unavailable' });
 		throw new Error('keychain shim not installed — call installKeychainShim before opening databases');
 	}
 }
@@ -102,6 +105,7 @@ function getOrCreate(sk: string, byteLen: number, hexLen: number, label: string)
 		if (existing !== null) {
 			// Re-validate the stored value — a corrupt entry must not reach SQLCipher.
 			if (!new RegExp(`^[0-9a-fA-F]{${hexLen}}$`).test(existing)) {
+				logEvent(events.DB_KEY_READ_FAILURE, { category: 'stored_corrupt', material: label });
 				throw new Error(`stored ${label} corrupt`);
 			}
 			return existing;
@@ -113,6 +117,7 @@ function getOrCreate(sk: string, byteLen: number, hexLen: number, label: string)
 		const hex = await randomKey(byteLen);
 		if (!new RegExp(`^[0-9a-fA-F]{${hexLen}}$`).test(hex)) {
 			// Sanitize error — do not include the value in the message.
+			logEvent(events.DB_KEY_READ_FAILURE, { category: 'generation_failed', material: label });
 			throw new Error(`${label} generation produced unexpected output; cannot open database safely`);
 		}
 

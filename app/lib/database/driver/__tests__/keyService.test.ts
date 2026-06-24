@@ -27,6 +27,12 @@ jest.mock('@rocket.chat/mobile-crypto', () => ({
 	randomKey: jest.fn(async (bytes: number) => 'ab'.repeat(bytes))
 }));
 
+const mockLogEvent = jest.fn();
+jest.mock('../../../methods/helpers/log', () => ({
+	logEvent: (...args: unknown[]) => mockLogEvent(...args),
+	events: { DB_KEY_READ_FAILURE: 'db_key_read_failure' }
+}));
+
 function makeMemoryShim(): IKeychainShim {
 	const store = new Map<string, string>();
 	return {
@@ -45,6 +51,7 @@ beforeEach(() => {
 	installKeychainShim(makeMemoryShim());
 	// Reset the CSPRNG mock after any one-shot override below
 	(randomKey as jest.Mock).mockImplementation(async (bytes: number) => 'ab'.repeat(bytes));
+	mockLogEvent.mockClear();
 });
 
 describe('getOrCreateDatabaseKey', () => {
@@ -204,5 +211,39 @@ describe('dev keychain shim', () => {
 		});
 		const key = await fresh.getOrCreateDatabaseKey('dev.db');
 		expect(key).toMatch(/^[0-9a-fA-F]{64}$/);
+	});
+});
+
+describe('key read failure telemetry', () => {
+	it('emits DB_KEY_READ_FAILURE(stored_corrupt) when the stored value is invalid hex', async () => {
+		const shim = makeMemoryShim();
+		await shim.setItem('db_key_v1:corrupt.db', 'gg'.repeat(32)); // 'gg' is not valid hex
+		installKeychainShim(shim);
+
+		await expect(getOrCreateDatabaseKey('corrupt.db')).rejects.toThrow();
+		expect(mockLogEvent).toHaveBeenCalledWith('db_key_read_failure', { category: 'stored_corrupt', material: 'key' });
+	});
+
+	it('emits DB_KEY_READ_FAILURE(generation_failed) when randomKey returns invalid hex', async () => {
+		(randomKey as jest.Mock).mockResolvedValueOnce('not-valid-hex!!');
+
+		await expect(getOrCreateDatabaseKey('gen-fail.db')).rejects.toThrow();
+		expect(mockLogEvent).toHaveBeenCalledWith('db_key_read_failure', { category: 'generation_failed', material: 'key' });
+	});
+
+	it('does not include key material in the telemetry payload', async () => {
+		(randomKey as jest.Mock).mockResolvedValueOnce('BADVAL');
+
+		await expect(getOrCreateDatabaseKey('safe.db')).rejects.toThrow();
+
+		const payloads = JSON.stringify(mockLogEvent.mock.calls);
+		expect(payloads).not.toContain('BADVAL');
+	});
+
+	it('emits DB_KEY_READ_FAILURE(generation_failed) for salt when randomKey returns invalid hex', async () => {
+		(randomKey as jest.Mock).mockResolvedValueOnce('bad!');
+
+		await expect(getOrCreateDatabaseSalt('salt-fail.db')).rejects.toThrow();
+		expect(mockLogEvent).toHaveBeenCalledWith('db_key_read_failure', { category: 'generation_failed', material: 'salt' });
 	});
 });
