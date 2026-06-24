@@ -27,7 +27,7 @@ const Accessory = ({ element, parser }: IAccessoryComponent) => parser.renderAcc
 const Fields = ({ fields, parser }: IFields) => (
 	<>
 		{fields.map((field, index) => (
-			<View key={`${(field as any).type || 'field'}-${index}`} style={[styles.text, styles.field]}>
+			<View key={`${field.type || 'field'}-${index}`} style={[styles.text, styles.field]}>
 				{parser.text(field)}
 			</View>
 		))}
