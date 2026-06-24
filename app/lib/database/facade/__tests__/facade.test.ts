@@ -359,4 +359,47 @@ describe('WriterQueue', () => {
 		const queue = new WriterQueue();
 		await expect(queue.enqueue(async () => 'value')).resolves.toBe('value');
 	});
+
+	it('runs a re-entrant enqueue inline instead of deadlocking', async () => {
+		// The WMDB write idiom is db.write(() => collection.create()), and create()/update() themselves
+		// call db.write(). The inner enqueue must run inline within the outer writer — enqueuing it behind
+		// the outer one deadlocks, since the outer fn awaits the inner, which can't run until the outer ends.
+		const queue = new WriterQueue();
+		const order: string[] = [];
+
+		const work = queue.enqueue(async () => {
+			order.push('outer-start');
+			const inner = await queue.enqueue(async () => {
+				order.push('inner');
+				return 'inner-result';
+			});
+			order.push('outer-end');
+			return inner;
+		});
+		const timeout = new Promise<never>((_, reject) => {
+			setTimeout(() => reject(new Error('re-entrant write deadlocked')), 200);
+		});
+
+		await expect(Promise.race([work, timeout])).resolves.toBe('inner-result');
+		expect(order).toEqual(['outer-start', 'inner', 'outer-end']);
+	});
+
+	it('resumes queued writers after a re-entrant writer completes', async () => {
+		const queue = new WriterQueue();
+		const order: string[] = [];
+
+		const outer = queue.enqueue(async () => {
+			order.push('outer-start');
+			await queue.enqueue(async () => {
+				order.push('inner');
+			});
+			order.push('outer-end');
+		});
+		const next = queue.enqueue(async () => {
+			order.push('next');
+		});
+
+		await Promise.all([outer, next]);
+		expect(order).toEqual(['outer-start', 'inner', 'outer-end', 'next']);
+	});
 });

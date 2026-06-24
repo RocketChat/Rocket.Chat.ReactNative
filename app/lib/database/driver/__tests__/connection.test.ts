@@ -9,7 +9,15 @@
  *  - open-verify failure: safe error message, no key material
  */
 
-import { deriveServerDbName, openServersDb, openServerDb, closeDb, _clearRegistry, _getRegistry, DEFAULT_DB_NAME } from '../connection';
+import {
+	deriveServerDbName,
+	openServersDb,
+	openServerDb,
+	closeDb,
+	_clearRegistry,
+	_getRegistry,
+	DEFAULT_DB_NAME
+} from '../connection';
 
 // ---------------------------------------------------------------------------
 // Mocks
@@ -89,7 +97,10 @@ jest.mock('react-native', () => ({
 // ---------------------------------------------------------------------------
 
 import { openDatabaseAsync } from 'expo-sqlite';
+import { migrate } from 'drizzle-orm/expo-sqlite/migrator';
 import { getOrCreateDatabaseKey, getOrCreateDatabaseSalt } from '../keyService';
+import serversMigrations from '../migrations/servers/migrations';
+import appMigrations from '../migrations/app/migrations';
 
 beforeEach(() => {
 	execCalls.length = 0;
@@ -201,6 +212,36 @@ describe('open sequence', () => {
 
 		await openServerDb('https://example.com');
 		expect(callOrder.indexOf('key')).toBeLessThan(callOrder.indexOf('open'));
+	});
+});
+
+// ---------------------------------------------------------------------------
+// Schema DDL application
+// ---------------------------------------------------------------------------
+
+describe('schema migration', () => {
+	it('applies the servers DDL bundle when opening the servers DB', async () => {
+		await openServersDb();
+		expect(migrate).toHaveBeenCalledTimes(1);
+		expect(migrate).toHaveBeenCalledWith(expect.anything(), serversMigrations);
+	});
+
+	it('applies the app DDL bundle when opening a server DB', async () => {
+		await openServerDb('https://open.rocket.chat');
+		expect(migrate).toHaveBeenCalledWith(expect.anything(), appMigrations);
+	});
+
+	it('runs the DDL after the open PRAGMAs, on the keyed handle', async () => {
+		const order: string[] = [];
+		mockSqlite.execAsync.mockImplementation(async (sql: string) => {
+			execCalls.push(sql);
+			order.push('pragma');
+		});
+		(migrate as jest.Mock).mockImplementation(async () => {
+			order.push('migrate');
+		});
+		await openServersDb();
+		expect(order).toEqual(['pragma', 'migrate']);
 	});
 });
 

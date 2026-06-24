@@ -35,11 +35,16 @@
 import { Platform } from 'react-native';
 import { openDatabaseAsync, deleteDatabaseAsync, type SQLiteDatabase } from 'expo-sqlite';
 import { drizzle, type ExpoSQLiteDatabase } from 'drizzle-orm/expo-sqlite';
+import { migrate } from 'drizzle-orm/expo-sqlite/migrator';
 import { Directory, Paths } from 'expo-file-system';
 
 import * as appSchema from './schema/app';
 import * as serversSchema from './schema/servers';
+import appMigrations from './migrations/app/migrations';
+import serversMigrations from './migrations/servers/migrations';
 import { getOrCreateDatabaseKey, getOrCreateDatabaseSalt } from './keyService';
+
+type MigrationConfig = Parameters<typeof migrate>[1];
 
 // ---------------------------------------------------------------------------
 // Types
@@ -198,6 +203,11 @@ function openDb<K extends DbKind>(dbName: string, kind: K): Promise<DbHandle<K>>
 		// The conditional type SchemaForKind<K> cannot be narrowed by the JS runtime check above;
 		// casting through unknown is the standard TS pattern for this shape.
 		const db = drizzle(sqlite, { schema }) as unknown as ExpoSQLiteDatabase<SchemaForKind<K>>;
+
+		// Apply the schema DDL on the freshly keyed handle. The migrator creates tables on first
+		// open and tracks applied migrations in __drizzle_migrations, so re-opens are no-ops.
+		const migrations = (kind === 'servers' ? serversMigrations : appMigrations) as MigrationConfig;
+		await migrate(db, migrations);
 
 		const handle: DbHandle<K> = { db, sqlite, dbName };
 		_registry.set(dbName, handle as DbHandle);
