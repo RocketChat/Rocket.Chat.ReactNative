@@ -1,4 +1,4 @@
-import { searchLocal, searchRemote, type TSearch } from './search';
+import { search, searchLocal, searchRemote, type TSearch } from './search';
 import { spotlight } from '../services/restApi';
 import database from '../database/index';
 import { store as reduxStore } from '../store/auxStore';
@@ -283,6 +283,24 @@ describe('searchLocal + searchRemote', () => {
 		const result = (await searchRemote({ text: 'doe', localData })) as ISearch[];
 
 		// one local (jane) + one remote (john)
+		expect(result).toHaveLength(2);
+		expect(result.some(item => item.name === 'jane.doe')).toBe(true);
+		expect(result.some(item => item.rid === 'john.doe' && item.search)).toBe(true);
+	});
+
+	it('calls onLocal with local results before resolving with the merged set', async () => {
+		mockedSpotlight.mockResolvedValue({ users: [buildSpotlightUser({ username: 'john.doe' })], rooms: [] });
+
+		const onLocal = jest.fn();
+		const result = (await search({ text: 'doe', onLocal })) as ISearch[];
+
+		// onLocal receives only the local result (jane), before the spotlight augmentation
+		expect(onLocal).toHaveBeenCalledTimes(1);
+		const localPayload = onLocal.mock.calls[0][0] as ISearch[];
+		expect(localPayload).toHaveLength(1);
+		expect(localPayload[0].name).toBe('jane.doe');
+
+		// resolved value is the merged set (jane + john)
 		expect(result).toHaveLength(2);
 		expect(result.some(item => item.name === 'jane.doe')).toBe(true);
 		expect(result.some(item => item.rid === 'john.doe' && item.search)).toBe(true);

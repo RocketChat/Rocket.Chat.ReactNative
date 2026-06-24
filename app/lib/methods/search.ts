@@ -190,3 +190,18 @@ export const searchRemote = async ({
 		return data;
 	}
 };
+
+// Orchestrates the two-phase search: resolves the local query first and hands it to `onLocal`
+// so callers can paint it immediately, then resolves with the spotlight-augmented results.
+// searchRemote still receives localData so spotlight can exclude users already present locally.
+export const search = async ({
+	text = '',
+	filterUsers = true,
+	filterRooms = true,
+	rid = '',
+	onLocal
+}: ISearchParams & { onLocal?: (localData: TSearch[]) => void }): Promise<TSearch[]> => {
+	const localData = await searchLocal({ text, filterUsers, filterRooms, rid });
+	onLocal?.(localData);
+	return searchRemote({ text, filterUsers, filterRooms, rid, localData });
+};

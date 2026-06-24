@@ -23,7 +23,7 @@ import { type ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import { useTheme } from '../../theme';
 import { showErrorAlert } from '../../lib/methods/helpers/info';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import { searchLocal, searchRemote, type TSearch } from '../../lib/methods/search';
+import { search as runSearch, type TSearch } from '../../lib/methods/search';
 import { isGroupChat as isGroupChatMethod } from '../../lib/methods/helpers';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import Header from './Header';
@@ -131,11 +131,14 @@ const SelectedUsersView = () => {
 
 		try {
 			// Paint local results immediately while the backend request is still in flight
-			const localData = await searchLocal({ text, filterRooms: false });
-			if (isStale()) return;
-			setSearch(localData);
-
-			const result = await searchRemote({ text, filterRooms: false, localData });
+			const result = await runSearch({
+				text,
+				filterRooms: false,
+				onLocal: localData => {
+					if (isStale()) return;
+					setSearch(localData);
+				}
+			});
 			if (isStale()) return;
 			setSearch(result);
 		} catch (e) {

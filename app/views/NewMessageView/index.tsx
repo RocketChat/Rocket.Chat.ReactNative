@@ -16,7 +16,7 @@ import { useTheme } from '../../theme';
 import { goRoom as goRoomMethod, type TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { type NewMessageStackParamList } from '../../stacks/types';
-import { searchLocal, searchRemote } from '../../lib/methods/search';
+import { search as runSearch } from '../../lib/methods/search';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { useMasterDetail } from '../../lib/hooks/useMasterDetail';
 import Item from './Item';
@@ -81,11 +81,14 @@ const NewMessageView = () => {
 
 		try {
 			// Paint local results immediately while the backend request is still in flight
-			const localData = await searchLocal({ text, filterRooms: false });
-			if (isStale()) return;
-			setSearch(localData as ISearch[]);
-
-			const result = (await searchRemote({ text, filterRooms: false, localData })) as ISearch[];
+			const result = (await runSearch({
+				text,
+				filterRooms: false,
+				onLocal: localData => {
+					if (isStale()) return;
+					setSearch(localData as ISearch[]);
+				}
+			})) as ISearch[];
 			if (isStale()) return;
 			setSearch(result);
 		} catch (e) {
